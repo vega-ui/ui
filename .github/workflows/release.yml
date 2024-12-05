@@ -5,13 +5,17 @@ on:
     tags:
       - 'v*'
 
+permissions:
+  pages: write
+  id-token: write
+
 jobs:
   pre-checks:
     name: Run Tests and Linter
     uses: ./.github/workflows/tests-and-lint.yml
 
   release:
-    name: Publish to NPM
+    name: Release
     needs: pre-checks
     runs-on: ubuntu-latest
 
@@ -30,8 +34,24 @@ jobs:
       - name: Authenticate with NPM
         run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
 
-      - name: Publish to NPM
+      - name: Build NPM package
+        run: npm run build
+
+      - name: Publish NPM package
         shell: bash
         run: |
           npm version ${{ github.ref_name }} --no-git-tag-version
           npm publish --access public
+
+      - name: Build storybook
+        run: npm run build-storybook
+
+      - name: Upload storybook
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: storybook-static/
+
+      - name: Deploy storybook to GitHub Pages
+        uses: actions/deploy-pages@v4
+        with:
+          token: ${{ github.token }}
