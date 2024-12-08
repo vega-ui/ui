@@ -1,7 +1,7 @@
 {
   "name": "@adora-cs/ui-kit-web",
-  "private": true,
   "version": "1.0.0",
+  "license": "MIT",
   "type": "module",
   "main": "./dist/index.umd.ts",
   "module": "./dist/index.es.ts",
