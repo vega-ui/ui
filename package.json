@@ -1,7 +1,13 @@
 {
-  "name": "@adora-cs/ui-kit-web",
+  "name": "@adara-cs/ui-kit-web",
   "version": "1.0.0",
   "license": "MIT",
+  "keywords": ["ui-kit", "ui", "ts", "typescript", "js"],
+  "author": "adara-cs",
+  "bugs": {
+    "url": "https://github.com/adara-cs/ui-kit-web/issues"
+  },
+  "homepage": "https://github.com/adara-cs/ui-kit-web#readme",
   "type": "module",
   "main": "./dist/index.umd.ts",
   "module": "./dist/index.es.ts",

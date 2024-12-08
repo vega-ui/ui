@@ -34,4 +34,4 @@ jobs:
         shell: bash
         run: |
           npm version ${{ github.ref_name }} --no-git-tag-version
-          npm publish
+          npm publish --access public
