@@ -1,4 +1,5 @@
-import './button.css';
+import style from './button.module.css';
+import { csx } from '../../utils';
 
 export interface ButtonProps {
   /** Is this the principal call to action on the page? */
@@ -25,7 +26,7 @@ export const Button = ({
   return (
     <button
       type='button'
-      className={['storybook-button', `storybook-button--${size}`, mode].join(' ')}
+      className={csx(style.storybookButton, `storybook-button--${size}`, mode)}
       style={{ backgroundColor }}
       {...props}
     >

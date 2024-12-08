@@ -1,0 +1,1 @@
+export const csx = (...rest: (string | undefined)[]) => rest.filter(Boolean).join(' ')
