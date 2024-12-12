@@ -1,0 +1,101 @@
+@import "../tokens/index.css";
+
+.dark {
+    --background-color: var(--color-black);
+    --invert: var(--color-white);
+
+    /* Surface */
+
+    --surface-primary: var(--color-white);
+    --surface-secondary: var(--color-blue-50);
+    --surface-accent: var(--color-gray-25);
+
+    /* Neutral */
+
+    --neutral-300: var(--color-gray-150);
+    --neutral-500: var(--color-gray-400);
+    --neutral-900: var(--color-gray-950);
+
+    /* Primary */
+
+    --primary-lighten6: var(--color-blue-50);
+    --primary-lighten5: var(--color-blue-100);
+    --primary-lighten4: var(--color-blue-150);
+    --primary-lighten3: var(--color-blue-170);
+    --primary-lighten2: var(--color-blue-200);
+    --primary-lighten1: var(--color-blue-300);
+
+    --primary-base: var(--color-blue-400);
+
+    --primary-darken1: var(--color-blue-500);
+    --primary-darken2: var(--color-blue-600);
+    --primary-darken3: var(--color-blue-700);
+    --primary-darken4: var(--color-blue-800);
+    --primary-darken5: var(--color-blue-850);
+    --primary-darken6: var(--color-blue-900);
+
+    /* Error */
+
+    --error-lighten5: var(--color-red-50);
+    --error-lighten4: var(--color-red-100);
+    --error-lighten3: var(--color-red-150);
+    --error-lighten2: var(--color-red-200);
+    --error-lighten1: var(--color-red-300);
+
+    --error-base: var(--color-red-400);
+
+    --error-darken1: var(--color-red-500);
+    --error-darken2: var(--color-red-600);
+    --error-darken3: var(--color-red-700);
+    --error-darken4: var(--color-red-800);
+    --error-darken5: var(--color-red-900);
+
+    /* Success */
+
+    --green-lighten5: var(--color-green-50);
+    --green-lighten4: var(--color-green-100);
+    --green-lighten3: var(--color-green-150);
+    --green-lighten2: var(--color-green-200);
+    --green-lighten1: var(--color-green-300);
+
+    --success-base: var(--color-green-400);
+
+    --green-darken1: var(--color-green-500);
+    --green-darken2: var(--color-green-600);
+    --green-darken3: var(--color-green-700);
+    --green-darken4: var(--color-green-800);
+    --green-darken5: var(--color-green-900);
+
+    /* warning */
+
+    --warning-lighten5: var(--color-orange-50);
+    --warning-lighten4: var(--color-orange-100);
+    --warning-lighten3: var(--color-orange-150);
+    --warning-lighten2: var(--color-orange-200);
+    --warning-lighten1: var(--color-orange-300);
+
+    --warning-base: var(--color-orange-400);
+
+    --warning-darken1: var(--color-orange-500);
+    --warning-darken2: var(--color-orange-600);
+    --warning-darken3: var(--color-orange-700);
+    --warning-darken4: var(--color-orange-800);
+    --warning-darken5: var(--color-orange-900);
+
+    /* info */
+
+    --info-lighten5: var(--color-blue-50);
+    --info-lighten4: var(--color-blue-100);
+    --info-lighten3: var(--color-blue-150);
+    --info-lighten2: var(--color-blue-200);
+    --info-lighten1: var(--color-blue-300);
+
+    --info-base: var(--color-blue-400);
+
+    --info-darken1: var(--color-blue-500);
+    --info-darken2: var(--color-blue-600);
+    --info-darken3: var(--color-blue-700);
+    --info-darken4: var(--color-blue-800);
+    --info-darken5: var(--color-blue-850);
+    --info-darken6: var(--color-blue-900);
+}

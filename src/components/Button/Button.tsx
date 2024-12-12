@@ -1,5 +1,5 @@
 import style from './button.module.css';
-import { csx } from '../../utils';
+import { Icon } from '../Icon'
 
 export interface ButtonProps {
   /** Is this the principal call to action on the page? */
@@ -16,20 +16,18 @@ export interface ButtonProps {
 
 /** Primary UI component for user interaction */
 export const Button = ({
-  primary = false,
-  size = 'medium',
   backgroundColor,
   label,
   ...props
 }: ButtonProps) => {
-  const mode = primary ? 'storybook-button--primary' : 'storybook-button--secondary';
   return (
     <button
       type='button'
-      className={csx(style.storybookButton, `storybook-button--${size}`, mode)}
+      className={style.button}
       style={{ backgroundColor }}
       {...props}
     >
+      <Icon name='support' />
       {label}
     </button>
   );

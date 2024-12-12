@@ -1,0 +1,25 @@
+.icon {}
+
+.icon[data-size='nano'] {
+    height: 12px;
+}
+
+.icon[data-size='mini'] {
+    height: 14px;
+}
+
+.icon[data-size='small'] {
+    height: 16px;
+}
+
+.icon[data-size='medium'] {
+    height: 18px;
+}
+
+.icon[data-size='large'] {
+    height: 22px;
+}
+
+.icon[data-size='huge'] {
+    height: 28px;
+}
