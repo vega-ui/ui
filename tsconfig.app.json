@@ -14,14 +14,14 @@
     "moduleDetection": "force",
     "noEmit": true,
     "jsx": "react-jsx",
-
+    "types": ["vite-plugin-svgr/client"],
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true,
+    "noFallthroughCasesInSwitch": true
   },
-  "include": ["src"],
+  "include": ["src", "global.d.ts"],
   "exclude": [
     "src/**/*.stories.ts"
   ]
