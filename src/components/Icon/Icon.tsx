@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import style from './icon.module.css'
+import style from './style.module.css'
 import { csx } from '../../utils/css';
 import { IconName, getIcon } from './utils';
 
@@ -14,7 +14,8 @@ export interface IconProps {
   'aria-labelledby'?: string
 }
 
-export const Icon: FC<IconProps> = ({ size = 'small', color = 'var(--invert)', 'aria-label': ariaLabel, 'aria-labelledby': ariaLabelledby, name, width, height, className }) => {
+/** UI component for render svg icons */
+export const Icon: FC<IconProps> = ({ size = 'small', color = 'var(--neutral-1000)', 'aria-label': ariaLabel, 'aria-labelledby': ariaLabelledby, name, width, height, className }) => {
   const Component = getIcon(name as IconName);
 
   return (

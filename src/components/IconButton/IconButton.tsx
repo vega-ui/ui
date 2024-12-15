@@ -1,35 +1,39 @@
 import style from './style.module.css';
 import { ButtonBase, ButtonBaseProps } from '../ButtonBase';
+import { Fragment, ReactNode } from 'react';
+import { Icon, IconProps } from '../Icon';
 
-export interface ButtonProps extends ButtonBaseProps {
+export interface IconButtonProps extends Omit<ButtonBaseProps, 'children'> {
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset'
   size?: 'small' | 'medium' | 'large';
-  children: string;
+  name?: IconProps['name']
+  children?: ReactNode;
   onClick?: () => void;
 }
 
 /** Primary UI component for user interaction */
-export const Button = ({
+export const IconButton = ({
   size = 'medium',
   disabled,
-  children,
   variant = 'primary',
   appearance = 'fill',
   type = 'button',
+  name,
+  children,
   ...props
-}: ButtonProps) => {
+}: IconButtonProps) => {
   return (
     <ButtonBase
       type={type}
       disabled={disabled}
-      className={style.button}
+      className={style.iconButton}
       data-size={size}
       variant={variant}
       appearance={appearance}
       {...props}
     >
-      {children}
+      {children ? children : name ? <Icon name={name} /> : <Fragment />}
     </ButtonBase>
   );
 };

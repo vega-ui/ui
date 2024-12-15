@@ -1,11 +1,11 @@
 :root {
     --radius: 4px;
 
-    --radius-1: calc(var(--spacing) * 1);
-    --radius-2: calc(var(--spacing) * 2);
-    --radius-3: calc(var(--spacing) * 3);
-    --radius-4: calc(var(--spacing) * 4);
-    --radius-5: calc(var(--spacing) * 5);
-    --radius-6: calc(var(--spacing) * 6);
-    --radius-8: calc(var(--spacing) * 8);
+    --radius-1: calc(var(--radius) * 1);
+    --radius-2: calc(var(--radius) * 2);
+    --radius-3: calc(var(--radius) * 3);
+    --radius-4: calc(var(--radius) * 4);
+    --radius-5: calc(var(--radius) * 5);
+    --radius-6: calc(var(--radius) * 6);
+    --radius-8: calc(var(--radius) * 8);
 }

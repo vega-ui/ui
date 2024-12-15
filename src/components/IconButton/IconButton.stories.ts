@@ -1,29 +1,24 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 
-
-import { Button } from './Button.tsx';
+import { IconButton } from './IconButton.tsx';
 
 const meta = {
-  title: 'UI/Button',
-  component: Button,
+  title: 'UI/IconButton',
+  component: IconButton,
   parameters: {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
+  argTypes: {},
   args: { onClick: fn() },
-} satisfies Meta<typeof Button>;
+} satisfies Meta<typeof IconButton>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  args: {
-    children: 'Кнопка',
-  },
+  args: {},
 };
 
 export const PrimaryOutline: Story = {
@@ -78,14 +73,12 @@ export const SecondaryTransparent: Story = {
 export const Small: Story = {
   args: {
     size: 'small',
-    children: 'Кнопка',
   },
 };
 
 export const Medium: Story = {
   args: {
     size: 'medium',
-    children: 'Кнопка',
   },
 };
 
@@ -93,6 +86,5 @@ export const Medium: Story = {
 export const Large: Story = {
   args: {
     size: 'large',
-    children: 'Кнопка',
   },
 };

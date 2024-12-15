@@ -2,7 +2,6 @@
 
 .light {
     --background-color: var(--color-white);
-    --invert: var(--color-black);
 
     /* Surface */
 
@@ -12,90 +11,114 @@
 
     /* Neutral */
 
+    --neutral-0: var(--color-white);
+    --neutral-50: var(--color-gray-25);
+    --neutral-100: var(--color-gray-50);
     --neutral-300: var(--color-gray-150);
     --neutral-500: var(--color-gray-400);
+    --neutral-800: var(--color-gray-900);
     --neutral-900: var(--color-gray-950);
+    --neutral-1000: var(--color-black);
 
     /* Primary */
 
-    --primary-lighten6: var(--color-blue-50);
-    --primary-lighten5: var(--color-blue-100);
-    --primary-lighten4: var(--color-blue-150);
-    --primary-lighten3: var(--color-blue-170);
-    --primary-lighten2: var(--color-blue-200);
-    --primary-lighten1: var(--color-blue-300);
+    --primary-acent-1: var(--color-blue-50);
+    --primary-acent-2: var(--color-blue-100);
+    --primary-acent-3: var(--color-blue-150);
+    --primary-acent-4: var(--color-blue-170);
+    --primary-acent-5: var(--color-blue-200);
+    --primary-acent-6: var(--color-blue-300);
 
-    --primary-base: var(--color-blue-400);
+    --primary-acent-7: var(--color-blue-400);
 
-    --primary-darken1: var(--color-blue-500);
-    --primary-darken2: var(--color-blue-600);
-    --primary-darken3: var(--color-blue-700);
-    --primary-darken4: var(--color-blue-800);
-    --primary-darken5: var(--color-blue-850);
-    --primary-darken6: var(--color-blue-900);
+    --primary-acent-8: var(--color-blue-500);
+    --primary-acent-9: var(--color-blue-600);
+    --primary-acent-10: var(--color-blue-700);
+    --primary-acent-11: var(--color-blue-800);
+    --primary-acent-12: var(--color-blue-850);
+    --primary-acent-13: var(--color-blue-900);
+
+    /* Secondary */
+
+    --secondary-acent-1: var(--color-gray-25);
+    --secondary-acent-2: var(--color-gray-50);
+    --secondary-acent-3: var(--color-gray-100);
+    --secondary-acent-4: var(--color-gray-150);
+    --secondary-acent-5: var(--color-gray-200);
+    --secondary-acent-6: var(--color-gray-300);
+
+    --secondary-acent-7: var(--color-gray-400);
+
+    --secondary-acent-8: var(--color-gray-500);
+    --secondary-acent-9: var(--color-gray-600);
+    --secondary-acent-10: var(--color-gray-700);
+    --secondary-acent-11: var(--color-gray-800);
+    --secondary-acent-12: var(--color-gray-900);
+    --secondary-acent-13: var(--color-gray-950);
 
     /* Error */
 
-    --error-lighten5: var(--color-red-50);
-    --error-lighten4: var(--color-red-100);
-    --error-lighten3: var(--color-red-150);
-    --error-lighten2: var(--color-red-200);
-    --error-lighten1: var(--color-red-300);
+    --error-acent-1: var(--color-red-50);
+    --error-acent-2: var(--color-red-100);
+    --error-acent-3: var(--color-red-150);
+    --error-acent-4: var(--color-red-200);
+    --error-acent-5: var(--color-red-300);
 
-    --error-base: var(--color-red-400);
+    --error-acent-6: var(--color-red-400);
 
-    --error-darken1: var(--color-red-500);
-    --error-darken2: var(--color-red-600);
-    --error-darken3: var(--color-red-700);
-    --error-darken4: var(--color-red-800);
-    --error-darken5: var(--color-red-900);
+    --error-acent-7: var(--color-red-500);
+    --error-acent-8: var(--color-red-600);
+    --error-acent-9: var(--color-red-700);
+    --error-acent-10: var(--color-red-800);
+    --error-acent-111: var(--color-red-900);
 
     /* Success */
 
-    --green-lighten5: var(--color-green-50);
-    --green-lighten4: var(--color-green-100);
-    --green-lighten3: var(--color-green-150);
-    --green-lighten2: var(--color-green-200);
-    --green-lighten1: var(--color-green-300);
+    --success-accent-1: var(--color-green-50);
+    --success-accent-2: var(--color-green-100);
+    --success-accent-3: var(--color-green-150);
+    --success-accent-4: var(--color-green-200);
+    --success-accent-5: var(--color-green-300);
 
-    --success-base: var(--color-green-400);
+    --success-accent-6: var(--color-green-400);
 
-    --green-darken1: var(--color-green-500);
-    --green-darken2: var(--color-green-600);
-    --green-darken3: var(--color-green-700);
-    --green-darken4: var(--color-green-800);
-    --green-darken5: var(--color-green-900);
+    --success-accent-7: var(--color-green-500);
+    --success-accent-8: var(--color-green-600);
+    --success-accent-9: var(--color-green-700);
+    --success-accent-10: var(--color-green-800);
+    --success-accent-11: var(--color-green-900);
 
-    /* warning */
+    /* Warning */
 
-    --warning-lighten5: var(--color-orange-50);
-    --warning-lighten4: var(--color-orange-100);
-    --warning-lighten3: var(--color-orange-150);
-    --warning-lighten2: var(--color-orange-200);
-    --warning-lighten1: var(--color-orange-300);
+    --warning-accent-1: var(--color-orange-50);
+    --warning-accent-2: var(--color-orange-100);
+    --warning-accent-3: var(--color-orange-150);
+    --warning-accent-4: var(--color-orange-200);
+    --warning-accent-5: var(--color-orange-300);
 
-    --warning-base: var(--color-orange-400);
+    --warning-accent-6: var(--color-orange-400);
 
-    --warning-darken1: var(--color-orange-500);
-    --warning-darken2: var(--color-orange-600);
-    --warning-darken3: var(--color-orange-700);
-    --warning-darken4: var(--color-orange-800);
-    --warning-darken5: var(--color-orange-900);
+    --warning-accent-7: var(--color-orange-500);
+    --warning-accent-8: var(--color-orange-600);
+    --warning-accent-9: var(--color-orange-700);
+    --warning-accent-10: var(--color-orange-800);
+    --warning-accent-11: var(--color-orange-900);
 
-    /* info */
+    /* Info */
 
-    --info-lighten5: var(--color-blue-50);
-    --info-lighten4: var(--color-blue-100);
-    --info-lighten3: var(--color-blue-150);
-    --info-lighten2: var(--color-blue-200);
-    --info-lighten1: var(--color-blue-300);
+    --info-accent-1: var(--color-blue-50);
+    --info-accent-2: var(--color-blue-100);
+    --info-accent-3: var(--color-blue-150);
+    --info-acent-4: var(--color-blue-170);
+    --info-accent-5: var(--color-blue-200);
+    --info-accent-6: var(--color-blue-300);
 
-    --info-base: var(--color-blue-400);
+    --info-accent-7: var(--color-blue-400);
 
-    --info-darken1: var(--color-blue-500);
-    --info-darken2: var(--color-blue-600);
-    --info-darken3: var(--color-blue-700);
-    --info-darken4: var(--color-blue-800);
-    --info-darken5: var(--color-blue-850);
-    --info-darken6: var(--color-blue-900);
+    --info-accent-8: var(--color-blue-500);
+    --info-accent-9: var(--color-blue-600);
+    --info-accent-10: var(--color-blue-700);
+    --info-accent-11: var(--color-blue-800);
+    --info-accent-12: var(--color-blue-850);
+    --info-accent-13: var(--color-blue-900);
 }
