@@ -1,0 +1,15 @@
+.popover {
+    background: var(--surface-foreground);
+    box-shadow: var(--surface-shadow);
+    border-radius: var(--radius-3);
+    width: max-content;
+    padding: var(--spacing-8);
+}
+
+.popoverOverlay {
+    background-color: var(--overlay);
+}
+
+.popoverOverlayBlurred {
+    backdrop-filter: blur(10px);
+}

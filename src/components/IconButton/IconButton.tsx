@@ -33,7 +33,7 @@ export const IconButton = ({
       appearance={appearance}
       {...props}
     >
-      {children ? children : name ? <Icon name={name} /> : <Fragment />}
+      {children ? children : name ? <Icon color='currentColor' name={name} /> : <Fragment />}
     </ButtonBase>
   );
 };

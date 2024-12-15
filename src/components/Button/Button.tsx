@@ -1,16 +1,17 @@
 import style from './style.module.css';
 import { ButtonBase, ButtonBaseProps } from '../ButtonBase';
+import { forwardRef, ReactNode } from 'react';
 
 export interface ButtonProps extends ButtonBaseProps {
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset'
   size?: 'small' | 'medium' | 'large';
-  children: string;
+  children: ReactNode;
   onClick?: () => void;
 }
 
 /** Primary UI component for user interaction */
-export const Button = ({
+export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
   size = 'medium',
   disabled,
   children,
@@ -18,9 +19,10 @@ export const Button = ({
   appearance = 'fill',
   type = 'button',
   ...props
-}: ButtonProps) => {
+}, ref) => {
   return (
     <ButtonBase
+      ref={ref}
       type={type}
       disabled={disabled}
       className={style.button}
@@ -32,4 +34,4 @@ export const Button = ({
       {children}
     </ButtonBase>
   );
-};
+});

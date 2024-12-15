@@ -18,7 +18,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Primary: Story = {
-  args: {},
+  args: {
+    name: 'globe',
+  },
 };
 
 export const PrimaryOutline: Story = {
@@ -44,7 +46,7 @@ export const PrimaryTransparent: Story = {
 
 export const Secondary: Story = {
   args: {
-    children: 'Кнопка',
+    name: 'globe',
     variant: 'secondary',
   },
 };
@@ -72,12 +74,14 @@ export const SecondaryTransparent: Story = {
 
 export const Small: Story = {
   args: {
+    name: 'globe',
     size: 'small',
   },
 };
 
 export const Medium: Story = {
   args: {
+    name: 'globe',
     size: 'medium',
   },
 };
@@ -85,6 +89,7 @@ export const Medium: Story = {
 
 export const Large: Story = {
   args: {
+    name: 'globe',
     size: 'large',
   },
 };

@@ -3,7 +3,9 @@
 
     --spacing-1: calc(var(--spacing) * 1);
     --spacing-2: calc(var(--spacing) * 2);
+    --spacing-3: calc(var(--spacing) * 3);
     --spacing-4: calc(var(--spacing) * 4);
+    --spacing-5: calc(var(--spacing) * 5);
     --spacing-6: calc(var(--spacing) * 6);
     --spacing-7: calc(var(--spacing) * 7);
     --spacing-8: calc(var(--spacing) * 8);

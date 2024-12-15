@@ -1,1 +1,1 @@
-export { Text } from './Text.tsx'
+export { Text, type TextProps } from './Text.tsx'

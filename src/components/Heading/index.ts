@@ -1,1 +1,1 @@
-export { Heading } from './Heading.tsx'
+export { Heading, type HeadingProps } from './Heading.tsx'

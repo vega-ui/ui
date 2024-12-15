@@ -1,0 +1,24 @@
+.option {
+    padding: var(--spacing-4) var(--spacing-10);
+    border-radius: var(--radius-3);
+    transition: background-color var(--transition-state-delay) ease, color var(--transition-state-delay) ease;
+    cursor: pointer;
+}
+
+.option > .text {
+    color: var(--neutral-1000);
+}
+
+.option:hover,
+.option:focus-visible {
+    outline: none;
+    background-color: var(--primary-acent-3);
+}
+
+.option[aria-selected="true"] {
+    background-color: var(--primary-acent-7);
+}
+
+.option[aria-selected="true"] span {
+    color: var(--neutral-0);
+}
