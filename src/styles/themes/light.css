@@ -2,22 +2,34 @@
 
 .light {
     --background-color: var(--color-white);
+    --focus-color: var(--color-blue-200);
+    --overlay: rgba(0, 0, 0, 0.25);
 
     /* Surface */
 
     --surface-primary: var(--color-white);
     --surface-secondary: var(--color-blue-50);
     --surface-accent: var(--color-gray-25);
+    --surface-foreground: var(--color-white);
+
+    --surface-shadow: var(--black-shadow);
 
     /* Neutral */
 
     --neutral-0: var(--color-white);
-    --neutral-50: var(--color-gray-25);
-    --neutral-100: var(--color-gray-50);
-    --neutral-300: var(--color-gray-150);
-    --neutral-500: var(--color-gray-400);
-    --neutral-800: var(--color-gray-900);
-    --neutral-900: var(--color-gray-950);
+    --neutral-25: var(--color-gray-25);
+    --neutral-50: var(--color-gray-50);
+    --neutral-100: var(--color-gray-100);
+    --neutral-150: var(--color-gray-150);
+    --neutral-200: var(--color-gray-200);
+    --neutral-300: var(--color-gray-300);
+    --neutral-400: var(--color-gray-400);
+    --neutral-500: var(--color-gray-500);
+    --neutral-600: var(--color-gray-600);
+    --neutral-700: var(--color-gray-700);
+    --neutral-800: var(--color-gray-800);
+    --neutral-900: var(--color-gray-900);
+    --neutral-950: var(--color-gray-950);
     --neutral-1000: var(--color-black);
 
     /* Primary */

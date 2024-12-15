@@ -1,5 +1,9 @@
 .icon {}
 
+.icon[data-size='pico'] {
+    height: 10px;
+}
+
 .icon[data-size='nano'] {
     height: 12px;
 }

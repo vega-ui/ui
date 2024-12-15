@@ -32,8 +32,8 @@
 }
 
 .buttonBase[data-variant='primary'][data-appearance='fill']:disabled {
-    background-color: var(--neutral-100);
-    color: var(--neutral-500);
+    background-color: var(--neutral-50);
+    color: var(--neutral-400);
 }
 
 /* Primary Outline */
@@ -57,8 +57,8 @@
 }
 
 .buttonBase[data-variant='primary'][data-appearance='outline']:disabled {
-    border-color: var(--neutral-500);
-    color: var(--neutral-500);
+    border-color: var(--neutral-400);
+    color: var(--neutral-400);
     background: none;
 }
 
@@ -81,8 +81,8 @@
 }
 
 .buttonBase[data-variant='primary'][data-appearance='ghost']:disabled {
-    background-color: var(--neutral-100);
-    color: var(--neutral-500);
+    background-color: var(--neutral-50);
+    color: var(--neutral-400);
 }
 
 /* Primary Transparent */
@@ -104,7 +104,7 @@
 }
 
 .buttonBase[data-variant='primary'][data-appearance='transparent']:disabled {
-    color: var(--neutral-500);
+    color: var(--neutral-400);
     background: none;
 }
 
@@ -126,7 +126,7 @@
 
 .buttonBase[data-variant='secondary'][data-appearance='fill']:disabled {
     background-color: var(--secondary-acent-2);
-    color: var(--neutral-500);
+    color: var(--neutral-400);
 }
 
 /* Secondary Outline */
@@ -148,8 +148,8 @@
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='outline']:disabled {
-    border-color: var(--neutral-500);
-    color: var(--neutral-500);
+    border-color: var(--neutral-400);
+    color: var(--neutral-400);
     background: none;
 }
 
@@ -170,7 +170,7 @@
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='ghost']:disabled {
-    color: var(--neutral-500);
+    color: var(--neutral-400);
     background-color: var(--secondary-acent-2);
 }
 
@@ -191,6 +191,6 @@
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='transparent']:disabled {
-    color: var(--neutral-500);
+    color: var(--neutral-400);
     background: none;
 }
