@@ -1,49 +1,55 @@
 :root {
-    --font-size-1: 12px;
-    --font-size-2: 14px;
-    --font-size-3: 16px;
-    --font-size-4: 20px;
-    --font-size-5: 18px;
-    --font-size-6: 24px;
-    --font-size-7: 28px;
-    --font-size-8: 32px;
-    --font-size-9: 40px;
-    --font-size-10: 48px;
+    --font-size-1: 0.75rem;
+    --font-size-2: 0.875rem;
+    --font-size-3: 1rem;
+    --font-size-4: 1.125rem;
+    --font-size-5: 1.25rem;
+    --font-size-6: 1.5rem;
+    --font-size-7: 1.75rem;
+    --font-size-8: 2rem;
+    --font-size-9: 2.5rem;
+    --font-size-10: 3rem;
+    --font-size-11: 4rem;
 
-    --line-height-1: 16px;
-    --line-height-2: 20px;
-    --line-height-3: 24px;
-    --line-height-4: 26px;
-    --line-height-5: 28px;
-    --line-height-6: 30px;
-    --line-height-7: 36px;
-    --line-height-8: 40px;
-    --line-height-9: 48px;
-    --line-height-10: 64px;
-
-    --letter-spacing-1: 0.0025em;
-    --letter-spacing-2: 0em;
-    --letter-spacing-3: 0em;
-    --letter-spacing-4: -0.0025em;
-    --letter-spacing-5: -0.005em;
-    --letter-spacing-6: -0.00625em;
-    --letter-spacing-7: -0.0075em;
-    --letter-spacing-8: -0.01em;
-    --letter-spacing-9: -0.025em;
-
-    /* Продукты */
-
-    position: absolute;
-    width: 253px;
-    height: 59px;
-    left: 0px;
-    top: 0px;
-
-    --default-font-family: Montserrat, Roboto, Arial, sans-serif;
+    --default-font-family: Montserrat, Arial, sans-serif;
     --default-font-size: var(--font-size-3);
     --default-font-style: normal;
     --default-font-weight: 400;
     --default-line-height: 1.5;
+
+    /* Text */
+
+    --line-height-1: 1.25rem;
+    --line-height-2: 1.5rem;
+    --line-height-3: 1.75rem;
+    --line-height-4: 2rem;
+    --line-height-5: 2rem;
+    --line-height-6: 2.5rem;
+    --line-height-7: 2.75rem;
+    --line-height-8: 3rem;
+    --line-height-9: 3.25rem;
+    --line-height-10: 3.5rem;
+    --line-height-11: 3.75rem;
+
+    /* Heading */
+
+    --heading-font-family: var(--default-font-family);
+    --heading-font-size-adjust: 1;
+    --heading-font-style: normal;
+    --heading-font-weight: 500;
+    --heading-letter-spacing: 0em;
+
+    --heading-line-height-1: 1.25rem;
+    --heading-line-height-2: 1.5rem;
+    --heading-line-height-3: 1.75rem;
+    --heading-line-height-4: 2rem;
+    --heading-line-height-5: 2rem;
+    --heading-line-height-6: 2.5rem;
+    --heading-line-height-7: 2.75rem;
+    --heading-line-height-8: 3rem;
+    --heading-line-height-9: 3.25rem;
+    --heading-line-height-10: 3.5rem;
+    --heading-line-height-11: 3.75rem;
 }
 
 @font-face {

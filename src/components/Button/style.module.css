@@ -1,0 +1,20 @@
+.button {
+}
+
+.button[data-size='small'] {
+    font-size: var(--font-size-3);
+    padding: var(--spacing-6) var(--spacing-10);
+    border-radius: var(--radius-3);
+}
+
+.button[data-size='medium'] {
+    font-size: var(--font-size-4);
+    padding: var(--spacing-7) var(--spacing-18);
+    border-radius: var(--radius-3);
+}
+
+.button[data-size='large'] {
+    font-size: var(--font-size-5);
+    padding: var(--spacing-8) var(--spacing-24);
+    border-radius: var(--radius-4);
+}
