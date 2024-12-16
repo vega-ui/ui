@@ -22,10 +22,10 @@ export default defineConfig({
   build: {
     sourcemap: true,
     lib: {
-      formats: ['es', 'umd'],
+      formats: ['es'],
       entry: resolve(__dirname, 'src/'),
       name: 'AdaraCloudUI',
-      fileName: (format) => `index.${format}.js`,
+      fileName: 'index'
     },
     commonjsOptions: {
       sourceMap: false

@@ -2,3 +2,8 @@ html {
     width: 100% !important;
     min-height: 100%;
 }
+
+.sbdocs.sbdocs-preview.sb-unstyled,
+.sb-show-main {
+    background-color: var(--background-color) !important;
+}
