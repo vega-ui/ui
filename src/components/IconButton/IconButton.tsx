@@ -2,6 +2,7 @@ import style from './style.module.css';
 import { ButtonBase, ButtonBaseProps } from '../ButtonBase';
 import { Fragment, ReactNode } from 'react';
 import { Icon, IconProps } from '../Icon';
+import { sizeMapper } from './utils';
 
 export interface IconButtonProps extends Omit<ButtonBaseProps, 'children'> {
   disabled?: boolean;
@@ -33,7 +34,7 @@ export const IconButton = ({
       appearance={appearance}
       {...props}
     >
-      {children ? children : name ? <Icon color='currentColor' name={name} /> : <Fragment />}
+      {children ? children : name ? <Icon color='currentColor' name={name} size={sizeMapper(size)} /> : <Fragment />}
     </ButtonBase>
   );
 };
