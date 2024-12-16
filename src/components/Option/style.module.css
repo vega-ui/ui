@@ -20,5 +20,5 @@
 }
 
 .option[aria-selected="true"] span {
-    color: var(--neutral-0);
+    color: var(--color-white);
 }
