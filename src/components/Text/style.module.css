@@ -3,6 +3,22 @@
     color: var(--neutral-1000);
 }
 
+.text[data-fontWeight='400'] {
+    font-weight: 400;
+}
+
+.text[data-fontWeight='500'] {
+    font-weight: 500;
+}
+
+.text[data-fontWeight='700'] {
+    font-weight: 700;
+}
+
+.text[data-fontWeight='900'] {
+    font-weight: 900;
+}
+
 .text[data-size='1'] {
     font-size: var(--font-size-1);
     line-height: var(--line-height-1);
