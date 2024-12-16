@@ -11,16 +11,9 @@ const preview = {
         dark: "dark",
       },
       defaultTheme: "light",
-    }),
+    })
   ],
   parameters: {
-    backgrounds: {
-      values: [
-        { name: 'Dark', value: 'black' },
-        { name: 'Light', value: 'white' },
-      ],
-      default: 'Light',
-    },
     controls: {
       matchers: {
         color: /(background|color)$/i,

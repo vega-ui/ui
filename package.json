@@ -16,16 +16,8 @@
   },
   "homepage": "https://github.com/adara-cs/ui-kit-web#readme",
   "type": "module",
-  "main": "./dist/index.umd.ts",
-  "module": "./dist/index.es.ts",
+  "module": "./dist/index.ts",
   "types": "./dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/index.es.js",
-      "require": "./dist/index.umd.js"
-    },
-    "./style.css": "./dist/index.css"
-  },
   "files": [
     "dist"
   ],
