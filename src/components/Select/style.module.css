@@ -10,7 +10,7 @@
     font-size: var(--font-size-3);
     border-radius: var(--radius-3);
     box-sizing: border-box;
-    min-height: 48px;
+    height: 48px;
     min-width: 200px;
 }
 
@@ -65,11 +65,11 @@
 }
 
 .selectCombobox:hover {
-    border-color: var(--primary-acent-6);
+    border-color: var(--primary-accent-6);
 }
 
 .selectCombobox:active, .selectCombobox[data-state="open"] {
-    border-color: var(--primary-acent-7);
+    border-color: var(--primary-accent-7);
 }
 
 .selectCombobox:focus-visible {

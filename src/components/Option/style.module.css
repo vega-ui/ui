@@ -12,11 +12,11 @@
 .option:hover,
 .option:focus-visible {
     outline: none;
-    background-color: var(--primary-acent-3);
+    background-color: var(--primary-accent-3);
 }
 
 .option[aria-selected="true"] {
-    background-color: var(--primary-acent-7);
+    background-color: var(--primary-accent-7);
 }
 
 .option[aria-selected="true"] span {
