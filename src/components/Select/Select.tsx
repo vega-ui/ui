@@ -128,8 +128,8 @@ export const Select: FC<SelectProps> = ({
           {start ? start : icon ? <Icon name={icon} size={iconSize} color={iconColor} aria-hidden /> : undefined}
           {selectedIndex != null && options ? <Text className={styles.value}>{options[selectedIndex].label}</Text> : <Text className={styles.placeholder}>{placeholder}</Text>}
         </div>
-        <div>
-          <Icon className={styles.controlIcon} color='var(--neutral-500)' name='chevron' size='pico' />
+        <div className={styles.control}>
+          <Icon className={styles.controlIcon} color='currentColor' name='chevron' size='pico' />
           {end}
         </div>
       </div>

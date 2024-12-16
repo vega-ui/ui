@@ -52,6 +52,7 @@
 
     /* Secondary */
 
+    --secondary-accent-0: var(--color-white);
     --secondary-accent-1: var(--color-gray-25);
     --secondary-accent-2: var(--color-gray-50);
     --secondary-accent-3: var(--color-gray-100);
@@ -67,6 +68,7 @@
     --secondary-accent-11: var(--color-gray-800);
     --secondary-accent-12: var(--color-gray-900);
     --secondary-accent-13: var(--color-gray-950);
+    --secondary-accent-14: var(--color-black);
 
     /* Error */
 

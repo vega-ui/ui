@@ -3,7 +3,7 @@
     --color-blue-100: rgba(243, 249, 255, 1);
     --color-blue-150: rgba(232, 243, 255, 1);
     --color-blue-170: rgba(200, 232, 255, 1);
-    --color-blue-200: rgba(164, 217, 255, 1);
+    --color-blue-200: rgb(164, 218, 250, 1);
     --color-blue-300: rgba(109, 194, 255, 1);
     --color-blue-400: rgba(0, 149, 255, 1);
     --color-blue-500: rgb(0, 139, 238, 1);
@@ -70,10 +70,10 @@
     --color-gray-400: rgba(119, 135, 154, 1);
     --color-gray-500: rgba(100, 116, 136, 1);
     --color-gray-600: rgba(84, 97, 113, 1);
-    --color-gray-700: rgba(59, 68, 79, 1);
-    --color-gray-800: rgb(43, 48, 56, 1);
-    --color-gray-900: rgba(27, 29, 38, 1);
-    --color-gray-950: rgb(11, 14, 16, 1);
+    --color-gray-700: rgb(59, 64, 75, 1);
+    --color-gray-800: rgb(47, 53, 63, 1);
+    --color-gray-900: rgb(33, 38, 45, 1);
+    --color-gray-950: rgb(23, 26, 33, 1);
 
     --color-black: rgba(0, 0, 0, 1);
     --color-white: rgba(255, 255, 255, 1);
