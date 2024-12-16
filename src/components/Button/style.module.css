@@ -1,5 +1,6 @@
 .button {
     display: flex;
+    align-items: center;
     flex-direction: row;
     gap: var(--spacing-5);
     box-sizing: border-box;
