@@ -5,7 +5,6 @@
     cursor: pointer;
     font-family: var(--default-font-family);
     font-weight: 500;
-    transition: transform var(--transition-state-delay) ease-in-out;
 }
 
 .buttonBase:disabled {
@@ -30,7 +29,6 @@
 
 .buttonBase[data-variant='primary'][data-appearance='fill']:active {
     background-color: var(--primary-accent-9);
-    transform: scale(0.95);
 }
 
 .buttonBase[data-variant='primary'][data-appearance='fill']:disabled {
@@ -56,7 +54,6 @@
     border-color: var(--primary-accent-9);
     background-color: var(--primary-accent-2);
     color: var(--primary-accent-9);
-    transform: scale(0.95);
 }
 
 .buttonBase[data-variant='primary'][data-appearance='outline']:disabled {
@@ -81,7 +78,6 @@
 .buttonBase[data-variant='primary'][data-appearance='ghost']:active {
     background-color: var(--primary-accent-4);
     color: var(--primary-accent-9);
-    transform: scale(0.95);
 }
 
 .buttonBase[data-variant='primary'][data-appearance='ghost']:disabled {
@@ -105,7 +101,6 @@
 .buttonBase[data-variant='primary'][data-appearance='transparent']:active {
     background-color: var(--primary-accent-2);
     color: var(--primary-accent-7);
-    transform: scale(0.95);
 }
 
 .buttonBase[data-variant='primary'][data-appearance='transparent']:disabled {
@@ -127,7 +122,6 @@
 
 .buttonBase[data-variant='secondary'][data-appearance='fill']:active {
     background-color: var(--secondary-accent-14);
-    transform: scale(0.95);
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='fill']:disabled {
@@ -151,7 +145,6 @@
 .buttonBase[data-variant='secondary'][data-appearance='outline']:active {
     border-color: var(--secondary-accent-13);
     background-color: var(--secondary-accent-2);
-    transform: scale(0.95);
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='outline']:disabled {
@@ -174,7 +167,6 @@
 
 .buttonBase[data-variant='secondary'][data-appearance='ghost']:active {
     background-color: var(--secondary-accent-4);
-    transform: scale(0.95);
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='ghost']:disabled {
@@ -196,7 +188,6 @@
 
 .buttonBase[data-variant='secondary'][data-appearance='transparent']:active {
     background-color: var(--secondary-accent-2);
-    transform: scale(0.95);
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='transparent']:disabled {
