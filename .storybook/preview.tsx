@@ -1,7 +1,7 @@
 import '../src/index.css'
 import './style.css'
 
-import { withThemeByClassName } from "@storybook/addon-styling";
+import { withThemeByClassName } from "@storybook/addon-themes";
 
 const preview = {
   decorators: [
