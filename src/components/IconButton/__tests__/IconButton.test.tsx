@@ -39,6 +39,12 @@ describe('Icon Button', () => {
     })
   })
 
+  it('as link', async () => {
+    const wrapper = render(<IconButton as='a' data-testid='link' name='globe' />)
+
+    expect(wrapper.getByTestId('link').tagName).toBe('A')
+  })
+
   it('click', async () => {
     const handleClick = vi.fn()
     const wrapper = render(<IconButton onClick={handleClick} />)

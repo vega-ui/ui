@@ -1,8 +1,8 @@
 import style from './style.module.css';
 import { ButtonBase, ButtonBaseProps } from '../ButtonBase';
-import { forwardRef, ReactNode } from 'react';
+import { ComponentPropsWithRef, ElementType, forwardRef, ReactNode } from 'react';
 
-export interface ButtonProps extends ButtonBaseProps {
+export type ButtonProps<T extends ElementType = 'button'> = ButtonBaseProps<T> & {
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset'
   size?: 'small' | 'medium' | 'large';
@@ -10,18 +10,22 @@ export interface ButtonProps extends ButtonBaseProps {
   onClick?: () => void;
 }
 
+type ButtonComponent = <T extends ElementType = 'button'>(props: ButtonProps<T>) => ReactNode | null;
+
 /** Primary UI component for user interaction */
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(({
+export const Button: ButtonComponent = forwardRef(<T extends ElementType>({
   size = 'medium',
   disabled,
+  as,
   children,
   variant = 'primary',
   appearance = 'fill',
   type = 'button',
   ...props
-}, ref) => {
+}: ButtonProps<T>, ref: ComponentPropsWithRef<T>['ref']) => {
   return (
     <ButtonBase
+      as={as}
       ref={ref}
       type={type}
       disabled={disabled}

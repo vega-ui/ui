@@ -23,6 +23,24 @@ export const Primary: Story = {
   },
 };
 
+export const PrimaryAsLink: Story = {
+  args: {
+    name: 'globe',
+    as: 'a',
+    href: 'https://github.com/adara-cs/ui-kit-web'
+  },
+};
+
+export const PrimaryAsLinkDisabled: Story = {
+  args: {
+    name: 'globe',
+    as: 'a',
+    'aria-disabled': true,
+    href: 'https://github.com/adara-cs/ui-kit-web',
+    onClick: (e: KeyboardEvent) => e.preventDefault(),
+  },
+};
+
 export const PrimaryOutline: Story = {
   args: {
     ...Primary.args,
@@ -48,6 +66,26 @@ export const Secondary: Story = {
   args: {
     name: 'globe',
     variant: 'secondary',
+  },
+};
+
+export const SecondaryAsLink: Story = {
+  args: {
+    variant: 'secondary',
+    name: 'globe',
+    as: 'a',
+    href: 'https://github.com/adara-cs/ui-kit-web'
+  },
+};
+
+export const SecondaryAsLinkDisabled: Story = {
+  args: {
+    variant: 'secondary',
+    name: 'globe',
+    as: 'a',
+    'aria-disabled': true,
+    href: 'https://github.com/adara-cs/ui-kit-web',
+    onClick: (e: KeyboardEvent) => e.preventDefault(),
   },
 };
 

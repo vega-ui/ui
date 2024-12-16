@@ -34,6 +34,13 @@ describe('Button', () => {
     })
   })
 
+  it('as link', async () => {
+    const wrapper = render(<Button as='a'>{TEXT}</Button>)
+
+    wrapper.getByText(TEXT).click()
+    expect(wrapper.getByText(TEXT).tagName).toBe('A')
+  })
+
   it('click', async () => {
     const handleClick = vi.fn()
     const wrapper = render(<Button onClick={handleClick}>{TEXT}</Button>)
