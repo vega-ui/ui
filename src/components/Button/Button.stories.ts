@@ -24,6 +24,24 @@ export const Primary: Story = {
   },
 };
 
+export const PrimaryAsLink: Story = {
+  args: {
+    as: 'a',
+    href: 'https://github.com/adara-cs/ui-kit-web',
+    children: 'GitHub',
+  },
+};
+
+export const PrimaryAsLinkDisabled: Story = {
+  args: {
+    as: 'a',
+    'aria-disabled': 'true',
+    href: 'https://github.com/adara-cs/ui-kit-web',
+    children: 'GitHub',
+    onClick: (e: KeyboardEvent) => e.preventDefault(),
+  },
+};
+
 export const PrimaryOutline: Story = {
   args: {
     ...Primary.args,
@@ -49,6 +67,15 @@ export const Secondary: Story = {
   args: {
     children: 'Кнопка',
     variant: 'secondary',
+  },
+};
+
+export const SecondaryAsLink: Story = {
+  args: {
+    variant: 'secondary',
+    as: 'a',
+    href: 'https://github.com/adara-cs/ui-kit-web',
+    children: 'GitHub',
   },
 };
 
