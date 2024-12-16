@@ -5,6 +5,22 @@
     margin: 0;
 }
 
+.heading[data-fontWeight='400'] {
+    font-weight: 400;
+}
+
+.heading[data-fontWeight='500'] {
+    font-weight: 500;
+}
+
+.heading[data-fontWeight='700'] {
+    font-weight: 700;
+}
+
+.heading[data-fontWeight='900'] {
+    font-weight: 900;
+}
+
 .heading[data-size='1'] {
     font-size: var(--font-size-1);
     line-height: var(--heading-line-height-1);

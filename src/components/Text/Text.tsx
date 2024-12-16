@@ -8,13 +8,14 @@ export interface TextProps<T extends ElementType = 'span'> {
   as?: T;
   children?: string;
   size?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11;
+  fontWeight?: 400 | 500 | 700 | 900
 }
 
-export const Text = <T extends ElementType = 'span'>({ as, className, size = 3, children }: TextProps<T> & Omit<ComponentPropsWithRef<T>, keyof TextProps<T>>) => {
+export const Text = <T extends ElementType = 'span'>({ as, className, size = 3, fontWeight, children }: TextProps<T> & Omit<ComponentPropsWithRef<T>, keyof TextProps<T>>) => {
   const Element = as || 'span';
 
   return (
-    <Element className={csx(style.text, className)} data-size={size}>
+    <Element className={csx(style.text, className)} data-fontWeight={fontWeight} data-size={size}>
       {children}
     </Element>
   );
