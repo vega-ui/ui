@@ -84,6 +84,10 @@
     transition: border-color var(--transition-state-delay) ease-in-out;
 }
 
+.selectCombobox[data-variant='field'] .control {
+    color: var(--neutral-500);
+}
+
 .selectCombobox[data-variant='field'][aria-disabled='true'] {
     background-color: var(--neutral-50);
     padding: var(--spacing-6) var(--spacing-10);
@@ -100,12 +104,16 @@
     min-width: 100px;
 }
 
+.selectCombobox[data-variant='inline'] .control {
+    color: var(--neutral-1000);
+}
+
 .selectCombobox[data-variant='inline'][aria-disabled='true'] .value,
 .selectCombobox[data-variant='inline'][aria-disabled='true'] .placeholder {
     color: var(--neutral-400);
 }
 
-.selectCombobox[data-variant='inline'][aria-disabled='ture'] .controlIcon {
+.selectCombobox[data-variant='inline'][aria-disabled='true'] .controlIcon {
     fill: var(--neutral-400);
 }
 

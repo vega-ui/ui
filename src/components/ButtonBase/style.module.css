@@ -5,6 +5,7 @@
     cursor: pointer;
     font-family: var(--default-font-family);
     font-weight: 500;
+    transition: transform var(--transition-state-delay) ease-in-out;
 }
 
 .buttonBase:disabled {
@@ -24,11 +25,12 @@
 }
 
 .buttonBase[data-variant='primary'][data-appearance='fill']:hover {
-    background-color: var(--primary-accent-6);
+    background-color: var(--primary-accent-8);
 }
 
 .buttonBase[data-variant='primary'][data-appearance='fill']:active {
-    background-color: var(--primary-accent-8);
+    background-color: var(--primary-accent-9);
+    transform: scale(0.95);
 }
 
 .buttonBase[data-variant='primary'][data-appearance='fill']:disabled {
@@ -45,15 +47,16 @@
 }
 
 .buttonBase[data-variant='primary'][data-appearance='outline']:hover {
-    border-color: var(--primary-accent-6);
+    border-color: var(--primary-accent-8);
     background-color: var(--primary-accent-1);
-    color: var(--primary-accent-6);
+    color: var(--primary-accent-8);
 }
 
 .buttonBase[data-variant='primary'][data-appearance='outline']:active {
-    border-color: var(--primary-accent-8);
+    border-color: var(--primary-accent-9);
     background-color: var(--primary-accent-2);
-    color: var(--primary-accent-8);
+    color: var(--primary-accent-9);
+    transform: scale(0.95);
 }
 
 .buttonBase[data-variant='primary'][data-appearance='outline']:disabled {
@@ -71,13 +74,14 @@
 }
 
 .buttonBase[data-variant='primary'][data-appearance='ghost']:hover {
-    background-color: var(--primary-accent-1);
-    color: var(--primary-accent-6);
+    background-color: var(--primary-accent-3);
+    color: var(--primary-accent-8);
 }
 
 .buttonBase[data-variant='primary'][data-appearance='ghost']:active {
-    background-color: var(--primary-accent-3);
-    color: var(--primary-accent-8);
+    background-color: var(--primary-accent-4);
+    color: var(--primary-accent-9);
+    transform: scale(0.95);
 }
 
 .buttonBase[data-variant='primary'][data-appearance='ghost']:disabled {
@@ -95,12 +99,13 @@
 
 .buttonBase[data-variant='primary'][data-appearance='transparent']:hover {
     background-color: var(--primary-accent-1);
-    color: var(--primary-accent-6);
+    color: var(--primary-accent-7);
 }
 
 .buttonBase[data-variant='primary'][data-appearance='transparent']:active {
-    background-color: var(--primary-accent-3);
-    color: var(--primary-accent-8);
+    background-color: var(--primary-accent-2);
+    color: var(--primary-accent-7);
+    transform: scale(0.95);
 }
 
 .buttonBase[data-variant='primary'][data-appearance='transparent']:disabled {
@@ -117,11 +122,12 @@
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='fill']:hover {
-    background-color: var(--secondary-accent-11);
+    background-color: var(--secondary-accent-13);
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='fill']:active {
-    background-color: var(--secondary-accent-13);
+    background-color: var(--secondary-accent-14);
+    transform: scale(0.95);
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='fill']:disabled {
@@ -145,6 +151,7 @@
 .buttonBase[data-variant='secondary'][data-appearance='outline']:active {
     border-color: var(--secondary-accent-13);
     background-color: var(--secondary-accent-2);
+    transform: scale(0.95);
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='outline']:disabled {
@@ -162,11 +169,12 @@
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='ghost']:hover {
-    background-color: var(--secondary-accent-1);
+    background-color: var(--secondary-accent-3);
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='ghost']:active {
-    background-color: var(--secondary-accent-3);
+    background-color: var(--secondary-accent-4);
+    transform: scale(0.95);
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='ghost']:disabled {
@@ -188,6 +196,7 @@
 
 .buttonBase[data-variant='secondary'][data-appearance='transparent']:active {
     background-color: var(--secondary-accent-2);
+    transform: scale(0.95);
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='transparent']:disabled {
