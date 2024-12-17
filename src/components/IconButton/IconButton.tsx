@@ -1,18 +1,19 @@
 import style from './style.module.css';
 import { ButtonBase, ButtonBaseProps } from '../ButtonBase';
-import { ComponentPropsWithRef, ElementType, forwardRef, Fragment, ReactNode } from 'react';
+import { ElementType, forwardRef, Fragment, ReactNode } from 'react';
 import { Icon, IconProps } from '../Icon';
 import { sizeMapper } from './utils';
+import { PolymorphicComponentPropWithRef, PolymorphicRef } from '../../../utils';
 
-export type IconButtonProps<T extends ElementType = 'button'> = ButtonBaseProps<T> & {
+export type IconButtonProps<T extends ElementType> = PolymorphicComponentPropWithRef<T, ButtonBaseProps<T> & {
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset'
   size?: 'small' | 'medium' | 'large';
   name?: IconProps['name']
   onClick?: () => void;
-}
+}>
 
-type IconButtonComponent = <T extends ElementType = 'button'>(props: IconButtonProps<T>) => ReactNode | null;
+type IconButtonComponent = <T extends ElementType>(props: IconButtonProps<T>) => ReactNode | null;
 
 /** Primary UI component for user interaction */
 export const IconButton: IconButtonComponent = forwardRef(<T extends ElementType>({
@@ -22,13 +23,11 @@ export const IconButton: IconButtonComponent = forwardRef(<T extends ElementType
   appearance = 'fill',
   type = 'button',
   name,
-  as,
   children,
  ...props
-}: IconButtonProps<T>, ref: ComponentPropsWithRef<T>['ref']) => {
+}: IconButtonProps<T>, ref: PolymorphicRef<T>) => {
   return (
     <ButtonBase
-      as={as}
       ref={ref}
       type={type}
       disabled={disabled}
@@ -36,7 +35,7 @@ export const IconButton: IconButtonComponent = forwardRef(<T extends ElementType
       data-size={size}
       variant={variant}
       appearance={appearance}
-      {...props}
+      {...(props as Record<string, unknown>)}
     >
       {children ? children : name ? <Icon color='currentColor' name={name} size={sizeMapper(size)} /> : <Fragment />}
     </ButtonBase>

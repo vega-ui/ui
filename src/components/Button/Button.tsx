@@ -1,39 +1,37 @@
 import style from './style.module.css';
 import { ButtonBase, ButtonBaseProps } from '../ButtonBase';
-import { ComponentPropsWithRef, ElementType, forwardRef, ReactNode } from 'react';
+import { ElementType, forwardRef, ReactNode } from 'react';
+import { PolymorphicComponentPropWithRef, PolymorphicRef } from '../../../utils';
 
-export type ButtonProps<T extends ElementType = 'button'> = ButtonBaseProps<T> & {
+export type ButtonProps<T extends ElementType> = PolymorphicComponentPropWithRef<T, ButtonBaseProps<T> & {
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset'
   size?: 'small' | 'medium' | 'large';
-  children: ReactNode;
   onClick?: () => void;
-}
+}>
 
-type ButtonComponent = <T extends ElementType = 'button'>(props: ButtonProps<T>) => ReactNode | null;
+type ButtonComponent = <T extends ElementType>(props: ButtonProps<T>) => ReactNode | null;
 
 /** Primary UI component for user interaction */
 export const Button: ButtonComponent = forwardRef(<T extends ElementType>({
   size = 'medium',
   disabled,
-  as,
   children,
   variant = 'primary',
   appearance = 'fill',
   type = 'button',
   ...props
-}: ButtonProps<T>, ref: ComponentPropsWithRef<T>['ref']) => {
+}: ButtonProps<T>, ref: PolymorphicRef<T>) => {
   return (
     <ButtonBase
-      as={as}
       ref={ref}
-      type={type}
       disabled={disabled}
+      type={type}
       className={style.button}
       data-size={size}
       variant={variant}
       appearance={appearance}
-      {...props}
+      {...(props as Record<string, unknown>)}
     >
       {children}
     </ButtonBase>
