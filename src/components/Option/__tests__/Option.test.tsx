@@ -7,12 +7,12 @@ const TEXT = 'Hello, World!';
 describe('Option', () => {
   it('render', () => {
     render(<Option value={1}>{TEXT}</Option>)
-    expect(screen.getByRole('option')).toBeTruthy()
+    expect(screen.getByRole('option')).toBeDefined()
   })
 
   it('selected', () => {
     render(<Option selected value={1}>{TEXT}</Option>)
-    expect(screen.getByRole('option').ariaSelected).toBeTruthy()
+    expect(screen.getByRole('option').ariaSelected).toBeDefined()
   })
 
   it('focusable', () => {

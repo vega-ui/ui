@@ -10,7 +10,7 @@ describe('Popover', () => {
     screen.getByRole('button').click()
 
     await waitFor(() => {
-      expect(screen.getByText(TEXT)).toBeTruthy()
+      expect(screen.getByText(TEXT)).toBeDefined()
     })
   })
 

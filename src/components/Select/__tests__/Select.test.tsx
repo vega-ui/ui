@@ -14,7 +14,7 @@ const component = (
 describe('Button', () => {
   it('render combobox', () => {
     render(component)
-    expect(screen.getByRole('combobox')).toBeTruthy()
+    expect(screen.getByRole('combobox')).toBeDefined()
   })
 
   it('open', async () => {
@@ -22,7 +22,7 @@ describe('Button', () => {
     screen.getByRole('combobox').click()
 
     await waitFor(() => {
-      expect(screen.getByRole('listbox')).toBeTruthy()
+      expect(screen.getByRole('listbox')).toBeDefined()
     })
   })
 

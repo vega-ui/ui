@@ -5,6 +5,6 @@ import { Separator } from '../Separator.tsx';
 describe('Text', () => {
   it('render', () => {
     render(<Separator />)
-    expect(screen.getByRole('separator')).toBeTruthy()
+    expect(screen.getByRole('separator')).toBeDefined()
   })
 })

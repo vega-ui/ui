@@ -15,7 +15,7 @@ export const Text = <T extends ElementType = 'span'>({ as, className, size = 3, 
   const Element = as || 'span';
 
   return (
-    <Element className={csx(style.text, className)} data-fontWeight={fontWeight} data-size={size}>
+    <Element className={csx(style.text, className)} data-fontweight={fontWeight} data-size={size}>
       {children}
     </Element>
   );

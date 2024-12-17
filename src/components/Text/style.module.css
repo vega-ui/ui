@@ -3,19 +3,19 @@
     color: var(--neutral-1000);
 }
 
-.text[data-fontWeight='400'] {
+.text[data-fontweight='400'] {
     font-weight: 400;
 }
 
-.text[data-fontWeight='500'] {
+.text[data-fontweight='500'] {
     font-weight: 500;
 }
 
-.text[data-fontWeight='700'] {
+.text[data-fontweight='700'] {
     font-weight: 700;
 }
 
-.text[data-fontWeight='900'] {
+.text[data-fontweight='900'] {
     font-weight: 900;
 }
 
