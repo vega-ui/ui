@@ -19,7 +19,7 @@ export const Heading = <T extends HeadingAs = 'h1'>({ as, className, size, fontW
   const headingSize = size !== undefined ? size : Element ? sizeMapper(Element) : 3;
 
   return (
-    <Element className={csx(style.heading, className)} data-fontWeight={fontWeight} data-size={headingSize}>
+    <Element className={csx(style.heading, className)} data-fontweight={fontWeight} data-size={headingSize}>
       {children}
     </Element>
   );

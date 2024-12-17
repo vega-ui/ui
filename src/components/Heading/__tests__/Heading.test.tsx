@@ -5,8 +5,13 @@ import { Heading } from '../Heading.tsx';
 describe('Text', () => {
   it('render default heading element', () => {
     render(<Heading>Hello</Heading>)
-    expect(screen.getByText('Hello')).toBeTruthy()
+    expect(screen.getByText('Hello')).toBeDefined()
     expect(screen.getByText('Hello').tagName).toBe('H1')
+  })
+
+  it('font-weight', () => {
+    render(<Heading fontWeight={500}>Hello</Heading>)
+    expect(screen.getByText('Hello').dataset.fontweight).toBe('500')
   })
 
   it('render as h2', () => {

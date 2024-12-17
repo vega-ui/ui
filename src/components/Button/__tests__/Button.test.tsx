@@ -10,7 +10,7 @@ const appearance = ['fill', 'outline', 'ghost', 'transparent'] as const;
 describe('Button', () => {
   it('render', () => {
     render(<Button>{TEXT}</Button>)
-    expect(screen.getByText(TEXT)).toBeTruthy()
+    expect(screen.getByText(TEXT)).toBeDefined()
   })
 
   sizes.forEach((size) => {
