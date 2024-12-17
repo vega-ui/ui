@@ -1,15 +1,22 @@
 import style from './style.module.css'
-import { ComponentPropsWithRef, ElementType, forwardRef, ReactNode } from 'react';
+import {
+  ElementType,
+  forwardRef,
+  ReactNode
+} from 'react';
 import { csx } from '../../utils/css';
+import { PolymorphicComponentPropWithRef, PolymorphicRef } from '../../../utils';
 
-export type ButtonBaseProps<T extends ElementType = 'button'> = {
-  variant?: 'primary' | 'secondary'
-  appearance?: 'fill' | 'outline' | 'ghost' | 'transparent'
-  disabled?: boolean
-  as?: T
-} & ComponentPropsWithRef<T>
+export type ButtonBaseProps<T extends ElementType> = PolymorphicComponentPropWithRef<
+  T,
+  {
+    variant?: 'primary' | 'secondary'
+    appearance?: 'fill' | 'outline' | 'ghost' | 'transparent'
+    disabled?: boolean
+  }
+>;
 
-type ButtonBaseComponent = <T extends ElementType = 'button'>(props: ButtonBaseProps<T>) => ReactNode | null;
+type ButtonBaseComponent = <T extends ElementType>(props: ButtonBaseProps<T>) => ReactNode | null;
 
 export const ButtonBase: ButtonBaseComponent = forwardRef(<T extends ElementType>({
  className,
@@ -19,7 +26,7 @@ export const ButtonBase: ButtonBaseComponent = forwardRef(<T extends ElementType
  variant = 'primary',
  appearance = 'fill',
  ...props
-}: ButtonBaseProps<T>, ref: ComponentPropsWithRef<T>['ref']) => {
+}: ButtonBaseProps<T>, ref: PolymorphicRef<T>) => {
   const Element = as || 'button';
 
   return (

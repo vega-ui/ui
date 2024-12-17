@@ -20,7 +20,7 @@ type Story = StoryObj<typeof meta>;
 export const Primary: Story = {
   args: {
     name: 'globe',
-  },
+  }
 };
 
 export const PrimaryAsLink: Story = {
@@ -37,7 +37,6 @@ export const PrimaryAsLinkDisabled: Story = {
     as: 'a',
     'aria-disabled': true,
     href: 'https://github.com/adara-cs/ui-kit-web',
-    onClick: (e: KeyboardEvent) => e.preventDefault(),
   },
 };
 
@@ -85,7 +84,6 @@ export const SecondaryAsLinkDisabled: Story = {
     as: 'a',
     'aria-disabled': true,
     href: 'https://github.com/adara-cs/ui-kit-web',
-    onClick: (e: KeyboardEvent) => e.preventDefault(),
   },
 };
 

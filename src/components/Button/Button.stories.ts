@@ -38,7 +38,6 @@ export const PrimaryAsLinkDisabled: Story = {
     'aria-disabled': 'true',
     href: 'https://github.com/adara-cs/ui-kit-web',
     children: 'GitHub',
-    onClick: (e: KeyboardEvent) => e.preventDefault(),
   },
 };
 
