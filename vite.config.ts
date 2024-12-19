@@ -1,6 +1,5 @@
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
-import { libInjectCss } from 'vite-plugin-lib-inject-css';
 import svgr from 'vite-plugin-svgr';
 import react from '@vitejs/plugin-react'
 import dts from 'vite-plugin-dts'
@@ -15,7 +14,6 @@ export default defineConfig({
       rollupTypes: true,
       tsconfigPath: './tsconfig.app.json'
     }),
-    libInjectCss(),
     svgr()
   ],
   assetsInclude: ['**/*.woff2', '**/*.ttf'],
