@@ -3,3 +3,13 @@
     height: 1px;
     background: var(--neutral-100);
 }
+
+.separator[data-orientation="horizontal"] {
+    height: 1px;
+    width: 100%;
+}
+
+.separator[data-orientation="vertical"] {
+    height: 100%;
+    width: 1px;
+}
