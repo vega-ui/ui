@@ -2,6 +2,7 @@ import style from './style.module.css';
 import { ButtonBase, ButtonBaseProps } from '../ButtonBase';
 import { ElementType, forwardRef, ReactNode } from 'react';
 import { PolymorphicComponentPropWithRef, PolymorphicRef } from '../../../utils';
+import { csx } from '../../utils/css';
 
 export type ButtonProps<T extends ElementType> = PolymorphicComponentPropWithRef<T, ButtonBaseProps<T> & {
   disabled?: boolean;
@@ -20,6 +21,7 @@ export const Button: ButtonComponent = forwardRef(<T extends ElementType>({
   variant = 'primary',
   appearance = 'fill',
   type = 'button',
+  className,
   ...props
 }: ButtonProps<T>, ref: PolymorphicRef<T>) => {
   return (
@@ -27,7 +29,7 @@ export const Button: ButtonComponent = forwardRef(<T extends ElementType>({
       ref={ref}
       disabled={disabled}
       type={type}
-      className={style.button}
+      className={csx(style.button, className)}
       data-size={size}
       variant={variant}
       appearance={appearance}
