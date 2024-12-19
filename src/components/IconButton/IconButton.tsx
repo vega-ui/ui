@@ -4,6 +4,7 @@ import { ElementType, forwardRef, Fragment, ReactNode } from 'react';
 import { Icon, IconProps } from '../Icon';
 import { sizeMapper } from './utils';
 import { PolymorphicComponentPropWithRef, PolymorphicRef } from '../../../utils';
+import { csx } from '../../utils/css';
 
 export type IconButtonProps<T extends ElementType> = PolymorphicComponentPropWithRef<T, ButtonBaseProps<T> & {
   disabled?: boolean;
@@ -11,6 +12,7 @@ export type IconButtonProps<T extends ElementType> = PolymorphicComponentPropWit
   size?: 'small' | 'medium' | 'large';
   name?: IconProps['name']
   onClick?: () => void;
+  className?: string
 }>
 
 type IconButtonComponent = <T extends ElementType>(props: IconButtonProps<T>) => ReactNode | null;
@@ -22,6 +24,7 @@ export const IconButton: IconButtonComponent = forwardRef(<T extends ElementType
   variant = 'primary',
   appearance = 'fill',
   type = 'button',
+  className,
   name,
   children,
  ...props
@@ -31,7 +34,7 @@ export const IconButton: IconButtonComponent = forwardRef(<T extends ElementType
       ref={ref}
       type={type}
       disabled={disabled}
-      className={style.iconButton}
+      className={csx(style.iconButton, className)}
       data-size={size}
       variant={variant}
       appearance={appearance}

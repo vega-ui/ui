@@ -13,6 +13,7 @@ export type ButtonBaseProps<T extends ElementType> = PolymorphicComponentPropWit
     variant?: 'primary' | 'secondary'
     appearance?: 'fill' | 'outline' | 'ghost' | 'transparent'
     disabled?: boolean
+    className?: string
   }
 >;
 
