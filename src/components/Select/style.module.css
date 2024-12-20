@@ -54,6 +54,7 @@
     border-radius: var(--radius-3);
     width: max-content;
     overflow: hidden;
+    z-index: var(--z-index-above);
 }
 
 .selectCombobox[aria-disabled='true'] {
