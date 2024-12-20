@@ -14,10 +14,11 @@ export const VisuallyHidden: VisuallyHiddenComponent = forwardRef(<T extends Ele
   className,
   children,
   as,
+  ...props
 }: VisuallyHiddenProps<T>, ref: PolymorphicRef<T>) => {
   const Element = as || 'div';
 
   return (
-    <Element className={csx(style.visuallyHidden, className)} ref={ref}>{children}</Element>
+    <Element className={csx(style.visuallyHidden, className)} {...props} ref={ref}>{children}</Element>
   )
 })
