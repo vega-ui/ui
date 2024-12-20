@@ -4,7 +4,7 @@ import { Link } from '../Link.tsx';
 
 describe('Text', () => {
   it('render default link element', () => {
-    render(<Link>Hello</Link>)
+    render(<Link href='#'>Hello</Link>)
     expect(screen.getByRole('link')).toBeDefined()
   })
 
