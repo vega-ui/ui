@@ -15,7 +15,8 @@ import { Text } from '../Text';
 import { Icon, IconProps } from '../Icon';
 
 export interface SelectProps {
-  className?: string
+  listboxClassName?: string
+  comboboxClassName?: string
   children?: ReactElement | ReactElement[]
   start?: ReactNode
   end?: ReactNode
@@ -30,7 +31,8 @@ export interface SelectProps {
 }
 
 export const Select: FC<SelectProps> = ({
-  className,
+  listboxClassName,
+  comboboxClassName,
   start,
   end,
   disabled = false,
@@ -123,7 +125,7 @@ export const Select: FC<SelectProps> = ({
 
   return (
     <>
-      <div data-variant={variant} data-state={isOpen ? 'open' : 'close'} aria-disabled={disabled} tabIndex={0} ref={refs.setReference} className={styles.selectCombobox} {...getReferenceProps()}>
+      <div data-variant={variant} data-state={isOpen ? 'open' : 'close'} aria-disabled={disabled} tabIndex={0} ref={refs.setReference} className={csx(styles.selectCombobox, comboboxClassName)} {...getReferenceProps()}>
         <div className={styles.segment}>
           {start ? start : icon ? <Icon name={icon} size={iconSize} color={iconColor} aria-hidden /> : undefined}
           {selectedIndex != null && options ? <Text className={styles.value}>{options[selectedIndex].label}</Text> : <Text className={styles.placeholder}>{placeholder}</Text>}
@@ -138,7 +140,7 @@ export const Select: FC<SelectProps> = ({
           <div
             ref={refs.setFloating}
             style={{ ...floatingStyles, ...transitionStyles }}
-            className={csx(styles.selectListbox, className)}
+            className={csx(styles.selectListbox, listboxClassName)}
             {...getFloatingProps()}
           >
             {Children.map(children, (child, i) => (
