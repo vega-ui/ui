@@ -21,7 +21,12 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     triggerSlot: (ref, props) => <Button ref={ref} {...props}>Popover</Button>,
-    children: <Text size={3}>Привет! Я - Popover</Text>,
+    children: (
+      <>
+        <Text size={3}>Привет! Я - Popover</Text>
+        <Button variant='secondary' appearance='transparent'>Согласен</Button>
+      </>
+    ),
     title: 'Модалка'
   },
 };
