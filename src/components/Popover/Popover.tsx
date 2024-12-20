@@ -17,6 +17,8 @@ export interface PopoverProps {
   placement?: Placement
   lockScroll?: boolean
   overlay?: boolean
+  open?: boolean
+  onOpenChange?(state?: boolean): void
   blurredOverlay?: boolean
   role?: 'combobox' | 'listbox' | 'dialog' | 'select'
 }
@@ -27,18 +29,23 @@ export const Popover: FC<PopoverProps> = ({
   role: ariaRole,
   lockScroll = false,
   overlay = false,
+  open,
+  onOpenChange,
   blurredOverlay = true,
   className,
   children
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
+  const isOpenPopover = open ?? isOpen;
+  const setOpenPopover = onOpenChange ?? setIsOpen;
+
   const { refs, floatingStyles, context } = useFloating({
     whileElementsMounted: autoUpdate,
     middleware: [offset(10), flip(), shift()],
     placement,
-    open: isOpen,
-    onOpenChange: setIsOpen,
+    open: isOpenPopover,
+    onOpenChange: setOpenPopover,
   });
 
   const click = useClick(context);
@@ -71,7 +78,7 @@ export const Popover: FC<PopoverProps> = ({
   return (
     <>
       {triggerSlot?.(refs.setReference, getReferenceProps())}
-      {isOpen && (
+      {isOpenPopover && (
         overlay ? (
           <FloatingOverlay lockScroll={lockScroll} className={csx(styles.popoverOverlay, blurredOverlay ? styles.popoverOverlayBlurred : undefined)}>
             {content}

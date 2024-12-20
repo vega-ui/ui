@@ -8,6 +8,7 @@
 
 .popoverOverlay {
     background-color: var(--overlay);
+    z-index: var(--z-index-overlay);
 }
 
 .popoverOverlayBlurred {
