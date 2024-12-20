@@ -9,7 +9,8 @@
 
 .modal[data-fluid='true'] {
     width: 100vw;
-    min-height: 100vh;
+    height: 100%;
+    overflow: auto;
     border-radius: 0;
     box-sizing: border-box;
 }
