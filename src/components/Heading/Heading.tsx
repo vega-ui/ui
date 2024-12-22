@@ -10,7 +10,7 @@ export interface HeadingProps<T extends HeadingAs = 'h1'> {
   className?: string
   as?: T
   children?: string
-  size?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10
+  size?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11
   fontWeight?: 400 | 500 | 700 | 900
 }
 
