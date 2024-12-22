@@ -4,6 +4,11 @@ import ChevronIcon from '../../../../assets/icons/chevron.svg?react'
 import CloseIcon from '../../../../assets/icons/close.svg?react'
 import ArrowBottomRightIcon from '../../../../assets/icons/arrow-bottom-right.svg?react'
 import MenuLeftIcon from '../../../../assets/icons/menu-left.svg?react'
+import ChipIcon from '../../../../assets/icons/chip.svg?react'
+import CloudIcon from '../../../../assets/icons/cloud.svg?react'
+import DatabaseIcon from '../../../../assets/icons/database.svg?react'
+import ServerIcon from '../../../../assets/icons/server.svg?react'
+import ServerRakeIcon from '../../../../assets/icons/server_rake.svg?react'
 
 const icons = {
   support: SupportIcon,
@@ -11,7 +16,12 @@ const icons = {
   chevron: ChevronIcon,
   close: CloseIcon,
   arrowBottomRight: ArrowBottomRightIcon,
-  menuLeft: MenuLeftIcon
+  menuLeft: MenuLeftIcon,
+  chip: ChipIcon,
+  cloud: CloudIcon,
+  database: DatabaseIcon,
+  server: ServerIcon,
+  serverRake: ServerRakeIcon,
 } as const
 
 export type IconName = keyof typeof icons
