@@ -36,12 +36,12 @@
     --text-font-size-3: var(--font-size-3);
     --text-font-size-4: var(--font-size-4);
     --text-font-size-5: var(--font-size-5);
-    --text-font-size-6: clamp(calc(var(--font-size-6) - 0.125rem), 3vw, var(--font-size-6));
-    --text-font-size-7: clamp(calc(var(--font-size-7) - 0.25rem), 3vw, var(--font-size-7));
-    --text-font-size-8: clamp(calc(var(--font-size-8) - 0.25rem), 3vw, var(--font-size-8));
-    --text-font-size-9: clamp(calc(var(--font-size-9) - 0.25rem), 3vw, var(--font-size-9));
-    --text-font-size-10: clamp(calc(var(--font-size-10) - 0.5rem), 3vw, var(--font-size-10));
-    --text-font-size-11: clamp(calc(var(--font-size-11) - 0.5rem), 3vw, var(--font-size-11));
+    --text-font-size-6: clamp(var(--font-size-6) - 0.125rem, 3vw + 1rem, var(--font-size-6));
+    --text-font-size-7: clamp(var(--font-size-7) - 0.25rem, 3vw + 1rem, var(--font-size-7));
+    --text-font-size-8: clamp(var(--font-size-8) - 0.25rem, 3vw + 1rem, var(--font-size-8));
+    --text-font-size-9: clamp(var(--font-size-9) - 0.25rem, 3vw + 1rem, var(--font-size-9));
+    --text-font-size-10: clamp(var(--font-size-10) - 0.5rem, 3vw + 1rem, var(--font-size-10));
+    --text-font-size-11: clamp(var(--font-size-11) - 0.5rem, 3vw + 1rem, var(--font-size-11));
 
     /* Heading */
 
