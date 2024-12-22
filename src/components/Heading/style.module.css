@@ -3,6 +3,7 @@
     font-weight: var(--heading-font-weight);
     color: var(--neutral-1000);
     margin: 0;
+    white-space: pre-line
 }
 
 .heading[data-fontweight='400'] {
