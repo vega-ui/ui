@@ -80,10 +80,6 @@
     --heading-line-height-11: 5rem;
 }
 
-@media screen and (max-width: 1024px) {
-
-}
-
 @font-face {
     font-family: Montserrat;
     font-display: auto;
