@@ -1,10 +1,10 @@
 import {
-  forwardRef, HTMLAttributes,
+  forwardRef, TextareaHTMLAttributes,
 } from 'react';
 import style from './style.module.css'
 import { csx } from '../../utils/css';
 
-export interface TextAreaProps extends HTMLAttributes<HTMLTextAreaElement> {
+export interface TextAreaProps extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'size'> {
   disabled?: boolean
   className?: string
   placeholder?: string

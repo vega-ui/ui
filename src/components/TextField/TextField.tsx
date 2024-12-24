@@ -1,10 +1,10 @@
 import {
-  forwardRef, HTMLAttributes, ReactNode,
+  forwardRef, InputHTMLAttributes, ReactNode,
 } from 'react';
 import style from './style.module.css'
 import { csx } from '../../utils/css';
 
-export interface TextFieldProps extends HTMLAttributes<HTMLInputElement> {
+export interface TextFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
   disabled?: boolean
   className?: string
   wrapperClassName?: string
