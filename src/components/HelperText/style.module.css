@@ -1,0 +1,9 @@
+p.helperText {
+    display: inline-block;
+    margin-top: var(--spacing-2);
+    color: var(--neutral-400);
+}
+
+.helperText[data-error='true'] {
+    color: var(--error-accent-5);
+}

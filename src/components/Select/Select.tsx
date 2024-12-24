@@ -26,6 +26,7 @@ export interface SelectProps {
   iconColor?: IconProps['color']
   iconSize?: IconProps['size']
   variant?: 'inline' | 'field'
+  size?: 'small' | 'medium' | 'large'
   value?: string | number
   onSelect?(value: string | number):void
 }
@@ -42,6 +43,7 @@ export const Select: FC<SelectProps> = ({
   placeholder,
   children,
   variant = 'field',
+  size: fieldSize = 'medium',
   onSelect: handleSelect,
   value,
 }) => {
@@ -125,7 +127,7 @@ export const Select: FC<SelectProps> = ({
 
   return (
     <>
-      <div data-variant={variant} data-state={isOpen ? 'open' : 'close'} aria-disabled={disabled} tabIndex={0} ref={refs.setReference} className={csx(styles.selectCombobox, comboboxClassName)} {...getReferenceProps()}>
+      <div data-size={fieldSize} data-variant={variant} data-state={isOpen ? 'open' : 'close'} aria-disabled={disabled} tabIndex={0} ref={refs.setReference} className={csx(styles.selectCombobox, comboboxClassName)} {...getReferenceProps()}>
         <div className={styles.segment}>
           {start ? start : icon ? <Icon name={icon} size={iconSize} color={iconColor} aria-hidden /> : undefined}
           {selectedIndex != null && options ? <Text className={styles.value}>{options[selectedIndex].label}</Text> : <Text className={styles.placeholder}>{placeholder}</Text>}
@@ -146,6 +148,7 @@ export const Select: FC<SelectProps> = ({
             {Children.map(children, (child, i) => (
               cloneElement(child!, {
                 ...child?.props,
+                size: fieldSize,
                 value: i,
                 ref(node: HTMLElement) {
                   listRef.current[i] = node;

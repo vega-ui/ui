@@ -8,10 +8,11 @@ export interface OptionProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSel
   value: string | number
   children?: string
   focusable?: boolean
+  size?: 'small' | 'medium' | 'large'
   onSelect?(value: string | number): void
 }
 
-export const Option = forwardRef<HTMLDivElement, OptionProps>(({ selected, focusable, value, children, className, onSelect: handleSelect, ...props }, ref) => {
+export const Option = forwardRef<HTMLDivElement, OptionProps>(({ selected, focusable, size, value, children, className, onSelect: handleSelect, ...props }, ref) => {
   const onSelect = () => {
     handleSelect?.(value)
   }
@@ -24,7 +25,7 @@ export const Option = forwardRef<HTMLDivElement, OptionProps>(({ selected, focus
   }
 
   return (
-    <div ref={ref} {...props} onClick={onSelect} onKeyDown={onKeyDown} tabIndex={focusable ? 0 : -1} role='option' aria-selected={selected} className={csx(styles.option, className)}>
+    <div ref={ref} {...props} onClick={onSelect} onKeyDown={onKeyDown} tabIndex={focusable ? 0 : -1} data-size={size} role='option' aria-selected={selected} className={csx(styles.option, className)}>
       <Text className={styles.text}>{children}</Text>
     </div>
   )

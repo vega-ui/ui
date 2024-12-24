@@ -1,0 +1,135 @@
+.inputWrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+    background-color: var(--surface-foreground);
+    border: 1px solid var(--neutral-200);
+    box-sizing: border-box;
+    cursor: text;
+    transition: border-color var(--transition-state-delay) ease;
+}
+
+.startSlot,
+.endSlot {
+    display: flex;
+    align-items: center;
+}
+
+.inputWrapper[data-size='small'] {
+    border-radius: var(--radius-3);
+    height: 44px;
+}
+
+.inputWrapper[data-size='small'] .input {
+    padding-right: var(--spacing-10);
+    padding-left: var(--spacing-10);
+    border-radius: inherit;
+    font-size: var(--text-font-size-2);
+}
+
+.inputWrapper[data-size='small'] .startSlot {
+    padding-left: var(--spacing-10);
+}
+
+.inputWrapper[data-size='small'] .endSlot {
+    padding-right: var(--spacing-10);
+}
+
+.inputWrapper[data-size='small']:has(div.startSlot) .input {
+    padding-left: var(--spacing-5);
+}
+
+.inputWrapper[data-size='small']:has(div.endSlot) .input {
+    padding-right: var(--spacing-5);
+}
+
+.inputWrapper[data-size='medium'] {
+    border-radius: var(--radius-3);
+    height: 48px;
+}
+
+.inputWrapper[data-size='medium'] .input {
+    padding-right: var(--spacing-12);
+    padding-left: var(--spacing-12);
+    border-radius: inherit;
+    font-size: var(--text-font-size-3);
+}
+
+.inputWrapper[data-size='medium'] .startSlot {
+    padding-left: var(--spacing-12);
+}
+
+.inputWrapper[data-size='medium'] .endSlot {
+    padding-right: var(--spacing-12);
+}
+
+.inputWrapper[data-size='medium']:has(div.startSlot) .input {
+    padding-left: var(--spacing-6);
+}
+
+.inputWrapper[data-size='medium']:has(div.endSlot) .input {
+    padding-right: var(--spacing-6);
+}
+
+.inputWrapper[data-size='large'] {
+    font-size: var(--text-font-size-4);
+    border-radius: var(--radius-4);
+    height: 52px;
+}
+
+.inputWrapper[data-size='large'] .input {
+    padding-right: var(--spacing-14);
+    padding-left: var(--spacing-14);
+    border-radius: inherit;
+    font-size: var(--text-font-size-4);
+}
+
+.inputWrapper[data-size='large'] .startSlot {
+    padding-left: var(--spacing-14);
+}
+
+.inputWrapper[data-size='large'] .endSlot {
+    padding-right: var(--spacing-14);
+}
+
+.inputWrapper[data-size='medium']:has(div.startSlot) .input {
+    padding-left: var(--spacing-7);
+}
+
+.inputWrapper[data-size='medium']:has(div.endSlot) .input {
+    padding-right: var(--spacing-7);
+}
+
+.inputWrapper:has(.input:disabled) {
+    cursor: not-allowed;
+    background-color: var(--neutral-50);
+    border: 1px solid var(--neutral-200);
+    transition: border-color var(--transition-state-delay) ease-in-out;
+}
+
+.inputWrapper:has(.input:focus) {
+    border-color: var(--primary-accent-7);
+}
+
+.inputWrapper:has(.input[data-error='true']) {
+    border-color: var(--error-accent-5);
+}
+
+.input {
+    box-sizing: border-box;
+    padding: 0;
+    font-family: var(--default-font-family);
+    background-color: var(--surface-foreground);
+    color: var(--neutral-1000);
+    border: 0;
+    height: 100%;
+    outline: none;
+}
+
+.input::placeholder {
+    color: var(--neutral-500);
+}
+
+.input:disabled {
+    cursor: not-allowed;
+}

@@ -23,7 +23,7 @@
     color: var(--neutral-1000);
 }
 
-.placeholder {
+.selectCombobox .placeholder {
     color: var(--neutral-500);
 }
 
@@ -39,22 +39,35 @@
     transition: transform var(--transition-state-delay) ease-in-out;
 }
 
-.selectCombobox[data-state='open'] .controlIcon {
-    transform: rotate(180deg);
+.selectCombobox[data-size='small'] {
+    height: 44px;
+    padding: var(--spacing-6) var(--spacing-10);
 }
 
-.selectListbox {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-3);
-    padding: var(--spacing-4);
-    outline: none;
-    background: var(--surface-foreground);
-    box-shadow: var(--surface-shadow);
-    border-radius: var(--radius-3);
-    width: max-content;
-    overflow: hidden;
-    z-index: var(--z-index-popover);
+.selectCombobox[data-size='small'] .value,
+.selectCombobox[data-size='small'] .placeholder {
+    font-size: var(--text-font-size-2);
+}
+
+
+.selectCombobox[data-size='medium'] {
+    height: 48px;
+    padding: var(--spacing-8) var(--spacing-10);
+}
+
+.selectCombobox[data-size='medium'] .value,
+.selectCombobox[data-size='medium'] .placeholder {
+    font-size: var(--text-font-size-3);
+}
+
+.selectCombobox[data-size='large'] {
+    height: 52px;
+    padding: var(--spacing-10) var(--spacing-10);
+}
+
+.selectCombobox[data-size='large'] .value,
+.selectCombobox[data-size='large'] .placeholder {
+    font-size: var(--text-font-size-4);
 }
 
 .selectCombobox[aria-disabled='true'] {
@@ -79,7 +92,6 @@
 
 .selectCombobox[data-variant='field'] {
     background-color: var(--surface-foreground);
-    padding: var(--spacing-6) var(--spacing-10);
     border-radius: var(--radius-3);
     border: 1px solid var(--neutral-200);
     transition: border-color var(--transition-state-delay) ease-in-out;
@@ -91,8 +103,6 @@
 
 .selectCombobox[data-variant='field'][aria-disabled='true'] {
     background-color: var(--neutral-50);
-    padding: var(--spacing-6) var(--spacing-10);
-    border-radius: var(--radius-3);
     border: 1px solid var(--neutral-200);
     transition: border-color var(--transition-state-delay) ease-in-out;
 }
@@ -121,4 +131,22 @@
 .selectCombobox[data-variant='field'][aria-disabled='true'] .value,
 .selectCombobox[data-variant='field'][aria-disabled='true'] .placeholder {
     color: var(--neutral-400);
+}
+
+.selectCombobox[data-state='open'] .controlIcon {
+    transform: rotate(180deg);
+}
+
+.selectListbox {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+    padding: var(--spacing-4);
+    outline: none;
+    background: var(--surface-foreground);
+    box-shadow: var(--surface-shadow);
+    border-radius: var(--radius-3);
+    width: max-content;
+    overflow: hidden;
+    z-index: var(--z-index-popover);
 }
