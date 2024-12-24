@@ -1,22 +1,22 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react'
-import { TextField } from '../TextField.tsx';
+import { TextArea } from '../TextArea.tsx';
 import { fireEvent } from '@storybook/test';
 
 
 describe('TextField', () => {
   it('render textField', () => {
-    render(<TextField data-testid='input' />)
+    render(<TextArea data-testid='input' />)
     expect(screen.getByTestId('input')).toBeDefined()
   })
 
   it('placeholder', () => {
-    render(<TextField data-testid='input' placeholder='Check' />)
+    render(<TextArea data-testid='input' placeholder='Check' />)
     expect(screen.getByTestId('input').getAttribute('placeholder')).toBe('Check')
   })
 
   it('change', () => {
-    render(<TextField data-testid='input' />)
+    render(<TextArea data-testid='input' />)
     const input: HTMLInputElement = screen.getByTestId('input');
     fireEvent.input(input, { target: { value: '1' } })
 
@@ -25,7 +25,7 @@ describe('TextField', () => {
 
   it('disabled', () => {
     const onChange = vi.fn()
-    render(<TextField onChange={onChange} disabled data-testid='input' />)
+    render(<TextArea onChange={onChange} disabled data-testid='input' />)
 
     const input: HTMLInputElement = screen.getByTestId('input');
     input.click()

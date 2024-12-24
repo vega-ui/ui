@@ -16,6 +16,7 @@
 }
 
 .inputWrapper[data-size='small'] {
+    padding: var(--spacing-6) 0;
     border-radius: var(--radius-3);
     height: 44px;
 }
@@ -44,6 +45,7 @@
 }
 
 .inputWrapper[data-size='medium'] {
+    padding: var(--spacing-6) 0;
     border-radius: var(--radius-3);
     height: 48px;
 }
@@ -72,6 +74,7 @@
 }
 
 .inputWrapper[data-size='large'] {
+    padding: var(--spacing-7) 0;
     font-size: var(--text-font-size-4);
     border-radius: var(--radius-4);
     height: 52px;
