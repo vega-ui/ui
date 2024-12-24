@@ -3,7 +3,7 @@
     box-shadow: var(--surface-shadow);
     border-radius: var(--radius-3);
     width: max-content;
-    padding: var(--spacing-8) var(--spacing-12);
+    padding: var(--spacing-10) var(--spacing-12);
     min-width: clamp(240px, 30vw, 400px);
 }
 
