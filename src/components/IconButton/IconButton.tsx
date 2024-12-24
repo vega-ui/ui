@@ -31,14 +31,14 @@ export const IconButton: IconButtonComponent = forwardRef(<T extends ElementType
 }: IconButtonProps<T>, ref: PolymorphicRef<T>) => {
   return (
     <ButtonBase
-      ref={ref}
       type={type}
+      {...(props as Record<string, unknown>)}
+      ref={ref}
       disabled={disabled}
       className={csx(style.iconButton, className)}
       data-size={size}
       variant={variant}
       appearance={appearance}
-      {...(props as Record<string, unknown>)}
     >
       {children ? children : name ? <Icon color='currentColor' name={name} size={sizeMapper(size)} /> : <Fragment />}
     </ButtonBase>

@@ -26,14 +26,14 @@ export const Button: ButtonComponent = forwardRef(<T extends ElementType>({
 }: ButtonProps<T>, ref: PolymorphicRef<T>) => {
   return (
     <ButtonBase
-      ref={ref}
-      disabled={disabled}
       type={type}
+      {...(props as Record<string, unknown>)}
       className={csx(style.button, className)}
       data-size={size}
-      variant={variant}
+      disabled={disabled}
       appearance={appearance}
-      {...(props as Record<string, unknown>)}
+      variant={variant}
+      ref={ref}
     >
       {children}
     </ButtonBase>
