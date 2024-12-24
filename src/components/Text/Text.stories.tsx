@@ -28,8 +28,8 @@ export const Each: Story = {
     const sizes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] as const
     return (
       <>
-        {sizes.map((size) => (
-            <Text as='p' size={size}>Hello</Text>
+        {sizes.map((size, index) => (
+            <Text as='p' size={size}>{(index + 1).toString()}: Hello</Text>
           ))}
       </>
     )
