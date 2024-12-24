@@ -8,8 +8,8 @@
     /* Surface */
 
     --surface-primary: var(--color-white);
-    --surface-secondary: var(--color-blue-50);
-    --surface-accent: var(--color-gray-900);
+    --surface-secondary: var(--color-blue-900);
+    --surface-accent: var(--color-gray-950);
     --surface-foreground: rgba(31, 34, 39, 1);
 
     --surface-shadow: var(--black-shadow);
