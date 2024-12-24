@@ -13,6 +13,7 @@
     border-radius: var(--radius-3);
     min-height: 44px;
     font-size: var(--text-font-size-2);
+    line-height: var(--line-height-2);
 }
 
 .textarea[data-size='medium'] {
@@ -20,12 +21,14 @@
     border-radius: var(--radius-3);
     min-height: 48px;
     font-size: var(--text-font-size-3);
+    line-height: var(--line-height-3);
 }
 .textarea[data-size='large']  {
     padding: var(--spacing-7) var(--spacing-14);
     border-radius: var(--radius-4);
     min-height: 52px;
     font-size: var(--text-font-size-4);
+    line-height: var(--line-height-4);
 }
 
 .textarea:disabled {
