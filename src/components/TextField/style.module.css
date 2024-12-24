@@ -26,6 +26,7 @@
     padding-left: var(--spacing-10);
     border-radius: inherit;
     font-size: var(--text-font-size-2);
+    line-height: var(--line-height-2);
 }
 
 .inputWrapper[data-size='small'] .startSlot {
@@ -55,6 +56,7 @@
     padding-left: var(--spacing-12);
     border-radius: inherit;
     font-size: var(--text-font-size-3);
+    line-height: var(--line-height-3);
 }
 
 .inputWrapper[data-size='medium'] .startSlot {
@@ -85,6 +87,7 @@
     padding-left: var(--spacing-14);
     border-radius: inherit;
     font-size: var(--text-font-size-4);
+    line-height: var(--line-height-4);
 }
 
 .inputWrapper[data-size='large'] .startSlot {
