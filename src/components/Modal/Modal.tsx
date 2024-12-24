@@ -1,8 +1,7 @@
-import { FC, ReactElement, ReactNode, Ref, useState } from 'react';
+import { FC, ReactElement, ReactNode, Ref, useId, useState } from 'react';
 import { csx } from '../../utils/css';
 import styles from './style.module.css'
 import {
-  autoUpdate,
   FloatingFocusManager, FloatingOverlay, FloatingPortal,
   useClick, useDismiss,
   useFloating,
@@ -42,14 +41,15 @@ export const Modal: FC<ModalProps> = ({
   const setOpenModal = onOpenChange ?? setIsOpen;
 
   const { refs, context } = useFloating({
-    whileElementsMounted: autoUpdate,
     open: isOpenModal,
     onOpenChange: setOpenModal,
   });
 
+  const headingId = useId();
+
   const click = useClick(context);
-  const dismiss = useDismiss(context);
-  const role = useRole(context, { role: 'dialog' });
+  const role = useRole(context );
+  const dismiss = useDismiss(context, { outsidePressEvent: 'mousedown' });
 
   const { getReferenceProps, getFloatingProps } = useInteractions([
     click,
@@ -64,22 +64,23 @@ export const Modal: FC<ModalProps> = ({
   return (
     <>
       {triggerSlot?.(refs.setReference, getReferenceProps())}
-      {isOpenModal && (
-        <FloatingPortal>
-          <FloatingOverlay lockScroll className={csx(styles.modalOverlay, blurredOverlay ? styles.modalOverlayBlurred : undefined, overlayClassName)}>
+      <FloatingPortal>
+        {isOpenModal && (
+          <FloatingOverlay className={csx(styles.modalOverlay, blurredOverlay ? styles.modalOverlayBlurred : undefined, overlayClassName)} lockScroll>
             <FloatingFocusManager context={context}>
               <div
                 data-fluid={fluid}
-                ref={refs.setFloating}
-                style={{ ...transitionStyles }}
+                style={{...transitionStyles}}
                 className={csx(styles.modal, className)}
+                ref={refs.setFloating}
+                aria-labelledby={headingId}
                 {...getFloatingProps()}
               >
                 {(withClose || title) && (
                   <header className={styles.header}>
-                    {title && <Heading className={styles.title} size={6}>{title}</Heading>}
+                    {title && <Heading id={headingId} className={styles.title} size={6}>{title}</Heading>}
                     {withClose &&
-                        <IconButton onClick={() => setOpenModal(false)} ref={dismiss.floating} name='close' size='small'
+                        <IconButton onClick={() => setOpenModal(false)} name='close' size='small'
                                     variant='secondary' appearance='transparent'/>}
                   </header>
                 )}
@@ -87,8 +88,8 @@ export const Modal: FC<ModalProps> = ({
               </div>
             </FloatingFocusManager>
           </FloatingOverlay>
-        </FloatingPortal>
-      )}
+        )}
+      </FloatingPortal>
     </>
   )
 }
