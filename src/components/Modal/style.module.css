@@ -23,7 +23,7 @@
 }
 
 .modalOverlayBlurred {
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(2px);
 }
 
 .header {
