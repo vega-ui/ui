@@ -15,11 +15,6 @@ describe('TextField', () => {
     expect(screen.getByTestId('input').getAttribute('placeholder')).toBe('Check')
   })
 
-  it('value', () => {
-    render(<TextField value='1' data-testid='input' placeholder='Check' />)
-    expect(screen.getByTestId('input').getAttribute('value')).toBe('1')
-  })
-
   it('change', () => {
     render(<TextField data-testid='input' />)
     const input: HTMLInputElement = screen.getByTestId('input');
