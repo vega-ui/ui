@@ -9,6 +9,8 @@ import CloudIcon from '../../../../assets/icons/cloud.svg?react'
 import DatabaseIcon from '../../../../assets/icons/database.svg?react'
 import ServerIcon from '../../../../assets/icons/server.svg?react'
 import ServerRakeIcon from '../../../../assets/icons/server_rake.svg?react'
+import Signal from '../../../../assets/icons/signal.svg?react'
+import Data from '../../../../assets/icons/data.svg?react'
 
 const icons = {
   support: SupportIcon,
@@ -22,6 +24,8 @@ const icons = {
   database: DatabaseIcon,
   server: ServerIcon,
   serverRake: ServerRakeIcon,
+  signal: Signal,
+  data: Data
 } as const
 
 export type IconName = keyof typeof icons
