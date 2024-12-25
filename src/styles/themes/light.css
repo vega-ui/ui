@@ -8,7 +8,7 @@
     /* Surface */
 
     --surface-primary: var(--color-white);
-    --surface-secondary: var(--color-blue-50);
+    --surface-secondary: var(--color-blue-100);
     --surface-accent: var(--color-gray-25);
     --surface-foreground: var(--color-white);
 
