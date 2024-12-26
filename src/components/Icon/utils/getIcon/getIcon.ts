@@ -11,6 +11,8 @@ import ServerIcon from '../../../../assets/icons/server.svg?react'
 import ServerRakeIcon from '../../../../assets/icons/server_rake.svg?react'
 import Signal from '../../../../assets/icons/signal.svg?react'
 import Data from '../../../../assets/icons/data.svg?react'
+import Drive from '../../../../assets/icons/drive.svg?react'
+import Ram from '../../../../assets/icons/ram.svg?react'
 
 const icons = {
   support: SupportIcon,
@@ -25,7 +27,9 @@ const icons = {
   server: ServerIcon,
   serverRake: ServerRakeIcon,
   signal: Signal,
-  data: Data
+  data: Data,
+  drive: Drive,
+  ram: Ram
 } as const
 
 export type IconName = keyof typeof icons
