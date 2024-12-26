@@ -16,14 +16,12 @@
 }
 
 .inputWrapper[data-size='small'] {
-    padding: var(--spacing-6) 0;
     border-radius: var(--radius-3);
     height: 44px;
 }
 
 .inputWrapper[data-size='small'] .input {
-    padding-right: var(--spacing-10);
-    padding-left: var(--spacing-10);
+    padding: var(--spacing-6) var(--spacing-10);
     border-radius: inherit;
     font-size: var(--text-font-size-2);
     line-height: var(--line-height-2);
@@ -46,14 +44,12 @@
 }
 
 .inputWrapper[data-size='medium'] {
-    padding: var(--spacing-6) 0;
     border-radius: var(--radius-3);
     height: 48px;
 }
 
 .inputWrapper[data-size='medium'] .input {
-    padding-right: var(--spacing-12);
-    padding-left: var(--spacing-12);
+    padding: var(--spacing-6) var(--spacing-12);
     border-radius: inherit;
     font-size: var(--text-font-size-3);
     line-height: var(--line-height-3);
@@ -76,15 +72,13 @@
 }
 
 .inputWrapper[data-size='large'] {
-    padding: var(--spacing-7) 0;
     font-size: var(--text-font-size-4);
     border-radius: var(--radius-4);
     height: 52px;
 }
 
 .inputWrapper[data-size='large'] .input {
-    padding-right: var(--spacing-14);
-    padding-left: var(--spacing-14);
+    padding: var(--spacing-7) var(--spacing-14);
     border-radius: inherit;
     font-size: var(--text-font-size-4);
     line-height: var(--line-height-4);
