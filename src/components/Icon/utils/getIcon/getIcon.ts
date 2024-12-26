@@ -13,6 +13,8 @@ import Signal from '../../../../assets/icons/signal.svg?react'
 import Data from '../../../../assets/icons/data.svg?react'
 import Drive from '../../../../assets/icons/drive.svg?react'
 import Ram from '../../../../assets/icons/ram.svg?react'
+import PrevArrow from '../../../../assets/icons/prev-arrow.svg?react'
+import NextArrow from '../../../../assets/icons/next-arrow.svg?react'
 
 const icons = {
   support: SupportIcon,
@@ -29,7 +31,9 @@ const icons = {
   signal: Signal,
   data: Data,
   drive: Drive,
-  ram: Ram
+  ram: Ram,
+  prevArrow: PrevArrow,
+  nextArrow: NextArrow,
 } as const
 
 export type IconName = keyof typeof icons
