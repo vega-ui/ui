@@ -1,4 +1,5 @@
 .inputWrapper {
+    --input-height: 0;
     display: flex;
     align-items: center;
     position: relative;
@@ -7,6 +8,7 @@
     box-sizing: border-box;
     cursor: text;
     transition: border-color var(--transition-state-delay) ease;
+    height: var(--input-height);
 }
 
 .startSlot,
@@ -17,7 +19,7 @@
 
 .inputWrapper[data-size='small'] {
     border-radius: var(--radius-3);
-    height: 44px;
+    --input-height: var(--spacing-20);
 }
 
 .inputWrapper[data-size='small'] .input {
@@ -45,7 +47,7 @@
 
 .inputWrapper[data-size='medium'] {
     border-radius: var(--radius-3);
-    height: 48px;
+    --input-height: var(--spacing-24);
 }
 
 .inputWrapper[data-size='medium'] .input {
@@ -74,7 +76,7 @@
 .inputWrapper[data-size='large'] {
     font-size: var(--text-font-size-4);
     border-radius: var(--radius-4);
-    height: 52px;
+    --input-height: var(--spacing-26);
 }
 
 .inputWrapper[data-size='large'] .input {
