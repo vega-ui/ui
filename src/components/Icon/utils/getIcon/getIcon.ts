@@ -16,6 +16,7 @@ import Ram from '../../../../assets/icons/ram.svg?react'
 import PrevArrow from '../../../../assets/icons/prev-arrow.svg?react'
 import NextArrow from '../../../../assets/icons/next-arrow.svg?react'
 import Mail from '../../../../assets/icons/mail.svg?react'
+import Pin from '../../../../assets/icons/pin.svg?react'
 
 const icons = {
   support: SupportIcon,
@@ -36,6 +37,7 @@ const icons = {
   prevArrow: PrevArrow,
   nextArrow: NextArrow,
   mail: Mail,
+  pin: Pin,
 } as const
 
 export type IconName = keyof typeof icons
