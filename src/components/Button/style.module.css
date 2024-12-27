@@ -1,29 +1,31 @@
 .button {
+    --button-height: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: row;
     gap: var(--spacing-5);
+    height: var(--button-height);
     box-sizing: border-box;
 }
 
 .button[data-size='small'] {
+    --button-height: var(--spacing-20);
     font-size: var(--font-size-2);
     padding: var(--spacing-6) var(--spacing-10);
     border-radius: var(--radius-3);
-    height: 44px;
 }
 
 .button[data-size='medium'] {
+    --button-height: var(--spacing-24);
     font-size: var(--font-size-3);
     padding: var(--spacing-7) var(--spacing-18);
     border-radius: var(--radius-3);
-    height: 48px;
 }
 
 .button[data-size='large'] {
+    --button-height: var(--spacing-26);
     font-size: var(--font-size-4);
     padding: var(--spacing-8) var(--spacing-24);
     border-radius: var(--radius-4);
-    height: 52px;
 }

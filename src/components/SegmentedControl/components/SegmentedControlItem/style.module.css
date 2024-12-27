@@ -1,0 +1,71 @@
+.control {
+    --control-height: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border-radius: inherit;
+    position: relative;
+    outline: none;
+    font-family: var(--default-font-family);
+    font-weight: 500;
+    height: var(--control-height);
+    cursor: pointer;
+    background-color: transparent;
+    color: var(--neutral-1000);
+    transition: color var(--transition-fast-state-delay) ease,
+    background-color var(--transition-state-delay) ease-in;
+}
+
+.control[data-variant='primary']:not([data-checked='true']):hover {
+    background-color: var(--primary-accent-3);
+}
+
+.control[data-variant='primary']:not([data-checked='true']):active {
+    background-color: var(--primary-accent-4);
+}
+
+.control[data-variant='secondary']:not([data-checked='true']):hover {
+    background-color: var(--secondary-accent-3);
+}
+
+.control[data-variant='secondary']:not([data-checked='true']):active {
+    background-color: var(--secondary-accent-4);
+}
+
+.control[data-disabled='true'] {
+    color: var(--neutral-400) !important;
+    cursor: not-allowed;
+}
+
+.control[data-checked='true'][data-disabled='true'] {
+    color: var(--neutral-500) !important;
+}
+
+.control[data-disabled='true']:hover,
+.control[data-disabled='true']:active {
+    background-color: initial;
+}
+
+.control[data-checked='true'] {
+    color: var(--neutral-0);
+    transition: color var(--transition-fast-state-delay) ease, background-color 0s;
+}
+
+.control[data-size='small'] {
+    font-size: var(--font-size-2);
+    padding: var(--spacing-6) var(--spacing-10);
+    --control-height: var(--spacing-20);
+}
+
+.control[data-size='medium'] {
+    font-size: var(--font-size-3);
+    padding: var(--spacing-7) var(--spacing-18);
+    --control-height: var(--spacing-24);
+}
+
+.control[data-size='large'] {
+    font-size: var(--font-size-4);
+    padding: var(--spacing-8) var(--spacing-24);
+    --control-height: var(--spacing-26);
+}
