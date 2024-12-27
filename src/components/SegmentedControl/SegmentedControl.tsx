@@ -32,7 +32,7 @@ export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps
   name,
   ...props
 }, ref) => {
-  const values = Children.toArray(children).map((child) => (child as ReactElement).props.value)
+  const values = Children.toArray(children).map((child) => (child as ReactElement).props?.value)
 
   const [uncontrolledValue, setUncontrolledValue] = useState(controlledValue ?? values[0])
 
@@ -54,7 +54,7 @@ export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps
           disabled,
           name,
           size,
-          checked: child.props.value === value,
+          checked: child.props?.value === value,
         })
       ))}
       <div data-disabled={disabled} data-variant={variant} style={{transform: `translateX(${(activeIndex === -1 ? 0 : activeIndex) * 100}%)`, width: `calc(100% / ${Children.count(children)})` }} data-size={size} className={style.active}/>

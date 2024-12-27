@@ -47,7 +47,6 @@ describe('Button', () => {
     )
     screen.getByRole('combobox').click()
 
-
     await waitFor(() => {
       screen.getAllByRole('option')[1].click()
       expect(setValue).toBeCalledWith(2)
