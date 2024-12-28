@@ -24,13 +24,6 @@ export const Size: Story = {
   },
 };
 
-export const Colorful: Story = {
-  args: {
-    color: '#cc36cc',
-    size: 'large'
-  },
-};
-
 export const Height: Story = {
   args: {
     height: 64
