@@ -1,0 +1,15 @@
+.tooltip {
+    background: var(--neutral-950);
+    box-shadow: var(--surface-shadow);
+    border-radius: var(--radius-3);
+    padding: var(--spacing-4) var(--spacing-6);
+    z-index: var(--z-index-popover);
+}
+
+.arrow {
+    fill: var(--neutral-950);
+}
+
+span.content {
+    color: var(--neutral-0);
+}

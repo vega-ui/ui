@@ -19,6 +19,7 @@ import Mail from '../../../../assets/icons/mail.svg?react'
 import Pin from '../../../../assets/icons/pin.svg?react'
 import Sun from '../../../../assets/icons/sun.svg?react'
 import Moon from '../../../../assets/icons/moon.svg?react'
+import Info from '../../../../assets/icons/info.svg?react'
 
 const icons = {
   support: SupportIcon,
@@ -41,7 +42,8 @@ const icons = {
   mail: Mail,
   pin: Pin,
   sun: Sun,
-  moon: Moon
+  moon: Moon,
+  info: Info
 } as const
 
 export type IconName = keyof typeof icons

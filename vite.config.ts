@@ -14,7 +14,11 @@ export default defineConfig({
       rollupTypes: true,
       tsconfigPath: './tsconfig.app.json'
     }),
-    svgr()
+    svgr({
+      svgrOptions: {
+        ref: true,
+      }
+    })
   ],
   assetsInclude: ['**/*.woff2', '**/*.ttf'],
   build: {

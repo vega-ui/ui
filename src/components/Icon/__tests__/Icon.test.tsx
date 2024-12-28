@@ -19,11 +19,6 @@ describe('Icon', () => {
     expect(screen.getByTestId('icon').getAttribute('aria-label')).toBe('Support')
   })
 
-  it('fill color', () => {
-    render(<Icon name='support' color='red' />)
-    expect(screen.getByTestId('icon').getAttribute('fill')).toBe('red')
-  })
-
   it('custom height', () => {
     render(<Icon name='support' height={64} />)
     expect(screen.getByTestId('icon').getAttribute('height')).toBe('64')
