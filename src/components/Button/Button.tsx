@@ -11,7 +11,7 @@ export type ButtonProps<T extends ElementType> = PolymorphicComponentPropWithRef
   onClick?: () => void;
 }>
 
-type ButtonComponent = <T extends ElementType>(props: ButtonProps<T>) => ReactNode | null;
+type ButtonComponent = <T extends ElementType = 'button'>(props: ButtonProps<T>) => ReactNode | null;
 
 /** Primary UI component for user interaction */
 export const Button: ButtonComponent = forwardRef(<T extends ElementType>({

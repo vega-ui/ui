@@ -21,5 +21,5 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     href: 'https://github.com/adara-cs/ui-kit-web'
-  },
+  }
 };

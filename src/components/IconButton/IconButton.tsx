@@ -15,7 +15,7 @@ export type IconButtonProps<T extends ElementType> = PolymorphicComponentPropWit
   className?: string
 }>
 
-type IconButtonComponent = <T extends ElementType>(props: IconButtonProps<T>) => ReactNode | null;
+type IconButtonComponent = <T extends ElementType = 'button'>(props: IconButtonProps<T>) => ReactNode | null;
 
 /** Primary UI component for user interaction */
 export const IconButton: IconButtonComponent = forwardRef(<T extends ElementType>({
