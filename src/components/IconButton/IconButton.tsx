@@ -40,7 +40,7 @@ export const IconButton: IconButtonComponent = forwardRef(<T extends ElementType
       variant={variant}
       appearance={appearance}
     >
-      {children ? children : name ? <Icon color='currentColor' name={name} size={sizeMapper(size)} /> : <Fragment />}
+      {children ? children : name ? <Icon name={name} size={sizeMapper(size)} /> : <Fragment />}
     </ButtonBase>
   );
 });

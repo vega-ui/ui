@@ -60,10 +60,10 @@ export const WithIcon: Story = {
     return (
       <SegmentedControl {...props}>
         <SegmentedControlItem value='1'>
-          <Icon name='sun' color='currentColor' />
+          <Icon name='sun' />
         </SegmentedControlItem>
         <SegmentedControlItem value='2'>
-          <Icon name='moon' color='currentColor' />
+          <Icon name='moon' />
         </SegmentedControlItem>
       </SegmentedControl>
     )

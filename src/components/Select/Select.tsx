@@ -23,7 +23,6 @@ export interface SelectProps {
   placeholder?: string
   disabled?: boolean
   icon?: IconProps['name']
-  iconColor?: IconProps['color']
   iconSize?: IconProps['size']
   variant?: 'inline' | 'field'
   size?: 'small' | 'medium' | 'large'
@@ -38,7 +37,6 @@ export const Select: FC<SelectProps> = ({
   end,
   disabled = false,
   icon,
-  iconColor = 'currentColor',
   iconSize,
   placeholder,
   children,
@@ -129,11 +127,11 @@ export const Select: FC<SelectProps> = ({
     <>
       <div data-size={fieldSize} data-variant={variant} data-state={isOpen ? 'open' : 'close'} aria-disabled={disabled} tabIndex={0} ref={refs.setReference} className={csx(styles.selectCombobox, comboboxClassName)} {...getReferenceProps()}>
         <div className={styles.segment}>
-          {start ? start : icon ? <Icon name={icon} size={iconSize} color={iconColor} aria-hidden /> : undefined}
+          {start ? start : icon ? <Icon name={icon} size={iconSize} aria-hidden /> : undefined}
           {selectedIndex != null && options ? <Text className={styles.value}>{options[selectedIndex].label}</Text> : <Text className={styles.placeholder}>{placeholder}</Text>}
         </div>
         <div className={styles.control}>
-          <Icon className={styles.controlIcon} color='currentColor' name='chevron' size='pico' />
+          <Icon className={styles.controlIcon} name='chevron' size='pico' />
           {end}
         </div>
       </div>
