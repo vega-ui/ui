@@ -7,17 +7,14 @@ import {
 import { csx } from '../../utils/css';
 import { PolymorphicComponentPropWithRef, PolymorphicRef } from '../../../utils';
 
-export type ButtonBaseProps<T extends ElementType> = PolymorphicComponentPropWithRef<
-  T,
-  {
+export type ButtonBaseProps<T extends ElementType> = PolymorphicComponentPropWithRef<T, {
     variant?: 'primary' | 'secondary'
     appearance?: 'fill' | 'outline' | 'ghost' | 'transparent'
     disabled?: boolean
     className?: string
-  }
->;
+}>;
 
-type ButtonBaseComponent = <T extends ElementType>(props: ButtonBaseProps<T>) => ReactNode | null;
+type ButtonBaseComponent = <T extends ElementType = 'button'>(props: ButtonBaseProps<T>) => ReactNode | null;
 
 export const ButtonBase: ButtonBaseComponent = forwardRef(<T extends ElementType>({
  className,

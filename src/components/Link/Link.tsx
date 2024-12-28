@@ -1,4 +1,4 @@
-import { ElementType, forwardRef } from 'react';
+import { ElementType, forwardRef, ReactNode } from 'react';
 
 import style from './style.module.css'
 import { csx } from '../../utils/css';
@@ -12,7 +12,9 @@ export type LinkProps<T extends ElementType> = PolymorphicComponentPropWithRef<T
   fontWeight?: TextProps<T>['fontWeight']
 }>
 
-export const Link = forwardRef(<T extends ElementType>({ as, className, size = 3, fontWeight, children, ...props }: LinkProps<T>, ref: PolymorphicRef<T>) => {
+type LinkComponent = <T extends ElementType = 'a'>(props: LinkProps<T>) => ReactNode | null;
+
+export const Link: LinkComponent = forwardRef(<T extends ElementType>({ as, className, size = 3, fontWeight, children, ...props }: LinkProps<T>, ref: PolymorphicRef<T>) => {
   const Element = as || 'a';
 
   return (
