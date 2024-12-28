@@ -5,7 +5,7 @@ import { csx } from '../../utils/css';
 import { Text, TextProps } from '../Text';
 import { PolymorphicComponentPropWithRef, PolymorphicRef } from '../../../utils';
 
-export type LinkProps<T extends ElementType = 'a'> = PolymorphicComponentPropWithRef<T, {
+export type LinkProps<T extends ElementType> = PolymorphicComponentPropWithRef<T, {
   className?: string
   children?: string;
   size?: TextProps<T>['size'];
