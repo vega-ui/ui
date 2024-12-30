@@ -1,6 +1,4 @@
-.icon {
-    fill: var(--neutral-1000);
-}
+.icon {}
 
 .icon[data-size='pico'] {
     height: 10px;
