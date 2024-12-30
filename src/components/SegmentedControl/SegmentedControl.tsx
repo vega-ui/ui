@@ -1,19 +1,20 @@
 import style from './style.module.css';
 import {
   ChangeEvent,
-  Children, cloneElement,
+  Children,
   DetailedHTMLProps,
   forwardRef,
   HTMLAttributes, ReactElement,
   useState
 } from 'react';
 import { csx } from '../../utils/css';
+import { SegmentedControlItem, SegmentedControlItemProps } from './components';
 
 export interface SegmentedControlProps extends Omit<DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange'> {
   disabled?: boolean
   size?: 'small' | 'medium' | 'large'
   onClick?: () => void
-  children?: ReactElement[] | ReactElement
+  children?: ReactElement<SegmentedControlItemProps>[] | ReactElement<SegmentedControlItemProps>
   value?: string | number
   name: string
   variant?: 'primary' | 'secondary'
@@ -47,17 +48,24 @@ export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps
 
   return (
     <div data-size={size} data-variant={variant} className={csx(style.controlWrapper, className)} ref={ref} {...props}>
-      {children && Children.map(children, (child) => (
-        cloneElement(child, {
-          ...child.props,
-          onChange,
-          disabled,
-          name,
-          size,
-          checked: child.props?.value === value,
-        })
+      {children && Children.map(children, (child, i) => (
+        <SegmentedControlItem
+          key={i}
+          {...child.props}
+          onChange={onChange}
+          disabled={disabled}
+          name={name}
+          size={size}
+          checked={child.props?.value === value}
+        />
       ))}
-      <div data-disabled={disabled} data-variant={variant} style={{transform: `translateX(${(activeIndex === -1 ? 0 : activeIndex) * 100}%)`, width: `calc(100% / ${Children.count(children)})` }} data-size={size} className={style.active}/>
+      <div
+        data-disabled={disabled}
+        data-variant={variant}
+        style={{ transform: `translateX(${(activeIndex === -1 ? 0 : activeIndex) * 100}%)`, width: `calc(100% / ${Children.count(children)})` }}
+        data-size={size}
+        className={style.active}
+      />
     </div>
   );
 });

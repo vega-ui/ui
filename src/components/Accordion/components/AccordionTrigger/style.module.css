@@ -1,0 +1,52 @@
+.triggerButton {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: 500;
+    width: 100%;
+    text-align: left;
+    border-radius: var(--radius-3);
+    box-sizing: border-box;
+    user-select: text;
+    background: none;
+    outline: none;
+    border: none;
+    color: inherit;
+}
+
+.triggerButton[data-size='small'] {
+    padding: var(--spacing-6) 0;
+    border-radius: var(--radius-3);
+}
+
+.triggerButton[data-size='medium'] {
+    padding: var(--spacing-7) 0;
+    border-radius: var(--radius-3);
+}
+
+.triggerButton[data-size='large'] {
+    padding: var(--spacing-8) 0;
+    border-radius: var(--radius-4);
+}
+
+.triggerButton:focus-visible {
+    outline: 2px solid var(--focus-color);
+}
+
+.arrowIcon {
+    transition: transform var(--transition-state-delay) ease;
+}
+
+.triggerButton[data-open='false'] {
+    cursor: pointer;
+}
+
+.triggerButton[data-open='true'] .arrowIcon {
+    transform: rotate(180deg);
+}
+
+.triggerButton[data-open='false'] .arrowIcon {
+    transform: rotate(0deg);
+}

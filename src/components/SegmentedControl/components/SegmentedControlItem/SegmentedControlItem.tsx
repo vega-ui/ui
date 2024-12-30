@@ -1,5 +1,4 @@
 import { ChangeEvent, FC, ReactNode } from 'react';
-import { VisuallyHidden } from '../../../VisuallyHidden';
 import style from './style.module.css';
 
 export interface SegmentedControlItemProps {
@@ -16,7 +15,7 @@ export interface SegmentedControlItemProps {
 export const SegmentedControlItem: FC<SegmentedControlItemProps> = ({ disabled, checked, variant, name, onChange, size = 'medium', value, children }) => {
   return (
     <label data-checked={checked} data-disabled={disabled} data-size={size} data-variant={variant} className={style.control}>
-      <VisuallyHidden onChange={(e) => onChange?.(e, e.target.value)} value={value} disabled={disabled} as='input' type='radio' name={name}
+      <input onChange={(e) => onChange?.(e, e.target.value)} hidden value={value} disabled={disabled} type='radio' name={name}
                       defaultChecked={checked} />
       {children}
     </label>

@@ -20,6 +20,7 @@ import Pin from '../../../../assets/icons/pin.svg?react'
 import Sun from '../../../../assets/icons/sun.svg?react'
 import Moon from '../../../../assets/icons/moon.svg?react'
 import Info from '../../../../assets/icons/info.svg?react'
+import BottomArrow from '../../../../assets/icons/bottom-arrow.svg?react'
 
 const icons = {
   support: SupportIcon,
@@ -43,7 +44,8 @@ const icons = {
   pin: Pin,
   sun: Sun,
   moon: Moon,
-  info: Info
+  info: Info,
+  bottomArrow: BottomArrow,
 } as const
 
 export type IconName = keyof typeof icons

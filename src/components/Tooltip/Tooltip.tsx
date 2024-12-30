@@ -33,7 +33,7 @@ export const Tooltip: FC<TooltipProps> = ({
 }) => {
   const arrowRef = useRef(null);
 
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const { refs, floatingStyles, context } = useFloating({
     whileElementsMounted: autoUpdate,
@@ -45,8 +45,8 @@ export const Tooltip: FC<TooltipProps> = ({
       flip(),
       shift(),
     ],
-    open: isOpen,
-    onOpenChange: setIsOpen,
+    open,
+    onOpenChange: setOpen,
   });
 
   const hover = useHover(context, { move: false, delay: { open: delayOpen, close: delayClose } });
@@ -68,7 +68,7 @@ export const Tooltip: FC<TooltipProps> = ({
   return (
     <>
       {triggerSlot?.(refs.setReference, getReferenceProps({ tabIndex: 0 }))}
-      {isOpen && (
+      {open && (
         <div ref={refs.setFloating} className={csx(styles.tooltip, className)} style={{ ...floatingStyles, ...transitionStyles}} {...getFloatingProps()}>
           <FloatingArrow className={styles.arrow} ref={arrowRef} context={context} />
           <Text size={fontSize} fontWeight={fontWeight} className={styles.content}>
