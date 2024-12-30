@@ -20,7 +20,7 @@ export const Option = forwardRef<HTMLDivElement, OptionProps>(({ selected, focus
   const onKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Enter' || ['Enter', ' '].includes(e.key)) {
       e.preventDefault();
-      handleSelect?.(value);
+      handleSelect?.(value)
     }
   }
 

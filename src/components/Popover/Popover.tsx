@@ -29,16 +29,16 @@ export const Popover: FC<PopoverProps> = ({
   role: ariaRole,
   lockScroll = false,
   overlay = false,
-  open,
+  open: controlledOpen,
   onOpenChange,
   blurredOverlay = true,
   className,
   children
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
-  const isOpenPopover = open ?? isOpen;
-  const setOpenPopover = onOpenChange ?? setIsOpen;
+  const isOpenPopover = controlledOpen ?? open;
+  const setOpenPopover = onOpenChange ?? setOpen;
 
   const { refs, floatingStyles, context } = useFloating({
     whileElementsMounted: autoUpdate,

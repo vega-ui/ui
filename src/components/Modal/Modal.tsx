@@ -31,14 +31,14 @@ export const Modal: FC<ModalProps> = ({
   fluid = false,
   withClose = true,
   title,
-  open,
+  open: controlledOpen,
   onOpenChange,
   children
 }) => {
-  const [isOpen, setIsOpen] = useState(open ?? false);
+  const [open, setOpen] = useState(controlledOpen ?? false);
 
-  const isOpenModal = open ?? isOpen;
-  const setOpenModal = onOpenChange ?? setIsOpen;
+  const isOpenModal = controlledOpen ?? open;
+  const setOpenModal = onOpenChange ?? setOpen;
 
   const { refs, context } = useFloating({
     open: isOpenModal,
