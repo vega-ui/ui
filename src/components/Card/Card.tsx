@@ -8,9 +8,9 @@ export interface CardProps extends DetailedHTMLProps<HTMLAttributes<HTMLElement>
   appearance?: 'outline' | 'transparent'
 }
 
-export const Card = forwardRef<HTMLElement, PropsWithChildren<CardProps>>(({ children, size = 'medium', appearance = 'outline', className, ...props }) => {
+export const Card = forwardRef<HTMLElement, PropsWithChildren<CardProps>>(({ children, size = 'medium', appearance = 'outline', className, ...props }, ref) => {
   return (
-    <article data-size={size} data-appearance={appearance} className={csx(style.card, className)} {...props}>
+    <article ref={ref} data-size={size} data-appearance={appearance} className={csx(style.card, className)} {...props}>
       {children}
     </article>
   )

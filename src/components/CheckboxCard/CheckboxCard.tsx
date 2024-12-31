@@ -21,10 +21,10 @@ export const CheckboxCard = forwardRef<HTMLElement, PropsWithChildren<CheckboxCa
   value,
   disabled,
   ...props
-}) => {
+}, ref) => {
   return (
     <label>
-      <Card data-orientation={orientation} className={csx(className, style.checkboxCard)} size={size} {...props}>
+      <Card ref={ref} data-orientation={orientation} className={csx(className, style.checkboxCard)} size={size} {...props}>
         <div className={style.content}>
           {children}
         </div>
