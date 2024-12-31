@@ -4,24 +4,25 @@
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
+    aspect-ratio: 1 / 1;
     height: var(--icon-button-size);
     width: var(--icon-button-size);
 }
 
 .iconButton[data-size='small'] {
-    padding: var(--spacing-6);
+    padding: var(--spacing-7);
     border-radius: var(--radius-3);
-    --icon-button-size: var(--spacing-20);
+    --icon-button-size: var(--spacing-21);
 }
 
 .iconButton[data-size='medium'] {
-    padding: var(--spacing-7);
+    padding: var(--spacing-8);
     border-radius: var(--radius-3);
     --icon-button-size: var(--spacing-24);
 }
 
 .iconButton[data-size='large'] {
-    padding: var(--spacing-8);
+    padding: var(--spacing-9);
     border-radius: var(--radius-4);
-    --icon-button-size: var(--spacing-26);
+    --icon-button-size: var(--spacing-27);
 }

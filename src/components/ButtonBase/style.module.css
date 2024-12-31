@@ -133,7 +133,7 @@
 
 .buttonBase[data-variant='secondary'][data-appearance='fill']:disabled,
 .buttonBase[data-variant='secondary'][data-appearance='fill'][aria-disabled='true'] {
-    background-color: var(--secondary-accent-2);
+    background-color: var(--neutral-50);
     color: var(--neutral-400);
 }
 

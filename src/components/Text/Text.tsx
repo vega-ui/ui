@@ -1,4 +1,4 @@
-import { ComponentPropsWithRef, ElementType } from 'react';
+import { ComponentPropsWithRef, ElementType, ReactNode } from 'react';
 
 import style from './style.module.css'
 import { csx } from '../../utils/css';
@@ -6,7 +6,7 @@ import { csx } from '../../utils/css';
 export interface TextProps<T extends ElementType = 'span'> {
   className?: string
   as?: T;
-  children?: string | string[]
+  children?: ReactNode | ReactNode[]
   size?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11
   fontWeight?: 400 | 500 | 700 | 900
 }

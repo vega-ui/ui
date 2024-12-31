@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
 
 import { IconButton } from './IconButton.tsx';
 
@@ -11,7 +10,6 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {},
-  args: { onClick: fn() },
 } satisfies Meta<typeof IconButton>;
 
 export default meta;

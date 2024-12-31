@@ -10,7 +10,7 @@
 }
 
 .button[data-size='small'] {
-    --button-height: var(--spacing-20);
+    --button-height: var(--spacing-21);
     font-size: var(--font-size-2);
     padding: var(--spacing-6) var(--spacing-10);
     border-radius: var(--radius-3);
@@ -24,7 +24,7 @@
 }
 
 .button[data-size='large'] {
-    --button-height: var(--spacing-26);
+    --button-height: var(--spacing-27);
     font-size: var(--font-size-4);
     padding: var(--spacing-8) var(--spacing-24);
     border-radius: var(--radius-4);

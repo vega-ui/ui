@@ -1,0 +1,30 @@
+.numberTextField {
+    text-align: center;
+}
+
+.numberTextField::-webkit-outer-spin-button,
+.numberTextField::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.numberTextField {
+    -moz-appearance: textfield;
+}
+
+.startSlot,
+.endSlot {
+    gap: var(--spacing-6);
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.startSlotWrapper,
+.endSlotWrapper {
+    display: flex;
+    align-items: center;
+}
+
+.controlButton {
+    height: 100%;
+}

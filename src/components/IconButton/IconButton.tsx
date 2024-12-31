@@ -9,7 +9,8 @@ import { csx } from '../../utils/css';
 export type IconButtonProps<T extends ElementType> = PolymorphicComponentPropWithRef<T, ButtonBaseProps<T> & {
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset'
-  size?: 'small' | 'medium' | 'large';
+  size?: 'small' | 'medium' | 'large'
+  iconSize?: IconProps['size']
   name?: IconProps['name']
   onClick?: () => void;
   className?: string
@@ -20,6 +21,7 @@ type IconButtonComponent = <T extends ElementType = 'button'>(props: IconButtonP
 /** Primary UI component for user interaction */
 export const IconButton: IconButtonComponent = forwardRef(<T extends ElementType>({
   size = 'medium',
+  iconSize,
   disabled,
   variant = 'primary',
   appearance = 'fill',
@@ -40,7 +42,7 @@ export const IconButton: IconButtonComponent = forwardRef(<T extends ElementType
       variant={variant}
       appearance={appearance}
     >
-      {children ? children : name ? <Icon name={name} size={sizeMapper(size)} /> : <Fragment />}
+      {children ? children : name ? <Icon name={name} size={iconSize ?? sizeMapper(size)} /> : <Fragment />}
     </ButtonBase>
   );
 });
