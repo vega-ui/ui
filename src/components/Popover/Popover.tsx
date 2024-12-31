@@ -1,4 +1,4 @@
-import { FC, ReactElement, ReactNode, Ref, useState } from 'react';
+import { forwardRef, ReactElement, ReactNode, Ref, useState } from 'react';
 import { csx } from '../../utils/css';
 import styles from './style.module.css'
 import {
@@ -9,6 +9,7 @@ import {
   useFloating,
   useInteractions, useRole, useTransitionStyles
 } from '@floating-ui/react';
+import { mergeRefs } from '../../utils/margeRefs';
 
 export interface PopoverProps {
   className?: string
@@ -23,18 +24,18 @@ export interface PopoverProps {
   role?: 'combobox' | 'listbox' | 'dialog' | 'select'
 }
 
-export const Popover: FC<PopoverProps> = ({
-  triggerSlot,
-  placement = 'bottom',
-  role: ariaRole,
-  lockScroll = false,
-  overlay = false,
-  open: controlledOpen,
-  onOpenChange,
-  blurredOverlay = true,
-  className,
-  children
-}) => {
+export const Popover = forwardRef<HTMLDivElement, PopoverProps>(({
+   triggerSlot,
+   placement = 'bottom',
+   role: ariaRole,
+   lockScroll = false,
+   overlay = false,
+   open: controlledOpen,
+   onOpenChange,
+   blurredOverlay = true,
+   className,
+   children
+}, ref) => {
   const [open, setOpen] = useState(false);
 
   const isOpenPopover = controlledOpen ?? open;
@@ -65,7 +66,7 @@ export const Popover: FC<PopoverProps> = ({
   const content = (
     <FloatingFocusManager context={context}>
       <div
-        ref={refs.setFloating}
+        ref={mergeRefs([refs.setFloating, ref])}
         style={{ ...floatingStyles, ...transitionStyles }}
         className={csx(styles.popover, className)}
         {...getFloatingProps()}
@@ -87,4 +88,4 @@ export const Popover: FC<PopoverProps> = ({
       )}
     </>
   )
-}
+})
