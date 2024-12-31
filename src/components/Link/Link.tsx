@@ -8,8 +8,8 @@ import { PolymorphicComponentPropWithRef, PolymorphicRef } from '../../../utils'
 export type LinkProps<T extends ElementType> = PolymorphicComponentPropWithRef<T, {
   className?: string
   children?: string;
-  size?: TextProps<T>['size'];
-  fontWeight?: TextProps<T>['fontWeight']
+  size?: TextProps['size']
+  fontWeight?: TextProps['fontWeight']
 }>
 
 type LinkComponent = <T extends ElementType = 'a'>(props: LinkProps<T>) => ReactNode | null;

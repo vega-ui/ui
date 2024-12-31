@@ -4,7 +4,7 @@ import style from './style.module.css'
 import { csx } from '../../utils/css';
 import { PolymorphicComponentPropWithRef, PolymorphicRef } from '../../../utils';
 
-export type TextProps<T extends ElementType> = PolymorphicComponentPropWithRef<T, {
+export type TextProps<T extends ElementType = 'span'> = PolymorphicComponentPropWithRef<T, {
   className?: string
   as?: T
   children?: ReactNode | ReactNode[]
