@@ -9,13 +9,13 @@ import { mergeRefs } from '../../utils/margeRefs';
 import { csx } from '../../utils/css';
 import { sizeMapper } from './utils';
 
-export interface NumberTextFieldProps extends TextFieldProps {
+export interface NumberFieldProps extends TextFieldProps {
   step?: number
   min?: number
   max?: number
 }
 
-export const NumberField = forwardRef<HTMLInputElement, NumberTextFieldProps>(({
+export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(({
   className,
   disabled,
   size = 'medium',
