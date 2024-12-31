@@ -1,6 +1,7 @@
 .content {
     transition: height var(--transition-fast-state-delay) ease;
     overflow-y: hidden;
+    padding-bottom: var(--spacing-4);
 }
 
 .content[data-open='true'] {
