@@ -11,7 +11,7 @@
     box-sizing: border-box;
     border: 1px solid var(--neutral-200);
     background-color: transparent;
-    transition: background-color .25s ease;
+    transition: background-color var(--transition-state-delay) ease;
     width: var(--size);
     height: var(--size);
     overflow: hidden;
@@ -37,7 +37,7 @@
     position: absolute;
     opacity: 0;
     transform: scale(0);
-    transition: all .25s ease;
+    transition: all var(--transition-state-delay) ease;
 }
 
 .checkboxWrapper:has(input[type='checkbox']:disabled) .checkbox {
