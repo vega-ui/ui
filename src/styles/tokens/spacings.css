@@ -15,10 +15,14 @@
     --spacing-14: calc(var(--spacing) * 14);
     --spacing-16: calc(var(--spacing) * 16);
     --spacing-18: calc(var(--spacing) * 18);
+    --spacing-19: calc(var(--spacing) * 19);
     --spacing-20: calc(var(--spacing) * 20);
     --spacing-21: calc(var(--spacing) * 21);
+    --spacing-22: calc(var(--spacing) * 22);
     --spacing-24: calc(var(--spacing) * 24);
     --spacing-26: calc(var(--spacing) * 26);
+    --spacing-27: calc(var(--spacing) * 27);
+    --spacing-28: calc(var(--spacing) * 28);
     --spacing-32: calc(var(--spacing) * 32);
     --spacing-36: calc(var(--spacing) * 36);
     --spacing-40: calc(var(--spacing) * 40);

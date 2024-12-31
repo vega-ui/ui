@@ -15,11 +15,12 @@
 .endSlot {
     display: flex;
     align-items: center;
+    height: 100%;
 }
 
 .inputWrapper[data-size='small'] {
     border-radius: var(--radius-3);
-    --input-height: var(--spacing-20);
+    --input-height: var(--spacing-21);
 }
 
 .inputWrapper[data-size='small'] .input {
@@ -76,7 +77,7 @@
 .inputWrapper[data-size='large'] {
     font-size: var(--text-font-size-4);
     border-radius: var(--radius-4);
-    --input-height: var(--spacing-26);
+    --input-height: var(--spacing-27);
 }
 
 .inputWrapper[data-size='large'] .input {
@@ -121,7 +122,7 @@
     box-sizing: border-box;
     padding: 0;
     font-family: var(--default-font-family);
-    background-color: var(--surface-foreground);
+    background: none;
     color: var(--neutral-1000);
     border: 0;
     height: 100%;

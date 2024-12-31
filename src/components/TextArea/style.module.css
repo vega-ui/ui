@@ -13,7 +13,7 @@
 .textarea[data-size='small'] {
     padding: var(--spacing-6) var(--spacing-10);
     border-radius: var(--radius-3);
-    --control-height: var(--spacing-20);
+    --control-height: var(--spacing-21);
     font-size: var(--text-font-size-2);
     line-height: var(--line-height-2);
 }
@@ -28,7 +28,7 @@
 .textarea[data-size='large']  {
     padding: var(--spacing-7) var(--spacing-14);
     border-radius: var(--radius-4);
-    --control-height: var(--spacing-26);
+    --control-height: var(--spacing-27);
     font-size: var(--text-font-size-4);
     line-height: var(--line-height-4);
 }

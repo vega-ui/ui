@@ -21,6 +21,9 @@ import Sun from '../../../../assets/icons/sun.svg?react'
 import Moon from '../../../../assets/icons/moon.svg?react'
 import Info from '../../../../assets/icons/info.svg?react'
 import BottomArrow from '../../../../assets/icons/bottom-arrow.svg?react'
+import Plus from '../../../../assets/icons/plus.svg?react'
+import Minus from '../../../../assets/icons/minus.svg?react'
+import Check from '../../../../assets/icons/check.svg?react'
 
 const icons = {
   support: SupportIcon,
@@ -46,6 +49,9 @@ const icons = {
   moon: Moon,
   info: Info,
   bottomArrow: BottomArrow,
+  plus: Plus,
+  minus: Minus,
+  check: Check
 } as const
 
 export type IconName = keyof typeof icons

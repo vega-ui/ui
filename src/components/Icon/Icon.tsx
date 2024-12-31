@@ -4,7 +4,7 @@ import { csx } from '../../utils/css';
 import { IconName, getIcon } from './utils';
 
 export interface IconProps {
-  size?: 'pico' | 'nano' | 'mini' | 'small' | 'medium' | 'large' | 'huge'
+  size?: 'femto' | 'pico' | 'nano' | 'mini' | 'small' | 'medium' | 'large' | 'huge'
   name: IconName
   className?: string
   width?: number
