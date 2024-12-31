@@ -6,13 +6,12 @@ import { PolymorphicComponentPropWithRef, PolymorphicRef } from '../../../utils'
 
 export type TextProps<T extends ElementType = 'span'> = PolymorphicComponentPropWithRef<T, {
   className?: string
-  as?: T
   children?: ReactNode | ReactNode[]
   size?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11
   fontWeight?: 400 | 500 | 700 | 900
 }>
 
-type TextComponent = <T extends ElementType>(props: TextProps<T>) => ReactNode | null;
+type TextComponent = <T extends ElementType = 'span'>(props: TextProps<T>) => ReactNode | null;
 
 export const Text: TextComponent = forwardRef(<T extends ElementType>({
   as, 
