@@ -1,0 +1,12 @@
+.title {
+    max-width: 350px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.description {
+    color: var(--neutral-500);
+    margin-top: var(--spacing-2);
+    max-width: 350px;
+}

@@ -1,0 +1,37 @@
+.checkboxCard {
+    align-items: flex-end;
+    min-width: 220px;
+}
+
+.checkboxCard[data-orientation='vertical'] {
+    gap: var(--spacing-8);
+}
+
+.checkboxCard[data-orientation='horizontal'] {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-16);
+}
+
+.checkboxCard:hover,
+.checkboxCard:has(:focus-visible) {
+    border-color: var(--neutral-200);
+}
+
+.checkboxCard[data-appearance] {
+    transition: border-color var(--transition-state-delay) ease;
+}
+
+.checkboxCard[data-appearance]:has(input[type='checkbox']:disabled) {
+    background-color: var(--neutral-25);
+    cursor: not-allowed;
+}
+
+.checkboxCard[data-appearance]:has(input[type='checkbox']:checked),
+.checkboxCard[data-appearance]:has(input[type='checkbox']:indeterminate) {
+    border-color: var(--primary-accent-7);
+}
+
+.content {
+    width: 100%;
+}
