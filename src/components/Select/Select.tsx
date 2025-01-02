@@ -1,4 +1,4 @@
-import { Children, FC, ReactElement, ReactNode, useMemo, useRef, useState } from 'react';
+import { Children, FC, HTMLAttributes, ReactElement, ReactNode, useMemo, useRef, useState } from 'react';
 import {
   autoUpdate,
   flip,
@@ -15,7 +15,7 @@ import { Text } from '../Text';
 import { Icon, IconProps } from '../Icon';
 import { Option, OptionProps } from '../Option';
 
-export interface SelectProps {
+export interface SelectProps extends Omit<HTMLAttributes<HTMLButtonElement>, 'onSelect'> {
   listboxClassName?: string
   comboboxClassName?: string
   children?: ReactElement<OptionProps> | ReactElement<OptionProps>[]
@@ -45,6 +45,7 @@ export const Select: FC<SelectProps> = ({
   size: fieldSize = 'medium',
   onSelect: handleSelect,
   value,
+  ...props
 }) => {
   const options = useMemo(() => Children.count(children) !== 0 ? Children.map(children, (child) => ({
     label: child?.props.children ?? '',
@@ -126,7 +127,7 @@ export const Select: FC<SelectProps> = ({
 
   return (
     <>
-      <div data-size={fieldSize} data-variant={variant} data-state={open ? 'open' : 'close'} aria-disabled={disabled} tabIndex={0} ref={refs.setReference} className={csx(styles.selectCombobox, comboboxClassName)} {...getReferenceProps()}>
+      <button type='button' data-size={fieldSize} data-variant={variant} data-state={open ? 'open' : 'close'} aria-disabled={disabled} tabIndex={0} ref={refs.setReference} className={csx(styles.selectCombobox, comboboxClassName)} {...props} {...getReferenceProps()}>
         <div className={styles.segment}>
           {start ? start : icon ? <Icon name={icon} size={iconSize} aria-hidden /> : undefined}
           {selectedIndex != null && options ? <Text className={styles.value}>{options[selectedIndex].label}</Text> : <Text className={styles.placeholder}>{placeholder}</Text>}
@@ -135,11 +136,12 @@ export const Select: FC<SelectProps> = ({
           <Icon className={styles.controlIcon} name='chevron' size='pico' />
           {end}
         </div>
-      </div>
+      </button>
       {open && options?.length !== 0 && (
         <FloatingFocusManager context={context} modal={false}>
           <div
             ref={refs.setFloating}
+            role='listbox'
             style={{ ...floatingStyles, ...transitionStyles }}
             className={csx(styles.selectListbox, listboxClassName)}
             {...getFloatingProps()}

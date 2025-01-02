@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Select } from './Select.tsx';
 import { Option } from '../Option';
+import { Label } from '../Label';
 
 const meta = {
   title: 'UI/Select',
@@ -45,6 +46,25 @@ export const Inline: Story = {
         <Option value={2}>Английский</Option>
         <Option value={3}>Белорусский</Option>
       </Select>
+    )
+  }
+};
+
+export const WithLabel: Story = {
+  args: {
+    placeholder: 'Выберите язык',
+    id: 'test',
+  },
+  render(args) {
+    return (
+      <>
+        <Label htmlFor='test'>Label</Label>
+        <Select {...args}>
+          <Option value={1}>Русский</Option>
+          <Option value={2}>Английский</Option>
+          <Option value={3}>Белорусский</Option>
+        </Select>
+      </>
     )
   }
 };

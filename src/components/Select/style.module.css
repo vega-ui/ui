@@ -118,6 +118,8 @@
 }
 
 .selectCombobox[data-variant='inline'] {
+    background: none;
+    border: none;
     min-width: 100px;
 }
 
