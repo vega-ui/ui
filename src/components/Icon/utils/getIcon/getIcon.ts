@@ -24,6 +24,8 @@ import BottomArrow from '../../../../assets/icons/bottom-arrow.svg?react'
 import Plus from '../../../../assets/icons/plus.svg?react'
 import Minus from '../../../../assets/icons/minus.svg?react'
 import Check from '../../../../assets/icons/check.svg?react'
+import CheckO from '../../../../assets/icons/check-o.svg?react'
+import Danger from '../../../../assets/icons/danger.svg?react'
 
 const icons = {
   support: SupportIcon,
@@ -51,7 +53,9 @@ const icons = {
   bottomArrow: BottomArrow,
   plus: Plus,
   minus: Minus,
-  check: Check
+  check: Check,
+  checkCircle: CheckO,
+  danger: Danger,
 } as const
 
 export type IconName = keyof typeof icons
