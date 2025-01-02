@@ -14,7 +14,7 @@ export interface AccordionItemProps {
   separated?: boolean
 }
 
-export const AccordionItem: FC<AccordionItemProps> = ({ size, triggerSlot, separated, value, open, onChangeOpen, children }) => {
+export const AccordionItem: FC<AccordionItemProps> = ({ size, triggerSlot, separated, value, open = false, onChangeOpen, children }) => {
   const triggerRef = useRef<HTMLButtonElement>(null)
 
   const onChange = useCallback((state: boolean) => {
