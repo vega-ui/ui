@@ -16,11 +16,11 @@ export const Collapsible: FC<CollapsibleProps> = ({ open: controlledOpen, onChan
   const onChangeOpen = onControlledChangeOpen ?? setUncontrolledOpen
 
   const onOpen = useCallback(() => {
-    onChangeOpen(true)
+    onChangeOpen?.(true)
   }, [onChangeOpen])
 
   const onClose = useCallback(() => {
-    onChangeOpen(false)
+    onChangeOpen?.(false)
   }, [onChangeOpen])
 
   useEffect(() => {
