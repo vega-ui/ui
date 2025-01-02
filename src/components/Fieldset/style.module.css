@@ -1,0 +1,33 @@
+.fieldset {
+    border-color: var(--neutral-200);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 16px;
+}
+
+.head {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: var(--spacing-6);
+}
+
+.fieldset .legend {
+    padding: 0;
+}
+
+.fieldset .sublegend {
+    color: var(--neutral-500);
+}
+
+.fieldset[data-appearance='outlined'] {
+    border-color: var(--neutral-200);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: var(--radius-5);
+    padding: clamp(var(--spacing-12), 3vw, var(--spacing-14));
+}
+
+.fieldset[data-appearance='transparent'] {
+    padding: 0;
+    border: none;
+}
