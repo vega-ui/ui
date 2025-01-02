@@ -1,0 +1,11 @@
+code.code {
+    font-family: var(--code-font-family), monospace !important;
+    line-height: 1.25;
+    display: inline-block;
+    background-color: var(--neutral-50);
+    padding: 0 .5em;
+    border-radius: .35em;
+    color: var(--neutral-600);
+    break-inside: avoid;
+    word-wrap: break-word;
+}
