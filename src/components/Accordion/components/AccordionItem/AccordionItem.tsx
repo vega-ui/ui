@@ -6,7 +6,7 @@ import { Collapsible } from '../../../Collapsible';
 
 export interface AccordionItemProps {
   open?: boolean
-  onChangeOpen: (value: string, state: boolean) => void
+  onChangeOpen?: (value: string, state: boolean) => void
   size?: 'small' | 'medium' | 'large'
   value: string
   triggerSlot?: ReactNode
@@ -18,7 +18,7 @@ export const AccordionItem: FC<AccordionItemProps> = ({ size, triggerSlot, separ
   const triggerRef = useRef<HTMLButtonElement>(null)
 
   const onChange = useCallback((state: boolean) => {
-    onChangeOpen(value, state)
+    onChangeOpen?.(value, state)
   }, [value, onChangeOpen])
 
   return (

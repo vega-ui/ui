@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react'
 import { Accordion } from '../Accordion.tsx';
 import { Text } from '../../Text';
-import { AccordionItem } from '../components/AccordionItem';
+import { AccordionItem } from '../components';
 
 const CONTENT_CONTAINER_SELECTOR = 'div[data-type="content"][data-open]'
 

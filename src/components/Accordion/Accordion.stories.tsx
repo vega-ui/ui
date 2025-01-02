@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { Accordion } from './Accordion.tsx';
 import { Text } from '../Text';
-import { AccordionItem } from './components/AccordionItem';
+import { AccordionItem } from './components';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof Accordion> = {
