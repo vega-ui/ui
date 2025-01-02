@@ -12,6 +12,10 @@ const config: StorybookConfig = {
     name: "@storybook/react-vite",
     options: {},
   },
+  async viteFinal(config) {
+    config.build.sourcemap = false;
+    return config;
+  },
   staticDirs: ['../public'],
 };
 export default config;
