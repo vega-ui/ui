@@ -4,10 +4,12 @@ import style from './style.module.css'
 import { csx } from '../../utils/css';
 import { PolymorphicComponentPropWithRef, PolymorphicRef } from '../../../utils';
 
+export type TextSize = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11
+
 export type TextProps<T extends ElementType = 'span'> = PolymorphicComponentPropWithRef<T, {
   className?: string
   children?: ReactNode | ReactNode[]
-  size?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11
+  size?: TextSize
   fontWeight?: 400 | 500 | 700 | 900
 }>
 

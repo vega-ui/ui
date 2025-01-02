@@ -72,67 +72,67 @@
 
     /* Error */
 
-    --error-accent-1: var(--color-red-50);
-    --error-accent-2: var(--color-red-100);
-    --error-accent-3: var(--color-red-150);
-    --error-accent-4: var(--color-red-200);
-    --error-accent-5: var(--color-red-300);
+    --error-accent-11: var(--color-red-50);
+    --error-accent-10: var(--color-red-100);
+    --error-accent-9: var(--color-red-150);
+    --error-accent-8: var(--color-red-200);
+    --error-accent-7: var(--color-red-300);
 
     --error-accent-6: var(--color-red-400);
 
-    --error-accent-7: var(--color-red-500);
-    --error-accent-8: var(--color-red-600);
-    --error-accent-9: var(--color-red-700);
-    --error-accent-10: var(--color-red-800);
-    --error-accent-111: var(--color-red-900);
+    --error-accent-5: var(--color-red-500);
+    --error-accent-4: var(--color-red-600);
+    --error-accent-3: var(--color-red-700);
+    --error-accent-2: var(--color-red-800);
+    --error-accent-1: var(--color-red-900);
 
     /* Success */
 
-    --success-accent-1: var(--color-green-50);
-    --success-accent-2: var(--color-green-100);
-    --success-accent-3: var(--color-green-150);
-    --success-accent-4: var(--color-green-200);
-    --success-accent-5: var(--color-green-300);
+    --success-accent-11: var(--color-green-50);
+    --success-accent-10: var(--color-green-100);
+    --success-accent-9: var(--color-green-150);
+    --success-accent-8: var(--color-green-200);
+    --success-accent-7: var(--color-green-300);
 
     --success-accent-6: var(--color-green-400);
 
-    --success-accent-7: var(--color-green-500);
-    --success-accent-8: var(--color-green-600);
-    --success-accent-9: var(--color-green-700);
-    --success-accent-10: var(--color-green-800);
-    --success-accent-11: var(--color-green-900);
+    --success-accent-5: var(--color-green-500);
+    --success-accent-4: var(--color-green-600);
+    --success-accent-3: var(--color-green-700);
+    --success-accent-2: var(--color-green-800);
+    --success-accent-1: var(--color-green-900);
 
     /* Warning */
 
-    --warning-accent-1: var(--color-orange-50);
-    --warning-accent-2: var(--color-orange-100);
-    --warning-accent-3: var(--color-orange-150);
-    --warning-accent-4: var(--color-orange-200);
-    --warning-accent-5: var(--color-orange-300);
+    --warning-accent-11: var(--color-orange-50);
+    --warning-accent-10: var(--color-orange-100);
+    --warning-accent-9: var(--color-orange-150);
+    --warning-accent-8: var(--color-orange-200);
+    --warning-accent-7: var(--color-orange-300);
 
     --warning-accent-6: var(--color-orange-400);
 
-    --warning-accent-7: var(--color-orange-500);
-    --warning-accent-8: var(--color-orange-600);
-    --warning-accent-9: var(--color-orange-700);
-    --warning-accent-10: var(--color-orange-800);
-    --warning-accent-11: var(--color-orange-900);
+    --warning-accent-5: var(--color-orange-500);
+    --warning-accent-4: var(--color-orange-600);
+    --warning-accent-3: var(--color-orange-700);
+    --warning-accent-2: var(--color-orange-800);
+    --warning-accent-1: var(--color-orange-900);
 
     /* Info */
 
-    --info-accent-1: var(--color-blue-50);
-    --info-accent-2: var(--color-blue-100);
-    --info-accent-3: var(--color-blue-150);
-    --info-accent-4: var(--color-blue-170);
-    --info-accent-5: var(--color-blue-200);
-    --info-accent-6: var(--color-blue-300);
+    --info-accent-13: var(--color-blue-50);
+    --info-accent-12: var(--color-blue-100);
+    --info-accent-11: var(--color-blue-150);
+    --info-accent-10: var(--color-blue-170);
+    --info-accent-9: var(--color-blue-200);
+    --info-accent-8: var(--color-blue-300);
 
     --info-accent-7: var(--color-blue-400);
 
-    --info-accent-8: var(--color-blue-500);
-    --info-accent-9: var(--color-blue-600);
-    --info-accent-10: var(--color-blue-700);
-    --info-accent-11: var(--color-blue-800);
-    --info-accent-12: var(--color-blue-850);
-    --info-accent-13: var(--color-blue-900);
+    --info-accent-6: var(--color-blue-500);
+    --info-accent-5: var(--color-blue-600);
+    --info-accent-4: var(--color-blue-700);
+    --info-accent-3: var(--color-blue-800);
+    --info-accent-2: var(--color-blue-850);
+    --info-accent-1: var(--color-blue-900);
 }
