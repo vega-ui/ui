@@ -1,13 +1,3 @@
-.content {
-    transition: height var(--transition-fast-state-delay) ease;
-    overflow-y: hidden;
-}
-
 .content[data-open='true'] {
-    height: var(--content-height);
     padding-bottom: var(--spacing-4);
-}
-
-.content[data-open='false'] {
-    height: 0;
 }

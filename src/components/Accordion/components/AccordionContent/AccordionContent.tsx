@@ -1,26 +1,17 @@
-import { DetailedHTMLProps, forwardRef, HTMLAttributes, PropsWithChildren, Ref } from 'react';
+import { DetailedHTMLProps, forwardRef, HTMLAttributes, PropsWithChildren } from 'react';
 import style from './style.module.css';
 import { csx } from '../../../../utils/css';
+import { CollapsibleContent } from '../../../Collapsible';
 
-interface AccordionContentProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-  hidden?: boolean
-  open?: boolean
-  wrapperRef?: Ref<HTMLDivElement>
-}
+type AccordionContentProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
 
 export const AccordionContent = forwardRef<HTMLDivElement, PropsWithChildren<AccordionContentProps>>(({
-  hidden,
-  open,
   className,
-  wrapperRef,
-  onTransitionEnd,
   children,
 }, ref) => {
   return (
-    <div ref={ref} data-type='content' data-open={open} hidden={hidden} onTransitionEnd={onTransitionEnd} className={csx(style.content, className)}>
-      <div ref={wrapperRef}>
-        {children}
-      </div>
-    </div>
+    <CollapsibleContent className={csx(style.content, className)} ref={ref}>
+      {children}
+    </CollapsibleContent>
   )
 })
