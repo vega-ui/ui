@@ -4,6 +4,8 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    background: none;
+    border: none;
     gap: var(--spacing-10);
     user-select: none;
     cursor: pointer;
@@ -118,8 +120,6 @@
 }
 
 .selectCombobox[data-variant='inline'] {
-    background: none;
-    border: none;
     min-width: 100px;
 }
 
