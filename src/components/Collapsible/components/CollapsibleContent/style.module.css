@@ -1,0 +1,12 @@
+.content {
+    transition: height var(--transition-fast-state-delay) ease;
+    overflow-y: hidden;
+}
+
+.content[data-open='true'] {
+    height: var(--content-height);
+}
+
+.content[data-open='false'] {
+    height: 0;
+}
