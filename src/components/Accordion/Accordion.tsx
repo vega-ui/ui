@@ -42,9 +42,9 @@ export const Accordion: FC<AccordionProps> = ({ size = 'medium', defaultOpened, 
           return (
             <AccordionItem
               key={value}
+              {...child.props}
               size={size}
               separated={separated ? i !== Children.count(children) - 1 : undefined}
-              {...child.props}
               open={opened.includes(value)}
               onChangeOpen={onChangeOpen}
             />

@@ -1,4 +1,4 @@
-import { defaultCollapsibleContext } from './defaultContext.ts';
-import { createContext } from 'react';
+import { type DefaultCollapsibleContext, defaultCollapsibleContext } from './defaultContext.ts';
+import { Context, createContext } from 'react';
 
-export const CollapsibleContext = createContext(defaultCollapsibleContext)
+export const CollapsibleContext: Context<DefaultCollapsibleContext> = createContext(defaultCollapsibleContext)

@@ -1,6 +1,6 @@
 import { Ref, TransitionEventHandler } from 'react';
 
-interface DefaultCollapsibleContext {
+export interface DefaultCollapsibleContext {
   opened: boolean
   hidden: boolean
   open: VoidFunction,
