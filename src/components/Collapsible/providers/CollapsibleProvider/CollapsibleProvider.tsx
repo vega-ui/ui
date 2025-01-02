@@ -20,7 +20,7 @@ export const CollapsibleProvider: FC<PropsWithChildren<CollapsibleProvider>> = (
     wrapperRef,
     contentRef,
     onTransitionEnd,
-  }), [opened, open, close, hidden, wrapperRef, contentRef, onTransitionEnd])
+  }), [opened, onOpen, onClose, hidden, wrapperRef, contentRef, onTransitionEnd])
 
   return (
     <CollapsibleContext.Provider value={value}>
