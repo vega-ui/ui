@@ -30,3 +30,17 @@ export const Default: Story = {
     )
   }
 };
+
+export const FieldInside: Story = {
+  args: {},
+  render(props) {
+    return (
+      <>
+        <Label {...props}>
+          Hello
+          <TextField id='test' size={props.size} placeholder='Иван' />
+        </Label>
+      </>
+    )
+  }
+};
