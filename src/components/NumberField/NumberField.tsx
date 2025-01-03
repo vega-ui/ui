@@ -19,8 +19,6 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(({
   className,
   disabled,
   size = 'medium',
-  startSlot,
-  endSlot,
   min = 0,
   max,
   step,
@@ -37,29 +35,24 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(({
   }
 
   return (
-    <TextField
-      ref={mergeRefs([inputRef, ref])}
-      size={size}
-      type='number'
-      min={min}
-      max={max}
-      className={csx(style.numberTextField, className)}
-      startSlotClassName={style.startSlot}
-      endSlotClassName={style.endSlot}
-      disabled={disabled}
-      startSlot={
-        <>
-          <IconButton disabled={disabled} iconSize={sizeMapper(size)} size={size} className={style.controlButton} onClick={onStepDown} variant='secondary' appearance='transparent' name='minus' />
-          {startSlot && <div className={style.startSlotWrapper}>{startSlot}</div>}
-        </>
-      }
-      endSlot={
-        <>
-          {endSlot && <div className={style.endSlotWrapper}>{endSlot}</div>}
-          <IconButton disabled={disabled} iconSize={sizeMapper(size)} size={size} onClick={onStepUp} className={style.controlButton} variant='secondary' appearance='transparent' name='plus' />
-        </>
-      }
-      {...props}
-    />
+    <div className={style.wrapper}>
+      <TextField
+        ref={mergeRefs([inputRef, ref])}
+        size={size}
+        type='number'
+        min={min}
+        max={max}
+        className={csx(style.numberTextField, className)}
+        wrapperClassName={style.inputWrapper}
+        disabled={disabled}
+        {...props}
+      />
+      <IconButton disabled={disabled} iconSize={sizeMapper(size)} size={size}
+                  className={csx(style.controlButton, style.controlButtonDown)} onClick={onStepDown}
+                  variant='secondary' appearance='transparent' name='minus'/>
+      <IconButton disabled={disabled} iconSize={sizeMapper(size)} size={size} onClick={onStepUp}
+                  className={csx(style.controlButton, style.controlButtonUp)} variant='secondary'
+                  appearance='transparent' name='plus'/>
+    </div>
   )
 })

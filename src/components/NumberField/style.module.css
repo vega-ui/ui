@@ -1,3 +1,12 @@
+.wrapper {
+    position: relative;
+    width: 100%;
+}
+
+.inputWrapper {
+    padding: 0 var(--input-height);
+}
+
 .numberTextField {
     text-align: center;
 }
@@ -12,19 +21,16 @@
     -moz-appearance: textfield;
 }
 
-.startSlot,
-.endSlot {
-    gap: var(--spacing-6);
-    padding-left: 0 !important;
-    padding-right: 0 !important;
+.controlButtonUp,
+.controlButtonDown {
+    position: absolute;
+    top: 0;
 }
 
-.startSlotWrapper,
-.endSlotWrapper {
-    display: flex;
-    align-items: center;
+.controlButtonDown {
+    left: 0;
 }
 
-.controlButton {
-    height: 100%;
+.controlButtonUp {
+    right: 0;
 }

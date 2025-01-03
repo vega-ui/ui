@@ -4,7 +4,7 @@
     align-items: center;
     position: relative;
     background-color: var(--surface-foreground);
-    border: 1px solid var(--neutral-200);
+    outline: 1px solid var(--neutral-200);
     box-sizing: border-box;
     cursor: text;
     transition: border-color var(--transition-state-delay) ease;
@@ -106,16 +106,16 @@
 .inputWrapper:has(.input:disabled) {
     cursor: not-allowed;
     background-color: var(--neutral-50);
-    border: 1px solid var(--neutral-200);
+    outline-color: var(--neutral-200);
     transition: border-color var(--transition-state-delay) ease-in-out;
 }
 
 .inputWrapper:has(.input:focus) {
-    border-color: var(--primary-accent-7);
+    outline-color: var(--primary-accent-7);
 }
 
 .inputWrapper:has(.input[data-error='true']) {
-    border-color: var(--error-accent-5);
+    outline-color: var(--error-accent-5);
 }
 
 .input {

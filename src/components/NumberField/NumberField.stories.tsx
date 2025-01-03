@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { NumberField } from './NumberField.tsx';
 import { Icon } from '../Icon';
 import { Text } from '../Text';
+import { Label } from '../Label';
 
 const meta = {
   title: 'UI/NumberField',
@@ -34,5 +35,18 @@ export const WithStartSlot: Story = {
 export const WithEndSlot: Story = {
   render(props) {
     return <NumberField {...props} placeholder='Количество' endSlot={<Text>шт.</Text>} />
+  }
+}
+
+export const WithLabel: Story = {
+  render(props) {
+    return (
+      <>
+        <Label>
+          Количество
+          <NumberField {...props} endSlot={<Text>шт.</Text>} />
+        </Label>
+      </>
+    )
   }
 }
