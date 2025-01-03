@@ -1,6 +1,11 @@
 .checkboxCard {
     align-items: flex-end;
     min-width: 220px;
+    flex: 1;
+}
+
+.checkboxCardWrapper {
+    display: flex;
 }
 
 .checkboxCard[data-orientation='vertical'] {
@@ -10,6 +15,7 @@
 .checkboxCard[data-orientation='horizontal'] {
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
     gap: var(--spacing-16);
 }
 
