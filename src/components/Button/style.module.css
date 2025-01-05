@@ -29,3 +29,7 @@
     padding: var(--spacing-8) var(--spacing-24);
     border-radius: var(--radius-4);
 }
+
+.button[data-full-width='true'] {
+    width: 100%;
+}
