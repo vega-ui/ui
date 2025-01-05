@@ -78,7 +78,7 @@ export const Modal: FC<ModalProps> = ({
               >
                 {(withClose || title) && (
                   <header className={styles.header}>
-                    {title && <Heading id={headingId} className={styles.title} size={6}>{title}</Heading>}
+                    {title && <Heading as='h2' id={headingId} className={styles.title} size={6}>{title}</Heading>}
                     {withClose &&
                         <IconButton onClick={() => setOpenModal(false)} name='close' size='small'
                                     variant='secondary' appearance='transparent'/>}
