@@ -8,7 +8,7 @@ import {
   UIEvent,
   useState,
   useRef,
-  useEffect, useMemo, Ref, ReactElement,
+  useMemo, Ref, ReactElement,
 } from 'react';
 import {
   FloatingFocusManager,
@@ -57,7 +57,6 @@ export interface SheetProps extends HTMLAttributes<HTMLElement> {
   defaultSnapPoint?: number
   onChangeActiveSnapPoint?: (activeSnapPoint: number) => void
   steppedSnapPoints?: boolean
-  restoreScroll?: boolean
   withOverlay?: boolean
   open?: boolean
   onChangeOpen?: (value: boolean | undefined) => void
@@ -75,7 +74,6 @@ export const Sheet: FC<SheetProps> = ({
   closable = true,
   swipeTimestamp = 500,
   defaultSnapPoint,
-  restoreScroll = true,
   withOverlay = true,
   steppedSnapPoints = false,
   activeSnapPoint: controlledActiveSnapPoint,
@@ -267,15 +265,6 @@ export const Sheet: FC<SheetProps> = ({
       setTransforming(false)
     }
   }
-
-  const restored = useRef(false)
-
-  useEffect(() => {
-    if (contentRef.current && contentRef.current.scrollTop !== 0 && scrollable && restoreScroll && !restored.current) {
-      contentRef.current.scrollTop = 0
-      restored.current = true
-    }
-  }, [contentRef.current?.scrollTop, scrollable, restoreScroll])
 
   const content = (
     <SheetInner
