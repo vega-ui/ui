@@ -16,7 +16,6 @@ export interface SheetContentProps extends HTMLAttributes<HTMLDivElement> {
 export const SheetContent = forwardRef<HTMLDivElement, PropsWithChildren<SheetContentProps>>(({
   className,
   scrollable,
-  touchAction,
   children,
   ...props
 }, ref) => {
@@ -25,7 +24,6 @@ export const SheetContent = forwardRef<HTMLDivElement, PropsWithChildren<SheetCo
       ref={ref}
       className={csx(style.sheetContent, className)}
       data-scrollable={scrollable}
-      style={{ touchAction }}
       {...props}
     >
       {children}

@@ -1,5 +1,4 @@
 import {
-  CSSProperties,
   forwardRef,
   HTMLAttributes,
   PropsWithChildren, Ref,
@@ -19,7 +18,6 @@ export interface SheetInnerProps extends HTMLAttributes<HTMLDivElement> {
   offset: number
   contentRef?: Ref<HTMLDivElement>
   scrollable?: boolean
-  touchAction?: CSSProperties['touchAction']
   handleClassName?: string
   contentClassName?: string
 }
@@ -32,7 +30,6 @@ export const SheetInner = forwardRef<HTMLDivElement, PropsWithChildren<SheetInne
   contentRef,
   scrollable,
   shadow = false,
-  touchAction,
   contentClassName,
   handleClassName,
   ...props
@@ -47,7 +44,7 @@ export const SheetInner = forwardRef<HTMLDivElement, PropsWithChildren<SheetInne
       {...props}
     >
       <SheetHandle className={handleClassName} />
-      <SheetContent className={contentClassName} ref={contentRef} scrollable={scrollable} touchAction={touchAction}>
+      <SheetContent className={contentClassName} ref={contentRef} scrollable={scrollable}>
         {children}
       </SheetContent>
     </SheetContainer>

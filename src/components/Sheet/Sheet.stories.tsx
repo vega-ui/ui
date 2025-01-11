@@ -37,7 +37,7 @@ export const Default: Story = {
 export const Scrollable: Story = {
   render(props) {
     return (
-      <Sheet {...props} style={{ maxHeight: '620px' }} triggerSlot={(ref, props) => <Button fullWidth ref={ref} {...props}>Open</Button>}>
+      <Sheet {...props} style={{ maxHeight: '430px' }} triggerSlot={(ref, props) => <Button fullWidth ref={ref} {...props}>Open</Button>}>
         {Array.from({ length: 12 }).map((_, index) => (
           <Text key={index} as='p' size={3} style={{ marginBottom: index !== 9 ? '32px' : undefined}}>
             Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
