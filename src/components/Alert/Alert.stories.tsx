@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Alert, AlertProps } from './Alert.tsx';
 import { IconButton } from '../IconButton';
+import { Link } from '../Link';
+import { Code } from '../Code';
 
 const variants: AlertProps['variant'][] = ['info', 'error', 'success', 'warning']
 
@@ -62,5 +64,16 @@ export const WithAction: Story = {
     endSlot: (
       <IconButton size='small' name='close' iconSize='femto' appearance='transparent' />
     )
+  },
+};
+
+export const WithCustomChildren: Story = {
+  args: {
+    title: 'I\'m a title',
+    children: (
+      <>
+        Hello, it's an <Link size={2}>example.com</Link>. Also let's print <Code size={2}>Hello, world!</Code>
+      </>
+    ),
   },
 };

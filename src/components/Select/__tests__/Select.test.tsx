@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react'
 import { Select } from '../Select.tsx';
 import { Option } from '../../Option';
+import { act } from 'react';
 
 const component = (
   <Select>
@@ -19,7 +20,9 @@ describe('Button', () => {
 
   it('open', async () => {
     render(component)
-    screen.getByRole('combobox').click()
+    act(() => {
+      screen.getByRole('combobox').click()
+    })
 
     await waitFor(() => {
       expect(screen.getByRole('listbox')).toBeDefined()
@@ -28,7 +31,9 @@ describe('Button', () => {
 
   it('render options', async () => {
     render(component)
-    screen.getByRole('combobox').click()
+    act(() => {
+      screen.getByRole('combobox').click()
+    })
 
     await waitFor(() => {
       expect(screen.getAllByRole('option').length).toBe(3)
@@ -45,7 +50,9 @@ describe('Button', () => {
         <Option value={3}>Новосибирск</Option>
       </Select>
     )
-    screen.getByRole('combobox').click()
+    act(() => {
+      screen.getByRole('combobox').click()
+    })
 
     await waitFor(() => {
       screen.getAllByRole('option')[1].click()

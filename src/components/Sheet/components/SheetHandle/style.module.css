@@ -1,0 +1,20 @@
+.handle {
+    touch-action: none !important;
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    padding: calc(var(--spacing-3) + var(--spacing-8));
+    cursor: s-resize;
+}
+
+.handle:after {
+    content: '';
+    position: absolute;
+    background: var(--neutral-100);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: var(--spacing-3);
+    width: clamp(100px, 5vw, 50px);
+    border-radius: 100px;
+}
