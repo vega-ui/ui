@@ -97,7 +97,6 @@ export const NotClosable: Story = {
 
 export const WithoutOverlay: Story = {
   args: {
-    closable: false,
     withOverlay: false,
   },
   render(props) {

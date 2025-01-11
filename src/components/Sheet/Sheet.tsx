@@ -8,7 +8,7 @@ import {
   UIEvent,
   useState,
   useRef,
-  useMemo, Ref, ReactElement,
+  useMemo, Ref, ReactElement, forwardRef,
 } from 'react';
 import {
   FloatingFocusManager,
@@ -24,6 +24,7 @@ import { useSnapPoints } from './hooks';
 import { SheetInner, SheetOverlay } from './components';
 import { useControlledState } from '../../hooks';
 import { RemoveScroll } from 'react-remove-scroll';
+import { mergeRefs } from '../../utils/margeRefs';
 
 export interface SheetProps extends HTMLAttributes<HTMLElement> {
   /** The value that the Sheet will aim at when the pointer is released */
@@ -53,6 +54,7 @@ export interface SheetProps extends HTMLAttributes<HTMLElement> {
    *
    * @default false
    */
+  dismissible?: boolean
   activeSnapPoint?: number
   defaultSnapPoint?: number
   onChangeActiveSnapPoint?: (activeSnapPoint: number) => void
@@ -64,7 +66,7 @@ export interface SheetProps extends HTMLAttributes<HTMLElement> {
   triggerSlot?: (ref: Ref<never>, props?: Record<string, unknown>) => ReactElement
 }
 
-export const Sheet: FC<SheetProps> = ({
+export const Sheet: FC<SheetProps> = forwardRef(({
   children,
   triggerSlot,
   snapPoints,
@@ -72,6 +74,7 @@ export const Sheet: FC<SheetProps> = ({
   siblingThreshold = .1,
   scrollable = true,
   closable = true,
+  dismissible = true,
   swipeTimestamp = 500,
   defaultSnapPoint,
   withOverlay = true,
@@ -82,7 +85,7 @@ export const Sheet: FC<SheetProps> = ({
   onChangeOpen: controlledOnChangeOpen,
   className,
   ...props
-}) => {
+}, ref) => {
   const contentRef = useRef<HTMLDivElement>(null)
 
   const [isOpen, setIsOpen] = useControlledState(controlledOpen, false, controlledOnChangeOpen)
@@ -110,7 +113,7 @@ export const Sheet: FC<SheetProps> = ({
   const click = useClick(context);
   const dismiss = useDismiss(context, {
     outsidePressEvent: 'pointerdown',
-    enabled: closable && withOverlay
+    enabled: dismissible
   });
   const role = useRole(context);
 
@@ -276,7 +279,7 @@ export const Sheet: FC<SheetProps> = ({
       onPointerUp={onRelease}
       hidden={withOverlay ? props.hidden : !isMounted}
       status={status}
-      ref={refs.setFloating}
+      ref={mergeRefs([refs.setFloating, ref])}
       contentRef={contentRef}
       offset={offset}
       scrollable={scrollable}
@@ -305,4 +308,4 @@ export const Sheet: FC<SheetProps> = ({
       </FloatingPortal>
     </>
   )
-}
+})
