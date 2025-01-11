@@ -8,8 +8,7 @@ import {
   UIEvent,
   useState,
   useRef,
-  CSSProperties,
-  useEffect, useMemo, Ref, ReactElement
+  useEffect, useMemo, Ref, ReactElement,
 } from 'react';
 import {
   FloatingFocusManager,
@@ -24,6 +23,7 @@ import {
 import { useSnapPoints } from './hooks';
 import { SheetInner, SheetOverlay } from './components';
 import { useControlledState } from '../../hooks';
+import { RemoveScroll } from 'react-remove-scroll';
 
 export interface SheetProps extends HTMLAttributes<HTMLElement> {
   /** The value that the Sheet will aim at when the pointer is released */
@@ -95,9 +95,8 @@ export const Sheet: FC<SheetProps> = ({
   });
 
   const [transforming, setTransforming] = useState<boolean>(false)
-  const [touchAction, setTouchAction] = useState<CSSProperties['touchAction']>('auto')
-  
-  const { defaultActiveSnapPoint, activeSnapPointValue, findClosestSnapPointIndex, setActiveSnapPoint, isFirstSnapPoint, activeSnapPoint, hasSnapPoints, sortedSnapPointsInDimensions } = useSnapPoints({
+
+  const { defaultActiveSnapPoint, activeSnapPointValue, findClosestSnapPointIndex, setActiveSnapPoint, activeSnapPoint, hasSnapPoints, sortedSnapPointsInDimensions } = useSnapPoints({
     snapPoints,
     defaultSnapPoint,
     activeSnapPoint: controlledActiveSnapPoint,
@@ -161,7 +160,7 @@ export const Sheet: FC<SheetProps> = ({
 
     while (el) {
       if (el.scrollHeight > el.clientHeight) {
-        if (el.scrollTop !== 0 && offset === limit) return false;
+        if (el.scrollTop !== 0) return false;
       }
 
       if (el === refs.floating.current) break;
@@ -172,7 +171,7 @@ export const Sheet: FC<SheetProps> = ({
     return true
   }
 
-  const onTouch = (e: PointerEvent) => {
+  const onPress = (e: PointerEvent) => {
     if (!couldDrag(e.target as HTMLElement)) return
 
     if (refs.floating.current && !refs.floating.current.contains(e.target as Node)) return;
@@ -264,15 +263,10 @@ export const Sheet: FC<SheetProps> = ({
     const element = (e.target as HTMLElement)
     const scrollTop = element.scrollTop
 
-    if (scrollTop !== 0 && transforming) setTransforming(false)
-
-    setTouchAction(scrollTop === 0 && offset === limit ? 'pan-down' : 'auto')
+    if (scrollTop !== 0 && transforming) {
+      setTransforming(false)
+    }
   }
-
-  useEffect(() => {
-    if (offset !== limit) setTouchAction('none')
-    else setTouchAction('pan-down')
-  }, [isFirstSnapPoint, offset, hasSnapPoints, limit])
 
   const restored = useRef(false)
 
@@ -288,7 +282,7 @@ export const Sheet: FC<SheetProps> = ({
       className={className}
       shadow={!withOverlay}
       onScrollCapture={onScrollCapture}
-      onPointerDown={onTouch}
+      onPointerDown={onPress}
       onPointerMove={onDrag}
       onPointerUp={onRelease}
       hidden={withOverlay ? props.hidden : !isMounted}
@@ -296,7 +290,6 @@ export const Sheet: FC<SheetProps> = ({
       ref={refs.setFloating}
       contentRef={contentRef}
       offset={offset}
-      touchAction={touchAction}
       scrollable={scrollable}
       dragging={transforming}
       {...getFloatingProps(props)}
@@ -311,11 +304,13 @@ export const Sheet: FC<SheetProps> = ({
       <FloatingPortal>
         {isMounted && (
           <FloatingFocusManager context={context}>
-            {withOverlay ? (
-              <SheetOverlay hidden={!isMounted}>
-                {content}
-              </SheetOverlay>
-            ) : content}
+            <RemoveScroll>
+              {withOverlay ? (
+                <SheetOverlay hidden={!isMounted}>
+                  {content}
+                </SheetOverlay>
+              ) : content}
+            </RemoveScroll>
           </FloatingFocusManager>
         )}
       </FloatingPortal>

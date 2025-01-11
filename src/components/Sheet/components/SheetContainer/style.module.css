@@ -11,6 +11,8 @@
     background: var(--surface-foreground);
     border-top-left-radius: var(--radius-6);
     border-top-right-radius: var(--radius-6);
+    transition: all .25s ease;
+    will-change: transform;
 }
 
 .sheet[data-shadow='true'] {
@@ -25,14 +27,6 @@
     width: 100%;
     height: 200%;
     background: var(--surface-foreground);
-}
-
-.sheet {
-    transition: all .25s ease;
-}
-
-.sheet > * {
-    touch-action: inherit;
 }
 
 .sheet[data-status='open'] {
