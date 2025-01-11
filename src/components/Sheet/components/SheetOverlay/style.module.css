@@ -1,0 +1,7 @@
+.overlay {
+    background-color: var(--overlay);
+}
+
+.overlay[data-blurred='true'] {
+    backdrop-filter: blur(2px);
+}

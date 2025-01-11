@@ -57,15 +57,27 @@ export const Modal: FC<ModalProps> = ({
     role,
   ]);
 
-  const { styles: transitionStyles } = useTransitionStyles(context, {
-    duration: 200,
+  const { styles: transitionStyles, isMounted } = useTransitionStyles(context, {
+    duration: {
+      open: 250,
+      close: 150
+    },
+    initial: {
+      transform: 'scale(.95)'
+    },
+    open: {
+      transform: 'scale(1)'
+    },
+    close: {
+      transform: 'scale(.95)'
+    }
   });
 
   return (
     <>
       {triggerSlot?.(refs.setReference, getReferenceProps())}
       <FloatingPortal>
-        {isOpenModal && (
+        {isMounted && (
           <FloatingOverlay className={csx(styles.modalOverlay, blurredOverlay ? styles.modalOverlayBlurred : undefined, overlayClassName)} lockScroll>
             <FloatingFocusManager context={context}>
               <div
