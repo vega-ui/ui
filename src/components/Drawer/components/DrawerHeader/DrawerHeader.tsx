@@ -29,7 +29,7 @@ export const DrawerHeader = forwardRef<HTMLDivElement, PropsWithChildren<DrawerH
       {...props}
     >
       {title && <Heading as='h3'>{title}</Heading>}
-      <IconButton onClick={() => onChangeOpen(false)} variant='secondary' appearance='transparent' name='close' size='small' />
+      <IconButton onClick={() => onChangeOpen(false)} aria-label='close' variant='secondary' appearance='transparent' name='close' size='small' />
       {children}
     </div>
   )
