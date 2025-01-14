@@ -11,11 +11,11 @@
 }
 
 .drawer[data-full-width='true'] {
-    width: calc(100% - var(--outer-space) * 2 - env(safe-area-inset-bottom) - env(safe-area-inset-top));
+    width: calc(100% - var(--outer-space) * 2 - env(safe-area-inset-right) - env(safe-area-inset-left));
 }
 
 .drawer[data-full-height='true'] {
-    height: calc(100% - var(--outer-space) * 2 - env(safe-area-inset-right) - env(safe-area-inset-left));
+    height: calc(100% - var(--outer-space) * 2 - env(safe-area-inset-bottom) - env(safe-area-inset-top));
 }
 
 .drawer[data-shadow='true'] {
