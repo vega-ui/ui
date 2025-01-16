@@ -1,1 +1,1 @@
-export * from './CollapsibleProvider'
+export * from './TableProvider'

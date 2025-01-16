@@ -1,7 +1,7 @@
 import { forwardRef, PropsWithChildren, TableHTMLAttributes } from 'react';
 import style from './style.module.css'
 import { Text } from '../Text';
-import { TableProvider } from './providers/TableProvider';
+import { TableProvider } from './providers';
 import { csx } from '../../utils/css';
 import { TableData, TableHead, TableHeading, TableRow, TableBody, TableFoot } from './components';
 
