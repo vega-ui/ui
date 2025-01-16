@@ -32,6 +32,7 @@ export interface DrawerProps extends HTMLAttributes<HTMLElement> {
   open?: boolean
   onChangeOpen?: (value: boolean | undefined) => void
   headerSlot?: JSX.Element | JSX.Element[]
+  blurredOverlay?: boolean
   fullWidth?: boolean
   fullHeight?: boolean
   position?: DrawerPosition
@@ -47,6 +48,7 @@ export const Drawer = forwardRef<HTMLDivElement, DrawerProps>(({
   headerSlot,
   withOverlay = true,
   shadowed = !withOverlay,
+  blurredOverlay = true,
   dismissible = true,
   fullWidth = false,
   fullHeight = false,
@@ -107,7 +109,7 @@ export const Drawer = forwardRef<HTMLDivElement, DrawerProps>(({
           {isMounted && (
             <FloatingFocusManager context={context}>
               {withOverlay ? (
-                <DrawerOverlay hidden={!isMounted}>
+                <DrawerOverlay blurred={blurredOverlay} hidden={!isMounted}>
                   {content}
                 </DrawerOverlay>
               ) : content}
