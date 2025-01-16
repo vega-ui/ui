@@ -1,6 +1,7 @@
 .overlay {
     background-color: var(--overlay);
     z-index: var(--z-index-overlay);
+    overflow: hidden !important;
 }
 
 .overlay[data-blurred='true'] {
