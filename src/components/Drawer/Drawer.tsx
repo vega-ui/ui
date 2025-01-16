@@ -29,6 +29,7 @@ export interface DrawerProps extends HTMLAttributes<HTMLElement> {
   dismissible?: boolean
   withOverlay?: boolean
   shadowed?: boolean
+  scrollable?: boolean
   open?: boolean
   onChangeOpen?: (value: boolean | undefined) => void
   headerSlot?: JSX.Element | JSX.Element[]
@@ -53,6 +54,7 @@ export const Drawer = forwardRef<HTMLDivElement, DrawerProps>(({
   fullWidth = false,
   fullHeight = false,
   position = 'right',
+  scrollable = true,
   open: controlledOpen,
   onChangeOpen: controlledOnChangeOpen,
   className,
@@ -95,7 +97,7 @@ export const Drawer = forwardRef<HTMLDivElement, DrawerProps>(({
       {...getFloatingProps(props)}
     >
       {headerSlot}
-      <DrawerContent className={contentClassName} ref={contentRef}>
+      <DrawerContent scrollable={scrollable} className={contentClassName} ref={contentRef}>
         {children}
       </DrawerContent>
     </div>

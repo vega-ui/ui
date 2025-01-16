@@ -1,22 +1,26 @@
 .drawer {
     --outer-space: var(--spacing-6);
+    display: flex;
+    flex-direction: column;
     position: fixed;
     box-sizing: border-box;
     margin: var(--outer-space);
     background: var(--surface-foreground);
     border-radius: var(--radius-6);
     padding: clamp(var(--spacing-10), 5vw, var(--spacing-16));
+    max-height: calc(100% - var(--outer-space) * 2 - env(safe-area-inset-bottom) - env(safe-area-inset-top));
+    max-width: calc(100% - var(--outer-space) * 2 - env(safe-area-inset-right) - env(safe-area-inset-left));
     transition: all .25s ease;
     z-index: var(--z-index-above);
     will-change: transform;
 }
 
 .drawer[data-full-width='true'] {
-    width: calc(100% - var(--outer-space) * 2 - env(safe-area-inset-right) - env(safe-area-inset-left));
+    width: 100%;
 }
 
 .drawer[data-full-height='true'] {
-    height: calc(100% - var(--outer-space) * 2 - env(safe-area-inset-bottom) - env(safe-area-inset-top));
+    height: 100%;
 }
 
 .drawer[data-shadow='true'] {
