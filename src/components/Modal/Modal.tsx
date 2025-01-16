@@ -78,7 +78,7 @@ export const Modal: FC<ModalProps> = ({
       {triggerSlot?.(refs.setReference, getReferenceProps())}
       <FloatingPortal>
         {isMounted && (
-          <FloatingOverlay className={csx(styles.modalOverlay, blurredOverlay ? styles.modalOverlayBlurred : undefined, overlayClassName)} lockScroll>
+          <FloatingOverlay data-blurred={blurredOverlay} className={csx(styles.modalOverlay, overlayClassName)} lockScroll>
             <FloatingFocusManager context={context}>
               <div
                 data-fluid={fluid}
