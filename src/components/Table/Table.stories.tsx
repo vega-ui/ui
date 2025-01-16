@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Table } from './Table.tsx';
 import { Text } from '../Text';
 import { TableBody, TableData, TableFoot, TableHead, TableHeading, TableRow } from './components';
-import style from './style.module.css';
 
 const meta = {
   title: 'UI/Table',
