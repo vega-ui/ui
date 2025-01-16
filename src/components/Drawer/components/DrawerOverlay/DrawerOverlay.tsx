@@ -9,7 +9,7 @@ export interface DrawerOverlayProps {
   className?: string
 }
 
-export const DrawerOverlay: FC<PropsWithChildren<DrawerOverlayProps>> = ({ hidden, className, blurred, children }) => {
+export const DrawerOverlay: FC<PropsWithChildren<DrawerOverlayProps>> = ({ hidden, className, blurred = true, children }) => {
   return (
     <FloatingOverlay
       hidden={hidden}

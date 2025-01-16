@@ -9,7 +9,7 @@ export interface SheetOverlayProps {
   className?: string
 }
 
-export const SheetOverlay: FC<PropsWithChildren<SheetOverlayProps>> = ({ hidden, className, blurred, children }) => {
+export const SheetOverlay: FC<PropsWithChildren<SheetOverlayProps>> = ({ hidden, className, blurred = true, children }) => {
   return (
     <FloatingOverlay
       hidden={hidden}

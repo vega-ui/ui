@@ -56,6 +56,7 @@ export interface SheetProps extends HTMLAttributes<HTMLElement> {
    */
   dismissible?: boolean
   activeSnapPoint?: number
+  blurredOverlay?: boolean
   defaultSnapPoint?: number
   onChangeActiveSnapPoint?: (activeSnapPoint: number) => void
   steppedSnapPoints?: boolean
@@ -78,6 +79,7 @@ export const Sheet: FC<SheetProps> = forwardRef(({
   swipeTimestamp = 500,
   defaultSnapPoint,
   withOverlay = true,
+  blurredOverlay = true,
   steppedSnapPoints = false,
   activeSnapPoint: controlledActiveSnapPoint,
   onChangeActiveSnapPoint,
@@ -298,7 +300,7 @@ export const Sheet: FC<SheetProps> = forwardRef(({
           <FloatingFocusManager context={context}>
             <RemoveScroll>
               {withOverlay ? (
-                <SheetOverlay hidden={!isMounted}>
+                <SheetOverlay blurred={blurredOverlay} hidden={!isMounted}>
                   {content}
                 </SheetOverlay>
               ) : content}

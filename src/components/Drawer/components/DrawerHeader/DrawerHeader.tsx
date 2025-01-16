@@ -28,7 +28,7 @@ export const DrawerHeader = forwardRef<HTMLDivElement, PropsWithChildren<DrawerH
       className={csx(style.drawerHeader, className)}
       {...props}
     >
-      {title && <Heading as='h3'>{title}</Heading>}
+      {title && <Heading as='h3' size={6}>{title}</Heading>}
       <IconButton onClick={() => onChangeOpen(false)} aria-label='close' variant='secondary' appearance='transparent' name='close' size='small' />
       {children}
     </div>
