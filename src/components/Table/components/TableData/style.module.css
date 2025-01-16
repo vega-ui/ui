@@ -1,0 +1,35 @@
+.data {
+    padding: 12px;
+}
+
+.data[data-align='start'] {
+    text-align: start;
+}
+
+.data[data-align='center'] {
+    text-align: center;
+}
+
+.data[data-align='end'] {
+    text-align: end;
+}
+
+.data[data-align='between'] {
+    text-align: center;
+}
+
+.data[data-align='between']:first-child {
+    text-align: start;
+}
+
+.data[data-align='between']:last-child {
+    text-align: end;
+}
+
+.dataNotEdgePadded:first-child {
+    padding-left: 0;
+}
+
+.dataNotEdgePadded:last-child {
+    padding-right: 0;
+}
