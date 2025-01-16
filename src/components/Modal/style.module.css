@@ -17,18 +17,28 @@
 .modalOverlay {
     display: grid;
     place-items: center;
-    background-color: var(--overlay);
     z-index: var(--z-index-overlay);
     padding: var(--spacing-6);
     box-sizing: border-box;
 }
 
-.modalOverlay:has(.modal[data-fluid='true']) {
-    padding: 0;
+.modalOverlay::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--overlay);
 }
 
-.modalOverlayBlurred {
+.modalOverlay[data-blurred='true']::after {
     backdrop-filter: blur(2px);
+}
+
+.modalOverlay:has(.modal[data-fluid='true']) {
+    padding: 0;
 }
 
 .header {
