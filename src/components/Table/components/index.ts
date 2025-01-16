@@ -1,0 +1,6 @@
+export * from './TableHead'
+export * from './TableBody'
+export * from './TableFoot'
+export * from './TableRow'
+export * from './TableHeading'
+export * from './TableData'

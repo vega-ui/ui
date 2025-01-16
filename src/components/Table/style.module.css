@@ -1,0 +1,15 @@
+.tableContainer {
+    overflow-x: auto;
+}
+
+.table {
+    border-collapse: collapse;
+}
+
+.table[data-full-width='true'] {
+    width: 100%;
+}
+
+.table[data-full-height='true'] {
+    height: 100%;
+}

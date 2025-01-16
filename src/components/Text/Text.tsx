@@ -10,7 +10,7 @@ export type TextProps<T extends ElementType = 'span'> = PolymorphicComponentProp
   className?: string
   children?: ReactNode | ReactNode[]
   size?: TextSize
-  fontWeight?: 400 | 500 | 700 | 900
+  fontWeight?: 400 | 500 | 600 | 700 | 900
 }>
 
 type TextComponent = <T extends ElementType = 'span'>(props: TextProps<T>) => ReactNode | null;
