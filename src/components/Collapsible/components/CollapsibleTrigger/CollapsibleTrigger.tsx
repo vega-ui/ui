@@ -30,7 +30,7 @@ export const CollapsibleTrigger: CollapsibleTriggerComponent = forwardRef(<T ext
   }
 
   return (
-    <Element aria-expanded={opened} data-open={opened} onClick={onClick} ref={ref}
+    <Element type={Element === 'button' ? 'button' : undefined} aria-expanded={opened} data-open={opened} onClick={onClick} ref={ref}
             className={csx(style.triggerButton, className)} {...props}>
       {children}
     </Element>
