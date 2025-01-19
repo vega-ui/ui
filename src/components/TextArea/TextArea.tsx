@@ -11,6 +11,7 @@ export interface TextAreaProps extends Omit<TextareaHTMLAttributes<HTMLTextAreaE
   value?: string | number
   size?: 'small' | 'medium' | 'large'
   error?: boolean
+  fullWidth?: boolean
 }
 
 export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(({
@@ -18,9 +19,10 @@ export const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(({
   placeholder,
   error,
   size = 'medium',
+  fullWidth,
   ...props
 }, ref) => {
   return (
-    <textarea data-size={size} data-error={error} ref={ref} placeholder={placeholder} className={csx(style.textarea, className)} {...props} />
+    <textarea data-size={size} data-full-width={fullWidth} data-error={error} ref={ref} placeholder={placeholder} className={csx(style.textarea, className)} {...props} />
   )
 })
