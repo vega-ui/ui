@@ -1,5 +1,6 @@
 import { FC, ReactNode, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { CollapsibleProvider } from './providers';
+import { useControlledState } from '../../hooks';
 
 export interface CollapsibleProps {
   open?: boolean
@@ -9,11 +10,8 @@ export interface CollapsibleProps {
 }
 
 export const Collapsible: FC<CollapsibleProps> = ({ open: controlledOpen, onChangeOpen: onControlledChangeOpen, onChangeHidden, children }) => {
-  const [uncontrolledOpen, setUncontrolledOpen] = useState<boolean>(false)
+  const [open, onChangeOpen] = useControlledState(controlledOpen, false, onControlledChangeOpen)
   const [hidden, setHidden] = useState(false)
-
-  const open = controlledOpen ?? uncontrolledOpen
-  const onChangeOpen = onControlledChangeOpen ?? setUncontrolledOpen
 
   const onOpen = useCallback(() => {
     onChangeOpen?.(true)
