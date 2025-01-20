@@ -1,3 +1,5 @@
+'use client';
+
 import { FC, ReactElement, Ref, useRef, useState } from 'react';
 import { csx } from '../../utils/css';
 import {

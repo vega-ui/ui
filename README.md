@@ -28,6 +28,28 @@ Connect the styles first. You can do this using a js file, however, we recommend
   @layer reset, library, components, overrides;
 ```
 
+Setup fonts
+
+**Next:**
+
+```typescript jsx
+    import { Montserrat } from 'next/font/google';
+
+    const montserratSans = Montserrat({
+      subsets: ['latin', 'cyrillic'],
+      display: 'swap',
+      weight: ['400', '500', '700', '900']
+    });
+```
+
+**Google Fonts:**
+
+```html
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+```
+
 Start using
 
 ```typescript

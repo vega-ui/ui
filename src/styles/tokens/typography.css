@@ -88,7 +88,6 @@
     font-display: auto;
     font-style: normal;
     font-weight: 900;
-    src: url('/fonts/Montserrat-Black.woff2') format('woff2'), url('/fonts/Montserrat-Black.ttf') format('truetype');
 }
 
 @font-face {
@@ -96,7 +95,6 @@
     font-display: auto;
     font-style: normal;
     font-weight: 700;
-    src: url('/fonts/Montserrat-Bold.woff2') format('woff2'), url('/fonts/Montserrat-Bold.ttf') format('truetype');
 }
 
 @font-face {
@@ -104,7 +102,6 @@
     font-display: auto;
     font-style: normal;
     font-weight: 500;
-    src: url('/fonts/Montserrat-Medium.woff2') format('woff2'), url('/fonts/Montserrat-Medium.ttf') format('truetype');
 }
 
 @font-face {
@@ -112,5 +109,4 @@
     font-display: auto;
     font-style: normal;
     font-weight: 400;
-    src: url('/fonts/Montserrat-Regular.woff2') format('woff2'), url('/fonts/Montserrat-Regular.ttf') format('truetype');
 }

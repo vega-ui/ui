@@ -1,3 +1,5 @@
+'use client';
+
 import { FC, ReactElement, ReactNode, Ref, useId, useState } from 'react';
 import { csx } from '../../utils/css';
 import styles from './style.module.css'
