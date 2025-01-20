@@ -15,7 +15,6 @@ const config: StorybookConfig = {
   async viteFinal(config) {
     config.build.sourcemap = false;
     return config;
-  },
-  staticDirs: ['../public'],
+  }
 };
 export default config;
