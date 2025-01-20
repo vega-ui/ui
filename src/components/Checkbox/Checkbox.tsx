@@ -1,3 +1,4 @@
+'use client';
 import { ChangeEventHandler, DetailedHTMLProps, forwardRef, InputHTMLAttributes, useEffect, useRef } from 'react';
 import { mergeRefs } from '../../utils/margeRefs';
 import style from './style.module.css'

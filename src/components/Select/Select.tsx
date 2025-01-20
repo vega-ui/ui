@@ -1,3 +1,5 @@
+'use client';
+
 import { Children, FC, HTMLAttributes, ReactElement, ReactNode, useMemo, useRef, useState } from 'react';
 import {
   autoUpdate,

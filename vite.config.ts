@@ -3,6 +3,8 @@ import { resolve } from 'path'
 import svgr from 'vite-plugin-svgr';
 import react from '@vitejs/plugin-react'
 import dts from 'vite-plugin-dts'
+import preserveDirectives from 'rollup-preserve-directives'
+import fg from 'fast-glob'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -11,8 +13,8 @@ export default defineConfig({
     react(),
     dts({
       insertTypesEntry: true,
-      rollupTypes: true,
-      tsconfigPath: './tsconfig.app.json'
+      tsconfigPath: './tsconfig.app.json',
+      exclude: ['**/*/**.stories.(tsx|ts)', '**/*/__tests__/'],
     }),
     svgr({
       svgrOptions: {
@@ -20,22 +22,26 @@ export default defineConfig({
       }
     })
   ],
-  assetsInclude: ['**/*.woff2', '**/*.ttf'],
   build: {
     sourcemap: true,
     lib: {
       formats: ['es'],
-      entry: resolve(__dirname, 'src/'),
+      entry: [resolve(__dirname, 'src/index.ts'), ...fg.sync('src/**/*/index.ts')],
+      fileName: (_, entryName) => {
+        const path = `${entryName}.js`
+        return path.startsWith('src') ? path.replace('src/', '') : path;
+      },
+      cssFileName: 'index',
       name: 'AdaraCloudUI',
-      fileName: 'index'
-    },
-    commonjsOptions: {
-      sourceMap: false
     },
     chunkSizeWarningLimit: 10000,
     rollupOptions: {
-      external: ['react', 'react-dom', 'react/jsx-runtime'],
+      external: ['react', 'react-dom', 'react/jsx-runtime', '@floating-ui/react', 'react-remove-scroll'],
+      plugins: [
+        preserveDirectives()
+      ],
       output: {
+        preserveModules: true,
         globals: {
           react: 'React',
           'react-dom': 'ReactDOM',

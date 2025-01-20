@@ -1,3 +1,4 @@
+'use client';
 import { Children, FC, ReactElement, useState } from 'react';
 import { AccordionItem, AccordionItemProps } from './components';
 import { csx } from '../../utils/css';
