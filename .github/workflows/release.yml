@@ -45,8 +45,8 @@ jobs:
       - name: Setup Git User
         shell: bash
         run: |
-          git config --global user.email "epicstyt@gmail.com"
-          git config --global user.name "Stepan Rabotkin"
+          git config --global user.email "196216297+adara-cloud-ci@users.noreply.github.com"
+          git config --global user.name "Adara Cloud CI"
 
       - name: Publish versions
         uses: changesets/action@v1.4.9
