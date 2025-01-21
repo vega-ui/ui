@@ -1,5 +1,4 @@
-import '../src/index.css'
-import './style.css'
+import '../packages/ui/src/index.css'
 
 import { withThemeByClassName } from "@storybook/addon-themes";
 

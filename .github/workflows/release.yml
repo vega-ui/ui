@@ -40,8 +40,10 @@ jobs:
       - name: Publish NPM package
         shell: bash
         run: |
+          cd dist
           npm version ${{ github.ref_name }} --no-git-tag-version
           npm publish --access public
+          cd ../
 
       - name: Build storybook
         run: npm run build-storybook

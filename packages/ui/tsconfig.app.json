@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "types": ["vite-plugin-svgr/client"],
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+  },
+  "include": ["src", "global.d.ts"],
+  "paths": {
+    "@adara-cs/utils": ["../utils/src"],
+    "@adara-cs/utils/*": ["../utils/src/*"],
+    "@adara-cs/hooks": ["../hooks/src"],
+    "@adara-cs/hooks/*": ["../hooks/src/*"],
+    "@adara-cs/types": ["../types"],
+    "@adara-cs/types/*": ["../types/*"]
+  }
+}

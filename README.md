@@ -1,4 +1,4 @@
-# Adara UI
+# Adara UI Monorepo
 
 React component library, written by developers for developers 🩵
 ## Installation

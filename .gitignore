@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+.turbo
+**/.turbo
+**/dist
+
 # Storybook
 
 storybook-static
@@ -28,3 +32,4 @@ storybook-static
 *.sw?
 
 coverage
+.nx/cache

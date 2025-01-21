@@ -1,0 +1,17 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "tasks": {
+    "build": {
+      "outputs": ["dist/**"],
+      "outputLogs": "none"
+    },
+    "test": {
+      "cache": false,
+      "outputLogs": "none"
+    },
+    "check-types": {
+      "dependsOn": ["^check-types"],
+      "outputLogs": "none"
+    }
+  }
+}

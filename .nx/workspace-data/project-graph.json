@@ -1,0 +1,496 @@
+{
+  "nodes": {
+    "@adara-cs/hooks": {
+      "name": "@adara-cs/hooks",
+      "type": "lib",
+      "data": {
+        "root": "packages/hooks",
+        "sourceRoot": "packages/hooks",
+        "name": "@adara-cs/hooks",
+        "tags": [
+          "npm:public",
+          "npm:ui-kit",
+          "npm:ui",
+          "npm:ts",
+          "npm:typescript",
+          "npm:js"
+        ],
+        "metadata": {
+          "targetGroups": {
+            "NPM Scripts": [
+              "build",
+              "lint",
+              "storybook",
+              "build-storybook",
+              "test",
+              "test:watch",
+              "test:coverage"
+            ]
+          },
+          "description": "AdaraCloud UI Kit for Web",
+          "js": {
+            "packageName": "@adara-cs/hooks"
+          }
+        },
+        "targets": {
+          "build": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "build"
+            },
+            "metadata": {
+              "scriptContent": "tsc -b && vite build",
+              "runCommand": "pnpm run build"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "lint": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "lint"
+            },
+            "metadata": {
+              "scriptContent": "eslint .",
+              "runCommand": "pnpm run lint"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "storybook": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "storybook"
+            },
+            "metadata": {
+              "scriptContent": "storybook dev -p 6006",
+              "runCommand": "pnpm run storybook"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "build-storybook": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "build-storybook"
+            },
+            "metadata": {
+              "scriptContent": "storybook build",
+              "runCommand": "pnpm run build-storybook"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "test": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "test"
+            },
+            "metadata": {
+              "scriptContent": "vitest run",
+              "runCommand": "pnpm run test"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "test:watch": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "test:watch"
+            },
+            "metadata": {
+              "scriptContent": "vitest --watch",
+              "runCommand": "pnpm run test:watch"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "test:coverage": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "test:coverage"
+            },
+            "metadata": {
+              "scriptContent": "vitest --coverage",
+              "runCommand": "pnpm run test:coverage"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "nx-release-publish": {
+            "executor": "@nx/js:release-publish",
+            "dependsOn": [
+              "^nx-release-publish"
+            ],
+            "options": {},
+            "configurations": {},
+            "parallelism": true
+          }
+        },
+        "implicitDependencies": []
+      }
+    },
+    "@adara-cs/types": {
+      "name": "@adara-cs/types",
+      "type": "lib",
+      "data": {
+        "root": "packages/types",
+        "sourceRoot": "packages/types",
+        "name": "@adara-cs/types",
+        "tags": [
+          "npm:public",
+          "npm:ui-kit",
+          "npm:ui",
+          "npm:ts",
+          "npm:typescript",
+          "npm:js"
+        ],
+        "metadata": {
+          "targetGroups": {
+            "NPM Scripts": [
+              "build",
+              "lint",
+              "storybook",
+              "build-storybook",
+              "test",
+              "test:watch",
+              "test:coverage"
+            ]
+          },
+          "description": "Types for AdaraCloud UI Kit Web",
+          "js": {
+            "packageName": "@adara-cs/types"
+          }
+        },
+        "targets": {
+          "build": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "build"
+            },
+            "metadata": {
+              "scriptContent": "mkdir dist && copy index.d.ts dist",
+              "runCommand": "pnpm run build"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "lint": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "lint"
+            },
+            "metadata": {
+              "scriptContent": "eslint .",
+              "runCommand": "pnpm run lint"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "storybook": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "storybook"
+            },
+            "metadata": {
+              "scriptContent": "storybook dev -p 6006",
+              "runCommand": "pnpm run storybook"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "build-storybook": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "build-storybook"
+            },
+            "metadata": {
+              "scriptContent": "storybook build",
+              "runCommand": "pnpm run build-storybook"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "test": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "test"
+            },
+            "metadata": {
+              "scriptContent": "vitest run",
+              "runCommand": "pnpm run test"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "test:watch": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "test:watch"
+            },
+            "metadata": {
+              "scriptContent": "vitest --watch",
+              "runCommand": "pnpm run test:watch"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "test:coverage": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "test:coverage"
+            },
+            "metadata": {
+              "scriptContent": "vitest --coverage",
+              "runCommand": "pnpm run test:coverage"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "nx-release-publish": {
+            "executor": "@nx/js:release-publish",
+            "dependsOn": [
+              "^nx-release-publish"
+            ],
+            "options": {},
+            "configurations": {},
+            "parallelism": true
+          }
+        },
+        "implicitDependencies": []
+      }
+    },
+    "@adara-cs/utils": {
+      "name": "@adara-cs/utils",
+      "type": "lib",
+      "data": {
+        "root": "packages/utils",
+        "sourceRoot": "packages/utils",
+        "name": "@adara-cs/utils",
+        "tags": [
+          "npm:public",
+          "npm:ui-kit",
+          "npm:ui",
+          "npm:ts",
+          "npm:typescript",
+          "npm:js"
+        ],
+        "metadata": {
+          "targetGroups": {
+            "NPM Scripts": [
+              "build",
+              "lint",
+              "test"
+            ]
+          },
+          "description": "Utilities for @adara-cs/ui-kit-web",
+          "js": {
+            "packageName": "@adara-cs/utils"
+          }
+        },
+        "targets": {
+          "build": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "build"
+            },
+            "metadata": {
+              "scriptContent": "tsc -b && vite build",
+              "runCommand": "pnpm run build"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "lint": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "lint"
+            },
+            "metadata": {
+              "scriptContent": "eslint .",
+              "runCommand": "pnpm run lint"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "test": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "test"
+            },
+            "metadata": {
+              "scriptContent": "vitest run",
+              "runCommand": "pnpm run test"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "nx-release-publish": {
+            "executor": "@nx/js:release-publish",
+            "dependsOn": [
+              "^nx-release-publish"
+            ],
+            "options": {},
+            "configurations": {},
+            "parallelism": true
+          }
+        },
+        "implicitDependencies": []
+      }
+    },
+    "@adara-cs/ui-kit-web": {
+      "name": "@adara-cs/ui-kit-web",
+      "type": "lib",
+      "data": {
+        "root": "packages/ui",
+        "sourceRoot": "packages/ui",
+        "name": "@adara-cs/ui-kit-web",
+        "tags": [
+          "npm:public",
+          "npm:ui-kit",
+          "npm:ui",
+          "npm:ts",
+          "npm:typescript",
+          "npm:js"
+        ],
+        "metadata": {
+          "targetGroups": {
+            "NPM Scripts": [
+              "build",
+              "lint",
+              "storybook",
+              "build-storybook",
+              "test",
+              "test:watch",
+              "test:coverage"
+            ]
+          },
+          "description": "AdaraCloud UI Kit for Web",
+          "js": {
+            "packageName": "@adara-cs/ui-kit-web"
+          }
+        },
+        "targets": {
+          "build": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "build"
+            },
+            "metadata": {
+              "scriptContent": "tsc -b && vite build",
+              "runCommand": "pnpm run build"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "lint": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "lint"
+            },
+            "metadata": {
+              "scriptContent": "eslint .",
+              "runCommand": "pnpm run lint"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "storybook": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "storybook"
+            },
+            "metadata": {
+              "scriptContent": "storybook dev -p 6006",
+              "runCommand": "pnpm run storybook"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "build-storybook": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "build-storybook"
+            },
+            "metadata": {
+              "scriptContent": "storybook build",
+              "runCommand": "pnpm run build-storybook"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "test": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "test"
+            },
+            "metadata": {
+              "scriptContent": "vitest run",
+              "runCommand": "pnpm run test"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "test:watch": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "test:watch"
+            },
+            "metadata": {
+              "scriptContent": "vitest --watch",
+              "runCommand": "pnpm run test:watch"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "test:coverage": {
+            "executor": "nx:run-script",
+            "options": {
+              "script": "test:coverage"
+            },
+            "metadata": {
+              "scriptContent": "vitest --coverage",
+              "runCommand": "pnpm run test:coverage"
+            },
+            "configurations": {},
+            "parallelism": true
+          },
+          "nx-release-publish": {
+            "executor": "@nx/js:release-publish",
+            "dependsOn": [
+              "^nx-release-publish"
+            ],
+            "options": {},
+            "configurations": {},
+            "parallelism": true
+          }
+        },
+        "implicitDependencies": []
+      }
+    }
+  },
+  "externalNodes": {},
+  "dependencies": {
+    "@adara-cs/hooks": [],
+    "@adara-cs/types": [],
+    "@adara-cs/utils": [],
+    "@adara-cs/ui-kit-web": [
+      {
+        "source": "@adara-cs/ui-kit-web",
+        "target": "@adara-cs/types",
+        "type": "static"
+      },
+      {
+        "source": "@adara-cs/ui-kit-web",
+        "target": "@adara-cs/hooks",
+        "type": "static"
+      },
+      {
+        "source": "@adara-cs/ui-kit-web",
+        "target": "@adara-cs/utils",
+        "type": "static"
+      }
+    ]
+  },
+  "version": "6.0"
+}
