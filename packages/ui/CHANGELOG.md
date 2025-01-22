@@ -1,5 +1,15 @@
 # @adara-cs/ui-kit-web
 
+## 1.1.3
+
+### Patch Changes
+
+- 7ec3eaa: Change entry points for packages
+- Updated dependencies [7ec3eaa]
+  - @adara-cs/hooks@1.1.3
+  - @adara-cs/utils@1.1.3
+  - @adara-cs/types@1.1.3
+
 ## 1.1.2
 
 ### Patch Changes
