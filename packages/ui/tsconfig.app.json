@@ -1,5 +1,5 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "../../tsconfig.build.json",
   "compilerOptions": {
     "jsx": "react-jsx",
     "types": ["vite-plugin-svgr/client"],

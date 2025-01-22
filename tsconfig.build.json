@@ -17,14 +17,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
-    "paths": {
-      "@adara-cs/utils": ["./packages/utils/src/index.ts"],
-      "@adara-cs/utils/*": ["./packages/utils/src/*"],
-      "@adara-cs/hooks": ["./packages/hooks/src/index.ts"],
-      "@adara-cs/hooks/*": ["./packages/hooks/src/*"],
-      "@adara-cs/types": ["./packages/types/index.d.ts"],
-      "@adara-cs/types/*": ["./packages/types/*"]
-    }
   },
   "exclude": ["node_modules"]
 }

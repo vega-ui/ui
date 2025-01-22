@@ -1,16 +1,18 @@
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
-import svgr from 'vite-plugin-svgr';
+import svgr from 'vite-plugin-svgr'
 import react from '@vitejs/plugin-react'
 import dts from 'vite-plugin-dts'
 import preserveDirectives from 'rollup-preserve-directives'
 import fg from 'fast-glob'
+import tsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vite.dev/config/
 export default defineConfig({
   base: '/',
   plugins: [
     react(),
+    tsconfigPaths({ root: '../../' }),
     dts({
       insertTypesEntry: true,
       tsconfigPath: './tsconfig.app.json',

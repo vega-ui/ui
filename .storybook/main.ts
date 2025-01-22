@@ -1,4 +1,6 @@
 import type { StorybookConfig } from "@storybook/react-vite";
+import tsconfigPaths from 'vite-tsconfig-paths';
+import svgr from 'vite-plugin-svgr'
 
 const config: StorybookConfig = {
   stories: ["../packages/**/*.mdx", "../packages/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
@@ -10,10 +12,20 @@ const config: StorybookConfig = {
   ],
   framework: {
     name: "@storybook/react-vite",
-    options: {},
+    options: {
+    },
   },
   async viteFinal(config) {
-    config.build.sourcemap = false;
+    config.plugins = [
+      ...(config.plugins ?? []),
+      tsconfigPaths({ root: '../../' }),
+      svgr({
+        svgrOptions: {
+          ref: true,
+        }
+      })
+    ]
+    if (config.build) config.build.sourcemap = false;
     return config;
   }
 };

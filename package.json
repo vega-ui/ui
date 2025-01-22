@@ -2,6 +2,7 @@
   "name": "@adara-cs/ui-kit-web",
   "version": "0.0.0",
   "description": "AdaraCloud UI Kit for Web",
+  "private": true,
   "license": "MIT",
   "keywords": [
     "ui-kit",
@@ -34,9 +35,11 @@
     "@storybook/addon-onboarding": "^8.4.7",
     "@storybook/addon-themes": "^8.4.7",
     "@storybook/blocks": "^8.4.7",
+    "@storybook/manager-api": "^8.5.0",
     "@storybook/react": "^8.4.7",
     "@storybook/react-vite": "^8.4.7",
     "@storybook/test": "^8.4.7",
+    "@storybook/theming": "^8.5.0",
     "@types/node": "^22.10.1",
     "@typescript-eslint/eslint-plugin": "^8.21.0",
     "@typescript-eslint/parser": "^8.21.0",
@@ -48,7 +51,9 @@
     "storybook": "^8.4.7",
     "turbo": "^2.3.3",
     "typescript": "5.7.2",
-    "typescript-eslint": "^8.17.0"
+    "typescript-eslint": "^8.17.0",
+    "vite-plugin-svgr": "^4.3.0",
+    "vite-tsconfig-paths": "^5.1.4"
   },
   "config": {
     "commitizen": {
