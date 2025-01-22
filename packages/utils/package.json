@@ -16,13 +16,13 @@
   },
   "homepage": "https://github.com/adara-cs/ui-kit-web#readme",
   "type": "module",
-  "main": "./index.ts",
+  "main": "./dist/index.ts",
   "exports": {
     ".": {
       "source": "./src/index.ts",
       "import": {
-        "types": "./index.d.ts",
-        "default": "./index.js"
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
       }
     }
   },
