@@ -24,6 +24,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.PAT_GITHUB }}
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -39,6 +42,12 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Setup Git User
+        shell: bash
+        run: |
+          git config --global user.email "epicstyt@gmail.com"
+          git config --global user.name "Stepan Rabotkin"
+
       - name: Publish versions
         uses: changesets/action@v1.4.9
         with:
@@ -46,6 +55,7 @@ jobs:
           title: "chore: update versions"
           version: pnpm ci:version
           publish: pnpm ci:publish
+          setupGitUser: false
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_GITHUB }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
