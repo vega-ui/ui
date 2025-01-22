@@ -21,7 +21,7 @@
     "index.d.ts"
   ],
   "scripts": {
-    "build": "mkdir dist && copy index.d.ts dist"
+    "build": "mkdir dist && cp index.d.ts dist"
   },
   "publishConfig": {
     "access": "public"
