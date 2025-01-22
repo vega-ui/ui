@@ -1,6 +1,6 @@
 {
   "name": "@adara-cs/types",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Types for AdaraCloud UI Kit Web",
   "license": "MIT",
   "keywords": [
@@ -17,7 +17,9 @@
   "homepage": "https://github.com/adara-cs/ui-kit-web#readme",
   "type": "module",
   "types": "./index.d.ts",
-  "files": ["index.d.ts"],
+  "files": [
+    "index.d.ts"
+  ],
   "scripts": {
     "build": "mkdir dist && cp index.d.ts dist"
   },
