@@ -23,7 +23,7 @@ Connect the styles first. You can do this using a js file, however, we recommend
 
 ```css
   @import url('@/shared/styles/normalize.css') layer(reset);
-  @import url('@adara-cs/ui-kit-web/dist/index.css') layer(library);
+  @import url('@adara-cs/ui-kit-web/style') layer(library);
 
   @layer reset, library, components, overrides;
 ```

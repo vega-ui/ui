@@ -26,6 +26,12 @@
         "default": "./dist/index.js"
       }
     },
+    "./style": {
+      "source": "./src/index.css",
+      "import": {
+        "default": "./dist/index.css"
+      }
+    },
     "./components": {
       "source": "./src/components/index.ts",
       "import": {
