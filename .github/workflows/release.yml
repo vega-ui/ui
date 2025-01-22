@@ -5,6 +5,12 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+  pull-requests: write
+  pages: write
+  id-token: write
+
 env:
   CI: true
 jobs:
@@ -37,9 +43,6 @@ jobs:
 
       - name: Publish versions
         uses: changesets/action@v1.4.9
-        permissions:
-          contents: write
-          pull-requests: write
         with:
           commit: "chore: update versions"
           title: "chore: update versions"
@@ -50,21 +53,15 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_ENV: "production"
 
-      - name: Storybook
-        if: "contains(github.event.head_commit.message, 'chore: update versions')"
-        permissions:
-          pages: write
-          id-token: write
-        steps:
-          - name: Build storybook
-            run: npm run build-storybook
+      - name: Build storybook
+        run: npm run build-storybook
 
-          - name: Upload storybook
-            uses: actions/upload-pages-artifact@v3
-            with:
-              path: storybook-static/
+      - name: Upload storybook
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: storybook-static/
 
-          - name: Deploy storybook to GitHub Pages
-            uses: actions/deploy-pages@v4
-            with:
-              token: ${{ github.token }}
+      - name: Deploy storybook to GitHub Pages
+        uses: actions/deploy-pages@v4
+        with:
+          token: ${{ github.token }}
