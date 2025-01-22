@@ -20,8 +20,14 @@ jobs:
         with:
           node-version: '22'
 
+      - name: Install pnpm
+        run: npm i pnpm@latest -g
+
+      - name: Setup pnpm config
+        run: pnpm config set store-dir $PNPM_CACHE_FOLDER
+
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install
 
       - name: Run Linter
         run: npm run lint
