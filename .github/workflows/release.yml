@@ -6,8 +6,6 @@ on:
       - main
 
 permissions:
-  contents: write
-  pull-requests: write
   pages: write
   id-token: write
 
@@ -49,7 +47,7 @@ jobs:
           version: pnpm ci:version
           publish: pnpm ci:publish
         env:
-          GITHUB_TOKEN: ${{ github.token }}
+          GITHUB_TOKEN: ${{ secrets.PAT_GITHUB }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_ENV: "production"
 
