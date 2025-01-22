@@ -2,6 +2,8 @@ name: Tests and Lint
 
 on:
   push:
+    branches-ignore:
+      - main
   pull_request:
   workflow_dispatch:
   workflow_call:
@@ -15,16 +17,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-
-      - name: Install pnpm
-        run: npm i pnpm@latest -g
-
-      - name: Setup pnpm config
-        run: pnpm config set store-dir $PNPM_CACHE_FOLDER
 
       - name: Install dependencies
         run: pnpm install

@@ -5,14 +5,8 @@ on:
     branches:
       - main
 
-permissions:
-  contents: write
-  pages: write
-  id-token: write
-
 env:
   CI: true
-  PNPM_CACHE_FOLDER: .pnpm-store
 jobs:
   pre-checks:
     name: Run Tests and Linter
@@ -27,16 +21,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-
-      - name: Install pnpm
-        run: npm i pnpm@latest -g
-
-      - name: Setup pnpm config
-        run: pnpm config set store-dir $PNPM_CACHE_FOLDER
 
       - name: Install dependencies
         run: pnpm install
@@ -46,6 +37,9 @@ jobs:
 
       - name: Publish versions
         uses: changesets/action@v1.4.9
+        permissions:
+          contents: write
+          pull-requests: write
         with:
           commit: "chore: update versions"
           title: "chore: update versions"
@@ -56,15 +50,21 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_ENV: "production"
 
-      - name: Build storybook
-        run: npm run build-storybook
+      - name: Storybook
+        if: "contains(github.event.head_commit.message, 'chore: update versions')"
+        permissions:
+          pages: write
+          id-token: write
+        steps:
+          - name: Build storybook
+            run: npm run build-storybook
 
-      - name: Upload storybook
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: storybook-static/
+          - name: Upload storybook
+            uses: actions/upload-pages-artifact@v3
+            with:
+              path: storybook-static/
 
-      - name: Deploy storybook to GitHub Pages
-        uses: actions/deploy-pages@v4
-        with:
-          token: ${{ github.token }}
+          - name: Deploy storybook to GitHub Pages
+            uses: actions/deploy-pages@v4
+            with:
+              token: ${{ github.token }}
