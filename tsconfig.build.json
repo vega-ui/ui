@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "skipLibCheck": true,
+
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
+    "paths": {
+      "@adara-cs/utils": ["./packages/utils/src/index.ts"],
+      "@adara-cs/utils/*": ["./packages/utils/src/*"],
+      "@adara-cs/hooks": ["./packages/hooks/src/index.ts"],
+      "@adara-cs/hooks/*": ["./packages/hooks/src/*"],
+      "@adara-cs/types": ["./packages/types/index.d.ts"],
+      "@adara-cs/types/*": ["./packages/types/*"]
+    }
+  },
+  "exclude": ["node_modules"]
+}
