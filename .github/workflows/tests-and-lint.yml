@@ -30,7 +30,7 @@ jobs:
         run: pnpm install
 
       - name: Run Linter
-        run: npm run lint
+        run: pnpm run lint
 
       - name: Run Tests
-        run: turbo run test
+        run: pnpm test
