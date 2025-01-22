@@ -1,11 +1,10 @@
 import { defineConfig } from 'vite'
-import { resolve } from 'path'
 import svgr from 'vite-plugin-svgr'
 import react from '@vitejs/plugin-react'
 import dts from 'vite-plugin-dts'
 import preserveDirectives from 'rollup-preserve-directives'
-import fg from 'fast-glob'
 import tsconfigPaths from 'vite-tsconfig-paths';
+import { resolve } from 'node:path';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -16,7 +15,7 @@ export default defineConfig({
     dts({
       insertTypesEntry: true,
       tsconfigPath: './tsconfig.app.json',
-      exclude: ['**/*/**.stories.(tsx|ts)', '**/*/__tests__/']
+      exclude: ['**/*/**.stories.(tsx|ts)', '**/*/__tests__/'],
     }),
     svgr({
       svgrOptions: {
@@ -28,7 +27,7 @@ export default defineConfig({
     sourcemap: true,
     lib: {
       formats: ['es'],
-      entry: [resolve(__dirname, './src/index.ts'), ...fg.globSync('./src/**/*/index.ts')],
+      entry: resolve(__dirname, 'src/index.ts'),
       fileName: (_, entryName) => {
         const path = `${entryName}.js`
         return path.startsWith('src') ? path.replace('src/', '') : path;
