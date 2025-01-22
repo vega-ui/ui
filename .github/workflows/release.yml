@@ -9,6 +9,9 @@ permissions:
   pages: write
   id-token: write
 
+env:
+  CI: true
+  PNPM_CACHE_FOLDER: .pnpm-store
 jobs:
   pre-checks:
     name: Run Tests and Linter
@@ -28,22 +31,29 @@ jobs:
         with:
           node-version: '22'
 
+      - name: Install pnpm
+        run: npm i pnpm@latest -g
+
+      - name: Setup pnpm config
+        run: pnpm config set store-dir $PNPM_CACHE_FOLDER
+
       - name: Install dependencies
-        run: npm ci
+        run: pnpm install
 
-      - name: Authenticate with NPM
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
+      - name: Build
+        run: pnpm build
 
-      - name: Build NPM package
-        run: npm run build
-
-      - name: Publish NPM package
-        shell: bash
-        run: |
-          cd dist
-          npm version ${{ github.ref_name }} --no-git-tag-version
-          npm publish --access public
-          cd ../
+      - name: Publish versions
+        uses: changesets/action@v1.4.9
+        with:
+          commit: "chore: update versions"
+          title: "chore: update versions"
+          version: pnpm ci:version
+          publish: pnpm ci:publish
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_ENV: "production"
 
       - name: Build storybook
         run: npm run build-storybook

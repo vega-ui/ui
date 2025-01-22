@@ -16,13 +16,13 @@
   },
   "homepage": "https://github.com/adara-cs/ui-kit-web#readme",
   "type": "module",
-  "main": "./src/index.ts",
+  "main": "./index.ts",
   "exports": {
     ".": {
       "source": "./src/index.ts",
       "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
+        "types": "./index.d.ts",
+        "default": "./index.js"
       }
     }
   },
@@ -30,18 +30,17 @@
     "dist/*"
   ],
   "scripts": {
+    "dev": "vite build --watch",
     "build": "vite build",
     "check-types": "tsc --noEmit",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:watch": "vitest --watch"
   },
   "devDependencies": {
     "@types/react": "^18.3.12",
     "vite": "^6.0.1",
     "vite-plugin-dts": "^4.3.0",
     "vite-plugin-svgr": "^4.3.0",
-    "fast-glob": "^3.3.3",
-    "globals": "^15.12.0",
-    "jsdom": "^25.0.1",
     "vitest": "^2.1.8"
   },
   "publishConfig": {

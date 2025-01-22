@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest'
-import { csx } from '../csx.ts';
+import { csx } from '../csx';
 
 describe('csx', () => {
   test('undefined and non-undefined class name', () => {

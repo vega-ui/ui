@@ -16,14 +16,15 @@
   },
   "homepage": "https://github.com/adara-cs/ui-kit-web#readme",
   "scripts": {
+    "dev": "turbo run dev",
     "build": "turbo run build",
     "test": "turbo run test",
-    "lint": "eslint .",
-    "ci:publish": "turbo run build test && changeset version && changeset publish",
+    "lint": "eslint packages --ext .ts,.tsx --config .eslintrc.json --cache",
+    "ci:version": "changeset version",
+    "ci:publish": "changeset publish",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test:watch": "vitest --watch",
-    "test:coverage": "vitest --coverage"
+    "test:watch": "vitest --watch"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.11",
@@ -36,8 +37,9 @@
     "@storybook/react": "^8.4.7",
     "@storybook/react-vite": "^8.4.7",
     "@storybook/test": "^8.4.7",
-    "@testing-library/react": "^16.1.0",
     "@types/node": "^22.10.1",
+    "@typescript-eslint/eslint-plugin": "^8.21.0",
+    "@typescript-eslint/parser": "^8.21.0",
     "eslint": "^8",
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.14",

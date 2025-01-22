@@ -2,16 +2,19 @@
   "$schema": "https://turbo.build/schema.json",
   "tasks": {
     "build": {
-      "outputs": ["dist/**"],
-      "outputLogs": "none"
+      "outputs": ["dist/**"]
     },
     "test": {
-      "cache": false,
-      "outputLogs": "none"
+      "cache": false
+    },
+    "dev": {
+      "cache": false
+    },
+    "lint": {
+      "cache": false
     },
     "check-types": {
-      "dependsOn": ["^check-types"],
-      "outputLogs": "none"
+      "dependsOn": ["^check-types"]
     }
   }
 }
