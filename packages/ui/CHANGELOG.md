@@ -1,5 +1,14 @@
 # @adara-cs/ui-kit-web
 
+## 1.1.4
+
+### Patch Changes
+
+- ac67ebc: Fixed entry point for css
+  - @adara-cs/hooks@1.1.4
+  - @adara-cs/types@1.1.4
+  - @adara-cs/utils@1.1.4
+
 ## 1.1.3
 
 ### Patch Changes
