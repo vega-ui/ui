@@ -17,9 +17,7 @@
   "homepage": "https://github.com/adara-cs/ui-kit-web#readme",
   "type": "module",
   "types": "./index.d.ts",
-  "files": [
-    "index.d.ts"
-  ],
+  "files": ["index.d.ts"],
   "scripts": {
     "build": "mkdir dist && cp index.d.ts dist"
   },
