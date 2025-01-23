@@ -1,5 +1,14 @@
 # @adara-cs/ui-kit-web
 
+## 1.1.6
+
+### Patch Changes
+
+- 7d3c6aa: Changed index.js entry and added use client
+  - @adara-cs/hooks@1.1.6
+  - @adara-cs/types@1.1.6
+  - @adara-cs/utils@1.1.6
+
 ## 1.1.5
 
 ### Patch Changes
