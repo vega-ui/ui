@@ -1,5 +1,14 @@
 # @adara-cs/ui-kit-web
 
+## 1.1.8
+
+### Patch Changes
+
+- f98ee98: Added use client for context hooks
+  - @adara-cs/hooks@1.1.8
+  - @adara-cs/types@1.1.8
+  - @adara-cs/utils@1.1.8
+
 ## 1.1.7
 
 ### Patch Changes
