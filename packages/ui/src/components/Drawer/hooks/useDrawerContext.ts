@@ -1,3 +1,5 @@
+'use client';
+
 import { useContext } from 'react';
 import { DrawerContext, DrawerContextState } from '../providers';
 
