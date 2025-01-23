@@ -1,3 +1,4 @@
+'use client';
 import { ElementType, forwardRef, ReactNode } from 'react';
 
 import style from './style.module.css'

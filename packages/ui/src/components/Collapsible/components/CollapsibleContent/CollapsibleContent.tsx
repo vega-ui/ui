@@ -1,3 +1,4 @@
+'use client';
 import { DetailedHTMLProps, forwardRef, HTMLAttributes, PropsWithChildren, useContext } from 'react';
 import style from './style.module.css';
 import { csx, mergeRefs } from '@adara-cs/utils';

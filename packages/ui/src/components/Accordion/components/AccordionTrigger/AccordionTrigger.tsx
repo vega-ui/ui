@@ -1,3 +1,4 @@
+'use client';
 import { forwardRef, PropsWithChildren, ReactElement } from 'react';
 import { sizeMapper } from './utils';
 import { Icon } from '../../../Icon';

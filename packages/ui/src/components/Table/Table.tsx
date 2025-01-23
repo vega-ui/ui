@@ -1,3 +1,4 @@
+'use client';
 import { forwardRef, PropsWithChildren, TableHTMLAttributes } from 'react';
 import style from './style.module.css'
 import { Text } from '../Text';

@@ -1,3 +1,4 @@
+'use client';
 import { forwardRef, PropsWithChildren } from 'react';
 import { Card, CardProps } from '../Card';
 import { Checkbox, CheckboxProps } from '../Checkbox';

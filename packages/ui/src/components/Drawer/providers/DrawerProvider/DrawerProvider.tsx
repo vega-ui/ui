@@ -1,3 +1,4 @@
+'use client';
 import { FC, PropsWithChildren, useMemo } from 'react';
 import { DrawerContext } from './context.ts';
 

@@ -1,3 +1,4 @@
+'use client';
 import { FC, PropsWithChildren } from 'react';
 import { FloatingOverlay } from '@floating-ui/react';
 import { csx } from '@adara-cs/utils';

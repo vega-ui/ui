@@ -1,3 +1,4 @@
+'use client';
 import { FC, PropsWithChildren } from 'react';
 import { Heading } from '../../../Heading';
 import { Text } from '../../../Text';

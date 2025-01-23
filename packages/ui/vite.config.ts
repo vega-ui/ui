@@ -5,6 +5,7 @@ import dts from 'vite-plugin-dts'
 import preserveDirectives from 'rollup-preserve-directives'
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { resolve } from 'node:path';
+import { globSync } from 'node:fs';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -27,7 +28,7 @@ export default defineConfig({
     sourcemap: true,
     lib: {
       formats: ['es'],
-      entry: resolve(__dirname, 'src/index.ts'),
+      entry: [resolve(__dirname, 'src/index.ts'), ...globSync('src/**/*/index.ts')],
       fileName: (_, entryName) => {
         const path = `${entryName}.js`
         return path.startsWith('src') ? path.replace('src/', '') : path;

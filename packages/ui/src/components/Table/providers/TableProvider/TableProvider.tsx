@@ -1,3 +1,4 @@
+'use client';
 import { FC, PropsWithChildren, useMemo } from 'react';
 import { TableContextData } from './defaultContext.ts';
 import { TableContext } from './context.ts';

@@ -1,3 +1,4 @@
+'use client';
 import { FC, PropsWithChildren, Ref, TransitionEventHandler, useMemo } from 'react';
 import { CollapsibleContext } from './context.ts';
 

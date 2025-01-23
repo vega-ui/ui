@@ -1,3 +1,4 @@
+'use client';
 import { FC, HTMLAttributes, PropsWithChildren } from 'react';
 import { csx } from '@adara-cs/utils';
 import style from './style.module.css'

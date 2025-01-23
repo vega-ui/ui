@@ -1,3 +1,4 @@
+'use client';
 import { FC, ReactNode, useCallback, useRef } from 'react';
 import { AccordionTrigger } from '../AccordionTrigger';
 import { AccordionContent } from '../AccordionContent';

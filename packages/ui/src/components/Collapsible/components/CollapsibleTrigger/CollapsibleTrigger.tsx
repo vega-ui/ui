@@ -1,3 +1,4 @@
+'use client';
 import { ElementType, forwardRef, ReactNode, useContext } from 'react';
 import { csx } from '@adara-cs/utils';
 import style from './style.module.css';
