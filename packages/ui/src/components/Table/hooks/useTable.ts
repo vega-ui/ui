@@ -1,3 +1,5 @@
+'use client';
+
 import { useContext } from 'react';
 import { TableContext } from '../providers/TableProvider/context.ts';
 
