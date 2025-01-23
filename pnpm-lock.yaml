@@ -163,9 +163,6 @@ importers:
       '@vitejs/plugin-react':
         specifier: ^4.3.4
         version: 4.3.4(vite@6.0.11(@types/node@22.10.7))
-      fast-glob:
-        specifier: ^3.3.3
-        version: 3.3.3
       globals:
         specifier: ^15.12.0
         version: 15.14.0
