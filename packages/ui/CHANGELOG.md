@@ -1,5 +1,14 @@
 # @adara-cs/ui-kit-web
 
+## 1.1.5
+
+### Patch Changes
+
+- 3ec1a16: Changed build for ui kit web
+  - @adara-cs/hooks@1.1.5
+  - @adara-cs/types@1.1.5
+  - @adara-cs/utils@1.1.5
+
 ## 1.1.4
 
 ### Patch Changes
