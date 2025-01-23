@@ -1,5 +1,14 @@
 # @adara-cs/ui-kit-web
 
+## 1.1.7
+
+### Patch Changes
+
+- 15a2bbb: Fixed use client
+  - @adara-cs/hooks@1.1.7
+  - @adara-cs/types@1.1.7
+  - @adara-cs/utils@1.1.7
+
 ## 1.1.6
 
 ### Patch Changes
