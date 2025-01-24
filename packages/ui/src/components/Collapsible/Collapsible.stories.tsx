@@ -27,7 +27,12 @@ export const Default: Story = {
           Открыть скрытую область
         </CollapsibleTrigger>
         <CollapsibleContent>
-          <Text>Hello</Text>
+          <ul>
+            <li>Hello</li>
+            <li>Hello</li>
+            <li>Hello</li>
+            <li>Hello</li>
+          </ul>
         </CollapsibleContent>
       </Collapsible>
     )

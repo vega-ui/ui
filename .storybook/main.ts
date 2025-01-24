@@ -18,7 +18,7 @@ const config: StorybookConfig = {
   async viteFinal(config) {
     config.plugins = [
       ...(config.plugins ?? []),
-      tsconfigPaths({ root: '../../' }),
+      tsconfigPaths({ root: '../' }),
       svgr({
         svgrOptions: {
           ref: true,
