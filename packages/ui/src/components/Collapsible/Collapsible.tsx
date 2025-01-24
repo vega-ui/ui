@@ -34,7 +34,13 @@ export const Collapsible: FC<CollapsibleProps> = ({ open: controlledOpen, onChan
   const wrapperRef = useRef<HTMLDivElement>(null)
 
   useLayoutEffect(() => {
-    if (contentRef.current) contentRef.current.style.setProperty('--content-height', wrapperRef.current?.offsetHeight + 'px')
+    const wrapperNode = wrapperRef.current
+    const contentNode = contentRef.current
+
+    if (contentNode && wrapperNode) {
+      const rect = wrapperNode.getBoundingClientRect()
+      contentNode.style.setProperty('--content-height', rect.height + 'px')
+    }
   }, []);
 
   const onOpenContent = useCallback(() => {
