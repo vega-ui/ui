@@ -1,5 +1,14 @@
 # @adara-cs/ui-kit-web
 
+## 1.1.9
+
+### Patch Changes
+
+- 1971e9d: Fixed bug, when Collapsible component calculate incorrect height
+  - @adara-cs/hooks@1.1.9
+  - @adara-cs/types@1.1.9
+  - @adara-cs/utils@1.1.9
+
 ## 1.1.8
 
 ### Patch Changes
