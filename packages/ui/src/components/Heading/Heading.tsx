@@ -1,4 +1,4 @@
-import { ElementType, forwardRef, HTMLAttributes, ReactElement, ReactNode, Ref } from 'react';
+import { ElementType, forwardRef, HTMLAttributes, ReactNode, Ref } from 'react';
 
 import style from './style.module.css'
 import { csx } from '@adara-cs/utils';
@@ -9,7 +9,7 @@ type HeadingAs = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 export interface HeadingProps<T extends HeadingAs = 'h1'> extends HTMLAttributes<HTMLHeadingElement> {
   as: T
   className?: string
-  children?: string | string[] | ReactElement
+  children?: ReactNode | ReactNode[]
   size?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11
   fontWeight?: 400 | 500 | 700 | 900
 }
