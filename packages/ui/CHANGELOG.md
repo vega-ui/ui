@@ -1,5 +1,14 @@
 # @adara-cs/ui-kit-web
 
+## 2.0.1
+
+### Patch Changes
+
+- 6a860bb: Added use client to useCollapsibleContext
+  - @adara-cs/hooks@2.0.1
+  - @adara-cs/types@2.0.1
+  - @adara-cs/utils@2.0.1
+
 ## 2.0.0
 
 ### Major Changes
