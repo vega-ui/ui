@@ -1,5 +1,5 @@
 .drawerContent {
     pointer-events: auto;
-    overflow: auto;
+    overflow: hidden auto;
     flex: 1;
 }
