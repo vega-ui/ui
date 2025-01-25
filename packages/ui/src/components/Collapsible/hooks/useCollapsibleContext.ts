@@ -1,3 +1,5 @@
+'use client';
+
 import { useContext } from 'react';
 import { CollapsibleContext } from '../providers/CollapsibleProvider/context.ts';
 
