@@ -1,5 +1,14 @@
 # @adara-cs/ui-kit-web
 
+## 2.0.2
+
+### Patch Changes
+
+- fde761d: Changes overflow of drawer content component
+  - @adara-cs/hooks@2.0.2
+  - @adara-cs/types@2.0.2
+  - @adara-cs/utils@2.0.2
+
 ## 2.0.1
 
 ### Patch Changes
