@@ -1,5 +1,14 @@
 # @adara-cs/ui-kit-web
 
+## 2.0.3
+
+### Patch Changes
+
+- 7042b0e: Changed children type of Heading and added icon
+  - @adara-cs/hooks@2.0.3
+  - @adara-cs/types@2.0.3
+  - @adara-cs/utils@2.0.3
+
 ## 2.0.2
 
 ### Patch Changes
