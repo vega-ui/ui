@@ -27,6 +27,7 @@ import Check from '../../../../assets/icons/check.svg?react'
 import CheckO from '../../../../assets/icons/check-o.svg?react'
 import Danger from '../../../../assets/icons/danger.svg?react'
 import Copy from '../../../../assets/icons/copy.svg?react'
+import Anchor from '../../../../assets/icons/anchor.svg?react'
 
 const icons = {
   support: SupportIcon,
@@ -57,7 +58,8 @@ const icons = {
   check: Check,
   checkCircle: CheckO,
   danger: Danger,
-  copy: Copy
+  copy: Copy,
+  anchor: Anchor
 } as const
 
 export type IconName = keyof typeof icons
