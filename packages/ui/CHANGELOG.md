@@ -1,5 +1,17 @@
 # @adara-cs/ui-kit-web
 
+## 2.0.0
+
+### Major Changes
+
+- 69b05fa: Added copy icon
+
+### Patch Changes
+
+- @adara-cs/hooks@2.0.0
+- @adara-cs/types@2.0.0
+- @adara-cs/utils@2.0.0
+
 ## 1.1.9
 
 ### Patch Changes
