@@ -6,7 +6,7 @@ import { Text } from '../Text';
 const sizes = ['small', 'medium', 'large'] as const
 
 const meta = {
-  title: 'UI/Card',
+  title: 'UI-Core/Card',
   component: Card,
   parameters: {
     layout: 'centered',

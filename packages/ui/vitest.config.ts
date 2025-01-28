@@ -9,7 +9,7 @@ export default defineConfig({
     environment: 'jsdom',
   },
   plugins: [
-    tsconfigPaths({root: '../../'}) as unknown as Plugin,
+    tsconfigPaths({root: '../../', configNames: ['tsconfig.base.json'] }) as unknown as Plugin,
     svgr() as unknown  as Plugin,
     react() as unknown  as Plugin
   ]

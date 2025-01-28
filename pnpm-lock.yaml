@@ -87,6 +87,58 @@ importers:
         specifier: ^5.1.4
         version: 5.1.4(typescript@5.7.2)(vite@6.0.11(@types/node@22.10.7))
 
+  packages/flags-icon:
+    dependencies:
+      '@adara-cs/utils':
+        specifier: workspace:*
+        version: link:../utils
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+    devDependencies:
+      '@testing-library/react':
+        specifier: ^16.1.0
+        version: 16.2.0(@testing-library/dom@10.4.0)(@types/react-dom@18.3.5(@types/react@18.3.18))(@types/react@18.3.18)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@types/react':
+        specifier: ^18.3.12
+        version: 18.3.18
+      '@types/react-dom':
+        specifier: ^18.3.1
+        version: 18.3.5(@types/react@18.3.18)
+      '@vitejs/plugin-react':
+        specifier: ^4.3.4
+        version: 4.3.4(vite@6.0.11(@types/node@22.10.7))
+      globals:
+        specifier: ^15.12.0
+        version: 15.14.0
+      jsdom:
+        specifier: ^25.0.1
+        version: 25.0.1
+      rollup-preserve-directives:
+        specifier: ^1.1.3
+        version: 1.1.3(rollup@4.31.0)
+      vite:
+        specifier: ^6.0.1
+        version: 6.0.11(@types/node@22.10.7)
+      vite-plugin-dts:
+        specifier: ^4.3.0
+        version: 4.5.0(@types/node@22.10.7)(rollup@4.31.0)(typescript@5.7.2)(vite@6.0.11(@types/node@22.10.7))
+      vite-plugin-lib-inject-css:
+        specifier: ^2.1.1
+        version: 2.2.1(vite@6.0.11(@types/node@22.10.7))
+      vite-plugin-svgr:
+        specifier: ^4.3.0
+        version: 4.3.0(rollup@4.31.0)(typescript@5.7.2)(vite@6.0.11(@types/node@22.10.7))
+      vite-tsconfig-paths:
+        specifier: ^5.1.4
+        version: 5.1.4(typescript@5.7.2)(vite@6.0.11(@types/node@22.10.7))
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.8(@types/node@22.10.7)(jsdom@25.0.1)
+
   packages/hooks:
     dependencies:
       react:
@@ -129,6 +181,9 @@ importers:
 
   packages/ui:
     dependencies:
+      '@adara-cs/flags-icon':
+        specifier: workspace:*
+        version: link:../flags-icon
       '@adara-cs/hooks':
         specifier: workspace:*
         version: link:../hooks
@@ -141,6 +196,18 @@ importers:
       '@floating-ui/react':
         specifier: ^0.27.2
         version: 0.27.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@maskito/core':
+        specifier: ^3.2.1
+        version: 3.2.1
+      '@maskito/phone':
+        specifier: ^3.2.1
+        version: 3.2.1(@maskito/core@3.2.1)(@maskito/kit@3.2.1(@maskito/core@3.2.1))(libphonenumber-js@1.11.18)
+      '@maskito/react':
+        specifier: ^3.2.1
+        version: 3.2.1(@maskito/core@3.2.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      libphonenumber-js:
+        specifier: ^1.11.18
+        version: 1.11.18
       react:
         specifier: ^18.3.1
         version: 18.3.1
@@ -821,6 +888,28 @@ packages:
 
   '@manypkg/get-packages@1.1.3':
     resolution: {integrity: sha512-fo+QhuU3qE/2TQMQmbVMqaQ6EWbMhi4ABWP+O4AM1NqPBuy0OrApV5LO6BrrgnhtAHS2NH6RrVk9OL181tTi8A==}
+
+  '@maskito/core@3.2.1':
+    resolution: {integrity: sha512-gpoJbFFsq2CFz9smqEvZfTPVMt/gkRoiL14idL1sLXEDbWZyeKce0SgusHzHXaOkEegly4BIJGazCNG2hsPNYg==}
+
+  '@maskito/kit@3.2.1':
+    resolution: {integrity: sha512-p9Tmr4BMZs7geNWMYMQaP4Dc+Sre8OeE6Vynz1RGsJJdjxmocY2mihXKldecS8c9aXfHvLU658F9YtorL3Akjg==}
+    peerDependencies:
+      '@maskito/core': ^3.2.1
+
+  '@maskito/phone@3.2.1':
+    resolution: {integrity: sha512-F1hrnpP1UyMhVO0nZAMoA0kkS8rVTc4kVUZ8mcxz98weIAKYo3wiuLOMXb1cg7/ejcpEnqDTRe1rzBxwtRAKeQ==}
+    peerDependencies:
+      '@maskito/core': ^3.2.1
+      '@maskito/kit': ^3.2.1
+      libphonenumber-js: '>=1.0.0'
+
+  '@maskito/react@3.2.1':
+    resolution: {integrity: sha512-qTBDYARpGGxXPU2pLBwSkzw7nLox/5z+sMCTUD7/HgYuAR9TJrmZP2MCyQQgqxTeOLNn5NOTgJWfaqIsSOuTvw==}
+    peerDependencies:
+      '@maskito/core': ^3.2.1
+      react: '>=16.8'
+      react-dom: '>=16.8'
 
   '@mdx-js/react@3.1.0':
     resolution: {integrity: sha512-QjHtSaoameoalGnKDT3FoIl4+9RwyTmo9ZJGBdLOks/YOiWHoRDI3PUwEzOE7kEmGcV3AFcp9K6dYu9rEuKLAQ==}
@@ -2172,6 +2261,9 @@ packages:
   levn@0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
     engines: {node: '>= 0.8.0'}
+
+  libphonenumber-js@1.11.18:
+    resolution: {integrity: sha512-okMm/MCoFrm1vByeVFLBdkFIXLSHy/AIK2AEGgY3eoicfWZeOZqv3GfhtQgICkzs/tqorAMm3a4GBg5qNCrqzg==}
 
   lines-and-columns@1.2.4:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
@@ -3658,6 +3750,24 @@ snapshots:
       fs-extra: 8.1.0
       globby: 11.1.0
       read-yaml-file: 1.1.0
+
+  '@maskito/core@3.2.1': {}
+
+  '@maskito/kit@3.2.1(@maskito/core@3.2.1)':
+    dependencies:
+      '@maskito/core': 3.2.1
+
+  '@maskito/phone@3.2.1(@maskito/core@3.2.1)(@maskito/kit@3.2.1(@maskito/core@3.2.1))(libphonenumber-js@1.11.18)':
+    dependencies:
+      '@maskito/core': 3.2.1
+      '@maskito/kit': 3.2.1(@maskito/core@3.2.1)
+      libphonenumber-js: 1.11.18
+
+  '@maskito/react@3.2.1(@maskito/core@3.2.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
+    dependencies:
+      '@maskito/core': 3.2.1
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
 
   '@mdx-js/react@3.1.0(@types/react@18.3.18)(react@18.3.1)':
     dependencies:
@@ -5177,6 +5287,8 @@ snapshots:
     dependencies:
       prelude-ls: 1.2.1
       type-check: 0.4.0
+
+  libphonenumber-js@1.11.18: {}
 
   lines-and-columns@1.2.4: {}
 

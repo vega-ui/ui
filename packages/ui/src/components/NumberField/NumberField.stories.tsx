@@ -6,7 +6,7 @@ import { Text } from '../Text';
 import { Label } from '../Label';
 
 const meta = {
-  title: 'UI/NumberField',
+  title: 'UI-Core/NumberField',
   component: NumberField,
   parameters: {
     layout: 'centered',

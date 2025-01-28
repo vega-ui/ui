@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Option } from './Option.tsx';
 
 const meta = {
-  title: 'UI/Option',
+  title: 'UI-Core/Option',
   component: Option,
   parameters: {
     layout: 'centered',

@@ -5,7 +5,7 @@ import { Option } from '../Option';
 import { Label } from '../Label';
 
 const meta = {
-  title: 'UI/Select',
+  title: 'UI-Core/Select',
   component: Select,
   parameters: {
     layout: 'centered',

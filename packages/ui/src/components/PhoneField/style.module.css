@@ -1,0 +1,49 @@
+.inputWrapper {}
+
+.inputWrapper[data-size] .startSlot {
+    padding-left: 0;
+}
+
+.inputWrapper[data-size='small'] .countrySelect {
+    padding-inline: var(--spacing-4);
+}
+
+.inputWrapper[data-size='medium'] .countrySelect {
+    padding-inline: var(--spacing-6);
+}
+
+
+.inputWrapper[data-size='large'] .countrySelect {
+    padding-inline: var(--spacing-8);
+}
+
+.inputWrapper[data-size] .countrySelect {
+    min-width: auto;
+    aspect-ratio: 1 / 1;
+    height: 100%;
+    background-color: var(--neutral-25);
+    border: none;
+    gap: var(--spacing-6);
+}
+
+.inputWrapper[data-size='small'] .countrySelect,
+.inputWrapper[data-size='medium'] .countrySelect {
+    border-radius: var(--radius-3);
+}
+
+.inputWrapper[data-size='large'] .countrySelect {
+    border-radius: var(--radius-4);
+}
+
+.countryList {
+    scrollbar-width: thin;
+    scrollbar-color: var(--neutral-300) var(--neutral-50);
+}
+
+.icon {
+    flex-shrink: 0;
+}
+
+.option {
+    gap: var(--spacing-8);
+}

@@ -4,7 +4,7 @@ import { Icon } from './Icon.tsx';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof Icon> = {
-  title: 'UI/Icon',
+  title: 'UI-Core/Icon',
   component: Icon,
   parameters: {
     layout: 'centered',

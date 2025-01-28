@@ -7,6 +7,7 @@ import { IconButton } from '../IconButton';
 import style from './style.module.css'
 import { csx, mergeRefs } from '@adara-cs/utils';
 import { sizeMapper } from './utils';
+import { useMaskito } from '@maskito/react';
 
 export interface NumberFieldProps extends TextFieldProps {
   step?: number
@@ -23,20 +24,26 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(({
   step,
   ...props
 }, ref) => {
-  const inputRef = useRef<HTMLInputElement>(null)
+  const innerInputRef = useRef<HTMLInputElement>(null)
+
+  const inputRef = useMaskito({
+    options: {
+      mask: /^\d+$/,
+    }
+  })
 
   const onStepUp = () => {
-    inputRef.current?.stepUp(step)
+    innerInputRef.current?.stepUp(step)
   }
 
   const onStepDown = () => {
-    inputRef.current?.stepDown(step)
+    innerInputRef.current?.stepDown(step)
   }
 
   return (
     <div className={style.wrapper}>
       <TextField
-        ref={mergeRefs([inputRef, ref])}
+        ref={mergeRefs([inputRef, ref, innerInputRef])}
         size={size}
         type='number'
         min={min}

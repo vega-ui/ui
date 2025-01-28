@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { IconButton } from './IconButton.tsx';
 
 const meta = {
-  title: 'UI/IconButton',
+  title: 'UI-Core/IconButton',
   component: IconButton,
   parameters: {
     layout: 'centered',

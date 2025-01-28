@@ -5,7 +5,7 @@ import { Icon } from '../Icon';
 import { IconButton } from '../IconButton';
 
 const meta = {
-  title: 'UI/TextField',
+  title: 'UI-Core/TextField',
   component: TextField,
   parameters: {
     layout: 'centered',

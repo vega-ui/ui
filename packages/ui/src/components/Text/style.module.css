@@ -2,7 +2,7 @@
     font-family: var(--default-font-family);
     color: var(--neutral-1000);
     margin: 0;
-    white-space: pre-line
+    white-space: pre-line;
 }
 
 .text[data-fontweight='400'] {

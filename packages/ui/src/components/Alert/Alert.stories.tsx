@@ -7,7 +7,7 @@ import { Code } from '../Code';
 const variants: AlertProps['variant'][] = ['info', 'error', 'success', 'warning']
 
 const meta = {
-  title: 'UI/Alert',
+  title: 'UI-Core/Alert',
   component: Alert,
   parameters: {
     layout: 'padded',
