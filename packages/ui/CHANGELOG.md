@@ -1,5 +1,15 @@
 # @adara-cs/ui-kit-web
 
+## 2.2.1
+
+### Patch Changes
+
+- 7b1dd02: Fixed build of package
+  - @adara-cs/hooks@2.2.1
+  - @adara-cs/icons@2.2.1
+  - @adara-cs/types@2.2.1
+  - @adara-cs/utils@2.2.1
+
 ## 2.2.0
 
 ### Minor Changes
