@@ -1,5 +1,15 @@
 # @adara-cs/ui-kit-web
 
+## 2.2.4
+
+### Patch Changes
+
+- d1bfb6e: changed default select listbow width value
+  - @adara-cs/hooks@2.2.4
+  - @adara-cs/icons@2.2.4
+  - @adara-cs/types@2.2.4
+  - @adara-cs/utils@2.2.4
+
 ## 2.2.3
 
 ### Patch Changes
