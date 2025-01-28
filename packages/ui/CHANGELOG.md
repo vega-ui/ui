@@ -1,5 +1,15 @@
 # @adara-cs/ui-kit-web
 
+## 2.2.3
+
+### Patch Changes
+
+- dec3081: Changed select listbox max width
+  - @adara-cs/hooks@2.2.3
+  - @adara-cs/icons@2.2.3
+  - @adara-cs/types@2.2.3
+  - @adara-cs/utils@2.2.3
+
 ## 2.2.2
 
 ### Patch Changes
