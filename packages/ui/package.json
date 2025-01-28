@@ -62,7 +62,6 @@
     "react-dom": "^18.3.1"
   },
   "dependencies": {
-    "@adara-cs/flags-icon": "workspace:*",
     "@adara-cs/hooks": "workspace:*",
     "@adara-cs/types": "workspace:*",
     "@adara-cs/utils": "workspace:*",
