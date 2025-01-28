@@ -164,7 +164,7 @@
     width: max-content;
     overflow: auto;
     max-height: 250px;
-    max-width: 350px;
+    max-width: 100%;
     z-index: var(--z-index-popover);
 }
 
