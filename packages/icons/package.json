@@ -1,0 +1,53 @@
+{
+  "name": "@adara-cs/icons",
+  "version": "2.1.0",
+  "description": "Icons for AdaraCloud UI Kit for Web",
+  "license": "MIT",
+  "keywords": [
+    "ui-kit",
+    "ui",
+    "ts",
+    "typescript",
+    "js"
+  ],
+  "author": "adara-cs",
+  "bugs": {
+    "url": "https://github.com/adara-cs/ui-kit-web/issues"
+  },
+  "homepage": "https://github.com/adara-cs/ui-kit-web#readme",
+  "type": "module",
+  "main": "./dist/index.ts",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist/*"
+  ],
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build",
+    "check-types": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "dependencies": {
+    "react": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "vite": "^6.0.1",
+    "vite-plugin-dts": "^4.3.0",
+    "vite-plugin-svgr": "^4.3.0",
+    "@vitejs/plugin-react": "^4.3.4"
+  },
+  "config": {
+    "commitizen": {
+      "path": "git-cz"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "packageManager": "pnpm@10.0.0"
+}

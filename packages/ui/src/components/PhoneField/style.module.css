@@ -19,9 +19,8 @@
 
 .inputWrapper[data-size] .countrySelect {
     min-width: auto;
-    aspect-ratio: 1 / 1;
     height: 100%;
-    background-color: var(--neutral-25);
+    background-color: var(--neutral-50);
     border: none;
     gap: var(--spacing-6);
 }
@@ -33,6 +32,11 @@
 
 .inputWrapper[data-size='large'] .countrySelect {
     border-radius: var(--radius-4);
+}
+
+.selectWrapper {
+    height: 100%;
+    position: initial !important;
 }
 
 .countryList {

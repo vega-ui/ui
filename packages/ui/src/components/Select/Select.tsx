@@ -19,6 +19,7 @@ import { Option, OptionProps } from '../Option';
 export interface SelectProps extends Omit<HTMLAttributes<HTMLButtonElement>, 'onSelect'> {
   listboxClassName?: string
   comboboxClassName?: string
+  wrapperClassName?: string
   valueClassName?: string
   placeholderClassName?: string
   className?: string
@@ -32,6 +33,7 @@ export interface SelectProps extends Omit<HTMLAttributes<HTMLButtonElement>, 'on
   iconSize?: IconProps['size']
   variant?: 'inline' | 'field'
   size?: 'small' | 'medium' | 'large'
+  fullWidthListbox?: boolean
   value?: string | number | undefined
   onSelect?(value: string | number | undefined):void
 }
@@ -39,6 +41,7 @@ export interface SelectProps extends Omit<HTMLAttributes<HTMLButtonElement>, 'on
 export const Select: FC<SelectProps> = ({
   listboxClassName,
   comboboxClassName,
+  wrapperClassName,
   valueClassName,
   placeholderClassName,
   className,
@@ -53,6 +56,7 @@ export const Select: FC<SelectProps> = ({
   variant = 'field',
   size: fieldSize = 'medium',
   onSelect: handleSelect,
+  fullWidthListbox = false,
   value,
   ...props
 }) => {
@@ -146,7 +150,7 @@ export const Select: FC<SelectProps> = ({
   });
 
   return (
-    <>
+    <div className={csx(styles.wrapper, wrapperClassName)}>
       <button {...props} type='button' data-size={fieldSize} data-variant={variant} data-state={open ? 'open' : 'close'}
               aria-disabled={disabled} tabIndex={0} ref={refs.setReference}
               className={csx(styles.selectCombobox, comboboxClassName, className)} {...getReferenceProps()}>
@@ -169,6 +173,7 @@ export const Select: FC<SelectProps> = ({
           <div
             ref={refs.setFloating}
             role='listbox'
+            data-full-width={fullWidthListbox}
             style={{ ...floatingStyles, ...transitionStyles }}
             className={csx(styles.selectListbox, listboxClassName)}
             {...getFloatingProps()}
@@ -193,6 +198,6 @@ export const Select: FC<SelectProps> = ({
           </div>
         </FloatingFocusManager>
       )}
-    </>
+    </div>
   )
 }

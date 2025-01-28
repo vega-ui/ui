@@ -309,23 +309,7 @@ const options: PhoneFieldCountry[] = [
   },
   {
     'iso': 'GB',
-    'label': 'Англия (+44)'
-  },
-  {
-    'iso': 'GB',
-    'label': 'Шотландия (+44)'
-  },
-  {
-    'iso': 'GB',
     'label': 'Великобритания (+44)'
-  },
-  {
-    'iso': 'GB',
-    'label': 'Уэльс (+44)'
-  },
-  {
-    'iso': 'GB',
-    'label': 'Северная Ирландия (+44)'
   },
   {
     'iso': 'GD',

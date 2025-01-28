@@ -24,6 +24,7 @@ export interface PhoneFieldProps extends TextFieldProps {
   defaultCountry?: CountryCode
   defaultValue?: string
   countries: PhoneFieldCountry[]
+  fullWidthListbox?: boolean
 }
 
 export const PhoneField = forwardRef<HTMLInputElement, PhoneFieldProps>(({
@@ -34,6 +35,7 @@ export const PhoneField = forwardRef<HTMLInputElement, PhoneFieldProps>(({
   defaultCountry = 'RU',
   defaultValue,
   countries,
+  fullWidthListbox = true,
   ...props
 }, ref) => {
   const [value, setValue] = useControlledState<CountryCode>(undefined, defaultCountry)
@@ -74,7 +76,7 @@ export const PhoneField = forwardRef<HTMLInputElement, PhoneFieldProps>(({
       onInput={onInput}
       value={inputValue}
       startSlot={
-        <Select valueSlot={<FlagIcon size={size} name={value as FlagIconProps['name']} />} value={value} onSelect={onSelect} className={style.countrySelect} listboxClassName={style.countryList}>
+        <Select wrapperClassName={style.selectWrapper} fullWidthListbox valueSlot={<FlagIcon size={size} name={value as FlagIconProps['name']} />} value={value} onSelect={onSelect} className={style.countrySelect} listboxClassName={style.countryList}>
           {countries?.map(({ label, iso }) => (
             <Option className={style.option} value={iso} key={value}>
               <FlagIcon className={style.icon} size={size} name={iso as FlagIconProps['name']} />

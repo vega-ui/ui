@@ -6,7 +6,8 @@
       "@adara-cs/hooks": ["./packages/hooks/src/index.ts"],
       "@adara-cs/hooks/*": ["./packages/hooks/src/*"],
       "@adara-cs/types": ["./packages/types/index.d.ts"],
-      "@adara-cs/types/*": ["./packages/types/*"]
+      "@adara-cs/types/*": ["./packages/types/*"],
+      "@adara-cs/icons": ["./packages/icons/src/index.ts"],
     }
   },
   "exclude": ["node_modules"]

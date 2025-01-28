@@ -14,11 +14,6 @@ export interface FlagIconProps {
   'aria-labelledby'?: string
 }
 
-/**
- * External component from <code>@adara-cs/flags-icon</code>
- *
- * Icons from <a href="https://flagpack.xyz/docs/flag-index/">Flagpack</a>
- * */
 export const FlagIcon = forwardRef<SVGSVGElement, FlagIconProps>(({
   size = 'small',
   'aria-label': ariaLabel,

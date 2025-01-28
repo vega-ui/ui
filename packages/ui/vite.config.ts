@@ -38,7 +38,17 @@ export default defineConfig({
     },
     chunkSizeWarningLimit: 10000,
     rollupOptions: {
-      external: ['react', 'react-dom', 'react/jsx-runtime', '@floating-ui/react', 'react-remove-scroll', '@adara-cs/utils', '@adara-cs/hooks', '@adara-cs/types'],
+      external: [
+        'react',
+        'react-dom',
+        'react/jsx-runtime',
+        '@floating-ui/react',
+        'react-remove-scroll',
+        '@adara-cs/utils',
+        '@adara-cs/hooks',
+        '@adara-cs/types',
+        '@adara-cs/icons'
+      ],
       plugins: [
         preserveDirectives()
       ],

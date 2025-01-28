@@ -65,6 +65,7 @@
     "@adara-cs/hooks": "workspace:*",
     "@adara-cs/types": "workspace:*",
     "@adara-cs/utils": "workspace:*",
+    "@adara-cs/icons": "workspace:*",
     "@floating-ui/react": "^0.27.2",
     "@maskito/core": "^3.2.1",
     "@maskito/phone": "^3.2.1",
