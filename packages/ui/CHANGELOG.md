@@ -1,5 +1,16 @@
 # @adara-cs/ui-kit-web
 
+## 2.2.2
+
+### Patch Changes
+
+- 0525edc: Fixed inputMode to numeric in NumberField
+- Updated dependencies [2bc09bf]
+  - @adara-cs/icons@2.2.2
+  - @adara-cs/hooks@2.2.2
+  - @adara-cs/types@2.2.2
+  - @adara-cs/utils@2.2.2
+
 ## 2.2.1
 
 ### Patch Changes
