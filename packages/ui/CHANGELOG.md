@@ -1,5 +1,19 @@
 # @adara-cs/ui-kit-web
 
+## 2.2.0
+
+### Minor Changes
+
+- a1bfe34: Added icons package
+
+### Patch Changes
+
+- Updated dependencies [a1bfe34]
+  - @adara-cs/icons@2.2.0
+  - @adara-cs/hooks@2.2.0
+  - @adara-cs/types@2.2.0
+  - @adara-cs/utils@2.2.0
+
 ## 2.1.0
 
 ### Minor Changes
