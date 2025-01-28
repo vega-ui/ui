@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { PhoneField, PhoneFieldCountry } from './PhoneField.tsx';
+import { Label } from '../Label';
 
 const options: PhoneFieldCountry[] = [
   {
@@ -984,3 +985,39 @@ export const WithLimitCountries: Story = {
     ],
   },
 };
+
+export const SingleCountry: Story = {
+  args: {
+    countries: [
+      {
+        'iso': 'RU',
+        'label': 'Россия (+7)'
+      }
+    ],
+  },
+};
+
+export const WithLabel: Story = {
+  args: {
+    countries: [
+      {
+        'iso': 'RU',
+        'label': 'Россия (+7)'
+      },
+      {
+        'iso': 'KZ',
+        'label': 'Казахстан (+7)'
+      },
+    ],
+  },
+  render(props) {
+    return (
+      <>
+        <Label>
+          Телефон для связи
+          <PhoneField {...props} />
+        </Label>
+      </>
+    )
+  }
+}

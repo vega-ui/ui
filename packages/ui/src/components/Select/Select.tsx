@@ -29,6 +29,7 @@ export interface SelectProps extends Omit<HTMLAttributes<HTMLButtonElement>, 'on
   valueSlot?: ReactNode
   placeholder?: string
   disabled?: boolean
+  readOnly?: boolean
   icon?: IconProps['name']
   iconSize?: IconProps['size']
   variant?: 'inline' | 'field'
@@ -49,6 +50,7 @@ export const Select: FC<SelectProps> = ({
   valueSlot,
   endSlot,
   disabled = false,
+  readOnly = false,
   icon,
   iconSize,
   placeholder,
@@ -82,8 +84,8 @@ export const Select: FC<SelectProps> = ({
     onOpenChange: setOpen,
   });
 
-  const click = useClick(context, { event: 'mousedown', enabled: !disabled });
-  const dismiss = useDismiss(context);
+  const click = useClick(context, { event: 'mousedown', enabled: !disabled && !readOnly });
+  const dismiss = useDismiss(context, { enabled: !disabled && !readOnly });
   const role = useRole(context, { role: 'listbox' });
 
   const listRef = useRef<Array<HTMLElement | null>>([]);
@@ -107,7 +109,7 @@ export const Select: FC<SelectProps> = ({
     selectedIndex,
     onNavigate: setActiveIndex,
     loop: true,
-    enabled: !disabled
+    enabled: !disabled && !readOnly
   });
 
   const onMatch = (index: number) => {
@@ -152,7 +154,7 @@ export const Select: FC<SelectProps> = ({
   return (
     <div className={csx(styles.wrapper, wrapperClassName)}>
       <button {...props} type='button' data-size={fieldSize} data-variant={variant} data-state={open ? 'open' : 'close'}
-              aria-disabled={disabled} tabIndex={0} ref={refs.setReference}
+              aria-disabled={disabled} aria-readonly={readOnly} tabIndex={0} ref={refs.setReference}
               className={csx(styles.selectCombobox, comboboxClassName, className)} {...getReferenceProps()}>
         <div className={styles.segment}>
           {startSlot ? startSlot : icon ? <Icon name={icon} size={iconSize} aria-hidden/> : undefined}
@@ -163,10 +165,12 @@ export const Select: FC<SelectProps> = ({
               : <Text className={csx(styles.placeholder, placeholderClassName)}>{placeholder}</Text>
           }
         </div>
-        <div className={styles.control}>
-          <Icon className={styles.controlIcon} name='chevron' size='pico'/>
-          {endSlot}
-        </div>
+        {(!readOnly || endSlot) && (
+          <div className={styles.control}>
+            {!readOnly && <Icon className={styles.controlIcon} name='chevron' size='pico'/>}
+            {endSlot}
+          </div>
+        )}
       </button>
       {open && options?.length !== 0 && (
         <FloatingFocusManager context={context} modal={false}>
