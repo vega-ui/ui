@@ -6,6 +6,7 @@ import preserveDirectives from 'rollup-preserve-directives'
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { resolve } from 'node:path';
 import { globSync } from 'node:fs';
+import * as packageJson from './package.json';
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -15,7 +16,7 @@ export default defineConfig({
     tsconfigPaths({ root: '../../' }),
     dts({
       insertTypesEntry: true,
-      tsconfigPath: './tsconfig.app.json',
+      tsconfigPath: resolve(__dirname, 'tsconfig.app.json'),
       exclude: ['**/*/**.stories.(tsx|ts)', '**/*/__tests__/'],
     }),
     svgr({
@@ -38,17 +39,7 @@ export default defineConfig({
     },
     chunkSizeWarningLimit: 10000,
     rollupOptions: {
-      external: [
-        'react',
-        'react-dom',
-        'react/jsx-runtime',
-        '@floating-ui/react',
-        'react-remove-scroll',
-        '@adara-cs/utils',
-        '@adara-cs/hooks',
-        '@adara-cs/types',
-        '@adara-cs/icons'
-      ],
+      external: [...Object.keys(packageJson.dependencies), 'react/jsx-runtime', 'libphonenumber-js/min/metadata'],
       plugins: [
         preserveDirectives()
       ],
