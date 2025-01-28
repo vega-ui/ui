@@ -46,6 +46,7 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(({
         ref={mergeRefs([inputRef, ref, innerInputRef])}
         size={size}
         type='number'
+        inputMode='numeric'
         min={min}
         max={max}
         className={csx(style.numberTextField, className)}
