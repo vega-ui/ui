@@ -1,0 +1,17 @@
+.icon {}
+
+.icon[data-size='small'] {
+    height: 16px;
+    width: 16px;
+    border-radius: var(--radius-1);
+}
+
+.icon[data-size='medium'] {
+    height: 18px;
+    border-radius: var(--radius-1);
+}
+
+.icon[data-size='large'] {
+    height: 24px;
+    border-radius: var(--radius-1);
+}

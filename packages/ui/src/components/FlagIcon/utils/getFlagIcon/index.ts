@@ -1,0 +1,1 @@
+export { getFlagIcon, type FlagIconName } from './getFlagIcon.ts'

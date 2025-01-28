@@ -4,7 +4,7 @@ import { Text } from '../Text';
 import { Checkbox } from './Checkbox.tsx';
 
 const meta = {
-  title: 'UI/Checkbox',
+  title: 'UI-Core/Checkbox',
   component: Checkbox,
   parameters: {
     layout: 'centered',

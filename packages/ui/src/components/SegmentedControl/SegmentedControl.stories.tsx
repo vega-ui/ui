@@ -7,7 +7,7 @@ import { SegmentedControlItem } from './components';
 import { Icon } from '../Icon';
 
 const meta = {
-  title: 'UI/SegmentedControl',
+  title: 'UI-Core/SegmentedControl',
   component: SegmentedControl,
   parameters: {
     layout: 'centered',

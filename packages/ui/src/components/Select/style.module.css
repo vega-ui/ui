@@ -20,6 +20,7 @@
 .segment {
     display: flex;
     flex-direction: row;
+    justify-content: center;
     align-items: center;
     width: 100%;
     gap: var(--spacing-5);
@@ -156,6 +157,8 @@
     box-shadow: var(--surface-shadow);
     border-radius: var(--radius-3);
     width: max-content;
-    overflow: hidden;
+    overflow: auto;
+    max-height: 250px;
+    max-width: 350px;
     z-index: var(--z-index-popover);
 }

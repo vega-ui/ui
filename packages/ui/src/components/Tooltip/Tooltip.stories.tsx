@@ -8,7 +8,7 @@ import { Modal } from '../Modal';
 import { TextField } from '../TextField';
 
 const meta = {
-  title: 'UI/Tooltip',
+  title: 'UI-Core/Tooltip',
   component: Tooltip,
   parameters: {
     layout: 'centered',

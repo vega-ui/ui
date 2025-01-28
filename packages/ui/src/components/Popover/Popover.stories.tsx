@@ -5,7 +5,7 @@ import { Button } from '../Button';
 import { Text } from '../Text';
 
 const meta = {
-  title: 'UI/Popover',
+  title: 'UI-Core/Popover',
   component: Popover,
   parameters: {
     layout: 'centered',

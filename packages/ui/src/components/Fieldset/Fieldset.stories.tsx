@@ -6,7 +6,7 @@ import { Label } from '../Label';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof Fieldset> = {
-  title: 'UI/Fieldset',
+  title: 'UI-Core/Fieldset',
   component: Fieldset,
   parameters: {
     layout: 'centered',

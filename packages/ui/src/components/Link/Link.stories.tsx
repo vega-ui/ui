@@ -4,7 +4,7 @@ import { Link } from './Link.tsx';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof Link> = {
-  title: 'UI/Link',
+  title: 'UI-Core/Link',
   component: Link,
   parameters: {
     layout: 'centered',

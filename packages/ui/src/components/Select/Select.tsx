@@ -6,7 +6,6 @@ import {
   flip,
   FloatingFocusManager,
   offset,
-  size,
   useClick,
   useDismiss,
   useFloating, useInteractions, useListNavigation, useRole, useTransitionStyles, useTypeahead
@@ -20,9 +19,13 @@ import { Option, OptionProps } from '../Option';
 export interface SelectProps extends Omit<HTMLAttributes<HTMLButtonElement>, 'onSelect'> {
   listboxClassName?: string
   comboboxClassName?: string
+  valueClassName?: string
+  placeholderClassName?: string
+  className?: string
   children?: ReactElement<OptionProps> | ReactElement<OptionProps>[]
-  start?: ReactNode
-  end?: ReactNode
+  startSlot?: ReactNode
+  endSlot?: ReactNode
+  valueSlot?: ReactNode
   placeholder?: string
   disabled?: boolean
   icon?: IconProps['name']
@@ -36,8 +39,12 @@ export interface SelectProps extends Omit<HTMLAttributes<HTMLButtonElement>, 'on
 export const Select: FC<SelectProps> = ({
   listboxClassName,
   comboboxClassName,
-  start,
-  end,
+  valueClassName,
+  placeholderClassName,
+  className,
+  startSlot,
+  valueSlot,
+  endSlot,
   disabled = false,
   icon,
   iconSize,
@@ -64,16 +71,7 @@ export const Select: FC<SelectProps> = ({
     whileElementsMounted: autoUpdate,
     middleware: [
       offset(5),
-      flip({ padding: 10 }),
-      size({
-        apply({ rects, elements, availableHeight }) {
-          Object.assign(elements.floating.style, {
-            maxHeight: `${availableHeight}px`,
-            minWidth: `${rects.reference.width}px`,
-          });
-        },
-        padding: 10,
-      }),
+      flip({ padding: 10 })
     ],
     placement: variant === 'inline' ? 'bottom' : 'bottom-start',
     open,
@@ -86,7 +84,17 @@ export const Select: FC<SelectProps> = ({
 
   const listRef = useRef<Array<HTMLElement | null>>([]);
 
-  const listContentRef = useRef(options ? options.map(v => v.label) : []);
+  const listContentRef = useRef<(string | null)[]>(
+    options
+      ? options.map(
+          v =>
+            Array.isArray(v.label)
+              ? v.label.filter(v => typeof v === 'string')
+              : v.label
+        ).flat() as string[]
+      : []
+  );
+
   const isTypingRef = useRef(false);
 
   const listNav = useListNavigation(context, {
@@ -98,11 +106,21 @@ export const Select: FC<SelectProps> = ({
     enabled: !disabled
   });
 
+  const onMatch = (index: number) => {
+    if (open) {
+      setActiveIndex(index)
+      return
+    }
+
+    setSelectedIndex(index)
+    handleSelect?.(options?.[index].value)
+  }
+
   const typeahead = useTypeahead(context, {
     listRef: listContentRef,
     activeIndex,
     selectedIndex,
-    onMatch: open ? setActiveIndex : setSelectedIndex,
+    onMatch,
     onTypingChange(isTyping) {
       isTypingRef.current = isTyping;
     },
@@ -117,11 +135,11 @@ export const Select: FC<SelectProps> = ({
     typeahead,
   ]);
 
-  const onSelect = (index: number) => {
+  const onSelectIndex = (index: number) => {
     setSelectedIndex(index);
     handleSelect?.(options?.[index].value)
     setOpen(false);
-  };
+  }
 
   const { styles: transitionStyles } = useTransitionStyles(context, {
     duration: 200,
@@ -129,14 +147,21 @@ export const Select: FC<SelectProps> = ({
 
   return (
     <>
-      <button type='button' data-size={fieldSize} data-variant={variant} data-state={open ? 'open' : 'close'} aria-disabled={disabled} tabIndex={0} ref={refs.setReference} className={csx(styles.selectCombobox, comboboxClassName)} {...props} {...getReferenceProps()}>
+      <button {...props} type='button' data-size={fieldSize} data-variant={variant} data-state={open ? 'open' : 'close'}
+              aria-disabled={disabled} tabIndex={0} ref={refs.setReference}
+              className={csx(styles.selectCombobox, comboboxClassName, className)} {...getReferenceProps()}>
         <div className={styles.segment}>
-          {start ? start : icon ? <Icon name={icon} size={iconSize} aria-hidden /> : undefined}
-          {selectedIndex != null && options ? <Text className={styles.value}>{options[selectedIndex].label}</Text> : <Text className={styles.placeholder}>{placeholder}</Text>}
+          {startSlot ? startSlot : icon ? <Icon name={icon} size={iconSize} aria-hidden/> : undefined}
+          {
+            selectedIndex != null && options
+              ? valueSlot ? valueSlot :
+                <Text className={csx(styles.value, valueClassName)}>{options[selectedIndex].label}</Text>
+              : <Text className={csx(styles.placeholder, placeholderClassName)}>{placeholder}</Text>
+          }
         </div>
         <div className={styles.control}>
-          <Icon className={styles.controlIcon} name='chevron' size='pico' />
-          {end}
+          <Icon className={styles.controlIcon} name='chevron' size='pico'/>
+          {endSlot}
         </div>
       </button>
       {open && options?.length !== 0 && (
@@ -159,7 +184,7 @@ export const Select: FC<SelectProps> = ({
                 }}
                 selected={i === selectedIndex}
                 focusable={i === activeIndex}
-                onSelect={onSelect}
+                onSelect={onSelectIndex}
                 {...getItemProps()}
               >
                 {child.props?.children}

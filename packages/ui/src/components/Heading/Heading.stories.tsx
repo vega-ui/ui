@@ -4,7 +4,7 @@ import { Heading } from './Heading.tsx';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof Heading> = {
-  title: 'UI/Heading',
+  title: 'UI-Core/Heading',
   component: Heading,
   parameters: {
     layout: 'centered',

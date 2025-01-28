@@ -5,7 +5,7 @@ import { TextField } from '../TextField';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof Label> = {
-  title: 'UI/Label',
+  title: 'UI-Core/Label',
   component: Label,
   parameters: {
     layout: 'centered',
