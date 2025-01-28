@@ -1,5 +1,17 @@
 # @adara-cs/ui-kit-web
 
+## 2.1.0
+
+### Minor Changes
+
+- ed7a79b: Added phone field component
+
+### Patch Changes
+
+- @adara-cs/hooks@2.1.0
+- @adara-cs/types@2.1.0
+- @adara-cs/utils@2.1.0
+
 ## 2.0.3
 
 ### Patch Changes
