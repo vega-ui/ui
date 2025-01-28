@@ -58,7 +58,7 @@ export const Select: FC<SelectProps> = ({
   variant = 'field',
   size: fieldSize = 'medium',
   onSelect: handleSelect,
-  fullWidthListbox = false,
+  fullWidthListbox = true,
   value,
   ...props
 }) => {
