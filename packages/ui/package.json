@@ -70,7 +70,7 @@
     "@maskito/core": "^3.2.1",
     "@maskito/phone": "^3.2.1",
     "@maskito/react": "^3.2.1",
-    "libphonenumber-js": "^1.11.18",
+    "libphonenumber-js": "^1.11.19",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-remove-scroll": "^2.6.3"
