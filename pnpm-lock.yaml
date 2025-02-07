@@ -245,6 +245,9 @@ importers:
       '@maskito/core':
         specifier: ^3.2.1
         version: 3.2.1
+      '@maskito/kit':
+        specifier: ^3.2.1
+        version: 3.2.1(@maskito/core@3.2.1)
       '@maskito/phone':
         specifier: ^3.2.1
         version: 3.2.1(@maskito/core@3.2.1)(@maskito/kit@3.2.1(@maskito/core@3.2.1))(libphonenumber-js@1.11.19)
