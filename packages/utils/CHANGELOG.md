@@ -1,5 +1,11 @@
 # @adara-cs/utils
 
+## 2.3.0
+
+### Minor Changes
+
+- f7bc797: Added responsive ui package/kit
+
 ## 2.2.4
 
 ## 2.2.3
