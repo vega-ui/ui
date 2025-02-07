@@ -1,0 +1,4 @@
+.sheetHeader {
+    flex: 1;
+    padding: var(--spacing-6) clamp(var(--spacing-8), 3vw, var(--spacing-16)) var(--spacing-6);
+}

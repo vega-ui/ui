@@ -11,7 +11,16 @@ export interface OptionProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSel
   onSelect?(value: string | number): void
 }
 
-export const Option = forwardRef<HTMLDivElement, OptionProps>(({ selected, focusable, size, value, children, className, onSelect: handleSelect, ...props }, ref) => {
+export const Option = forwardRef<HTMLDivElement, OptionProps>(({
+  selected,
+  focusable,
+  size = 'medium',
+  value,
+  children,
+  className,
+  onSelect: handleSelect,
+  ...props
+}, ref) => {
   const onSelect = () => {
     handleSelect?.(value)
   }

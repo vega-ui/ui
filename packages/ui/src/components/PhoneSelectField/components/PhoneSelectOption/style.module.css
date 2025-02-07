@@ -1,0 +1,7 @@
+.option {
+    gap: var(--spacing-8);
+}
+
+.icon {
+    flex-shrink: 0;
+}

@@ -1,6 +1,17 @@
 'use client';
 
-import { Children, FC, HTMLAttributes, ReactElement, ReactNode, useMemo, useRef, useState } from 'react';
+import {
+  Children,
+  FC,
+  HTMLAttributes,
+  ReactElement,
+  ReactNode,
+  Ref,
+  useCallback,
+  useMemo,
+  useRef,
+  useState
+} from 'react';
 import {
   autoUpdate,
   flip,
@@ -8,17 +19,22 @@ import {
   offset,
   useClick,
   useDismiss,
-  useFloating, useInteractions, useListNavigation, useRole, useTransitionStyles, useTypeahead
+  useFloating,
+  useInteractions,
+  useListNavigation,
+  useRole, useTransitionStyles,
+  useTypeahead,
+  FloatingList,
 } from '@floating-ui/react';
 import { csx } from '@adara-cs/utils';
 import styles from './style.module.css';
-import { Text } from '../Text';
-import { Icon, IconProps } from '../Icon';
-import { Option, OptionProps } from '../Option';
+import { OptionProps } from '../Option';
+import { SelectCombobox, SelectListbox } from './components';
+import { useControlledState } from '@adara-cs/hooks';
+import { SelectProvider } from './providers/SelectProvider/SelectProvider.tsx';
 
 export interface SelectProps extends Omit<HTMLAttributes<HTMLButtonElement>, 'onSelect'> {
   listboxClassName?: string
-  comboboxClassName?: string
   wrapperClassName?: string
   valueClassName?: string
   placeholderClassName?: string
@@ -27,21 +43,21 @@ export interface SelectProps extends Omit<HTMLAttributes<HTMLButtonElement>, 'on
   startSlot?: ReactNode
   endSlot?: ReactNode
   valueSlot?: ReactNode
+  placeholderSlot?: ReactNode
   placeholder?: string
   disabled?: boolean
   readOnly?: boolean
-  icon?: IconProps['name']
-  iconSize?: IconProps['size']
   variant?: 'inline' | 'field'
   size?: 'small' | 'medium' | 'large'
+  comboboxRef?: Ref<HTMLElement>
   fullWidthListbox?: boolean
   value?: string | number | undefined
-  onSelect?(value: string | number | undefined):void
+  defaultValue?: string | number | undefined
+  onSelect?(value: string | number | undefined): void
 }
 
 export const Select: FC<SelectProps> = ({
   listboxClassName,
-  comboboxClassName,
   wrapperClassName,
   valueClassName,
   placeholderClassName,
@@ -51,27 +67,32 @@ export const Select: FC<SelectProps> = ({
   endSlot,
   disabled = false,
   readOnly = false,
-  icon,
-  iconSize,
   placeholder,
   children,
   variant = 'field',
-  size: fieldSize = 'medium',
-  onSelect: handleSelect,
-  fullWidthListbox = true,
-  value,
+  size = 'medium',
+  fullWidthListbox = false,
+  value: controlledValue,
+  defaultValue,
+  onSelect,
   ...props
 }) => {
-  const options = useMemo(() => Children.count(children) !== 0 ? Children.map(children, (child) => ({
-    label: child?.props.children ?? '',
-    value: child?.props.value ?? ''
-  })) : [], [children])
+  const [value, setValue] = useControlledState(controlledValue, defaultValue, onSelect)
 
-  const selectedDefaultIndex = options?.findIndex(v => value === v.value)
+  const placement = variant === 'inline' ? 'bottom' : 'bottom-start'
+  const enabled = !disabled && !readOnly
+
+  const options = useMemo(() => Children.count(children) !== 0
+    ? Children.map(children, (child) => ({
+          label: child?.props.children ?? '',
+          value: child?.props.value ?? ''
+        }))
+    : [], [children])
 
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const [selectedIndex, setSelectedIndex] = useState<number | null | undefined>(selectedDefaultIndex !== -1 ? selectedDefaultIndex : null);
+
+  const selectedIndex = useMemo(() => options?.findIndex(v => v.value === value), [options, value])
 
   const { refs, floatingStyles, context } = useFloating<HTMLElement>({
     whileElementsMounted: autoUpdate,
@@ -79,37 +100,37 @@ export const Select: FC<SelectProps> = ({
       offset(5),
       flip({ padding: 10 })
     ],
-    placement: variant === 'inline' ? 'bottom' : 'bottom-start',
+    placement,
     open,
     onOpenChange: setOpen,
   });
 
-  const click = useClick(context, { event: 'mousedown', enabled: !disabled && !readOnly });
-  const dismiss = useDismiss(context, { enabled: !disabled && !readOnly });
+  const click = useClick(context, { event: 'mousedown', enabled });
+  const dismiss = useDismiss(context, { enabled });
   const role = useRole(context, { role: 'listbox' });
 
-  const listRef = useRef<Array<HTMLElement | null>>([]);
+  const elementsRef = useRef([]);
 
   const listContentRef = useRef<(string | null)[]>(
     options
       ? options.map(
-          v =>
-            Array.isArray(v.label)
-              ? v.label.filter(v => typeof v === 'string')
-              : v.label
-        ).flat() as string[]
+        v =>
+          Array.isArray(v.label)
+            ? v.label.filter(v => typeof v === 'string')
+            : v.label
+      ).flat() as string[]
       : []
   );
 
   const isTypingRef = useRef(false);
 
   const listNav = useListNavigation(context, {
-    listRef,
+    listRef: elementsRef,
     activeIndex,
     selectedIndex,
     onNavigate: setActiveIndex,
     loop: true,
-    enabled: !disabled && !readOnly
+    enabled
   });
 
   const onMatch = (index: number) => {
@@ -118,8 +139,7 @@ export const Select: FC<SelectProps> = ({
       return
     }
 
-    setSelectedIndex(index)
-    handleSelect?.(options?.[index].value)
+    setValue(options?.[index].value)
   }
 
   const typeahead = useTypeahead(context, {
@@ -130,10 +150,10 @@ export const Select: FC<SelectProps> = ({
     onTypingChange(isTyping) {
       isTypingRef.current = isTyping;
     },
-    enabled: !disabled
+    enabled
   });
 
-  const { getReferenceProps, getFloatingProps, getItemProps } = useInteractions([
+  const { getReferenceProps: getSelectComboboxProps, getFloatingProps: getSelectListboxProps, getItemProps: getSelectOptionProps } = useInteractions([
     click,
     dismiss,
     role,
@@ -141,67 +161,61 @@ export const Select: FC<SelectProps> = ({
     typeahead,
   ]);
 
-  const onSelectIndex = (index: number) => {
-    setSelectedIndex(index);
-    handleSelect?.(options?.[index].value)
-    setOpen(false);
-  }
+  const onSelectOption = useCallback((value: number | string | undefined) => {
+    setValue(value)
+    setOpen(false)
+  }, [])
 
   const { styles: transitionStyles } = useTransitionStyles(context, {
     duration: 200,
   });
 
+  const label = useMemo(() => options?.find(v => v.value === value)?.label, [value, options])
+
   return (
     <div className={csx(styles.wrapper, wrapperClassName)}>
-      <button {...props} type='button' data-size={fieldSize} data-variant={variant} data-state={open ? 'open' : 'close'}
-              aria-disabled={disabled} aria-readonly={readOnly} tabIndex={0} ref={refs.setReference}
-              className={csx(styles.selectCombobox, comboboxClassName, className)} {...getReferenceProps()}>
-        <div className={styles.segment}>
-          {startSlot ? startSlot : icon ? <Icon name={icon} size={iconSize} aria-hidden/> : undefined}
-          {
-            selectedIndex != null && options
-              ? valueSlot ? valueSlot :
-                <Text className={csx(styles.value, valueClassName)}>{options[selectedIndex].label}</Text>
-              : <Text className={csx(styles.placeholder, placeholderClassName)}>{placeholder}</Text>
-          }
-        </div>
-        {(!readOnly || endSlot) && (
-          <div className={styles.control}>
-            {!readOnly && <Icon className={styles.controlIcon} name='chevron' size='pico'/>}
-            {endSlot}
-          </div>
-        )}
-      </button>
-      {open && options?.length !== 0 && (
-        <FloatingFocusManager context={context} modal={false}>
-          <div
-            ref={refs.setFloating}
-            role='listbox'
-            data-full-width={fullWidthListbox}
-            style={{ ...floatingStyles, ...transitionStyles }}
-            className={csx(styles.selectListbox, listboxClassName)}
-            {...getFloatingProps()}
-          >
-            {children && Children.map(children, (child, i) => (
-              <Option
-                key={i}
-                {...child.props}
-                size={fieldSize}
-                value={i}
-                ref={(node) => {
-                  listRef.current[i] = node
-                }}
-                selected={i === selectedIndex}
-                focusable={i === activeIndex}
-                onSelect={onSelectIndex}
-                {...getItemProps()}
+      <SelectCombobox
+        ref={refs.setReference}
+        size={size}
+        className={className}
+        disabled={disabled}
+        readOnly={readOnly}
+        variant={variant}
+        placeholder={placeholder}
+        valueClassName={valueClassName}
+        placeholderClassName={placeholderClassName}
+        endSlot={endSlot}
+        startSlot={startSlot}
+        valueSlot={valueSlot}
+        withArrow={!readOnly}
+        open={open}
+        {...getSelectComboboxProps(props)}
+      >
+        {label}
+      </SelectCombobox>
+      <SelectProvider
+        size={size}
+        getItemProps={getSelectOptionProps}
+        onSelect={onSelectOption}
+        activeIndex={activeIndex}
+        value={value}
+      >
+        <FloatingList elementsRef={elementsRef}>
+          {open && (
+            <FloatingFocusManager context={context} modal={false}>
+              <SelectListbox
+                ref={refs.setFloating}
+                className={listboxClassName}
+                fullWidth={fullWidthListbox}
+                style={{ ...floatingStyles, ...transitionStyles }}
+                {...getSelectListboxProps()}
               >
-                {child.props?.children}
-              </Option>
-            ))}
-          </div>
-        </FloatingFocusManager>
-      )}
+                {children}
+              </SelectListbox>
+            </FloatingFocusManager>
+          )}
+        </FloatingList>
+      </SelectProvider>
     </div>
   )
 }

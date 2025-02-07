@@ -3,6 +3,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Select } from './Select.tsx';
 import { Option } from '../Option';
 import { Label } from '../Label';
+import { Icon } from '../Icon';
+import { SelectOption } from './components/SelectOption';
 
 const meta = {
   title: 'UI-Core/Select',
@@ -25,9 +27,9 @@ export const Field: Story = {
   render(args) {
     return (
       <Select {...args}>
-        <Option value={1}>Москва</Option>
-        <Option value={2}>Санкт-Петербург</Option>
-        <Option value={3}>Новосибирск</Option>
+        <SelectOption value='Moscow'>Москва</SelectOption>
+        <SelectOption value='Saint-Petersburg'>Санкт-Петербург</SelectOption>
+        <SelectOption value='Novosibirsk'>Новосибирск</SelectOption>
       </Select>
     )
   }
@@ -37,7 +39,7 @@ export const Inline: Story = {
   args: {
     placeholder: 'Выберите язык',
     variant: 'inline',
-    icon: 'globe',
+    startSlot: <Icon name='globe' />
   },
   render(args) {
     return (

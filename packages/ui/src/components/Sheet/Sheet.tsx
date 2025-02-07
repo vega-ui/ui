@@ -62,8 +62,10 @@ export interface SheetProps extends HTMLAttributes<HTMLElement> {
   steppedSnapPoints?: boolean
   withOverlay?: boolean
   open?: boolean
+  clickEnabled?: boolean
   onChangeOpen?: (value: boolean | undefined) => void
   children?: ReactNode | ReactNode[]
+  headerSlot?: ReactNode | ReactNode[]
   triggerSlot?: (ref: Ref<never>, props?: Record<string, unknown>) => ReactElement
 }
 
@@ -85,6 +87,8 @@ export const Sheet: FC<SheetProps> = forwardRef(({
   onChangeActiveSnapPoint,
   open: controlledOpen,
   onChangeOpen: controlledOnChangeOpen,
+  headerSlot,
+  clickEnabled = true,
   className,
   ...props
 }, ref) => {
@@ -112,7 +116,7 @@ export const Sheet: FC<SheetProps> = forwardRef(({
 
   const [y, setY] = useState(0)
 
-  const click = useClick(context);
+  const click = useClick(context, { enabled: clickEnabled });
   const dismiss = useDismiss(context, {
     outsidePressEvent: 'pointerdown',
     enabled: dismissible
@@ -286,6 +290,7 @@ export const Sheet: FC<SheetProps> = forwardRef(({
       offset={offset}
       scrollable={scrollable}
       dragging={transforming}
+      headerSlot={headerSlot}
       {...getFloatingProps(props)}
     >
       {children}
