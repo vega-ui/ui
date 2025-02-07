@@ -1,0 +1,7 @@
+.selectArrow {
+    transition: transform var(--transition-fast-state-delay) ease-in-out;
+}
+
+.selectArrow[data-open='true'] {
+    transform: rotate(180deg);
+}

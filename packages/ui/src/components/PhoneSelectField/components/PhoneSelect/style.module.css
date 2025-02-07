@@ -1,0 +1,32 @@
+.selectWrapper {
+    height: 100%;
+    position: initial !important;
+}
+
+.countryList {
+    scrollbar-width: thin;
+    scrollbar-color: var(--neutral-300) var(--neutral-50);
+}
+
+.countrySelect[data-size] {
+    min-width: auto;
+    height: 100%;
+    background-color: var(--neutral-50);
+    border: none;
+    gap: var(--spacing-6);
+}
+
+.countrySelect[data-size='small'] {
+    padding-inline: var(--spacing-4);
+    border-radius: var(--radius-3);
+}
+
+.countrySelect[data-size='medium'] {
+    padding-inline: var(--spacing-6);
+    border-radius: var(--radius-3);
+}
+
+.countrySelect[data-size='large'] {
+    padding-inline: var(--spacing-8);
+    border-radius: var(--radius-4);
+}

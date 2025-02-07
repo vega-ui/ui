@@ -12,9 +12,6 @@
     },
     "lint": {
       "cache": false
-    },
-    "check-types": {
-      "dependsOn": ["^check-types"]
     }
   }
 }

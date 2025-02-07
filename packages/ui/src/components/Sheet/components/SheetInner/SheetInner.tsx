@@ -2,11 +2,12 @@
 import {
   forwardRef,
   HTMLAttributes,
-  PropsWithChildren, Ref,
+  PropsWithChildren, ReactNode, Ref,
 } from 'react';
 import { SheetHandle } from '../SheetHandle';
 import { SheetContent } from '../SheetContent';
 import { SheetContainer } from '../SheetContainer';
+import { SheetHeader } from '../SheetHeader';
 
 type TransitionStatus = 'unmounted' | 'initial' | 'open' | 'close'
 
@@ -21,6 +22,7 @@ export interface SheetInnerProps extends HTMLAttributes<HTMLDivElement> {
   scrollable?: boolean
   handleClassName?: string
   contentClassName?: string
+  headerSlot?: ReactNode | ReactNode[]
 }
 
 export const SheetInner = forwardRef<HTMLDivElement, PropsWithChildren<SheetInnerProps>>(({
@@ -33,6 +35,7 @@ export const SheetInner = forwardRef<HTMLDivElement, PropsWithChildren<SheetInne
   shadow = false,
   contentClassName,
   handleClassName,
+  headerSlot,
   ...props
 }, ref) => {
   return (
@@ -45,6 +48,11 @@ export const SheetInner = forwardRef<HTMLDivElement, PropsWithChildren<SheetInne
       {...props}
     >
       <SheetHandle className={handleClassName} />
+      {headerSlot && (
+        <SheetHeader>
+          {headerSlot}
+        </SheetHeader>
+      )}
       <SheetContent className={contentClassName} ref={contentRef} scrollable={scrollable}>
         {children}
       </SheetContent>

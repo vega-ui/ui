@@ -1,0 +1,20 @@
+.selectListbox {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+    padding: var(--spacing-4);
+    outline: none;
+    box-sizing: border-box;
+    background: var(--surface-foreground);
+    box-shadow: var(--surface-shadow);
+    border-radius: var(--radius-3);
+    width: max-content;
+    overflow: auto;
+    max-height: 250px;
+    min-width: 100%;
+    z-index: var(--z-index-popover);
+}
+
+.selectListbox[data-full-width='true'] {
+    width: 100%;
+}
