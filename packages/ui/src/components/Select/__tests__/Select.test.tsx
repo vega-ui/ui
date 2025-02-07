@@ -1,14 +1,14 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react'
 import { Select } from '../Select.tsx';
-import { Option } from '../../Option';
 import { act } from 'react';
+import { SelectOption } from '../components';
 
 const component = (
   <Select>
-    <Option value={1}>Москва</Option>
-    <Option value={2}>Санкт-Петербург</Option>
-    <Option value={3}>Новосибирск</Option>
+    <SelectOption value={1}>Москва</SelectOption>
+    <SelectOption value={2}>Санкт-Петербург</SelectOption>
+    <SelectOption value={3}>Новосибирск</SelectOption>
   </Select>
 )
 
@@ -45,9 +45,9 @@ describe('Select', () => {
 
     render(
       <Select onSelect={setValue}>
-        <Option value={1}>Москва</Option>
-        <Option value={2}>Санкт-Петербург</Option>
-        <Option value={3}>Новосибирск</Option>
+        <SelectOption value={1}>Москва</SelectOption>
+        <SelectOption value={2}>Санкт-Петербург</SelectOption>
+        <SelectOption value={3}>Новосибирск</SelectOption>
       </Select>
     )
     act(() => {

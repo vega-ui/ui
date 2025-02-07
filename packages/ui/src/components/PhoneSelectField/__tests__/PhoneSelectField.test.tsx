@@ -16,7 +16,7 @@ const list: PhoneFieldCountry[] = [
 ]
 
 describe('PhoneField', () => {
-  it('render numberField', () => {
+  it('render field', () => {
     render(<PhoneSelectField countries={list} data-testid='input' />)
     expect(screen.getByTestId('input')).toBeDefined()
   })
