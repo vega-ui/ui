@@ -1,5 +1,15 @@
 # @adara-cs/ui-kit-web
 
+## 2.3.2
+
+### Patch Changes
+
+- af977f7: Changed options filtering to perf & prop responsiveBreakpoint replaced by isBreakpoint
+  - @adara-cs/hooks@2.3.2
+  - @adara-cs/icons@2.3.2
+  - @adara-cs/types@2.3.2
+  - @adara-cs/utils@2.3.2
+
 ## 2.3.1
 
 ### Patch Changes
