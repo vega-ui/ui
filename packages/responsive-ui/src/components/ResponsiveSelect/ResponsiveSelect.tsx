@@ -2,12 +2,12 @@
 
 import { FC } from 'react';
 import { Select, SelectProps } from '@adara-cs/ui-kit-web';
-import { useControlledState, useMediaQuery } from '@adara-cs/hooks';
+import { useControlledState } from '@adara-cs/hooks';
 import { SheetSelect, SheetSelectProps } from '../SheetSelect';
 import { ResponsiveSelectProvider } from './providers';
 
 export interface ResponsiveSelectProps extends Omit<SelectProps, 'className'>, Omit<SheetSelectProps, 'className'> {
-  responsiveBreakpoint?: number
+  isBreakpoint?: boolean
   sheetSelectClassName?: string
   selectClassName?: string
 }
@@ -27,12 +27,11 @@ export const ResponsiveSelect: FC<ResponsiveSelectProps> = ({
   valueSlot,
   onSelect,
   defaultValue,
-  responsiveBreakpoint,
+  isBreakpoint = false,
   value: controlledValue,
   children
 }) => {
   const [value, setValue] = useControlledState(controlledValue, defaultValue, onSelect)
-  const isBreakpoint = useMediaQuery(`(max-width: ${responsiveBreakpoint}px)`, { defaultValue: false })
 
   return (
     <ResponsiveSelectProvider isBreakpoint={isBreakpoint}>

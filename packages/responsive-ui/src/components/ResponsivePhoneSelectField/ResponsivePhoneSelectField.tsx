@@ -2,12 +2,12 @@
 
 import { ChangeEvent, FC } from 'react';
 import { PhoneSelectFieldProps, PhoneSelectField } from '@adara-cs/ui-kit-web';
-import { useControlledState, useMediaQuery } from '@adara-cs/hooks';
+import { useControlledState } from '@adara-cs/hooks';
 import { SheetPhoneSelectField, SheetPhoneSelectFieldProps } from '../SheetPhoneSelectField';
 import { CountryCode } from 'libphonenumber-js';
 
 export interface ResponsivePhoneSelectFieldProps extends Omit<PhoneSelectFieldProps, 'className'>, Omit<SheetPhoneSelectFieldProps, 'className'> {
-  responsiveBreakpoint?: number
+  isBreakpoint?: boolean
   sheetPhoneSelectFieldClassName?: string
   phoneSelectFieldClassName?: string
   onCountryChanged?: (country: CountryCode | undefined) => void
@@ -23,7 +23,7 @@ export const ResponsivePhoneSelectField: FC<ResponsivePhoneSelectFieldProps> = (
   endSlot,
   startSlot,
   defaultValue,
-  responsiveBreakpoint,
+  isBreakpoint = false,
   country: controlledCountry,
   onCountryChanged,
   defaultCountry,
@@ -33,7 +33,6 @@ export const ResponsivePhoneSelectField: FC<ResponsivePhoneSelectFieldProps> = (
 }) => {
   const [value, setValue] = useControlledState<string | number | undefined>(controlledValue, defaultValue)
   const [country, setCountry] = useControlledState<CountryCode | undefined>(controlledCountry, defaultCountry, onCountryChanged)
-  const isBreakpoint = useMediaQuery(`(max-width: ${responsiveBreakpoint}px)`, { defaultValue: false })
 
   const onInput = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.currentTarget.value)
