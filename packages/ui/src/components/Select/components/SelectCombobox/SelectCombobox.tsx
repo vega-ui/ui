@@ -47,7 +47,7 @@ export const SelectCombobox = forwardRef<HTMLButtonElement, PropsWithChildren<Se
         {startSlot}
         {children
           ? valueSlot ? valueSlot : <SelectValue className={csx(style.value, valueClassName)}>{children}</SelectValue>
-          : <SelectPlaceholder className={csx(style.placeholder, placeholderClassName)}>{placeholder}</SelectPlaceholder>
+          : placeholder ? <SelectPlaceholder className={csx(style.placeholder, placeholderClassName)}>{placeholder}</SelectPlaceholder> : undefined
         }
       </div>
       {(withArrow || endSlot) && (
