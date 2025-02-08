@@ -21,6 +21,7 @@
     display: flex;
     align-items: center;
     gap: var(--spacing-4);
+    color: var(--neutral-1000);
 }
 
 .selectCombobox[data-size='small'] {

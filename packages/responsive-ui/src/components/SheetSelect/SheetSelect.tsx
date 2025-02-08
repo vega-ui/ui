@@ -1,7 +1,7 @@
 'use client';
 
-import { Children, FC, ReactElement, useEffect, useMemo, useState } from 'react';
-import { OptionProps, SelectCombobox, SelectComboboxProps, Sheet, TextField } from '@adara-cs/ui-kit-web';
+import { Children, FC, ReactElement, ReactNode, useMemo, useState } from 'react';
+import { OptionProps, SelectCombobox, SelectComboboxProps, Sheet } from '@adara-cs/ui-kit-web';
 import { useControlledState } from '@adara-cs/hooks';
 import { SheetSelectOptionList } from './components';
 import { SheetSelectProvider } from './providers';
@@ -9,12 +9,13 @@ import style from './style.module.css'
 
 export interface SheetSelectProps extends SelectComboboxProps {
   searchFieldClassName?: string
-  filterable?: boolean
+  searchable?: boolean
   value?: string | number | undefined
   defaultValue?: string | number | undefined
   onSelect?(value: string | number | undefined): void
   children?: ReactElement<OptionProps> | ReactElement<OptionProps>[]
-  filterFieldPlaceholder?: string
+  searchFieldPlaceholder?: string
+  headerSlot?: ReactNode | ReactNode[]
 }
 
 export const SheetSelect: FC<SheetSelectProps> = ({
@@ -26,26 +27,19 @@ export const SheetSelect: FC<SheetSelectProps> = ({
   placeholder,
   valueClassName,
   placeholderClassName,
-  searchFieldClassName,
   endSlot,
   startSlot,
   valueSlot,
+  headerSlot,
   onSelect,
-  filterable = true,
-  filterFieldPlaceholder,
   value: controlledValue,
   defaultValue,
   children,
 }) => {
   const [value, setValue] = useControlledState(controlledValue, defaultValue, onSelect)
-  const [searchValue, setSearchValue] = useState('')
   const [open, setOpen] = useState<boolean | undefined>(false)
 
   const enabled = !disabled && !readOnly
-
-  useEffect(() => {
-    if (!open) setSearchValue('')
-  }, [open]);
 
   const options = useMemo(() =>
       Children.count(children) !== 0
@@ -55,17 +49,6 @@ export const SheetSelect: FC<SheetSelectProps> = ({
         }))
         : [], [children]
   )
-
-  const filteredOptions = useMemo(() => {
-    if (!searchValue) return children
-
-    const childrenArray = Children.toArray(children) as ReactElement<OptionProps>[]
-    const getLabel = (child: ReactElement<OptionProps>) => Array.isArray(child.props.children)
-      ? child.props.children.filter(v => typeof v === 'string').join(' ')
-      : child.props.children as string
-
-    return childrenArray.filter((child) => getLabel(child)?.toLowerCase().includes(searchValue.toLowerCase()))
-  }, [searchValue]) as ReactElement<OptionProps>[]
 
   const onSelectOption = (value: number | string | undefined) => {
     setValue(value)
@@ -81,8 +64,7 @@ export const SheetSelect: FC<SheetSelectProps> = ({
       clickEnabled={enabled}
       open={open}
       onChangeOpen={setOpen}
-      headerSlot={filterable && <TextField className={searchFieldClassName} value={searchValue}
-                                            onChange={(e) => setSearchValue(e.currentTarget.value)} placeholder={filterFieldPlaceholder} />}
+      headerSlot={headerSlot}
       triggerSlot={(ref, props) => (
         <SelectCombobox
           ref={ref}
@@ -106,7 +88,7 @@ export const SheetSelect: FC<SheetSelectProps> = ({
       )}>
       <SheetSelectProvider value={value} onSelect={onSelectOption} size={size}>
         <SheetSelectOptionList>
-          {filteredOptions}
+          {children}
         </SheetSelectOptionList>
       </SheetSelectProvider>
     </Sheet>
