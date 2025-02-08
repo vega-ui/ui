@@ -10,9 +10,7 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {},
-  args: {
-    responsiveBreakpoint: 1024,
-  },
+  args: {},
 } satisfies Meta<typeof ResponsivePhoneSelectField>;
 
 export default meta;

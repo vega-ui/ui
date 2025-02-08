@@ -12,9 +12,7 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {},
-  args: {
-    responsiveBreakpoint: 1024,
-  },
+  args: {},
 } satisfies Meta<typeof ResponsiveSelect>;
 
 export default meta;
