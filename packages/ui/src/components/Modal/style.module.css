@@ -26,10 +26,8 @@
     content: '';
     position: absolute;
     z-index: -1;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    width: 100%;
+    min-height: 100vh;
     background-color: var(--overlay);
 }
 
@@ -39,16 +37,4 @@
 
 .modalOverlay:has(.modal[data-fluid='true']) {
     padding: 0;
-}
-
-.header {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
-    margin-bottom: var(--spacing-10);
-}
-
-.title {
-    flex: 1;
 }
