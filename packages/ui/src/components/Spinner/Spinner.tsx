@@ -3,12 +3,12 @@ import style from './style.module.css'
 import { csx } from '@adara-cs/utils';
 
 export interface SpinnerProps extends HTMLAttributes<HTMLDivElement> {
-  size?: 'small' | 'medium' | 'large';
+  size?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11
   variant?: 'primary' | 'secondary'
 }
 
 export const Spinner = forwardRef<HTMLDivElement, SpinnerProps>(({
-  size = 'medium',
+  size = 3,
   variant = 'primary',
   className,
   ...props

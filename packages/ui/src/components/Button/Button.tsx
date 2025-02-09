@@ -4,6 +4,7 @@ import { csx } from '@adara-cs/utils';
 import { PolymorphicComponentPropWithRef, PolymorphicRef } from '@adara-cs/types';
 import { Spinner } from '../Spinner';
 import style from './style.module.css';
+import { sizeMapper } from './utils';
 
 export type ButtonProps<T extends ElementType> = PolymorphicComponentPropWithRef<T, ButtonBaseProps<T> & {
   disabled?: boolean
@@ -45,7 +46,7 @@ export const Button: ButtonComponent = forwardRef(<T extends ElementType>({
       variant={variant}
       ref={ref}
     >
-      {loading && (spinnerSlot ? spinnerSlot : <Spinner className={csx(style.spinner, spinnerClassName)} aria-hidden variant='secondary' size='small' />)}
+      {loading && (spinnerSlot ? spinnerSlot : <Spinner className={csx(style.spinner, spinnerClassName)} aria-hidden variant='secondary' size={sizeMapper(size)} />)}
       {children}
     </ButtonBase>
   );
