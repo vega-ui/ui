@@ -1,13 +1,17 @@
-import style from './style.module.css';
 import { ButtonBase, ButtonBaseProps } from '../ButtonBase';
 import { ElementType, forwardRef, ReactNode } from 'react';
 import { csx } from '@adara-cs/utils';
 import { PolymorphicComponentPropWithRef, PolymorphicRef } from '@adara-cs/types';
+import { Spinner } from '../Spinner';
+import style from './style.module.css';
 
 export type ButtonProps<T extends ElementType> = PolymorphicComponentPropWithRef<T, ButtonBaseProps<T> & {
   disabled?: boolean
+  loading?: boolean
   type?: 'button' | 'submit' | 'reset'
   size?: 'small' | 'medium' | 'large'
+  spinnerSlot?: ReactNode
+  spinnerClassName?: string
   fullWidth?: boolean
   onClick?: () => void
 }>
@@ -22,6 +26,9 @@ export const Button: ButtonComponent = forwardRef(<T extends ElementType>({
   variant = 'primary',
   appearance = 'fill',
   type = 'button',
+  loading = false,
+  spinnerSlot,
+  spinnerClassName,
   className,
   fullWidth,
   ...props
@@ -33,11 +40,12 @@ export const Button: ButtonComponent = forwardRef(<T extends ElementType>({
       data-full-width={fullWidth}
       className={csx(style.button, className)}
       data-size={size}
-      disabled={disabled}
+      disabled={disabled || loading}
       appearance={appearance}
       variant={variant}
       ref={ref}
     >
+      {loading && (spinnerSlot ? spinnerSlot : <Spinner className={csx(style.spinner, spinnerClassName)} aria-hidden variant='secondary' size='small' />)}
       {children}
     </ButtonBase>
   );

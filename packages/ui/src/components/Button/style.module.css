@@ -16,6 +16,11 @@
     border-radius: var(--radius-3);
 }
 
+.button[data-size='small'] .spinner {
+    --spinner-size: var(--font-size-2);
+    --spinner-width: var(--spacing-1);
+}
+
 .button[data-size='medium'] {
     --button-height: var(--spacing-24);
     font-size: var(--font-size-3);
@@ -23,11 +28,21 @@
     border-radius: var(--radius-3);
 }
 
+.button[data-size='medium'] .spinner {
+    --spinner-size: var(--font-size-3);
+    --spinner-width: var(--spacing-1);
+}
+
 .button[data-size='large'] {
     --button-height: var(--spacing-27);
     font-size: var(--font-size-4);
     padding: var(--spacing-8) var(--spacing-24);
     border-radius: var(--radius-4);
+}
+
+.button[data-size='large'] .spinner {
+    --spinner-size: var(--font-size-4);
+    --spinner-width: var(--spacing-1);
 }
 
 .button[data-full-width='true'] {

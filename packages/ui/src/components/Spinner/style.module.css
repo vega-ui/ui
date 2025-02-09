@@ -1,0 +1,42 @@
+.spinner {
+    --spinner-color: var(--primary-accent-7);
+    --spinner-width: 8px;
+    --spinner-size: 56px;
+
+    width: var(--spinner-size);
+    height: var(--spinner-size);
+    border-radius: 50%;
+    background: radial-gradient(farthest-side, var(--spinner-color) 94%, #0000) top/var(--spinner-width) var(--spinner-width) no-repeat,
+    conic-gradient(#0000 30%, var(--spinner-color));
+    mask: radial-gradient(farthest-side, #0000 calc(100% - var(--spinner-width)), #000 0);
+    animation: spinner-loading 1s infinite linear;
+}
+
+.spinner[data-size='small'] {
+    --spinner-width: 3px;
+    --spinner-size: 20px;
+}
+
+.spinner[data-size='medium'] {
+    --spinner-width: 6px;
+    --spinner-size: 48px;
+}
+
+.spinner[data-size='large'] {
+    --spinner-width: 8px;
+    --spinner-size: 64px;
+}
+
+.spinner[data-variant='primary'] {
+    --spinner-color: var(--primary-accent-7);
+}
+
+.spinner[data-variant='secondary'] {
+    --spinner-color: var(--secondary-accent-7);
+}
+
+@keyframes spinner-loading {
+    100% {
+        transform: rotate(1turn);
+    }
+}
