@@ -1,5 +1,15 @@
 # @adara-cs/ui-kit-web
 
+## 2.3.5
+
+### Patch Changes
+
+- 9183fa3: Changed min width for modal
+  - @adara-cs/hooks@2.3.5
+  - @adara-cs/icons@2.3.5
+  - @adara-cs/types@2.3.5
+  - @adara-cs/utils@2.3.5
+
 ## 2.3.4
 
 ### Patch Changes
