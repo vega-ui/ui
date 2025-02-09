@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, ReactElement, ReactNode, Ref, useState } from 'react';
+import { FC, ReactElement, ReactNode, Ref } from 'react';
 import { csx } from '@adara-cs/utils';
 import styles from './style.module.css'
 import {
