@@ -1,5 +1,15 @@
 # @adara-cs/ui-kit-web
 
+## 2.3.4
+
+### Patch Changes
+
+- 0962903: Fixed modal provider and controlled hooks
+  - @adara-cs/hooks@2.3.4
+  - @adara-cs/icons@2.3.4
+  - @adara-cs/types@2.3.4
+  - @adara-cs/utils@2.3.4
+
 ## 2.3.3
 
 ### Patch Changes
