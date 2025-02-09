@@ -1,0 +1,11 @@
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: var(--spacing-10);
+}
+
+.title {
+    flex: 1;
+}

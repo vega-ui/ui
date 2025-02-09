@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, ReactElement, ReactNode, Ref, useId, useState } from 'react';
+import { FC, ReactElement, ReactNode, Ref, useState } from 'react';
 import { csx } from '@adara-cs/utils';
 import styles from './style.module.css'
 import {
@@ -9,8 +9,7 @@ import {
   useFloating,
   useInteractions, useRole, useTransitionStyles
 } from '@floating-ui/react';
-import { Heading } from '../Heading';
-import { IconButton } from '../IconButton';
+import { ModalProvider } from './providers';
 
 export interface ModalProps {
   className?: string
@@ -31,8 +30,6 @@ export const Modal: FC<ModalProps> = ({
   className,
   overlayClassName,
   fluid = false,
-  withClose = true,
-  title,
   open: controlledOpen,
   onOpenChange,
   children
@@ -46,8 +43,6 @@ export const Modal: FC<ModalProps> = ({
     open: isOpenModal,
     onOpenChange: setOpenModal,
   });
-
-  const headingId = useId();
 
   const click = useClick(context);
   const role = useRole(context );
@@ -79,30 +74,23 @@ export const Modal: FC<ModalProps> = ({
     <>
       {triggerSlot?.(refs.setReference, getReferenceProps())}
       <FloatingPortal>
-        {isMounted && (
-          <FloatingOverlay data-blurred={blurredOverlay} className={csx(styles.modalOverlay, overlayClassName)} lockScroll>
-            <FloatingFocusManager context={context}>
-              <div
-                data-fluid={fluid}
-                style={{...transitionStyles}}
-                className={csx(styles.modal, className)}
-                ref={refs.setFloating}
-                aria-labelledby={headingId}
-                {...getFloatingProps()}
-              >
-                {(withClose || title) && (
-                  <header className={styles.header}>
-                    {title && <Heading as='h2' id={headingId} className={styles.title} size={6}>{title}</Heading>}
-                    {withClose &&
-                        <IconButton onClick={() => setOpenModal(false)} name='close' size='small'
-                                    variant='secondary' appearance='transparent'/>}
-                  </header>
-                )}
-                {children}
-              </div>
-            </FloatingFocusManager>
-          </FloatingOverlay>
-        )}
+        <ModalProvider open={isOpenModal} changeOpen={setOpenModal}>
+          {isMounted && (
+            <FloatingOverlay data-blurred={blurredOverlay} className={csx(styles.modalOverlay, overlayClassName)} lockScroll>
+              <FloatingFocusManager context={context}>
+                <div
+                  data-fluid={fluid}
+                  style={{...transitionStyles}}
+                  className={csx(styles.modal, className)}
+                  ref={refs.setFloating}
+                  {...getFloatingProps()}
+                >
+                  {children}
+                </div>
+              </FloatingFocusManager>
+            </FloatingOverlay>
+          )}
+        </ModalProvider>
       </FloatingPortal>
     </>
   )
