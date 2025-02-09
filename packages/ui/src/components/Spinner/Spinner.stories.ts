@@ -10,7 +10,9 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {},
-  args: {},
+  args: {
+    size: 7
+  },
 } satisfies Meta<typeof Spinner>;
 
 export default meta;
