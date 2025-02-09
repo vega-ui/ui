@@ -22,6 +22,19 @@ export const Primary: Story = {
   args: {
     children: 'Кнопка',
   },
+  argTypes: {
+    variant: {
+      control: 'radio',
+      options: ['primary', 'secondary']
+    },
+    size: {
+      control: 'radio',
+      options: ['small', 'medium', 'large']
+    },
+    loading: {
+      control: 'boolean',
+    },
+  }
 };
 
 export const PrimaryAsLink: Story = {
