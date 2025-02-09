@@ -10,6 +10,7 @@ import {
   useInteractions, useRole, useTransitionStyles
 } from '@floating-ui/react';
 import { ModalProvider } from './providers';
+import { useControlledState } from '@adara-cs/hooks';
 
 export interface ModalProps {
   className?: string
@@ -34,14 +35,11 @@ export const Modal: FC<ModalProps> = ({
   onOpenChange,
   children
 }) => {
-  const [open, setOpen] = useState(controlledOpen ?? false);
-
-  const isOpenModal = controlledOpen ?? open;
-  const setOpenModal = onOpenChange ?? setOpen;
+  const [open, setOpen] = useControlledState(controlledOpen, false, onOpenChange)
 
   const { refs, context } = useFloating({
-    open: isOpenModal,
-    onOpenChange: setOpenModal,
+    open,
+    onOpenChange: setOpen,
   });
 
   const click = useClick(context);
@@ -74,7 +72,7 @@ export const Modal: FC<ModalProps> = ({
     <>
       {triggerSlot?.(refs.setReference, getReferenceProps())}
       <FloatingPortal>
-        <ModalProvider open={isOpenModal} changeOpen={setOpenModal}>
+        <ModalProvider open={open} changeOpen={setOpen}>
           {isMounted && (
             <FloatingOverlay data-blurred={blurredOverlay} className={csx(styles.modalOverlay, overlayClassName)} lockScroll>
               <FloatingFocusManager context={context}>
