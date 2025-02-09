@@ -1,5 +1,16 @@
 # @adara-cs/ui-kit-web
 
+## 2.3.3
+
+### Patch Changes
+
+- 7cee615: Separated modal to modal header and bare modal. Deleted props withClose and title from modal component, added these props to ModalHeader
+- d10f482: added spinner component & loading prop to button
+  - @adara-cs/hooks@2.3.3
+  - @adara-cs/icons@2.3.3
+  - @adara-cs/types@2.3.3
+  - @adara-cs/utils@2.3.3
+
 ## 2.3.2
 
 ### Patch Changes
