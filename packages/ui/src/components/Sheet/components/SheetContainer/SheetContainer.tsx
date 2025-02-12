@@ -1,8 +1,8 @@
 'use client';
 import {
-  forwardRef,
+  FC,
   HTMLAttributes,
-  PropsWithChildren,
+  PropsWithChildren, Ref,
 } from 'react';
 import { csx } from '@adara-cs/utils';
 import styles from './style.module.css'
@@ -15,9 +15,10 @@ export interface SheetContainerProps extends HTMLAttributes<HTMLDivElement> {
   className?: string
   offset?: number
   shadow?: boolean
+  ref?: Ref<HTMLDivElement>
 }
 
-export const SheetContainer = forwardRef<HTMLDivElement, PropsWithChildren<SheetContainerProps>>(({
+export const SheetContainer: FC<PropsWithChildren<SheetContainerProps>> = ({
   className,
   dragging,
   status,
@@ -25,8 +26,9 @@ export const SheetContainer = forwardRef<HTMLDivElement, PropsWithChildren<Sheet
   shadow,
   children,
   style,
+  ref,
   ...props
-}, ref) => {
+}) => {
   return (
     <div
       data-status={status}
@@ -40,4 +42,4 @@ export const SheetContainer = forwardRef<HTMLDivElement, PropsWithChildren<Sheet
       {children}
     </div>
   )
-})
+}

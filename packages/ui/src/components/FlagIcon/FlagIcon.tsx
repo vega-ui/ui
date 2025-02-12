@@ -1,5 +1,5 @@
 'use client';
-import { forwardRef } from 'react';
+import { FC, Ref } from 'react';
 import style from './style.module.css'
 import { csx } from '@adara-cs/utils';
 import { FlagIconName, getFlagIcon } from './utils';
@@ -12,9 +12,10 @@ export interface FlagIconProps {
   height?: number
   'aria-label'?: string
   'aria-labelledby'?: string
+  ref?: Ref<SVGSVGElement>
 }
 
-export const FlagIcon = forwardRef<SVGSVGElement, FlagIconProps>(({
+export const FlagIcon: FC<FlagIconProps> = ({
   size = 'small',
   'aria-label': ariaLabel,
   'aria-labelledby': ariaLabelledby,
@@ -22,8 +23,9 @@ export const FlagIcon = forwardRef<SVGSVGElement, FlagIconProps>(({
   width,
   height,
   className,
+  ref,
   ...props
-}, ref) => {
+}) => {
   const Component = getFlagIcon(name);
 
   return (
@@ -41,4 +43,4 @@ export const FlagIcon = forwardRef<SVGSVGElement, FlagIconProps>(({
       ref={ref}
     />
   )
-})
+}

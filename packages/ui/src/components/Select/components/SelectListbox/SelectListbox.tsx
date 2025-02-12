@@ -1,4 +1,4 @@
-import { forwardRef, HTMLAttributes, ReactElement } from 'react'
+import { FC, HTMLAttributes, ReactElement, Ref } from 'react'
 import { csx } from '@adara-cs/utils';
 import style from './style.module.css';
 import { OptionProps } from '../../../Option';
@@ -7,14 +7,16 @@ export interface SelectListboxProps extends Omit<HTMLAttributes<HTMLDivElement>,
   fullWidth?: boolean
   className?: string
   children?: ReactElement<OptionProps> | ReactElement<OptionProps>[]
+  ref?: Ref<HTMLDivElement>
 }
 
-export const SelectListbox = forwardRef<HTMLDivElement, SelectListboxProps>(({
+export const SelectListbox: FC<SelectListboxProps> = ({
   fullWidth,
   className,
   children,
+  ref,
   ...props
-}, ref) => {
+}) => {
   return (
     <div
       ref={ref}
@@ -26,4 +28,4 @@ export const SelectListbox = forwardRef<HTMLDivElement, SelectListboxProps>(({
       {children}
     </div>
   )
-})
+}

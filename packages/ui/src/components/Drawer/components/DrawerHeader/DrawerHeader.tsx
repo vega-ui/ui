@@ -1,8 +1,7 @@
 'use client';
 import {
-  forwardRef,
-  HTMLAttributes,
-  PropsWithChildren,
+  FC,
+  HTMLAttributes, Ref,
 } from 'react';
 import { csx } from '@adara-cs/utils';
 import style from './style.module.css'
@@ -13,14 +12,16 @@ import { useDrawerContext } from '../../hooks';
 export interface DrawerHeaderProps extends HTMLAttributes<HTMLDivElement> {
   title?: string
   className?: string
+  ref?: Ref<HTMLDivElement>
 }
 
-export const DrawerHeader = forwardRef<HTMLDivElement, PropsWithChildren<DrawerHeaderProps>>(({
+export const DrawerHeader: FC<DrawerHeaderProps> = ({
   className,
   title,
   children,
+  ref,
   ...props
-}, ref) => {
+}) => {
   const { onChangeOpen } = useDrawerContext()
 
   return (
@@ -34,4 +35,4 @@ export const DrawerHeader = forwardRef<HTMLDivElement, PropsWithChildren<DrawerH
       {children}
     </div>
   )
-})
+}

@@ -1,18 +1,21 @@
 'use client';
-import { DetailedHTMLProps, forwardRef, HTMLAttributes, PropsWithChildren } from 'react';
+import { DetailedHTMLProps, FC, HTMLAttributes, Ref } from 'react';
 import style from './style.module.css';
 import { csx } from '@adara-cs/utils';
 import { CollapsibleContent } from '../../../Collapsible';
 
-type AccordionContentProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>
+interface AccordionContentProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+  ref?: Ref<HTMLDivElement>
+}
 
-export const AccordionContent = forwardRef<HTMLDivElement, PropsWithChildren<AccordionContentProps>>(({
-  className,
-  children,
-}, ref) => {
+export const AccordionContent: FC<AccordionContentProps> = ({
+ className,
+ children,
+  ref,
+}) => {
   return (
     <CollapsibleContent className={csx(style.content, className)} ref={ref}>
       {children}
     </CollapsibleContent>
   )
-})
+}

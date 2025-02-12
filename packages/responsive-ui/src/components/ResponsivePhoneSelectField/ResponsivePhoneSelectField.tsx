@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEvent, FC } from 'react';
+import { ChangeEvent, FC, Ref } from 'react';
 import { PhoneSelectFieldProps, PhoneSelectField } from '@adara-cs/ui-kit-web';
 import { useControlledState } from '@adara-cs/hooks';
 import { SheetPhoneSelectField, SheetPhoneSelectFieldProps } from '../SheetPhoneSelectField';
@@ -11,6 +11,7 @@ export interface ResponsivePhoneSelectFieldProps extends Omit<PhoneSelectFieldPr
   sheetPhoneSelectFieldClassName?: string
   phoneSelectFieldClassName?: string
   onCountryChanged?: (country: CountryCode | undefined) => void
+  ref?: Ref<HTMLInputElement>
 }
 
 export const ResponsivePhoneSelectField: FC<ResponsivePhoneSelectFieldProps> = ({
@@ -30,6 +31,8 @@ export const ResponsivePhoneSelectField: FC<ResponsivePhoneSelectFieldProps> = (
   onInput: onInputValue,
   value: controlledValue,
   countries,
+  ref,
+  ...props
 }) => {
   const [value, setValue] = useControlledState<string | number | undefined>(controlledValue, defaultValue)
   const [country, setCountry] = useControlledState<CountryCode | undefined>(controlledCountry, defaultCountry, onCountryChanged)
@@ -54,6 +57,8 @@ export const ResponsivePhoneSelectField: FC<ResponsivePhoneSelectFieldProps> = (
           endSlot={endSlot}
           startSlot={startSlot}
           placeholder={placeholder}
+          ref={ref}
+          {...props}
         />
       ) : (
         <PhoneSelectField
@@ -69,6 +74,8 @@ export const ResponsivePhoneSelectField: FC<ResponsivePhoneSelectFieldProps> = (
           startSlot={startSlot}
           placeholder={placeholder}
           value={value}
+          ref={ref}
+          {...props}
         />
       )}
     </>

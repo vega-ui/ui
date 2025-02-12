@@ -1,5 +1,5 @@
 'use client';
-import { forwardRef, PropsWithChildren, TableHTMLAttributes } from 'react';
+import { FC, Ref, TableHTMLAttributes } from 'react';
 import style from './style.module.css'
 import { TableProvider } from './providers';
 import { csx } from '@adara-cs/utils';
@@ -11,9 +11,10 @@ export interface TableProps extends TableHTMLAttributes<HTMLTableElement> {
   edgePadded?: boolean
   fullWidth?: boolean
   fullHeight?: boolean
+  ref?: Ref<HTMLTableElement>
 }
 
-export const Table = forwardRef<HTMLTableElement, PropsWithChildren<TableProps>>(({
+export const Table: FC<TableProps> = ({
   dataAlign = 'between',
   fullHeight,
   fullWidth,
@@ -21,8 +22,9 @@ export const Table = forwardRef<HTMLTableElement, PropsWithChildren<TableProps>>
   className,
   containerClassName,
   children,
+  ref,
   ...props
-}, ref) => {
+}) => {
   return (
     <TableProvider dataAlign={dataAlign} edgePadded={edgePadded}>
       <div className={csx(style.tableContainer, containerClassName)}>
@@ -33,4 +35,4 @@ export const Table = forwardRef<HTMLTableElement, PropsWithChildren<TableProps>>
       </div>
     </TableProvider>
   )
-})
+}

@@ -1,5 +1,5 @@
 'use client';
-import { forwardRef, PropsWithChildren } from 'react';
+import { FC, Ref } from 'react';
 import { Card, CardProps } from '../Card';
 import { Checkbox, CheckboxProps } from '../Checkbox';
 import { csx } from '@adara-cs/utils';
@@ -10,9 +10,10 @@ export interface CheckboxCardProps extends CardProps, Pick<CheckboxProps, 'check
   wrapperClassName?: string
   disabled?: boolean
   orientation?: 'horizontal' | 'vertical'
+  ref?: Ref<HTMLInputElement>
 }
 
-export const CheckboxCard = forwardRef<HTMLElement, PropsWithChildren<CheckboxCardProps>>(({
+export const CheckboxCard: FC<CheckboxCardProps> = ({
   children,
   size = 'small',
   orientation = 'vertical',
@@ -23,8 +24,9 @@ export const CheckboxCard = forwardRef<HTMLElement, PropsWithChildren<CheckboxCa
   indeterminate,
   value,
   disabled,
+  ref,
   ...props
-}, ref) => {
+}) => {
   return (
     <label className={csx(style.checkboxCardWrapper, wrapperClassName)}>
       <Card ref={ref} data-orientation={orientation} className={csx(className, style.checkboxCard)} size={size} {...props}>
@@ -35,4 +37,4 @@ export const CheckboxCard = forwardRef<HTMLElement, PropsWithChildren<CheckboxCa
       </Card>
     </label>
   )
-})
+}

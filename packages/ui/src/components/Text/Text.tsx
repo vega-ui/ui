@@ -1,7 +1,7 @@
-import { ElementType, forwardRef, ReactNode } from 'react';
+import { ElementType, ReactNode } from 'react';
 
 import { csx } from '@adara-cs/utils';
-import { PolymorphicComponentPropWithRef, PolymorphicRef } from '@adara-cs/types';
+import { PolymorphicComponentPropWithRef } from '@adara-cs/types';
 import style from './style.module.css'
 
 export type TextSize = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11
@@ -15,14 +15,15 @@ export type TextProps<T extends ElementType = 'span'> = PolymorphicComponentProp
 
 type TextComponent = <T extends ElementType = 'span'>(props: TextProps<T>) => ReactNode | null;
 
-export const Text: TextComponent = forwardRef(<T extends ElementType>({
-  as, 
-  className, 
-  size = 3, 
-  fontWeight, 
-  children, 
-  ...props 
-}: TextProps<T>, ref: PolymorphicRef<T>) => {
+export const Text: TextComponent = <T extends ElementType>({
+  as,
+  className,
+  size = 3,
+  fontWeight,
+  children,
+  ref,
+  ...props
+}: TextProps<T>) => {
   const Element = as || 'span';
 
   return (
@@ -30,4 +31,4 @@ export const Text: TextComponent = forwardRef(<T extends ElementType>({
       {children}
     </Element>
   );
-})
+}

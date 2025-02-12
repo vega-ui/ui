@@ -1,21 +1,22 @@
 'use client';
 import {
-  forwardRef,
-  HTMLAttributes,
-  PropsWithChildren,
+  FC,
+  HTMLAttributes, Ref,
 } from 'react';
 import { csx } from '@adara-cs/utils';
 import style from './style.module.css'
 
 export interface SheetHeaderProps extends HTMLAttributes<HTMLDivElement> {
   className?: string
+  ref?: Ref<HTMLDivElement>
 }
 
-export const SheetHeader = forwardRef<HTMLDivElement, PropsWithChildren<SheetHeaderProps>>(({
+export const SheetHeader: FC<SheetHeaderProps> = ({
   className,
   children,
+  ref,
   ...props
-}, ref) => {
+}) => {
   return (
     <div
       ref={ref}
@@ -25,4 +26,4 @@ export const SheetHeader = forwardRef<HTMLDivElement, PropsWithChildren<SheetHea
       {children}
     </div>
   )
-})
+}

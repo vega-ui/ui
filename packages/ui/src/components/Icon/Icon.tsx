@@ -1,5 +1,5 @@
 'use client';
-import { forwardRef } from 'react';
+import { FC, Ref } from 'react';
 import style from './style.module.css'
 import { csx } from '@adara-cs/utils';
 import { IconName, getIcon } from './utils';
@@ -12,19 +12,21 @@ export interface IconProps {
   height?: number
   'aria-label'?: string
   'aria-labelledby'?: string
+  ref?: Ref<SVGSVGElement>
 }
 
 /** UI component for render svg icons */
-export const Icon = forwardRef<SVGSVGElement, IconProps>(({
+export const Icon: FC<IconProps> = ({
   size = 'small',
   'aria-label': ariaLabel,
   'aria-labelledby': ariaLabelledby,
+  ref,
   name,
   width,
   height,
   className,
   ...props
-}, ref) => {
+}) => {
   const Component = getIcon(name as IconName);
 
   return (
@@ -39,8 +41,8 @@ export const Icon = forwardRef<SVGSVGElement, IconProps>(({
       data-size={width || height ? undefined : size}
       width={width}
       height={height}
-      {...props}
       ref={ref}
+      {...props}
     />
   )
-})
+}

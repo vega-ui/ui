@@ -1,7 +1,7 @@
 import { ButtonBase, ButtonBaseProps } from '../ButtonBase';
-import { ElementType, forwardRef, ReactNode } from 'react';
+import { ElementType, ReactNode, Ref } from 'react';
 import { csx } from '@adara-cs/utils';
-import { PolymorphicComponentPropWithRef, PolymorphicRef } from '@adara-cs/types';
+import { PolymorphicComponentPropWithRef } from '@adara-cs/types';
 import { Spinner } from '../Spinner';
 import style from './style.module.css';
 import { sizeMapper } from './utils';
@@ -20,20 +20,21 @@ export type ButtonProps<T extends ElementType> = PolymorphicComponentPropWithRef
 type ButtonComponent = <T extends ElementType = 'button'>(props: ButtonProps<T>) => ReactNode | null;
 
 /** Primary UI component for user interaction */
-export const Button: ButtonComponent = forwardRef(<T extends ElementType>({
-  size = 'medium',
-  disabled,
-  children,
-  variant = 'primary',
-  appearance = 'fill',
-  type = 'button',
-  loading = false,
-  spinnerSlot,
-  spinnerClassName,
-  className,
-  fullWidth,
-  ...props
-}: ButtonProps<T>, ref: PolymorphicRef<T>) => {
+export const Button: ButtonComponent = <T extends ElementType>({
+   size = 'medium',
+   disabled,
+   children,
+   variant = 'primary',
+   appearance = 'fill',
+   type = 'button',
+   loading = false,
+   spinnerSlot,
+   spinnerClassName,
+   className,
+   fullWidth,
+   ref,
+   ...props
+}: ButtonProps<T>) => {
   return (
     <ButtonBase
       type={type}
@@ -44,10 +45,10 @@ export const Button: ButtonComponent = forwardRef(<T extends ElementType>({
       disabled={disabled || loading}
       appearance={appearance}
       variant={variant}
-      ref={ref}
+      ref={ref as Ref<never>}
     >
       {loading && (spinnerSlot ? spinnerSlot : <Spinner className={csx(style.spinner, spinnerClassName)} aria-hidden variant='secondary' size={sizeMapper(size)} />)}
       {children}
     </ButtonBase>
   );
-});
+}

@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { FC, Ref } from 'react';
 import { TextField, TextFieldProps } from '../TextField';
 import { mergeRefs } from '@adara-cs/utils';
 import { useMaskito } from '@maskito/react'
@@ -10,16 +10,18 @@ export interface PhoneFieldProps extends TextFieldProps {
   country?: CountryCode
   defaultValue?: string
   strictMask?: boolean
+  ref?: Ref<HTMLInputElement>
 }
 
-export const PhoneField = forwardRef<HTMLInputElement, PhoneFieldProps>(({
+export const PhoneField: FC<PhoneFieldProps> = ({
   className,
   disabled,
   size = 'medium',
   country,
   strictMask = true,
+  ref,
   ...props
-}, ref) => {
+}) => {
   const inputRef = useMaskito({
     options: maskitoPhoneOptionsGenerator({
       metadata,
@@ -39,4 +41,4 @@ export const PhoneField = forwardRef<HTMLInputElement, PhoneFieldProps>(({
       {...props}
     />
   )
-})
+}

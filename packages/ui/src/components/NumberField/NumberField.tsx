@@ -1,5 +1,6 @@
 import {
-  forwardRef,
+  FC,
+  Ref,
   useRef,
 } from 'react';
 import { TextField, TextFieldProps } from '../TextField';
@@ -13,17 +14,19 @@ export interface NumberFieldProps extends TextFieldProps {
   step?: number
   min?: number
   max?: number
+  ref?: Ref<HTMLInputElement>
 }
 
-export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(({
+export const NumberField: FC<NumberFieldProps> = ({
   className,
   disabled,
   size = 'medium',
   min = 0,
   max,
   step,
+  ref,
   ...props
-}, ref) => {
+}) => {
   const innerInputRef = useRef<HTMLInputElement>(null)
 
   const inputRef = useMaskito({
@@ -62,4 +65,4 @@ export const NumberField = forwardRef<HTMLInputElement, NumberFieldProps>(({
                   appearance='transparent' name='plus'/>
     </div>
   )
-})
+}

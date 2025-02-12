@@ -1,4 +1,4 @@
-import { DetailedHTMLProps, forwardRef, HTMLAttributes, ReactNode } from 'react';
+import { DetailedHTMLProps, FC, HTMLAttributes, ReactNode } from 'react';
 import style from './style.module.css'
 import { csx } from '@adara-cs/utils';
 import { Icon, IconProps } from '../Icon';
@@ -14,15 +14,16 @@ export interface AlertProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElem
   variant?: 'success' | 'error' | 'warning' | 'info'
 }
 
-export const Alert = forwardRef<HTMLDivElement, AlertProps>(({
+export const Alert: FC<AlertProps> = ({
   variant = 'info',
   endSlot,
   title,
   icon,
   className,
   children,
+  ref,
   ...props
-}, ref) => {
+}) => {
   return (
     <div ref={ref} data-variant={variant} className={csx(style.alert, className)} {...props}>
       {icon !== false && <Icon className={style.icon} name={icon ?? iconMapper[variant]} size='medium' />}
@@ -33,4 +34,4 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(({
       {endSlot}
     </div>
   )
-})
+}

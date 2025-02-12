@@ -1,9 +1,8 @@
 'use client';
 import {
   CSSProperties,
-  forwardRef,
-  HTMLAttributes,
-  PropsWithChildren,
+  FC,
+  HTMLAttributes, Ref,
 } from 'react';
 import { csx } from '@adara-cs/utils';
 import style from './style.module.css'
@@ -12,14 +11,16 @@ export interface DrawerContentProps extends HTMLAttributes<HTMLDivElement> {
   scrollable?: boolean
   touchAction?: CSSProperties['touchAction']
   className?: string
+  ref?: Ref<HTMLDivElement>
 }
 
-export const DrawerContent = forwardRef<HTMLDivElement, PropsWithChildren<DrawerContentProps>>(({
+export const DrawerContent: FC<DrawerContentProps> = ({
   className,
   scrollable,
   children,
+  ref,
   ...props
-}, ref) => {
+}) => {
   return (
     <div
       ref={ref}
@@ -30,4 +31,4 @@ export const DrawerContent = forwardRef<HTMLDivElement, PropsWithChildren<Drawer
       {children}
     </div>
   )
-})
+}

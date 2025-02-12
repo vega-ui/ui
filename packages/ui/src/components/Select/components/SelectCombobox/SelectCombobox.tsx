@@ -1,4 +1,4 @@
-import { forwardRef, PropsWithChildren, ReactNode } from 'react';
+import { FC, PropsWithChildren, ReactNode, Ref } from 'react';
 import { csx } from '@adara-cs/utils';
 import { SelectValue } from '../SelectValue';
 import style from './style.module.css';
@@ -20,9 +20,10 @@ export interface SelectComboboxProps {
   size?: 'small' | 'medium' | 'large'
   withArrow?: boolean
   open?: boolean
+  ref?: Ref<HTMLButtonElement>
 }
 
-export const SelectCombobox = forwardRef<HTMLButtonElement, PropsWithChildren<SelectComboboxProps>>(({
+export const SelectCombobox: FC<PropsWithChildren<SelectComboboxProps>> = ({
   size = 'medium',
   open,
   className,
@@ -37,8 +38,9 @@ export const SelectCombobox = forwardRef<HTMLButtonElement, PropsWithChildren<Se
   withArrow = true,
   placeholder,
   children,
+  ref,
   ...props
-}, ref) => {
+}) => {
   return (
     <button role='combobox' type='button' data-size={size} data-variant={variant} data-state={open ? 'open' : 'close'}
             aria-disabled={disabled} aria-readonly={readOnly} tabIndex={0} ref={ref}
@@ -58,4 +60,4 @@ export const SelectCombobox = forwardRef<HTMLButtonElement, PropsWithChildren<Se
       )}
     </button>
   )
-})
+}

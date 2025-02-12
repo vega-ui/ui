@@ -8,7 +8,7 @@ import {
   UIEvent,
   useState,
   useRef,
-  useMemo, Ref, ReactElement, forwardRef,
+  useMemo, Ref, ReactElement,
 } from 'react';
 import {
   FloatingFocusManager,
@@ -67,9 +67,10 @@ export interface SheetProps extends HTMLAttributes<HTMLElement> {
   children?: ReactNode | ReactNode[]
   headerSlot?: ReactNode | ReactNode[]
   triggerSlot?: (ref: Ref<never>, props?: Record<string, unknown>) => ReactElement
+  ref?: Ref<HTMLDivElement>
 }
 
-export const Sheet: FC<SheetProps> = forwardRef(({
+export const Sheet: FC<SheetProps> = ({
   children,
   triggerSlot,
   snapPoints,
@@ -90,8 +91,9 @@ export const Sheet: FC<SheetProps> = forwardRef(({
   headerSlot,
   clickEnabled = true,
   className,
+  ref,
   ...props
-}, ref) => {
+}) => {
   const contentRef = useRef<HTMLDivElement>(null)
 
   const [isOpen, setIsOpen] = useControlledState(controlledOpen, false, controlledOnChangeOpen)
@@ -315,4 +317,4 @@ export const Sheet: FC<SheetProps> = forwardRef(({
       </FloatingPortal>
     </>
   )
-})
+}
