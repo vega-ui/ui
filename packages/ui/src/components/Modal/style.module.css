@@ -26,6 +26,9 @@
     content: '';
     position: absolute;
     z-index: -1;
+    top: 0;
+    left: 0;
+    right: 0;
     width: 100%;
     min-height: 100vh;
     background-color: var(--overlay);
