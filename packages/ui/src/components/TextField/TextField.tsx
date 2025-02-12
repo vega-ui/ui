@@ -1,5 +1,6 @@
 import {
-  forwardRef, InputHTMLAttributes, ReactNode,
+  FC,
+  InputHTMLAttributes, ReactNode, Ref,
 } from 'react';
 import style from './style.module.css'
 import { csx } from '@adara-cs/utils';
@@ -16,9 +17,10 @@ export interface TextFieldProps extends Omit<InputHTMLAttributes<HTMLInputElemen
   startSlot?: ReactNode
   endSlot?: ReactNode
   error?: boolean
+  ref?: Ref<HTMLInputElement>
 }
 
-export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(({
+export const TextField: FC<TextFieldProps> = ({
   className,
   wrapperClassName,
   startSlotClassName,
@@ -28,8 +30,9 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(({
   placeholder,
   error,
   size = 'medium',
+  ref,
   ...props
-}, ref) => {
+}) => {
   return (
     <div data-size={size} className={csx(style.inputWrapper, wrapperClassName)}>
       {startSlot && (
@@ -45,4 +48,4 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(({
       )}
     </div>
   )
-})
+}

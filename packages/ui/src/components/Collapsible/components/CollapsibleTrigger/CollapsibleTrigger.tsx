@@ -1,8 +1,8 @@
 'use client';
-import { ElementType, forwardRef, ReactNode } from 'react';
+import { ElementType, ReactNode } from 'react';
 import { csx } from '@adara-cs/utils';
 import style from './style.module.css';
-import { PolymorphicComponentPropWithRef, PolymorphicRef } from '@adara-cs/types';
+import { PolymorphicComponentPropWithRef } from '@adara-cs/types';
 import { useCollapsibleContext } from '../../hooks';
 
 export type CollapsibleTriggerProps<T extends ElementType> = PolymorphicComponentPropWithRef<T, {
@@ -12,13 +12,14 @@ export type CollapsibleTriggerProps<T extends ElementType> = PolymorphicComponen
 
 type CollapsibleTriggerComponent = <T extends ElementType = 'button'>(props: CollapsibleTriggerProps<T>) => ReactNode | null;
 
-export const CollapsibleTrigger: CollapsibleTriggerComponent = forwardRef(<T extends ElementType>({
+export const CollapsibleTrigger: CollapsibleTriggerComponent = <T extends ElementType>({
   className,
   onClick: _onClick,
   children,
   as,
+  ref,
   ...props
-}: CollapsibleTriggerProps<T>, ref: PolymorphicRef<T>) => {
+}: CollapsibleTriggerProps<T>) => {
   const Element = as || 'button';
 
   const { opened, open, close } = useCollapsibleContext()
@@ -32,8 +33,8 @@ export const CollapsibleTrigger: CollapsibleTriggerComponent = forwardRef(<T ext
 
   return (
     <Element type={Element === 'button' ? 'button' : undefined} aria-expanded={opened} data-open={opened} onClick={onClick} ref={ref}
-            className={csx(style.triggerButton, className)} {...props}>
+             className={csx(style.triggerButton, className)} {...props}>
       {children}
     </Element>
   )
-})
+}

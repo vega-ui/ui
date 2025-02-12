@@ -1,6 +1,7 @@
 import {
+  FC,
   FormEvent,
-  forwardRef, ReactNode, useRef,
+  ReactNode, Ref, useRef,
 } from 'react';
 import { TextFieldProps } from '../TextField';
 import style from './style.module.css'
@@ -25,9 +26,10 @@ export interface PhoneSelectFieldProps extends TextFieldProps {
   fullWidthListbox?: boolean
   onCountryChanged?: (country: CountryCode) => void
   selectSlot?: ReactNode | ReactNode[]
+  ref?: Ref<HTMLInputElement>
 }
 
-export const PhoneSelectField = forwardRef<HTMLInputElement, PhoneSelectFieldProps>(({
+export const PhoneSelectField: FC<PhoneSelectFieldProps> = ({
   className,
   disabled,
   size = 'medium',
@@ -40,11 +42,12 @@ export const PhoneSelectField = forwardRef<HTMLInputElement, PhoneSelectFieldPro
   onCountryChanged,
   selectSlot,
   fullWidthListbox = true,
+  ref,
   ...props
-}, ref) => {
+}) => {
   const [countryCode, setCountryCode] = useControlledState<CountryCode>(country, defaultCountry, onCountryChanged)
   const [inputValue, setInputValue] = useControlledState(value, defaultValue ?? `+${callingCodes['RU']} `)
-  const innerRef = useRef<HTMLInputElement>()
+  const innerRef = useRef<HTMLInputElement>(null)
 
   const onSelect = (value: CountryCode) => {
     setCountryCode(value)
@@ -77,8 +80,8 @@ export const PhoneSelectField = forwardRef<HTMLInputElement, PhoneSelectFieldPro
       startSlot={
         selectSlot
           ? (<PhoneSelectProvider onSelect={onSelect} value={countryCode} size={size}>
-              {selectSlot}
-            </PhoneSelectProvider>)
+            {selectSlot}
+          </PhoneSelectProvider>)
           : <PhoneSelect size={size} fullWidthListbox={fullWidthListbox} onSelect={onSelect} value={countryCode} countries={countries} />
       }
       startSlotClassName={style.startSlot}
@@ -89,4 +92,4 @@ export const PhoneSelectField = forwardRef<HTMLInputElement, PhoneSelectFieldPro
       disabled={disabled}
     />
   )
-})
+}

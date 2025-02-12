@@ -1,5 +1,5 @@
 'use client';
-import { forwardRef, ReactElement, ReactNode, Ref, useState } from 'react';
+import { FC, ReactElement, ReactNode, Ref, useState } from 'react';
 import styles from './style.module.css'
 import {
   autoUpdate,
@@ -22,20 +22,22 @@ export interface PopoverProps {
   onOpenChange?(state?: boolean): void
   blurredOverlay?: boolean
   role?: 'combobox' | 'listbox' | 'dialog' | 'select'
+  ref?: Ref<HTMLDivElement>
 }
 
-export const Popover = forwardRef<HTMLDivElement, PopoverProps>(({
-   triggerSlot,
-   placement = 'bottom',
-   role: ariaRole,
-   lockScroll = false,
-   overlay = false,
-   open: controlledOpen,
-   onOpenChange,
-   blurredOverlay = true,
-   className,
-   children
-}, ref) => {
+export const Popover: FC<PopoverProps> = ({
+  triggerSlot,
+  placement = 'bottom',
+  role: ariaRole,
+  lockScroll = false,
+  overlay = false,
+  open: controlledOpen,
+  onOpenChange,
+  blurredOverlay = true,
+  className,
+  children,
+  ref,
+}) => {
   const [open, setOpen] = useState(false);
 
   const isOpenPopover = controlledOpen ?? open;
@@ -88,4 +90,4 @@ export const Popover = forwardRef<HTMLDivElement, PopoverProps>(({
       )}
     </>
   )
-})
+}

@@ -4,7 +4,7 @@ import {
   HTMLAttributes,
   ReactNode,
   useRef,
-  Ref, ReactElement, forwardRef,
+  Ref, ReactElement, JSX, FC,
 } from 'react';
 import {
   FloatingFocusManager,
@@ -40,9 +40,10 @@ export interface DrawerProps extends HTMLAttributes<HTMLElement> {
   triggerSlot?: (ref: Ref<never>, props?: Record<string, unknown>) => ReactElement
   className?: string
   contentClassName?: string
+  ref?: Ref<HTMLDivElement>
 }
 
-export const Drawer = forwardRef<HTMLDivElement, DrawerProps>(({
+export const Drawer: FC<DrawerProps> = ({
   children,
   triggerSlot,
   headerSlot,
@@ -58,8 +59,9 @@ export const Drawer = forwardRef<HTMLDivElement, DrawerProps>(({
   onChangeOpen: controlledOnChangeOpen,
   className,
   contentClassName,
+  ref,
   ...props
-}, ref) => {
+}) => {
   const contentRef = useRef<HTMLDivElement>(null)
 
   const [isOpen, setIsOpen] = useControlledState(controlledOpen, false, controlledOnChangeOpen)
@@ -120,4 +122,4 @@ export const Drawer = forwardRef<HTMLDivElement, DrawerProps>(({
       </FloatingPortal>
     </>
   )
-})
+}

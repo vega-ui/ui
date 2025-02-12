@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { FC, Ref } from 'react';
 import { PhoneSelectField, PhoneSelectFieldProps } from '@adara-cs/ui-kit-web';
 import { CountryCode } from 'libphonenumber-js';
 import { SheetPhoneSelect } from './components';
@@ -8,12 +8,15 @@ export interface PhoneFieldCountry {
   label: string
 }
 
-export type SheetPhoneSelectFieldProps = Omit<PhoneSelectFieldProps, 'selectSlot'>
+export interface SheetPhoneSelectFieldProps extends Omit<PhoneSelectFieldProps, 'selectSlot'> {
+  ref?: Ref<HTMLInputElement>
+}
 
-export const SheetPhoneSelectField = forwardRef<HTMLInputElement, SheetPhoneSelectFieldProps>(({
+export const SheetPhoneSelectField: FC<SheetPhoneSelectFieldProps> = ({
   countries,
+  ref,
   ...props
-}, ref) => {
+}) => {
   return (
     <PhoneSelectField
       countries={countries}
@@ -22,4 +25,4 @@ export const SheetPhoneSelectField = forwardRef<HTMLInputElement, SheetPhoneSele
       {...props}
     />
   )
-})
+}

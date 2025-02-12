@@ -1,16 +1,20 @@
 'use client';
-import { DetailedHTMLProps, forwardRef, HTMLAttributes, PropsWithChildren } from 'react';
+import { DetailedHTMLProps, FC, HTMLAttributes, Ref } from 'react';
 import style from './style.module.css';
 import { csx, mergeRefs } from '@adara-cs/utils';
 import { useCollapsibleContext } from '../../hooks';
 
-export type CollapsibleContentProps = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> & { wrapperClassName?: string };
+export interface CollapsibleContentProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+  wrapperClassName?: string
+  ref?: Ref<HTMLDivElement>
+}
 
-export const CollapsibleContent = forwardRef<HTMLDivElement, PropsWithChildren<CollapsibleContentProps>>(({
+export const CollapsibleContent: FC<CollapsibleContentProps> = ({
   className,
   wrapperClassName,
+  ref,
   children,
-}, ref) => {
+}) => {
   const { opened, onTransitionEnd, wrapperRef, contentRef, hidden } = useCollapsibleContext()
 
   return (
@@ -20,4 +24,4 @@ export const CollapsibleContent = forwardRef<HTMLDivElement, PropsWithChildren<C
       </div>
     </div>
   )
-})
+}

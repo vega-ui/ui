@@ -1,4 +1,4 @@
-import { forwardRef, HTMLAttributes, KeyboardEvent, ReactNode } from 'react';
+import { FC, HTMLAttributes, KeyboardEvent, ReactNode, Ref } from 'react';
 import styles from './style.module.css'
 import { csx } from '@adara-cs/utils';
 
@@ -9,9 +9,10 @@ export interface OptionProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSel
   focusable?: boolean
   size?: 'small' | 'medium' | 'large'
   onSelect?(value: string | number): void
+  ref?: Ref<HTMLDivElement>
 }
 
-export const Option = forwardRef<HTMLDivElement, OptionProps>(({
+export const Option: FC<OptionProps> = ({
   selected,
   focusable,
   size = 'medium',
@@ -19,8 +20,9 @@ export const Option = forwardRef<HTMLDivElement, OptionProps>(({
   children,
   className,
   onSelect: handleSelect,
+  ref,
   ...props
-}, ref) => {
+}) => {
   const onSelect = () => {
     handleSelect?.(value)
   }
@@ -37,4 +39,4 @@ export const Option = forwardRef<HTMLDivElement, OptionProps>(({
       {children}
     </div>
   )
-})
+}

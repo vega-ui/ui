@@ -1,8 +1,8 @@
 'use client';
 import {
-  forwardRef,
+  FC,
   HTMLAttributes,
-  PropsWithChildren, ReactNode, Ref,
+  ReactNode, Ref,
 } from 'react';
 import { SheetHandle } from '../SheetHandle';
 import { SheetContent } from '../SheetContent';
@@ -23,9 +23,10 @@ export interface SheetInnerProps extends HTMLAttributes<HTMLDivElement> {
   handleClassName?: string
   contentClassName?: string
   headerSlot?: ReactNode | ReactNode[]
+  ref?: Ref<HTMLDivElement>
 }
 
-export const SheetInner = forwardRef<HTMLDivElement, PropsWithChildren<SheetInnerProps>>(({
+export const SheetInner: FC<SheetInnerProps> = ({
   status,
   children,
   dragging,
@@ -36,8 +37,9 @@ export const SheetInner = forwardRef<HTMLDivElement, PropsWithChildren<SheetInne
   contentClassName,
   handleClassName,
   headerSlot,
+  ref,
   ...props
-}, ref) => {
+}) => {
   return (
     <SheetContainer
       status={status}
@@ -58,4 +60,4 @@ export const SheetInner = forwardRef<HTMLDivElement, PropsWithChildren<SheetInne
       </SheetContent>
     </SheetContainer>
   )
-})
+}

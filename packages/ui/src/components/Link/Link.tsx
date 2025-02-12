@@ -1,10 +1,10 @@
 'use client';
-import { ElementType, forwardRef, ReactNode } from 'react';
+import { ElementType, ReactNode } from 'react';
 
 import style from './style.module.css'
 import { csx } from '@adara-cs/utils';
 import { Text, TextProps } from '../Text';
-import { PolymorphicComponentPropWithRef, PolymorphicRef } from '@adara-cs/types';
+import { PolymorphicComponentPropWithRef } from '@adara-cs/types';
 
 export type LinkProps<T extends ElementType> = PolymorphicComponentPropWithRef<T, {
   className?: string
@@ -15,7 +15,7 @@ export type LinkProps<T extends ElementType> = PolymorphicComponentPropWithRef<T
 
 type LinkComponent = <T extends ElementType = 'a'>(props: LinkProps<T>) => ReactNode | null;
 
-export const Link: LinkComponent = forwardRef(<T extends ElementType>({ as, className, size = 3, fontWeight, children, ...props }: LinkProps<T>, ref: PolymorphicRef<T>) => {
+export const Link: LinkComponent = <T extends ElementType>({ as, className, size = 3, fontWeight, children, ref, ...props }: LinkProps<T>) => {
   const Element = as || 'a';
 
   return (
@@ -25,4 +25,4 @@ export const Link: LinkComponent = forwardRef(<T extends ElementType>({ as, clas
       </Text>
     </Element>
   );
-})
+}

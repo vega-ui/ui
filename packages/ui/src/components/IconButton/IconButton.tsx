@@ -1,10 +1,10 @@
 import style from './style.module.css';
 import { ButtonBase, ButtonBaseProps } from '../ButtonBase';
-import { ElementType, forwardRef, Fragment, ReactNode } from 'react';
+import { ElementType, Fragment, ReactNode, Ref } from 'react';
 import { Icon, IconProps } from '../Icon';
 import { sizeMapper } from './utils';
 import { csx } from '@adara-cs/utils';
-import { PolymorphicComponentPropWithRef, PolymorphicRef } from '@adara-cs/types';
+import { PolymorphicComponentPropWithRef } from '@adara-cs/types';
 
 export type IconButtonProps<T extends ElementType> = PolymorphicComponentPropWithRef<T, ButtonBaseProps<T> & {
   disabled?: boolean;
@@ -19,7 +19,7 @@ export type IconButtonProps<T extends ElementType> = PolymorphicComponentPropWit
 type IconButtonComponent = <T extends ElementType = 'button'>(props: IconButtonProps<T>) => ReactNode | null;
 
 /** Primary UI component for user interaction */
-export const IconButton: IconButtonComponent = forwardRef(<T extends ElementType>({
+export const IconButton: IconButtonComponent = <T extends ElementType>({
   size = 'medium',
   iconSize,
   disabled,
@@ -29,13 +29,14 @@ export const IconButton: IconButtonComponent = forwardRef(<T extends ElementType
   className,
   name,
   children,
- ...props
-}: IconButtonProps<T>, ref: PolymorphicRef<T>) => {
+  ref,
+  ...props
+}: IconButtonProps<T>) => {
   return (
     <ButtonBase
       type={type}
       {...(props as Record<string, unknown>)}
-      ref={ref}
+      ref={ref as Ref<never>}
       disabled={disabled}
       className={csx(style.iconButton, className)}
       data-size={size}
@@ -45,4 +46,4 @@ export const IconButton: IconButtonComponent = forwardRef(<T extends ElementType
       {children ? children : name ? <Icon name={name} size={iconSize ?? sizeMapper(size)} /> : <Fragment />}
     </ButtonBase>
   );
-});
+}

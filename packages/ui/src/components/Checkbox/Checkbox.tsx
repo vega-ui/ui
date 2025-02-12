@@ -1,5 +1,13 @@
 'use client';
-import { ChangeEventHandler, DetailedHTMLProps, forwardRef, InputHTMLAttributes, useEffect, useRef } from 'react';
+import {
+  ChangeEventHandler,
+  DetailedHTMLProps,
+  FC,
+  InputHTMLAttributes,
+  Ref,
+  useEffect,
+  useRef
+} from 'react';
 import style from './style.module.css'
 import { csx, mergeRefs } from '@adara-cs/utils';
 import { Icon } from '../Icon';
@@ -16,9 +24,10 @@ export interface CheckboxProps extends Omit<DetailedHTMLProps<InputHTMLAttribute
   size?: 'small' | 'medium' | 'large'
   onChange?: ChangeEventHandler<HTMLInputElement>
   disabled?: boolean
+  ref?: Ref<HTMLInputElement>
 }
 
-export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(({
+export const Checkbox: FC<CheckboxProps> = ({
   variant = 'primary',
   size = 'medium',
   indeterminate,
@@ -28,8 +37,9 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(({
   className,
   wrapperClassName,
   disabled,
-  ...props
-}, ref) => {
+  ref,
+ ...props
+}) => {
   const inputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
@@ -45,4 +55,4 @@ export const Checkbox = forwardRef<HTMLInputElement, CheckboxProps>(({
       </div>
     </label>
   )
-})
+}

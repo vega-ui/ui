@@ -1,5 +1,5 @@
 'use client';
-import { forwardRef, PropsWithChildren, ReactElement } from 'react';
+import { FC, PropsWithChildren, ReactElement, Ref } from 'react';
 import { sizeMapper } from './utils';
 import { Icon } from '../../../Icon';
 import { Heading } from '../../../Heading';
@@ -13,16 +13,18 @@ interface AccordionTriggerProps {
   wrapperClassName?: string
   arrowIconClassName?: string
   arrowIcon?: ReactElement
+  ref?: Ref<HTMLButtonElement>
 }
 
-export const AccordionTrigger = forwardRef<HTMLButtonElement, PropsWithChildren<AccordionTriggerProps>>(({
+export const AccordionTrigger: FC<PropsWithChildren<AccordionTriggerProps>> = ({
   size = 'medium',
   arrowIcon,
   className,
   arrowIconClassName,
   wrapperClassName,
   children,
-}, ref) => {
+  ref,
+}) => {
   return (
     <Heading as='h3' size={sizeMapper(size)} className={wrapperClassName}>
       <CollapsibleTrigger ref={ref} className={csx(style.triggerButton, className)} data-size={size}>
@@ -31,4 +33,4 @@ export const AccordionTrigger = forwardRef<HTMLButtonElement, PropsWithChildren<
       </CollapsibleTrigger>
     </Heading>
   )
-})
+}

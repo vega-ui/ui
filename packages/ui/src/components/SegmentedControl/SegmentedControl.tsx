@@ -4,9 +4,8 @@ import style from './style.module.css';
 import {
   ChangeEvent,
   Children,
-  DetailedHTMLProps,
-  forwardRef,
-  HTMLAttributes, ReactElement,
+  DetailedHTMLProps, FC,
+  HTMLAttributes, ReactElement, Ref,
   useState
 } from 'react';
 import { csx } from '@adara-cs/utils';
@@ -21,10 +20,11 @@ export interface SegmentedControlProps extends Omit<DetailedHTMLProps<HTMLAttrib
   name: string
   variant?: 'primary' | 'secondary'
   onChange?(e: ChangeEvent<HTMLInputElement>, value: string | number): void
+  ref?: Ref<HTMLDivElement>
 }
 
 /** Primary UI component for user interaction */
-export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps>(({
+export const SegmentedControl: FC<SegmentedControlProps> = ({
   size = 'medium',
   disabled,
   className,
@@ -33,9 +33,10 @@ export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps
   value: controlledValue,
   onChange: controlledOnChange,
   name,
+  ref,
   ...props
-}, ref) => {
-  const values = Children.toArray(children).map((child) => (child as ReactElement).props?.value)
+}) => {
+  const values = Children.toArray(children).map((child) => (child as ReactElement<{ value?: string | number }>).props?.value)
 
   const [uncontrolledValue, setUncontrolledValue] = useState(controlledValue ?? values[0])
 
@@ -70,4 +71,4 @@ export const SegmentedControl = forwardRef<HTMLDivElement, SegmentedControlProps
       />
     </div>
   );
-});
+}

@@ -1,11 +1,10 @@
 import style from './style.module.css'
 import {
   ElementType,
-  forwardRef,
   ReactNode
 } from 'react';
 import { csx } from '@adara-cs/utils';
-import { PolymorphicComponentPropWithRef, PolymorphicRef } from '@adara-cs/types';
+import { PolymorphicComponentPropWithRef } from '@adara-cs/types';
 
 export type ButtonBaseProps<T extends ElementType> = PolymorphicComponentPropWithRef<T, {
     variant?: 'primary' | 'secondary'
@@ -16,15 +15,16 @@ export type ButtonBaseProps<T extends ElementType> = PolymorphicComponentPropWit
 
 type ButtonBaseComponent = <T extends ElementType = 'button'>(props: ButtonBaseProps<T>) => ReactNode | null;
 
-export const ButtonBase: ButtonBaseComponent = forwardRef(<T extends ElementType>({
- className,
- as,
- children,
- disabled,
- variant = 'primary',
- appearance = 'fill',
- ...props
-}: ButtonBaseProps<T>, ref: PolymorphicRef<T>) => {
+export const ButtonBase: ButtonBaseComponent = <T extends ElementType>({
+  className,
+  as,
+  children,
+  disabled,
+  variant = 'primary',
+  appearance = 'fill',
+  ref,
+  ...props
+}: ButtonBaseProps<T>) => {
   const Element = as || 'button';
 
   return (
@@ -32,4 +32,4 @@ export const ButtonBase: ButtonBaseComponent = forwardRef(<T extends ElementType
       {children}
     </Element>
   )
-})
+}
