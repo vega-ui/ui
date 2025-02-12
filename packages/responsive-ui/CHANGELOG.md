@@ -1,5 +1,17 @@
 # @adara-cs/responsive-ui
 
+## 2.3.7
+
+### Patch Changes
+
+- 08808c0: Updated to React 19
+- Updated dependencies [08808c0]
+  - @adara-cs/ui-kit-web@2.3.7
+  - @adara-cs/hooks@2.3.7
+  - @adara-cs/icons@2.3.7
+  - @adara-cs/types@2.3.7
+  - @adara-cs/utils@2.3.7
+
 ## 2.3.6
 
 ### Patch Changes
