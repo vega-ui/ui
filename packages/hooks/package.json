@@ -50,7 +50,7 @@
     "vite-plugin-dts": "^4.3.0",
     "vite-plugin-svgr": "^4.3.0",
     "@vitejs/plugin-react": "^4.3.4",
-    "vitest": "^2.1.8"
+    "vitest": "^3.0.5"
   },
   "config": {
     "commitizen": {
