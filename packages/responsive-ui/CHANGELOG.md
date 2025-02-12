@@ -1,5 +1,17 @@
 # @adara-cs/responsive-ui
 
+## 2.3.9
+
+### Patch Changes
+
+- 8877bb7: changes prefix source
+- Updated dependencies [8877bb7]
+  - @adara-cs/ui-kit-web@2.3.9
+  - @adara-cs/hooks@2.3.9
+  - @adara-cs/icons@2.3.9
+  - @adara-cs/types@2.3.9
+  - @adara-cs/utils@2.3.9
+
 ## 2.3.8
 
 ### Patch Changes
