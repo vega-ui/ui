@@ -4,8 +4,7 @@ import { FC, Ref } from 'react';
 import { PhoneSelectFieldProps, PhoneSelectField } from '@adara-cs/ui-kit-web';
 import { useControlledState } from '@adara-cs/hooks';
 import { SheetPhoneSelectField, SheetPhoneSelectFieldProps } from '../SheetPhoneSelectField';
-import { CountryCode } from 'libphonenumber-js';
-import { callingCodes } from '../SheetPhoneSelectField/constants';
+import { CountryCode, getCountryCallingCode } from 'libphonenumber-js';
 
 export interface ResponsivePhoneSelectFieldProps extends Omit<PhoneSelectFieldProps, 'className'>, Omit<SheetPhoneSelectFieldProps, 'className'> {
   isBreakpoint?: boolean
@@ -37,7 +36,7 @@ export const ResponsivePhoneSelectField: FC<ResponsivePhoneSelectFieldProps> = (
   ref,
   ...props
 }) => {
-  const [value, setValue] = useControlledState<string>(controlledValue, defaultValue ?? `+${callingCodes['RU']} `, onPhoneInput)
+  const [value, setValue] = useControlledState<string>(controlledValue, defaultValue ?? `+${getCountryCallingCode('RU')} `, onPhoneInput)
   const [country, setCountry] = useControlledState<CountryCode | undefined>(controlledCountry, defaultCountry, onCountryChanged)
 
   return (

@@ -27,7 +27,7 @@ export const PhoneField: FC<PhoneFieldProps> = ({
       metadata,
       strict: strictMask,
       countryIsoCode: country,
-    })
+    }),
   })
 
   return (

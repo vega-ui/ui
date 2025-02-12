@@ -6,9 +6,8 @@ import {
 import { TextFieldProps } from '../TextField';
 import style from './style.module.css'
 import { mergeRefs } from '@adara-cs/utils';
-import { callingCodes } from './constants';
 import { useControlledState } from '@adara-cs/hooks';
-import { AsYouType, CountryCode } from 'libphonenumber-js';
+import { AsYouType, CountryCode, getCountryCallingCode } from 'libphonenumber-js';
 import { PhoneField } from '../PhoneField';
 import { PhoneSelect } from './components';
 import { PhoneSelectProvider } from './providers';
@@ -49,12 +48,12 @@ export const PhoneSelectField: FC<PhoneSelectFieldProps> = ({
   ...props
 }) => {
   const [countryCode, setCountryCode] = useControlledState<CountryCode>(country, defaultCountry, onCountryChanged)
-  const [inputValue, setInputValue] = useControlledState(value, defaultValue ?? `+${callingCodes['RU']} `, onPhoneInput)
+  const [inputValue, setInputValue] = useControlledState(value, defaultValue ?? `+${getCountryCallingCode(countryCode)} `, onPhoneInput)
   const innerRef = useRef<HTMLInputElement>(null)
 
   const onSelect = (value: CountryCode) => {
     setCountryCode(value)
-    setInputValue(`+${callingCodes[value]} `)
+    setInputValue(`+${getCountryCallingCode(value)} `)
     innerRef.current?.focus()
   }
 

@@ -1005,10 +1005,8 @@ export const WithLabel: Story = {
   render(props) {
     return (
       <>
-        <Label>
-          Телефон для связи
-          <PhoneSelectField {...props} />
-        </Label>
+        <Label htmlFor='phone'>Телефон для связи</Label>
+        <PhoneSelectField {...props} id='phone' onInput={(e) => console.log(e.currentTarget.value)} />
       </>
     )
   }
