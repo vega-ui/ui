@@ -18,14 +18,16 @@ export interface PhoneFieldCountry {
   label: string
 }
 
-export interface PhoneSelectFieldProps extends TextFieldProps {
+export interface PhoneSelectFieldProps extends Omit<TextFieldProps, 'value'> {
   defaultCountry?: CountryCode
   country?: CountryCode
   defaultValue?: string
   countries: PhoneFieldCountry[]
   fullWidthListbox?: boolean
   onCountryChanged?: (country: CountryCode) => void
+  onPhoneInput?: (value: string) => void
   selectSlot?: ReactNode | ReactNode[]
+  value?: string
   ref?: Ref<HTMLInputElement>
 }
 
@@ -42,11 +44,12 @@ export const PhoneSelectField: FC<PhoneSelectFieldProps> = ({
   onCountryChanged,
   selectSlot,
   fullWidthListbox = true,
+  onPhoneInput,
   ref,
   ...props
 }) => {
   const [countryCode, setCountryCode] = useControlledState<CountryCode>(country, defaultCountry, onCountryChanged)
-  const [inputValue, setInputValue] = useControlledState(value, defaultValue ?? `+${callingCodes['RU']} `)
+  const [inputValue, setInputValue] = useControlledState(value, defaultValue ?? `+${callingCodes['RU']} `, onPhoneInput)
   const innerRef = useRef<HTMLInputElement>(null)
 
   const onSelect = (value: CountryCode) => {

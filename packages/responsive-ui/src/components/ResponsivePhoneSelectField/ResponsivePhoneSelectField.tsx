@@ -1,10 +1,11 @@
 'use client';
 
-import { ChangeEvent, FC, Ref } from 'react';
+import { FC, Ref } from 'react';
 import { PhoneSelectFieldProps, PhoneSelectField } from '@adara-cs/ui-kit-web';
 import { useControlledState } from '@adara-cs/hooks';
 import { SheetPhoneSelectField, SheetPhoneSelectFieldProps } from '../SheetPhoneSelectField';
 import { CountryCode } from 'libphonenumber-js';
+import { callingCodes } from '../SheetPhoneSelectField/constants';
 
 export interface ResponsivePhoneSelectFieldProps extends Omit<PhoneSelectFieldProps, 'className'>, Omit<SheetPhoneSelectFieldProps, 'className'> {
   isBreakpoint?: boolean
@@ -12,6 +13,7 @@ export interface ResponsivePhoneSelectFieldProps extends Omit<PhoneSelectFieldPr
   phoneSelectFieldClassName?: string
   onCountryChanged?: (country: CountryCode | undefined) => void
   ref?: Ref<HTMLInputElement>
+  onPhoneInput?: (value: string) => void
 }
 
 export const ResponsivePhoneSelectField: FC<ResponsivePhoneSelectFieldProps> = ({
@@ -28,19 +30,15 @@ export const ResponsivePhoneSelectField: FC<ResponsivePhoneSelectFieldProps> = (
   country: controlledCountry,
   onCountryChanged,
   defaultCountry,
-  onInput: onInputValue,
+  onInput,
   value: controlledValue,
+  onPhoneInput,
   countries,
   ref,
   ...props
 }) => {
-  const [value, setValue] = useControlledState<string | number | undefined>(controlledValue, defaultValue)
+  const [value, setValue] = useControlledState<string>(controlledValue, defaultValue ?? `+${callingCodes['RU']} `, onPhoneInput)
   const [country, setCountry] = useControlledState<CountryCode | undefined>(controlledCountry, defaultCountry, onCountryChanged)
-
-  const onInput = (e: ChangeEvent<HTMLInputElement>) => {
-    setValue(e.currentTarget.value)
-    onInputValue?.(e)
-  }
 
   return (
     <>
@@ -57,6 +55,7 @@ export const ResponsivePhoneSelectField: FC<ResponsivePhoneSelectFieldProps> = (
           endSlot={endSlot}
           startSlot={startSlot}
           placeholder={placeholder}
+          onPhoneInput={setValue}
           ref={ref}
           {...props}
         />
@@ -74,6 +73,7 @@ export const ResponsivePhoneSelectField: FC<ResponsivePhoneSelectFieldProps> = (
           startSlot={startSlot}
           placeholder={placeholder}
           value={value}
+          onPhoneInput={setValue}
           ref={ref}
           {...props}
         />
