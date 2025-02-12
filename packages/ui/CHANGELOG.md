@@ -1,5 +1,15 @@
 # @adara-cs/ui-kit-web
 
+## 2.3.8
+
+### Patch Changes
+
+- 8da31e1: added new prop - onPhoneInput
+  - @adara-cs/hooks@2.3.8
+  - @adara-cs/icons@2.3.8
+  - @adara-cs/types@2.3.8
+  - @adara-cs/utils@2.3.8
+
 ## 2.3.7
 
 ### Patch Changes
