@@ -37,7 +37,7 @@
     "test:watch": "vitest --watch"
   },
   "devDependencies": {
-    "@types/react": "^18.3.12",
+    "@types/react": "^19.0.8",
     "vite": "^6.0.1",
     "vite-plugin-dts": "^4.3.0",
     "vite-plugin-svgr": "^4.3.0",
