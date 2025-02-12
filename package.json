@@ -41,7 +41,7 @@
     "@storybook/test": "^8.4.7",
     "@storybook/theming": "^8.5.0",
     "@types/node": "^22.10.10",
-    "@typescript-eslint/eslint-plugin": "^8.21.0",
+    "@typescript-eslint/eslint-plugin": "^8.23.0",
     "@typescript-eslint/parser": "^8.21.0",
     "eslint": "^8",
     "eslint-plugin-react-hooks": "^5.0.0",
