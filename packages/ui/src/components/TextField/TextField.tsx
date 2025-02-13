@@ -30,11 +30,12 @@ export const TextField: FC<TextFieldProps> = ({
   placeholder,
   error,
   size = 'medium',
+  hidden,
   ref,
   ...props
 }) => {
   return (
-    <div data-size={size} className={csx(style.inputWrapper, wrapperClassName)}>
+    <div data-size={size} className={csx(style.inputWrapper, wrapperClassName)} hidden={hidden}>
       {startSlot && (
         <div className={csx(style.startSlot, startSlotClassName)}>
           {startSlot}
