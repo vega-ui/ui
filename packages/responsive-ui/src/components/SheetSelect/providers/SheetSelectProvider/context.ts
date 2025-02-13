@@ -1,3 +1,5 @@
+'use client';
+
 import { Context, createContext } from 'react';
 
 type Value = string | number | undefined
