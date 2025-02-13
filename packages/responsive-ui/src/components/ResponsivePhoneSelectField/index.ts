@@ -1,1 +1,1 @@
-export { ResponsivePhoneSelectField } from './ResponsivePhoneSelectField.tsx'
+export { ResponsivePhoneSelectField, type ResponsivePhoneSelectFieldProps } from './ResponsivePhoneSelectField.tsx'
