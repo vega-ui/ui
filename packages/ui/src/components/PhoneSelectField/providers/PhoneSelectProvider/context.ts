@@ -1,3 +1,5 @@
+'use client';
+
 import { Context, createContext } from 'react';
 import { CountryCode } from 'libphonenumber-js';
 

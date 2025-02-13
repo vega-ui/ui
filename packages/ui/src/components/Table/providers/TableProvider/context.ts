@@ -1,3 +1,5 @@
+'use client';
+
 import { type TableContextData, defaultTableContext } from './defaultContext.ts';
 import { Context, createContext } from 'react';
 
