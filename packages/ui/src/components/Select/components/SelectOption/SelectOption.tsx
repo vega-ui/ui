@@ -1,3 +1,4 @@
+'use client';
 import { FC } from 'react';
 import { useSelectContext } from '../../hooks';
 import { Option, OptionProps } from '../../../Option';
