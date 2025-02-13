@@ -1,5 +1,15 @@
 # @adara-cs/ui-kit-web
 
+## 2.3.11
+
+### Patch Changes
+
+- 64e8ccf: Changed modal border radius
+  - @adara-cs/hooks@2.3.11
+  - @adara-cs/icons@2.3.11
+  - @adara-cs/types@2.3.11
+  - @adara-cs/utils@2.3.11
+
 ## 2.3.10
 
 ### Patch Changes
