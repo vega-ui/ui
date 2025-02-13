@@ -1,3 +1,4 @@
+'use client';
 import { FC, ReactNode } from 'react';
 import { FlagIcon, FlagIconProps } from '../../../FlagIcon';
 import { Option, OptionProps } from '../../../Option';
