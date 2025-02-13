@@ -1,5 +1,15 @@
 # @adara-cs/ui-kit-web
 
+## 2.3.13
+
+### Patch Changes
+
+- c680639: Added use client directive to createContext
+  - @adara-cs/hooks@2.3.13
+  - @adara-cs/icons@2.3.13
+  - @adara-cs/types@2.3.13
+  - @adara-cs/utils@2.3.13
+
 ## 2.3.12
 
 ### Patch Changes
