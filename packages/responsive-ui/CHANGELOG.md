@@ -1,5 +1,17 @@
 # @adara-cs/responsive-ui
 
+## 2.3.14
+
+### Patch Changes
+
+- 74850e3: Added use client to floating ui context
+- Updated dependencies [74850e3]
+  - @adara-cs/ui-kit-web@2.3.14
+  - @adara-cs/hooks@2.3.14
+  - @adara-cs/icons@2.3.14
+  - @adara-cs/types@2.3.14
+  - @adara-cs/utils@2.3.14
+
 ## 2.3.13
 
 ### Patch Changes
