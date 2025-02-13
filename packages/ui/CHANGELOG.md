@@ -1,5 +1,15 @@
 # @adara-cs/ui-kit-web
 
+## 2.3.12
+
+### Patch Changes
+
+- e2e42df: Added hidden props to input
+  - @adara-cs/hooks@2.3.12
+  - @adara-cs/icons@2.3.12
+  - @adara-cs/types@2.3.12
+  - @adara-cs/utils@2.3.12
+
 ## 2.3.11
 
 ### Patch Changes

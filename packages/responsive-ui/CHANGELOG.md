@@ -1,5 +1,17 @@
 # @adara-cs/responsive-ui
 
+## 2.3.12
+
+### Patch Changes
+
+- 975b1bf: Added type export
+- Updated dependencies [e2e42df]
+  - @adara-cs/ui-kit-web@2.3.12
+  - @adara-cs/hooks@2.3.12
+  - @adara-cs/icons@2.3.12
+  - @adara-cs/types@2.3.12
+  - @adara-cs/utils@2.3.12
+
 ## 2.3.11
 
 ### Patch Changes
