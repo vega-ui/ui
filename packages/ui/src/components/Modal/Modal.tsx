@@ -1,7 +1,7 @@
 'use client';
 
 import { FC, ReactElement, ReactNode, Ref } from 'react';
-import { csx } from '@adara-cs/utils';
+import { csx, mergeRefs } from '@adara-cs/utils';
 import styles from './style.module.css'
 import {
   FloatingFocusManager, FloatingOverlay, FloatingPortal,
@@ -18,11 +18,10 @@ export interface ModalProps {
   triggerSlot?: (ref: Ref<never>, props?: Record<string, unknown>) => ReactElement
   open?: boolean
   onOpenChange?(state?: boolean): void
-  children?: ReactNode
+  children?: ReactNode | ReactNode[]
   fluid?: boolean
-  withClose?: boolean
   blurredOverlay?: boolean
-  title?: string
+  ref?: Ref<HTMLDivElement>
 }
 
 export const Modal: FC<ModalProps> = ({
@@ -33,7 +32,8 @@ export const Modal: FC<ModalProps> = ({
   fluid = false,
   open: controlledOpen,
   onOpenChange,
-  children
+  children,
+  ref,
 }) => {
   const [open, setOpen] = useControlledState(controlledOpen, false, onOpenChange)
 
@@ -80,7 +80,7 @@ export const Modal: FC<ModalProps> = ({
                   data-fluid={fluid}
                   style={{...transitionStyles}}
                   className={csx(styles.modal, className)}
-                  ref={refs.setFloating}
+                  ref={mergeRefs([refs.setFloating, ref])}
                   {...getFloatingProps()}
                 >
                   {children}

@@ -4,6 +4,7 @@
     border-radius: var(--radius-5);
     padding: var(--spacing-10) var(--spacing-12);
     min-width: clamp(220px, 70vw, 500px);
+    max-width: 600px;
 }
 
 .modal[data-fluid='true'] {
