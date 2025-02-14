@@ -1,5 +1,17 @@
 # @adara-cs/responsive-ui
 
+## 2.4.1
+
+### Patch Changes
+
+- 31f7d29: Fixed components export
+- Updated dependencies [8295ddc]
+  - @adara-cs/ui-kit-web@2.4.1
+  - @adara-cs/hooks@2.4.1
+  - @adara-cs/icons@2.4.1
+  - @adara-cs/types@2.4.1
+  - @adara-cs/utils@2.4.1
+
 ## 2.4.0
 
 ### Minor Changes

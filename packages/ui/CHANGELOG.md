@@ -1,5 +1,15 @@
 # @adara-cs/ui-kit-web
 
+## 2.4.1
+
+### Patch Changes
+
+- 8295ddc: Fixed modal max width on fluid
+  - @adara-cs/hooks@2.4.1
+  - @adara-cs/icons@2.4.1
+  - @adara-cs/types@2.4.1
+  - @adara-cs/utils@2.4.1
+
 ## 2.4.0
 
 ### Minor Changes
