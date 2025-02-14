@@ -1,1 +1,1 @@
-export * from './ResponsiveSelectProvider'
+export * from './ResponsiveModalProvider'
