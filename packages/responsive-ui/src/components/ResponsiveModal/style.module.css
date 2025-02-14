@@ -1,0 +1,173 @@
+.wrapper {
+    position: relative;
+}
+
+.selectCombobox {
+    --select-height: 0;
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background: none;
+    border: none;
+    gap: var(--spacing-10);
+    user-select: none;
+    cursor: pointer;
+    font-family: var(--default-font-family);
+    font-size: var(--font-size-3);
+    border-radius: var(--radius-3);
+    box-sizing: border-box;
+    height: var(--select-height);
+}
+
+.segment {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: var(--spacing-5);
+    color: var(--neutral-1000);
+}
+
+.selectCombobox .placeholder {
+    color: var(--neutral-500);
+}
+
+.value {
+    max-width: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    color: var(--neutral-1000);
+}
+
+.controlIcon {
+    transition: transform var(--transition-state-delay) ease-in-out;
+}
+
+.selectCombobox[data-size='small'] {
+    min-width: 150px;
+    --select-height: var(--spacing-21);
+    padding: var(--spacing-6) var(--spacing-8);
+    gap: var(--spacing-8);
+}
+
+.selectCombobox[data-size='small'] .value,
+.selectCombobox[data-size='small'] .placeholder {
+    font-size: var(--text-font-size-2);
+}
+
+
+.selectCombobox[data-size='medium'] {
+    min-width: 150px;
+    --select-height: var(--spacing-24);
+    padding: var(--spacing-8) var(--spacing-10);
+    gap: var(--spacing-10);
+}
+
+.selectCombobox[data-size='medium'] .value,
+.selectCombobox[data-size='medium'] .placeholder {
+    font-size: var(--text-font-size-3);
+}
+
+.selectCombobox[data-size='large'] {
+    min-width: 250px;
+    --select-height: var(--spacing-27);
+    padding: var(--spacing-10) var(--spacing-10);
+    gap: var(--spacing-12);
+}
+
+.selectCombobox[data-size='large'] .value,
+.selectCombobox[data-size='large'] .placeholder {
+    font-size: var(--text-font-size-4);
+}
+
+.selectCombobox[aria-disabled='true'] {
+    cursor: not-allowed;
+}
+
+.selectCombobox[aria-disabled='true'] .segment {
+    color: var(--neutral-400);
+}
+
+.selectCombobox:hover {
+    border-color: var(--primary-accent-6);
+}
+
+.selectCombobox:active, .selectCombobox[data-state="open"] {
+    border-color: var(--primary-accent-7);
+}
+
+.selectCombobox:focus-visible {
+    outline: 2px solid var(--focus-color);
+}
+
+.selectCombobox[data-variant='field'] {
+    background-color: var(--surface-foreground);
+    border-radius: var(--radius-3);
+    border: 1px solid var(--neutral-200);
+    transition: border-color var(--transition-state-delay) ease-in-out;
+}
+
+.selectCombobox[data-variant='field'] .control {
+    color: var(--neutral-500);
+}
+
+.selectCombobox[data-variant='field'][aria-disabled='true'] {
+    background-color: var(--neutral-50);
+    border: 1px solid var(--neutral-200);
+    transition: border-color var(--transition-state-delay) ease-in-out;
+}
+
+.selectCombobox[data-variant='field'][aria-disabled='true'] .controlIcon {
+    fill: var(--neutral-400);
+}
+
+.selectCombobox[data-variant='inline'] {
+    min-width: 100px;
+}
+
+.selectCombobox[data-variant='inline'] .control {
+    color: var(--neutral-1000);
+}
+
+.selectCombobox[data-variant='inline'][aria-disabled='true'] .value,
+.selectCombobox[data-variant='inline'][aria-disabled='true'] .placeholder {
+    color: var(--neutral-400);
+}
+
+.selectCombobox[data-variant='inline'][aria-disabled='true'] .controlIcon {
+    fill: var(--neutral-400);
+}
+
+.selectCombobox[data-variant='field'][aria-disabled='true'] .value,
+.selectCombobox[data-variant='field'][aria-disabled='true'] .placeholder {
+    color: var(--neutral-400);
+}
+
+.selectCombobox[data-state='open'] .controlIcon {
+    transform: rotate(180deg);
+}
+
+.selectListbox {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+    padding: var(--spacing-4);
+    outline: none;
+    box-sizing: border-box;
+    background: var(--surface-foreground);
+    box-shadow: var(--surface-shadow);
+    border-radius: var(--radius-3);
+    width: max-content;
+    overflow: auto;
+    max-height: 250px;
+    max-width: 100%;
+    z-index: var(--z-index-popover);
+}
+
+.selectListbox[data-full-width='true'] {
+    width: 100%;
+}
