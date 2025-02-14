@@ -1,5 +1,20 @@
 # @adara-cs/responsive-ui
 
+## 2.4.0
+
+### Minor Changes
+
+- fe19c63: Added responsive modal
+
+### Patch Changes
+
+- Updated dependencies [fe19c63]
+  - @adara-cs/ui-kit-web@2.4.0
+  - @adara-cs/hooks@2.4.0
+  - @adara-cs/icons@2.4.0
+  - @adara-cs/types@2.4.0
+  - @adara-cs/utils@2.4.0
+
 ## 2.3.14
 
 ### Patch Changes
