@@ -1,4 +1,5 @@
 export * from './ResponsiveSelect'
+export * from './ResponsiveModal'
 export * from './SheetSelect'
 export * from './SheetPhoneSelectField'
 export * from './ResponsivePhoneSelectField'
