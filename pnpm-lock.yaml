@@ -30,8 +30,8 @@ importers:
         specifier: ^8.5.5
         version: 8.5.5(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.5.5(prettier@2.8.8))
       '@storybook/manager-api':
-        specifier: ^8.5.0
-        version: 8.5.0(storybook@8.5.5(prettier@2.8.8))
+        specifier: ^8.5.6
+        version: 8.5.6(storybook@8.5.5(prettier@2.8.8))
       '@storybook/react':
         specifier: ^8.5.5
         version: 8.5.5(@storybook/test@8.5.5(storybook@8.5.5(prettier@2.8.8)))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(storybook@8.5.5(prettier@2.8.8))(typescript@5.7.2)
@@ -1109,13 +1109,13 @@ packages:
     peerDependencies:
       storybook: ^8.5.5
 
-  '@storybook/manager-api@8.5.0':
-    resolution: {integrity: sha512-Ildriueo3eif4M+gMlMxu/mrBIbAnz8+oesmQJKdzZfe/U9eQTI9OUqJsxx/IVBmdzQ3ySsgNmzj5VweRkse4A==}
+  '@storybook/manager-api@8.5.5':
+    resolution: {integrity: sha512-JQgnFskT1lhgT05m9zTeeW1FZIQbXjzRWEWbqYLcaiAnhbTb7B0IN8y1SOFQRLxXFrNa38T1AVHJj//Zv7KR3g==}
     peerDependencies:
       storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
 
-  '@storybook/manager-api@8.5.5':
-    resolution: {integrity: sha512-JQgnFskT1lhgT05m9zTeeW1FZIQbXjzRWEWbqYLcaiAnhbTb7B0IN8y1SOFQRLxXFrNa38T1AVHJj//Zv7KR3g==}
+  '@storybook/manager-api@8.5.6':
+    resolution: {integrity: sha512-24Fm1LnRs1uCTMDid1Mmii0mQvmyM//IfzdtuVvzh0OSvatEKKLX+o3vdG/3/QCN1FVyq1hI9uHnkOaz6EuH4Q==}
     peerDependencies:
       storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
 
@@ -4025,11 +4025,11 @@ snapshots:
       '@vitest/utils': 2.1.9
       storybook: 8.5.5(prettier@2.8.8)
 
-  '@storybook/manager-api@8.5.0(storybook@8.5.5(prettier@2.8.8))':
+  '@storybook/manager-api@8.5.5(storybook@8.5.5(prettier@2.8.8))':
     dependencies:
       storybook: 8.5.5(prettier@2.8.8)
 
-  '@storybook/manager-api@8.5.5(storybook@8.5.5(prettier@2.8.8))':
+  '@storybook/manager-api@8.5.6(storybook@8.5.5(prettier@2.8.8))':
     dependencies:
       storybook: 8.5.5(prettier@2.8.8)
 
