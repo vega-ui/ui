@@ -1,11 +1,11 @@
 'use client';
 
-import { Context, createContext } from 'react';
+import { Context, createContext, KeyboardEvent, MouseEvent } from 'react';
 import { CountryCode } from 'libphonenumber-js';
 
 export interface PhoneSelectContextState {
   value: CountryCode | undefined
-  onSelect: (value: CountryCode) => void
+  onSelect: (e: KeyboardEvent | MouseEvent | null, value: CountryCode) => void
   size?: 'small' | 'medium' | 'large'
 }
 

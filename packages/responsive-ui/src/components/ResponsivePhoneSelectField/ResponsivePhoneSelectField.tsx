@@ -1,7 +1,7 @@
 'use client';
 
 import { FC, Ref } from 'react';
-import { PhoneSelectFieldProps, PhoneSelectField } from '@adara-cs/ui-kit-web';
+import { PhoneSelectFieldProps, PhoneSelectField, PhoneSelectFieldChangeEvent } from '@adara-cs/ui-kit-web';
 import { useControlledState } from '@adara-cs/hooks';
 import { SheetPhoneSelectField, SheetPhoneSelectFieldProps } from '../SheetPhoneSelectField';
 import { CountryCode, getCountryCallingCode } from 'libphonenumber-js';
@@ -12,7 +12,7 @@ export interface ResponsivePhoneSelectFieldProps extends Omit<PhoneSelectFieldPr
   phoneSelectFieldClassName?: string
   onCountryChanged?: (country: CountryCode | undefined) => void
   ref?: Ref<HTMLInputElement>
-  onPhoneInput?: (value: string) => void
+  onChange?: (event: PhoneSelectFieldChangeEvent, value: string) => void
 }
 
 export const ResponsivePhoneSelectField: FC<ResponsivePhoneSelectFieldProps> = ({
@@ -31,13 +31,18 @@ export const ResponsivePhoneSelectField: FC<ResponsivePhoneSelectFieldProps> = (
   defaultCountry,
   onInput,
   value: controlledValue,
-  onPhoneInput,
+  onChange: _onChange,
   countries,
   ref,
   ...props
 }) => {
-  const [value, setValue] = useControlledState<string>(controlledValue, defaultValue ?? `+${getCountryCallingCode('RU')} `, onPhoneInput)
+  const [value, setValue] = useControlledState<string>(controlledValue, defaultValue ?? `+${getCountryCallingCode('RU')} `)
   const [country, setCountry] = useControlledState<CountryCode | undefined>(controlledCountry, defaultCountry, onCountryChanged)
+
+  const onChange = (e: PhoneSelectFieldChangeEvent, value: string) => {
+    _onChange?.(e, value)
+    setValue(value)
+  }
 
   return (
     <>
@@ -54,7 +59,7 @@ export const ResponsivePhoneSelectField: FC<ResponsivePhoneSelectFieldProps> = (
           endSlot={endSlot}
           startSlot={startSlot}
           placeholder={placeholder}
-          onPhoneInput={setValue}
+          onChange={onChange}
           ref={ref}
           {...props}
         />
@@ -72,7 +77,7 @@ export const ResponsivePhoneSelectField: FC<ResponsivePhoneSelectFieldProps> = (
           startSlot={startSlot}
           placeholder={placeholder}
           value={value}
-          onPhoneInput={setValue}
+          onChange={onChange}
           ref={ref}
           {...props}
         />

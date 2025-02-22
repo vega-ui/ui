@@ -1,1 +1,1 @@
-export { NumberField, type NumberFieldProps } from './NumberField.tsx'
+export { NumberField, type NumberFieldProps, type NumberFieldChangeEvent } from './NumberField.tsx'

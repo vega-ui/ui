@@ -2,6 +2,8 @@ import {
   FC,
   FormEvent,
   ReactNode, Ref, useRef,
+  MouseEvent,
+  KeyboardEvent,
 } from 'react';
 import { TextFieldProps } from '../TextField';
 import style from './style.module.css'
@@ -17,14 +19,16 @@ export interface PhoneFieldCountry {
   label: string
 }
 
-export interface PhoneSelectFieldProps extends Omit<TextFieldProps, 'value'> {
+export type PhoneSelectFieldChangeEvent = MouseEvent | KeyboardEvent | FormEvent | null
+
+export interface PhoneSelectFieldProps extends Omit<TextFieldProps, 'value' | 'onChange'> {
   defaultCountry?: CountryCode
   country?: CountryCode
   defaultValue?: string
   countries: PhoneFieldCountry[]
   fullWidthListbox?: boolean
   onCountryChanged?: (country: CountryCode) => void
-  onPhoneInput?: (value: string) => void
+  onChange?: (event: PhoneSelectFieldChangeEvent, value: string) => void
   selectSlot?: ReactNode | ReactNode[]
   value?: string
   ref?: Ref<HTMLInputElement>
@@ -34,7 +38,7 @@ export const PhoneSelectField: FC<PhoneSelectFieldProps> = ({
   className,
   disabled,
   size = 'medium',
-  onInput: handleInput,
+  onInput: _onInput,
   defaultCountry = 'RU',
   defaultValue,
   countries,
@@ -43,23 +47,26 @@ export const PhoneSelectField: FC<PhoneSelectFieldProps> = ({
   onCountryChanged,
   selectSlot,
   fullWidthListbox = true,
-  onPhoneInput,
+  onChange,
   ref,
   ...props
 }) => {
   const [countryCode, setCountryCode] = useControlledState<CountryCode>(country, defaultCountry, onCountryChanged)
-  const [inputValue, setInputValue] = useControlledState(value, defaultValue ?? `+${getCountryCallingCode(countryCode)} `, onPhoneInput)
+  const [inputValue, setInputValue] = useControlledState(value, defaultValue ?? `+${getCountryCallingCode(countryCode)} `)
   const innerRef = useRef<HTMLInputElement>(null)
 
-  const onSelect = (value: CountryCode) => {
+  const onSelect = (e: MouseEvent | KeyboardEvent | null, value: CountryCode) => {
     setCountryCode(value)
-    setInputValue(`+${getCountryCallingCode(value)} `)
+    const inputValue = `+${getCountryCallingCode(value)} `
+    setInputValue(inputValue)
+    onChange?.(e, inputValue)
     innerRef.current?.focus()
   }
 
   const onInput = (e: FormEvent<HTMLInputElement>) => {
     const value = e.currentTarget.value
     setInputValue(value)
+    onChange?.(e, value)
 
     const asYouType = new AsYouType()
     asYouType.input(value)
@@ -67,7 +74,7 @@ export const PhoneSelectField: FC<PhoneSelectFieldProps> = ({
     const countryCode = asYouType.getCountry()
     if (countryCode) setCountryCode(countryCode)
 
-    handleInput?.(e)
+    _onInput?.(e)
   }
 
   return (

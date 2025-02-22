@@ -1,7 +1,7 @@
 'use client';
 
 import { FC } from 'react';
-import { Select, SelectProps } from '@adara-cs/ui-kit-web';
+import { Select, SelectEvent, SelectProps } from '@adara-cs/ui-kit-web';
 import { useControlledState } from '@adara-cs/hooks';
 import { SheetSelect, SheetSelectProps } from '../SheetSelect';
 import { ResponsiveSelectProvider } from './providers';
@@ -25,19 +25,24 @@ export const ResponsiveSelect: FC<ResponsiveSelectProps> = ({
   endSlot,
   startSlot,
   valueSlot,
-  onSelect,
+  onSelect: _onSelect,
   defaultValue,
   isBreakpoint = false,
   value: controlledValue,
   children
 }) => {
-  const [value, setValue] = useControlledState(controlledValue, defaultValue, onSelect)
+  const [value, setValue] = useControlledState(controlledValue, defaultValue)
+
+  const onSelect = (e: SelectEvent, value: string) => {
+    _onSelect?.(e, value)
+    setValue(value)
+  }
 
   return (
     <ResponsiveSelectProvider isBreakpoint={isBreakpoint}>
       {isBreakpoint ? (
         <SheetSelect
-          onSelect={setValue}
+          onSelect={onSelect}
           value={value}
           className={sheetSelectClassName}
           disabled={disabled}
@@ -66,7 +71,7 @@ export const ResponsiveSelect: FC<ResponsiveSelectProps> = ({
           valueSlot={valueSlot}
           placeholder={placeholder}
           value={value}
-          onSelect={setValue}
+          onSelect={onSelect}
         >
           {children}
         </Select>

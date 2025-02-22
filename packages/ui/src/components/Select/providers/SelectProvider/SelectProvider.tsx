@@ -1,5 +1,5 @@
 'use client';
-import { FC, PropsWithChildren, useMemo } from 'react';
+import { FC, PropsWithChildren, useMemo, KeyboardEvent, MouseEvent } from 'react';
 import { SelectContext, SelectContextState } from './context.ts';
 
 type Value = string | number | undefined
@@ -7,7 +7,7 @@ type Value = string | number | undefined
 export interface SelectProviderProps {
   value: Value
   activeIndex: number | undefined | null
-  onSelect: (value: Value) => void
+  onSelect: (e: MouseEvent | KeyboardEvent, value: Value) => void
   getItemProps: SelectContextState['getItemProps']
   size: 'small' | 'medium' | 'large'
 }

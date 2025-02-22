@@ -1,12 +1,13 @@
 'use client';
 import { FC, PropsWithChildren, useMemo } from 'react';
 import { SheetSelectContext } from './context.ts';
+import { SelectEvent } from '@adara-cs/ui-kit-web';
 
 type Value = string | number | undefined
 
 export interface SheetSelectProviderProps {
   value: Value
-  onSelect: (value: Value) => void
+  onSelect: (e: SelectEvent, value: Value) => void
   size: 'small' | 'medium' | 'large'
 }
 

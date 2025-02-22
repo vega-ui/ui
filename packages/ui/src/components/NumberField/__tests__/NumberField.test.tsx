@@ -2,17 +2,13 @@ import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react'
 import { NumberField } from '../NumberField.tsx';
 import { fireEvent } from '@storybook/test';
+import { act } from 'react';
 
 
 describe('NumberField', () => {
   it('render numberField', () => {
     render(<NumberField data-testid='input' />)
     expect(screen.getByTestId('input')).toBeDefined()
-  })
-
-  it('type number', () => {
-    render(<NumberField data-testid='input' />)
-    expect(screen.getByTestId('input').getAttribute('type')).toBe('number')
   })
 
   it('placeholder', () => {
@@ -23,7 +19,9 @@ describe('NumberField', () => {
   it('change', () => {
     render(<NumberField data-testid='input' />)
     const input: HTMLInputElement = screen.getByTestId('input');
-    fireEvent.input(input, { target: { value: 1 } })
+    act(() => {
+      fireEvent.input(input, { target: { value: 1 } })
+    })
 
     expect(input.value).toBe('1')
   })
@@ -31,7 +29,9 @@ describe('NumberField', () => {
   it('change with text value', () => {
     render(<NumberField data-testid='input' />)
     const input: HTMLInputElement = screen.getByTestId('input');
-    fireEvent.input(input, { target: { value: 'Hello' } })
+    act(() => {
+      fireEvent.input(input, { target: { value: 'Hello' } })
+    })
 
     expect(input.value).toBe('')
   })
@@ -41,10 +41,19 @@ describe('NumberField', () => {
     const input: HTMLInputElement = screen.getByTestId('input')
     const [stepDownButton, stepUpButton] = screen.getAllByRole('button')
 
-    stepUpButton.click()
+    act(() => {
+      stepUpButton.click()
+    })
+    expect(input.value).toBe('0')
+
+    act(() => {
+      stepUpButton.click()
+    })
     expect(input.value).toBe('1')
 
-    stepDownButton.click()
+    act(() => {
+      stepDownButton.click()
+    })
     expect(input.value).toBe('0')
   })
 

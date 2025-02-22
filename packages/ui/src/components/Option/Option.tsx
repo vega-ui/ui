@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes, KeyboardEvent, ReactNode, Ref } from 'react';
+import { FC, HTMLAttributes, KeyboardEvent, ReactNode, Ref, MouseEvent } from 'react';
 import styles from './style.module.css'
 import { csx } from '@adara-cs/utils';
 
@@ -8,7 +8,7 @@ export interface OptionProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSel
   children?: ReactNode
   focusable?: boolean
   size?: 'small' | 'medium' | 'large'
-  onSelect?(value: string | number): void
+  onSelect?(event: MouseEvent | KeyboardEvent, value: string | number): void
   ref?: Ref<HTMLDivElement>
 }
 
@@ -23,14 +23,14 @@ export const Option: FC<OptionProps> = ({
   ref,
   ...props
 }) => {
-  const onSelect = () => {
-    handleSelect?.(value)
+  const onSelect = (e: MouseEvent) => {
+    handleSelect?.(e, value)
   }
 
   const onKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Enter' || ['Enter', ' '].includes(e.key)) {
       e.preventDefault();
-      handleSelect?.(value)
+      handleSelect?.(e, value)
     }
   }
 
