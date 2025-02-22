@@ -1,6 +1,6 @@
 import style from './style.module.css';
 import { ButtonBase, ButtonBaseProps } from '../ButtonBase';
-import { ElementType, Fragment, ReactNode, Ref } from 'react';
+import { ElementType, Fragment, ReactNode, Ref, MouseEvent } from 'react';
 import { Icon, IconProps } from '../Icon';
 import { sizeMapper } from './utils';
 import { csx } from '@adara-cs/utils';
@@ -12,7 +12,7 @@ export type IconButtonProps<T extends ElementType> = PolymorphicComponentPropWit
   size?: 'small' | 'medium' | 'large'
   iconSize?: IconProps['size']
   name?: IconProps['name']
-  onClick?: () => void;
+  onClick?: (e: MouseEvent) => void;
   className?: string
 }>
 

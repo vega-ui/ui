@@ -1,11 +1,11 @@
 'use client';
-import { FC, PropsWithChildren, useMemo } from 'react';
+import { FC, PropsWithChildren, useMemo, MouseEvent, KeyboardEvent } from 'react';
 import { PhoneSelectContext } from './context.ts';
 import { CountryCode } from 'libphonenumber-js';
 
 export interface PhoneSelectProviderProps {
   value: CountryCode
-  onSelect: (value: CountryCode) => void
+  onSelect: (e: KeyboardEvent | MouseEvent | null, value: CountryCode) => void
   size: 'small' | 'medium' | 'large'
 }
 

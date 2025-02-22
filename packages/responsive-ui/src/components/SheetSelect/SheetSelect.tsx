@@ -1,7 +1,7 @@
 'use client';
 
 import { Children, FC, ReactElement, ReactNode, useMemo, useState } from 'react';
-import { OptionProps, SelectCombobox, SelectComboboxProps, Sheet } from '@adara-cs/ui-kit-web';
+import { OptionProps, SelectCombobox, SelectComboboxProps, SelectEvent, Sheet } from '@adara-cs/ui-kit-web';
 import { useControlledState } from '@adara-cs/hooks';
 import { SheetSelectOptionList } from './components';
 import { SheetSelectProvider } from './providers';
@@ -12,7 +12,7 @@ export interface SheetSelectProps extends SelectComboboxProps {
   searchable?: boolean
   value?: string | number | undefined
   defaultValue?: string | number | undefined
-  onSelect?(value: string | number | undefined): void
+  onSelect?(e: SelectEvent, value: string | number | undefined): void
   children?: ReactElement<OptionProps> | ReactElement<OptionProps>[]
   searchFieldPlaceholder?: string
   headerSlot?: ReactNode | ReactNode[]
@@ -36,7 +36,7 @@ export const SheetSelect: FC<SheetSelectProps> = ({
   defaultValue,
   children,
 }) => {
-  const [value, setValue] = useControlledState(controlledValue, defaultValue, onSelect)
+  const [value, setValue] = useControlledState(controlledValue, defaultValue)
   const [open, setOpen] = useState<boolean | undefined>(false)
 
   const enabled = !disabled && !readOnly
@@ -50,7 +50,8 @@ export const SheetSelect: FC<SheetSelectProps> = ({
         : [], [children]
   )
 
-  const onSelectOption = (value: number | string | undefined) => {
+  const onSelectOption = (e: SelectEvent, value: number | string | undefined) => {
+    onSelect?.(e, value)
     setValue(value)
     setOpen(false)
   }

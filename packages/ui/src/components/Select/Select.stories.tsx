@@ -26,7 +26,7 @@ export const Field: Story = {
   },
   render(args) {
     return (
-      <Select {...args}>
+      <Select {...args} onSelect={console.log}>
         <SelectOption value='Moscow'>Москва</SelectOption>
         <SelectOption value='Saint-Petersburg'>Санкт-Петербург</SelectOption>
         <SelectOption value='Novosibirsk'>Новосибирск</SelectOption>

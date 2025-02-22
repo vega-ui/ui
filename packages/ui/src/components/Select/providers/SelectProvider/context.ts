@@ -1,13 +1,13 @@
 'use client';
 
-import { Context, createContext, HTMLProps } from 'react';
+import { Context, createContext, HTMLProps, MouseEvent, KeyboardEvent } from 'react';
 
 type Value = string | number | undefined
 
 export interface SelectContextState {
   value: Value
   activeIndex: number | undefined | null
-  onSelect: (value: Value) => void
+  onSelect: (e: MouseEvent | KeyboardEvent, value: Value) => void
   getItemProps?: (props?: (Omit<HTMLProps<HTMLElement>, 'selected' | 'active'>)) => Record<string, unknown>
   size?: 'small' | 'medium' | 'large'
 }

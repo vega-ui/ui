@@ -10,7 +10,9 @@ import {
   useCallback,
   useMemo,
   useRef,
-  useState
+  useState,
+  MouseEvent,
+  KeyboardEvent,
 } from 'react';
 import {
   autoUpdate,
@@ -31,7 +33,9 @@ import styles from './style.module.css';
 import { OptionProps } from '../Option';
 import { SelectCombobox, SelectListbox } from './components';
 import { useControlledState } from '@adara-cs/hooks';
-import { SelectProvider } from './providers/SelectProvider/SelectProvider.tsx';
+import { SelectProvider } from './providers';
+
+export type SelectEvent = MouseEvent | null | KeyboardEvent
 
 export interface SelectProps extends Omit<HTMLAttributes<HTMLButtonElement>, 'onSelect'> {
   listboxClassName?: string
@@ -53,7 +57,7 @@ export interface SelectProps extends Omit<HTMLAttributes<HTMLButtonElement>, 'on
   fullWidthListbox?: boolean
   value?: string | number | undefined
   defaultValue?: string | number | undefined
-  onSelect?(value: string | number | undefined): void
+  onSelect?(event: SelectEvent, value: string | number | undefined): void
 }
 
 export const Select: FC<SelectProps> = ({
@@ -77,7 +81,7 @@ export const Select: FC<SelectProps> = ({
   onSelect,
   ...props
 }) => {
-  const [value, setValue] = useControlledState(controlledValue, defaultValue, onSelect)
+  const [value, setValue] = useControlledState(controlledValue, defaultValue)
 
   const placement = variant === 'inline' ? 'bottom' : 'bottom-start'
   const enabled = !disabled && !readOnly
@@ -139,7 +143,9 @@ export const Select: FC<SelectProps> = ({
       return
     }
 
-    setValue(options?.[index].value)
+    const newValue = options?.[index].value
+    setValue(newValue)
+    onSelect?.(null, newValue)
   }
 
   const typeahead = useTypeahead(context, {
@@ -161,10 +167,11 @@ export const Select: FC<SelectProps> = ({
     typeahead,
   ]);
 
-  const onSelectOption = useCallback((value: number | string | undefined) => {
+  const onSelectOption = useCallback((e: MouseEvent | KeyboardEvent, value: number | string | undefined) => {
     setValue(value)
+    onSelect?.(e, value)
     setOpen(false)
-  }, [])
+  }, [onSelect])
 
   const { styles: transitionStyles } = useTransitionStyles(context, {
     duration: 200,

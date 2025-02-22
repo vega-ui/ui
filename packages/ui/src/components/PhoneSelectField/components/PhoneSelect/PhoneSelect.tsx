@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, MouseEvent, KeyboardEvent } from 'react';
 import { FlagIcon, FlagIconProps } from '../../../FlagIcon';
 import { PhoneSelectOption } from '../PhoneSelectOption';
 import { Select, SelectProps } from '../../../Select';
@@ -13,7 +13,7 @@ export interface PhoneSelectProps {
   size?: SelectProps['size']
   fullWidthListbox?: boolean
   value?: CountryCode
-  onSelect?: (country: CountryCode) => void
+  onSelect?: (e: MouseEvent | KeyboardEvent | null, country: CountryCode) => void
 }
 
 export const PhoneSelect: FC<PhoneSelectProps> = ({ countries, size = 'medium', fullWidthListbox, value, onSelect }) => {
