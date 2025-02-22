@@ -1,5 +1,17 @@
 # @adara-cs/responsive-ui
 
+## 2.4.2
+
+### Patch Changes
+
+- 3c06ae9: Change API for onChange in Select, PhoneSelectField, SheetSelect, ResponsiveSelect, and NumberField
+- Updated dependencies [3c06ae9]
+  - @adara-cs/ui-kit-web@2.4.2
+  - @adara-cs/hooks@2.4.2
+  - @adara-cs/icons@2.4.2
+  - @adara-cs/types@2.4.2
+  - @adara-cs/utils@2.4.2
+
 ## 2.4.1
 
 ### Patch Changes
