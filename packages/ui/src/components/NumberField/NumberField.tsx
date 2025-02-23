@@ -20,8 +20,8 @@ export type NumberFieldChangeEvent = WheelEvent | FormEvent | MouseEvent | Keybo
 
 export interface NumberFieldProps extends Omit<TextFieldProps, 'onChange'> {
   step?: number
-  min?: number
-  max?: number
+  min?: number | string
+  max?: number | string
   defaultValue?: number
   ref?: Ref<HTMLInputElement>
   precision?: number
@@ -33,8 +33,8 @@ export const NumberField: FC<NumberFieldProps> = ({
   className,
   disabled,
   size = 'medium',
-  min = Number.MIN_SAFE_INTEGER,
-  max = Number.MAX_SAFE_INTEGER,
+  min: minValue = Number.MIN_SAFE_INTEGER,
+  max: maxValue = Number.MAX_SAFE_INTEGER,
   step = 1,
   precision = 0,
   ref,
@@ -44,6 +44,9 @@ export const NumberField: FC<NumberFieldProps> = ({
   onChange,
   ...props
 }) => {
+  const max = getNumberValue(maxValue)
+  const min = getNumberValue(minValue)
+
   const maskitoOptions = maskitoNumberOptionsGenerator({
     max,
     min,
