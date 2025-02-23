@@ -1,5 +1,16 @@
 # @adara-cs/ui-kit-web
 
+## 2.4.8
+
+### Patch Changes
+
+- 848e062: Added hidden select to custom select to provide more efficient integration with forms
+- 430a948: Improved aria in number field
+  - @adara-cs/hooks@2.4.8
+  - @adara-cs/icons@2.4.8
+  - @adara-cs/types@2.4.8
+  - @adara-cs/utils@2.4.8
+
 ## 2.4.7
 
 ### Patch Changes
