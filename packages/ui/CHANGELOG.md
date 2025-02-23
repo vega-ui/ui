@@ -1,5 +1,15 @@
 # @adara-cs/ui-kit-web
 
+## 2.4.4
+
+### Patch Changes
+
+- 09e3e9d: Change onChange api - deleted second arg with value
+  - @adara-cs/hooks@2.4.4
+  - @adara-cs/icons@2.4.4
+  - @adara-cs/types@2.4.4
+  - @adara-cs/utils@2.4.4
+
 ## 2.4.3
 
 ### Patch Changes
