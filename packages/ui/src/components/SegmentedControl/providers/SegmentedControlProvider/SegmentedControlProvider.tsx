@@ -4,7 +4,7 @@ import { SegmentedControlContext } from './context.ts';
 
 export interface SegmentedControlProviderProps {
   value: string | number | undefined
-  onChange: (e: ChangeEvent<HTMLInputElement>, value: string | number | undefined) => void
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void
   size: 'small' | 'medium' | 'large'
   disabled?: boolean
   name?: string
