@@ -1,9 +1,9 @@
-import { FC, ReactNode } from 'react';
+import { ChangeEvent, FC, HTMLAttributes, ReactNode } from 'react';
 import style from './style.module.css';
 import { VisuallyHidden } from '../../../VisuallyHidden';
 import { useSegmentedControlContext } from '../../hooks';
 
-export interface SegmentedControlItemProps {
+export interface SegmentedControlItemProps extends HTMLAttributes<HTMLInputElement> {
   disabled?: boolean
   size?: 'small' | 'medium' | 'large'
   variant?: 'primary' | 'secondary'
@@ -12,15 +12,20 @@ export interface SegmentedControlItemProps {
   value?: string | number
 }
 
-export const SegmentedControlItem: FC<SegmentedControlItemProps> = ({ disabled, checked, variant, size = 'medium', value, children }) => {
-  const { value: selectedValue, size: _size, onChange, name, disabled: _disabled } = useSegmentedControlContext()
+export const SegmentedControlItem: FC<SegmentedControlItemProps> = ({ disabled, checked, variant, size = 'medium', value, children, onChange, ...props }) => {
+  const { value: selectedValue, size: _size, onChange: _onChange, name, disabled: _disabled } = useSegmentedControlContext()
 
   const inputChecked = checked ?? selectedValue === value
 
+  const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    _onChange(e)
+    onChange?.(e)
+  }
+
   return (
     <label data-checked={inputChecked} data-disabled={disabled} data-size={_size ?? size} data-variant={variant} className={style.control}>
-      <VisuallyHidden as='input' onChange={onChange} value={value} disabled={_disabled ?? disabled} type='radio' name={name}
-                      defaultChecked={inputChecked} />
+      <VisuallyHidden as='input' onChange={onInputChange} value={value} disabled={_disabled ?? disabled} type='radio' name={name}
+                      defaultChecked={inputChecked} {...props} />
       {children}
     </label>
   )
