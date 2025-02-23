@@ -20,7 +20,7 @@ export interface SegmentedControlProps extends Omit<DetailedHTMLProps<HTMLAttrib
   value?: string | number
   name: string
   variant?: 'primary' | 'secondary'
-  onChange?(e: ChangeEvent<HTMLInputElement>, value: string | number | undefined): void
+  onChange?(e: ChangeEvent<HTMLInputElement>): void
   ref?: Ref<HTMLDivElement>
 }
 
@@ -41,9 +41,9 @@ export const SegmentedControl: FC<SegmentedControlProps> = ({
 
   const [value, setValue] = useControlledState(controlledValue, values[0])
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>, value: string | number | undefined) => {
-    _onChange?.(e, value)
-    setValue(value)
+  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+    _onChange?.(e)
+    setValue(e.currentTarget.value)
   }
 
   const activeIndex = values.indexOf(value)

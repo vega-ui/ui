@@ -4,7 +4,7 @@ import { ChangeEvent, Context, createContext } from 'react';
 
 export interface SegmentedControlContextState {
   value: string | number | undefined
-  onChange: (event: ChangeEvent<HTMLInputElement>, value: string | number | undefined) => void
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void
   size?: 'small' | 'medium' | 'large'
   disabled?: boolean
   name?: string
