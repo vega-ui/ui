@@ -1,5 +1,15 @@
 # @adara-cs/ui-kit-web
 
+## 2.4.5
+
+### Patch Changes
+
+- b055830: added opportunity to put props in SegmentedControlItem
+  - @adara-cs/hooks@2.4.5
+  - @adara-cs/icons@2.4.5
+  - @adara-cs/types@2.4.5
+  - @adara-cs/utils@2.4.5
+
 ## 2.4.4
 
 ### Patch Changes
