@@ -19,18 +19,18 @@ export const Option: FC<OptionProps> = ({
   value,
   children,
   className,
-  onSelect: handleSelect,
+  onSelect: _onSelect,
   ref,
   ...props
 }) => {
   const onSelect = (e: MouseEvent) => {
-    handleSelect?.(e, value)
+    _onSelect?.(e, value)
   }
 
   const onKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'Enter' || ['Enter', ' '].includes(e.key)) {
       e.preventDefault();
-      handleSelect?.(e, value)
+      _onSelect?.(e, value)
     }
   }
 

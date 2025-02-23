@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Select } from './Select.tsx';
-import { Option } from '../Option';
 import { Label } from '../Label';
 import { Icon } from '../Icon';
 import { SelectOption } from './components/SelectOption';
@@ -44,9 +43,9 @@ export const Inline: Story = {
   render(args) {
     return (
       <Select {...args}>
-        <Option value={1}>Русский</Option>
-        <Option value={2}>Английский</Option>
-        <Option value={3}>Белорусский</Option>
+        <SelectOption value={1}>Русский</SelectOption>
+        <SelectOption value={2}>Английский</SelectOption>
+        <SelectOption value={3}>Белорусский</SelectOption>
       </Select>
     )
   }
@@ -62,9 +61,9 @@ export const WithLabel: Story = {
       <>
         <Label htmlFor='test'>Label</Label>
         <Select {...args}>
-          <Option value={1}>Русский</Option>
-          <Option value={2}>Английский</Option>
-          <Option value={3}>Белорусский</Option>
+          <SelectOption value={1}>Русский</SelectOption>
+          <SelectOption value={2}>Английский</SelectOption>
+          <SelectOption value={3}>Белорусский</SelectOption>
         </Select>
       </>
     )

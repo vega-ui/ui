@@ -34,6 +34,7 @@ import { OptionProps } from '../Option';
 import { SelectCombobox, SelectListbox } from './components';
 import { useControlledState } from '@adara-cs/hooks';
 import { SelectProvider } from './providers';
+import { VisuallyHidden } from '../VisuallyHidden';
 
 export type SelectEvent = MouseEvent | null | KeyboardEvent
 
@@ -59,6 +60,7 @@ export interface SelectProps extends Omit<HTMLAttributes<HTMLButtonElement>, 'on
   defaultValue?: string | number | undefined
   onSelect?(event: SelectEvent, value: string | number | undefined): void
   ref?: Ref<HTMLButtonElement>
+  name?: string
 }
 
 export const Select: FC<SelectProps> = ({
@@ -81,6 +83,7 @@ export const Select: FC<SelectProps> = ({
   defaultValue,
   onSelect,
   ref,
+  name,
   ...props
 }) => {
   const [value, setValue] = useControlledState(controlledValue, defaultValue)
@@ -171,8 +174,8 @@ export const Select: FC<SelectProps> = ({
 
   const onSelectOption = useCallback((e: MouseEvent | KeyboardEvent, value: number | string | undefined) => {
     setValue(value)
-    onSelect?.(e, value)
     setOpen(false)
+    onSelect?.(e, value)
   }, [onSelect])
 
   const { styles: transitionStyles } = useTransitionStyles(context, {
@@ -183,6 +186,13 @@ export const Select: FC<SelectProps> = ({
 
   return (
     <div className={csx(styles.wrapper, wrapperClassName)}>
+      <VisuallyHidden name={name} value={value} defaultValue={defaultValue} aria-hidden='true' tabIndex={-1} as='select'>
+        {options?.map(({ label, value: optionValue }) => (
+          <option value={optionValue}>
+            {label}
+          </option>
+        ))}
+      </VisuallyHidden>
       <SelectCombobox
         ref={mergeRefs([refs.setReference, ref])}
         size={size}
