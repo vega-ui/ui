@@ -1,5 +1,15 @@
 # @adara-cs/ui-kit-web
 
+## 2.4.9
+
+### Patch Changes
+
+- d94faa1: Fixed problem with select: made it uncontrolled
+  - @adara-cs/hooks@2.4.9
+  - @adara-cs/icons@2.4.9
+  - @adara-cs/types@2.4.9
+  - @adara-cs/utils@2.4.9
+
 ## 2.4.8
 
 ### Patch Changes
