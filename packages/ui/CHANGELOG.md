@@ -1,5 +1,15 @@
 # @adara-cs/ui-kit-web
 
+## 2.4.6
+
+### Patch Changes
+
+- 467bfa6: Allow use max and min as string in number field
+  - @adara-cs/hooks@2.4.6
+  - @adara-cs/icons@2.4.6
+  - @adara-cs/types@2.4.6
+  - @adara-cs/utils@2.4.6
+
 ## 2.4.5
 
 ### Patch Changes
