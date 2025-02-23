@@ -186,9 +186,9 @@ export const Select: FC<SelectProps> = ({
 
   return (
     <div className={csx(styles.wrapper, wrapperClassName)}>
-      <VisuallyHidden name={name} value={value} defaultValue={defaultValue} aria-hidden='true' tabIndex={-1} as='select'>
+      <VisuallyHidden name={name} defaultValue={value} aria-hidden='true' tabIndex={-1} as='select'>
         {options?.map(({ label, value: optionValue }) => (
-          <option value={optionValue}>
+          <option key={optionValue} value={optionValue}>
             {label}
           </option>
         ))}
