@@ -6,10 +6,11 @@ import {
   Children,
   DetailedHTMLProps, FC,
   HTMLAttributes, ReactElement, Ref,
-  useState
 } from 'react';
 import { csx } from '@adara-cs/utils';
-import { SegmentedControlItem, SegmentedControlItemProps } from './components';
+import { SegmentedControlItemProps } from './components';
+import { SegmentedControlProvider } from './providers';
+import { useControlledState } from '@adara-cs/hooks';
 
 export interface SegmentedControlProps extends Omit<DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange'> {
   disabled?: boolean
@@ -19,7 +20,7 @@ export interface SegmentedControlProps extends Omit<DetailedHTMLProps<HTMLAttrib
   value?: string | number
   name: string
   variant?: 'primary' | 'secondary'
-  onChange?(e: ChangeEvent<HTMLInputElement>, value: string | number): void
+  onChange?(e: ChangeEvent<HTMLInputElement>, value: string | number | undefined): void
   ref?: Ref<HTMLDivElement>
 }
 
@@ -31,44 +32,38 @@ export const SegmentedControl: FC<SegmentedControlProps> = ({
   children,
   variant,
   value: controlledValue,
-  onChange: controlledOnChange,
+  onChange: _onChange,
   name,
   ref,
   ...props
 }) => {
   const values = Children.toArray(children).map((child) => (child as ReactElement<{ value?: string | number }>).props?.value)
 
-  const [uncontrolledValue, setUncontrolledValue] = useState(controlledValue ?? values[0])
+  const [value, setValue] = useControlledState(controlledValue, values[0])
 
-  const uncontrolledOnChange = (_: ChangeEvent<HTMLInputElement>, value: string | number) => {
-    setUncontrolledValue(value)
+  const onChange = (e: ChangeEvent<HTMLInputElement>, value: string | number | undefined) => {
+    _onChange?.(e, value)
+    setValue(value)
   }
-
-  const value = controlledValue ?? uncontrolledValue
-  const onChange = controlledOnChange ?? uncontrolledOnChange
 
   const activeIndex = values.indexOf(value)
 
   return (
-    <div data-size={size} data-variant={variant} className={csx(style.controlWrapper, className)} ref={ref} {...props}>
-      {children && Children.map(children, (child, i) => (
-        <SegmentedControlItem
-          key={i}
-          {...child.props}
-          onChange={onChange}
-          disabled={disabled}
-          name={name}
-          size={size}
-          checked={child.props?.value === value}
+    <SegmentedControlProvider value={value} onChange={onChange} size={size} disabled={disabled} name={name}>
+      <div data-size={size} data-variant={variant} className={csx(style.controlWrapper, className)}
+           ref={ref} {...props}>
+        {children}
+        <div
+          data-disabled={disabled}
+          data-variant={variant}
+          style={{
+            transform: `translateX(${(activeIndex === -1 ? 0 : activeIndex) * 100}%)`,
+            width: `calc(100% / ${Children.count(children)})`
+          }}
+          data-size={size}
+          className={style.active}
         />
-      ))}
-      <div
-        data-disabled={disabled}
-        data-variant={variant}
-        style={{ transform: `translateX(${(activeIndex === -1 ? 0 : activeIndex) * 100}%)`, width: `calc(100% / ${Children.count(children)})` }}
-        data-size={size}
-        className={style.active}
-      />
-    </div>
+      </div>
+    </SegmentedControlProvider>
   );
 }
