@@ -28,7 +28,7 @@ import {
   useTypeahead,
   FloatingList,
 } from '@floating-ui/react';
-import { csx } from '@adara-cs/utils';
+import { csx, mergeRefs } from '@adara-cs/utils';
 import styles from './style.module.css';
 import { OptionProps } from '../Option';
 import { SelectCombobox, SelectListbox } from './components';
@@ -58,6 +58,7 @@ export interface SelectProps extends Omit<HTMLAttributes<HTMLButtonElement>, 'on
   value?: string | number | undefined
   defaultValue?: string | number | undefined
   onSelect?(event: SelectEvent, value: string | number | undefined): void
+  ref?: Ref<HTMLButtonElement>
 }
 
 export const Select: FC<SelectProps> = ({
@@ -79,6 +80,7 @@ export const Select: FC<SelectProps> = ({
   value: controlledValue,
   defaultValue,
   onSelect,
+  ref,
   ...props
 }) => {
   const [value, setValue] = useControlledState(controlledValue, defaultValue)
@@ -182,7 +184,7 @@ export const Select: FC<SelectProps> = ({
   return (
     <div className={csx(styles.wrapper, wrapperClassName)}>
       <SelectCombobox
-        ref={refs.setReference}
+        ref={mergeRefs([refs.setReference, ref])}
         size={size}
         className={className}
         disabled={disabled}
