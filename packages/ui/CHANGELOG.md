@@ -1,5 +1,16 @@
 # @adara-cs/ui-kit-web
 
+## 2.4.3
+
+### Patch Changes
+
+- df8c8f8: Added outline for focus visible segmented control
+- 74367f7: Added controlledControl and Provider to SegmentedControl
+  - @adara-cs/hooks@2.4.3
+  - @adara-cs/icons@2.4.3
+  - @adara-cs/types@2.4.3
+  - @adara-cs/utils@2.4.3
+
 ## 2.4.2
 
 ### Patch Changes
