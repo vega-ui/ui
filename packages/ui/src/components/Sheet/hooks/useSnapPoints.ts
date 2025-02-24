@@ -35,7 +35,7 @@ export const useSnapPoints = ({ snapPoints, containerRef, defaultSnapPoint, acti
       setActiveSnapPoint(sortedSnapPointsInDimensions.findIndex(v => v === snapPointsInDimensions[defaultSnapPoint]))
       defaultSet.current = true
     }
-  }, [defaultSnapPoint, sortedSnapPointsInDimensions]);
+  }, [defaultSnapPoint, setActiveSnapPoint, snapPointsInDimensions, sortedSnapPointsInDimensions]);
 
   const activeSnapPointValue = useMemo(() =>
     sortedSnapPointsInDimensions.length !== 0
