@@ -25,7 +25,7 @@ export const SheetPhoneSelect: FC<SheetPhoneSelectProps> = ({
 
   const filteredCountries = useMemo(() => {
     return countries.filter((country) => country.label.toLowerCase().includes(searchValue.toLowerCase()))
-  }, [searchValue])
+  }, [countries, searchValue])
 
   return (
     <SheetSelect
