@@ -24,7 +24,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     placeholder: 'Количество',
-    onChange: console.log,
+    max: 16,
+    min: 1,
   },
 };
 

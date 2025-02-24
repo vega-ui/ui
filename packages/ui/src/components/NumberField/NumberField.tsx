@@ -1,10 +1,12 @@
+'use client';
+
 import {
   FC,
   Ref, useEffect,
   useRef,
   KeyboardEvent,
   FormEvent,
-  MouseEvent,
+  MouseEvent, useCallback,
 } from 'react';
 import { TextField, TextFieldProps } from '../TextField';
 import { IconButton } from '../IconButton';
@@ -62,7 +64,7 @@ export const NumberField: FC<NumberFieldProps> = ({
     options: maskitoOptions
   })
 
-  const increment = () => {
+  const increment = useCallback(() => {
     if (value === '' || value === undefined) {
       const v = min !== Number.MIN_SAFE_INTEGER ? min : 0
 
@@ -75,9 +77,9 @@ export const NumberField: FC<NumberFieldProps> = ({
     setValue(nextValue)
 
     return nextValue
-  }
+  }, [max, min, setValue, step, value])
 
-  const decrement = () => {
+  const decrement = useCallback(() => {
     if (value === '' || value === undefined) {
       const v = min !== Number.MIN_SAFE_INTEGER ? min : 0
 
@@ -90,7 +92,7 @@ export const NumberField: FC<NumberFieldProps> = ({
     setValue(nextValue)
 
     return nextValue
-  }
+  }, [min, setValue, step, value])
 
   const onKeyDown = (e: KeyboardEvent) => {
     let v: number | undefined
@@ -118,6 +120,8 @@ export const NumberField: FC<NumberFieldProps> = ({
   useEffect(() => {
     if (!changeOnWheel) return
 
+    const elem = wrapperRef.current
+
     const cb = (e: WheelEvent) => {
       e.preventDefault()
 
@@ -125,12 +129,12 @@ export const NumberField: FC<NumberFieldProps> = ({
       if (value !== undefined) onChange?.(e, value)
     }
 
-    wrapperRef.current?.addEventListener('wheel', cb)
+    elem?.addEventListener('wheel', cb)
 
     return () => {
-      wrapperRef.current?.removeEventListener('wheel', cb)
+      elem?.removeEventListener('wheel', cb)
     }
-  }, [increment, decrement]);
+  }, [increment, decrement, changeOnWheel, onChange]);
 
   const onIncrement = (e: MouseEvent) => {
     const value = increment()
