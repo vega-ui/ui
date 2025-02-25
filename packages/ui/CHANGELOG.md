@@ -1,5 +1,15 @@
 # @adara-cs/ui-kit-web
 
+## 2.4.11
+
+### Patch Changes
+
+- c8d3fa2: Fixed modal props type - state is a bool
+  - @adara-cs/hooks@2.4.11
+  - @adara-cs/icons@2.4.11
+  - @adara-cs/types@2.4.11
+  - @adara-cs/utils@2.4.11
+
 ## 2.4.10
 
 ### Patch Changes
