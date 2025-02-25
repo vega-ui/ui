@@ -17,7 +17,7 @@ export interface ModalProps {
   overlayClassName?: string
   triggerSlot?: (ref: Ref<never>, props?: Record<string, unknown>) => ReactElement
   open?: boolean
-  onOpenChange?(state?: boolean): void
+  onOpenChange?(state: boolean): void
   children?: ReactNode | ReactNode[]
   fluid?: boolean
   blurredOverlay?: boolean
