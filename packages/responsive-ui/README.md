@@ -23,8 +23,8 @@ Install @adara-cs/responsive-ui with
 Connect the styles first. You can do this using a js file, however, we recommend that you connect using ``@import`` and defining layers so that there are no conflicts with specificity.
 
 ```css
-  @import url('@adara-cs/ui-kit-web/style') layer(library);
-  @import url('@adara-cs/responsive-ui/style') layer(library);
+  @import url('@adara-cs/ui-kit-web/style.css') layer(library);
+  @import url('@adara-cs/responsive-ui/style.css') layer(library);
 
   @layer reset, library, components, overrides;
 ```
