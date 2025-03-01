@@ -1,5 +1,28 @@
 # @adara-cs/ui-kit-web
 
+## 2.4.11
+
+### Patch Changes
+
+- c8d3fa2: Fixed modal props type - state is a bool
+  - @adara-cs/hooks@2.4.11
+  - @adara-cs/icons@2.4.11
+  - @adara-cs/types@2.4.11
+  - @adara-cs/utils@2.4.11
+
+## 2.4.10
+
+### Patch Changes
+
+- 4cb0ffd: Fixed bug in number field provided by react-hooks eslint rule.
+
+  The ref value 'wrapper Ref. current' will likely have changed by the time this effect cleanup function runs. If this ref points to a node rendered by React, copy 'wrapper Ref. current' to a variable inside the effect, and use that variable in the cleanup function.(react-hooks/ exhaustive-deps\_
+
+  - @adara-cs/hooks@2.4.10
+  - @adara-cs/icons@2.4.10
+  - @adara-cs/types@2.4.10
+  - @adara-cs/utils@2.4.10
+
 ## 2.4.9
 
 ### Patch Changes

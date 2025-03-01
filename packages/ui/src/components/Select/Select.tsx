@@ -176,7 +176,7 @@ export const Select: FC<SelectProps> = ({
     setValue(value)
     setOpen(false)
     onSelect?.(e, value)
-  }, [onSelect])
+  }, [onSelect, setValue])
 
   const { styles: transitionStyles } = useTransitionStyles(context, {
     duration: 200,

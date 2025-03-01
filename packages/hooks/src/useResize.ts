@@ -19,7 +19,7 @@ export const useResize = () => {
     return () => {
       controller.abort()
     }
-  }, [])
+  }, [height, width])
 
   return { height, width }
 }

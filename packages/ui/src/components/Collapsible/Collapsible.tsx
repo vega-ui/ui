@@ -28,7 +28,7 @@ export const Collapsible: FC<CollapsibleProps> = ({ open: controlledOpen, onChan
 
   useEffect(() => {
     onChangeHidden?.(hidden)
-  }, [hidden])
+  }, [hidden, onChangeHidden])
 
   const contentRef = useRef<HTMLDivElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
