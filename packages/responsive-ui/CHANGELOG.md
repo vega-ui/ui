@@ -1,5 +1,17 @@
 # @adara-cs/responsive-ui
 
+## 2.4.12
+
+### Patch Changes
+
+- 609de66: Fixec style export
+- Updated dependencies [609de66]
+  - @adara-cs/ui-kit-web@2.4.12
+  - @adara-cs/hooks@2.4.12
+  - @adara-cs/icons@2.4.12
+  - @adara-cs/types@2.4.12
+  - @adara-cs/utils@2.4.12
+
 ## 2.4.11
 
 ### Patch Changes
