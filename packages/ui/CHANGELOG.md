@@ -1,5 +1,16 @@
 # @adara-cs/ui-kit-web
 
+## 2.4.13
+
+### Patch Changes
+
+- a18337d: Changed start to flex-start into align-items
+- 57c720a: Fixed style exports
+  - @adara-cs/hooks@2.4.13
+  - @adara-cs/icons@2.4.13
+  - @adara-cs/types@2.4.13
+  - @adara-cs/utils@2.4.13
+
 ## 2.4.12
 
 ### Patch Changes
