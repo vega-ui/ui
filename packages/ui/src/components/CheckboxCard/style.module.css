@@ -33,9 +33,14 @@
     cursor: not-allowed;
 }
 
-.checkboxCard[data-appearance]:has(input[type='checkbox']:checked),
-.checkboxCard[data-appearance]:has(input[type='checkbox']:indeterminate) {
+.checkboxCard[data-variant='primary']:has(input[type='checkbox']:checked),
+.checkboxCard[data-variant='primary']:has(input[type='checkbox']:indeterminate) {
     border-color: var(--primary-accent-7);
+}
+
+.checkboxCard[data-variant='secondary']:has(input[type='checkbox']:checked),
+.checkboxCard[data-variant='secondary']:has(input[type='checkbox']:indeterminate) {
+    border-color: var(--secondary-accent-7);
 }
 
 .content {
