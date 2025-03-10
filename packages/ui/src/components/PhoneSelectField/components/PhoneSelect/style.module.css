@@ -11,8 +11,8 @@
 .countrySelect[data-size] {
     min-width: auto;
     height: 100%;
-    background-color: var(--neutral-50);
-    border: none;
+    background-color: var(--neutral-50) !important;
+    border: none !important;
     gap: var(--spacing-6);
 }
 
