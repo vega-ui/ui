@@ -36,7 +36,7 @@ export interface PhoneSelectFieldProps extends Omit<TextFieldProps, 'value' | 'o
 
 export const PhoneSelectField: FC<PhoneSelectFieldProps> = ({
   className,
-  disabled = true,
+  disabled,
   size = 'medium',
   onInput: _onInput,
   defaultCountry = 'RU',
