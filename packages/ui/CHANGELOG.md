@@ -1,5 +1,15 @@
 # @adara-cs/ui-kit-web
 
+## 2.4.17
+
+### Patch Changes
+
+- 91d561e: Fixed drawer prop type and phone select field props
+  - @adara-cs/hooks@2.4.17
+  - @adara-cs/icons@2.4.17
+  - @adara-cs/types@2.4.17
+  - @adara-cs/utils@2.4.17
+
 ## 2.4.16
 
 ### Patch Changes
