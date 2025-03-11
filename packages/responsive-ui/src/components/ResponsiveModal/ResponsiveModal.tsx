@@ -2,7 +2,7 @@
 
 import { FC, Ref } from 'react';
 import { Modal, Sheet, SheetProps, ModalProps } from '@adara-cs/ui-kit-web';
-import { ResponsiveModalProvider } from './providers/ResponsiveModalProvider';
+import { ResponsiveModalProvider } from './providers';
 
 export interface ResponsiveModalProps extends ModalProps, SheetProps {
   isBreakpoint?: boolean

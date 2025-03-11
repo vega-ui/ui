@@ -55,7 +55,7 @@ export const SelectCombobox: FC<PropsWithChildren<SelectComboboxProps>> = ({
       {(withArrow || endSlot) && (
         <div className={style.control}>
           {endSlot}
-          {withArrow && <SelectArrow open={open} className={style.controlIcon}/>}
+          {withArrow && <SelectArrow size={size} open={open} className={style.controlIcon}/>}
         </div>
       )}
     </button>

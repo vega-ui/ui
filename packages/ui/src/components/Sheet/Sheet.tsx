@@ -63,7 +63,7 @@ export interface SheetProps extends HTMLAttributes<HTMLElement> {
   withOverlay?: boolean
   open?: boolean
   clickEnabled?: boolean
-  onChangeOpen?: (value: boolean | undefined) => void
+  onOpenChange?: (value: boolean) => void
   children?: ReactNode | ReactNode[]
   headerSlot?: ReactNode | ReactNode[]
   triggerSlot?: (ref: Ref<never>, props?: Record<string, unknown>) => ReactElement
@@ -87,7 +87,7 @@ export const Sheet: FC<SheetProps> = ({
   activeSnapPoint: controlledActiveSnapPoint,
   onChangeActiveSnapPoint,
   open: controlledOpen,
-  onChangeOpen: controlledOnChangeOpen,
+  onOpenChange: controlledOnOpenChange,
   headerSlot,
   clickEnabled = true,
   className,
@@ -96,7 +96,7 @@ export const Sheet: FC<SheetProps> = ({
 }) => {
   const contentRef = useRef<HTMLDivElement>(null)
 
-  const [isOpen, setIsOpen] = useControlledState(controlledOpen, false, controlledOnChangeOpen)
+  const [isOpen, setIsOpen] = useControlledState(controlledOpen, false, controlledOnOpenChange)
 
   const { refs, context } = useFloating({
     open: isOpen,

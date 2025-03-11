@@ -64,7 +64,7 @@ export const SheetSelect: FC<SheetSelectProps> = ({
       className={style.sheet}
       clickEnabled={enabled}
       open={open}
-      onChangeOpen={setOpen}
+      onOpenChange={setOpen}
       headerSlot={headerSlot}
       triggerSlot={(ref, props) => (
         <SelectCombobox

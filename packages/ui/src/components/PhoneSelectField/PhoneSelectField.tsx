@@ -91,7 +91,7 @@ export const PhoneSelectField: FC<PhoneSelectFieldProps> = ({
           ? (<PhoneSelectProvider onSelect={onSelect} value={countryCode} size={size}>
             {selectSlot}
           </PhoneSelectProvider>)
-          : <PhoneSelect size={size} fullWidthListbox={fullWidthListbox} onSelect={onSelect} value={countryCode} countries={countries} />
+          : <PhoneSelect disabled={disabled} size={size} fullWidthListbox={fullWidthListbox} onSelect={onSelect} value={countryCode} countries={countries} />
       }
       startSlotClassName={style.startSlot}
       wrapperClassName={style.inputWrapper}
