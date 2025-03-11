@@ -30,7 +30,7 @@ export interface DrawerProps extends HTMLAttributes<HTMLElement> {
   shadowed?: boolean
   scrollable?: boolean
   open?: boolean
-  onChangeOpen?: (value: boolean | undefined) => void
+  onChangeOpen?: (value: boolean) => void
   headerSlot?: JSX.Element | JSX.Element[]
   blurredOverlay?: boolean
   fullWidth?: boolean
