@@ -1,5 +1,15 @@
 # @adara-cs/ui-kit-web
 
+## 2.4.18
+
+### Patch Changes
+
+- 7312c64: Added new props to NumberField - allowEmpty, which controll availibility of field to be empty or filled by min number (or zero, if min is a default min value)
+  - @adara-cs/hooks@2.4.18
+  - @adara-cs/icons@2.4.18
+  - @adara-cs/types@2.4.18
+  - @adara-cs/utils@2.4.18
+
 ## 2.4.17
 
 ### Patch Changes
