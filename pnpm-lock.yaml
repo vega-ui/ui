@@ -243,17 +243,17 @@ importers:
         specifier: ^0.27.2
         version: 0.27.3(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@maskito/core':
-        specifier: ^3.2.1
-        version: 3.2.1
+        specifier: ^3.4.0
+        version: 3.4.0
       '@maskito/kit':
-        specifier: ^3.2.1
-        version: 3.2.1(@maskito/core@3.2.1)
+        specifier: ^3.4.0
+        version: 3.4.0(@maskito/core@3.4.0)
       '@maskito/phone':
-        specifier: ^3.2.1
-        version: 3.2.1(@maskito/core@3.2.1)(@maskito/kit@3.2.1(@maskito/core@3.2.1))(libphonenumber-js@1.11.19)
+        specifier: ^3.4.0
+        version: 3.4.0(@maskito/core@3.4.0)(@maskito/kit@3.4.0(@maskito/core@3.4.0))(libphonenumber-js@1.11.19)
       '@maskito/react':
-        specifier: ^3.2.1
-        version: 3.2.1(@maskito/core@3.2.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        specifier: ^3.4.0
+        version: 3.4.0(@maskito/core@3.4.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       libphonenumber-js:
         specifier: ^1.11.19
         version: 1.11.19
@@ -958,25 +958,25 @@ packages:
   '@manypkg/get-packages@1.1.3':
     resolution: {integrity: sha512-fo+QhuU3qE/2TQMQmbVMqaQ6EWbMhi4ABWP+O4AM1NqPBuy0OrApV5LO6BrrgnhtAHS2NH6RrVk9OL181tTi8A==}
 
-  '@maskito/core@3.2.1':
-    resolution: {integrity: sha512-gpoJbFFsq2CFz9smqEvZfTPVMt/gkRoiL14idL1sLXEDbWZyeKce0SgusHzHXaOkEegly4BIJGazCNG2hsPNYg==}
+  '@maskito/core@3.4.0':
+    resolution: {integrity: sha512-gFM6qk675YwOEGhxu9Xm6/sl1TZBRab6+B3Gstqml7xJopHHZ0rUOrWXwmX0z2JI+1PsgUL/ftV/CSZ8CpIONg==}
 
-  '@maskito/kit@3.2.1':
-    resolution: {integrity: sha512-p9Tmr4BMZs7geNWMYMQaP4Dc+Sre8OeE6Vynz1RGsJJdjxmocY2mihXKldecS8c9aXfHvLU658F9YtorL3Akjg==}
+  '@maskito/kit@3.4.0':
+    resolution: {integrity: sha512-jkexr7wjAqFeMpyc7s0IlinL+3F9xC4BYUHDQcEqlAJisDgVFtGCZZK/RvV1C+HGDn2gtzzVrJ3G/OY66k6EXg==}
     peerDependencies:
-      '@maskito/core': ^3.2.1
+      '@maskito/core': ^3.4.0
 
-  '@maskito/phone@3.2.1':
-    resolution: {integrity: sha512-F1hrnpP1UyMhVO0nZAMoA0kkS8rVTc4kVUZ8mcxz98weIAKYo3wiuLOMXb1cg7/ejcpEnqDTRe1rzBxwtRAKeQ==}
+  '@maskito/phone@3.4.0':
+    resolution: {integrity: sha512-KR6JuuWhTumIOCUV3CzPhh1niCXcuqsogNsLW3YfdmeVo8GygS9isnHNbSaAA/b9OnmIEkh25mur6x3yEJuYjA==}
     peerDependencies:
-      '@maskito/core': ^3.2.1
-      '@maskito/kit': ^3.2.1
+      '@maskito/core': ^3.4.0
+      '@maskito/kit': ^3.4.0
       libphonenumber-js: '>=1.0.0'
 
-  '@maskito/react@3.2.1':
-    resolution: {integrity: sha512-qTBDYARpGGxXPU2pLBwSkzw7nLox/5z+sMCTUD7/HgYuAR9TJrmZP2MCyQQgqxTeOLNn5NOTgJWfaqIsSOuTvw==}
+  '@maskito/react@3.4.0':
+    resolution: {integrity: sha512-0Pv5zWbodC9mbF9Ev4nGXM894DnYb8fOWFfhbewLE8yH7UXtjQLa0Rj0EMYWzzMcHweTYcMZ7Zt/lmnOT8R5pw==}
     peerDependencies:
-      '@maskito/core': ^3.2.1
+      '@maskito/core': ^3.4.0
       react: '>=16.8'
       react-dom: '>=16.8'
 
@@ -3943,21 +3943,21 @@ snapshots:
       globby: 11.1.0
       read-yaml-file: 1.1.0
 
-  '@maskito/core@3.2.1': {}
+  '@maskito/core@3.4.0': {}
 
-  '@maskito/kit@3.2.1(@maskito/core@3.2.1)':
+  '@maskito/kit@3.4.0(@maskito/core@3.4.0)':
     dependencies:
-      '@maskito/core': 3.2.1
+      '@maskito/core': 3.4.0
 
-  '@maskito/phone@3.2.1(@maskito/core@3.2.1)(@maskito/kit@3.2.1(@maskito/core@3.2.1))(libphonenumber-js@1.11.19)':
+  '@maskito/phone@3.4.0(@maskito/core@3.4.0)(@maskito/kit@3.4.0(@maskito/core@3.4.0))(libphonenumber-js@1.11.19)':
     dependencies:
-      '@maskito/core': 3.2.1
-      '@maskito/kit': 3.2.1(@maskito/core@3.2.1)
+      '@maskito/core': 3.4.0
+      '@maskito/kit': 3.4.0(@maskito/core@3.4.0)
       libphonenumber-js: 1.11.19
 
-  '@maskito/react@3.2.1(@maskito/core@3.2.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+  '@maskito/react@3.4.0(@maskito/core@3.4.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
-      '@maskito/core': 3.2.1
+      '@maskito/core': 3.4.0
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
 
