@@ -62,7 +62,7 @@
     "@adara-cs/types": "workspace:*",
     "@adara-cs/ui-kit-web": "workspace:*",
     "@adara-cs/utils": "workspace:*",
-    "@floating-ui/react": "^0.27.2",
+    "@floating-ui/react": "^0.27.5",
     "libphonenumber-js": "^1.11.18",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
