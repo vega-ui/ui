@@ -12,7 +12,14 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  argTypes: {},
+  argTypes: {
+    min: { type: 'number' },
+    max: { type: 'number' },
+    size: {
+      control: 'radio',
+      options: ['small', 'medium', 'large']
+    }
+  },
   args: {},
 } satisfies Meta<typeof NumberField>;
 

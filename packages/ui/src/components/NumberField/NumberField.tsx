@@ -6,54 +6,55 @@ import {
   useRef,
   KeyboardEvent,
   FormEvent,
-  MouseEvent, useCallback,
+  MouseEvent,
+  FocusEvent,
+  useCallback,
 } from 'react';
 import { TextField, TextFieldProps } from '../TextField';
 import { IconButton } from '../IconButton';
 import style from './style.module.css'
 import { csx, mergeRefs } from '@adara-cs/utils';
-import { getNumberValue, sizeMapper } from './utils';
+import { getNumberMaskOptions, getNumberValue, sizeMapper } from './utils';
 import { useMaskito } from '@maskito/react';
-import { maskitoNumberOptionsGenerator } from '@maskito/kit';
 import { useControlledState } from '@adara-cs/hooks';
 import { maskitoTransform } from '@maskito/core';
 
-export type NumberFieldChangeEvent = WheelEvent | FormEvent | MouseEvent | KeyboardEvent
+export type NumberFieldChangeEvent = WheelEvent | FormEvent | MouseEvent | KeyboardEvent | FocusEvent
 
 export interface NumberFieldProps extends Omit<TextFieldProps, 'onChange'> {
   step?: number
-  min?: number | string
-  max?: number | string
+  min?: number
+  max?: number
   defaultValue?: number
   ref?: Ref<HTMLInputElement>
   precision?: number
   changeOnWheel?: boolean
   onChange?: (event: NumberFieldChangeEvent, value: number) => void
+  allowEmpty?: boolean
 }
 
 export const NumberField: FC<NumberFieldProps> = ({
   className,
   disabled,
   size = 'medium',
-  min: minValue = Number.MIN_SAFE_INTEGER,
-  max: maxValue = Number.MAX_SAFE_INTEGER,
+  min = Number.MIN_SAFE_INTEGER,
+  max = Number.MAX_SAFE_INTEGER,
   step = 1,
   precision = 0,
   ref,
   value: controlledValue,
   defaultValue = '',
+  allowEmpty = true,
   changeOnWheel = true,
   onChange,
   ...props
 }) => {
-  const max = getNumberValue(maxValue)
-  const min = getNumberValue(minValue)
-
-  const maskitoOptions = maskitoNumberOptionsGenerator({
+  const maskitoOptions = getNumberMaskOptions({
     max,
     min,
     minusSign: '-',
-    precision
+    precision,
+    allowEmpty
   })
 
   const [value, setValue] = useControlledState<string | number | undefined>(controlledValue, defaultValue)
