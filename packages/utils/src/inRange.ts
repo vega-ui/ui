@@ -1,1 +1,1 @@
-export const inRange = (value: number, range: [number, number]) => value >= range[0] && value <= range[1] || value <= range[1] && value >= range[0]
+export const inRange = (value: number, range: [number, number] | []) => range.length === 0 ? false : value >= range[0] && value <= range[1] || value <= range[1] && value >= range[0]

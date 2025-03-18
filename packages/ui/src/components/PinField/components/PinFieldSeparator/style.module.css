@@ -1,0 +1,16 @@
+.separator {
+    height: 1px;
+    background-color: var(--neutral-150);
+}
+
+.separator[data-size='small'] {
+    width: 21px;
+}
+
+.separator[data-size='medium'] {
+    width: 24px;
+}
+
+.separator[data-size='large'] {
+    width: 27px;
+}
