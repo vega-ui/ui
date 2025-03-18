@@ -1,5 +1,19 @@
 # @adara-cs/ui-kit-web
 
+## 2.5.0
+
+### Minor Changes
+
+- c7808d0: Added PinField for OTP and pin-codes
+
+### Patch Changes
+
+- Updated dependencies [c7808d0]
+  - @adara-cs/utils@2.5.0
+  - @adara-cs/hooks@2.5.0
+  - @adara-cs/icons@2.5.0
+  - @adara-cs/types@2.5.0
+
 ## 2.4.18
 
 ### Patch Changes
