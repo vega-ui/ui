@@ -1,5 +1,11 @@
 # @adara-cs/utils
 
+## 2.5.0
+
+### Minor Changes
+
+- c7808d0: Added PinField for OTP and pin-codes
+
 ## 2.4.18
 
 ## 2.4.17
