@@ -1,0 +1,26 @@
+.inputWrapper {
+    position: relative;
+    box-sizing: border-box;
+}
+
+.group {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-3);
+    border-radius: inherit;
+}
+
+.input {
+    position: absolute;
+    top: 0;
+    z-index: -1;
+}
+
+.inputWrapper:has(.input:focus) .inputPinBlock[data-focus='true']:not([data-value]):before {
+    visibility: visible;
+}
+
+.inputWrapper:has(.input:focus) .inputPinBlock[data-focus='true'] {
+    outline-color: var(--primary-accent-7);
+}
