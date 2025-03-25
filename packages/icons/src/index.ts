@@ -30,6 +30,8 @@ import CheckOIcon from './assets/icons/check-o.svg?react'
 import DangerIcon from './assets/icons/danger.svg?react'
 import CopyIcon from './assets/icons/copy.svg?react'
 import AnchorIcon from './assets/icons/anchor.svg?react'
+import EyeIcon from './assets/icons/eye.svg?react'
+import EyeCloseIcon from './assets/icons/eye-close.svg?react'
 
 // Flags
 
@@ -322,6 +324,8 @@ export {
   DangerIcon,
   CopyIcon,
   AnchorIcon,
+  EyeIcon,
+  EyeCloseIcon,
 
   FlagAD,
   FlagAE,
