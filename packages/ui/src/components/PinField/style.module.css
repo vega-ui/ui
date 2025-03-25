@@ -17,7 +17,7 @@
     z-index: -1;
 }
 
-.inputWrapper:has(.input:focus) .inputPinBlock[data-focus='true']:not([data-value]):before {
+.inputWrapper:has(.input:focus) .inputPinBlock[data-caret='true']:not([data-value]):before {
     visibility: visible;
 }
 

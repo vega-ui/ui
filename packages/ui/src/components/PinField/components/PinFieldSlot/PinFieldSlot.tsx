@@ -24,7 +24,7 @@ export const PinFieldSlot: FC<PinFieldSlotProps> = ({ index }) => {
   const onClick = () => {
     if (!inputRef) return
 
-    if (index + 1 <= value.length) {
+    if (index <= value.length) {
       inputRef.current?.setSelectionRange(index, index + 1)
       onSelectionRangeChange?.([index, index + 1])
     }
@@ -43,6 +43,7 @@ export const PinFieldSlot: FC<PinFieldSlotProps> = ({ index }) => {
       onClick={onClick}
       className={csx(style.slot, slotClassName)}
       data-focus={selectionRange ? inRange(index, selectionRange) && inRange(index + 1, selectionRange) : false}
+      data-caret={index === selectionRange[0]}
       data-value={value[index]}
       data-disabled={disabled}
       data-error={error}
