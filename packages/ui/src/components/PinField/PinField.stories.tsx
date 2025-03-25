@@ -38,7 +38,7 @@ export const Default: Story = {
 
 export const WithAlphabet: Story = {
   args: {
-    mask: /^[A-z]+$/,
+    mask: /^[A-Za-z]+$/,
     children: [
       <PinFieldSlot index={0} />,
       <PinFieldSlot index={1} />,
