@@ -5,7 +5,8 @@ import {
 } from 'react';
 import { TextField, TextFieldProps } from '../TextField';
 import { IconButton } from '../IconButton';
-import { mergeRefs } from '@adara-cs/utils';
+import { csx, mergeRefs } from '@adara-cs/utils';
+import style from './style.module.css';
 
 export type PasswordFieldProps = TextFieldProps
 
@@ -13,7 +14,7 @@ export const PasswordField: FC<PasswordFieldProps> = ({
   disabled,
   size = 'medium',
   ref,
-  endSlot,
+  className,
   ...props
 }) => {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -22,21 +23,24 @@ export const PasswordField: FC<PasswordFieldProps> = ({
   const onToggle = () => {
     setShown(!shown)
     inputRef.current?.focus()
+    requestAnimationFrame(() => {
+      inputRef.current?.setSelectionRange(-1, -1);
+    })
   }
 
   return (
-    <TextField
-      ref={mergeRefs([ref, inputRef])}
-      size={size}
-      type={shown ? 'text' : 'password'}
-      endSlot={
-        <>
-          {endSlot}
-          <IconButton size={size} disabled={disabled} variant='secondary' appearance='transparent' name={shown ? 'eyeClose' : 'eye'} onClick={onToggle} />
-        </>
-      }
-      disabled={disabled}
-      {...props}
-    />
+    <div className={style.wrapper}>
+      <TextField
+        ref={mergeRefs([inputRef, ref])}
+        size={size}
+        className={csx(style.numberTextField, className)}
+        wrapperClassName={style.inputWrapper}
+        disabled={disabled}
+        type={shown ? 'text' : 'password'}
+        {...props}
+      />
+      <IconButton className={style.controlButton} size={size} disabled={disabled} variant='secondary' appearance='transparent'
+                  name={shown ? 'eyeClose' : 'eye'} onClick={onToggle}/>
+    </div>
   )
 }

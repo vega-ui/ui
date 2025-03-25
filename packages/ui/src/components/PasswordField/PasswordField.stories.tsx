@@ -13,8 +13,6 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {
-    min: { type: 'number' },
-    max: { type: 'number' },
     size: {
       control: 'radio',
       options: ['small', 'medium', 'large']
@@ -29,7 +27,7 @@ type Story = StoryObj<typeof meta>;
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Default: Story = {
   args: {
-    placeholder: 'Количество'
+    placeholder: 'Пароль'
   },
 };
 
@@ -50,7 +48,7 @@ export const WithLabel: Story = {
     return (
       <>
         <Label>
-          Количество
+          Пароль
           <PasswordField {...props} endSlot={<Text>шт.</Text>} />
         </Label>
       </>

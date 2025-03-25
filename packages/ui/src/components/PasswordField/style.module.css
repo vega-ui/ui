@@ -4,33 +4,11 @@
 }
 
 .inputWrapper {
-    padding: 0 var(--input-height);
+    padding-right: var(--input-height);
 }
 
-.numberTextField {
-    text-align: center;
-}
-
-.numberTextField::-webkit-outer-spin-button,
-.numberTextField::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-.numberTextField {
-    -moz-appearance: textfield;
-}
-
-.controlButtonUp,
-.controlButtonDown {
+.controlButton {
     position: absolute;
     top: 0;
-}
-
-.controlButtonDown {
-    left: 0;
-}
-
-.controlButtonUp {
     right: 0;
 }
