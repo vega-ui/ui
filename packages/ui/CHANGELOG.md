@@ -1,5 +1,15 @@
 # @adara-cs/ui-kit-web
 
+## 2.5.2
+
+### Patch Changes
+
+- 0fbc506: In some cases, when the entire Pin field was highlighted, the caret could appear on each of the highlighted fields, while it should be on only one. Also fixed a bug where it was impossible to select the end field.
+  - @adara-cs/hooks@2.5.2
+  - @adara-cs/icons@2.5.2
+  - @adara-cs/types@2.5.2
+  - @adara-cs/utils@2.5.2
+
 ## 2.5.1
 
 ### Patch Changes
