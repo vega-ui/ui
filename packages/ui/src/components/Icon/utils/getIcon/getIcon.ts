@@ -28,7 +28,9 @@ import {
   CheckOIcon,
   DangerIcon,
   CopyIcon,
-  AnchorIcon
+  AnchorIcon,
+  EyeIcon,
+  EyeCloseIcon,
 } from '@adara-cs/icons'
 
 const icons = {
@@ -61,7 +63,9 @@ const icons = {
   checkCircle: CheckOIcon,
   danger: DangerIcon,
   copy: CopyIcon,
-  anchor: AnchorIcon
+  anchor: AnchorIcon,
+  eye: EyeIcon,
+  eyeClose: EyeCloseIcon,
 } as const
 
 export type IconName = keyof typeof icons
