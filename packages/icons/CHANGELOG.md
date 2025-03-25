@@ -1,5 +1,11 @@
 # @adara-cs/icons
 
+## 2.6.0
+
+### Minor Changes
+
+- c31254f: Added new field - password
+
 ## 2.5.2
 
 ## 2.5.1
