@@ -5,7 +5,7 @@ import {
 } from 'react';
 import { TextField, TextFieldProps } from '../TextField';
 import { IconButton } from '../IconButton';
-import { csx, mergeRefs } from '@adara-cs/utils';
+import { mergeRefs } from '@adara-cs/utils';
 import style from './style.module.css';
 
 export type PasswordFieldProps = TextFieldProps
@@ -14,7 +14,6 @@ export const PasswordField: FC<PasswordFieldProps> = ({
   disabled,
   size = 'medium',
   ref,
-  className,
   ...props
 }) => {
   const inputRef = useRef<HTMLInputElement>(null)
@@ -33,7 +32,6 @@ export const PasswordField: FC<PasswordFieldProps> = ({
       <TextField
         ref={mergeRefs([inputRef, ref])}
         size={size}
-        className={csx(style.numberTextField, className)}
         wrapperClassName={style.inputWrapper}
         disabled={disabled}
         type={shown ? 'text' : 'password'}
