@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "esModuleInterop": true,
     "paths": {
       "@adara-cs/utils": ["./packages/utils/src/index.ts"],
       "@adara-cs/utils/*": ["./packages/utils/src/*"],
@@ -10,7 +11,7 @@
       "@adara-cs/icons/*": ["./packages/icons/*"],
       "@adara-cs/icons": ["./packages/icons/src/index.ts"],
       "@adara-cs/ui-kit-web": ["./packages/ui/src/index.ts"],
-      "@adara-cs/ui-kit-web/*": ["./packages/ui/src/*"],
+      "@adara-cs/ui-kit-web/*": ["./packages/ui/src/*"]
     }
   },
   "exclude": ["node_modules"]
