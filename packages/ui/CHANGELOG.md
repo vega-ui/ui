@@ -1,5 +1,15 @@
 # @adara-cs/ui-kit-web
 
+## 2.5.1
+
+### Patch Changes
+
+- 2cdc436: Fixed the Collapsible logic, in which content added a little later could be ignored in the height property, which led to its clipping in cases of opening.
+  - @adara-cs/hooks@2.5.1
+  - @adara-cs/icons@2.5.1
+  - @adara-cs/types@2.5.1
+  - @adara-cs/utils@2.5.1
+
 ## 2.5.0
 
 ### Minor Changes
