@@ -1,5 +1,15 @@
 # @adara-cs/ui-kit-web
 
+## 2.6.1
+
+### Patch Changes
+
+- 7e066da: Fixed password field: control button placement
+  - @adara-cs/hooks@2.6.1
+  - @adara-cs/icons@2.6.1
+  - @adara-cs/types@2.6.1
+  - @adara-cs/utils@2.6.1
+
 ## 2.6.0
 
 ### Minor Changes
