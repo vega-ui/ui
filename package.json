@@ -20,7 +20,7 @@
     "dev": "turbo run dev",
     "build": "turbo run build",
     "test": "turbo run test",
-    "lint": "eslint packages --ext .ts,.tsx --config .eslintrc.json --cache",
+    "lint": "eslint --cache",
     "ci:version": "changeset version",
     "ci:publish": "changeset publish",
     "storybook": "storybook dev -p 6006",
@@ -60,11 +60,6 @@
     "commitizen": {
       "path": "git-cz"
     }
-  },
-  "eslintConfig": {
-    "extends": [
-      "plugin:storybook/recommended"
-    ]
   },
   "packageManager": "pnpm@10.0.0"
 }

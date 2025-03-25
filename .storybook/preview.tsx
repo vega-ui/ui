@@ -2,16 +2,16 @@ import '../packages/ui/src/index.css'
 import '../packages/responsive-ui/src/index.css'
 import './style.css'
 
-import { withThemeByClassName } from "@storybook/addon-themes";
+import { withThemeByClassName } from '@storybook/addon-themes'; 
 
 const preview = {
   decorators: [
     withThemeByClassName({
       themes: {
-        light: "light",
-        dark: "dark",
+        light: 'light',
+        dark: 'dark',
       },
-      defaultTheme: "light",
+      defaultTheme: 'light',
     })
   ],
   parameters: {
