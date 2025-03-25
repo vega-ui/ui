@@ -1,5 +1,19 @@
 # @adara-cs/ui-kit-web
 
+## 2.6.0
+
+### Minor Changes
+
+- c31254f: Added new field - password
+
+### Patch Changes
+
+- Updated dependencies [c31254f]
+  - @adara-cs/icons@2.6.0
+  - @adara-cs/hooks@2.6.0
+  - @adara-cs/types@2.6.0
+  - @adara-cs/utils@2.6.0
+
 ## 2.5.2
 
 ### Patch Changes
