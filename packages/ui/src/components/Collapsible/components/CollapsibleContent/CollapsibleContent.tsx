@@ -1,5 +1,5 @@
 'use client';
-import { DetailedHTMLProps, FC, HTMLAttributes, Ref } from 'react';
+import { DetailedHTMLProps, FC, HTMLAttributes, Ref, useLayoutEffect, useRef } from 'react';
 import style from './style.module.css';
 import { csx, mergeRefs } from '@adara-cs/utils';
 import { useCollapsibleContext } from '../../hooks';
@@ -15,7 +15,20 @@ export const CollapsibleContent: FC<CollapsibleContentProps> = ({
   ref,
   children,
 }) => {
-  const { opened, onTransitionEnd, wrapperRef, contentRef, hidden } = useCollapsibleContext()
+  const contentRef = useRef<HTMLDivElement>(null)
+  const wrapperRef = useRef<HTMLDivElement>(null)
+
+  const { opened, onTransitionEnd, hidden } = useCollapsibleContext()
+
+  useLayoutEffect(() => {
+    const contentNode = contentRef.current
+    const wrapperNode = wrapperRef.current
+
+    if (contentNode && wrapperNode) {
+      const rectHeight = wrapperNode.getBoundingClientRect().height
+      contentNode.style.setProperty('--content-height', rectHeight + 'px')
+    }
+  });
 
   return (
     <div ref={mergeRefs([ref, contentRef])} data-type='content' data-open={opened} hidden={hidden} onTransitionEnd={onTransitionEnd} className={csx(style.content, className)}>
