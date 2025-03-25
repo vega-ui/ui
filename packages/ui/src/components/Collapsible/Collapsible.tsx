@@ -1,5 +1,5 @@
 'use client';
-import { FC, ReactNode, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { FC, ReactNode, useCallback, useEffect, useState } from 'react';
 import { CollapsibleProvider } from './providers';
 import { useControlledState } from '@adara-cs/hooks';
 
@@ -30,32 +30,19 @@ export const Collapsible: FC<CollapsibleProps> = ({ open: controlledOpen, onChan
     onChangeHidden?.(hidden)
   }, [hidden, onChangeHidden])
 
-  const contentRef = useRef<HTMLDivElement>(null)
-  const wrapperRef = useRef<HTMLDivElement>(null)
-
-  useLayoutEffect(() => {
-    const wrapperNode = wrapperRef.current
-    const contentNode = contentRef.current
-
-    if (contentNode && wrapperNode) {
-      const rect = wrapperNode.getBoundingClientRect()
-      contentNode.style.setProperty('--content-height', rect.height + 'px')
-    }
-  }, []);
-
   const onOpenContent = useCallback(() => {
     setHidden(false)
     requestAnimationFrame(() => {
       onOpen()
     })
-  }, [open])
+  }, [onOpen])
 
   const onTransitionEnd = useCallback(() => {
     if (!open) setHidden(true)
   }, [open])
 
   return (
-    <CollapsibleProvider wrapperRef={wrapperRef} contentRef={contentRef} onTransitionEnd={onTransitionEnd} hidden={hidden} opened={open} onOpen={onOpenContent} onClose={onClose}>
+    <CollapsibleProvider onTransitionEnd={onTransitionEnd} hidden={hidden} opened={open} onOpen={onOpenContent} onClose={onClose}>
       {children}
     </CollapsibleProvider>
   )
