@@ -33,6 +33,7 @@ export const PinFieldInput: FC<PinFieldInputProps> = ({
   disabled,
   onSelectionRangeChange,
   onComplete,
+  onSelect: _onSelect,
   ...props
 }) => {
   const onSelect = (e: SyntheticEvent<HTMLInputElement, Event>) => {
@@ -42,6 +43,8 @@ export const PinFieldInput: FC<PinFieldInputProps> = ({
 
     const selectionStart = input.selectionDirection === 'forward' ? input.selectionStart : input.selectionEnd
     const selectionEnd = input.selectionDirection === 'forward' ? input.selectionEnd : input.selectionStart
+
+    _onSelect?.(e)
 
     if (selectionStart === null || selectionEnd === null) return
     if (selectionStart === selectionEnd) {
