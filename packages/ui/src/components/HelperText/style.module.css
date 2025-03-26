@@ -4,5 +4,5 @@ p.helperText {
 }
 
 .helperText[data-error='true'] {
-    color: var(--error-accent-5);
+    color: var(--error-accent-6);
 }

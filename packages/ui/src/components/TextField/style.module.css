@@ -115,7 +115,7 @@
 }
 
 .inputWrapper:has(.input[data-error='true']) {
-    outline-color: var(--error-accent-5);
+    outline-color: var(--error-accent-6);
 }
 
 .input {
