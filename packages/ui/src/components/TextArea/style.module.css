@@ -50,7 +50,7 @@
 }
 
 .textarea[data-error='true'] {
-    border-color: var(--error-accent-5);
+    border-color: var(--error-accent-6);
 }
 
 .textarea::placeholder {
