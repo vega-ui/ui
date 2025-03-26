@@ -1,5 +1,15 @@
 # @adara-cs/ui-kit-web
 
+## 2.6.2
+
+### Patch Changes
+
+- b2421cb: Changed main error color
+  - @adara-cs/hooks@2.6.2
+  - @adara-cs/icons@2.6.2
+  - @adara-cs/types@2.6.2
+  - @adara-cs/utils@2.6.2
+
 ## 2.6.1
 
 ### Patch Changes
