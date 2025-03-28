@@ -1,5 +1,25 @@
 # @adara-cs/ui-kit-web
 
+## 2.6.3
+
+### Patch Changes
+
+- 363d50e: Changed Icon sizes
+
+  femto - 4xs
+  pico - 3xs
+  nano - 2xs
+  mini - xs
+  small - sm
+  medium - md
+  large - lg
+  huge - xl
+
+  - @adara-cs/hooks@2.6.3
+  - @adara-cs/icons@2.6.3
+  - @adara-cs/types@2.6.3
+  - @adara-cs/utils@2.6.3
+
 ## 2.6.2
 
 ### Patch Changes
