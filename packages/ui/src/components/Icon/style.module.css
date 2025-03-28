@@ -1,41 +1,41 @@
 .icon {}
 
-.icon[data-size='femto'] {
+.icon[data-size='4xs'] {
     height: 8px;
     width: 8px;
 }
 
-.icon[data-size='pico'] {
+.icon[data-size='3xs'] {
     height: 10px;
     width: 10px;
 }
 
-.icon[data-size='nano'] {
+.icon[data-size='2xs'] {
     height: 12px;
     width: 12px;
 }
 
-.icon[data-size='mini'] {
+.icon[data-size='xs'] {
     height: 14px;
     width: 14px;
 }
 
-.icon[data-size='small'] {
+.icon[data-size='sm'] {
     height: 16px;
     width: 16px;
 }
 
-.icon[data-size='medium'] {
+.icon[data-size='md'] {
     height: 18px;
     width: 18px;
 }
 
-.icon[data-size='large'] {
+.icon[data-size='lg'] {
     height: 22px;
     width: 22px;
 }
 
-.icon[data-size='huge'] {
+.icon[data-size='xl'] {
     height: 28px;
     width: 28px;
 }

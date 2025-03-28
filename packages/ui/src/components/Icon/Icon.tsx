@@ -5,7 +5,7 @@ import { csx } from '@adara-cs/utils';
 import { IconName, getIcon } from './utils';
 
 export interface IconProps {
-  size?: 'femto' | 'pico' | 'nano' | 'mini' | 'small' | 'medium' | 'large' | 'huge'
+  size?: '4xs' | '3xs' | '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
   name: IconName
   className?: string
   width?: number

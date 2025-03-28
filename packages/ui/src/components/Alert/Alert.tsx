@@ -26,7 +26,7 @@ export const Alert: FC<AlertProps> = ({
 }) => {
   return (
     <div ref={ref} data-variant={variant} className={csx(style.alert, className)} {...props}>
-      {icon !== false && <Icon className={style.icon} name={icon ?? iconMapper[variant]} size='medium' />}
+      {icon !== false && <Icon className={style.icon} name={icon ?? iconMapper[variant]} size='md' />}
       <div className={style.content}>
         <Text className={style.title} fontWeight={500} size={3} as='p'>{title}</Text>
         {children && <Text as='p' size={2} className={style.text}>{children}</Text>}
