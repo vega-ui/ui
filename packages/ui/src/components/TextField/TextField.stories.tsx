@@ -27,7 +27,7 @@ export const Default: Story = {
 
 export const WithStartSlot: Story = {
   render(props) {
-    return <TextField {...props} placeholder='Домен' startSlot={<Icon name='cloud' size='mini' />} />
+    return <TextField {...props} placeholder='Домен' startSlot={<Icon name='cloud' size='xs' />} />
   }
 }
 

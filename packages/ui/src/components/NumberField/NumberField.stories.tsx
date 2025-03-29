@@ -35,7 +35,7 @@ export const Default: Story = {
 
 export const WithStartSlot: Story = {
   render(props) {
-    return <NumberField {...props} placeholder='Количество процессоров' startSlot={<Icon name='chip' size='mini' />} />
+    return <NumberField {...props} placeholder='Количество процессоров' startSlot={<Icon name='chip' size='xs' />} />
   }
 }
 
