@@ -29,7 +29,7 @@ export const AccordionTrigger: FC<PropsWithChildren<AccordionTriggerProps>> = ({
     <Heading as='h3' size={sizeMapper(size)} className={wrapperClassName}>
       <CollapsibleTrigger ref={ref} className={csx(style.triggerButton, className)} data-size={size}>
         {children}
-        {arrowIcon ? arrowIcon : <Icon className={csx(style.arrowIcon, arrowIconClassName)} size='pico' name='bottomArrow'/>}
+        {arrowIcon ? arrowIcon : <Icon className={csx(style.arrowIcon, arrowIconClassName)} size='3xs' name='bottomArrow'/>}
       </CollapsibleTrigger>
     </Heading>
   )
