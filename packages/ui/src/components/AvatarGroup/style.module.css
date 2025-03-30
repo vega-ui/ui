@@ -9,7 +9,7 @@
 }
 
 .avatar {
-    outline: calc(var(--size) * 0.125) solid white;
+    outline: calc(var(--size) * 0.125) solid var(--background-color);
 }
 
 .group > .avatar:not(:last-child) {

@@ -16,6 +16,7 @@ export const AvatarGroupItem: FC<PropsWithChildren<AvatarGroupItemProps>> = ({
 
   return (
     <Avatar
+      data-name='avatar'
       className={csx(avatarClass, className)}
       size={size}
       variant={variant}
