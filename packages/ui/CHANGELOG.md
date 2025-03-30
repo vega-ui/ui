@@ -1,5 +1,15 @@
 # @adara-cs/ui-kit-web
 
+## 2.7.1
+
+### Patch Changes
+
+- d41f384: Fixed avatar group background color
+  - @adara-cs/hooks@2.7.1
+  - @adara-cs/icons@2.7.1
+  - @adara-cs/types@2.7.1
+  - @adara-cs/utils@2.7.1
+
 ## 2.7.0
 
 ### Minor Changes
