@@ -1,5 +1,18 @@
 # @adara-cs/ui-kit-web
 
+## 2.7.0
+
+### Minor Changes
+
+- bb3c880: Added new components - avatar and avatar group
+
+### Patch Changes
+
+- @adara-cs/hooks@2.7.0
+- @adara-cs/icons@2.7.0
+- @adara-cs/types@2.7.0
+- @adara-cs/utils@2.7.0
+
 ## 2.6.4
 
 ### Patch Changes
