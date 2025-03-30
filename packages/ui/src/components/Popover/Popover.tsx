@@ -1,5 +1,5 @@
 'use client';
-import { FC, ReactElement, ReactNode, Ref, useState } from 'react';
+import { FC, ReactElement, ReactNode, Ref } from 'react';
 import styles from './style.module.css'
 import {
   autoUpdate,
@@ -10,6 +10,7 @@ import {
   useInteractions, useRole, useTransitionStyles
 } from '@floating-ui/react';
 import { mergeRefs, csx } from '@adara-cs/utils';
+import { useControlledState } from '@adara-cs/hooks';
 
 export interface PopoverProps {
   className?: string
@@ -19,7 +20,8 @@ export interface PopoverProps {
   lockScroll?: boolean
   overlay?: boolean
   open?: boolean
-  onOpenChange?(state?: boolean): void
+  defaultOpen?: boolean
+  onOpenChange?(state: boolean): void
   blurredOverlay?: boolean
   role?: 'combobox' | 'listbox' | 'dialog' | 'select'
   ref?: Ref<HTMLDivElement>
@@ -32,23 +34,21 @@ export const Popover: FC<PopoverProps> = ({
   lockScroll = false,
   overlay = false,
   open: controlledOpen,
+  defaultOpen = false,
   onOpenChange,
   blurredOverlay = true,
   className,
   children,
   ref,
 }) => {
-  const [open, setOpen] = useState(false);
-
-  const isOpenPopover = controlledOpen ?? open;
-  const setOpenPopover = onOpenChange ?? setOpen;
+  const [open, setOpen] = useControlledState(controlledOpen, defaultOpen, onOpenChange);
 
   const { refs, floatingStyles, context } = useFloating({
     whileElementsMounted: autoUpdate,
     middleware: [offset(10), flip(), shift()],
     placement,
-    open: isOpenPopover,
-    onOpenChange: setOpenPopover,
+    open,
+    onOpenChange: setOpen,
   });
 
   const click = useClick(context);
@@ -81,7 +81,7 @@ export const Popover: FC<PopoverProps> = ({
   return (
     <>
       {triggerSlot?.(refs.setReference, getReferenceProps())}
-      {isOpenPopover && (
+      {open && (
         overlay ? (
           <FloatingOverlay lockScroll={lockScroll} className={csx(styles.popoverOverlay, blurredOverlay ? styles.popoverOverlayBlurred : undefined)}>
             {content}

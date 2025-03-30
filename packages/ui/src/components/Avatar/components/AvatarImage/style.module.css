@@ -1,0 +1,12 @@
+.image {
+    display: none;
+    object-fit: cover;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+}
+
+.image[data-status='loaded'] {
+    display: initial;
+}

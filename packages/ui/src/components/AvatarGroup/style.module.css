@@ -1,0 +1,22 @@
+.container {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-6);
+}
+
+.group {
+    display: flex;
+}
+
+.avatar {
+    outline: calc(var(--size) * 0.125) solid white;
+}
+
+.group > .avatar:not(:last-child) {
+    margin-right: -4px;
+    transition: margin-right var(--transition-state-delay) ease-in-out;
+}
+
+.group > .avatar:not(:last-child):hover {
+    margin-right: calc(var(--size) * 0.125);
+}

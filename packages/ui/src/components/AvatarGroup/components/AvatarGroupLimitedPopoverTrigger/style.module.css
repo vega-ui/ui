@@ -1,0 +1,23 @@
+.trigger {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-4);
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.trigger:focus-visible {
+    outline: 2px solid var(--focus-color);
+}
+
+.stateIcon {
+    flex-shrink: 0;
+    color: var(--primary-accent-7);
+    transform: rotate(0deg);
+    transition: transform var(--transition-fast-state-delay) ease-in-out;
+}
+
+.stateIcon[data-open='true'] {
+    transform: rotate(180deg);
+}
