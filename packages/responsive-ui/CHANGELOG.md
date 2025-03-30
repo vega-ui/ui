@@ -1,5 +1,16 @@
 # @adara-cs/responsive-ui
 
+## 2.7.0
+
+### Patch Changes
+
+- Updated dependencies [bb3c880]
+  - @adara-cs/ui-kit-web@2.7.0
+  - @adara-cs/hooks@2.7.0
+  - @adara-cs/icons@2.7.0
+  - @adara-cs/types@2.7.0
+  - @adara-cs/utils@2.7.0
+
 ## 2.6.4
 
 ### Patch Changes
