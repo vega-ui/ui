@@ -1,0 +1,5 @@
+.fallback {
+    font-size: calc(var(--size) * 0.4) !important;
+    line-height: 1 !important;
+    color: inherit;
+}

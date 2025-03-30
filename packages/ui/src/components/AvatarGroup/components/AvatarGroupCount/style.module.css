@@ -1,0 +1,7 @@
+.count[data-variant='primary'] {
+    color: var(--primary-accent-7);
+}
+
+.count[data-variant='secondary'] {
+    color: var(--neutral-1000);
+}
