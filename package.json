@@ -31,7 +31,7 @@
     "@changesets/cli": "^2.28.1",
     "@eslint/eslintrc": "^3",
     "@storybook/addon-essentials": "^8.6.11",
-    "@storybook/addon-interactions": "^8.5.5",
+    "@storybook/addon-interactions": "^8.6.11",
     "@storybook/addon-onboarding": "^8.5.5",
     "@storybook/addon-themes": "^8.5.5",
     "@storybook/blocks": "^8.5.8",
