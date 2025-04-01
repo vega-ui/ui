@@ -41,7 +41,7 @@
 }
 
 .avatar[data-size='lg'] {
-    --size: var(--spacing-20);
+    --size: var(--spacing-21);
 }
 
 .avatar[data-size='xl'] {
@@ -49,5 +49,5 @@
 }
 
 .avatar[data-size='2xl'] {
-    --size: var(--spacing-32);
+    --size: var(--spacing-27);
 }
