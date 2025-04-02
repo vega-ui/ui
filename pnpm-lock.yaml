@@ -21,8 +21,8 @@ importers:
         specifier: ^8.6.11
         version: 8.6.11(@types/react@19.0.10)(storybook@8.6.11(prettier@2.8.8))
       '@storybook/addon-interactions':
-        specifier: ^8.5.5
-        version: 8.5.5(storybook@8.6.11(prettier@2.8.8))
+        specifier: ^8.6.11
+        version: 8.6.11(storybook@8.6.11(prettier@2.8.8))
       '@storybook/addon-onboarding':
         specifier: ^8.5.5
         version: 8.5.5(storybook@8.6.11(prettier@2.8.8))
@@ -471,6 +471,10 @@ packages:
 
   '@babel/runtime@7.26.9':
     resolution: {integrity: sha512-aA63XwOkcl4xxQa3HjPMqOP6LiK0ZDv3mUPYEFXkpHbaFjtGggE1A61FjFzJnB+p7/oy2gA8E+rcBNl/zC1tMg==}
+    engines: {node: '>=6.9.0'}
+
+  '@babel/runtime@7.27.0':
+    resolution: {integrity: sha512-VtPOkrdPHZsKc/clNqyi9WUA8TINkZ4cGk63UUE3u4pmB2k+ZMQRDuIOagv8UVd6j7k0T3+RRIb7beKTebNbcw==}
     engines: {node: '>=6.9.0'}
 
   '@babel/template@7.25.9':
@@ -1202,10 +1206,10 @@ packages:
     peerDependencies:
       storybook: ^8.6.11
 
-  '@storybook/addon-interactions@8.5.5':
-    resolution: {integrity: sha512-/wu1GjuDMIT3FbASgIhlLk2jmQSqAYap0FwTNwnLRazKolvdpoGlSHDpDe8x7mABXzNIkbwrRi0A7R0K7nawnA==}
+  '@storybook/addon-interactions@8.6.11':
+    resolution: {integrity: sha512-j9wUf8lQF922eC2HbWG4LdeflOu/togry80QB+Sqxs4+dg4iWhjxmN8gWav14/oa0vJBLN7Z2Tr4ifsJUEwRkg==}
     peerDependencies:
-      storybook: ^8.5.5
+      storybook: ^8.6.11
 
   '@storybook/addon-measure@8.6.11':
     resolution: {integrity: sha512-9Y0qXF9WEg4WHszT17FhppHXcRLv+XC+kpLiKYiL2D4Cm1Xz/2s0N1J50dLBL/gHW04jrVk5lPlpJbcJgWBE5Q==}
@@ -1311,6 +1315,11 @@ packages:
     peerDependencies:
       storybook: ^8.5.5
 
+  '@storybook/instrumenter@8.6.11':
+    resolution: {integrity: sha512-IOLvc4BOVKofWhyRScA2h/R36cACBK3DUCrZkQTLU+FUIXWg7Yjyco7lDEk/0W9mlH0Fe/eWEhluI2WTowkesQ==}
+    peerDependencies:
+      storybook: ^8.6.11
+
   '@storybook/manager-api@8.5.5':
     resolution: {integrity: sha512-JQgnFskT1lhgT05m9zTeeW1FZIQbXjzRWEWbqYLcaiAnhbTb7B0IN8y1SOFQRLxXFrNa38T1AVHJj//Zv7KR3g==}
     peerDependencies:
@@ -1372,6 +1381,11 @@ packages:
     resolution: {integrity: sha512-8hVvT+TopKmh9iKZdTHmMz4kelz+gKwjCquw59ynoZBZ4saJdEdqmIaoPaFPAJukuGAP7qQKO6AnYFsufNw4gw==}
     peerDependencies:
       storybook: ^8.5.5
+
+  '@storybook/test@8.6.11':
+    resolution: {integrity: sha512-bk8JCRmVRHjnyt+/YnzCMEd4Y/K2L3uM+sCNuH4pYw6XT2UkR3Dj5mScGnfMvm98lHfpZDcD/AbY2vorOQsq+g==}
+    peerDependencies:
+      storybook: ^8.6.11
 
   '@storybook/theming@8.5.5':
     resolution: {integrity: sha512-h/dsoA9RmWbIYjRNAVlJzjmrtLo5ZdNKEIZ0BDdpnuDhU3NEADtI4RrF4fwgoiA4ZNNUod0agvjUtzwgV1VF2Q==}
@@ -3542,6 +3556,10 @@ snapshots:
     dependencies:
       regenerator-runtime: 0.14.1
 
+  '@babel/runtime@7.27.0':
+    dependencies:
+      regenerator-runtime: 0.14.1
+
   '@babel/template@7.25.9':
     dependencies:
       '@babel/code-frame': 7.26.2
@@ -3996,7 +4014,7 @@ snapshots:
 
   '@manypkg/find-root@1.1.0':
     dependencies:
-      '@babel/runtime': 7.26.9
+      '@babel/runtime': 7.27.0
       '@types/node': 12.20.55
       find-up: 4.1.0
       fs-extra: 8.1.0
@@ -4243,11 +4261,11 @@ snapshots:
       '@storybook/global': 5.0.0
       storybook: 8.6.11(prettier@2.8.8)
 
-  '@storybook/addon-interactions@8.5.5(storybook@8.6.11(prettier@2.8.8))':
+  '@storybook/addon-interactions@8.6.11(storybook@8.6.11(prettier@2.8.8))':
     dependencies:
       '@storybook/global': 5.0.0
-      '@storybook/instrumenter': 8.5.5(storybook@8.6.11(prettier@2.8.8))
-      '@storybook/test': 8.5.5(storybook@8.6.11(prettier@2.8.8))
+      '@storybook/instrumenter': 8.6.11(storybook@8.6.11(prettier@2.8.8))
+      '@storybook/test': 8.6.11(storybook@8.6.11(prettier@2.8.8))
       polished: 4.3.1
       storybook: 8.6.11(prettier@2.8.8)
       ts-dedent: 2.2.0
@@ -4365,6 +4383,12 @@ snapshots:
       '@vitest/utils': 2.1.9
       storybook: 8.6.11(prettier@2.8.8)
 
+  '@storybook/instrumenter@8.6.11(storybook@8.6.11(prettier@2.8.8))':
+    dependencies:
+      '@storybook/global': 5.0.0
+      '@vitest/utils': 2.1.9
+      storybook: 8.6.11(prettier@2.8.8)
+
   '@storybook/manager-api@8.5.5(storybook@8.6.11(prettier@2.8.8))':
     dependencies:
       storybook: 8.6.11(prettier@2.8.8)
@@ -4431,6 +4455,17 @@ snapshots:
       '@storybook/csf': 0.1.12
       '@storybook/global': 5.0.0
       '@storybook/instrumenter': 8.5.5(storybook@8.6.11(prettier@2.8.8))
+      '@testing-library/dom': 10.4.0
+      '@testing-library/jest-dom': 6.5.0
+      '@testing-library/user-event': 14.5.2(@testing-library/dom@10.4.0)
+      '@vitest/expect': 2.0.5
+      '@vitest/spy': 2.0.5
+      storybook: 8.6.11(prettier@2.8.8)
+
+  '@storybook/test@8.6.11(storybook@8.6.11(prettier@2.8.8))':
+    dependencies:
+      '@storybook/global': 5.0.0
+      '@storybook/instrumenter': 8.6.11(storybook@8.6.11(prettier@2.8.8))
       '@testing-library/dom': 10.4.0
       '@testing-library/jest-dom': 6.5.0
       '@testing-library/user-event': 14.5.2(@testing-library/dom@10.4.0)
@@ -5881,7 +5916,7 @@ snapshots:
 
   polished@4.3.1:
     dependencies:
-      '@babel/runtime': 7.26.0
+      '@babel/runtime': 7.27.0
 
   possible-typed-array-names@1.1.0: {}
 
