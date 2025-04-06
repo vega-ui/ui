@@ -62,7 +62,7 @@ export const WithAction: Story = {
     title: 'I\'m a title',
     children: 'I\'m a content!',
     endSlot: (
-      <IconButton size='small' name='close' iconSize='femto' appearance='transparent' />
+      <IconButton size='small' name='close' iconSize='sm' appearance='transparent' />
     )
   },
 };
