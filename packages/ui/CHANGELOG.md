@@ -1,5 +1,18 @@
 # @adara-cs/ui-kit-web
 
+## 2.8.0
+
+### Minor Changes
+
+- 7252bc7: Added new component - badge
+
+### Patch Changes
+
+- @adara-cs/hooks@2.8.0
+- @adara-cs/icons@2.8.0
+- @adara-cs/types@2.8.0
+- @adara-cs/utils@2.8.0
+
 ## 2.7.2
 
 ### Patch Changes
