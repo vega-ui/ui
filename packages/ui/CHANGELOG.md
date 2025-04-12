@@ -1,5 +1,15 @@
 # @adara-cs/ui-kit-web
 
+## 2.8.1
+
+### Patch Changes
+
+- 71c644b: Changed badge styles
+  - @adara-cs/hooks@2.8.1
+  - @adara-cs/icons@2.8.1
+  - @adara-cs/types@2.8.1
+  - @adara-cs/utils@2.8.1
+
 ## 2.8.0
 
 ### Minor Changes
