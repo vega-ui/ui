@@ -1,5 +1,5 @@
-import { AvatarProps } from '../../../Avatar';
-import { TextProps } from '../../../Text';
+import { AvatarProps } from '../../../../../Avatar';
+import { TextProps } from '../../../../../Text';
 
 type SizeMapperType = Exclude<AvatarProps['size'], undefined>;
 

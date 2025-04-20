@@ -2,10 +2,10 @@ code.code {
     font-family: var(--code-font-family), monospace !important;
     line-height: 1.25;
     display: inline-block;
-    background-color: var(--neutral-50);
+    background-color: var(--color-gray-accent-100);
     padding: 0 .5em;
     border-radius: .35em;
-    color: var(--neutral-600);
+    color: var(--color-gray-accent-800);
     break-inside: avoid;
     word-wrap: break-word;
 }

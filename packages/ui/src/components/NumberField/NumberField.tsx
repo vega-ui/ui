@@ -147,6 +147,12 @@ export const NumberField: FC<NumberFieldProps> = ({
     if (value !== undefined) onChange?.(e, value)
   }
 
+  const valueNumber = value != undefined ? getNumberValue(value) : 0
+  const inputValue = isNaN(valueNumber) ? 0 : valueNumber
+
+  const isDecrementDisabled = inputValue <= min
+  const isIncrementDisabled = inputValue >= max
+
   return (
     <div className={style.wrapper} onKeyDown={onKeyDown} ref={wrapperRef}>
       <TextField
@@ -162,10 +168,10 @@ export const NumberField: FC<NumberFieldProps> = ({
         disabled={disabled}
         {...props}
       />
-      <IconButton disabled={disabled} iconSize={sizeMapper(size)} size={size}
+      <IconButton disabled={disabled || isDecrementDisabled} iconSize={sizeMapper(size)} size={size}
                   className={csx(style.controlButton, style.controlButtonDown)} onClick={onDecrement}
                   variant='secondary' appearance='transparent' name='minus'/>
-      <IconButton disabled={disabled} iconSize={sizeMapper(size)} size={size} onClick={onIncrement}
+      <IconButton disabled={disabled || isIncrementDisabled} iconSize={sizeMapper(size)} size={size} onClick={onIncrement}
                   className={csx(style.controlButton, style.controlButtonUp)} variant='secondary'
                   appearance='transparent' name='plus'/>
     </div>

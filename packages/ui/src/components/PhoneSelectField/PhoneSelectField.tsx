@@ -82,8 +82,6 @@ export const PhoneSelectField: FC<PhoneSelectFieldProps> = ({
       {...props}
       strictMask={countries.length === 1}
       country={countryCode}
-      type='tel'
-      inputMode='tel'
       onInput={onInput}
       value={inputValue}
       startSlot={

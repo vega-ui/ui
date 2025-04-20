@@ -8,16 +8,18 @@ export interface SegmentedControlProviderProps {
   size: 'small' | 'medium' | 'large'
   disabled?: boolean
   name?: string
+  variant?: 'primary' | 'secondary'
 }
 
-export const SegmentedControlProvider: FC<PropsWithChildren<SegmentedControlProviderProps>> = ({ value, onChange, size, name, disabled, children }) => {
+export const SegmentedControlProvider: FC<PropsWithChildren<SegmentedControlProviderProps>> = ({ value, variant, onChange, size, name, disabled, children }) => {
   const providerValue = useMemo(() => ({
     value,
     onChange,
     size,
     name,
     disabled,
-  }), [value, onChange, size, name, disabled])
+    variant
+  }), [value, onChange, size, name, variant, disabled])
 
   return (
     <SegmentedControlContext.Provider value={providerValue}>

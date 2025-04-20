@@ -1,36 +1,3 @@
 .wrapper {
     position: relative;
 }
-
-.selectCombobox[data-size='small'] .value,
-.selectCombobox[data-size='small'] .placeholder {
-    font-size: var(--text-font-size-2);
-}
-
-.selectCombobox[data-size='medium'] .value,
-.selectCombobox[data-size='medium'] .placeholder {
-    font-size: var(--text-font-size-3);
-}
-
-.selectCombobox[data-size='large'] .value,
-.selectCombobox[data-size='large'] .placeholder {
-    font-size: var(--text-font-size-4);
-}
-
-.selectCombobox[data-variant='field'][aria-disabled='true'] .controlIcon {
-    fill: var(--neutral-400);
-}
-
-.selectCombobox[data-variant='inline'][aria-disabled='true'] .value,
-.selectCombobox[data-variant='inline'][aria-disabled='true'] .placeholder {
-    color: var(--neutral-400);
-}
-
-.selectCombobox[data-variant='inline'][aria-disabled='true'] .controlIcon {
-    fill: var(--neutral-400);
-}
-
-.selectCombobox[data-variant='field'][aria-disabled='true'] .value,
-.selectCombobox[data-variant='field'][aria-disabled='true'] .placeholder {
-    color: var(--neutral-400);
-}

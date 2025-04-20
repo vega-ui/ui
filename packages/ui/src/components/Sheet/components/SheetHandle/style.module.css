@@ -10,7 +10,7 @@
 .handle:after {
     content: '';
     position: absolute;
-    background: var(--neutral-100);
+    background: var(--color-gray-accent-200);
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);

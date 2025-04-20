@@ -1,22 +1,22 @@
 .link {
     text-decoration: underline;
-    text-decoration-color: var(--primary-accent-7);
+    text-decoration-color: var(--color-primary-500);
     text-underline-offset: 0.2em;
     transition: text-decoration-color var(--transition-state-delay) ease, text-underline-offset var(--transition-state-delay) ease;
 }
 
 .link span {
-    color: var(--primary-accent-7);
+    color: var(--color-primary-500);
     transition: color var(--transition-state-delay) ease;
 }
 
 .link:hover {
-    text-decoration-color: var(--primary-accent-8);
+    text-decoration-color: var(--color-primary-600);
     text-underline-offset: 0.4em;
 }
 
 .link:hover span {
-    color: var(--primary-accent-8);
+    color: var(--color-primary-600);
 }
 
 .link:focus-visible {

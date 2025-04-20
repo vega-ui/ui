@@ -1,6 +1,6 @@
 .text {
     font-family: var(--default-font-family);
-    color: var(--neutral-1000);
+    color: var(--text-color);
     margin: 0;
     white-space: pre-line;
 }

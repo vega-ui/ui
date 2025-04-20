@@ -13,7 +13,7 @@
 
 .stateIcon {
     flex-shrink: 0;
-    color: var(--primary-accent-7);
+    color: var(--color-primary-500);
     transform: rotate(0deg);
     transition: transform var(--transition-fast-state-delay) ease-in-out;
 }

@@ -12,34 +12,34 @@
     height: var(--control-height);
     cursor: pointer;
     background-color: transparent;
-    color: var(--neutral-1000);
+    color: var(--text-color);
     transition: color var(--transition-fast-state-delay) ease,
-    background-color var(--transition-state-delay) ease-in;
+    background-color var(--transition-fast-state-delay) ease-in;
 }
 
 .control[data-variant='primary']:not([data-checked='true']):hover {
-    background-color: var(--primary-accent-3);
+    background-color: var(--color-primary-100);
 }
 
 .control[data-variant='primary']:not([data-checked='true']):active {
-    background-color: var(--primary-accent-4);
+    background-color: var(--color-primary-150);
 }
 
 .control[data-variant='secondary']:not([data-checked='true']):hover {
-    background-color: var(--secondary-accent-3);
+    background-color: var(--color-secondary-100);
 }
 
 .control[data-variant='secondary']:not([data-checked='true']):active {
-    background-color: var(--secondary-accent-4);
+    background-color: var(--color-secondary-150);
 }
 
 .control[data-disabled='true'] {
-    color: var(--neutral-400) !important;
+    color: var(--color-gray-accent-800) !important;
     cursor: not-allowed;
 }
 
 .control[data-checked='true'][data-disabled='true'] {
-    color: var(--neutral-500) !important;
+    color: var(--color-gray-accent-800) !important;
 }
 
 .control[data-disabled='true']:hover,
@@ -48,7 +48,7 @@
 }
 
 .control[data-checked='true'] {
-    color: var(--neutral-0);
+    color: var(--text-inverce-color);
     transition: color var(--transition-fast-state-delay) ease, background-color 0s;
 }
 

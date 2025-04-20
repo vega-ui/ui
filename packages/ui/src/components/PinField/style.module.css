@@ -22,5 +22,5 @@
 }
 
 .inputWrapper:has(.input:focus) .inputPinBlock[data-focus='true'] {
-    outline-color: var(--primary-accent-7);
+    border-color: var(--field-border-focus-color);
 }

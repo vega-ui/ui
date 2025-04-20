@@ -6,10 +6,12 @@
 
 .group {
     display: flex;
+
+    --avatar-outline-color: var(--background-color);
 }
 
 .avatar {
-    outline: calc(var(--size) * 0.125) solid var(--background-color);
+    outline: calc(var(--size) * 0.125) solid var(--avatar-outline-color);
 }
 
 .group > .avatar:not(:last-child) {

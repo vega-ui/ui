@@ -5,13 +5,13 @@
 
 .countryList {
     scrollbar-width: thin;
-    scrollbar-color: var(--neutral-300) var(--neutral-50);
+    scrollbar-color: var(--color-gray-accent-300) var(--color-gray-accent-50);
 }
 
 .countrySelect[data-size] {
     min-width: auto;
     height: 100%;
-    background-color: var(--neutral-50) !important;
+    background-color: var(--color-gray-accent-100);
     border: none !important;
     gap: var(--spacing-6);
 }

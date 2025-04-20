@@ -1,1 +1,1 @@
-export { AvatarGroupProvider, type SelectProviderProps } from './AvatarGroupProvider.tsx'
+export { AvatarGroupProvider, type AvatarGroupProviderProps } from './AvatarGroupProvider.tsx'

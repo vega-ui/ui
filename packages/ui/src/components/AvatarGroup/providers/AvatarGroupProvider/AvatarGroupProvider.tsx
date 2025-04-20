@@ -2,7 +2,9 @@
 import { FC, PropsWithChildren, useMemo } from 'react';
 import { AvatarGroupContext, AvatarGroupContextState } from './context.ts';
 
-export const AvatarGroupProvider: FC<PropsWithChildren<AvatarGroupContextState>> = ({ size, hiddenCount, variant, avatarClass, children }) => {
+export type AvatarGroupProviderProps = PropsWithChildren<AvatarGroupContextState>
+
+export const AvatarGroupProvider: FC<AvatarGroupProviderProps> = ({ size, hiddenCount, variant, avatarClass, children }) => {
   const providerValue = useMemo(() => ({
     size,
     variant,

@@ -17,7 +17,7 @@ export interface IconProps {
 
 /** UI component for render svg icons */
 export const Icon: FC<IconProps> = ({
-  size = 'small',
+  size = 'sm',
   'aria-label': ariaLabel,
   'aria-labelledby': ariaLabelledby,
   ref,

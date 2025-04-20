@@ -9,9 +9,11 @@
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    border: 1px solid var(--neutral-200);
+    border: 1px solid var(--field-border-color);
     background-color: transparent;
-    transition: background-color var(--transition-state-delay) ease;
+    transition:
+            background-color var(--transition-state-delay) ease,
+            border-color var(--transition-state-delay) ease;
     width: var(--size);
     height: var(--size);
     overflow: hidden;
@@ -44,30 +46,45 @@
     cursor: not-allowed;
 }
 
-.checkboxWrapper:has(input[type='checkbox']:checked) .checkbox[data-variant='primary'],
-.checkboxWrapper:has(input[type='checkbox']:indeterminate) .checkbox[data-variant='primary'] {
-    background-color: var(--primary-accent-7);
-    border-color: var(--primary-accent-7);
-    color: var(--color-white);
+/* primary/hover | secondary/hover */
+
+.checkboxWrapper:has(input[type='checkbox']:hover) .checkbox[data-variant='primary'],
+.checkboxWrapper:has(input[type='checkbox']:hover) .checkbox[data-variant='secondary'] {
+    border-color: var(--field-border-hover-color);
 }
 
-.checkboxWrapper:has(input[type='checkbox']:disabled) .checkbox[data-variant='primary'] {
-    background-color: var(--neutral-50);
-    border-color: var(--neutral-50);
-    color: var(--neutral-400);
+/* primary/active | secondary/active  */
+
+.checkboxWrapper:has(input[type='checkbox']:active) .checkbox[data-variant='primary'],
+.checkboxWrapper:has(input[type='checkbox']:active) .checkbox[data-variant='secondary'] {
+    border-color: var(--field-border-active-color);
 }
+
+/* primary/checked | primary/indeterminate */
+
+.checkboxWrapper:has(input[type='checkbox']:checked) .checkbox[data-variant='primary'],
+.checkboxWrapper:has(input[type='checkbox']:indeterminate) .checkbox[data-variant='primary'] {
+    background-color: var(--color-primary-500);
+    border-color: var(--color-primary-500);
+    color: var(--light-color);
+}
+
+/* secondary/checked | secondary/indeterminate */
 
 .checkboxWrapper:has(input[type='checkbox']:checked) .checkbox[data-variant='secondary'],
 .checkboxWrapper:has(input[type='checkbox']:indeterminate) .checkbox[data-variant='secondary'] {
-    background-color: var(--secondary-accent-12);
-    border-color: var(--secondary-accent-12);
-    color: var(--neutral-0);
+    background-color: var(--color-secondary-500);
+    border-color: var(--color-secondary-500);
+    color: var(--light-color);
 }
 
+/* primary/disabled | secondary/disabled */
+
+.checkboxWrapper:has(input[type='checkbox']:disabled) .checkbox[data-variant='primary'],
 .checkboxWrapper:has(input[type='checkbox']:disabled) .checkbox[data-variant='secondary'] {
-    background-color: var(--neutral-50);
-    border-color: var(--neutral-50);
-    color: var(--neutral-400);
+    background-color: var(--disable-background-color);
+    border-color: var(--disable-background-color);
+    color: var(--disable-text-color);
 }
 
 .checkboxWrapper:has(input[type='checkbox']:checked) .checkboxCheckIcon,

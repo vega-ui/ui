@@ -27,6 +27,5 @@ export const Size: Story = {
 export const Height: Story = {
   args: {
     height: 64
-
   },
 };

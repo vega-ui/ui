@@ -6,7 +6,7 @@
 }
 
 .description {
-    color: var(--neutral-500);
+    color: var(--color-gray-accent-500);
     margin-top: var(--spacing-2);
     max-width: 350px;
 }

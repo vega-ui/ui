@@ -1,6 +1,6 @@
 .separator {
     height: 1px;
-    background-color: var(--neutral-150);
+    background-color: var(--color-gray-accent-150);
 }
 
 .separator[data-size='small'] {

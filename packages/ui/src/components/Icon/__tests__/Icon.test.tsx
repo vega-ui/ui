@@ -6,7 +6,7 @@ describe('Icon', () => {
   it('default size', () => {
     render(<Icon name='support' />)
     expect(screen.getByTestId('icon').hasAttribute('data-size')).toBeTruthy()
-    expect(screen.getByTestId('icon').getAttribute('data-size')).toBe('small')
+    expect(screen.getByTestId('icon').getAttribute('data-size')).toBe('sm')
   })
 
   it('role image', () => {

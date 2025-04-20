@@ -22,7 +22,7 @@
 }
 
 .card[data-appearance='outline'] {
-    border-color: var(--neutral-150);
+    border-color: var(--color-gray-accent-150);
 }
 
 .card[data-appearance='transparent'] {

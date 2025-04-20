@@ -42,8 +42,8 @@ export const SelectCombobox: FC<PropsWithChildren<SelectComboboxProps>> = ({
   ...props
 }) => {
   return (
-    <button role='combobox' type='button' data-size={size} data-variant={variant} data-state={open ? 'open' : 'close'}
-            aria-disabled={disabled} aria-readonly={readOnly} tabIndex={0} ref={ref}
+    <button disabled={disabled} role='combobox' type='button' data-size={size} data-variant={variant} data-state={open ? 'open' : 'close'}
+            aria-readonly={readOnly} tabIndex={0} ref={ref}
             className={csx(style.selectCombobox, className)} {...props}>
       <div className={style.segment}>
         {startSlot}

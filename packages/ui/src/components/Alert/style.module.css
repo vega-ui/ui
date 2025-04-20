@@ -24,39 +24,39 @@
 .alert[data-variant='info'] .title,
 .alert[data-variant='info'] .icon,
 .alert[data-variant='info'] .text {
-    color: var(--info-accent-9);
+    color: var(--color-alert-info-text);
 }
 
 .alert[data-variant='info'] {
-    background-color: var(--info-accent-3);
+    background-color: var(--color-alert-info-background);
 }
 
 .alert[data-variant='success'] .title,
 .alert[data-variant='success'] .icon,
 .alert[data-variant='success'] .text {
-    color: var(--success-accent-9);
+    color: var(--color-alert-success-text);
 }
 
 .alert[data-variant='success'] {
-    background-color: var(--success-accent-2);
+    background-color: var(--color-alert-success-background);
 }
 
 .alert[data-variant='error'] .title,
 .alert[data-variant='error'] .icon,
 .alert[data-variant='error'] .text {
-    color: var(--error-accent-9);
+    color: var(--color-alert-error-text);
 }
 
 .alert[data-variant='error'] {
-    background-color: var(--error-accent-2);
+    background-color: var(--color-alert-error-background);
 }
 
 .alert[data-variant='warning'] .title,
 .alert[data-variant='warning'] .icon,
 .alert[data-variant='warning'] .text {
-    color: var(--warning-accent-9);
+    color: var(--color-alert-warning-text);
 }
 
 .alert[data-variant='warning'] {
-    background-color: var(--warning-accent-2);
+    background-color: var(--color-alert-warning-background);
 }

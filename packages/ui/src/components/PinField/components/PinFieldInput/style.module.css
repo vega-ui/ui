@@ -7,7 +7,7 @@
     padding: 0;
     opacity: 0;
     background: none;
-    color: var(--neutral-1000);
+    color: var(--text-color);
     border: 0;
     outline: none;
 }
