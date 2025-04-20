@@ -1,4 +1,5 @@
 .checkboxCard {
+    cursor: pointer;
     align-items: flex-end;
     min-width: 220px;
     flex: 1;
@@ -21,7 +22,11 @@
 
 .checkboxCard:hover,
 .checkboxCard:has(:focus-visible) {
-    border-color: var(--neutral-200);
+    border-color: var(--color-gray-accent-300);
+}
+
+.checkboxCard:active {
+    border-color: var(--color-gray-accent-400);
 }
 
 .checkboxCard[data-appearance] {
@@ -29,18 +34,18 @@
 }
 
 .checkboxCard[data-appearance]:has(input[type='checkbox']:disabled) {
-    background-color: var(--neutral-25);
+    background-color: var(--color-gray-accent-150);
     cursor: not-allowed;
 }
 
 .checkboxCard[data-variant='primary']:has(input[type='checkbox']:checked),
 .checkboxCard[data-variant='primary']:has(input[type='checkbox']:indeterminate) {
-    border-color: var(--primary-accent-7);
+    border-color: var(--color-primary-500);
 }
 
 .checkboxCard[data-variant='secondary']:has(input[type='checkbox']:checked),
 .checkboxCard[data-variant='secondary']:has(input[type='checkbox']:indeterminate) {
-    border-color: var(--secondary-accent-7);
+    border-color: var(--color-secondary-500);
 }
 
 .content {

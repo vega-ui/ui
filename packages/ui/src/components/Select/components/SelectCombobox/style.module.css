@@ -5,11 +5,11 @@
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    background: none;
-    border: none;
+    background-color: transparent;
     gap: var(--spacing-10);
     user-select: none;
     cursor: pointer;
+    border: none;
     font-family: var(--default-font-family);
     font-size: var(--font-size-3);
     border-radius: var(--radius-3);
@@ -21,7 +21,7 @@
     display: flex;
     align-items: center;
     gap: var(--spacing-4);
-    color: var(--neutral-1000);
+    color: var(--text-color);
 }
 
 .control {
@@ -65,65 +65,81 @@
     font-size: var(--text-font-size-4);
 }
 
-.selectCombobox[aria-disabled='true'] {
-    cursor: not-allowed;
-}
-
-.selectCombobox[aria-disabled='true'] .segment {
-    color: var(--neutral-400);
-}
-
-.selectCombobox:hover {
-    border-color: var(--primary-accent-6);
-}
-
-.selectCombobox:active, .selectCombobox[data-state="open"] {
-    border-color: var(--primary-accent-7);
-}
-
-.selectCombobox:focus-visible {
-    outline: 2px solid var(--focus-color);
+.selectCombobox[data-variant='field'] .control,
+.selectCombobox[data-variant='inline'] .control {
+    color: var(--field-placeholder-color);
 }
 
 .selectCombobox[data-variant='field'] {
     background-color: var(--surface-foreground);
     border-radius: var(--radius-3);
-    border: 1px solid var(--neutral-200);
+    border: 1px solid var(--field-border-color);
     transition: border-color var(--transition-state-delay) ease-in-out;
+    outline: none;
 }
 
-.selectCombobox[data-variant='field'] .control {
-    color: var(--neutral-500);
+/* selectCombobox/field/hover */
+
+.selectCombobox[data-variant='field']:hover {
+    border-color: var(--field-border-hover-color);
 }
 
-.selectCombobox[data-variant='field'][aria-disabled='true'] {
-    background-color: var(--neutral-50);
-    border: 1px solid var(--neutral-200);
-    transition: border-color var(--transition-state-delay) ease-in-out;
+/* selectCombobox/field/focus */
+
+.selectCombobox[data-variant='field'][data-state='open'],
+.selectCombobox[data-variant='field']:focus {
+    border-color: var(--field-border-focus-color);
 }
 
-.selectCombobox[data-variant='field'][aria-disabled='true'] .controlIcon {
-    fill: var(--neutral-400);
+/* selectCombobox/field/disabled */
+
+.selectCombobox[data-variant='field']:disabled {
+    background-color: var(--disable-background-color);
 }
 
 .selectCombobox[data-variant='inline'] {
-    min-width: 100px;
+    border-radius: var(--radius-3);
+    border: 1px solid transparent;
+    transition:
+            border-color var(--transition-state-delay) ease-in-out,
+            background-color var(--transition-state-delay) ease-in-out;
+    outline: none;
 }
 
-.selectCombobox[data-variant='inline'] .control {
-    color: var(--neutral-1000);
+/* selectCombobox/field/hover */
+
+.selectCombobox[data-variant='inline']:hover {
+    background-color: var(--color-gray-accent-0);
+    border-color: var(--color-gray-accent-0);
 }
 
-.selectCombobox[data-variant='inline'][aria-disabled='true'] .value,
-.selectCombobox[data-variant='inline'][aria-disabled='true'] .placeholder {
-    color: var(--neutral-400);
+/* selectCombobox/inline/focus */
+
+.selectCombobox[data-variant='inline'][data-state='open'],
+.selectCombobox[data-variant='inline']:focus {
+    border-color: var(--field-border-focus-color);
+    background-color: transparent;
 }
 
-.selectCombobox[data-variant='inline'][aria-disabled='true'] .controlIcon {
-    fill: var(--neutral-400);
+/* selectCombobox/field/disabled */
+
+.selectCombobox[data-variant='inline']:disabled {
+    background-color: transparent;
+    border-color: transparent;
 }
 
-.selectCombobox[data-variant='field'][aria-disabled='true'] .value,
-.selectCombobox[data-variant='field'][aria-disabled='true'] .placeholder {
-    color: var(--neutral-400);
+/* selectCombobox/disabled */
+
+.selectCombobox:disabled {
+    cursor: not-allowed;
+}
+
+.selectCombobox:disabled .placeholder,
+.selectCombobox:disabled .control {
+    color: var(--disable-placeholder-text-color);
+}
+
+.selectCombobox:disabled .segment,
+.selectCombobox:disabled .value {
+    color: var(--disable-text-color);
 }

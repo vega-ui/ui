@@ -949,7 +949,11 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  argTypes: {},
+  argTypes: {
+    disabled: {
+      control: 'boolean'
+    }
+  },
   args: {},
 } satisfies Meta<typeof PhoneSelectField>;
 

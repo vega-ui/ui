@@ -3,5 +3,5 @@
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    color: var(--neutral-1000);
+    color: var(--text-color);
 }

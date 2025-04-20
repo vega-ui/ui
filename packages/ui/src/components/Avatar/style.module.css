@@ -15,13 +15,13 @@
 }
 
 .avatar[data-variant='primary'] {
-    background-color: var(--primary-accent-2);
-    color: var(--primary-accent-7);
+    background-color: var(--color-primary-50);
+    color: var(--color-primary-500);
 }
 
 .avatar[data-variant='secondary'] {
-    background-color: var(--secondary-accent-2);
-    color: var(--neutral-1000);
+    background-color: var(--color-secondary-50);
+    color: var(--text-color);
 }
 
 .avatar[data-size='2xs'] {

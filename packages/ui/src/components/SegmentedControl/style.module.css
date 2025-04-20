@@ -3,7 +3,6 @@
     grid-auto-columns: 1fr;
     grid-auto-flow: column;
     position: relative;
-    background-color: var(--secondary-accent-2);
     isolation: isolate;
 }
 
@@ -12,17 +11,16 @@
 }
 
 .controlWrapper[data-variant='primary'] {
-    background-color: var(--primary-accent-2);
+    background-color: var(--color-primary-50);
 }
 
 .controlWrapper[data-variant='secondary'] {
-    background-color: var(--secondary-accent-2);
+    background-color: var(--color-secondary-50);
 }
 
 .active {
     display: block;
     border-radius: inherit;
-    background-color: var(--secondary-accent-12);
     position: absolute;
     z-index: -1;
     pointer-events: none;
@@ -34,15 +32,15 @@
 }
 
 .active[data-variant='primary'] {
-    background-color: var(--primary-accent-7);
+    background-color: var(--color-primary-500);
 }
 
 .active[data-variant='secondary'] {
-    background-color: var(--secondary-accent-12);
+    background-color: var(--color-secondary-500);
 }
 
 .active[data-disabled='true'] {
-    background-color: var(--neutral-150);
+    background-color: var(--color-gray-accent-100);
 }
 
 .controlWrapper[data-size='small'] {

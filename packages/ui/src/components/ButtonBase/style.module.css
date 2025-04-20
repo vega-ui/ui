@@ -21,187 +21,191 @@
 /* Primary Fill */
 
 .buttonBase[data-variant='primary'][data-appearance='fill'] {
-    background-color: var(--primary-accent-7);
+    background-color: var(--color-primary-500);
     transition: background-color var(--transition-state-delay) ease-in-out, color var(--transition-state-delay) ease-in-out;
     color: var(--color-white);
 }
 
 .buttonBase[data-variant='primary'][data-appearance='fill']:hover {
-    background-color: var(--primary-accent-8);
+    background-color: var(--color-primary-600);
 }
 
 .buttonBase[data-variant='primary'][data-appearance='fill']:active {
-    background-color: var(--primary-accent-9);
+    background-color: var(--color-primary-700);
 }
 
 .buttonBase[data-variant='primary'][data-appearance='fill']:disabled,
 .buttonBase[data-variant='primary'][data-appearance='fill'][aria-disabled='true'] {
-    background-color: var(--neutral-50);
-    color: var(--neutral-400);
+    background-color: var(--disable-background-color);
+    color: var(--disable-text-color);
 }
 
 /* Primary Outline */
 
 .buttonBase[data-variant='primary'][data-appearance='outline'] {
-    border: 2px solid var(--primary-accent-7);
+    border: 2px solid var(--color-primary-500);
     transition: border-color var(--transition-state-delay) ease-in-out, background-color var(--transition-state-delay) ease-in-out, color var(--transition-state-delay) ease-in-out;
-    color: var(--primary-accent-7);
+    color: var(--color-primary-500);
 }
 
 .buttonBase[data-variant='primary'][data-appearance='outline']:hover {
-    border-color: var(--primary-accent-8);
-    background-color: var(--primary-accent-1);
-    color: var(--primary-accent-8);
+    border-color: var(--color-primary-600);
+    background-color: var(--color-primary-0);
+    color: var(--color-primary-600);
 }
 
 .buttonBase[data-variant='primary'][data-appearance='outline']:active {
-    border-color: var(--primary-accent-9);
-    background-color: var(--primary-accent-2);
-    color: var(--primary-accent-9);
+    border-color: var(--color-primary-700);
+    background-color: var(--color-primary-50);
+    color: var(--color-primary-700);
 }
 
 .buttonBase[data-variant='primary'][data-appearance='outline']:disabled,
 .buttonBase[data-variant='primary'][data-appearance='outline'][aria-disabled='true'] {
-    border-color: var(--neutral-400);
-    color: var(--neutral-400);
+    border-color: var(--disable-border-color);
+    color: var(--disable-text-color);
     background: none;
 }
 
 /* Primary Ghost */
 
 .buttonBase[data-variant='primary'][data-appearance='ghost'] {
-    background-color: var(--primary-accent-2);
-    color: var(--primary-accent-7);
+    background-color: var(--color-primary-50);
+    color: var(--color-primary-500);
     transition: background-color var(--transition-state-delay) ease-in-out, color var(--transition-state-delay) ease-in-out;
 }
 
 .buttonBase[data-variant='primary'][data-appearance='ghost']:hover {
-    background-color: var(--primary-accent-3);
-    color: var(--primary-accent-8);
+    background-color: var(--color-primary-100);
+    color: var(--color-primary-600);
 }
 
 .buttonBase[data-variant='primary'][data-appearance='ghost']:active {
-    background-color: var(--primary-accent-4);
-    color: var(--primary-accent-9);
+    background-color: var(--color-primary-150);
+    color: var(--color-primary-700);
 }
 
 .buttonBase[data-variant='primary'][data-appearance='ghost']:disabled,
 .buttonBase[data-variant='primary'][data-appearance='ghost'][aria-disabled='true'] {
-    background-color: var(--neutral-50);
-    color: var(--neutral-400);
+    background-color: var(--disable-background-color);
+    color: var(--disable-text-color);
 }
 
 /* Primary Transparent */
 
 .buttonBase[data-variant='primary'][data-appearance='transparent'] {
     background: none;
-    color: var(--primary-accent-7);
+    color: var(--color-primary-500);
     transition: background-color var(--transition-state-delay) ease-in-out, color var(--transition-state-delay) ease-in-out;
 }
 
 .buttonBase[data-variant='primary'][data-appearance='transparent']:hover {
-    background-color: var(--primary-accent-1);
-    color: var(--primary-accent-7);
+    background-color: var(--color-primary-0);
+    color: var(--color-primary-500);
 }
 
 .buttonBase[data-variant='primary'][data-appearance='transparent']:active {
-    background-color: var(--primary-accent-2);
-    color: var(--primary-accent-7);
+    background-color: var(--color-primary-50);
+    color: var(--color-primary-500);
 }
 
 .buttonBase[data-variant='primary'][data-appearance='transparent']:disabled,
 .buttonBase[data-variant='primary'][data-appearance='transparent'][aria-disabled='true'] {
-    color: var(--neutral-400);
+    color: var(--disable-text-color);
     background: none;
 }
 
 /* Secondary Fill */
 
 .buttonBase[data-variant='secondary'][data-appearance='fill'] {
-    background-color: var(--secondary-accent-12);
+    background-color: var(--color-secondary-500);
     transition: background-color var(--transition-state-delay) ease-in-out, color var(--transition-state-delay) ease-in-out;
-    color: var(--neutral-0);
+    color: var(--text-inverce-color);
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='fill']:hover {
-    background-color: var(--secondary-accent-13);
+    background-color: var(--color-secondary-600);
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='fill']:active {
-    background-color: var(--secondary-accent-14);
+    background-color: var(--color-secondary-700);
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='fill']:disabled,
 .buttonBase[data-variant='secondary'][data-appearance='fill'][aria-disabled='true'] {
-    background-color: var(--neutral-50);
-    color: var(--neutral-400);
+    background-color: var(--disable-background-color);
+    color: var(--disable-text-color);
 }
 
 /* Secondary Outline */
 
 .buttonBase[data-variant='secondary'][data-appearance='outline'] {
-    border: 2px solid var(--secondary-accent-12);
+    border: 2px solid var(--color-secondary-500);
     transition: border-color var(--transition-state-delay) ease-in-out, background-color var(--transition-state-delay) ease-in-out, color var(--transition-state-delay) ease-in-out;
-    color: var(--neutral-1000);
+    color: var(--color-secondary-500);
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='outline']:hover {
-    border-color: var(--secondary-accent-11);
-    background-color: var(--secondary-accent-1);
+    border-color: var(--color-secondary-600);
+    background-color: var(--color-secondary-0);
+    color: var(--color-secondary-600);
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='outline']:active {
-    border-color: var(--secondary-accent-13);
-    background-color: var(--secondary-accent-2);
+    border-color: var(--color-secondary-700);
+    background-color: var(--color-secondary-50);
+    color: var(--color-secondary-700);
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='outline']:disabled,
 .buttonBase[data-variant='secondary'][data-appearance='outline'][aria-disabled='true'] {
-    border-color: var(--neutral-400);
-    color: var(--neutral-400);
+    border-color: var(--disable-border-color);
+    color: var(--disable-text-color);
     background: none;
 }
 
 /* Secondary Ghost */
 
 .buttonBase[data-variant='secondary'][data-appearance='ghost'] {
-    background-color: var(--secondary-accent-2);
-    color: var(--neutral-1000);
+    background-color: var(--color-secondary-50);
+    color: var(--color-secondary-500);
     transition: background-color var(--transition-state-delay) ease-in-out, color var(--transition-state-delay) ease-in-out;
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='ghost']:hover {
-    background-color: var(--secondary-accent-3);
+    background-color: var(--color-secondary-100);
+    color: var(--color-secondary-600);
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='ghost']:active {
-    background-color: var(--secondary-accent-4);
+    background-color: var(--color-secondary-150);
+    color: var(--color-secondary-700);
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='ghost']:disabled,
 .buttonBase[data-variant='secondary'][data-appearance='ghost'][aria-disabled='true'] {
-    color: var(--neutral-400);
-    background-color: var(--secondary-accent-2);
+    background-color: var(--disable-background-color);
+    color: var(--disable-text-color);
 }
 
 /* Secondary Transparent */
 
 .buttonBase[data-variant='secondary'][data-appearance='transparent'] {
     background: none;
-    color: var(--neutral-1000);
+    color: var(--color-secondary-500);
     transition: background-color var(--transition-state-delay) ease-in-out, color var(--transition-state-delay) ease-in-out;
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='transparent']:hover {
-    background-color: var(--secondary-accent-1);
+    background-color: var(--color-secondary-0);
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='transparent']:active {
-    background-color: var(--secondary-accent-2);
+    background-color: var(--color-secondary-50);
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='transparent']:disabled,
 .buttonBase[data-variant='secondary'][data-appearance='transparent'][aria-disabled='true'] {
-    color: var(--neutral-400);
+    color: var(--disable-text-color);
     background: none;
 }

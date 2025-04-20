@@ -30,7 +30,7 @@ export const SegmentedControl: FC<SegmentedControlProps> = ({
   disabled,
   className,
   children,
-  variant,
+  variant = 'secondary',
   value: controlledValue,
   onChange: _onChange,
   name,
@@ -49,7 +49,7 @@ export const SegmentedControl: FC<SegmentedControlProps> = ({
   const activeIndex = values.indexOf(value)
 
   return (
-    <SegmentedControlProvider value={value} onChange={onChange} size={size} disabled={disabled} name={name}>
+    <SegmentedControlProvider value={value} onChange={onChange} variant={variant} size={size} disabled={disabled} name={name} >
       <div data-size={size} data-variant={variant} className={csx(style.controlWrapper, className)}
            ref={ref} {...props}>
         {children}

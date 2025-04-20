@@ -1,7 +1,7 @@
 .heading {
     font-family: var(--heading-font-family);
     font-weight: var(--heading-font-weight);
-    color: var(--neutral-1000);
+    color: var(--text-color);
     margin: 0;
     white-space: pre-line
 }

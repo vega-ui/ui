@@ -8,6 +8,7 @@ export interface SegmentedControlContextState {
   size?: 'small' | 'medium' | 'large'
   disabled?: boolean
   name?: string
+  variant?: 'primary' | 'secondary'
 }
 
 export const defaultSegmentedControlContext: SegmentedControlContextState = {

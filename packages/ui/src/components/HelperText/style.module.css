@@ -1,8 +1,8 @@
 p.helperText {
     display: inline-block;
-    color: var(--neutral-400);
+    color: var(--color-gray-accent-500);
 }
 
 .helperText[data-error='true'] {
-    color: var(--error-accent-6);
+    color: var(--color-error);
 }

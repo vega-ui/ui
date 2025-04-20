@@ -27,9 +27,16 @@ export const Primary: Story = {
       control: 'radio',
       options: ['primary', 'secondary']
     },
+    appearance: {
+      control: 'radio',
+      options: ['fill', 'ghost', 'outline', 'transparent']
+    },
     size: {
       control: 'radio',
       options: ['small', 'medium', 'large']
+    },
+    disabled: {
+      control: 'boolean',
     },
     loading: {
       control: 'boolean',

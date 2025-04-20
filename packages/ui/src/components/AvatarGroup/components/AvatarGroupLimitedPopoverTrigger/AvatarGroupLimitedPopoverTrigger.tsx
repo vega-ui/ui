@@ -20,7 +20,7 @@ export const AvatarGroupLimitedPopoverTrigger: FC<AvatarGroupLimitedPopoverTrigg
   className,
   open,
   children,
-  size,
+  size = 'md',
   ...props
 }) => {
   return (

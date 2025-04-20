@@ -18,6 +18,9 @@ const meta = {
     size: {
       control: 'radio',
       options: ['small', 'medium', 'large']
+    },
+    disabled: {
+      control: 'boolean'
     }
   },
   args: {},

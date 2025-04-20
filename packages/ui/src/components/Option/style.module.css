@@ -5,7 +5,7 @@
     padding: var(--spacing-4) var(--spacing-10);
     transition: background-color var(--transition-state-delay) ease, color var(--transition-state-delay) ease;
     cursor: pointer;
-    color: var(--neutral-1000);
+    color: var(--text-color);
 }
 
 .option[data-size='small'] {
@@ -32,11 +32,16 @@
 .option:hover,
 .option:focus-visible {
     outline: none;
-    background-color: var(--primary-accent-3);
+    background-color: var(--color-primary-100);
+}
+
+.option:active {
+    outline: none;
+    background-color: var(--color-primary-200);
 }
 
 .option[aria-selected="true"] {
-    background-color: var(--primary-accent-7);
+    background-color: var(--color-primary-500);
 }
 
 .option[aria-selected="true"] {

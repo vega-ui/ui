@@ -4,11 +4,27 @@
     align-items: center;
     position: relative;
     background-color: var(--surface-foreground);
-    outline: 1px solid var(--neutral-200);
+    border: 1px solid var(--field-border-color);
     box-sizing: border-box;
     cursor: text;
     transition: border-color var(--transition-state-delay) ease;
     height: var(--input-height);
+}
+
+.input {
+    box-sizing: border-box;
+    padding: 0;
+    font-family: var(--default-font-family);
+    background: none;
+    color: var(--text-color);
+    border: 0;
+    height: 100%;
+    width: 100%;
+    outline: none;
+}
+
+.input::placeholder {
+    color: var(--field-placeholder-color);
 }
 
 .startSlot,
@@ -103,37 +119,36 @@
     padding-right: var(--spacing-7);
 }
 
-.inputWrapper:has(.input:disabled) {
-    cursor: not-allowed;
-    background-color: var(--neutral-50);
-    outline-color: var(--neutral-200);
-    transition: border-color var(--transition-state-delay) ease-in-out;
+/* textField/hover */
+
+.inputWrapper:has(.input:hover) {
+    border-color: var(--field-border-hover-color);
 }
 
-.inputWrapper:has(.input:focus) {
-    outline-color: var(--primary-accent-7);
+/* textField/active */
+
+.inputWrapper:has(.input:active),
+.inputWrapper:has(.input:focus-visible) {
+    border-color: var(--field-border-focus-color);
 }
+
+/* textField/error */
 
 .inputWrapper:has(.input[data-error='true']) {
-    outline-color: var(--error-accent-6);
+    border-color: var(--color-error);
 }
 
-.input {
-    box-sizing: border-box;
-    padding: 0;
-    font-family: var(--default-font-family);
-    background: none;
-    color: var(--neutral-1000);
-    border: 0;
-    height: 100%;
-    width: 100%;
-    outline: none;
-}
+/* textField/disabled */
 
-.input::placeholder {
-    color: var(--neutral-500);
+.inputWrapper:has(.input:disabled) {
+    cursor: not-allowed;
+    background-color: var(--disable-background-color);
 }
 
 .input:disabled {
     cursor: not-allowed;
+    color: var(--disable-text-color);
+}
+
+.input:disabled::placeholder {
 }
