@@ -1,5 +1,11 @@
 # @adara-cs/hooks
 
+## 2.9.1
+
+### Patch Changes
+
+- 8711609: Changed as type and deleted package types
+
 ## 2.9.0
 
 ## 2.8.1
