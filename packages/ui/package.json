@@ -62,7 +62,6 @@
   },
   "dependencies": {
     "@adara-cs/hooks": "workspace:*",
-    "@adara-cs/types": "workspace:*",
     "@adara-cs/utils": "workspace:*",
     "@adara-cs/icons": "workspace:*",
     "@floating-ui/react": "^0.27.5",

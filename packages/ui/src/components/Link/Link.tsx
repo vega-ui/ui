@@ -1,21 +1,27 @@
 'use client';
-import { ElementType, ReactNode } from 'react';
+import { ComponentPropsWithRef, ElementType } from 'react';
 
 import style from './style.module.css'
 import { csx } from '@adara-cs/utils';
 import { Text, TextProps } from '../Text';
-import { PolymorphicComponentPropWithRef } from '@adara-cs/types';
 
-export type LinkProps<T extends ElementType> = PolymorphicComponentPropWithRef<T, {
+export type LinkProps<T extends ElementType = 'a'> = {
   className?: string
   children?: string;
   size?: TextProps['size']
   fontWeight?: TextProps['fontWeight']
-}>
+  as?: T
+} & Omit<ComponentPropsWithRef<T>, 'as'>
 
-type LinkComponent = <T extends ElementType = 'a'>(props: LinkProps<T>) => ReactNode | null;
-
-export const Link: LinkComponent = <T extends ElementType>({ as, className, size = 3, fontWeight, children, ref, ...props }: LinkProps<T>) => {
+export const Link = <T extends ElementType = 'a'>({
+  as,
+  className,
+  size = 3,
+  fontWeight,
+  children,
+  ref,
+  ...props
+}: LinkProps<T>) => {
   const Element = as || 'a';
 
   return (

@@ -1,18 +1,15 @@
 'use client';
-import { ElementType, ReactNode } from 'react';
+import { ComponentPropsWithRef, ElementType, MouseEvent } from 'react';
 import { csx } from '@adara-cs/utils';
 import style from './style.module.css';
-import { PolymorphicComponentPropWithRef } from '@adara-cs/types';
 import { useCollapsibleContext } from '../../hooks';
 
-export type CollapsibleTriggerProps<T extends ElementType> = PolymorphicComponentPropWithRef<T, {
+export type CollapsibleTriggerProps<T extends ElementType = 'button'> = {
   className?: string
-  onClick?: () => void
-}>;
+  as?: T
+} & Omit<ComponentPropsWithRef<T>, 'as'>;
 
-type CollapsibleTriggerComponent = <T extends ElementType = 'button'>(props: CollapsibleTriggerProps<T>) => ReactNode | null;
-
-export const CollapsibleTrigger: CollapsibleTriggerComponent = <T extends ElementType>({
+export const CollapsibleTrigger = <T extends ElementType = 'button'>({
   className,
   onClick: _onClick,
   children,
@@ -24,11 +21,11 @@ export const CollapsibleTrigger: CollapsibleTriggerComponent = <T extends Elemen
 
   const { opened, open, close } = useCollapsibleContext()
 
-  const onClick = () => {
+  const onClick = (e: MouseEvent) => {
     if (opened) close()
     else open()
 
-    _onClick?.()
+    _onClick?.(e)
   }
 
   return (
