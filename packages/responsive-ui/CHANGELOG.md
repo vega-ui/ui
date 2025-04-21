@@ -1,5 +1,16 @@
 # @adara-cs/responsive-ui
 
+## 2.9.1
+
+### Patch Changes
+
+- 8711609: Changed as type and deleted package types
+- Updated dependencies [8711609]
+  - @adara-cs/hooks@2.9.1
+  - @adara-cs/icons@2.9.1
+  - @adara-cs/utils@2.9.1
+  - @adara-cs/ui-kit-web@2.9.1
+
 ## 2.9.0
 
 ### Minor Changes
