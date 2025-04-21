@@ -160,9 +160,6 @@ importers:
       '@adara-cs/icons':
         specifier: workspace:*
         version: link:../icons
-      '@adara-cs/types':
-        specifier: workspace:*
-        version: link:../types
       '@adara-cs/ui-kit-web':
         specifier: workspace:*
         version: link:../ui
@@ -222,12 +219,6 @@ importers:
         specifier: ^3.0.5
         version: 3.0.5(@types/node@22.10.10)(jsdom@26.0.0)
 
-  packages/types:
-    devDependencies:
-      '@types/react':
-        specifier: ^19.0.10
-        version: 19.0.10
-
   packages/ui:
     dependencies:
       '@adara-cs/hooks':
@@ -236,9 +227,6 @@ importers:
       '@adara-cs/icons':
         specifier: workspace:*
         version: link:../icons
-      '@adara-cs/types':
-        specifier: workspace:*
-        version: link:../types
       '@adara-cs/utils':
         specifier: workspace:*
         version: link:../utils
