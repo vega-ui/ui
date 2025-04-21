@@ -1,12 +1,11 @@
 import { ButtonBase, ButtonBaseProps } from '../ButtonBase';
 import { ElementType, ReactNode, Ref } from 'react';
 import { csx } from '@adara-cs/utils';
-import { PolymorphicComponentPropWithRef } from '@adara-cs/types';
 import { Spinner } from '../Spinner';
 import style from './style.module.css';
 import { sizeMapper } from './utils';
 
-export type ButtonProps<T extends ElementType> = PolymorphicComponentPropWithRef<T, ButtonBaseProps<T> & {
+export type ButtonProps<T extends ElementType = 'button'> = ButtonBaseProps<T> & {
   disabled?: boolean
   loading?: boolean
   type?: 'button' | 'submit' | 'reset'
@@ -14,13 +13,10 @@ export type ButtonProps<T extends ElementType> = PolymorphicComponentPropWithRef
   spinnerSlot?: ReactNode
   spinnerClassName?: string
   fullWidth?: boolean
-  onClick?: () => void
-}>
-
-type ButtonComponent = <T extends ElementType = 'button'>(props: ButtonProps<T>) => ReactNode | null;
+}
 
 /** Primary UI component for user interaction */
-export const Button: ButtonComponent = <T extends ElementType>({
+export const Button = <T extends ElementType = 'button'>({
    size = 'medium',
    disabled,
    children,

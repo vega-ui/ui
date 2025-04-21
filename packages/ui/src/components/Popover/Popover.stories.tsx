@@ -24,7 +24,7 @@ export const Default: Story = {
     children: (
       <>
         <Text size={3}>Привет! Я - Popover</Text>
-        <Button variant='secondary' appearance='transparent'>Кнопка</Button>
+        <Button onClick={(e) => console.log(e)} variant='secondary' appearance='transparent'>Кнопка</Button>
       </>
     )
   },

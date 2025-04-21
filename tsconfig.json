@@ -6,8 +6,6 @@
       "@adara-cs/utils/*": ["./packages/utils/src/*"],
       "@adara-cs/hooks": ["./packages/hooks/src/index.ts"],
       "@adara-cs/hooks/*": ["./packages/hooks/src/*"],
-      "@adara-cs/types": ["./packages/types/index.d.ts"],
-      "@adara-cs/types/*": ["./packages/types/*"],
       "@adara-cs/icons/*": ["./packages/icons/*"],
       "@adara-cs/icons": ["./packages/icons/src/index.ts"],
       "@adara-cs/ui-kit-web": ["./packages/ui/src/index.ts"],

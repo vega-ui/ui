@@ -1,15 +1,13 @@
-import { ElementType, ReactNode } from 'react';
+import { ComponentPropsWithRef, ElementType } from 'react';
 import { csx } from '@adara-cs/utils';
-import { PolymorphicComponentPropWithRef } from '@adara-cs/types';
 import style from './style.module.css'
 
-export type VisuallyHiddenProps<T extends ElementType> = PolymorphicComponentPropWithRef<T, {
+export type VisuallyHiddenProps<T extends ElementType = 'div'> = {
   className?: string
-}>
+  as?: T
+} & Omit<ComponentPropsWithRef<T>, 'as'>;
 
-type VisuallyHiddenComponent = <T extends ElementType>(props: VisuallyHiddenProps<T>) => ReactNode | null;
-
-export const VisuallyHidden: VisuallyHiddenComponent = <T extends ElementType>({
+export const VisuallyHidden = <T extends ElementType = 'div'>({
   className,
   children,
   as,

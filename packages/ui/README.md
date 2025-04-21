@@ -1,6 +1,7 @@
 # Adara UI
 
 React component library, written by developers for developers 🩵
+
 ## Installation
 
 Install @adara-cs/ui-kit-web with
@@ -60,6 +61,38 @@ Start using
   <Button>Hello, world!</Button>
 ```
 
+## Types
+
+### 📌 Note: Correct typing with `as={Component<'tag'>}`
+
+When passing a component to the `as` prop, and that component is itself a **generic polymorphic component**, such as:
+
+```tsx
+function Link<T extends React.ElementType = 'a'>(props: { as?: T } & ...) { ... }
+```
+
+TypeScript **cannot infer the concrete type `T`** if you simply write:
+
+```tsx
+<Wrapper as={Link} /> // ❌ Event types will be `any`
+```
+
+To retain full typing support (e.g. `onClick(e)` as `MouseEvent<HTMLAnchorElement>`), you must **explicitly instantiate the generic**:
+
+```tsx
+<Wrapper as={Link<'a'>} /> // ✅ All event types, refs, and attributes are fully typed
+```
+
+This approach guarantees:
+
+- Automatic attribute inference (`href`, `type`, `disabled`, etc.)
+- Correct DOM event typing (`onClick`, `onChange`, `onSubmit`, etc.)
+- Full type safety without `any`
+- No wrappers, factories, or custom utilities needed
+
+---
+
+> 💡 It is recommended to use `Component<'tag'>` inside `as` when the component you are passing is itself generic and supports polymorphism.
 
 ## Running Tests
 

@@ -1,21 +1,20 @@
-import { ElementType, ReactNode } from 'react';
+import { ComponentPropsWithRef, ElementType, ReactNode } from 'react';
 
 import { csx } from '@adara-cs/utils';
-import { PolymorphicComponentPropWithRef } from '@adara-cs/types';
 import style from './style.module.css'
 
 export type TextSize = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11
 
-export type TextProps<T extends ElementType = 'span'> = PolymorphicComponentPropWithRef<T, {
+export type TextProps<T extends ElementType = 'span'> = {
   className?: string
   children?: ReactNode | ReactNode[]
   size?: TextSize
   fontWeight?: 400 | 500 | 600 | 700 | 900
-}>
+  as?: T
+} & Omit<ComponentPropsWithRef<T>, 'as'>;
 
-type TextComponent = <T extends ElementType = 'span'>(props: TextProps<T>) => ReactNode | null;
 
-export const Text: TextComponent = <T extends ElementType>({
+export const Text = <T extends ElementType = 'span'>({
   as,
   className,
   size = 3,
