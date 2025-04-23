@@ -1,45 +1,28 @@
 'use client';
-import { FC, ReactElement, ReactNode, Ref } from 'react';
-import styles from './style.module.css'
+import { FC, ReactNode } from 'react';
 import {
-  autoUpdate,
-  flip, FloatingFocusManager, FloatingOverlay,
-  offset, Placement,
-  shift, useClick, useDismiss,
-  useFloating,
-  useInteractions, useRole, useTransitionStyles
+  autoUpdate, flip, FloatingContext, offset,
+  Placement, shift, useClick, useDismiss, useFloating, useInteractions, useRole,
 } from '@floating-ui/react';
-import { mergeRefs, csx } from '@adara-cs/utils';
 import { useControlledState } from '@adara-cs/hooks';
+import { PopoverProvider } from './providers';
 
 export interface PopoverProps {
-  className?: string
-  triggerSlot?: (ref: Ref<never>, props?: Record<string, unknown>) => ReactElement
   children?: ReactNode
   placement?: Placement
-  lockScroll?: boolean
-  overlay?: boolean
   open?: boolean
   defaultOpen?: boolean
   onOpenChange?(state: boolean): void
-  blurredOverlay?: boolean
-  role?: 'combobox' | 'listbox' | 'dialog' | 'select'
-  ref?: Ref<HTMLDivElement>
+  role?: 'listbox' | 'dialog'
 }
 
 export const Popover: FC<PopoverProps> = ({
-  triggerSlot,
   placement = 'bottom',
   role: ariaRole,
-  lockScroll = false,
-  overlay = false,
   open: controlledOpen,
   defaultOpen = false,
   onOpenChange,
-  blurredOverlay = true,
-  className,
   children,
-  ref,
 }) => {
   const [open, setOpen] = useControlledState(controlledOpen, defaultOpen, onOpenChange);
 
@@ -61,33 +44,20 @@ export const Popover: FC<PopoverProps> = ({
     role,
   ]);
 
-  const { styles: transitionStyles } = useTransitionStyles(context, {
-    duration: 200,
-  });
-
-  const content = (
-    <FloatingFocusManager context={context}>
-      <div
-        ref={mergeRefs([refs.setFloating, ref])}
-        style={{ ...floatingStyles, ...transitionStyles }}
-        className={csx(styles.popover, className)}
-        {...getFloatingProps()}
-      >
-        {children}
-      </div>
-    </FloatingFocusManager>
-  )
-
   return (
-    <>
-      {triggerSlot?.(refs.setReference, getReferenceProps())}
-      {open && (
-        overlay ? (
-          <FloatingOverlay lockScroll={lockScroll} className={csx(styles.popoverOverlay, blurredOverlay ? styles.popoverOverlayBlurred : undefined)}>
-            {content}
-          </FloatingOverlay>
-        ) : content
-      )}
-    </>
+    <PopoverProvider
+      open={open}
+      role={ariaRole}
+      contentStyles={floatingStyles}
+      changeOpen={setOpen}
+      placement={placement}
+      context={context as FloatingContext<HTMLElement>}
+      triggerProps={getReferenceProps()}
+      contentProps={getFloatingProps()}
+      triggerRef={refs.setReference}
+      contentRef={refs.setFloating}
+    >
+      {children}
+    </PopoverProvider>
   )
 }

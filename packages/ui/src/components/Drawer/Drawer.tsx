@@ -1,14 +1,11 @@
 'use client';
 
 import {
-  HTMLAttributes,
-  ReactNode,
-  useRef,
-  Ref, ReactElement, JSX, FC,
+  Ref,
+  FC, ReactNode,
 } from 'react';
 import {
-  FloatingFocusManager,
-  FloatingPortal,
+  FloatingContext,
   useClick,
   useDismiss,
   useFloating,
@@ -16,54 +13,25 @@ import {
   useRole,
   useTransitionStatus
 } from '@floating-ui/react';
-import { DrawerOverlay, DrawerContent } from './components';
 import { useControlledState } from '@adara-cs/hooks';
-import { csx, mergeRefs } from '@adara-cs/utils';
-import styles from './style.module.css';
-import { DrawerProvider } from './providers';
+import { DrawerPosition, DrawerProvider } from './providers';
 
-export type DrawerPosition = 'top-start' | 'top' | 'top-end' | 'right-start' | 'right' | 'right-end' | 'bottom-end' | 'bottom' | 'bottom-start' | 'left-end' | 'left' | 'left-start'
-
-export interface DrawerProps extends HTMLAttributes<HTMLElement> {
+export interface DrawerProps {
   dismissible?: boolean
-  withOverlay?: boolean
-  shadowed?: boolean
-  scrollable?: boolean
   open?: boolean
   onChangeOpen?: (value: boolean) => void
-  headerSlot?: JSX.Element | JSX.Element[]
-  blurredOverlay?: boolean
-  fullWidth?: boolean
-  fullHeight?: boolean
   position?: DrawerPosition
-  children?: ReactNode | ReactNode[]
-  triggerSlot?: (ref: Ref<never>, props?: Record<string, unknown>) => ReactElement
-  className?: string
-  contentClassName?: string
   ref?: Ref<HTMLDivElement>
+  children?: ReactNode
 }
 
 export const Drawer: FC<DrawerProps> = ({
-  children,
-  triggerSlot,
-  headerSlot,
-  withOverlay = true,
-  shadowed = !withOverlay,
-  blurredOverlay = true,
   dismissible = true,
-  fullWidth = false,
-  fullHeight = false,
   position = 'right',
-  scrollable = true,
   open: controlledOpen,
   onChangeOpen: controlledOnChangeOpen,
-  className,
-  contentClassName,
-  ref,
-  ...props
+  children,
 }) => {
-  const contentRef = useRef<HTMLDivElement>(null)
-
   const [isOpen, setIsOpen] = useControlledState(controlledOpen, false, controlledOnChangeOpen)
 
   const { refs, context } = useFloating({
@@ -86,40 +54,20 @@ export const Drawer: FC<DrawerProps> = ({
 
   const { isMounted, status } = useTransitionStatus(context);
 
-  const content = (
-    <div
-      data-position={position}
-      data-full-width={fullWidth}
-      data-full-height={fullHeight}
-      data-status={status}
-      data-shadow={shadowed}
-      ref={mergeRefs([ref, refs.setFloating])}
-      className={csx(styles.drawer, className)}
-      {...getFloatingProps(props)}
-    >
-      {headerSlot}
-      <DrawerContent scrollable={scrollable} className={contentClassName} ref={contentRef}>
-        {children}
-      </DrawerContent>
-    </div>
-  )
-
   return (
-    <>
-      {triggerSlot?.(refs.setReference, getReferenceProps())}
-      <FloatingPortal>
-        <DrawerProvider open={isOpen} onChangeOpen={setIsOpen}>
-          {isMounted && (
-            <FloatingFocusManager context={context}>
-              {withOverlay ? (
-                <DrawerOverlay blurred={blurredOverlay} hidden={!isMounted}>
-                  {content}
-                </DrawerOverlay>
-              ) : content}
-            </FloatingFocusManager>
-          )}
-        </DrawerProvider>
-      </FloatingPortal>
-    </>
+    <DrawerProvider
+      context={context as FloatingContext<HTMLElement>}
+      contentRef={refs.setFloating}
+      triggerRef={refs.setReference}
+      contentProps={getFloatingProps()}
+      triggerProps={getReferenceProps()}
+      open={isOpen}
+      onChangeOpen={setIsOpen}
+      isMounted={isMounted}
+      transitionStatus={status}
+      position={position}
+    >
+      {children}
+    </DrawerProvider>
   )
 }

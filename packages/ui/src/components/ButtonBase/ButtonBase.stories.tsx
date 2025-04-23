@@ -20,6 +20,16 @@ type Story = StoryObj<typeof meta>;
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Default: Story = {
   args: {
-    children: 'Кнопка!',
+    children: 'I\'m a button!',
   },
+};
+
+export const AsChild: Story = {
+  render(props) {
+    return (
+      <ButtonBase {...props} asChild>
+        <a href='#'>I'm a link!</a>
+      </ButtonBase>
+    );
+  }
 };

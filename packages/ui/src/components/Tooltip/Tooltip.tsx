@@ -1,9 +1,8 @@
 'use client';
 
-import { FC, ReactElement, Ref, useRef, useState } from 'react';
-import { csx } from '@adara-cs/utils';
+import { FC, ReactNode, useRef, useState } from 'react';
 import {
-  arrow, autoUpdate, flip, FloatingArrow, offset, shift,
+  arrow, autoUpdate, flip, FloatingContext, offset, shift,
   useDismiss,
   useFloating, useFocus,
   useHover,
@@ -11,24 +10,15 @@ import {
   useRole,
   useTransitionStyles
 } from '@floating-ui/react';
-import styles from './style.module.css'
-import { Text, TextProps } from '../Text';
+import { TooltipProvider } from './providers';
 
 export interface TooltipProps {
-  className?: string
-  triggerSlot?: (ref: Ref<never>, props?: Record<string, unknown>) => ReactElement
-  children?: string | string[]
-  fontSize?: TextProps['size']
-  fontWeight?: TextProps['fontWeight']
+  children?: ReactNode
   delayOpen?: number
   delayClose?: number
 }
 
 export const Tooltip: FC<TooltipProps> = ({
-  triggerSlot,
-  className,
-  fontSize = 2,
-  fontWeight,
   delayOpen = 500,
   delayClose = 0,
   children
@@ -68,16 +58,18 @@ export const Tooltip: FC<TooltipProps> = ({
   });
 
   return (
-    <>
-      {triggerSlot?.(refs.setReference, getReferenceProps({ tabIndex: 0 }))}
-      {open && (
-        <div ref={refs.setFloating} className={csx(styles.tooltip, className)} style={{ ...floatingStyles, ...transitionStyles}} {...getFloatingProps()}>
-          <FloatingArrow className={styles.arrow} ref={arrowRef} context={context} />
-          <Text size={fontSize} fontWeight={fontWeight} className={styles.content}>
-            {children}
-          </Text>
-        </div>
-      )}
-    </>
+    <TooltipProvider
+      arrowRef={arrowRef}
+      changeOpen={setOpen}
+      open={open}
+      triggerProps={getReferenceProps()}
+      contentProps={getFloatingProps()}
+      contentRef={refs.setFloating}
+      triggerRef={refs.setReference}
+      context={context as FloatingContext<HTMLElement>}
+      contentStyle={{ ...floatingStyles, ...transitionStyles }}
+    >
+      {children}
+    </TooltipProvider>
   )
 }

@@ -1,20 +1,23 @@
-import { ComponentPropsWithRef, ElementType } from 'react';
+import { FC, ReactNode, Ref } from 'react';
 import { csx } from '@adara-cs/utils';
 import style from './style.module.css'
+import { Slot } from '../Slot';
 
-export type VisuallyHiddenProps<T extends ElementType = 'div'> = {
+export interface VisuallyHiddenProps {
   className?: string
-  as?: T
-} & Omit<ComponentPropsWithRef<T>, 'as'>;
+  asChild?: boolean
+  children?: ReactNode
+  ref?: Ref<HTMLDivElement>
+}
 
-export const VisuallyHidden = <T extends ElementType = 'div'>({
+export const VisuallyHidden: FC<VisuallyHiddenProps> = ({
   className,
   children,
-  as,
+  asChild,
   ref,
   ...props
-}: VisuallyHiddenProps<T>) => {
-  const Element = as || 'div';
+}) => {
+  const Element = asChild ? Slot : 'div';
 
   return (
     <Element {...props} className={csx(style.visuallyHidden, className)} ref={ref}>{children}</Element>

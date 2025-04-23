@@ -3,7 +3,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Modal } from './Modal.tsx';
 import { Button } from '../Button';
 import { Text } from '../Text';
-import { ModalHeader } from './components';
+import { ModalHeader, ModalTrigger } from './components';
+import { ModalContent } from './components/ModalContent';
 
 const meta = {
   title: 'UI-Core/Modal',
@@ -21,24 +22,32 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    triggerSlot: (ref, props) => <Button ref={ref} {...props}>Modal</Button>,
     children: (
       <>
-        <Text size={3}>Привет! Я - Modal</Text>
-        <Button variant='secondary' appearance='transparent'>Согласен</Button>
+        <ModalTrigger asChild>
+          <Button>Modal</Button>
+        </ModalTrigger>
+        <ModalContent>
+          <Text size={3}>Привет! Я - Modal</Text>
+          <Button variant='secondary' appearance='transparent'>Согласен</Button>
+        </ModalContent>
       </>
     ),
-    title: 'Модалка'
   },
 };
 
-export const WithoutCloseButton: Story = {
+export const WithHeader: Story = {
   args: {
-    triggerSlot: (ref, props) => <Button ref={ref} {...props}>Modal</Button>,
     children: (
       <>
-        <ModalHeader title='Заголовок' />
-        <Text size={3}>Привет! Я - Modal</Text>
+        <ModalTrigger asChild>
+          <Button>Modal</Button>
+        </ModalTrigger>
+        <ModalContent>
+          <ModalHeader title='Hello' />
+          <Text size={3}>Привет! Я - Modal</Text>
+          <Button variant='secondary' appearance='transparent'>Согласен</Button>
+        </ModalContent>
       </>
     ),
   },
@@ -46,20 +55,16 @@ export const WithoutCloseButton: Story = {
 
 export const Fluid: Story = {
   args: {
-    triggerSlot: (ref, props) => <Button ref={ref} {...props}>Modal</Button>,
     children: (
       <>
-        <ModalHeader title='Заголовок' />
-        <Text size={3}>Привет! Я - Modal</Text>
+        <ModalTrigger asChild>
+          <Button>Modal</Button>
+        </ModalTrigger>
+        <ModalContent>
+          <Text size={3}>Привет! Я - Modal</Text>
+          <Button variant='secondary' appearance='transparent'>Согласен</Button>
+        </ModalContent>
       </>
     ),
-    fluid: true,
-  },
-};
-
-export const WithoutTitle: Story = {
-  args: {
-    triggerSlot: (ref, props) => <Button ref={ref} {...props}>Modal</Button>,
-    children: <Text size={3}>Привет! Я - Modal</Text>,
   },
 };

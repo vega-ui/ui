@@ -48,7 +48,9 @@ export const Checkbox: FC<CheckboxProps> = ({
 
   return (
     <label className={csx(style.checkboxWrapper, wrapperClassName)}>
-      <VisuallyHidden onChange={onChange} as='input' type='checkbox' ref={mergeRefs([inputRef, ref])} disabled={disabled} defaultChecked={defaultChecked} checked={checked} {...props} />
+      <VisuallyHidden asChild ref={mergeRefs([inputRef, ref])}>
+        <input onChange={onChange} type='checkbox' disabled={disabled} defaultChecked={defaultChecked} checked={checked} {...props} />
+      </VisuallyHidden>
       <div className={csx(style.checkbox, className)} data-size={size} data-variant={variant}>
         <Icon aria-hidden className={style.checkboxCheckIcon} name='check' size={sizeMapper(size)} />
         <Icon aria-hidden className={style.checkboxIndeterminateIcon} name='minus' size={sizeMapper(size)} />

@@ -2,12 +2,22 @@ import { describe, expect, it } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react'
 import { Popover } from '../Popover.tsx';
 import { act } from 'react';
+import { PopoverContent, PopoverTrigger } from '../components';
 
 const TEXT = 'Hello, World!';
 
 describe('Popover', () => {
   it('render', async () => {
-    render(<Popover triggerSlot={(ref, props) => <button ref={ref} {...props}>Trigger</button>}>{TEXT}</Popover>)
+    render(
+      <Popover>
+        <PopoverTrigger asChild>
+          <button>Trigger</button>
+        </PopoverTrigger>
+        <PopoverContent>
+          {TEXT}
+        </PopoverContent>
+      </Popover>
+    )
     act(() => {
       screen.getByRole('button').click()
     })
@@ -18,7 +28,16 @@ describe('Popover', () => {
   })
 
   it('has role', async () => {
-    render(<Popover triggerSlot={(ref, props) => <button ref={ref} {...props}>Trigger</button>}>{TEXT}</Popover>)
+    render(
+      <Popover>
+        <PopoverTrigger asChild>
+          <button>Trigger</button>
+        </PopoverTrigger>
+        <PopoverContent>
+          {TEXT}
+        </PopoverContent>
+      </Popover>
+    )
     act(() => {
       screen.getByRole('button').click()
     })

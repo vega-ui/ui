@@ -1,11 +1,11 @@
 import style from './style.module.css';
 import { ButtonBase, ButtonBaseProps } from '../ButtonBase';
-import { ElementType, Fragment, Ref, MouseEvent } from 'react';
+import { Fragment, Ref, MouseEvent, FC } from 'react';
 import { Icon, IconProps } from '../Icon';
 import { sizeMapper } from './utils';
 import { csx } from '@adara-cs/utils';
 
-export type IconButtonProps<T extends ElementType> = ButtonBaseProps<T> & {
+export interface IconButtonProps extends ButtonBaseProps {
   disabled?: boolean;
   type?: 'button' | 'submit' | 'reset'
   size?: 'small' | 'medium' | 'large'
@@ -16,7 +16,7 @@ export type IconButtonProps<T extends ElementType> = ButtonBaseProps<T> & {
 }
 
 /** Primary UI component for user interaction */
-export const IconButton = <T extends ElementType = 'button'>({
+export const IconButton: FC<IconButtonProps> = ({
   size = 'medium',
   iconSize,
   disabled,
@@ -28,7 +28,7 @@ export const IconButton = <T extends ElementType = 'button'>({
   children,
   ref,
   ...props
-}: IconButtonProps<T>) => {
+}) => {
   return (
     <ButtonBase
       type={type}

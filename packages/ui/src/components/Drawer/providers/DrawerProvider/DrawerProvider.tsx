@@ -1,17 +1,45 @@
 'use client';
 import { FC, PropsWithChildren, useMemo } from 'react';
-import { DrawerContext } from './context.ts';
+import { DrawerContext, DrawerContextState } from './context.ts';
 
-interface DrawerProvider {
-  open: boolean
-  onChangeOpen: (value: boolean) => void
-}
+export type DrawerProviderProps = DrawerContextState
 
-export const DrawerProvider: FC<PropsWithChildren<DrawerProvider>> = ({ open, onChangeOpen, children }) => {
+export const DrawerProvider: FC<PropsWithChildren<DrawerProviderProps>> = ({
+  open,
+  onChangeOpen,
+  context,
+  contentRef,
+  contentProps,
+  triggerProps,
+  triggerRef,
+  isMounted,
+  transitionStatus,
+  position,
+  children
+}) => {
   const value = useMemo(() => ({
     open,
     onChangeOpen,
-  }), [open, onChangeOpen])
+    context,
+    contentRef,
+    contentProps,
+    triggerProps,
+    triggerRef,
+    isMounted,
+    transitionStatus,
+    position,
+  }), [
+    open,
+    onChangeOpen,
+    context,
+    contentRef,
+    contentProps,
+    triggerProps,
+    triggerRef,
+    isMounted,
+    transitionStatus,
+    position,
+  ])
 
   return (
     <DrawerContext.Provider value={value}>

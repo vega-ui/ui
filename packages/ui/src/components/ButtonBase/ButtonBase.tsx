@@ -1,29 +1,29 @@
 import style from './style.module.css'
-import {
-  ComponentPropsWithRef,
-  ElementType,
-} from 'react';
 import { csx } from '@adara-cs/utils';
+import { Slot } from '../Slot';
+import { ButtonHTMLAttributes, FC, ReactNode, Ref } from 'react';
 
-export type ButtonBaseProps<T extends ElementType> = {
+export interface ButtonBaseProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'secondary'
   appearance?: 'fill' | 'outline' | 'ghost' | 'transparent'
   disabled?: boolean
   className?: string
-  as?: T
-} & Omit<ComponentPropsWithRef<T>, 'as'>;
+  asChild?: boolean
+  children?: ReactNode
+  ref?: Ref<HTMLButtonElement>
+}
 
-export const ButtonBase = <T extends ElementType = 'button'>({
+export const ButtonBase: FC<ButtonBaseProps> = ({
  className,
- as,
+ asChild,
  children,
  disabled,
  variant = 'primary',
  appearance = 'fill',
  ref,
  ...props
-}: ButtonBaseProps<T>) => {
-  const Element = as || 'button';
+}) => {
+  const Element = asChild ? Slot : 'button';
 
   return (
     <Element

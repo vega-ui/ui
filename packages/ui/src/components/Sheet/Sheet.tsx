@@ -8,11 +8,10 @@ import {
   UIEvent,
   useState,
   useRef,
-  useMemo, Ref, ReactElement,
+  useMemo, Ref,
 } from 'react';
 import {
-  FloatingFocusManager,
-  FloatingPortal,
+  FloatingContext,
   useClick,
   useDismiss,
   useFloating,
@@ -21,15 +20,12 @@ import {
   useTransitionStatus
 } from '@floating-ui/react';
 import { useSnapPoints } from './hooks';
-import { SheetInner, SheetOverlay } from './components';
 import { useControlledState } from '@adara-cs/hooks';
-import { RemoveScroll } from 'react-remove-scroll';
-import { mergeRefs } from '@adara-cs/utils';
+import { SheetProvider } from './providers';
 
 export interface SheetProps extends HTMLAttributes<HTMLElement> {
   /** The value that the Sheet will aim at when the pointer is released */
   snapPoints?: Array<`${number}px` | number>
-  scrollable?: boolean
   /**
    * The threshold value, as a percentage of the screen, at which the snap point will be set to the edge value
    *
@@ -56,46 +52,32 @@ export interface SheetProps extends HTMLAttributes<HTMLElement> {
    */
   dismissible?: boolean
   activeSnapPoint?: number
-  blurredOverlay?: boolean
   defaultSnapPoint?: number
   onChangeActiveSnapPoint?: (activeSnapPoint: number) => void
   steppedSnapPoints?: boolean
-  withOverlay?: boolean
   open?: boolean
   clickEnabled?: boolean
   onOpenChange?: (value: boolean) => void
   children?: ReactNode | ReactNode[]
-  headerSlot?: ReactNode | ReactNode[]
-  triggerSlot?: (ref: Ref<never>, props?: Record<string, unknown>) => ReactElement
   ref?: Ref<HTMLDivElement>
 }
 
 export const Sheet: FC<SheetProps> = ({
   children,
-  triggerSlot,
   snapPoints,
   edgeThreshold = .4,
   siblingThreshold = .1,
-  scrollable = true,
   closable = true,
   dismissible = true,
   swipeTimestamp = 500,
   defaultSnapPoint,
-  withOverlay = true,
-  blurredOverlay = true,
   steppedSnapPoints = false,
   activeSnapPoint: controlledActiveSnapPoint,
   onChangeActiveSnapPoint,
   open: controlledOpen,
   onOpenChange: controlledOnOpenChange,
-  headerSlot,
   clickEnabled = true,
-  className,
-  ref,
-  ...props
 }) => {
-  const contentRef = useRef<HTMLDivElement>(null)
-
   const [isOpen, setIsOpen] = useControlledState(controlledOpen, false, controlledOnOpenChange)
 
   const { refs, context } = useFloating({
@@ -277,44 +259,25 @@ export const Sheet: FC<SheetProps> = ({
     }
   }
 
-  const content = (
-    <SheetInner
-      className={className}
-      shadow={!withOverlay}
+  return (
+    <SheetProvider
+      open={isOpen}
+      changeOpen={setIsOpen}
+      context={context as FloatingContext<HTMLElement>}
+      contentRef={refs.setFloating}
+      triggerRef={refs.setReference}
+      triggerProps={getReferenceProps()}
+      contentProps={getFloatingProps()}
+      transitionStatus={status}
+      isMounted={isMounted}
       onScrollCapture={onScrollCapture}
-      onPointerDown={onPress}
-      onPointerMove={onDrag}
-      onPointerUp={onRelease}
-      hidden={withOverlay ? props.hidden : !isMounted}
-      status={status}
-      ref={mergeRefs([refs.setFloating, ref])}
-      contentRef={contentRef}
+      onDrag={onDrag}
+      onPress={onPress}
+      onRelease={onRelease}
       offset={offset}
-      scrollable={scrollable}
-      dragging={transforming}
-      headerSlot={headerSlot}
-      {...getFloatingProps(props)}
+      transforming={transforming}
     >
       {children}
-    </SheetInner>
-  )
-
-  return (
-    <>
-      {triggerSlot?.(refs.setReference, getReferenceProps())}
-      <FloatingPortal>
-        {isMounted && (
-          <FloatingFocusManager context={context}>
-            <RemoveScroll>
-              {withOverlay ? (
-                <SheetOverlay blurred={blurredOverlay} hidden={!isMounted}>
-                  {content}
-                </SheetOverlay>
-              ) : content}
-            </RemoveScroll>
-          </FloatingFocusManager>
-        )}
-      </FloatingPortal>
-    </>
+    </SheetProvider>
   )
 }

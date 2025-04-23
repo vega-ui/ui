@@ -5,7 +5,7 @@ import {
   ReactNode, Ref,
 } from 'react';
 import { SheetHandle } from '../SheetHandle';
-import { SheetContent } from '../SheetContent';
+import { SheetContent } from '../SheetInnerContent';
 import { SheetContainer } from '../SheetContainer';
 import { SheetHeader } from '../SheetHeader';
 

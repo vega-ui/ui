@@ -1,2 +1,2 @@
-export { DrawerProvider } from './DrawerProvider.tsx'
-export { DrawerContext, type DrawerContextState } from './context.ts'
+export { DrawerProvider, type DrawerProviderProps } from './DrawerProvider.tsx'
+export { DrawerContext, type DrawerContextState, type DrawerPosition } from './context.ts'
