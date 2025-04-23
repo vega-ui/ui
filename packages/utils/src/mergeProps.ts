@@ -1,5 +1,5 @@
-import { csx } from '@adara-cs/utils/csx.ts';
-import { mergeRefs } from '@adara-cs/utils/mergeRefs.ts';
+import { csx } from './csx';
+import { mergeRefs } from './mergeRefs';
 import { Ref } from 'react';
 
 /**
