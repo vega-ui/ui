@@ -23,7 +23,7 @@ export const Primary: Story = {
 
 export const PrimaryAsLink: Story = {
   render() {
-    return <IconButton name='support' asChild><a href='https://github.com/adara-cs/ui-kit-web'>Github</a></IconButton>
+    return <IconButton name='support' asChild><a href='https://github.com/adara-cs/ui-kit-web' /></IconButton>
   }
 };
 
@@ -57,7 +57,7 @@ export const Secondary: Story = {
 
 export const SecondaryAsLink: Story = {
   render() {
-    return <IconButton variant='secondary' name='support' asChild><a href='https://github.com/adara-cs/ui-kit-web'>Github</a></IconButton>
+    return <IconButton variant='secondary' name='support' asChild><a href='https://github.com/adara-cs/ui-kit-web' /></IconButton>
   }
 };
 
