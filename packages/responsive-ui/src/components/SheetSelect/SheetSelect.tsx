@@ -67,7 +67,6 @@ export const SheetSelect: FC<SheetSelectProps> = ({
 
   return (
     <Sheet
-      role='listbox'
       clickEnabled={enabled}
       open={open}
       onOpenChange={setOpen}
@@ -92,7 +91,7 @@ export const SheetSelect: FC<SheetSelectProps> = ({
         </SelectCombobox>
       </SheetTrigger>
       <SheetSelectProvider value={value} onSelect={onSelectOption} size={size}>
-        <SheetContent className={style.sheet} headerSlot={headerSlot}>
+        <SheetContent role='listbox' className={style.sheet} headerSlot={headerSlot}>
           <SheetSelectOptionList>
             {children}
           </SheetSelectOptionList>

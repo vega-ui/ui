@@ -56,7 +56,7 @@ export const SheetContent: FC<SheetContentProps> = ({
       scrollable={scrollable}
       dragging={transforming}
       headerSlot={headerSlot}
-      {...mergeProps(props, contentProps)}
+      {...mergeProps(contentProps, props)}
     >
       {children}
     </SheetInner>
