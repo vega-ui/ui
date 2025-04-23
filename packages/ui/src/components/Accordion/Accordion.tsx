@@ -5,14 +5,48 @@ import { csx } from '@adara-cs/utils';
 import style from './style.module.css'
 
 export interface AccordionProps {
+  /**
+   * Optional custom CSS class to apply to the accordion wrapper.
+   * Useful for styling overrides or scoped custom styling.
+   */
   className?: string
+
+  /**
+   * Defines the size of the accordion. Affects padding and font size.
+   *
+   * - 'small': compact layout
+   * - 'medium': default layout
+   * - 'large': spacious layout
+   */
   size?: 'small' | 'medium' | 'large'
+
+  /**
+   * Accordion items to render. Should be one or more `<AccordionItem>` components.
+   * Accepts a single element or an array of elements.
+   */
   children?: ReactElement<AccordionItemProps> | ReactElement<AccordionItemProps>[]
+
+  /**
+   * An array of item `id`s that should be open by default when the accordion mounts.
+   */
   defaultOpened?: string[]
+
+  /**
+   * Adds visual separators (such as borders or spacing) between accordion items.
+   * Enhances readability in dense layouts.
+   */
   separated?: boolean
+
+  /**
+   * Allows multiple accordion items to be open at the same time.
+   * If `false`, only one item can be open at once (classic accordion behavior).
+   */
   multiple?: boolean
 }
 
+/**
+ An Accordion is a UI component that toggles content visibility, allowing users to expand or collapse sections for better organization and navigation.
+*/
 export const Accordion: FC<AccordionProps> = ({ size = 'medium', defaultOpened, multiple = false, separated = true, children, className }) => {
   const [opened, setOpened] = useState<string[]>(defaultOpened ?? [])
 

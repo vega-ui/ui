@@ -21,7 +21,11 @@ export const CheckboxCardContent: FC<PropsWithChildren<CheckboxCardContentProps>
   return (
     <div className={className}>
       {title && <Heading as='h4' className={style.title} size={titleSize}>{title}</Heading>}
-      {description && <Text as='p' size={descriptionSize} className={style.description}>{description}</Text>}
+      {description && (
+        <Text asChild size={descriptionSize} className={style.description}>
+          <p>{description}</p>
+        </Text>
+      )}
       {children}
     </div>
   )

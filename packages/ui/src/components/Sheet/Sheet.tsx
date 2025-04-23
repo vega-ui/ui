@@ -49,18 +49,66 @@ export interface SheetProps {
    *
    * @default false
    */
+  /**
+   * Whether the sheet can be dismissed by clicking outside or swiping down.
+   */
   dismissible?: boolean
+
+  /**
+   * The currently active snap point index (controlled).
+   * Defines the vertical height or position of the sheet.
+   */
   activeSnapPoint?: number
+
+  /**
+   * The initial snap point index when uncontrolled.
+   */
   defaultSnapPoint?: number
+
+  /**
+   * Callback fired when the active snap point changes.
+   *
+   * @param activeSnapPoint - The index of the newly activated snap point.
+   */
   onChangeActiveSnapPoint?: (activeSnapPoint: number) => void
+
+  /**
+   * Enables snapping only to defined steps instead of continuous drag.
+   */
   steppedSnapPoints?: boolean
+
+  /**
+   * Controls whether the sheet is currently open (controlled).
+   */
   open?: boolean
+
+  /**
+   * Enables interaction via outside click.
+   * Useful for closing or toggling the sheet from external elements.
+   */
   clickEnabled?: boolean
+
+  /**
+   * Callback fired when the open state changes.
+   *
+   * @param value - The new open state (`true` or `false`).
+   */
   onOpenChange?: (value: boolean) => void
+
+  /**
+   * The content rendered inside the sheet.
+   * Can include any layout or form elements.
+   */
   children?: ReactNode | ReactNode[]
+
+  /**
+   * Ref to the root container of the sheet.
+   * Useful for focus management, measurement, or animations.
+   */
   ref?: Ref<HTMLDivElement>
 }
 
+/** A Sheet is a UI component that slides up from the bottom of the screen, typically used for displaying additional content or actions without navigating away from the current page */
 export const Sheet: FC<SheetProps> = ({
   children,
   snapPoints,

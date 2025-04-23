@@ -15,18 +15,67 @@ import { PinFieldInput } from './components';
 import { PinFieldProvider } from './providers';
 
 export interface PinFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
+  /**
+   * Disables the input field, making it non-interactive.
+   * Also applies a visual disabled style.
+   */
   disabled?: boolean
+
+  /**
+   * Custom class name applied to the input element.
+   * Useful for scoped styles or design tokens.
+   */
   className?: string
+
+  /**
+   * Optional class name for the wrapper element.
+   * Useful for controlling layout or grid styling.
+   */
   wrapperClassName?: string
+
+  /**
+   * Placeholder character shown when the field is empty.
+   */
   placeholder?: string
+
+  /**
+   * The current value of the pin input.
+   * Can be a string or number depending on format.
+   */
   value?: string | number
+
+  /**
+   * Visual size of the pin input.
+   * Affects dimensions and font size.
+   */
   size?: 'small' | 'medium' | 'large'
+
+  /**
+   * Shows the field in an error state.
+   */
   error?: boolean
+
+  /**
+   * Ref forwarded to the native `<input>` element.
+   * Useful for focus or programmatic control.
+   */
   ref?: Ref<HTMLInputElement>
+
+  /**
+   * Optional input mask that restricts characters for each digit.
+   * Can be a RegExp or array of RegExp/string for per-character control.
+   */
   mask?: Array<RegExp | string> | RegExp
+
+  /**
+   * Callback fired when all digits are filled in and input is complete.
+   *
+   * @param e - The form event associated with the completion.
+   */
   onComplete?: (e: FormEvent<HTMLInputElement>) => void
 }
 
+/** A PinField is a UI component that allows users to input OTP/Pin codes, commonly used for forms. */
 export const PinField: FC<PinFieldProps> = ({
   className,
   wrapperClassName,

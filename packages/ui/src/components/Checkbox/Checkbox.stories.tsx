@@ -26,9 +26,35 @@ export const Secondary: Story = {
   },
 };
 
+export const Disabled: Story = {
+  args: {
+    disabled: true
+  },
+};
+
 export const Indeterminate: Story = {
   args: {
     indeterminate: true
+  },
+};
+
+export const Checked: Story = {
+  args: {
+    checked: true
+  },
+};
+
+export const IndeterminateDisabled: Story = {
+  args: {
+    indeterminate: true,
+    disabled: true
+  },
+};
+
+export const CheckedDisabled: Story = {
+  args: {
+    checked: true,
+    disabled: true
   },
 };
 
@@ -36,9 +62,11 @@ export const WithLabel: Story = {
   args: {},
   render(props) {
     return (
-      <Text size={2} style={{ display: 'flex', alignItems: 'center', gap: '16px' }} as='label'>
-        <Checkbox {...props} />
-        Just a label
+      <Text asChild size={2} style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+        <label>
+          <Checkbox {...props} />
+          Just a label
+        </label>
       </Text>
     )
   }

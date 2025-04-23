@@ -8,14 +8,46 @@ import { useControlledState } from '@adara-cs/hooks';
 import { PopoverProvider } from './providers';
 
 export interface PopoverProps {
+  /**
+   * The trigger and content elements for the popover.
+   * Should include `PopoverTrigger` and `PopoverContent` components.
+   */
   children?: ReactNode
+
+  /**
+   * Preferred placement of the popover relative to its trigger.
+   * Follows the Floating UI `Placement` type (e.g., 'top', 'bottom-start').
+   */
   placement?: Placement
+
+  /**
+   * Controls the open state of the popover.
+   * When set, the component becomes controlled.
+   */
   open?: boolean
+
+  /**
+   * Initial open state for uncontrolled usage.
+   */
   defaultOpen?: boolean
+
+  /**
+   * Callback fired when the open state changes.
+   *
+   * @param state - The new open state (`true` or `false`)
+   */
   onOpenChange?(state: boolean): void
+
+  /**
+   * Defines the ARIA role of the popover content for accessibility.
+   *
+   * - 'listbox': Used for dropdown menus or selects
+   * - 'dialog': Used for focus-trapped modal-like content
+   */
   role?: 'listbox' | 'dialog'
 }
 
+/** A Popover is a UI component that displays additional content or information in a small overlay, typically triggered by a user action, such as clicking or hovering over an element. It is often used for tooltips, details, or extra options */
 export const Popover: FC<PopoverProps> = ({
   placement = 'bottom',
   role: ariaRole,

@@ -27,11 +27,11 @@ export const Each: Story = {
   render() {
     const sizes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] as const
     return (
-      <>
+      <div style={{ display: 'flex', gap: '16px', flexDirection: 'column' }}>
         {sizes.map((size, index) => (
-            <Text as='p' size={size}>{(index + 1).toString()}: Hello</Text>
+            <Text size={size}>{(index + 1).toString()}: Hello</Text>
           ))}
-      </>
+      </div>
     )
   }
 };

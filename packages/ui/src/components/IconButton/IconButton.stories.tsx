@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { IconButton } from './IconButton.tsx';
+import { IconButton, IconButtonProps } from './IconButton.tsx';
 
 const meta = {
   title: 'UI-Core/IconButton',
@@ -15,91 +15,86 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+const variants: IconButtonProps['variant'][] = ['primary', 'secondary']
+const appearances: IconButtonProps['appearance'][] = ['fill', 'outline', 'ghost', 'transparent']
+const sizes: IconButtonProps['size'][] = ['small', 'medium', 'large']
+
 export const Primary: Story = {
   args: {
     name: 'globe'
   }
 };
 
-export const PrimaryAsLink: Story = {
-  render() {
-    return <IconButton name='support' asChild><a href='https://github.com/adara-cs/ui-kit-web' /></IconButton>
-  }
-};
-
-export const PrimaryOutline: Story = {
-  args: {
-    ...Primary.args,
-    appearance: 'outline'
-  },
-};
-
-export const PrimaryGhost: Story = {
-  args: {
-    ...Primary.args,
-    appearance: 'ghost'
-  },
-};
-
-export const PrimaryTransparent: Story = {
-  args: {
-    ...Primary.args,
-    appearance: 'transparent'
-  },
-};
-
 export const Secondary: Story = {
   args: {
-    name: 'globe',
     variant: 'secondary',
-  },
-};
-
-export const SecondaryAsLink: Story = {
-  render() {
-    return <IconButton variant='secondary' name='support' asChild><a href='https://github.com/adara-cs/ui-kit-web' /></IconButton>
+    name: 'globe'
   }
 };
 
-export const SecondaryOutline: Story = {
+export const Disabled: Story = {
   args: {
-    ...Secondary.args,
-    appearance: 'outline'
-  },
+    disabled: true,
+    name: 'globe'
+  }
 };
 
-export const SecondaryGhost: Story = {
-  args: {
-    ...Secondary.args,
-    appearance: 'ghost'
-  },
-};
+export const AsChild: Story = {
+  render(...props) {
+    return (
+      <IconButton {...props} asChild name='support'>
+        <a href='#' />
+      </IconButton>
+    )
+  }
+}
 
-export const SecondaryTransparent: Story = {
-  args: {
-    ...Secondary.args,
-    appearance: 'transparent'
-  },
-};
+export const AllVariants: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+      {variants.map(variant => (
+        <div key={variant}>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: `repeat(${sizes.length}, 1fr)`,
+              gap: '12px',
+            }}
+          >
+            {appearances.map(appearance =>
+              sizes.map(size => (
+                <IconButton
+                  key={`${variant}-${appearance}-${size}`}
+                  variant={variant}
+                  appearance={appearance}
+                  size={size}
+                  name='support'
+                />
+              ))
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  ),
+}
 
-export const Small: Story = {
-  args: {
-    name: 'globe',
-    size: 'small',
-  },
-};
-
-export const Medium: Story = {
-  args: {
-    name: 'globe',
-    size: 'medium',
-  },
-};
-
-
-export const Large: Story = {
-  args: {
-    name: 'globe',
-    size: 'large',
-  },
-};
+export const AllSizes: Story = {
+  name: 'All Sizes',
+  render: () => (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: `repeat(${sizes.length}, auto)`,
+        gap: '16px',
+        alignItems: 'center',
+      }}
+    >
+      {sizes.map(size => (
+        <div key={size} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <IconButton variant='primary' appearance='fill' size={size} name='support' />
+        </div>
+      ))}
+    </div>
+  ),
+}

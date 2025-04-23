@@ -9,12 +9,20 @@ describe('Text', () => {
   })
 
   it('render as p', () => {
-    render(<Text as='p'>Hello</Text>)
+    render(
+      <Text asChild>
+        <p>Hello</p>
+      </Text>
+    )
     expect(screen.getByText('Hello').tagName).toBe('P')
   })
 
   it('font-weight', () => {
-    render(<Text fontWeight={500} as='p'>Hello</Text>)
+    render(
+      <Text fontWeight={500} asChild>
+        <p>Hello</p>
+      </Text>
+    )
     expect(screen.getByText('Hello').dataset.fontweight).toBe('500')
   })
 })

@@ -20,7 +20,7 @@ export const AvatarGroupLimitedPopover: FC<PropsWithChildren<AvatarGroupLimitPop
       onOpenChange={setOpen}
       open={open}
     >
-      <PopoverTrigger>
+      <PopoverTrigger asChild>
         <AvatarGroupLimitedPopoverTrigger size={size} open={open}>{hiddenCount}</AvatarGroupLimitedPopoverTrigger>
       </PopoverTrigger>
       <PopoverContent className={style.container}>

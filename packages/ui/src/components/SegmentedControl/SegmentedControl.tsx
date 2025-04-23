@@ -13,18 +13,54 @@ import { SegmentedControlProvider } from './providers';
 import { useControlledState } from '@adara-cs/hooks';
 
 export interface SegmentedControlProps extends Omit<DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange'> {
+  /**
+   * Disables all segments, preventing user interaction.
+   */
   disabled?: boolean
+
+  /**
+   * Visual size of the segmented control.
+   */
   size?: 'small' | 'medium' | 'large'
-  onClick?: () => void
+
+  /**
+   * One or more `SegmentedControlItem` components.
+   * These define the selectable options.
+   */
   children?: ReactElement<SegmentedControlItemProps>[] | ReactElement<SegmentedControlItemProps>
+
+  /**
+   * The currently selected value.
+   * Must match the `value` of one of the children.
+   */
   value?: string | number
+
+  /**
+   * The name of the underlying radio group.
+   * Required for grouping and form submission.
+   */
   name: string
+
+  /**
+   * Visual style variant of the segmented control.
+   */
   variant?: 'primary' | 'secondary'
+
+  /**
+   * Callback fired when the selected segment changes.
+   *
+   * @param e - The original change event from the input
+   */
   onChange?(e: ChangeEvent<HTMLInputElement>): void
+
+  /**
+   * Ref to the root container element.
+   * Useful for measuring or controlling focus.
+   */
   ref?: Ref<HTMLDivElement>
 }
 
-/** Primary UI component for user interaction */
+/** A Segmented Control is a UI component that displays a set of options in a horizontal layout, where each option is a "segment." Users can select one segment to toggle between different views or settings, offering a compact alternative to multiple buttons or switches */
 export const SegmentedControl: FC<SegmentedControlProps> = ({
   size = 'medium',
   disabled,

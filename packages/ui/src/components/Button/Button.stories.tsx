@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 
 
-import { Button } from './Button.tsx';
+import { Button, ButtonProps } from './Button.tsx';
 
 const meta = {
   title: 'UI-Core/Button',
@@ -18,111 +18,96 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+const variants: ButtonProps['variant'][] = ['primary', 'secondary']
+const appearances: ButtonProps['appearance'][] = ['fill', 'outline', 'ghost', 'transparent']
+const sizes: ButtonProps['size'][] = ['small', 'medium', 'large']
+
 export const Primary: Story = {
   args: {
-    children: 'Кнопка',
-  },
-  argTypes: {
-    variant: {
-      control: 'radio',
-      options: ['primary', 'secondary']
-    },
-    appearance: {
-      control: 'radio',
-      options: ['fill', 'ghost', 'outline', 'transparent']
-    },
-    size: {
-      control: 'radio',
-      options: ['small', 'medium', 'large']
-    },
-    disabled: {
-      control: 'boolean',
-    },
-    loading: {
-      control: 'boolean',
-    },
+    children: 'Button'
   }
-};
-
-export const PrimaryAsLink: Story = {
-  render() {
-    return <Button asChild><a href='https://github.com/adara-cs/ui-kit-web'>Github</a></Button>
-  }
-};
-
-export const PrimaryOutline: Story = {
-  args: {
-    ...Primary.args,
-    appearance: 'outline'
-  },
-};
-
-export const PrimaryGhost: Story = {
-  args: {
-    ...Primary.args,
-    appearance: 'ghost'
-  },
-};
-
-export const PrimaryTransparent: Story = {
-  args: {
-    ...Primary.args,
-    appearance: 'transparent'
-  },
-};
+}
 
 export const Secondary: Story = {
   args: {
-    children: 'Кнопка',
     variant: 'secondary',
-  },
-};
-
-export const SecondaryAsLink: Story = {
-  render() {
-    return <Button variant='secondary' asChild><a href='https://github.com/adara-cs/ui-kit-web'>Github</a></Button>
+    children: 'Button'
   }
-};
+}
 
-export const SecondaryOutline: Story = {
+export const Disabled: Story = {
   args: {
-    ...Secondary.args,
-    appearance: 'outline'
-  },
-};
+    disabled: true,
+    children: 'Button'
+  }
+}
 
-export const SecondaryGhost: Story = {
+export const Loading: Story = {
   args: {
-    ...Secondary.args,
-    appearance: 'ghost'
-  },
-};
+    loading: true,
+    children: 'Button'
+  }
+}
 
-export const SecondaryTransparent: Story = {
-  args: {
-    ...Secondary.args,
-    appearance: 'transparent'
-  },
-};
+export const AsChild: Story = {
+  render(...props) {
+    return (
+      <Button {...props} asChild>
+        <a href='#'>Button</a>
+      </Button>
+    )
+  }
+}
 
-export const Small: Story = {
-  args: {
-    size: 'small',
-    children: 'Кнопка',
-  },
-};
+export const AllVariants: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
+      {variants.map(variant => (
+        <div key={variant}>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: `repeat(${sizes.length}, 1fr)`,
+              gap: '12px',
+            }}
+          >
+            {appearances.map(appearance =>
+              sizes.map(size => (
+                <Button
+                  key={`${variant}-${appearance}-${size}`}
+                  variant={variant}
+                  appearance={appearance}
+                  size={size}
+                >
+                  {`${appearance} / ${size}`}
+                </Button>
+              ))
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  ),
+}
 
-export const Medium: Story = {
-  args: {
-    size: 'medium',
-    children: 'Кнопка',
-  },
-};
-
-
-export const Large: Story = {
-  args: {
-    size: 'large',
-    children: 'Кнопка',
-  },
-};
+export const AllSizes: Story = {
+  name: 'All Sizes',
+  render: () => (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateColumns: `repeat(${sizes.length}, auto)`,
+        gap: '16px',
+        alignItems: 'center',
+      }}
+    >
+      {sizes.map(size => (
+        <div key={size} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <Button variant='primary' appearance='fill' size={size}>
+            button / {size}
+          </Button>
+        </div>
+      ))}
+    </div>
+  ),
+}
