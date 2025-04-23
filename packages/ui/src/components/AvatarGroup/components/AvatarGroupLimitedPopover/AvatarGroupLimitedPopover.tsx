@@ -1,7 +1,7 @@
 'use client';
 
 import { FC, PropsWithChildren, ReactElement, useState } from 'react';
-import { Popover } from '../../../Popover';
+import { Popover, PopoverContent, PopoverTrigger } from '../../../Popover';
 import { AvatarGroupLimitedPopoverTrigger } from '../AvatarGroupLimitedPopoverTrigger';
 import { AvatarGroupItemProps } from '../AvatarGroupItem';
 import style from './style.module.css'
@@ -17,14 +17,15 @@ export const AvatarGroupLimitedPopover: FC<PropsWithChildren<AvatarGroupLimitPop
 
   return (
     <Popover
-      triggerSlot={(ref, props) => (
-        <AvatarGroupLimitedPopoverTrigger size={size} open={open} ref={ref} {...props}>{hiddenCount}</AvatarGroupLimitedPopoverTrigger>
-      )}
-      className={style.container}
       onOpenChange={setOpen}
       open={open}
     >
-      {children}
+      <PopoverTrigger>
+        <AvatarGroupLimitedPopoverTrigger size={size} open={open}>{hiddenCount}</AvatarGroupLimitedPopoverTrigger>
+      </PopoverTrigger>
+      <PopoverContent className={style.container}>
+        {children}
+      </PopoverContent>
     </Popover>
   )
 }

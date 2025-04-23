@@ -2,7 +2,6 @@
 
 import {
   FC,
-  HTMLAttributes,
   ReactNode,
   PointerEvent,
   UIEvent,
@@ -23,7 +22,7 @@ import { useSnapPoints } from './hooks';
 import { useControlledState } from '@adara-cs/hooks';
 import { SheetProvider } from './providers';
 
-export interface SheetProps extends HTMLAttributes<HTMLElement> {
+export interface SheetProps {
   /** The value that the Sheet will aim at when the pointer is released */
   snapPoints?: Array<`${number}px` | number>
   /**

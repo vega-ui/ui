@@ -1,7 +1,14 @@
 'use client';
 
 import { Children, FC, ReactElement, ReactNode, useMemo, useState } from 'react';
-import { OptionProps, SelectCombobox, SelectComboboxProps, SelectEvent, Sheet } from '@adara-cs/ui-kit-web';
+import {
+  OptionProps,
+  SelectCombobox,
+  SelectComboboxProps,
+  SelectEvent,
+  Sheet, SheetContent,
+  SheetTrigger
+} from '@adara-cs/ui-kit-web';
 import { useControlledState } from '@adara-cs/hooks';
 import { SheetSelectOptionList } from './components';
 import { SheetSelectProvider } from './providers';
@@ -61,14 +68,12 @@ export const SheetSelect: FC<SheetSelectProps> = ({
   return (
     <Sheet
       role='listbox'
-      className={style.sheet}
       clickEnabled={enabled}
       open={open}
       onOpenChange={setOpen}
-      headerSlot={headerSlot}
-      triggerSlot={(ref, props) => (
+    >
+      <SheetTrigger asChild>
         <SelectCombobox
-          ref={ref}
           size={size}
           className={className}
           disabled={disabled}
@@ -82,15 +87,16 @@ export const SheetSelect: FC<SheetSelectProps> = ({
           valueSlot={valueSlot}
           withArrow={!readOnly}
           open={open}
-          {...props}
         >
           {label}
         </SelectCombobox>
-      )}>
+      </SheetTrigger>
       <SheetSelectProvider value={value} onSelect={onSelectOption} size={size}>
-        <SheetSelectOptionList>
-          {children}
-        </SheetSelectOptionList>
+        <SheetContent className={style.sheet} headerSlot={headerSlot}>
+          <SheetSelectOptionList>
+            {children}
+          </SheetSelectOptionList>
+        </SheetContent>
       </SheetSelectProvider>
     </Sheet>
   )
