@@ -1,11 +1,11 @@
 import { ButtonBase, ButtonBaseProps } from '../ButtonBase';
-import { ElementType, ReactNode, Ref } from 'react';
+import { FC, ReactNode, Ref } from 'react';
 import { csx } from '@adara-cs/utils';
 import { Spinner } from '../Spinner';
 import style from './style.module.css';
 import { sizeMapper } from './utils';
 
-export type ButtonProps<T extends ElementType = 'button'> = ButtonBaseProps<T> & {
+export interface ButtonProps extends ButtonBaseProps {
   disabled?: boolean
   loading?: boolean
   type?: 'button' | 'submit' | 'reset'
@@ -16,7 +16,7 @@ export type ButtonProps<T extends ElementType = 'button'> = ButtonBaseProps<T> &
 }
 
 /** Primary UI component for user interaction */
-export const Button = <T extends ElementType = 'button'>({
+export const Button: FC<ButtonProps> = ({
    size = 'medium',
    disabled,
    children,
@@ -28,9 +28,10 @@ export const Button = <T extends ElementType = 'button'>({
    spinnerClassName,
    className,
    fullWidth,
+   asChild,
    ref,
    ...props
-}: ButtonProps<T>) => {
+}) => {
   return (
     <ButtonBase
       type={type}
@@ -43,7 +44,7 @@ export const Button = <T extends ElementType = 'button'>({
       variant={variant}
       ref={ref as Ref<never>}
     >
-      {loading && (spinnerSlot ? spinnerSlot : <Spinner className={csx(style.spinner, spinnerClassName)} aria-hidden variant='secondary' size={sizeMapper(size)} />)}
+      {loading && !asChild && (spinnerSlot ? spinnerSlot : <Spinner className={csx(style.spinner, spinnerClassName)} aria-hidden variant='secondary' size={sizeMapper(size)} />)}
       {children}
     </ButtonBase>
   );

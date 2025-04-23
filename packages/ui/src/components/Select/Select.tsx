@@ -186,12 +186,14 @@ export const Select: FC<SelectProps> = ({
 
   return (
     <div className={csx(styles.wrapper, wrapperClassName)}>
-      <VisuallyHidden name={name} defaultValue={value} aria-hidden='true' tabIndex={-1} as='select'>
-        {options?.map(({ label, value: optionValue }) => (
-          <option key={optionValue} value={optionValue}>
-            {label}
-          </option>
-        ))}
+      <VisuallyHidden>
+        <select defaultValue={value} aria-hidden='true' tabIndex={-1} name={name}>
+          {options?.map(({ label, value: optionValue }) => (
+            <option key={optionValue} value={optionValue}>
+              {label}
+            </option>
+          ))}
+        </select>
       </VisuallyHidden>
       <SelectCombobox
         ref={mergeRefs([refs.setReference, ref])}

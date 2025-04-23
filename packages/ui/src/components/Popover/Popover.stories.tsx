@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Popover } from './Popover.tsx';
 import { Button } from '../Button';
 import { Text } from '../Text';
+import { PopoverContent, PopoverTrigger } from './components';
 
 const meta = {
   title: 'UI-Core/Popover',
@@ -20,11 +21,15 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    triggerSlot: (ref, props) => <Button ref={ref} {...props}>Popover</Button>,
     children: (
       <>
-        <Text size={3}>Привет! Я - Popover</Text>
-        <Button onClick={(e) => console.log(e)} variant='secondary' appearance='transparent'>Кнопка</Button>
+        <PopoverTrigger asChild>
+          <Button>Popover</Button>
+        </PopoverTrigger>
+        <PopoverContent>
+          <Text size={3}>Привет! Я - Popover</Text>
+          <Button onClick={(e) => console.log(e)} variant='secondary' appearance='transparent'>Кнопка</Button>
+        </PopoverContent>
       </>
     )
   },

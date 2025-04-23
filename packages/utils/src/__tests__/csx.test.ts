@@ -6,6 +6,10 @@ describe('csx', () => {
     expect(csx(undefined, 'button')).eq('button')
   })
 
+  test('two equal class names', () => {
+    expect(csx('button', 'button')).eq('button')
+  })
+
   test('non-undefined class names', () => {
     expect(csx('button', 'button-primary')).eq('button button-primary')
   })

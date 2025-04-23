@@ -3,9 +3,9 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Tooltip } from './Tooltip.tsx';
 import { Button } from '../Button';
 import { IconButton } from '../IconButton';
-import { Icon } from '../Icon';
-import { Modal } from '../Modal';
+import { Modal, ModalContent, ModalTrigger } from '../Modal';
 import { TextField } from '../TextField';
+import { TooltipContent, TooltipTrigger } from './components';
 
 const meta = {
   title: 'UI-Core/Tooltip',
@@ -23,34 +23,67 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    triggerSlot: (ref, props) => <Button ref={ref} {...props}>Popover</Button>,
-    children: 'Привет! Я - Tooltip'
+    children: (
+      <>
+        <TooltipTrigger asChild>
+          <Button>Tooltip!</Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          Hello! I'm a tooltip
+        </TooltipContent>
+      </>
+    )
   },
 };
 
 export const WithIconButton: Story = {
   args: {
-    triggerSlot: (ref, props) => <IconButton ref={ref} {...props} name='support' />,
-    children: 'Помощь'
-  },
-};
-
-export const WithIcon: Story = {
-  args: {
-    triggerSlot: (ref, props) => <Icon ref={ref} {...props} name='info' />,
-    children: 'Здесь просто текст Tooltip'
+    children: (
+      <>
+        <TooltipTrigger asChild>
+          <IconButton name='support' />
+        </TooltipTrigger>
+        <TooltipContent>
+          Support
+        </TooltipContent>
+      </>
+    )
   },
 };
 
 export const InsideModal: Story = {
   args: {
-    triggerSlot: (ref, props) => <Icon ref={ref} {...props} name='info' />,
-    children: 'Здесь просто текст Tooltip'
+    children: (
+      <>
+        <TooltipTrigger asChild>
+          <IconButton name='info' />
+        </TooltipTrigger>
+        <TooltipContent>
+          Info
+        </TooltipContent>
+      </>
+    )
   },
   render(props) {
     return (
-      <Modal title='Модалка' triggerSlot={(ref, props) => <Button ref={ref} {...props}>Открыть</Button>}>
-        <TextField endSlot={<Tooltip triggerSlot={(ref, props) => <Icon ref={ref} {...props} name='info' />} {...props} />} />
+      <Modal>
+        <ModalTrigger asChild>
+          <Button>Open</Button>
+        </ModalTrigger>
+        <ModalContent>
+          <TextField
+            endSlot={
+              <Tooltip {...props}>
+                <TooltipTrigger asChild>
+                  <IconButton appearance='transparent' name='info' />
+                </TooltipTrigger>
+                <TooltipContent>
+                  Info
+                </TooltipContent>
+              </Tooltip>
+            }
+          />
+        </ModalContent>
       </Modal>
     )
   }

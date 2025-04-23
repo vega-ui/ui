@@ -1,27 +1,29 @@
 'use client';
-import { ComponentPropsWithRef, ElementType, MouseEvent } from 'react';
+import { FC, HTMLAttributes, MouseEvent, Ref } from 'react';
 import { csx } from '@adara-cs/utils';
 import style from './style.module.css';
 import { useCollapsibleContext } from '../../hooks';
+import { Slot } from '../../../Slot';
 
-export type CollapsibleTriggerProps<T extends ElementType = 'button'> = {
+export interface CollapsibleTriggerProps extends HTMLAttributes<HTMLElement> {
   className?: string
-  as?: T
-} & Omit<ComponentPropsWithRef<T>, 'as'>;
+  asChild?: boolean
+  ref?: Ref<HTMLButtonElement>
+}
 
-export const CollapsibleTrigger = <T extends ElementType = 'button'>({
+export const CollapsibleTrigger: FC<CollapsibleTriggerProps> = ({
   className,
   onClick: _onClick,
   children,
-  as,
+  asChild,
   ref,
   ...props
-}: CollapsibleTriggerProps<T>) => {
-  const Element = as || 'button';
+}) => {
+  const Element = asChild ? Slot : 'button';
 
   const { opened, open, close } = useCollapsibleContext()
 
-  const onClick = (e: MouseEvent) => {
+  const onClick = (e: MouseEvent<HTMLElement>) => {
     if (opened) close()
     else open()
 

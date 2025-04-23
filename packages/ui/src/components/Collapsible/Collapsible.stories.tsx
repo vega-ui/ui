@@ -23,8 +23,8 @@ export const Default: Story = {
   render(props) {
     return (
       <Collapsible {...props}>
-        <CollapsibleTrigger as={Button<'button'>} onClick={(e) => console.log(e)} appearance='transparent'>
-          Открыть скрытую область
+        <CollapsibleTrigger asChild>
+          <Button appearance='transparent'>Открыть скрытую область</Button>
         </CollapsibleTrigger>
         <CollapsibleContent>
           <Text>Hello</Text>

@@ -24,8 +24,10 @@ export const SegmentedControlItem: FC<SegmentedControlItemProps> = ({ disabled, 
 
   return (
     <label data-checked={inputChecked} data-disabled={disabled} data-size={_size ?? size} data-variant={variant ?? _variant} className={style.control}>
-      <VisuallyHidden as='input' onChange={onInputChange} value={value} disabled={_disabled ?? disabled} type='radio' name={name}
-                      defaultChecked={inputChecked} {...props} />
+      <VisuallyHidden asChild>
+        <input onChange={onInputChange} value={value} disabled={_disabled ?? disabled} type='radio' name={name}
+               defaultChecked={inputChecked} {...props} />
+      </VisuallyHidden>
       {children}
     </label>
   )

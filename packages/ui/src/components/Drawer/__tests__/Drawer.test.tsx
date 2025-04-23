@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react'
 import { Drawer } from '../Drawer.tsx';
 import { act } from 'react';
+import { DrawerContent, DrawerTrigger } from '../components';
 
 const TRIGGER_TEXT = 'Trigger'
 const CONTENT_TEXT = 'Content'
@@ -9,8 +10,13 @@ const CONTENT_TEXT = 'Content'
 describe('Drawer', () => {
   it('render', () => {
     render(
-      <Drawer triggerSlot={(ref, props) => <button ref={ref} {...props}>{TRIGGER_TEXT}</button>}>
-        {CONTENT_TEXT}
+      <Drawer>
+        <DrawerTrigger asChild>
+          <button>{TRIGGER_TEXT}</button>
+        </DrawerTrigger>
+        <DrawerContent>
+          {CONTENT_TEXT}
+        </DrawerContent>
       </Drawer>
     )
 
@@ -22,8 +28,13 @@ describe('Drawer', () => {
 
   it('open', () => {
     render(
-      <Drawer triggerSlot={(ref, props) => <button ref={ref} {...props}>{TRIGGER_TEXT}</button>}>
-        {CONTENT_TEXT}
+      <Drawer>
+        <DrawerTrigger asChild>
+          <button>{TRIGGER_TEXT}</button>
+        </DrawerTrigger>
+        <DrawerContent>
+          {CONTENT_TEXT}
+        </DrawerContent>
       </Drawer>
     )
 

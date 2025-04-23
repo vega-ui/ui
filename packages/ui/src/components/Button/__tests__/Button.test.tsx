@@ -35,10 +35,13 @@ describe('Button', () => {
   })
 
   it('as link', async () => {
-    const wrapper = render(<Button as='a'>{TEXT}</Button>)
+    const wrapper = render(
+      <Button asChild>
+        <a href='#'>{TEXT}</a>
+      </Button>
+    )
 
-    wrapper.getByText(TEXT).click()
-    expect(wrapper.getByText(TEXT).tagName).toBe('A')
+    expect(wrapper.getByRole('link')).toBeDefined()
   })
 
   it('click', async () => {

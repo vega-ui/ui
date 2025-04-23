@@ -40,7 +40,11 @@ describe('Icon Button', () => {
   })
 
   it('as link', async () => {
-    const wrapper = render(<IconButton as='a' data-testid='link' name='globe' />)
+    const wrapper = render(
+      <IconButton asChild data-testid='link' name='globe'>
+         <a href='#' />
+      </IconButton>
+    )
 
     expect(wrapper.getByTestId('link').tagName).toBe('A')
   })
