@@ -66,7 +66,7 @@
 .checkboxWrapper:has(input[type='checkbox']:indeterminate) .checkbox[data-variant='primary'] {
     background-color: var(--color-primary-500);
     border-color: var(--color-primary-500);
-    color: var(--light-color);
+    color: var(--color-white);
 }
 
 /* secondary/checked | secondary/indeterminate */
@@ -75,7 +75,7 @@
 .checkboxWrapper:has(input[type='checkbox']:indeterminate) .checkbox[data-variant='secondary'] {
     background-color: var(--color-secondary-500);
     border-color: var(--color-secondary-500);
-    color: var(--light-color);
+    color: var(--color-white);
 }
 
 /* primary/disabled | secondary/disabled */
