@@ -45,20 +45,9 @@ export const Primary: Story = {
 };
 
 export const PrimaryAsLink: Story = {
-  args: {
-    as: 'a',
-    href: 'https://github.com/adara-cs/ui-kit-web',
-    children: 'GitHub',
-  },
-};
-
-export const PrimaryAsLinkDisabled: Story = {
-  args: {
-    as: 'a',
-    'aria-disabled': 'true',
-    href: 'https://github.com/adara-cs/ui-kit-web',
-    children: 'GitHub',
-  },
+  render() {
+    return <Button asChild><a href='https://github.com/adara-cs/ui-kit-web'>Github</a></Button>
+  }
 };
 
 export const PrimaryOutline: Story = {
@@ -90,12 +79,9 @@ export const Secondary: Story = {
 };
 
 export const SecondaryAsLink: Story = {
-  args: {
-    variant: 'secondary',
-    as: 'a',
-    href: 'https://github.com/adara-cs/ui-kit-web',
-    children: 'GitHub',
-  },
+  render() {
+    return <Button variant='secondary' asChild><a href='https://github.com/adara-cs/ui-kit-web'>Github</a></Button>
+  }
 };
 
 export const SecondaryOutline: Story = {

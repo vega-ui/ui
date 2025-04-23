@@ -10,7 +10,7 @@ export const Slot: FC<SlotProps> = ({ children, ...props }) => {
   const child = Children.only(children);
 
   if (!isValidElement(child)) {
-    throw new Error('[Slot] `asChild` must be single React-element.');
+    throw new Error('[Slot] `asChild` must be a valid React-element.');
   }
 
   const elementToClone = children as ReactElement<{ [p: string]: unknown }>

@@ -28,6 +28,7 @@ export const Button: FC<ButtonProps> = ({
    spinnerClassName,
    className,
    fullWidth,
+   asChild,
    ref,
    ...props
 }) => {
@@ -43,7 +44,7 @@ export const Button: FC<ButtonProps> = ({
       variant={variant}
       ref={ref as Ref<never>}
     >
-      {loading && (spinnerSlot ? spinnerSlot : <Spinner className={csx(style.spinner, spinnerClassName)} aria-hidden variant='secondary' size={sizeMapper(size)} />)}
+      {loading && !asChild && (spinnerSlot ? spinnerSlot : <Spinner className={csx(style.spinner, spinnerClassName)} aria-hidden variant='secondary' size={sizeMapper(size)} />)}
       {children}
     </ButtonBase>
   );
