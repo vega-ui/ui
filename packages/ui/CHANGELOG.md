@@ -1,5 +1,14 @@
 # @adara-cs/ui-kit-web
 
+## 2.10.2
+
+### Patch Changes
+
+- 69c2eb7: Fixed color of Icon inside checkbox in checked status
+  - @adara-cs/hooks@2.10.2
+  - @adara-cs/icons@2.10.2
+  - @adara-cs/utils@2.10.2
+
 ## 2.10.1
 
 ### Patch Changes
