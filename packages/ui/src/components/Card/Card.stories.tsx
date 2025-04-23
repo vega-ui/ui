@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
-import { Card } from './Card.tsx';
+import { Card, CardProps } from './Card.tsx';
 import { Text } from '../Text';
 
-const sizes = ['small', 'medium', 'large'] as const
+const sizes: CardProps['size'][] = ['small', 'medium', 'large']
+const appearance: CardProps['appearance'][] = ['outline', 'transparent']
 
 const meta = {
   title: 'UI-Core/Card',
@@ -27,6 +28,27 @@ export const Default: Story = {
     ),
   },
 };
+
+export const AllVariants: Story = {
+  args: {
+    children: (
+      <Text>I'm a card!</Text>
+    ),
+  },
+  render() {
+    return (
+      <div style={{ display: 'grid', gap: '12px', gridTemplateColumns: `repeat(${sizes.length}, 1fr)`, alignItems: 'center' }}>
+        {appearance.map((app) => (
+          sizes.map((size) => (
+            <Card appearance={app} size={size}>
+              <Text>I'm a card!</Text>
+            </Card>
+          ))
+        ))}
+      </div>
+    )
+  }
+}
 
 export const Sizes: Story = {
   args: {

@@ -13,11 +13,24 @@ import {
 import { TooltipProvider } from './providers';
 
 export interface TooltipProps {
+  /**
+   * The trigger and content of the tooltip.
+   * Should include TooltipTrigger and TooltipContent as children.
+   */
   children?: ReactNode
+
+  /**
+   * Delay (in milliseconds) before the tooltip appears after hover/focus.
+   */
   delayOpen?: number
+
+  /**
+   * Delay (in milliseconds) before the tooltip disappears after blur/unhover.
+   */
   delayClose?: number
 }
 
+/** A Tooltip is a UI component that provides brief, context-sensitive information when a user hovers over or focuses on an element, often displayed as a small popup near the element */
 export const Tooltip: FC<TooltipProps> = ({
   delayOpen = 500,
   delayClose = 0,

@@ -17,14 +17,43 @@ import { useControlledState } from '@adara-cs/hooks';
 import { DrawerPosition, DrawerProvider } from './providers';
 
 export interface DrawerProps {
+  /**
+   * Allows the drawer to be closed by clicking outside or pressing Escape.
+   * When false, the drawer stays open until explicitly closed.
+   */
   dismissible?: boolean
+
+  /**
+   * Controls whether the drawer is open.
+   * When provided, the component becomes controlled.
+   */
   open?: boolean
+
+  /**
+   * Callback fired when the drawer's open state changes.
+   * Receives the new state as a boolean.
+   */
   onChangeOpen?: (value: boolean) => void
+
+  /**
+   * Defines from which side of the screen the drawer appears.
+   */
   position?: DrawerPosition
+
+  /**
+   * Ref forwarded to the drawer's root DOM element.
+   * Useful for focus management or animation hooks.
+   */
   ref?: Ref<HTMLDivElement>
+
+  /**
+   * The content to display inside the drawer.
+   * Typically, includes navigation, settings, or forms.
+   */
   children?: ReactNode
 }
 
+/** A Drawer is a UI component that slides in from the side of the screen to display additional content or navigation options, often used for menus or sidebars */
 export const Drawer: FC<DrawerProps> = ({
   dismissible = true,
   position = 'right',

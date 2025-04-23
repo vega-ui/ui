@@ -25,6 +25,33 @@ export const Default: Story = {
   },
 };
 
+export const Checked: Story = {
+  args: {
+    checked: true,
+    children: (
+      <CheckboxCardContent title='Быстрый старт' description='Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне' />
+    ),
+  },
+};
+
+export const Indeterminate: Story = {
+  args: {
+    indeterminate: true,
+    children: (
+      <CheckboxCardContent title='Быстрый старт' description='Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне' />
+    ),
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    disabled: true,
+    children: (
+      <CheckboxCardContent title='Быстрый старт' description='Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне' />
+    ),
+  },
+};
+
 export const Horizontal: Story = {
   args: {
     orientation: 'horizontal',

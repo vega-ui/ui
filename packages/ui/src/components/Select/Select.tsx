@@ -30,8 +30,7 @@ import {
 } from '@floating-ui/react';
 import { csx, mergeRefs } from '@adara-cs/utils';
 import styles from './style.module.css';
-import { OptionProps } from '../Option';
-import { SelectCombobox, SelectListbox } from './components';
+import { SelectCombobox, SelectListbox, SelectOptionProps } from './components';
 import { useControlledState } from '@adara-cs/hooks';
 import { SelectProvider } from './providers';
 import { VisuallyHidden } from '../VisuallyHidden';
@@ -39,30 +38,125 @@ import { VisuallyHidden } from '../VisuallyHidden';
 export type SelectEvent = MouseEvent | null | KeyboardEvent
 
 export interface SelectProps extends Omit<HTMLAttributes<HTMLButtonElement>, 'onSelect'> {
+  /**
+   * Optional class name for the listbox (dropdown) container.
+   */
   listboxClassName?: string
+
+  /**
+   * Optional class name for the outer wrapper of the Select component.
+   */
   wrapperClassName?: string
+
+  /**
+   * Class name applied to the value container.
+   */
   valueClassName?: string
+
+  /**
+   * Class name applied to the placeholder container when no value is selected.
+   */
   placeholderClassName?: string
+
+  /**
+   * Custom class name applied to the root trigger button element.
+   */
   className?: string
-  children?: ReactElement<OptionProps> | ReactElement<OptionProps>[]
+
+  /**
+   * One or more `<SelectOption />` elements defining the selectable items.
+   */
+  children?: ReactElement<SelectOptionProps> | ReactElement<SelectOptionProps>[]
+
+  /**
+   * Optional content placed at the start (left) of the trigger button.
+   * Useful for icons or labels.
+   */
   startSlot?: ReactNode
+
+  /**
+   * Optional content placed at the end (right) of the trigger button.
+   * Commonly used for chevrons or indicators.
+   */
   endSlot?: ReactNode
+
+  /**
+   * Custom node to render in place of the selected value.
+   */
   valueSlot?: ReactNode
+
+  /**
+   * Custom node to render when no value is selected.
+   */
   placeholderSlot?: ReactNode
+
+  /**
+   * Fallback string shown when no value is selected and no `placeholderSlot` is provided.
+   */
   placeholder?: string
+
+  /**
+   * Whether the select is disabled.
+   * Prevents interaction and applies a disabled style.
+   */
   disabled?: boolean
+
+  /**
+   * If true, the select cannot be changed but remains focusable.
+   */
   readOnly?: boolean
+
+  /**
+   * Visual style variant for the select control.
+   */
   variant?: 'inline' | 'field'
+
+  /**
+   * Visual size of the select control.
+   */
   size?: 'small' | 'medium' | 'large'
+
+  /**
+   * Ref to the combobox or button element for DOM access or focus management.
+   */
   comboboxRef?: Ref<HTMLElement>
+
+  /**
+   * Makes the dropdown listbox span the full width of the trigger.
+   */
   fullWidthListbox?: boolean
+
+  /**
+   * The currently selected value (controlled).
+   */
   value?: string | number | undefined
+
+  /**
+   * The default selected value (uncontrolled).
+   */
   defaultValue?: string | number | undefined
+
+  /**
+   * Callback fired when an option is selected.
+   *
+   * @param event - The triggering event
+   * @param value - The selected option value
+   */
   onSelect?(event: SelectEvent, value: string | number | undefined): void
+
+  /**
+   * Ref to the trigger button element.
+   */
   ref?: Ref<HTMLButtonElement>
+
+  /**
+   * Optional `name` for form integration.
+   * Included in form submissions when value is set.
+   */
   name?: string
 }
 
+/** A Select is a UI component that provides a dropdown menu of options from which users can choose one. It is commonly used for forms and filtering, offering a list of predefined values in a compact, accessible manner */
 export const Select: FC<SelectProps> = ({
   listboxClassName,
   wrapperClassName,

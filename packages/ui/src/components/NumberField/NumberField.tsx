@@ -22,17 +22,59 @@ import { maskitoTransform } from '@maskito/core';
 export type NumberFieldChangeEvent = WheelEvent | FormEvent | MouseEvent | KeyboardEvent | FocusEvent
 
 export interface NumberFieldProps extends Omit<TextFieldProps, 'onChange'> {
+  /**
+   * Amount to increment or decrement the value by when using arrow keys or spinner controls.
+   */
   step?: number
+
+  /**
+   * Minimum allowed value for the input.
+   * Enforced both via HTML attributes and internal logic.
+   */
   min?: number
+
+  /**
+   * Maximum allowed value for the input.
+   */
   max?: number
+
+  /**
+   * Initial value of the input when uncontrolled.
+   */
   defaultValue?: number
+
+  /**
+   * Ref forwarded to the underlying native input element.
+   */
   ref?: Ref<HTMLInputElement>
+
+  /**
+   * Number of decimal places to round the input value to.
+   * Useful for financial or scientific precision.
+   */
   precision?: number
+
+  /**
+   * Enables changing the value with the mouse wheel when focused.
+   */
   changeOnWheel?: boolean
+
+  /**
+   * Callback fired when the value changes.
+   *
+   * @param event - The original change event
+   * @param value - The parsed numeric value
+   */
   onChange?: (event: NumberFieldChangeEvent, value: number) => void
+
+  /**
+   * Allows the field to be empty (null/undefined) instead of defaulting to 0.
+   * Useful for optional numeric inputs.
+   */
   allowEmpty?: boolean
 }
 
+/** A NumberField is a UI component that allows users to input numeric values, often with support for validation, increment/decrement buttons, and a specified range */
 export const NumberField: FC<NumberFieldProps> = ({
   className,
   disabled,

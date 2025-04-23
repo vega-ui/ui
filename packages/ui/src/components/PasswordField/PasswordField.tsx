@@ -10,6 +10,7 @@ import style from './style.module.css';
 
 export type PasswordFieldProps = TextFieldProps
 
+/** A PasswordField is a UI component that allows users to input passwords or secure pin codes */
 export const PasswordField: FC<PasswordFieldProps> = ({
   disabled,
   size = 'medium',

@@ -34,7 +34,7 @@
 }
 
 .checkboxCard[data-appearance]:has(input[type='checkbox']:disabled) {
-    background-color: var(--color-gray-accent-150);
+    background-color: var(--color-gray-accent-50);
     cursor: not-allowed;
 }
 
