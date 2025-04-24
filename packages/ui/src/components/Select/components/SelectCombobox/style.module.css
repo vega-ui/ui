@@ -73,22 +73,21 @@
 .selectCombobox[data-variant='field'] {
     background-color: var(--surface-foreground);
     border-radius: var(--radius-3);
-    border: 1px solid var(--field-border-color);
-    transition: border-color var(--transition-state-delay) ease-in-out;
-    outline: none;
+    outline: 1px solid var(--field-border-color);
+    transition: outline var(--transition-state-delay) ease-in-out;
 }
 
 /* selectCombobox/field/hover */
 
 .selectCombobox[data-variant='field']:hover {
-    border-color: var(--field-border-hover-color);
+    outline-color: var(--field-border-hover-color);
 }
 
 /* selectCombobox/field/focus */
 
 .selectCombobox[data-variant='field'][data-state='open'],
 .selectCombobox[data-variant='field']:focus {
-    border-color: var(--field-border-focus-color);
+    outline-color: var(--field-border-focus-color);
 }
 
 /* selectCombobox/field/disabled */
@@ -101,7 +100,7 @@
     border-radius: var(--radius-3);
     border: 1px solid transparent;
     transition:
-            border-color var(--transition-state-delay) ease-in-out,
+            outline-color var(--transition-state-delay) ease-in-out,
             background-color var(--transition-state-delay) ease-in-out;
     outline: none;
 }
@@ -110,14 +109,14 @@
 
 .selectCombobox[data-variant='inline']:hover {
     background-color: var(--color-gray-accent-0);
-    border-color: var(--color-gray-accent-0);
+    outline-color: var(--color-gray-accent-0);
 }
 
 /* selectCombobox/inline/focus */
 
 .selectCombobox[data-variant='inline'][data-state='open'],
 .selectCombobox[data-variant='inline']:focus {
-    border-color: var(--field-border-focus-color);
+    outline-color: var(--field-border-focus-color);
     background-color: transparent;
 }
 
@@ -125,7 +124,7 @@
 
 .selectCombobox[data-variant='inline']:disabled {
     background-color: transparent;
-    border-color: transparent;
+    outline-color: transparent;
 }
 
 /* selectCombobox/disabled */
