@@ -6,7 +6,7 @@ import { csx } from '@adara-cs/utils';
 import { PaginationProvider } from './providers';
 import { IconButtonProps } from '../IconButton';
 
-export interface CardProps extends HTMLAttributes<HTMLElement> {
+export interface PaginationProps extends HTMLAttributes<HTMLElement> {
   /**
    * Custom class name applied to the card container.
    * Useful for styling or layout control.
@@ -33,7 +33,7 @@ export interface CardProps extends HTMLAttributes<HTMLElement> {
 }
 
 /** Pagination is a UI component that divides content into discrete pages and provides navigation controls, allowing users to move between different sections of content, commonly used in lists, tables, or search results */
-export const Pagination: FC<CardProps> = ({
+export const Pagination: FC<PaginationProps> = ({
   children,
   className,
   size = 'medium',

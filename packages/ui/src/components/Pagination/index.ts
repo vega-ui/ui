@@ -1,4 +1,4 @@
-export { Pagination, type CardProps } from './Pagination.tsx'
+export { Pagination, type PaginationProps } from './Pagination.tsx'
 export {
   PaginationItem, type PaginationItemProps,
   PaginationFirstTrigger, type PaginationFirstTriggerProps,
