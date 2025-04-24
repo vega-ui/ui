@@ -4,10 +4,10 @@
     align-items: center;
     position: relative;
     background-color: var(--surface-foreground);
-    border: 1px solid var(--field-border-color);
+    outline: 1px solid var(--field-border-color);
     box-sizing: border-box;
     cursor: text;
-    transition: border-color var(--transition-state-delay) ease;
+    transition: outline-color var(--transition-state-delay) ease;
     height: var(--input-height);
 }
 
@@ -122,20 +122,20 @@
 /* textField/hover */
 
 .inputWrapper:has(.input:hover) {
-    border-color: var(--field-border-hover-color);
+    outline-color: var(--field-border-hover-color);
 }
 
 /* textField/active */
 
 .inputWrapper:has(.input:active),
 .inputWrapper:has(.input:focus-visible) {
-    border-color: var(--field-border-focus-color);
+    outline-color: var(--field-border-focus-color);
 }
 
 /* textField/error */
 
 .inputWrapper:has(.input[data-error='true']) {
-    border-color: var(--color-error);
+    outline-color: var(--color-error);
 }
 
 /* textField/disabled */
@@ -151,4 +151,5 @@
 }
 
 .input:disabled::placeholder {
+    color: var(--disable-placeholder-text-color);
 }

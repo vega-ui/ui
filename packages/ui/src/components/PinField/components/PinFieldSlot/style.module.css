@@ -5,8 +5,8 @@
     height: var(--input-height);
     width: var(--input-height);
     border-radius: inherit;
-    border: 1px solid var(--field-border-color);
-    transition: border-color var(--transition-state-delay) ease;
+    outline: 1px solid var(--field-border-color);
+    transition: outline-color var(--transition-state-delay) ease;
     font-family: var(--default-font-family);
     background-color: var(--surface-foreground);
     color: var(--text-color);
@@ -50,13 +50,13 @@
 /* slot/error */
 
 .slot[data-error='true'] {
-    border-color: var(--color-error);
+    outline-color: var(--color-error);
 }
 
 /* slot/hover */
 
 .slot:hover {
-    border-color: var(--field-border-hover-color);
+    outline-color: var(--field-border-hover-color);
 }
 
 /* slot/disabled */
