@@ -1,0 +1,7 @@
+export { PaginationItem, type PaginationItemProps } from './PaginationItem'
+export { PaginationFirstTrigger, type PaginationFirstTriggerProps } from './PaginationFirstTrigger'
+export { PaginationLastTrigger, type PaginationLastTriggerProps } from './PaginationLastTrigger'
+export { PaginationNextTrigger, type PaginationNextTriggerProps } from './PaginationNextTrigger'
+export { PaginationPrevTrigger, type PaginationPrevTriggerProps } from './PaginationPrevTrigger'
+export { PaginationEllipsis, type PaginationEllipsisProps } from './PaginationEllipsis'
+export { PaginationText, type PaginationTextProps } from './PaginationText'

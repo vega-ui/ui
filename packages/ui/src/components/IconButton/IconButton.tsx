@@ -1,9 +1,9 @@
-import style from './style.module.css';
 import { ButtonBase, ButtonBaseProps } from '../ButtonBase';
 import { Fragment, Ref, FC, cloneElement, ReactElement } from 'react';
 import { Icon, IconProps } from '../Icon';
 import { sizeMapper } from './utils';
 import { csx } from '@adara-cs/utils';
+import style from './style.module.css';
 
 export interface IconButtonProps extends ButtonBaseProps {
   /**

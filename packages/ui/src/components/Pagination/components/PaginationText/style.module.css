@@ -1,0 +1,11 @@
+.paginationText {
+    padding-inline: var(--spacing-8);
+}
+
+.paginationText[data-variant='primary'] {
+    color: var(--color-primary-500);
+}
+
+.paginationText[data-variant='secondary'] {
+    color: var(--color-secondary-500);
+}

@@ -1,0 +1,4 @@
+.paginationItem[data-size] {
+    aspect-ratio: 1 / 1;
+    --padding-inline: var(--padding-block);
+}

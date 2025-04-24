@@ -3,6 +3,10 @@ import {
   GlobeIcon,
   ChevronIcon,
   CloseIcon,
+  ArrowRightIcon,
+  ArrowLeftIcon,
+  DoubleArrowRightIcon,
+  DoubleArrowLeftIcon,
   ArrowBottomRightIcon,
   MenuLeftIcon,
   ChipIcon,
@@ -66,6 +70,10 @@ const icons = {
   anchor: AnchorIcon,
   eye: EyeIcon,
   eyeClose: EyeCloseIcon,
+  arrowLeft: ArrowLeftIcon,
+  arrowRight: ArrowRightIcon,
+  doubleArrowLeft: DoubleArrowLeftIcon,
+  doubleArrowRight: DoubleArrowRightIcon,
 } as const
 
 export type IconName = keyof typeof icons

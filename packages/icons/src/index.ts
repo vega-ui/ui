@@ -32,6 +32,10 @@ import CopyIcon from './assets/icons/copy.svg?react'
 import AnchorIcon from './assets/icons/anchor.svg?react'
 import EyeIcon from './assets/icons/eye.svg?react'
 import EyeCloseIcon from './assets/icons/eye-close.svg?react'
+import ArrowLeftIcon from './assets/icons/arrow-left.svg?react'
+import DoubleArrowLeftIcon from './assets/icons/double-arrow-left.svg?react'
+import ArrowRightIcon from './assets/icons/arrow-right.svg?react'
+import DoubleArrowRightIcon from './assets/icons/double-arrow-right.svg?react'
 
 // Flags
 
@@ -326,6 +330,10 @@ export {
   AnchorIcon,
   EyeIcon,
   EyeCloseIcon,
+  ArrowRightIcon,
+  ArrowLeftIcon,
+  DoubleArrowLeftIcon,
+  DoubleArrowRightIcon,
 
   FlagAD,
   FlagAE,
