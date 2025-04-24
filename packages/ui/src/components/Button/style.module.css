@@ -7,12 +7,17 @@
     gap: var(--spacing-5);
     height: var(--button-height);
     box-sizing: border-box;
+
+    padding-inline: var(--padding-inline);
+    padding-block: var(--padding-block);
 }
 
 .button[data-size='small'] {
     --button-height: var(--spacing-21);
+    --padding-inline: var(--spacing-10);
+    --padding-block: var(--spacing-6);
+
     font-size: var(--font-size-2);
-    padding: var(--spacing-6) var(--spacing-10);
     border-radius: var(--radius-3);
 }
 
@@ -23,8 +28,10 @@
 
 .button[data-size='medium'] {
     --button-height: var(--spacing-24);
+    --padding-inline: var(--spacing-18);
+    --padding-block: var(--spacing-7);
+
     font-size: var(--font-size-3);
-    padding: var(--spacing-7) var(--spacing-18);
     border-radius: var(--radius-3);
 }
 
@@ -35,8 +42,10 @@
 
 .button[data-size='large'] {
     --button-height: var(--spacing-27);
+    --padding-inline: var(--spacing-24);
+    --padding-block: var(--spacing-8);
+
     font-size: var(--font-size-4);
-    padding: var(--spacing-8) var(--spacing-24);
     border-radius: var(--radius-4);
 }
 

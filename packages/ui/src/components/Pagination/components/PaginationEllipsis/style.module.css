@@ -1,0 +1,11 @@
+.paginationEllipsis[data-size] {
+    aspect-ratio: 1 / 1;
+    cursor: text;
+    --padding-inline: var(--padding-block);
+}
+
+.paginationEllipsis[data-variant][data-appearance]:focus,
+.paginationEllipsis[data-variant][data-appearance]:hover,
+.paginationEllipsis[data-variant][data-appearance]:active {
+    background-color: transparent;
+}
