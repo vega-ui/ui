@@ -1,5 +1,15 @@
 # @adara-cs/ui-kit-web
 
+## 2.10.3
+
+### Patch Changes
+
+- d066a85: Changed border to outline into Field-like components
+- fc76ab0: Fixed bug: changed border to outline in PhoneSelect
+  - @adara-cs/hooks@2.10.3
+  - @adara-cs/icons@2.10.3
+  - @adara-cs/utils@2.10.3
+
 ## 2.10.2
 
 ### Patch Changes
