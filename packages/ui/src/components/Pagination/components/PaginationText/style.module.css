@@ -1,5 +1,6 @@
 .paginationText {
     padding-inline: var(--spacing-8);
+    white-space: nowrap;
 }
 
 .paginationText[data-variant='primary'] {
