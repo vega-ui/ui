@@ -6,7 +6,7 @@ import { Label } from '../Label';
 import { HelperText } from '../HelperText';
 
 const meta = {
-  title: 'UI-Core/PinField',
+  title: 'UI-Core/PinField/PinField',
   component: PinField,
   parameters: {
     layout: 'centered',

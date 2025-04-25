@@ -1,10 +1,13 @@
 .modal {
     background: var(--surface-foreground);
-    box-shadow: var(--surface-shadow);
     border-radius: var(--radius-5);
     padding: var(--spacing-10) var(--spacing-12);
     min-width: clamp(220px, 70vw, 500px);
     max-width: 600px;
+}
+
+.modal[data-shadowed='true'] {
+    box-shadow: var(--surface-shadow);
 }
 
 .modal[data-fluid='true'] {
@@ -24,7 +27,7 @@
     box-sizing: border-box;
 }
 
-.modalOverlay::after {
+.modalOverlay[data-overlaid='true']::after {
     content: '';
     position: absolute;
     z-index: -1;

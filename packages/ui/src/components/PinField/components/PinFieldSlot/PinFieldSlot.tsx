@@ -4,10 +4,22 @@ import { csx, inRange } from '@adara-cs/utils';
 import { usePinFieldContext } from '../../hooks';
 
 export interface PinFieldSlotProps {
+  /**
+   * The zero-based index of the slot within the PinField sequence.
+   */
   index: number
+
+  /**
+   * Optional class name applied to the individual slot element.
+   */
+  className?: string
 }
 
-export const PinFieldSlot: FC<PinFieldSlotProps> = ({ index }) => {
+/** The PinFieldSlot component represents an individual character position within a PinField, exposing its index for customizing the rendering, behavior, or styling of that specific input cell. */
+export const PinFieldSlot: FC<PinFieldSlotProps> = ({
+  index,
+  className,
+}) => {
   const {
     inputId,
     value,
@@ -41,7 +53,7 @@ export const PinFieldSlot: FC<PinFieldSlotProps> = ({ index }) => {
       htmlFor={inputId}
       aria-hidden='true'
       onClick={onClick}
-      className={csx(style.slot, slotClassName)}
+      className={csx(style.slot, slotClassName, className)}
       data-focus={selectionRange ? inRange(index, selectionRange) && inRange(index + 1, selectionRange) : false}
       data-caret={index === selectionRange[0]}
       data-value={value[index]}

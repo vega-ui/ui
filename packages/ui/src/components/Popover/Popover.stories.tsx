@@ -6,7 +6,7 @@ import { Text } from '../Text';
 import { PopoverContent, PopoverTrigger } from './components';
 
 const meta = {
-  title: 'UI-Core/Popover',
+  title: 'UI-Core/Popover/Popover',
   component: Popover,
   parameters: {
     layout: 'centered',

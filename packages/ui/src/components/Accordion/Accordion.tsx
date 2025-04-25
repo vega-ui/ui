@@ -1,10 +1,10 @@
 'use client';
-import { Children, FC, ReactElement, useState } from 'react';
+import { Children, FC, HTMLAttributes, ReactElement, useState } from 'react';
 import { AccordionItem, AccordionItemProps } from './components';
 import { csx } from '@adara-cs/utils';
 import style from './style.module.css'
 
-export interface AccordionProps {
+export interface AccordionProps extends HTMLAttributes<HTMLUListElement> {
   /**
    * Optional custom CSS class to apply to the accordion wrapper.
    * Useful for styling overrides or scoped custom styling.
@@ -13,10 +13,6 @@ export interface AccordionProps {
 
   /**
    * Defines the size of the accordion. Affects padding and font size.
-   *
-   * - 'small': compact layout
-   * - 'medium': default layout
-   * - 'large': spacious layout
    */
   size?: 'small' | 'medium' | 'large'
 
@@ -47,7 +43,7 @@ export interface AccordionProps {
 /**
  An Accordion is a UI component that toggles content visibility, allowing users to expand or collapse sections for better organization and navigation.
 */
-export const Accordion: FC<AccordionProps> = ({ size = 'medium', defaultOpened, multiple = false, separated = true, children, className }) => {
+export const Accordion: FC<AccordionProps> = ({ size = 'medium', defaultOpened, multiple = false, separated = true, children, className, ...props }) => {
   const [opened, setOpened] = useState<string[]>(defaultOpened ?? [])
 
   const closeAll = () => {
@@ -69,7 +65,7 @@ export const Accordion: FC<AccordionProps> = ({ size = 'medium', defaultOpened, 
   }
 
   return (
-    <ul className={csx(className, style.accordion)}>
+    <ul {...props} className={csx(className, style.accordion)}>
       {children && (
         Children.map(children, (child, i) => {
           const value = child.props.value

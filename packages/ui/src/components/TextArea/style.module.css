@@ -5,6 +5,7 @@
     background-color: var(--surface-foreground);
     color: var(--text-color);
     outline: 1px solid var(--field-border-color);
+    border: none;
     box-sizing: border-box;
     transition: outline-color var(--transition-state-delay) ease;
     min-height: var(--textarea-height);

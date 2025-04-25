@@ -6,7 +6,7 @@ import { Icon } from '../Icon';
 import { SelectOption } from './components/SelectOption';
 
 const meta = {
-  title: 'UI-Core/Select',
+  title: 'UI-Core/Select/Select',
   component: Select,
   parameters: {
     layout: 'centered',

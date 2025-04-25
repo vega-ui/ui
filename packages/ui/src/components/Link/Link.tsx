@@ -1,12 +1,12 @@
 'use client';
-import { FC, Ref } from 'react';
+import { AnchorHTMLAttributes, FC, Ref } from 'react';
 
 import style from './style.module.css'
 import { csx } from '@adara-cs/utils';
 import { Text, TextProps } from '../Text';
 import { Slot } from '../Slot';
 
-export interface LinkProps {
+export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   /**
    * Custom class name applied to the link.
    * Useful for design token styling or scoped overrides.

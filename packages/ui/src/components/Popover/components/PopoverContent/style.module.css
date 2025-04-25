@@ -1,10 +1,13 @@
 .popover {
     background: var(--surface-foreground);
-    box-shadow: var(--surface-shadow);
     border-radius: var(--radius-3);
     width: max-content;
     padding: var(--spacing-8);
     z-index: var(--z-index-popover);
+}
+
+.popover[data-shadowed='true'] {
+    box-shadow: var(--surface-shadow);
 }
 
 .popoverOverlay {

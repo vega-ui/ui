@@ -1,14 +1,23 @@
 'use client';
-import { DetailedHTMLProps, FC, HTMLAttributes, Ref, useLayoutEffect, useRef } from 'react';
+import { FC, HTMLAttributes, Ref, useLayoutEffect, useRef } from 'react';
 import style from './style.module.css';
 import { csx, mergeRefs } from '@adara-cs/utils';
 import { useCollapsibleContext } from '../../hooks';
 
-export interface CollapsibleContentProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+export interface CollapsibleContentProps extends HTMLAttributes<HTMLDivElement> {
+  /**
+   * Optional class name for the outer wrapper that may contain animation or layout styling.
+   */
   wrapperClassName?: string
+
+  /**
+   * Ref forwarded to the root collapsible content container.
+   * Useful for measuring height, managing animation, or setting focus.
+   */
   ref?: Ref<HTMLDivElement>
 }
 
+/** The CollapsibleContent component holds the expandable content of a Collapsible section and is shown or hidden based on the trigger state, with optional animation and accessibility support */
 export const CollapsibleContent: FC<CollapsibleContentProps> = ({
   className,
   wrapperClassName,

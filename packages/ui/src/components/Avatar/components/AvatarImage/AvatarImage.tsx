@@ -3,7 +3,16 @@ import style from './style.module.css';
 import { csx } from '@adara-cs/utils';
 
 export interface AvatarImageProps extends ImgHTMLAttributes<HTMLImageElement> {
+  /**
+   * Ref to the native <img> element.
+   * Useful for direct DOM access, loading state tracking, or animations.
+   */
   ref?: Ref<HTMLImageElement>
+
+  /**
+   * URL of the fallback image to display if the main image fails to load.
+   * This allows graceful degradation of the avatar when the primary source is unavailable.
+   */
   fallbackSrc?: string
 }
 
@@ -13,6 +22,9 @@ export enum ImageStatus {
   LOADED = 'loaded'
 }
 
+/**
+ * The AvatarImage component renders a user’s profile image within an avatar and optionally falls back to a secondary fallbackSrc image if the primary source fails to load
+ */
 export const AvatarImage: FC<AvatarImageProps> = ({
   src,
   fallbackSrc,

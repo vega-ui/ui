@@ -1,3 +1,186 @@
+.drawer {
+    --outer-space: var(--spacing-6);
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    box-sizing: border-box;
+    margin: var(--outer-space);
+    background: var(--surface-foreground);
+    border-radius: var(--radius-6);
+    padding: clamp(var(--spacing-10), 5vw, var(--spacing-16));
+    max-height: calc(100% - var(--outer-space) * 2 - env(safe-area-inset-bottom) - env(safe-area-inset-top));
+    max-width: calc(100% - var(--outer-space) * 2 - env(safe-area-inset-right) - env(safe-area-inset-left));
+    transition: all .25s ease;
+    z-index: var(--z-index-above);
+    will-change: transform;
+}
+
+.drawer[data-full-width='true'] {
+    width: 100%;
+}
+
+.drawer[data-full-height='true'] {
+    height: 100%;
+}
+
+.drawer[data-shadow='true'] {
+    box-shadow: var(--surface-shadow);
+}
+
+.drawer[data-status='open'] {
+    transform: translateY(0);
+}
+
+.drawer[data-status='initial'],
+.drawer[data-status='unmounted'],
+.drawer[data-status='close'] {
+    transform: translateY(100%);
+}
+
+.drawer[data-position='top'] {
+    top: 0;
+    left: calc(50% - var(--outer-space));;
+    transform: translateX(-50%);
+}
+
+.drawer[data-status='open'][data-position='top'] {
+    transform: translate(-50%, 0);
+}
+
+.drawer[data-status='open']:where([data-position='top-start'], [data-position='top-end']) {
+    transform: translateY(0);
+}
+
+.drawer[data-status='initial'][data-position='top'],
+.drawer[data-status='unmounted'][data-position='top'],
+.drawer[data-status='close'][data-position='top'] {
+    transform: translate(-50%, -100%);
+}
+
+.drawer[data-status='initial']:where([data-position='top-start'], [data-position='top-end']),
+.drawer[data-status='unmounted']:where([data-position='top-start'], [data-position='top-end']),
+.drawer[data-status='close']:where([data-position='top-start'], [data-position='top-end']) {
+    transform: translateY(-100%);
+}
+
+.drawer[data-position='top-start'] {
+    top: 0;
+    left: 0;
+}
+
+.drawer[data-position='top-end'] {
+    top: 0;
+    right: 0;
+}
+
+.drawer[data-position='right'] {
+    right: 0;
+    top: calc(50% - var(--outer-space));
+    transform: translateY(-50%);
+}
+
+.drawer[data-status='open'][data-position='right'] {
+    transform: translate(0, -50%);
+}
+
+.drawer[data-status='open']:where([data-position='right-start'], [data-position='right-end']) {
+    transform: translateX(0);
+}
+
+.drawer[data-status='initial'][data-position='right'],
+.drawer[data-status='unmounted'][data-position='right'],
+.drawer[data-status='close'][data-position='right'] {
+    transform: translate(100%, -50%);
+}
+
+.drawer[data-status='initial']:where([data-position='right-start'], [data-position='right-end']),
+.drawer[data-status='unmounted']:where([data-position='right-start'], [data-position='right-end']),
+.drawer[data-status='close']:where([data-position='right-start'], [data-position='right-end']) {
+    transform: translateX(100%);
+}
+
+.drawer[data-position='right-start'] {
+    right: 0;
+    top: 0;
+}
+
+.drawer[data-position='right-end'] {
+    right: 0;
+    bottom: 0;
+}
+
+.drawer[data-position='bottom'] {
+    bottom: 0;
+    left: calc(50% - var(--outer-space));;
+    transform: translateX(-50%);
+}
+
+.drawer[data-status='open'][data-position='bottom'] {
+    transform: translate(-50%, 0);
+}
+
+.drawer[data-status='open']:where([data-position='bottom-start'], [data-position='bottom-end']) {
+    transform: translateY(0);
+}
+
+.drawer[data-status='initial'][data-position='bottom'],
+.drawer[data-status='unmounted'][data-position='bottom'],
+.drawer[data-status='close'][data-position='bottom'] {
+    transform: translate(-50%, 100%);
+}
+
+.drawer[data-status='initial']:where([data-position='bottom-start'], [data-position='bottom-end']),
+.drawer[data-status='unmounted']:where([data-position='bottom-start'], [data-position='bottom-end']),
+.drawer[data-status='close']:where([data-position='bottom-start'], [data-position='bottom-end']) {
+    transform: translateY(100%);
+}
+
+.drawer[data-position='bottom-start'] {
+    bottom: 0;
+    left: 0;
+}
+
+.drawer[data-position='bottom-end'] {
+    bottom: 0;
+    right: 0;
+}
+
+.drawer[data-position='left'] {
+    left: 0;
+    top: calc(50% - var(--outer-space));;
+    transform: translateY(-50%);
+}
+
+.drawer[data-status='open'][data-position='left'] {
+    transform: translate(0, -50%);
+}
+
+.drawer[data-status='open']:where([data-position='left-start'], [data-position='left-end']) {
+    transform: translateX(0);
+}
+
+.drawer[data-status='initial'][data-position='left'],
+.drawer[data-status='unmounted'][data-position='left'],
+.drawer[data-status='close'][data-position='left'] {
+    transform: translate(-100%, -50%);
+}
+
+.drawer[data-status='initial']:where([data-position='left-start'], [data-position='left-end']),
+.drawer[data-status='unmounted']:where([data-position='left-start'], [data-position='left-end']),
+.drawer[data-status='close']:where([data-position='left-start'], [data-position='left-end']) {
+    transform: translateX(-100%);
+}
+
+.drawer[data-position='left-start'] {
+    left: 0;
+    top: 0;
+}
+
+.drawer[data-position='left-end'] {
+    left: 0;
+    bottom: 0;
+}
+
 .drawerContent {
     pointer-events: auto;
     overflow: hidden auto;

@@ -7,6 +7,9 @@ import { useAvatarGroupContext } from '../../hooks';
 
 export type AvatarGroupItemProps = AvatarProps
 
+/**
+ * The AvatarGroupItem component represents an individual avatar within an AvatarGroup, inheriting group-level styles like size and variant, and is typically used to visually stack or align multiple avatars in a compact layout
+ * */
 export const AvatarGroupItem: FC<PropsWithChildren<AvatarGroupItemProps>> = ({
   className,
   children,

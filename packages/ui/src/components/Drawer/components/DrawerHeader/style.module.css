@@ -1,6 +1,7 @@
 .drawerHeader {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
+    align-items: center;
+    gap: var(--spacing-4);
     margin-bottom: var(--spacing-12);
 }

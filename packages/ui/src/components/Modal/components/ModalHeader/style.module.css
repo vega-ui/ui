@@ -4,6 +4,7 @@
     justify-content: flex-end;
     align-items: center;
     margin-bottom: var(--spacing-10);
+    gap: var(--spacing-4);
 }
 
 .title {

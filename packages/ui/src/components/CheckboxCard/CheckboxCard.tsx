@@ -4,7 +4,7 @@ import { Card, CardProps } from '../Card';
 import { Checkbox, CheckboxProps } from '../Checkbox';
 import { csx } from '@adara-cs/utils';
 import style from './style.module.css'
-import { CheckboxCardProvider } from './providers/CheckboxCardProvider';
+import { CheckboxCardProvider } from './providers';
 import { sizeMapper } from './utils';
 
 export interface CheckboxCardProps extends Omit<CardProps, 'appearance'>, Pick<CheckboxProps, 'checked' | 'value' | 'indeterminate'> {
