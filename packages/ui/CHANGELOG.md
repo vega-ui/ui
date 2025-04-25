@@ -1,5 +1,20 @@
 # @adara-cs/ui-kit-web
 
+## 2.12.0
+
+### Minor Changes
+
+- c529c0c: Added Storybook descriptions to all composite components (e.g. `Pagination`, `Avatar`, `Modal`, `Drawer`, `Table`, `PinField`, etc.), improving documentation clarity and discoverability.
+
+  Each part (such as `PaginationItem`, `AvatarFallback`, `ModalTrigger`, `TableRow`, etc.) now includes a concise functional description to help developers understand its role and usage at a glance.
+
+### Patch Changes
+
+- 2941138: Added nowrap for text in PaginationText
+  - @adara-cs/hooks@2.12.0
+  - @adara-cs/icons@2.12.0
+  - @adara-cs/utils@2.12.0
+
 ## 2.11.0
 
 ### Minor Changes
