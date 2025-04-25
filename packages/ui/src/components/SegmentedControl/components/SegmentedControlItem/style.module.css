@@ -17,19 +17,19 @@
     background-color var(--transition-fast-state-delay) ease-in;
 }
 
-.control[data-variant='primary']:not([data-checked='true']):hover {
+.control[data-variant='primary']:hover {
     background-color: var(--color-primary-100);
 }
 
-.control[data-variant='primary']:not([data-checked='true']):active {
+.control[data-variant='primary']:active {
     background-color: var(--color-primary-150);
 }
 
-.control[data-variant='secondary']:not([data-checked='true']):hover {
+.control[data-variant='secondary']:hover {
     background-color: var(--color-secondary-100);
 }
 
-.control[data-variant='secondary']:not([data-checked='true']):active {
+.control[data-variant='secondary']:active {
     background-color: var(--color-secondary-150);
 }
 
@@ -50,6 +50,12 @@
 .control[data-checked='true'] {
     color: var(--text-inverce-color);
     transition: color var(--transition-fast-state-delay) ease, background-color 0s;
+}
+
+.control[data-checked='true'],
+.control[data-checked='true']:hover,
+.control[data-checked='true']:active {
+    background-color: initial;
 }
 
 .control[data-size='small'] {

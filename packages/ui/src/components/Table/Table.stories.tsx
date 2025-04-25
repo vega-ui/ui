@@ -4,7 +4,7 @@ import { Text } from '../Text';
 import { TableBody, TableData, TableFoot, TableHead, TableHeading, TableRow } from './components';
 
 const meta = {
-  title: 'UI-Core/Table',
+  title: 'UI-Core/Table/Table',
   component: Table,
   parameters: {
     layout: 'padded',

@@ -7,21 +7,60 @@ import { csx, mergeProps, mergeRefs } from '@adara-cs/utils';
 import style from './style.module.css'
 import { FloatingFocusManager, FloatingPortal } from '@floating-ui/react';
 import { DrawerOverlay } from '../DrawerOverlay';
-import styles from '../../style.module.css';
 import { useDrawerContext } from '../../hooks';
 
 export interface DrawerContentProps extends HTMLAttributes<HTMLDivElement> {
+  /**
+   * Enables vertical scrolling inside the drawer body.
+   * Useful for long content within fixed-height drawers.
+   */
   scrollable?: boolean
+
+  /**
+   * Custom class name applied to the drawer content container.
+   */
   className?: string
+
+  /**
+   * Ref forwarded to the drawer content element.
+   * Useful for measuring, focusing, or animation hooks.
+   */
   ref?: Ref<HTMLDivElement>
+
+  /**
+   * Custom node(s) rendered in the header area of the drawer.
+   * Typically used for titles, close buttons, or actions.
+   */
   headerSlot?: JSX.Element | JSX.Element[]
+
+  /**
+   * Applies a blurred background overlay behind the drawer content.
+   * Useful for modal-style drawer overlays.
+   */
   blurredOverlay?: boolean
+
+  /**
+   * Adds a shadow to the drawer panel for depth and separation.
+   */
   shadowed?: boolean
+
+  /**
+   * Indicates that the drawer floats over the main content (not pushed from the edge).
+   */
   overlaid?: boolean
+
+  /**
+   * Makes the drawer stretch to fill the full width of its parent container.
+   */
   fullWidth?: boolean
+
+  /**
+   * Makes the drawer stretch to fill the full height of its parent container.
+   */
   fullHeight?: boolean
 }
 
+/** The DrawerContent component is the main content area of a drawer, supporting scrollable layouts, optional headers, visual overlays, and full-size configurations for flexible and responsive panel design */
 export const DrawerContent: FC<DrawerContentProps> = ({
   className,
   scrollable,
@@ -45,7 +84,7 @@ export const DrawerContent: FC<DrawerContentProps> = ({
       data-status={transitionStatus}
       data-shadow={shadowed}
       ref={mergeRefs([ref, contentRef])}
-      className={csx(styles.drawer, className)}
+      className={csx(style.drawer, className)}
       {...mergeProps(props, contentProps)}
     >
       {headerSlot}

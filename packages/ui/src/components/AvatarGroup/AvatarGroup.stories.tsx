@@ -4,7 +4,7 @@ import { AvatarFallback, AvatarImage } from '../Avatar/components';
 import { AvatarGroupItem } from './components';
 
 const meta = {
-  title: 'UI-Core/AvatarGroup',
+  title: 'UI-Core/AvatarGroup/AvatarGroup',
   component: AvatarGroup,
   parameters: {
     layout: 'padded',

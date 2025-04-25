@@ -7,7 +7,7 @@ import { DrawerContent, DrawerHeader, DrawerTrigger } from './components';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof Drawer> = {
-  title: 'UI-Core/Drawer',
+  title: 'UI-Core/Drawer/Drawer',
   component: Drawer,
   parameters: {
     layout: 'padded'
@@ -38,9 +38,6 @@ export const Default: Story = {
 }
 
 export const WithoutOverlay: Story = {
-  args: {
-    withOverlay: false,
-  },
   render(props) {
     return (
       <Drawer {...props}>
@@ -63,9 +60,6 @@ export const WithoutOverlay: Story = {
 }
 
 export const WithHeader: Story = {
-  args: {
-    withOverlay: false,
-  },
   render(props) {
     return (
       <Drawer {...props}>

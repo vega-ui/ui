@@ -6,6 +6,7 @@ import { useListItem } from '@floating-ui/react';
 
 export type SelectOptionProps = OptionProps
 
+/** The SelectOption component represents a single selectable item within a Select dropdown, supporting optional selection state, focusability, custom content, and ARIA roles for accessibility compliance */
 export const SelectOption: FC<SelectOptionProps> = ({ 
   value,
   size,

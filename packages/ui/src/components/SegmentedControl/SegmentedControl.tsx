@@ -39,7 +39,7 @@ export interface SegmentedControlProps extends Omit<DetailedHTMLProps<HTMLAttrib
    * The name of the underlying radio group.
    * Required for grouping and form submission.
    */
-  name: string
+  name?: string
 
   /**
    * Visual style variant of the segmented control.
