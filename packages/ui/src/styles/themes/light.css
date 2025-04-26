@@ -2,7 +2,7 @@
 
 .light {
     --background-color: #FFFFFF;
-    --focus-color: var(--color-blue-200);
+    --focus-color: var(--color-blue-300);
     --overlay: rgba(0, 0, 0, 0.35);
     --text-color: #000000;
     --text-inverce-color: #FFFFFF;

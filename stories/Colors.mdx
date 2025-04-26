@@ -1,6 +1,6 @@
 import { Meta, ColorPalette, ColorItem } from '@storybook/blocks';
 
-<Meta title="Tokens/Colors" />
+<Meta title='Tokens/Colors' />
 
 <ColorPalette>
     {[
@@ -10,29 +10,29 @@ import { Meta, ColorPalette, ColorItem } from '@storybook/blocks';
         <ColorItem
             key={name}
             title={name.charAt(0).toUpperCase() + name.slice(1)}
-            subtitle={`--color-${name}-*`}
+            subtitle={name}
             colors={{
-                "0": `var(--color-${name}-0)`,
-                "50": `var(--color-${name}-50)`,
-                "100": `var(--color-${name}-100)`,
-                "150": `var(--color-${name}-150)`,
-                "200": `var(--color-${name}-200)`,
-                "250": `var(--color-${name}-250)`,
-                "300": `var(--color-${name}-300)`,
-                "350": `var(--color-${name}-350)`,
-                "400": `var(--color-${name}-400)`,
-                "450": `var(--color-${name}-450)`,
-                "500": `var(--color-${name}-500)`,
-                "550": `var(--color-${name}-550)`,
-                "600": `var(--color-${name}-600)`,
-                "650": `var(--color-${name}-650)`,
-                "700": `var(--color-${name}-700)`,
-                "750": `var(--color-${name}-750)`,
-                "800": `var(--color-${name}-800)`,
-                "850": `var(--color-${name}-850)`,
-                "900": `var(--color-${name}-900)`,
-                "950": `var(--color-${name}-950)`,
-                "1000": `var(--color-${name}-1000)`
+                '0': `var(--color-${name}-0)`,
+                '50': `var(--color-${name}-50)`,
+                '100': `var(--color-${name}-100)`,
+                '150': `var(--color-${name}-150)`,
+                '200': `var(--color-${name}-200)`,
+                '250': `var(--color-${name}-250)`,
+                '300': `var(--color-${name}-300)`,
+                '350': `var(--color-${name}-350)`,
+                '400': `var(--color-${name}-400)`,
+                '450': `var(--color-${name}-450)`,
+                '500': `var(--color-${name}-500)`,
+                '550': `var(--color-${name}-550)`,
+                '600': `var(--color-${name}-600)`,
+                '650': `var(--color-${name}-650)`,
+                '700': `var(--color-${name}-700)`,
+                '750': `var(--color-${name}-750)`,
+                '800': `var(--color-${name}-800)`,
+                '850': `var(--color-${name}-850)`,
+                '900': `var(--color-${name}-900)`,
+                '950': `var(--color-${name}-950)`,
+                '1000': `var(--color-${name}-1000)`
             }}
         />
     ))}

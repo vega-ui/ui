@@ -1,0 +1,83 @@
+.switch {
+    --switch-size: 16px;
+    --switch-padding: 2px;
+
+    display: flex;
+    align-items: center;
+    border-radius: var(--switch-size);
+    height: var(--switch-size);
+    width: calc(var(--switch-size) * 2 - var(--switch-padding) * 2);
+    padding: var(--switch-padding);
+    cursor: pointer;
+    box-sizing: border-box;
+    background-color: var(--color-gray-accent-150);
+    transition: 
+    background-color var(--transition-state-delay) ease-in,
+    border-color var(--transition-state-delay) ease-in;
+}
+
+.switchControl {
+    --switch-control-size: calc(var(--switch-size) - var(--switch-padding) * 2);
+
+    background-color: var(--color-white);
+    border-radius: inherit;
+    width: var(--switch-control-size);
+    height: var(--switch-control-size);
+    transform: translateX(0%);
+    transition: 
+    transform var(--transition-fast-state-delay) ease-in,
+    width var(--transition-fast-state-delay) ease-in;
+}
+
+/* switch/hover */
+
+.switch:has(input:hover) {
+    background-color: var(--color-gray-accent-200);
+}
+
+/* switch/active */
+
+.switch:has(input:active) {
+    background-color: var(--color-gray-accent-250);
+}
+
+/* switch/checked */
+
+.switch:has(input:checked) .switchControl {
+    transform: translateX(100%);
+}
+
+/* switch/checked/primary */
+
+.switch[data-variant='primary']:has(input:checked) {
+    background-color: var(--color-primary-500);
+}
+
+/* switch/checked/secondary */
+
+.switch[data-variant='secondary']:has(input:checked) {
+    background-color: var(--color-secondary-500);
+}
+
+/* switch/disabled */
+
+.switch[data-variant]:has(input:disabled) {
+    cursor: not-allowed;
+    background-color: var(--disable-background-color);
+}
+
+.switch[data-variant]:has(input:disabled) .switchControl {
+    background-color: var(--disable-text-color);
+}
+
+.switch[data-size='small'] {
+    --switch-size: var(--spacing-12);
+}
+
+.switch[data-size='medium'] {
+    --switch-size: var(--spacing-14);
+}
+
+.switch[data-size='large'] {
+    --switch-size: var(--spacing-16);
+}
