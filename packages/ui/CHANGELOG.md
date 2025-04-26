@@ -1,5 +1,17 @@
 # @adara-cs/ui-kit-web
 
+## 2.13.0
+
+### Minor Changes
+
+- 7094fd1: Added new components - Switch and Radio (RadioButton)
+
+### Patch Changes
+
+- @adara-cs/hooks@2.13.0
+- @adara-cs/icons@2.13.0
+- @adara-cs/utils@2.13.0
+
 ## 2.12.0
 
 ### Minor Changes
