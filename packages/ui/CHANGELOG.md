@@ -1,5 +1,18 @@
 # @adara-cs/ui-kit-web
 
+## 2.14.0
+
+### Minor Changes
+
+- aa4a76b: Changed Blue pallete and Badge/Alert colors
+
+### Patch Changes
+
+- 57b39e4: Added switch animation
+  - @adara-cs/hooks@2.14.0
+  - @adara-cs/icons@2.14.0
+  - @adara-cs/utils@2.14.0
+
 ## 2.13.0
 
 ### Minor Changes
