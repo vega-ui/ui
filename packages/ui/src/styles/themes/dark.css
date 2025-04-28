@@ -471,39 +471,39 @@
 
     /* Alert colors */
 
-    --color-alert-info-background: var(--color-blue-accent-50);
+    --color-alert-info-background: var(--color-blue-accent-100);
     --color-alert-info-text: var(--color-blue-accent-800);
-    --color-alert-error-background: var(--color-red-accent-50);
+    --color-alert-error-background: var(--color-red-accent-100);
     --color-alert-error-text: var(--color-red-accent-800);
-    --color-alert-success-background: var(--color-green-accent-50);
+    --color-alert-success-background: var(--color-green-accent-100);
     --color-alert-success-text: var(--color-green-accent-800);
-    --color-alert-warning-background: var(--color-orange-accent-50);
+    --color-alert-warning-background: var(--color-orange-accent-100);
     --color-alert-warning-text: var(--color-orange-accent-800);
 
     /* Badge colors */
 
-    --color-badge-info-ghost-background: var(--color-blue-accent-50);
+    --color-badge-info-ghost-background: var(--color-blue-accent-100);
     --color-badge-info-ghost-text: var(--color-blue-accent-800);
     --color-badge-info-fill-background: var(--color-blue-accent-500);
     --color-badge-info-fill-text: var(--color-white);
     --color-badge-info-outline-border: var(--color-blue-accent-500);
     --color-badge-info-outline-text: var(--color-blue-accent-500);
 
-    --color-badge-success-ghost-background: var(--color-green-accent-50);
+    --color-badge-success-ghost-background: var(--color-green-accent-100);
     --color-badge-success-ghost-text: var(--color-green-accent-800);
     --color-badge-success-fill-background: var(--color-green-accent-500);
     --color-badge-success-fill-text: var(--color-white);
     --color-badge-success-outline-border: var(--color-green-accent-500);
     --color-badge-success-outline-text: var(--color-green-accent-500);
 
-    --color-badge-error-ghost-background: var(--color-red-accent-50);
+    --color-badge-error-ghost-background: var(--color-red-accent-100);
     --color-badge-error-ghost-text: var(--color-red-accent-800);
     --color-badge-error-fill-background: var(--color-red-accent-500);
     --color-badge-error-fill-text: var(--color-white);
     --color-badge-error-outline-border: var(--color-red-accent-500);
     --color-badge-error-outline-text: var(--color-red-accent-500);
 
-    --color-badge-warning-ghost-background: var(--color-orange-accent-50);
+    --color-badge-warning-ghost-background: var(--color-orange-accent-100);
     --color-badge-warning-ghost-text: var(--color-orange-accent-800);
     --color-badge-warning-fill-background: var(--color-orange-accent-500);
     --color-badge-warning-fill-text: var(--color-white);
