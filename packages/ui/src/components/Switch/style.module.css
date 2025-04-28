@@ -41,10 +41,23 @@
     background-color: var(--color-gray-accent-250);
 }
 
+.switch:has(input:active) .switchControl {
+    --switch-control-size-ratio: .125;
+
+    transition-delay: .5s;
+    width: calc(var(--switch-control-size) * (1 + var(--switch-control-size-ratio)));
+}
+
 /* switch/checked */
 
 .switch:has(input:checked) .switchControl {
     transform: translateX(100%);
+}
+
+/* switch/checked/active */
+
+.switch:has(input:checked:active) .switchControl {
+    transform: translateX(calc(100% - var(--switch-control-size) * var(--switch-control-size-ratio) * 2));
 }
 
 /* switch/checked/primary */
