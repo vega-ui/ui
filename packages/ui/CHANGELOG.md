@@ -1,5 +1,14 @@
 # @adara-cs/ui-kit-web
 
+## 2.14.1
+
+### Patch Changes
+
+- a42ec5b: Fixed default segmented item size
+  - @adara-cs/hooks@2.14.1
+  - @adara-cs/icons@2.14.1
+  - @adara-cs/utils@2.14.1
+
 ## 2.14.0
 
 ### Minor Changes
