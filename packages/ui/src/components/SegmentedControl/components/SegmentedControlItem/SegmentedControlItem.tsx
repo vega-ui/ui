@@ -43,7 +43,7 @@ export const SegmentedControlItem: FC<SegmentedControlItemProps> = ({
   disabled,
   checked,
   variant,
-  size = 'medium',
+  size,
   value,
   children,
   className,
