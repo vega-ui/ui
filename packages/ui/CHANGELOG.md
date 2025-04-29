@@ -1,5 +1,14 @@
 # @adara-cs/ui-kit-web
 
+## 2.14.2
+
+### Patch Changes
+
+- 3467ef8: Removed defaultChecked from segmentedControlItem
+  - @adara-cs/hooks@2.14.2
+  - @adara-cs/icons@2.14.2
+  - @adara-cs/utils@2.14.2
+
 ## 2.14.1
 
 ### Patch Changes
