@@ -11,7 +11,7 @@ export interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {
    * The HTML heading tag to render (e.g., 'h1', 'h2').
    * Defines semantic structure and accessibility level.
    */
-  as: HeadingAs
+  as?: HeadingAs
 
   /**
    * Custom class name applied to the heading element.
