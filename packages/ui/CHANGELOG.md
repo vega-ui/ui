@@ -1,5 +1,14 @@
 # @adara-cs/ui-kit-web
 
+## 2.14.3
+
+### Patch Changes
+
+- eef759a: Changed required as in Heading to non-required
+  - @adara-cs/hooks@2.14.3
+  - @adara-cs/icons@2.14.3
+  - @adara-cs/utils@2.14.3
+
 ## 2.14.2
 
 ### Patch Changes
