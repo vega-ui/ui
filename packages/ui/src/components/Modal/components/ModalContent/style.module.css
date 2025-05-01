@@ -1,7 +1,7 @@
 .modal {
     background: var(--surface-foreground);
-    border-radius: var(--radius-5);
-    padding: var(--spacing-10) var(--spacing-12);
+    border-radius: var(--radius-6);
+    padding: var(--spacing-14) var(--spacing-12);
     min-width: clamp(220px, 70vw, 500px);
     max-width: 600px;
 }
