@@ -1,5 +1,14 @@
 # @adara-cs/ui-kit-web
 
+## 2.14.4
+
+### Patch Changes
+
+- 699773b: Changed modal paddings and radiuses
+  - @adara-cs/hooks@2.14.4
+  - @adara-cs/icons@2.14.4
+  - @adara-cs/utils@2.14.4
+
 ## 2.14.3
 
 ### Patch Changes
