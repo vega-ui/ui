@@ -1,1 +1,1 @@
-export * from './iconMapper'
+export * from './iconMapper.tsx'

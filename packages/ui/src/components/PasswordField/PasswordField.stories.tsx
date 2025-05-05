@@ -4,6 +4,7 @@ import { PasswordField } from './PasswordField.tsx';
 import { Icon } from '../Icon';
 import { Text } from '../Text';
 import { Label } from '../Label';
+import { ChipIcon } from '@adara-cs/icons';
 
 const meta = {
   title: 'UI-Core/PasswordField',
@@ -33,7 +34,7 @@ export const Default: Story = {
 
 export const WithStartSlot: Story = {
   render(props) {
-    return <PasswordField {...props} placeholder='Количество процессоров' startSlot={<Icon name='chip' size='xs' />} />
+    return <PasswordField {...props} placeholder='Количество процессоров' startSlot={<Icon size='xs'><ChipIcon /></Icon>} />
   }
 }
 

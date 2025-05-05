@@ -1,1 +1,0 @@
-export { getIcon, type IconName } from './getIcon.ts'

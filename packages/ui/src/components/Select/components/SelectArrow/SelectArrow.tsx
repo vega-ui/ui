@@ -3,6 +3,7 @@ import style from './style.module.css';
 import { Icon } from '../../../Icon';
 import { csx } from '@adara-cs/utils';
 import { sizeMapper } from './utils';
+import { ChevronIcon } from '@adara-cs/icons';
 
 export interface SelectArrowProps {
   open?: boolean
@@ -12,6 +13,8 @@ export interface SelectArrowProps {
 
 export const SelectArrow: FC<SelectArrowProps> = ({ open, size = 'medium', className }) => {
   return (
-    <Icon className={csx(style.selectArrow, className)} data-open={open} name='chevron' size={sizeMapper(size)} />
+    <Icon className={csx(style.selectArrow, className)} data-open={open} size={sizeMapper(size)}>
+      <ChevronIcon />
+    </Icon>
   )
 }

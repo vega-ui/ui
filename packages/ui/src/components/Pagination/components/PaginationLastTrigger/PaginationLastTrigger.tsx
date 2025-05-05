@@ -4,6 +4,7 @@ import { FC } from 'react';
 import { IconButton, IconButtonProps } from '../../../IconButton';
 import { PaginationListItem } from '../PaginationListItem';
 import { usePaginationContext } from '../../hooks';
+import { DoubleArrowRightIcon } from '@adara-cs/icons';
 
 export interface PaginationLastTriggerProps extends IconButtonProps {
   /**
@@ -38,13 +39,12 @@ export const PaginationLastTrigger: FC<PaginationLastTriggerProps> = ({
         aria-disabled={disabled}
         disabled={disabled}
         variant={variant ?? _variant}
-        name='doubleArrowRight'
         appearance='ghost'
         asChild={asChild}
         size={size ?? _size}
         {...props}
       >
-        {(asChild && children) ? children : <a href={disabled ? undefined : href} />}
+        {(asChild && children) ? children : <a href={disabled ? undefined : href}><DoubleArrowRightIcon /></a>}
       </IconButton>
     </PaginationListItem>
   )

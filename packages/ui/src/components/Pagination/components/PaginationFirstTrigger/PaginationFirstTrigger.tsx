@@ -3,6 +3,7 @@
 import { IconButton, IconButtonProps } from '../../../IconButton';
 import { PaginationListItem } from '../PaginationListItem';
 import { usePaginationContext } from '../../hooks';
+import { DoubleArrowLeftIcon } from '@adara-cs/icons';
 
 export interface PaginationFirstTriggerProps extends IconButtonProps {
   /**
@@ -37,13 +38,12 @@ export const PaginationFirstTrigger = ({
         asChild={asChild}
         aria-disabled={disabled}
         variant={variant ?? _variant}
-        name='doubleArrowLeft'
         appearance='ghost'
         size={size ?? _size}
         disabled={disabled}
         {...props}
       >
-        {(asChild && children) ? children : <a href={disabled ? undefined : href} />}
+        {(asChild && children) ? children : <a href={disabled ? undefined : href}><DoubleArrowLeftIcon /></a>}
       </IconButton>
     </PaginationListItem>
   )

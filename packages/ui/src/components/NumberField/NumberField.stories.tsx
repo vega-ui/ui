@@ -4,6 +4,7 @@ import { NumberField } from './NumberField.tsx';
 import { Icon } from '../Icon';
 import { Text } from '../Text';
 import { Label } from '../Label';
+import { ChipIcon } from '@adara-cs/icons';
 
 const meta = {
   title: 'UI-Core/NumberField',
@@ -38,7 +39,7 @@ export const Default: Story = {
 
 export const WithStartSlot: Story = {
   render(props) {
-    return <NumberField {...props} placeholder='Количество процессоров' startSlot={<Icon name='chip' size='xs' />} />
+    return <NumberField {...props} placeholder='Количество процессоров' startSlot={<Icon size='xs'><ChipIcon /></Icon>} />
   }
 }
 

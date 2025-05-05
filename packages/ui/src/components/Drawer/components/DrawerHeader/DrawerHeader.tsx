@@ -8,6 +8,7 @@ import style from './style.module.css'
 import { IconButton } from '../../../IconButton';
 import { Heading } from '../../../Heading';
 import { useDrawerContext } from '../../hooks';
+import { CloseIcon } from '@adara-cs/icons';
 
 export interface DrawerHeaderProps extends HTMLAttributes<HTMLDivElement> {
   /**
@@ -50,8 +51,8 @@ export const DrawerHeader: FC<DrawerHeaderProps> = ({
       {...props}
     >
       <div className={csx(style.drawerHeader, className)}>
-        {title && <Heading as='h3' size={6}>{title}</Heading>}
-        <IconButton onClick={() => onChangeOpen(false)} aria-label='close' variant='secondary' appearance='transparent' name='close' size='small' />
+        {title && <Heading as='h3' size={5}>{title}</Heading>}
+        <IconButton onClick={() => onChangeOpen(false)} aria-label='close' variant='secondary' appearance='transparent' size='small'><CloseIcon /></IconButton>
       </div>
       {children}
     </div>

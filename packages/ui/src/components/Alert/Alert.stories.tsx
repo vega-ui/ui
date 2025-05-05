@@ -3,6 +3,7 @@ import { Alert, AlertProps } from './Alert.tsx';
 import { IconButton } from '../IconButton';
 import { Link } from '../Link';
 import { Code } from '../Code';
+import { CloseIcon } from '@adara-cs/icons';
 
 const variants: AlertProps['variant'][] = ['info', 'error', 'success', 'warning']
 
@@ -51,7 +52,6 @@ export const WithoutContent: Story = {
 
 export const WithoutIcon: Story = {
   args: {
-    icon: false,
     title: 'I\'m a title',
     children: 'I\'m a content!',
   },
@@ -62,7 +62,9 @@ export const WithAction: Story = {
     title: 'I\'m a title',
     children: 'I\'m a content!',
     endSlot: (
-      <IconButton size='small' name='close' iconSize='sm' appearance='transparent' />
+      <IconButton size='small' iconSize='sm' appearance='transparent'>
+        <CloseIcon />
+      </IconButton>
     )
   },
 };

@@ -1,8 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { TextField } from './TextField.tsx';
+import { TextField, TextFieldProps } from './TextField.tsx';
 import { Icon } from '../Icon';
 import { IconButton } from '../IconButton';
+import { CloudIcon } from '@adara-cs/icons';
+
+const sizes: TextFieldProps['size'][] = ['small', 'medium', 'large']
 
 const meta = {
   title: 'UI-Core/TextField',
@@ -25,14 +28,24 @@ export const Default: Story = {
   },
 };
 
+export const Sizes: Story = {
+  render(props) {
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        {sizes.map((size) => <TextField size={size} {...props} />)}
+      </div>
+    )
+  }
+};
+
 export const WithStartSlot: Story = {
   render(props) {
-    return <TextField {...props} placeholder='Домен' startSlot={<Icon name='cloud' size='xs' />} />
+    return <TextField {...props} placeholder='Домен' startSlot={<Icon size='xs'><CloudIcon /></Icon>} />
   }
 }
 
 export const WithEndSlot: Story = {
   render(props) {
-    return <TextField {...props} placeholder='Домен' endSlot={<IconButton name='cloud' variant='primary' appearance='transparent' size='small' aria-label='Отправить' />} />
+    return <TextField {...props} placeholder='Домен' endSlot={<IconButton variant='primary' appearance='transparent' size='small' aria-label='Отправить'><CloudIcon /></IconButton>} />
   }
 }

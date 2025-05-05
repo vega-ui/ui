@@ -1,10 +1,13 @@
 .slot {
+    --input-br-ratio: 0.333;
+
     display: flex;
     justify-content: center;
     align-items: center;
     height: var(--input-height);
     width: var(--input-height);
-    border-radius: inherit;
+    aspect-ratio: 1 / 1;
+    border-radius: calc(var(--input-height) * var(--input-br-ratio));
     outline: 1px solid var(--field-border-color);
     transition: outline-color var(--transition-state-delay) ease;
     font-family: var(--default-font-family);
@@ -14,27 +17,27 @@
 }
 
 .slot[data-size='small'] {
-    font-size: var(--text-font-size-2);
-    line-height: var(--line-height-2);
-    border-radius: var(--radius-3);
     --input-height: var(--spacing-21);
     --cursor-height: var(--text-font-size-2);
+
+    font-size: var(--text-font-size-2);
+    line-height: var(--line-height-2);
 }
 
 .slot[data-size='medium'] {
-    font-size: var(--text-font-size-3);
-    line-height: var(--line-height-3);
-    border-radius: var(--radius-3);
     --input-height: var(--spacing-24);
     --cursor-height: var(--text-font-size-3);
+
+    font-size: var(--text-font-size-3);
+    line-height: var(--line-height-3);
 }
 
 .slot[data-size='large'] {
-    font-size: var(--text-font-size-4);
-    line-height: var(--line-height-4);
-    border-radius: var(--radius-4);
     --input-height: var(--spacing-27);
     --cursor-height: var(--text-font-size-4);
+
+    font-size: var(--text-font-size-4);
+    line-height: var(--line-height-4);
 }
 
 .slot:before {

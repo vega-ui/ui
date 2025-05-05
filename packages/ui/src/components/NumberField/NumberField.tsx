@@ -18,6 +18,7 @@ import { getNumberMaskOptions, getNumberValue, sizeMapper } from './utils';
 import { useMaskito } from '@maskito/react';
 import { useControlledState } from '@adara-cs/hooks';
 import { maskitoTransform } from '@maskito/core';
+import { MinusIcon, PlusIcon } from '@adara-cs/icons';
 
 export type NumberFieldChangeEvent = WheelEvent | FormEvent | MouseEvent | KeyboardEvent | FocusEvent
 
@@ -212,10 +213,14 @@ export const NumberField: FC<NumberFieldProps> = ({
       />
       <IconButton disabled={disabled || isDecrementDisabled} iconSize={sizeMapper(size)} size={size}
                   className={csx(style.controlButton, style.controlButtonDown)} onClick={onDecrement}
-                  variant='secondary' appearance='transparent' name='minus'/>
+                  variant='secondary' appearance='transparent'>
+        <MinusIcon />
+      </IconButton>
       <IconButton disabled={disabled || isIncrementDisabled} iconSize={sizeMapper(size)} size={size} onClick={onIncrement}
                   className={csx(style.controlButton, style.controlButtonUp)} variant='secondary'
-                  appearance='transparent' name='plus'/>
+                  appearance='transparent'>
+        <PlusIcon />
+      </IconButton>
     </div>
   )
 }

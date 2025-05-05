@@ -1,42 +1,43 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react'
 import { Icon } from '../Icon.tsx';
+import { SupportIcon } from '@adara-cs/icons';
 
 describe('Icon', () => {
   it('default size', () => {
-    render(<Icon name='support' />)
+    render(<Icon data-testid='icon'><SupportIcon /></Icon>)
     expect(screen.getByTestId('icon').hasAttribute('data-size')).toBeTruthy()
     expect(screen.getByTestId('icon').getAttribute('data-size')).toBe('sm')
   })
 
   it('role image', () => {
-    render(<Icon name='support' />)
+    render(<Icon data-testid='icon'><SupportIcon /></Icon>)
     expect(screen.getByTestId('icon').getAttribute('role')).toBe('image')
   })
 
   it('label', () => {
-    render(<Icon name='support' size='sm' aria-label='Support' />)
+    render(<Icon data-testid='icon' size='sm' aria-label='Support'><SupportIcon /></Icon>)
     expect(screen.getByTestId('icon').getAttribute('aria-label')).toBe('Support')
   })
 
   it('custom height', () => {
-    render(<Icon name='support' height={64} />)
+    render(<Icon data-testid='icon' height={64} aria-label='Support'><SupportIcon /></Icon>)
     expect(screen.getByTestId('icon').getAttribute('height')).toBe('64')
   })
 
   it('custom width', () => {
-    render(<Icon name='support' width={64} />)
+    render(<Icon data-testid='icon' width={64}><SupportIcon /></Icon>)
     expect(screen.getByTestId('icon').getAttribute('width')).toBe('64')
   })
 
   it('custom width with size', () => {
-    render(<Icon name='support' width={64} size='sm' />)
+    render(<Icon data-testid='icon' width={64} size='sm'><SupportIcon /></Icon>)
     expect(screen.getByTestId('icon').getAttribute('width')).toBe('64')
     expect(screen.getByTestId('icon').hasAttribute('data-size')).toBeFalsy()
   })
 
   it('custom height with size', () => {
-    render(<Icon name='support' height={64} size='sm' />)
+    render(<Icon data-testid='icon' height={64} size='sm'><SupportIcon /></Icon>)
     expect(screen.getByTestId('icon').getAttribute('height')).toBe('64')
     expect(screen.getByTestId('icon').hasAttribute('data-size')).toBeFalsy()
   })

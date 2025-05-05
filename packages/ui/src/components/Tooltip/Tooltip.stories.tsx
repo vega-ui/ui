@@ -6,6 +6,7 @@ import { IconButton } from '../IconButton';
 import { Modal, ModalContent, ModalTrigger } from '../Modal';
 import { TextField } from '../TextField';
 import { TooltipContent, TooltipTrigger } from './components';
+import { SupportIcon, InfoIcon } from '@adara-cs/icons';
 
 const meta = {
   title: 'UI-Core/Tooltip',
@@ -41,7 +42,7 @@ export const WithIconButton: Story = {
     children: (
       <>
         <TooltipTrigger asChild>
-          <IconButton name='support' />
+          <IconButton><SupportIcon /></IconButton>
         </TooltipTrigger>
         <TooltipContent>
           Support
@@ -56,7 +57,7 @@ export const InsideModal: Story = {
     children: (
       <>
         <TooltipTrigger asChild>
-          <IconButton name='info' />
+          <IconButton><InfoIcon /></IconButton>
         </TooltipTrigger>
         <TooltipContent>
           Info
@@ -75,7 +76,7 @@ export const InsideModal: Story = {
             endSlot={
               <Tooltip {...props}>
                 <TooltipTrigger asChild>
-                  <IconButton appearance='transparent' name='info' />
+                  <IconButton appearance='transparent'><InfoIcon /></IconButton>
                 </TooltipTrigger>
                 <TooltipContent>
                   Info
