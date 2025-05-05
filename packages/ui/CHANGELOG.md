@@ -1,5 +1,14 @@
 # @adara-cs/ui-kit-web
 
+## 3.0.3
+
+### Patch Changes
+
+- 072cdc8: Fixed Icon size into IconButton
+  - @adara-cs/hooks@3.0.3
+  - @adara-cs/icons@3.0.3
+  - @adara-cs/utils@3.0.3
+
 ## 3.0.2
 
 ### Patch Changes
