@@ -1,6 +1,6 @@
 'use client';
 
-import { FC } from 'react';
+import { cloneElement, FC, ReactElement } from 'react';
 import { IconButton, IconButtonProps } from '../../../IconButton';
 import { PaginationListItem } from '../PaginationListItem';
 import { usePaginationContext } from '../../hooks';
@@ -32,6 +32,8 @@ export const PaginationPrevTrigger: FC<PaginationPrevTriggerProps> = ({
   ...props
 }) => {
   const { size: _size, variant: _variant } = usePaginationContext()
+  const childrenReact = (children as ReactElement)
+  const childrenProps = (childrenReact?.props as Record<string, unknown>)
 
   return (
     <PaginationListItem>
@@ -44,7 +46,10 @@ export const PaginationPrevTrigger: FC<PaginationPrevTriggerProps> = ({
         size={size ?? _size}
         {...props}
       >
-        {(asChild && children) ? children : <a href={disabled ? undefined : href}><ArrowLeftIcon /></a>}
+        {(asChild && children)
+          ? cloneElement(children as ReactElement, childrenProps, <ArrowLeftIcon />)
+          : <a href={disabled ? undefined : href}><ArrowLeftIcon /></a>
+        }
       </IconButton>
     </PaginationListItem>
   )
