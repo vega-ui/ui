@@ -1,5 +1,14 @@
 # @adara-cs/ui-kit-web
 
+## 3.0.1
+
+### Patch Changes
+
+- 1124ecf: Fixed Icon size: now custom height and width available
+  - @adara-cs/hooks@3.0.1
+  - @adara-cs/icons@3.0.1
+  - @adara-cs/utils@3.0.1
+
 ## 3.0.0
 
 ### Major Changes
