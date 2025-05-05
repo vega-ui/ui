@@ -25,5 +25,5 @@
 }
 
 .icon {
-    --icon-size: calc(var(--icon-button-size) / 3) !important;
+    --icon-size: calc(var(--icon-button-size) / 3);
 }
