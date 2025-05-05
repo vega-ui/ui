@@ -1,7 +1,7 @@
 import { DetailedHTMLProps, FC, HTMLAttributes, ReactNode } from 'react';
 import style from './style.module.css'
 import { csx } from '@adara-cs/utils';
-import { Icon, IconProps } from '../Icon';
+import { Icon } from '../Icon';
 import { Text } from '../Text';
 import { iconMapper } from './utils';
 
@@ -13,11 +13,11 @@ export interface AlertProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElem
   children?: ReactNode | ReactNode[]
 
   /**
-   * The name of the icon to display at the start of the alert.
-   * Uses the same naming convention as `IconProps['name']`.
+   * Optional content rendered at the icon slot of the alert.
+   * Useful for renderings custom icons.
    * Pass `false` to hide the icon entirely.
    */
-  icon?: IconProps['name'] | false
+  iconSlot?: ReactNode | ReactNode[]
 
   /**
    * Optional content rendered at the end of the alert.
@@ -54,7 +54,7 @@ export const Alert: FC<AlertProps> = ({
   variant = 'info',
   endSlot,
   title,
-  icon,
+  iconSlot,
   className,
   children,
   ref,
@@ -62,7 +62,7 @@ export const Alert: FC<AlertProps> = ({
 }) => {
   return (
     <div ref={ref} data-variant={variant} className={csx(style.alert, className)} {...props}>
-      {icon !== false && <Icon className={style.icon} name={icon ?? iconMapper[variant]} size='md' />}
+      {iconSlot !== false && iconSlot ? iconSlot : <Icon className={style.icon} size='md'>{iconMapper[variant]}</Icon>}
       <div className={style.content}>
         <Text className={style.title} fontWeight={500} size={3} asChild>
           <p>{title}</p>

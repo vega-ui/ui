@@ -1,5 +1,7 @@
 .inputWrapper {
     --input-height: 0;
+    --input-br-ratio: 0.333;
+
     display: flex;
     align-items: center;
     position: relative;
@@ -9,12 +11,14 @@
     cursor: text;
     transition: outline-color var(--transition-state-delay) ease;
     height: var(--input-height);
+    border-radius: calc(var(--input-height) * var(--input-br-ratio));
 }
 
 .input {
     box-sizing: border-box;
     padding: 0;
     font-family: var(--default-font-family);
+    border-radius: inherit;
     background: none;
     color: var(--text-color);
     border: 0;
@@ -35,13 +39,11 @@
 }
 
 .inputWrapper[data-size='small'] {
-    border-radius: var(--radius-3);
     --input-height: var(--spacing-21);
 }
 
 .inputWrapper[data-size='small'] .input {
     padding: var(--spacing-6) var(--spacing-10);
-    border-radius: inherit;
     font-size: var(--text-font-size-2);
     line-height: var(--line-height-2);
 }
@@ -63,13 +65,11 @@
 }
 
 .inputWrapper[data-size='medium'] {
-    border-radius: var(--radius-3);
     --input-height: var(--spacing-24);
 }
 
 .inputWrapper[data-size='medium'] .input {
     padding: var(--spacing-6) var(--spacing-12);
-    border-radius: inherit;
     font-size: var(--text-font-size-3);
     line-height: var(--line-height-3);
 }
@@ -92,13 +92,11 @@
 
 .inputWrapper[data-size='large'] {
     font-size: var(--text-font-size-4);
-    border-radius: var(--radius-4);
     --input-height: var(--spacing-27);
 }
 
 .inputWrapper[data-size='large'] .input {
     padding: var(--spacing-7) var(--spacing-14);
-    border-radius: inherit;
     font-size: var(--text-font-size-4);
     line-height: var(--line-height-4);
 }

@@ -1,86 +1,59 @@
-'use client';
-import { FC, Ref } from 'react';
+import { FC, ReactNode, Ref } from 'react';
 import style from './style.module.css'
 import { csx } from '@adara-cs/utils';
-import { IconName, getIcon } from './utils';
+import { Slot } from '../Slot';
 
 export interface IconProps {
   /**
-   * The name of the icon to render.
-   * Must match a key in the IconName type or icon registry.
+   * Predefined size token for the icon.
+   * Can be overridden by explicit width and height.
    */
-  name: IconName
+  size?: '4xs' | '3xs' | '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | null
 
-  /**
-   * Predefined size keyword for the icon.
-   * Can be overridden by custom `width` and `height`.
-   */
-  size?: '4xs' | '3xs' | '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
-
-  /**
-   * Optional class name for styling the icon container.
-   */
+  /** Optional custom class name for styling */
   className?: string
 
-  /**
-   * Explicit width in pixels for the icon.
-   * Overrides the preset from `size` if provided.
-   */
+  /** Explicit width in pixels (overrides `size` if set) */
   width?: number
 
-  /**
-   * Explicit height in pixels for the icon.
-   * Overrides the preset from `size` if provided.
-   */
+  /** Explicit height in pixels (overrides `size` if set) */
   height?: number
 
-  /**
-   * Aria label for accessibility.
-   * Use when the icon conveys meaningful information without visible text.
-   */
-  'aria-label'?: string
-
-  /**
-   * ID of an element that labels the icon.
-   * Alternative to `aria-label` for externalized or localized labels.
-   */
-  'aria-labelledby'?: string
-
-  /**
-   * Ref forwarded to the underlying SVG element.
-   * Useful for animation, focus, or measuring.
-   */
+  /** Ref to the SVG element */
   ref?: Ref<SVGSVGElement>
+
+  /**
+   * Icon content (required).
+   * Accepts:
+   * – icons from `~/icons`
+   * – custom inline SVG
+   * – third-party icon components (e.g. Lucide, Tabler)
+   */
+  children: ReactNode
 }
 
 /** UI component for render SVG icons */
 export const Icon: FC<IconProps> = ({
   size = 'sm',
-  'aria-label': ariaLabel,
-  'aria-labelledby': ariaLabelledby,
   ref,
-  name,
   width,
   height,
   className,
+  children,
   ...props
 }) => {
-  const Component = getIcon(name as IconName);
-
   return (
-    <Component
+    <Slot
       role='image'
-      aria-label={ariaLabel}
-      aria-labelledby={ariaLabelledby}
-      aria-hidden={!ariaLabel && !ariaLabelledby}
-      data-testid='icon'
       className={csx(style.icon, className)}
       fill='currentColor'
+      ref={ref}
       data-size={width || height ? undefined : size}
       width={width}
       height={height}
-      ref={ref}
       {...props}
-    />
+    >
+      {children}
+    </Slot>
   )
 }

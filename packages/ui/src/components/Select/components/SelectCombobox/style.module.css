@@ -1,5 +1,7 @@
 .selectCombobox {
     --select-height: 0;
+    --select--br-ratio: 0.333;
+
     display: flex;
     width: 100%;
     flex-direction: row;
@@ -12,9 +14,9 @@
     border: none;
     font-family: var(--default-font-family);
     font-size: var(--font-size-3);
-    border-radius: var(--radius-3);
     box-sizing: border-box;
     height: var(--select-height);
+    border-radius: calc(var(--select-height) * var(--select--br-ratio));
 }
 
 .segment {
@@ -30,8 +32,9 @@
 }
 
 .selectCombobox[data-size='small'] {
-    min-width: 150px;
     --select-height: var(--spacing-21);
+
+    min-width: 150px;
     padding: var(--spacing-5) var(--spacing-8);
     gap: var(--spacing-8);
 }
@@ -42,8 +45,9 @@
 }
 
 .selectCombobox[data-size='medium'] {
-    min-width: 150px;
     --select-height: var(--spacing-24);
+
+    min-width: 150px;
     padding: var(--spacing-5) var(--spacing-10);
     gap: var(--spacing-10);
 }
@@ -54,8 +58,9 @@
 }
 
 .selectCombobox[data-size='large'] {
-    min-width: 250px;
     --select-height: var(--spacing-27);
+
+    min-width: 250px;
     padding: var(--spacing-5) var(--spacing-10);
     gap: var(--spacing-12);
 }
@@ -72,7 +77,6 @@
 
 .selectCombobox[data-variant='field'] {
     background-color: var(--surface-foreground);
-    border-radius: var(--radius-3);
     outline: 1px solid var(--field-border-color);
     transition: outline var(--transition-state-delay) ease-in-out;
 }
@@ -97,7 +101,6 @@
 }
 
 .selectCombobox[data-variant='inline'] {
-    border-radius: var(--radius-3);
     border: 1px solid transparent;
     transition:
             outline-color var(--transition-state-delay) ease-in-out,

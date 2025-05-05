@@ -4,6 +4,7 @@ import { Select } from './Select.tsx';
 import { Label } from '../Label';
 import { Icon } from '../Icon';
 import { SelectOption } from './components/SelectOption';
+import { GlobeIcon } from '@adara-cs/icons';
 
 const meta = {
   title: 'UI-Core/Select/Select',
@@ -38,7 +39,7 @@ export const Inline: Story = {
   args: {
     placeholder: 'Выберите язык',
     variant: 'inline',
-    startSlot: <Icon name='globe' />
+    startSlot: <Icon><GlobeIcon /></Icon>
   },
   render(args) {
     return (

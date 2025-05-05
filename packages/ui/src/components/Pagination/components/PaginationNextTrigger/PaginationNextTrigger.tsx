@@ -1,9 +1,10 @@
 'use client';
 
-import { FC } from 'react';
+import { cloneElement, FC, ReactElement } from 'react';
 import { IconButton, IconButtonProps } from '../../../IconButton';
 import { PaginationListItem } from '../PaginationListItem';
 import { usePaginationContext } from '../../hooks';
+import { ArrowRightIcon } from '@adara-cs/icons';
 
 export interface PaginationNextTriggerProps extends IconButtonProps {
   /**
@@ -31,20 +32,24 @@ export const PaginationNextTrigger: FC<PaginationNextTriggerProps> = ({
   ...props
 }) => {
   const { size: _size, variant: _variant } = usePaginationContext()
+  const childrenReact = (children as ReactElement)
+  const childrenProps = (childrenReact?.props as Record<string, unknown>)
 
   return (
     <PaginationListItem>
       <IconButton
         aria-disabled={disabled}
         variant={variant ?? _variant}
-        name='arrowRight'
         asChild={asChild}
         disabled={disabled}
         appearance='ghost'
         size={size ?? _size}
         {...props}
       >
-        {(asChild && children) ? children : <a href={disabled ? undefined : href} />}
+        {(asChild && children)
+          ? cloneElement(children as ReactElement, childrenProps, <ArrowRightIcon />)
+          : <a href={disabled ? undefined : href}><ArrowRightIcon /></a>
+        }
       </IconButton>
     </PaginationListItem>
   )

@@ -1,5 +1,7 @@
 .iconButton {
     --icon-button-size: 0;
+    --icon-button-br-ratio: 0.333;
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -7,19 +9,21 @@
     aspect-ratio: 1 / 1;
     height: var(--icon-button-size);
     width: var(--icon-button-size);
+    border-radius: calc(var(--icon-button-size) * var(--icon-button-br-ratio));
 }
 
 .iconButton[data-size='small'] {
-    border-radius: var(--radius-3);
     --icon-button-size: var(--spacing-21);
 }
 
 .iconButton[data-size='medium'] {
-    border-radius: var(--radius-3);
     --icon-button-size: var(--spacing-24);
 }
 
 .iconButton[data-size='large'] {
-    border-radius: var(--radius-4);
     --icon-button-size: var(--spacing-27);
+}
+
+.icon {
+    --icon-size: calc(var(--icon-button-size) / 3) !important;
 }

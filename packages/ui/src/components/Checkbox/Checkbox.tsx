@@ -12,7 +12,7 @@ import style from './style.module.css'
 import { csx, mergeRefs } from '@adara-cs/utils';
 import { Icon } from '../Icon';
 import { VisuallyHidden } from '../VisuallyHidden';
-import { sizeMapper } from './utils';
+import { CheckIcon, MinusIcon } from '@adara-cs/icons';
 
 export interface CheckboxProps extends Omit<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'size'> {
   /**
@@ -101,8 +101,8 @@ export const Checkbox: FC<CheckboxProps> = ({
         <input onChange={onChange} type='checkbox' disabled={disabled} defaultChecked={defaultChecked} checked={checked} {...props} />
       </VisuallyHidden>
       <div className={csx(style.checkbox, className)} data-size={size} data-variant={variant}>
-        <Icon aria-hidden className={style.checkboxCheckIcon} name='check' size={sizeMapper(size)} />
-        <Icon aria-hidden className={style.checkboxIndeterminateIcon} name='minus' size={sizeMapper(size)} />
+        <Icon size={null} aria-hidden className={style.checkboxCheckIcon}><CheckIcon /></Icon>
+        <Icon size={null} aria-hidden className={style.checkboxIndeterminateIcon}><MinusIcon /></Icon>
       </div>
     </label>
   )

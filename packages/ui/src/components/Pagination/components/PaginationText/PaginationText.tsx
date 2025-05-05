@@ -5,8 +5,8 @@ import { PaginationListItem } from '../PaginationListItem';
 import { usePaginationContext } from '../../hooks';
 import { Text, TextProps } from '../../../Text';
 import { sizeMapper } from './utils';
-import style from './style.module.css'
 import { csx } from '@adara-cs/utils';
+import style from './style.module.css'
 
 export interface PaginationTextProps extends TextProps {
   /**

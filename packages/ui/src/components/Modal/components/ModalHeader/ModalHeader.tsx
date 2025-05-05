@@ -6,6 +6,7 @@ import { IconButton } from '../../../IconButton';
 import style from './style.module.css';
 import { useModalContext } from '../../hooks';
 import { csx } from '@adara-cs/utils';
+import { CloseIcon } from '@adara-cs/icons';
 
 export interface ModalHeaderProps extends HTMLAttributes<HTMLElement> {
   /**
@@ -32,10 +33,12 @@ export const ModalHeader: FC<ModalHeaderProps> = ({ title, headingId, withClose 
 
   return (
     <header className={csx(style.header, className)} {...props}>
-      {title && <Heading as='h2' id={headingId} className={style.title} size={6}>{title}</Heading>}
+      {title && <Heading as='h2' id={headingId} className={style.title} size={5}>{title}</Heading>}
       {withClose &&
-          <IconButton onClick={() => changeOpen(false)} name='close' size='small'
-                      variant='secondary' appearance='transparent'/>}
+          <IconButton onClick={() => changeOpen(false)} size='small'
+                      variant='secondary' appearance='transparent'>
+              <CloseIcon />
+          </IconButton>}
     </header>
   )
 }

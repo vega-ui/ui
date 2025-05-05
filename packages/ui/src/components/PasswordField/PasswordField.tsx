@@ -7,6 +7,7 @@ import { TextField, TextFieldProps } from '../TextField';
 import { IconButton } from '../IconButton';
 import { mergeRefs } from '@adara-cs/utils';
 import style from './style.module.css';
+import { EyeCloseIcon, EyeIcon } from '@adara-cs/icons';
 
 export type PasswordFieldProps = TextFieldProps
 
@@ -38,8 +39,9 @@ export const PasswordField: FC<PasswordFieldProps> = ({
         type={shown ? 'text' : 'password'}
         {...props}
       />
-      <IconButton className={style.controlButton} size={size} disabled={disabled} variant='secondary' appearance='transparent'
-                  name={shown ? 'eyeClose' : 'eye'} onClick={onToggle}/>
+      <IconButton className={style.controlButton} size={size} disabled={disabled} variant='secondary' appearance='transparent' onClick={onToggle}>
+        {shown ? <EyeCloseIcon /> : <EyeIcon />}
+      </IconButton>
     </div>
   )
 }

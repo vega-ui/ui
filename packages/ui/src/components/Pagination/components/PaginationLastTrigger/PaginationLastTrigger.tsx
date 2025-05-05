@@ -1,9 +1,10 @@
 'use client';
 
-import { FC } from 'react';
+import { cloneElement, FC, ReactElement } from 'react';
 import { IconButton, IconButtonProps } from '../../../IconButton';
 import { PaginationListItem } from '../PaginationListItem';
 import { usePaginationContext } from '../../hooks';
+import { DoubleArrowRightIcon } from '@adara-cs/icons';
 
 export interface PaginationLastTriggerProps extends IconButtonProps {
   /**
@@ -31,6 +32,8 @@ export const PaginationLastTrigger: FC<PaginationLastTriggerProps> = ({
   ...props
 }) => {
   const { size: _size, variant: _variant } = usePaginationContext()
+  const childrenReact = (children as ReactElement)
+  const childrenProps = (childrenReact?.props as Record<string, unknown>)
 
   return (
     <PaginationListItem>
@@ -38,13 +41,15 @@ export const PaginationLastTrigger: FC<PaginationLastTriggerProps> = ({
         aria-disabled={disabled}
         disabled={disabled}
         variant={variant ?? _variant}
-        name='doubleArrowRight'
         appearance='ghost'
         asChild={asChild}
         size={size ?? _size}
         {...props}
       >
-        {(asChild && children) ? children : <a href={disabled ? undefined : href} />}
+        {(asChild && children)
+          ? cloneElement(children as ReactElement, childrenProps, <DoubleArrowRightIcon />)
+          : <a href={disabled ? undefined : href}><DoubleArrowRightIcon /></a>
+        }
       </IconButton>
     </PaginationListItem>
   )

@@ -1,9 +1,8 @@
-import { Children, cloneElement, FC, HTMLAttributes, isValidElement, ReactElement, ReactNode, Ref } from 'react';
+import { Children, cloneElement, FC, HTMLAttributes, isValidElement, ReactElement, ReactNode } from 'react';
 import { mergeProps } from '@adara-cs/utils';
 
-export interface SlotProps extends HTMLAttributes<HTMLElement> {
+export interface SlotProps extends HTMLAttributes<HTMLElement>, Record<string, unknown> {
   children: ReactNode
-  ref?: Ref<HTMLElement>
 }
 
 export const Slot: FC<SlotProps> = ({ children, ...props }) => {

@@ -1,4 +1,7 @@
 .checkbox {
+    --checkbox-size: var(--spacing-8);
+    --checkbox-br-ratio: 0.333;
+
     position: relative;
     cursor: pointer;
     display: flex;
@@ -10,8 +13,9 @@
     transition:
             background-color var(--transition-state-delay) ease,
             border-color var(--transition-state-delay) ease;
-    width: var(--size);
-    height: var(--size);
+    width: var(--checkbox-size);
+    height: var(--checkbox-size);
+    border-radius: calc(var(--checkbox-size) * var(--checkbox-br-ratio));
     overflow: hidden;
 }
 
@@ -20,26 +24,25 @@
 }
 
 .checkbox[data-size='small'] {
-    --size: var(--spacing-8);
-    border-radius: calc(var(--radius-1) * 1.25);
+    --checkbox-size: var(--spacing-8);
 }
 
 .checkbox[data-size='medium'] {
-    --size: var(--spacing-10);
-    border-radius: calc(var(--radius-1) * 1.5);
+    --checkbox-size: var(--spacing-10);
 }
 
 .checkbox[data-size='large'] {
-    --size: var(--spacing-12);
-    border-radius: var(--radius-2);
+    --checkbox-size: var(--spacing-12);
 }
 
 .checkboxCheckIcon,
 .checkboxIndeterminateIcon {
+    --icon-size: calc(var(--checkbox-size) / 2) !important;
+
     position: absolute;
     opacity: 0;
     transform: scale(0);
-    transition: all var(--transition-state-delay) ease;
+    transition: transform var(--transition-state-delay) ease;
 }
 
 .checkboxWrapper:has(input[type='checkbox']:disabled) .checkbox {

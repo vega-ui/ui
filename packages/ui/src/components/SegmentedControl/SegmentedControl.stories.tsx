@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { fn } from '@storybook/test';
 
-
 import { SegmentedControl } from './SegmentedControl.tsx';
 import { SegmentedControlItem } from './components';
 import { Icon } from '../Icon';
+import { SunIcon, MoonIcon } from '@adara-cs/icons';
 
 const meta = {
   title: 'UI-Core/SegmentedControl/SegmentedControl',
@@ -60,10 +60,10 @@ export const WithIcon: Story = {
     return (
       <SegmentedControl {...props}>
         <SegmentedControlItem value='1'>
-          <Icon name='sun' />
+          <Icon><SunIcon /></Icon>
         </SegmentedControlItem>
         <SegmentedControlItem value='2'>
-          <Icon name='moon' />
+          <Icon><MoonIcon /></Icon>
         </SegmentedControlItem>
       </SegmentedControl>
     )
