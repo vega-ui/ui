@@ -1,5 +1,5 @@
 .switch {
-    --switch-size: 16px;
+    --switch-size: var(--spacing-8);
     --switch-padding: 2px;
 
     display: flex;

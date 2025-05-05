@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { IconButton, IconButtonProps } from './IconButton.tsx';
-import { GlobeIcon, SupportIcon } from '@adara-cs/icons';
+import { GlobeIcon, SupportIcon, MinusIcon } from '@adara-cs/icons';
 
 const meta = {
   title: 'UI-Core/IconButton',
@@ -29,7 +29,7 @@ export const Primary: Story = {
 export const Secondary: Story = {
   args: {
     variant: 'secondary',
-    children: <GlobeIcon />
+    children: <MinusIcon />
   }
 };
 
