@@ -3,7 +3,7 @@ import {
   InputHTMLAttributes, ReactNode, Ref,
 } from 'react';
 import style from './style.module.css'
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 
 export interface TextFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
   /**

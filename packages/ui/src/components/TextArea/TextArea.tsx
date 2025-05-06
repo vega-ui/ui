@@ -3,7 +3,7 @@ import {
   Ref, TextareaHTMLAttributes,
 } from 'react';
 import style from './style.module.css'
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 
 export interface TextAreaProps extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'size'> {
   /**

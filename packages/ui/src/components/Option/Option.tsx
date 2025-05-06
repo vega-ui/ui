@@ -1,6 +1,6 @@
 import { FC, HTMLAttributes, KeyboardEvent, ReactNode, Ref, MouseEvent } from 'react';
 import styles from './style.module.css'
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 
 export interface OptionProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSelect'> {
   /**

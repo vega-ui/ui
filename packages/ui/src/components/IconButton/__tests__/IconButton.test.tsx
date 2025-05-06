@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react'
 import { IconButton } from '../IconButton.tsx';
-import { GlobeIcon } from '@adara-cs/icons';
+import { GlobeIcon } from '@vega-ui/icons';
 
 const sizes = ['small', 'medium', 'large'] as const;
 const variants = ['primary', 'secondary'] as const;

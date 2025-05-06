@@ -1,5 +1,5 @@
 import { Children, FC, HTMLAttributes, ReactElement } from 'react';
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
 
 export interface SheetSelectOptionListProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSelect' | 'itemRef'> {

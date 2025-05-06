@@ -4,7 +4,7 @@ import {
   HTMLAttributes,
   PropsWithChildren, Ref,
 } from 'react';
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 import styles from './style.module.css'
 
 type TransitionStatus = 'unmounted' | 'initial' | 'open' | 'close'

@@ -1,7 +1,7 @@
 'use client';
 import { Children, FC, HTMLAttributes, ReactElement, useState } from 'react';
 import { AccordionItem, AccordionItemProps } from './components';
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
 
 export interface AccordionProps extends HTMLAttributes<HTMLUListElement> {

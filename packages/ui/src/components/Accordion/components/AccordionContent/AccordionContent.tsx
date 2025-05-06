@@ -1,7 +1,7 @@
 'use client';
 import { DetailedHTMLProps, FC, HTMLAttributes, Ref } from 'react';
 import style from './style.module.css';
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 import { CollapsibleContent } from '../../../Collapsible';
 
 interface AccordionContentProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {

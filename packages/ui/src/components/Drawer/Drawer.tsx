@@ -13,7 +13,7 @@ import {
   useRole,
   useTransitionStatus
 } from '@floating-ui/react';
-import { useControlledState } from '@adara-cs/hooks';
+import { useControlledState } from '@vega-ui/hooks';
 import { DrawerPosition, DrawerProvider } from './providers';
 
 export interface DrawerProps {

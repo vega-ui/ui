@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { SheetPhoneSelectField, PhoneFieldCountry } from './SheetPhoneSelectField.tsx';
-import { Label } from '@adara-cs/ui-kit-web';
+import { Label } from '@vega-ui/react';
 
 const options: PhoneFieldCountry[] = [
   {

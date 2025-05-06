@@ -13,12 +13,12 @@ import {
 import { TextField, TextFieldProps } from '../TextField';
 import { IconButton } from '../IconButton';
 import style from './style.module.css'
-import { csx, mergeRefs } from '@adara-cs/utils';
+import { csx, mergeRefs } from '@vega-ui/utils';
 import { getNumberMaskOptions, getNumberValue, sizeMapper } from './utils';
 import { useMaskito } from '@maskito/react';
-import { useControlledState } from '@adara-cs/hooks';
+import { useControlledState } from '@vega-ui/hooks';
 import { maskitoTransform } from '@maskito/core';
-import { MinusIcon, PlusIcon } from '@adara-cs/icons';
+import { MinusIcon, PlusIcon } from '@vega-ui/icons';
 
 export type NumberFieldChangeEvent = WheelEvent | FormEvent | MouseEvent | KeyboardEvent | FocusEvent
 

@@ -10,7 +10,7 @@ const meta = {
     layout: 'padded',
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/VegaUI--Community-?node-id=0-4176&t=2RYEGgF9z3n5SpP5-4',
+      url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/vega-ui--Community-?node-id=0-4176&t=2RYEGgF9z3n5SpP5-4',
     },
   },
   tags: ['autodocs'],

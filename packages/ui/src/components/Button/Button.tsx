@@ -1,6 +1,6 @@
 import { ButtonBase, ButtonBaseProps } from '../ButtonBase';
 import { FC, ReactNode, Ref } from 'react';
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 import { Spinner } from '../Spinner';
 import style from './style.module.css';
 import { sizeMapper } from './utils';

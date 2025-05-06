@@ -4,7 +4,7 @@ import { cloneElement, FC, ReactElement } from 'react';
 import { IconButton, IconButtonProps } from '../../../IconButton';
 import { PaginationListItem } from '../PaginationListItem';
 import { usePaginationContext } from '../../hooks';
-import { ArrowLeftIcon } from '@adara-cs/icons';
+import { ArrowLeftIcon } from '@vega-ui/icons';
 
 export interface PaginationPrevTriggerProps extends IconButtonProps {
   /**

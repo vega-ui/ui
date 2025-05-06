@@ -1,7 +1,7 @@
 {
-  "name": "@adara-cs/hooks",
-  "version": "3.0.3",
-  "description": "AdaraCloud UI Kit for Web",
+  "name": "@vega-ui/hooks",
+  "version": "1.0.0",
+  "description": "Vega UI Kit for Web",
   "license": "MIT",
   "keywords": [
     "ui-kit",
@@ -10,11 +10,11 @@
     "typescript",
     "js"
   ],
-  "author": "adara-cs",
+  "author": "VegaUI Team",
   "bugs": {
-    "url": "https://github.com/adara-cs/ui-kit-web/issues"
+    "url": "https://github.com/vega-ui/ui/issues"
   },
-  "homepage": "https://github.com/adara-cs/ui-kit-web#readme",
+  "homepage": "https://github.com/vega-ui/ui#readme",
   "type": "module",
   "main": "./dist/index.ts",
   "types": "./dist/index.d.ts",

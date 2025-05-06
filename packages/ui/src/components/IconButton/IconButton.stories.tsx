@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { IconButton, IconButtonProps } from './IconButton.tsx';
-import { GlobeIcon, SupportIcon, MinusIcon } from '@adara-cs/icons';
+import { GlobeIcon, SupportIcon, MinusIcon } from '@vega-ui/icons';
 
 const meta = {
   title: 'UI-Core/IconButton',
@@ -10,7 +10,7 @@ const meta = {
     layout: 'centered',
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/VegaUI--Community-?node-id=0-5550&t=2RYEGgF9z3n5SpP5-4',
+      url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/vega-ui--Community-?node-id=0-5550&t=2RYEGgF9z3n5SpP5-4',
     },
   },
   tags: ['autodocs'],

@@ -1,7 +1,7 @@
 import { FC, HTMLAttributes } from 'react';
 import { usePinFieldContext } from '../../hooks';
 import style from './style.module.css'
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 
 export interface PinFieldSeparator extends HTMLAttributes<HTMLDivElement> {
   /**

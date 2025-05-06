@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Avatar } from './Avatar.tsx';
 import { AvatarFallback, AvatarIcon, AvatarImage } from './components';
-import { SupportIcon } from '@adara-cs/icons';
+import { SupportIcon } from '@vega-ui/icons';
 
 const meta = {
   title: 'UI-Core/Avatar/Avatar',
@@ -10,7 +10,7 @@ const meta = {
     layout: 'padded',
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/VegaUI--Community-?node-id=0-2671&t=2RYEGgF9z3n5SpP5-4',
+      url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/vega-ui--Community-?node-id=0-2671&t=2RYEGgF9z3n5SpP5-4',
     },
   },
   tags: ['autodocs'],

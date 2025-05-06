@@ -1,7 +1,7 @@
 'use client';
 
 import { FC } from 'react';
-import { Modal, Sheet, SheetProps, ModalProps } from '@adara-cs/ui-kit-web';
+import { Modal, Sheet, SheetProps, ModalProps } from '@vega-ui/react';
 import { ResponsiveModalProvider } from './providers';
 
 export interface ResponsiveModalProps extends ModalProps, SheetProps {

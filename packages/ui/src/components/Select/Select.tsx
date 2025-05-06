@@ -28,10 +28,10 @@ import {
   useTypeahead,
   FloatingList,
 } from '@floating-ui/react';
-import { csx, mergeRefs } from '@adara-cs/utils';
+import { csx, mergeRefs } from '@vega-ui/utils';
 import styles from './style.module.css';
 import { SelectCombobox, SelectListbox, SelectOptionProps } from './components';
-import { useControlledState } from '@adara-cs/hooks';
+import { useControlledState } from '@vega-ui/hooks';
 import { SelectProvider } from './providers';
 import { VisuallyHidden } from '../VisuallyHidden';
 

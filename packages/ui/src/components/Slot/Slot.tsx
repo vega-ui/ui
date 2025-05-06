@@ -1,5 +1,5 @@
 import { Children, cloneElement, FC, HTMLAttributes, isValidElement, ReactElement, ReactNode } from 'react';
-import { mergeProps } from '@adara-cs/utils';
+import { mergeProps } from '@vega-ui/utils';
 
 export interface SlotProps extends HTMLAttributes<HTMLElement>, Record<string, unknown> {
   children: ReactNode

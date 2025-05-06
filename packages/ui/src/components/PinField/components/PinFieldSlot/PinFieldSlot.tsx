@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import style from './style.module.css';
-import { csx, inRange } from '@adara-cs/utils';
+import { csx, inRange } from '@vega-ui/utils';
 import { usePinFieldContext } from '../../hooks';
 
 export interface PinFieldSlotProps {

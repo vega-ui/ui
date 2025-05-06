@@ -3,7 +3,7 @@ import { FC, ReactNode, Ref } from 'react';
 import {
   FloatingArrow,
 } from '@floating-ui/react';
-import { csx, mergeRefs } from '@adara-cs/utils';
+import { csx, mergeRefs } from '@vega-ui/utils';
 import styles from './style.module.css';
 import { useTooltipContext } from '../../hooks';
 import { Text, TextProps } from '../../../Text';

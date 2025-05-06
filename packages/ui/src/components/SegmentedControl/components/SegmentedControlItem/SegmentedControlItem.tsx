@@ -2,7 +2,7 @@ import { ChangeEvent, FC, HTMLAttributes, ReactNode } from 'react';
 import style from './style.module.css';
 import { VisuallyHidden } from '../../../VisuallyHidden';
 import { useSegmentedControlContext } from '../../hooks';
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 
 export interface SegmentedControlItemProps extends HTMLAttributes<HTMLInputElement> {
   /**

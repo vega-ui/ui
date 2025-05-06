@@ -254,7 +254,7 @@ import {
   FlagZA,
   FlagZM,
   FlagZW
-} from '@adara-cs/icons'
+} from '@vega-ui/icons'
 
 const icons = {
   AD: FlagAD,

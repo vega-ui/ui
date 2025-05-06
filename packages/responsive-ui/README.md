@@ -1,21 +1,21 @@
-# Adara Responsive UI
+# Vega Responsive UI
 
 Responsive components for your interface 📦
 
 ## Installation
 
-Install @adara-cs/responsive-ui with
+Install @vega-ui/responsive-react with
 
 **npm:**
 
 ```bash
-  npm i @adara-cs/responsive-ui
+  npm i @vega-ui/responsive-react
 ```
 
 **yarn:**
 
 ```bash
-  yarn add @adara-cs/responsive-ui
+  yarn add @vega-ui/responsive-react
 ```
 
 ## Start
@@ -23,8 +23,8 @@ Install @adara-cs/responsive-ui with
 Connect the styles first. You can do this using a js file, however, we recommend that you connect using ``@import`` and defining layers so that there are no conflicts with specificity.
 
 ```css
-  @import url('@adara-cs/ui-kit-web/style.css') layer(library);
-  @import url('@adara-cs/responsive-ui/style.css') layer(library);
+  @import url('@vega-ui/react/style.css') layer(library);
+  @import url('@vega-ui/responsive-react/style.css') layer(library);
 
   @layer reset, library, components, overrides;
 ```
@@ -54,7 +54,7 @@ Setup fonts
 Start using
 
 ```tsx
-  import { ResponsiveSelect, ResponsiveSelectOption } from '@adara-cs/responsive-ui';
+  import { ResponsiveSelect, ResponsiveSelectOption } from '@vega-ui/responsive-react';
 
   ...
 

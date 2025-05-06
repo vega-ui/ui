@@ -1,7 +1,7 @@
 'use client';
 
 import { Children, FC, PropsWithChildren, ReactElement, Ref } from 'react';
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 import { AvatarGroupProvider } from './providers';
 import { AvatarGroupCount, AvatarGroupItemProps, AvatarGroupLimitedPopover } from './components';
 import style from './style.module.css'

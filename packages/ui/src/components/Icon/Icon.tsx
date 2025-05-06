@@ -1,6 +1,6 @@
 import { FC, ReactNode, Ref } from 'react';
 import style from './style.module.css'
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 import { Slot } from '../Slot';
 
 export interface IconProps {

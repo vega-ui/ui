@@ -1,7 +1,7 @@
 {
-  "name": "@adara-cs/ui-kit-web",
-  "version": "3.0.3",
-  "description": "AdaraCloud UI Kit for Web",
+  "name": "@vega-ui/react",
+  "version": "1.0.0",
+  "description": "Vega UI Kit for React",
   "license": "MIT",
   "keywords": [
     "ui-kit",
@@ -10,11 +10,11 @@
     "typescript",
     "js"
   ],
-  "author": "adara-cs",
+  "author": "VegaUI Team",
   "bugs": {
-    "url": "https://github.com/adara-cs/ui-kit-web/issues"
+    "url": "https://github.com/vega-ui/react/issues"
   },
-  "homepage": "https://github.com/adara-cs/ui-kit-web#readme",
+  "homepage": "https://github.com/vega-ui/react#readme",
   "type": "module",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -61,9 +61,9 @@
     "react-dom": "^19.0.0"
   },
   "dependencies": {
-    "@adara-cs/hooks": "workspace:*",
-    "@adara-cs/utils": "workspace:*",
-    "@adara-cs/icons": "workspace:*",
+    "@vega-ui/hooks": "workspace:*",
+    "@vega-ui/utils": "workspace:*",
+    "@vega-ui/icons": "workspace:*",
     "@floating-ui/react": "^0.27.5",
     "@maskito/core": "^3.4.0",
     "@maskito/phone": "^3.4.0",

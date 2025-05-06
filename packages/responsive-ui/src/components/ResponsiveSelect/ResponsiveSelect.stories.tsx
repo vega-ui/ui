@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { ResponsiveSelect } from './ResponsiveSelect.tsx';
-import { Label } from '@adara-cs/ui-kit-web';
+import { Label } from '@vega-ui/react';
 import { ResponsiveSelectOption } from './components';
 
 const meta = {

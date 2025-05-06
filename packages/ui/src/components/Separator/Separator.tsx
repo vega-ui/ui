@@ -1,7 +1,7 @@
 import { FC, HTMLAttributes } from 'react';
 
 import style from './style.module.css'
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 
 export interface SeparatorProps extends HTMLAttributes<HTMLDivElement> {
   /**

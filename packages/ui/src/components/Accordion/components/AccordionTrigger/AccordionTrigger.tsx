@@ -3,10 +3,10 @@ import { FC, PropsWithChildren, ReactElement, Ref } from 'react';
 import { sizeMapper } from './utils';
 import { Icon } from '../../../Icon';
 import { Heading } from '../../../Heading';
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 import style from './style.module.css';
 import { CollapsibleTrigger } from '../../../Collapsible';
-import { BottomArrowIcon } from '@adara-cs/icons';
+import { BottomArrowIcon } from '@vega-ui/icons';
 
 interface AccordionTriggerProps {
   size?: 'small' | 'medium' | 'large'

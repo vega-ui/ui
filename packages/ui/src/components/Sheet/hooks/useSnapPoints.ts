@@ -1,8 +1,8 @@
 'use client';
 
 import { RefObject, useEffect, useMemo, useRef } from 'react';
-import { useControlledState, useResize } from '@adara-cs/hooks';
-import { inRange } from '@adara-cs/utils';
+import { useControlledState, useResize } from '@vega-ui/hooks';
+import { inRange } from '@vega-ui/utils';
 
 interface UseSnapPointsOptions {
   containerRef?: RefObject<HTMLElement | null>

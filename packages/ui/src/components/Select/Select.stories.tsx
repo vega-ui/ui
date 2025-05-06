@@ -4,7 +4,7 @@ import { Select } from './Select.tsx';
 import { Label } from '../Label';
 import { Icon } from '../Icon';
 import { SelectOption } from './components/SelectOption';
-import { GlobeIcon } from '@adara-cs/icons';
+import { GlobeIcon } from '@vega-ui/icons';
 
 const meta = {
   title: 'UI-Core/Select/Select',
@@ -13,7 +13,7 @@ const meta = {
     layout: 'centered',
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/VegaUI--Community-?node-id=0-2262&t=2RYEGgF9z3n5SpP5-4',
+      url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/vega-ui--Community-?node-id=0-2262&t=2RYEGgF9z3n5SpP5-4',
     },
   },
   tags: ['autodocs'],

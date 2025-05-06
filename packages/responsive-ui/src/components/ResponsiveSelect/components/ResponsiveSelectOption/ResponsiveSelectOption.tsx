@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { useResponsiveSelectContext } from '../../hooks';
 import { SheetSelectOption, SheetSelectOptionProps } from '../../../SheetSelect';
-import { SelectOption, SelectOptionProps } from '@adara-cs/ui-kit-web';
+import { SelectOption, SelectOptionProps } from '@vega-ui/react';
 
 export interface ResponsiveSelectOptionProps extends SheetSelectOptionProps, SelectOptionProps {}
 

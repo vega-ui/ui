@@ -5,8 +5,8 @@ import { Heading } from '../../../Heading';
 import { IconButton } from '../../../IconButton';
 import style from './style.module.css';
 import { useModalContext } from '../../hooks';
-import { csx } from '@adara-cs/utils';
-import { CloseIcon } from '@adara-cs/icons';
+import { csx } from '@vega-ui/utils';
+import { CloseIcon } from '@vega-ui/icons';
 
 export interface ModalHeaderProps extends HTMLAttributes<HTMLElement> {
   /**

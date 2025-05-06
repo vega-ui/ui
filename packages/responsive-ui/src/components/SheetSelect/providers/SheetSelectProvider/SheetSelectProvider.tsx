@@ -1,7 +1,7 @@
 'use client';
 import { FC, PropsWithChildren, useMemo } from 'react';
 import { SheetSelectContext } from './context.ts';
-import { SelectEvent } from '@adara-cs/ui-kit-web';
+import { SelectEvent } from '@vega-ui/react';
 
 type Value = string | number | undefined
 

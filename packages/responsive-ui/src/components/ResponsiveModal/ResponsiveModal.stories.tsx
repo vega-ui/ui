@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { ResponsiveModal } from './ResponsiveModal.tsx';
-import { Button, Text } from '@adara-cs/ui-kit-web';
+import { Button, Text } from '@vega-ui/react';
 import { ResponsiveModalHeader, ResponsiveModalTrigger } from './components';
 import { ResponsiveModalContent } from './components/ResponsiveModalContent/ResponsiveModalContent.tsx';
 

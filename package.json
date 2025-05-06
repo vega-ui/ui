@@ -1,7 +1,7 @@
 {
-  "name": "@adara-cs/ui-kit-web",
+  "name": "@vega-ui/react",
   "version": "0.0.0",
-  "description": "AdaraCloud UI Kit for Web",
+  "description": "Vega UI Kit for Web",
   "private": true,
   "license": "MIT",
   "keywords": [
@@ -11,11 +11,11 @@
     "typescript",
     "js"
   ],
-  "author": "adara-cs",
+  "author": "VegaUI Team",
   "bugs": {
-    "url": "https://github.com/adara-cs/ui-kit-web/issues"
+    "url": "https://github.com/vega-ui/ui/issues"
   },
-  "homepage": "https://github.com/adara-cs/ui-kit-web#readme",
+  "homepage": "https://github.com/vega-ui/ui#readme",
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",

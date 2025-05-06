@@ -1,9 +1,9 @@
 import { FC } from 'react';
 import style from './style.module.css';
 import { Icon } from '../../../Icon';
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 import { sizeMapper } from './utils';
-import { ChevronIcon } from '@adara-cs/icons';
+import { ChevronIcon } from '@vega-ui/icons';
 
 export interface SelectArrowProps {
   open?: boolean

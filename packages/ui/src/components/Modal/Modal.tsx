@@ -2,7 +2,7 @@
 
 import { FC, ReactNode } from 'react';
 import { ModalProvider } from './providers';
-import { useControlledState } from '@adara-cs/hooks';
+import { useControlledState } from '@vega-ui/hooks';
 import { FloatingContext, useClick, useDismiss, useFloating, useInteractions, useRole } from '@floating-ui/react';
 
 export interface ModalProps {

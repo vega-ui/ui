@@ -1,6 +1,6 @@
 import { FC, ImgHTMLAttributes, Ref, useState } from 'react';
 import style from './style.module.css';
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 
 export interface AvatarImageProps extends ImgHTMLAttributes<HTMLImageElement> {
   /**

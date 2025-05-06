@@ -1,6 +1,6 @@
 import { DetailedHTMLProps, FC, HTMLAttributes, Ref } from 'react';
 import style from './style.module.css'
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 
 export interface CardProps extends DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> {
   /**

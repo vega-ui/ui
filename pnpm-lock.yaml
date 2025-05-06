@@ -157,16 +157,16 @@ importers:
 
   packages/responsive-ui:
     dependencies:
-      '@adara-cs/hooks':
+      '@vega-ui/hooks':
         specifier: workspace:*
         version: link:../hooks
-      '@adara-cs/icons':
+      '@vega-ui/icons':
         specifier: workspace:*
         version: link:../icons
-      '@adara-cs/ui-kit-web':
+      '@vega-ui/react':
         specifier: workspace:*
         version: link:../ui
-      '@adara-cs/utils':
+      '@vega-ui/utils':
         specifier: workspace:*
         version: link:../utils
       '@floating-ui/react':
@@ -224,13 +224,13 @@ importers:
 
   packages/ui:
     dependencies:
-      '@adara-cs/hooks':
+      '@vega-ui/hooks':
         specifier: workspace:*
         version: link:../hooks
-      '@adara-cs/icons':
+      '@vega-ui/icons':
         specifier: workspace:*
         version: link:../icons
-      '@adara-cs/utils':
+      '@vega-ui/utils':
         specifier: workspace:*
         version: link:../utils
       '@floating-ui/react':

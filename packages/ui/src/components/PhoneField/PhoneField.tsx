@@ -1,6 +1,6 @@
 import { FC, Ref } from 'react';
 import { TextField, TextFieldProps } from '../TextField';
-import { mergeRefs } from '@adara-cs/utils';
+import { mergeRefs } from '@vega-ui/utils';
 import { useMaskito } from '@maskito/react'
 import { maskitoPhoneOptionsGenerator } from '@maskito/phone';
 import metadata from 'libphonenumber-js/min/metadata';

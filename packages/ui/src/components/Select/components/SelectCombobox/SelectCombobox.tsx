@@ -1,5 +1,5 @@
 import { FC, PropsWithChildren, ReactNode, Ref } from 'react';
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 import { SelectValue } from '../SelectValue';
 import style from './style.module.css';
 import { SelectPlaceholder } from '../SelectPlaceholder';

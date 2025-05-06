@@ -8,8 +8,8 @@ import {
   SelectEvent,
   Sheet, SheetContent,
   SheetTrigger
-} from '@adara-cs/ui-kit-web';
-import { useControlledState } from '@adara-cs/hooks';
+} from '@vega-ui/react';
+import { useControlledState } from '@vega-ui/hooks';
 import { SheetSelectOptionList } from './components';
 import { SheetSelectProvider } from './providers';
 import style from './style.module.css'

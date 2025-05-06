@@ -1,5 +1,5 @@
 import style from './style.module.css'
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 import { Slot } from '../Slot';
 import { ButtonHTMLAttributes, FC, ReactNode, Ref } from 'react';
 

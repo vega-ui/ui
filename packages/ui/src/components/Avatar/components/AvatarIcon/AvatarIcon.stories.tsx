@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { AvatarIcon } from './AvatarIcon.tsx';
 import { Avatar } from '../../Avatar.tsx';
-import { SupportIcon } from '@adara-cs/icons';
+import { SupportIcon } from '@vega-ui/icons';
 
 const meta = {
   title: 'UI-Core/Avatar/AvatarIcon',

@@ -1,6 +1,6 @@
 'use client';
 import { FC, PropsWithChildren, ThHTMLAttributes } from 'react';
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
 import { TableProps } from '../../Table.tsx';
 import { useTable } from '../../hooks';

@@ -1,3 +1,3 @@
-# @adara-cs/utils
+# @vega-ui/utils
 
-Utilities for Adara UI Kit Web
+Utilities for Vega UI Kit Web

@@ -9,10 +9,10 @@ import {
   useRef
 } from 'react';
 import style from './style.module.css'
-import { csx, mergeRefs } from '@adara-cs/utils';
+import { csx, mergeRefs } from '@vega-ui/utils';
 import { Icon } from '../Icon';
 import { VisuallyHidden } from '../VisuallyHidden';
-import { CheckIcon, MinusIcon } from '@adara-cs/icons';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 export interface CheckboxProps extends Omit<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'size'> {
   /**

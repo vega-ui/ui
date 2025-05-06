@@ -23,7 +23,7 @@ export default defineConfig({
     },
     chunkSizeWarningLimit: 10000,
     rollupOptions: {
-      external: ['react', 'react-dom', 'react/jsx-runtime', '@floating-ui/react', 'react-remove-scroll', '@adara-cs/utils', '@adara-cs/hooks'],
+      external: ['react', 'react-dom', 'react/jsx-runtime', '@floating-ui/react', 'react-remove-scroll', '@vega-ui/utils', '@vega-ui/hooks'],
       output: {
         preserveModules: true,
         globals: {

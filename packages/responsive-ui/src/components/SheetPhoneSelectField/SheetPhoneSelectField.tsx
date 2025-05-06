@@ -1,5 +1,5 @@
 import { FC, Ref } from 'react';
-import { PhoneSelectField, PhoneSelectFieldProps } from '@adara-cs/ui-kit-web';
+import { PhoneSelectField, PhoneSelectFieldProps } from '@vega-ui/react';
 import { CountryCode } from 'libphonenumber-js';
 import { SheetPhoneSelect } from './components';
 

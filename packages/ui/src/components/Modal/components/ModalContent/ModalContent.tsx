@@ -6,7 +6,7 @@ import {
   FloatingPortal,
   useTransitionStyles
 } from '@floating-ui/react';
-import { csx, mergeRefs } from '@adara-cs/utils';
+import { csx, mergeRefs } from '@vega-ui/utils';
 import styles from './style.module.css';
 import { useModalContext } from '../../hooks';
 

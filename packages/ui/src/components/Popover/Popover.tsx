@@ -4,7 +4,7 @@ import {
   autoUpdate, flip, FloatingContext, offset,
   Placement, shift, useClick, useDismiss, useFloating, useInteractions, useRole,
 } from '@floating-ui/react';
-import { useControlledState } from '@adara-cs/hooks';
+import { useControlledState } from '@vega-ui/hooks';
 import { PopoverProvider } from './providers';
 
 export interface PopoverProps {

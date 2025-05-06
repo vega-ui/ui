@@ -1,7 +1,7 @@
 'use client';
 
 import { FC, PropsWithChildren } from 'react';
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 import { Avatar, AvatarProps } from '../../../Avatar';
 import { useAvatarGroupContext } from '../../hooks';
 

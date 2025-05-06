@@ -1,6 +1,6 @@
 import { FC, PropsWithChildren } from 'react';
 import { Text, TextProps } from '../../../Text';
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 import style from './style.module.css';
 
 export type AvatarFallbackProps = Exclude<TextProps, 'size'>

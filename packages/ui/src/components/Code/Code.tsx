@@ -1,6 +1,6 @@
 import { FC, ReactNode, Ref } from 'react';
 import style from './style.module.css'
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 import { Text, TextProps } from '../Text';
 import { TextSize } from '../Text/Text.tsx';
 

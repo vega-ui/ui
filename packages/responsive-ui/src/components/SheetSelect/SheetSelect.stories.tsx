@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { SheetSelect } from './SheetSelect.tsx';
-import { Label } from '@adara-cs/ui-kit-web';
+import { Label } from '@vega-ui/react';
 import { SheetSelectOption } from './components/SheetSelectOption';
 
 const meta = {

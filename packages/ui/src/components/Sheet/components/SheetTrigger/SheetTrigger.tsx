@@ -1,7 +1,7 @@
 'use client';
 
 import { ButtonHTMLAttributes, FC, Ref } from 'react';
-import { mergeProps, mergeRefs } from '@adara-cs/utils';
+import { mergeProps, mergeRefs } from '@vega-ui/utils';
 import { Slot } from '../../../Slot';
 import { useSheetContext } from '../../hooks';
 

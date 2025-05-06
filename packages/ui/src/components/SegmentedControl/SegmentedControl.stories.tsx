@@ -4,7 +4,7 @@ import { fn } from '@storybook/test';
 import { SegmentedControl } from './SegmentedControl.tsx';
 import { SegmentedControlItem } from './components';
 import { Icon } from '../Icon';
-import { SunIcon, MoonIcon } from '@adara-cs/icons';
+import { SunIcon, MoonIcon } from '@vega-ui/icons';
 
 const meta = {
   title: 'UI-Core/SegmentedControl/SegmentedControl',
@@ -13,7 +13,7 @@ const meta = {
     layout: 'centered',
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/VegaUI--Community-?node-id=0-2378&t=2RYEGgF9z3n5SpP5-11',
+      url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/vega-ui--Community-?node-id=0-2378&t=2RYEGgF9z3n5SpP5-11',
     },
   },
   tags: ['autodocs'],

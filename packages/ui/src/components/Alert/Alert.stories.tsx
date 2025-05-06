@@ -3,7 +3,7 @@ import { Alert, AlertProps } from './Alert.tsx';
 import { IconButton } from '../IconButton';
 import { Link } from '../Link';
 import { Code } from '../Code';
-import { CloseIcon } from '@adara-cs/icons';
+import { CloseIcon } from '@vega-ui/icons';
 
 const variants: AlertProps['variant'][] = ['info', 'error', 'success', 'warning']
 
@@ -14,7 +14,7 @@ const meta = {
     layout: 'padded',
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/VegaUI--Community-?node-id=0-548&t=2RYEGgF9z3n5SpP5-4',
+      url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/vega-ui--Community-?node-id=0-548&t=2RYEGgF9z3n5SpP5-4',
     },
   },
   tags: ['autodocs'],

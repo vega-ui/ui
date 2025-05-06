@@ -1,6 +1,6 @@
 import { DetailedHTMLProps, FC, InputHTMLAttributes, Ref } from 'react'
 import style from './style.module.css'
-import { csx } from '@adara-cs/utils'
+import { csx } from '@vega-ui/utils'
 import { VisuallyHidden } from '../VisuallyHidden'
 
 export interface SwitchProps

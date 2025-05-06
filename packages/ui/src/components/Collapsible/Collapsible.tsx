@@ -1,7 +1,7 @@
 'use client';
 import { FC, ReactNode, useCallback, useEffect, useState } from 'react';
 import { CollapsibleProvider } from './providers';
-import { useControlledState } from '@adara-cs/hooks';
+import { useControlledState } from '@vega-ui/hooks';
 
 export interface CollapsibleProps {
   /**

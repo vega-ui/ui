@@ -1,5 +1,5 @@
-# @adara-cs/icons
+# @vega-ui/icons
 
-Icons for Adara UI Kit Web
+Icons for Vega UI Kit Web
 
 Flags from [Flagpack](/https://flagpack.xyz/)

@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useResponsiveModalContext } from '../../hooks';
-import { Heading, ModalHeader } from '@adara-cs/ui-kit-web';
+import { Heading, ModalHeader } from '@vega-ui/react';
 import style from './style.module.css'
 
 export interface ResponsiveModalHeaderProps {

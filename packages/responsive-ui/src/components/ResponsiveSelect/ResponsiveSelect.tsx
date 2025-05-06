@@ -1,8 +1,8 @@
 'use client';
 
 import { FC } from 'react';
-import { Select, SelectEvent, SelectProps } from '@adara-cs/ui-kit-web';
-import { useControlledState } from '@adara-cs/hooks';
+import { Select, SelectEvent, SelectProps } from '@vega-ui/react';
+import { useControlledState } from '@vega-ui/hooks';
 import { SheetSelect, SheetSelectProps } from '../SheetSelect';
 import { ResponsiveSelectProvider } from './providers';
 

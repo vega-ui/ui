@@ -4,7 +4,7 @@ import { FC } from 'react';
 import { Button, ButtonProps } from '../../../Button';
 import { PaginationListItem } from '../PaginationListItem';
 import style from './style.module.css'
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 import { usePaginationContext } from '../../hooks';
 
 export type PaginationEllipsisProps = ButtonProps

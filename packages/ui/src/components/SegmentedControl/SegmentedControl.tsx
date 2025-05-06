@@ -7,10 +7,10 @@ import {
   DetailedHTMLProps, FC,
   HTMLAttributes, ReactElement, Ref,
 } from 'react';
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 import { SegmentedControlItemProps } from './components';
 import { SegmentedControlProvider } from './providers';
-import { useControlledState } from '@adara-cs/hooks';
+import { useControlledState } from '@vega-ui/hooks';
 
 export interface SegmentedControlProps extends Omit<DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange'> {
   /**

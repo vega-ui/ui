@@ -1,3 +1,3 @@
-# @adara-cs/hooks
+# @vega-ui/hooks
 
-Hooks for Adara UI Kit Web
+Hooks for Vega UI Kit Web

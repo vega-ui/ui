@@ -7,8 +7,8 @@ import {
   useState
 } from 'react';
 import style from './style.module.css'
-import { csx, mergeRefs } from '@adara-cs/utils';
-import { useControlledState } from '@adara-cs/hooks';
+import { csx, mergeRefs } from '@vega-ui/utils';
+import { useControlledState } from '@vega-ui/hooks';
 import { useMaskito } from '@maskito/react';
 import { MaskitoOptions } from '@maskito/core';
 import { PinFieldInput } from './components';

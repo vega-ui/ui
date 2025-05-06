@@ -2,14 +2,14 @@
   "compilerOptions": {
     "esModuleInterop": true,
     "paths": {
-      "@adara-cs/utils": ["./packages/utils/src/index.ts"],
-      "@adara-cs/utils/*": ["./packages/utils/src/*"],
-      "@adara-cs/hooks": ["./packages/hooks/src/index.ts"],
-      "@adara-cs/hooks/*": ["./packages/hooks/src/*"],
-      "@adara-cs/icons/*": ["./packages/icons/*"],
-      "@adara-cs/icons": ["./packages/icons/src/index.ts"],
-      "@adara-cs/ui-kit-web": ["./packages/ui/src/index.ts"],
-      "@adara-cs/ui-kit-web/*": ["./packages/ui/src/*"]
+      "@vega-ui/utils": ["./packages/utils/src/index.ts"],
+      "@vega-ui/utils/*": ["./packages/utils/src/*"],
+      "@vega-ui/hooks": ["./packages/hooks/src/index.ts"],
+      "@vega-ui/hooks/*": ["./packages/hooks/src/*"],
+      "@vega-ui/icons/*": ["./packages/icons/src/*"],
+      "@vega-ui/icons": ["./packages/icons/src/index.ts"],
+      "@vega-ui/react": ["./packages/ui/src/index.ts"],
+      "@vega-ui/react/*": ["./packages/ui/src/*"]
     }
   },
   "exclude": ["node_modules"]

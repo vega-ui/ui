@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { Option, OptionProps } from '@adara-cs/ui-kit-web';
+import { Option, OptionProps } from '@vega-ui/react';
 import { useSheetSelectContext } from '../../hooks';
 
 export type SheetSelectOptionProps = OptionProps

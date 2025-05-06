@@ -3,7 +3,7 @@ import { FloatingFocusManager, FloatingPortal } from '@floating-ui/react';
 import { RemoveScroll } from 'react-remove-scroll';
 import { SheetOverlay } from '../SheetOverlay';
 import { SheetInner } from '../SheetInner';
-import { mergeProps, mergeRefs } from '@adara-cs/utils';
+import { mergeProps, mergeRefs } from '@vega-ui/utils';
 import { useSheetContext } from '../../hooks';
 
 export interface SheetContentProps extends HTMLAttributes<HTMLDivElement> {

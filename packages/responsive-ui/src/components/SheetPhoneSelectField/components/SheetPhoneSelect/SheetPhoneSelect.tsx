@@ -1,5 +1,5 @@
 import { FC, useMemo, useState } from 'react';
-import { FlagIcon, FlagIconProps, TextField, usePhoneSelectContext, VisuallyHidden } from '@adara-cs/ui-kit-web';
+import { FlagIcon, FlagIconProps, TextField, usePhoneSelectContext, VisuallyHidden } from '@vega-ui/react';
 import { SheetSelect, SheetSelectOption } from '../../../SheetSelect';
 import { CountryCode } from 'libphonenumber-js';
 import style from './style.module.css';

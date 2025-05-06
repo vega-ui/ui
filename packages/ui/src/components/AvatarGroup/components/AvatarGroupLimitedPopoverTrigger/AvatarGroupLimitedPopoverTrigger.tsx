@@ -3,11 +3,11 @@
 import { ButtonHTMLAttributes, FC, Ref } from 'react';
 import { AvatarGroupCount } from '../AvatarGroupCount';
 import { Icon } from '../../../Icon';
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
 import { AvatarGroupItemProps } from '../AvatarGroupItem';
 import { sizeMapper } from './utils';
-import { ChevronIcon } from '@adara-cs/icons';
+import { ChevronIcon } from '@vega-ui/icons';
 
 export interface AvatarGroupLimitedPopoverTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   ref?: Ref<HTMLButtonElement>

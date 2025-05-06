@@ -1,7 +1,7 @@
 import { ButtonBase, ButtonBaseProps } from '../ButtonBase';
 import { Ref, FC, cloneElement, ReactElement, PropsWithChildren } from 'react';
 import { Icon, IconProps } from '../Icon';
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 import style from './style.module.css';
 
 export interface IconButtonProps extends ButtonBaseProps {

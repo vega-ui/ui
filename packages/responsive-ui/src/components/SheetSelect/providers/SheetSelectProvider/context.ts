@@ -1,7 +1,7 @@
 'use client';
 
 import { Context, createContext } from 'react';
-import { SelectEvent } from '@adara-cs/ui-kit-web';
+import { SelectEvent } from '@vega-ui/react';
 
 type Value = string | number | undefined
 

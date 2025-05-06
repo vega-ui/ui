@@ -3,12 +3,12 @@ import {
   FC,
   HTMLAttributes, Ref,
 } from 'react';
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
 import { IconButton } from '../../../IconButton';
 import { Heading } from '../../../Heading';
 import { useDrawerContext } from '../../hooks';
-import { CloseIcon } from '@adara-cs/icons';
+import { CloseIcon } from '@vega-ui/icons';
 
 export interface DrawerHeaderProps extends HTMLAttributes<HTMLDivElement> {
   /**

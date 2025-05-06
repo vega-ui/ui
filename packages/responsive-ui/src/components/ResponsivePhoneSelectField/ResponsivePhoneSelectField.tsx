@@ -1,8 +1,8 @@
 'use client';
 
 import { FC, Ref } from 'react';
-import { PhoneSelectFieldProps, PhoneSelectField, PhoneSelectFieldChangeEvent } from '@adara-cs/ui-kit-web';
-import { useControlledState } from '@adara-cs/hooks';
+import { PhoneSelectFieldProps, PhoneSelectField, PhoneSelectFieldChangeEvent } from '@vega-ui/react';
+import { useControlledState } from '@vega-ui/hooks';
 import { SheetPhoneSelectField, SheetPhoneSelectFieldProps } from '../SheetPhoneSelectField';
 import { CountryCode, getCountryCallingCode } from 'libphonenumber-js';
 

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react'
 import { Icon } from '../Icon.tsx';
-import { SupportIcon } from '@adara-cs/icons';
+import { SupportIcon } from '@vega-ui/icons';
 
 describe('Icon', () => {
   it('default size', () => {

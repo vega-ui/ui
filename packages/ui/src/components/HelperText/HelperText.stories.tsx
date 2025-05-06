@@ -12,7 +12,7 @@ const meta: Meta<typeof HelperText> = {
     layout: 'centered',
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/VegaUI--Community-?node-id=0-4369&t=2RYEGgF9z3n5SpP5-4',
+      url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/vega-ui--Community-?node-id=0-4369&t=2RYEGgF9z3n5SpP5-4',
     },
   },
   args: {

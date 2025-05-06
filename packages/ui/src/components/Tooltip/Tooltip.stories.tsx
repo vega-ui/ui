@@ -6,7 +6,7 @@ import { IconButton } from '../IconButton';
 import { Modal, ModalContent, ModalTrigger } from '../Modal';
 import { TextField } from '../TextField';
 import { TooltipContent, TooltipTrigger } from './components';
-import { SupportIcon, InfoIcon } from '@adara-cs/icons';
+import { SupportIcon, InfoIcon } from '@vega-ui/icons';
 
 const meta = {
   title: 'UI-Core/Tooltip',
@@ -15,7 +15,7 @@ const meta = {
     layout: 'centered',
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/VegaUI--Community-?node-id=0-1763&t=2RYEGgF9z3n5SpP5-11',
+      url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/vega-ui--Community-?node-id=0-1763&t=2RYEGgF9z3n5SpP5-11',
     },
   },
   tags: ['autodocs'],

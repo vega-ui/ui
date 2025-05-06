@@ -2,7 +2,7 @@
 
 import { FC, HTMLAttributes, ReactNode, Ref } from 'react';
 import { FloatingFocusManager, FloatingOverlay, useTransitionStyles } from '@floating-ui/react';
-import { csx, mergeProps, mergeRefs } from '@adara-cs/utils';
+import { csx, mergeProps, mergeRefs } from '@vega-ui/utils';
 import styles from './style.module.css';
 import { usePopoverContext } from '../../hooks';
 

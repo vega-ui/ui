@@ -7,8 +7,8 @@ import {
 } from 'react';
 import { TextFieldProps } from '../TextField';
 import style from './style.module.css'
-import { mergeRefs } from '@adara-cs/utils';
-import { useControlledState } from '@adara-cs/hooks';
+import { mergeRefs } from '@vega-ui/utils';
+import { useControlledState } from '@vega-ui/hooks';
 import { AsYouType, CountryCode, getCountryCallingCode } from 'libphonenumber-js';
 import { PhoneField } from '../PhoneField';
 import { PhoneSelect } from './components';

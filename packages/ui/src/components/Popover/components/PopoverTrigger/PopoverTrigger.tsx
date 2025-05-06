@@ -2,7 +2,7 @@
 
 import { ButtonHTMLAttributes, FC, Ref } from 'react';
 import { Slot } from '../../../Slot';
-import { mergeProps, mergeRefs } from '@adara-cs/utils';
+import { mergeProps, mergeRefs } from '@vega-ui/utils';
 import { usePopoverContext } from '../../hooks';
 
 export interface PopoverTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {

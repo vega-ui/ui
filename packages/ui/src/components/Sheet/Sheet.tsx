@@ -19,7 +19,7 @@ import {
   useTransitionStatus
 } from '@floating-ui/react';
 import { useSnapPoints } from './hooks';
-import { useControlledState } from '@adara-cs/hooks';
+import { useControlledState } from '@vega-ui/hooks';
 import { SheetProvider } from './providers';
 
 export interface SheetProps {

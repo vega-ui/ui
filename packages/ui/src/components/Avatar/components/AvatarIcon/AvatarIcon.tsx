@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Icon, IconProps } from '../../../Icon';
 import style from './style.module.css';
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 
 export type AvatarIconProps = IconProps
 

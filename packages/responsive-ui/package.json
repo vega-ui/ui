@@ -1,7 +1,7 @@
 {
-  "name": "@adara-cs/responsive-ui",
-  "version": "3.0.3",
-  "description": "Responsive AdaraCloud UI Kit for Web",
+  "name": "@vega-ui/responsive-react",
+  "version": "1.0.0",
+  "description": "Responsive Vega UI Kit for React",
   "license": "MIT",
   "keywords": [
     "ui-kit",
@@ -10,11 +10,11 @@
     "typescript",
     "js"
   ],
-  "author": "adara-cs",
+  "author": "VegaUI Team",
   "bugs": {
-    "url": "https://github.com/adara-cs/ui-kit-web/issues"
+    "url": "https://github.com/vega-ui/ui/issues"
   },
-  "homepage": "https://github.com/adara-cs/ui-kit-web#readme",
+  "homepage": "https://github.com/vega-ui/ui#readme",
   "type": "module",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -57,10 +57,10 @@
     "react-dom": "^19.0.0"
   },
   "dependencies": {
-    "@adara-cs/hooks": "workspace:*",
-    "@adara-cs/icons": "workspace:*",
-    "@adara-cs/ui-kit-web": "workspace:*",
-    "@adara-cs/utils": "workspace:*",
+    "@vega-ui/hooks": "workspace:*",
+    "@vega-ui/icons": "workspace:*",
+    "@vega-ui/react": "workspace:*",
+    "@vega-ui/utils": "workspace:*",
     "@floating-ui/react": "^0.27.5",
     "libphonenumber-js": "^1.11.18",
     "react": "^19.0.0",

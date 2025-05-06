@@ -3,7 +3,7 @@ import {
   FC,
   HTMLAttributes, JSX, Ref,
 } from 'react';
-import { csx, mergeProps, mergeRefs } from '@adara-cs/utils';
+import { csx, mergeProps, mergeRefs } from '@vega-ui/utils';
 import style from './style.module.css'
 import { FloatingFocusManager, FloatingPortal } from '@floating-ui/react';
 import { DrawerOverlay } from '../DrawerOverlay';

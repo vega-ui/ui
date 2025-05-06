@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Icon, IconProps } from './Icon.tsx';
-import { SupportIcon, ServerIcon, AnchorIcon } from '@adara-cs/icons';
+import { SupportIcon, ServerIcon, AnchorIcon } from '@vega-ui/icons';
 
 const sizes: IconProps['size'][] = ['4xs', '3xs', '2xs', 'xs', 'sm', 'md', 'lg', 'xl']
 

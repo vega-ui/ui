@@ -1,7 +1,7 @@
 'use client';
 import { FC, HTMLAttributes, Ref, useLayoutEffect, useRef } from 'react';
 import style from './style.module.css';
-import { csx, mergeRefs } from '@adara-cs/utils';
+import { csx, mergeRefs } from '@vega-ui/utils';
 import { useCollapsibleContext } from '../../hooks';
 
 export interface CollapsibleContentProps extends HTMLAttributes<HTMLDivElement> {

@@ -3,7 +3,7 @@
 import { IconButton, IconButtonProps } from '../../../IconButton';
 import { PaginationListItem } from '../PaginationListItem';
 import { usePaginationContext } from '../../hooks';
-import { DoubleArrowLeftIcon } from '@adara-cs/icons';
+import { DoubleArrowLeftIcon } from '@vega-ui/icons';
 import { cloneElement, ReactElement } from 'react';
 
 export interface PaginationFirstTriggerProps extends IconButtonProps {

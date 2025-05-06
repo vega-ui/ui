@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { TextField, TextFieldProps } from './TextField.tsx';
 import { Icon } from '../Icon';
 import { IconButton } from '../IconButton';
-import { CloudIcon } from '@adara-cs/icons';
+import { CloudIcon } from '@vega-ui/icons';
 
 const sizes: TextFieldProps['size'][] = ['small', 'medium', 'large']
 
@@ -14,7 +14,7 @@ const meta = {
     layout: 'centered',
     design: {
       type: 'figma',
-      url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/VegaUI--Community-?node-id=0-1782&t=2RYEGgF9z3n5SpP5-11',
+      url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/vega-ui--Community-?node-id=0-1782&t=2RYEGgF9z3n5SpP5-11',
     },
   },
   tags: ['autodocs'],

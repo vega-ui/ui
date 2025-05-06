@@ -1,20 +1,20 @@
-# Adara UI Monorepo
+# Vega UI Monorepo
 
 React component library, written by developers for developers 🩵
 ## Installation
 
-Install @adara-cs/ui-kit-web with
+Install @vega-ui/react with
 
 **npm:**
 
 ```bash
-  npm i @adara-cs/ui-kit-web
+  npm i @vega-ui/react
 ```
 
 **yarn:**
 
 ```bash
-  yarn add @adara-cs/ui-kit-web
+  yarn add @vega-ui/react
 ```
 
 ## Start
@@ -23,7 +23,7 @@ Connect the styles first. You can do this using a js file, however, we recommend
 
 ```css
   @import url('@/shared/styles/normalize.css') layer(reset);
-  @import url('@adara-cs/ui-kit-web/style') layer(library);
+  @import url('@vega-ui/react/style') layer(library);
 
   @layer reset, library, components, overrides;
 ```
@@ -53,7 +53,7 @@ Setup fonts
 Start using
 
 ```typescript
-  import { Button } from '@adara-cs/ui-kit-web';
+  import { Button } from '@vega-ui/react';
 
   ...
 

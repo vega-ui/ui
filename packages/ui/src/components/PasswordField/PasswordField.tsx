@@ -5,9 +5,9 @@ import {
 } from 'react';
 import { TextField, TextFieldProps } from '../TextField';
 import { IconButton } from '../IconButton';
-import { mergeRefs } from '@adara-cs/utils';
+import { mergeRefs } from '@vega-ui/utils';
 import style from './style.module.css';
-import { EyeCloseIcon, EyeIcon } from '@adara-cs/icons';
+import { EyeCloseIcon, EyeIcon } from '@vega-ui/icons';
 
 export type PasswordFieldProps = TextFieldProps
 

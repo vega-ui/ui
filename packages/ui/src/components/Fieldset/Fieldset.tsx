@@ -1,7 +1,7 @@
 import { FC, PropsWithChildren } from 'react';
 
 import style from './style.module.css'
-import { csx } from '@adara-cs/utils';
+import { csx } from '@vega-ui/utils';
 import { Text } from '../Text';
 
 export interface FieldsetProps {

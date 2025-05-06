@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { useResponsiveModalContext } from '../../hooks';
-import { ModalTrigger, ModalTriggerProps, SheetTrigger, SheetTriggerProps } from '@adara-cs/ui-kit-web';
+import { ModalTrigger, ModalTriggerProps, SheetTrigger, SheetTriggerProps } from '@vega-ui/react';
 
 export type ResponsiveModalTriggerProps = SheetTriggerProps & ModalTriggerProps;
 
