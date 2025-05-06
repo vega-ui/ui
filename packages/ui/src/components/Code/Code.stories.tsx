@@ -7,6 +7,10 @@ const meta = {
   component: Code,
   parameters: {
     layout: 'padded',
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/VegaUI--Community-?node-id=0-1572&t=2RYEGgF9z3n5SpP5-4',
+    },
   },
   tags: ['autodocs'],
   argTypes: {},

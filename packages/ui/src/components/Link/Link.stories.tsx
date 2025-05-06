@@ -8,9 +8,13 @@ const meta: Meta<typeof Link> = {
   component: Link,
   parameters: {
     layout: 'centered',
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/VegaUI--Community-?node-id=0-6085&t=2RYEGgF9z3n5SpP5-4',
+    },
   },
   args: {
-    children: 'Это просто ссылка'
+    children: 'Just a link'
   },
   tags: ['autodocs'],
 };
@@ -20,6 +24,6 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    href: 'https://github.com/adara-cs/ui-kit-web'
+    href: '#'
   }
 };

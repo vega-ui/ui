@@ -13,6 +13,10 @@ const meta = {
   component: Tooltip,
   parameters: {
     layout: 'centered',
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/VegaUI--Community-?node-id=0-1763&t=2RYEGgF9z3n5SpP5-11',
+    },
   },
   tags: ['autodocs'],
   argTypes: {},

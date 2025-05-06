@@ -1,7 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
-
-
 import { Button, ButtonProps } from './Button.tsx';
 
 const meta = {
@@ -9,10 +6,13 @@ const meta = {
   component: Button,
   parameters: {
     layout: 'centered',
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/VegaUI--Community-?node-id=0-4826&t=2RYEGgF9z3n5SpP5-4',
+    },
   },
   tags: ['autodocs'],
   argTypes: {},
-  args: { onClick: fn() },
 } satisfies Meta<typeof Button>;
 
 export default meta;

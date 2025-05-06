@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
 import { CheckboxCard } from './CheckboxCard.tsx';
 import { CheckboxCardContent } from './components';
 
@@ -8,10 +7,13 @@ const meta = {
   component: CheckboxCard,
   parameters: {
     layout: 'centered',
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/VegaUI--Community-?node-id=0-1159&t=2RYEGgF9z3n5SpP5-4',
+    },
   },
   tags: ['autodocs'],
   argTypes: {},
-  args: { onClick: fn() },
 } satisfies Meta<typeof CheckboxCard>;
 
 export default meta;

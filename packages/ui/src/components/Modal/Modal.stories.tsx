@@ -3,14 +3,17 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Modal } from './Modal.tsx';
 import { Button } from '../Button';
 import { Text } from '../Text';
-import { ModalHeader, ModalTrigger } from './components';
-import { ModalContent } from './components/ModalContent';
+import { ModalHeader, ModalTrigger, ModalContent } from './components';
 
 const meta = {
   title: 'UI-Core/Modal/Modal',
   component: Modal,
   parameters: {
     layout: 'centered',
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/VegaUI--Community-?node-id=0-1644&t=2RYEGgF9z3n5SpP5-4',
+    },
   },
   tags: ['autodocs'],
   argTypes: {},

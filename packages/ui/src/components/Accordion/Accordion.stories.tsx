@@ -9,7 +9,11 @@ const meta: Meta<typeof Accordion> = {
   title: 'UI-Core/Accordion/Accordion',
   component: Accordion,
   parameters: {
-    layout: 'padded'
+    layout: 'padded',
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/VegaUI--Community-?node-id=0-521&t=2RYEGgF9z3n5SpP5-4',
+    },
   },
   args: {},
   tags: ['autodocs'],

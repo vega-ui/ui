@@ -10,7 +10,11 @@ const meta: Meta<typeof Drawer> = {
   title: 'UI-Core/Drawer/Drawer',
   component: Drawer,
   parameters: {
-    layout: 'padded'
+    layout: 'padded',
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/VegaUI--Community-?node-id=0-1623&t=2RYEGgF9z3n5SpP5-4',
+    },
   },
   tags: ['autodocs'],
 };

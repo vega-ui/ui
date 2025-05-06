@@ -8,6 +8,10 @@ const meta: Meta<typeof Separator> = {
   component: Separator,
   parameters: {
     layout: 'centered',
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/VegaUI--Community-?node-id=0-2660&t=2RYEGgF9z3n5SpP5-4',
+    },
   },
   args: {},
   tags: ['autodocs'],

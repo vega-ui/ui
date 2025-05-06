@@ -9,7 +9,7 @@ describe('Text', () => {
   })
 
   it('has href', () => {
-    render(<Link href='https://github.com/adara-cs/ui-kit-web'>Hello</Link>)
-    expect(screen.getByRole('link').getAttribute('href')).toBe('https://github.com/adara-cs/ui-kit-web')
+    render(<Link href='#'>Hello</Link>)
+    expect(screen.getByRole('link').getAttribute('href')).toBe('#')
   })
 })

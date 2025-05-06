@@ -1,1 +1,1 @@
-export { ResponsiveModalProvider, type ResponsiveSelectProviderProps } from './ResponsiveModalProvider.tsx'
+export { ResponsiveModalProvider, type ResponsiveModalProviderProps } from './ResponsiveModalProvider.tsx'
