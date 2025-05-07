@@ -28,7 +28,7 @@
     "test:watch": "vitest --watch"
   },
   "devDependencies": {
-    "@changesets/cli": "^2.28.1",
+    "@changesets/cli": "^2.29.3",
     "@eslint/eslintrc": "^3",
     "@eslint/js": "^9.23.0",
     "@storybook/addon-designs": "^8.2.1",
