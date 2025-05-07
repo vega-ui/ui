@@ -62,7 +62,7 @@
     "@vega-ui/react": "workspace:*",
     "@vega-ui/utils": "workspace:*",
     "@floating-ui/react": "^0.27.8",
-    "libphonenumber-js": "^1.11.18",
+    "libphonenumber-js": "^1.12.8",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

@@ -173,8 +173,8 @@ importers:
         specifier: workspace:*
         version: link:../utils
       libphonenumber-js:
-        specifier: ^1.11.18
-        version: 1.11.19
+        specifier: ^1.12.8
+        version: 1.12.8
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -235,7 +235,7 @@ importers:
         version: 3.4.0(@maskito/core@3.4.0)
       '@maskito/phone':
         specifier: ^3.4.0
-        version: 3.4.0(@maskito/core@3.4.0)(@maskito/kit@3.4.0(@maskito/core@3.4.0))(libphonenumber-js@1.11.19)
+        version: 3.4.0(@maskito/core@3.4.0)(@maskito/kit@3.4.0(@maskito/core@3.4.0))(libphonenumber-js@1.12.8)
       '@maskito/react':
         specifier: ^3.4.0
         version: 3.4.0(@maskito/core@3.4.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
@@ -249,8 +249,8 @@ importers:
         specifier: workspace:*
         version: link:../utils
       libphonenumber-js:
-        specifier: ^1.11.19
-        version: 1.11.19
+        specifier: ^1.12.8
+        version: 1.12.8
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -2514,8 +2514,8 @@ packages:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
     engines: {node: '>= 0.8.0'}
 
-  libphonenumber-js@1.11.19:
-    resolution: {integrity: sha512-bW/Yp/9dod6fmyR+XqSUL1N5JE7QRxQ3KrBIbYS1FTv32e5i3SEtQVX+71CYNv8maWNSOgnlCoNp9X78f/cKiA==}
+  libphonenumber-js@1.12.8:
+    resolution: {integrity: sha512-f1KakiQJa9tdc7w1phC2ST+DyxWimy9c3g3yeF+84QtEanJr2K77wAmBPP22riU05xldniHsvXuflnLZ4oysqA==}
 
   lines-and-columns@1.2.4:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
@@ -4087,11 +4087,11 @@ snapshots:
     dependencies:
       '@maskito/core': 3.4.0
 
-  '@maskito/phone@3.4.0(@maskito/core@3.4.0)(@maskito/kit@3.4.0(@maskito/core@3.4.0))(libphonenumber-js@1.11.19)':
+  '@maskito/phone@3.4.0(@maskito/core@3.4.0)(@maskito/kit@3.4.0(@maskito/core@3.4.0))(libphonenumber-js@1.12.8)':
     dependencies:
       '@maskito/core': 3.4.0
       '@maskito/kit': 3.4.0(@maskito/core@3.4.0)
-      libphonenumber-js: 1.11.19
+      libphonenumber-js: 1.12.8
 
   '@maskito/react@3.4.0(@maskito/core@3.4.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
@@ -5766,7 +5766,7 @@ snapshots:
       prelude-ls: 1.2.1
       type-check: 0.4.0
 
-  libphonenumber-js@1.11.19: {}
+  libphonenumber-js@1.12.8: {}
 
   lines-and-columns@1.2.4: {}
 
