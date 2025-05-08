@@ -38,7 +38,7 @@
   },
   "devDependencies": {
     "@types/react": "^19.0.10",
-    "vite": "^6.0.13",
+    "vite": "^6.3.5",
     "vite-plugin-dts": "^4.3.0",
     "vite-plugin-svgr": "^4.3.0",
     "vitest": "^3.0.5"
