@@ -58,7 +58,7 @@
   },
   "peerDependencies": {
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.1.0"
   },
   "dependencies": {
     "@vega-ui/hooks": "workspace:*",
@@ -71,13 +71,13 @@
     "@maskito/kit": "^3.4.0",
     "libphonenumber-js": "^1.12.8",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react-dom": "^19.1.0",
     "react-remove-scroll": "^2.6.3"
   },
   "devDependencies": {
     "@testing-library/react": "^16.1.0",
     "@types/react": "^19.0.10",
-    "@types/react-dom": "^19.0.3",
+    "@types/react-dom": "^19.1.4",
     "@vitejs/plugin-react": "^4.3.4",
     "globals": "^16.0.0",
     "jsdom": "^26.0.0",
