@@ -19,7 +19,7 @@ importers:
         version: 9.23.0
       '@storybook/addon-designs':
         specifier: ^8.2.1
-        version: 8.2.1(@storybook/blocks@8.5.8(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(storybook@8.6.11(prettier@2.8.8)))(@storybook/components@8.5.5(storybook@8.6.11(prettier@2.8.8)))(@storybook/theming@8.5.5(storybook@8.6.11(prettier@2.8.8)))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 8.2.1(@storybook/blocks@8.5.8(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(storybook@8.6.11(prettier@2.8.8)))(@storybook/components@8.5.5(storybook@8.6.11(prettier@2.8.8)))(@storybook/theming@8.6.12(storybook@8.6.11(prettier@2.8.8)))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@storybook/addon-essentials':
         specifier: ^8.6.11
         version: 8.6.11(@types/react@19.0.10)(storybook@8.6.11(prettier@2.8.8))
@@ -48,8 +48,8 @@ importers:
         specifier: ^8.5.5
         version: 8.5.5(storybook@8.6.11(prettier@2.8.8))
       '@storybook/theming':
-        specifier: ^8.5.5
-        version: 8.5.5(storybook@8.6.11(prettier@2.8.8))
+        specifier: ^8.6.12
+        version: 8.6.12(storybook@8.6.11(prettier@2.8.8))
       '@types/node':
         specifier: ^22.10.10
         version: 22.10.10
@@ -1272,6 +1272,11 @@ packages:
 
   '@storybook/theming@8.6.11':
     resolution: {integrity: sha512-G7IK5P9gzofUjfYhMo9Pdgbqcr22eoKFLD808Q8RxJopDoypdZKg4tes2iD+6YnrtnHS0nEoP/soMmfFYl9FIw==}
+    peerDependencies:
+      storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
+
+  '@storybook/theming@8.6.12':
+    resolution: {integrity: sha512-6VjZg8HJ2Op7+KV7ihJpYrDnFtd9D1jrQnUS8LckcpuBXrIEbaut5+34ObY8ssQnSqkk2GwIZBBBQYQBCVvkOw==}
     peerDependencies:
       storybook: ^8.2.0 || ^8.3.0-0 || ^8.4.0-0 || ^8.5.0-0 || ^8.6.0-0
 
@@ -4060,13 +4065,13 @@ snapshots:
       storybook: 8.6.11(prettier@2.8.8)
       ts-dedent: 2.2.0
 
-  '@storybook/addon-designs@8.2.1(@storybook/blocks@8.5.8(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(storybook@8.6.11(prettier@2.8.8)))(@storybook/components@8.5.5(storybook@8.6.11(prettier@2.8.8)))(@storybook/theming@8.5.5(storybook@8.6.11(prettier@2.8.8)))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
+  '@storybook/addon-designs@8.2.1(@storybook/blocks@8.5.8(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(storybook@8.6.11(prettier@2.8.8)))(@storybook/components@8.5.5(storybook@8.6.11(prettier@2.8.8)))(@storybook/theming@8.6.12(storybook@8.6.11(prettier@2.8.8)))(react-dom@19.1.0(react@19.1.0))(react@19.1.0)':
     dependencies:
       '@figspec/react': 1.0.4(react@19.1.0)
     optionalDependencies:
       '@storybook/blocks': 8.5.8(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(storybook@8.6.11(prettier@2.8.8))
       '@storybook/components': 8.5.5(storybook@8.6.11(prettier@2.8.8))
-      '@storybook/theming': 8.5.5(storybook@8.6.11(prettier@2.8.8))
+      '@storybook/theming': 8.6.12(storybook@8.6.11(prettier@2.8.8))
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
 
@@ -4321,6 +4326,10 @@ snapshots:
       storybook: 8.6.11(prettier@2.8.8)
 
   '@storybook/theming@8.6.11(storybook@8.6.11(prettier@2.8.8))':
+    dependencies:
+      storybook: 8.6.11(prettier@2.8.8)
+
+  '@storybook/theming@8.6.12(storybook@8.6.11(prettier@2.8.8))':
     dependencies:
       storybook: 8.6.11(prettier@2.8.8)
 
