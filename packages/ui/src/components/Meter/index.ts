@@ -1,1 +1,1 @@
-export { Meter, type LabelProps } from './Meter.tsx'
+export { Meter, type MeterProps } from './Meter.tsx'

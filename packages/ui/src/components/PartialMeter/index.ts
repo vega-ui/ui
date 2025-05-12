@@ -1,1 +1,4 @@
-export { PartialMeter, type LabelProps } from './PartialMeter.tsx'
+export { PartialMeter, type PartialMeterProps } from './PartialMeter.tsx'
+export {
+  PartialMeterItem, type PartialMeterItemProps
+} from './components'
