@@ -1,0 +1,65 @@
+.meter {
+    --meter-height: var(--spacing-2);
+    --meter-br-ratio: 1;
+    --meter-value: 0;
+    --meter-max: 1;
+
+    --meter-track-optimum-color: var(--color-green-500);
+    --meter-track-suboptimum-color: var(--color-amber-500);
+    --meter-track-even-less-good-color: var(--color-red-500);
+
+    height: var(--meter-height);
+    border-radius: calc(var(--meter-height) * var(--meter-br-ratio));
+
+    background-color: var(--color-gray-accent-100);
+    overflow-x: clip;
+}
+
+.meterTrack {
+    --meter-track-br-ratio: 1;
+    --meter-track-height: var(--meter-height);
+    --meter-track-color: var(--color-primary-500);
+
+    width: calc(var(--meter-value) / var(--meter-max) * 100%);
+    height: var(--meter-track-height);
+    background-color: var(--meter-track-color);
+    border-radius: calc(var(--meter-track-height) * var(--meter-track-br-ratio));
+
+    transition: width var(--transition-state-delay) ease;
+}
+
+.meter[data-fullwidth='true'] {
+    width: 100%;
+}
+
+.meter[data-size='sm'] {
+    --meter-height: var(--spacing-2);
+}
+
+.meter[data-size='md'] {
+    --meter-height: var(--spacing-4);
+}
+
+.meter[data-size='lg'] {
+    --meter-height: var(--spacing-6);
+}
+
+.meter[data-variant='primary'] .meterTrack {
+    --meter-track-color: var(--color-primary-500);
+}
+
+.meter[data-variant='secondary'] .meterTrack {
+    --meter-track-color: var(--color-secondary-500);
+}
+
+.meter[data-state='good'] .meterTrack {
+    --meter-track-color: var(--meter-track-optimum-color);
+}
+
+.meter[data-state='warn'] .meterTrack {
+    --meter-track-color: var(--meter-track-suboptimum-color);
+}
+
+.meter[data-state='bad'] .meterTrack {
+    --meter-track-color: var(--meter-track-even-less-good-color);
+}

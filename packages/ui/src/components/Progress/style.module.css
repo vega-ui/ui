@@ -1,0 +1,65 @@
+.progress {
+    --progress-height: var(--spacing-2);
+    --progress-br-ratio: 1;
+
+    height: var(--progress-height);
+    border-radius: calc(var(--progress-height) * var(--progress-br-ratio));
+
+    background-color: var(--color-gray-accent-100);
+    overflow-x: clip;
+}
+
+.progressTrack {
+    --progress-track-br-ratio: 1;
+    --progress-track-height: var(--progress-height);
+    --progress-track-color: var(--color-primary-500);
+
+    height: var(--progress-track-height);
+    background-color: var(--progress-track-color);
+    border-radius: calc(var(--progress-track-height) * var(--progress-track-br-ratio));
+
+    transition: width var(--transition-state-delay) ease;
+}
+
+.progress[data-fullwidth='true'] {
+    width: 100%;
+}
+
+.progress:has(progress:indeterminate) {
+    overflow-x: hidden;
+}
+
+.progress:has(progress:indeterminate) .progressTrack {
+    width: 100%;
+    animation: 1.25s progressTrackIndeterminate ease-in-out infinite;
+}
+
+.progress[data-size='sm'] {
+    --progress-height: var(--spacing-2);
+}
+
+.progress[data-size='md'] {
+    --progress-height: var(--spacing-4);
+}
+
+.progress[data-size='lg'] {
+    --progress-height: var(--spacing-6);
+}
+
+.progress[data-variant='primary'] .progressTrack {
+    --progress-track-color: var(--color-primary-500);
+}
+
+.progress[data-variant='secondary'] .progressTrack {
+    --progress-track-color: var(--color-secondary-500);
+}
+
+@keyframes progressTrackIndeterminate {
+    from {
+        transform: translateX(-100%) scaleX(0);
+    }
+
+    to {
+        transform: translateX(100%) scaleX(1);
+    }
+}

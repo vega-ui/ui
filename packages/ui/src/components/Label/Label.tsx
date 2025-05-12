@@ -5,7 +5,7 @@ import { csx } from '@vega-ui/utils';
 import { Text, TextProps } from '../Text';
 import { sizeMapper } from './utils';
 
-export interface LabelProps {
+export interface LabelProps extends Omit<TextProps, 'size'> {
   /**
    * Optional class name applied to the `<label>` element.
    * Useful for design system overrides or scoped styles.
@@ -38,9 +38,9 @@ export interface LabelProps {
 }
 
 /** A Label is a UI component that provides descriptive text to identify or explain the purpose of another element, such as a form input field, button, or checkbox, improving accessibility and user understanding */
-export const Label: FC<LabelProps> = ({ className, size = 'medium', htmlFor, fontWeight = 500, children }) => {
+export const Label: FC<LabelProps> = ({ className, size = 'medium', htmlFor, fontWeight = 500, children, ...props }) => {
   return (
-    <Text asChild className={csx(style.label, className)} size={sizeMapper(size)} fontWeight={fontWeight}>
+    <Text asChild className={csx(style.label, className)} size={sizeMapper(size)} fontWeight={fontWeight} {...props}>
       <label htmlFor={htmlFor}>{children}</label>
     </Text>
   );
