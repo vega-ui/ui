@@ -1,5 +1,14 @@
 # @vega-ui/react
 
+## 1.1.1
+
+### Patch Changes
+
+- ffa6cc4: Fixed exports
+  - @vega-ui/hooks@1.1.1
+  - @vega-ui/icons@1.1.1
+  - @vega-ui/utils@1.1.1
+
 ## 1.1.0
 
 ### Minor Changes
