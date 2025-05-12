@@ -228,17 +228,17 @@ importers:
         specifier: ^0.27.8
         version: 0.27.8(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@maskito/core':
-        specifier: ^3.4.0
-        version: 3.4.0
+        specifier: ^3.7.2
+        version: 3.7.2
       '@maskito/kit':
         specifier: ^3.4.0
-        version: 3.4.0(@maskito/core@3.4.0)
+        version: 3.4.0(@maskito/core@3.7.2)
       '@maskito/phone':
         specifier: ^3.4.0
-        version: 3.4.0(@maskito/core@3.4.0)(@maskito/kit@3.4.0(@maskito/core@3.4.0))(libphonenumber-js@1.12.8)
+        version: 3.4.0(@maskito/core@3.7.2)(@maskito/kit@3.4.0(@maskito/core@3.7.2))(libphonenumber-js@1.12.8)
       '@maskito/react':
         specifier: ^3.4.0
-        version: 3.4.0(@maskito/core@3.4.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        version: 3.4.0(@maskito/core@3.7.2)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@vega-ui/hooks':
         specifier: workspace:*
         version: link:../hooks
@@ -996,8 +996,8 @@ packages:
   '@manypkg/get-packages@1.1.3':
     resolution: {integrity: sha512-fo+QhuU3qE/2TQMQmbVMqaQ6EWbMhi4ABWP+O4AM1NqPBuy0OrApV5LO6BrrgnhtAHS2NH6RrVk9OL181tTi8A==}
 
-  '@maskito/core@3.4.0':
-    resolution: {integrity: sha512-gFM6qk675YwOEGhxu9Xm6/sl1TZBRab6+B3Gstqml7xJopHHZ0rUOrWXwmX0z2JI+1PsgUL/ftV/CSZ8CpIONg==}
+  '@maskito/core@3.7.2':
+    resolution: {integrity: sha512-jnX1u2HAZFy0K8Ll6AoeMpe502aVzrqgPKG7rk/qtbivW+71U3vutP3kqmjZtgsPoNzQ2wzKVWMgi7JEXDK11g==}
 
   '@maskito/kit@3.4.0':
     resolution: {integrity: sha512-jkexr7wjAqFeMpyc7s0IlinL+3F9xC4BYUHDQcEqlAJisDgVFtGCZZK/RvV1C+HGDn2gtzzVrJ3G/OY66k6EXg==}
@@ -4079,21 +4079,21 @@ snapshots:
       globby: 11.1.0
       read-yaml-file: 1.1.0
 
-  '@maskito/core@3.4.0': {}
+  '@maskito/core@3.7.2': {}
 
-  '@maskito/kit@3.4.0(@maskito/core@3.4.0)':
+  '@maskito/kit@3.4.0(@maskito/core@3.7.2)':
     dependencies:
-      '@maskito/core': 3.4.0
+      '@maskito/core': 3.7.2
 
-  '@maskito/phone@3.4.0(@maskito/core@3.4.0)(@maskito/kit@3.4.0(@maskito/core@3.4.0))(libphonenumber-js@1.12.8)':
+  '@maskito/phone@3.4.0(@maskito/core@3.7.2)(@maskito/kit@3.4.0(@maskito/core@3.7.2))(libphonenumber-js@1.12.8)':
     dependencies:
-      '@maskito/core': 3.4.0
-      '@maskito/kit': 3.4.0(@maskito/core@3.4.0)
+      '@maskito/core': 3.7.2
+      '@maskito/kit': 3.4.0(@maskito/core@3.7.2)
       libphonenumber-js: 1.12.8
 
-  '@maskito/react@3.4.0(@maskito/core@3.4.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+  '@maskito/react@3.4.0(@maskito/core@3.7.2)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
-      '@maskito/core': 3.4.0
+      '@maskito/core': 3.7.2
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
 
