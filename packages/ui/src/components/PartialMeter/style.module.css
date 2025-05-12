@@ -1,0 +1,30 @@
+.meter {
+    --meter-height: var(--spacing-2);
+    --meter-br-ratio: 1;
+    --meter-gap-ratio: 0.25;
+
+    height: var(--meter-height);
+    border-radius: calc(var(--meter-height) * var(--meter-br-ratio));
+    overflow: hidden;
+
+    display: flex;
+    gap: calc(var(--meter-height) * var(--meter-gap-ratio));
+    background-color: var(--color-gray-accent-100);
+    overflow-x: clip;
+}
+
+.meter[data-fullwidth='true'] {
+    width: 100%;
+}
+
+.meter[data-size='sm'] {
+    --meter-height: var(--spacing-2);
+}
+
+.meter[data-size='md'] {
+    --meter-height: var(--spacing-4);
+}
+
+.meter[data-size='lg'] {
+    --meter-height: var(--spacing-6);
+}

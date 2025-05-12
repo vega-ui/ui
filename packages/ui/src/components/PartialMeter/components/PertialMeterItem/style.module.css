@@ -1,0 +1,14 @@
+.partialMeterItem {
+    --meter-item-value: 0;
+    --meter-item-br-ratio: 1;
+    --meter-item-color: var(--color-primary-500);
+
+    width: calc(var(--meter-item-value) / var(--meter-max) * 100%);
+    background-color: var(--meter-item-color);
+    height: 100%;
+}
+
+.partialMeterItem:last-child {
+    border-top-right-radius: inherit;
+    border-bottom-right-radius: inherit;
+}
