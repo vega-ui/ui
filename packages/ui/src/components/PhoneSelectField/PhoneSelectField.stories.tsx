@@ -943,7 +943,7 @@ const options: PhoneFieldCountry[] = [
 ]
 
 const meta = {
-  title: 'UI-Core/PhoneSelectField',
+  title: 'Form/Fields/PhoneSelectField',
   component: PhoneSelectField,
   parameters: {
     layout: 'centered',

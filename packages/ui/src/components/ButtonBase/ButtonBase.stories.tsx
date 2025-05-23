@@ -4,7 +4,7 @@ import { fn } from '@storybook/test';
 import { ButtonBase } from './ButtonBase.tsx';
 
 const meta = {
-  title: 'UI-Core/ButtonBase',
+  title: 'Actions/ButtonBase',
   component: ButtonBase,
   parameters: {
     layout: 'centered',

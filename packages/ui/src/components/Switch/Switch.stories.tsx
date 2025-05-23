@@ -4,7 +4,7 @@ import { Text } from '../Text/index.ts'
 import { Switch } from './Switch.tsx'
 
 const meta = {
-  title: 'UI-Core/Switch',
+  title: 'Form/Selectors/Switch',
   component: Switch,
   parameters: {
     layout: 'centered',

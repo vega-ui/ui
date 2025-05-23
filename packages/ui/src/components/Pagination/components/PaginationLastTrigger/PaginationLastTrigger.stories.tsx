@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { PaginationLastTrigger } from './PaginationLastTrigger.tsx';
 import { Tooltip } from '../../../Tooltip';
-import { TooltipContent, TooltipTrigger } from '../../../Tooltip/components';
+import { TooltipContent, TooltipTrigger } from '../../../Tooltip';
 
 const meta = {
-  title: 'UI-Core/Pagination/PaginationLastTrigger',
+  title: 'Navigation/Pagination/PaginationLastTrigger',
   component: PaginationLastTrigger,
   parameters: {
     layout: 'centered',

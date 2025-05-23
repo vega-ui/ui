@@ -3,7 +3,7 @@ import { AvatarImage } from './AvatarImage.tsx';
 import { Avatar } from '../../Avatar.tsx';
 
 const meta = {
-  title: 'UI-Core/Avatar/AvatarImage',
+  title: 'Display/Avatar/AvatarImage',
   component: AvatarImage,
   parameters: {
     layout: 'centered',

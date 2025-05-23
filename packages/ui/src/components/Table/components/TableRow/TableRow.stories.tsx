@@ -3,7 +3,7 @@ import { TableRow } from './TableRow.tsx';
 import { Text } from '../../../Text';
 
 const meta = {
-  title: 'UI-Core/Table/TableRow',
+  title: 'Display/Table/TableRow',
   component: TableRow,
   parameters: {
     layout: 'centered',

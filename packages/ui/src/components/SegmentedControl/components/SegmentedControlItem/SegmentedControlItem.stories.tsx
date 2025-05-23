@@ -3,7 +3,7 @@ import { SegmentedControlItem } from './SegmentedControlItem.tsx';
 import { Text } from '../../../Text';
 
 const meta = {
-  title: 'UI-Core/SegmentedControl/SegmentedControlItem',
+  title: 'Form/Selectors/SegmentedControl/SegmentedControlItem',
   component: SegmentedControlItem,
   parameters: {
     layout: 'centered',

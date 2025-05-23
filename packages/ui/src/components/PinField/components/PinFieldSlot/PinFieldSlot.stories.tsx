@@ -3,7 +3,7 @@ import { PinFieldSlot } from './PinFieldSlot.tsx';
 import { PinField } from '../../PinField.tsx';
 
 const meta = {
-  title: 'UI-Core/PinField/PinFieldSlot',
+  title: 'Form/Fields/PinField/PinFieldSlot',
   component: PinFieldSlot,
   parameters: {
     layout: 'centered',

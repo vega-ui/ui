@@ -4,7 +4,7 @@ import { Text } from '../../../Text';
 import { Collapsible } from '../../Collapsible.tsx';
 
 const meta = {
-  title: 'UI-Core/Collapsible/CollapsibleContent',
+  title: 'Actions/Collapsible/CollapsibleContent',
   component: CollapsibleContent,
   parameters: {
     layout: 'centered',

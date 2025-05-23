@@ -4,7 +4,7 @@ import { Tooltip } from '../../../Tooltip';
 import { TooltipContent, TooltipTrigger } from '../../../Tooltip/components';
 
 const meta = {
-  title: 'UI-Core/Pagination/PaginationNextTrigger',
+  title: 'Navigation/Pagination/PaginationNextTrigger',
   component: PaginationNextTrigger,
   parameters: {
     layout: 'centered',

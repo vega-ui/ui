@@ -4,7 +4,7 @@ import { AvatarFallback, AvatarIcon, AvatarImage } from './components';
 import { SupportIcon } from '@vega-ui/icons';
 
 const meta = {
-  title: 'UI-Core/Avatar/Avatar',
+  title: 'Display/Avatar/Avatar',
   component: Avatar,
   parameters: {
     layout: 'padded',

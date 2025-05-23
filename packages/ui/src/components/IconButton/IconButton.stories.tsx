@@ -4,7 +4,7 @@ import { IconButton, IconButtonProps } from './IconButton.tsx';
 import { GlobeIcon, SupportIcon, MinusIcon } from '@vega-ui/icons';
 
 const meta = {
-  title: 'UI-Core/IconButton',
+  title: 'Actions/IconButton',
   component: IconButton,
   parameters: {
     layout: 'centered',

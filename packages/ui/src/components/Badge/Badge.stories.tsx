@@ -6,7 +6,7 @@ const appearance: BadgeProps['appearance'][] = ['ghost', 'outline', 'fill']
 const sizes: BadgeProps['size'][] = ['xs', 'sm', 'md', 'lg', 'xl']
 
 const meta = {
-  title: 'UI-Core/Badge',
+  title: 'Feedback/Badge',
   component: Badge,
   parameters: {
     layout: 'padded',

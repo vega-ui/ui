@@ -22,7 +22,8 @@ export interface SpinnerProps extends HTMLAttributes<HTMLDivElement> {
   ref?: Ref<HTMLDivElement>
 }
 
-/** A Spinner is a UI component that indicates a loading or processing state, often displayed as a rotating circle or animated graphic, to show that the system is performing an action or waiting for a response */
+/** Spinner is a UI component that indicates a loading or processing state, often displayed as a rotating circle or
+ *  animated graphic, to show that the system is performing an action or waiting for a response */
 export const Spinner: FC<SpinnerProps> = ({
   size = 3,
   variant = 'primary',

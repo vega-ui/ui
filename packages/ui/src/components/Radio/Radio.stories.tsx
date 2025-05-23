@@ -4,7 +4,7 @@ import { Text } from '../Text/index.ts'
 import { Radio } from './Radio.tsx'
 
 const meta = {
-  title: 'UI-Core/Radio',
+  title: 'Form/Selectors/Radio',
   component: Radio,
   parameters: {
     layout: 'centered',

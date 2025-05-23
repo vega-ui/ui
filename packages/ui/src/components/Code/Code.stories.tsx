@@ -3,7 +3,7 @@ import { Code } from './Code.tsx';
 import { Text } from '../Text';
 
 const meta = {
-  title: 'UI-Core/Code',
+  title: 'Typography/Code',
   component: Code,
   parameters: {
     layout: 'padded',

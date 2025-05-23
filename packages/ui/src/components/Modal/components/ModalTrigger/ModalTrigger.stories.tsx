@@ -6,7 +6,7 @@ import { Modal } from '../../Modal.tsx';
 import { ModalContent } from '../ModalContent';
 
 const meta = {
-  title: 'UI-Core/Modal/ModalTrigger',
+  title: 'Overlay/Modal/ModalTrigger',
   component: ModalTrigger,
   parameters: {
     layout: 'centered',

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { PinFieldSeparator } from './PinFieldSeparator.tsx';
 
 const meta = {
-  title: 'UI-Core/PinField/PinFieldSeparator',
+  title: 'Form/Fields/PinField/PinFieldSeparator',
   component: PinFieldSeparator,
   parameters: {
     layout: 'centered',

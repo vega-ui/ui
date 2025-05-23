@@ -3,7 +3,7 @@ import { TableHead } from './TableHead.tsx';
 import { Text } from '../../../Text';
 
 const meta = {
-  title: 'UI-Core/Table/TableHead',
+  title: 'Display/Table/TableHead',
   component: TableHead,
   parameters: {
     layout: 'centered',

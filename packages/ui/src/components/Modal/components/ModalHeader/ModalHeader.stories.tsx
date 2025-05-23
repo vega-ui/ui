@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { ModalHeader } from './ModalHeader.tsx';
 
 const meta = {
-  title: 'UI-Core/Modal/ModalHeader',
+  title: 'Overlay/Modal/ModalHeader',
   component: ModalHeader,
   parameters: {
     layout: 'centered',

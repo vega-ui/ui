@@ -7,7 +7,7 @@ const sizes: CardProps['size'][] = ['small', 'medium', 'large']
 const appearance: CardProps['appearance'][] = ['outline', 'transparent']
 
 const meta = {
-  title: 'UI-Core/Card',
+  title: 'Display/Card',
   component: Card,
   parameters: {
     layout: 'centered',

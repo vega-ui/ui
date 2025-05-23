@@ -7,7 +7,7 @@ import { SelectOption } from './components/SelectOption';
 import { GlobeIcon } from '@vega-ui/icons';
 
 const meta = {
-  title: 'UI-Core/Select/Select',
+  title: 'Form/Selectors/Select/Select',
   component: Select,
   parameters: {
     layout: 'centered',

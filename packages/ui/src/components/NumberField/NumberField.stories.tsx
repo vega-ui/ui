@@ -7,7 +7,7 @@ import { Label } from '../Label';
 import { ChipIcon } from '@vega-ui/icons';
 
 const meta = {
-  title: 'UI-Core/NumberField',
+  title: 'Form/Fields/NumberField',
   component: NumberField,
   parameters: {
     layout: 'centered',

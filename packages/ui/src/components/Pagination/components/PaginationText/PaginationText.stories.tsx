@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { PaginationText } from './PaginationText.tsx';
 
 const meta = {
-  title: 'UI-Core/Pagination/PaginationText',
+  title: 'Navigation/Pagination/PaginationText',
   component: PaginationText,
   parameters: {
     layout: 'centered',

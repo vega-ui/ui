@@ -6,7 +6,7 @@ import { ModalTrigger } from '../ModalTrigger';
 import { Button } from '../../../Button';
 
 const meta = {
-  title: 'UI-Core/Modal/ModalContent',
+  title: 'Overlay/Modal/ModalContent',
   component: ModalContent,
   parameters: {
     layout: 'centered',

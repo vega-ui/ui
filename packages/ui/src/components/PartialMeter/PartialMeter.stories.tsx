@@ -10,7 +10,7 @@ const sizes: PartialMeterProps['size'][] = ['sm', 'md', 'lg'] as const
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof PartialMeter> = {
-  title: 'UI-Core/PartialMeter/PartialMeter',
+  title: 'Feedback/PartialMeter/PartialMeter',
   component: PartialMeter,
   parameters: {
     layout: 'centered',

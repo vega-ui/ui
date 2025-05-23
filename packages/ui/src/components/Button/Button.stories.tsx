@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Button, ButtonProps } from './Button.tsx';
 
 const meta = {
-  title: 'UI-Core/Button',
+  title: 'Actions/Button',
   component: Button,
   parameters: {
     layout: 'centered',

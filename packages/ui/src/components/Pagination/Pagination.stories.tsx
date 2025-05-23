@@ -11,7 +11,7 @@ import { IconButtonProps } from '../IconButton';
 import { JSX, useState } from 'react';
 
 const meta = {
-  title: 'UI-Core/Pagination/Pagination',
+  title: 'Navigation/Pagination/Pagination',
   component: Pagination,
   parameters: {
     layout: 'centered',

@@ -6,7 +6,7 @@ import { DrawerTrigger } from '../DrawerTrigger';
 import { Button } from '../../../Button';
 
 const meta = {
-  title: 'UI-Core/Drawer/DrawerContent',
+  title: 'Overlay/Drawer/DrawerContent',
   component: DrawerContent,
   parameters: {
     layout: 'centered',

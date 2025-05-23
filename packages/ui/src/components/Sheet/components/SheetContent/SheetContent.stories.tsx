@@ -6,7 +6,7 @@ import { SheetTrigger } from '../SheetTrigger';
 import { Sheet } from '../../Sheet.tsx';
 
 const meta = {
-  title: 'UI-Core/Sheet/SheetContent',
+  title: 'Overlay/Sheet/SheetContent',
   component: SheetContent,
   parameters: {
     layout: 'centered',

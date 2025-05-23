@@ -5,7 +5,7 @@ import { Tooltip } from '../../Tooltip.tsx';
 import { TooltipTrigger } from '../TooltipTrigger';
 
 const meta = {
-  title: 'UI-Core/Tooltip/TooltipContent',
+  title: 'Overlay/Tooltip/TooltipContent',
   component: TooltipContent,
   parameters: {
     layout: 'centered',

@@ -4,7 +4,7 @@ import { Button } from '../../../Button';
 import { CheckboxCard } from '../../CheckboxCard.tsx';
 
 const meta = {
-  title: 'UI-Core/CheckboxCard/CheckboxCardContent',
+  title: 'Form/Selectors/CheckboxCard/CheckboxCardContent',
   component: CheckboxCardContent,
   parameters: {
     layout: 'centered',

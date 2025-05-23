@@ -4,7 +4,7 @@ import { FlagIcon } from './FlagIcon.tsx';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof FlagIcon> = {
-  title: 'UI-Core/FlagIcon',
+  title: 'Display/FlagIcon',
   component: FlagIcon,
   parameters: {
     layout: 'centered',

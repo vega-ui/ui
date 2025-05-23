@@ -8,7 +8,7 @@ import { CloudIcon } from '@vega-ui/icons';
 const sizes: TextFieldProps['size'][] = ['small', 'medium', 'large']
 
 const meta = {
-  title: 'UI-Core/TextField',
+  title: 'Form/Fields/TextField',
   component: TextField,
   parameters: {
     layout: 'centered',
