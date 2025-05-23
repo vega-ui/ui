@@ -1,5 +1,14 @@
 # @vega-ui/react
 
+## 1.2.1
+
+### Patch Changes
+
+- 3bdf4de: Changed slider styles
+  - @vega-ui/hooks@1.2.1
+  - @vega-ui/icons@1.2.1
+  - @vega-ui/utils@1.2.1
+
 ## 1.2.0
 
 ### Minor Changes
