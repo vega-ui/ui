@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { TextArea } from './TextArea.tsx';
 
 const meta = {
-  title: 'UI-Core/TextArea',
+  title: 'Form/Fields/TextArea',
   component: TextArea,
   parameters: {
     layout: 'centered',

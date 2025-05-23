@@ -6,7 +6,7 @@ import { Text } from '../Text';
 import { ModalHeader, ModalTrigger, ModalContent } from './components';
 
 const meta = {
-  title: 'UI-Core/Modal/Modal',
+  title: 'Overlay/Modal/Modal',
   component: Modal,
   parameters: {
     layout: 'centered',

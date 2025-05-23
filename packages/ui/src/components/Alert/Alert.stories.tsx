@@ -8,7 +8,7 @@ import { CloseIcon } from '@vega-ui/icons';
 const variants: AlertProps['variant'][] = ['info', 'error', 'success', 'warning']
 
 const meta = {
-  title: 'UI-Core/Alert',
+  title: 'Feedback/Alert',
   component: Alert,
   parameters: {
     layout: 'padded',

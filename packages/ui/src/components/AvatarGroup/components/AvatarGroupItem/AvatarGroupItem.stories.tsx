@@ -3,7 +3,7 @@ import { AvatarGroupItem } from './AvatarGroupItem.tsx';
 import { AvatarFallback, AvatarImage } from '../../../Avatar';
 
 const meta = {
-  title: 'UI-Core/AvatarGroup/AvatarGroupItem',
+  title: 'Display/AvatarGroup/AvatarGroupItem',
   component: AvatarGroupItem,
   parameters: {
     layout: 'centered',

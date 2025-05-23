@@ -7,7 +7,7 @@ import { Label } from '../Label';
 import { ChipIcon } from '@vega-ui/icons';
 
 const meta = {
-  title: 'UI-Core/PasswordField',
+  title: 'Form/Fields/PasswordField',
   component: PasswordField,
   parameters: {
     layout: 'centered',

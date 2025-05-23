@@ -4,7 +4,7 @@ import { Separator } from './Separator.tsx';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof Separator> = {
-  title: 'UI-Core/Separator',
+  title: 'Display/Separator',
   component: Separator,
   parameters: {
     layout: 'centered',

@@ -3,7 +3,7 @@ import { CheckboxCard } from './CheckboxCard.tsx';
 import { CheckboxCardContent } from './components';
 
 const meta = {
-  title: 'UI-Core/CheckboxCard/CheckboxCard',
+  title: 'Form/Selectors/CheckboxCard/CheckboxCard',
   component: CheckboxCard,
   parameters: {
     layout: 'centered',

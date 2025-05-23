@@ -3,7 +3,7 @@ import { AccordionItem } from './AccordionItem.tsx';
 import { Text } from '../../../Text';
 
 const meta = {
-  title: 'UI-Core/Accordion/AccordionItem',
+  title: 'Actions/Accordion/AccordionItem',
   component: AccordionItem,
   parameters: {
     layout: 'centered',

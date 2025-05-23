@@ -7,7 +7,7 @@ const variants: ProgressProps['variant'][] = ['primary', 'secondary'] as const
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof Progress> = {
-  title: 'UI-Core/Progress',
+  title: 'Feedback/Progress',
   component: Progress,
   parameters: {
     layout: 'centered',

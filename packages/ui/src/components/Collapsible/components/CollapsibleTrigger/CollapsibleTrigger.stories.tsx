@@ -3,7 +3,7 @@ import { CollapsibleTrigger } from './CollapsibleTrigger.tsx';
 import { Button } from '../../../Button';
 
 const meta = {
-  title: 'UI-Core/Collapsible/CollapsibleTrigger',
+  title: 'Actions/Collapsible/CollapsibleTrigger',
   component: CollapsibleTrigger,
   parameters: {
     layout: 'centered',

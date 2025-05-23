@@ -1,0 +1,36 @@
+import type { Meta, StoryObj } from '@storybook/react';
+
+import { SliderBaseThumb, SliderBaseThumbProps } from './SliderBaseThumb.tsx';
+import { SliderBase } from '../../SliderBase.tsx';
+
+// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
+const meta: Meta<typeof SliderBaseThumb> = {
+  title: 'Form/Sliders/SliderBase/SliderBaseThumb',
+  component: SliderBaseThumb,
+  parameters: {
+    layout: 'centered',
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/vega-ui--Community-?node-id=0-4344&t=2RYEGgF9z3n5SpP5-4',
+    },
+  },
+  tags: ['autodocs'],
+};
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Default: Story = {
+  args: {
+    value: 20,
+  },
+  render(props: SliderBaseThumbProps) {
+    const { value, size, orientation, style } = props
+
+    return (
+      <SliderBase value={value} size={size} orientation={orientation} style={orientation === 'vertical' ? { height: '400px', ...style } : { width: '400px', ...style }}>
+        <SliderBaseThumb {...props} />
+      </SliderBase>
+    )
+  }
+};

@@ -4,7 +4,7 @@ import { Avatar } from '../../Avatar.tsx';
 import { SupportIcon } from '@vega-ui/icons';
 
 const meta = {
-  title: 'UI-Core/Avatar/AvatarIcon',
+  title: 'Display/Avatar/AvatarIcon',
   component: AvatarIcon,
   parameters: {
     layout: 'centered',

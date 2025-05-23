@@ -4,7 +4,7 @@ import { VisuallyHidden } from './VisuallyHidden.tsx';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof VisuallyHidden> = {
-  title: 'UI-Core/VisuallyHidden',
+  title: 'Utils/VisuallyHidden',
   component: VisuallyHidden,
   parameters: {
     layout: 'centered',

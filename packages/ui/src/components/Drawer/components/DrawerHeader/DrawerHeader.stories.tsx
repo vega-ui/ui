@@ -3,7 +3,7 @@ import { DrawerHeader } from './DrawerHeader.tsx';
 import { Text } from '../../../Text';
 
 const meta = {
-  title: 'UI-Core/Drawer/DrawerHeader',
+  title: 'Overlay/Drawer/DrawerHeader',
   component: DrawerHeader,
   parameters: {
     layout: 'centered',

@@ -4,7 +4,7 @@ import { TableFoot } from './TableFoot.tsx';
 import { Text } from '../../../Text';
 
 const meta = {
-  title: 'UI-Core/Table/TableFoot',
+  title: 'Display/Table/TableFoot',
   component: TableFoot,
   parameters: {
     layout: 'centered',

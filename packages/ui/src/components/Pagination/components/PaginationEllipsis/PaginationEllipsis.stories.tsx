@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { PaginationEllipsis } from './PaginationEllipsis.tsx';
 
 const meta = {
-  title: 'UI-Core/Pagination/PaginationEllipsis',
+  title: 'Navigation/Pagination/PaginationEllipsis',
   component: PaginationEllipsis,
   parameters: {
     layout: 'centered',

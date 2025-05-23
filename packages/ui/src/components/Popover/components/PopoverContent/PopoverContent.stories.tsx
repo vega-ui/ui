@@ -6,7 +6,7 @@ import { PopoverTrigger } from '../PopoverTrigger';
 import { Popover } from '../../Popover.tsx';
 
 const meta = {
-  title: 'UI-Core/Popover/PopoverContent',
+  title: 'Overlay/Popover/PopoverContent',
   component: PopoverContent,
   parameters: {
     layout: 'centered',

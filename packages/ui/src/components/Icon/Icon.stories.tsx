@@ -7,7 +7,7 @@ const sizes: IconProps['size'][] = ['4xs', '3xs', '2xs', 'xs', 'sm', 'md', 'lg',
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof Icon> = {
-  title: 'UI-Core/Icon',
+  title: 'Display/Icon',
   component: Icon,
   parameters: {
     layout: 'centered',

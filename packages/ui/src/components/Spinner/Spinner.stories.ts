@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Spinner } from './Spinner.tsx';
 
 const meta = {
-  title: 'UI-Core/Spinner',
+  title: 'Feedback/Spinner',
   component: Spinner,
   parameters: {
     layout: 'centered',

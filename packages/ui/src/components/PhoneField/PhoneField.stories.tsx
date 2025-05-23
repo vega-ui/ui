@@ -4,7 +4,7 @@ import { PhoneField } from './PhoneField.tsx';
 import { Label } from '../Label';
 
 const meta = {
-  title: 'UI-Core/PhoneField',
+  title: 'Form/Fields/PhoneField',
   component: PhoneField,
   parameters: {
     layout: 'centered',

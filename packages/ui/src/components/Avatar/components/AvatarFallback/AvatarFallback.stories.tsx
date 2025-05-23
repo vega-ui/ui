@@ -3,7 +3,7 @@ import { AvatarFallback } from './AvatarFallback.tsx';
 import { Avatar } from '../../Avatar.tsx';
 
 const meta = {
-  title: 'UI-Core/Avatar/AvatarFallback',
+  title: 'Display/Avatar/AvatarFallback',
   component: AvatarFallback,
   parameters: {
     layout: 'centered',

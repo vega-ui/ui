@@ -1,0 +1,32 @@
+@property --slider-base-progress-color {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: var(--color-primary-500);
+}
+
+.progress {
+    --slider-base-progress-from: 0;
+    --slider-base-progress-to: var(--slider-base-value);
+    --slider-base-progress-diff: 0;
+
+    position: absolute;
+    touch-action: none;
+    user-select: none;
+
+    border-radius: inherit;
+    background-color: var(--slider-base-progress-color);
+
+    transition: background-color var(--transition-state-delay) ease-in-out;
+}
+
+.progress[data-orientation='horizontal'] {
+    height: 100%;
+    width: calc(var(--slider-base-progress-diff) / var(--slider-base-max) * 100%);
+    left: calc(var(--slider-base-progress-from) / var(--slider-base-max) * 100%);
+}
+
+.progress[data-orientation='vertical'] {
+    width: 100%;
+    height: calc(var(--slider-base-progress-diff) / var(--slider-base-max) * 100%);
+    bottom: calc(var(--slider-base-progress-from) / var(--slider-base-max) * 100%);
+}

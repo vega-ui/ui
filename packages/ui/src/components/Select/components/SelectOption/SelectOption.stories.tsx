@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { SelectOption } from './SelectOption.tsx';
 
 const meta = {
-  title: 'UI-Core/Select/SelectOption',
+  title: 'Form/Selectors/Select/SelectOption',
   component: SelectOption,
   parameters: {
     layout: 'centered',

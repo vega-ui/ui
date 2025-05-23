@@ -1,0 +1,53 @@
+@property --slider-base-thumb-border-color {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: var(--color-primary-500);
+}
+
+@property --slider-base-thumb-color {
+    syntax: "<color>";
+    inherits: true;
+    initial-value: var(--light-color);
+}
+
+.thumb {
+    --slider-base-thumb-size: calc(var(--slider-size) * 4);
+    --slider-base-thumb-br-ratio: 1;
+    --slider-base-thumb-bw-ratio: 0.2;
+
+    position: absolute;
+    touch-action: none;
+    user-select: none;
+
+    width: var(--slider-base-thumb-size);
+    height: var(--slider-base-thumb-size);
+
+    box-sizing: border-box;
+    background-color: var(--slider-base-thumb-color);
+    border-radius: calc(var(--slider-base-thumb-size) * var(--slider-base-thumb-br-ratio));
+
+    box-shadow: inset 0 0 0 calc(var(--slider-base-thumb-size) * var(--slider-base-thumb-bw-ratio)) var(--slider-base-thumb-border-color);
+
+    transition: box-shadow var(--transition-state-delay) ease-in-out,
+                background-color var(--transition-state-delay) ease-in-out;
+}
+
+.thumb[data-orientation='horizontal'] {
+    left: calc((var(--slider-base-value) / var(--slider-base-max) * 100%) - (var(--slider-base-thumb-size) / 2));
+}
+
+.thumb[data-orientation='vertical'] {
+    bottom: calc((var(--slider-base-value) / var(--slider-base-max) * 100%) - (var(--slider-base-thumb-size) / 2));
+}
+
+.thumb:hover {
+    --slider-base-thumb-bw-ratio: 0.25;
+}
+
+.thumb:focus-visible {
+    outline: 2px solid var(--focus-color);
+}
+
+.thumb:active {
+    --slider-base-thumb-bw-ratio: 0.3;
+}

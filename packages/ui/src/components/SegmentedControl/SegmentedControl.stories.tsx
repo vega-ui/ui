@@ -7,7 +7,7 @@ import { Icon } from '../Icon';
 import { SunIcon, MoonIcon } from '@vega-ui/icons';
 
 const meta = {
-  title: 'UI-Core/SegmentedControl/SegmentedControl',
+  title: 'Form/Selectors/SegmentedControl/SegmentedControl',
   component: SegmentedControl,
   parameters: {
     layout: 'centered',

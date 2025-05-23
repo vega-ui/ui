@@ -4,7 +4,7 @@ import { TableData } from './TableData.tsx';
 import { Text } from '../../../Text';
 
 const meta = {
-  title: 'UI-Core/Table/TableData',
+  title: 'Display/Table/TableData',
   component: TableData,
   parameters: {
     layout: 'centered',

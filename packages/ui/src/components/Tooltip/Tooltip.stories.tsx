@@ -9,7 +9,7 @@ import { TooltipContent, TooltipTrigger } from './components';
 import { SupportIcon, InfoIcon } from '@vega-ui/icons';
 
 const meta = {
-  title: 'UI-Core/Tooltip',
+  title: 'Overlay/Tooltip/Tooltip',
   component: Tooltip,
   parameters: {
     layout: 'centered',
