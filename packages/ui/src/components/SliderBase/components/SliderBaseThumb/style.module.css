@@ -11,7 +11,7 @@
 }
 
 .thumb {
-    --slider-base-thumb-size: calc(var(--slider-size) * 4);
+    --slider-base-thumb-size: calc(var(--slider-size) * 3);
     --slider-base-thumb-br-ratio: 1;
     --slider-base-thumb-bw-ratio: 0.2;
 
