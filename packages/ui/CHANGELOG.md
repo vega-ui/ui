@@ -1,5 +1,18 @@
 # @vega-ui/react
 
+## 1.2.0
+
+### Minor Changes
+
+- 6224045: Added new component - RangeSlider, Slider and SliderBase
+
+### Patch Changes
+
+- Updated dependencies [6224045]
+  - @vega-ui/utils@1.2.0
+  - @vega-ui/hooks@1.2.0
+  - @vega-ui/icons@1.2.0
+
 ## 1.1.1
 
 ### Patch Changes
