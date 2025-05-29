@@ -471,14 +471,35 @@
 
     /* Alert colors */
 
-    --color-alert-info-background: var(--color-blue-accent-100);
-    --color-alert-info-text: var(--color-blue-accent-800);
-    --color-alert-error-background: var(--color-red-accent-100);
-    --color-alert-error-text: var(--color-red-accent-800);
-    --color-alert-success-background: var(--color-green-accent-100);
-    --color-alert-success-text: var(--color-green-accent-800);
-    --color-alert-warning-background: var(--color-orange-accent-100);
-    --color-alert-warning-text: var(--color-orange-accent-800);
+    /* Alert/Filled */
+
+    --color-alert-info-filled-background: var(--color-blue-accent-100);
+    --color-alert-info-filled-text: var(--color-blue-accent-800);
+    --color-alert-info-filled-border: transparent;
+    --color-alert-error-filled-background: var(--color-red-accent-100);
+    --color-alert-error-filled-text: var(--color-red-accent-800);
+    --color-alert-error-filled-border: transparent;
+    --color-alert-success-filled-background: var(--color-green-accent-100);
+    --color-alert-success-filled-text: var(--color-green-accent-800);
+    --color-alert-success-filled-border: transparent;
+    --color-alert-warning-filled-background: var(--color-orange-accent-100);
+    --color-alert-warning-filled-text: var(--color-orange-accent-800);
+    --color-alert-warning-filled-border: transparent;
+
+    /* Alert/Surface */
+
+    --color-alert-info-surface-background: var(--color-blue-accent-50);
+    --color-alert-info-surface-text: var(--color-blue-accent-700);
+    --color-alert-info-surface-border: var(--color-blue-accent-700);
+    --color-alert-error-surface-background: var(--color-red-accent-50);
+    --color-alert-error-surface-text: var(--color-red-accent-700);
+    --color-alert-error-surface-border: var(--color-red-accent-700);
+    --color-alert-success-surface-background: var(--color-green-accent-50);
+    --color-alert-success-surface-text: var(--color-green-accent-700);
+    --color-alert-success-surface-border: var(--color-green-accent-700);
+    --color-alert-warning-surface-background: var(--color-orange-accent-50);
+    --color-alert-warning-surface-text: var(--color-orange-accent-700);
+    --color-alert-warning-surface-border: var(--color-orange-accent-700);
 
     /* Badge colors */
 
