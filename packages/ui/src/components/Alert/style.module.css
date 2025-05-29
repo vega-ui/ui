@@ -1,3 +1,21 @@
+@property --alert-bg-color {
+    syntax: '<color>';
+    inherits: true;
+    initial-value: var(--color-alert-info-filled-background);
+}
+
+@property --alert-text-color {
+    syntax: '<color>';
+    inherits: true;
+    initial-value: var(--color-alert-info-filled-text);
+}
+
+@property --alert-border-color {
+    syntax: '<color>';
+    inherits: true;
+    initial-value: var(--color-alert-info-filled-border);
+}
+
 .alert {
     display: flex;
     flex-direction: row;
@@ -5,9 +23,12 @@
     justify-content: flex-end;
     gap: var(--spacing-8);
     box-sizing: border-box;
-    border: 1px solid transparent;
     padding: clamp(var(--spacing-6), 3vw, var(--spacing-8)) clamp(var(--spacing-12), 3vw, var(--spacing-14));
     border-radius: var(--radius-4);
+
+    background-color: var(--alert-bg-color);
+    color: var(--alert-text-color);
+    border: 1px solid var(--alert-border-color);
 }
 
 .content {
@@ -21,42 +42,70 @@
     line-height: 1;
 }
 
-.alert[data-variant='info'] .title,
-.alert[data-variant='info'] .icon,
-.alert[data-variant='info'] .text {
-    color: var(--color-alert-info-text);
+.alert .title, .alert .icon, .alert .text {
+    color: inherit;
 }
 
-.alert[data-variant='info'] {
-    background-color: var(--color-alert-info-background);
+/* Alert/Fill/Info */
+
+.alert[data-variant='info'][data-apperance='fill'] {
+    --alert-bg-color: var(--color-alert-info-filled-background);
+    --alert-text-color: var(--color-alert-info-filled-text);
+    --alert-border-color: var(--color-alert-info-filled-border);
 }
 
-.alert[data-variant='success'] .title,
-.alert[data-variant='success'] .icon,
-.alert[data-variant='success'] .text {
-    color: var(--color-alert-success-text);
+/* Alert/Surface/Info */
+
+.alert[data-variant='info'][data-apperance='surface'] {
+    --alert-bg-color: var(--color-alert-info-surface-background);
+    --alert-text-color: var(--color-alert-info-surface-text);
+    --alert-border-color: var(--color-alert-info-surface-border);
 }
 
-.alert[data-variant='success'] {
-    background-color: var(--color-alert-success-background);
+/* Alert/Fill/Success */
+
+.alert[data-variant='success'][data-apperance='fill'] {
+    --alert-bg-color: var(--color-alert-success-filled-background);
+    --alert-text-color: var(--color-alert-success-filled-text);
+    --alert-border-color: var(--color-alert-success-filled-border);
 }
 
-.alert[data-variant='error'] .title,
-.alert[data-variant='error'] .icon,
-.alert[data-variant='error'] .text {
-    color: var(--color-alert-error-text);
+/* Alert/Surface/Success */
+
+.alert[data-variant='success'][data-apperance='surface'] {
+    --alert-bg-color: var(--color-alert-success-surface-background);
+    --alert-text-color: var(--color-alert-success-surface-text);
+    --alert-border-color: var(--color-alert-success-surface-border);
 }
 
-.alert[data-variant='error'] {
-    background-color: var(--color-alert-error-background);
+/* Alert/Fill/Warning */
+
+.alert[data-variant='warning'][data-apperance='fill'] {
+    --alert-bg-color: var(--color-alert-warning-filled-background);
+    --alert-text-color: var(--color-alert-warning-filled-text);
+    --alert-border-color: var(--color-alert-warning-filled-border);
 }
 
-.alert[data-variant='warning'] .title,
-.alert[data-variant='warning'] .icon,
-.alert[data-variant='warning'] .text {
-    color: var(--color-alert-warning-text);
+/* Alert/Surface/Warning */
+
+.alert[data-variant='warning'][data-apperance='surface'] {
+    --alert-bg-color: var(--color-alert-warning-surface-background);
+    --alert-text-color: var(--color-alert-warning-surface-text);
+    --alert-border-color: var(--color-alert-warning-surface-border);
 }
 
-.alert[data-variant='warning'] {
-    background-color: var(--color-alert-warning-background);
+/* Alert/Fill/Error */
+
+.alert[data-variant='error'][data-apperance='fill'] {
+    --alert-bg-color: var(--color-alert-error-filled-background);
+    --alert-text-color: var(--color-alert-error-filled-text);
+    --alert-border-color: var(--color-alert-error-filled-border);
+}
+
+/* Alert/Surface/Error */
+
+.alert[data-variant='error'][data-apperance='surface'] {
+    --alert-bg-color: var(--color-alert-error-surface-background);
+    --alert-text-color: var(--color-alert-error-surface-text);
+    --alert-border-color: var(--color-alert-error-surface-border);
 }
