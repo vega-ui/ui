@@ -1,5 +1,14 @@
 # @vega-ui/react
 
+## 1.2.2
+
+### Patch Changes
+
+- a80dac4: Changed Alert styles accorded to Figma
+  - @vega-ui/hooks@1.2.2
+  - @vega-ui/icons@1.2.2
+  - @vega-ui/utils@1.2.2
+
 ## 1.2.1
 
 ### Patch Changes
