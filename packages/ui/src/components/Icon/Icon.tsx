@@ -21,6 +21,9 @@ export interface IconProps {
 
   /** Ref to the SVG element */
   ref?: Ref<SVGSVGElement>
+  
+  /** Stroke thickness for SVG lines and shapes (in px or pt). */
+  strokeWidth?: number
 
   /**
    * Icon content (required).
@@ -40,15 +43,17 @@ export const Icon: FC<IconProps> = ({
   height,
   className,
   children,
+  strokeWidth,
   ...props
 }) => {
   return (
     <Slot
       role='image'
       className={csx(style.icon, className)}
-      fill='currentColor'
+      color='currentColor'
       ref={ref}
       data-size={width || height ? undefined : size}
+      strokeWidth={strokeWidth ?? 2.5}
       width={width}
       height={height}
       {...props}

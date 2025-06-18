@@ -4,7 +4,7 @@ import { cloneElement, FC, ReactElement } from 'react';
 import { IconButton, IconButtonProps } from '../../../IconButton';
 import { PaginationListItem } from '../PaginationListItem';
 import { usePaginationContext } from '../../hooks';
-import { ArrowLeftIcon } from '@vega-ui/icons';
+import { MoveLeftIcon } from '@vega-ui/icons';
 
 export interface PaginationPrevTriggerProps extends IconButtonProps {
   /**
@@ -47,8 +47,8 @@ export const PaginationPrevTrigger: FC<PaginationPrevTriggerProps> = ({
         {...props}
       >
         {(asChild && children)
-          ? cloneElement(children as ReactElement, childrenProps, <ArrowLeftIcon />)
-          : <a href={disabled ? undefined : href}><ArrowLeftIcon /></a>
+          ? cloneElement(children as ReactElement, childrenProps, <MoveLeftIcon />)
+          : <a href={disabled ? undefined : href}><MoveLeftIcon /></a>
         }
       </IconButton>
     </PaginationListItem>

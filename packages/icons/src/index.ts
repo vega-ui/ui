@@ -1,40 +1,7 @@
 // Icons
 
-import SupportIcon from './assets/icons/support.svg?react'
-import GlobeIcon from './assets/icons/globe.svg?react'
-import ChevronIcon from './assets/icons/chevron.svg?react'
-import CloseIcon from './assets/icons/close.svg?react'
-import ArrowBottomRightIcon from './assets/icons/arrow-bottom-right.svg?react'
-import MenuLeftIcon from './assets/icons/menu-left.svg?react'
-import ChipIcon from './assets/icons/chip.svg?react'
-import CloudIcon from './assets/icons/cloud.svg?react'
-import DatabaseIcon from './assets/icons/database.svg?react'
-import ServerIcon from './assets/icons/server.svg?react'
-import ServerRakeIcon from './assets/icons/server_rake.svg?react'
-import SignalIcon from './assets/icons/signal.svg?react'
-import DataIcon from './assets/icons/data.svg?react'
-import DriveIcon from './assets/icons/drive.svg?react'
-import RamIcon from './assets/icons/ram.svg?react'
-import PrevArrowIcon from './assets/icons/prev-arrow.svg?react'
-import NextArrowIcon from './assets/icons/next-arrow.svg?react'
-import MailIcon from './assets/icons/mail.svg?react'
-import PinIcon from './assets/icons/pin.svg?react'
-import SunIcon from './assets/icons/sun.svg?react'
-import MoonIcon from './assets/icons/moon.svg?react'
-import InfoIcon from './assets/icons/info.svg?react'
-import BottomArrowIcon from './assets/icons/bottom-arrow.svg?react'
-import PlusIcon from './assets/icons/plus.svg?react'
-import MinusIcon from './assets/icons/minus.svg?react'
-import CheckIcon from './assets/icons/check.svg?react'
-import CheckOIcon from './assets/icons/check-o.svg?react'
-import DangerIcon from './assets/icons/danger.svg?react'
-import CopyIcon from './assets/icons/copy.svg?react'
-import AnchorIcon from './assets/icons/anchor.svg?react'
-import EyeIcon from './assets/icons/eye.svg?react'
-import EyeCloseIcon from './assets/icons/eye-close.svg?react'
-import ArrowLeftIcon from './assets/icons/arrow-left.svg?react'
+export * from 'lucide-react'
 import DoubleArrowLeftIcon from './assets/icons/double-arrow-left.svg?react'
-import ArrowRightIcon from './assets/icons/arrow-right.svg?react'
 import DoubleArrowRightIcon from './assets/icons/double-arrow-right.svg?react'
 
 // Flags
@@ -298,40 +265,6 @@ import FlagZW from './assets/flags/ZW.svg?react';
 // Icons
 
 export {
-  SupportIcon,
-  GlobeIcon,
-  ChevronIcon,
-  CloseIcon,
-  ArrowBottomRightIcon,
-  MenuLeftIcon,
-  ChipIcon,
-  CloudIcon,
-  DatabaseIcon,
-  ServerIcon,
-  ServerRakeIcon,
-  SignalIcon,
-  DataIcon,
-  DriveIcon,
-  RamIcon,
-  PrevArrowIcon,
-  NextArrowIcon,
-  MailIcon,
-  PinIcon,
-  SunIcon,
-  MoonIcon,
-  InfoIcon,
-  BottomArrowIcon,
-  PlusIcon,
-  MinusIcon,
-  CheckIcon,
-  CheckOIcon,
-  DangerIcon,
-  CopyIcon,
-  AnchorIcon,
-  EyeIcon,
-  EyeCloseIcon,
-  ArrowRightIcon,
-  ArrowLeftIcon,
   DoubleArrowLeftIcon,
   DoubleArrowRightIcon,
 

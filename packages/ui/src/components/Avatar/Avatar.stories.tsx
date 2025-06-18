@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Avatar } from './Avatar.tsx';
 import { AvatarFallback, AvatarIcon, AvatarImage } from './components';
-import { SupportIcon } from '@vega-ui/icons';
+import { HeartPlus } from '@vega-ui/icons';
 
 const meta = {
   title: 'Display/Avatar/Avatar',
@@ -77,7 +77,7 @@ export const WithIcon: Story = {
           <div key={variant} style={{display: 'flex', flexDirection: 'row', gap: '24px', alignItems: 'center'}}>
             {sizes.map((size) => (
               <Avatar {...props} variant={variant} size={size} key={size}>
-                <AvatarIcon><SupportIcon /></AvatarIcon>
+                <AvatarIcon><HeartPlus /></AvatarIcon>
               </Avatar>
             ))}
           </div>

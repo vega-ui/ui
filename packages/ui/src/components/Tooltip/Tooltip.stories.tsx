@@ -6,7 +6,7 @@ import { IconButton } from '../IconButton';
 import { Modal, ModalContent, ModalTrigger } from '../Modal';
 import { TextField } from '../TextField';
 import { TooltipContent, TooltipTrigger } from './components';
-import { SupportIcon, InfoIcon } from '@vega-ui/icons';
+import { HeartIcon, InfoIcon } from '@vega-ui/icons';
 
 const meta = {
   title: 'Overlay/Tooltip/Tooltip',
@@ -46,7 +46,7 @@ export const WithIconButton: Story = {
     children: (
       <>
         <TooltipTrigger asChild>
-          <IconButton><SupportIcon /></IconButton>
+          <IconButton><HeartIcon /></IconButton>
         </TooltipTrigger>
         <TooltipContent>
           Support

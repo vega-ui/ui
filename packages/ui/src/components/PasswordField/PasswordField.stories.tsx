@@ -4,7 +4,7 @@ import { PasswordField } from './PasswordField.tsx';
 import { Icon } from '../Icon';
 import { Text } from '../Text';
 import { Label } from '../Label';
-import { ChipIcon } from '@vega-ui/icons';
+import { ServerIcon } from '@vega-ui/icons';
 
 const meta = {
   title: 'Form/Fields/PasswordField',
@@ -38,7 +38,7 @@ export const Default: Story = {
 
 export const WithStartSlot: Story = {
   render(props) {
-    return <PasswordField {...props} placeholder='Количество процессоров' startSlot={<Icon size='xs'><ChipIcon /></Icon>} />
+    return <PasswordField {...props} placeholder='Количество процессоров' startSlot={<Icon size='xs'><ServerIcon /></Icon>} />
   }
 }
 

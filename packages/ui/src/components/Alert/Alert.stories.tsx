@@ -3,7 +3,7 @@ import { Alert, AlertProps } from './Alert.tsx';
 import { IconButton } from '../IconButton';
 import { Link } from '../Link';
 import { Code } from '../Code';
-import { CloseIcon } from '@vega-ui/icons';
+import { X as Close } from '@vega-ui/icons';
 
 const variants: AlertProps['variant'][] = ['info', 'error', 'success', 'warning']
 
@@ -67,7 +67,7 @@ export const WithAction: Story = {
     children: 'I\'m a content!',
     endSlot: (
       <IconButton size='small' iconSize='sm' appearance='transparent'>
-        <CloseIcon />
+        <Close />
       </IconButton>
     )
   },

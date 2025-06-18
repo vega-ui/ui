@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Icon, IconProps } from './Icon.tsx';
-import { SupportIcon, ServerIcon, AnchorIcon } from '@vega-ui/icons';
+import { Server, Anchor, HeartPlus } from '@vega-ui/icons';
 
 const sizes: IconProps['size'][] = ['4xs', '3xs', '2xs', 'xs', 'sm', 'md', 'lg', 'xl']
 
@@ -21,7 +21,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    children: <SupportIcon />
+    children: <Server />
   },
 };
 
@@ -31,7 +31,7 @@ export const Sizes: Story = {
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
         {sizes.map((size) => (
           <Icon key={size} size={size}>
-            <ServerIcon />
+            <Anchor />
           </Icon>
         ))}
       </div>
@@ -41,7 +41,7 @@ export const Sizes: Story = {
 
 export const Height: Story = {
   args: {
-    children: <SupportIcon />,
+    children: <HeartPlus />,
     height: 64
   },
 };
@@ -49,7 +49,7 @@ export const Height: Story = {
 export const Colorful: Story = {
   args: {
     size: 'xl',
-    children: <AnchorIcon />,
+    children: <HeartPlus />,
     color: 'var(--color-green-accent-500)',
   },
 };

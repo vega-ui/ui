@@ -6,7 +6,7 @@ import { IconButton } from '../../../IconButton';
 import style from './style.module.css';
 import { useModalContext } from '../../hooks';
 import { csx } from '@vega-ui/utils';
-import { CloseIcon } from '@vega-ui/icons';
+import { X as CloseIcon } from '@vega-ui/icons';
 
 export interface ModalHeaderProps extends HTMLAttributes<HTMLElement> {
   /**
@@ -35,7 +35,7 @@ export const ModalHeader: FC<ModalHeaderProps> = ({ title, headingId, withClose 
     <header className={csx(style.header, className)} {...props}>
       {title && <Heading as='h2' id={headingId} className={style.title} size={5}>{title}</Heading>}
       {withClose &&
-          <IconButton onClick={() => changeOpen(false)} size='small'
+          <IconButton onClick={() => changeOpen(false)} size='medium'
                       variant='secondary' appearance='transparent'>
               <CloseIcon />
           </IconButton>}

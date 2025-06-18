@@ -101,8 +101,8 @@ export const Checkbox: FC<CheckboxProps> = ({
         <input onChange={onChange} type='checkbox' disabled={disabled} defaultChecked={defaultChecked} checked={checked} {...props} />
       </VisuallyHidden>
       <div className={csx(style.checkbox, className)} data-size={size} data-variant={variant}>
-        <Icon size={null} aria-hidden className={style.checkboxCheckIcon}><CheckIcon /></Icon>
-        <Icon size={null} aria-hidden className={style.checkboxIndeterminateIcon}><MinusIcon /></Icon>
+        <Icon size={null} aria-hidden className={style.checkboxCheckIcon}><CheckIcon strokeWidth={4} /></Icon>
+        <Icon size={null} aria-hidden className={style.checkboxIndeterminateIcon}><MinusIcon strokeWidth={4} /></Icon>
       </div>
     </label>
   )
