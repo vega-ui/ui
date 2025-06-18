@@ -1,5 +1,18 @@
 # @vega-ui/react
 
+## 1.3.0
+
+### Minor Changes
+
+- 279075a: Changed providers of icons - lucide
+
+### Patch Changes
+
+- Updated dependencies [279075a]
+  - @vega-ui/icons@1.3.0
+  - @vega-ui/hooks@1.3.0
+  - @vega-ui/utils@1.3.0
+
 ## 1.2.2
 
 ### Patch Changes
