@@ -3,7 +3,7 @@ import style from './style.module.css';
 import { Icon } from '../../../Icon';
 import { csx } from '@vega-ui/utils';
 import { sizeMapper } from './utils';
-import { ChevronIcon } from '@vega-ui/icons';
+import { ChevronDown } from '@vega-ui/icons';
 
 export interface SelectArrowProps {
   open?: boolean
@@ -14,7 +14,7 @@ export interface SelectArrowProps {
 export const SelectArrow: FC<SelectArrowProps> = ({ open, size = 'medium', className }) => {
   return (
     <Icon className={csx(style.selectArrow, className)} data-open={open} size={sizeMapper(size)}>
-      <ChevronIcon />
+      <ChevronDown />
     </Icon>
   )
 }

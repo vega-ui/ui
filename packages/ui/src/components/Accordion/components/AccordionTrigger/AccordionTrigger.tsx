@@ -6,7 +6,7 @@ import { Heading } from '../../../Heading';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css';
 import { CollapsibleTrigger } from '../../../Collapsible';
-import { BottomArrowIcon } from '@vega-ui/icons';
+import { ChevronDown } from '@vega-ui/icons';
 
 interface AccordionTriggerProps {
   size?: 'small' | 'medium' | 'large'
@@ -30,7 +30,7 @@ export const AccordionTrigger: FC<PropsWithChildren<AccordionTriggerProps>> = ({
     <Heading as='h3' size={sizeMapper(size)} className={wrapperClassName}>
       <CollapsibleTrigger ref={ref} className={csx(style.triggerButton, className)} data-size={size}>
         {children}
-        {arrowIcon ? arrowIcon : <Icon className={csx(style.arrowIcon, arrowIconClassName)} size='3xs'><BottomArrowIcon /></Icon>}
+        {arrowIcon ? arrowIcon : <Icon className={csx(style.arrowIcon, arrowIconClassName)} size='sm'><ChevronDown /></Icon>}
       </CollapsibleTrigger>
     </Heading>
   )

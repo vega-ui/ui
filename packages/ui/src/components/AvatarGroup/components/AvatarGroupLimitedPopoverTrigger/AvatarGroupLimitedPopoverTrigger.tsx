@@ -7,7 +7,7 @@ import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
 import { AvatarGroupItemProps } from '../AvatarGroupItem';
 import { sizeMapper } from './utils';
-import { ChevronIcon } from '@vega-ui/icons';
+import { ChevronDown } from '@vega-ui/icons';
 
 export interface AvatarGroupLimitedPopoverTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   ref?: Ref<HTMLButtonElement>
@@ -27,7 +27,7 @@ export const AvatarGroupLimitedPopoverTrigger: FC<AvatarGroupLimitedPopoverTrigg
   return (
     <button className={csx(style.trigger, className)} type='button' ref={ref} {...props}>
       <AvatarGroupCount>{children}</AvatarGroupCount>
-      <Icon className={style.stateIcon} data-open={open} size={sizeMapper(size)}><ChevronIcon /></Icon>
+      <Icon className={style.stateIcon} data-open={open} size={sizeMapper(size)}><ChevronDown /></Icon>
     </button>
   )
 }

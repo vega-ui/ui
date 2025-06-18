@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { IconButton, IconButtonProps } from './IconButton.tsx';
-import { GlobeIcon, SupportIcon, MinusIcon } from '@vega-ui/icons';
+import { GlobeIcon, Heart, MinusIcon } from '@vega-ui/icons';
 
 const meta = {
   title: 'Actions/IconButton',
@@ -125,7 +125,7 @@ export const AllSizes: Story = {
       {sizes.map(size => (
         <div key={size} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <IconButton variant='primary' appearance='fill' size={size}>
-            <SupportIcon />
+            <Heart />
           </IconButton>
         </div>
       ))}
