@@ -1,5 +1,18 @@
 # @vega-ui/react
 
+## 1.4.0
+
+### Minor Changes
+
+- e022b3c: Added new utilities
+
+### Patch Changes
+
+- Updated dependencies [e022b3c]
+  - @vega-ui/utils@1.4.0
+  - @vega-ui/hooks@1.4.0
+  - @vega-ui/icons@1.4.0
+
 ## 1.3.0
 
 ### Minor Changes

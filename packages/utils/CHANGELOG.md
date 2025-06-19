@@ -1,5 +1,11 @@
 # @vega-ui/utils
 
+## 1.4.0
+
+### Minor Changes
+
+- e022b3c: Added new utilities
+
 ## 1.3.0
 
 ## 1.2.2
