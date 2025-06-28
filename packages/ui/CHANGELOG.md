@@ -1,5 +1,14 @@
 # @vega-ui/react
 
+## 1.4.1
+
+### Patch Changes
+
+- a136ce0: Deleted @property css
+  - @vega-ui/hooks@1.4.1
+  - @vega-ui/icons@1.4.1
+  - @vega-ui/utils@1.4.1
+
 ## 1.4.0
 
 ### Minor Changes
