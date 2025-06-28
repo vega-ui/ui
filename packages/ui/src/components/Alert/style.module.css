@@ -1,22 +1,8 @@
-@property --alert-bg-color {
-    syntax: '<color>';
-    inherits: true;
-    initial-value: var(--color-alert-info-filled-background);
-}
-
-@property --alert-text-color {
-    syntax: '<color>';
-    inherits: true;
-    initial-value: var(--color-alert-info-filled-text);
-}
-
-@property --alert-border-color {
-    syntax: '<color>';
-    inherits: true;
-    initial-value: var(--color-alert-info-filled-border);
-}
-
 .alert {
+    --alert-bg-color: var(--color-alert-info-filled-background);
+    --alert-text-color: var(--color-alert-info-filled-text);
+    --alert-border-color: var(--color-alert-info-filled-border);
+
     display: flex;
     flex-direction: row;
     align-items: flex-start;

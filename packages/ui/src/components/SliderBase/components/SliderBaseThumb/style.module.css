@@ -1,16 +1,6 @@
-@property --slider-base-thumb-border-color {
-    syntax: "<color>";
-    inherits: true;
-    initial-value: var(--color-primary-500);
-}
-
-@property --slider-base-thumb-color {
-    syntax: "<color>";
-    inherits: true;
-    initial-value: var(--light-color);
-}
-
 .thumb {
+    --slider-base-thumb-border-color: var(--color-primary-500);
+    --slider-base-thumb-color: var(--light-color);
     --slider-base-thumb-size: calc(var(--slider-size) * 3);
     --slider-base-thumb-br-ratio: 1;
     --slider-base-thumb-bw-ratio: 0.2;

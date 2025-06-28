@@ -1,10 +1,5 @@
-@property --slider-base-progress-color {
-    syntax: "<color>";
-    inherits: true;
-    initial-value: var(--color-primary-500);
-}
-
 .progress {
+    --slider-base-progress-color: var(--color-primary-500);
     --slider-base-progress-from: 0;
     --slider-base-progress-to: var(--slider-base-value);
     --slider-base-progress-diff: 0;
