@@ -3,7 +3,6 @@ import { FC, ReactNode, Ref } from 'react';
 import { csx } from '@vega-ui/utils';
 import { Spinner } from '../Spinner';
 import style from './style.module.css';
-import { sizeMapper } from './utils';
 
 export interface ButtonProps extends ButtonBaseProps {
   /**
@@ -88,7 +87,7 @@ export const Button: FC<ButtonProps> = ({
     >
       {!asChild ? (
         <>
-          {loading && (spinnerSlot ? spinnerSlot : <Spinner className={csx(style.spinner, spinnerClassName)} aria-hidden variant='secondary' size={sizeMapper(size)} />)}
+          {loading && (spinnerSlot ? spinnerSlot : <Spinner className={csx(style.spinner, spinnerClassName)} aria-hidden variant='secondary' />)}
           {children}
         </>
       ) : children}

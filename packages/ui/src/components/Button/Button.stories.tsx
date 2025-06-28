@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Button, ButtonProps } from './Button.tsx';
-import { Icon } from '../Icon';
-import { DoubleArrowLeftIcon } from '@vega-ui/icons';
 
 const meta = {
   title: 'Actions/Button',
@@ -26,14 +24,7 @@ const sizes: ButtonProps['size'][] = ['small', 'medium', 'large']
 
 export const Primary: Story = {
   args: {
-    children: (
-      <>
-        <Icon>
-          <DoubleArrowLeftIcon />
-        </Icon>
-        'Button'
-      </>
-    )
+    children: 'Button'
   }
 }
 
