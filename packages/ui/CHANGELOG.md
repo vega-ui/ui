@@ -1,5 +1,15 @@
 # @vega-ui/react
 
+## 1.4.2
+
+### Patch Changes
+
+- 7002513: Removed default props in Icon & added new types to Slot (generic type)
+- e731538: Deleted utils for size map spinner
+  - @vega-ui/hooks@1.4.2
+  - @vega-ui/icons@1.4.2
+  - @vega-ui/utils@1.4.2
+
 ## 1.4.1
 
 ### Patch Changes
