@@ -1,4 +1,4 @@
-import { FC, ReactNode, Ref } from 'react';
+import { FC, ReactNode, Ref, SVGProps } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { Slot } from '../Slot';
@@ -43,17 +43,15 @@ export const Icon: FC<IconProps> = ({
   height,
   className,
   children,
-  strokeWidth,
   ...props
 }) => {
   return (
-    <Slot
+    <Slot<SVGProps<SVGElement>>
       role='image'
       className={csx(style.icon, className)}
-      color='currentColor'
       ref={ref}
       data-size={width || height ? undefined : size}
-      strokeWidth={strokeWidth ?? 2.5}
+      stroke='currentColor'
       width={width}
       height={height}
       {...props}
