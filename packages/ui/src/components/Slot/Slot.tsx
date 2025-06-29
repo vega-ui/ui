@@ -1,11 +1,11 @@
-import { Children, cloneElement, FC, HTMLAttributes, isValidElement, ReactElement, ReactNode } from 'react';
+import { Children, cloneElement, HTMLAttributes, isValidElement, ReactElement, ReactNode } from 'react';
 import { mergeProps } from '@vega-ui/utils';
 
-export interface SlotProps extends HTMLAttributes<HTMLElement>, Record<string, unknown> {
+export type SlotProps<T> = Omit<HTMLAttributes<HTMLElement>, keyof T> & Record<string, unknown> & {
   children: ReactNode
-}
+} & T
 
-export const Slot: FC<SlotProps> = ({ children, ...props }) => {
+export const Slot = <T,>({ children, ...props }: SlotProps<T>): ReactElement => {
   const child = Children.only(children);
 
   if (!isValidElement(child)) {
