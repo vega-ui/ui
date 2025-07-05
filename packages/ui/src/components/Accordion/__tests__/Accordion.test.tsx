@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react'
 import { Accordion } from '../Accordion.tsx';
 import { Text } from '../../Text';
-import { AccordionItem } from '../components';
+import { AccordionContent, AccordionItem, AccordionTrigger } from '../components';
 
 const CONTENT_CONTAINER_SELECTOR = 'div[data-type="content"][data-open]'
 
@@ -16,8 +16,9 @@ describe('Accordion', () => {
     render(
       <Accordion>
         {items.map(({ title, content, value }) => (
-          <AccordionItem key={value} value={value} triggerSlot={title}>
-            <Text>{content}</Text>
+          <AccordionItem key={value} value={value}>
+            <AccordionTrigger>{title}</AccordionTrigger>
+            <AccordionContent><Text>{content}</Text></AccordionContent>
           </AccordionItem>
         ))}
       </Accordion>
@@ -33,8 +34,9 @@ describe('Accordion', () => {
     render(
       <Accordion>
         {items.map(({ title, content, value }) => (
-          <AccordionItem key={value} value={value} triggerSlot={title}>
-            <Text>{content}</Text>
+          <AccordionItem key={value} value={value}>
+            <AccordionTrigger>{title}</AccordionTrigger>
+            <AccordionContent><Text>{content}</Text></AccordionContent>
           </AccordionItem>
         ))}
       </Accordion>
@@ -56,8 +58,9 @@ describe('Accordion', () => {
     render(
       <Accordion>
         {items.map(({ title, content, value }) => (
-          <AccordionItem key={value} value={value} triggerSlot={title}>
-            <Text>{content}</Text>
+          <AccordionItem key={value} value={value}>
+            <AccordionTrigger>{title}</AccordionTrigger>
+            <AccordionContent><Text>{content}</Text></AccordionContent>
           </AccordionItem>
         ))}
       </Accordion>
