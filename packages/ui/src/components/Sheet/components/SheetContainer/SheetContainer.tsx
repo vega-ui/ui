@@ -35,9 +35,9 @@ export const SheetContainer: FC<PropsWithChildren<SheetContainerProps>> = ({
       data-dragging={dragging}
       data-shadow={shadow}
       ref={ref}
-      style={{ ...style, ...(status === 'open' ? { transform: `translateY(${offset}px)`} : {}) }}
+      style={{ ...style, ...(status === 'open' ? { transform: `translateY(${offset}px)` } : {}) }}
       className={csx(styles.sheet, className)}
-      {...props}
+      {...props} 
     >
       {children}
     </div>

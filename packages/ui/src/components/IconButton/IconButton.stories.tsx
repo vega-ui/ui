@@ -82,7 +82,7 @@ export const AsChild: Story = {
 
 export const AllVariants: Story = {
   render: () => (
-    <div style={{display: 'flex', flexDirection: 'column', gap: '32px'}}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
       {variants.map(variant => (
         <div key={variant}>
           <div
@@ -112,7 +112,6 @@ export const AllVariants: Story = {
 }
 
 export const AllSizes: Story = {
-  name: 'All Sizes',
   render: () => (
     <div
       style={{
