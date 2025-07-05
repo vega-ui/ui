@@ -4,6 +4,8 @@ import { Separator } from '../../../Separator';
 import { Collapsible } from '../../../Collapsible';
 import style from './style.module.css'
 import { useAccordionContext } from '../../hooks';
+import { AccordionItemProvider } from '../../providers';
+import { AccordionSize } from '../../types.ts';
 
 export interface AccordionItemProps {
   /**
@@ -37,11 +39,17 @@ export interface AccordionItemProps {
    * Has no effect when used directly inside an `Accordion`, as separation is handled at the group level.
    */
   separated?: boolean
+  
+  /**
+   * Controls the size of the trigger and affects typography and spacing.
+   * Falls back to context value if not provided.
+   */
+  size?: AccordionSize
 }
 
 /** The AccordionItem component represents an individual collapsible section within an accordion group, supporting controlled or uncontrolled open state, a customizable trigger slot, and optional visual separation from adjacent items */
-export const AccordionItem: FC<AccordionItemProps> = ({ separated, value, open, onChangeOpen, children }) => {
-  const { opened, onChangeOpened, separated: _separated } = useAccordionContext()
+export const AccordionItem: FC<AccordionItemProps> = ({ separated, size, value, open, onChangeOpen, children }) => {
+  const { opened, onChangeOpened, separated: _separated, size: _size = 'medium' } = useAccordionContext()
 
   const onChange = useCallback((state: boolean) => {
     onChangeOpen?.(value, state)
@@ -49,11 +57,13 @@ export const AccordionItem: FC<AccordionItemProps> = ({ separated, value, open, 
   }, [value, onChangeOpen, onChangeOpened])
 
   return (
-    <li className={style.item}>
-      <Collapsible open={open ?? opened.includes(value)} onChangeOpen={onChange}>
-        {children}
-        {(separated ?? _separated) && <Separator className={style.separator} />}
-      </Collapsible>
-    </li>
+    <AccordionItemProvider size={size ?? _size}>
+      <li className={style.item}>
+        <Collapsible open={open ?? opened.includes(value)} onChangeOpen={onChange}>
+          {children}
+          {(separated ?? _separated) && <Separator className={style.separator} />}
+        </Collapsible>
+      </li>
+    </AccordionItemProvider>
   )
 }

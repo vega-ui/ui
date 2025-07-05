@@ -7,15 +7,9 @@ import { csx } from '@vega-ui/utils';
 import style from './style.module.css';
 import { CollapsibleTrigger } from '../../../Collapsible';
 import { ChevronDown } from '@vega-ui/icons';
-import { useAccordionContext } from '../../hooks';
+import { useAccordionItemContext } from '../../hooks';
 
 export interface AccordionTriggerProps {
-  /**
-   * Controls the size of the trigger and affects typography and spacing.
-   * Falls back to context value if not provided.
-   */
-  size?: 'small' | 'medium' | 'large'
-  
   /**
    * Optional class name for the trigger button element.
    */
@@ -48,7 +42,6 @@ export interface AccordionTriggerProps {
  * Supports custom size, styling, and icon overrides.
  */
 export const AccordionTrigger: FC<PropsWithChildren<AccordionTriggerProps>> = ({
-  size,
   arrowIcon,
   className,
   arrowIconClassName,
@@ -56,11 +49,11 @@ export const AccordionTrigger: FC<PropsWithChildren<AccordionTriggerProps>> = ({
   children,
   ref,
 }) => {
-  const { size: _size = 'medium' } = useAccordionContext()
+  const { size } = useAccordionItemContext()
 
   return (
-    <Heading as='h3' size={sizeMapper(size ?? _size)} className={wrapperClassName}>
-      <CollapsibleTrigger ref={ref} className={csx(style.triggerButton, className)} data-size={size ?? _size}>
+    <Heading as='h3' size={sizeMapper(size)} className={wrapperClassName}>
+      <CollapsibleTrigger ref={ref} className={csx(style.triggerButton, className)} data-size={size}>
         {children}
         {arrowIcon ? arrowIcon : <Icon className={csx(style.arrowIcon, arrowIconClassName)} size='sm'><ChevronDown /></Icon>}
       </CollapsibleTrigger>
