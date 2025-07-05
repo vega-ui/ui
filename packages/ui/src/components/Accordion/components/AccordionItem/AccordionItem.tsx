@@ -1,10 +1,9 @@
 'use client';
-import { FC, ReactNode, useCallback, useRef } from 'react';
-import { AccordionTrigger } from '../AccordionTrigger';
-import { AccordionContent } from '../AccordionContent';
+import { FC, ReactNode, useCallback } from 'react';
 import { Separator } from '../../../Separator';
 import { Collapsible } from '../../../Collapsible';
 import style from './style.module.css'
+import { useAccordionContext } from '../../hooks';
 
 export interface AccordionItemProps {
   /**
@@ -22,21 +21,10 @@ export interface AccordionItemProps {
   onChangeOpen?: (value: string, state: boolean) => void
 
   /**
-   * Visual size of the item.
-   * Affects spacing, padding, and font size.
-   */
-  size?: 'small' | 'medium' | 'large'
-
-  /**
    * Unique identifier for this accordion item.
    * Used for managing open state within the accordion group.
    */
   value: string
-
-  /**
-   * Custom node rendered inside the trigger area (typically a label or heading).
-   */
-  triggerSlot?: ReactNode
 
   /**
    * The content inside the accordion item.
@@ -52,23 +40,19 @@ export interface AccordionItemProps {
 }
 
 /** The AccordionItem component represents an individual collapsible section within an accordion group, supporting controlled or uncontrolled open state, a customizable trigger slot, and optional visual separation from adjacent items */
-export const AccordionItem: FC<AccordionItemProps> = ({ size, triggerSlot, separated, value, open = false, onChangeOpen, children }) => {
-  const triggerRef = useRef<HTMLButtonElement>(null)
+export const AccordionItem: FC<AccordionItemProps> = ({ separated, value, open, onChangeOpen, children }) => {
+  const { opened, onChangeOpened, separated: _separated } = useAccordionContext()
 
   const onChange = useCallback((state: boolean) => {
     onChangeOpen?.(value, state)
-  }, [value, onChangeOpen])
+    onChangeOpened?.(value, state)
+  }, [value, onChangeOpen, onChangeOpened])
 
   return (
     <li className={style.item}>
-      <Collapsible open={open} onChangeOpen={onChange}>
-        <AccordionTrigger size={size} ref={triggerRef}>
-          {triggerSlot}
-        </AccordionTrigger>
-        <AccordionContent>
-          {children}
-        </AccordionContent>
-        {separated && <Separator />}
+      <Collapsible open={open ?? opened.includes(value)} onChangeOpen={onChange}>
+        {children}
+        {(separated ?? _separated) && <Separator className={style.separator} />}
       </Collapsible>
     </li>
   )

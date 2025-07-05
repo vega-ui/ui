@@ -1,12 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { AccordionItem } from './AccordionItem.tsx';
+import { AccordionTrigger } from './AccordionTrigger.tsx';
 import { Text } from '../../../Text';
-import { AccordionTrigger } from '../AccordionTrigger';
-import { AccordionContent } from '../AccordionContent';
+import { CollapsibleContext } from '../../../Collapsible/providers/CollapsibleProvider/context.ts';
 
 const meta = {
-  title: 'Actions/Accordion/AccordionItem',
-  component: AccordionItem,
+  title: 'Actions/Accordion/AccordionTrigger',
+  component: AccordionTrigger,
   parameters: {
     layout: 'centered',
     design: {
@@ -17,26 +16,20 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {},
   args: {},
-} satisfies Meta<typeof AccordionItem>;
+} satisfies Meta<typeof AccordionTrigger>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Default: Story = {
-  args: {
-    value: 'default'
-  },
   render({ ...props }) {
     return (
-      <AccordionItem {...props}>
-        <AccordionTrigger>
-          Hello, World!
-        </AccordionTrigger>
-        <AccordionContent>
+      <CollapsibleContext value={{ opened: true, hidden: false, open: () => undefined,  close: () => undefined }}>
+        <AccordionTrigger {...props}>
           <Text>Hello, World!</Text>
-        </AccordionContent>
-      </AccordionItem>
+        </AccordionTrigger>
+      </CollapsibleContext>
     )
   }
 }

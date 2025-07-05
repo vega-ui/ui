@@ -1,8 +1,11 @@
 'use client';
-import { Children, FC, HTMLAttributes, ReactElement, useState } from 'react';
-import { AccordionItem, AccordionItemProps } from './components';
+import { FC, HTMLAttributes, ReactElement } from 'react';
+import { AccordionItemProps } from './components';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
+import { AccordionProvider } from './providers';
+import { useControlledState } from '@vega-ui/hooks';
+import { AccordionSize } from './types.ts';
 
 export interface AccordionProps extends HTMLAttributes<HTMLUListElement> {
   /**
@@ -14,13 +17,23 @@ export interface AccordionProps extends HTMLAttributes<HTMLUListElement> {
   /**
    * Defines the size of the accordion. Affects padding and font size.
    */
-  size?: 'small' | 'medium' | 'large'
+  size?: AccordionSize
 
   /**
    * Accordion items to render. Should be one or more `<AccordionItem>` components.
    * Accepts a single element or an array of elements.
    */
   children?: ReactElement<AccordionItemProps> | ReactElement<AccordionItemProps>[]
+  
+  /**
+   * IDs of currently open items. Enables controlled mode when set.
+   */
+  opened?: string[]
+  
+  /**
+   * Called when open item IDs change.
+   */
+  onChangeOpened?: (opened?: string[]) => void
 
   /**
    * An array of item `id`s that should be open by default when the accordion mounts.
@@ -43,20 +56,25 @@ export interface AccordionProps extends HTMLAttributes<HTMLUListElement> {
 /**
  An Accordion is a UI component that toggles content visibility, allowing users to expand or collapse sections for better organization and navigation.
 */
-export const Accordion: FC<AccordionProps> = ({ size = 'medium', defaultOpened, multiple = false, separated = true, children, className, ...props }) => {
-  const [opened, setOpened] = useState<string[]>(defaultOpened ?? [])
-
-  const closeAll = () => {
-    setOpened([])
-  }
+export const Accordion: FC<AccordionProps> = ({
+  size = 'medium',
+  defaultOpened = [],
+  opened,
+  onChangeOpened,
+  multiple = false,
+  separated = true,
+  children,
+  className,
+  ...props
+}) => {
+  const [openedValues, setOpenedValues] = useControlledState<string[]>(opened, defaultOpened, onChangeOpened)
 
   const open = (value: string) => {
-    if (!multiple) closeAll()
-    setOpened(p => ([...p, value]))
+    setOpenedValues(multiple ? [...openedValues, value] : [value])
   }
 
   const close = (value: string) => {
-    setOpened(p => p.filter(v => v !== value))
+    setOpenedValues(openedValues.filter(v => v !== value))
   }
 
   const onChangeOpen = (value: string, state: boolean) => {
@@ -65,23 +83,10 @@ export const Accordion: FC<AccordionProps> = ({ size = 'medium', defaultOpened, 
   }
 
   return (
-    <ul {...props} className={csx(className, style.accordion)}>
-      {children && (
-        Children.map(children, (child, i) => {
-          const value = child.props.value
-
-          return (
-            <AccordionItem
-              key={value}
-              {...child.props}
-              size={size}
-              separated={separated ? i !== Children.count(children) - 1 : undefined}
-              open={opened.includes(value)}
-              onChangeOpen={onChangeOpen}
-            />
-          )
-        })
-      )}
-    </ul>
+    <AccordionProvider separated={separated} opened={openedValues} onChangeOpened={onChangeOpen} size={size}>
+      <ul {...props} className={csx(className, style.accordion)}>
+        {children}
+      </ul>
+    </AccordionProvider>
   );
 }
