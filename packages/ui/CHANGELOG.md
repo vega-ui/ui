@@ -1,5 +1,17 @@
 # @vega-ui/react
 
+## 1.6.0
+
+### Minor Changes
+
+- c672c1e: Added accordion item provider
+
+### Patch Changes
+
+- @vega-ui/hooks@1.6.0
+- @vega-ui/icons@1.6.0
+- @vega-ui/utils@1.6.0
+
 ## 1.5.0
 
 ### Minor Changes
