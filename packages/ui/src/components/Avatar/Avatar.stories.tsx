@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Avatar } from './Avatar.tsx';
 import { AvatarFallback, AvatarIcon, AvatarImage } from './components';
-import { HeartPlus } from '@vega-ui/icons';
+import { HeartPlus } from '@vega-ui/icons'; 
 
 const meta = {
   title: 'Display/Avatar/Avatar',
@@ -37,7 +37,7 @@ export const Default: Story = {
 export const Sizes: Story = {
   render(...props) {
     return (
-      <div style={{display: 'flex', flexDirection: 'row', gap: '24px', alignItems: 'center'}}>
+      <div style={{ display: 'flex', flexDirection: 'row', gap: '24px', alignItems: 'center' }}>
         {sizes.map((size) => (
           <Avatar {...props} size={size} key={size}>
             <AvatarFallback key={0}>BC</AvatarFallback>
@@ -53,9 +53,9 @@ export const Sizes: Story = {
 export const Initials: Story = {
   render(...props) {
     return (
-      <div style={{display: 'flex', gap: '24px', flexDirection: 'column'}}>
+      <div style={{ display: 'flex', gap: '24px', flexDirection: 'column' }}>
         {variants.map((variant) => (
-          <div key={variant} style={{display: 'flex', flexDirection: 'row', gap: '24px', alignItems: 'center'}}>
+          <div key={variant} style={{ display: 'flex', flexDirection: 'row', gap: '24px', alignItems: 'center' }}>
             {sizes.map((size) => (
               <Avatar {...props} variant={variant} size={size} key={size}>
                 <AvatarFallback key={0}>BC</AvatarFallback>
@@ -72,9 +72,9 @@ export const Initials: Story = {
 export const WithIcon: Story = {
   render(...props) {
     return (
-      <div style={{display: 'flex', gap: '24px', flexDirection: 'column'}}>
+      <div style={{ display: 'flex', gap: '24px', flexDirection: 'column' }}>
         {variants.map((variant) => (
-          <div key={variant} style={{display: 'flex', flexDirection: 'row', gap: '24px', alignItems: 'center'}}>
+          <div key={variant} style={{ display: 'flex', flexDirection: 'row', gap: '24px', alignItems: 'center' }}>
             {sizes.map((size) => (
               <Avatar {...props} variant={variant} size={size} key={size}>
                 <AvatarIcon><HeartPlus /></AvatarIcon>

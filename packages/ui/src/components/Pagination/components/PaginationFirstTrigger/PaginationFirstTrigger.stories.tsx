@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { PaginationFirstTrigger} from './PaginationFirstTrigger.tsx';
+import { PaginationFirstTrigger } from './PaginationFirstTrigger.tsx';
 import { Tooltip } from '../../../Tooltip';
-import { TooltipContent, TooltipTrigger } from '../../../Tooltip/components';
-
+import { TooltipContent, TooltipTrigger } from '../../../Tooltip';
+ 
 const meta = {
   title: 'Navigation/Pagination/PaginationFirstTrigger',
   component: PaginationFirstTrigger,

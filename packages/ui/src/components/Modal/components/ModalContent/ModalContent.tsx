@@ -9,7 +9,7 @@ import {
 import { csx, mergeRefs } from '@vega-ui/utils';
 import styles from './style.module.css';
 import { useModalContext } from '../../hooks';
-
+ 
 export interface ModalContentProps {
   /**
    * Applies a blurred background overlay behind the modal content.
@@ -100,7 +100,7 @@ export const ModalContent: FC<ModalContentProps> = ({
             <div
               data-fluid={fluid}
               data-shadowed={shadowed}
-              style={{...transitionStyles}}
+              style={{ ...transitionStyles }}
               className={csx(styles.modal, className)}
               ref={mergeRefs([contentRef, ref])}
               {...contentProps}

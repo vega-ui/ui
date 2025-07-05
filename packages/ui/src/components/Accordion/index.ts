@@ -1,2 +1,6 @@
 export { Accordion, type AccordionProps } from './Accordion.tsx'
-export { AccordionItem, type AccordionItemProps } from './components'
+export {
+  AccordionItem, type AccordionItemProps,
+  AccordionTrigger, type AccordionTriggerProps,
+  AccordionContent, type AccordionContentProps
+} from './components'

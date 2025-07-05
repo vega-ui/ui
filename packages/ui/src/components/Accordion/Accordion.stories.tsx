@@ -3,6 +3,8 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Accordion } from './Accordion.tsx';
 import { Text } from '../Text';
 import { AccordionItem } from './components';
+import { AccordionTrigger } from './components/AccordionTrigger';
+import { AccordionContent } from './components/AccordionContent';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof Accordion> = {
@@ -26,14 +28,29 @@ export const Default: Story = {
   args: {
     children: (
       [
-        <AccordionItem value='1' triggerSlot='Услуги'>
-          <Text>Hello</Text>
+        <AccordionItem key='1' value='1'>
+          <AccordionTrigger>
+            Hello
+          </AccordionTrigger>
+          <AccordionContent>
+            <Text>Just a content</Text>
+          </AccordionContent>
         </AccordionItem>,
-        <AccordionItem value='2' triggerSlot='Услуги'>
-          <Text>Hello</Text>
+        <AccordionItem key='2' value='2'>
+          <AccordionTrigger>
+            Hello
+          </AccordionTrigger>
+          <AccordionContent>
+            <Text>Just a content</Text>
+          </AccordionContent>
         </AccordionItem>,
-        <AccordionItem value='3' triggerSlot='Услуги'>
-          <Text>Hello</Text>
+        <AccordionItem key='3' value='3'>
+          <AccordionTrigger>
+            Hello
+          </AccordionTrigger>
+          <AccordionContent>
+            <Text>Just a content</Text>
+          </AccordionContent>
         </AccordionItem>
       ]
     )
@@ -52,14 +69,29 @@ export const DefaultOpened: Story = {
     defaultOpened: ['1'],
     children: (
       [
-        <AccordionItem value='1' triggerSlot='Услуги'>
-          <Text>Hello</Text>
+        <AccordionItem key='1' value='1'>
+          <AccordionTrigger>
+            Hello
+          </AccordionTrigger>
+          <AccordionContent>
+            <Text>Just a content</Text>
+          </AccordionContent>
         </AccordionItem>,
-        <AccordionItem value='2' triggerSlot='Услуги'>
-          <Text>Hello</Text>
+        <AccordionItem key='2' value='2'>
+          <AccordionTrigger>
+            Hello
+          </AccordionTrigger>
+          <AccordionContent>
+            <Text>Just a content</Text>
+          </AccordionContent>
         </AccordionItem>,
-        <AccordionItem value='3' triggerSlot='Услуги'>
-          <Text>Hello</Text>
+        <AccordionItem key='3' value='3'>
+          <AccordionTrigger>
+            Hello
+          </AccordionTrigger>
+          <AccordionContent>
+            <Text>Just a content</Text>
+          </AccordionContent>
         </AccordionItem>
       ]
     )

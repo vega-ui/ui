@@ -17,6 +17,7 @@ export default tseslint.config([
     plugins: { 'react-hooks': reactHooks },
     rules: {
       quotes: ['error', 'single'],
+      'object-curly-spacing': ['error', 'always'],
       'jsx-quotes': ['error', 'prefer-single'],
       'react/react-in-jsx-scope': 'off',
       '@typescript-eslint/strict-boolean-expressions': 'off',

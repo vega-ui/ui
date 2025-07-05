@@ -91,7 +91,6 @@ export const AllVariants: Story = {
 }
 
 export const AllSizes: Story = {
-  name: 'All Sizes',
   render: () => (
     <div
       style={{

@@ -8,7 +8,7 @@ import { TextField } from '../TextField';
 import { Label } from '../Label';
 import { Separator } from '../Separator';
 import { SheetContent, SheetTrigger } from './components';
-
+ 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof Sheet> = {
   title: 'Overlay/Sheet/Sheet',
@@ -55,7 +55,7 @@ export const Scrollable: Story = {
         </SheetTrigger>
         <SheetContent style={{ maxHeight: '430px' }}>
           {Array.from({ length: 12 }).map((_, index) => (
-            <Text key={index} asChild size={3} style={{marginBottom: index !== 9 ? '32px' : undefined}}>
+            <Text key={index} asChild size={3} style={{ marginBottom: index !== 9 ? '32px' : undefined }}>
               <p>
                 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
                 industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
@@ -83,7 +83,7 @@ export const SnapPoints: Story = {
           <Button>Open</Button>
         </SheetTrigger>
         <SheetContent>
-          <Text asChild size={3} style={{textAlign: 'center', marginTop: '30px', paddingBottom: '250px'}}>
+          <Text asChild size={3} style={{ textAlign: 'center', marginTop: '30px', paddingBottom: '250px' }}>
             <p>
               Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
               industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
@@ -111,7 +111,7 @@ export const SteppedSnapPoints: Story = {
           <Button>Open</Button>
         </SheetTrigger>
         <SheetContent>
-          <Text asChild size={3} style={{textAlign: 'center', marginTop: '30px'}}>
+          <Text asChild size={3} style={{ textAlign: 'center', marginTop: '30px' }}>
             <p>
               Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
               industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
@@ -139,7 +139,7 @@ export const NotClosable: Story = {
           <Button>Open</Button>
         </SheetTrigger>
         <SheetContent>
-          <Text asChild size={3} style={{textAlign: 'center', marginTop: '30px'}}>
+          <Text asChild size={3} style={{ textAlign: 'center', marginTop: '30px' }}>
             <p>
               Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
               industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
@@ -163,7 +163,7 @@ export const WithoutOverlay: Story = {
           <Button>Open</Button>
         </SheetTrigger>
         <SheetContent overlaid={false}>
-          <Text asChild size={3} style={{textAlign: 'center', marginTop: '30px'}}>
+          <Text asChild size={3} style={{ textAlign: 'center', marginTop: '30px' }}>
             <p>
               Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
               industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
@@ -197,8 +197,8 @@ export const WithFormInside: Story = {
                   Personal
                 </legend>
               </Text>
-              <Separator style={{margin: '16px 0'}}/>
-              <div style={{marginBottom: '32px'}}>
+              <Separator style={{ margin: '16px 0' }}/>
+              <div style={{ marginBottom: '32px' }}>
                 <Label htmlFor='firstName'>First Name</Label>
                 <TextField id='firstName' placeholder='Ivan'/>
               </div>
@@ -207,7 +207,7 @@ export const WithFormInside: Story = {
                 <TextField id='lastName' placeholder='Ivanov'/>
               </div>
             </Fieldset>
-            <Button style={{marginTop: '32px'}}>Submit</Button>
+            <Button style={{ marginTop: '32px' }}>Submit</Button>
           </form>
         </SheetContent>
       </Sheet>
