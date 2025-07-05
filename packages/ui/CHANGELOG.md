@@ -1,5 +1,17 @@
 # @vega-ui/react
 
+## 1.5.0
+
+### Minor Changes
+
+- 89c9898: Added new compoents - AccordionTrigger, AccordionContent, that brings new flexibility for styling elements
+
+### Patch Changes
+
+- @vega-ui/hooks@1.5.0
+- @vega-ui/icons@1.5.0
+- @vega-ui/utils@1.5.0
+
 ## 1.4.2
 
 ### Patch Changes
