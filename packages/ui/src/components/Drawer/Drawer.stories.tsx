@@ -4,7 +4,7 @@ import { Drawer } from './Drawer.tsx';
 import { Text } from '../Text';
 import { Button } from '../Button';
 import { DrawerContent, DrawerHeader, DrawerTrigger } from './components';
-
+ 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof Drawer> = {
   title: 'Overlay/Drawer/Drawer',
@@ -48,8 +48,8 @@ export const WithoutOverlay: Story = {
         <DrawerTrigger asChild>
           <Button fullWidth>Open</Button>
         </DrawerTrigger>
-        <DrawerContent overlaid={false} style={{maxWidth: '80%'}}>
-          <Text asChild size={3} style={{maxWidth: '400px'}}>
+        <DrawerContent overlaid={false} style={{ maxWidth: '80%' }}>
+          <Text asChild size={3} style={{ maxWidth: '400px' }}>
             <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
               industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
               scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into
