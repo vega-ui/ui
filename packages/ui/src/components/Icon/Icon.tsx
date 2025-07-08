@@ -8,7 +8,7 @@ export interface IconProps {
    * Predefined size token for the icon.
    * Can be overridden by explicit width and height.
    */
-  size?: '4xs' | '3xs' | '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | null
+  size?: '4xs' | '3xs' | '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 
   /** Optional custom class name for styling */
   className?: string
@@ -37,7 +37,7 @@ export interface IconProps {
 
 /** UI component for render SVG icons */
 export const Icon: FC<IconProps> = ({
-  size = 'sm',
+  size,
   ref,
   width,
   height,

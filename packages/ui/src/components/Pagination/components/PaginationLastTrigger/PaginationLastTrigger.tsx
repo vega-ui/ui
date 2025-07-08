@@ -5,6 +5,7 @@ import { IconButton, IconButtonProps } from '../../../IconButton';
 import { PaginationListItem } from '../PaginationListItem';
 import { usePaginationContext } from '../../hooks';
 import { DoubleArrowRightIcon } from '@vega-ui/icons';
+import { Icon } from '../../../Icon';
 
 export interface PaginationLastTriggerProps extends IconButtonProps {
   /**
@@ -47,8 +48,8 @@ export const PaginationLastTrigger: FC<PaginationLastTriggerProps> = ({
         {...props}
       >
         {(asChild && children)
-          ? cloneElement(children as ReactElement, childrenProps, <DoubleArrowRightIcon />)
-          : <a href={disabled ? undefined : href}><DoubleArrowRightIcon /></a>
+          ? cloneElement(children as ReactElement, childrenProps, <Icon><DoubleArrowRightIcon /></Icon>)
+          : <a href={disabled ? undefined : href}><Icon><DoubleArrowRightIcon /></Icon></a>
         }
       </IconButton>
     </PaginationListItem>

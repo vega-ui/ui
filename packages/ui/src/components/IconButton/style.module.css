@@ -1,6 +1,7 @@
 .iconButton {
     --icon-button-size: 0;
     --icon-button-br-ratio: 0.333;
+    --icon-size: calc(var(--icon-button-size) / 3);
 
     display: flex;
     align-items: center;
@@ -22,8 +23,4 @@
 
 .iconButton[data-size='large'] {
     --icon-button-size: var(--spacing-27);
-}
-
-.icon {
-    --icon-size: calc(var(--icon-button-size) / 3);
 }

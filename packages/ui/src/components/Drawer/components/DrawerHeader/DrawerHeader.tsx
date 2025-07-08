@@ -9,6 +9,7 @@ import { IconButton } from '../../../IconButton';
 import { Heading } from '../../../Heading';
 import { useDrawerContext } from '../../hooks';
 import { X as CloseIcon } from '@vega-ui/icons';
+import { Icon } from '../../../Icon';
 
 export interface DrawerHeaderProps extends HTMLAttributes<HTMLDivElement> {
   /**
@@ -52,7 +53,9 @@ export const DrawerHeader: FC<DrawerHeaderProps> = ({
     >
       <div className={csx(style.drawerHeader, className)}>
         {title && <Heading as='h3' size={5}>{title}</Heading>}
-        <IconButton onClick={() => onChangeOpen(false)} aria-label='close' variant='secondary' appearance='transparent' size='medium'><CloseIcon /></IconButton>
+        <IconButton onClick={() => onChangeOpen(false)} aria-label='close' variant='secondary' appearance='transparent' size='medium'>
+          <Icon><CloseIcon /></Icon>
+        </IconButton>
       </div>
       {children}
     </div>
