@@ -7,6 +7,7 @@ import { Modal, ModalContent, ModalTrigger } from '../Modal';
 import { TextField } from '../TextField';
 import { TooltipContent, TooltipTrigger } from './components';
 import { HeartIcon, InfoIcon } from '@vega-ui/icons';
+import { Icon } from '../Icon';
 
 const meta = {
   title: 'Overlay/Tooltip/Tooltip',
@@ -46,7 +47,7 @@ export const WithIconButton: Story = {
     children: (
       <>
         <TooltipTrigger asChild>
-          <IconButton><HeartIcon /></IconButton>
+          <IconButton><Icon><HeartIcon /></Icon></IconButton>
         </TooltipTrigger>
         <TooltipContent>
           Support
@@ -61,7 +62,7 @@ export const InsideModal: Story = {
     children: (
       <>
         <TooltipTrigger asChild>
-          <IconButton><InfoIcon /></IconButton>
+          <IconButton><Icon><InfoIcon /></Icon></IconButton>
         </TooltipTrigger>
         <TooltipContent>
           Info
@@ -80,7 +81,7 @@ export const InsideModal: Story = {
             endSlot={
               <Tooltip {...props}>
                 <TooltipTrigger asChild>
-                  <IconButton appearance='transparent'><InfoIcon /></IconButton>
+                  <IconButton appearance='transparent'><Icon><InfoIcon /></Icon></IconButton>
                 </TooltipTrigger>
                 <TooltipContent>
                   Info

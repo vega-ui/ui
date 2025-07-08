@@ -37,7 +37,7 @@ export interface IconProps {
 
 /** UI component for render SVG icons */
 export const Icon: FC<IconProps> = ({
-  size = 'sm',
+  size,
   ref,
   width,
   height,

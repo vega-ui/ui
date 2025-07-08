@@ -4,12 +4,6 @@ import { Icon } from '../Icon.tsx';
 import { Globe } from '@vega-ui/icons';
 
 describe('Icon', () => {
-  it('default size', () => {
-    render(<Icon data-testid='icon'><Globe /></Icon>)
-    expect(screen.getByTestId('icon').hasAttribute('data-size')).toBeTruthy()
-    expect(screen.getByTestId('icon').getAttribute('data-size')).toBe('sm')
-  })
-
   it('role image', () => {
     render(<Icon data-testid='icon'><Globe /></Icon>)
     expect(screen.getByTestId('icon').getAttribute('role')).toBe('image')

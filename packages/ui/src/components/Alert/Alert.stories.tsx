@@ -4,6 +4,7 @@ import { IconButton } from '../IconButton';
 import { Link } from '../Link';
 import { Code } from '../Code';
 import { X as Close } from '@vega-ui/icons';
+import { Icon } from '../Icon';
 
 const variants: AlertProps['variant'][] = ['info', 'error', 'success', 'warning']
 
@@ -75,8 +76,8 @@ export const WithAction: Story = {
     title: 'I\'m a title',
     children: 'I\'m a content!',
     endSlot: (
-      <IconButton size='small' iconSize='sm' appearance='transparent'>
-        <Close />
+      <IconButton size='small'appearance='transparent'>
+        <Icon><Close /></Icon>
       </IconButton>
     )
   },

@@ -1,6 +1,5 @@
 import { ButtonBase, ButtonBaseProps } from '../ButtonBase';
-import { Ref, FC, cloneElement, ReactElement, PropsWithChildren } from 'react';
-import { Icon, IconProps } from '../Icon';
+import { FC } from 'react';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css';
 
@@ -27,12 +26,6 @@ export interface IconButtonProps extends ButtonBaseProps {
   size?: 'small' | 'medium' | 'large' | string
 
   /**
-   * Size of the icon rendered inside the button.
-   * Inherits from the `IconProps['size']` type.
-   */
-  iconSize?: IconProps['size']
-
-  /**
    * When true, renders the button as a child component using `Slot` (e.g., from Radix UI).
    * Enables polymorphic rendering — useful for making the button act as a link or custom tag.
    */
@@ -47,7 +40,6 @@ export interface IconButtonProps extends ButtonBaseProps {
 /** Primary UI component for user interaction */
 export const IconButton: FC<IconButtonProps> = ({
   size = 'medium',
-  iconSize = null,
   disabled,
   type = 'button',
   className,
@@ -59,21 +51,14 @@ export const IconButton: FC<IconButtonProps> = ({
   return (
     <ButtonBase
       type={type}
-      {...(props as Record<string, unknown>)}
+      {...props}
       asChild={asChild}
-      ref={ref as Ref<never>}
+      ref={ref}
       disabled={disabled}
       className={csx(style.iconButton, className)}
       data-size={size}
     >
-      {asChild
-        ? cloneElement(
-          children as ReactElement,
-          ((children as ReactElement).props as PropsWithChildren),
-          <Icon className={style.icon} size={iconSize}>{((children as ReactElement).props as PropsWithChildren)?.children}</Icon>
-        )
-        : <Icon className={style.icon} size={iconSize}>{children}</Icon>
-      }
+      {children}
     </ButtonBase>
   );
 }

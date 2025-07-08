@@ -1,10 +1,11 @@
 'use client';
 
+import { cloneElement, FC, ReactElement } from 'react';
 import { IconButton, IconButtonProps } from '../../../IconButton';
 import { PaginationListItem } from '../PaginationListItem';
 import { usePaginationContext } from '../../hooks';
 import { DoubleArrowLeftIcon } from '@vega-ui/icons';
-import { cloneElement, ReactElement } from 'react';
+import { Icon } from '../../../Icon';
 
 export interface PaginationFirstTriggerProps extends IconButtonProps {
   /**
@@ -22,7 +23,7 @@ export interface PaginationFirstTriggerProps extends IconButtonProps {
  * - If `asChild` is `true` but no `children` is provided, the component will render a default `<a>` tag
  *   with the provided `href`, unless `disabled` is set.
  */
-export const PaginationFirstTrigger = ({
+export const PaginationFirstTrigger: FC<PaginationFirstTriggerProps> = ({
   disabled,
   asChild = true,
   children,
@@ -30,7 +31,7 @@ export const PaginationFirstTrigger = ({
   href,
   variant,
   ...props
-}: PaginationFirstTriggerProps) => {
+}) => {
   const { size: _size, variant: _variant } = usePaginationContext()
   const childrenReact = (children as ReactElement)
   const childrenProps = (childrenReact?.props as Record<string, unknown>)
@@ -47,8 +48,8 @@ export const PaginationFirstTrigger = ({
         {...props}
       >
         {(asChild && children)
-          ? cloneElement(children as ReactElement, childrenProps, <DoubleArrowLeftIcon />)
-          : <a href={disabled ? undefined : href}><DoubleArrowLeftIcon /></a>
+          ? cloneElement(children as ReactElement, childrenProps, <Icon><DoubleArrowLeftIcon /></Icon>)
+          : <a href={disabled ? undefined : href}><Icon><DoubleArrowLeftIcon /></Icon></a>
         }
       </IconButton>
     </PaginationListItem>

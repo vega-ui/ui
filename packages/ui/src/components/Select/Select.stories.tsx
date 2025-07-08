@@ -52,7 +52,7 @@ export const Inline: Story = {
   args: {
     placeholder: 'Выберите язык',
     variant: 'inline',
-    startSlot: <Icon><Globe /></Icon>
+    startSlot: <Icon size='sm'><Globe /></Icon>
   },
   render(args) {
     return (
