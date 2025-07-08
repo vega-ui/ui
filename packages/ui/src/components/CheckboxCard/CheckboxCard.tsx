@@ -35,7 +35,7 @@ export interface CheckboxCardProps extends Omit<CardProps, 'appearance'>, Pick<C
    * Variant that controls the visual style of the checkbox card.
    * Typically used to switch between brand or neutral themes.
    */
-  variant?: 'primary' | 'secondary'
+  variant?: 'primary' | 'secondary' | string
 
   /**
    * Controls whether the checkbox card is selected.

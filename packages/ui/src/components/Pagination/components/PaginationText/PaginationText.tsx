@@ -12,7 +12,7 @@ export interface PaginationTextProps extends TextProps {
   /**
    * Visual style variant of the text.
    */
-  variant?: 'primary' | 'secondary'
+  variant?: 'primary' | 'secondary' | string
 }
 
 /**

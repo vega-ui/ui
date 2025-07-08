@@ -14,7 +14,7 @@ export interface FlagIconProps {
   /**
    * Visual size of the flag icon. Affects its rendered dimensions unless overridden by width/height.
    */
-  size?: 'small' | 'medium' | 'large'
+  size?: 'small' | 'medium' | 'large' | string
 
   /**
    * Custom CSS class for styling the SVG element.

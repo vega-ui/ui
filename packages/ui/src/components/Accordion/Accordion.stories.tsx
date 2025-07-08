@@ -17,6 +17,12 @@ const meta: Meta<typeof Accordion> = {
       url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/vega-ui--Community-?node-id=0-521&t=2RYEGgF9z3n5SpP5-4',
     },
   },
+  argTypes: {
+    size: {
+      control: 'radio',
+      options: ['small', 'medium', 'large'],
+    }
+  },
   args: {},
   tags: ['autodocs'],
 };

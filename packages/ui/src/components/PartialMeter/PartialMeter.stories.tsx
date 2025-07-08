@@ -19,6 +19,12 @@ const meta: Meta<typeof PartialMeter> = {
       url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/VegaUI--Community-?node-id=2273-5914&t=RUt89rPgQMrw8K8U-11',
     },
   },
+  argTypes: {
+    size: {
+      control: 'radio',
+      options: ['sm', 'md', 'lg'],
+    }
+  },
   tags: ['autodocs'],
 };
 

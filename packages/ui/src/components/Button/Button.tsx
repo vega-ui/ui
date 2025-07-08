@@ -35,7 +35,7 @@ export interface ButtonProps extends ButtonBaseProps {
    * Defines the size of the button.
    * Affects padding, font size, and overall dimensions.
    */
-  size?: 'small' | 'medium' | 'large'
+  size?: 'small' | 'medium' | 'large' | string
 
   /**
    * Custom content to display as a spinner during loading.

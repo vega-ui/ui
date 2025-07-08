@@ -19,7 +19,16 @@ const meta = {
     },
   },
   tags: ['autodocs'],
-  argTypes: {},
+  argTypes: {
+    variant: {
+      control: 'radio',
+      options: ['error', 'success', 'warning', 'info'],
+    },
+    appearance: {
+      control: 'radio',
+      options: ['fill', 'surface'],
+    }
+  },
   args: {},
 } satisfies Meta<typeof Alert>;
 

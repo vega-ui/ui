@@ -59,7 +59,7 @@ export interface SliderProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onCha
   /**
    * Visual size of the slider.
    */
-  size?: 'sm' | 'md' | 'lg'
+  size?: 'sm' | 'md' | 'lg' | string
 
   /**
    * Whether the slider is disabled and non-interactive.

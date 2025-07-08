@@ -1,11 +1,10 @@
 import { TextProps } from '../../../../../Text';
+import { PaginationSize } from '../../../../types.ts';
 
-type SizeMapperType = 'small' | 'medium' | 'large';
-
-const mapperIconSize: Record<SizeMapperType, TextProps['size']> = {
+const mapperIconSize: Record<PaginationSize, TextProps['size']> = {
   'small': 2,
   'medium': 3,
   'large': 4,
 } as const;
 
-export const sizeMapper = (type: SizeMapperType) => mapperIconSize[type]
+export const sizeMapper = (type: PaginationSize) => mapperIconSize?.[type] ?? 3

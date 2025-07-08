@@ -1,6 +1,7 @@
 'use client';
 
 import { Context, createContext, HTMLProps, MouseEvent, KeyboardEvent } from 'react';
+import { SelectSize } from '../../types.ts';
 
 type Value = string | number | undefined
 
@@ -9,7 +10,7 @@ export interface SelectContextState {
   activeIndex: number | undefined | null
   onSelect: (e: MouseEvent | KeyboardEvent, value: Value) => void
   getItemProps?: (props?: (Omit<HTMLProps<HTMLElement>, 'selected' | 'active'>)) => Record<string, unknown>
-  size?: 'small' | 'medium' | 'large'
+  size?: SelectSize
 }
 
 export const defaultSelectContext: SelectContextState = {

@@ -3,8 +3,7 @@ import { FC, HTMLAttributes, ReactNode, Ref } from 'react';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
 import { Slot } from '../Slot';
-
-export type TextSize = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11
+import { TextSize } from './types.ts';
 
 export interface TextProps extends HTMLAttributes<HTMLSpanElement> {
   /**

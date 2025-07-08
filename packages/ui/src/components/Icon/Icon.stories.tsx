@@ -13,6 +13,12 @@ const meta: Meta<typeof Icon> = {
     layout: 'centered',
   },
   args: {},
+  argTypes: {
+    size: {
+      control: 'radio',
+      options: ['4xs', '3xs', '2xs', 'xs', 'sm', 'md', 'lg', 'xl'],
+    },
+  },
   tags: ['autodocs'],
 };
 

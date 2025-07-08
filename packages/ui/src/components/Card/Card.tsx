@@ -13,13 +13,13 @@ export interface CardProps extends DetailedHTMLProps<HTMLAttributes<HTMLElement>
    * Specifies the size of the card.
    * Affects padding, font size, and possibly layout behavior.
    */
-  size?: 'small' | 'medium' | 'large'
+  size?: 'small' | 'medium' | 'large' | string
 
   /**
    * Defines the visual style of the card's surface.
    * Controls background and border visibility.
    */
-  appearance?: 'outline' | 'transparent'
+  appearance?: 'outline' | 'transparent' | string
 
   /**
    * Ref forwarded to the card’s root element (`<div>`).

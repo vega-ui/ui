@@ -3,6 +3,7 @@ import style from './style.module.css';
 import { VisuallyHidden } from '../../../VisuallyHidden';
 import { useSegmentedControlContext } from '../../hooks';
 import { csx } from '@vega-ui/utils';
+import { SegmentedControlSize } from '../../types.ts';
 
 export interface SegmentedControlItemProps extends HTMLAttributes<HTMLInputElement> {
   /**
@@ -14,7 +15,7 @@ export interface SegmentedControlItemProps extends HTMLAttributes<HTMLInputEleme
    * Controls the size of the item.
    * Affects padding, font size, and spacing.
    */
-  size?: 'small' | 'medium' | 'large'
+  size?: SegmentedControlSize
 
   /**
    * Visual style variant of the item.

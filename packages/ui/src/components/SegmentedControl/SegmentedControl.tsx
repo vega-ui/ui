@@ -11,6 +11,7 @@ import { csx } from '@vega-ui/utils';
 import { SegmentedControlItemProps } from './components';
 import { SegmentedControlProvider } from './providers';
 import { useControlledState } from '@vega-ui/hooks';
+import { SegmentedControlSize } from './types.ts';
 
 export interface SegmentedControlProps extends Omit<DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement>, 'onChange'> {
   /**
@@ -21,7 +22,7 @@ export interface SegmentedControlProps extends Omit<DetailedHTMLProps<HTMLAttrib
   /**
    * Visual size of the segmented control.
    */
-  size?: 'small' | 'medium' | 'large'
+  size?: SegmentedControlSize
 
   /**
    * One or more `SegmentedControlItem` components.
@@ -44,7 +45,7 @@ export interface SegmentedControlProps extends Omit<DetailedHTMLProps<HTMLAttrib
   /**
    * Visual style variant of the segmented control.
    */
-  variant?: 'primary' | 'secondary'
+  variant?: 'primary' | 'secondary' | string
 
   /**
    * Callback fired when the selected segment changes.

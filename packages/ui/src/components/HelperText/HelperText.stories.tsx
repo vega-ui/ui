@@ -18,6 +18,12 @@ const meta: Meta<typeof HelperText> = {
   args: {
     children: 'Имя'
   },
+  argTypes: {
+    size: {
+      control: 'radio',
+      options: ['small', 'medium', 'large'],
+    },
+  },
   tags: ['autodocs'],
 };
 

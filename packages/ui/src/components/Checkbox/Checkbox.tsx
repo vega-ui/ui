@@ -49,12 +49,12 @@ export interface CheckboxProps extends Omit<DetailedHTMLProps<InputHTMLAttribute
   /**
    * Visual variant of the checkbox, for theme or context switching.
    */
-  variant?: 'primary' | 'secondary'
+  variant?: 'primary' | 'secondary' | string
 
   /**
    * Size of the checkbox input and its visual marker.
    */
-  size?: 'small' | 'medium' | 'large'
+  size?: 'small' | 'medium' | 'large' | string
 
   /**
    * Callback function fired when the checkbox state changes.

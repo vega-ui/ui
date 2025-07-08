@@ -4,6 +4,7 @@ import { SelectValue } from '../SelectValue';
 import style from './style.module.css';
 import { SelectPlaceholder } from '../SelectPlaceholder';
 import { SelectArrow } from '../SelectArrow';
+import { SelectSize, SelectVariant } from '../../types.ts';
 
 export interface SelectComboboxProps {
   comboboxClassName?: string
@@ -16,8 +17,8 @@ export interface SelectComboboxProps {
   placeholder?: string
   disabled?: boolean
   readOnly?: boolean
-  variant?: 'inline' | 'field'
-  size?: 'small' | 'medium' | 'large'
+  variant?: SelectVariant
+  size?: SelectSize
   withArrow?: boolean
   open?: boolean
   ref?: Ref<HTMLButtonElement>

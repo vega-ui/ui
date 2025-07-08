@@ -53,6 +53,7 @@
     "dev": "vite build --watch",
     "build": "vite build",
     "test": "vitest run",
+    "lint": "eslint",
     "test:watch": "vitest --watch",
     "check-types": "tsc --noEmit"
   },

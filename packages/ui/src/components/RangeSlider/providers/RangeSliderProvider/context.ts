@@ -1,6 +1,7 @@
 'use client';
 
 import { Context, createContext } from 'react';
+import { RangeSliderSize } from '../../types.ts';
 
 export interface RangeSliderContextState {
   min: number
@@ -8,7 +9,7 @@ export interface RangeSliderContextState {
   value: readonly [number, number]
   step: number | 'any'
   orientation?: 'horizontal' | 'vertical'
-  size?: 'sm' | 'md' | 'lg'
+  size?: RangeSliderSize
   minRange?: number
 }
 

@@ -1,0 +1,1 @@
+export type SegmentedControlSize = 'small' | 'medium' | 'large' | string

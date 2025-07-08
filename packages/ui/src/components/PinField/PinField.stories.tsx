@@ -19,6 +19,10 @@ const meta = {
   argTypes: {
     maxLength: {
       type: 'number'
+    },
+    size: {
+      control: 'radio',
+      options: ['small', 'medium', 'large'],
     }
   },
   args: {},

@@ -14,7 +14,7 @@ export interface PinFieldSeparator extends HTMLAttributes<HTMLDivElement> {
    * Controls the visual size of the separator.
    * Aligns with the size of the surrounding `PinField` elements.
    */
-  size?: 'small' | 'medium' | 'large'
+  size?: 'small' | 'medium' | 'large' | string
 }
 
 

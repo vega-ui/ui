@@ -1,6 +1,7 @@
 import { TextProps } from '../../../../../Text';
+import { CheckboxCardSize } from '../../../../types.ts';
 
-const mapperTextSize: Record<'small' | 'medium' | 'large', {
+const mapperTextSize: Record<CheckboxCardSize, {
   title: TextProps['size'],
   description: TextProps['size']
 }> = {
@@ -18,4 +19,7 @@ const mapperTextSize: Record<'small' | 'medium' | 'large', {
   },
 } as const;
 
-export const sizeMapper = (type: 'small' | 'medium' | 'large') => mapperTextSize[type]
+export const sizeMapper = (type: CheckboxCardSize) => mapperTextSize?.[type] ?? {
+  title: 4,
+  description: 3,
+}

@@ -2,7 +2,7 @@ import { FC, ReactNode, Ref } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { Text, TextProps } from '../Text';
-import { TextSize } from '../Text/Text.tsx';
+import { TextSize } from '../Text/types.ts';
 
 export interface CodeProps extends TextProps {
   /**

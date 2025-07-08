@@ -46,13 +46,13 @@ export interface AlertProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElem
    * - 'warning': Indicates a caution or risk
    * - 'info': Neutral informational message
    */
-  variant?: 'success' | 'error' | 'warning' | 'info'
+  variant?: 'success' | 'error' | 'warning' | 'info' | string
 
   /**
    * Visual appearance of the badge.
    * Defines how the badge is styled (background, border, etc.).
    */
-  appearance?: 'fill' | 'surface'
+  appearance?: 'fill' | 'surface' | string
 }
 
 /** An Alert is a UI component that displays important messages, such as warnings, errors, or confirmations, to grab user attention. */
@@ -69,7 +69,7 @@ export const Alert: FC<AlertProps> = ({
 }) => {
   return (
     <div ref={ref} data-apperance={appearance} data-variant={variant} className={csx(style.alert, className)} {...props}>
-      {iconSlot !== false && iconSlot ? iconSlot : <Icon className={style.icon} size='md'>{iconMapper[variant]}</Icon>}
+      {iconSlot !== false && iconSlot ? iconSlot : <Icon className={style.icon} size='md'>{iconMapper?.[variant]}</Icon>}
       <div className={style.content}>
         <Text className={style.title} fontWeight={500} size={3} asChild>
           <p>{title}</p>

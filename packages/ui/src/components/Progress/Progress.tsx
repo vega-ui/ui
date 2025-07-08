@@ -13,13 +13,13 @@ export interface ProgressProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * Visual size of the progress bar.
    */
-  size?: 'sm' | 'md' | 'lg'
+  size?: 'sm' | 'md' | 'lg' | string
 
   /**
    * Visual style of the progress bar.
    * Typically mapped to theme color variants.
    */
-  variant?: 'primary' | 'secondary'
+  variant?: 'primary' | 'secondary' | string
 
   /**
    * Class name for the track (the unfilled portion of the bar).

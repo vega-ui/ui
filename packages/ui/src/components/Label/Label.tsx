@@ -4,6 +4,7 @@ import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { Text, TextProps } from '../Text';
 import { sizeMapper } from './utils';
+import { LabelSize } from './types.ts';
 
 export interface LabelProps extends Omit<TextProps, 'size'> {
   /**
@@ -22,7 +23,7 @@ export interface LabelProps extends Omit<TextProps, 'size'> {
    * Visual size of the label text.
    * Typically maps to type scale values in a design system.
    */
-  size?: 'small' | 'medium' | 'large'
+  size?: LabelSize
 
   /**
    * Font weight of the label text.

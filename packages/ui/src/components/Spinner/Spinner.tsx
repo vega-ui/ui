@@ -8,7 +8,7 @@ export interface SpinnerProps extends HTMLAttributes<HTMLDivElement> {
    * Maps to a scalable design token or type scale.
    * Accepts values from 1 (smallest) to 11 (largest).
    */
-  size?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11
+  size?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | number
 
   /**
    * Visual color variant of the spinner.

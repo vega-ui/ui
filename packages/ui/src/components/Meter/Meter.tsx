@@ -15,12 +15,12 @@ export interface MeterProps extends HTMLAttributes<HTMLDivElement> {
    * Visual size of the meter component.
    * Typically maps to predefined size tokens in a design system.
    */
-  size?: 'sm' | 'md' | 'lg'
+  size?: 'sm' | 'md' | 'lg' | string
 
   /**
    * Visual variant of the meter (e.g., for styling themes).
    */
-  variant?: 'primary' | 'secondary'
+  variant?: 'primary' | 'secondary' | string
 
   /**
    * Optional class name applied to the inner track element.

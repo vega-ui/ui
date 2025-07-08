@@ -10,7 +10,16 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  argTypes: {},
+  argTypes: {
+    variant: {
+      control: 'radio',
+      options: ['primary', 'secondary'],
+    },
+    appearance: {
+      control: 'radio',
+      options: ['fill', 'outline', 'ghost', 'transparent']
+    }
+  },
   args: { onClick: fn() },
 } satisfies Meta<typeof ButtonBase>;
 

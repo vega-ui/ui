@@ -1,11 +1,10 @@
 import { TextProps } from '../../../../../Text';
+import { AccordionSize } from '../../../../types.ts';
 
-type SizeMapperType = 'small' | 'medium' | 'large';
-
-const mapperHeadingSize: Record<SizeMapperType, TextProps['size']> = {
+const mapperHeadingSize: Record<AccordionSize, TextProps['size']> = {
   'small': 3,
   'medium': 4,
   'large': 5,
 } as const;
 
-export const sizeMapper = (type: SizeMapperType) => mapperHeadingSize[type]
+export const sizeMapper = (type: AccordionSize) => mapperHeadingSize?.[type] ?? 3

@@ -13,4 +13,4 @@ const mapperTextSize: Record<SizeMapperType, IconProps['size']> = {
   '2xl': 'xl',
 } as const;
 
-export const sizeMapper = (type: SizeMapperType) => mapperTextSize[type]
+export const sizeMapper = (type: SizeMapperType) => mapperTextSize?.[type] ?? 'sm'

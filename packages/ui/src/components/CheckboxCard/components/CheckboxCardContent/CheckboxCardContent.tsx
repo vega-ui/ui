@@ -3,9 +3,9 @@ import { FC, PropsWithChildren } from 'react';
 import { Heading } from '../../../Heading';
 import { Text } from '../../../Text';
 import style from './style.module.css';
-import { CheckboxCardProps } from '../../CheckboxCard.tsx';
 import { sizeMapper } from './utils';
 import { useCheckboxCardContext } from '../../hooks';
+import { CheckboxCardSize } from '../../types.ts';
 
 export interface CheckboxCardContentProps {
   /**
@@ -27,7 +27,7 @@ export interface CheckboxCardContentProps {
    * Inherited visual size from the parent CheckboxCard component.
    * Affects spacing, typography, and layout scale.
    */
-  size?: CheckboxCardProps['size']
+  size?: CheckboxCardSize
 }
 
 /** The CheckboxCardContent component is a layout wrapper used inside a CheckboxCard to structure and style its inner content, such as titles, descriptions, or icons, while aligning with the card’s orientation and variant */

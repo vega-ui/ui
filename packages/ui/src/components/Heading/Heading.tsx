@@ -30,7 +30,7 @@ export interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {
    * Typically mapped to a design system's type scale.
    * Accepts values from 1 (smallest) to 11 (largest).
    */
-  size?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11
+  size?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | number
 
   /**
    * Font weight of the heading text.

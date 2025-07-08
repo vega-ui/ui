@@ -1,9 +1,10 @@
 'use client';
 import { FC, PropsWithChildren, useMemo } from 'react';
 import { CheckboxCardContext } from './context.ts';
+import { CheckboxCardSize } from '../../types.ts';
 
 export interface CheckboxCardProviderProps {
-  size: 'small' | 'medium' | 'large'
+  size: CheckboxCardSize
 }
 
 export const CheckboxCardProvider: FC<PropsWithChildren<CheckboxCardProviderProps>> = ({ size, children }) => {

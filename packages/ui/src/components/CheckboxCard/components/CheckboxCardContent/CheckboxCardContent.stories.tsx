@@ -10,7 +10,12 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  argTypes: {},
+  argTypes: {
+    size: {
+      control: 'radio',
+      options: ['small', 'medium', 'large'],
+    },
+  },
   args: {},
 } satisfies Meta<typeof CheckboxCardContent>;
 
