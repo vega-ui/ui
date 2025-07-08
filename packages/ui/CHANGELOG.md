@@ -1,5 +1,18 @@
 # @vega-ui/react
 
+## 1.7.0
+
+### Minor Changes
+
+- 3941d2c: Added custom size, appearance and variant to elements
+- 5cb45a4: Changed default icon size to null
+
+### Patch Changes
+
+- @vega-ui/hooks@1.7.0
+- @vega-ui/icons@1.7.0
+- @vega-ui/utils@1.7.0
+
 ## 1.6.0
 
 ### Minor Changes
