@@ -5,6 +5,7 @@ import { IconButton, IconButtonProps } from '../../../IconButton';
 import { PaginationListItem } from '../PaginationListItem';
 import { usePaginationContext } from '../../hooks';
 import { MoveRight } from '@vega-ui/icons';
+import { Icon } from '../../../Icon';
 
 export interface PaginationNextTriggerProps extends IconButtonProps {
   /**
@@ -47,8 +48,8 @@ export const PaginationNextTrigger: FC<PaginationNextTriggerProps> = ({
         {...props}
       >
         {(asChild && children)
-          ? cloneElement(children as ReactElement, childrenProps, <MoveRight />)
-          : <a href={disabled ? undefined : href}><MoveRight /></a>
+          ? cloneElement(children as ReactElement, childrenProps, <Icon><MoveRight /></Icon>)
+          : <a href={disabled ? undefined : href}><Icon><MoveRight /></Icon></a>
         }
       </IconButton>
     </PaginationListItem>

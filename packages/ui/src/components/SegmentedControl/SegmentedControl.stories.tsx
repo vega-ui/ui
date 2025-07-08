@@ -64,10 +64,10 @@ export const WithIcon: Story = {
     return (
       <SegmentedControl {...props}>
         <SegmentedControlItem value='1'>
-          <Icon><SunIcon /></Icon>
+          <Icon size='sm'><SunIcon /></Icon>
         </SegmentedControlItem>
         <SegmentedControlItem value='2'>
-          <Icon><MoonIcon /></Icon>
+          <Icon size='sm'><MoonIcon /></Icon>
         </SegmentedControlItem>
       </SegmentedControl>
     )

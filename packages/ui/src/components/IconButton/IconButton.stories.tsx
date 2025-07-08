@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { IconButton, IconButtonProps } from './IconButton.tsx';
 import { GlobeIcon, Heart, MinusIcon } from '@vega-ui/icons';
+import { Icon } from '../Icon';
 
 const meta = {
   title: 'Actions/IconButton',
@@ -26,14 +27,14 @@ const sizes: IconButtonProps['size'][] = ['small', 'medium', 'large']
 
 export const Primary: Story = {
   args: {
-    children: <GlobeIcon />
+    children: <Icon><GlobeIcon /></Icon>
   }
 };
 
 export const Secondary: Story = {
   args: {
     variant: 'secondary',
-    children: <MinusIcon />
+    children: <Icon><MinusIcon /></Icon>
   }
 };
 
@@ -41,7 +42,7 @@ export const Sizes: Story = {
   render(props) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-        {sizes.map((size) => <IconButton size={size} {...props}><GlobeIcon /></IconButton>)}
+        {sizes.map((size) => <IconButton size={size} {...props}><Icon><GlobeIcon /></Icon></IconButton>)}
       </div>
     )
   }
@@ -52,11 +53,13 @@ export const WithCustomIcon: Story = {
     variant: 'secondary',
     appearance: 'ghost',
     children: (
-      <svg stroke='var(--color-red-accent-500)' fill='var(--color-red-accent-500)' stroke-width='0' viewBox='0 0 512 512'
-           xmlns='http://www.w3.org/2000/svg'>
-        <path
-          d='M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z'></path>
-      </svg>
+      <Icon>
+        <svg stroke='var(--color-red-accent-500)' fill='var(--color-red-accent-500)' stroke-width='0' viewBox='0 0 512 512'
+             xmlns='http://www.w3.org/2000/svg'>
+          <path
+            d='M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z'></path>
+        </svg>
+      </Icon>
     )
   }
 };
@@ -64,7 +67,7 @@ export const WithCustomIcon: Story = {
 export const Disabled: Story = {
   args: {
     disabled: true,
-    children: <GlobeIcon/>
+    children: <Icon><GlobeIcon/></Icon>
   }
 };
 
@@ -100,7 +103,7 @@ export const AllVariants: Story = {
                   appearance={appearance}
                   size={size}
                 >
-                  <GlobeIcon />
+                  <Icon><GlobeIcon /></Icon>
                 </IconButton>
               ))
             )}
@@ -124,7 +127,7 @@ export const AllSizes: Story = {
       {sizes.map(size => (
         <div key={size} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <IconButton variant='primary' appearance='fill' size={size}>
-            <Heart />
+            <Icon><Heart /></Icon>
           </IconButton>
         </div>
       ))}

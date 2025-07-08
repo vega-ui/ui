@@ -50,6 +50,6 @@ export const WithStartSlot: Story = {
 
 export const WithEndSlot: Story = {
   render(props) {
-    return <TextField {...props} placeholder='Домен' endSlot={<IconButton variant='primary' appearance='transparent' size='small' aria-label='Отправить'><CloudIcon /></IconButton>} />
+    return <TextField {...props} placeholder='Домен' endSlot={<IconButton variant='primary' appearance='transparent' size='small' aria-label='Отправить'><Icon><CloudIcon /></Icon></IconButton>} />
   }
 }
