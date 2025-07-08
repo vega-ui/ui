@@ -1,0 +1,1 @@
+export type RangeSliderSize = 'sm' | 'md' | 'lg' | string

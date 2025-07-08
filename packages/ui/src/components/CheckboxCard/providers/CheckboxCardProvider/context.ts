@@ -1,9 +1,10 @@
 'use client';
 
 import { Context, createContext } from 'react';
+import { CheckboxCardSize } from '../../types.ts';
 
 export interface CheckboxCardContextState {
-  size: 'small' | 'medium' | 'large'
+  size: CheckboxCardSize
 }
 
 export const defaultCheckboxCardContext: CheckboxCardContextState = {

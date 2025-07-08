@@ -48,7 +48,7 @@ export interface PinFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement
    * Visual size of the pin input.
    * Affects dimensions and font size.
    */
-  size?: 'small' | 'medium' | 'large'
+  size?: 'small' | 'medium' | 'large' | string
 
   /**
    * Shows the field in an error state.

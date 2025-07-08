@@ -14,7 +14,7 @@ export interface PartialMeterProps extends HTMLAttributes<HTMLDivElement> {
    * Visual size of the meter component.
    * Typically maps to predefined size tokens in a design system.
    */
-  size?: 'sm' | 'md' | 'lg'
+  size?: 'sm' | 'md' | 'lg' | string
 
   /**
    * Unique ID for the meter element.

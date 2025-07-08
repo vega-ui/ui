@@ -1,6 +1,7 @@
 'use client';
 import { FC, PropsWithChildren, useMemo, KeyboardEvent, MouseEvent } from 'react';
 import { SelectContext, SelectContextState } from './context.ts';
+import { SelectSize } from '../../types.ts';
 
 type Value = string | number | undefined
 
@@ -9,7 +10,7 @@ export interface SelectProviderProps {
   activeIndex: number | undefined | null
   onSelect: (e: MouseEvent | KeyboardEvent, value: Value) => void
   getItemProps: SelectContextState['getItemProps']
-  size: 'small' | 'medium' | 'large'
+  size: SelectSize
 }
 
 export const SelectProvider: FC<PropsWithChildren<SelectProviderProps>> = ({ value, activeIndex, onSelect, getItemProps, size, children }) => {

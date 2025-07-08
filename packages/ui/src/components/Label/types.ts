@@ -1,0 +1,1 @@
+export type LabelSize = 'small' | 'medium' | 'large' | string;

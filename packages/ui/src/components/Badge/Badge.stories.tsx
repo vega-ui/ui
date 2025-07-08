@@ -16,7 +16,20 @@ const meta = {
     },
   },
   tags: ['autodocs'],
-  argTypes: {},
+  argTypes: {
+    variant: {
+      control: 'radio',
+      options: ['error', 'success', 'warning', 'info'],
+    },
+    appearance: {
+      control: 'radio',
+      options: ['fill', 'outline', 'ghost'],
+    },
+    size: {
+      control: 'radio',
+      options: ['xs', 'sm', 'md', 'lg', 'xl']
+    }
+  },
   args: {},
 } satisfies Meta<typeof Badge>;
 

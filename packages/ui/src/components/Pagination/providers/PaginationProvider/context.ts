@@ -2,9 +2,10 @@
 
 import { Context, createContext } from 'react';
 import { IconButtonProps } from '../../../IconButton';
+import { PaginationSize } from '../../types.ts';
 
 export interface PaginationContextState {
-  size?: IconButtonProps['size']
+  size?: PaginationSize
   variant?: IconButtonProps['variant']
 }
 

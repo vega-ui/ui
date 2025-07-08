@@ -14,6 +14,12 @@ const meta: Meta<typeof Fieldset> = {
   args: {
     children: 'Имя'
   },
+  argTypes: {
+    appearance: {
+      control: 'radio',
+      options: ['transparent', 'outlined'],
+    },
+  },
   tags: ['autodocs'],
 };
 

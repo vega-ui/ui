@@ -4,7 +4,7 @@ import { Context, createContext, RefObject } from 'react';
 
 export interface PinFieldContextState {
   inputId?: string
-  size?: 'small' | 'medium' | 'large'
+  size?: 'small' | 'medium' | 'large' | string
   maxLength?: number
   value: string
   placeholder?: string

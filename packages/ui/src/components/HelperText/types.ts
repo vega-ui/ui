@@ -1,0 +1,1 @@
+export type HelperTextSize = 'small' | 'medium' | 'large' | string

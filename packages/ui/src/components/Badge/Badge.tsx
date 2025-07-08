@@ -25,18 +25,18 @@ export interface BadgeProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElem
    * - 'warning': For cautionary/in-progress status
    * - 'info': For neutral/informational status
    */
-  variant?: 'success' | 'error' | 'warning' | 'info'
+  variant?: 'success' | 'error' | 'warning' | 'info' | string
 
   /**
    * Visual appearance of the badge.
    * Defines how the badge is styled (background, border, etc.).
    */
-  appearance?: 'fill' | 'outline' | 'ghost'
+  appearance?: 'fill' | 'outline' | 'ghost' | string
 
   /**
    * Size of the badge. Affects padding, font size, and overall dimensions.
    */
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | string
 }
 
 /** A Badge is a UI component that displays small status indicators, counts, or labels, often used to highlight notifications, message counts, or item statuses on top of icons or other UI elements. */

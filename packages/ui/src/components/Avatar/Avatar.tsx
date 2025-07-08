@@ -19,7 +19,7 @@ export interface AvatarProps {
    * Defines the size of the avatar.
    * Affects both the container and any nested content (image, initials, etc.).
    */
-  size?: '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+  size?: '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | string
 
   /**
    * Visual variant of the avatar.
@@ -28,7 +28,7 @@ export interface AvatarProps {
    * - 'primary': Default visual style
    * - 'secondary': Alternate or less prominent style
    */
-  variant?: 'primary' | 'secondary'
+  variant?: 'primary' | 'secondary' | string
 }
 
 /** An Avatar is a UI component that displays a user's profile image, initials, or an icon, commonly used in social profiles, chat applications, and dashboards to represent a person or entity. */

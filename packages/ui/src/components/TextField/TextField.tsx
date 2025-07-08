@@ -52,7 +52,7 @@ export interface TextFieldProps extends Omit<InputHTMLAttributes<HTMLInputElemen
    * - 'medium': Default
    * - 'large': Spacious layout
    */
-  size?: 'small' | 'medium' | 'large'
+  size?: 'small' | 'medium' | 'large' | string
 
   /**
    * Content displayed at the start (left) of the input field.

@@ -4,6 +4,7 @@ import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { Text } from '../Text';
 import { sizeMapper } from './utils';
+import { HelperTextSize } from './types.ts';
 
 export interface HelperTextProps {
   /**
@@ -22,7 +23,7 @@ export interface HelperTextProps {
    * Visual size of the helper text.
    * Adjusts font size and spacing relative to form element size.
    */
-  size?: 'small' | 'medium' | 'large'
+  size?: HelperTextSize
 
   /**
    * Font weight of the helper text.

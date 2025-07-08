@@ -8,7 +8,7 @@ export interface IconProps {
    * Predefined size token for the icon.
    * Can be overridden by explicit width and height.
    */
-  size?: '4xs' | '3xs' | '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | null
+  size?: '4xs' | '3xs' | '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | null | string
 
   /** Optional custom class name for styling */
   className?: string

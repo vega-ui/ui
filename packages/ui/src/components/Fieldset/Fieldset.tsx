@@ -20,7 +20,7 @@ export interface FieldsetProps {
   /**
    * Visual appearance of the fieldset container.
    */
-  appearance?: 'transparent' | 'outlined'
+  appearance?: 'transparent' | 'outlined' | string
 
   /**
    * Custom CSS class applied to the fieldset element.

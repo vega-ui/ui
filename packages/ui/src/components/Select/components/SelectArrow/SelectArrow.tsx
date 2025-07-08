@@ -4,11 +4,12 @@ import { Icon } from '../../../Icon';
 import { csx } from '@vega-ui/utils';
 import { sizeMapper } from './utils';
 import { ChevronDown } from '@vega-ui/icons';
+import { SelectSize } from '../../types.ts';
 
 export interface SelectArrowProps {
   open?: boolean
   className?: string
-  size?: 'small' | 'medium' | 'large'
+  size?: SelectSize
 }
 
 export const SelectArrow: FC<SelectArrowProps> = ({ open, size = 'medium', className }) => {

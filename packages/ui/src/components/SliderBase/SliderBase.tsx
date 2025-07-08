@@ -42,7 +42,7 @@ export interface SliderBaseProps extends HTMLAttributes<HTMLDivElement> {
    * Visual size of the slider.
    * Typically maps to height or thumb size in design tokens.
    */
-  size?: 'sm' | 'md' | 'lg'
+  size?: 'sm' | 'md' | 'lg' | string
 
   /**
    * Optional React ref to access the root slider DOM node.

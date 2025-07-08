@@ -14,7 +14,12 @@ const meta = {
     },
   },
   tags: ['autodocs'],
-  argTypes: {},
+  argTypes: {
+    size: {
+      control: 'radio',
+      options: ['2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl']
+    }
+  },
   args: {},
 } satisfies Meta<typeof Avatar>;
 

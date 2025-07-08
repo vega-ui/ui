@@ -17,7 +17,16 @@ const meta = {
     },
   },
   tags: ['autodocs'],
-  argTypes: {},
+  argTypes: {
+    size: {
+      control: 'radio',
+      options: ['small', 'medium', 'large'],
+    },
+    variant: {
+      control: 'radio',
+      options: ['field', 'inline'],
+    }
+  },
   args: {},
 } satisfies Meta<typeof Select>;
 

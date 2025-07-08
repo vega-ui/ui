@@ -12,6 +12,12 @@ const meta: Meta<typeof FlagIcon> = {
   args: {
     name: 'RU'
   },
+  argTypes: {
+    size: {
+      control: 'radio',
+      options: ['small', 'medium', 'large'],
+    },
+  },
   tags: ['autodocs'],
 };
 

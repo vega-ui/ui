@@ -14,7 +14,16 @@ const meta = {
     },
   },
   tags: ['autodocs'],
-  argTypes: {},
+  argTypes: {
+    variant: {
+      control: 'radio',
+      options: ['primary', 'secondary'],
+    },
+    size: {
+      control: 'radio',
+      options: ['small', 'medium', 'large'],
+    },
+  },
 } satisfies Meta<typeof Checkbox>;
 
 export default meta;

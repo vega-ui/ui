@@ -17,6 +17,12 @@ const meta: Meta<typeof Label> = {
   args: {
     children: 'Имя'
   },
+  argTypes: {
+    size: {
+      control: 'radio',
+      options: ['small', 'medium', 'large'],
+    }
+  },
   tags: ['autodocs'],
 };
 

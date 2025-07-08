@@ -14,6 +14,12 @@ const meta: Meta<typeof SliderBase> = {
       url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/vega-ui--Community-?node-id=0-4344&t=2RYEGgF9z3n5SpP5-4',
     },
   },
+  argTypes: {
+    size: {
+      control: 'radio',
+      options: ['sm', 'md', 'lg'],
+    },
+  },
   tags: ['autodocs'],
 };
 

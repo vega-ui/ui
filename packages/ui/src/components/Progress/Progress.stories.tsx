@@ -16,6 +16,16 @@ const meta: Meta<typeof Progress> = {
       url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/VegaUI--Community-?node-id=2268-5896&t=KIqUXkO2Fq2zdfys-11',
     },
   },
+  argTypes: {
+    size: {
+      control: 'radio',
+      options: ['sm', 'md', 'lg'],
+    },
+    variant: {
+      control: 'radio',
+      options: ['primary', 'secondary'],
+    }
+  },
   tags: ['autodocs'],
 };
 

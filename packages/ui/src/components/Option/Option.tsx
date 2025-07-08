@@ -28,7 +28,7 @@ export interface OptionProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSel
   /**
    * Size of the option for visual styling.
    */
-  size?: 'small' | 'medium' | 'large'
+  size?: 'small' | 'medium' | 'large' | string
 
   /**
    * Callback fired when the option is selected via click or keyboard.

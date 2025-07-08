@@ -13,6 +13,7 @@ import { useControlledState } from '@vega-ui/hooks';
 import { SliderBase } from '../SliderBase';
 import { clamp } from '@vega-ui/utils';
 import { RangeSliderProvider } from './providers';
+import { RangeSliderSize } from './types';
 
 export interface RangeSliderProps extends Omit<HTMLAttributes<HTMLDivElement>, 'defaultValue' | 'onChange'> {
   /**
@@ -56,7 +57,7 @@ export interface RangeSliderProps extends Omit<HTMLAttributes<HTMLDivElement>, '
   /**
    * Size of the slider visuals (thumb, track, etc).
    */
-  size?: 'sm' | 'md' | 'lg'
+  size?: RangeSliderSize
 
   /**
    * Minimum distance allowed between thumbs.

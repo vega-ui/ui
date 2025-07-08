@@ -7,12 +7,12 @@ export interface ButtonBaseProps extends ButtonHTMLAttributes<HTMLButtonElement>
   /**
    * Defines the visual style of the button, affecting color schemes and emphasis.
    */
-  variant?: 'primary' | 'secondary'
+  variant?: 'primary' | 'secondary' | string
 
   /**
    * Adjusts the button's structural appearance (background, border, etc.).
    */
-  appearance?: 'fill' | 'outline' | 'ghost' | 'transparent'
+  appearance?: 'fill' | 'outline' | 'ghost' | 'transparent' | string
 
   /**
    * Disables the button when true.

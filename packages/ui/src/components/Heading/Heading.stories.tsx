@@ -16,6 +16,12 @@ const meta: Meta<typeof Heading> = {
   args: {
     children: 'Заголовок'
   },
+  argTypes: {
+    size: {
+      control: 'radio',
+      options: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    },
+  },
   tags: ['autodocs'],
 };
 

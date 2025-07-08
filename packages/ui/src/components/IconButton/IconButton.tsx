@@ -24,7 +24,7 @@ export interface IconButtonProps extends ButtonBaseProps {
    * Size of the button container.
    * Controls padding and overall clickable area.
    */
-  size?: 'small' | 'medium' | 'large'
+  size?: 'small' | 'medium' | 'large' | string
 
   /**
    * Size of the icon rendered inside the button.

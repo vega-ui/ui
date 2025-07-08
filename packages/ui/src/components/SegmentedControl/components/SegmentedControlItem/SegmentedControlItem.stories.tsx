@@ -13,7 +13,16 @@ const meta = {
     },
   },
   tags: ['autodocs'],
-  argTypes: {},
+  argTypes: {
+    size: {
+      control: 'radio',
+      options: ['small', 'medium', 'large'],
+    },
+    variant: {
+      control: 'radio',
+      options: ['primary', 'secondary'],
+    }
+  },
   args: {},
 } satisfies Meta<typeof SegmentedControlItem>;
 

@@ -1,14 +1,15 @@
 'use client';
 import { FC, PropsWithChildren, useMemo, ChangeEvent } from 'react';
 import { SegmentedControlContext } from './context.ts';
+import { SegmentedControlSize } from '../../types.ts';
 
 export interface SegmentedControlProviderProps {
   value: string | number | undefined
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
-  size: 'small' | 'medium' | 'large'
+  size: SegmentedControlSize
   disabled?: boolean
   name?: string
-  variant?: 'primary' | 'secondary'
+  variant?: 'primary' | 'secondary' | string
 }
 
 export const SegmentedControlProvider: FC<PropsWithChildren<SegmentedControlProviderProps>> = ({ value, variant, onChange, size, name, disabled, children }) => {

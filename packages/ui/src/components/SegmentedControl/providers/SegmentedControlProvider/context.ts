@@ -1,14 +1,15 @@
 'use client';
 
 import { ChangeEvent, Context, createContext } from 'react';
+import { SegmentedControlSize } from '../../types.ts';
 
 export interface SegmentedControlContextState {
   value: string | number | undefined
   onChange: (event: ChangeEvent<HTMLInputElement>) => void
-  size?: 'small' | 'medium' | 'large'
+  size?: SegmentedControlSize
   disabled?: boolean
   name?: string
-  variant?: 'primary' | 'secondary'
+  variant?: 'primary' | 'secondary' | string
 }
 
 export const defaultSegmentedControlContext: SegmentedControlContextState = {

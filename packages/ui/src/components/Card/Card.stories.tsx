@@ -17,7 +17,16 @@ const meta = {
     },
   },
   tags: ['autodocs'],
-  argTypes: {},
+  argTypes: {
+    size: {
+      control: 'radio',
+      options: ['small', 'medium', 'large'],
+    },
+    appearance: {
+      control: 'radio',
+      options: ['outline', 'transparent'],
+    },
+  },
   args: { onClick: fn() },
 } satisfies Meta<typeof Card>;
 

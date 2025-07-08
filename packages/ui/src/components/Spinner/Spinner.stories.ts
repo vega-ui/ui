@@ -13,7 +13,12 @@ const meta = {
     },
   },
   tags: ['autodocs'],
-  argTypes: {},
+  argTypes: {
+    size: {
+      control: 'radio',
+      options: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    },
+  },
   args: {
     size: 7
   },

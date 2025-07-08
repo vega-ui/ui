@@ -6,7 +6,7 @@ import { CountryCode } from 'libphonenumber-js';
 export interface PhoneSelectContextState {
   value: CountryCode | undefined
   onSelect: (e: KeyboardEvent | MouseEvent | null, value: CountryCode) => void
-  size?: 'small' | 'medium' | 'large'
+  size?: 'small' | 'medium' | 'large' | string
 }
 
 export const defaultPhoneSelectContext: PhoneSelectContextState = {

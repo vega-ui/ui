@@ -33,7 +33,7 @@ export interface TextAreaProps extends Omit<TextareaHTMLAttributes<HTMLTextAreaE
    * Visual size of the textarea.
    * Controls padding, font size, and height presets.
    */
-  size?: 'small' | 'medium' | 'large'
+  size?: 'small' | 'medium' | 'large' | string
 
   /**
    * Displays the textarea in an error state.

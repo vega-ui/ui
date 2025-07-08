@@ -14,7 +14,12 @@ const meta = {
     },
   },
   tags: ['autodocs'],
-  argTypes: {},
+  argTypes: {
+    size: {
+      control: 'radio',
+      options: ['small', 'medium', 'large'],
+    }
+  },
 } satisfies Meta<typeof IconButton>;
 
 export default meta;

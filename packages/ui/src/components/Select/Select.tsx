@@ -34,6 +34,7 @@ import { SelectCombobox, SelectListbox, SelectOptionProps } from './components';
 import { useControlledState } from '@vega-ui/hooks';
 import { SelectProvider } from './providers';
 import { VisuallyHidden } from '../VisuallyHidden';
+import { SelectSize, SelectVariant } from './types';
 
 export type SelectEvent = MouseEvent | null | KeyboardEvent
 
@@ -109,12 +110,12 @@ export interface SelectProps extends Omit<HTMLAttributes<HTMLButtonElement>, 'on
   /**
    * Visual style variant for the select control.
    */
-  variant?: 'inline' | 'field'
+  variant?: SelectVariant
 
   /**
    * Visual size of the select control.
    */
-  size?: 'small' | 'medium' | 'large'
+  size?: SelectSize
 
   /**
    * Ref to the combobox or button element for DOM access or focus management.
