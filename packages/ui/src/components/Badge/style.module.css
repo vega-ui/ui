@@ -1,7 +1,7 @@
 .badge {
-    --size: 28px;
+    --size: var(--spacing-14);
     --padding-inline: 0;
-    --radius: 0;
+    --badge-br-ratio: 0.333;
     --font-size: var(--font-size-1);
     --background-color: var(--color-badge-info-fill-background);
     --border-color: transparent;
@@ -22,43 +22,33 @@
 
     height: var(--size);
     min-width: var(--size);
-    padding-inline: var(--padding-inline);
-    border-radius: var(--radius);
+    padding-inline: calc(var(--size) / 2.5);
+    border-radius: calc(var(--size) * var(--badge-br-ratio));
 }
 
 
 .badge[data-size='xs'] {
     --size: var(--spacing-14);
-    --radius: var(--radius-2);
-    --padding-inline: var(--spacing-6);
     --font-size: var(--font-size-1);
 }
 
 .badge[data-size='sm'] {
     --size: var(--spacing-16);
-    --radius: var(--radius-2);
-    --padding-inline: var(--spacing-6);
     --font-size: var(--font-size-2);
 }
 
 .badge[data-size='md'] {
     --size: var(--spacing-18);
-    --radius: var(--radius-2);
-    --padding-inline: var(--spacing-7);
     --font-size: var(--font-size-3);
 }
 
 .badge[data-size='lg'] {
     --size: var(--spacing-20);
-    --radius: var(--radius-3);
-    --padding-inline: var(--spacing-7);
     --font-size: var(--font-size-4);
 }
 
 .badge[data-size='xl'] {
     --size: var(--spacing-22);
-    --radius: var(--radius-3);
-    --padding-inline: var(--spacing-8);
     --font-size: var(--font-size-5);
 }
 
