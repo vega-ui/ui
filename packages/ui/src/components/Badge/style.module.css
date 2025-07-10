@@ -80,6 +80,12 @@
     --background-color: var(--color-badge-info-fill-background);
 }
 
+.badge[data-variant='info'][data-appearance='surface'] {
+    --color: var(--color-badge-info-surface-text);
+    --background-color: var(--color-badge-info-surface-background);
+    --border-color: var(--color-badge-info-surface-border);
+}
+
 /* Success variant */
 
 .badge[data-variant='success'] {
@@ -96,6 +102,12 @@
 .badge[data-variant='success'][data-appearance='fill'] {
     --color: var(--color-badge-success-fill-text);
     --background-color: var(--color-badge-success-fill-background);
+}
+
+.badge[data-variant='success'][data-appearance='surface'] {
+    --color: var(--color-badge-success-surface-text);
+    --background-color: var(--color-badge-success-surface-background);
+    --border-color: var(--color-badge-success-surface-border);
 }
 
 /* Error variant */
@@ -116,6 +128,12 @@
     --background-color: var(--color-badge-error-fill-background);
 }
 
+.badge[data-variant='error'][data-appearance='surface'] {
+    --color: var(--color-badge-error-surface-text);
+    --background-color: var(--color-badge-error-surface-background);
+    --border-color: var(--color-badge-error-surface-border);
+}
+
 /* Warning variant */
 
 .badge[data-variant='warning'] {
@@ -132,4 +150,10 @@
 .badge[data-variant='warning'][data-appearance='fill'] {
     --color: var(--color-badge-warning-fill-text);
     --background-color: var(--color-badge-warning-fill-background);
+}
+
+.badge[data-variant='warning'][data-appearance='surface'] {
+    --color: var(--color-badge-warning-surface-text);
+    --background-color: var(--color-badge-warning-surface-background);
+    --border-color: var(--color-badge-warning-surface-border);
 }

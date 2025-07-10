@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Badge, BadgeProps } from './Badge.tsx';
 
 const variants: Exclude<BadgeProps['variant'], undefined>[] = ['info', 'error', 'success', 'warning']
-const appearance: BadgeProps['appearance'][] = ['ghost', 'outline', 'fill']
+const appearance: BadgeProps['appearance'][] = ['ghost', 'outline', 'fill', 'surface']
 const sizes: BadgeProps['size'][] = ['xs', 'sm', 'md', 'lg', 'xl']
 
 const meta = {
