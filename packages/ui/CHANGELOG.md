@@ -1,5 +1,15 @@
 # @vega-ui/react
 
+## 1.7.1
+
+### Patch Changes
+
+- bc29e3e: Changed Badge display to inline-flex
+- a4f52d3: Separated inner components in Alert
+  - @vega-ui/hooks@1.7.1
+  - @vega-ui/icons@1.7.1
+  - @vega-ui/utils@1.7.1
+
 ## 1.7.0
 
 ### Minor Changes
