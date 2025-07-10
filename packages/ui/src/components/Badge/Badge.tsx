@@ -31,7 +31,7 @@ export interface BadgeProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElem
    * Visual appearance of the badge.
    * Defines how the badge is styled (background, border, etc.).
    */
-  appearance?: 'fill' | 'outline' | 'ghost' | 'surafce' | string
+  appearance?: 'fill' | 'outline' | 'ghost' | 'surface' | string
 
   /**
    * Size of the badge. Affects padding, font size, and overall dimensions.
