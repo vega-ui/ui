@@ -24,14 +24,6 @@
     gap: var(--spacing-2);
 }
 
-.alert .title[data-size] {
-    line-height: 1;
-}
-
-.alert .title, .alert .icon, .alert .text {
-    color: inherit;
-}
-
 /* Alert/Fill/Info */
 
 .alert[data-variant='info'][data-apperance='fill'] {
