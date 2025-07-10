@@ -1,5 +1,15 @@
 # @vega-ui/react
 
+## 1.7.2
+
+### Patch Changes
+
+- ec3ec3a: Added new badge appearance
+- 272ce51: Changed spelling
+  - @vega-ui/hooks@1.7.2
+  - @vega-ui/icons@1.7.2
+  - @vega-ui/utils@1.7.2
+
 ## 1.7.1
 
 ### Patch Changes
