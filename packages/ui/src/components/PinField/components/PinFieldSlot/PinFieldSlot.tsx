@@ -46,7 +46,10 @@ export const PinFieldSlot: FC<PinFieldSlotProps> = ({
       onSelectionRangeChange?.([index, index + 1])
     }
   }
-
+  
+  const selectedAll = selectionRange[0] === value.length && selectionRange[selectionRange.length - 1] === 0
+  const selectedByIndex = (selectionRange ? inRange(index, selectionRange) && inRange(index + 1, selectionRange) : false)
+  
   return (
     <label
       data-size={size}
@@ -54,7 +57,7 @@ export const PinFieldSlot: FC<PinFieldSlotProps> = ({
       aria-hidden='true'
       onClick={onClick}
       className={csx(style.slot, slotClassName, className)}
-      data-focus={selectionRange ? inRange(index, selectionRange) && inRange(index + 1, selectionRange) : false}
+      data-focus={selectedAll || selectedByIndex}
       data-caret={index === selectionRange[0]}
       data-value={value[index]}
       data-disabled={disabled}

@@ -75,6 +75,12 @@
     visibility: hidden;
 }
 
+/* slot/active */
+
+.slot[data-focus='true'] {
+    outline-color: var(--color-primary-500);
+}
+
 /* placeholder */
 
 .slot:not([data-value]) {
