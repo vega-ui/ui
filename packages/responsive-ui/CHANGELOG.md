@@ -1,5 +1,16 @@
 # @vega-ui/responsive-react
 
+## 1.7.3
+
+### Patch Changes
+
+- Updated dependencies [9bd2b72]
+- Updated dependencies [ff9b743]
+  - @vega-ui/react@1.7.3
+  - @vega-ui/hooks@1.7.3
+  - @vega-ui/icons@1.7.3
+  - @vega-ui/utils@1.7.3
+
 ## 1.7.2
 
 ### Patch Changes
