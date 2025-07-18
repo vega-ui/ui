@@ -1,5 +1,15 @@
 # @vega-ui/react
 
+## 1.7.3
+
+### Patch Changes
+
+- 9bd2b72: Changed measure of padding and br into the Badge
+- ff9b743: Fixed style for pin field
+  - @vega-ui/hooks@1.7.3
+  - @vega-ui/icons@1.7.3
+  - @vega-ui/utils@1.7.3
+
 ## 1.7.2
 
 ### Patch Changes
