@@ -1,0 +1,1 @@
+export type PageControlVariant = 'default' | 'high-contrast'
