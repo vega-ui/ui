@@ -11,15 +11,13 @@ import {
   useCallback,
 } from 'react';
 import { TextField, TextFieldProps } from '../TextField';
-import { IconButton } from '../IconButton';
 import style from './style.module.css'
 import { csx, mergeRefs } from '@vega-ui/utils';
 import { getNumberMaskOptions, getNumberValue } from './utils';
 import { useMaskito } from '@maskito/react';
 import { useControlledState } from '@vega-ui/hooks';
 import { maskitoTransform } from '@maskito/core';
-import { MinusIcon, PlusIcon } from '@vega-ui/icons';
-import { Icon } from '../Icon';
+import { NumberFieldDecrement, NumberFieldIncrement } from './components';
 
 export type NumberFieldChangeEvent = WheelEvent | FormEvent | MouseEvent | KeyboardEvent | FocusEvent
 
@@ -212,16 +210,18 @@ export const NumberField: FC<NumberFieldProps> = ({
         disabled={disabled}
         {...props}
       />
-      <IconButton disabled={disabled || isDecrementDisabled} size={size}
-                  className={csx(style.controlButton, style.controlButtonDown)} onClick={onDecrement}
-                  variant='secondary' appearance='transparent'>
-        <Icon><MinusIcon /></Icon>
-      </IconButton>
-      <IconButton disabled={disabled || isIncrementDisabled} size={size} onClick={onIncrement}
-                  className={csx(style.controlButton, style.controlButtonUp)} variant='secondary'
-                  appearance='transparent'>
-        <Icon><PlusIcon /></Icon>
-      </IconButton>
+      <NumberFieldDecrement
+        disabled={disabled || isDecrementDisabled}
+        size={size}
+        className={csx(style.controlButton, style.controlButtonDown)}
+        onClick={onDecrement}
+      />
+      <NumberFieldIncrement
+        disabled={disabled || isIncrementDisabled}
+        size={size}
+        className={csx(style.controlButton, style.controlButtonUp)}
+        onClick={onIncrement}
+      />
     </div>
   )
 }
