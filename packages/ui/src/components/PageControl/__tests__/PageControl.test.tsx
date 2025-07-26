@@ -1,13 +1,11 @@
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import { PageControl } from '../PageControl'
-import { PageControlItem, PageControlProgress } from '../components'
+import { PageControlItem } from '../components'
 import { useState } from 'react'
 
 const TestComponent = ({
   active: _active = 0,
-  duration = 100,
-  onProgressEnd = vi.fn(),
 }: {
   duration?: number
   onProgressEnd?: () => void
@@ -18,7 +16,7 @@ const TestComponent = ({
   return (
     <PageControl active={active} onChangeActive={setActive}>
       <PageControlItem index={0} />
-      <PageControlProgress index={1} duration={duration} onProgressEnd={onProgressEnd} />
+      <PageControlItem index={1} />
       <PageControlItem index={2} />
     </PageControl>
   )
