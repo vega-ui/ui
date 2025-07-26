@@ -1,5 +1,17 @@
 # @vega-ui/react
 
+## 1.8.0
+
+### Minor Changes
+
+- 83bafaa: Added new component - PageControl
+
+### Patch Changes
+
+- @vega-ui/hooks@1.8.0
+- @vega-ui/icons@1.8.0
+- @vega-ui/utils@1.8.0
+
 ## 1.7.4
 
 ### Patch Changes
