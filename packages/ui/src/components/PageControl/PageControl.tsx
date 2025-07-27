@@ -29,6 +29,9 @@ export interface PageControlProps extends HTMLAttributes<HTMLUListElement> {
    */
   ref?: Ref<HTMLUListElement>
   
+  /**
+   * Defines the size of the page control items.
+   */
   size?: PageControlSize
 }
 

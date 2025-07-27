@@ -28,6 +28,9 @@ export interface PageControlItemProps extends ButtonHTMLAttributes<HTMLButtonEle
    */
   current?: boolean
   
+  /**
+   * Defines the size of the page control items.
+   */
   size?: PageControlSize
 }
 

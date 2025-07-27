@@ -25,13 +25,13 @@ const TestComponent = ({
 describe('PageControl (with progress)', () => {
   it('renders all items', () => {
     render(<TestComponent />)
-    const buttons = screen.getAllByRole('button')
+    const buttons = screen.getAllByRole('tab')
     expect(buttons).toHaveLength(3)
   })
   
   it('changes active item on click', () => {
     render(<TestComponent />)
-    const buttons = screen.getAllByRole('button')
+    const buttons = screen.getAllByRole('tab')
     
     fireEvent.click(buttons[2])
     expect(buttons[2].getAttribute('data-active')).toBe('true')

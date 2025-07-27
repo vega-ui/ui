@@ -1,7 +1,7 @@
-import { AnimationEventHandler, FC, AnimationEvent, Ref, useRef, useEffect, useState, CSSProperties } from 'react';
+import { AnimationEventHandler, FC, Ref, useRef, useEffect, useState, CSSProperties } from 'react';
 import style from './style.module.css'
 import { PageControlItem, PageControlItemProps } from '../PageControlItem';
-import { csx, mergeRefs } from '@vega-ui/utils';
+import { csx, mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
 import { usePageControlContext } from '../../hooks';
 import { PageControlSize } from '../../types.ts';
 
@@ -42,6 +42,9 @@ export interface PageControlProgressProps extends PageControlItemProps {
    */
   current?: boolean
   
+  /**
+   * Defines the size of the page control items.
+   */
   size?: PageControlSize
 }
 
@@ -49,7 +52,6 @@ export interface PageControlProgressProps extends PageControlItemProps {
 export const PageControlProgress: FC<PageControlProgressProps> = ({
   className,
   onProgressEnd,
-  onAnimationEnd: _onAnimationEnd,
   index,
   duration = 5000,
   current,
@@ -63,11 +65,6 @@ export const PageControlProgress: FC<PageControlProgressProps> = ({
   const [progressValue, setProgressValue] = useState(0)
   
   const isCurrent = current ?? (active === index)
-  
-  const onAnimationEnd = (e: AnimationEvent<HTMLButtonElement>) => {
-    _onAnimationEnd?.(e)
-    onProgressEnd?.(e)
-  }
   
   useEffect(() => {
     const el = progressRef.current
@@ -103,7 +100,7 @@ export const PageControlProgress: FC<PageControlProgressProps> = ({
       aria-valuenow={isCurrent ? progressValue : undefined}
       className={csx(style.pageControlProgress, className)}
       size={size ?? _size}
-      onAnimationEnd={onAnimationEnd}
+      onAnimationEnd={mergeEventHandlers(props.onAnimationEnd, onProgressEnd)}
       style={{
         '--duration': `${duration}ms`,
         ..._style
