@@ -3,7 +3,8 @@
     border: none;
     overflow: hidden;
     width: var(--page-control-item-size);
-    transition: width var(--transition-state-delay) ease-in-out;
+    transition: width var(--transition-state-delay) ease-in-out,
+                background-color var(--transition-fast-state-delay) linear;
 }
 
 .pageControlProgress[data-active='true'] {
