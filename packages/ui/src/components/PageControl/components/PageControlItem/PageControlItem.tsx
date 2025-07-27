@@ -1,8 +1,8 @@
 import { ButtonHTMLAttributes, FC, Ref } from 'react';
 import style from './style.module.css'
 import { usePageControlContext } from '../../hooks';
-import { csx } from '@vega-ui/utils';
-import { PageControlVariant } from '../../types.ts';
+import { csx, mergeRefs } from '@vega-ui/utils';
+import { PageControlSize, PageControlVariant } from '../../types.ts';
 
 export interface PageControlItemProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
@@ -10,12 +10,6 @@ export interface PageControlItemProps extends ButtonHTMLAttributes<HTMLButtonEle
    * Used to identify and compare with the active index from context.
    */
   index: number
-  
-  /**
-   * Optional class name applied to the outer <li> wrapper.
-   * Useful for layout or spacing overrides.
-   */
-  wrapperClassName?: string
   
   /**
    * Ref forwarded to the underlying button element.
@@ -33,37 +27,46 @@ export interface PageControlItemProps extends ButtonHTMLAttributes<HTMLButtonEle
    * If not provided, active state is determined by comparing `index` with the active index from context.
    */
   current?: boolean
+  
+  /**
+   * Defines the size of the page control items.
+   */
+  size?: PageControlSize
 }
 
 /** PageControlItem is a UI component that represents an individual navigation dot or step indicator within a PageControl group. It reflects active state, handles user interaction, and adapts visually based on context or variant. */
 export const PageControlItem: FC<PageControlItemProps> = ({
   index,
-  wrapperClassName,
   className,
   children,
   variant,
+  size,
   current,
   ref,
   ...props
 }) => {
-  const { active, variant: _variant } = usePageControlContext()
+  const { active, variant: _variant, size: _size, itemRef } = usePageControlContext()
   
   const _current = active === index
+  const selected = current ?? _current
   
   return (
-    <li className={csx(style.wrapper, wrapperClassName)}>
-      <button
-        ref={ref}
-        disabled={current}
-        data-index={index}
-        aria-current={current ? 'page' : undefined}
-        className={csx(style.pageControlItem, className)}
-        data-active={current ?? _current}
-        data-variant={variant ?? _variant}
-        {...props}
-      >
-        {children}
-      </button>
-    </li>
+    <button
+      role='tab'
+      type='button'
+      tabIndex={selected ? 0 : -1}
+      ref={mergeRefs([ref, itemRef?.(index)])}
+      disabled={current}
+      data-index={index}
+      aria-current={current ? 'page' : undefined}
+      className={csx(style.pageControlItem, className)}
+      aria-selected={selected}
+      data-active={selected}
+      data-variant={variant ?? _variant}
+      data-size={_size ?? size}
+      {...props}
+    >
+      {children}
+    </button>
   )
 }

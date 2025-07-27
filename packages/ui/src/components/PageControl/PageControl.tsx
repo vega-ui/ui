@@ -1,8 +1,9 @@
-import { FC, HTMLAttributes, PropsWithChildren, useRef, useState, PointerEvent, MouseEvent, Ref } from 'react';
+import { FC, HTMLAttributes, PropsWithChildren, useRef, useState, PointerEvent, MouseEvent, KeyboardEvent, Ref, Children } from 'react';
 import { PageControlProvider } from './providers';
 import style from './style.module.css'
-import { csx } from '@vega-ui/utils';
-import { PageControlVariant } from './types.ts';
+import { csx, mergeEventHandlers } from '@vega-ui/utils';
+import { PageControlSize, PageControlVariant } from './types.ts';
+import { useRefMap } from '@vega-ui/hooks';
 
 export interface PageControlProps extends HTMLAttributes<HTMLUListElement> {
   /**
@@ -27,6 +28,11 @@ export interface PageControlProps extends HTMLAttributes<HTMLUListElement> {
    * Ref forwarded to the underlying <ul> element.
    */
   ref?: Ref<HTMLUListElement>
+  
+  /**
+   * Defines the size of the page control items.
+   */
+  size?: PageControlSize
 }
 
 /** PageControl is a UI component that displays a sequence of page indicators, allowing users to navigate between steps or views. It supports interaction, active state management, and visual variants such as default or high-contrast styles. */
@@ -36,30 +42,37 @@ export const PageControl: FC<PropsWithChildren<PageControlProps>> = ({
   children,
   className,
   variant = 'default',
-  onPointerMove: _onPointerMove,
-  onPointerDown: _onPointerDown,
-  onPointerUp: _onPointerUp,
-  onClick: _onClick,
+  size = 'md',
   ref,
   ...props
 }) => {
+  const count = Children.count(children)
+  const { getItem, itemRef } = useRefMap()
+  
   const y = useRef<number>(null)
   const [moved, setMoved] = useState(false)
   
-  const changeActive = (element: HTMLElement) => {
+  const changeActive = (index: number) => {
+    const activeIndex = index > count - 1 ? 0 : index < 0 ? count - 1 : index
+    
+    getItem(activeIndex)?.focus()
+    onChangeActive?.(activeIndex)
+  }
+  
+  const changeActiveByElement = (element: HTMLElement) => {
     const index = element.dataset?.index
     if (!index || active === Number(index)) return
     
-    onChangeActive?.(Number(index))
+    changeActive(Number(index))
   }
   
   const onClick = (e: MouseEvent<HTMLUListElement>) => {
-    _onClick?.(e)
-    changeActive(e.target as HTMLElement)
+    changeActiveByElement(e.target as HTMLElement)
   }
   
   const onPointerDown = (e: PointerEvent<HTMLUListElement>) => {
-    _onPointerDown?.(e)
+    // Pointer move only for touch and pen
+    if (e.pointerType === 'mouse') return
     
     const { y: elemY, bottom } = e.currentTarget.getBoundingClientRect()
     y.current = (elemY + bottom) / 2
@@ -69,31 +82,53 @@ export const PageControl: FC<PropsWithChildren<PageControlProps>> = ({
   
   const onPointerMove = (e: PointerEvent<HTMLUListElement>) => {
     e.currentTarget.setPointerCapture(e.pointerId)
-    _onPointerMove?.(e)
     
     if (!y.current || !moved) return
     
     const target = document.elementFromPoint(e.clientX, y.current)
     if (!target) return
     
-    changeActive(target as HTMLElement)
+    changeActiveByElement(target as HTMLElement)
   }
   
-  const onPointerUp = (e: PointerEvent<HTMLUListElement>) => {
-    _onPointerUp?.(e)
+  const onPointerUp = () => {
     setMoved(false)
     y.current = null
   }
   
+  const onKeyDown = (e: KeyboardEvent) => {
+    if (active === undefined) return
+    
+    switch (e.key) {
+      case 'ArrowRight': {
+        e.preventDefault()
+        
+        const next = active + 1
+        changeActive(next)
+        
+        return
+      }
+      case 'ArrowLeft': {
+        e.preventDefault()
+        
+        const prev = active - 1
+        changeActive(prev)
+        
+        return
+      }
+    }
+  }
+
   return (
-    <PageControlProvider variant={variant} active={active}>
+    <PageControlProvider itemRef={itemRef} size={size} variant={variant} active={active}>
       <ul
-        role='list'
+        role='tablist'
         ref={ref}
-        onClick={onClick}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={onPointerUp}
+        onKeyDown={mergeEventHandlers(onKeyDown, props.onKeyDown)}
+        onClick={mergeEventHandlers(onClick, props.onClick)}
+        onPointerDown={mergeEventHandlers(onPointerDown, props.onPointerDown)}
+        onPointerMove={mergeEventHandlers(onPointerMove, props.onPointerMove)}
+        onPointerUp={mergeEventHandlers(onPointerUp, props.onPointerUp)}
         className={csx(style.pageControl, className)}
         {...props}
       >
