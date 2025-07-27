@@ -1,5 +1,15 @@
 # @vega-ui/react
 
+## 1.8.1
+
+### Patch Changes
+
+- c98c982: Added Size prop to PageControl, added hook useRefMap, improved accessability, added mergeEventHandlers util
+- Updated dependencies [c98c982]
+  - @vega-ui/hooks@1.8.1
+  - @vega-ui/utils@1.8.1
+  - @vega-ui/icons@1.8.1
+
 ## 1.8.0
 
 ### Minor Changes
