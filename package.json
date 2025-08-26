@@ -30,7 +30,7 @@
   "devDependencies": {
     "@changesets/cli": "^2.29.3",
     "@eslint/eslintrc": "^3",
-    "@eslint/js": "^9.23.0",
+    "@eslint/js": "^9.34.0",
     "@storybook/addon-designs": "^8.2.1",
     "@storybook/addon-essentials": "^8.6.11",
     "@storybook/addon-interactions": "^8.6.11",
