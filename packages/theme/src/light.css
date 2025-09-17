@@ -1,4 +1,4 @@
-@import "../tokens/index.css";
+@import "@vega-ui/tokens-core";
 
 .light {
     --background-color: #FFFFFF;

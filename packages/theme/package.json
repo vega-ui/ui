@@ -1,0 +1,30 @@
+{
+  "name": "@vega-ui/theme-core",
+  "version": "1.8.0",
+  "description": "CSS themes for @vega-ui/react",
+  "license": "MIT",
+  "keywords": [
+    "ui-kit",
+    "ui",
+    "ts",
+    "typescript",
+    "js"
+  ],
+  "author": "VegaUI Team",
+  "bugs": {
+    "url": "https://github.com/vega-ui/ui/issues"
+  },
+  "homepage": "https://github.com/vega-ui/ui#readme",
+  "main": "./src/index.css",
+  "exports": {
+    ".": "./src/index.css"
+  },
+  "files": ["src"],
+  "dependencies": {
+    "@vega-ui/tokens-core": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "packageManager": "pnpm@10.0.0"
+}
