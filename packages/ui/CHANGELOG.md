@@ -1,5 +1,17 @@
 # @vega-ui/react
 
+## 1.9.0
+
+### Minor Changes
+
+- c90a0c1: Added new packages - tokens and theme
+
+### Patch Changes
+
+- @vega-ui/hooks@1.9.0
+- @vega-ui/icons@1.9.0
+- @vega-ui/utils@1.9.0
+
 ## 1.8.1
 
 ### Patch Changes

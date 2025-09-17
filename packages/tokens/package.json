@@ -1,6 +1,6 @@
 {
   "name": "@vega-ui/tokens-core",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "description": "CSS tokens for @vega-ui/react",
   "license": "MIT",
   "keywords": [
@@ -19,7 +19,9 @@
   "exports": {
     ".": "./src/index.css"
   },
-  "files": ["src"],
+  "files": [
+    "src"
+  ],
   "publishConfig": {
     "access": "public"
   },
