@@ -1,4 +1,4 @@
-import '../packages/ui/src/index.css'
+import '../packages/theme/src/index.css'
 import '../packages/responsive-ui/src/index.css'
 import './style.css'
 

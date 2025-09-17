@@ -225,6 +225,14 @@ importers:
         specifier: ^3.2.0
         version: 3.2.0(@types/node@22.10.10)(jsdom@26.0.0)
 
+  packages/theme:
+    dependencies:
+      '@vega-ui/tokens-core':
+        specifier: workspace:*
+        version: link:../tokens
+
+  packages/tokens: {}
+
   packages/ui:
     dependencies:
       '@floating-ui/react':
