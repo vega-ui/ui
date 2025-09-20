@@ -3,7 +3,7 @@
 }
 
 .pageControlItem {
-    --page-control-item-size: 12px;
+    --page-control-item-size: 8px;
 
     cursor: pointer;
     aspect-ratio: 1 / 1;
@@ -13,7 +13,8 @@
     background-color: var(--page-control-item-enabled-color);
     border-radius: var(--page-control-item-size);
     border: none;
-    transition: background-color var(--transition-state-delay) ease-in-out;
+    padding: 0;
+    transition: background-color var(--transition-fast-state-delay) ease-in-out;
 }
 
 .pageControlItem[data-variant='default'] {
@@ -44,4 +45,16 @@
 
 .pageControlItem:focus-visible {
     outline: 2px solid var(--focus-color);
+}
+
+.pageControlItem[data-size='sm'] {
+    --page-control-item-size: 8px;
+}
+
+.pageControlItem[data-size='md'] {
+    --page-control-item-size: 12px;
+}
+
+.pageControlItem[data-size='lg'] {
+    --page-control-item-size: 16px;
 }

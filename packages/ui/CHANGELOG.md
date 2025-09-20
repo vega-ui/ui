@@ -1,5 +1,27 @@
 # @vega-ui/react
 
+## 1.9.0
+
+### Minor Changes
+
+- c90a0c1: Added new packages - tokens and theme
+
+### Patch Changes
+
+- @vega-ui/hooks@1.9.0
+- @vega-ui/icons@1.9.0
+- @vega-ui/utils@1.9.0
+
+## 1.8.1
+
+### Patch Changes
+
+- c98c982: Added Size prop to PageControl, added hook useRefMap, improved accessability, added mergeEventHandlers util
+- Updated dependencies [c98c982]
+  - @vega-ui/hooks@1.8.1
+  - @vega-ui/utils@1.8.1
+  - @vega-ui/icons@1.8.1
+
 ## 1.8.0
 
 ### Minor Changes

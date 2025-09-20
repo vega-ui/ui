@@ -1,5 +1,13 @@
 # @vega-ui/utils
 
+## 1.9.0
+
+## 1.8.1
+
+### Patch Changes
+
+- c98c982: Added Size prop to PageControl, added hook useRefMap, improved accessability, added mergeEventHandlers util
+
 ## 1.8.0
 
 ## 1.7.4
