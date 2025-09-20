@@ -1,5 +1,17 @@
 # @vega-ui/react
 
+## 1.10.0
+
+### Minor Changes
+
+- d5538a5: Added new sizes (xs, xl) for button, icon button and segmented control
+
+### Patch Changes
+
+- @vega-ui/hooks@1.10.0
+- @vega-ui/icons@1.10.0
+- @vega-ui/utils@1.10.0
+
 ## 1.9.0
 
 ### Minor Changes
