@@ -16,7 +16,7 @@ const meta = {
   argTypes: {
     size: {
       control: 'radio',
-      options: ['small', 'medium', 'large'],
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
     variant: {
       control: 'radio',

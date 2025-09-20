@@ -63,7 +63,7 @@ export interface SegmentedControlProps extends Omit<DetailedHTMLProps<HTMLAttrib
 
 /** A Segmented Control is a UI component that displays a set of options in a horizontal layout, where each option is a "segment." Users can select one segment to toggle between different views or settings, offering a compact alternative to multiple buttons or switches */
 export const SegmentedControl: FC<SegmentedControlProps> = ({
-  size = 'medium',
+  size = 'md',
   disabled,
   className,
   children,

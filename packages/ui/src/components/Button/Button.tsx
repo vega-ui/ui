@@ -35,7 +35,7 @@ export interface ButtonProps extends ButtonBaseProps {
    * Defines the size of the button.
    * Affects padding, font size, and overall dimensions.
    */
-  size?: 'small' | 'medium' | 'large' | string
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | string
 
   /**
    * Custom content to display as a spinner during loading.
@@ -57,7 +57,7 @@ export interface ButtonProps extends ButtonBaseProps {
 
 /** Primary UI component for user interaction */
 export const Button: FC<ButtonProps> = ({
-   size = 'medium',
+   size = 'md',
    disabled,
    children,
    variant = 'primary',

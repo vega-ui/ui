@@ -15,7 +15,7 @@ const meta = {
   argTypes: {
     size: {
       control: 'radio',
-      options: ['small', 'medium', 'large'],
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
   },
 } satisfies Meta<typeof Button>;
@@ -25,7 +25,7 @@ type Story = StoryObj<typeof meta>;
 
 const variants: ButtonProps['variant'][] = ['primary', 'secondary']
 const appearances: ButtonProps['appearance'][] = ['fill', 'outline', 'ghost', 'transparent']
-const sizes: ButtonProps['size'][] = ['small', 'medium', 'large']
+const sizes: ButtonProps['size'][] = ['xs', 'sm', 'md', 'lg', 'xl']
 
 export const Primary: Story = {
   args: {

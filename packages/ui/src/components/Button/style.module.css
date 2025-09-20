@@ -15,7 +15,20 @@
     border-radius: calc(var(--button-height) * var(--button-br-ratio));
 }
 
-.button[data-size='small'] {
+.button[data-size='xs'] {
+    --button-height: var(--spacing-18);
+    --padding-inline: var(--spacing-8);
+    --padding-block: var(--spacing-4);
+
+    font-size: var(--font-size-2);
+}
+
+.button[data-size='xs'] .spinner {
+    --spinner-size: var(--font-size-2);
+    --spinner-width: var(--spacing-1);
+}
+
+.button[data-size='sm'] {
     --button-height: var(--spacing-21);
     --padding-inline: var(--spacing-10);
     --padding-block: var(--spacing-6);
@@ -23,12 +36,12 @@
     font-size: var(--font-size-2);
 }
 
-.button[data-size='small'] .spinner {
+.button[data-size='sm'] .spinner {
     --spinner-size: var(--font-size-2);
     --spinner-width: var(--spacing-1);
 }
 
-.button[data-size='medium'] {
+.button[data-size='md'] {
     --button-height: var(--spacing-24);
     --padding-inline: var(--spacing-18);
     --padding-block: var(--spacing-7);
@@ -36,12 +49,12 @@
     font-size: var(--font-size-3);
 }
 
-.button[data-size='medium'] .spinner {
+.button[data-size='md'] .spinner {
     --spinner-size: var(--font-size-3);
     --spinner-width: var(--spacing-1);
 }
 
-.button[data-size='large'] {
+.button[data-size='lg'] {
     --button-height: var(--spacing-27);
     --padding-inline: var(--spacing-24);
     --padding-block: var(--spacing-8);
@@ -49,7 +62,20 @@
     font-size: var(--font-size-4);
 }
 
-.button[data-size='large'] .spinner {
+.button[data-size='lg'] .spinner {
+    --spinner-size: var(--font-size-4);
+    --spinner-width: var(--spacing-1);
+}
+
+.button[data-size='xl'] {
+    --button-height: var(--spacing-30);
+    --padding-inline: var(--spacing-24);
+    --padding-block: var(--spacing-8);
+
+    font-size: var(--font-size-4);
+}
+
+.button[data-size='xl'] .spinner {
     --spinner-size: var(--font-size-4);
     --spinner-width: var(--spacing-1);
 }
