@@ -12,24 +12,17 @@
     cursor: pointer;
     background-color: transparent;
     color: var(--text-color);
+    padding: var(--spacing-3) var(--spacing-5);
     transition: color var(--transition-fast-state-delay) ease,
     background-color var(--transition-fast-state-delay) ease-in;
 }
 
-.control[data-variant='primary']:hover {
-    background-color: var(--color-primary-100);
+.control:hover {
+    background-color: var(--color-gray-accent-100);
 }
 
-.control[data-variant='primary']:active {
-    background-color: var(--color-primary-150);
-}
-
-.control[data-variant='secondary']:hover {
-    background-color: var(--color-secondary-100);
-}
-
-.control[data-variant='secondary']:active {
-    background-color: var(--color-secondary-150);
+.control:active {
+    background-color: var(--color-gray-accent-150);
 }
 
 .control[data-disabled='true'] {
@@ -57,17 +50,22 @@
     background-color: initial;
 }
 
-.control[data-size='small'] {
+.control[data-size='xs'] {
     font-size: var(--font-size-2);
-    padding: var(--spacing-6) var(--spacing-10);
 }
 
-.control[data-size='medium'] {
+.control[data-size='sm'] {
+    font-size: var(--font-size-2);
+}
+
+.control[data-size='md'] {
     font-size: var(--font-size-3);
-    padding: var(--spacing-7) var(--spacing-18);
 }
 
-.control[data-size='large'] {
+.control[data-size='lg'] {
     font-size: var(--font-size-4);
-    padding: var(--spacing-8) var(--spacing-24);
+}
+
+.control[data-size='xl'] {
+    font-size: var(--font-size-4);
 }

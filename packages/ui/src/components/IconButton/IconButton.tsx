@@ -23,7 +23,7 @@ export interface IconButtonProps extends ButtonBaseProps {
    * Size of the button container.
    * Controls padding and overall clickable area.
    */
-  size?: 'small' | 'medium' | 'large' | string
+  size?: 'sm' | 'md' | 'lg' | string
 
   /**
    * When true, renders the button as a child component using `Slot` (e.g., from Radix UI).
@@ -39,7 +39,7 @@ export interface IconButtonProps extends ButtonBaseProps {
 
 /** Primary UI component for user interaction */
 export const IconButton: FC<IconButtonProps> = ({
-  size = 'medium',
+  size = 'md',
   disabled,
   type = 'button',
   className,

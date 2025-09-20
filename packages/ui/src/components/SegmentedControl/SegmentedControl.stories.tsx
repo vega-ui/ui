@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { fn } from '@storybook/test';
 
 import { SegmentedControl } from './SegmentedControl.tsx';
 import { SegmentedControlItem } from './components';
@@ -10,7 +9,7 @@ const meta = {
   title: 'Form/Selectors/SegmentedControl/SegmentedControl',
   component: SegmentedControl,
   parameters: {
-    layout: 'centered',
+    layout: 'padded',
     design: {
       type: 'figma',
       url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/vega-ui--Community-?node-id=0-2378&t=2RYEGgF9z3n5SpP5-11',
@@ -20,14 +19,13 @@ const meta = {
   argTypes: {
     size: {
       control: 'radio',
-      options: ['small', 'medium', 'large'],
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
     variant: {
       control: 'radio',
       options: ['primary', 'secondary'],
     }
   },
-  args: { onClick: fn() },
 } satisfies Meta<typeof SegmentedControl>;
 
 export default meta;
@@ -40,9 +38,9 @@ export const Default: Story = {
   render(props) {
     return (
       <SegmentedControl {...props}>
-        <SegmentedControlItem value='1'>SSD</SegmentedControlItem>
-        <SegmentedControlItem value='2'>HDD</SegmentedControlItem>
-        <SegmentedControlItem value='3'>NVMe</SegmentedControlItem>
+        <SegmentedControlItem value='1'>Label</SegmentedControlItem>
+        <SegmentedControlItem value='2'>Label</SegmentedControlItem>
+        <SegmentedControlItem value='3'>Label</SegmentedControlItem>
       </SegmentedControl>
     )
   }

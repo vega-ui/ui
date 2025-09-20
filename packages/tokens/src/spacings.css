@@ -23,6 +23,7 @@
     --spacing-26: calc(var(--spacing) * 26);
     --spacing-27: calc(var(--spacing) * 27);
     --spacing-28: calc(var(--spacing) * 28);
+    --spacing-30: calc(var(--spacing) * 30);
     --spacing-32: calc(var(--spacing) * 32);
     --spacing-36: calc(var(--spacing) * 36);
     --spacing-40: calc(var(--spacing) * 40);

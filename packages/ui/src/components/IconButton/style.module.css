@@ -13,14 +13,22 @@
     border-radius: calc(var(--icon-button-size) * var(--icon-button-br-ratio));
 }
 
-.iconButton[data-size='small'] {
+.iconButton[data-size='xs'] {
+    --icon-button-size: var(--spacing-18);
+}
+
+.iconButton[data-size='sm'] {
     --icon-button-size: var(--spacing-21);
 }
 
-.iconButton[data-size='medium'] {
+.iconButton[data-size='md'] {
     --icon-button-size: var(--spacing-24);
 }
 
-.iconButton[data-size='large'] {
+.iconButton[data-size='lg'] {
     --icon-button-size: var(--spacing-27);
+}
+
+.iconButton[data-size='xl'] {
+    --icon-button-size: var(--spacing-30);
 }

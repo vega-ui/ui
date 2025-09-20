@@ -10,19 +10,12 @@
     box-sizing: border-box;
 
     height: var(--segmented-control-height);
+    background-color: var(--color-gray-accent-50);
     border-radius: calc(var(--segmented-control-height) * var(--segmented-control-br-ratio));
 }
 
 .controlWrapper:has(:focus-visible) {
     outline: 2px solid var(--focus-color);
-}
-
-.controlWrapper[data-variant='primary'] {
-    background-color: var(--color-primary-50);
-}
-
-.controlWrapper[data-variant='secondary'] {
-    background-color: var(--color-secondary-50);
 }
 
 .active {
@@ -50,14 +43,22 @@
     background-color: var(--color-gray-accent-100);
 }
 
-.controlWrapper[data-size='small'] {
+.controlWrapper[data-size='xs'] {
+    --segmented-control-height: var(--spacing-18);
+}
+
+.controlWrapper[data-size='sm'] {
     --segmented-control-height: var(--spacing-21);
 }
 
-.controlWrapper[data-size='medium'] {
+.controlWrapper[data-size='md'] {
     --segmented-control-height: var(--spacing-24);
 }
 
-.controlWrapper[data-size='large'] {
+.controlWrapper[data-size='lg'] {
     --segmented-control-height: var(--spacing-27);
+}
+
+.controlWrapper[data-size='xl'] {
+    --segmented-control-height: var(--spacing-30);
 }
