@@ -1,10 +1,10 @@
-import { FC, HTMLAttributes, ReactNode, Ref } from 'react';
+import { FC, HTMLAttributes, Ref } from 'react';
 import { FloatingFocusManager, FloatingPortal } from '@floating-ui/react';
 import { RemoveScroll } from 'react-remove-scroll';
 import { SheetOverlay } from '../SheetOverlay';
-import { SheetInner } from '../SheetInner';
 import { mergeProps, mergeRefs } from '@vega-ui/utils';
 import { useSheetContext } from '../../hooks';
+import { SheetContainer } from '../SheetContainer';
 
 export interface SheetContentProps extends HTMLAttributes<HTMLDivElement> {
   /**
@@ -16,18 +16,6 @@ export interface SheetContentProps extends HTMLAttributes<HTMLDivElement> {
    * Renders the sheet as an overlay above content instead of displacing layout.
    */
   overlaid?: boolean
-
-  /**
-   * Optional header content rendered at the top of the sheet.
-   * Typically used for titles, toolbars, or close actions.
-   */
-  headerSlot?: ReactNode | ReactNode[]
-
-  /**
-   * Enables vertical scrolling within the sheet content area.
-   * Useful for long content in constrained viewports.
-   */
-  scrollable?: boolean
 
   /**
    * Ref forwarded to the root sheet container.
@@ -52,9 +40,7 @@ export interface SheetContentProps extends HTMLAttributes<HTMLDivElement> {
 export const SheetContent: FC<SheetContentProps> = ({
   className,
   overlaid = true,
-  scrollable = true,
   blurredOverlay,
-  headerSlot,
   ref,
   hidden,
   children,
@@ -75,7 +61,7 @@ export const SheetContent: FC<SheetContentProps> = ({
   } = useSheetContext()
 
   const content = (
-    <SheetInner
+    <SheetContainer
       className={className}
       shadow={!overlaid}
       onScrollCapture={onScrollCapture}
@@ -86,13 +72,11 @@ export const SheetContent: FC<SheetContentProps> = ({
       status={transitionStatus}
       ref={mergeRefs([contentRef, ref])}
       offset={offset}
-      scrollable={scrollable}
       dragging={transforming}
-      headerSlot={headerSlot}
       {...mergeProps(contentProps, props)}
     >
       {children}
-    </SheetInner>
+    </SheetContainer>
   )
 
   return (

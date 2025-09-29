@@ -1,6 +1,8 @@
 .sheet {
     display: flex;
     flex-direction: column;
+    gap: var(--spacing-8);
+    padding-top: var(--spacing-12);
     position: fixed;
     box-sizing: border-box;
     bottom: 0;
