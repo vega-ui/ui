@@ -1,5 +1,17 @@
 # @vega-ui/react
 
+## 1.11.0
+
+### Minor Changes
+
+- a4c6339: SheetContent will now contain SheetMain, SheetHandle, and SheetHeader inside
+
+### Patch Changes
+
+- @vega-ui/hooks@1.11.0
+- @vega-ui/icons@1.11.0
+- @vega-ui/utils@1.11.0
+
 ## 1.10.1
 
 ### Patch Changes
