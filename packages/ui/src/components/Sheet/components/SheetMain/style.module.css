@@ -1,0 +1,7 @@
+.sheetMain {
+    flex: 1;
+    padding-inline: clamp(var(--spacing-16), 3vw, var(--spacing-16));
+    padding-bottom: var(--spacing-12);
+    pointer-events: auto;
+    overflow: auto;
+}
