@@ -1,4 +1,4 @@
 .sheetHeader {
     flex: 1;
-    padding-inline: clamp(var(--spacing-16), 3vw, var(--spacing-16));
+    padding-inline: clamp(var(--spacing-12), 3vw, var(--spacing-16));
 }
