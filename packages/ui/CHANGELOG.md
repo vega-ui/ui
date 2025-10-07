@@ -1,5 +1,14 @@
 # @vega-ui/react
 
+## 1.11.2
+
+### Patch Changes
+
+- 61a382b: The gray colors have been changed, the surface has been added, and the fields styles have also been changed
+  - @vega-ui/hooks@1.11.2
+  - @vega-ui/icons@1.11.2
+  - @vega-ui/utils@1.11.2
+
 ## 1.11.1
 
 ### Patch Changes
