@@ -1,5 +1,5 @@
 .popover {
-    background: var(--surface-foreground);
+    background: var(--surface-ultrathin);
     border-radius: var(--radius-3);
     width: max-content;
     padding: var(--spacing-8);

@@ -5,7 +5,7 @@
     padding: var(--spacing-4);
     outline: none;
     box-sizing: border-box;
-    background: var(--surface-foreground);
+    background: var(--surface-ultrathin);
     box-shadow: var(--surface-shadow);
     border-radius: var(--radius-3);
     width: max-content;

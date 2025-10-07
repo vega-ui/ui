@@ -5,7 +5,7 @@
     position: fixed;
     box-sizing: border-box;
     margin: var(--outer-space);
-    background: var(--surface-foreground);
+    background: var(--surface-ultrathin);
     border-radius: var(--radius-6);
     padding: clamp(var(--spacing-10), 5vw, var(--spacing-16));
     max-height: calc(100% - var(--outer-space) * 2 - env(safe-area-inset-bottom) - env(safe-area-inset-top));

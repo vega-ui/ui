@@ -338,7 +338,7 @@
     /* Graphite color */
 
     --color-graphite-0: #FCFCFC;
-    --color-graphite-50: #F8F9FA;
+    --color-graphite-50: #F5F6F7;
     --color-graphite-100: #EFF0F2;
     --color-graphite-150: #EBEEF0;
     --color-graphite-200: #A8B1B8;
@@ -361,10 +361,10 @@
 
     /* Gray color */
 
-    --color-gray-0: #FCFDFD;
-    --color-gray-50: #F8F9FA;
-    --color-gray-100: #F3F5F7;
-    --color-gray-150: #E8EBEE;
+    --color-gray-0: #FAFBFC;
+    --color-gray-50: #F5F5F7;
+    --color-gray-100: #F2F3F5;
+    --color-gray-150: #EDEFF2;
     --color-gray-200: #DDE1E6;
     --color-gray-250: #D0D6DC;
     --color-gray-300: #C1C9D1;
@@ -378,10 +378,10 @@
     --color-gray-700: #616E7D;
     --color-gray-750: #546171;
     --color-gray-800: #454E59;
-    --color-gray-850: #343B43;
-    --color-gray-900: #363F48;
-    --color-gray-950: #131518;
-    --color-gray-1000: #070809;
+    --color-gray-850: #363A43;
+    --color-gray-900: #23252A;
+    --color-gray-950: #1A1C20;
+    --color-gray-1000: #16171A;
 
     /* Smoke color */
 

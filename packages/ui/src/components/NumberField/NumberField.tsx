@@ -196,7 +196,7 @@ export const NumberField: FC<NumberFieldProps> = ({
   const isIncrementDisabled = inputValue >= max
 
   return (
-    <div className={style.wrapper} onKeyDown={onKeyDown} ref={wrapperRef}>
+    <div data-size={size} className={style.wrapper} onKeyDown={onKeyDown} ref={wrapperRef}>
       <TextField
         ref={mergeRefs([inputRef, ref, innerInputRef])}
         size={size}
