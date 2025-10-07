@@ -100,12 +100,12 @@
 }
 
 .buttonBase[data-variant='primary'][data-appearance='transparent']:hover {
-    background-color: var(--color-primary-0);
+    background-color: var(--color-primary-50);
     color: var(--color-primary-500);
 }
 
 .buttonBase[data-variant='primary'][data-appearance='transparent']:active {
-    background-color: var(--color-primary-50);
+    background-color: var(--color-primary-100);
     color: var(--color-primary-500);
 }
 
