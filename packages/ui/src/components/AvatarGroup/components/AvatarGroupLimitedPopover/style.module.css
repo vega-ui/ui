@@ -1,5 +1,5 @@
 .container {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
-    --avatar-outline-color: var(--surface-foreground);
+    --avatar-outline-color: var(--surface-regular);
 }

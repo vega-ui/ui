@@ -4,12 +4,13 @@
 
     display: flex;
     font-family: var(--default-font-family);
-    background-color: var(--surface-foreground);
+    background-color: var(--field-background-color);
     color: var(--text-color);
-    outline: 1px solid var(--field-border-color);
+    outline: 1px solid transparent;
     border: none;
     box-sizing: border-box;
-    transition: outline-color var(--transition-state-delay) ease;
+    transition: outline-color var(--transition-state-delay) ease,
+                background-color var(--transition-state-delay) ease;
     border-radius: calc(var(--textarea-height) * var(--textarea-br-ratio));
     min-height: var(--textarea-height);
 }
@@ -49,7 +50,7 @@
 /* textArea/hover */
 
 .textarea:hover {
-    outline-color: var(--field-border-hover-color);
+    background-color: var(--field-background-hover-color);
 }
 
 /* textArea/focus | textArea/active */

@@ -197,11 +197,11 @@
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='transparent']:hover {
-    background-color: var(--color-secondary-0);
+    background-color: var(--color-secondary-50);
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='transparent']:active {
-    background-color: var(--color-secondary-50);
+    background-color: var(--color-secondary-100);
 }
 
 .buttonBase[data-variant='secondary'][data-appearance='transparent']:disabled,

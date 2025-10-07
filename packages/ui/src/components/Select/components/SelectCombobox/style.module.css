@@ -76,15 +76,16 @@
 }
 
 .selectCombobox[data-variant='field'] {
-    background-color: var(--surface-foreground);
-    outline: 1px solid var(--field-border-color);
-    transition: outline var(--transition-state-delay) ease-in-out;
+    background-color: var(--field-background-color);
+    outline: 1px solid transparent;
+    transition: outline var(--transition-state-delay) ease-in-out,
+                background-color var(--transition-state-delay) ease;
 }
 
 /* selectCombobox/field/hover */
 
 .selectCombobox[data-variant='field']:hover {
-    outline-color: var(--field-border-hover-color);
+    outline-color: var(--field-background-hover-color);
 }
 
 /* selectCombobox/field/focus */

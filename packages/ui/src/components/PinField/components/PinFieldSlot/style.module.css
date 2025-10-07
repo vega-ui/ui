@@ -8,10 +8,11 @@
     width: var(--input-height);
     aspect-ratio: 1 / 1;
     border-radius: calc(var(--input-height) * var(--input-br-ratio));
-    outline: 1px solid var(--field-border-color);
-    transition: outline-color var(--transition-state-delay) ease;
+    outline: 1px solid transparent;
+    transition: outline-color var(--transition-state-delay) ease,
+                background-color var(--transition-state-delay) ease;
     font-family: var(--default-font-family);
-    background-color: var(--surface-foreground);
+    background-color: var(--field-background-color);
     color: var(--text-color);
     cursor: text;
 }
@@ -59,7 +60,7 @@
 /* slot/hover */
 
 .slot:hover {
-    outline-color: var(--field-border-hover-color);
+    background-color: var(--field-background-hover-color);
 }
 
 /* slot/disabled */

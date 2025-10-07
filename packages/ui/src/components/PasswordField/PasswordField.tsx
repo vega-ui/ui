@@ -31,7 +31,7 @@ export const PasswordField: FC<PasswordFieldProps> = ({
   }
 
   return (
-    <div className={style.wrapper}>
+    <div data-size={size} className={style.wrapper}>
       <TextField
         ref={mergeRefs([inputRef, ref])}
         size={size}
