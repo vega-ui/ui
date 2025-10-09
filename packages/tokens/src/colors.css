@@ -338,25 +338,25 @@
     /* Graphite color */
 
     --color-graphite-0: #FCFCFC;
-    --color-graphite-50: #F5F6F7;
-    --color-graphite-100: #EFF0F2;
-    --color-graphite-150: #EBEEF0;
-    --color-graphite-200: #A8B1B8;
-    --color-graphite-250: #7C8388;
+    --color-graphite-50: #EEEFF0;
+    --color-graphite-100: #DFE1E4;
+    --color-graphite-150: #C5C9CD;
+    --color-graphite-200: #8C939B;
+    --color-graphite-250: #707881;
     --color-graphite-300: #585D61;
     --color-graphite-350: #3E4348;
     --color-graphite-400: #353A40;
     --color-graphite-450: #2B3136;
     --color-graphite-500: #181E24;
-    --color-graphite-550: #171D00;
-    --color-graphite-600: #171D23;
-    --color-graphite-650: #161B21;
-    --color-graphite-700: #14191E;
-    --color-graphite-750: #11161A;
-    --color-graphite-800: #0E1216;
-    --color-graphite-850: #0B0E10;
-    --color-graphite-900: #07090B;
-    --color-graphite-950: #040506;
+    --color-graphite-550: #11161A;
+    --color-graphite-600: #0E1115;
+    --color-graphite-650: #0C0F12;
+    --color-graphite-700: #090B0D;
+    --color-graphite-750: #07090A;
+    --color-graphite-800: #050708;
+    --color-graphite-850: #050809;
+    --color-graphite-900: #040607;
+    --color-graphite-950: #020203;
     --color-graphite-1000: #010202;
 
     /* Gray color */
