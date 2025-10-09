@@ -1,5 +1,11 @@
 # @vega-ui/tokens-core
 
+## 1.11.3
+
+### Patch Changes
+
+- 0392555: Made graphite color more contrast than gray
+
 ## 1.11.2
 
 ### Patch Changes

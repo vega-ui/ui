@@ -1,5 +1,14 @@
 # @vega-ui/react
 
+## 1.11.3
+
+### Patch Changes
+
+- 0392555: Made graphite color more contrast than gray
+  - @vega-ui/hooks@1.11.3
+  - @vega-ui/icons@1.11.3
+  - @vega-ui/utils@1.11.3
+
 ## 1.11.2
 
 ### Patch Changes
