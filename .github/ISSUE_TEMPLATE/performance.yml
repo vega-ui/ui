@@ -1,0 +1,123 @@
+name: "⚡ Performance Issue"
+description: "Report a performance degradation or inefficiency in a Vega UI component"
+title: "[Perf] <ComponentName>: short summary"
+labels: ["performance", "ui-kit", "investigation"]
+assignees:
+  - core-team
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## ⚡ Vega UI Performance Issue Report
+        Please use this template to report performance regressions, inefficiencies, or rendering bottlenecks in Vega UI components.
+
+  - type: input
+    id: component
+    attributes:
+      label: Component
+      description: Exact component name (e.g., ButtonBase, Accordion, AvatarGroup)
+      placeholder: "ButtonBase"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity level
+      description: How much does the issue impact UX or system performance?
+      options:
+        - 🟥 Critical (UI freeze, severe lag, blocking user interaction)
+        - 🟧 High (noticeable delay in normal user flow)
+        - 🟨 Medium (visible only under heavy load or many instances)
+        - 🟩 Low (minor measurable impact)
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: Describe where and under what conditions the issue occurs (platform, device, environment, etc.)
+      placeholder: |
+        Example:
+        • Vega UI Web
+        • Component: ListItem
+        • Issue: FPS drops during scrolling with 1000+ list items
+
+  - type: textarea
+    id: metrics
+    attributes:
+      label: Metrics and profiling data
+      description: Provide any measurement data (FPS, memory usage, render count, commit time, etc.)
+      placeholder: |
+        Example:
+        • FPS drops 60 → 28 during scroll
+        • Re-renders: 200+ per state update
+        • Memory usage: 120 MB → 300 MB in 10s
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Provide clear steps for reproducing the issue
+      placeholder: |
+        1. Open the ButtonBase story in Storybook
+        2. Start React Profiler
+        3. Click the button repeatedly
+        4. Observe render time increase
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: Describe how the component should ideally perform
+      placeholder: "Component should only re-render itself, not sibling elements"
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: Describe what actually happens during performance degradation
+      placeholder: "Every click triggers a re-render of the entire list"
+
+  - type: dropdown
+    id: profiling_tool
+    attributes:
+      label: Profiling tools used
+      description: Which tools were used to collect data?
+      multiple: true
+      options:
+        - React Profiler
+        - Chrome Performance Tab
+        - React Native Performance Monitor
+        - Hermes Debugger
+        - Lighthouse
+        - Vega Benchmark Script
+        - Other
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots or profiling traces
+      description: Attach screenshots or links to profiler traces
+      placeholder: "Attach React Profiler trace or Lighthouse report link"
+
+  - type: textarea
+    id: suggestions
+    attributes:
+      label: Possible causes or optimization ideas
+      description: Share hypotheses or ideas for potential optimization
+      placeholder: |
+        Possible improvements:
+        • Use React.memo
+        • Optimize useEffect dependencies
+        • Replace inline functions with useCallback
+        • Add virtualization for large lists
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional information
+      description: Anything else useful for debugging (related PRs, commits, branches, etc.)
+      placeholder: "Related commits, branches, or references"
