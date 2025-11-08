@@ -17,6 +17,14 @@ const meta = {
       control: 'radio',
       options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
+    variant: {
+      control: 'radio',
+      options: ['primary', 'secondary']
+    },
+    appearance: {
+      control: 'radio',
+      options: ['fill', 'outline', 'ghost', 'transparent']
+    }
   },
 } satisfies Meta<typeof Button>;
 
