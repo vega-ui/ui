@@ -11,7 +11,9 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {},
-  args: {},
+  args: {
+    size: 'md',
+  },
 } satisfies Meta<typeof PaginationPrevTrigger>;
 
 export default meta;
