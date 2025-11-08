@@ -31,7 +31,7 @@
     "react-dom": "^19.0.0"
   },
   "dependencies": {
-    "lucide-react": "^0.517.0",
+    "lucide-react": "latest",
     "react": "^19.0.0"
   },
   "devDependencies": {
