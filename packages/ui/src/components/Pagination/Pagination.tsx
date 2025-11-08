@@ -36,7 +36,7 @@ export interface PaginationProps extends HTMLAttributes<HTMLElement> {
 export const Pagination: FC<PaginationProps> = ({
   children,
   className,
-  size = 'medium',
+  size = 'md',
   variant = 'primary',
   ref,
   ...props

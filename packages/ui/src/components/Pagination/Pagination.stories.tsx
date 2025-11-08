@@ -24,7 +24,7 @@ const meta = {
   argTypes: {
     size: {
       control: 'radio',
-      options: ['small', 'medium', 'large'] as IconButtonProps['size'][],
+      options: ['sm', 'md', 'lg'] as IconButtonProps['size'][],
     },
     variant: {
       control: 'radio',
