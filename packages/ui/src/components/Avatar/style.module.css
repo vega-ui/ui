@@ -1,6 +1,7 @@
 .avatar {
     --avatar-size: var(--spacing-8);
     --avatar-br-ratio: 1;
+    --size: var(--avatar-size);
 
     display: flex;
     justify-content: center;

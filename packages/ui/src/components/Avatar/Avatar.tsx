@@ -41,7 +41,13 @@ export const Avatar: FC<PropsWithChildren<AvatarProps>> = ({
   ...props
 }) => {
   return (
-    <div ref={ref} data-name='avatar' data-size={size} data-variant={variant} className={csx(style.avatar, className)} {...props}>
+    <div
+      ref={ref}
+      data-size={size}
+      data-variant={variant}
+      className={csx(style.avatar, className)}
+      {...props}
+    >
       {children}
     </div>
   )
