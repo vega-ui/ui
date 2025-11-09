@@ -1,5 +1,17 @@
 # @vega-ui/react
 
+## 1.11.4
+
+### Patch Changes
+
+- 8f89ab1: Fixed buttons docs
+- 2740436: Fixed avatar icon size
+- 9c8d951: Fixed pagination icon button size
+- Updated dependencies [0124d94]
+  - @vega-ui/icons@1.11.4
+  - @vega-ui/hooks@1.11.4
+  - @vega-ui/utils@1.11.4
+
 ## 1.11.3
 
 ### Patch Changes

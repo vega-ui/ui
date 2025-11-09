@@ -1,5 +1,11 @@
 # @vega-ui/icons
 
+## 1.11.4
+
+### Patch Changes
+
+- 0124d94: Upped icon ver
+
 ## 1.11.3
 
 ## 1.11.2
