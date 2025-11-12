@@ -1,5 +1,12 @@
 # @vega-ui/theme-core
 
+## 1.12.0
+
+### Patch Changes
+
+- Updated dependencies [30e9724]
+  - @vega-ui/tokens-core@1.12.0
+
 ## 1.11.4
 
 ### Patch Changes
