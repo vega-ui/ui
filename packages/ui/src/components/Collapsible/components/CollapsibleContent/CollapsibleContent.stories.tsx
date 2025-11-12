@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CollapsibleContent } from './CollapsibleContent.tsx';
 import { Text } from '../../../Text';
 import { Collapsible } from '../../Collapsible.tsx';

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { SheetSelect } from './SheetSelect.tsx';
 import { Label } from '@vega-ui/react';

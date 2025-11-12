@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { SheetPhoneSelectField, PhoneFieldCountry } from './SheetPhoneSelectField.tsx';
 import { Label } from '@vega-ui/react';

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { SliderBaseProgress, SliderBaseProgressProps } from './SliderBaseProgress.tsx';
 import { SliderBase } from '../../SliderBase.tsx';

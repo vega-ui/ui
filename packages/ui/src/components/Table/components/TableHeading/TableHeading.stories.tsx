@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { TableHeading } from './TableHeading.tsx';
 import { Text } from '../../../Text';
 
 const meta = {
-  title: 'Display/Table/TableHeading',
+  title: 'Data/Table/TableHeading',
   component: TableHeading,
   parameters: {
     layout: 'centered',

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { AvatarGroup } from './AvatarGroup.tsx';
 import { AvatarFallback, AvatarImage } from '../Avatar/components';
 import { AvatarGroupItem } from './components';

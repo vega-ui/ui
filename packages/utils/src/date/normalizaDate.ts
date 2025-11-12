@@ -1,0 +1,1 @@
+export const normalizeDate = (d: Date): Date => new Date(d.getFullYear(), d.getMonth(), d.getDate(), 0, 0, 0, 0)

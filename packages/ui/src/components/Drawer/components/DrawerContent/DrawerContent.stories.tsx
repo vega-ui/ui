@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DrawerContent } from './DrawerContent.tsx';
 import { Text } from '../../../Text';
 import { Drawer } from '../../Drawer.tsx';
