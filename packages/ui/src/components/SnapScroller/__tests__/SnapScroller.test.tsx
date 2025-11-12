@@ -120,17 +120,16 @@ describe('SnapScroller', () => {
   
   it('exposes imperative API (element, prev, next)', () => {
     patchScrollMetrics({ width: 300, scrollWidth: 900 });
-    const apiRef = createRef<{ element: HTMLDivElement | null; prev: () => void; next: () => void }>();
+    const apiRef = createRef<{ prev: () => void; next: () => void }>();
     
     render(
-      <SnapScroller ref={apiRef}>
+      <SnapScroller apiRef={apiRef}>
         <SnapScrollerContent index={0} />
         <SnapScrollerContent index={1} />
         <SnapScrollerContent index={2} />
       </SnapScroller>
     );
     
-    expect(apiRef.current?.element).toBeInstanceOf(HTMLElement);
     expect(() => apiRef.current?.prev()).not.toThrow();
     expect(() => apiRef.current?.next()).not.toThrow();
   });

@@ -1,9 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
-import { render, screen } from '@testing-library/react'
+import { render, screen, fireEvent } from '@testing-library/react'
 import { PinField } from '../PinField.tsx';
-import { fireEvent } from '@storybook/test';
 import { act } from 'react';
-
 
 describe('PinField', () => {
   it('render textField', () => {
