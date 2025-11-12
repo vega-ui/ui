@@ -1,4 +1,4 @@
-import { getFirstDayOfWeek } from '@vega-ui/utils';
+import { getFirstDayOfWeek } from './getFirstDayOfWeek';
 
 export const getWeekDayNames = (
   locale: string = 'en-US',
