@@ -1,10 +1,10 @@
 
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { TableFoot } from './TableFoot.tsx';
 import { Text } from '../../../Text';
 
 const meta = {
-  title: 'Display/Table/TableFoot',
+  title: 'Data/Table/TableFoot',
   component: TableFoot,
   parameters: {
     layout: 'centered',

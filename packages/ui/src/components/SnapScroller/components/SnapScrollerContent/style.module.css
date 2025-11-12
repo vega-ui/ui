@@ -1,0 +1,5 @@
+.content {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    flex-shrink: 0;
+}

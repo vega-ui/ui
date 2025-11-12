@@ -1,8 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { TextArea } from '../TextArea.tsx';
-import { fireEvent } from '@storybook/test';
-
 
 describe('TextField', () => {
   it('render textField', () => {

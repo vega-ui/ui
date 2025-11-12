@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Alert, AlertProps } from './Alert.tsx';
 import { IconButton } from '../IconButton';
 import { Link } from '../Link';

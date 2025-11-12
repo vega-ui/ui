@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { NumberField } from './NumberField.tsx';
 import { Icon } from '../Icon';

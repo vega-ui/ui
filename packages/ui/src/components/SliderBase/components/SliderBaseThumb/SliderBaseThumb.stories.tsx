@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { SliderBaseThumb, SliderBaseThumbProps } from './SliderBaseThumb.tsx';
 import { SliderBase } from '../../SliderBase.tsx';

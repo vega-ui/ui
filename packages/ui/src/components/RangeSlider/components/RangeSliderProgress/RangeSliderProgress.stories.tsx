@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { RangeSliderProgress } from './RangeSliderProgress.tsx';
 import { RangeSlider } from '../../RangeSlider.tsx';
 

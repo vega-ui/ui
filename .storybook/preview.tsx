@@ -2,7 +2,7 @@ import '../packages/theme/src/index.css'
 import '../packages/responsive-ui/src/index.css'
 import './style.css'
 
-import { withThemeByClassName } from '@storybook/addon-themes'; 
+import { withThemeByClassName } from '@storybook/addon-themes';
 
 const preview = {
   decorators: [
@@ -15,6 +15,7 @@ const preview = {
     })
   ],
   parameters: {
+    actions: { argTypesRegex: '^on[A-Z].*' },
     controls: {
       matchers: {
         color: /(background|color)$/i,

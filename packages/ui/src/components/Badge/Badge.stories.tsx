@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Badge, BadgeProps } from './Badge.tsx';
 
 const variants: Exclude<BadgeProps['variant'], undefined>[] = ['info', 'error', 'success', 'warning']

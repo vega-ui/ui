@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Icon, IconProps } from './Icon.tsx';
 import { Server, Anchor, HeartPlus } from '@vega-ui/icons';

@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { ResponsiveModal } from './ResponsiveModal.tsx';
 import { Button, Text } from '@vega-ui/react';

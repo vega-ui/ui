@@ -1,9 +1,9 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { TableRow } from './TableRow.tsx';
 import { Text } from '../../../Text';
 
 const meta = {
-  title: 'Display/Table/TableRow',
+  title: 'Data/Table/TableRow',
   component: TableRow,
   parameters: {
     layout: 'centered',

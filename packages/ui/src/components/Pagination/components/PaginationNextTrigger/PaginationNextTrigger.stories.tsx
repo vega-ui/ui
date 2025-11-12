@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { PaginationNextTrigger } from './PaginationNextTrigger.tsx';
 import { Tooltip } from '../../../Tooltip';
 import { TooltipContent, TooltipTrigger } from '../../../Tooltip/components';

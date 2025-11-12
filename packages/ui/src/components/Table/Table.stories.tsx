@@ -1,10 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Table } from './Table.tsx';
 import { Text } from '../Text';
 import { TableBody, TableData, TableFoot, TableHead, TableHeading, TableRow } from './components';
 
 const meta = {
-  title: 'Display/Table/Table',
+  title: 'Data/Table/Table',
   component: Table,
   parameters: {
     layout: 'padded',

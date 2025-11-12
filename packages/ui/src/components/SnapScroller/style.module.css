@@ -1,0 +1,12 @@
+.scrollView {
+    display: flex;
+    contain: layout paint;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.scrollView::-webkit-scrollbar {
+    display: none;
+}

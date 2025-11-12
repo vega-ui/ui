@@ -1,7 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
-import { render, screen } from '@testing-library/react'
+import { fireEvent, render, screen } from '@testing-library/react'
 import { SheetPhoneSelectField, PhoneFieldCountry } from '../SheetPhoneSelectField.tsx';
-import { fireEvent } from '@storybook/test';
 import { act } from 'react';
 
 const list: PhoneFieldCountry[] = [

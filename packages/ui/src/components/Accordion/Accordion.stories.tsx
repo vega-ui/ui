@@ -1,10 +1,8 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Accordion } from './Accordion.tsx';
 import { Text } from '../Text';
-import { AccordionItem } from './components';
-import { AccordionTrigger } from './components/AccordionTrigger';
-import { AccordionContent } from './components/AccordionContent';
+import { AccordionTrigger, AccordionContent, AccordionItem } from './components';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof Accordion> = {

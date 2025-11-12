@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { ResponsiveSelect } from './ResponsiveSelect.tsx';
 import { Label } from '@vega-ui/react';
