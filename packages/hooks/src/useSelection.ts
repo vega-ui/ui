@@ -40,7 +40,7 @@ export const useSelection = <K, const M extends Selection>({
   const isSelected = useCallback((key: K) => {
     if (!selected) return false
     if (selectedEqual) return selectedEqual(key, selected)
-    if (selection === 'single') return eq(selected as SelectedValue<'single', K>, key)
+    if (selection === 'single' || !Array.isArray(selected)) return eq(selected as SelectedValue<'single', K>, key)
     
     const array = selected as SelectedValue<'multiple', K>
     return array.some(k => eq(k, key))

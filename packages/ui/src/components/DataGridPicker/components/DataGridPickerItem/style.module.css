@@ -46,6 +46,11 @@
     inset: 0;
 }
 
+.item[data-range='start'] ,
+.item[data-range='end'] {
+    touch-action: none;
+}
+
 .item[data-range='start']:after {
     border-top-left-radius: inherit;
     border-bottom-left-radius: inherit;

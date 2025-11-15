@@ -1,11 +1,19 @@
-import { FC, KeyboardEvent, PointerEvent, PropsWithChildren, useCallback, useEffect, useRef } from 'react';
+import {
+  FC,
+  KeyboardEvent,
+  PropsWithChildren,
+  PointerEvent,
+  useCallback,
+  useRef,
+  useEffect,
+} from 'react';
 import { DataGrid, DataGridProps, DataGridResolveValue } from '../DataGrid';
 import { DataGridApiRef, DataGridCellKey } from '../DataGrid/types';
 import { DataGridDisabled, DataGridSelection } from './types';
 import { DataGridSelectableProvider } from './providers';
 import { Grid, MatrixNode, mergeEventHandlers } from '@vega-ui/utils';
 import { useControlledState, useSelection } from '@vega-ui/hooks';
-import { getCellCoordinates } from './helpers';
+import { getCellKey } from './helpers';
 
 export interface DataGridSelectableProps extends DataGridProps {
   /**
@@ -68,7 +76,7 @@ export interface DataGridSelectableProps extends DataGridProps {
    * Custom equality comparator for comparing two cell keys.
    * Defaults to strict equality (`===`).
    */
-  equals?(start: DataGridCellKey, end: DataGridCellKey): boolean;
+  equals?(start: DataGridCellKey | undefined, end: DataGridCellKey | undefined): boolean;
   
   /**
    * Custom ordering comparator for comparing two cell keys.
@@ -120,13 +128,17 @@ export const DataGridSelectable: FC<PropsWithChildren<DataGridSelectableProps>> 
   onChangeActive,
   onMove: _onMove,
   onPointerDown: _onPointerDown,
-  onPointerOver: _onPointerOver,
+  onPointerMove: _onPointerMove,
   ...props
 }) => {
-  const apiRef = useRef<DataGridApiRef>(null)
   const [active, setActive] = useControlledState(_active, defaultActive ?? '', onChangeActive)
+  
+  const apiRef = useRef<DataGridApiRef>(null)
+  const expanding = useRef(false)
+  const index = useRef<0 | 1 | undefined>(undefined)
+  const pointed = useRef<HTMLElement>(null)
 
-  const equals = useCallback((a: DataGridCellKey, b: DataGridCellKey) => {
+  const equals = useCallback((a: DataGridCellKey | undefined, b: DataGridCellKey | undefined) => {
     if (_equals) return _equals(a, b)
     return a === b
   }, [_equals])
@@ -160,6 +172,7 @@ export const DataGridSelectable: FC<PropsWithChildren<DataGridSelectableProps>> 
   })
   
   const onSelect = useCallback((key: DataGridCellKey) => {
+    if (expanding.current) return
     const { keyMap, grid } = apiRef.current ?? {}
     if (!grid || !keyMap) return;
     const position = keyMap.get(key)
@@ -172,9 +185,7 @@ export const DataGridSelectable: FC<PropsWithChildren<DataGridSelectableProps>> 
     setActive(node.key)
   }, [toggle])
   
-  const index = useRef<0 | 1 | undefined>(undefined)
-  
-  const onMove = (e: KeyboardEvent<HTMLDivElement>, node: MatrixNode<HTMLElement, DataGridCellKey>, axis: 0 | 1, dir: -1 | 1) => {
+  const onMove = useCallback((e: KeyboardEvent<HTMLDivElement>, node: MatrixNode<HTMLElement, DataGridCellKey>, axis: 0 | 1, dir: -1 | 1) => {
     _onMove?.(e, node, axis, dir)
     
     const keyMap = apiRef.current?.keyMap
@@ -187,63 +198,66 @@ export const DataGridSelectable: FC<PropsWithChildren<DataGridSelectableProps>> 
       : undefined
     
     if (e.shiftKey && expandable && node.key !== undefined) expand(node.key, edge)
-  }
+  }, [_onMove, edges, expand])
+  
+  const rangeExpandable = expandable && Array.isArray(selected) && selected.length !== 0 && selection === 'range'
   
   const onPointerDown = (event: PointerEvent<HTMLElement>) => {
+    if (!rangeExpandable) return
+    
     const grid = apiRef.current?.grid
     if (!grid) return;
-    
-    if (!expandable || !selected || !Array.isArray(selected) || selected.length === 0 || selection !== 'range') return
-    
-    const coordinates = getCellCoordinates(event.target as HTMLElement) as [number, number] | undefined
-    if (!coordinates) return
-    
-    const key = grid.getNode(coordinates)?.key
-    if (key === undefined) return;
-    
+
+    const key = getCellKey(event.target as HTMLElement, grid)
+    if (key === undefined) return
+
     const [start, end] = edges()
+
+    if (equals(key, start)) index.current = 0
+    if (equals(key, end)) index.current = 1
+    if (index.current === undefined) return
     
-    if (start !== undefined && equals(key, start)) index.current = 0
-    if (end !== undefined && equals(key, end)) index.current = 1
+    expanding.current = true;
+    pointed.current = event.target as HTMLElement
   }
-  
-  const onPointerOver = (event: PointerEvent<HTMLElement>) => {
+
+  const onPointerMove = (event: PointerEvent<HTMLElement>) => {
+    if (index.current === undefined || !rangeExpandable) return
+
+    const el = document.elementFromPoint(event.clientX, event.clientY) as HTMLElement | null
+    
+    if (el === pointed.current) return;
+    pointed.current = el;
+
     const grid = apiRef.current?.grid
     if (!grid) return;
     
-    if (!expandable || index.current === undefined || !Array.isArray(selected) || !selected || selection !== 'range') return
-    
-    const coordinates = getCellCoordinates(event.target as HTMLElement) as [number, number] | undefined
-    if (!coordinates) return
-    
-    const node = grid.getNode(coordinates)
-    if (!node) return;
-    
-    const { key } = node
+    const key = getCellKey(el as HTMLElement, grid)
     if (key === undefined) return;
-    
+
     const [start, end] = edges()
-    
-    if (start === undefined && end === undefined) {
+
+    if (start === undefined || end === undefined) {
       index.current = undefined
       return
     }
-    
+
     expand(key, index.current)
-    
-    if (!start || !end) return
     
     if (compare(key, end) > 0) index.current = 1
     if (compare(key, start) < 0) index.current = 0
   }
   
+  const onPointerUp = useRef(() => {
+    index.current = undefined
+    requestIdleCallback(() => {
+      expanding.current = false;
+    })
+  })
+
   useEffect(() => {
-    const onPointerUp = () => {
-      index.current = undefined
-    }
-    
-    document.addEventListener('pointerup', onPointerUp)
-    return () => document.removeEventListener('pointerup', onPointerUp)
+    document.addEventListener('pointerup', onPointerUp.current, { passive: true })
+    return () => document.removeEventListener('pointerup', onPointerUp.current)
   }, [])
   
   return (
@@ -264,7 +278,7 @@ export const DataGridSelectable: FC<PropsWithChildren<DataGridSelectableProps>> 
         defaultActive={defaultActive}
         onMove={onMove}
         onPointerDown={mergeEventHandlers(onPointerDown, _onPointerDown)}
-        onPointerOver={mergeEventHandlers(onPointerOver, _onPointerOver)}
+        onPointerMove={mergeEventHandlers(onPointerMove, _onPointerMove)}
       >
         {children}
       </DataGrid>

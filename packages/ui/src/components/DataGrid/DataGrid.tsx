@@ -152,7 +152,6 @@ export const DataGrid: FC<PropsWithChildren<DataGridProps>> = ({
   }, [exclude])
   
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    console.log(e.key)
     const activePosition = keyMap.get(active)
     if (!activePosition) return
     const getNode = (key: string) => {
