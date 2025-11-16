@@ -7,7 +7,7 @@ import {
   useCallback,
   useImperativeHandle,
   useLayoutEffect,
-  useRef, useState,
+  useRef,
 } from 'react';
 import style from './style.module.css'
 import { csx, mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
@@ -75,7 +75,7 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
   
   const index = useRef<number | undefined>(undefined)
   const scrollerRef = useRef<HTMLDivElement>(null)
-  const [preserve, setPreserve] = useState(false)
+  const preserve = useRef(false)
   
   const scroll = (offsetWidth: number, element?: HTMLDivElement) => {
     const scroller: HTMLDivElement | null = element ?? scrollerRef.current
@@ -143,20 +143,21 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
     const { scrollWidth, clientWidth, scrollLeft } = target
     
     const snapped = getSnappedIndex(target)
+    const preserved = preserve.current
 
     if (snapped !== undefined && snapped !== index.current) {
       onSnap?.(snapped)
       index.current = snapped
     }
     
-    if (Math.floor(scrollLeft) === 0) {
+    if (Math.floor(scrollLeft) <= 0 && !preserved) {
       onOffset?.(-1);
-      setPreserve(true)
+      preserve.current = true;
     }
     
-    if (Math.ceil(scrollLeft) === scrollWidth - clientWidth) {
+    if (Math.ceil(scrollLeft) >= scrollWidth - clientWidth && !preserved) {
       onOffset?.(1);
-      setPreserve(true)
+      preserve.current = true;
     }
   }
   
@@ -174,8 +175,8 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
     if (next) {
       requestAnimationFrame(() => {
         next.scrollIntoView({ behavior: 'instant', inline: 'nearest', block: 'nearest' });
+        preserve.current = false;
       })
-      setPreserve(false)
     }
   });
   
