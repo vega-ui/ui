@@ -55,6 +55,16 @@ export interface DataGridSelectableProps extends DataGridProps {
   active?: DataGridCellKey;
   
   /**
+   * Controlled selected cells.
+   */
+  selected?: DataGridCellKey | DataGridCellKey[] | undefined;
+  
+  /**
+   * Uncontrolled initial selected cells.
+   */
+  defaultSelected?: DataGridCellKey | DataGridCellKey[] | undefined;
+  
+  /**
    * Range boundaries.
    * If provided, limits selection to cells between `from` and `to`
    * based on the `compare` function.
@@ -124,6 +134,8 @@ export const DataGridSelectable: FC<PropsWithChildren<DataGridSelectableProps>> 
   selectedEqual,
   active: _active,
   defaultActive,
+  selected: _selected,
+  defaultSelected,
   onSelectCell,
   onChangeActive,
   onMove: _onMove,
@@ -169,6 +181,8 @@ export const DataGridSelectable: FC<PropsWithChildren<DataGridSelectableProps>> 
     selectedEqual,
     min: from,
     max: to,
+    selected: _selected,
+    defaultSelected,
   })
   
   const onSelect = useCallback((key: DataGridCellKey) => {
