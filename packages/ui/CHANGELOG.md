@@ -1,5 +1,14 @@
 # @vega-ui/react
 
+## 1.12.3
+
+### Patch Changes
+
+- b433cff: Fixed RangeSlider performance
+  - @vega-ui/hooks@1.12.3
+  - @vega-ui/icons@1.12.3
+  - @vega-ui/utils@1.12.3
+
 ## 1.12.2
 
 ### Patch Changes
