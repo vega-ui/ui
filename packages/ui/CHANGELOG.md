@@ -1,5 +1,16 @@
 # @vega-ui/react
 
+## 1.12.2
+
+### Patch Changes
+
+- 919f735: Fixed SnapScrolle onSnap call
+- 709d532: Changed requestIdleCallback to rAF due to unsupport into Safari
+- e5ab56d: Fixed SnapScroller onScroll left
+  - @vega-ui/hooks@1.12.2
+  - @vega-ui/icons@1.12.2
+  - @vega-ui/utils@1.12.2
+
 ## 1.12.1
 
 ### Patch Changes
