@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach, afterEach, beforeAll } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
 
@@ -37,9 +37,21 @@ const Grid3x2Selectable: FC<DataGridSelectableProps> = ({
 );
 
 describe('DataGridSelectable', () => {
+  let elementFromPointMock: ReturnType<typeof vi.fn>
+  
+  beforeAll(() => {
+    elementFromPointMock = vi.fn()
+    Object.defineProperty(document, 'elementFromPoint', {
+      configurable: true,
+      writable: true,
+      value: elementFromPointMock,
+    })
+  })
+  
   beforeEach(() => {
     vi.useFakeTimers();
   });
+  
   afterEach(() => {
     vi.runOnlyPendingTimers();
     vi.useRealTimers();
@@ -123,7 +135,8 @@ describe('DataGridSelectable', () => {
     
     // drag edge -> hover another cell
     fireEvent.pointerDown(getCell(0, 1)!);
-    fireEvent.pointerOver(getCell(1, 2)!);
+    elementFromPointMock.mockReturnValue(getCell(1, 2))
+    fireEvent.pointerMove(getCell(1, 2)!);
     
     expect(getCell(0, 2)).toHaveAttribute('aria-selected', 'false');
     expect(getCell(1, 2)).toHaveAttribute('aria-selected', 'true');
