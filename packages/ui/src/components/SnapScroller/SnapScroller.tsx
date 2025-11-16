@@ -142,12 +142,12 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
     const target = e.currentTarget
     const { scrollWidth, clientWidth, scrollLeft } = target
     
-    if (onSnap) {
-      const snapped = getSnappedIndex(target)
-      if (snapped !== undefined && index.current !== undefined && snapped !== index.current) onSnap(snapped)
+    const snapped = getSnappedIndex(target)
+
+    if (snapped !== undefined && snapped !== index.current) {
+      onSnap?.(snapped)
+      index.current = snapped
     }
-    
-    index.current = getSnappedIndex(target)
     
     if (Math.floor(scrollLeft) === 0) {
       onOffset?.(-1);
@@ -166,17 +166,15 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
     const el = scrollerRef.current;
     if (!el) return;
     
-    const itemKey = index.current
-    if (itemKey === undefined) return;
+    const current = index.current
+    if (current === undefined) return;
     
-    const next = getItem(itemKey);
+    const next = getItem(current);
     
     if (next) {
       requestAnimationFrame(() => {
         next.scrollIntoView({ behavior: 'instant', inline: 'nearest', block: 'nearest' });
       })
-      
-      index.current = undefined
       setPreserve(false)
     }
   });

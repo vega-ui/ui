@@ -261,7 +261,6 @@ export const DefaultSwipable: Story = {
       
       const { current } = index
       const gridIndex = Number(active.toString().split(':')[0])
-      
       if (!isNaN(gridIndex) && gridIndex !== current) {
         if (gridIndex < current) apiRef.current?.prev()
         if (gridIndex > current) apiRef.current?.next()
