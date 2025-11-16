@@ -10,9 +10,9 @@ import {
 
 import { useControlledState } from '@vega-ui/hooks';
 import { SliderBase } from '../SliderBase';
-import { clamp } from '@vega-ui/utils';
 import { RangeSliderProvider } from './providers';
-import { RangeSliderSize } from './types';
+import { RangeSliderOrientation, RangeSliderSize, RangeSliderStep } from './types';
+import { calculateValue, getClosestIndex, normalizeValue } from './helpers';
 
 export interface RangeSliderProps extends Omit<HTMLAttributes<HTMLDivElement>, 'defaultValue' | 'onChange'> {
   /**
@@ -41,12 +41,12 @@ export interface RangeSliderProps extends Omit<HTMLAttributes<HTMLDivElement>, '
    * Step between values.
    * Use `'any'` for no snapping.
    */
-  step?: number | 'any'
+  step?: RangeSliderStep
 
   /**
    * Layout direction: horizontal (default) or vertical.
    */
-  orientation?: 'vertical' | 'horizontal'
+  orientation?: RangeSliderOrientation
 
   /**
    * Custom class name for the root element.
@@ -106,59 +106,24 @@ export const RangeSlider: FC<PropsWithChildren<RangeSliderProps>> = ({
     const current = value[index];
     if (disabled || current === val) return
     
-    let changed = [...value] as [number, number]
+    const normalized = normalizeValue(index, val, value)
     
-    if (index === 0 && val > value[1]) changed = [value[1], val]
-    else if (index === 1 && val < value[0]) changed = [val, value[0]]
-    else changed[index] = val
-    
-    if (Math.abs(changed[0] - changed[1]) < minRange) {
-      if (index === 1 && val < value[1]) changed[index] = changed[0] + minRange
-      if (index === 0 && val > value[0]) changed[index] = changed[1] - minRange
+    if (Math.abs(normalized[0] - normalized[1]) < minRange) {
+      if (index === 1 && val < value[1]) normalized[index] = normalized[0] + minRange
+      if (index === 0 && val > value[0]) normalized[index] = normalized[1] - minRange
     }
     
-    setValue(changed)
-    return changed
+    setValue(normalized)
+    return normalized
   }
   
-  const calcValue = (e: PointerEvent | MouseEvent) => {
-    const track = sliderRef.current
-    if (!track) return min
-    
-    const rect = track.getBoundingClientRect()
-
-    const percent = orientation === 'horizontal'
-      ? (e.clientX - rect.left) / rect.width
-      : 1 - (e.clientY - rect.top) / rect.height
-
-    const raw = min + (max - min) * percent
-
-    if (step === 'any') return clamp(min, raw, max)
-
-    const snapped = Math.round(raw / step) * step
-    return clamp(min, snapped, max)
-  }
-
-  const getClosestIndex = (e: PointerEvent) => {
-    const val = calcValue(e)
-
-    const lengths = [Math.abs(value[0] - val), Math.abs(value[1] - val)]
-
-    if (lengths[0] < lengths[1]) return 0
-    if (lengths[1] < lengths[0]) return 1
-    if (lengths[0] === lengths[1]) {
-      if (val < value[0]) return 0
-      if (val > value[1]) return 1
-    }
-
-    return null
-  }
+  const calcValue = (e: PointerEvent | MouseEvent) => calculateValue(sliderRef.current, e, { max, min, orientation, step })
 
   const getIndex = (e: PointerEvent) => {
     const element = e.target as HTMLElement
 
     const index = Number(element.dataset.index)
-    if (isNaN(index)) return getClosestIndex(e)
+    if (isNaN(index)) return getClosestIndex(calcValue(e), value)
 
     return index
   }
