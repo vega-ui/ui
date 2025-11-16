@@ -3,7 +3,6 @@ import {
   HTMLAttributes,
   PointerEvent,
   MouseEvent,
-  useState,
   useRef,
   KeyboardEvent,
   PropsWithChildren,
@@ -11,9 +10,9 @@ import {
 
 import { useControlledState } from '@vega-ui/hooks';
 import { SliderBase } from '../SliderBase';
-import { clamp } from '@vega-ui/utils';
 import { RangeSliderProvider } from './providers';
-import { RangeSliderSize } from './types';
+import { RangeSliderOrientation, RangeSliderSize, RangeSliderStep } from './types';
+import { calculateValue, getClosestIndex, normalizeValue } from './helpers';
 
 export interface RangeSliderProps extends Omit<HTMLAttributes<HTMLDivElement>, 'defaultValue' | 'onChange'> {
   /**
@@ -22,9 +21,9 @@ export interface RangeSliderProps extends Omit<HTMLAttributes<HTMLDivElement>, '
   value?: [number, number]
 
   /**
-   * Uncontrolled initial value for the slider, as a readonly tuple.
+   * Uncontrolled initial value for the slider.
    */
-  defaultValue?: readonly [number, number]
+  defaultValue?: [number, number]
 
   /**
    * Maximum allowed value.
@@ -42,12 +41,12 @@ export interface RangeSliderProps extends Omit<HTMLAttributes<HTMLDivElement>, '
    * Step between values.
    * Use `'any'` for no snapping.
    */
-  step?: number | 'any'
+  step?: RangeSliderStep
 
   /**
    * Layout direction: horizontal (default) or vertical.
    */
-  orientation?: 'vertical' | 'horizontal'
+  orientation?: RangeSliderOrientation
 
   /**
    * Custom class name for the root element.
@@ -98,114 +97,66 @@ export const RangeSlider: FC<PropsWithChildren<RangeSliderProps>> = ({
   defaultValue,
   ...props
 }) => {
-  const defaultSliderValue = defaultValue ? defaultValue : [min, max] as const
-
   const sliderRef = useRef<HTMLDivElement>(null)
 
-  const [dragging, setDragging] = useState(false)
-  const [value, setValue] = useControlledState(controlledValue, defaultSliderValue)
-  const [activeIndex, setActiveIndex] = useState<number>()
+  const index = useRef<number>(null)
+  const [value, setValue] = useControlledState<[number, number]>(controlledValue, defaultValue ?? [min, max])
 
-  const changeValue = (index: number, newValue: number) => {
-    if (disabled || value[index] === newValue) return
-
-    const cloned = [...value] as [number, number]
-    cloned[index] = newValue
-
-    if (Math.abs(cloned[0] - cloned[1]) < minRange) {
-      if (index === 1 && newValue < value[1]) cloned[index] = cloned[0] + minRange
-      if (index === 0 && newValue > value[0]) cloned[index] = cloned[1] - minRange
+  const changeValue = (index: number, val: number) => {
+    const current = value[index];
+    if (disabled || current === val) return
+    
+    const normalized = normalizeValue(index, val, value)
+    
+    if (Math.abs(normalized[0] - normalized[1]) < minRange) {
+      if (index === 1 && val < value[1]) normalized[index] = normalized[0] + minRange
+      if (index === 0 && val > value[0]) normalized[index] = normalized[1] - minRange
     }
-
-    if (cloned[1] < cloned[0]) return
-
-    setValue(cloned)
-
-    return cloned
+    
+    setValue(normalized)
+    return normalized
   }
-
-  const calcValue = (e: PointerEvent | MouseEvent) => {
-    const track = sliderRef.current
-    if (!track) return min
-    const rect = track.getBoundingClientRect()
-
-    const percent = orientation === 'horizontal'
-      ? (e.clientX - rect.left) / rect.width
-      : 1 - (e.clientY - rect.top) / rect.height
-
-    const raw = min + (max - min) * percent
-
-    if (step === 'any') return clamp(min, raw, max)
-
-    const snapped = Math.round(raw / step) * step
-    return clamp(min, snapped, max)
-  }
-
-  const getClosestIndex = (e: PointerEvent) => {
-    const val = calcValue(e)
-
-    const lengths = [Math.abs(value[0] - val), Math.abs(value[1] - val)]
-
-    if (lengths[0] < lengths[1]) return 0
-    if (lengths[1] < lengths[0]) return 1
-    if (lengths[0] === lengths[1]) {
-      if (val < value[0]) return 0
-      if (val > value[1]) return 1
-    }
-
-    return null
-  }
+  
+  const calcValue = (e: PointerEvent | MouseEvent) => calculateValue(sliderRef.current, e, { max, min, orientation, step })
 
   const getIndex = (e: PointerEvent) => {
     const element = e.target as HTMLElement
 
-    const dataIndex = Number(element.dataset.index)
-    const closestIndex = getClosestIndex(e)
+    const index = Number(element.dataset.index)
+    if (isNaN(index)) return getClosestIndex(calcValue(e), value)
 
-    if (isNaN(dataIndex)) return closestIndex
-
-    return dataIndex
+    return index
   }
 
   const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
-    const val = calcValue(e)
-
     const element = e.target as HTMLElement
-    element?.setPointerCapture(e.pointerId)
+    if (!element) return
+    
+    const pointedIndex = getIndex(e)
+    if (pointedIndex === null) return
+    
+    element.setPointerCapture(e.pointerId)
+    index.current = pointedIndex
 
-    const index = getIndex(e)
-    if (index == null) return
-
-    setActiveIndex(index)
-
-    const newValues = changeValue(index, val)
+    const newValues = changeValue(pointedIndex, calcValue(e))
     if (newValues) onChange?.(e, newValues)
-
-    setDragging(true)
   }
-
+  
   const onPointerMove = (e: PointerEvent<HTMLDivElement>) => {
-    if (!dragging) return
+    if (index.current === null) return
 
     const val = calcValue(e)
+    
+    const newValues = changeValue(index.current, val)
+    
+    if (val < value[0] && index.current !== 0) index.current = 0;
+    if (val > value[1] && index.current !== 1) index.current = 1;
+    
+    if (!newValues) return
 
-    if (value[0] === value[1]) {
-      let index = getIndex(e)
-      if (index === null) return
-
-      if (val < value[0]) index = 0;
-      if (val > value[1]) index = 1;
-
-      setActiveIndex(index)
-    }
-
-    if (activeIndex === undefined) return;
-
-    const newValues = changeValue(activeIndex, val)
-
-    if (newValues) onChange?.(e, newValues)
-    if (newValues && newValues[0] === newValues[1] && value[activeIndex] !== val && preventSkip) {
-      setDragging(false)
+    onChange?.(e, newValues)
+    if (newValues[0] === newValues[1] && value[index.current] !== val && preventSkip) {
+      index.current = null;
       return
     }
   }
@@ -238,16 +189,28 @@ export const RangeSlider: FC<PropsWithChildren<RangeSliderProps>> = ({
       const val = e.key === 'Home'
         ? index === 0 ? min : value[0]
         : index === 1 ? max : value[1]
-
+      
       const newValues = changeValue(index, val)
       if (newValues) onChange?.(e, newValues)
 
       return
     }
   }
+  
+  const onPointerUp = () => {
+    index.current = null;
+  }
 
   return (
-    <RangeSliderProvider minRange={minRange} min={min} max={max} value={value} step={step} size={size} orientation={orientation}>
+    <RangeSliderProvider
+      minRange={minRange}
+      min={min}
+      max={max}
+      value={value}
+      step={step}
+      size={size}
+      orientation={orientation}
+    >
       <SliderBase
         disabled={disabled}
         orientation={orientation}
@@ -255,15 +218,10 @@ export const RangeSlider: FC<PropsWithChildren<RangeSliderProps>> = ({
         size={size}
         min={min}
         max={max}
-        onPointerUp={() => {
-          setDragging(false)
-        }}
-        onMouseUp={() => {
-          setDragging(false)
-        }}
         onKeyDown={onKeyDown}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
+        onPointerUp={onPointerUp}
         {...props}
       >
         {children}

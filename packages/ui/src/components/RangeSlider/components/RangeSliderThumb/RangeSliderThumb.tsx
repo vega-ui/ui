@@ -20,7 +20,7 @@ export interface RangeSliderThumbProps extends Omit<SliderBaseThumbProps, 'value
    * Index of the thumb: 0 for the left (start), 1 for the right (end).
    * Used to determine which part of the range this thumb controls.
    */
-  index: number
+  index: 0 | 1
 
   /**
    * Optional custom class name for styling the thumb.

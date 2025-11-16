@@ -17,7 +17,7 @@ const meta: Meta<typeof RangeSlider> = {
     },
   },
   args: {
-    style: { width: '400px' },
+    style: { width: 400 },
     children: [
       <RangeSliderProgress />,
       <RangeSliderThumb index={0} />,
@@ -37,7 +37,7 @@ export const Default: Story = {
 export const WithLabels: Story = {
   args: {},
   render(props) {
-    const [value, setValue] = useState<[number, number]>([0, 100])
+    const [value, setValue] = useState<[number, number]>([30, 70])
 
     const aId = useId()
     const bId = useId()
@@ -48,7 +48,7 @@ export const WithLabels: Story = {
           <Text asChild><label htmlFor={aId}>{value?.[0]}</label></Text>
           <Text asChild><label htmlFor={bId}>{value?.[1]}</label></Text>
         </div>
-        <RangeSlider {...props} onChange={(_, value) => setValue(value)}>
+        <RangeSlider {...props} value={value} onChange={(_, value) => setValue(value)}>
           <RangeSliderProgress />
           <RangeSliderThumb id={aId} index={0} />
           <RangeSliderThumb id={bId} index={1} />
@@ -61,6 +61,7 @@ export const WithLabels: Story = {
 export const Vertical: Story = {
   args: {
     orientation: 'vertical',
+    style: { height: 200 },
   },
 };
 
