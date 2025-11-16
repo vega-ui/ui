@@ -42,6 +42,7 @@
     "vite-plugin-dts": "^4.3.0",
     "vite-plugin-svgr": "^4.3.0"
   },
+  "sideEffects": false,
   "config": {
     "commitizen": {
       "path": "git-cz"
