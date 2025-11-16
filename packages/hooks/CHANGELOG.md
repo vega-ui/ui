@@ -1,5 +1,11 @@
 # @vega-ui/hooks
 
+## 1.12.1
+
+### Patch Changes
+
+- 22dea95: A bug was fixed in which it was impossible to expand the selected range on mobile devices and scroll in SnapScroller, as well as minor edits were made: when changing the range to the beginning and end, reset is not triggered.
+
 ## 1.12.0
 
 ### Minor Changes

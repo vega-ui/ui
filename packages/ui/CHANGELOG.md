@@ -1,5 +1,16 @@
 # @vega-ui/react
 
+## 1.12.1
+
+### Patch Changes
+
+- 22dea95: A bug was fixed in which it was impossible to expand the selected range on mobile devices and scroll in SnapScroller, as well as minor edits were made: when changing the range to the beginning and end, reset is not triggered.
+- 3b2c885: Added selected and default selected as a prop for DataGridSelectable
+- Updated dependencies [22dea95]
+  - @vega-ui/hooks@1.12.1
+  - @vega-ui/icons@1.12.1
+  - @vega-ui/utils@1.12.1
+
 ## 1.12.0
 
 ### Minor Changes
