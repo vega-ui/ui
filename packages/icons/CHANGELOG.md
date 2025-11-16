@@ -1,5 +1,11 @@
 # @vega-ui/icons
 
+## 1.12.4
+
+### Patch Changes
+
+- a18e86e: Added side effects to icon
+
 ## 1.12.3
 
 ## 1.12.2

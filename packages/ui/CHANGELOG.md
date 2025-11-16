@@ -1,5 +1,14 @@
 # @vega-ui/react
 
+## 1.12.4
+
+### Patch Changes
+
+- Updated dependencies [a18e86e]
+  - @vega-ui/icons@1.12.4
+  - @vega-ui/hooks@1.12.4
+  - @vega-ui/utils@1.12.4
+
 ## 1.12.3
 
 ### Patch Changes
