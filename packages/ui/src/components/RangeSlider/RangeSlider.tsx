@@ -91,7 +91,7 @@ export const RangeSlider: FC<PropsWithChildren<RangeSliderProps>> = ({
   size,
   step = 1,
   minRange = 0,
-  preventSkip = false,
+  preventSkip = true,
   children,
   onChange,
   defaultValue,
