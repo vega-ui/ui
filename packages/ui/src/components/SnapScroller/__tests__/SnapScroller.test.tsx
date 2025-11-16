@@ -134,12 +134,12 @@ describe('SnapScroller', () => {
     expect(() => apiRef.current?.next()).not.toThrow();
   });
   
-  it('preserves snapped index after edge trigger when preserveScroll is true', async () => {
+  it('preserves snapped index after edge trigger', async () => {
     const { setScrollLeft } = patchScrollMetrics({ width: 300, scrollWidth: 900 });
     const onOffset = vi.fn();
     
     render(
-      <SnapScroller data-testid='scroller' onOffset={onOffset} preserveScroll>
+      <SnapScroller data-testid='scroller' onOffset={onOffset}>
         <SnapScrollerContent index={0} />
         <SnapScrollerContent index={1} />
         <SnapScrollerContent index={2} />

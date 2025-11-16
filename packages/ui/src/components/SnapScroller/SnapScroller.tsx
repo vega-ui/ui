@@ -75,7 +75,7 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
   
   const index = useRef<number | undefined>(undefined)
   const scrollerRef = useRef<HTMLDivElement>(null)
-  const preserve = useRef(false)
+  const lastDelta = useRef(0)
   
   const scroll = (offsetWidth: number, element?: HTMLDivElement) => {
     const scroller: HTMLDivElement | null = element ?? scrollerRef.current
@@ -143,26 +143,27 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
     const { scrollWidth, clientWidth, scrollLeft } = target
     
     const snapped = getSnappedIndex(target)
-    const preserved = preserve.current
 
     if (snapped !== undefined && snapped !== index.current) {
       onSnap?.(snapped)
       index.current = snapped
     }
     
-    if (Math.floor(scrollLeft) <= 0 && !preserved) {
+    if (Math.floor(scrollLeft) <= 0 && lastDelta.current !== -1) {
       onOffset?.(-1);
-      preserve.current = true;
+      lastDelta.current = -1;
+      return
     }
     
-    if (Math.ceil(scrollLeft) >= scrollWidth - clientWidth && !preserved) {
+    if (Math.ceil(scrollLeft) >= scrollWidth - clientWidth && lastDelta.current !== 1) {
       onOffset?.(1);
-      preserve.current = true;
+      lastDelta.current = 1;
+      return
     }
   }
   
   useLayoutEffect(() => {
-    if (!preserveScroll || !preserve) return
+    if (!preserveScroll || lastDelta.current === 0) return
     
     const el = scrollerRef.current;
     if (!el) return;
@@ -172,12 +173,10 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
     
     const next = getItem(current);
     
-    if (next) {
-      requestAnimationFrame(() => {
-        next.scrollIntoView({ behavior: 'instant', inline: 'nearest', block: 'nearest' });
-        preserve.current = false;
-      })
-    }
+    requestAnimationFrame(() => {
+      if (next) next.scrollIntoView({ behavior: 'instant', inline: 'nearest', block: 'nearest' });
+      lastDelta.current = 0;
+    })
   });
   
   return (
