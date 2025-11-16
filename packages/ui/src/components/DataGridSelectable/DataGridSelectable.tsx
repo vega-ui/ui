@@ -264,9 +264,7 @@ export const DataGridSelectable: FC<PropsWithChildren<DataGridSelectableProps>> 
   
   const onPointerUp = useRef(() => {
     index.current = undefined
-    requestIdleCallback(() => {
-      expanding.current = false;
-    })
+    expanding.current = false;
   })
 
   useEffect(() => {
