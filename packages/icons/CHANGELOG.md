@@ -1,5 +1,7 @@
 # @vega-ui/icons
 
+## 1.13.0
+
 ## 1.12.4
 
 ### Patch Changes
