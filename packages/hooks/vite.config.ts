@@ -1,14 +1,17 @@
 import { defineConfig } from 'vite'
 import { resolve } from 'path'
 import dts from 'vite-plugin-dts'
+import tsconfigPaths from 'vite-tsconfig-paths';
+import * as packageJson from './package.json';
 
 // https://vite.dev/config/
 export default defineConfig({
   base: '/',
   plugins: [
+    tsconfigPaths({ root: '../../' }),
     dts({
       insertTypesEntry: true,
-      tsconfigPath: './tsconfig.app.json',
+      tsconfigPath: resolve(__dirname, 'tsconfig.app.json'),
     }),
   ],
   build: {
@@ -19,17 +22,17 @@ export default defineConfig({
       fileName: (_, entryName) => {
         return `${entryName}.js`;
       },
-      name: 'AdaraCloudUI',
+      name: 'VegaUI',
     },
     chunkSizeWarningLimit: 10000,
     rollupOptions: {
-      external: ['react', 'react-dom', 'react/jsx-runtime', '@floating-ui/react', 'react-remove-scroll', '@vega-ui/utils', '@vega-ui/hooks'],
+      external: [...Object.keys(packageJson.dependencies), 'react/jsx-runtime'],
       output: {
         preserveModules: true,
         globals: {
           react: 'React',
           'react-dom': 'ReactDOM',
-          'react/jsx-runtime': 'react/jsx-runtime',
+          'react/jsx-runtime': 'react/jsx-runtime'
         },
       },
     },

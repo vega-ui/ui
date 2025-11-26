@@ -7,6 +7,12 @@ const meta: Meta<typeof DataGridPickerItem> = {
   title: 'Data/DataGridPicker/DataGridPickerItem',
   component: DataGridPickerItem,
   tags: ['autodocs'],
+  argTypes: {
+    size: {
+      control: 'radio',
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
+    }
+  }
 }
 
 export default meta;

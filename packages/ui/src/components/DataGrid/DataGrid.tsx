@@ -1,5 +1,4 @@
 import {
-  FC,
   HTMLAttributes,
   PropsWithChildren,
   KeyboardEvent,
@@ -10,8 +9,7 @@ import {
 } from 'react';
 import style from './style.module.css'
 import { csx, MatrixNode, mergeEventHandlers } from '@vega-ui/utils';
-import { useControlledState } from '@vega-ui/hooks';
-import { Grid } from '@vega-ui/utils';
+import { useControlledState, useGrid } from '@vega-ui/hooks';
 
 import { DataGridProvider } from './providers';
 import {
@@ -21,7 +19,7 @@ import {
   DataGridWrap, DataGridApiRef, DataGridExcludeResolver,
 } from './types';
 
-export interface DataGridProps extends HTMLAttributes<HTMLDivElement> {
+export interface DataGridProps<K extends DataGridCellKey = DataGridCellKey> extends HTMLAttributes<HTMLDivElement> {
   /**
    * Ref to the grid’s root element.
    */
@@ -31,9 +29,9 @@ export interface DataGridProps extends HTMLAttributes<HTMLDivElement> {
    * Ref to the grid’s imperative API.
    * Exposes low-level structures for advanced scenarios:
    * - `grid` — matrix navigation helper
-   * - `keyMap` — Map<DataGridCellKey, [row, col]> for fast lookups
+   * - `keyMap` — Map<K, [row, col]> for fast lookups
    */
-  apiRef?: Ref<DataGridApiRef>;
+  apiRef?: Ref<DataGridApiRef<K>>;
   
   /**
    * Navigation wrap mode.
@@ -47,17 +45,17 @@ export interface DataGridProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * Uncontrolled initial active (focused) cell key.
    */
-  defaultActive?: DataGridCellKey;
+  defaultActive?: K;
   
   /**
    * Controlled active (focused) cell key.
    */
-  active?: DataGridCellKey;
+  active?: K;
   
   /**
    * Fires when the active (focused) cell key changes.
    */
-  onChangeActive?(active: DataGridCellKey): void;
+  onChangeActive?(active: K): void;
   
   /**
    * Exclude cells from focus traversal.
@@ -66,14 +64,7 @@ export interface DataGridProps extends HTMLAttributes<HTMLDivElement> {
    * - an array of keys
    * - a predicate `(key) => boolean`
    */
-  exclude?: DataGridExclude;
-  
-  /**
-   * Prevent automatic scrolling when moving focus to a new active cell.
-   *
-   * @default true
-   */
-  preventScrollToActive?: boolean;
+  exclude?: DataGridExclude<K>;
   
   /**
    * Page navigation row step for PageUp/PageDown.
@@ -91,7 +82,7 @@ export interface DataGridProps extends HTMLAttributes<HTMLDivElement> {
    */
   onMove?(
     e: KeyboardEvent<HTMLDivElement>,
-    node: MatrixNode<HTMLElement, DataGridCellKey>,
+    node: MatrixNode<HTMLElement, K>,
     axis: 0 | 1,
     dir: -1 | 1
   ): void;
@@ -103,11 +94,10 @@ export interface DataGridProps extends HTMLAttributes<HTMLDivElement> {
  * optional wrapping, exclusion of specific cells from traversal, and an
  * imperative API (`apiRef`) for advanced integrations.
  */
-export const DataGrid: FC<PropsWithChildren<DataGridProps>> = ({
+export const DataGrid = <K extends DataGridCellKey = DataGridCellKey>({
   children,
   apiRef,
   className,
-  preventScrollToActive = true,
   rowDelta,
   exclude,
   active: _active,
@@ -118,34 +108,34 @@ export const DataGrid: FC<PropsWithChildren<DataGridProps>> = ({
   ref,
   onMove,
   ...props
-}) => {
+}: PropsWithChildren<DataGridProps<K>>) => {
   const wrapH = ['horizontal', 'both'].includes(wrap ?? '')
   const wrapV = ['vertical', 'both'].includes(wrap ?? '')
 
-  const grid = useRef(new Grid<HTMLElement, DataGridCellKey>()).current
-  const keyMap = useRef(new Map<DataGridCellKey, DataGridCoordinates>()).current
+  const grid = useGrid<HTMLDivElement, K>()
+  const keyMap = useRef(new Map<K, DataGridCoordinates>()).current
   
   useImperativeHandle(apiRef, () => ({
     grid,
     keyMap,
   }), [grid, keyMap])
   
-  const [active, setActive] = useControlledState(_active, defaultActive ?? '', onChangeActive)
+  const [active, setActive] = useControlledState<K>(_active, defaultActive ?? '' as K, onChangeActive)
 
-  const setItemRef = useCallback((coordinates: DataGridCoordinates, key: DataGridCellKey) => (element: HTMLElement) => {
+  const setItemRef = useCallback((coordinates: DataGridCoordinates, key: K) => (element: HTMLDivElement) => {
     keyMap.set(key, coordinates)
     grid.addNode(coordinates, key, element)
   }, [])
   
-  const changeActive = (node: MatrixNode<HTMLElement, DataGridCellKey>) => {
+  const changeActive = (node: MatrixNode<HTMLElement, K>) => {
     if (node.key) setActive(node.key)
-    node.payload?.focus({ preventScroll: preventScrollToActive })
+    node.payload?.focus()
   }
 
-  const excluded = useCallback((key?: DataGridCellKey) => {
+  const excluded = useCallback((key?: K) => {
     if (!key) return false
     
-    if (typeof exclude === 'function') return (exclude as DataGridExcludeResolver)(key)
+    if (typeof exclude === 'function') return (exclude as DataGridExcludeResolver<K>)(key)
     if (Array.isArray(exclude)) return exclude.includes(key)
     
     return key === exclude
@@ -154,6 +144,7 @@ export const DataGrid: FC<PropsWithChildren<DataGridProps>> = ({
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     const activePosition = keyMap.get(active)
     if (!activePosition) return
+    
     const getNode = (key: string) => {
       if (key === 'ArrowLeft') return grid.before(activePosition, 0, wrapH)
       if (key === 'ArrowRight') return grid.after(activePosition, 0, wrapH)

@@ -33,7 +33,12 @@ const meta = {
       </DataGridSelectableRowGroup>
     )
   },
-  argTypes: {},
+  argTypes: {
+    wrap: {
+      control: 'radio',
+      options: ['horizontal', 'vertical', 'both'],
+    },
+  },
 } satisfies Meta<typeof DataGridSelectable>;
 
 export default meta;

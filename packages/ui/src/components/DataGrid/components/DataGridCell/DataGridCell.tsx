@@ -3,13 +3,14 @@ import style from './style.module.css'
 import { csx, mergeRefs } from '@vega-ui/utils';
 import { useDataGridContext, useDataGridRowContext } from '../../hooks';
 import { Slot } from '../../../Slot';
+import { DataGridCellKey } from '../../types.ts';
 
 export interface DataGridCellProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * Column index of the cell (0-based). Used together with row index from the row context
    * to form grid coordinates: `[row, col]`.
    */
-  col?: number;
+  col: number;
   
   /**
    * External ref to the cell root element. Will be merged with the internal
@@ -21,7 +22,7 @@ export interface DataGridCellProps extends HTMLAttributes<HTMLDivElement> {
    * Stable key that identifies the cell in the DataGrid matrix.
    * If omitted, a key is derived as `${row}:${col}` from row/col.
    */
-  cellKey?: string | number;
+  cellKey?: DataGridCellKey;
   
   /**
    * When `true`, renders children via `Slot` and forwards props/refs to the child
@@ -30,6 +31,12 @@ export interface DataGridCellProps extends HTMLAttributes<HTMLDivElement> {
    * @default false
    */
   asChild?: boolean;
+  
+  /**
+   * Exclude cells from focus traversal.
+   * Overrides value from root DataGrid
+   */
+  excluded?: boolean;
 }
 
 /**
@@ -42,19 +49,20 @@ export const DataGridCell: FC<PropsWithChildren<DataGridCellProps>> = ({
   ref,
   col,
   className,
+  excluded,
   cellKey,
   ...props
 }) => {
   const Element = asChild ? Slot : 'div'
   
-  const { itemRef, active, excluded } = useDataGridContext()
+  const { itemRef, active, excluded: _excluded } = useDataGridContext()
   const { row } = useDataGridRowContext()
   
   const key = cellKey ?? `${row}:${col}`
-  const coordinates = row !== undefined && col !== undefined
-    ? [row, col] as [number, number]
-    : undefined
+  const coordinates = [row, col] as [number, number]
   const focusable = key === active
+  
+  const excludedCell = excluded || _excluded(key)
   
   return (
     <Element
@@ -63,7 +71,7 @@ export const DataGridCell: FC<PropsWithChildren<DataGridCellProps>> = ({
       data-col={col}
       data-key={cellKey}
       tabIndex={focusable ? 0 : -1}
-      ref={mergeRefs([ref, coordinates && !excluded?.(key) ? itemRef(coordinates, key) : undefined])}
+      ref={mergeRefs([ref, !excludedCell ? itemRef(coordinates, key) : undefined])}
       className={csx(style.cell, className)}
       {...props}
     >

@@ -6,13 +6,12 @@ import {
   DataGridPickerRowGroup,
   DataGridPickerRow,
 } from './components';
-import { useRef, useState } from 'react';
+import { FC, useRef } from 'react';
 import { IconButton } from '../IconButton';
 import { Icon } from '../Icon';
 import { ChevronLeft, ChevronRight } from '@vega-ui/icons'
-import { SnapScroller } from '../SnapScroller';
-import { SnapScrollerApiRef, SnapScrollerContent } from '../SnapScroller';
-import { DataGridCellKey } from '../DataGrid/types.ts';
+import { SnapScrollerApiRef } from '../SnapScroller';
+import { IndexedSnapScroller, IndexedSnapScrollerContent, useIndexesSnapScrollerContext } from '../IndexedSnapScroller';
 
 const EMOJI_POOL = [
   '😀','😃','😄','😁','😆','😅','😂','🤣','😊','🙂','🙃','😉','😌','😍','🥰','😘','😗','😙','😚','😋',
@@ -94,44 +93,6 @@ interface EmojiCell {
   col: number;
 }
 
-interface EmojiGridPage {
-  index: number;
-  grid: EmojiCell[][];
-}
-
-function buildEmojiGridList(
-  startIndex: number,
-  pages: number,
-  size = 5
-): EmojiGridPage[] {
-  return Array.from({ length: pages }, (_, i) => {
-    const index = startIndex + i + 1;
-    const emojis = getEmojiGridByOffset(index, size);
-    
-    const grid: EmojiCell[][] = [];
-    
-    for (let localRow = 0; localRow < size; localRow++) {
-      const absoluteRow = localRow + size * index;
-      const row: EmojiCell[] = [];
-      
-      for (let col = 0; col < size; col++) {
-        row.push({
-          emoji: emojis[localRow][col],
-          row: absoluteRow,
-          col,
-        });
-      }
-      
-      grid.push(row);
-    }
-    
-    return {
-      index,
-      grid,
-    };
-  });
-}
-
 const meta = {
   title: 'Data/DataGridPicker/DataGridPicker',
   component: DataGridPicker,
@@ -139,6 +100,9 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
+  args: {
+    size: 'sm',
+  },
   argTypes: {
     selection: {
       control: 'radio',
@@ -147,6 +111,14 @@ const meta = {
     wrap: {
       control: 'radio',
       options: ['horizontal', 'vertical', 'both'],
+    },
+    variant: {
+      control: 'radio',
+      options: ['primary', 'secondary'],
+    },
+    size: {
+      control: 'radio',
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     }
   }
 } satisfies Meta<typeof DataGridPicker>;
@@ -164,7 +136,7 @@ export const Default: Story = {
         {matrix.map((row, index) => (
           <DataGridPickerRow row={index} key={index}>
             {row.map(([, col]) => (
-              <DataGridPickerItem style={{ width: 42, height: 42 }} col={col} key={col}>
+              <DataGridPickerItem col={col} key={col}>
                 {col + 1}
               </DataGridPickerItem>
             ))}
@@ -175,108 +147,48 @@ export const Default: Story = {
   }
 };
 
-const SIZE = 3
-const MAX_GRIDS = SIZE * 2
-const defaultGrid = buildEmojiGridList(-1, SIZE, 5);
+const DefaultSwipableLayout: FC = () => {
+  const { index } = useIndexesSnapScrollerContext()
+  
+  const makeKey = (index: number, row: number, col: number, emoji: string) => `${index}:${row}:${col}:${emoji.codePointAt(0)}`;
+  
+  const grid: EmojiCell[][] = getEmojiGridByOffset(index, 5).map((row, rowIndex) =>
+    row.map((emoji, col) => ({
+      emoji,
+      row: rowIndex + 5 * index,
+      col,
+    }))
+  );
+  
+  return (
+    <DataGridPickerRowGroup>
+      {grid.map((row, rowIndex) => (
+        <DataGridPickerRow row={row[rowIndex]?.row} key={rowIndex}>
+          {row.map((cell, columnIndex) => (
+            <DataGridPickerItem
+              col={columnIndex}
+              value={makeKey(index, cell.row, cell.col, cell.emoji)}
+              key={columnIndex}
+            >
+              {cell.emoji}
+            </DataGridPickerItem>
+          ))}
+        </DataGridPickerRow>
+      ))}
+    </DataGridPickerRowGroup>
+  )
+}
 
-export const DefaultSwipable: Story = {
+export const DefaultSwipableRange: Story = {
   args: {
-    selection: 'range'
+    selection: 'range',
+    defaultActive: '1:5:0:9992'
   },
   render(props) {
     const apiRef = useRef<SnapScrollerApiRef>(null)
     
-    const index = useRef<number>(1)
-    const [gridList, setGridList] = useState(defaultGrid)
-    
-    const onSnapChanged = (value: number) => {
-      index.current = value
-    }
-    
-    const makePage = (index: number, size = 5): EmojiGridPage => {
-      const base = getEmojiGridByOffset(index, size);
-      const grid: EmojiCell[][] = base.map((row, rowIndex) =>
-        row.map((emoji, col) => ({
-          emoji,
-          row: rowIndex + size * index,
-          col,
-        }))
-      );
-      return { index, grid };
-    };
-    
-    const start = () => {
-      const startIndex = gridList[0].index;
-      const next = Array.from({ length: SIZE }, (_, i) => makePage(startIndex - i - 1, 5)).reverse();
-      const merged = [...next, ...gridList];
-      
-      if (merged.length > MAX_GRIDS) setGridList(merged.slice(0, MAX_GRIDS));
-      else setGridList(merged);
-    };
-    
-    const end = () => {
-      const startIndex = gridList[gridList.length - 1].index;
-      const next = Array.from({ length: SIZE }, (_, i) => makePage(startIndex + i + 1, 5));
-      const merged = [...gridList, ...next];
-      
-      if (merged.length > MAX_GRIDS) setGridList(merged.slice(merged.length - MAX_GRIDS));
-      else setGridList(merged);
-    };
-    
-    const onOffset = (offset: number) => {
-      if (offset === -1) start()
-      if (offset === 1) end()
-    }
-    
-    const makeKey = (index: number, row: number, col: number, emoji: string) => `${index}:${row}:${col}:${emoji.codePointAt(0)}`;
-    
-    const parseCoordinatesFromKey = (key: string): [number, number] => {
-      const [,row, col] = key.split(':')
-      return [Number(row), Number(col)]
-    }
-    
-    const isBetween = (key: DataGridCellKey, selected: DataGridCellKey[]): boolean => {
-      const [startKey, endKey] = selected
-      
-      if (selected.length !== 2) return selected.includes(key)
-      const toIndex = (row: number, col: number, cols: number = 5) => row * cols + col
-      const start = parseCoordinatesFromKey(startKey as string)
-      const end = parseCoordinatesFromKey(endKey as string)
-      const cell = parseCoordinatesFromKey(key as string)
-      
-      const a = toIndex(...start)
-      const b = toIndex(...end)
-      const i = toIndex(...cell)
-      
-      const lo = Math.min(a, b)
-      const hi = Math.max(a, b)
-      
-      return i >= lo && i <= hi
-    }
-    
-    const [active, setActive] = useState<string | number | undefined>('1:9:1:128569')
-    
-    const onActive = (active: DataGridCellKey) => {
-      setActive(active)
-      
-      const { current } = index
-      const gridIndex = Number(active.toString().split(':')[0])
-      if (!isNaN(gridIndex) && gridIndex !== current) {
-        if (gridIndex < current) apiRef.current?.prev()
-        if (gridIndex > current) apiRef.current?.next()
-      }
-    }
-    
     return (
-      <DataGridPicker
-        {...props}
-        disabled={['1:8:1:129395']}
-        exclude={['1:8:1:129395']}
-        active={active}
-        onChangeActive={onActive}
-        resolveRange={(start, end) => [start.key, end.key]}
-        selectedEqual={isBetween}
-      >
+      <DataGridPicker{...props}>
         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: '16px' }}>
           <IconButton onClick={() => apiRef?.current?.prev()} variant='secondary' appearance='transparent' size='sm'>
             <Icon><ChevronLeft /></Icon>
@@ -285,33 +197,11 @@ export const DefaultSwipable: Story = {
             <Icon><ChevronRight /></Icon>
           </IconButton>
         </div>
-        <SnapScroller
-          onSnap={onSnapChanged}
-          onOffset={onOffset}
-          apiRef={apiRef}
-          style={{ width: 210 }}
-        >
-          {gridList.map(({ grid, index }) => (
-            <SnapScrollerContent index={index} key={index}>
-              <DataGridPickerRowGroup>
-                {grid.map((row, rowIndex) => (
-                  <DataGridPickerRow row={row[rowIndex]?.row} key={rowIndex}>
-                    {row.map((cell, columnIndex) => (
-                      <DataGridPickerItem
-                        col={columnIndex}
-                        cellKey={makeKey(index, cell.row, cell.col, cell.emoji)}
-                        style={{ width: 42, height: 42 }}
-                        key={columnIndex}
-                      >
-                        {cell.emoji}
-                      </DataGridPickerItem>
-                    ))}
-                  </DataGridPickerRow>
-                ))}
-              </DataGridPickerRowGroup>
-            </SnapScrollerContent>
-          ))}
-        </SnapScroller>
+        <IndexedSnapScroller apiRef={apiRef} style={{ width: 210 }}>
+          <IndexedSnapScrollerContent>
+            <DefaultSwipableLayout />
+          </IndexedSnapScrollerContent>
+        </IndexedSnapScroller>
       </DataGridPicker>
     )
   }

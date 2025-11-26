@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { useControlledState } from './useControlledState';
 
 export type Selection = 'single' | 'multiple' | 'range'
-export type SelectedValue<M extends Selection, K> = M extends 'single' ? K : Array<K>
+export type SelectedValue<M extends Selection, K> = M extends 'single' ? K : K[]
 export type SelectionDisabledResolver<K> = ((value: K) => boolean)
 export type SelectedDisabled<K> = K | K[] | SelectionDisabledResolver<K>
 
@@ -12,8 +12,7 @@ export interface UseSelectionOptions<K, M extends Selection> {
   selected?: SelectedValue<M, K>;
   disabled?: SelectedDisabled<K>;
   equals?(a: K, b: K): boolean;
-  selectedEqual?(value: K, selected: SelectedValue<M, K>): boolean;
-  compare?: M extends 'range' ? (a: K, b: K) => -1 | 0 | 1 : never;
+  compare: M extends 'range' ? (a: K, b: K) => -1 | 0 | 1 : never;
   resolveRange?: M extends 'range' ? (a: K, b: K) => K[] : never;
   onSelect?(selected: SelectedValue<M, K> | undefined): void;
   min?: K
@@ -25,7 +24,6 @@ export const useSelection = <K, const M extends Selection>({
   defaultSelected = [] as SelectedValue<M, K>,
   disabled,
   selected: _selected,
-  selectedEqual,
   onSelect,
   equals,
   compare,
@@ -34,20 +32,39 @@ export const useSelection = <K, const M extends Selection>({
   max,
 }: UseSelectionOptions<K, M>) => {
   const [selected, setSelected] = useControlledState<SelectedValue<M, K> | undefined>(_selected, defaultSelected, onSelect)
-  
+
   const eq = useMemo(() => equals ?? ((a: K, b: K) => Object.is(a, b)), [equals])
   
-  const isSelected = useCallback((key: K) => {
-    if (!selected) return false
-    if (selectedEqual) return selectedEqual(key, selected)
-    if (selection === 'single' || !Array.isArray(selected)) return eq(selected as SelectedValue<'single', K>, key)
+  const edges = useCallback((): [K, K] | [] => {
+    if (selection !== 'range') return []
     
-    const array = selected as SelectedValue<'multiple', K>
-    return array.some(k => eq(k, key))
-  }, [selection, selected, eq, selectedEqual])
+    const range = selected as SelectedValue<'range', K>
+    const start = range[0]
+    const end = range[range.length - 1]
+    
+    if (compare(start, end) === 1) return [end, start]
+    
+    return [start, end]
+  }, [selected, selection, compare])
+  
+  const isSelected = useCallback((key: K | undefined) => {
+    if (selected === undefined || key === undefined) return false
+    
+    if (Array.isArray(selected)) {
+      if (selection === 'range') {
+        const [start, end] = edges()
+        
+        return eq(start, key) || eq(end, key) || (compare(key, start) > 0 && compare(key, end) < 0)
+      }
+      
+      return selected.some(k => eq(k, key))
+    }
+    
+    return eq(selected as SelectedValue<'single', K>, key)
+  }, [selection, selected, eq, edges, compare])
   
   const isDisabled = useCallback((key?: K) => {
-    if (!key) return false
+    if (key === undefined) return false
     if (typeof disabled === 'function') return (disabled as SelectionDisabledResolver<K>)(key)
     if (Array.isArray(disabled)) return disabled.includes(key)
     if (compare) {
@@ -56,7 +73,7 @@ export const useSelection = <K, const M extends Selection>({
     }
     
     return disabled === key
-  }, [disabled])
+  }, [disabled, min, max, compare])
   
   const unselect = useCallback((key: K) => {
     if (selection === 'multiple') {
@@ -120,18 +137,6 @@ export const useSelection = <K, const M extends Selection>({
     const value = resolveRange ? resolveRange(start, end) : [start, end]
     return value as SelectedValue<M, K>
   }, [resolveRange])
-  
-  const edges = useCallback((): [K, K] | [] => {
-    if (selection !== 'range') return []
-    
-    const range = selected as SelectedValue<'range', K>
-    const start = range[0]
-    const end = range[range.length - 1]
-    
-    if (compare?.(start, end) === 1) return [end, start]
-    
-    return [start, end]
-  }, [selected, selection, compare])
   
   const expand = useCallback((key: K, edge?: 0 | 1) => {
     if (selection !== 'range' || !compare) return

@@ -1,19 +1,38 @@
-import { FC, PropsWithChildren, useRef } from 'react';
-import { useDataGridRowContext } from '../../../DataGrid';
+import { FC, PropsWithChildren } from 'react';
+import { DataGridCellKey, useDataGridRowContext } from '../../../DataGrid';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css';
 import { DataGridPickerItemRangePosition } from './types';
 import { getRangePosition } from './helpers';
 import { DataGridSelectableCell, DataGridSelectableCellProps } from '../../../DataGridSelectable';
 import { useDataGridSelectableContext } from '../../../DataGridSelectable';
+import { DataGridPickerSize, DataGridPickerVariant } from '../../types';
+import { useDataGridPickerContext } from '../../hooks';
 
-export interface DataGridPickerItemProps extends DataGridSelectableCellProps {
+export interface DataGridPickerItemProps extends Omit<DataGridSelectableCellProps, 'cellKey'> {
   /**
    * Optional visual indicator of the cell’s position within a range.
    * One of: `"start" | "between" | "end"`.
    * If not provided, the component automatically derives it based on selection context.
    */
   range?: DataGridPickerItemRangePosition
+  
+  /**
+   * Controls the item’s visual size.
+   * Useful for adapting the picker to compact or large layouts.
+   */
+  size?: DataGridPickerSize
+  
+  /**
+   * Logical value associated with this grid cell.
+   * Used as the cell’s unique selection key.
+   */
+  value?: DataGridCellKey
+  
+  /**
+   * Visual appearance preset for the picker.
+   */
+  variant?: DataGridPickerVariant
 }
 
 /**
@@ -21,28 +40,30 @@ export interface DataGridPickerItemProps extends DataGridSelectableCellProps {
  * position in a selected range for visual feedback.
  */
 export const DataGridPickerItem: FC<PropsWithChildren<DataGridPickerItemProps>> = ({
+  col,
+  size,
   range,
   className,
   children,
-  cellKey,
-  col,
+  value,
+  variant,
   ...props
 }) => {
   const { row } = useDataGridRowContext()
-  const { equals, selected, selection } = useDataGridSelectableContext()
-  
-  const ref = useRef<HTMLDivElement>(null)
-  
-  const key = cellKey ?? `${row}:${col}`
-  const rangePosition = selection === 'range' && Array.isArray(selected) && selected.length >= 2 && !equals(selected[0], selected[selected.length - 1])
-    ? getRangePosition(key, { equals, selected })
+  const { size: _size, variant: _variant } = useDataGridPickerContext()
+  const { equals, selected, selection, compare, isSelected } = useDataGridSelectableContext()
+
+  const key = value ?? `${row}:${col}`
+  const rangePosition = selection === 'range' && isSelected(key) && Array.isArray(selected) && selected.length >= 2 && !equals(selected[0], selected[selected.length - 1])
+    ? getRangePosition(key, { equals, selected, compare })
     : undefined
   
   return (
     <DataGridSelectableCell
-      ref={ref}
+      data-size={size ?? _size}
+      data-variant={variant ?? _variant}
       data-range={range ?? rangePosition}
-      className={csx(style.item, className)}
+      className={csx(style.pickerItem, className)}
       col={col}
       cellKey={key}
       {...props}

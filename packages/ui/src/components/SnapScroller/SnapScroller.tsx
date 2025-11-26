@@ -118,6 +118,11 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
     return Number(index)
   }
   
+  const scrollTo = (to: number) => {
+    const item = getItem(to)
+    item?.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' })
+  }
+
   const scrollByDelta = (delta: number) => {
     const scroller = scrollerRef.current
     if (!scroller) return
@@ -125,8 +130,7 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
     const current = getSnappedIndex(scroller)
     if (current === undefined) return
     
-    const item = getItem(current + delta)
-    item?.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' })
+    scrollTo(current + delta)
   }
   
   useImperativeHandle(apiRef, () => ({
@@ -135,6 +139,9 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
     },
     next() {
       scrollByDelta(1)
+    },
+    to(index: number) {
+      scrollTo(index)
     }
   }))
   
@@ -174,11 +181,11 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
     const next = getItem(current);
     
     requestAnimationFrame(() => {
-      if (next) next.scrollIntoView({ behavior: 'instant', inline: 'nearest', block: 'nearest' });
+      next?.scrollIntoView({ behavior: 'instant', inline: 'nearest', block: 'nearest' });
       lastDelta.current = 0;
     })
   });
-  
+
   return (
     <SnapScrollerProvider itemRef={itemRef}>
       <div

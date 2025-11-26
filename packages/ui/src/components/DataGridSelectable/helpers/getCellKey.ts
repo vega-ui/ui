@@ -1,8 +1,8 @@
 import { getCellCoordinates } from './getCellCoordinates.ts';
+import { DataGridCellKey } from '../../DataGrid';
 import { Grid } from '@vega-ui/utils';
-import { DataGridCellKey } from '../../DataGrid/types.ts';
 
-export const getCellKey = (element: HTMLElement, grid: Grid<HTMLElement, DataGridCellKey>) => {
+export const getCellKey = <K = DataGridCellKey>(element: HTMLElement, grid: Grid<HTMLElement, K>) => {
   const coordinates = getCellCoordinates(element)
   if (!coordinates) return
   
