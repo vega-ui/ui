@@ -2,19 +2,25 @@
 
 import { createContext } from 'react';
 import { DataGridSelection } from '../../types.ts';
-import { DataGridCellKey } from '../../../DataGrid/types.ts';
+import { DataGridCellKey } from '../../../DataGrid';
 
-export interface DataGridSelectableContextState {
+export interface DataGridSelectableContextState<K = DataGridCellKey> {
   selection?: DataGridSelection
-  onSelect?(key: DataGridCellKey): void
-  isSelected?(key: DataGridCellKey): boolean
-  isDisabled?(key: DataGridCellKey): boolean
-  selected?: Array<DataGridCellKey> | DataGridCellKey
-  equals(a: DataGridCellKey, b: DataGridCellKey): boolean
-  compare(a: DataGridCellKey, b: DataGridCellKey): -1 | 0 | 1
+  onSelect?(key: K): void
+  isSelected(key: K | undefined): boolean
+  isDisabled(key: K | undefined): boolean
+  selected?: K[] | K
+  equals(a: K, b: K): boolean
+  compare(a: K, b: K): -1 | 0 | 1
 }
 
 export const defaultDataGridSelectableContext: DataGridSelectableContextState = {
+  isSelected() {
+    return false
+  },
+  isDisabled() {
+    return false
+  },
   compare() {
     return 0
   },

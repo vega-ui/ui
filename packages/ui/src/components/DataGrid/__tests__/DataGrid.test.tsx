@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 
-import { FC } from 'react';
+import { FC, RefObject } from 'react';
 import { DataGrid, DataGridProps } from '../DataGrid';
 import type { DataGridApiRef } from '../types';
 import { DataGridCell, DataGridRow } from '../components';
@@ -174,7 +174,7 @@ describe('DataGrid', () => {
   });
   
   it('apiRef exposes grid and keyMap with registered cells', () => {
-    const apiRef = { current: null as unknown as DataGridApiRef };
+    const apiRef = { current: null } as unknown as RefObject<DataGridApiRef<string>>;
     render(<Grid3x2 defaultActive='1:2' apiRef={apiRef} />);
     
     expect(apiRef.current).toBeTruthy();

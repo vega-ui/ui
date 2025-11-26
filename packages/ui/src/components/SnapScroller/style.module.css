@@ -2,6 +2,7 @@
     display: flex;
     contain: layout paint;
     scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
     scrollbar-width: none;
     overflow-x: auto;
     overflow-y: hidden;

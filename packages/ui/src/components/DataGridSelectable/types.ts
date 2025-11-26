@@ -1,5 +1,5 @@
-import { DataGridCellKey } from '../DataGrid/types.ts';
+import { DataGridCellKey } from '../DataGrid';
 
 export type DataGridSelection = 'single' | 'multiple' | 'range'
-export type DataGridDisabledResolver = (key: DataGridCellKey) => boolean
-export type DataGridDisabled = DataGridDisabledResolver | DataGridCellKey[] | DataGridCellKey
+export type DataGridDisabledResolver<K = DataGridCellKey> = (key: K) => boolean
+export type DataGridDisabled<K = DataGridCellKey> = DataGridDisabledResolver<K> | K[] | K

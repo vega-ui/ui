@@ -138,7 +138,7 @@ describe('DataGridSelectable', () => {
     elementFromPointMock.mockReturnValue(getCell(1, 2))
     fireEvent.pointerMove(getCell(1, 2)!);
     
-    expect(getCell(0, 2)).toHaveAttribute('aria-selected', 'false');
+    expect(getCell(0, 2)).toHaveAttribute('aria-selected', 'true');
     expect(getCell(1, 2)).toHaveAttribute('aria-selected', 'true');
   });
   

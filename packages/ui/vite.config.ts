@@ -35,7 +35,7 @@ export default defineConfig({
         return path.startsWith('src') ? path.replace('src/', '') : path;
       },
       cssFileName: 'index',
-      name: 'AdaraCloudUI',
+      name: 'VegaUI',
     },
     chunkSizeWarningLimit: 10000,
     rollupOptions: {

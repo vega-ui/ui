@@ -19,11 +19,12 @@ const meta = {
   },
   tags: ['autodocs'],
   args: {
+    wrap: 'horizontal',
     children: (
       <DataGridRowGroup>
         {matrix.map((row, index) => (
           <DataGridRow row={index} key={index}>
-            {row.map(({ index: [, col] }) => (
+            {row.map(({ index: [, col] }, index) => (
               <DataGridCell style={{ width: 42, height: 42 }} col={col} key={index}>
                 <Text size={2}>{col + 1}</Text>
               </DataGridCell>

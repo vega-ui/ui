@@ -1,14 +1,14 @@
 import { Grid } from '@vega-ui/utils';
 
 export type DataGridWrap = 'horizontal' | 'vertical' | 'both'
+export type DataGridCellKey = string | number;
 
-export interface DataGridApiRef {
-  grid: Grid<HTMLElement, DataGridCellKey>
-  keyMap: Map<DataGridCellKey, DataGridCoordinates>
+export interface DataGridApiRef<K> {
+  grid: Grid<HTMLElement, K>
+  keyMap: Map<K, DataGridCoordinates>
 }
 
-export type DataGridCellKey = string | number;
 export type DataGridCoordinates = [number, number];
-export type DataGridResolveValue = { index: DataGridCoordinates, key: DataGridCellKey }
-export type DataGridExcludeResolver = (key: DataGridCellKey) => boolean
-export type DataGridExclude = DataGridExcludeResolver | DataGridCellKey[] | DataGridCellKey
+export type DataGridResolveValue<K> = { index: DataGridCoordinates, key: K }
+export type DataGridExcludeResolver<K> = ((key: K) => boolean)
+export type DataGridExclude<K> = DataGridExcludeResolver<K> | K[] | K

@@ -7,4 +7,12 @@ export {
   DataGridRowGroup, type DataGridRowGroupProps
 } from './components'
 export { useDataGridContext, useDataGridRowContext } from './hooks'
-export { type DataGridResolveValue, type DataGridDisabledResolver, type DataGridDisabled } from './types'
+export {
+  type DataGridResolveValue,
+  type DataGridCellKey,
+  type DataGridExclude,
+  type DataGridExcludeResolver,
+  type DataGridWrap,
+  type DataGridApiRef,
+  type DataGridCoordinates
+} from './types'

@@ -1,13 +1,14 @@
 'use client';
-import { FC, PropsWithChildren, useMemo } from 'react';
+import { PropsWithChildren, useMemo } from 'react';
 import {
   DataGridSelectableContext,
   DataGridSelectableContextState
 } from './context';
+import { DataGridCellKey } from '../../../DataGrid';
 
-type DataGridSelectableProviderProps = DataGridSelectableContextState
+type DataGridSelectableProviderProps<K = DataGridCellKey> = DataGridSelectableContextState<K>
 
-export const DataGridSelectableProvider: FC<PropsWithChildren<DataGridSelectableProviderProps>> = ({
+export const DataGridSelectableProvider = <K = DataGridCellKey>({
   onSelect,
   isSelected,
   isDisabled,
@@ -16,7 +17,7 @@ export const DataGridSelectableProvider: FC<PropsWithChildren<DataGridSelectable
   equals,
   compare,
   children
-}) => {
+}: PropsWithChildren<DataGridSelectableProviderProps<K>>) => {
   const value = useMemo(() => ({
     isSelected,
     isDisabled,
@@ -36,7 +37,7 @@ export const DataGridSelectableProvider: FC<PropsWithChildren<DataGridSelectable
   ])
 
   return (
-    <DataGridSelectableContext.Provider value={value}>
+    <DataGridSelectableContext.Provider value={value as DataGridSelectableContextState}>
       {children}
     </DataGridSelectableContext.Provider>
   )

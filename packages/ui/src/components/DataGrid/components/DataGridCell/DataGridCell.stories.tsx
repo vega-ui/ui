@@ -16,5 +16,6 @@ export const Default: Story = {
   args: {
     children: <Text size={2}>1</Text>,
     asChild: false,
+    col: 0,
   },
 };
