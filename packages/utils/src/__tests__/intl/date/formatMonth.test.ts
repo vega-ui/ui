@@ -3,13 +3,13 @@ import { formatMonth } from '../../../intl';
 
 describe('formatMonth', () => {
   it('formats month in default locale (en-US) with numeric format', () => {
-    expect(formatMonth(0)).toBe('1');
-    expect(formatMonth(11)).toBe('12');
+    expect(formatMonth(0)).toBe('January');
+    expect(formatMonth(11)).toBe('December');
   });
   
   it('formats month using a specific locale', () => {
     const result = formatMonth(5, 'ru-RU');
-    expect(result).toBe('6');
+    expect(result).toBe('июнь');
   });
   
   it('formats month using 2-digit format', () => {
@@ -33,7 +33,7 @@ describe('formatMonth', () => {
   });
   
   it('clamps overflow months via JavaScript Date rollover', () => {
-    expect(formatMonth(13)).toBe('2');
+    expect(formatMonth(13)).toBe('February');
   });
   
   it('returns a string for any valid month', () => {

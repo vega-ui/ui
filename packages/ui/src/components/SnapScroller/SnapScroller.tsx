@@ -86,7 +86,7 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
   const scrollToMiddle = (element?: HTMLDivElement) => {
     const scroller = element ?? scrollerRef.current
     if (!scroller) return
-    
+
     const middle = Math.trunc(scroller.scrollWidth / 2)
     if (middle) scroll(middle, scroller)
   }
@@ -118,9 +118,9 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
     return Number(index)
   }
   
-  const scrollTo = (to: number) => {
+  const scrollTo = (to: number, behavior?: ScrollBehavior) => {
     const item = getItem(to)
-    item?.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' })
+    item?.scrollIntoView({ behavior: behavior ?? 'smooth', inline: 'nearest', block: 'nearest' })
   }
 
   const scrollByDelta = (delta: number) => {
@@ -140,8 +140,8 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
     next() {
       scrollByDelta(1)
     },
-    to(index: number) {
-      scrollTo(index)
+    to(index: number, behavior?: ScrollBehavior) {
+      scrollTo(index, behavior)
     }
   }))
   
@@ -151,7 +151,7 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
     
     const snapped = getSnappedIndex(target)
 
-    if (snapped !== undefined && snapped !== index.current) {
+    if (snapped !== undefined && snapped !== index.current && lastDelta.current === 0) {
       onSnap?.(snapped)
       index.current = snapped
     }
@@ -181,8 +181,8 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
     const next = getItem(current);
     
     requestAnimationFrame(() => {
-      next?.scrollIntoView({ behavior: 'instant', inline: 'nearest', block: 'nearest' });
       lastDelta.current = 0;
+      next?.scrollIntoView({ behavior: 'instant', inline: 'nearest', block: 'nearest' });
     })
   });
 

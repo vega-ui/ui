@@ -1,8 +1,9 @@
-import { FC, PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 import { DataGridPicker, DataGridPickerProps } from '../DataGridPicker';
 import { getCurrentDate } from '@vega-ui/utils';
+import { DataGridSelection } from '../DataGridSelectable/types.ts';
 
-export type DayPickerProps = DataGridPickerProps<number>
+export type DayPickerProps<S extends DataGridSelection = 'single'> = DataGridPickerProps<number, S>
 
 /**
  * DayPicker is a high-level calendar day selection component built on
@@ -21,7 +22,7 @@ export type DayPickerProps = DataGridPickerProps<number>
  * from DataGridPicker.
  */
 
-export const DayPicker: FC<PropsWithChildren<DayPickerProps>> = ({ children, size = 'xs', ...props }) => {
+export const DayPicker = <S extends DataGridSelection = 'single'>({ children, size = 'xs', ...props }: PropsWithChildren<DayPickerProps<S>>) => {
   return (
     <DataGridPicker {...props} size={size} defaultActive={getCurrentDate().getTime()}>
       {children}

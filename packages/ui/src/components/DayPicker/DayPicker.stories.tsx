@@ -17,7 +17,7 @@ const meta: Meta<typeof DayPicker> = {
   title: 'Data/Pickers/DayPicker/DayPicker',
   component: DayPicker,
   args: {
-    style: { width: 300 },
+    inline: true,
     children: <DayPickerLayout />
   },
   argTypes: {

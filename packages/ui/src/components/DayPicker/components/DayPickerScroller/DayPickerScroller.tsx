@@ -1,8 +1,7 @@
 import { FC, PropsWithChildren } from 'react';
-import { SnapScrollerProps } from '../../../SnapScroller';
-import { IndexedSnapScroller } from '../../../IndexedSnapScroller';
+import { IndexedSnapScroller, IndexedSnapScrollerProps } from '../../../IndexedSnapScroller';
 
-export type DayPickerScrollerProps = SnapScrollerProps
+export type DayPickerScrollerProps = IndexedSnapScrollerProps
 
 /**
  * DayPickerScroller is a thin wrapper around IndexedSnapScroller

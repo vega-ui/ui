@@ -12,5 +12,5 @@
 export interface SnapScrollerApiRef {
   next(): void
   prev(): void
-  to(index: number): void
+  to(index: number, behavior?: ScrollBehavior): void
 }

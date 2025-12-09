@@ -10,11 +10,11 @@ import { DataGrid, DataGridProps, DataGridResolveValue } from '../DataGrid';
 import { DataGridApiRef, DataGridCellKey } from '../DataGrid';
 import { DataGridDisabled, DataGridSelection } from './types';
 import { DataGridSelectableProvider } from './providers';
-import { Grid, MatrixNode, mergeEventHandlers } from '@vega-ui/utils';
+import { Grid, MatrixNode, mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
 import { useControlledState, useSelection } from '@vega-ui/hooks';
 import { getCellKey } from './helpers';
 
-export interface DataGridSelectableProps<K extends DataGridCellKey = DataGridCellKey> extends DataGridProps<K> {
+export interface DataGridSelectableProps<K extends DataGridCellKey = DataGridCellKey, S extends DataGridSelection = 'single'> extends DataGridProps<K> {
   /**
    * Selection mode.
    * - `'single'` — only one cell can be selected at a time
@@ -23,7 +23,7 @@ export interface DataGridSelectableProps<K extends DataGridCellKey = DataGridCel
    *
    * @default 'single'
    */
-  selection?: DataGridSelection;
+  selection?: S;
   
   /**
    * Predicate or map of disabled cells.
@@ -58,12 +58,12 @@ export interface DataGridSelectableProps<K extends DataGridCellKey = DataGridCel
   /**
    * Controlled selected cells.
    */
-  selected?: K | K[] | undefined;
+  selected?: (S extends 'single' ? K : K[]) | undefined;
   
   /**
    * Uncontrolled initial selected cells.
    */
-  defaultSelected?: K | K[] | undefined;
+  defaultSelected?: (S extends 'single' ? K : K[]) | undefined;
   
   /**
    * Range boundaries.
@@ -98,7 +98,7 @@ export interface DataGridSelectableProps<K extends DataGridCellKey = DataGridCel
    * Fires when the user selects cell.
    * Receives the list of selected cell keys.
    */
-  onSelectCell?(value: K[]): void;
+  onSelectCell?(value: S extends 'single' ? K : K[]): void;
   
   /**
    * Fires when the active (focused) cell changes.
@@ -112,7 +112,7 @@ export interface DataGridSelectableProps<K extends DataGridCellKey = DataGridCel
  * and pointer interactions, and integration with the low-level `Grid`
  * matrix via `apiRef`.
  */
-export const DataGridSelectable = <K extends DataGridCellKey = DataGridCellKey>({
+export const DataGridSelectable = <K extends DataGridCellKey = DataGridCellKey, S extends DataGridSelection = 'single'>({
   to,
   from,
   children,
@@ -120,7 +120,8 @@ export const DataGridSelectable = <K extends DataGridCellKey = DataGridCellKey>(
   expandable = true,
   exclude,
   excludeDisabled = true,
-  selection = 'single',
+  selection = 'single' as S,
+  apiRef: _apiRef,
   resolveRange: _resolveRange,
   equals: _equals,
   compare: _compare,
@@ -134,7 +135,7 @@ export const DataGridSelectable = <K extends DataGridCellKey = DataGridCellKey>(
   onPointerDown: _onPointerDown,
   onPointerMove: _onPointerMove,
   ...props
-}: PropsWithChildren<DataGridSelectableProps<K>>) => {
+}: PropsWithChildren<DataGridSelectableProps<K, S>>) => {
   const [active, setActive] = useControlledState(_active, defaultActive ?? '' as K, onChangeActive)
   
   const apiRef = useRef<DataGridApiRef<K>>(null)
@@ -163,7 +164,7 @@ export const DataGridSelectable = <K extends DataGridCellKey = DataGridCellKey>(
     return _resolveRange({ index: startCoord, key: start }, { index: endCoord, key: end }, grid)
   }, [_resolveRange])
 
-  const { expand, toggle, isSelected, isDisabled, selected, edges } = useSelection<K, typeof selection>({
+  const { expand, toggle, isSelected, isDisabled, selected, edges } = useSelection<K, S>({
     selection,
     equals,
     compare,
@@ -195,7 +196,6 @@ export const DataGridSelectable = <K extends DataGridCellKey = DataGridCellKey>(
     
     const keyMap = apiRef.current?.keyMap
     if (!keyMap) return;
-    
     const [start] = edges()
     
     const edge = start !== undefined && active !== undefined
@@ -203,7 +203,7 @@ export const DataGridSelectable = <K extends DataGridCellKey = DataGridCellKey>(
       : undefined
 
     if (e.shiftKey && expandable && node.key !== undefined) expand(node.key, edge)
-  }, [_onMove, edges, expand])
+  }, [_onMove, active, edges, expand])
   
   const rangeExpandable = expandable && Array.isArray(selected) && selected.length !== 0 && selection === 'range'
 
@@ -291,7 +291,7 @@ export const DataGridSelectable = <K extends DataGridCellKey = DataGridCellKey>(
       <DataGrid
         {...props}
         exclude={excluded}
-        apiRef={apiRef}
+        apiRef={mergeRefs([_apiRef, apiRef])}
         active={active}
         onChangeActive={setActive}
         defaultActive={defaultActive}

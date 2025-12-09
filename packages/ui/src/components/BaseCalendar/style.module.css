@@ -1,0 +1,8 @@
+.baseCalendar {
+    display: grid;
+    gap: var(--spacing-6);
+}
+
+.baseCalendar[data-compact='true'] {
+    width: min-content;
+}
