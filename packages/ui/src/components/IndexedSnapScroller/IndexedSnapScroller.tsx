@@ -1,7 +1,8 @@
-import { FC, PropsWithChildren, useRef } from 'react';
+import { FC, PropsWithChildren, Ref, useImperativeHandle, useRef, useState } from 'react';
 import { useIndexes } from '@vega-ui/hooks';
-import { SnapScroller, SnapScrollerProps } from '../SnapScroller';
+import { SnapScroller, SnapScrollerApiRef, SnapScrollerProps } from '../SnapScroller';
 import { IndexedSnapScrollerProvider } from './providers';
+import { IndexedSnapScrollerApiRef } from './types.ts';
 
 export interface IndexedSnapScrollerProps extends SnapScrollerProps {
   /**
@@ -42,6 +43,8 @@ export interface IndexedSnapScrollerProps extends SnapScrollerProps {
    * @default 2
    */
   shift?: number;
+  
+  apiRef?: Ref<IndexedSnapScrollerApiRef>
 }
 
 /**
@@ -60,11 +63,16 @@ export const IndexedSnapScroller: FC<PropsWithChildren<IndexedSnapScrollerProps>
   onOffset: _onOffset,
   onSnap: _onSnap,
   children,
+  apiRef,
   ...props
 }) => {
-  const { indexes, shift, push } = useIndexes({ start, startDir, size, shift: indexShift })
-  const index = useRef<number>(Math.floor(size / 2) + start)
+  const [resetId, setResetId] = useState(0);
+  const initialIndex = Math.floor(size / 2) + start
   
+  const { indexes, shift, push, reset } = useIndexes({ start, startDir, size, shift: indexShift })
+  const index = useRef<number>(initialIndex)
+  const internalApiRef = useRef<SnapScrollerApiRef>(null)
+
   const onSnap = (value: number) => {
     _onSnap?.(value)
     index.current = value;
@@ -76,10 +84,19 @@ export const IndexedSnapScroller: FC<PropsWithChildren<IndexedSnapScrollerProps>
     if (value === 1) push()
   }
   
+  useImperativeHandle(apiRef, () => ({
+    ...internalApiRef.current!,
+    reset(index, resetKeys?: boolean) {
+      reset(index)
+      if (resetKeys) setResetId(prevId => prevId + 1)
+    },
+    indexes,
+  }), [reset, indexes])
+
   return (
-    <SnapScroller onSnap={onSnap} onOffset={onOffset} {...props}>
+    <SnapScroller apiRef={internalApiRef} onSnap={onSnap} onOffset={onOffset} {...props}>
       {indexes.map((index) => (
-        <IndexedSnapScrollerProvider key={index} index={index}>
+        <IndexedSnapScrollerProvider key={`${resetId}-${index}`} index={index}>
           {children}
         </IndexedSnapScrollerProvider>
       ))}

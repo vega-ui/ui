@@ -31,17 +31,19 @@
 /* Hover */
 .pickerItem:hover {
     background-color: var(--data-grid-picker-item-hover-bc);
+    transition: background-color var(--transition-fast-state-delay) ease-in-out;
 }
 
 /* Active */
 .pickerItem:active {
     background-color: var(--data-grid-picker-item-active-bc);
+    transition: background-color var(--transition-fast-state-delay) ease-in-out;
 }
 
 /* Disabled */
 .pickerItem[aria-disabled='true'] {
     cursor: not-allowed;
-    color: var(--disable-text-color);
+    color: var(--disable-placeholder-text-color);
     background: initial;
     touch-action: none;
     pointer-events: none;
@@ -55,11 +57,13 @@
 
 /* Selected/Hover */
 .pickerItem[aria-selected='true']:not([data-range='between']):hover {
+    transition: background-color var(--transition-fast-state-delay) ease-in-out;
     background-color: var(--data-grid-picker-item-selected-hover-bc);
 }
 
 /* Selected/Active */
 .pickerItem[aria-selected='true']:not([data-range='between']):active {
+    transition: background-color var(--transition-fast-state-delay) ease-in-out;
     background-color: var(--data-grid-picker-item-selected-active-bc);
 }
 
@@ -87,18 +91,20 @@
 
 /* Ranged/Hover */
 .pickerItem[data-range='between']:hover {
+    transition: background-color var(--transition-fast-state-delay) ease-in-out;
     background-color: var(--data-grid-picker-item-range-hover-bc);
 }
 
 /* Ranged/Active */
 .pickerItem[data-range='between']:active {
+    transition: background-color var(--transition-fast-state-delay) ease-in-out;
     background-color: var(--data-grid-picker-item-range-active-bc);
 }
 
 /* Ranged/Disabled */
 .pickerItem[aria-disabled='true'][aria-selected='true']:not([data-range='between']) {
     background: var(--disable-background-color);
-    color: var(--disable-text-color);
+    color: var(--disable-placeholder-text-color);
 }
 
 .pickerItem[aria-disabled='true'][aria-selected='true']:after {

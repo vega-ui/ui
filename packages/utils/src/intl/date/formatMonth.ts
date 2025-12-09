@@ -8,7 +8,7 @@
 export const formatMonth = (
   month: number,
   locale: Intl.LocalesArgument = 'en-US',
-  format: Intl.DateTimeFormatOptions['month'] = 'numeric'
+  format: Intl.DateTimeFormatOptions['month'] = 'long'
 ): string => {
   return new Intl.DateTimeFormat(locale, { month: format }).format(new Date(1970, month, 1));
 };

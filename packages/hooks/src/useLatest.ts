@@ -1,6 +1,6 @@
 import type { MutableRefObject } from 'react'
 import { useRef } from 'react'
-import { useIsomorphicLayoutEffect } from './useIsomophicLayoutEffect.ts'
+import { useIsomorphicLayoutEffect } from './useIsomophicLayoutEffect'
 
 export const useLatest = <T>(value: T): MutableRefObject<T> => {
   const ref = useRef(value)

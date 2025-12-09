@@ -1,0 +1,5 @@
+.label {
+    color: var(--color-gray-accent-500) !important;
+    text-align: center;
+    min-height: 36px;
+}

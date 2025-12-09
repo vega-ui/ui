@@ -1,7 +1,8 @@
-import { FC, PropsWithChildren } from 'react';
+import { PropsWithChildren } from 'react';
 import { DataGridPicker, DataGridPickerProps } from '../DataGridPicker';
+import { type DataGridSelection } from '../DataGridSelectable';
 
-export type MonthPickerProps = DataGridPickerProps<number>
+export type MonthPickerProps<S extends DataGridSelection = 'single'> = DataGridPickerProps<number, S>
 
 /**
  * MonthPicker is a thin wrapper around DataGridPicker specialized for
@@ -12,7 +13,7 @@ export type MonthPickerProps = DataGridPickerProps<number>
  * Custom month layouts can be composed by passing children, allowing
  * full control over how months are rendered within the grid.
  */
-export const MonthPicker: FC<PropsWithChildren<MonthPickerProps>> = ({ children, defaultActive, size = 'xs', ...props }) => {
+export const MonthPicker = <S extends DataGridSelection = 'single'>({ children, defaultActive, size = 'xs', ...props }: PropsWithChildren<MonthPickerProps<S>>) => {
   return (
     <DataGridPicker {...props} size={size} defaultActive={defaultActive ?? new Date().getMonth()}>
       {children}

@@ -8,6 +8,7 @@
     --color: var(--color-badge-info-fill-text);
 
     display: inline-flex;
+    flex-shrink: 0;
     flex-direction: row;
     align-items: center;
     justify-content: center;

@@ -22,9 +22,14 @@ export const useIndexes = (options: UseIndexesOptions) => {
     setIndexes(getOffsetIndexes(end, 1, size))
   }, [indexes, indexesShift, size])
   
+  const reset = useCallback((s = start) => {
+    setIndexes(getOffsetIndexes(s, startDir, size))
+  }, [start, startDir, size])
+  
   return {
     indexes,
     push,
     shift,
+    reset,
   }
 }

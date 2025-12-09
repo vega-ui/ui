@@ -3,7 +3,7 @@ import { getFirstDayOfWeek } from './getFirstDayOfWeek';
 export const getWeekDayNames = (
   locale: string = 'en-US',
   style: 'long' | 'short' | 'narrow' = 'long',
-  firstDayOfWeek = getFirstDayOfWeek(locale)
+  firstDayOfWeek: number
 ): string[] => {
   const baseSunday = new Date(Date.UTC(2025, 0, 5))
   const formatter = new Intl.DateTimeFormat(locale, { weekday: style, timeZone: 'UTC' })
@@ -14,6 +14,6 @@ export const getWeekDayNames = (
     return formatter.format(d)
   })
   
-  const startIndex = firstDayOfWeek
+  const startIndex = firstDayOfWeek ?? getFirstDayOfWeek(locale)
   return namesSundayFirst.slice(startIndex).concat(namesSundayFirst.slice(0, startIndex))
 }

@@ -1,0 +1,16 @@
+.picker {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    transition: transform var(--transition-fast-state-delay) ease-in-out;
+}
+
+.picker[data-visible='false'] {
+    transform: translateY(calc(-100% - 2px));
+}
+
+.picker[data-visible='true'] {
+    transform: translateY(0);
+}

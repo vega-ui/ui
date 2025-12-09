@@ -3,13 +3,12 @@ import {
   PropsWithChildren,
   KeyboardEvent,
   useCallback,
-  useRef,
   useImperativeHandle,
   Ref,
 } from 'react';
 import style from './style.module.css'
 import { csx, MatrixNode, mergeEventHandlers } from '@vega-ui/utils';
-import { useControlledState, useGrid } from '@vega-ui/hooks';
+import { useControlledState, useGrid, useMap } from '@vega-ui/hooks';
 
 import { DataGridProvider } from './providers';
 import {
@@ -113,7 +112,7 @@ export const DataGrid = <K extends DataGridCellKey = DataGridCellKey>({
   const wrapV = ['vertical', 'both'].includes(wrap ?? '')
 
   const grid = useGrid<HTMLDivElement, K>()
-  const keyMap = useRef(new Map<K, DataGridCoordinates>()).current
+  const keyMap = useMap<K, DataGridCoordinates>()
   
   useImperativeHandle(apiRef, () => ({
     grid,
@@ -145,26 +144,32 @@ export const DataGrid = <K extends DataGridCellKey = DataGridCellKey>({
     const activePosition = keyMap.get(active)
     if (!activePosition) return
     
-    const getNode = (key: string) => {
-      if (key === 'ArrowLeft') return grid.before(activePosition, 0, wrapH)
-      if (key === 'ArrowRight') return grid.after(activePosition, 0, wrapH)
-      if (key === 'ArrowDown') return grid.after(activePosition, 1, wrapV)
-      if (key === 'ArrowUp') return grid.before(activePosition, 1, wrapV)
-    }
-    
-    const nextNode = getNode(e.key)
-    
-    if (nextNode) {
-      e.preventDefault()
-      changeActive(nextNode)
-      
-      const axis = ['ArrowLeft', 'ArrowRight'].includes(e.key) ? 0 : 1
-      const dir = ['ArrowLeft', 'ArrowUp'].includes(e.key) ? -1 : 1
-      
-      onMove?.(e, nextNode, axis, dir)
-    }
-    
     switch (e.key) {
+      case 'ArrowLeft':
+      case 'ArrowRight':
+      case 'ArrowDown':
+      case 'ArrowUp': {
+        e.preventDefault()
+        
+        const getNode = (key: string) => {
+          if (key === 'ArrowLeft') return grid.before(activePosition, 0, wrapH)
+          if (key === 'ArrowRight') return grid.after(activePosition, 0, wrapH)
+          if (key === 'ArrowDown') return grid.after(activePosition, 1, wrapV)
+          if (key === 'ArrowUp') return grid.before(activePosition, 1, wrapV)
+        }
+        
+        const nextNode = getNode(e.key)
+        if (!nextNode) return
+        
+        changeActive(nextNode)
+        
+        const axis = ['ArrowLeft', 'ArrowRight'].includes(e.key) ? 0 : 1
+        const dir = ['ArrowLeft', 'ArrowUp'].includes(e.key) ? -1 : 1
+        
+        onMove?.(e, nextNode, axis, dir)
+        
+        return
+      }
       case 'PageUp': {
         e.preventDefault()
         

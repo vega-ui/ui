@@ -12,8 +12,8 @@ export interface UseSelectionOptions<K, M extends Selection> {
   selected?: SelectedValue<M, K>;
   disabled?: SelectedDisabled<K>;
   equals?(a: K, b: K): boolean;
-  compare: M extends 'range' ? (a: K, b: K) => -1 | 0 | 1 : never;
-  resolveRange?: M extends 'range' ? (a: K, b: K) => K[] : never;
+  compare: (a: K, b: K) => -1 | 0 | 1;
+  resolveRange?: (a: K, b: K) => K[];
   onSelect?(selected: SelectedValue<M, K> | undefined): void;
   min?: K
   max?: K
@@ -65,12 +65,10 @@ export const useSelection = <K, const M extends Selection>({
   
   const isDisabled = useCallback((key?: K) => {
     if (key === undefined) return false
+    if (min !== undefined && compare(key, min) === -1) return true
+    if (max !== undefined && compare?.(key, max) === 1) return true
     if (typeof disabled === 'function') return (disabled as SelectionDisabledResolver<K>)(key)
     if (Array.isArray(disabled)) return disabled.includes(key)
-    if (compare) {
-      if (min && compare(key, min) === -1) return true
-      if (max && compare?.(key, max) === 1) return true
-    }
     
     return disabled === key
   }, [disabled, min, max, compare])
