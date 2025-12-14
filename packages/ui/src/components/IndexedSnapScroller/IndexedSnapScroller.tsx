@@ -68,7 +68,7 @@ export const IndexedSnapScroller: FC<PropsWithChildren<IndexedSnapScrollerProps>
 }) => {
   const [resetId, setResetId] = useState(0);
   const initialIndex = Math.floor(size / 2) + start
-  
+
   const { indexes, shift, push, reset } = useIndexes({ start, startDir, size, shift: indexShift })
   const index = useRef<number>(initialIndex)
   const internalApiRef = useRef<SnapScrollerApiRef>(null)
@@ -94,7 +94,13 @@ export const IndexedSnapScroller: FC<PropsWithChildren<IndexedSnapScrollerProps>
   }), [reset, indexes])
 
   return (
-    <SnapScroller apiRef={internalApiRef} onSnap={onSnap} onOffset={onOffset} {...props}>
+    <SnapScroller
+      initialIndex={initialIndex}
+      apiRef={internalApiRef}
+      onSnap={onSnap}
+      onOffset={onOffset}
+      {...props}
+    >
       {indexes.map((index) => (
         <IndexedSnapScrollerProvider key={`${resetId}-${index}`} index={index}>
           {children}
