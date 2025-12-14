@@ -169,11 +169,11 @@ describe('IndexedSnapScroller', () => {
     
     const scroller = screen.getByTestId('scroller')
     const pages = screen.getAllByTestId('page');
-    const target = pages[2];
+    const target = pages[3];
     
     (document.elementFromPoint as Mock).mockReturnValue(target);
     
-    setScrollLeft(400);
+    setScrollLeft(600);
     fireEvent.scroll(scroller!);
     
     const expectedIndex = Number(target.getAttribute('data-index'));
