@@ -1,4 +1,4 @@
-import { EventHandler, SyntheticEvent } from 'react';
+import type { EventHandler, SyntheticEvent } from 'react';
 
 export const mergeEventHandlers = <E extends SyntheticEvent>(
   ...handlers: (EventHandler<E> | undefined)[]

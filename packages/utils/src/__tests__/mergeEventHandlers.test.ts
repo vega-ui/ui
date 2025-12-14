@@ -1,6 +1,6 @@
 import { describe, expect, test, vi } from 'vitest'
 import { mergeEventHandlers } from '../mergeEventHandlers'
-import { SyntheticEvent } from 'react';
+import type { SyntheticEvent } from 'react';
 
 describe('mergeEventsHandlers', () => {
   test('calls all handlers in order', () => {

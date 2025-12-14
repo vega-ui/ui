@@ -1,6 +1,6 @@
 import { csx } from './csx';
 import { mergeRefs } from './mergeRefs';
-import { Ref } from 'react';
+import type { Ref } from 'react';
 
 /**
  * Merges multiple props objects together into a single props object.
