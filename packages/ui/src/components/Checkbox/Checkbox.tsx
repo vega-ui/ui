@@ -13,6 +13,7 @@ import { csx, mergeRefs } from '@vega-ui/utils';
 import { Icon } from '../Icon';
 import { VisuallyHidden } from '../VisuallyHidden';
 import { CheckIcon, MinusIcon } from '@vega-ui/icons';
+import { CheckboxSize, CheckboxVariant } from './types.ts';
 
 export interface CheckboxProps extends Omit<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'size'> {
   /**
@@ -49,12 +50,12 @@ export interface CheckboxProps extends Omit<DetailedHTMLProps<InputHTMLAttribute
   /**
    * Visual variant of the checkbox, for theme or context switching.
    */
-  variant?: 'primary' | 'secondary' | string
+  variant?: CheckboxVariant
 
   /**
    * Size of the checkbox input and its visual marker.
    */
-  size?: 'small' | 'medium' | 'large' | string
+  size?: CheckboxSize
 
   /**
    * Callback function fired when the checkbox state changes.

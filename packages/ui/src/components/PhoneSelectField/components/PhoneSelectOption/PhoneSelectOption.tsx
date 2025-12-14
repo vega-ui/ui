@@ -1,14 +1,14 @@
 'use client';
 import { FC, ReactNode } from 'react';
 import { FlagIcon, FlagIconProps } from '../../../FlagIcon';
-import { Option, OptionProps } from '../../../Option';
+import { Option, OptionSize } from '../../../Option';
 import style from './style.module.css'
 import { useListItem } from '@floating-ui/react';
 import { useSelectContext } from '../../../Select';
 
 export interface PhoneSelectOptionProps {
   children?: ReactNode | ReactNode[]
-  size?: OptionProps['size']
+  size?: OptionSize
   value: string
   iso: FlagIconProps['name']
 }

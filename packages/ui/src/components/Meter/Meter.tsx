@@ -4,6 +4,7 @@ import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { VisuallyHidden } from '../VisuallyHidden';
 import { getMeterState } from './helpers';
+import { MeterSize, MeterVariant } from './types.ts';
 
 export interface MeterProps extends HTMLAttributes<HTMLDivElement> {
   /**
@@ -15,12 +16,12 @@ export interface MeterProps extends HTMLAttributes<HTMLDivElement> {
    * Visual size of the meter component.
    * Typically maps to predefined size tokens in a design system.
    */
-  size?: 'sm' | 'md' | 'lg' | string
+  size?: MeterSize
 
   /**
    * Visual variant of the meter (e.g., for styling themes).
    */
-  variant?: 'primary' | 'secondary' | string
+  variant?: MeterVariant
 
   /**
    * Optional class name applied to the inner track element.

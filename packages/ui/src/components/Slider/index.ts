@@ -4,3 +4,4 @@ export {
   SliderProgress, type SliderProgressProps,
 } from './components'
 export { useSliderContext } from './contexts'
+export type { SliderSize } from './types'

@@ -1,12 +1,11 @@
 'use client';
 
 import { createContext } from '@vega-ui/react-context';
-import { IconButtonProps } from '../../../IconButton';
-import { PaginationSize } from '../../types.ts';
+import { PaginationSize, PaginationVariant } from '../../types.ts';
 
 export interface PaginationContextState {
   size?: PaginationSize
-  variant?: IconButtonProps['variant']
+  variant?: PaginationVariant
 }
 
 export const [PaginationProvider, usePaginationContext] = createContext<PaginationContextState>('PaginationContext', {

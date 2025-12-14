@@ -3,6 +3,7 @@ import { FC, PropsWithChildren } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { Text } from '../Text';
+import { FieldsetAppearance } from './types.ts';
 
 export interface FieldsetProps {
   /**
@@ -20,7 +21,7 @@ export interface FieldsetProps {
   /**
    * Visual appearance of the fieldset container.
    */
-  appearance?: 'transparent' | 'outlined' | string
+  appearance?: FieldsetAppearance
 
   /**
    * Custom CSS class applied to the fieldset element.

@@ -7,12 +7,13 @@ import { Text, TextProps } from '../../../Text';
 import { sizeMapper } from './helpers';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
+import { PaginationVariant } from '../../types.ts';
 
 export interface PaginationTextProps extends TextProps {
   /**
    * Visual style variant of the text.
    */
-  variant?: 'primary' | 'secondary' | string
+  variant?: PaginationVariant
 }
 
 /**

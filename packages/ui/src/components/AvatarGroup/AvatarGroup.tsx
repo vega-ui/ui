@@ -5,6 +5,7 @@ import { csx } from '@vega-ui/utils';
 import { AvatarGroupProvider } from './contexts';
 import { AvatarGroupCount, AvatarGroupItemProps, AvatarGroupLimitedPopover } from './components';
 import style from './style.module.css'
+import { AvatarSize, AvatarVariant } from '../Avatar';
 
 export interface AvatarGroupProps {
   /**
@@ -21,16 +22,15 @@ export interface AvatarGroupProps {
 
   /**
    * Size of all avatar items within the group.
-   * Inherits the sizing from `AvatarGroupItemProps['size']`.
    * Ensures consistent sizing across all items.
    */
-  size?: AvatarGroupItemProps['size']
+  size?: AvatarSize
 
   /**
    * Variant for all avatars in the group.
    * Applies a unified visual style (e.g., `primary`, `secondary`).
    */
-  variant?: AvatarGroupItemProps['variant']
+  variant?: AvatarVariant
 
   /**
    * Avatar items to render in the group.

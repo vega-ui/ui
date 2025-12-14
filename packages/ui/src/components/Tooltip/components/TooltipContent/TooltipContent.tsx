@@ -7,6 +7,7 @@ import { csx, mergeRefs } from '@vega-ui/utils';
 import styles from './style.module.css';
 import { useTooltipContext } from '../../contexts';
 import { Text, TextProps } from '../../../Text';
+import { TextSize } from '../../../Text/types.ts';
 
 export interface TooltipContentProps {
   /**
@@ -29,7 +30,7 @@ export interface TooltipContentProps {
    * Font size applied to the tooltip content.
    * Inherits values from the `Text` component scale.
    */
-  fontSize?: TextProps['size']
+  fontSize?: TextSize
 
   /**
    * Font weight applied to the tooltip content.

@@ -4,6 +4,7 @@ import { CSSProperties, FC, HTMLAttributes } from 'react';
 import style from './style.module.css';
 import { VisuallyHidden } from '../../../VisuallyHidden';
 import { csx } from '@vega-ui/utils';
+import { SliderBaseOrientation, SliderBaseSize, SliderBaseVariant } from '../../types.ts';
 
 export interface SliderBaseThumbProps extends HTMLAttributes<HTMLDivElement> {
   /**
@@ -40,18 +41,18 @@ export interface SliderBaseThumbProps extends HTMLAttributes<HTMLDivElement> {
    * Direction in which the thumb moves along the track.
    * `'horizontal'` is left-to-right; `'vertical'` is bottom-to-top.
    */
-  orientation?: 'horizontal' | 'vertical'
+  orientation?: SliderBaseOrientation
 
   /**
    * Visual size of the thumb.
    * Typically maps to a token scale in the design system.
    */
-  size?: 'sm' | 'md' | 'lg'
+  size?: SliderBaseSize
 
   /**
    * Visual variant for styling.
    */
-  variant?: 'primary' | 'secondary'
+  variant?: SliderBaseVariant
 
   /**
    * Whether the thumb is disabled and non-interactive.

@@ -3,6 +3,7 @@ import { FC, Ref } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { FlagIconName, getFlagIcon } from './helpers';
+import { FlagIconSize } from './types.ts';
 
 export interface FlagIconProps {
   /**
@@ -14,7 +15,7 @@ export interface FlagIconProps {
   /**
    * Visual size of the flag icon. Affects its rendered dimensions unless overridden by width/height.
    */
-  size?: 'small' | 'medium' | 'large' | string
+  size?: FlagIconSize
 
   /**
    * Custom CSS class for styling the SVG element.

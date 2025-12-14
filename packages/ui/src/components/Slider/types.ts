@@ -1,0 +1,1 @@
+export type SliderSize = 'sm' | 'md' | 'lg' | string

@@ -4,6 +4,7 @@ import {
 } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
+import { TextFieldSize } from './types.ts';
 
 export interface TextFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
   /**
@@ -52,7 +53,7 @@ export interface TextFieldProps extends Omit<InputHTMLAttributes<HTMLInputElemen
    * - 'medium': Default
    * - 'large': Spacious layout
    */
-  size?: 'small' | 'medium' | 'large' | string
+  size?: TextFieldSize
 
   /**
    * Content displayed at the start (left) of the input field.

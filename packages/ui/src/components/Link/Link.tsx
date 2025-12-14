@@ -5,6 +5,7 @@ import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { Text, TextProps } from '../Text';
 import { Slot } from '../Slot';
+import { TextSize } from '../Text/types.ts';
 
 export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   /**
@@ -23,7 +24,7 @@ export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
    * Visual size of the link text.
    * Inherits values from `TextProps['size']`, typically based on a design system scale.
    */
-  size?: TextProps['size']
+  size?: TextSize
 
   /**
    * Font weight of the link text.

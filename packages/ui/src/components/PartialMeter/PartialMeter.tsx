@@ -3,6 +3,7 @@ import { FC, HTMLAttributes } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { VisuallyHidden } from '../VisuallyHidden';
+import { PartialMeterSize } from './types.ts';
 
 export interface PartialMeterProps extends HTMLAttributes<HTMLDivElement> {
   /**
@@ -14,7 +15,7 @@ export interface PartialMeterProps extends HTMLAttributes<HTMLDivElement> {
    * Visual size of the meter component.
    * Typically maps to predefined size tokens in a design system.
    */
-  size?: 'sm' | 'md' | 'lg' | string
+  size?: PartialMeterSize
 
   /**
    * Unique ID for the meter element.

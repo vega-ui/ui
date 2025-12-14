@@ -13,6 +13,7 @@ import { useMaskito } from '@maskito/react';
 import { MaskitoOptions } from '@maskito/core';
 import { PinFieldInput } from './components';
 import { PinFieldProvider } from './contexts';
+import { PinFieldSize } from './types.ts';
 
 export interface PinFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
   /**
@@ -48,7 +49,7 @@ export interface PinFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement
    * Visual size of the pin input.
    * Affects dimensions and font size.
    */
-  size?: 'small' | 'medium' | 'large' | string
+  size?: PinFieldSize
 
   /**
    * Shows the field in an error state.

@@ -1,6 +1,7 @@
 import { FC, HTMLAttributes, KeyboardEvent, ReactNode, Ref, MouseEvent } from 'react';
 import styles from './style.module.css'
 import { csx } from '@vega-ui/utils';
+import { OptionSize } from './types.ts';
 
 export interface OptionProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSelect'> {
   /**
@@ -28,7 +29,7 @@ export interface OptionProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSel
   /**
    * Size of the option for visual styling.
    */
-  size?: 'small' | 'medium' | 'large' | string
+  size?: OptionSize
 
   /**
    * Callback fired when the option is selected via click or keyboard.

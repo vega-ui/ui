@@ -1,7 +1,7 @@
 import { FC, MouseEvent, KeyboardEvent } from 'react';
 import { FlagIcon, FlagIconProps } from '../../../FlagIcon';
 import { PhoneSelectOption } from '../PhoneSelectOption';
-import { Select, SelectProps } from '../../../Select';
+import { Select, type SelectSize } from '../../../Select';
 import { CountryCode } from 'libphonenumber-js';
 import style from './style.module.css';
 
@@ -10,7 +10,7 @@ export interface PhoneSelectProps {
     iso: CountryCode
     label: string
   }>
-  size?: SelectProps['size']
+  size?: SelectSize
   fullWidthListbox?: boolean
   value?: CountryCode
   onSelect?: (e: MouseEvent | KeyboardEvent | null, country: CountryCode) => void

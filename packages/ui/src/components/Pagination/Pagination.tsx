@@ -4,7 +4,7 @@ import { FC, HTMLAttributes, Ref } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { PaginationProvider } from './contexts';
-import { IconButtonProps } from '../IconButton';
+import { PaginationSize, PaginationVariant } from './types.ts';
 
 export interface PaginationProps extends HTMLAttributes<HTMLElement> {
   /**
@@ -22,14 +22,14 @@ export interface PaginationProps extends HTMLAttributes<HTMLElement> {
    * Visual size of the card, inherited from IconButtonProps.
    * Controls padding, font size, or spacing according to the design system scale.
    */
-  size?: IconButtonProps['size']
+  size?: PaginationSize
 
   /**
    * Visual variant of the component.
    * Inherits available values from `IconButtonProps['variant']`, such as 'primary' or 'secondary'.
    * Controls the visual style (color, background, border) according to the design system.
    */
-  variant?: IconButtonProps['variant']
+  variant?: PaginationVariant
 }
 
 /** Pagination is a UI component that divides content into discrete pages and provides navigation controls, allowing users to move between different sections of content, commonly used in lists, tables, or search results */
