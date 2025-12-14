@@ -1,5 +1,14 @@
 # @vega-ui/hooks
 
+## 1.14.1
+
+### Patch Changes
+
+- d76eea5: Deleted unused dependencies
+- Updated dependencies [9bb4a3b]
+- Updated dependencies [d76eea5]
+  - @vega-ui/utils@1.14.1
+
 ## 1.14.0
 
 ### Minor Changes
