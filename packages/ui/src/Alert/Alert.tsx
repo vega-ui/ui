@@ -2,7 +2,7 @@ import { DetailedHTMLProps, FC, HTMLAttributes, ReactNode } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { AlertAppearance, AlertVariant } from './types.ts';
-import { AlertBody, AlertIcon, AlertTitle } from './components';
+import { AlertProvider } from './contexts';
 
 export interface AlertProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   /**
@@ -12,29 +12,10 @@ export interface AlertProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElem
   children?: ReactNode | ReactNode[]
 
   /**
-   * Optional content rendered at the icon slot of the alert.
-   * Useful for renderings custom icons.
-   * Pass `false` to hide the icon entirely.
-   */
-  iconSlot?: ReactNode | ReactNode[]
-
-  /**
-   * Optional content rendered at the end of the alert.
-   * Useful for action buttons, close icons, or links.
-   */
-  endSlot?: ReactNode | ReactNode[]
-
-  /**
    * Optional custom CSS class for the alert container.
    * Useful for styling overrides or scoped styles.
    */
   className?: string
-
-  /**
-   * The main title or headline of the alert.
-   * This is required and displayed prominently.
-   */
-  title: string
 
   /**
    * Visual style of the alert.
@@ -58,22 +39,22 @@ export interface AlertProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElem
 export const Alert: FC<AlertProps> = ({
   variant = 'info',
   appearance = 'fill',
-  endSlot,
-  title,
-  iconSlot,
   className,
   children,
   ref,
   ...props
 }) => {
   return (
-    <div ref={ref} data-apperance={appearance} data-variant={variant} className={csx(style.alert, className)} {...props}>
-      {iconSlot !== false && iconSlot ? iconSlot : <AlertIcon variant={variant} />}
-      <div className={style.content}>
-        <AlertTitle>{title}</AlertTitle>
-        {children && <AlertBody>{children}</AlertBody>}
+    <AlertProvider variant={variant}>
+      <div
+        ref={ref}
+        data-apperance={appearance}
+        data-variant={variant}
+        className={csx(style.alert, className)}
+        {...props}
+      >
+        {children}
       </div>
-      {endSlot}
-    </div>
+    </AlertProvider>
   )
 }
