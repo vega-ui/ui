@@ -11,9 +11,6 @@ importers:
       '@changesets/cli':
         specifier: ^2.29.3
         version: 2.29.3
-      '@eslint/eslintrc':
-        specifier: ^3
-        version: 3.3.1
       '@eslint/js':
         specifier: ^9.23.0
         version: 9.30.1
@@ -38,18 +35,12 @@ importers:
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.25.0
         version: 8.25.0(@typescript-eslint/parser@8.21.0(eslint@9.30.1)(typescript@5.7.3))(eslint@9.30.1)(typescript@5.7.3)
-      '@typescript-eslint/parser':
-        specifier: ^8.21.0
-        version: 8.21.0(eslint@9.30.1)(typescript@5.7.3)
       eslint:
         specifier: ^9
         version: 9.30.1
       eslint-plugin-react-hooks:
         specifier: ^5.2.0
         version: 5.2.0(eslint@9.30.1)
-      eslint-plugin-react-refresh:
-        specifier: ^0.4.19
-        version: 0.4.19(eslint@9.30.1)
       eslint-plugin-storybook:
         specifier: ^9.1.13
         version: 9.1.13(eslint@9.30.1)(storybook@9.1.13(@testing-library/dom@10.4.1)(prettier@2.8.8)(vite@6.3.5(@types/node@22.10.10)))(typescript@5.7.3)
@@ -93,9 +84,6 @@ importers:
       '@types/react-dom':
         specifier: ^19.0.3
         version: 19.0.3(@types/react@19.0.10)
-      '@vitejs/plugin-react':
-        specifier: ^4.3.4
-        version: 4.3.4(vite@6.3.5(@types/node@22.10.10))
       vite:
         specifier: ^6.3.5
         version: 6.3.5(@types/node@22.10.10)
@@ -105,9 +93,6 @@ importers:
       vite-tsconfig-paths:
         specifier: ^5.1.4
         version: 5.1.4(typescript@5.7.3)(vite@6.3.5(@types/node@22.10.10))
-      vitest:
-        specifier: ^3.2.0
-        version: 3.2.0(@types/node@22.10.10)(jsdom@26.0.0)
 
   packages/icons:
     dependencies:
@@ -227,9 +212,6 @@ importers:
       vite-plugin-dts:
         specifier: ^4.3.0
         version: 4.5.0(@types/node@22.10.10)(rollup@4.40.2)(typescript@5.7.3)(vite@6.3.5(@types/node@22.10.10))
-      vite-plugin-lib-inject-css:
-        specifier: ^2.1.1
-        version: 2.2.1(vite@6.3.5(@types/node@22.10.10))
       vite-plugin-svgr:
         specifier: ^4.3.0
         version: 4.3.0(rollup@4.40.2)(typescript@5.7.3)(vite@6.3.5(@types/node@22.10.10))
@@ -320,9 +302,6 @@ importers:
       vite-plugin-dts:
         specifier: ^4.3.0
         version: 4.5.0(@types/node@22.10.10)(rollup@4.40.2)(typescript@5.7.3)(vite@6.3.5(@types/node@22.10.10))
-      vite-plugin-lib-inject-css:
-        specifier: ^2.1.1
-        version: 2.2.1(vite@6.3.5(@types/node@22.10.10))
       vite-plugin-svgr:
         specifier: ^4.3.0
         version: 4.3.0(rollup@4.40.2)(typescript@5.7.3)(vite@6.3.5(@types/node@22.10.10))
@@ -358,64 +337,6 @@ packages:
 
   '@asamuzakjp/css-color@2.8.3':
     resolution: {integrity: sha512-GIc76d9UI1hCvOATjZPyHFmE5qhRccp3/zGfMPapK3jBi+yocEzp6BBB0UnfRYP9NP4FANqUZYb0hnfs3TM3hw==}
-
-  '@ast-grep/napi-darwin-arm64@0.32.3':
-    resolution: {integrity: sha512-Ifh25Ra38+5TGvO48NVcJsRarBSqJ2ppN6J+Qc8Z19rKALYb61tsWj6oh0W1CTbsYQ/HJbIff//WkUDkY0wMMg==}
-    engines: {node: '>= 10'}
-    cpu: [arm64]
-    os: [darwin]
-
-  '@ast-grep/napi-darwin-x64@0.32.3':
-    resolution: {integrity: sha512-jkuXgdvBTK7aTV7IojqMCUbHE4bzJzJ/adR0segW+BpU/uh/pxNuCZAal7E7KmWgSWVSS56UCOjS0OyibZKb7Q==}
-    engines: {node: '>= 10'}
-    cpu: [x64]
-    os: [darwin]
-
-  '@ast-grep/napi-linux-arm64-gnu@0.32.3':
-    resolution: {integrity: sha512-Kso32W1K/+guK1Jkk33MpvVHhulaGF7lf6HW9Bc4VxRHWyZBXuhwwPOtf7+89qa2nEb0YyUxgQTnMUXbCKyYAQ==}
-    engines: {node: '>= 10'}
-    cpu: [arm64]
-    os: [linux]
-
-  '@ast-grep/napi-linux-arm64-musl@0.32.3':
-    resolution: {integrity: sha512-7+u7F5rzaV0/N5WdP2q+kGl3v+l8iGFRx4p7NUcbNumYqGDS2mkfRkaesRDSd7BH94ZulGtJnpmu3imX7spolQ==}
-    engines: {node: '>= 10'}
-    cpu: [arm64]
-    os: [linux]
-
-  '@ast-grep/napi-linux-x64-gnu@0.32.3':
-    resolution: {integrity: sha512-XwUjw+W1QWDAPjx+Hsa8ZwONN3MDPINdRkRM6Q1vV3pl0p9YrMpwL72xrWQA1G7r7ej9BI1fLiXWB4YEOeYzJw==}
-    engines: {node: '>= 10'}
-    cpu: [x64]
-    os: [linux]
-
-  '@ast-grep/napi-linux-x64-musl@0.32.3':
-    resolution: {integrity: sha512-894fQNqBDUfCP/qYbrPcK6+tMTEskc+vV2IKOKqgCfDryeptaiJJTJL9+Vbj38rO1LWhY8MIZ8W5ZyjxuhDRBA==}
-    engines: {node: '>= 10'}
-    cpu: [x64]
-    os: [linux]
-
-  '@ast-grep/napi-win32-arm64-msvc@0.32.3':
-    resolution: {integrity: sha512-T8nrZm3E+h2VgHuQ3THQLvqhou4MkSbNcyIOgLZ0l2NatHIckeHuly5fmnkd6KQsGP/AqAEGxZBoOVYvoDl7DA==}
-    engines: {node: '>= 10'}
-    cpu: [arm64]
-    os: [win32]
-
-  '@ast-grep/napi-win32-ia32-msvc@0.32.3':
-    resolution: {integrity: sha512-40RdPWWgVLCx6gRSXfVXt3TuV6dZQE8K74whq56+nliJqA4TA1QCrNtbX9keFvb1JDc/iOUKc4PKA3A7TGHANQ==}
-    engines: {node: '>= 10'}
-    cpu: [ia32]
-    os: [win32]
-
-  '@ast-grep/napi-win32-x64-msvc@0.32.3':
-    resolution: {integrity: sha512-4VKmBFhT0M8s1LbAXemPDnHyAjEi5owkqkz85akvic9u6vRI0evRk8j2sHmgEBXwyySLUHf0NfI0XqwZ0mAl7g==}
-    engines: {node: '>= 10'}
-    cpu: [x64]
-    os: [win32]
-
-  '@ast-grep/napi@0.32.3':
-    resolution: {integrity: sha512-EdgX3gnDGkKMeofSYQlmPccjnxmGGQoEKL7pVQUmenLrsUBXXcjY//6J0LJApfIzNCknjQkfWpj1IbWDkl66Iw==}
-    engines: {node: '>= 10'}
 
   '@babel/code-frame@7.27.1':
     resolution: {integrity: sha512-cjQ7ZlQ0Mv3b47hABuTevyTuYN4i+loJKGeV9flcCgIK37cCXRh+L1bd3iBHlynerhQ7BhCkn2BPbQUL+rGqFg==}
@@ -1781,11 +1702,6 @@ packages:
     peerDependencies:
       eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0 || ^9.0.0
 
-  eslint-plugin-react-refresh@0.4.19:
-    resolution: {integrity: sha512-eyy8pcr/YxSYjBoqIFSrlbn9i/xvxUFa8CjzAYo9cFjgGXqq1hyjihcpZvxRLalpaWmueWR81xn7vuKmAFijDQ==}
-    peerDependencies:
-      eslint: '>=8.40'
-
   eslint-plugin-storybook@9.1.13:
     resolution: {integrity: sha512-kPuhbtGDiJLB5OLZuwFZAxgzWakNDw64sJtXUPN8g0+VAeXfHyZEmsE28qIIETHxtal71lPKVm8QNnERaJHPJQ==}
     engines: {node: '>=20.0.0'}
@@ -2855,11 +2771,6 @@ packages:
       vite:
         optional: true
 
-  vite-plugin-lib-inject-css@2.2.1:
-    resolution: {integrity: sha512-PW3n/zRacr7bwNagHOnJfaVLoZyGDCPuFMJTyTFqjk4Xi0HKd1cK5+WlBidBBeWK8QE3SV0i+FsWmN+frBLCVQ==}
-    peerDependencies:
-      vite: '*'
-
   vite-plugin-svgr@4.3.0:
     resolution: {integrity: sha512-Jy9qLB2/PyWklpYy0xk0UU3TlU0t2UMpJXZvf+hWII1lAmRHrOUKi11Uw8N3rxoNk7atZNYO3pR3vI1f7oi+6w==}
     peerDependencies:
@@ -3033,45 +2944,6 @@ snapshots:
       '@csstools/css-parser-algorithms': 3.0.4(@csstools/css-tokenizer@3.0.3)
       '@csstools/css-tokenizer': 3.0.3
       lru-cache: 10.4.3
-
-  '@ast-grep/napi-darwin-arm64@0.32.3':
-    optional: true
-
-  '@ast-grep/napi-darwin-x64@0.32.3':
-    optional: true
-
-  '@ast-grep/napi-linux-arm64-gnu@0.32.3':
-    optional: true
-
-  '@ast-grep/napi-linux-arm64-musl@0.32.3':
-    optional: true
-
-  '@ast-grep/napi-linux-x64-gnu@0.32.3':
-    optional: true
-
-  '@ast-grep/napi-linux-x64-musl@0.32.3':
-    optional: true
-
-  '@ast-grep/napi-win32-arm64-msvc@0.32.3':
-    optional: true
-
-  '@ast-grep/napi-win32-ia32-msvc@0.32.3':
-    optional: true
-
-  '@ast-grep/napi-win32-x64-msvc@0.32.3':
-    optional: true
-
-  '@ast-grep/napi@0.32.3':
-    optionalDependencies:
-      '@ast-grep/napi-darwin-arm64': 0.32.3
-      '@ast-grep/napi-darwin-x64': 0.32.3
-      '@ast-grep/napi-linux-arm64-gnu': 0.32.3
-      '@ast-grep/napi-linux-arm64-musl': 0.32.3
-      '@ast-grep/napi-linux-x64-gnu': 0.32.3
-      '@ast-grep/napi-linux-x64-musl': 0.32.3
-      '@ast-grep/napi-win32-arm64-msvc': 0.32.3
-      '@ast-grep/napi-win32-ia32-msvc': 0.32.3
-      '@ast-grep/napi-win32-x64-msvc': 0.32.3
 
   '@babel/code-frame@7.27.1':
     dependencies:
@@ -4557,10 +4429,6 @@ snapshots:
     dependencies:
       eslint: 9.30.1
 
-  eslint-plugin-react-refresh@0.4.19(eslint@9.30.1):
-    dependencies:
-      eslint: 9.30.1
-
   eslint-plugin-storybook@9.1.13(eslint@9.30.1)(storybook@9.1.13(@testing-library/dom@10.4.1)(prettier@2.8.8)(vite@6.3.5(@types/node@22.10.10)))(typescript@5.7.3):
     dependencies:
       '@typescript-eslint/utils': 8.25.0(eslint@9.30.1)(typescript@5.7.3)
@@ -5621,13 +5489,6 @@ snapshots:
       - '@types/node'
       - rollup
       - supports-color
-
-  vite-plugin-lib-inject-css@2.2.1(vite@6.3.5(@types/node@22.10.10)):
-    dependencies:
-      '@ast-grep/napi': 0.32.3
-      magic-string: 0.30.17
-      picocolors: 1.1.1
-      vite: 6.3.5(@types/node@22.10.10)
 
   vite-plugin-svgr@4.3.0(rollup@4.40.2)(typescript@5.7.3)(vite@6.3.5(@types/node@22.10.10)):
     dependencies:
