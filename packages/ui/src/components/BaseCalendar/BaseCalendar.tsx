@@ -1,6 +1,6 @@
 import { FC, HTMLAttributes, PropsWithChildren } from 'react';
 import { BaseCalendarSize, BaseCalendarVariant } from './types.ts';
-import { BaseCalendarContexts } from './contexts';
+import { BaseCalendarProvider } from './contexts';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 
@@ -46,10 +46,10 @@ export const BaseCalendar: FC<PropsWithChildren<BaseCalendarProps>> = ({
   ...props
 }) => {
   return (
-    <BaseCalendarContexts size={size} variant={variant}>
+    <BaseCalendarProvider size={size} variant={variant}>
       <div className={csx(style.baseCalendar, className)} data-compact={compact} {...props}>
         {children}
       </div>
-    </BaseCalendarContexts>
+    </BaseCalendarProvider>
   )
 }

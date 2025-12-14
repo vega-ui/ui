@@ -79,7 +79,7 @@ importers:
     dependencies:
       '@vega-ui/utils':
         specifier: workspace:*
-        version: link:../helpers
+        version: link:../utils
       react:
         specifier: ^19.0.0
         version: 19.1.0
@@ -184,9 +184,12 @@ importers:
       '@vega-ui/react':
         specifier: workspace:*
         version: link:../ui
+      '@vega-ui/react-context':
+        specifier: workspace:*
+        version: link:../react-context
       '@vega-ui/utils':
         specifier: workspace:*
-        version: link:../helpers
+        version: link:../utils
       libphonenumber-js:
         specifier: ^1.12.9
         version: 1.12.9
@@ -276,7 +279,7 @@ importers:
         version: link:../react-context
       '@vega-ui/utils':
         specifier: workspace:*
-        version: link:../helpers
+        version: link:../utils
       libphonenumber-js:
         specifier: ^1.12.9
         version: 1.12.9

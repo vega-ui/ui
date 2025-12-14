@@ -1,7 +1,7 @@
 'use client';
 
-import { Context, createContext } from 'react';
 import { SelectEvent } from '@vega-ui/react';
+import { createContext } from '@vega-ui/react-context';
 
 type Value = string | number | undefined
 
@@ -11,10 +11,8 @@ export interface SheetSelectContextState {
   size?: 'small' | 'medium' | 'large'
 }
 
-export const defaultSheetSelectContext: SheetSelectContextState = {
+export const [SheetSelectProvider, useSheetSelectContext] = createContext<SheetSelectContextState>('SheetSelectContext', {
   value: undefined,
   onSelect: () => undefined,
   size: 'medium'
-}
-
-export const SheetSelectContext: Context<SheetSelectContextState> = createContext(defaultSheetSelectContext)
+})

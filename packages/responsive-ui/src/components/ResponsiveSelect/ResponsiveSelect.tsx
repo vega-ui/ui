@@ -4,7 +4,7 @@ import { FC } from 'react';
 import { Select, SelectEvent, SelectProps } from '@vega-ui/react';
 import { useControlledState } from '@vega-ui/hooks';
 import { SheetSelect, SheetSelectProps } from '../SheetSelect';
-import { ResponsiveSelectProvider } from './providers';
+import { ResponsiveSelectProvider } from './contexts';
 
 export interface ResponsiveSelectProps extends Omit<SelectProps, 'className'>, Omit<SheetSelectProps, 'className'> {
   isBreakpoint?: boolean

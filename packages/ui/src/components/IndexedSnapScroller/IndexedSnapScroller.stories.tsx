@@ -3,10 +3,10 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { IndexedSnapScroller } from './IndexedSnapScroller';
 import { IndexedSnapScrollerContent as _IndexedSnapScrollerContent, type IndexedSnapScrollerContentProps } from './components';
 import { FC } from 'react';
-import { useIndexesSnapScrollerContext } from './hooks';
+import { useIndexedSnapScrollerContext } from './contexts';
 
 const IndexedSnapScrollerContent: FC<IndexedSnapScrollerContentProps> = ({ style, ...props }) => {
-  const { index } = useIndexesSnapScrollerContext()
+  const { index } = useIndexedSnapScrollerContext()
   
   return (
     <_IndexedSnapScrollerContent

@@ -14,7 +14,7 @@ describe('createContext', () => {
     const [Provider, useCtx] = createContext('Foo', { a: 0 });
     
     const Consumer = () => {
-      const ctx = useCtx('Consumer');
+      const ctx = useCtx();
       return <div data-testid='v'>{String(ctx.a)}</div>;
     };
     
@@ -31,23 +31,12 @@ describe('createContext', () => {
     const [, useCtx] = createContext('Foo', { a: 777 });
     
     const Consumer = () => {
-      const ctx = useCtx('Consumer');
+      const ctx = useCtx();
       return <div data-testid='v'>{String(ctx.a)}</div>;
     };
     
     render(<Consumer />);
     expect(screen.getByTestId('v').textContent).toBe('777');
-  });
-  
-  it('throws when used outside Provider AND defaultContext is undefined', () => {
-    const [, useCtx] = createContext('Foo', undefined as unknown as object);
-    
-    const Consumer = () => {
-      useCtx('Consumer');
-      return <div>ok</div>;
-    };
-    
-    expect(() => render(<Consumer />)).toThrowError('`Consumer` must be used within `Foo`');
   });
   
   it('memoizes value: same prop references -> stable context reference', () => {
@@ -57,7 +46,7 @@ describe('createContext', () => {
     const collect = vi.fn<(v: { x: number }) => void>();
     
     const Consumer = () => {
-      const ctx = useCtx('Consumer');
+      const ctx = useCtx();
       useEffect(() => {
         collect(ctx);
       }, [ctx]);
@@ -86,7 +75,7 @@ describe('createContext', () => {
     const collect = vi.fn<(v: { x: number }) => void>();
     
     const Consumer = () => {
-      const ctx = useCtx('Consumer');
+      const ctx = useCtx();
       useEffect(() => collect(ctx), [ctx]);
       return null;
     };
@@ -112,7 +101,7 @@ describe('createContext', () => {
     const [Provider, useCtx] = createContext<{ x: number }>('Foo', { x: 0 });
     
     const Consumer = () => {
-      const ctx = useCtx('Consumer');
+      const ctx = useCtx();
       return (
         <div data-testid='hasChildren'>
           {String(Object.prototype.hasOwnProperty.call(ctx, 'children'))}

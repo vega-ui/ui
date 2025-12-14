@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { useResponsiveModalContext } from '../../hooks';
+import { useResponsiveModalContext } from '../../contexts';
 import { ModalTrigger, ModalTriggerProps, SheetTrigger, SheetTriggerProps } from '@vega-ui/react';
 
 export type ResponsiveModalTriggerProps = SheetTriggerProps & ModalTriggerProps;

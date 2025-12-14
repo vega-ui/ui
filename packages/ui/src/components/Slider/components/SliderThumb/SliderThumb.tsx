@@ -1,7 +1,7 @@
 'use client';
 
 import { FC } from 'react';
-import { useSliderContext } from '../../hooks';
+import { useSliderContext } from '../../contexts';
 import { SliderBaseThumb, SliderBaseThumbProps } from '../../../SliderBase';
 
 export type SliderThumbProps = SliderBaseThumbProps

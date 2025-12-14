@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { useResponsiveModalContext } from '../../hooks';
+import { useResponsiveModalContext } from '../../contexts';
 import { Heading, ModalHeader } from '@vega-ui/react';
 import style from './style.module.css'
 

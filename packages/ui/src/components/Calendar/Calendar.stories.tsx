@@ -25,7 +25,7 @@ import {
 } from '@vega-ui/utils';
 import { useCalendarContext } from './contexts';
 import { createDayPickerGrid } from '../DayPicker';
-import { useIndexesSnapScrollerContext } from '../IndexedSnapScroller';
+import { useIndexedSnapScrollerContext } from '../IndexedSnapScroller';
 import { Badge } from '../Badge';
 import { FC, Fragment } from 'react';
 
@@ -194,7 +194,7 @@ const DateBadge: FC<{ day?: number }> = ({ day }) => {
 
 const CustomDatesGrid = () => {
   const { year, month } = useCalendarContext()
-  const { index } = useIndexesSnapScrollerContext()
+  const { index } = useIndexedSnapScrollerContext()
   
   return (
     <>

@@ -1,5 +1,5 @@
 export * from './BaseCalendar.tsx'
-export { useBaseCalendarContext } from './hooks'
+export { useBaseCalendarContext } from './contexts'
 export {
   BaseCalendarHeader, type BaseCalendarHeaderProps,
   BaseCalendarWeekLabel, type BaseCalendarWeekLabelProps,
