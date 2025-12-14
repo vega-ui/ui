@@ -2,7 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Accordion } from './Accordion.tsx';
 import { Text } from '../Text';
-import { AccordionTrigger, AccordionContent, AccordionItem } from './components';
+import { AccordionTrigger, AccordionContent, AccordionItem, AccordionHeader, AccordionIcon } from './components';
+import { ArrowDown } from '@vega-ui/icons';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof Accordion> = {
@@ -21,7 +22,43 @@ const meta: Meta<typeof Accordion> = {
       options: ['small', 'medium', 'large'],
     }
   },
-  args: {},
+  args: {
+    children: [
+      <AccordionItem key='1' value='1'>
+        <AccordionHeader>
+          <AccordionTrigger>
+            Hello
+            <AccordionIcon />
+          </AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>
+          <Text>Just a content</Text>
+        </AccordionContent>
+      </AccordionItem>,
+      <AccordionItem key='2' value='2'>
+        <AccordionHeader>
+          <AccordionTrigger>
+            Hello
+            <AccordionIcon />
+          </AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>
+          <Text>Just a content</Text>
+        </AccordionContent>
+      </AccordionItem>,
+      <AccordionItem key='3' value='3'>
+        <AccordionHeader>
+          <AccordionTrigger>
+            Hello
+            <AccordionIcon />
+          </AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>
+          <Text>Just a content</Text>
+        </AccordionContent>
+      </AccordionItem>
+    ]
+  },
   tags: ['autodocs'],
 };
 
@@ -29,41 +66,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {
-    children: (
-      [
-        <AccordionItem key='1' value='1'>
-          <AccordionTrigger>
-            Hello
-          </AccordionTrigger>
-          <AccordionContent>
-            <Text>Just a content</Text>
-          </AccordionContent>
-        </AccordionItem>,
-        <AccordionItem key='2' value='2'>
-          <AccordionTrigger>
-            Hello
-          </AccordionTrigger>
-          <AccordionContent>
-            <Text>Just a content</Text>
-          </AccordionContent>
-        </AccordionItem>,
-        <AccordionItem key='3' value='3'>
-          <AccordionTrigger>
-            Hello
-          </AccordionTrigger>
-          <AccordionContent>
-            <Text>Just a content</Text>
-          </AccordionContent>
-        </AccordionItem>
-      ]
-    )
-  },
+  args: {},
 };
 
 export const Multiple: Story = {
   args: {
-    ...Default.args,
     multiple: true,
   },
 };
@@ -71,33 +78,51 @@ export const Multiple: Story = {
 export const DefaultOpened: Story = {
   args: {
     defaultOpened: ['1'],
-    children: (
-      [
-        <AccordionItem key='1' value='1'>
+  },
+};
+
+export const WithCustomIcon: Story = {
+  args: {
+    children: [
+      <AccordionItem key='1' value='1'>
+        <AccordionHeader>
           <AccordionTrigger>
             Hello
+            <AccordionIcon>
+              <ArrowDown />
+            </AccordionIcon>
           </AccordionTrigger>
-          <AccordionContent>
-            <Text>Just a content</Text>
-          </AccordionContent>
-        </AccordionItem>,
-        <AccordionItem key='2' value='2'>
+        </AccordionHeader>
+        <AccordionContent>
+          <Text>Just a content</Text>
+        </AccordionContent>
+      </AccordionItem>,
+      <AccordionItem key='2' value='2'>
+        <AccordionHeader>
           <AccordionTrigger>
             Hello
+            <AccordionIcon>
+              <ArrowDown />
+            </AccordionIcon>
           </AccordionTrigger>
-          <AccordionContent>
-            <Text>Just a content</Text>
-          </AccordionContent>
-        </AccordionItem>,
-        <AccordionItem key='3' value='3'>
+        </AccordionHeader>
+        <AccordionContent>
+          <Text>Just a content</Text>
+        </AccordionContent>
+      </AccordionItem>,
+      <AccordionItem key='3' value='3'>
+        <AccordionHeader>
           <AccordionTrigger>
             Hello
+            <AccordionIcon>
+              <ArrowDown />
+            </AccordionIcon>
           </AccordionTrigger>
-          <AccordionContent>
-            <Text>Just a content</Text>
-          </AccordionContent>
-        </AccordionItem>
-      ]
-    )
+        </AccordionHeader>
+        <AccordionContent>
+          <Text>Just a content</Text>
+        </AccordionContent>
+      </AccordionItem>
+    ]
   },
 };

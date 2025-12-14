@@ -3,12 +3,15 @@ import { AccordionItem } from './AccordionItem.tsx';
 import { Text } from '../../../Text';
 import { AccordionTrigger } from '../AccordionTrigger';
 import { AccordionContent } from '../AccordionContent';
+import { Accordion } from '../../Accordion.tsx';
+import { AccordionHeader } from '../AccordionHeader';
+import { AccordionIcon } from '../AccordionIcon';
 
 const meta = {
   title: 'Actions/Accordion/AccordionItem',
   component: AccordionItem,
   parameters: {
-    layout: 'centered',
+    layout: 'padded',
     design: {
       type: 'figma',
       url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/vega-ui--Community-?node-id=0-6037&t=2RYEGgF9z3n5SpP5-4',
@@ -16,7 +19,28 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {},
-  args: {},
+  args: {
+    children: (
+      <>
+        <AccordionHeader>
+          <AccordionTrigger>
+            <Text>Open</Text>
+            <AccordionIcon />
+          </AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>
+          <Text>Hello, World!</Text>
+        </AccordionContent>
+      </>
+    )
+  },
+  decorators(Story) {
+    return (
+      <Accordion>
+        <Story />
+      </Accordion>
+    )
+  }
 } satisfies Meta<typeof AccordionItem>;
 
 export default meta;
@@ -26,17 +50,5 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     value: 'default'
-  },
-  render({ ...props }) {
-    return (
-      <AccordionItem {...props}>
-        <AccordionTrigger>
-          Hello, World!
-        </AccordionTrigger>
-        <AccordionContent>
-          <Text>Hello, World!</Text>
-        </AccordionContent>
-      </AccordionItem>
-    )
   }
 }
