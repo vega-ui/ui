@@ -32,18 +32,6 @@
     outline: 2px solid var(--focus-color);
 }
 
-.arrowIcon {
-    transition: transform var(--transition-state-delay) ease;
-}
-
 .triggerButton[data-open='false'] {
     cursor: pointer;
-}
-
-.triggerButton[data-open='true'] .arrowIcon {
-    transform: rotate(180deg);
-}
-
-.triggerButton[data-open='false'] .arrowIcon {
-    transform: rotate(0deg);
 }

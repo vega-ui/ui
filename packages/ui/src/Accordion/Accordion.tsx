@@ -36,7 +36,7 @@ export interface AccordionProps extends HTMLAttributes<HTMLUListElement> {
   onChangeOpened?: (opened?: string[]) => void
 
   /**
-   * An array of item `id`s that should be open by default when the accordion mounts.
+   * An array of item `id's that should be open by default when the accordion mounts.
    */
   defaultOpened?: string[]
 

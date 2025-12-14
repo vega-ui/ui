@@ -1,0 +1,8 @@
+.icon {
+    transform: rotate(0deg);
+    transition: transform var(--transition-state-delay) ease;
+}
+
+.icon[data-open='true'] {
+    transform: rotate(180deg);
+}

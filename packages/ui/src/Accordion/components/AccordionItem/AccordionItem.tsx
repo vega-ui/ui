@@ -1,12 +1,13 @@
 'use client';
-import { FC, ReactNode, useCallback } from 'react';
+import { FC, HTMLAttributes, ReactNode, useCallback } from 'react';
 import { Separator } from '../../../Separator';
 import { Collapsible } from '../../../Collapsible';
 import style from './style.module.css'
 import { AccordionItemProvider, useAccordionContext } from '../../contexts';
 import { AccordionSize } from '../../types.ts';
+import { csx } from '@vega-ui/utils';
 
-export interface AccordionItemProps {
+export interface AccordionItemProps extends HTMLAttributes<HTMLLIElement> {
   /**
    * Controls whether the accordion item is open (expanded).
    * If provided, the component becomes controlled.
@@ -47,7 +48,16 @@ export interface AccordionItemProps {
 }
 
 /** The AccordionItem component represents an individual collapsible section within an accordion group, supporting controlled or uncontrolled open state, a customizable trigger slot, and optional visual separation from adjacent items */
-export const AccordionItem: FC<AccordionItemProps> = ({ separated, size, value, open, onChangeOpen, children }) => {
+export const AccordionItem: FC<AccordionItemProps> = ({
+  separated,
+  size,
+  className,
+  value,
+  open,
+  onChangeOpen,
+  children,
+  ...props
+}) => {
   const { opened, onChangeOpened, separated: _separated, size: _size = 'medium' } = useAccordionContext()
 
   const onChange = useCallback((state: boolean) => {
@@ -57,7 +67,7 @@ export const AccordionItem: FC<AccordionItemProps> = ({ separated, size, value, 
 
   return (
     <AccordionItemProvider size={size ?? _size}>
-      <li className={style.item}>
+      <li className={csx(className, style.item)} {...props}>
         <Collapsible open={open ?? opened.includes(value)} onChangeOpen={onChange}>
           {children}
           {(separated ?? _separated) && <Separator className={style.separator} />}

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react'
 import { Accordion } from '../Accordion.tsx';
 import { Text } from '../../Text';
-import { AccordionContent, AccordionItem, AccordionTrigger } from '../components';
+import { AccordionContent, AccordionHeader, AccordionIcon, AccordionItem, AccordionTrigger } from '../components';
 
 const CONTENT_CONTAINER_SELECTOR = 'div[data-type="content"][data-open]'
 
@@ -17,7 +17,12 @@ describe('Accordion', () => {
       <Accordion>
         {items.map(({ title, content, value }) => (
           <AccordionItem key={value} value={value}>
-            <AccordionTrigger>{title}</AccordionTrigger>
+            <AccordionHeader>
+              <AccordionTrigger>
+                {title}
+                <AccordionIcon />
+              </AccordionTrigger>
+            </AccordionHeader>
             <AccordionContent><Text>{content}</Text></AccordionContent>
           </AccordionItem>
         ))}
@@ -35,7 +40,12 @@ describe('Accordion', () => {
       <Accordion>
         {items.map(({ title, content, value }) => (
           <AccordionItem key={value} value={value}>
-            <AccordionTrigger>{title}</AccordionTrigger>
+            <AccordionHeader>
+              <AccordionTrigger>
+                {title}
+                <AccordionIcon />
+              </AccordionTrigger>
+            </AccordionHeader>
             <AccordionContent><Text>{content}</Text></AccordionContent>
           </AccordionItem>
         ))}
@@ -59,7 +69,12 @@ describe('Accordion', () => {
       <Accordion>
         {items.map(({ title, content, value }) => (
           <AccordionItem key={value} value={value}>
-            <AccordionTrigger>{title}</AccordionTrigger>
+            <AccordionHeader>
+              <AccordionTrigger>
+                {title}
+                <AccordionIcon />
+              </AccordionTrigger>
+            </AccordionHeader>
             <AccordionContent><Text>{content}</Text></AccordionContent>
           </AccordionItem>
         ))}
