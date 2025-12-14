@@ -1,1 +1,0 @@
-export { sizeMapper } from './sizeMapper'

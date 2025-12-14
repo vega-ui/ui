@@ -1,1 +1,0 @@
-export { useCalendarContext, CalendarProvider } from './context'

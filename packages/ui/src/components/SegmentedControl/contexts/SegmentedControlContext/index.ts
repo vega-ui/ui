@@ -1,1 +1,0 @@
-export { useSegmentedControlContext, SegmentedControlProvider } from './context'

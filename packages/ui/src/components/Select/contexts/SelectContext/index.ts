@@ -1,1 +1,0 @@
-export { useSelectContext, SelectProvider } from './context'

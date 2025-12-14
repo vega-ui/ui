@@ -1,1 +1,0 @@
-export { PageControlProvider, usePageControlContext } from './context'
