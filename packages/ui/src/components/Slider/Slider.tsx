@@ -4,6 +4,7 @@ import { clamp } from '@vega-ui/utils';
 import { useControlledState } from '@vega-ui/hooks';
 import { SliderProvider } from './contexts';
 import { SliderBase } from '../SliderBase';
+import { SliderSize } from './types.ts';
 
 export interface SliderProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
   /**
@@ -59,7 +60,7 @@ export interface SliderProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onCha
   /**
    * Visual size of the slider.
    */
-  size?: 'sm' | 'md' | 'lg' | string
+  size?: SliderSize
 
   /**
    * Whether the slider is disabled and non-interactive.

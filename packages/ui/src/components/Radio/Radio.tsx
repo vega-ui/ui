@@ -1,6 +1,7 @@
 import { DetailedHTMLProps, FC, InputHTMLAttributes, Ref } from 'react'
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils'
+import { RadioSize, RadioVariant } from './types.ts';
 
 export interface RadioProps
   extends Omit<
@@ -28,12 +29,12 @@ export interface RadioProps
   /**
    * Visual variant of the checkbox, for theme or context switching.
    */
-  variant?: 'primary' | 'secondary' | string
+  variant?: RadioVariant
 
   /**
    * Size of the checkbox input and its visual marker.
    */
-  size?: 'small' | 'medium' | 'large' | string
+  size?: RadioSize
 
   /**
    * Disables the checkbox, making it non-interactive.

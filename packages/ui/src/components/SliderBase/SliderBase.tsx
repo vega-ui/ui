@@ -6,6 +6,7 @@ import {
 
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
+import { SliderBaseOrientation, SliderBaseSize, SliderBaseVariant } from './types.ts';
 
 export interface SliderBaseProps extends HTMLAttributes<HTMLDivElement> {
   /**
@@ -42,7 +43,7 @@ export interface SliderBaseProps extends HTMLAttributes<HTMLDivElement> {
    * Visual size of the slider.
    * Typically maps to height or thumb size in design tokens.
    */
-  size?: 'sm' | 'md' | 'lg' | string
+  size?: SliderBaseSize
 
   /**
    * Optional React ref to access the root slider DOM node.
@@ -53,7 +54,7 @@ export interface SliderBaseProps extends HTMLAttributes<HTMLDivElement> {
    * Visual styling variant.
    * Useful for differentiating appearance across themes or modes.
    */
-  variant?: 'primary' | 'secondary'
+  variant?: SliderBaseVariant
 
   /**
    * Whether the slider is disabled and non-interactive.
@@ -65,7 +66,7 @@ export interface SliderBaseProps extends HTMLAttributes<HTMLDivElement> {
    * `'horizontal'` renders the slider from left to right (default),
    * `'vertical'` renders it from bottom to top.
    */
-  orientation?: 'horizontal' | 'vertical'
+  orientation?: SliderBaseOrientation
 }
 
 /** SliderBase is a low-level UI component that provides the core structure and logic for building custom sliders.

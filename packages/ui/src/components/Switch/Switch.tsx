@@ -2,6 +2,7 @@ import { DetailedHTMLProps, FC, InputHTMLAttributes, Ref } from 'react'
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils'
 import { VisuallyHidden } from '../VisuallyHidden'
+import { SwitchSize, SwitchVariant } from './types.ts';
 
 export interface SwitchProps
   extends Omit<
@@ -29,12 +30,12 @@ export interface SwitchProps
   /**
    * Visual variant of the checkbox, for theme or context switching.
    */
-  variant?: 'primary' | 'secondary' | string
+  variant?: SwitchVariant
 
   /**
    * Size of the checkbox input and its visual marker.
    */
-  size?: 'small' | 'medium' | 'large' | string
+  size?: SwitchSize
 
   /**
    * Disables the checkbox, making it non-interactive.

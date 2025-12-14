@@ -1,0 +1,1 @@
+export type FieldsetAppearance = 'transparent' | 'outlined' | string

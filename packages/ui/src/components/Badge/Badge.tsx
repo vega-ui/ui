@@ -1,6 +1,7 @@
 import { DetailedHTMLProps, FC, HTMLAttributes, ReactNode } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
+import { BadgeAppearance, BadgeSize, BadgeVariant } from './types.ts';
 
 export interface BadgeProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   /**
@@ -25,18 +26,18 @@ export interface BadgeProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElem
    * - 'warning': For cautionary/in-progress status
    * - 'info': For neutral/informational status
    */
-  variant?: 'success' | 'error' | 'warning' | 'info' | string
+  variant?: BadgeVariant
 
   /**
    * Visual appearance of the badge.
    * Defines how the badge is styled (background, border, etc.).
    */
-  appearance?: 'fill' | 'outline' | 'ghost' | 'surface' | string
+  appearance?: BadgeAppearance
 
   /**
    * Size of the badge. Affects padding, font size, and overall dimensions.
    */
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | string
+  size?: BadgeSize
 }
 
 /** A Badge is a UI component that displays small status indicators, counts, or labels, often used to highlight notifications, message counts, or item statuses on top of icons or other UI elements. */

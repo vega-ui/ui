@@ -2,13 +2,14 @@ import { FC, ReactNode, Ref, SVGProps } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { Slot } from '../Slot';
+import { IconSize } from './types.ts';
 
 export interface IconProps {
   /**
    * Predefined size token for the icon.
    * Can be overridden by explicit width and height.
    */
-  size?: '4xs' | '3xs' | '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | null | string
+  size?: IconSize
 
   /** Optional custom class name for styling */
   className?: string

@@ -2,6 +2,7 @@ import { FC, HTMLAttributes } from 'react';
 import { usePinFieldContext } from '../../contexts';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
+import { PinFieldSize } from '../../types.ts';
 
 export interface PinFieldSeparator extends HTMLAttributes<HTMLDivElement> {
   /**
@@ -14,7 +15,7 @@ export interface PinFieldSeparator extends HTMLAttributes<HTMLDivElement> {
    * Controls the visual size of the separator.
    * Aligns with the size of the surrounding `PinField` elements.
    */
-  size?: 'small' | 'medium' | 'large' | string
+  size?: PinFieldSize
 }
 
 

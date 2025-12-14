@@ -1,6 +1,7 @@
 import { DetailedHTMLProps, FC, HTMLAttributes, Ref } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
+import { CardAppearance, CardSize } from './types.ts';
 
 export interface CardProps extends DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> {
   /**
@@ -13,13 +14,13 @@ export interface CardProps extends DetailedHTMLProps<HTMLAttributes<HTMLElement>
    * Specifies the size of the card.
    * Affects padding, font size, and possibly layout behavior.
    */
-  size?: 'small' | 'medium' | 'large' | string
+  size?: CardSize
 
   /**
    * Defines the visual style of the card's surface.
    * Controls background and border visibility.
    */
-  appearance?: 'outline' | 'transparent' | string
+  appearance?: CardAppearance
 
   /**
    * Ref forwarded to the card’s root element (`<div>`).

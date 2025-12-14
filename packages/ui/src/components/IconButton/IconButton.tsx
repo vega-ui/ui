@@ -2,6 +2,7 @@ import { ButtonBase, ButtonBaseProps } from '../ButtonBase';
 import { FC } from 'react';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css';
+import { IconButtonSize } from './types.ts';
 
 export interface IconButtonProps extends ButtonBaseProps {
   /**
@@ -23,7 +24,7 @@ export interface IconButtonProps extends ButtonBaseProps {
    * Size of the button container.
    * Controls padding and overall clickable area.
    */
-  size?: 'sm' | 'md' | 'lg' | string
+  size?: IconButtonSize
 
   /**
    * When true, renders the button as a child component using `Slot` (e.g., from Radix UI).

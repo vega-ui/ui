@@ -1,0 +1,1 @@
+export type IconSize = '4xs' | '3xs' | '2xs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | null | string

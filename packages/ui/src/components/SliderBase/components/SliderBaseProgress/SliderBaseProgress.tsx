@@ -3,6 +3,7 @@
 import { CSSProperties, FC, HTMLAttributes, PropsWithChildren } from 'react';
 import style from './style.module.css';
 import { csx } from '@vega-ui/utils';
+import { SliderBaseOrientation, SliderBaseSize } from '../../types.ts';
 
 export interface SliderBaseProgressProps extends HTMLAttributes<HTMLDivElement> {
   /**
@@ -37,7 +38,7 @@ export interface SliderBaseProgressProps extends HTMLAttributes<HTMLDivElement> 
    * Visual size of the progress bar.
    * Typically maps to height or thickness of the track.
    */
-  size?: 'sm' | 'md' | 'lg'
+  size?: SliderBaseSize
 
   /**
    * Whether the slider is disabled.
@@ -48,7 +49,7 @@ export interface SliderBaseProgressProps extends HTMLAttributes<HTMLDivElement> 
    * Orientation of the slider.
    * Determines whether progress grows horizontally or vertically.
    */
-  orientation?: 'horizontal' | 'vertical'
+  orientation?: SliderBaseOrientation
 }
 
 /** SliderBaseProgress is a UI subcomponent that visually represents the filled portion of a slider track.

@@ -1,0 +1,1 @@
+export type TextAreaSize = 'small' | 'medium' | 'large' | string

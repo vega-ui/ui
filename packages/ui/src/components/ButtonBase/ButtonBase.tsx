@@ -2,17 +2,18 @@ import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { Slot } from '../Slot';
 import { ButtonHTMLAttributes, FC, ReactNode, Ref } from 'react';
+import { ButtonBaseVariant, ButtonBaseAppearance } from './types.ts';
 
 export interface ButtonBaseProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
    * Defines the visual style of the button, affecting color schemes and emphasis.
    */
-  variant?: 'primary' | 'secondary' | string
+  variant?: ButtonBaseVariant
 
   /**
    * Adjusts the button's structural appearance (background, border, etc.).
    */
-  appearance?: 'fill' | 'outline' | 'ghost' | 'transparent' | string
+  appearance?: ButtonBaseAppearance
 
   /**
    * Disables the button when true.

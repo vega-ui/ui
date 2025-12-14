@@ -9,3 +9,4 @@ export {
   PaginationText, type PaginationTextProps
 } from './components'
 export { usePaginationContext } from './contexts'
+export type { PaginationVariant, PaginationSize } from './types'

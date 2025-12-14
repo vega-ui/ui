@@ -10,8 +10,8 @@ import { FC, useRef } from 'react';
 import { IconButton } from '../IconButton';
 import { Icon } from '../Icon';
 import { ChevronLeft, ChevronRight } from '@vega-ui/icons'
-import { SnapScrollerApiRef } from '../SnapScroller';
-import { IndexedSnapScroller, IndexedSnapScrollerContent, useIndexesSnapScrollerContext } from '../IndexedSnapScroller';
+import { IndexedSnapScroller, IndexedSnapScrollerContent, useIndexedSnapScrollerContext } from '../IndexedSnapScroller';
+import { IndexedSnapScrollerApiRef } from '../IndexedSnapScroller/types.ts';
 
 const EMOJI_POOL = [
   '😀','😃','😄','😁','😆','😅','😂','🤣','😊','🙂','🙃','😉','😌','😍','🥰','😘','😗','😙','😚','😋',
@@ -148,7 +148,7 @@ export const Default: Story = {
 };
 
 const DefaultSwipableLayout: FC = () => {
-  const { index } = useIndexesSnapScrollerContext()
+  const { index } = useIndexedSnapScrollerContext()
   
   const makeKey = (index: number, row: number, col: number, emoji: string) => `${index}:${row}:${col}:${emoji.codePointAt(0)}`;
   
@@ -185,7 +185,7 @@ export const DefaultSwipableRange: Story = {
     defaultActive: '1:5:0:9992'
   },
   render(props) {
-    const apiRef = useRef<SnapScrollerApiRef>(null)
+    const apiRef = useRef<IndexedSnapScrollerApiRef>(null)
     
     return (
       <DataGridPicker{...props}>

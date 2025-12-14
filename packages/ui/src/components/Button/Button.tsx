@@ -3,6 +3,7 @@ import { FC, ReactNode, Ref } from 'react';
 import { csx } from '@vega-ui/utils';
 import { Spinner } from '../Spinner';
 import style from './style.module.css';
+import { ButtonSize } from './types.ts';
 
 export interface ButtonProps extends ButtonBaseProps {
   /**
@@ -35,7 +36,7 @@ export interface ButtonProps extends ButtonBaseProps {
    * Defines the size of the button.
    * Affects padding, font size, and overall dimensions.
    */
-  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | string
+  size?: ButtonSize
 
   /**
    * Custom content to display as a spinner during loading.

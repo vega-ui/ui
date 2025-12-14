@@ -2,7 +2,7 @@
 
 import { ChangeEvent } from 'react';
 import { createContext } from '@vega-ui/react-context';
-import { SegmentedControlSize } from '../../types.ts';
+import { SegmentedControlSize, SegmentedControlVariant } from '../../types.ts';
 
 export interface SegmentedControlContextState {
   value: string | number | undefined
@@ -10,7 +10,7 @@ export interface SegmentedControlContextState {
   size?: SegmentedControlSize
   disabled?: boolean
   name?: string
-  variant?: 'primary' | 'secondary' | string
+  variant?: SegmentedControlVariant
 }
 
 export const [SegmentedControlProvider, useSegmentedControlContext] = createContext<SegmentedControlContextState>('SegmentedControlContext', {

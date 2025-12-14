@@ -3,7 +3,7 @@ import style from './style.module.css';
 import { VisuallyHidden } from '../../../VisuallyHidden';
 import { useSegmentedControlContext } from '../../contexts';
 import { csx } from '@vega-ui/utils';
-import { SegmentedControlSize } from '../../types.ts';
+import { SegmentedControlSize, SegmentedControlVariant } from '../../types.ts';
 
 export interface SegmentedControlItemProps extends HTMLAttributes<HTMLInputElement> {
   /**
@@ -20,7 +20,7 @@ export interface SegmentedControlItemProps extends HTMLAttributes<HTMLInputEleme
   /**
    * Visual style variant of the item.
    */
-  variant?: 'primary' | 'secondary'
+  variant?: SegmentedControlVariant
 
   /**
    * The content (usually a label or icon) displayed inside the item.

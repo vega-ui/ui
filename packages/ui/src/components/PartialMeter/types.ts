@@ -1,0 +1,1 @@
+export type PartialMeterSize = 'sm' | 'md' | 'lg' | string

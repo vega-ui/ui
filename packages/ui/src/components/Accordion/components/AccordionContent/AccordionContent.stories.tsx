@@ -1,7 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { AccordionContent } from './AccordionContent.tsx';
+import { AccordionContent } from './AccordionContent';
 import { Text } from '../../../Text';
-import { CollapsibleContext } from '../../../Collapsible/contexts/CollapsibleContext/context.ts';
+import { Accordion } from '../../Accordion.tsx';
+import { AccordionItem } from '../AccordionItem';
 
 const meta = {
   title: 'Actions/Accordion/AccordionContent',
@@ -25,11 +26,18 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   render({ ...props }) {
     return (
-      <CollapsibleContext value={{ opened: true, hidden: false, open: () => undefined,  close: () => undefined }}>
-        <AccordionContent {...props}>
-          <Text>Hello, World!</Text>
-        </AccordionContent>
-      </CollapsibleContext>
+      <AccordionContent {...props}>
+        <Text>Hello, World!</Text>
+      </AccordionContent>
+    )
+  },
+  decorators(Story) {
+    return (
+      <Accordion opened={['1']}>
+        <AccordionItem value={'1'}>
+          <Story />
+        </AccordionItem>
+      </Accordion>
     )
   }
 }

@@ -5,15 +5,15 @@ import { AvatarGroupCount } from '../AvatarGroupCount';
 import { Icon } from '../../../Icon';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
-import { AvatarGroupItemProps } from '../AvatarGroupItem';
 import { sizeMapper } from './helpers';
 import { ChevronDown } from '@vega-ui/icons';
+import { AvatarSize } from '../../../Avatar';
 
 export interface AvatarGroupLimitedPopoverTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   ref?: Ref<HTMLButtonElement>
   open?: boolean
   children?: string | number
-  size?: AvatarGroupItemProps['size']
+  size?: AvatarSize
 }
 
 export const AvatarGroupLimitedPopoverTrigger: FC<AvatarGroupLimitedPopoverTriggerProps> = ({

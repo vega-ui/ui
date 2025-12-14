@@ -6,6 +6,7 @@ import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
 import { CheckboxCardProvider } from './contexts';
 import { sizeMapper } from './helpers';
+import { CheckboxCardOrientation, CheckboxVariant } from './types.ts';
 
 export interface CheckboxCardProps extends Omit<CardProps, 'appearance'>, Pick<CheckboxProps, 'checked' | 'value' | 'indeterminate'> {
   /**
@@ -29,13 +30,13 @@ export interface CheckboxCardProps extends Omit<CardProps, 'appearance'>, Pick<C
   /**
    * Defines the layout direction of the card content.
    */
-  orientation?: 'horizontal' | 'vertical'
+  orientation?: CheckboxCardOrientation
 
   /**
    * Variant that controls the visual style of the checkbox card.
    * Typically used to switch between brand or neutral themes.
    */
-  variant?: 'primary' | 'secondary' | string
+  variant?: CheckboxVariant
 
   /**
    * Controls whether the checkbox card is selected.

@@ -1,0 +1,1 @@
+export type OptionSize = 'small' | 'medium' | 'large' | string

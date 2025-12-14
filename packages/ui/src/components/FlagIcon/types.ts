@@ -1,0 +1,1 @@
+export type FlagIconSize = 'small' | 'medium' | 'large' | string

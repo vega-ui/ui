@@ -3,6 +3,7 @@ import { FC, HTMLAttributes } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { VisuallyHidden } from '../VisuallyHidden';
+import { ProgressSize, ProgressVariant } from './types.ts';
 
 export interface ProgressProps extends HTMLAttributes<HTMLDivElement> {
   /**
@@ -13,13 +14,13 @@ export interface ProgressProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * Visual size of the progress bar.
    */
-  size?: 'sm' | 'md' | 'lg' | string
+  size?: ProgressSize
 
   /**
    * Visual style of the progress bar.
    * Typically mapped to theme color variants.
    */
-  variant?: 'primary' | 'secondary' | string
+  variant?: ProgressVariant
 
   /**
    * Class name for the track (the unfilled portion of the bar).

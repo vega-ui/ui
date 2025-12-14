@@ -1,6 +1,7 @@
 import { FC, HTMLAttributes, Ref } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
+import { SpinnerSize, SpinnerVariant } from './types.ts';
 
 export interface SpinnerProps extends HTMLAttributes<HTMLDivElement> {
   /**
@@ -8,12 +9,12 @@ export interface SpinnerProps extends HTMLAttributes<HTMLDivElement> {
    * Maps to a scalable design token or type scale.
    * Accepts values from 1 (smallest) to 11 (largest).
    */
-  size?: 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | number
+  size?: SpinnerSize
 
   /**
    * Visual color variant of the spinner.
    */
-  variant?: 'primary' | 'secondary'
+  variant?: SpinnerVariant
 
   /**
    * Ref to the spinner's root container.

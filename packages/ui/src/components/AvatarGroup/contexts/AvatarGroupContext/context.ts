@@ -1,11 +1,11 @@
 'use client';
 
-import { AvatarProps } from '../../../Avatar';
+import { AvatarProps, AvatarSize, AvatarVariant } from '../../../Avatar';
 import { createContext } from '@vega-ui/react-context';
 
 export interface AvatarGroupContextState {
-  size?: AvatarProps['size']
-  variant?: AvatarProps['variant']
+  size?: AvatarSize
+  variant?: AvatarVariant
   avatarClass?: AvatarProps['className']
   hiddenCount?: number
 }
