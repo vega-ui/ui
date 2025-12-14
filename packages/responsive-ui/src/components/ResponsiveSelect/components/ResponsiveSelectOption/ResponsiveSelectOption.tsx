@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { useResponsiveSelectContext } from '../../hooks';
+import { useResponsiveSelectContext } from '../../contexts';
 import { SheetSelectOption, SheetSelectOptionProps } from '../../../SheetSelect';
 import { SelectOption, SelectOptionProps } from '@vega-ui/react';
 
