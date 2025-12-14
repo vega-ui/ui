@@ -1,5 +1,11 @@
 # @vega-ui/utils
 
+## 1.14.3
+
+### Patch Changes
+
+- 7711364: Renamed BaseCalendar to CalendarBase
+
 ## 1.14.2
 
 ### Patch Changes

@@ -1,5 +1,19 @@
 # @vega-ui/responsive-react
 
+## 1.14.3
+
+### Patch Changes
+
+- 7711364: Fixed SheetSelect (Responsive) types
+- Updated dependencies [e5fcee3]
+- Updated dependencies [5fbc32c]
+- Updated dependencies [7711364]
+  - @vega-ui/react@1.14.3
+  - @vega-ui/hooks@1.14.3
+  - @vega-ui/utils@1.14.3
+  - @vega-ui/icons@1.14.3
+  - @vega-ui/react-context@1.14.3
+
 ## 1.14.2
 
 ### Patch Changes

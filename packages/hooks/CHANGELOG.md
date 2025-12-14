@@ -1,5 +1,13 @@
 # @vega-ui/hooks
 
+## 1.14.3
+
+### Patch Changes
+
+- 7711364: Renamed BaseCalendar to CalendarBase
+- Updated dependencies [7711364]
+  - @vega-ui/utils@1.14.3
+
 ## 1.14.2
 
 ### Patch Changes

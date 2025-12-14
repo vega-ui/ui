@@ -1,5 +1,18 @@
 # @vega-ui/react
 
+## 1.14.3
+
+### Patch Changes
+
+- e5fcee3: Fixed active day into calendar
+- 5fbc32c: Changed dirs
+- 7711364: Renamed BaseCalendar to CalendarBase
+- Updated dependencies [7711364]
+  - @vega-ui/hooks@1.14.3
+  - @vega-ui/utils@1.14.3
+  - @vega-ui/icons@1.14.3
+  - @vega-ui/react-context@1.14.3
+
 ## 1.14.2
 
 ### Patch Changes
