@@ -1,6 +1,6 @@
 'use client';
 
-import { Children, FC, ReactElement, ReactNode, useMemo, useState } from 'react';
+import { Children, FC, ReactElement, useMemo, useState } from 'react';
 import {
   OptionProps,
   SelectCombobox,
@@ -22,7 +22,6 @@ export interface SheetSelectProps extends SelectComboboxProps {
   onSelect?(e: SelectEvent, value: string | number | undefined): void
   children?: ReactElement<OptionProps> | ReactElement<OptionProps>[]
   searchFieldPlaceholder?: string
-  headerSlot?: ReactNode | ReactNode[]
 }
 
 export const SheetSelect: FC<SheetSelectProps> = ({
@@ -37,7 +36,6 @@ export const SheetSelect: FC<SheetSelectProps> = ({
   endSlot,
   startSlot,
   valueSlot,
-  headerSlot,
   onSelect,
   value: controlledValue,
   defaultValue,
@@ -91,7 +89,7 @@ export const SheetSelect: FC<SheetSelectProps> = ({
         </SelectCombobox>
       </SheetTrigger>
       <SheetSelectProvider value={value} onSelect={onSelectOption} size={size}>
-        <SheetContent role='listbox' className={style.sheet} headerSlot={headerSlot}>
+        <SheetContent role='listbox' className={style.sheet}>
           <SheetSelectOptionList>
             {children}
           </SheetSelectOptionList>
