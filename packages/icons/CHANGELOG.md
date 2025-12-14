@@ -1,5 +1,11 @@
 # @vega-ui/icons
 
+## 1.14.1
+
+### Patch Changes
+
+- 9bb4a3b: Refactored contexts, they are unified in style
+
 ## 1.14.0
 
 ## 1.13.0

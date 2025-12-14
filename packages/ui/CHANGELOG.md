@@ -1,5 +1,20 @@
 # @vega-ui/react
 
+## 1.14.1
+
+### Patch Changes
+
+- 9bb4a3b: Refactored contexts, they are unified in style
+- 21bd47a: Changed types
+- d595467: Flat helpers to one level
+- d76eea5: Deleted unused dependencies
+- Updated dependencies [9bb4a3b]
+- Updated dependencies [d76eea5]
+  - @vega-ui/react-context@1.14.1
+  - @vega-ui/icons@1.14.1
+  - @vega-ui/utils@1.14.1
+  - @vega-ui/hooks@1.14.1
+
 ## 1.14.0
 
 ### Minor Changes
