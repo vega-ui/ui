@@ -8,7 +8,7 @@ import {
   CalendarDayPickerScrollerContent,
   CalendarDayPickerScrollerLayout
 } from '../CalendarDayPicker';
-import { getWeekDayNames } from '@vega-ui/utils';
+import { getFirstDayOfWeek, getWeekDayNames } from '@vega-ui/utils';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof CalendarContent> = {
@@ -19,7 +19,7 @@ const meta: Meta<typeof CalendarContent> = {
       <>
         <CalendarDayPicker>
           <CalendarWeekLabels>
-            {getWeekDayNames(navigator.language, 'short').map((name) => (
+            {getWeekDayNames(navigator.language, 'short', getFirstDayOfWeek()).map((name) => (
               <CalendarWeekLabel key={name}>{name}</CalendarWeekLabel>
             ))}
           </CalendarWeekLabels>

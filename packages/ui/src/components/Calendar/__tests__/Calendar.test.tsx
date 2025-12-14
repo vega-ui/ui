@@ -345,7 +345,7 @@ describe('Calendar', () => {
     expect(nextButton).not.toBeDisabled();
   });
   
-  it('passes compact, size and variant down to BaseCalendar root', () => {
+  it('passes compact, size and variant down to CalendarBase root', () => {
     const { container } = render(
       <TestCalendar compact size='md' variant='primary' />,
     );

@@ -1,8 +1,8 @@
 import { FC, PropsWithChildren } from 'react';
-import { BaseCalendarWeekLabels, BaseCalendarWeekLabelsProps } from '../../../BaseCalendar';
+import { CalendarBaseWeekLabels, CalendarBaseWeekLabelsProps } from '../../../CalendarBase';
 
-export type CalendarWeekLabelsProps = BaseCalendarWeekLabelsProps
+export type CalendarWeekLabelsProps = CalendarBaseWeekLabelsProps
 
 export const CalendarWeekLabels: FC<PropsWithChildren<CalendarWeekLabelsProps>> = (props) => {
-  return <BaseCalendarWeekLabels {...props} />
+  return <CalendarBaseWeekLabels {...props} />
 }

@@ -1,6 +1,6 @@
 import { DayPicker, DayPickerProps } from '../../../../DayPicker';
 import { isDisabledDate } from '../../../helpers';
-import { useBaseCalendarContext } from '../../../../BaseCalendar';
+import { useCalendarBaseContext } from '../../../../CalendarBase';
 import { useCalendarContext } from '../../../contexts';
 import { type DataGridSelection } from '../../../../DataGridSelectable';
 import style from './style.module.css';
@@ -23,7 +23,7 @@ export const CalendarDayPicker = <S extends DataGridSelection = 'single'>({ onSe
     from,
     to,
   } = useCalendarContext()
-  const { size, variant } = useBaseCalendarContext()
+  const { size, variant } = useCalendarBaseContext()
   
   const selected = Array.isArray(value) ? value.map((v: Date) => v.getTime()) : value?.getTime()
   

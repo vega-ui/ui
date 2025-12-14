@@ -1,15 +1,15 @@
 import { FC, MouseEvent } from 'react';
-import { BaseCalendarPrevButton, BaseCalendarPrevButtonProps } from '../../../BaseCalendar';
+import { CalendarBasePrevButton, CalendarBasePrevButtonProps } from '../../../CalendarBase';
 import { useCalendarContext } from '../../contexts';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 
-export type CalendarPrevButtonProps = BaseCalendarPrevButtonProps
+export type CalendarPrevButtonProps = CalendarBasePrevButtonProps
 
 /**
  * `CalendarPrevButton` is the calendar-integrated "previous" navigation
  * control, responsible for moving the visible month backward in the
- * day-picker view. It wraps `BaseCalendarPrevButton` and applies calendar
+ * day-picker view. It wraps `CalendarBasePrevButton` and applies calendar
  * state, range constraints, and picker-mode awareness.
  */
 export const CalendarPrevButton: FC<CalendarPrevButtonProps> = ({ disabled, className, onClick: _onClick, ...props }) => {
@@ -24,7 +24,7 @@ export const CalendarPrevButton: FC<CalendarPrevButtonProps> = ({ disabled, clas
   }
   
   return (
-    <BaseCalendarPrevButton
+    <CalendarBasePrevButton
       type='button'
       disabled={_disabled}
       className={csx(className, style.button)}
