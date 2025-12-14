@@ -1,5 +1,5 @@
-import { IconProps } from '../../../../../Icon';
-import { AvatarGroupItemProps } from '../../../AvatarGroupItem';
+import { IconProps } from '../../../../Icon';
+import { AvatarGroupItemProps } from '../../AvatarGroupItem';
 
 type SizeMapperType = Exclude<AvatarGroupItemProps['size'], undefined>;
 

@@ -1,5 +1,5 @@
-import { TextProps } from '../../../../../Text';
-import { CheckboxCardSize } from '../../../../types.ts';
+import { TextProps } from '../../../../Text';
+import { CheckboxCardSize } from '../../../types.ts';
 
 const mapperTextSize: Record<CheckboxCardSize, {
   title: TextProps['size'],

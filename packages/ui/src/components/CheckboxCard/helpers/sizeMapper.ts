@@ -1,5 +1,5 @@
-import { CheckboxProps } from '../../../Checkbox';
-import { CheckboxCardSize } from '../../types.ts';
+import { CheckboxProps } from '../../Checkbox';
+import { CheckboxCardSize } from '../types.ts';
 
 const mapperCheckboxSize: Record<CheckboxCardSize, CheckboxProps['size']> = {
   'small': 'medium',
