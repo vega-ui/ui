@@ -1,6 +1,6 @@
 'use client';
 import { FC } from 'react';
-import { useSelectContext } from '../../hooks';
+import { useSelectContext } from '../../contexts';
 import { Option, OptionProps } from '../../../Option';
 import { useListItem } from '@floating-ui/react';
 

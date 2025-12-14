@@ -1,7 +1,7 @@
 import { PropsWithChildren } from 'react';
 import { DataGridPicker, DataGridPickerProps } from '../DataGridPicker';
 import { getCurrentDate } from '@vega-ui/utils';
-import { DataGridSelection } from '../DataGridSelectable/types.ts';
+import { DataGridSelection } from '../DataGridSelectable';
 
 export type DayPickerProps<S extends DataGridSelection = 'single'> = DataGridPickerProps<number, S>
 

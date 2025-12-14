@@ -33,7 +33,7 @@ export default defineConfig({
     },
     chunkSizeWarningLimit: 10000,
     rollupOptions: {
-      external: ['react', 'react-dom', 'react/jsx-runtime', '@floating-ui/react', 'react-remove-scroll', '@vega-ui/utils', '@vega-ui/hooks', 'lucide-react'],
+      external: ['react', 'react-dom', 'react/jsx-runtime', '@floating-ui/react', 'react-remove-scroll', '@vega-ui/helpers', '@vega-ui/hooks', 'lucide-react'],
       output: {
         preserveModules: true,
         globals: {

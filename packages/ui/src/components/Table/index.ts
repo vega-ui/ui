@@ -9,3 +9,4 @@ export {
   type TableDataProps,
   type TableHeadingProps,
 } from './components'
+export { useTableContext } from './contexts'

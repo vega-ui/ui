@@ -2,7 +2,7 @@
 
 import { FC } from 'react';
 import { Modal, Sheet, SheetProps, ModalProps } from '@vega-ui/react';
-import { ResponsiveModalProvider } from './providers';
+import { ResponsiveModalProvider } from './contexts';
 
 export interface ResponsiveModalProps extends ModalProps, SheetProps {
   isBreakpoint?: boolean

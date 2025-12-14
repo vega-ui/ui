@@ -3,10 +3,10 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { IndexedSnapScroller } from '../IndexedSnapScroller';
 import { IndexedSnapScrollerContent, IndexedSnapScrollerContentProps } from '../components';
 import { FC } from 'react';
-import { useIndexesSnapScrollerContext } from '../hooks';
+import { useIndexedSnapScrollerContext } from '../contexts';
 
 const TestIndexedSnapScrollerContent: FC<IndexedSnapScrollerContentProps> = (props) => {
-  const { index } = useIndexesSnapScrollerContext();
+  const { index } = useIndexedSnapScrollerContext();
   
   return (
     <IndexedSnapScrollerContent data-testid='page' {...props}>

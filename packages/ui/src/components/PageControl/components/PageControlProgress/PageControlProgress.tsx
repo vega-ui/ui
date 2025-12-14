@@ -2,7 +2,7 @@ import { AnimationEventHandler, FC, Ref, useRef, useEffect, useState, CSSPropert
 import style from './style.module.css'
 import { PageControlItem, PageControlItemProps } from '../PageControlItem';
 import { csx, mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
-import { usePageControlContext } from '../../hooks';
+import { usePageControlContext } from '../../contexts';
 import { PageControlSize } from '../../types.ts';
 
 export interface PageControlProgressProps extends PageControlItemProps {

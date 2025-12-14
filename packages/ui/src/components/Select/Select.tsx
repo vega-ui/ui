@@ -32,7 +32,7 @@ import { csx, mergeRefs } from '@vega-ui/utils';
 import styles from './style.module.css';
 import { SelectCombobox, SelectListbox, SelectOptionProps } from './components';
 import { useControlledState } from '@vega-ui/hooks';
-import { SelectProvider } from './providers';
+import { SelectProvider } from './contexts';
 import { VisuallyHidden } from '../VisuallyHidden';
 import { SelectSize, SelectVariant } from './types';
 

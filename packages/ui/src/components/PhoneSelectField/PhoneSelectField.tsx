@@ -12,7 +12,7 @@ import { useControlledState } from '@vega-ui/hooks';
 import { AsYouType, CountryCode, getCountryCallingCode } from 'libphonenumber-js';
 import { PhoneField } from '../PhoneField';
 import { PhoneSelect } from './components';
-import { PhoneSelectProvider } from './providers';
+import { PhoneSelectProvider } from './contexts';
 
 export interface PhoneFieldCountry {
   iso: CountryCode

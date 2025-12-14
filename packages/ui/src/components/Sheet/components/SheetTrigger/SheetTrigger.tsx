@@ -3,7 +3,7 @@
 import { ButtonHTMLAttributes, FC, Ref } from 'react';
 import { mergeProps, mergeRefs } from '@vega-ui/utils';
 import { Slot } from '../../../Slot';
-import { useSheetContext } from '../../hooks';
+import { useSheetContext } from '../../contexts';
 
 export interface SheetTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**

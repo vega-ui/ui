@@ -3,7 +3,7 @@ import { FC } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { Text } from '../Text';
-import { sizeMapper } from './utils';
+import { sizeMapper } from './helpers';
 import { HelperTextSize } from './types.ts';
 
 export interface HelperTextProps {

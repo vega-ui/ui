@@ -11,7 +11,7 @@ import {
 } from 'react';
 import style from './style.module.css'
 import { csx, mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
-import { SnapScrollerProvider } from './providers';
+import { SnapScrollerProvider } from './contexts';
 import { useRefMap } from '@vega-ui/hooks';
 import { SnapScrollerApiRef } from './types';
 

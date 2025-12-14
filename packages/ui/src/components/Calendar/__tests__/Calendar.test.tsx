@@ -31,7 +31,7 @@ import {
   getCurrentDate,
   getWeekDayNames,
 } from '@vega-ui/utils';
-import { useCalendarContext } from '../hooks';
+import { useCalendarContext } from '../contexts';
 import type { CalendarSelection } from '../types';
 import { Icon } from '../../Icon';
 

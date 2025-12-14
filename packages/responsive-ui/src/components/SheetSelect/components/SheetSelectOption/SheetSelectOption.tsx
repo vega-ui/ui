@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Option, OptionProps } from '@vega-ui/react';
-import { useSheetSelectContext } from '../../hooks';
+import { useSheetSelectContext } from '../../contexts';
 
 export type SheetSelectOptionProps = OptionProps
 

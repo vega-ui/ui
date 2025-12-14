@@ -2,7 +2,7 @@
 
 import { ButtonHTMLAttributes, FC, Ref } from 'react';
 import { Slot } from '../../../Slot';
-import { useModalContext } from '../../hooks';
+import { useModalContext } from '../../contexts';
 import { mergeProps, mergeRefs } from '@vega-ui/utils';
 
 export interface ModalTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {

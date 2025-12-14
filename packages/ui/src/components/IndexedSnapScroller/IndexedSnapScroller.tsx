@@ -1,7 +1,7 @@
 import { FC, PropsWithChildren, Ref, useImperativeHandle, useRef, useState } from 'react';
 import { useIndexes } from '@vega-ui/hooks';
 import { SnapScroller, SnapScrollerApiRef, SnapScrollerProps } from '../SnapScroller';
-import { IndexedSnapScrollerProvider } from './providers';
+import { IndexedSnapScrollerProvider } from './contexts';
 import { IndexedSnapScrollerApiRef } from './types.ts';
 
 export interface IndexedSnapScrollerProps extends SnapScrollerProps {
@@ -52,7 +52,7 @@ export interface IndexedSnapScrollerProps extends SnapScrollerProps {
  * index-based paging. It maintains a sliding window of page indexes
  * and automatically shifts the window when the user scrolls to the
  * start or end of the snap area. Each rendered child is wrapped in an
- * `IndexedSnapScrollerProvider` with its corresponding index, allowing
+ * `IndexedSnapScrollerContext` with its corresponding index, allowing
  * dynamic page generation based on the current virtual index.
  */
 export const IndexedSnapScroller: FC<PropsWithChildren<IndexedSnapScrollerProps>> = ({

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { AccordionTrigger } from './AccordionTrigger.tsx';
 import { Text } from '../../../Text';
-import { CollapsibleContext } from '../../../Collapsible/providers/CollapsibleProvider/context.ts';
+import { CollapsibleContext } from '../../../Collapsible/contexts/CollapsibleContext/context.ts';
 
 const meta = {
   title: 'Actions/Accordion/AccordionTrigger',

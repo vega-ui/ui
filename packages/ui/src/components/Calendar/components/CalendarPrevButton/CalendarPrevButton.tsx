@@ -1,6 +1,6 @@
 import { FC, MouseEvent } from 'react';
 import { BaseCalendarPrevButton, BaseCalendarPrevButtonProps } from '../../../BaseCalendar';
-import { useCalendarContext } from '../../hooks';
+import { useCalendarContext } from '../../contexts';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 

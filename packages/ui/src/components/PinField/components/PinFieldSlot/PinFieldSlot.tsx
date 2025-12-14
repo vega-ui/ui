@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import style from './style.module.css';
 import { csx, inRange } from '@vega-ui/utils';
-import { usePinFieldContext } from '../../hooks';
+import { usePinFieldContext } from '../../contexts';
 
 export interface PinFieldSlotProps {
   /**

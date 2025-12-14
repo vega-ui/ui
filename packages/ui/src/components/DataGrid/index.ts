@@ -6,7 +6,7 @@ export {
   DataGridRow, type DataGridRowProps,
   DataGridRowGroup, type DataGridRowGroupProps
 } from './components'
-export { useDataGridContext, useDataGridRowContext } from './hooks'
+export { useDataGridContext, useDataGridRowContext } from './contexts'
 export {
   type DataGridResolveValue,
   type DataGridCellKey,

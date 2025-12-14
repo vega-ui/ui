@@ -1,6 +1,6 @@
 import { FC, KeyboardEvent } from 'react';
 import { MonthPicker, MonthPickerProps } from '../../../../MonthPicker';
-import { useCalendarContext } from '../../../hooks';
+import { useCalendarContext } from '../../../contexts';
 import { useBaseCalendarContext } from '../../../../BaseCalendar';
 import style from './style.module.css'
 

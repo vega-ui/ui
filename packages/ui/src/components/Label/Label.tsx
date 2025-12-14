@@ -3,7 +3,7 @@ import { FC, ReactNode } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { Text, TextProps } from '../Text';
-import { sizeMapper } from './utils';
+import { sizeMapper } from './helpers';
 import { LabelSize } from './types.ts';
 
 export interface LabelProps extends Omit<TextProps, 'size'> {

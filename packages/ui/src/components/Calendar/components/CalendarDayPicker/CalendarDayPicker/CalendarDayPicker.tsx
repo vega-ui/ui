@@ -1,7 +1,7 @@
 import { DayPicker, DayPickerProps } from '../../../../DayPicker';
 import { isDisabledDate } from '../../../helpers';
 import { useBaseCalendarContext } from '../../../../BaseCalendar';
-import { useCalendarContext } from '../../../hooks';
+import { useCalendarContext } from '../../../contexts';
 import { type DataGridSelection } from '../../../../DataGridSelectable';
 import style from './style.module.css';
 

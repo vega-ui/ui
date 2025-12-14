@@ -3,7 +3,7 @@ import style from './style.module.css'
 import { Text, TextProps } from '../../../Text';
 import { csx } from '@vega-ui/utils';
 import { sizeMapper } from './helpers';
-import { useBaseCalendarContext } from '../../hooks';
+import { useBaseCalendarContext } from '../../contexts';
 
 export type BaseCalendarWeekLabelProps = TextProps
 

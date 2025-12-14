@@ -1,7 +1,7 @@
 'use client';
 
 import { FC } from 'react';
-import { useRangeSliderContext } from '../../hooks';
+import { useRangeSliderContext } from '../../contexts';
 import { SliderBaseThumb, SliderBaseThumbProps } from '../../../SliderBase';
 
 export interface RangeSliderThumbProps extends Omit<SliderBaseThumbProps, 'value'> {

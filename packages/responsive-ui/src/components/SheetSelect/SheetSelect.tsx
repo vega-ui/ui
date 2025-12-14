@@ -11,7 +11,7 @@ import {
 } from '@vega-ui/react';
 import { useControlledState } from '@vega-ui/hooks';
 import { SheetSelectOptionList } from './components';
-import { SheetSelectProvider } from './providers';
+import { SheetSelectProvider } from './contexts';
 import style from './style.module.css'
 
 export interface SheetSelectProps extends SelectComboboxProps {

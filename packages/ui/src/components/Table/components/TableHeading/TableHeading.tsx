@@ -3,7 +3,7 @@ import { FC, PropsWithChildren, ThHTMLAttributes } from 'react';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
 import { TableProps } from '../../Table.tsx';
-import { useTable } from '../../hooks';
+import { useTableContext } from '../../contexts';
 
 export interface TableHeadingProps extends ThHTMLAttributes<HTMLTableHeaderCellElement> {
   /**
@@ -17,7 +17,7 @@ export interface TableHeadingProps extends ThHTMLAttributes<HTMLTableHeaderCellE
 
 /** The TableHeading component represents a single `<th>` cell within the table header (`<thead>`), supporting semantic labeling and optional content alignment via the dataAlign prop for consistent column layout */
 export const TableHeading: FC<PropsWithChildren<TableHeadingProps>> = ({ children, className, dataAlign, ...props }) => {
-  const { dataAlign: contextDataAlign, edgePadded } = useTable()
+  const { dataAlign: contextDataAlign, edgePadded } = useTableContext()
 
   return (
     <th {...props} data-align={dataAlign ?? contextDataAlign} className={csx(style.heading, !edgePadded ? style.headingNotEdgePadded : undefined, className)}>

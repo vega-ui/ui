@@ -3,7 +3,7 @@ import { FC, HTMLAttributes, ReactElement } from 'react';
 import { AccordionItemProps } from './components';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
-import { AccordionProvider } from './providers';
+import { AccordionProvider } from './contexts';
 import { useControlledState } from '@vega-ui/hooks';
 import { AccordionSize } from './types.ts';
 

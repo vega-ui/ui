@@ -2,7 +2,7 @@
 
 import { ButtonHTMLAttributes, FC, Ref } from 'react';
 import { Slot } from '../../../Slot';
-import { useTooltipContext } from '../../hooks';
+import { useTooltipContext } from '../../contexts';
 import { mergeProps, mergeRefs } from '@vega-ui/utils';
 
 export interface TooltipTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {

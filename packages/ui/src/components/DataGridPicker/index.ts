@@ -4,3 +4,4 @@ export {
   DataGridPickerRow, type DataGridPickerRowProps,
   DataGridPickerRowGroup, type DataGridPickerRowGroupProps,
 } from './components'
+export { useDataGridPickerContext } from './contexts'

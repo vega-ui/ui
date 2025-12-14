@@ -1,6 +1,6 @@
 import { IconButton, IconButtonProps } from '../../../IconButton';
-import { useBaseCalendarContext } from '../../hooks';
 import { FC } from 'react';
+import { useBaseCalendarContext } from '../../contexts';
 
 export type BaseCalendarNextButtonProps = IconButtonProps
 

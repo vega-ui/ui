@@ -3,7 +3,7 @@
 import { ButtonHTMLAttributes, FC, Ref } from 'react';
 import { mergeProps, mergeRefs } from '@vega-ui/utils';
 import { Slot } from '../../../Slot';
-import { useDrawerContext } from '../../hooks';
+import { useDrawerContext } from '../../contexts';
 
 export interface DrawerTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**

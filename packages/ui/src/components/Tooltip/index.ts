@@ -3,3 +3,4 @@ export {
   TooltipContent, type TooltipContentProps,
   TooltipTrigger, type TooltipTriggerProps,
 } from './components'
+export { useTooltipContext } from './contexts'

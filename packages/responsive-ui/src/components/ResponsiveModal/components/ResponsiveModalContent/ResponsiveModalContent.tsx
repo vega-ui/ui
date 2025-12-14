@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { useResponsiveModalContext } from '../../hooks';
+import { useResponsiveModalContext } from '../../contexts';
 import { ModalContent, ModalContentProps, SheetContent, SheetContentProps } from '@vega-ui/react';
 
 export type ResponsiveModalContentProps = SheetContentProps & ModalContentProps

@@ -2,7 +2,7 @@
 
 import { FC, PropsWithChildren } from 'react';
 import { SliderBaseProgress, SliderBaseProgressProps } from '../../../SliderBase';
-import { useSliderContext } from '../../hooks';
+import { useSliderContext } from '../../contexts';
 
 export type SliderProgressProps = SliderBaseProgressProps
 

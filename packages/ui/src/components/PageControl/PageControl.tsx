@@ -1,5 +1,5 @@
 import { FC, HTMLAttributes, PropsWithChildren, useRef, useState, PointerEvent, MouseEvent, KeyboardEvent, Ref, Children } from 'react';
-import { PageControlProvider } from './providers';
+import { PageControlProvider } from './contexts';
 import style from './style.module.css'
 import { csx, mergeEventHandlers } from '@vega-ui/utils';
 import { PageControlSize, PageControlVariant } from './types.ts';

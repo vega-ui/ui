@@ -1,7 +1,7 @@
 import { FC, HTMLAttributes, PropsWithChildren } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
-import { DataGridRowProvider } from '../../providers';
+import { DataGridRowProvider } from '../../contexts';
 
 export interface DataGridRowProps extends HTMLAttributes<HTMLDivElement> {
   /**

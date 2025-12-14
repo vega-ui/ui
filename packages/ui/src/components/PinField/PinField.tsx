@@ -12,7 +12,7 @@ import { useControlledState } from '@vega-ui/hooks';
 import { useMaskito } from '@maskito/react';
 import { MaskitoOptions } from '@maskito/core';
 import { PinFieldInput } from './components';
-import { PinFieldProvider } from './providers';
+import { PinFieldProvider } from './contexts';
 
 export interface PinFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
   /**

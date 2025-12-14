@@ -8,4 +8,4 @@ export {
   PaginationEllipsis, type PaginationEllipsisProps,
   PaginationText, type PaginationTextProps
 } from './components'
-export { usePaginationContext } from './hooks'
+export { usePaginationContext } from './contexts'

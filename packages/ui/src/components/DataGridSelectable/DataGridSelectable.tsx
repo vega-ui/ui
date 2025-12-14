@@ -9,7 +9,7 @@ import {
 import { DataGrid, DataGridProps, DataGridResolveValue } from '../DataGrid';
 import { DataGridApiRef, DataGridCellKey } from '../DataGrid';
 import { DataGridDisabled, DataGridSelection } from './types';
-import { DataGridSelectableProvider } from './providers';
+import { DataGridSelectableProvider } from './contexts';
 import { Grid, MatrixNode, mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
 import { useControlledState, useSelection } from '@vega-ui/hooks';
 import { getCellKey } from './helpers';
@@ -143,7 +143,7 @@ export const DataGridSelectable = <K extends DataGridCellKey = DataGridCellKey, 
   const index = useRef<0 | 1 | undefined>(undefined)
   const pointed = useRef<HTMLElement>(null)
 
-  const equals = useCallback((a: K | undefined, b: K | undefined) => {
+  const equals = useCallback((a: K, b: K) => {
     if (_equals) return _equals(a, b)
     return a === b
   }, [_equals])
@@ -218,8 +218,8 @@ export const DataGridSelectable = <K extends DataGridCellKey = DataGridCellKey, 
 
     const [start, end] = edges()
 
-    if (equals(key, start)) index.current = 0
-    if (equals(key, end)) index.current = 1
+    if (start !== undefined && equals(key, start)) index.current = 0
+    if (end !== undefined && equals(key, end)) index.current = 1
     if (index.current === undefined) return
     
     expanding.current = true;

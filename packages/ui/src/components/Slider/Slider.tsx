@@ -2,7 +2,7 @@ import { FC, HTMLAttributes, PointerEvent, KeyboardEvent, MouseEvent, useRef, us
 
 import { clamp } from '@vega-ui/utils';
 import { useControlledState } from '@vega-ui/hooks';
-import { SliderProvider } from './providers';
+import { SliderProvider } from './contexts';
 import { SliderBase } from '../SliderBase';
 
 export interface SliderProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {

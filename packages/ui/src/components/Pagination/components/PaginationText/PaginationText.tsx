@@ -2,9 +2,9 @@
 
 import { FC } from 'react';
 import { PaginationListItem } from '../PaginationListItem';
-import { usePaginationContext } from '../../hooks';
+import { usePaginationContext } from '../../contexts';
 import { Text, TextProps } from '../../../Text';
-import { sizeMapper } from './utils';
+import { sizeMapper } from './helpers';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
 

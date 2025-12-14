@@ -3,7 +3,7 @@
 import { ButtonHTMLAttributes, FC, Ref } from 'react';
 import { Slot } from '../../../Slot';
 import { mergeProps, mergeRefs } from '@vega-ui/utils';
-import { usePopoverContext } from '../../hooks';
+import { usePopoverContext } from '../../contexts';
 
 export interface PopoverTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**

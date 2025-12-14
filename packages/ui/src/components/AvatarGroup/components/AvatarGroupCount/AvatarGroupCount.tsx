@@ -2,10 +2,10 @@
 
 import { FC, PropsWithChildren, Ref } from 'react';
 import { csx } from '@vega-ui/utils';
-import { useAvatarGroupContext } from '../../hooks';
-import { sizeMapper } from './utils';
+import { sizeMapper } from './helpers';
 import { Text, TextProps } from '../../../Text';
 import style from './style.module.css';
+import { useAvatarGroupContext } from '../../contexts';
 
 export interface AvatarGroupCountProps extends TextProps {
   ref?: Ref<HTMLSpanElement>

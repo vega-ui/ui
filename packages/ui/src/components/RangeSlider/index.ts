@@ -3,4 +3,4 @@ export {
   RangeSliderThumb, type RangeSliderThumbProps,
   RangeSliderProgress, type RangeSliderRangeProps,
 } from './components'
-export { useRangeSliderContext } from './hooks'
+export { useRangeSliderContext } from './contexts'

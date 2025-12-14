@@ -10,7 +10,7 @@ import style from './style.module.css'
 import { csx, MatrixNode, mergeEventHandlers } from '@vega-ui/utils';
 import { useControlledState, useGrid, useMap } from '@vega-ui/hooks';
 
-import { DataGridProvider } from './providers';
+import { DataGridProvider } from './contexts';
 import {
   DataGridExclude,
   DataGridCoordinates,

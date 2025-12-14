@@ -1,7 +1,7 @@
 import { useRef, useState, useCallback } from 'react';
 import { getCurrentDate } from '@vega-ui/utils';
 import { IndexedSnapScrollerApiRef } from '../IndexedSnapScroller/types.ts';
-import { CalendarProvider } from './providers';
+import { CalendarProvider } from './contexts';
 import { useControlledState } from '@vega-ui/hooks';
 import { CalendarDatesDisabled, CalendarPicker, CalendarSelection } from './types.ts';
 import { DataGridApiRef } from '../DataGrid';
@@ -114,7 +114,7 @@ export interface CalendarProps<S extends CalendarSelection = 'single'> extends O
  * `Calendar` is the high-level, fully featured calendar component that
  * composes:
  * - the visual shell from `BaseCalendar`, and
- * - all calendar interaction logic via `CalendarProvider`.
+ * - all calendar interaction logic via `CalendarContext`.
  *
  * It coordinates day, month, and year views; synchronizes scroll-based
  * navigation with visible dates; and manages controlled/uncontrolled

@@ -1,7 +1,7 @@
 'use client';
 
 import { FC, PropsWithChildren } from 'react';
-import { useRangeSliderContext } from '../../hooks';
+import { useRangeSliderContext } from '../../contexts';
 import { SliderBaseProgress, SliderBaseProgressProps } from '../../../SliderBase';
 
 export type RangeSliderRangeProps = SliderBaseProgressProps

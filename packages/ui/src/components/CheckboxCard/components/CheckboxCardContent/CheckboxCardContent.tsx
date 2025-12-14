@@ -3,8 +3,8 @@ import { FC, PropsWithChildren } from 'react';
 import { Heading } from '../../../Heading';
 import { Text } from '../../../Text';
 import style from './style.module.css';
-import { sizeMapper } from './utils';
-import { useCheckboxCardContext } from '../../hooks';
+import { sizeMapper } from './helpers';
+import { useCheckboxCardContext } from '../../contexts';
 import { CheckboxCardSize } from '../../types.ts';
 
 export interface CheckboxCardContentProps {

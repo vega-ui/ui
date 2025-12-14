@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { DayPickerScroller, DayPickerScrollerProps } from '../../../../DayPicker';
-import { useCalendarContext } from '../../../hooks';
+import { useCalendarContext } from '../../../contexts';
 import { mergeRefs } from '@vega-ui/utils';
 
 export type CalendarDayPickerScrollerProps = DayPickerScrollerProps;
