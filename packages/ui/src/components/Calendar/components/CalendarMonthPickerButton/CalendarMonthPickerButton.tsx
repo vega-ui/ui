@@ -1,14 +1,14 @@
 import { FC, MouseEvent } from 'react';
-import { BaseCalendarPickerButton, BaseCalendarPickerButtonProps } from '../../../BaseCalendar';
+import { CalendarBasePickerButton, CalendarBasePickerButtonProps } from '../../../CalendarBase';
 import { useCalendarContext } from '../../contexts';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
 
-export type CalendarMonthPickerButtonProps = BaseCalendarPickerButtonProps
+export type CalendarMonthPickerButtonProps = CalendarBasePickerButtonProps
 
 /**
  * `CalendarMonthPickerButton` is the calendar-scoped trigger for toggling
- * the month-picker view. It wraps `BaseCalendarPickerButton` and wires it
+ * the month-picker view. It wraps `CalendarBasePickerButton` and wires it
  * into the `Calendar` state machine via `useCalendarContext()`.
  */
 export const CalendarMonthPickerButton: FC<CalendarMonthPickerButtonProps> = ({ onClick: _onClick, className, ...props }) => {
@@ -20,7 +20,7 @@ export const CalendarMonthPickerButton: FC<CalendarMonthPickerButtonProps> = ({ 
   }
   
   return (
-    <BaseCalendarPickerButton
+    <CalendarBasePickerButton
       onClick={onClick}
       type='button'
       aria-pressed={picker === 'month'}

@@ -3,9 +3,9 @@ import { getCurrentDate } from '@vega-ui/utils';
 import { IndexedSnapScrollerApiRef } from '../IndexedSnapScroller/types.ts';
 import { CalendarProvider } from './contexts';
 import { useControlledState } from '@vega-ui/hooks';
-import { CalendarDatesDisabled, CalendarPicker, CalendarSelection } from './types.ts';
+import { CalendarDatesDisabled, CalendarPicker, CalendarSelection, CalendarValue } from './types.ts';
 import { DataGridApiRef } from '../DataGrid';
-import { BaseCalendar, BaseCalendarProps } from '../BaseCalendar';
+import { CalendarBase, CalendarBaseProps } from '../CalendarBase';
 import {
   computeStart,
   focusPickerValue,
@@ -14,9 +14,7 @@ import {
   getFirstDayInMonth,
 } from './helpers';
 
-type CalendarValue<S extends CalendarSelection> = S extends 'single' ? Date : S extends 'range' ? [Date, Date] : Date[]
-
-export interface CalendarProps<S extends CalendarSelection = 'single'> extends Omit<BaseCalendarProps, 'onChange'> {
+export interface CalendarProps<S extends CalendarSelection = 'single'> extends Omit<CalendarBaseProps, 'onChange'> {
   /**
    * Upper date boundary for navigation and selection.
    * - Months and years beyond this date become unavailable.
@@ -113,7 +111,7 @@ export interface CalendarProps<S extends CalendarSelection = 'single'> extends O
 /**
  * `Calendar` is the high-level, fully featured calendar component that
  * composes:
- * - the visual shell from `BaseCalendar`, and
+ * - the visual shell from `CalendarBase`, and
  * - all calendar interaction logic via `CalendarContext`.
  *
  * It coordinates day, month, and year views; synchronizes scroll-based
@@ -300,9 +298,9 @@ export const Calendar = <S extends CalendarSelection>({
       onMonthPickerClick={onMonthPickerClick}
       onYearPickerClick={onYearPickerClick}
     >
-      <BaseCalendar size={size} variant={variant} {...props}>
+      <CalendarBase size={size} variant={variant} {...props}>
         {children}
-      </BaseCalendar>
+      </CalendarBase>
     </CalendarProvider>
   )
 }

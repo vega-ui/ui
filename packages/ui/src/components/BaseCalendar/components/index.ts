@@ -1,6 +1,0 @@
-export * from './BaseCalendarPrevButton'
-export * from './BaseCalendarNextButton'
-export * from './BaseCalendarWeekLabels'
-export * from './BaseCalendarWeekLabel'
-export * from './BaseCalendarHeader'
-export * from './BaseCalendarPickerButton'

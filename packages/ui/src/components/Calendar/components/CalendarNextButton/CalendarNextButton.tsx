@@ -1,15 +1,15 @@
 import { FC, MouseEvent } from 'react';
-import { BaseCalendarNextButton, BaseCalendarNextButtonProps } from '../../../BaseCalendar';
+import { CalendarBaseNextButton, CalendarBaseNextButtonProps } from '../../../CalendarBase';
 import { useCalendarContext } from '../../contexts';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 
-export type CalendarNextButtonProps = BaseCalendarNextButtonProps
+export type CalendarNextButtonProps = CalendarBaseNextButtonProps
 
 /**
  * `CalendarNextButton` is the calendar-scoped "next" navigation control
  * used to advance the visible month in the day-picker view. It wraps
- * `BaseCalendarNextButton` and integrates tightly with the calendar’s
+ * `CalendarBaseNextButton` and integrates tightly with the calendar’s
  * navigation, range constraints, and picker-mode state.
  */
 export const CalendarNextButton: FC<CalendarNextButtonProps> = ({ disabled, className, onClick: _onClick, ...props }) => {
@@ -24,7 +24,7 @@ export const CalendarNextButton: FC<CalendarNextButtonProps> = ({ disabled, clas
   }
   
   return (
-    <BaseCalendarNextButton
+    <CalendarBaseNextButton
       type='button'
       disabled={_disabled}
       className={csx(style.button, className)}

@@ -1,7 +1,7 @@
 import { FC, KeyboardEvent } from 'react';
 import { YearPicker, YearPickerProps } from '../../../../YearPicker';
 import { useCalendarContext } from '../../../contexts';
-import { useBaseCalendarContext } from '../../../../BaseCalendar';
+import { useCalendarBaseContext } from '../../../../CalendarBase';
 import style from './style.module.css'
 import { csx, mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
 
@@ -33,7 +33,7 @@ export const CalendarYearPicker: FC<CalendarYearPickerProps> = ({ className, api
     closeYearPicker,
     onSelectYear,
   } = useCalendarContext()
-  const { size, variant } = useBaseCalendarContext()
+  const { size, variant } = useCalendarBaseContext()
   
   const toYear = to ? to.getFullYear() : undefined
   const fromYear = from ? from.getFullYear() : undefined

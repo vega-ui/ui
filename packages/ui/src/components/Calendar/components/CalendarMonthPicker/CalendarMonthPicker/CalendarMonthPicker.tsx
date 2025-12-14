@@ -1,7 +1,7 @@
 import { FC, KeyboardEvent } from 'react';
 import { MonthPicker, MonthPickerProps } from '../../../../MonthPicker';
 import { useCalendarContext } from '../../../contexts';
-import { useBaseCalendarContext } from '../../../../BaseCalendar';
+import { useCalendarBaseContext } from '../../../../CalendarBase';
 import style from './style.module.css'
 
 export interface CalendarMonthPickerProps extends Omit<MonthPickerProps, 'to' | 'from'> {
@@ -33,7 +33,7 @@ export const CalendarMonthPicker: FC<CalendarMonthPickerProps> = ({ onSelectCell
     closeMonthPicker,
     onSelectMonth,
   } = useCalendarContext()
-  const { size, variant } = useBaseCalendarContext()
+  const { size, variant } = useCalendarBaseContext()
   
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Escape') {

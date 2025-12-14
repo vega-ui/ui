@@ -1,14 +1,14 @@
 import { FC, MouseEvent } from 'react';
-import { BaseCalendarPickerButton, type BaseCalendarPickerButtonProps } from '../../../BaseCalendar';
+import { CalendarBasePickerButton, type CalendarBasePickerButtonProps } from '../../../CalendarBase';
 import { useCalendarContext } from '../../contexts';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
 
-export type CalendarYearPickerButtonProps = BaseCalendarPickerButtonProps;
+export type CalendarYearPickerButtonProps = CalendarBasePickerButtonProps;
 
 /**
  * `CalendarYearPickerButton` is the calendar-scoped trigger for opening or
- * toggling the year-picker view. It wraps `BaseCalendarPickerButton` and
+ * toggling the year-picker view. It wraps `CalendarBasePickerButton` and
  * connects user interaction to the `Calendar` state machine through
  * `useCalendarContext()`.
  */
@@ -21,7 +21,7 @@ export const CalendarYearPickerButton: FC<CalendarYearPickerButtonProps> = ({ on
   }
   
   return (
-    <BaseCalendarPickerButton
+    <CalendarBasePickerButton
       type='button'
       aria-pressed={picker === 'year'}
       onClick={onClick}
