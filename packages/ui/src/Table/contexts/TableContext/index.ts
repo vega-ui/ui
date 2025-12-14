@@ -1,0 +1,1 @@
+export { useTableContext, TableProvider } from './context.ts'

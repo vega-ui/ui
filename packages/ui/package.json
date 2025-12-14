@@ -31,18 +31,11 @@
       }
     },
     "./style.css": "./dist/index.css",
-    "./components": {
-      "source": "./src/components/index.ts",
-      "import": {
-        "types": "./dist/components/index.d.ts",
-        "default": "./dist/components/index.js"
-      }
-    },
     "./*": {
-      "source": "./src/components/*/index.ts",
+      "source": "./src/*/index.ts",
       "import": {
-        "types": "./dist/components/*/index.d.ts",
-        "default": "./dist/components/*/index.js"
+        "types": "./dist/*/index.d.ts",
+        "default": "./dist/*/index.js"
       }
     }
   },

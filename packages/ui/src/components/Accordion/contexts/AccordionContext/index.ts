@@ -1,1 +1,0 @@
-export { AccordionProvider, useAccordionContext } from './context'
