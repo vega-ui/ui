@@ -1,4 +1,4 @@
-import { TextProps } from '../../../../../Text';
+import { TextProps } from '../../../../Text';
 
 type SizeMapperType = 'small' | 'medium' | 'large';
 

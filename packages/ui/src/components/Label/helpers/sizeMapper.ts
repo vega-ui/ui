@@ -1,5 +1,5 @@
-import { TextProps } from '../../../Text';
-import { LabelSize } from '../../types.ts';
+import { TextProps } from '../../Text';
+import { LabelSize } from '../types.ts';
 
 
 const mapperTextSize: Record<LabelSize, TextProps['size']> = {

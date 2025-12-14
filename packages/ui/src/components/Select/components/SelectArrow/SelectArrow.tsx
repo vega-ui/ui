@@ -2,7 +2,7 @@ import { FC } from 'react';
 import style from './style.module.css';
 import { Icon } from '../../../Icon';
 import { csx } from '@vega-ui/utils';
-import { sizeMapper } from './utils';
+import { sizeMapper } from './helpers';
 import { ChevronDown } from '@vega-ui/icons';
 import { SelectSize } from '../../types.ts';
 
