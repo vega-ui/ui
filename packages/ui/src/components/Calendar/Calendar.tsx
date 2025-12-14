@@ -185,16 +185,16 @@ export const Calendar = <S extends CalendarSelection>({
     const { year, month } = getDateByIndex(index, baseYear, baseMonth)
     const active = new Date(activeDay)
     
-    const currentYear = active.getFullYear()
-    const currentMonth = active.getMonth()
+    const activeYear = active.getFullYear()
+    const activeMonth = active.getMonth()
     
-    if (currentYear !== year || currentMonth !== month) {
+    if (activeYear !== year || activeMonth !== month) {
       const firstDay = getFirstDayInMonth({ year, month, from, to, disabled })
       if (!firstDay) return;
-      
+
       setActiveDay(firstDay.getTime())
-      if (year !== currentYear) setActiveYear(year)
-      if (month !== currentMonth) setActiveYear(month)
+      if (year !== activeYear) setActiveYear(year)
+      if (month !== activeMonth) setActiveYear(month)
     }
   }, [baseYear, baseMonth, activeDay, from, to, disabled])
   

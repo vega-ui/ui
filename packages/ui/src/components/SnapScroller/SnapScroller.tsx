@@ -28,6 +28,11 @@ export interface SnapScrollerProps extends HTMLAttributes<HTMLDivElement> {
   apiRef?: Ref<SnapScrollerApiRef>;
   
   /**
+   * Initial index of the item to snap to on mount.
+   */
+  initialIndex?: number
+  
+  /**
    * Preserve the currently snapped item after content changes
    * (e.g., when pages are prepended/appended). If `true`, the scroller will
    * restore the same snapped index using an immediate `scrollIntoView`.
@@ -67,13 +72,14 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
   onScroll: _onScroll,
   onSnap,
   preserveScroll = true,
+  initialIndex = 0,
   children,
   apiRef,
   ...props
 }) => {
   const { itemRef, getItem } = useRefMap<number, HTMLElement>()
   
-  const index = useRef<number | undefined>(undefined)
+  const index = useRef<number | undefined>(initialIndex)
   const scrollerRef = useRef<HTMLDivElement>(null)
   const lastDelta = useRef(0)
   
@@ -150,7 +156,7 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
     const { scrollWidth, clientWidth, scrollLeft } = target
     
     const snapped = getSnappedIndex(target)
-
+  
     if (snapped !== undefined && snapped !== index.current && lastDelta.current === 0) {
       onSnap?.(snapped)
       index.current = snapped
