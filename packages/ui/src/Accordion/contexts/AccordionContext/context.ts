@@ -10,7 +10,7 @@ export interface AccordionContextState {
   separated?: boolean
 }
 
-export const [AccordionProvider, useAccordionContext] = createContext<AccordionContextState>('AccordionContext', {
+export const [AccordionProvider, useAccordionContext] = createContext<AccordionContextState>('AlertContext', {
   opened: [],
   onChangeOpened: () => undefined,
   size: 'medium',

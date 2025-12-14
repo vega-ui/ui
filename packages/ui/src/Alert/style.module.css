@@ -17,13 +17,6 @@
     border: 1px solid var(--alert-border-color);
 }
 
-.content {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    gap: var(--spacing-2);
-}
-
 /* Alert/Fill/Info */
 
 .alert[data-variant='info'][data-apperance='fill'] {
