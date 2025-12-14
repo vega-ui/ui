@@ -1,5 +1,11 @@
 # @vega-ui/icons
 
+## 1.14.2
+
+### Patch Changes
+
+- 55809c0: Changed deps
+
 ## 1.14.1
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @vega-ui/react
 
+## 1.14.2
+
+### Patch Changes
+
+- 55809c0: Changed deps
+- Updated dependencies [55809c0]
+  - @vega-ui/hooks@1.14.2
+  - @vega-ui/icons@1.14.2
+  - @vega-ui/react-context@1.14.2
+  - @vega-ui/utils@1.14.2
+
 ## 1.14.1
 
 ### Patch Changes
