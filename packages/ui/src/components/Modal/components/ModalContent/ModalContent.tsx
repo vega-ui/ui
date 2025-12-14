@@ -8,7 +8,7 @@ import {
 } from '@floating-ui/react';
 import { csx, mergeRefs } from '@vega-ui/utils';
 import styles from './style.module.css';
-import { useModalContext } from '../../hooks';
+import { useModalContext } from '../../contexts';
  
 export interface ModalContentProps {
   /**

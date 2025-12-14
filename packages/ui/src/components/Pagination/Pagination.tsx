@@ -3,7 +3,7 @@
 import { FC, HTMLAttributes, Ref } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
-import { PaginationProvider } from './providers';
+import { PaginationProvider } from './contexts';
 import { IconButtonProps } from '../IconButton';
 
 export interface PaginationProps extends HTMLAttributes<HTMLElement> {

@@ -4,4 +4,4 @@ export {
   DrawerContent, type DrawerContentProps,
   DrawerTrigger, type DrawerTriggerProps,
 } from './components'
-export { useDrawerContext } from './hooks'
+export { useDrawerContext } from './contexts'

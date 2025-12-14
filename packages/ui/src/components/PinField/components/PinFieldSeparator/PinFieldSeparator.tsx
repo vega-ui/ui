@@ -1,5 +1,5 @@
 import { FC, HTMLAttributes } from 'react';
-import { usePinFieldContext } from '../../hooks';
+import { usePinFieldContext } from '../../contexts';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 

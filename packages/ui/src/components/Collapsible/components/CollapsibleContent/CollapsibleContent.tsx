@@ -2,7 +2,7 @@
 import { FC, HTMLAttributes, Ref, useLayoutEffect, useRef } from 'react';
 import style from './style.module.css';
 import { csx, mergeRefs } from '@vega-ui/utils';
-import { useCollapsibleContext } from '../../hooks';
+import { useCollapsibleContext } from '../../contexts';
 
 export interface CollapsibleContentProps extends HTMLAttributes<HTMLDivElement> {
   /**

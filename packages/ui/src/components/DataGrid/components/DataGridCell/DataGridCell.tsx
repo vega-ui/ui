@@ -1,7 +1,7 @@
 import { FC, HTMLAttributes, PropsWithChildren, Ref } from 'react';
 import style from './style.module.css'
 import { csx, mergeRefs } from '@vega-ui/utils';
-import { useDataGridContext, useDataGridRowContext } from '../../hooks';
+import { useDataGridContext, useDataGridRowContext } from '../../contexts';
 import { Slot } from '../../../Slot';
 import { DataGridCellKey } from '../../types.ts';
 

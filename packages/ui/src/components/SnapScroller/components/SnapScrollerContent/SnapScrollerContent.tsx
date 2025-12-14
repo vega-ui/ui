@@ -1,7 +1,7 @@
 import { FC, HTMLAttributes, PropsWithChildren, Ref } from 'react';
 import { csx, mergeRefs } from '@vega-ui/utils';
 import { Slot } from '../../../Slot';
-import { useSnapScrollerContext } from '../../hooks';
+import { useSnapScrollerContext } from '../../contexts';
 import style from './style.module.css'
 
 export interface SnapScrollerContentProps extends HTMLAttributes<HTMLDivElement> {

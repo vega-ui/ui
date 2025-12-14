@@ -23,7 +23,7 @@ import {
   getNextDate,
   getWeekDayNames
 } from '@vega-ui/utils';
-import { useCalendarContext } from './hooks';
+import { useCalendarContext } from './contexts';
 import { createDayPickerGrid } from '../DayPicker';
 import { useIndexesSnapScrollerContext } from '../IndexedSnapScroller';
 import { Badge } from '../Badge';

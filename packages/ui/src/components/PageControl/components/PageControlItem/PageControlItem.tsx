@@ -1,6 +1,6 @@
 import { ButtonHTMLAttributes, FC, Ref } from 'react';
 import style from './style.module.css'
-import { usePageControlContext } from '../../hooks';
+import { usePageControlContext } from '../../contexts';
 import { csx, mergeRefs } from '@vega-ui/utils';
 import { PageControlSize, PageControlVariant } from '../../types.ts';
 

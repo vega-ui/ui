@@ -1,7 +1,7 @@
 import { ChangeEvent, FC, HTMLAttributes, ReactNode } from 'react';
 import style from './style.module.css';
 import { VisuallyHidden } from '../../../VisuallyHidden';
-import { useSegmentedControlContext } from '../../hooks';
+import { useSegmentedControlContext } from '../../contexts';
 import { csx } from '@vega-ui/utils';
 import { SegmentedControlSize } from '../../types.ts';
 

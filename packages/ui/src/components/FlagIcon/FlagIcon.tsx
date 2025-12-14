@@ -2,7 +2,7 @@
 import { FC, Ref } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
-import { FlagIconName, getFlagIcon } from './utils';
+import { FlagIconName, getFlagIcon } from './helpers';
 
 export interface FlagIconProps {
   /**

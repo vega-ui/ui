@@ -20,7 +20,7 @@ import {
 } from '@floating-ui/react';
 import { useSnapPoints } from './hooks';
 import { useControlledState } from '@vega-ui/hooks';
-import { SheetProvider } from './providers';
+import { SheetProvider } from './contexts';
 
 export interface SheetProps {
   /** The value that the Sheet will aim at when the pointer is released */

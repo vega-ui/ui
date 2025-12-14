@@ -5,7 +5,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '../../../Popover';
 import { AvatarGroupLimitedPopoverTrigger } from '../AvatarGroupLimitedPopoverTrigger';
 import { AvatarGroupItemProps } from '../AvatarGroupItem';
 import style from './style.module.css'
-import { useAvatarGroupContext } from '../../hooks';
+import { useAvatarGroupContext } from '../../contexts';
 
 export interface AvatarGroupLimitPopoverProps {
   children?: ReactElement<AvatarGroupItemProps> | ReactElement<AvatarGroupItemProps>[]

@@ -1,13 +1,13 @@
 'use client';
 import { FC, PropsWithChildren, ReactElement, Ref } from 'react';
-import { sizeMapper } from './utils';
+import { sizeMapper } from './helpers';
 import { Icon } from '../../../Icon';
 import { Heading } from '../../../Heading';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css';
 import { CollapsibleTrigger } from '../../../Collapsible';
 import { ChevronDown } from '@vega-ui/icons';
-import { useAccordionItemContext } from '../../hooks';
+import { useAccordionItemContext } from '../../contexts';
 
 export interface AccordionTriggerProps {
   /**

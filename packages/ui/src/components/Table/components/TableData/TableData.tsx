@@ -2,7 +2,7 @@
 import { FC, PropsWithChildren, TdHTMLAttributes } from 'react';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
-import { useTable } from '../../hooks';
+import { useTableContext } from '../../contexts';
 import { TableProps } from '../../Table.tsx';
 
 export interface TableDataProps extends TdHTMLAttributes<HTMLTableDataCellElement> {
@@ -17,7 +17,7 @@ export interface TableDataProps extends TdHTMLAttributes<HTMLTableDataCellElemen
 
 /** The TableData component represents a single `<td>` cell within a Table, supporting semantic HTML attributes and optional content alignment via the dataAlign prop for layout consistency */
 export const TableData: FC<PropsWithChildren<TableDataProps>> = ({ children, className, dataAlign, ...props }) => {
-  const { dataAlign: contextDataAlign, edgePadded } = useTable()
+  const { dataAlign: contextDataAlign, edgePadded } = useTableContext()
 
   return (
     <td {...props} data-align={dataAlign ?? contextDataAlign} className={csx(style.data, !edgePadded ? style.dataNotEdgePadded : undefined, className)}>

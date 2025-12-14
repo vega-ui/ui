@@ -5,7 +5,7 @@ import {
 } from '@floating-ui/react';
 import { csx, mergeRefs } from '@vega-ui/utils';
 import styles from './style.module.css';
-import { useTooltipContext } from '../../hooks';
+import { useTooltipContext } from '../../contexts';
 import { Text, TextProps } from '../../../Text';
 
 export interface TooltipContentProps {

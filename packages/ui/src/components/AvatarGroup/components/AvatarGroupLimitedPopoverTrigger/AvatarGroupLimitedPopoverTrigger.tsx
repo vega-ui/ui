@@ -6,7 +6,7 @@ import { Icon } from '../../../Icon';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
 import { AvatarGroupItemProps } from '../AvatarGroupItem';
-import { sizeMapper } from './utils';
+import { sizeMapper } from './helpers';
 import { ChevronDown } from '@vega-ui/icons';
 
 export interface AvatarGroupLimitedPopoverTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {

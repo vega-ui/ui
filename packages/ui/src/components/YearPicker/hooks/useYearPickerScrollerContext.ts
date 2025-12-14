@@ -1,3 +1,3 @@
-import { useIndexesSnapScrollerContext } from '../../IndexedSnapScroller';
+import { useIndexedSnapScrollerContext } from '../../IndexedSnapScroller';
 
-export const useYearPickerScrollerContext = useIndexesSnapScrollerContext
+export const useYearPickerScrollerContext = useIndexedSnapScrollerContext

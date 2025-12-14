@@ -3,8 +3,7 @@ import { FC, ReactNode, useCallback } from 'react';
 import { Separator } from '../../../Separator';
 import { Collapsible } from '../../../Collapsible';
 import style from './style.module.css'
-import { useAccordionContext } from '../../hooks';
-import { AccordionItemProvider } from '../../providers';
+import { AccordionItemProvider, useAccordionContext } from '../../contexts';
 import { AccordionSize } from '../../types.ts';
 
 export interface AccordionItemProps {

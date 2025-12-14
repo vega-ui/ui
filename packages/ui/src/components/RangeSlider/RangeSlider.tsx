@@ -10,7 +10,7 @@ import {
 
 import { useControlledState } from '@vega-ui/hooks';
 import { SliderBase } from '../SliderBase';
-import { RangeSliderProvider } from './providers';
+import { RangeSliderProvider } from './contexts';
 import { RangeSliderOrientation, RangeSliderSize, RangeSliderStep } from './types';
 import { calculateValue, getClosestIndex, normalizeValue } from './helpers';
 

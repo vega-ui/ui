@@ -7,7 +7,7 @@ import { getRangePosition } from './helpers';
 import { DataGridSelectableCell, DataGridSelectableCellProps } from '../../../DataGridSelectable';
 import { useDataGridSelectableContext } from '../../../DataGridSelectable';
 import { DataGridPickerSize, DataGridPickerVariant } from '../../types';
-import { useDataGridPickerContext } from '../../hooks';
+import { useDataGridPickerContext } from '../../contexts';
 
 export interface DataGridPickerItemProps extends Omit<DataGridSelectableCellProps, 'cellKey'> {
   /**

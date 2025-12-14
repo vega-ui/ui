@@ -3,7 +3,7 @@ import { CSSProperties, FC, HTMLAttributes } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { VisuallyHidden } from '../VisuallyHidden';
-import { getMeterState } from './utils';
+import { getMeterState } from './helpers';
 
 export interface MeterProps extends HTMLAttributes<HTMLDivElement> {
   /**

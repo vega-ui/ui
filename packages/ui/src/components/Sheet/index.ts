@@ -6,4 +6,4 @@ export {
   SheetHeader, type SheetHeaderProps,
   SheetMain, type SheetMainProps,
 } from './components'
-export { useSheetContext } from './hooks'
+export { useSheetContext } from './contexts'

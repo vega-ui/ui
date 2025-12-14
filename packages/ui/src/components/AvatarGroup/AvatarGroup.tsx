@@ -2,7 +2,7 @@
 
 import { Children, FC, PropsWithChildren, ReactElement, Ref } from 'react';
 import { csx } from '@vega-ui/utils';
-import { AvatarGroupProvider } from './providers';
+import { AvatarGroupProvider } from './contexts';
 import { AvatarGroupCount, AvatarGroupItemProps, AvatarGroupLimitedPopover } from './components';
 import style from './style.module.css'
 

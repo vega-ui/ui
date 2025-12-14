@@ -4,4 +4,4 @@ export {
   ModalContent, type ModalContentProps,
   ModalTrigger, type ModalTriggerProps
 } from './components'
-export { useModalContext } from './hooks'
+export { useModalContext } from './contexts'

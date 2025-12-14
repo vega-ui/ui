@@ -3,7 +3,7 @@
 import { cloneElement, FC, ReactElement } from 'react';
 import { IconButton, IconButtonProps } from '../../../IconButton';
 import { PaginationListItem } from '../PaginationListItem';
-import { usePaginationContext } from '../../hooks';
+import { usePaginationContext } from '../../contexts';
 import { DoubleArrowLeftIcon } from '@vega-ui/icons';
 import { Icon } from '../../../Icon';
 

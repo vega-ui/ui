@@ -4,8 +4,8 @@ import { Card, CardProps } from '../Card';
 import { Checkbox, CheckboxProps } from '../Checkbox';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
-import { CheckboxCardProvider } from './providers';
-import { sizeMapper } from './utils';
+import { CheckboxCardProvider } from './contexts';
+import { sizeMapper } from './helpers';
 
 export interface CheckboxCardProps extends Omit<CardProps, 'appearance'>, Pick<CheckboxProps, 'checked' | 'value' | 'indeterminate'> {
   /**

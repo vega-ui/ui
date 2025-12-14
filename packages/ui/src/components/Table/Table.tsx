@@ -1,7 +1,7 @@
 'use client';
 import { FC, Ref, TableHTMLAttributes } from 'react';
 import style from './style.module.css'
-import { TableProvider } from './providers';
+import { TableProvider } from './contexts';
 import { csx } from '@vega-ui/utils';
 
 export interface TableProps extends TableHTMLAttributes<HTMLTableElement> {

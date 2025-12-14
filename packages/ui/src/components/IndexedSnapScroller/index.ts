@@ -1,5 +1,5 @@
 export { IndexedSnapScroller, type IndexedSnapScrollerProps } from './IndexedSnapScroller.tsx'
-export { useIndexesSnapScrollerContext } from './hooks'
+export { useIndexedSnapScrollerContext } from './contexts'
 export {
   IndexedSnapScrollerContent, type IndexedSnapScrollerContentProps
 } from './components'

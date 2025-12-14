@@ -2,7 +2,7 @@ import { ElementType, FC, HTMLAttributes, ReactNode, Ref } from 'react';
 
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
-import { sizeMapper } from './utils';
+import { sizeMapper } from './helpers';
 
 type HeadingAs = 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6';
 

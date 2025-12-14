@@ -1,6 +1,6 @@
 import { FC, KeyboardEvent, MouseEvent } from 'react';
 import { DataGridCell, DataGridCellProps, useDataGridRowContext } from '../../../DataGrid';
-import { useDataGridSelectableContext } from '../../hooks';
+import { useDataGridSelectableContext } from '../../contexts';
 import { csx, mergeEventHandlers } from '@vega-ui/utils';
 import style from './style.module.css'
 

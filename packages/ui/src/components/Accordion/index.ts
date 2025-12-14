@@ -4,3 +4,4 @@ export {
   AccordionTrigger, type AccordionTriggerProps,
   AccordionContent, type AccordionContentProps
 } from './components'
+export { useAccordionContext, useAccordionItemContext } from './contexts'

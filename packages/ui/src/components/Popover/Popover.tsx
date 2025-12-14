@@ -5,7 +5,7 @@ import {
   Placement, shift, useClick, useDismiss, useFloating, useInteractions, useRole,
 } from '@floating-ui/react';
 import { useControlledState } from '@vega-ui/hooks';
-import { PopoverProvider } from './providers';
+import { PopoverProvider } from './contexts';
 
 export interface PopoverProps {
   /**

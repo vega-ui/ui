@@ -3,4 +3,4 @@ export {
   SliderThumb, type SliderThumbProps,
   SliderProgress, type SliderProgressProps,
 } from './components'
-export { useSliderContext } from './hooks'
+export { useSliderContext } from './contexts'

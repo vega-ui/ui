@@ -13,7 +13,7 @@ import {
 import { TextField, TextFieldProps } from '../TextField';
 import style from './style.module.css'
 import { csx, mergeRefs } from '@vega-ui/utils';
-import { getNumberMaskOptions, getNumberValue } from './utils';
+import { getNumberMaskOptions, getNumberValue } from './helpers';
 import { useMaskito } from '@maskito/react';
 import { useControlledState } from '@vega-ui/hooks';
 import { maskitoTransform } from '@maskito/core';

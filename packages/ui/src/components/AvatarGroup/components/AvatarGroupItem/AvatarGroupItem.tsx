@@ -3,7 +3,7 @@
 import { FC, PropsWithChildren } from 'react';
 import { csx } from '@vega-ui/utils';
 import { Avatar, AvatarProps } from '../../../Avatar';
-import { useAvatarGroupContext } from '../../hooks';
+import { useAvatarGroupContext } from '../../contexts';
 
 export type AvatarGroupItemProps = AvatarProps
 

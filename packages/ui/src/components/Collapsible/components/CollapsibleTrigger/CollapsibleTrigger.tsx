@@ -2,7 +2,7 @@
 import { FC, HTMLAttributes, MouseEvent, Ref } from 'react';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css';
-import { useCollapsibleContext } from '../../hooks';
+import { useCollapsibleContext } from '../../contexts';
 import { Slot } from '../../../Slot';
 
 export interface CollapsibleTriggerProps extends HTMLAttributes<HTMLElement> {

@@ -1,0 +1,1 @@
+export { useIndexedSnapScrollerContext, IndexedSnapScrollerProvider } from './context'

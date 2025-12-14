@@ -9,7 +9,7 @@ import {
 } from 'react';
 import { csx } from '@vega-ui/utils';
 import { SegmentedControlItemProps } from './components';
-import { SegmentedControlProvider } from './providers';
+import { SegmentedControlProvider } from './contexts';
 import { useControlledState } from '@vega-ui/hooks';
 import { SegmentedControlSize } from './types.ts';
 

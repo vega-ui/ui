@@ -10,7 +10,7 @@ import {
   useRole,
   useTransitionStyles
 } from '@floating-ui/react';
-import { TooltipProvider } from './providers';
+import { TooltipProvider } from './contexts';
 
 export interface TooltipProps {
   /**

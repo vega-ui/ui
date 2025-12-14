@@ -1,13 +1,13 @@
 import { FC, HTMLAttributes, PropsWithChildren } from 'react';
 import { BaseCalendarSize, BaseCalendarVariant } from './types.ts';
-import { BaseCalendarProvider } from './providers';
+import { BaseCalendarContexts } from './contexts';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 
 export interface BaseCalendarProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * Visual variant for the calendar.
-   * Propagated through `BaseCalendarProvider` and used by nested
+   * Propagated through `BaseCalendarContext` and used by nested
    * controls (buttons, labels, etc.) to keep styling consistent.
    */
   variant?: BaseCalendarVariant;
@@ -15,7 +15,7 @@ export interface BaseCalendarProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * Global size scale for the calendar.
    * Affects nested controls such as navigation buttons, picker triggers,
-   * and week labels via `BaseCalendarProvider`.
+   * and week labels via `BaseCalendarContext`.
    */
   size?: BaseCalendarSize;
   
@@ -46,10 +46,10 @@ export const BaseCalendar: FC<PropsWithChildren<BaseCalendarProps>> = ({
   ...props
 }) => {
   return (
-    <BaseCalendarProvider size={size} variant={variant}>
+    <BaseCalendarContexts size={size} variant={variant}>
       <div className={csx(style.baseCalendar, className)} data-compact={compact} {...props}>
         {children}
       </div>
-    </BaseCalendarProvider>
+    </BaseCalendarContexts>
   )
 }

@@ -29,5 +29,5 @@ export {
   CalendarDayPickerScrollerContent, type CalendarDayPickerScrollerContentProps,
   CalendarDayPickerScrollerLayout, type CalendarDayPickerScrollerLayoutProps,
 } from './components'
-export { useCalendarContext } from './hooks'
+export { useCalendarContext } from './contexts'
 export { type CalendarPicker, type CalendarSelection, type CalendarDatesDisabled } from './types'

@@ -4,7 +4,7 @@ import { FC, HTMLAttributes } from 'react';
 import { Heading } from '../../../Heading';
 import { IconButton } from '../../../IconButton';
 import style from './style.module.css';
-import { useModalContext } from '../../hooks';
+import { useModalContext } from '../../contexts';
 import { csx } from '@vega-ui/utils';
 import { X as CloseIcon } from '@vega-ui/icons';
 import { Icon } from '../../../Icon';

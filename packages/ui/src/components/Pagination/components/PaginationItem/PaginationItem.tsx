@@ -5,7 +5,7 @@ import { Button, ButtonProps } from '../../../Button';
 import { PaginationListItem } from '../PaginationListItem';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
-import { usePaginationContext } from '../../hooks';
+import { usePaginationContext } from '../../contexts';
 
 export interface PaginationItemProps extends ButtonProps {
   /**

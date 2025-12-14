@@ -1,5 +1,5 @@
 export { DataGridSelectable, type DataGridSelectableProps } from './DataGridSelectable'
-export { useDataGridSelectableContext } from './hooks'
+export { useDataGridSelectableContext } from './contexts'
 export {
   DataGridSelectableRow, type DataGridSelectableRowProps,
   DataGridSelectableRowGroup, type DataGridSelectableRowGroupProps,
