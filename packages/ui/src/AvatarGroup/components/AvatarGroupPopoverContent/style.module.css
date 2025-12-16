@@ -1,0 +1,6 @@
+.content {
+    display: grid;
+    gap: var(--spacing-2);
+    grid-auto-flow: dense;
+    grid-template-columns: repeat(6, 1fr);
+}

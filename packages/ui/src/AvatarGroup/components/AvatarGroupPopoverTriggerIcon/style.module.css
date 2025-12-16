@@ -1,0 +1,10 @@
+.icon {
+    flex-shrink: 0;
+    color: var(--color-primary-500);
+    transform: rotate(0deg);
+    transition: transform var(--transition-fast-state-delay) ease-in-out;
+}
+
+.icon[data-open='true'] {
+    transform: rotate(180deg);
+}

@@ -1,7 +1,7 @@
 import { IconProps } from '../../../../Icon';
-import { AvatarGroupItemProps } from '../../AvatarGroupItem';
+import { AvatarGroupSize } from '../../../types.ts';
 
-type SizeMapperType = Exclude<AvatarGroupItemProps['size'], undefined>;
+type SizeMapperType = Exclude<AvatarGroupSize, undefined>;
 
 const mapperTextSize: Record<SizeMapperType, IconProps['size']> = {
   '2xs': '3xs',

@@ -1,9 +1,9 @@
-import { FC, PropsWithChildren, Ref } from 'react';
+import { FC, HTMLAttributes, Ref } from 'react';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
 import { AvatarSize, AvatarVariant } from './types.ts';
 
-export interface AvatarProps {
+export interface AvatarProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * Optional custom CSS class to apply to the avatar container.
    * Useful for extending or overriding default styles.
@@ -33,7 +33,7 @@ export interface AvatarProps {
 }
 
 /** An Avatar is a UI component that displays a user's profile image, initials, or an icon, commonly used in social profiles, chat applications, and dashboards to represent a person or entity. */
-export const Avatar: FC<PropsWithChildren<AvatarProps>> = ({
+export const Avatar: FC<AvatarProps> = ({
   className,
   size = 'md',
   variant = 'primary',
