@@ -16,7 +16,7 @@ body:
     id: component
     attributes:
       label: Component
-      description: Exact component name (e.g., ButtonBase, Accordion, AvatarGroup)
+      description: Exact component name (e.g., ButtonBase, Accordion, AvatarStack)
       placeholder: "ButtonBase"
     validations:
       required: true

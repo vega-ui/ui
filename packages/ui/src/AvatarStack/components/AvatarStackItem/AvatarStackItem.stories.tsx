@@ -1,17 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { AvatarGroupStackItem } from './AvatarGroupStackItem.tsx';
+import { AvatarStackItem } from './AvatarStackItem.tsx';
 import { AvatarFallback, AvatarImage } from '../../../Avatar';
 
 const meta = {
-  title: 'Display/AvatarGroup/AvatarGroupStackItem',
-  component: AvatarGroupStackItem,
+  title: 'Display/AvatarStack/AvatarStackItem',
+  component: AvatarStackItem,
   parameters: {
     layout: 'centered',
   },
   tags: ['autodocs'],
   argTypes: {},
   args: {},
-} satisfies Meta<typeof AvatarGroupStackItem>;
+} satisfies Meta<typeof AvatarStackItem>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -22,10 +22,10 @@ const url = 'https://images.unsplash.com/photo-1578979879663-4ba6a968a50a?q=80&w
 export const Default: Story = {
   render(props) {
     return (
-      <AvatarGroupStackItem {...props}>
+      <AvatarStackItem {...props}>
         <AvatarFallback>BC</AvatarFallback>,
         <AvatarImage src={url} />
-      </AvatarGroupStackItem>
+      </AvatarStackItem>
     )
   }
 }

@@ -1,7 +1,0 @@
-.count[data-variant='primary'] {
-    color: var(--color-primary-500);
-}
-
-.count[data-variant='secondary'] {
-    color: var(--text-color);
-}
