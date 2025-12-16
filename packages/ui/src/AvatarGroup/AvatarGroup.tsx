@@ -1,13 +1,12 @@
 'use client';
 
-import { Children, FC, PropsWithChildren, ReactElement, Ref } from 'react';
-import { csx } from '@vega-ui/utils';
+import { FC, HTMLAttributes, PropsWithChildren, Ref } from 'react';
 import { AvatarGroupProvider } from './contexts';
-import { AvatarGroupCount, AvatarGroupItemProps, AvatarGroupLimitedPopover } from './components';
 import style from './style.module.css'
-import { AvatarSize, AvatarVariant } from '../Avatar';
+import { csx } from '@vega-ui/utils';
+import { AvatarGroupSize, AvatarGroupVariant } from './types.ts';
 
-export interface AvatarGroupProps {
+export interface AvatarGroupProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * Optional custom CSS class for the avatar group container.
    * Allows styling overrides or scoped custom styles.
@@ -24,44 +23,13 @@ export interface AvatarGroupProps {
    * Size of all avatar items within the group.
    * Ensures consistent sizing across all items.
    */
-  size?: AvatarSize
+  size?: AvatarGroupSize
 
   /**
    * Variant for all avatars in the group.
    * Applies a unified visual style (e.g., `primary`, `secondary`).
    */
-  variant?: AvatarVariant
-
-  /**
-   * Avatar items to render in the group.
-   * Should consist of `<AvatarGroupItem />` components only.
-   * Accepts a single element or an array of elements.
-   */
-  children?: ReactElement<AvatarGroupItemProps> | ReactElement<AvatarGroupItemProps>[]
-
-  /**
-   * Maximum number of visible avatars before overflowing into a popover.
-   * If set, excess avatars will be hidden behind a "+X" count.
-   */
-  limit?: number
-
-  /**
-   * Enables the display of a popover when there are hidden avatars.
-   * Useful for showing all members in a tooltip or dropdown.
-   */
-  withPopover?: boolean
-
-  /**
-   * Custom slot to replace the default popover content.
-   * Used when `withPopover` is true and a custom layout is needed.
-   */
-  popoverSlot?: ReactElement | ReactElement[]
-
-  /**
-   * Custom slot to replace the default "+X" hidden count indicator.
-   * Useful for localization, icons, or alternate styles.
-   */
-  hiddenCountSlot?: ReactElement | ReactElement[]
+  variant?: AvatarGroupVariant
 }
 
 /** An Avatar Group is a UI component that displays multiple avatars in a compact, overlapping, or grid-like arrangement, commonly used to represent a group of users, such as team members or participants in a conversation.  */
@@ -69,32 +37,13 @@ export const AvatarGroup: FC<PropsWithChildren<AvatarGroupProps>> = ({
   className,
   size = 'md',
   variant = 'primary',
-  ref,
   children,
-  limit,
-  withPopover = false,
-  popoverSlot,
-  hiddenCountSlot,
   ...props
 }) => {
-  const childrenCount = Children.count(children)
-  const hiddenCount = childrenCount - (limit ?? childrenCount)
-
   return (
-    <AvatarGroupProvider hiddenCount={hiddenCount} avatarClass={style.avatar} size={size} variant={variant}>
-      <div className={style.container}>
-        <div ref={ref} className={csx(style.group, className)} {...props}>
-          {Children.toArray(children).slice(0, limit)}
-        </div>
-        {hiddenCount > 0 && limit !== 0 && (
-          withPopover
-            ? popoverSlot ?? (
-                <AvatarGroupLimitedPopover>
-                  {Children.toArray(children).slice(limit, childrenCount) as ReactElement<AvatarGroupItemProps>[]}
-                </AvatarGroupLimitedPopover>
-              )
-            : hiddenCountSlot ?? <AvatarGroupCount>{hiddenCount}</AvatarGroupCount>
-        )}
+    <AvatarGroupProvider size={size} variant={variant}>
+      <div className={csx(style.container, className)} {...props}>
+        {children}
       </div>
     </AvatarGroupProvider>
   )

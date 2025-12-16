@@ -1,11 +1,11 @@
-import { FC, PropsWithChildren } from 'react';
+import { FC } from 'react';
 import { csx } from '@vega-ui/utils';
 import { Icon, IconProps } from '../../../Icon';
 import { iconMapper } from './helpers';
 import style from './style.module.css'
 import { useAlertContext } from '../../contexts';
 
-export type AlertIconProps = Omit<IconProps, 'children'>
+export type AlertIconProps = IconProps
 
 /**
  * AlertIcon displays a contextual icon for an Alert based on its variant.
@@ -16,7 +16,7 @@ export type AlertIconProps = Omit<IconProps, 'children'>
  * current Alert variant. A custom icon can be provided via children
  * to override the default mapping.
  */
-export const AlertIcon: FC<PropsWithChildren<AlertIconProps>> = ({ children, className, ...props }) => {
+export const AlertIcon: FC<AlertIconProps> = ({ children, className, ...props }) => {
   const { variant } = useAlertContext()
   return <Icon size='md' className={csx(style.icon, className)} {...props}>{children ?? iconMapper[variant]}</Icon>
 }

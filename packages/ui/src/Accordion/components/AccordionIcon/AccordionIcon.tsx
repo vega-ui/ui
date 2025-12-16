@@ -1,4 +1,4 @@
-import { FC, PropsWithChildren } from 'react';
+import { FC } from 'react';
 import { csx } from '@vega-ui/utils';
 import { ChevronDown } from '@vega-ui/icons';
 import { Icon, IconProps } from '../../../Icon';
@@ -7,7 +7,7 @@ import { useCollapsibleContext } from '../../../Collapsible';
 import { sizeMapper } from './helpers';
 import { useAccordionItemContext } from '../../contexts';
 
-export type AccordionIconProps = Omit<IconProps, 'children'>
+export type AccordionIconProps = IconProps
 
 /**
  * AccordionIcon is a visual indicator for the AccordionItem state.
@@ -21,7 +21,7 @@ export type AccordionIconProps = Omit<IconProps, 'children'>
  * This component is purely presentational and relies on Accordion
  * and Collapsible contexts for its state.
  */
-export const AccordionIcon: FC<PropsWithChildren<AccordionIconProps>> = ({ className, children, ...props }) => {
+export const AccordionIcon: FC<AccordionIconProps> = ({ className, children, ...props }) => {
   const { size } = useAccordionItemContext()
   const { opened } = useCollapsibleContext()
   

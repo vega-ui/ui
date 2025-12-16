@@ -33,7 +33,7 @@ export interface IconProps {
    * – custom inline SVG
    * – third-party icon components (e.g. Lucide, Tabler)
    */
-  children: ReactNode
+  children?: ReactNode
 }
 
 /** UI component for render SVG icons */

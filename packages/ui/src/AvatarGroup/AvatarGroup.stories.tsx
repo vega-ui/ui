@@ -1,7 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { AvatarGroup } from './AvatarGroup.tsx';
-import { AvatarFallback, AvatarImage } from '../Avatar/components';
-import { AvatarGroupItem } from './components';
+import { Avatar, AvatarFallback, AvatarImage } from '../Avatar';
+import {
+  AvatarGroupCount,
+  AvatarGroupPopover, AvatarGroupPopoverContent,
+  AvatarGroupPopoverTrigger, AvatarGroupPopoverTriggerIcon,
+  AvatarGroupStack,
+  AvatarGroupStackItem
+} from './components';
 
 const meta = {
   title: 'Display/AvatarGroup/AvatarGroup',
@@ -47,36 +53,59 @@ const avatars = [
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Default: Story = {
   args: {
-    children: avatars.map((avatar, index) => (
-      <AvatarGroupItem key={index}>
-        <AvatarFallback>{avatar.length === 2 ? avatar : 'BC'}</AvatarFallback>
-        {avatar.startsWith('http') && <AvatarImage src={avatar} />}
-      </AvatarGroupItem>
-    ))
+    children: (
+      <AvatarGroupStack>
+        {avatars.map((avatar, index) => (
+          <AvatarGroupStackItem key={index}>
+            <AvatarFallback>{avatar.length === 2 ? avatar : 'BC'}</AvatarFallback>
+            {avatar.startsWith('http') && <AvatarImage src={avatar} />}
+          </AvatarGroupStackItem>
+        ))}
+      </AvatarGroupStack>
+    )
   },
 };
 
 export const Limit: Story = {
   args: {
-    limit: 4,
-    children: avatars.map((avatar, index) => (
-      <AvatarGroupItem key={index}>
-        <AvatarFallback>{avatar.length === 2 ? avatar : 'BC'}</AvatarFallback>
-        {avatar.startsWith('http') && <AvatarImage src={avatar} />}
-      </AvatarGroupItem>
-    ))
+    children: [
+      <AvatarGroupStack key={0}>
+        {avatars.map((avatar, index) => (
+          <AvatarGroupStackItem key={index}>
+            <AvatarFallback>{avatar.length === 2 ? avatar : 'BC'}</AvatarFallback>
+            {avatar.startsWith('http') && <AvatarImage src={avatar} />}
+          </AvatarGroupStackItem>
+        ))}
+      </AvatarGroupStack>,
+      <AvatarGroupCount key={1}>+3</AvatarGroupCount>
+    ]
   },
 };
 
 export const WithPopover: Story = {
   args: {
-    limit: 4,
-    withPopover: true,
-    children: avatars.map((avatar, index) => (
-      <AvatarGroupItem key={index}>
-        <AvatarFallback>{avatar.length === 2 ? avatar : 'BC'}</AvatarFallback>
-        {avatar.startsWith('http') && <AvatarImage src={avatar} />}
-      </AvatarGroupItem>
-    ))
+    children: [
+      <AvatarGroupStack key={0}>
+        {avatars.slice(0, 4).map((avatar, index) => (
+          <AvatarGroupStackItem key={index}>
+            <AvatarFallback>{avatar.length === 2 ? avatar : 'BC'}</AvatarFallback>
+            {avatar.startsWith('http') && <AvatarImage src={avatar} />}
+          </AvatarGroupStackItem>
+        ))}
+      </AvatarGroupStack>,
+      <AvatarGroupPopover>
+        <AvatarGroupPopoverTrigger>
+          <AvatarGroupCount key={1}>+7</AvatarGroupCount>
+          <AvatarGroupPopoverTriggerIcon />
+        </AvatarGroupPopoverTrigger>
+        <AvatarGroupPopoverContent>
+          {avatars.slice(4).map((src, index) => (
+            <Avatar key={index}>
+              <AvatarImage src={src} />
+            </Avatar>
+          ))}
+        </AvatarGroupPopoverContent>
+      </AvatarGroupPopover>
+    ]
   },
 };
