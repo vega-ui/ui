@@ -1,7 +1,0 @@
-export * from './AvatarGroupStackItem'
-export * from './AvatarGroupCount'
-export * from './AvatarGroupPopover'
-export * from './AvatarGroupPopoverTrigger'
-export * from './AvatarGroupPopoverTriggerIcon'
-export * from './AvatarGroupPopoverContent'
-export * from './AvatarGroupStack'

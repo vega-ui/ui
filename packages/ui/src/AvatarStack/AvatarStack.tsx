@@ -33,7 +33,7 @@ export interface AvatarGroupProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 /** An Avatar Group is a UI component that displays multiple avatars in a compact, overlapping, or grid-like arrangement, commonly used to represent a group of users, such as team members or participants in a conversation.  */
-export const AvatarGroup: FC<PropsWithChildren<AvatarGroupProps>> = ({
+export const AvatarStack: FC<PropsWithChildren<AvatarGroupProps>> = ({
   className,
   size = 'md',
   variant = 'primary',
@@ -42,7 +42,7 @@ export const AvatarGroup: FC<PropsWithChildren<AvatarGroupProps>> = ({
 }) => {
   return (
     <AvatarGroupProvider size={size} variant={variant}>
-      <div className={csx(style.container, className)} {...props}>
+      <div className={csx(style.stack, className)} {...props}>
         {children}
       </div>
     </AvatarGroupProvider>

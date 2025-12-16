@@ -9,9 +9,9 @@ import style from './style.module.css'
 export type AvatarGroupStackItemProps = AvatarProps
 
 /**
- * The AvatarGroupStackItem component represents an individual avatar within an AvatarGroup, inheriting group-level styles like size and variant, and is typically used to visually stack or align multiple avatars in a compact layout
+ * The AvatarStackItem component represents an individual avatar within an AvatarStack, inheriting group-level styles like size and variant, and is typically used to visually stack or align multiple avatars in a compact layout
  * */
-export const AvatarGroupStackItem: FC<AvatarGroupStackItemProps> = ({
+export const AvatarStackItem: FC<AvatarGroupStackItemProps> = ({
   className,
   ...props
 }) => {
