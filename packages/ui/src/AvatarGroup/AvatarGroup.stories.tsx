@@ -53,12 +53,16 @@ const avatars = [
 // More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
 export const Default: Story = {
   args: {
-    children: avatars.map((avatar, index) => (
-      <AvatarGroupStackItem key={index}>
-        <AvatarFallback>{avatar.length === 2 ? avatar : 'BC'}</AvatarFallback>
-        {avatar.startsWith('http') && <AvatarImage src={avatar} />}
-      </AvatarGroupStackItem>
-    ))
+    children: (
+      <AvatarGroupStack>
+        {avatars.map((avatar, index) => (
+          <AvatarGroupStackItem key={index}>
+            <AvatarFallback>{avatar.length === 2 ? avatar : 'BC'}</AvatarFallback>
+            {avatar.startsWith('http') && <AvatarImage src={avatar} />}
+          </AvatarGroupStackItem>
+        ))}
+      </AvatarGroupStack>
+    )
   },
 };
 
