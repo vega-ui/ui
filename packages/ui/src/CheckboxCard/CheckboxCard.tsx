@@ -7,6 +7,12 @@ import style from './style.module.css'
 import { CheckboxCardProvider } from './contexts';
 import { sizeMapper } from './helpers';
 import { CheckboxCardOrientation, CheckboxVariant } from './types.ts';
+import {
+  CheckboxCheckedIcon,
+  CheckboxHiddenInput,
+  CheckboxIndeterminateIcon,
+  CheckboxIndicator
+} from '../Checkbox/components';
 
 export interface CheckboxCardProps extends Omit<CardProps, 'appearance'>, Pick<CheckboxProps, 'checked' | 'indeterminate'> {
   /**
@@ -86,7 +92,13 @@ export const CheckboxCard: FC<CheckboxCardProps> = ({
             {children}
           </div>
           <Checkbox variant={variant} onChange={onChange} checked={checked} indeterminate={indeterminate}
-                    disabled={disabled} size={sizeMapper(size)} />
+                    disabled={disabled} size={sizeMapper(size)}>
+            <CheckboxHiddenInput />
+            <CheckboxIndicator>
+              <CheckboxCheckedIcon />
+              <CheckboxIndeterminateIcon />
+            </CheckboxIndicator>
+          </Checkbox>
         </Card>
       </label>
     </CheckboxCardProvider>
