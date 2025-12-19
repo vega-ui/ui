@@ -1,15 +1,28 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react'
-import { Checkbox } from '../Checkbox.tsx';
+import { Checkbox, CheckboxProps } from '../Checkbox.tsx';
+import { CheckboxCheckedIcon, CheckboxHiddenInput, CheckboxIndeterminateIcon, CheckboxIndicator } from '../components';
+
+const renderCheckbox = (props?: CheckboxProps) => {
+  return render(
+    <Checkbox {...(props ?? {})}>
+      <CheckboxHiddenInput />
+      <CheckboxIndicator>
+        <CheckboxCheckedIcon />
+        <CheckboxIndeterminateIcon />
+      </CheckboxIndicator>
+    </Checkbox>
+  )
+}
 
 describe('Checkbox', () => {
   it('render', () => {
-    render(<Checkbox />)
+    renderCheckbox()
     expect(screen.getByRole('checkbox')).toBeDefined()
   })
 
   it('change', () => {
-    render(<Checkbox />)
+    renderCheckbox()
     const checkbox: HTMLInputElement = screen.getByRole('checkbox')
     checkbox.click()
 
@@ -17,7 +30,7 @@ describe('Checkbox', () => {
   })
 
   it('indeterminate', () => {
-    render(<Checkbox indeterminate />)
+    renderCheckbox({ indeterminate: true })
     const checkbox: HTMLInputElement = screen.getByRole('checkbox')
 
     expect(checkbox.indeterminate).toBeTruthy()
@@ -28,7 +41,7 @@ describe('Checkbox', () => {
   })
 
   it('disabled', () => {
-    render(<Checkbox disabled />)
+    renderCheckbox({ disabled: true })
     const checkbox: HTMLInputElement = screen.getByRole('checkbox')
 
     checkbox.click()

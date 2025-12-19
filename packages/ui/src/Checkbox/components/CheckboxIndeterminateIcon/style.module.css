@@ -1,0 +1,8 @@
+.icon {
+    --icon-size: calc(var(--checkbox-size) / 2) !important;
+
+    position: absolute;
+    opacity: var(--checkbox-indeterminate);
+    transform: scale(var(--checkbox-indeterminate));
+    transition: transform var(--transition-state-delay) ease;
+}

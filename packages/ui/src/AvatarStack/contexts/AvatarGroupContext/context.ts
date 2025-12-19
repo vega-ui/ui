@@ -8,7 +8,7 @@ export interface AvatarGroupContextState {
   variant?: AvatarGroupVariant
 }
 
-export const [AvatarGroupProvider, useAvatarGroupContext] = createContext<AvatarGroupContextState>('AvatarGroupContext', {
+export const [AvatarGroupProvider, useAvatarGroupContext] = createContext<AvatarGroupContextState>('CheckboxContext', {
   size: 'md',
   variant: 'primary'
 })

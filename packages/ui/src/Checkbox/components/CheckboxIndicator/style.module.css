@@ -1,0 +1,19 @@
+.indicator {
+    position: relative;
+    cursor: inherit;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border: 1px solid var(--checkbox-b-color);
+    background-color: var(--checkbox-bg-color);
+    outline: var(--checkbox-outline, none);
+    transition:
+            background-color var(--transition-state-delay) ease,
+            border-color var(--transition-state-delay) ease;
+    color: var(--checkbox-color);
+    width: var(--checkbox-size);
+    height: var(--checkbox-size);
+    border-radius: calc(var(--checkbox-size) * var(--checkbox-br-ratio));
+    overflow: hidden;
+}
