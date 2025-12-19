@@ -1,12 +1,17 @@
 .checkboxCard {
+    --checkbox-card-b-color: transparent;
+    --checkbox-card-bg-color: transparent;
+
+    border-color: var(--checkbox-card-b-color);
+    background-color: var(--checkbox-card-bg-color);
+
+    position: relative;
     cursor: pointer;
     align-items: flex-end;
     min-width: 220px;
     flex: 1;
-}
-
-.checkboxCardWrapper {
-    display: flex;
+    transition: border-color var(--transition-state-delay) ease,
+                background-color var(--transition-state-delay) ease;
 }
 
 .checkboxCard[data-orientation='vertical'] {
@@ -22,32 +27,24 @@
 
 .checkboxCard:hover,
 .checkboxCard:has(:focus-visible) {
-    border-color: var(--color-gray-accent-300);
+    --checkbox-card-b-color: var(--color-gray-accent-300);
 }
 
 .checkboxCard:active {
-    border-color: var(--color-gray-accent-400);
+    --checkbox-card-b-color: var(--color-gray-accent-400);
 }
 
-.checkboxCard[data-appearance] {
-    transition: border-color var(--transition-state-delay) ease;
-}
-
-.checkboxCard[data-appearance]:has(input[type='checkbox']:disabled) {
-    background-color: var(--color-gray-accent-50);
+.checkboxCard:has(input[type='checkbox']:disabled) {
+    --checkbox-card-bg-color: var(--color-gray-accent-50);
     cursor: not-allowed;
 }
 
 .checkboxCard[data-variant='primary']:has(input[type='checkbox']:checked),
 .checkboxCard[data-variant='primary']:has(input[type='checkbox']:indeterminate) {
-    border-color: var(--color-primary-500);
+    --checkbox-card-b-color: var(--color-primary-500);
 }
 
 .checkboxCard[data-variant='secondary']:has(input[type='checkbox']:checked),
 .checkboxCard[data-variant='secondary']:has(input[type='checkbox']:indeterminate) {
-    border-color: var(--color-secondary-500);
-}
-
-.content {
-    width: 100%;
+    --checkbox-card-b-color: var(--color-secondary-500);
 }

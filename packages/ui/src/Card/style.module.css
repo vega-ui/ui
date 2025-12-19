@@ -6,17 +6,17 @@
     border: 1px solid transparent;
 }
 
-.card[data-size='small'] {
+.card[data-size='sm'] {
     padding: clamp(var(--spacing-8), 3vw, var(--spacing-10));
     border-radius: var(--radius-5);
 }
 
-.card[data-size='medium'] {
+.card[data-size='md'] {
     padding: clamp(var(--spacing-12), 3vw, var(--spacing-14));
     border-radius: var(--radius-5);
 }
 
-.card[data-size='large'] {
+.card[data-size='lg'] {
     padding: clamp(var(--spacing-14), 3vw, var(--spacing-16));
     border-radius: var(--radius-6);
 }
