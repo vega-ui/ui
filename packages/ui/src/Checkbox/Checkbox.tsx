@@ -1,32 +1,15 @@
-'use client';
-import {
-  ChangeEventHandler,
-  DetailedHTMLProps,
-  FC,
-  InputHTMLAttributes,
-  Ref,
-  useEffect,
-  useRef
-} from 'react';
+import { FC, HTMLAttributes, Ref } from 'react';
 import style from './style.module.css'
-import { csx, mergeRefs } from '@vega-ui/utils';
-import { Icon } from '../Icon';
-import { VisuallyHidden } from '../VisuallyHidden';
-import { CheckIcon, MinusIcon } from '@vega-ui/icons';
+import { csx } from '@vega-ui/utils';
 import { CheckboxSize, CheckboxVariant } from './types.ts';
+import { CheckboxProvider } from './contexts';
 
-export interface CheckboxProps extends Omit<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'size'> {
+export interface CheckboxProps extends HTMLAttributes<HTMLLabelElement> {
   /**
    * Optional custom CSS class for the checkbox input element.
    * Useful for styling overrides and scoped component design.
    */
   className?: string
-
-  /**
-   * Optional class name for the outer wrapper of the checkbox.
-   * Commonly used to style the label or layout container.
-   */
-  wrapperClassName?: string
 
   /**
    * Sets the checkbox to an indeterminate visual state.
@@ -59,9 +42,8 @@ export interface CheckboxProps extends Omit<DetailedHTMLProps<InputHTMLAttribute
 
   /**
    * Callback function fired when the checkbox state changes.
-   * Receives the native `ChangeEvent<HTMLInputElement>`.
    */
-  onChange?: ChangeEventHandler<HTMLInputElement>
+  onChangeChecked?(value: boolean): void
 
   /**
    * Disables the checkbox, making it non-interactive.
@@ -70,41 +52,45 @@ export interface CheckboxProps extends Omit<DetailedHTMLProps<InputHTMLAttribute
   disabled?: boolean
 
   /**
-   * Ref to the native `<input type="checkbox">` element.
+   * Ref to the native label element.
    * Useful for managing focus, setting indeterminate manually, etc.
    */
-  ref?: Ref<HTMLInputElement>
+  ref?: Ref<HTMLLabelElement>
 }
 
 /** A Checkbox is a UI component that allows users to select one or multiple options from a set, toggling between checked and unchecked states. */
 export const Checkbox: FC<CheckboxProps> = ({
-  variant = 'primary',
-  size = 'medium',
-  indeterminate,
-  defaultChecked,
-  checked,
-  onChange,
-  className,
-  wrapperClassName,
-  disabled,
   ref,
+  variant = 'primary',
+  size = 'md',
+  indeterminate,
+  checked,
+  defaultChecked,
+  className,
+  disabled,
+  onChangeChecked,
+  children,
  ...props
 }) => {
-  const inputRef = useRef<HTMLInputElement>(null)
-
-  useEffect(() => {
-    if (inputRef.current && indeterminate !== undefined) inputRef.current.indeterminate = indeterminate
-  }, [indeterminate])
-
   return (
-    <label className={csx(style.checkboxWrapper, wrapperClassName)}>
-      <VisuallyHidden asChild ref={mergeRefs([inputRef, ref])}>
-        <input onChange={onChange} type='checkbox' disabled={disabled} defaultChecked={defaultChecked} checked={checked} {...props} />
-      </VisuallyHidden>
-      <div className={csx(style.checkbox, className)} data-size={size} data-variant={variant}>
-        <Icon aria-hidden className={style.checkboxCheckIcon}><CheckIcon strokeWidth={4} /></Icon>
-        <Icon aria-hidden className={style.checkboxIndeterminateIcon}><MinusIcon strokeWidth={4} /></Icon>
-      </div>
-    </label>
+    <CheckboxProvider
+      size={size}
+      indeterminate={indeterminate}
+      defaultChecked={defaultChecked}
+      checked={checked}
+      onChangeChecked={onChangeChecked}
+      disabled={disabled}
+      variant={variant}
+    >
+      <label
+        className={csx(style.checkbox, className)}
+        data-size={size}
+        data-variant={variant}
+        ref={ref}
+        {...props}
+      >
+        {children}
+      </label>
+    </CheckboxProvider>
   )
 }

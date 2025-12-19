@@ -8,7 +8,7 @@ import { CheckboxCardProvider } from './contexts';
 import { sizeMapper } from './helpers';
 import { CheckboxCardOrientation, CheckboxVariant } from './types.ts';
 
-export interface CheckboxCardProps extends Omit<CardProps, 'appearance'>, Pick<CheckboxProps, 'checked' | 'value' | 'indeterminate'> {
+export interface CheckboxCardProps extends Omit<CardProps, 'appearance'>, Pick<CheckboxProps, 'checked' | 'indeterminate'> {
   /**
    * Custom CSS class for the root card-checkbox component.
    * Useful for overriding or extending base styles.
@@ -72,7 +72,6 @@ export const CheckboxCard: FC<CheckboxCardProps> = ({
   onChange,
   checked,
   indeterminate,
-  value,
   disabled,
   variant = 'primary',
   ref,
@@ -86,7 +85,7 @@ export const CheckboxCard: FC<CheckboxCardProps> = ({
           <div className={style.content}>
             {children}
           </div>
-          <Checkbox variant={variant} onChange={onChange} checked={checked} indeterminate={indeterminate} value={value}
+          <Checkbox variant={variant} onChange={onChange} checked={checked} indeterminate={indeterminate}
                     disabled={disabled} size={sizeMapper(size)} />
         </Card>
       </label>

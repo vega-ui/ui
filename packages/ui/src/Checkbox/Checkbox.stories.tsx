@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Text } from '../Text';
-import { Checkbox } from './Checkbox.tsx';
+import { Checkbox } from './Checkbox';
+import { CheckboxCheckedIcon, CheckboxHiddenInput, CheckboxIndeterminateIcon, CheckboxIndicator } from './components';
 
 const meta = {
-  title: 'Form/Selectors/Checkbox',
+  title: 'Form/Selectors/Checkbox/Checkbox',
   component: Checkbox,
   parameters: {
     layout: 'centered',
@@ -21,9 +22,18 @@ const meta = {
     },
     size: {
       control: 'radio',
-      options: ['small', 'medium', 'large'],
+      options: ['sm', 'md', 'lg'],
     },
   },
+  args: {
+    children: [
+      <CheckboxHiddenInput key={0} />,
+      <CheckboxIndicator key={1}>
+        <CheckboxCheckedIcon />
+        <CheckboxIndeterminateIcon />
+      </CheckboxIndicator>
+    ]
+  }
 } satisfies Meta<typeof Checkbox>;
 
 export default meta;
