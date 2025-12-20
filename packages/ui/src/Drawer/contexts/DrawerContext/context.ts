@@ -1,6 +1,5 @@
 'use client';
 
-import { Ref } from 'react';
 import { createContext } from '@vega-ui/react-context';
 import { FloatingContext } from '@floating-ui/react';
 import { DrawerPosition } from '../../types.ts';
@@ -9,8 +8,6 @@ export interface DrawerContextState {
   open: boolean
   onChangeOpen: (value: boolean) => void
   context: FloatingContext<HTMLElement>
-  triggerRef?: Ref<HTMLButtonElement>
-  contentRef?: Ref<HTMLDivElement>
   triggerProps?: Record<string, unknown>
   contentProps?: Record<string, unknown>
   isMounted?: boolean

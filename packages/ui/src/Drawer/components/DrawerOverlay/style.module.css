@@ -1,7 +1,7 @@
 .overlay {
-    z-index: var(--z-index-overlay);
     box-sizing: border-box;
-    overflow-x: hidden !important;
+    overflow-x: hidden;
+    z-index: 1;
 }
 
 .overlay::after {
