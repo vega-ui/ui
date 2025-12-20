@@ -1,18 +1,46 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react'
-import { CheckboxCard } from '../CheckboxCard.tsx';
+import { CheckboxCard, CheckboxCardProps } from '../CheckboxCard.tsx';
+import {
+  CheckboxCardContent, CheckboxCardControl, CheckboxCardControlCheckedIcon,
+  CheckboxCardControlHiddenInput,
+  CheckboxCardControlIndeterminateIcon,
+  CheckboxCardControlIndicator,
+  CheckboxCardDescription,
+  CheckboxCardTitle
+} from '../components';
 
-const TEXT = 'Hello, World!';
+const TITLE = 'Title';
+const TEXT = 'Description';
+
+const renderCheckboxCard = (props?: CheckboxCardProps) => {
+  render(
+    <CheckboxCard {...(props ?? {})}>
+      <CheckboxCardContent>
+        <CheckboxCardTitle>{TITLE}</CheckboxCardTitle>
+        <CheckboxCardDescription>{TEXT}</CheckboxCardDescription>
+      </CheckboxCardContent>
+      <CheckboxCardControl>
+        <CheckboxCardControlHiddenInput />
+        <CheckboxCardControlIndicator>
+          <CheckboxCardControlCheckedIcon />
+          <CheckboxCardControlIndeterminateIcon />
+        </CheckboxCardControlIndicator>
+      </CheckboxCardControl>
+    </CheckboxCard>
+  )
+}
 
 describe('CheckboxCard', () => {
   it('render', () => {
-    render(<CheckboxCard>{TEXT}</CheckboxCard>)
+    renderCheckboxCard()
+    expect(screen.getByText(TITLE)).toBeDefined()
     expect(screen.getByText(TEXT)).toBeDefined()
     expect(screen.getByRole('checkbox')).toBeDefined()
   })
 
   it('change', () => {
-    render(<CheckboxCard />)
+    renderCheckboxCard()
     const checkbox: HTMLInputElement = screen.getByRole('checkbox')
     checkbox.click()
 
@@ -20,7 +48,7 @@ describe('CheckboxCard', () => {
   })
 
   it('indeterminate', () => {
-    render(<CheckboxCard indeterminate />)
+    renderCheckboxCard({ indeterminate: true })
     const checkbox: HTMLInputElement = screen.getByRole('checkbox')
 
     expect(checkbox.indeterminate).toBeTruthy()
@@ -31,7 +59,7 @@ describe('CheckboxCard', () => {
   })
 
   it('disabled', () => {
-    render(<CheckboxCard disabled />)
+    renderCheckboxCard({ disabled: true })
     const checkbox: HTMLInputElement = screen.getByRole('checkbox')
 
     checkbox.click()

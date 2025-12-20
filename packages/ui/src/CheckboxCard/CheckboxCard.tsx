@@ -1,38 +1,15 @@
 'use client';
-import { FC, Ref } from 'react';
+import { FC } from 'react';
 import { Card, CardProps } from '../Card';
-import { Checkbox, CheckboxProps } from '../Checkbox';
+import { CheckboxProps } from '../Checkbox';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
 import { CheckboxCardProvider } from './contexts';
-import { sizeMapper } from './helpers';
 import { CheckboxCardOrientation, CheckboxVariant } from './types.ts';
-import {
-  CheckboxCheckedIcon,
-  CheckboxHiddenInput,
-  CheckboxIndeterminateIcon,
-  CheckboxIndicator
-} from '../Checkbox/components';
 
-export interface CheckboxCardProps extends Omit<CardProps, 'appearance'>, Pick<CheckboxProps, 'checked' | 'indeterminate'> {
-  /**
-   * Custom CSS class for the root card-checkbox component.
-   * Useful for overriding or extending base styles.
-   */
-  className?: string
-
-  /**
-   * Optional class name for the wrapper around the component.
-   * Can be used to apply layout or grid-level styling.
-   */
-  wrapperClassName?: string
-
-  /**
-   * Disables the entire card interaction.
-   * Applies a non-interactive and visually disabled state.
-   */
-  disabled?: boolean
-
+export interface CheckboxCardProps extends
+  Omit<CardProps, 'appearance'>,
+  Pick<CheckboxProps, 'onChangeChecked' | 'checked' | 'defaultChecked' | 'indeterminate' | 'disabled'> {
   /**
    * Defines the layout direction of the card content.
    */
@@ -43,64 +20,42 @@ export interface CheckboxCardProps extends Omit<CardProps, 'appearance'>, Pick<C
    * Typically used to switch between brand or neutral themes.
    */
   variant?: CheckboxVariant
-
-  /**
-   * Controls whether the checkbox card is selected.
-   * Used in controlled components for full state control.
-   */
-  checked?: boolean
-
-  /**
-   * Checkbox card value used in form submissions or selection groups.
-   */
-  value?: string
-
-  /**
-   * Displays an indeterminate visual state on the checkbox.
-   * Must be manually managed — does not affect form behavior.
-   */
-  indeterminate?: boolean
-
-  /**
-   * Ref forwarded to the underlying checkbox input element.
-   * Useful for imperative focus or state control.
-   */
-  ref?: Ref<HTMLInputElement>
 }
 
 /** A Checkbox Card is a UI component that combines a selectable checkbox with a card layout, allowing users to choose an option while displaying additional information in a structured format. */
 export const CheckboxCard: FC<CheckboxCardProps> = ({
   children,
-  size = 'medium',
+  size = 'md',
   orientation = 'vertical',
   className,
-  wrapperClassName,
-  onChange,
+  onChangeChecked,
   checked,
+  defaultChecked,
   indeterminate,
   disabled,
   variant = 'primary',
-  ref,
   ...props
 }) => {
   return (
-    <CheckboxCardProvider size={size}>
-      <label className={csx(style.checkboxCardWrapper, wrapperClassName)}>
-        <Card ref={ref} data-orientation={orientation} data-variant={variant} className={csx(className, style.checkboxCard)}
-              size={size} {...props}>
-          <div className={style.content}>
-            {children}
-          </div>
-          <Checkbox variant={variant} onChange={onChange} checked={checked} indeterminate={indeterminate}
-                    disabled={disabled} size={sizeMapper(size)}>
-            <CheckboxHiddenInput />
-            <CheckboxIndicator>
-              <CheckboxCheckedIcon />
-              <CheckboxIndeterminateIcon />
-            </CheckboxIndicator>
-          </Checkbox>
-        </Card>
-      </label>
+    <CheckboxCardProvider
+      checked={checked}
+      onChangedChecked={onChangeChecked}
+      defaultChecked={defaultChecked}
+      disabled={disabled}
+      indeterminate={indeterminate}
+      variant={variant}
+      size={size}
+    >
+      <Card
+        data-orientation={orientation}
+        data-variant={variant}
+        className={csx(className, style.checkboxCard)}
+        size={size}
+        asChild
+        {...props}
+      >
+        <label>{children}</label>
+      </Card>
     </CheckboxCardProvider>
   )
 }

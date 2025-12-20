@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CheckboxCard } from './CheckboxCard.tsx';
-import { CheckboxCardContent } from './components';
+import {
+  CheckboxCardContent, CheckboxCardControl, CheckboxCardControlCheckedIcon,
+  CheckboxCardControlHiddenInput,
+  CheckboxCardControlIndeterminateIcon, CheckboxCardControlIndicator, CheckboxCardDescription, CheckboxCardTitle
+} from './components';
 
 const meta = {
   title: 'Form/Selectors/CheckboxCard/CheckboxCard',
@@ -16,74 +20,59 @@ const meta = {
   argTypes: {
     size: {
       control: 'radio',
-      options: ['small', 'medium', 'large'],
+      options: ['sm', 'md', 'lg'],
     },
     variant: {
       control: 'radio',
       options: ['primary', 'secondary'],
     },
+    orientation: {
+      control: 'radio',
+      options: ['vertical', 'horizontal'],
+    }
+  },
+  args: {
+    children: [
+      <CheckboxCardContent key={0}>
+        <CheckboxCardTitle>What is Lorem Ipsum?</CheckboxCardTitle>
+        <CheckboxCardDescription>Lorem Ipsum is simply dummy text of the printing and typesetting industry</CheckboxCardDescription>
+      </CheckboxCardContent>,
+      <CheckboxCardControl key={1}>
+        <CheckboxCardControlHiddenInput />
+        <CheckboxCardControlIndicator>
+          <CheckboxCardControlCheckedIcon />
+          <CheckboxCardControlIndeterminateIcon />
+        </CheckboxCardControlIndicator>
+      </CheckboxCardControl>
+    ],
   },
 } satisfies Meta<typeof CheckboxCard>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  args: {
-    children: (
-      <CheckboxCardContent title='Быстрый старт' description='Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне' />
-    ),
-  },
-};
+export const Default: Story = {};
 
 export const Checked: Story = {
   args: {
     checked: true,
-    children: (
-      <CheckboxCardContent title='Быстрый старт' description='Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне' />
-    ),
   },
 };
 
 export const Indeterminate: Story = {
   args: {
     indeterminate: true,
-    children: (
-      <CheckboxCardContent title='Быстрый старт' description='Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне' />
-    ),
   },
 };
 
 export const Disabled: Story = {
   args: {
     disabled: true,
-    children: (
-      <CheckboxCardContent title='Быстрый старт' description='Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне' />
-    ),
   },
 };
 
 export const Horizontal: Story = {
   args: {
     orientation: 'horizontal',
-    children: (
-      <CheckboxCardContent title='Быстрый старт' description='Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне' />
-    ),
-  },
-};
-
-export const WithLongDesc: Story = {
-  args: {
-    children: (
-      <CheckboxCardContent title='Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне' description='Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне' />
-    ),
-  },
-};
-
-export const WithLongTitle: Story = {
-  args: {
-    children: (
-      <CheckboxCardContent title='Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне' description='Lorem Ipsum - это текст-"рыба", часто используемый в печати и вэб-дизайне' />
-    ),
   },
 };

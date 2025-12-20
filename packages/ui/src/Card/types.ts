@@ -1,2 +1,2 @@
-export type CardSize = 'small' | 'medium' | 'large' | string
+export type CardSize = 'sm' | 'md' | 'lg' | string
 export type CardAppearance = 'outline' | 'transparent' | string
