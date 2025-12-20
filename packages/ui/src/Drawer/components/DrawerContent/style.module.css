@@ -180,9 +180,3 @@
     left: 0;
     bottom: 0;
 }
-
-.drawerContent {
-    pointer-events: auto;
-    overflow: hidden auto;
-    flex: 1;
-}

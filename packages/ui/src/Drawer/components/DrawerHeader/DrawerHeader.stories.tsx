@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DrawerHeader } from './DrawerHeader.tsx';
-import { Text } from '../../../Text';
+import { DrawerTitle } from '../DrawerTitle';
+import { DrawerCloseButton } from '../DrawerCloseButton';
 
 const meta = {
   title: 'Overlay/Drawer/DrawerHeader',
@@ -20,9 +21,12 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     title: 'Drawer',
-    children: <Text>Drawer content</Text>,
+    children: [
+      <DrawerTitle key={0}>Drawer title</DrawerTitle>,
+      <DrawerCloseButton key={1} />
+    ],
     style: {
-      minWidth: '200px'
+      minWidth: '300px'
     }
   },
 }

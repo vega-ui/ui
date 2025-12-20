@@ -28,10 +28,10 @@ export const DrawerTrigger: FC<DrawerTriggerProps> = ({
 }) => {
   const Element = asChild ? Slot : 'button'
 
-  const { triggerRef, triggerProps = {} } = useDrawerContext()
+  const { context, triggerProps = {} } = useDrawerContext()
 
   return (
-    <Element {...mergeProps(props, triggerProps)} ref={mergeRefs([triggerRef, ref])}>
+    <Element {...mergeProps(props, triggerProps)} ref={mergeRefs([context?.refs?.setFloating, ref])}>
       {children}
     </Element>
   )

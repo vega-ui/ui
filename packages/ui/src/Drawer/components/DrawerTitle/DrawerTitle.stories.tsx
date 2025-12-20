@@ -1,20 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DrawerTrigger } from './DrawerTrigger';
-import { Button } from '../../../Button';
+import { DrawerTitle } from './DrawerTitle';
 
 const meta = {
-  title: 'Overlay/Drawer/DrawerTrigger',
-  component: DrawerTrigger,
+  title: 'Overlay/Drawer/DrawerTitle',
+  component: DrawerTitle,
   parameters: {
     layout: 'centered',
   },
   tags: ['autodocs'],
   argTypes: {},
   args: {
-    asChild: true,
-    children: <Button>Trigger</Button>
+    children: 'Title'
   },
-} satisfies Meta<typeof DrawerTrigger>;
+} satisfies Meta<typeof DrawerTitle>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

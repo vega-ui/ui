@@ -64,7 +64,7 @@ export const Drawer: FC<DrawerProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useControlledState(controlledOpen, false, controlledOnChangeOpen)
 
-  const { refs, context } = useFloating({
+  const { context } = useFloating({
     open: isOpen,
     onOpenChange: setIsOpen,
   });
@@ -87,8 +87,6 @@ export const Drawer: FC<DrawerProps> = ({
   return (
     <DrawerProvider
       context={context as FloatingContext<HTMLElement>}
-      contentRef={refs.setFloating}
-      triggerRef={refs.setReference}
       contentProps={getFloatingProps()}
       triggerProps={getReferenceProps()}
       open={isOpen}

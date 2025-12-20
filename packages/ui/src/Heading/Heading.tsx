@@ -36,10 +36,11 @@ export interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {
    *
    * - 400: Regular
    * - 500: Medium
+   * - 600: Semi-bold
    * - 700: Bold
    * - 900: Extra bold
    */
-  fontWeight?: 400 | 500 | 700 | 900
+  fontWeight?: 400 | 500 | 600 | 700 | 900
 
   /**
    * Ref to the native HTML heading element.

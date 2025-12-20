@@ -1,22 +1,34 @@
 'use client';
-import { FC, PropsWithChildren } from 'react';
-import { FloatingOverlay } from '@floating-ui/react';
+import { FC, HTMLAttributes, PropsWithChildren } from 'react';
+import { FloatingOverlay, FloatingOverlayProps } from '@floating-ui/react';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
 
-export interface DrawerOverlayProps {
-  hidden?: boolean
+export interface DrawerOverlayProps extends HTMLAttributes<HTMLDivElement>, FloatingOverlayProps {
+  /**
+   * Enables a background blur effect
+   */
   blurred?: boolean
-  className?: string
 }
 
-export const DrawerOverlay: FC<PropsWithChildren<DrawerOverlayProps>> = ({ hidden, className, blurred = true, children }) => {
+/**
+ * `DrawerOverlay` is a backdrop subcomponent of `Drawer` that renders
+ * a full-screen overlay behind the drawer content.
+ *
+ * It is responsible for visually separating the drawer from the
+ * underlying page content and optionally preventing background
+ * scrolling while the drawer is open.
+ *
+ * The component composes `FloatingOverlay` to handle scroll locking
+ * and layering, and supports optional visual effects such as blur.
+ */
+export const DrawerOverlay: FC<PropsWithChildren<DrawerOverlayProps>> = ({ lockScroll = true, className, blurred = true, children, ...props }) => {
   return (
     <FloatingOverlay
-      hidden={hidden}
       data-blurred={blurred}
+      lockScroll={lockScroll}
       className={csx(style.overlay, className)}
-      lockScroll
+      {...props}
     >
       {children}
     </FloatingOverlay>
