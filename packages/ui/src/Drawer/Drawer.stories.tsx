@@ -5,7 +5,7 @@ import { Button } from '../Button';
 import {
   DrawerContent,
   DrawerHeader,
-  DrawerOverlay,
+  DrawerBackdrop,
   DrawerPortal,
   DrawerTrigger,
   DrawerTitle,
@@ -56,7 +56,7 @@ export const Default: Story = {
         </DrawerTrigger>
         
         <DrawerPortal>
-          <DrawerOverlay />
+          <DrawerBackdrop />
           <DrawerContent>
             <LongText />
           </DrawerContent>
@@ -93,7 +93,7 @@ export const WithHeader: Story = {
         </DrawerTrigger>
         
         <DrawerPortal>
-          <DrawerOverlay>
+          <DrawerBackdrop>
             <DrawerContent shadowed>
               <DrawerHeader>
                 <DrawerTitle>Drawer title</DrawerTitle>
@@ -102,7 +102,7 @@ export const WithHeader: Story = {
               
               <LongText />
             </DrawerContent>
-          </DrawerOverlay>
+          </DrawerBackdrop>
         </DrawerPortal>
       </Drawer>
     );
@@ -120,7 +120,7 @@ export const WithActions: Story = {
         </DrawerTrigger>
         
         <DrawerPortal>
-          <DrawerOverlay>
+          <DrawerBackdrop>
             <DrawerContent shadowed style={{ maxWidth: 520 }}>
               <DrawerHeader>
                 <DrawerTitle>Invite members</DrawerTitle>
@@ -148,7 +148,7 @@ export const WithActions: Story = {
                 </div>
               </div>
             </DrawerContent>
-          </DrawerOverlay>
+          </DrawerBackdrop>
         </DrawerPortal>
       </Drawer>
     );
@@ -164,7 +164,7 @@ export const ScrollableContent: Story = {
         </DrawerTrigger>
         
         <DrawerPortal>
-          <DrawerOverlay>
+          <DrawerBackdrop>
             <DrawerContent shadowed style={{ maxWidth: 560 }}>
               <DrawerHeader>
                 <DrawerTitle>Activity</DrawerTitle>
@@ -200,7 +200,7 @@ export const ScrollableContent: Story = {
                 <Button size='sm' fullWidth>Mark all as read</Button>
               </div>
             </DrawerContent>
-          </DrawerOverlay>
+          </DrawerBackdrop>
         </DrawerPortal>
       </Drawer>
     );
@@ -216,7 +216,7 @@ export const NestedDrawers: Story = {
         </DrawerTrigger>
         
         <DrawerPortal>
-          <DrawerOverlay>
+          <DrawerBackdrop>
             <DrawerContent shadowed style={{ maxWidth: 640 }}>
               <DrawerHeader>
                 <DrawerTitle>Parent drawer</DrawerTitle>
@@ -239,7 +239,7 @@ export const NestedDrawers: Story = {
                   </DrawerTrigger>
                   
                   <DrawerPortal>
-                    <DrawerOverlay />
+                    <DrawerBackdrop />
                     <DrawerContent shadowed style={{ maxWidth: 520 }}>
                       <DrawerHeader>
                         <DrawerTitle>Nested drawer</DrawerTitle>
@@ -264,7 +264,7 @@ export const NestedDrawers: Story = {
                 </Drawer>
               </div>
             </DrawerContent>
-          </DrawerOverlay>
+          </DrawerBackdrop>
         </DrawerPortal>
       </Drawer>
     );
@@ -280,7 +280,7 @@ export const NestedConfirmFlow: Story = {
         </DrawerTrigger>
         
         <DrawerPortal>
-          <DrawerOverlay>
+          <DrawerBackdrop>
             <DrawerContent shadowed style={{ maxWidth: 640 }}>
               <DrawerHeader>
                 <DrawerTitle>Settings</DrawerTitle>
@@ -319,7 +319,7 @@ export const NestedConfirmFlow: Story = {
                   </DrawerTrigger>
                   
                   <DrawerPortal>
-                    <DrawerOverlay />
+                    <DrawerBackdrop />
                     <DrawerContent shadowed style={{ maxWidth: 520 }}>
                       <DrawerHeader>
                         <DrawerTitle>Confirm deletion</DrawerTitle>
@@ -350,7 +350,7 @@ export const NestedConfirmFlow: Story = {
                 </Drawer>
               </div>
             </DrawerContent>
-          </DrawerOverlay>
+          </DrawerBackdrop>
         </DrawerPortal>
       </Drawer>
     );
@@ -366,7 +366,7 @@ export const TripleNested: Story = {
         </DrawerTrigger>
         
         <DrawerPortal>
-          <DrawerOverlay>
+          <DrawerBackdrop>
             <DrawerContent shadowed style={{ maxWidth: 680 }}>
               <DrawerHeader>
                 <DrawerTitle>Level 1</DrawerTitle>
@@ -386,7 +386,7 @@ export const TripleNested: Story = {
                 </DrawerTrigger>
                 
                 <DrawerPortal>
-                  <DrawerOverlay />
+                  <DrawerBackdrop />
                   <DrawerContent shadowed style={{ maxWidth: 560 }}>
                     <DrawerHeader>
                       <DrawerTitle>Level 2</DrawerTitle>
@@ -401,7 +401,7 @@ export const TripleNested: Story = {
                       </DrawerTrigger>
                       
                       <DrawerPortal>
-                        <DrawerOverlay />
+                        <DrawerBackdrop />
                         <DrawerContent shadowed style={{ maxWidth: 480 }}>
                           <DrawerHeader>
                             <DrawerTitle>Level 3</DrawerTitle>
@@ -427,7 +427,7 @@ export const TripleNested: Story = {
                 </DrawerPortal>
               </Drawer>
             </DrawerContent>
-          </DrawerOverlay>
+          </DrawerBackdrop>
         </DrawerPortal>
       </Drawer>
     );

@@ -4,7 +4,7 @@ import { Drawer } from '../../Drawer.tsx';
 import { DrawerTrigger } from '../DrawerTrigger';
 import { Button } from '../../../Button';
 import { DrawerContent } from '../DrawerContent';
-import { DrawerOverlay } from '../DrawerOverlay';
+import { DrawerOverlay } from '../DrawerBackdrop';
 import { DrawerHeader } from '../DrawerHeader';
 import { DrawerTitle } from '../DrawerTitle';
 import { DrawerCloseButton } from '../DrawerCloseButton';

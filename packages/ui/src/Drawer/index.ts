@@ -3,7 +3,7 @@ export {
   DrawerHeader, type DrawerHeaderProps,
   DrawerContent, type DrawerContentProps,
   DrawerTrigger, type DrawerTriggerProps,
-  DrawerOverlay, type DrawerOverlayProps,
+  DrawerBackdrop, type DrawerBackdropProps,
   DrawerPortal, type DrawerPortalProps,
   DrawerCloseButton, type DrawerCloseButtonProps,
   DrawerTitle, type DrawerTitleProps,
