@@ -4,7 +4,7 @@ import { Drawer } from '../../Drawer.tsx';
 import { DrawerTrigger } from '../DrawerTrigger';
 import { Button } from '../../../Button';
 import { DrawerContent } from '../DrawerContent';
-import { DrawerOverlay } from '../DrawerBackdrop';
+import { DrawerBackdrop } from '../DrawerBackdrop';
 import { DrawerHeader } from '../DrawerHeader';
 import { DrawerTitle } from '../DrawerTitle';
 import { DrawerCloseButton } from '../DrawerCloseButton';
@@ -20,7 +20,7 @@ const meta = {
   argTypes: {},
   args: {
     children: [
-      <DrawerOverlay key={0} />,
+      <DrawerBackdrop key={0} />,
       <DrawerContent key={1}>
         <DrawerHeader>
           <DrawerTitle>Title</DrawerTitle>
