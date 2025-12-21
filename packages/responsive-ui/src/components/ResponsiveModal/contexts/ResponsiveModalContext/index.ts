@@ -1,1 +1,0 @@
-export { useResponsiveModalContext, ResponsiveModalProvider } from './context'
