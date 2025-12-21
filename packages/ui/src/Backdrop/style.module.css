@@ -1,0 +1,20 @@
+.backdrop {
+    box-sizing: border-box;
+    overflow-x: hidden;
+    z-index: 1;
+}
+
+.backdrop::after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: var(--overlay);
+}
+
+.backdrop[data-blurred='true']::after {
+    backdrop-filter: blur(2px);
+}
