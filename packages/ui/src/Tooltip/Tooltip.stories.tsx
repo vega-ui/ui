@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Tooltip } from './Tooltip.tsx';
 import { Button } from '../Button';
 import { IconButton } from '../IconButton';
-import { Dialog, DialogContent, DialogTrigger } from '../Modal';
+import { Dialog, DialogContent, DialogTrigger } from '../Dialog';
 import { TextField } from '../TextField';
 import { TooltipContent, TooltipTrigger } from './components';
 import { HeartIcon, InfoIcon } from '@vega-ui/icons';
