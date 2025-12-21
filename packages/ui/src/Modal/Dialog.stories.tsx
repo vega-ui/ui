@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Modal } from './Modal.tsx';
+import { Dialog } from './Dialog.tsx';
 import { Button } from '../Button';
 import { Text } from '../Text';
-import { ModalHeader, ModalTrigger, ModalContent } from './components';
+import { DialogHeader, DialogTrigger, DialogContent } from './components';
 
 const meta = {
-  title: 'Overlay/Modal/Modal',
-  component: Modal,
+  title: 'Overlay/Dialog/Dialog',
+  component: Dialog,
   parameters: {
     layout: 'centered',
     design: {
@@ -18,7 +18,7 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {},
   args: {},
-} satisfies Meta<typeof Modal>;
+} satisfies Meta<typeof Dialog>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -27,13 +27,13 @@ export const Default: Story = {
   args: {
     children: (
       <>
-        <ModalTrigger asChild>
-          <Button>Modal</Button>
-        </ModalTrigger>
-        <ModalContent>
-          <Text size={3}>Привет! Я - Modal</Text>
+        <DialogTrigger asChild>
+          <Button>Dialog</Button>
+        </DialogTrigger>
+        <DialogContent>
+          <Text size={3}>Привет! Я - Dialog</Text>
           <Button variant='secondary' appearance='transparent'>Согласен</Button>
-        </ModalContent>
+        </DialogContent>
       </>
     ),
   },
@@ -43,14 +43,14 @@ export const WithHeader: Story = {
   args: {
     children: (
       <>
-        <ModalTrigger asChild>
-          <Button>Modal</Button>
-        </ModalTrigger>
-        <ModalContent>
-          <ModalHeader title='Hello' />
-          <Text size={3}>Привет! Я - Modal</Text>
+        <DialogTrigger asChild>
+          <Button>Dialog</Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader title='Hello' />
+          <Text size={3}>Привет! Я - Dialog</Text>
           <Button variant='secondary' appearance='transparent'>Согласен</Button>
-        </ModalContent>
+        </DialogContent>
       </>
     ),
   },
@@ -60,13 +60,13 @@ export const Fluid: Story = {
   args: {
     children: (
       <>
-        <ModalTrigger asChild>
-          <Button>Modal</Button>
-        </ModalTrigger>
-        <ModalContent>
-          <Text size={3}>Привет! Я - Modal</Text>
+        <DialogTrigger asChild>
+          <Button>Dialog</Button>
+        </DialogTrigger>
+        <DialogContent>
+          <Text size={3}>Привет! Я - Dialog</Text>
           <Button variant='secondary' appearance='transparent'>Согласен</Button>
-        </ModalContent>
+        </DialogContent>
       </>
     ),
   },

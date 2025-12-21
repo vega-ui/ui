@@ -1,3 +1,3 @@
-export * from './ModalHeader'
-export * from './ModalTrigger'
-export * from './ModalContent'
+export * from './DialogHeader'
+export * from './DialogTrigger'
+export * from './DialogContent'

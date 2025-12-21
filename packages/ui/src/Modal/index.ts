@@ -1,7 +1,7 @@
-export { Modal, type ModalProps } from './Modal.tsx'
+export { Dialog, type DialogProps } from './Dialog.tsx'
 export {
-  ModalHeader, type ModalHeaderProps,
-  ModalContent, type ModalContentProps,
-  ModalTrigger, type ModalTriggerProps
+  DialogHeader, type DialogHeaderProps,
+  DialogContent, type DialogContentProps,
+  DialogTrigger, type DialogTriggerProps
 } from './components'
-export { useModalContext } from './contexts'
+export { useDialogContext } from './contexts'

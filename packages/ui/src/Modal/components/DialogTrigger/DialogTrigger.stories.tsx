@@ -1,20 +1,20 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { ModalTrigger } from './ModalTrigger.tsx';
+import { DialogTrigger } from './DialogTrigger.tsx';
 import { Text } from '../../../Text';
 import { Button } from '../../../Button';
-import { Modal } from '../../Modal.tsx';
-import { ModalContent } from '../ModalContent';
+import { Dialog } from '../../Dialog.tsx';
+import { DialogContent } from '../DialogContent';
 
 const meta = {
-  title: 'Overlay/Modal/ModalTrigger',
-  component: ModalTrigger,
+  title: 'Overlay/Dialog/DialogTrigger',
+  component: DialogTrigger,
   parameters: {
     layout: 'centered',
   },
   tags: ['autodocs'],
   argTypes: {},
   args: {},
-} satisfies Meta<typeof ModalTrigger>;
+} satisfies Meta<typeof DialogTrigger>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -23,14 +23,14 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   render(props) {
     return (
-      <Modal>
-        <ModalTrigger {...props} asChild>
+      <Dialog>
+        <DialogTrigger {...props} asChild>
           <Button>Open</Button>
-        </ModalTrigger>
-        <ModalContent>
-          <Text>Modal content</Text>
-        </ModalContent>
-      </Modal>
+        </DialogTrigger>
+        <DialogContent>
+          <Text>Dialog content</Text>
+        </DialogContent>
+      </Dialog>
     )
   }
 }

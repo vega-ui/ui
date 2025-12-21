@@ -8,12 +8,12 @@ import {
 } from '@floating-ui/react';
 import { csx, mergeRefs } from '@vega-ui/utils';
 import styles from './style.module.css';
-import { useModalContext } from '../../contexts';
+import { useDialogContext } from '../../contexts';
  
-export interface ModalContentProps {
+export interface DialogContentProps {
   /**
-   * Applies a blurred background overlay behind the modal content.
-   * Enhances visual focus on the modal by softening the background.
+   * Applies a blurred background overlay behind the dialog content.
+   * Enhances visual focus on the dialog by softening the background.
    */
   blurredOverlay?: boolean
 
@@ -24,42 +24,42 @@ export interface ModalContentProps {
   overlayClassName?: string
 
   /**
-   * Renders the modal as an overlay on top of the page content.
+   * Renders the dialog as an overlay on top of the page content.
    * Prevents it from affecting layout flow.
    */
   overlaid?: boolean
 
   /**
-   * Applies a visual shadow to the modal panel.
+   * Applies a visual shadow to the dialog panel.
    * Adds depth and separation from the background.
    */
   shadowed?: boolean
 
   /**
-   * Makes the modal fluid, allowing it to stretch responsively within its container.
+   * Makes the dialog fluid, allowing it to stretch responsively within its container.
    * Useful for adapting to different screen sizes or layouts.
    */
   fluid?: boolean
 
   /**
-   * Custom class name applied to the modal content container.
+   * Custom class name applied to the dialog content container.
    */
   className?: string
 
   /**
-   * Ref forwarded to the modal’s root element.
+   * Ref forwarded to the dialog’s root element.
    * Useful for managing focus, animations, or measurements.
    */
   ref?: Ref<HTMLDivElement>
 
   /**
-   * The children nodes to render inside the modal.
+   * The children nodes to render inside the dialog.
    */
   children?: ReactNode
 }
 
-/** The ModalContent component is the main container for a modal dialog’s content, supporting layout options like blurred overlays, shadows, fluid width, and overlaid positioning to control its appearance and behavior */
-export const ModalContent: FC<ModalContentProps> = ({
+/** The DialogContent component is the main container for a dialog dialog’s content, supporting layout options like blurred overlays, shadows, fluid width, and overlaid positioning to control its appearance and behavior */
+export const DialogContent: FC<DialogContentProps> = ({
   overlayClassName,
   blurredOverlay = true,
   overlaid = true,
@@ -69,7 +69,7 @@ export const ModalContent: FC<ModalContentProps> = ({
   ref,
   children,
 }) => {
-  const { contentProps, contentRef, context } = useModalContext()
+  const { contentProps, contentRef, context } = useDialogContext()
 
   const { styles: transitionStyles, isMounted } = useTransitionStyles(context, {
     duration: {
@@ -93,7 +93,7 @@ export const ModalContent: FC<ModalContentProps> = ({
         <FloatingOverlay
           data-overlaid={overlaid}
           data-blurred={blurredOverlay}
-          className={csx(styles.modalOverlay, overlayClassName)}
+          className={csx(styles.dialogOverlay, overlayClassName)}
           lockScroll
         >
           <FloatingFocusManager context={context}>
@@ -101,7 +101,7 @@ export const ModalContent: FC<ModalContentProps> = ({
               data-fluid={fluid}
               data-shadowed={shadowed}
               style={{ ...transitionStyles }}
-              className={csx(styles.modal, className)}
+              className={csx(styles.dialog, className)}
               ref={mergeRefs([contentRef, ref])}
               {...contentProps}
             >
