@@ -1,9 +1,8 @@
 import { ButtonBase, ButtonBaseProps } from '../ButtonBase';
-import { FC, ReactNode, Ref } from 'react';
+import { FC } from 'react';
 import { csx } from '@vega-ui/utils';
-import { Spinner } from '../Spinner';
-import style from './style.module.css';
 import { ButtonSize } from './types.ts';
+import style from './style.module.css';
 
 export interface ButtonProps extends ButtonBaseProps {
   /**
@@ -11,12 +10,6 @@ export interface ButtonProps extends ButtonBaseProps {
    * When true, the button is non-interactive and styled accordingly.
    */
   disabled?: boolean
-
-  /**
-   * Displays a loading spinner and disables the button.
-   * Useful for indicating ongoing processes.
-   */
-  loading?: boolean
 
   /**
    * Specifies the button's behavior.
@@ -39,18 +32,6 @@ export interface ButtonProps extends ButtonBaseProps {
   size?: ButtonSize
 
   /**
-   * Custom content to display as a spinner during loading.
-   * Overrides the default spinner component.
-   */
-  spinnerSlot?: ReactNode
-
-  /**
-   * Custom CSS class for the spinner element.
-   * Allows for styling overrides.
-   */
-  spinnerClassName?: string
-
-  /**
    * When true, the button expands to fill the width with its container.
    */
   fullWidth?: boolean
@@ -64,9 +45,6 @@ export const Button: FC<ButtonProps> = ({
    variant = 'primary',
    appearance = 'fill',
    type = 'button',
-   loading = false,
-   spinnerSlot,
-   spinnerClassName,
    className,
    fullWidth,
    asChild,
@@ -81,17 +59,12 @@ export const Button: FC<ButtonProps> = ({
       data-full-width={fullWidth}
       className={csx(style.button, className)}
       data-size={size}
-      disabled={disabled || loading}
+      disabled={disabled}
       appearance={appearance}
       variant={variant}
-      ref={ref as Ref<never>}
+      ref={ref}
     >
-      {!asChild ? (
-        <>
-          {loading && (spinnerSlot ? spinnerSlot : <Spinner className={csx(style.spinner, spinnerClassName)} aria-hidden variant='secondary' />)}
-          {children}
-        </>
-      ) : children}
+      {children}
     </ButtonBase>
   );
 }
