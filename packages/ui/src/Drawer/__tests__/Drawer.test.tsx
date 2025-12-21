@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react'
 import { Drawer } from '../Drawer.tsx';
 import { act } from 'react';
-import { DrawerContent, DrawerOverlay, DrawerPortal, DrawerTrigger } from '../components';
+import { DrawerContent, DrawerBackdrop, DrawerPortal, DrawerTrigger } from '../components';
 import { Text } from '../../Text';
 
 const TRIGGER_TEXT = 'Trigger'
@@ -14,11 +14,11 @@ describe('Drawer', () => {
       <Drawer>
         <DrawerTrigger>{TRIGGER_TEXT}</DrawerTrigger>
         <DrawerPortal>
-          <DrawerOverlay>
+          <DrawerBackdrop>
             <DrawerContent>
               <Text>{CONTENT_TEXT}</Text>
             </DrawerContent>
-          </DrawerOverlay>
+          </DrawerBackdrop>
         </DrawerPortal>
       </Drawer>
     )
@@ -34,11 +34,11 @@ describe('Drawer', () => {
       <Drawer>
         <DrawerTrigger>{TRIGGER_TEXT}</DrawerTrigger>
         <DrawerContent>
-          <DrawerOverlay>
+          <DrawerBackdrop>
             <DrawerContent>
               <Text>{CONTENT_TEXT}</Text>
             </DrawerContent>
-          </DrawerOverlay>
+          </DrawerBackdrop>
         </DrawerContent>
       </Drawer>
     )

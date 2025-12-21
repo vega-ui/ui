@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DrawerOverlay } from './DrawerOverlay';
+import { DrawerBackdrop } from './DrawerOverlay';
 
 const meta = {
-  title: 'Overlay/Drawer/DrawerOverlay',
-  component: DrawerOverlay,
+  title: 'Overlay/Drawer/DrawerBackdrop',
+  component: DrawerBackdrop,
   parameters: {
     layout: 'centered',
   },
@@ -19,7 +19,7 @@ const meta = {
       </div>
     )
   }
-} satisfies Meta<typeof DrawerOverlay>;
+} satisfies Meta<typeof DrawerBackdrop>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
