@@ -17,6 +17,8 @@ import { Radio } from '../Radio';
 
 import { FieldsetHeader, FieldsetLegend } from './components';
 import { FC, PropsWithChildren } from 'react';
+import { Card } from '../Card';
+import { PhoneField } from '../PhoneField';
 
 const meta: Meta<typeof Fieldset> = {
   title: 'Form/Layout/Fieldset/Fieldset',
@@ -239,16 +241,16 @@ export const PreferencesMixedControls: Story = {
           </Text>
           <Stack>
             <Row>
-              <Label>Public</Label>
-              <Radio value='public' name='visibility' />
+              <Label htmlFor='public-visibility'>Public</Label>
+              <Radio id='public-visibility' value='public' name='visibility' />
             </Row>
             <Row>
-              <Label>Friends only</Label>
-              <Radio value='friends' name='visibility' />
+              <Label htmlFor='friends-visibility'>Friends only</Label>
+              <Radio id='friends-visibility' value='friends' name='visibility' />
             </Row>
             <Row>
-              <Label>Private</Label>
-              <Radio value='private' name='visibility' />
+              <Label htmlFor='private-visibility'>Private</Label>
+              <Radio id='private-visibility' value='private' name='visibility' />
             </Row>
           </Stack>
         </div>
@@ -270,7 +272,7 @@ export const WithoutHeader: Story = {
         
         <Col>
           <Label htmlFor='phone'>Phone</Label>
-          <TextField id='phone' placeholder='+1 (555) 000-0000' />
+          <PhoneField id='phone' placeholder='+1 (555) 000-0000' country='US' />
         </Col>
         
         <Text asChild size={2} style={{ opacity: 0.7 }}>
@@ -320,23 +322,23 @@ export const MultipleGroupsOnPage: Story = {
         <Stack>
           <Row>
             <Checkbox defaultChecked>
-              <CheckboxHiddenInput />
+              <CheckboxHiddenInput id='two-factor' />
               <CheckboxIndicator>
                 <CheckboxIndeterminateIcon />
                 <CheckboxCheckedIcon />
               </CheckboxIndicator>
             </Checkbox>
-            <Label>Two-factor authentication</Label>
+            <Label htmlFor='two-factor'>Two-factor authentication</Label>
           </Row>
           <Row>
             <Checkbox>
-              <CheckboxHiddenInput />
+              <CheckboxHiddenInput id='password-required' />
               <CheckboxIndicator>
                 <CheckboxIndeterminateIcon />
                 <CheckboxCheckedIcon />
               </CheckboxIndicator>
             </Checkbox>
-            <Label>Require password on login</Label>
+            <Label htmlFor='password-required'>Require password on login</Label>
           </Row>
         </Stack>
       </Fieldset>
@@ -354,18 +356,7 @@ export const MultipleGroupsOnPage: Story = {
         
         <div style={{ display: 'grid', gap: 10 }}>
           {Array.from({ length: 3 }).map((_, i) => (
-            <div
-              key={i}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: 12,
-                padding: 12,
-                borderRadius: 12,
-                border: '1px solid rgba(0,0,0,.12)',
-              }}
-            >
+            <Card key={i} style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', gap: 6 }}>
               <div style={{ display: 'grid', gap: 2 }}>
                 <Text asChild size={2} style={{ fontWeight: 600 }}>
                   <p>Desktop • New York</p>
@@ -377,7 +368,7 @@ export const MultipleGroupsOnPage: Story = {
               <Button size='sm' variant='secondary'>
                 Revoke
               </Button>
-            </div>
+            </Card>
           ))}
         </div>
       </Fieldset>
