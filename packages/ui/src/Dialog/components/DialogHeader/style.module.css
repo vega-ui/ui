@@ -1,12 +1,7 @@
 .header {
     display: flex;
     flex-direction: row;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
-    margin-bottom: var(--spacing-10);
     gap: var(--spacing-4);
-}
-
-.title {
-    flex: 1;
 }

@@ -1,6 +1,5 @@
 'use client';
 
-import { Ref } from 'react';
 import { createContext } from '@vega-ui/react-context';
 import { FloatingContext } from '@floating-ui/react';
 
@@ -8,10 +7,11 @@ export interface DialogContextState {
   open: boolean
   changeOpen: (value: boolean) => void
   context: FloatingContext<HTMLElement>
-  triggerRef?: Ref<HTMLButtonElement>
-  contentRef?: Ref<HTMLDivElement>
+  status?: 'unmounted' | 'initial' | 'open' | 'close'
   triggerProps?: Record<string, unknown>
   contentProps?: Record<string, unknown>
+  fluid?: boolean
+  isMounted: boolean
 }
 
 export const [DialogProvider, useDialogContext] = createContext<DialogContextState>('DialogContext', {
@@ -19,5 +19,6 @@ export const [DialogProvider, useDialogContext] = createContext<DialogContextSta
   changeOpen: () => undefined,
   triggerProps: {},
   contentProps: {},
-  context: {} as FloatingContext<HTMLElement>
+  context: {} as FloatingContext<HTMLElement>,
+  isMounted: false,
 })

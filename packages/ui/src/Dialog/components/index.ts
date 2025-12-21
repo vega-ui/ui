@@ -1,3 +1,7 @@
 export * from './DialogHeader'
 export * from './DialogTrigger'
 export * from './DialogContent'
+export * from './DialogPortal'
+export * from './DialogBackdrop'
+export * from './DialogTitle'
+export * from './DialogCloseButton'

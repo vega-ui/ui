@@ -1,0 +1,10 @@
+.backdrop {
+    display: grid;
+    place-items: center;
+    padding: var(--spacing-6);
+    box-sizing: border-box;
+}
+
+.backdrop[data-fluid='true'] {
+    padding: 0;
+}

@@ -1,1 +1,1 @@
-export * from './DialogHeader.tsx'
+export * from './DialogHeader'
