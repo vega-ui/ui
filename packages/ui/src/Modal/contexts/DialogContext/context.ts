@@ -4,7 +4,7 @@ import { Ref } from 'react';
 import { createContext } from '@vega-ui/react-context';
 import { FloatingContext } from '@floating-ui/react';
 
-export interface ModalContextState {
+export interface DialogContextState {
   open: boolean
   changeOpen: (value: boolean) => void
   context: FloatingContext<HTMLElement>
@@ -14,7 +14,7 @@ export interface ModalContextState {
   contentProps?: Record<string, unknown>
 }
 
-export const [ModalProvider, useModalContext] = createContext<ModalContextState>('ModalContext', {
+export const [DialogProvider, useDialogContext] = createContext<DialogContextState>('DialogContext', {
   open: false,
   changeOpen: () => undefined,
   triggerProps: {},

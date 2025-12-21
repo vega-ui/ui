@@ -1,4 +1,4 @@
-.modal {
+.dialog {
     background: var(--surface-ultrathin);
     border-radius: var(--radius-6);
     padding: var(--spacing-14) var(--spacing-12);
@@ -6,11 +6,11 @@
     max-width: 600px;
 }
 
-.modal[data-shadowed='true'] {
+.dialog[data-shadowed='true'] {
     box-shadow: var(--surface-shadow);
 }
 
-.modal[data-fluid='true'] {
+.dialog[data-fluid='true'] {
     width: 100vw;
     max-width: initial;
     height: 100%;
@@ -19,7 +19,7 @@
     box-sizing: border-box;
 }
 
-.modalOverlay {
+.dialogOverlay {
     display: grid;
     place-items: center;
     z-index: var(--z-index-overlay);
@@ -27,7 +27,7 @@
     box-sizing: border-box;
 }
 
-.modalOverlay[data-overlaid='true']::after {
+.dialogOverlay[data-overlaid='true']::after {
     content: '';
     position: absolute;
     z-index: -1;
@@ -39,10 +39,10 @@
     background-color: var(--overlay);
 }
 
-.modalOverlay[data-blurred='true']::after {
+.dialogOverlay[data-blurred='true']::after {
     backdrop-filter: blur(2px);
 }
 
-.modalOverlay:has(.modal[data-fluid='true']) {
+.dialogOverlay:has(.dialog[data-fluid='true']) {
     padding: 0;
 }

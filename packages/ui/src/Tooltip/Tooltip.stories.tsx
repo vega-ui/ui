@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Tooltip } from './Tooltip.tsx';
 import { Button } from '../Button';
 import { IconButton } from '../IconButton';
-import { Modal, ModalContent, ModalTrigger } from '../Modal';
+import { Dialog, DialogContent, DialogTrigger } from '../Modal';
 import { TextField } from '../TextField';
 import { TooltipContent, TooltipTrigger } from './components';
 import { HeartIcon, InfoIcon } from '@vega-ui/icons';
@@ -72,11 +72,11 @@ export const InsideModal: Story = {
   },
   render(props) {
     return (
-      <Modal>
-        <ModalTrigger asChild>
+      <Dialog>
+        <DialogTrigger asChild>
           <Button>Open</Button>
-        </ModalTrigger>
-        <ModalContent>
+        </DialogTrigger>
+        <DialogContent>
           <TextField
             endSlot={
               <Tooltip {...props}>
@@ -89,8 +89,8 @@ export const InsideModal: Story = {
               </Tooltip>
             }
           />
-        </ModalContent>
-      </Modal>
+        </DialogContent>
+      </Dialog>
     )
   }
 };
