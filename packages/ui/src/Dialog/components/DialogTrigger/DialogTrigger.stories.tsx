@@ -1,9 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DialogTrigger } from './DialogTrigger.tsx';
-import { Text } from '../../../Text';
 import { Button } from '../../../Button';
 import { Dialog } from '../../Dialog.tsx';
-import { DialogContent } from '../DialogContent';
 
 const meta = {
   title: 'Overlay/Dialog/DialogTrigger',
@@ -27,9 +25,6 @@ export const Default: Story = {
         <DialogTrigger {...props} asChild>
           <Button>Open</Button>
         </DialogTrigger>
-        <DialogContent>
-          <Text>Dialog content</Text>
-        </DialogContent>
       </Dialog>
     )
   }

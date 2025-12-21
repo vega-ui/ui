@@ -23,10 +23,10 @@ export interface DialogTriggerProps extends ButtonHTMLAttributes<HTMLButtonEleme
 export const DialogTrigger: FC<DialogTriggerProps> = ({ asChild, children, ref, ...props }) => {
   const Element = asChild ? Slot : 'button'
 
-  const { triggerRef, triggerProps = {} } = useDialogContext()
+  const { context, triggerProps } = useDialogContext()
 
   return (
-    <Element {...mergeProps(props, triggerProps)} ref={mergeRefs([triggerRef, ref])}>
+    <Element {...mergeProps(props, triggerProps ?? {})} ref={mergeRefs([context.refs?.setReference, ref])}>
       {children}
     </Element>
   )
