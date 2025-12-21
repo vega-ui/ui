@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button, ButtonProps } from './Button.tsx';
+import { Spinner } from '../Spinner';
+import { CSSProperties } from 'react';
 
 const meta = {
   title: 'Actions/Button',
@@ -52,6 +54,15 @@ export const Disabled: Story = {
   args: {
     disabled: true,
     children: 'Button'
+  }
+}
+
+export const Loading: Story = {
+  args: {
+    disabled: true,
+    children: (
+      <Spinner size={3} style={{ '--spinner-color': 'var(--disable-text-color)' } as CSSProperties}/>
+    )
   }
 }
 
