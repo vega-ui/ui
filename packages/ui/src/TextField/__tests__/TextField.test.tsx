@@ -1,21 +1,37 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react'
 import { TextField } from '../TextField.tsx';
+import { TextFieldInput } from '../components';
 
 describe('TextField', () => {
   it('render textField', () => {
-    render(<TextField data-testid='input' />)
-    expect(screen.getByTestId('input')).toBeDefined()
+    render(
+      <TextField>
+        <TextFieldInput />
+      </TextField>
+    )
+    expect(screen.getByRole('textbox')).toBeDefined()
   })
 
   it('placeholder', () => {
-    render(<TextField data-testid='input' placeholder='Check' />)
-    expect(screen.getByTestId('input').getAttribute('placeholder')).toBe('Check')
+    render(
+      <TextField>
+        <TextFieldInput placeholder='Check' />
+      </TextField>
+    )
+    
+    const input = screen.getByRole('textbox')
+    
+    expect(input.getAttribute('placeholder')).toBe('Check')
   })
 
   it('change', () => {
-    render(<TextField data-testid='input' />)
-    const input: HTMLInputElement = screen.getByTestId('input');
+    render(
+      <TextField>
+        <TextFieldInput />
+      </TextField>
+    )
+    const input: HTMLInputElement = screen.getByRole('textbox')
     fireEvent.input(input, { target: { value: '1' } })
 
     expect(input.value).toBe('1')
@@ -23,9 +39,13 @@ describe('TextField', () => {
 
   it('disabled', () => {
     const onChange = vi.fn()
-    render(<TextField onChange={onChange} disabled data-testid='input' />)
+    render(
+      <TextField>
+        <TextFieldInput disabled onChange={onChange} />
+      </TextField>
+    )
 
-    const input: HTMLInputElement = screen.getByTestId('input');
+    const input: HTMLInputElement = screen.getByRole('textbox')
     input.click()
 
     expect(input.getAttribute('disabled')).toBeDefined()

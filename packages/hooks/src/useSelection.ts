@@ -12,7 +12,7 @@ export interface UseSelectionOptions<K, M extends Selection> {
   selected?: SelectedValue<M, K>;
   disabled?: SelectedDisabled<K>;
   equals?(a: K, b: K): boolean;
-  compare: (a: K, b: K) => -1 | 0 | 1;
+  compare?(a: K, b: K): -1 | 0 | 1;
   resolveRange?: (a: K, b: K) => K[];
   onSelect?(selected: SelectedValue<M, K> | undefined): void;
   min?: K

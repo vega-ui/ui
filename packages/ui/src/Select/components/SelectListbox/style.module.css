@@ -1,4 +1,6 @@
-.selectListbox {
+.listbox {
+    --select-listbox-br-ratio: var(--select-br-ratio);
+
     display: flex;
     flex-direction: column;
     gap: var(--spacing-3);
@@ -7,14 +9,25 @@
     box-sizing: border-box;
     background: var(--surface-ultrathin);
     box-shadow: var(--surface-shadow);
-    border-radius: var(--radius-3);
     width: max-content;
+    z-index: 1;
     overflow: auto;
     max-height: 250px;
     min-width: 100%;
-    z-index: var(--z-index-popover);
+    transition:
+            scale var(--transition-state-delay) ease,
+            opacity var(--transition-state-delay) ease;
+    border-radius: calc(var(--select-size) * var(--select-listbox-br-ratio));
 }
 
-.selectListbox[data-full-width='true'] {
-    width: 100%;
+.listbox[data-status='open'] {
+    scale: 1;
+    opacity: 1;
+}
+
+.listbox[data-status='initial'],
+.listbox[data-status='unmounted'],
+.listbox[data-status='close'] {
+    scale: 0;
+    opacity: 0;
 }

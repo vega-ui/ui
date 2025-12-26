@@ -1,9 +1,9 @@
-import { FC, HTMLAttributes, KeyboardEvent, ReactNode, Ref, MouseEvent } from 'react';
+import { HTMLAttributes, ReactNode, Ref } from 'react';
 import styles from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { OptionSize } from './types.ts';
 
-export interface OptionProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSelect'> {
+export interface OptionProps<V> extends Omit<HTMLAttributes<HTMLButtonElement>, 'size'> {
   /**
    * Whether this option is currently selected.
    */
@@ -13,7 +13,7 @@ export interface OptionProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSel
    * The unique value associated with this option.
    * Used in change callbacks and for identity comparisons.
    */
-  value: string | number
+  value: V
 
   /**
    * The content displayed for this option.
@@ -32,46 +32,39 @@ export interface OptionProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onSel
   size?: OptionSize
 
   /**
-   * Callback fired when the option is selected via click or keyboard.
-   *
-   * @param event - The triggering event (mouse or keyboard)
-   * @param value - The associated option value
-   */
-  onSelect?(event: MouseEvent | KeyboardEvent, value: string | number): void
-
-  /**
    * Ref forwarded to the root div of the option.
    * Useful for scroll management or focus handling in virtualized lists.
    */
-  ref?: Ref<HTMLDivElement>
+  ref?: Ref<HTMLButtonElement>
+  
+  disabled?: boolean
 }
 
 /** An Option is a single item within a Dropdown, Select, or similar list-based UI component, representing a choice that can be selected by the user */
-export const Option: FC<OptionProps> = ({
+export const Option = <V extends string | number>({
   selected,
   focusable,
-  size = 'medium',
-  value,
+  size = 'md',
   children,
   className,
-  onSelect: _onSelect,
+  onClick,
+  disabled,
   ref,
   ...props
-}) => {
-  const onSelect = (e: MouseEvent) => {
-    _onSelect?.(e, value)
-  }
-
-  const onKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'Enter' || ['Enter', ' '].includes(e.key)) {
-      e.preventDefault();
-      _onSelect?.(e, value)
-    }
-  }
-
+}: OptionProps<V>) => {
   return (
-    <div ref={ref} {...props} onClick={onSelect} onKeyDown={onKeyDown} tabIndex={focusable ? 0 : -1} data-size={size} role='option' aria-selected={selected} className={csx(styles.option, className)}>
+    <button
+      role='option'
+      ref={ref}
+      onClick={onClick}
+      tabIndex={focusable ? 0 : -1}
+      data-size={size}
+      aria-selected={selected}
+      className={csx(styles.option, className)}
+      disabled={disabled}
+      {...props}
+    >
       {children}
-    </div>
+    </button>
   )
 }

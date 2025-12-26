@@ -1,1 +1,1 @@
-export type TextFieldSize = 'small' | 'medium' | 'large' | string
+export type TextFieldSize = 'sm' | 'md' | 'lg' | string

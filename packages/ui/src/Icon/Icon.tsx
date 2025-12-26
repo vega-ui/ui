@@ -4,7 +4,7 @@ import { csx } from '@vega-ui/utils';
 import { Slot } from '../Slot';
 import { IconSize } from './types.ts';
 
-export interface IconProps {
+export interface IconProps extends SVGProps<SVGElement> {
   /**
    * Predefined size token for the icon.
    * Can be overridden by explicit width and height.

@@ -12,7 +12,7 @@ export type DrawerCloseButtonProps = IconButtonProps
  * close the currently open drawer.
  *
  * It composes the `IconButton` primitive and wires its click behavior
- * to the surrounding `Drawer` state via `DrawerContext`.
+ * to the surrounding `Drawer` state via `PhoneFieldContext`.
  *
  * When activated, the button triggers a state change that closes the
  * drawer. Any additional `onClick` handler passed via props is safely

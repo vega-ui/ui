@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Label } from './Label.tsx';
-import { TextField } from '../TextField';
+import { TextField, TextFieldInput } from '../TextField';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof Label> = {
@@ -35,7 +35,9 @@ export const Default: Story = {
     return (
       <>
         <Label {...props} htmlFor='test' />
-        <TextField id='test' size={props.size} placeholder='Иван' />
+        <TextField size={props.size}>
+          <TextFieldInput id='test' placeholder='Ivan' />
+        </TextField>
       </>
     )
   }
@@ -48,7 +50,9 @@ export const FieldInside: Story = {
       <>
         <Label {...props}>
           Hello
-          <TextField id='test' size={props.size} placeholder='Иван' />
+          <TextField size={props.size}>
+            <TextFieldInput id='test' placeholder='Ivan' />
+          </TextField>
         </Label>
       </>
     )

@@ -1,1 +1,1 @@
-export type PinFieldSize = 'small' | 'medium' | 'large' | string
+export type PinFieldSize = 'sm' | 'md' | 'lg' | string

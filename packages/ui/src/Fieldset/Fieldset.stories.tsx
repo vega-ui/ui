@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Fieldset } from './Fieldset.tsx';
-import { TextField } from '../TextField';
+import { TextField, TextFieldInput } from '../TextField';
 import { Label } from '../Label';
 import { Button } from '../Button';
 import { Text } from '../Text';
@@ -18,7 +18,6 @@ import { Radio } from '../Radio';
 import { FieldsetHeader, FieldsetLegend } from './components';
 import { FC, PropsWithChildren } from 'react';
 import { Card } from '../Card';
-import { PhoneField } from '../PhoneField';
 
 const meta: Meta<typeof Fieldset> = {
   title: 'Form/Layout/Fieldset/Fieldset',
@@ -56,7 +55,9 @@ export const Default: Story = {
         <FieldsetLegend>Title</FieldsetLegend>
       </FieldsetHeader>,
       <div key={1}>
-        <TextField placeholder='Field' />
+        <TextField>
+          <TextFieldInput placeholder='Field' />
+        </TextField>
       </div>,
     ],
   },
@@ -79,12 +80,16 @@ export const ProfileBasics: Story = {
       <Stack>
         <Col>
           <Label htmlFor='firstName'>First name</Label>
-          <TextField id='firstName' placeholder='John' />
+          <TextField>
+            <TextFieldInput id='firstName' placeholder='John' />
+          </TextField>
         </Col>
         
         <Col>
           <Label htmlFor='lastName'>Last name</Label>
-          <TextField id='lastName' placeholder='Doe' />
+          <TextField>
+            <TextFieldInput id='lastName' placeholder='Doe' />
+          </TextField>
         </Col>
         
         <div style={{ display: 'flex', gap: 10, marginTop: 6 }}>
@@ -129,17 +134,23 @@ export const OutlinedWithActions: Story = {
       <Stack>
         <Col>
           <Label htmlFor='city'>City</Label>
-          <TextField id='city' placeholder='New York' />
+          <TextField>
+            <TextFieldInput id='city' placeholder='New York' />
+          </TextField>
         </Col>
         
         <Col>
           <Label htmlFor='address'>Address</Label>
-          <TextField id='address' placeholder='123 Main St' />
+          <TextField>
+            <TextFieldInput id='address' placeholder='123 Main St' />
+          </TextField>
         </Col>
         
         <Col>
           <Label htmlFor='zip'>ZIP code</Label>
-          <TextField id='zip' placeholder='10001' />
+          <TextField>
+            <TextFieldInput id='zip' placeholder='10001' />
+          </TextField>
         </Col>
       </Stack>
     </Fieldset>
@@ -164,17 +175,23 @@ export const DisabledGroup: Story = {
       <Stack>
         <Col>
           <Label htmlFor='card'>Card number</Label>
-          <TextField disabled id='card' placeholder='0000 0000 0000 0000' />
+          <TextField>
+            <TextFieldInput disabled id='card' placeholder='0000 0000 0000 0000' />
+          </TextField>
         </Col>
         
         <Col>
           <Label htmlFor='nameOnCard'>Name on card</Label>
-          <TextField disabled id='nameOnCard' placeholder='JOHN DOE' />
+          <TextField>
+            <TextFieldInput disabled id='nameOnCard' placeholder='JOHN DOE' />
+          </TextField>
         </Col>
         
         <Col>
           <Label htmlFor='cvc'>CVC</Label>
-          <TextField disabled id='cvc' placeholder='123' />
+          <TextField>
+            <TextFieldInput disabled id='cvc' placeholder='123' />
+          </TextField>
         </Col>
         
         <Text asChild size={2} style={{ opacity: 0.6 }}>
@@ -267,12 +284,9 @@ export const WithoutHeader: Story = {
       <Stack>
         <Col>
           <Label htmlFor='email'>Email</Label>
-          <TextField id='email' placeholder='name@company.com' />
-        </Col>
-        
-        <Col>
-          <Label htmlFor='phone'>Phone</Label>
-          <PhoneField id='phone' placeholder='+1 (555) 000-0000' country='US' />
+          <TextField>
+            <TextFieldInput id='email' placeholder='name@company.com' />
+          </TextField>
         </Col>
         
         <Text asChild size={2} style={{ opacity: 0.7 }}>
@@ -302,11 +316,15 @@ export const MultipleGroupsOnPage: Story = {
         <Stack>
           <Col>
             <Label htmlFor='username'>Username</Label>
-            <TextField id='username' placeholder='johndoe' />
+            <TextField>
+              <TextFieldInput id='username' placeholder='johndoe' />
+            </TextField>
           </Col>
           <Col>
             <Label htmlFor='email2'>Email</Label>
-            <TextField id='email2' placeholder='john@domain.com' />
+            <TextField>
+              <TextFieldInput id='email2' placeholder='john@domain.com' />
+            </TextField>
           </Col>
         </Stack>
       </Fieldset>

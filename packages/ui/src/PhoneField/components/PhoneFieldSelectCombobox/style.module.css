@@ -1,0 +1,4 @@
+.combobox[data-variant] {
+    background-color: var(--color-gray-accent-150);
+    gap: var(--spacing-6);
+}

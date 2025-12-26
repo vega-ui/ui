@@ -3,14 +3,14 @@
     background-color: var(--color-gray-accent-150);
 }
 
-.separator[data-size='small'] {
-    width: 21px;
+.separator[data-size='sm'] {
+    width: var(--spacing-10);
 }
 
-.separator[data-size='medium'] {
-    width: 24px;
+.separator[data-size='md'] {
+    width: var(--spacing-12);
 }
 
-.separator[data-size='large'] {
-    width: 27px;
+.separator[data-size='lg'] {
+    width: var(--spacing-14);
 }

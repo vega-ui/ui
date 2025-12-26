@@ -1,7 +1,14 @@
-.selectValue {
+.value {
+    display: flex;
+    align-items: center;
+    pointer-events: none;
     max-width: 100%;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    color: var(--text-color);
+    color: var(--select-value-color, var(--text-color));
+}
+
+.value[data-placeholder='true'] {
+    color: var(--select-placeholder-color, var(--field-placeholder-color));
 }

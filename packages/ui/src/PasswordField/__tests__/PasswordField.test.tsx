@@ -1,59 +1,141 @@
+// @vitest-environment jsdom
 import { describe, expect, it, vi } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react'
-import { PasswordField } from '../PasswordField.tsx';
-import { act } from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { PasswordField, PasswordFieldProps } from '../PasswordField.tsx';
+import {
+  PasswordFieldInput,
+  PasswordFieldToggleButton,
+  PasswordFieldShownIcon,
+  PasswordFieldHiddenIcon,
+} from '../components';
+import { userEvent } from 'storybook/test';
 
 describe('PasswordField', () => {
-  it('render field', () => {
-    render(<PasswordField data-testid='input' />)
-    expect(screen.getByTestId('input')).toBeDefined()
-  })
-
-  it('placeholder', () => {
-    render(<PasswordField data-testid='input' placeholder='Check' />)
-    expect(screen.getByTestId('input').getAttribute('placeholder')).toBe('Check')
-  })
-
-  it('change', () => {
-    render(<PasswordField data-testid='input' />)
-    const input: HTMLInputElement = screen.getByTestId('input');
-    act(() => {
-      fireEvent.input(input, { target: { value: 1 } })
-    })
-
-    expect(input.value).toBe('1')
-  })
-
-  it('default type', () => {
-    render(<PasswordField data-testid='input' />)
-    const input: HTMLInputElement = screen.getByTestId('input');
-
-    expect(input.type).toBe('password')
-  })
-
-  it('change password visibility', () => {
-    render(<PasswordField data-testid='input' />)
-    const button: HTMLButtonElement = screen.getByRole('button');
-    const input: HTMLInputElement = screen.getByTestId('input');
-
-    act(() => {
-      button.click()
-    })
-
-    expect(input.type).toBe('text')
-  })
-
-  it('disabled', () => {
-    const onChange = vi.fn()
-    render(<PasswordField onChange={onChange} disabled data-testid='input' />)
-
-    const input: HTMLInputElement = screen.getByTestId('input');
-    const button: HTMLButtonElement = screen.getByRole('button');
-
-    input.click()
-
-    expect(input.getAttribute('disabled')).toBeDefined()
-    expect(button.getAttribute('disabled')).toBeDefined()
+  const renderField = (props?: PasswordFieldProps) => {
+    render(
+      <PasswordField {...props}>
+        <PasswordFieldInput data-testid='input' placeholder='Password' />
+        <PasswordFieldToggleButton aria-label='Toggle password visibility'>
+          <PasswordFieldShownIcon />
+          <PasswordFieldHiddenIcon />
+        </PasswordFieldToggleButton>
+      </PasswordField>
+    );
+  };
+  
+  it('renders', () => {
+    renderField();
+    expect(screen.getByTestId('input')).toBeInTheDocument();
+  });
+  
+  it('default type is password', () => {
+    renderField();
+    const input = screen.getByTestId('input') as HTMLInputElement;
+    expect(input.type).toBe('password');
+  });
+  
+  it('toggles visibility via toggle button', () => {
+    renderField();
+    const input = screen.getByTestId('input') as HTMLInputElement;
+    const button = screen.getByRole('button', { name: /toggle password visibility/i });
+    
+    expect(input.type).toBe('password');
+    
+    fireEvent.click(button);
+    expect(input.type).toBe('text');
+    
+    fireEvent.click(button);
+    expect(input.type).toBe('password');
+  });
+  
+  it('supports typing', () => {
+    renderField();
+    const input = screen.getByTestId('input') as HTMLInputElement;
+    
+    fireEvent.change(input, { target: { value: 'secret' } });
+    
+    expect(input.value).toBe('secret');
+  });
+  
+  it('disables both input and toggle button when PasswordField is disabled', () => {
+    renderField({ disabled: true });
+    
+    const input = screen.getByTestId('input') as HTMLInputElement;
+    const button = screen.getByRole('button', { name: /toggle password visibility/i });
+    
+    expect(input).toBeDisabled();
+    expect(button).toBeDisabled();
+  });
+  
+  it('does not toggle when disabled', () => {
+    renderField({ disabled: true });
+    
+    const input = screen.getByTestId('input') as HTMLInputElement;
+    const button = screen.getByRole('button', { name: /toggle password visibility/i });
+    
+    expect(input.type).toBe('password');
+    
+    fireEvent.click(button);
+    
+    expect(input.type).toBe('password');
+  });
+  
+  it('allows consumers to disable toggle button independently', () => {
+    render(
+      <PasswordField>
+        <PasswordFieldInput data-testid='input' />
+        <PasswordFieldToggleButton disabled aria-label='Toggle password visibility'>
+          <PasswordFieldShownIcon />
+          <PasswordFieldHiddenIcon />
+        </PasswordFieldToggleButton>
+      </PasswordField>
+    );
+    
+    const input = screen.getByTestId('input') as HTMLInputElement;
+    const button = screen.getByRole('button', { name: /toggle password visibility/i });
+    
+    expect(button).toBeDisabled();
+    fireEvent.click(button);
+    expect(input.type).toBe('password');
+  });
+  
+  it('calls input onChange when enabled', () => {
+    const onChange = vi.fn();
+    
+    render(
+      <PasswordField>
+        <PasswordFieldInput data-testid='input' onChange={onChange} />
+        <PasswordFieldToggleButton aria-label='Toggle password visibility'>
+          <PasswordFieldShownIcon />
+          <PasswordFieldHiddenIcon />
+        </PasswordFieldToggleButton>
+      </PasswordField>
+    );
+    
+    const input = screen.getByTestId('input') as HTMLInputElement;
+    
+    fireEvent.change(input, { target: { value: 'abc' } });
+    
+    expect(onChange).toHaveBeenCalledTimes(1);
+  });
+  
+  it('does not call input onChange when disabled', () => {
+    const onChange = vi.fn();
+    
+    render(
+      <PasswordField disabled>
+        <PasswordFieldInput data-testid='input' onChange={onChange} />
+        <PasswordFieldToggleButton aria-label='Toggle password visibility'>
+          <PasswordFieldShownIcon />
+          <PasswordFieldHiddenIcon />
+        </PasswordFieldToggleButton>
+      </PasswordField>
+    );
+    
+    const input = screen.getByTestId('input') as HTMLInputElement;
+    expect(input.disabled).toBeTruthy()
+    
+    userEvent.type(input, 'pwd');
     expect(onChange).toBeCalledTimes(0)
-  })
-})
+  });
+});

@@ -1,15 +1,49 @@
-import { FC, ReactNode } from 'react';
+import { FC, useLayoutEffect } from 'react';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css';
-import { Text } from '../../../Text';
+import { Text, TextProps } from '../../../Text';
+import { useSelectContext } from '../../contexts';
+import { sizeMapper } from './helpers';
 
-export interface SelectValueProps {
-  className?: string
-  children?: ReactNode | ReactNode[]
+export interface SelectValueProps extends TextProps {
+  /**
+   * Placeholder text shown when no option is selected.
+   *
+   * Displayed when the select value is empty or undefined.
+   * Once a value is selected, the placeholder is replaced
+   * by the selected option’s content.
+   */
+  placeholder?: string;
 }
 
-export const SelectValue: FC<SelectValueProps> = ({ className, children }) => {
+/**
+ * `SelectValue` is a visual component responsible for displaying
+ * the current value of the Select inside the trigger (combobox).
+ *
+ * It shows either:
+ * - the selected option’s content (passed as `children`), or
+ * - a placeholder when no value is selected.
+ */
+export const SelectValue: FC<SelectValueProps> = ({ className, placeholder, children, ...props }) => {
+  const { size, selected, valueRef, onHasValueChildrenChange } = useSelectContext()
+
+  const hasSelected = selected !== '' && selected !== undefined
+  const hasPlaceholder = placeholder !== undefined
+  const hasChildren = children !== undefined
+  
+  useLayoutEffect(() => {
+    onHasValueChildrenChange(hasChildren)
+  }, [onHasValueChildrenChange, hasChildren])
+
   return (
-    <Text className={csx(style.selectValue, className)}>{children}</Text>
+    <Text
+      ref={valueRef}
+      data-placeholder={hasPlaceholder && !hasSelected}
+      size={sizeMapper(size ?? 'md')}
+      className={csx(style.value, className)}
+      {...props}
+    >
+      {hasSelected ? children : <>{placeholder}</>}
+    </Text>
   )
 }

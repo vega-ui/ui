@@ -1,4 +1,12 @@
-export { Select, type SelectProps, type SelectEvent } from './Select.tsx'
-export { SelectListbox, type SelectListboxProps, SelectCombobox, type SelectComboboxProps, type SelectOptionProps, SelectOption } from './components'
+export { Select, type SelectProps } from './Select'
+export {
+  SelectListbox, type SelectListboxProps,
+  SelectCombobox, type SelectComboboxProps,
+  SelectOption, type SelectOptionProps,
+  SelectValue, type SelectValueProps,
+  SelectIcon, type SelectIconProps,
+  SelectHiddenSelect, type SelectHiddenSelectProps,
+  SelectPortal, type SelectPortalProps,
+} from './components'
 export { useSelectContext } from './contexts'
-export type { SelectSize, SelectVariant } from './types.ts'
+export type { SelectSize, SelectVariant } from './types'
