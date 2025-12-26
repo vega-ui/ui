@@ -1,21 +1,12 @@
-import {
-  FC, FormEvent,
-  InputHTMLAttributes,
-  Ref,
-  useId,
-  useRef,
-  useState
-} from 'react';
-import style from './style.module.css'
-import { csx, mergeRefs } from '@vega-ui/utils';
-import { useControlledState } from '@vega-ui/hooks';
+import { FC, HTMLAttributes, Ref, useCallback, useRef, useState } from 'react';
+import { clamp, csx } from '@vega-ui/utils';
 import { useMaskito } from '@maskito/react';
 import { MaskitoOptions } from '@maskito/core';
-import { PinFieldInput } from './components';
 import { PinFieldProvider } from './contexts';
 import { PinFieldSize } from './types.ts';
+import style from './style.module.css'
 
-export interface PinFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
+export interface PinFieldProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * Disables the input field, making it non-interactive.
    * Also applies a visual disabled style.
@@ -23,27 +14,9 @@ export interface PinFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement
   disabled?: boolean
 
   /**
-   * Custom class name applied to the input element.
-   * Useful for scoped styles or design tokens.
-   */
-  className?: string
-
-  /**
-   * Optional class name for the wrapper element.
-   * Useful for controlling layout or grid styling.
-   */
-  wrapperClassName?: string
-
-  /**
    * Placeholder character shown when the field is empty.
    */
   placeholder?: string
-
-  /**
-   * The current value of the pin input.
-   * Can be a string or number depending on format.
-   */
-  value?: string | number
 
   /**
    * Visual size of the pin input.
@@ -60,119 +33,77 @@ export interface PinFieldProps extends Omit<InputHTMLAttributes<HTMLInputElement
    * Ref forwarded to the native `<input>` element.
    * Useful for focus or programmatic control.
    */
-  ref?: Ref<HTMLInputElement>
+  ref?: Ref<HTMLDivElement>
 
   /**
    * Optional input mask that restricts characters for each digit.
    * Can be a RegExp or array of RegExp/string for per-character control.
    */
   mask?: Array<RegExp | string> | RegExp
-
+  
   /**
-   * Callback fired when all digits are filled in and input is complete.
-   *
-   * @param e - The form event associated with the completion.
+   * Max pin value
    */
-  onComplete?: (e: FormEvent<HTMLInputElement>) => void
+  maxLength: number
 }
 
 /** A PinField is a UI component that allows users to input OTP/Pin codes, commonly used for forms. */
 export const PinField: FC<PinFieldProps> = ({
   className,
-  wrapperClassName,
   placeholder,
   error,
-  size = 'medium',
-  hidden,
+  size = 'md',
   ref,
-  maxLength = 4,
   mask,
   children,
-  id,
   disabled,
-  onComplete,
-  inputMode = 'numeric',
-  autoComplete = 'one-time-code',
+  maxLength = 4,
   ...props
 }) => {
+  const [value, setValue] = useState('');
+  const [active, setActive] = useState(0)
+  const [selectedAll, setSelectedAll] = useState(false)
+
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const maskitoOptions: MaskitoOptions = {
+  const options: MaskitoOptions = {
     mask: mask ?? /^\d+$/
   }
+  
+  const inputMaskitoRef = useMaskito({ options });
+  
+  const syncActive = useCallback((index?: number) => {
+    const input = inputRef.current;
+    if (!input || input.selectionStart === null) return;
+    
+    const selectionStart = index ?? input.selectionStart ?? 0;
+    const clampedSelectedStart = clamp(0, selectionStart, maxLength - 1);
 
-  const inputMaskitoRef = useMaskito({ options: maskitoOptions });
-
-  const [value, setValue] = useControlledState(undefined, '')
-  const [selectionRange, setSelectionRange] = useState<[number, number] | []>([])
-
-  const inputId = useId()
+    input.selectionStart = clampedSelectedStart;
+    input.selectionEnd = clampedSelectedStart + 1
+    
+    setActive(clamp(0, input.selectionStart, maxLength - 1));
+  }, [maxLength])
 
   return (
     <PinFieldProvider
-      slotClassName={style.inputPinBlock}
+      maxLength={maxLength}
       disabled={disabled}
       size={size}
-      selectionRange={selectionRange}
-      onSelectionRangeChange={setSelectionRange}
-      value={value}
-      maxLength={maxLength}
       placeholder={placeholder}
-      inputRef={inputRef}
-      inputId={id ?? inputId}
+      innerInputRef={inputRef}
+      selectedAll={selectedAll}
+      setSelectedAll={setSelectedAll}
+      inputRef={inputMaskitoRef}
+      syncActive={syncActive}
+      setActive={setActive}
+      setValue={setValue}
+      value={value}
+      active={active}
       error={error}
     >
-      <div
-        data-size={size}
-        className={csx(style.inputWrapper, wrapperClassName)}
-        hidden={hidden}
-        onKeyDown={(e) => {
-          const input = inputRef.current
-
-          if (!input) return
-
-          const selectionStart = input.selectionDirection === 'forward' ? input.selectionStart : input.selectionEnd
-          const selectionEnd = input.selectionDirection === 'forward' ? input.selectionEnd : input.selectionStart
-
-          if (e.key === 'ArrowLeft' && selectionStart !== null && selectionStart !== 0) {
-            if (selectionStart === input.maxLength) inputRef.current?.setSelectionRange(selectionStart - 2, selectionStart - 1)
-            else inputRef.current?.setSelectionRange(selectionStart - 1, selectionStart)
-          }
-
-          if (e.key === 'ArrowRight' && selectionEnd !== null && selectionEnd !== input.maxLength) {
-            inputRef.current?.setSelectionRange(selectionEnd, selectionEnd + 1)
-          }
-
-          if (e.key === 'ArrowUp' && value.length > 0) {
-            inputRef.current?.setSelectionRange(0, 1)
-          }
-
-          if (e.key === 'ArrowDown' && value.length > 0) {
-            inputRef.current?.setSelectionRange(value.length - 1, value.length)
-          }
-        }}
-      >
-        <div className={style.group}>
-          {children}
-        </div>
-        <PinFieldInput
-          autoComplete={autoComplete}
-          id={id ?? inputId}
-          disabled={disabled}
-          maxLength={maxLength}
-          placeholder={placeholder}
-          className={csx(className, style.input)}
-          ref={mergeRefs([ref, inputRef, inputMaskitoRef])}
-          error={error}
-          onInput={(e) => setValue(e.currentTarget.value)}
-          onSelectionRangeChange={setSelectionRange}
-          onComplete={onComplete}
-          inputMode={inputMode}
-          onFocus={() => {
-            if (selectionRange.length === 0 && maxLength) setSelectionRange([0, 1])
-          }}
-          {...props}
-        />
+      <div className={csx(style.field, className)} ref={ref} {...props}>
+        {children}
       </div>
     </PinFieldProvider>
   )

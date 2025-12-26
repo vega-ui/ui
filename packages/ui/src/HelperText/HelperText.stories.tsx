@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { HelperText } from './HelperText.tsx';
-import { TextField } from '../TextField';
+import { TextField, TextFieldInput } from '../TextField';
 import { Label } from '../Label';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
@@ -32,13 +32,15 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    children: 'Обязательное поле'
+    children: 'Required'
   },
   render(props) {
     return (
       <>
         <Label htmlFor='test'>Имя</Label>
-        <TextField id='test' size={props.size} placeholder='Иван' />
+        <TextField size={props.size}>
+          <TextFieldInput id='test' placeholder='Ivan' />
+        </TextField>
         <HelperText {...props} />
       </>
     )
@@ -47,14 +49,16 @@ export const Default: Story = {
 
 export const WithError: Story = {
   args: {
-    children: 'Обязательное поле',
+    children: 'Required',
     error: true,
   },
   render(props) {
     return (
       <>
         <Label htmlFor='test'>Имя</Label>
-        <TextField id='test' size={props.size} error={props.error} placeholder='Иван' />
+        <TextField size={props.size} error={props.error}>
+          <TextFieldInput id='test' placeholder='Ivan' />
+        </TextField>
         <HelperText {...props} />
       </>
     )

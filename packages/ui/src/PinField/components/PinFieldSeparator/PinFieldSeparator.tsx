@@ -4,13 +4,7 @@ import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { PinFieldSize } from '../../types.ts';
 
-export interface PinFieldSeparator extends HTMLAttributes<HTMLDivElement> {
-  /**
-   * Optional class name applied to the separator element.
-   * Useful for styling margins, borders, or visual dividers.
-   */
-  className?: string
-
+export interface PinFieldSeparatorProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * Controls the visual size of the separator.
    * Aligns with the size of the surrounding `PinField` elements.
@@ -20,7 +14,7 @@ export interface PinFieldSeparator extends HTMLAttributes<HTMLDivElement> {
 
 
 /** The PinFieldSeparator component provides a visual divider between segments of a PinField, helping group input characters (e.g., in formats like 1234 — 5678) and supporting configurable sizing for layout consistency */
-export const PinFieldSeparator: FC<PinFieldSeparator> = ({
+export const PinFieldSeparator: FC<PinFieldSeparatorProps> = ({
   size,
   className,
   ...props
@@ -29,10 +23,10 @@ export const PinFieldSeparator: FC<PinFieldSeparator> = ({
 
   return (
     <div
-      {...props}
       role='separator'
       data-size={size ?? _size}
       className={csx(style.separator, className)}
+      {...props}
     />
   )
 }

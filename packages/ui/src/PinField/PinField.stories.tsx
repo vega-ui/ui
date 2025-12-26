@@ -1,9 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { PinField } from './PinField.tsx';
-import { PinFieldSeparator, PinFieldSlot } from './components';
-import { Label } from '../Label';
-import { HelperText } from '../HelperText';
+import { PinField } from './PinField';
+import {
+  PinFieldHiddenInput,
+  PinFieldSeparator,
+  PinFieldSlot,
+} from './components';
 
 const meta = {
   title: 'Form/Fields/PinField/PinField',
@@ -17,102 +19,163 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {
-    maxLength: {
-      type: 'number'
-    },
     size: {
       control: 'radio',
-      options: ['small', 'medium', 'large'],
-    }
+      options: ['sm', 'md', 'lg'],
+    },
   },
-  args: {},
 } satisfies Meta<typeof PinField>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const Default: Story = {
+/* ------------------------------------------------------------------ */
+/* Basic use cases                                                     */
+/* ------------------------------------------------------------------ */
+
+/** Standard 4-digit PIN (ATM / card / confirmation code) */
+export const FourDigitPIN: Story = {
+  name: '4-digit PIN',
   args: {
     placeholder: '••••',
+    maxLength: 4,
     children: [
+      <PinFieldHiddenInput />,
       <PinFieldSlot index={0} />,
       <PinFieldSlot index={1} />,
       <PinFieldSlot index={2} />,
-      <PinFieldSlot index={3} />
-    ]
+      <PinFieldSlot index={3} />,
+    ],
   },
 };
 
-export const WithAlphabet: Story = {
+/** 6-digit numeric OTP (bank / 2FA / SMS code) */
+export const SixDigitOTP: Story = {
+  name: '6-digit OTP',
   args: {
-    mask: /^[A-Za-z]+$/,
-    children: [
-      <PinFieldSlot index={0} />,
-      <PinFieldSlot index={1} />,
-      <PinFieldSlot index={2} />,
-      <PinFieldSlot index={3} />
-    ]
-  },
-};
-
-export const Long: Story = {
-  args: {
+    placeholder: '••••••',
     maxLength: 6,
     children: [
+      <PinFieldHiddenInput />,
       <PinFieldSlot index={0} />,
       <PinFieldSlot index={1} />,
       <PinFieldSlot index={2} />,
       <PinFieldSlot index={3} />,
       <PinFieldSlot index={4} />,
-      <PinFieldSlot index={5} />
-    ]
+      <PinFieldSlot index={5} />,
+    ],
   },
 };
 
-export const WithSeparator: Story = {
+/* ------------------------------------------------------------------ */
+/* Formatting & grouping                                               */
+/* ------------------------------------------------------------------ */
+
+/** Grouped PIN with visual separator (e.g. legacy systems) */
+export const GroupedWithSeparator: Story = {
+  name: 'Grouped with separator',
   args: {
+    maxLength: 4,
     children: [
+      <PinFieldHiddenInput />,
       <PinFieldSlot index={0} />,
       <PinFieldSlot index={1} />,
       <PinFieldSeparator />,
       <PinFieldSlot index={2} />,
-      <PinFieldSlot index={3} />
-    ]
+      <PinFieldSlot index={3} />,
+    ],
   },
 };
 
-export const WithLabel: Story = {
-  render(...args) {
-    return (
-      <>
-        <Label htmlFor='input'>OTP Code:</Label>
-        <PinField id='input' {...args}>
-          <PinFieldSlot index={0} />
-          <PinFieldSlot index={1} />
-          <PinFieldSeparator />
-          <PinFieldSlot index={2} />
-          <PinFieldSlot index={3} />
-        </PinField>
-      </>
-    )
-  }
+/** Long code split into logical groups (XXXX-XXXX) */
+export const LongGroupedCode: Story = {
+  name: 'Grouped 8-digit code',
+  args: {
+    maxLength: 8,
+    children: [
+      <PinFieldHiddenInput />,
+      <PinFieldSlot index={0} />,
+      <PinFieldSlot index={1} />,
+      <PinFieldSlot index={2} />,
+      <PinFieldSlot index={3} />,
+      <PinFieldSeparator />,
+      <PinFieldSlot index={4} />,
+      <PinFieldSlot index={5} />,
+      <PinFieldSlot index={6} />,
+      <PinFieldSlot index={7} />,
+    ],
+  },
 };
 
-export const WithHelper: Story = {
-  render(...args) {
-    return (
-      <>
-        <Label htmlFor='input1'>OTP Code:</Label>
-        <PinField id='input1' {...args}>
-          <PinFieldSlot index={0} />
-          <PinFieldSlot index={1} />
-          <PinFieldSeparator />
-          <PinFieldSlot index={2} />
-          <PinFieldSlot index={3} />
-        </PinField>
-        <HelperText>From SMS</HelperText>
-      </>
-    )
-  }
+/* ------------------------------------------------------------------ */
+/* Input constraints                                                   */
+/* ------------------------------------------------------------------ */
+
+/** Alphabetic PIN (internal systems / invite codes) */
+export const AlphabeticCode: Story = {
+  name: 'Alphabetic code',
+  args: {
+    mask: /^[A-Za-z]+$/,
+    placeholder: 'ABCD',
+    maxLength: 4,
+    children: [
+      <PinFieldHiddenInput />,
+      <PinFieldSlot index={0} />,
+      <PinFieldSlot index={1} />,
+      <PinFieldSlot index={2} />,
+      <PinFieldSlot index={3} />,
+    ],
+  },
+};
+
+/** Alphanumeric code (promo / activation code) */
+export const AlphaNumericCode: Story = {
+  name: 'Alphanumeric code',
+  args: {
+    mask: /^[A-Za-z0-9]+$/,
+    placeholder: 'A1B2',
+    maxLength: 4,
+    children: [
+      <PinFieldHiddenInput />,
+      <PinFieldSlot index={0} />,
+      <PinFieldSlot index={1} />,
+      <PinFieldSlot index={2} />,
+      <PinFieldSlot index={3} />,
+    ],
+  },
+};
+
+/* ------------------------------------------------------------------ */
+/* States                                                              */
+/* ------------------------------------------------------------------ */
+
+/** Error state (wrong PIN entered) */
+export const ErrorState: Story = {
+  name: 'Error state',
+  args: {
+    maxLength: 4,
+    error: true,
+    children: [
+      <PinFieldHiddenInput />,
+      <PinFieldSlot index={0} />,
+      <PinFieldSlot index={1} />,
+      <PinFieldSlot index={2} />,
+      <PinFieldSlot index={3} />,
+    ],
+  },
+};
+
+/** Disabled state (input locked) */
+export const Disabled: Story = {
+  args: {
+    maxLength: 4,
+    disabled: true,
+    children: [
+      <PinFieldHiddenInput />,
+      <PinFieldSlot index={0} />,
+      <PinFieldSlot index={1} />,
+      <PinFieldSlot index={2} />,
+      <PinFieldSlot index={3} />,
+    ],
+  },
 };

@@ -14,7 +14,7 @@
     border-radius: calc(var(--option-height) * var(--option-br-ratio));
 }
 
-.option[data-size='small'] {
+.option[data-size='sm'] {
     --option-height: var(--spacing-21);
 
     padding: var(--spacing-3) var(--spacing-10);
@@ -22,7 +22,7 @@
     line-height: var(--line-height-2);
 }
 
-.option[data-size='medium'] {
+.option[data-size='md'] {
     --option-height: var(--spacing-24);
 
     padding: var(--spacing-4) var(--spacing-10);
@@ -30,7 +30,7 @@
     line-height: var(--line-height-3);
 }
 
-.option[data-size='large'] {
+.option[data-size='lg'] {
     --option-height: var(--spacing-27);
 
     padding: var(--spacing-5) var(--spacing-10);

@@ -11,7 +11,7 @@ import {
   DrawerTitle,
   DrawerCloseButton,
 } from './components';
-import { TextField } from '../TextField';
+import { TextField, TextFieldInput } from '../TextField';
 import { Label } from '../Label';
 import { useId } from 'react';
 import { Card } from '../Card';
@@ -135,7 +135,9 @@ export const WithActions: Story = {
               <div style={{ display: 'grid', gap: 12, marginTop: 16 }}>
                 <div style={{ display: 'grid', gap: 8 }}>
                   <Label htmlFor={id}>Email</Label>
-                  <TextField size='small' id={id} placeholder='name@company.com' />
+                  <TextField size='sm'>
+                    <TextFieldInput id={id} placeholder='name@company.com' />
+                  </TextField>
                 </div>
                 
                 <div style={{ display: 'flex', gap: 10, marginTop: 8 }}>

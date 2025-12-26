@@ -2,21 +2,34 @@ import { describe, expect, it, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react'
 import { NumberField } from '../NumberField.tsx';
 import { act } from 'react';
+import { NumberFieldDecrementButton, NumberFieldIncrementButton, NumberFieldInput } from '../components';
 
 describe('NumberField', () => {
   it('render numberField', () => {
-    render(<NumberField data-testid='input' />)
-    expect(screen.getByTestId('input')).toBeDefined()
+    render(
+      <NumberField>
+        <NumberFieldInput />
+      </NumberField>
+    )
+    expect(screen.getByRole('textbox')).toBeDefined()
   })
 
   it('placeholder', () => {
-    render(<NumberField data-testid='input' placeholder='Check' />)
-    expect(screen.getByTestId('input').getAttribute('placeholder')).toBe('Check')
+    render(
+      <NumberField>
+        <NumberFieldInput placeholder='Check' />
+      </NumberField>
+    )
+    expect(screen.getByRole('textbox').getAttribute('placeholder')).toBe('Check')
   })
 
   it('change', () => {
-    render(<NumberField data-testid='input' />)
-    const input: HTMLInputElement = screen.getByTestId('input');
+    render(
+      <NumberField>
+        <NumberFieldInput />
+      </NumberField>
+    )
+    const input: HTMLInputElement = screen.getByRole('textbox');
     act(() => {
       fireEvent.input(input, { target: { value: 1 } })
     })
@@ -25,8 +38,12 @@ describe('NumberField', () => {
   })
 
   it('change with text value', () => {
-    render(<NumberField data-testid='input' />)
-    const input: HTMLInputElement = screen.getByTestId('input');
+    render(
+      <NumberField>
+        <NumberFieldInput />
+      </NumberField>
+    )
+    const input: HTMLInputElement = screen.getByRole('textbox');
     act(() => {
       fireEvent.input(input, { target: { value: 'Hello' } })
     })
@@ -35,8 +52,14 @@ describe('NumberField', () => {
   })
 
   it('change with control button', () => {
-    render(<NumberField data-testid='input' />)
-    const input: HTMLInputElement = screen.getByTestId('input')
+    render(
+      <NumberField>
+        <NumberFieldDecrementButton />
+        <NumberFieldInput />
+        <NumberFieldIncrementButton />
+      </NumberField>
+    )
+    const input: HTMLInputElement = screen.getByRole('textbox')
     const [stepDownButton, stepUpButton] = screen.getAllByRole('button')
 
     act(() => {
@@ -57,9 +80,13 @@ describe('NumberField', () => {
 
   it('disabled', () => {
     const onChange = vi.fn()
-    render(<NumberField onChange={onChange} disabled data-testid='input' />)
+    render(
+      <NumberField disabled>
+        <NumberFieldInput onChange={onChange} />
+      </NumberField>
+    )
 
-    const input: HTMLInputElement = screen.getByTestId('input');
+    const input: HTMLInputElement = screen.getByRole('textbox');
     input.click()
 
     expect(input.getAttribute('disabled')).toBeDefined()

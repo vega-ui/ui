@@ -1,3 +1,7 @@
 export * from './SelectCombobox'
 export * from './SelectListbox'
 export * from './SelectOption'
+export * from './SelectIcon'
+export * from './SelectHiddenSelect'
+export * from './SelectValue'
+export * from './SelectPortal'

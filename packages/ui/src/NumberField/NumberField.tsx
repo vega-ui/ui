@@ -5,23 +5,16 @@ import {
   Ref, useEffect,
   useRef,
   KeyboardEvent,
-  FormEvent,
-  MouseEvent,
-  FocusEvent,
-  useCallback,
+  useCallback, useState, useLayoutEffect,
 } from 'react';
 import { TextField, TextFieldProps } from '../TextField';
 import style from './style.module.css'
-import { csx, mergeRefs } from '@vega-ui/utils';
+import { clamp, csx, dispatchEvents, mergeRefs, setValue } from '@vega-ui/utils';
 import { getNumberMaskOptions, getNumberValue } from './helpers';
 import { useMaskito } from '@maskito/react';
-import { useControlledState } from '@vega-ui/hooks';
-import { maskitoTransform } from '@maskito/core';
-import { NumberFieldDecrement, NumberFieldIncrement } from './components';
+import { NumberFieldProvider } from './contexts';
 
-export type NumberFieldChangeEvent = WheelEvent | FormEvent | MouseEvent | KeyboardEvent | FocusEvent
-
-export interface NumberFieldProps extends Omit<TextFieldProps, 'onChange'> {
+export interface NumberFieldProps extends TextFieldProps {
   /**
    * Amount to increment or decrement the value by when using arrow keys or spinner controls.
    */
@@ -39,14 +32,9 @@ export interface NumberFieldProps extends Omit<TextFieldProps, 'onChange'> {
   max?: number
 
   /**
-   * Initial value of the input when uncontrolled.
+   * Ref forwarded to the element.
    */
-  defaultValue?: number
-
-  /**
-   * Ref forwarded to the underlying native input element.
-   */
-  ref?: Ref<HTMLInputElement>
+  ref?: Ref<HTMLDivElement>
 
   /**
    * Number of decimal places to round the input value to.
@@ -60,168 +48,176 @@ export interface NumberFieldProps extends Omit<TextFieldProps, 'onChange'> {
   changeOnWheel?: boolean
 
   /**
-   * Callback fired when the value changes.
-   *
-   * @param event - The original change event
-   * @param value - The parsed numeric value
-   */
-  onChange?: (event: NumberFieldChangeEvent, value: number) => void
-
-  /**
    * Allows the field to be empty (null/undefined) instead of defaulting to 0.
    * Useful for optional numeric inputs.
    */
   allowEmpty?: boolean
+  
+  /**
+   * Maximum number of digits allowed after the decimal point.
+   *
+   * This property controls numeric precision when the value is entered
+   * or adjusted via increment/decrement actions.
+   *
+   * It is commonly used for currency values, measurements, or ratings
+   * where fractional precision must be constrained.
+   *
+   * Example:
+   * - `maximumFractionDigits={0}` → integers only
+   * - `maximumFractionDigits={2}` → up to two decimal places
+   */
+  maximumFractionDigits?: number
+  
+  /**
+   * Disables the entire NumberField.
+   */
+  disabled?: boolean
 }
 
 /** A NumberField is a UI component that allows users to input numeric values, often with support for validation, increment/decrement buttons, and a specified range */
 export const NumberField: FC<NumberFieldProps> = ({
   className,
   disabled,
-  size = 'medium',
+  size = 'md',
   min = Number.MIN_SAFE_INTEGER,
   max = Number.MAX_SAFE_INTEGER,
   step = 1,
   precision = 0,
-  ref,
-  value: controlledValue,
-  defaultValue = '',
   allowEmpty = true,
   changeOnWheel = true,
-  onChange,
+  maximumFractionDigits = 2,
+  children,
+  ref,
   ...props
 }) => {
+  const [isMin, setIsMin] = useState(false);
+  const [isMax, setIsMax] = useState(false);
+  
   const maskitoOptions = getNumberMaskOptions({
     max,
     min,
     minusSign: '-',
     precision,
-    allowEmpty
+    allowEmpty,
+    maximumFractionDigits
   })
 
-  const [value, setValue] = useControlledState<string | number | undefined>(controlledValue, defaultValue)
   const innerInputRef = useRef<HTMLInputElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
+  
+  const syncBoundaries = () => {
+    const input = innerInputRef.current;
+    if (!input) return;
+    
+    const v = input.value === '' ? NaN : getNumberValue(input.value);
+    
+    setIsMin(Number.isFinite(v) ? v <= min : false);
+    setIsMax(Number.isFinite(v) ? v >= max : false);
+  };
 
   const inputRef = useMaskito({
     options: maskitoOptions
   })
+  
+  useLayoutEffect(syncBoundaries, []);
+  
+  const onInput = useCallback(() => {
+    syncBoundaries();
+  }, [])
+  
+  const changeValue = useCallback((value: number) => {
+    const input = innerInputRef.current
+    if (!input) return
+    
+    const currentValue = input.value
+    if (currentValue === String(value)) return;
+    
+    setValue(input, String(value))
+    dispatchEvents(input)
+  }, [])
 
   const increment = useCallback(() => {
+    const input = innerInputRef.current
+    if (!input) return
+    
+    const value = input.value
+    
     if (value === '' || value === undefined) {
       const v = min !== Number.MIN_SAFE_INTEGER ? min : 0
-
-      setValue(v)
-      return v
+      changeValue(v)
+      return
     }
 
-    const nextValue = getNumberValue(value) + step;
-    if (max !== undefined && nextValue > max) return
-    setValue(nextValue)
-
-    return nextValue
-  }, [max, min, setValue, step, value])
+    const nextValue = clamp(min, getNumberValue(value) + step, max);
+    changeValue(nextValue)
+  }, [max, min, step, changeValue])
 
   const decrement = useCallback(() => {
+    const input = innerInputRef.current
+    if (!input) return
+    
+    const value = input.value
+    
     if (value === '' || value === undefined) {
       const v = min !== Number.MIN_SAFE_INTEGER ? min : 0
-
-      setValue(v)
-      return v
+      changeValue(v)
+      return
     }
 
-    const nextValue = getNumberValue(value) - step
-    if (min !== undefined && nextValue < min) return
-    setValue(nextValue)
-
-    return nextValue
-  }, [min, setValue, step, value])
+    const nextValue = clamp(min, getNumberValue(value) - step, max);
+    changeValue(nextValue)
+  }, [min, step, changeValue])
 
   const onKeyDown = (e: KeyboardEvent) => {
-    let v: number | undefined
-
     if (e.key === 'ArrowUp') {
       e.preventDefault()
-      v = increment()
+      increment()
     }
 
     if (e.key === 'ArrowDown') {
       e.preventDefault()
-      v = decrement()
+      decrement()
     }
-
-    if (v !== undefined) onChange?.(e, v)
   }
-
-  const onInput = (e: FormEvent<HTMLInputElement>) => {
-    const value = e.currentTarget.value
-
-    setValue(value)
-    onChange?.(e, getNumberValue(value))
-  }
+  
+  const onWheel = useCallback((e: WheelEvent) => {
+    if (!changeOnWheel) return
+    e.preventDefault()
+    
+    if (e.deltaY < 0) increment()
+    else decrement()
+  }, [increment, decrement, changeOnWheel])
 
   useEffect(() => {
-    if (!changeOnWheel) return
-
     const elem = wrapperRef.current
+    if (!elem) return
 
-    const cb = (e: WheelEvent) => {
-      e.preventDefault()
-
-      const value = e.deltaY < 0 ? increment() : decrement()
-      if (value !== undefined) onChange?.(e, value)
-    }
-
-    elem?.addEventListener('wheel', cb)
-
-    return () => {
-      elem?.removeEventListener('wheel', cb)
-    }
-  }, [increment, decrement, changeOnWheel, onChange]);
-
-  const onIncrement = (e: MouseEvent) => {
-    const value = increment()
-    if (value !== undefined) onChange?.(e, value)
-  }
-
-  const onDecrement = (e: MouseEvent) => {
-    const value = decrement()
-    if (value !== undefined) onChange?.(e, value)
-  }
-
-  const valueNumber = value != undefined ? getNumberValue(value) : 0
-  const inputValue = isNaN(valueNumber) ? 0 : valueNumber
-
-  const isDecrementDisabled = inputValue <= min
-  const isIncrementDisabled = inputValue >= max
+    elem.addEventListener('wheel', onWheel)
+    return () => elem.removeEventListener('wheel', onWheel)
+  }, [onWheel]);
 
   return (
-    <div data-size={size} className={style.wrapper} onKeyDown={onKeyDown} ref={wrapperRef}>
+    <NumberFieldProvider
+      size={size}
+      isMax={isMax}
+      isMin={isMin}
+      max={max}
+      min={min}
+      increment={increment}
+      decrement={decrement}
+      disabled={disabled}
+      onInput={onInput}
+      inputRef={mergeRefs([inputRef, innerInputRef])}
+    >
       <TextField
-        ref={mergeRefs([inputRef, ref, innerInputRef])}
+        ref={mergeRefs([ref, wrapperRef])}
         size={size}
-        inputMode='numeric'
-        aria-valuemax={max}
-        aria-valuemin={min}
-        value={maskitoTransform(String(value), maskitoOptions)}
-        onInput={onInput}
         className={csx(style.numberTextField, className)}
-        wrapperClassName={style.inputWrapper}
-        disabled={disabled}
+        onKeyDown={onKeyDown}
         {...props}
-      />
-      <NumberFieldDecrement
-        disabled={disabled || isDecrementDisabled}
-        size={size}
-        className={csx(style.controlButton, style.controlButtonDown)}
-        onClick={onDecrement}
-      />
-      <NumberFieldIncrement
-        disabled={disabled || isIncrementDisabled}
-        size={size}
-        className={csx(style.controlButton, style.controlButtonUp)}
-        onClick={onIncrement}
-      />
-    </div>
+      >
+        {children}
+      </TextField>
+    </NumberFieldProvider>
   )
 }

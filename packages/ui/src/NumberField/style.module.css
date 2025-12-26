@@ -1,53 +1,7 @@
-.wrapper {
-    position: relative;
-    width: 100%;
-}
-
-.wrapper[data-size='small'] {
-    --input-height: var(--spacing-21);
-}
-
-.wrapper[data-size='medium'] {
-    --input-height: var(--spacing-24);
-}
-
-.wrapper[data-size='large'] {
-    --input-height: var(--spacing-27);
-}
-
 .inputWrapper {
     padding: 0 var(--input-height);
 }
 
 .numberTextField {
     text-align: center;
-}
-
-.numberTextField::-webkit-outer-spin-button,
-.numberTextField::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-.numberTextField {
-    -moz-appearance: textfield;
-}
-
-.controlButton {
-    aspect-ratio: 1 / 1;
-    --icon-button-size: var(--input-height) !important;
-}
-
-.controlButtonUp,
-.controlButtonDown {
-    position: absolute;
-    top: 0;
-}
-
-.controlButtonDown {
-    left: 0;
-}
-
-.controlButtonUp {
-    right: 0;
 }

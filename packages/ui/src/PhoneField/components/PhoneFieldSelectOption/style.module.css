@@ -1,0 +1,5 @@
+.option {
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--spacing-6);
+}

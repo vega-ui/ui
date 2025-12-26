@@ -13,14 +13,16 @@ export interface GetNumberMaskOptions {
   postfix?: string;
   minusSign?: string;
   allowEmpty?: boolean;
+  maximumFractionDigits?: number
 }
 
 export const getNumberMaskOptions = (options: GetNumberMaskOptions): Required<MaskitoOptions> => {
-  const { allowEmpty, min, ...maskitoOptions } = options
+  const { allowEmpty, min, maximumFractionDigits = 2, ...maskitoOptions } = options
   
   const { plugins, ...numberOptions } = maskitoNumberOptionsGenerator({
     minusSign: '-',
     min,
+    maximumFractionDigits,
     ...maskitoOptions,
   })
 

@@ -1,3 +1,3 @@
 export * from './PinFieldSlot'
-export * from './PinFieldInput'
+export * from './PinFieldHiddenInput'
 export * from './PinFieldSeparator'

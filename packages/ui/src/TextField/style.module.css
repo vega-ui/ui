@@ -1,4 +1,4 @@
-.inputWrapper {
+.field {
     --input-height: 0;
     --input-br-ratio: 0.333;
 
@@ -15,140 +15,40 @@
     border-radius: calc(var(--input-height) * var(--input-br-ratio));
 }
 
-.input {
-    box-sizing: border-box;
-    padding: 0;
-    font-family: var(--default-font-family);
-    border-radius: inherit;
-    background: none;
-    color: var(--text-color);
-    border: 0;
-    height: 100%;
-    width: 100%;
-    outline: none;
-}
-
-.input::placeholder {
-    color: var(--field-placeholder-color);
-}
-
-.startSlot,
-.endSlot {
-    display: flex;
-    align-items: center;
-    height: 100%;
-}
-
-.inputWrapper[data-size='small'] {
+.field[data-size='sm'] {
     --input-height: var(--spacing-21);
 }
 
-.inputWrapper[data-size='small'] .input {
-    padding: var(--spacing-6) var(--spacing-10);
-    font-size: var(--text-font-size-2);
-    line-height: var(--line-height-2);
-}
-
-.inputWrapper[data-size='small'] .startSlot {
-    padding-left: var(--spacing-10);
-}
-
-.inputWrapper[data-size='small'] .endSlot {
-    padding-right: var(--spacing-10);
-}
-
-.inputWrapper[data-size='small']:has(div.startSlot) .input {
-    padding-left: var(--spacing-5);
-}
-
-.inputWrapper[data-size='small']:has(div.endSlot) .input {
-    padding-right: var(--spacing-5);
-}
-
-.inputWrapper[data-size='medium'] {
+.field[data-size='md'] {
     --input-height: var(--spacing-24);
 }
 
-.inputWrapper[data-size='medium'] .input {
-    padding: var(--spacing-6) var(--spacing-12);
-    font-size: var(--text-font-size-3);
-    line-height: var(--line-height-3);
-}
-
-.inputWrapper[data-size='medium'] .startSlot {
-    padding-left: var(--spacing-12);
-}
-
-.inputWrapper[data-size='medium'] .endSlot {
-    padding-right: var(--spacing-12);
-}
-
-.inputWrapper[data-size='medium']:has(div.startSlot) .input {
-    padding-left: var(--spacing-6);
-}
-
-.inputWrapper[data-size='medium']:has(div.endSlot) .input {
-    padding-right: var(--spacing-6);
-}
-
-.inputWrapper[data-size='large'] {
-    font-size: var(--text-font-size-4);
+.field[data-size='lg'] {
     --input-height: var(--spacing-27);
-}
-
-.inputWrapper[data-size='large'] .input {
-    padding: var(--spacing-7) var(--spacing-14);
-    font-size: var(--text-font-size-4);
-    line-height: var(--line-height-4);
-}
-
-.inputWrapper[data-size='large'] .startSlot {
-    padding-left: var(--spacing-14);
-}
-
-.inputWrapper[data-size='large'] .endSlot {
-    padding-right: var(--spacing-14);
-}
-
-.inputWrapper[data-size='medium']:has(div.startSlot) .input {
-    padding-left: var(--spacing-7);
-}
-
-.inputWrapper[data-size='medium']:has(div.endSlot) .input {
-    padding-right: var(--spacing-7);
 }
 
 /* textField/hover */
 
-.inputWrapper:has(.input:hover) {
+.field:has(input:hover) {
     background-color: var(--field-background-hover-color);
 }
 
 /* textField/active */
 
-.inputWrapper:has(.input:active),
-.inputWrapper:has(.input:focus-visible) {
+.field:has(input:active),
+.field:has(input:focus-visible) {
     outline-color: var(--field-border-focus-color);
 }
 
 /* textField/error */
 
-.inputWrapper:has(.input[data-error='true']) {
+.field[data-error='true'] {
     outline-color: var(--color-error);
 }
 
 /* textField/disabled */
 
-.inputWrapper:has(.input:disabled) {
+.field:has(input:disabled) {
     cursor: not-allowed;
     background-color: var(--disable-background-color);
-}
-
-.input:disabled {
-    cursor: not-allowed;
-    color: var(--disable-text-color);
-}
-
-.input:disabled::placeholder {
-    color: var(--disable-placeholder-text-color);
 }

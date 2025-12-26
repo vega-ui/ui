@@ -1,48 +1,42 @@
 'use client';
 
-import {
-  FC, useRef, useState,
-} from 'react';
+import { FC, useCallback, useRef, useState } from 'react';
 import { TextField, TextFieldProps } from '../TextField';
-import { IconButton } from '../IconButton';
-import { mergeRefs } from '@vega-ui/utils';
-import style from './style.module.css';
-import { EyeOffIcon, EyeIcon } from '@vega-ui/icons';
-import { Icon } from '../Icon';
+import { PasswordFieldProvider } from './contexts';
 
-export type PasswordFieldProps = TextFieldProps
+export interface PasswordFieldProps extends TextFieldProps {
+  disabled?: boolean
+}
 
 /** A PasswordField is a UI component that allows users to input passwords or secure pin codes */
 export const PasswordField: FC<PasswordFieldProps> = ({
-  disabled,
-  size = 'medium',
   ref,
+  size,
+  disabled,
+  children,
   ...props
 }) => {
   const inputRef = useRef<HTMLInputElement>(null)
   const [shown, setShown] = useState(false)
 
-  const onToggle = () => {
-    setShown(!shown)
+  const toggleShow = useCallback(() => {
+    setShown(p => !p)
     inputRef.current?.focus()
     requestAnimationFrame(() => {
       inputRef.current?.setSelectionRange(-1, -1);
     })
-  }
+  }, [])
 
   return (
-    <div data-size={size} className={style.wrapper}>
-      <TextField
-        ref={mergeRefs([inputRef, ref])}
-        size={size}
-        wrapperClassName={style.inputWrapper}
-        disabled={disabled}
-        type={shown ? 'text' : 'password'}
-        {...props}
-      />
-      <IconButton className={style.controlButton} size={size} disabled={disabled} variant='secondary' appearance='transparent' onClick={onToggle}>
-        {shown ? <Icon><EyeOffIcon /></Icon> : <Icon><EyeIcon /></Icon>}
-      </IconButton>
-    </div>
+    <PasswordFieldProvider
+      shown={shown}
+      inputRef={inputRef}
+      toggleShow={toggleShow}
+      disabled={disabled}
+    >
+      <TextField ref={ref} size={size} {...props}>
+        {children}
+      </TextField>
+    </PasswordFieldProvider>
   )
 }

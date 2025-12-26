@@ -44,11 +44,14 @@ export const Default: Story = {
 };
 
 export const Sizes: Story = {
+  args: {
+    value: .5
+  },
   render(props) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {sizes.map((size, index) =>
-          <PartialMeter value={.5} style={{ width: 100 + index * 50 + 'px' }} size={size} {...props}>
+          <PartialMeter style={{ width: 100 + index * 50 + 'px' }} size={size} {...props}>
             <PartialMeterItem value={.35} style={{ '--meter-item-color': 'var(--color-blue-accent-500)' } as CSSProperties} />
             <PartialMeterItem value={.35} style={{ '--meter-item-color': 'var(--color-green-accent-500)' } as CSSProperties} />
             <PartialMeterItem value={.2} style={{ '--meter-item-color': 'var(--color-pink-accent-500)' } as CSSProperties} />
@@ -64,12 +67,13 @@ export const WithLabel: Story = {
   args: {
     style: { width: '150px' },
     id: 'partialMeterWithLabel',
+    value: 1,
   },
   render(props) {
     return (
       <div>
         <Label size='small' htmlFor='partialMeterWithLabel' style={{ marginBottom: '4px' }}>Disk usage:</Label>
-        <PartialMeter value={1} {...props}>
+        <PartialMeter {...props}>
           <PartialMeterItem value={.15} style={{ '--meter-item-color': 'var(--color-red-accent-500)' } as CSSProperties} />
           <PartialMeterItem value={.35} style={{ '--meter-item-color': 'var(--color-green-accent-500)' } as CSSProperties} />
           <PartialMeterItem value={.2} style={{ '--meter-item-color': 'var(--color-pink-accent-500)' } as CSSProperties} />
@@ -84,12 +88,13 @@ export const WithLabelAndTooltip: Story = {
   args: {
     style: { width: '150px' },
     id: 'partialMeterWithLabel',
+    value: 1,
   },
   render(props) {
     return (
       <div>
         <Label size='small' htmlFor='partialMeterWithLabel' style={{ marginBottom: '4px' }}>Disk usage:</Label>
-        <PartialMeter value={1} {...props}>
+        <PartialMeter {...props}>
           <Tooltip>
             <TooltipTrigger asChild>
               <PartialMeterItem value={.15} style={{ '--meter-item-color': 'var(--color-red-accent-500)' } as CSSProperties} />

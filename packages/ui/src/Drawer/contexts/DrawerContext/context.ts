@@ -15,7 +15,7 @@ export interface DrawerContextState {
   position?: DrawerPosition
 }
 
-export const [DrawerProvider, useDrawerContext] = createContext<DrawerContextState>('DrawerContext', {
+export const [DrawerProvider, useDrawerContext] = createContext<DrawerContextState>('PhoneFieldContext', {
   open: false,
   onChangeOpen: () => undefined,
   triggerProps: {},

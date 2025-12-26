@@ -1,64 +1,68 @@
-import { FC, PropsWithChildren, ReactNode, Ref } from 'react';
-import { csx } from '@vega-ui/utils';
-import { SelectValue } from '../SelectValue';
+import { FC, HTMLAttributes, Ref } from 'react';
+import { csx, mergeProps, mergeRefs } from '@vega-ui/utils';
 import style from './style.module.css';
-import { SelectPlaceholder } from '../SelectPlaceholder';
-import { SelectArrow } from '../SelectArrow';
-import { SelectSize, SelectVariant } from '../../types.ts';
+import { SelectVariant } from '../../types.ts';
+import { useSelectContext } from '../../contexts';
 
-export interface SelectComboboxProps {
-  comboboxClassName?: string
-  className?: string
-  valueClassName?: string
-  placeholderClassName?: string
-  startSlot?: ReactNode
-  endSlot?: ReactNode
-  valueSlot?: ReactNode
-  placeholder?: string
-  disabled?: boolean
+export interface SelectComboboxProps extends HTMLAttributes<HTMLButtonElement> {
+  /**
+   * Puts the combobox into read-only mode.
+   *
+   * When `true`, the value can be focused and read,
+   * but user interaction that changes the value is disabled
+   * (the dropdown should not open or change selection).
+   */
   readOnly?: boolean
+  
+  /**
+   * Visual variant of the combobox.
+   *
+   * Controls appearance (e.g. default, ghost, outlined, etc.)
+   * without affecting behavior.
+   */
   variant?: SelectVariant
-  size?: SelectSize
-  withArrow?: boolean
-  open?: boolean
+  
+  /**
+   * Ref to the underlying `<button>` element.
+   *
+   * Useful for focus management, positioning, and imperative access.
+   */
   ref?: Ref<HTMLButtonElement>
 }
 
-export const SelectCombobox: FC<PropsWithChildren<SelectComboboxProps>> = ({
-  size = 'medium',
-  open,
+/**
+ * Select combobox trigger component.
+ *
+ * Renders a button with `role="combobox"` that acts as the main control
+ * for opening and closing the Select dropdown
+ *
+ * Children are typically composed of:
+ * - `SelectValue` (current value / placeholder)
+ * - `SelectIcon` (dropdown indicator)
+ */
+export const SelectCombobox: FC<SelectComboboxProps> = ({
   className,
-  valueClassName,
-  placeholderClassName,
-  variant = 'field',
-  disabled,
-  readOnly,
-  startSlot,
-  valueSlot,
-  endSlot,
-  withArrow = true,
-  placeholder,
   children,
   ref,
   ...props
 }) => {
+  const { context, disabled, readOnly, size, variant, open, comboboxProps } = useSelectContext()
+  
   return (
-    <button disabled={disabled} role='combobox' type='button' data-size={size} data-variant={variant} data-state={open ? 'open' : 'close'}
-            aria-readonly={readOnly} tabIndex={0} ref={ref}
-            className={csx(style.selectCombobox, className)} {...props}>
-      <div className={style.segment}>
-        {startSlot}
-        {children
-          ? valueSlot ? valueSlot : <SelectValue className={csx(style.value, valueClassName)}>{children}</SelectValue>
-          : placeholder ? <SelectPlaceholder className={csx(style.placeholder, placeholderClassName)}>{placeholder}</SelectPlaceholder> : undefined
-        }
-      </div>
-      {(withArrow || endSlot) && (
-        <div className={style.control}>
-          {endSlot}
-          {withArrow && <SelectArrow size={size} open={open} className={style.controlIcon}/>}
-        </div>
-      )}
+    <button
+      role='combobox'
+      type='button'
+      disabled={disabled}
+      data-size={size}
+      data-variant={variant}
+      data-open={open}
+      aria-readonly={readOnly}
+      tabIndex={0}
+      ref={mergeRefs([ref, context.refs?.setReference])}
+      className={csx(style.combobox, className)}
+      {...mergeProps(comboboxProps, props)}
+    >
+      {children}
     </button>
   )
 }
