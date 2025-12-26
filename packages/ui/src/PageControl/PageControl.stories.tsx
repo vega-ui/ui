@@ -53,10 +53,10 @@ export const Progress: Story = {
     
     return (
       <PageControl onChangeActive={setActive} active={active} {...props}>
-        <PageControlProgress index={0} onProgressEnd={() => setActive(1)} />
-        <PageControlProgress index={1} onProgressEnd={() => setActive(2)} />
-        <PageControlProgress index={2} onProgressEnd={() => setActive(3)} />
-        <PageControlProgress index={3} onProgressEnd={() => setActive(0)} />
+        <PageControlProgress index={0} onAnimationEnd={() => setActive(1)} />
+        <PageControlProgress index={1} onAnimationEnd={() => setActive(2)} />
+        <PageControlProgress index={2} onAnimationEnd={() => setActive(3)} />
+        <PageControlProgress index={3} onAnimationEnd={() => setActive(0)} />
       </PageControl>
     )
   }
