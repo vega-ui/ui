@@ -1,7 +1,7 @@
-import { AnimationEventHandler, FC, Ref, useRef, useEffect, useState, CSSProperties } from 'react';
+import { FC, Ref, useRef, useEffect, useState, CSSProperties } from 'react';
 import style from './style.module.css'
 import { PageControlItem, PageControlItemProps } from '../PageControlItem';
-import { csx, mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
+import { csx, mergeRefs } from '@vega-ui/utils';
 import { usePageControlContext } from '../../contexts';
 import { PageControlSize } from '../../types.ts';
 
@@ -11,12 +11,6 @@ export interface PageControlProgressProps extends PageControlItemProps {
    * Used to determine whether this item is currently active.
    */
   index: number
-  
-  /**
-   * Callback fired when the progress animation completes.
-   * Receives the native AnimationEvent from the underlying button element.
-   */
-  onProgressEnd?: AnimationEventHandler<HTMLButtonElement>
   
   /**
    * Optional class name applied to the inner animated progress line.
@@ -51,7 +45,6 @@ export interface PageControlProgressProps extends PageControlItemProps {
 /** PageControlProgress is a UI component used within PageControl to represent a navigation item with a visual progress indicator. It animates over time and triggers a callback when the progress completes, enabling automatic step transitions. */
 export const PageControlProgress: FC<PageControlProgressProps> = ({
   className,
-  onProgressEnd,
   index,
   duration = 5000,
   current,
@@ -100,7 +93,6 @@ export const PageControlProgress: FC<PageControlProgressProps> = ({
       aria-valuenow={isCurrent ? progressValue : undefined}
       className={csx(style.pageControlProgress, className)}
       size={size ?? _size}
-      onAnimationEnd={mergeEventHandlers(props.onAnimationEnd, onProgressEnd)}
       style={{
         '--duration': `${duration}ms`,
         ..._style

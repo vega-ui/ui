@@ -37,13 +37,18 @@ export interface PageControlProps extends HTMLAttributes<HTMLUListElement> {
 
 /** PageControl is a UI component that displays a sequence of page indicators, allowing users to navigate between steps or views. It supports interaction, active state management, and visual variants such as default or high-contrast styles. */
 export const PageControl: FC<PropsWithChildren<PageControlProps>> = ({
+  ref,
   active,
   onChangeActive,
   children,
   className,
   variant = 'default',
   size = 'md',
-  ref,
+  onKeyDown: _onKeyDown,
+  onClick: _onClick,
+  onPointerDown: _onPointerDown,
+  onPointerUp: _onPointerUp,
+  onPointerMove: _onPointerMove,
   ...props
 }) => {
   const count = Children.count(children)
@@ -124,11 +129,11 @@ export const PageControl: FC<PropsWithChildren<PageControlProps>> = ({
       <ul
         role='tablist'
         ref={ref}
-        onKeyDown={mergeEventHandlers(onKeyDown, props.onKeyDown)}
-        onClick={mergeEventHandlers(onClick, props.onClick)}
-        onPointerDown={mergeEventHandlers(onPointerDown, props.onPointerDown)}
-        onPointerMove={mergeEventHandlers(onPointerMove, props.onPointerMove)}
-        onPointerUp={mergeEventHandlers(onPointerUp, props.onPointerUp)}
+        onKeyDown={mergeEventHandlers(onKeyDown, _onKeyDown)}
+        onClick={mergeEventHandlers(onClick, _onClick)}
+        onPointerDown={mergeEventHandlers(onPointerDown, _onPointerDown)}
+        onPointerMove={mergeEventHandlers(onPointerMove, _onPointerMove)}
+        onPointerUp={mergeEventHandlers(onPointerUp, _onPointerUp)}
         className={csx(style.pageControl, className)}
         {...props}
       >
