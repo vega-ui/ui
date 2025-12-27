@@ -43,13 +43,13 @@ export const Default: Story = {
         </PopoverTrigger>
         <PopoverContent style={contentSx}>
           <Heading size={4} fontWeight={600} as='h3'>
-            Привет! Я — Popover
+            Hi! I’m a Popover
           </Heading>
           <Text asChild size={2}>
-            <p>Быстрые действия и небольшой контент рядом с триггером.</p>
+            <p>Quick actions and small content next to the trigger.</p>
           </Text>
           <Button variant='secondary' appearance='transparent' onClick={(e) => console.log(e)}>
-            Ок
+            OK
           </Button>
         </PopoverContent>
       </>
@@ -67,13 +67,13 @@ export const WithBackdrop: Story = {
         <PopoverBackdrop />
         <PopoverContent style={contentSx}>
           <Heading size={4} fontWeight={600} as='h3'>
-            Popover с Backdrop
+            Popover with Backdrop
           </Heading>
           <Text asChild size={2}>
-            <p>Клик вне контента должен закрывать</p>
+            <p>Clicking outside the content should close it.</p>
           </Text>
           <Button variant='secondary' appearance='transparent' onClick={(e) => console.log(e)}>
-            Понял
+            Got it
           </Button>
         </PopoverContent>
       </>
@@ -87,13 +87,11 @@ export const HelpTooltip: Story = {
       <>
         <PopoverTrigger asChild>
           <Button variant='secondary' appearance='transparent'>
-            Что это?
+            What is this?
           </Button>
         </PopoverTrigger>
         <PopoverContent style={contentSx}>
-          <Text size={2}>
-            Popover подходит для небольших контекстных пояснений рядом с элементом интерфейса.
-          </Text>
+          <Text size={2}>Popover works well for small contextual hints near a UI element.</Text>
         </PopoverContent>
       </>
     ),
@@ -105,20 +103,18 @@ export const ConfirmAction: Story = {
     children: (
       <>
         <PopoverTrigger asChild>
-          <Button>Удалить</Button>
+          <Button>Delete</Button>
         </PopoverTrigger>
         <PopoverBackdrop />
         <PopoverContent style={contentSx}>
           <Heading size={4} fontWeight={600} as='h3'>
-            Удалить файл?
+            Delete the file?
           </Heading>
           <Text asChild size={2}>
-            <p>Действие нельзя будет отменить</p>
+            <p>This action can’t be undone.</p>
           </Text>
           <Separator style={{ marginBlock: 12 }} />
-          <Button onClick={() => console.log('confirm delete')}>
-            Удалить
-          </Button>
+          <Button onClick={() => console.log('confirm delete')}>Delete</Button>
         </PopoverContent>
       </>
     ),
@@ -130,19 +126,19 @@ export const QuickActions: Story = {
     children: (
       <>
         <PopoverTrigger asChild>
-          <Button variant='secondary'>Действия</Button>
+          <Button variant='secondary'>Actions</Button>
         </PopoverTrigger>
         <PopoverContent style={contentSx}>
-          <Text size={3}>Быстрые действия</Text>
+          <Text size={3}>Quick actions</Text>
           <div style={actionsListSx}>
             <Button appearance='transparent' variant='secondary' onClick={() => console.log('rename')}>
-              Переименовать
+              Rename
             </Button>
             <Button appearance='transparent' variant='secondary' onClick={() => console.log('duplicate')}>
-              Дублировать
+              Duplicate
             </Button>
             <Button appearance='transparent' variant='secondary' onClick={() => console.log('share')}>
-              Поделиться
+              Share
             </Button>
           </div>
         </PopoverContent>
@@ -157,7 +153,7 @@ export const UserMenu: Story = {
       <>
         <PopoverTrigger asChild>
           <Button variant='secondary' appearance='transparent'>
-            Профиль
+            Profile
           </Button>
         </PopoverTrigger>
         <PopoverBackdrop />
@@ -169,13 +165,13 @@ export const UserMenu: Story = {
           <Separator style={{ marginBlock: 12 }} />
           <div>
             <Button fullWidth appearance='transparent' variant='secondary' onClick={() => console.log('settings')}>
-              Настройки
+              Settings
             </Button>
             <Button fullWidth appearance='transparent' variant='secondary' onClick={() => console.log('billing')}>
-              Оплата
+              Billing
             </Button>
             <Button fullWidth appearance='transparent' variant='secondary' onClick={() => console.log('logout')}>
-              Выйти
+              Log out
             </Button>
           </div>
         </PopoverContent>
@@ -189,20 +185,22 @@ export const InlineForm: Story = {
     children: (
       <>
         <PopoverTrigger asChild>
-          <Button>Переименовать</Button>
+          <Button>Rename</Button>
         </PopoverTrigger>
         <PopoverBackdrop />
         <PopoverContent style={contentSx}>
           <Heading size={4} fontWeight={600} as='h3'>
-            Переименование
+            Rename
           </Heading>
           <Text asChild size={2}>
-            <p>Введите новое название и сохраните</p>
+            <p>Enter a new name and save it.</p>
           </Text>
           <TextField style={{ marginBlock: 12 }}>
-            <TextFieldInput placeholder='Документ' />
+            <TextFieldInput placeholder='Document' />
           </TextField>
-          <Button size='sm' onClick={() => console.log('save rename')}>Сохранить</Button>
+          <Button size='sm' onClick={() => console.log('save rename')}>
+            Save
+          </Button>
         </PopoverContent>
       </>
     ),
@@ -214,25 +212,27 @@ export const LongContent: Story = {
     children: (
       <>
         <PopoverTrigger asChild>
-          <Button variant='secondary'>Правила</Button>
+          <Button variant='secondary'>Rules</Button>
         </PopoverTrigger>
         <PopoverBackdrop />
         <PopoverContent style={contentSx}>
           <Heading size={4} fontWeight={600} as='h3'>
-            Памятка
+            Notes
           </Heading>
           <Text asChild size={2}>
-            <p>Popover лучше использовать для короткого контента. Если внутри появляется длинный текст, списки и сложные
-              формы — вероятно, вам нужен Dialog / Drawer.</p>
+            <p>
+              Popover is best for short content. If you need long text, lists, or complex forms, you probably want a
+              Dialog / Drawer instead.
+            </p>
           </Text>
           <Separator style={{ marginBlock: 12 }} />
           <Text size={2}>
-            • Закрытие по клику вне <br />
-            • Escape для закрытия <br />
-            • Логичный порядок табуляции
+            • Close on outside click <br />
+            • Escape to close <br />
+            • Logical tab order
           </Text>
           <Button variant='secondary' appearance='transparent' onClick={() => console.log('ok')}>
-            Ок
+            OK
           </Button>
         </PopoverContent>
       </>
@@ -245,38 +245,38 @@ export const NestedPopover: Story = {
     children: (
       <>
         <PopoverTrigger asChild>
-          <Button variant='secondary'>Открыть меню</Button>
+          <Button variant='secondary'>Open menu</Button>
         </PopoverTrigger>
         <PopoverBackdrop />
         <PopoverContent style={contentSx}>
           <Heading size={4} fontWeight={600} as='h3'>
-            Меню
+            Menu
           </Heading>
           <Text asChild size={2}>
-            <p>Внутри есть ещё один popover</p>
+            <p>There’s another popover inside.</p>
           </Text>
           
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             <Popover>
               <PopoverTrigger asChild>
                 <Button appearance='transparent' variant='secondary'>
-                  Ещё…
+                  More…
                 </Button>
               </PopoverTrigger>
               <PopoverContent style={contentSx}>
-                <Text size={3}>Вложенный</Text>
+                <Text size={3}>Nested</Text>
                 <div style={actionsListSx}>
                   <Button appearance='transparent' variant='secondary' onClick={() => console.log('nested action 1')}>
-                    Действие 1
+                    Action 1
                   </Button>
                   <Button appearance='transparent' variant='secondary' onClick={() => console.log('nested action 2')}>
-                    Действие 2
+                    Action 2
                   </Button>
                 </div>
               </PopoverContent>
             </Popover>
             
-            <Button onClick={() => console.log('primary action')}>Основное</Button>
+            <Button onClick={() => console.log('primary action')}>Primary</Button>
           </div>
         </PopoverContent>
       </>
@@ -292,23 +292,23 @@ export const ControlledExample: Story = {
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button variant='secondary' onClick={() => setOpen(!open)}>
-            {open ? 'Закрыть' : 'Открыть'} Popover
+            {open ? 'Close' : 'Open'} Popover
           </Button>
         </PopoverTrigger>
         <PopoverBackdrop />
         <PopoverContent style={contentSx}>
           <Heading size={4} fontWeight={600} as='h3'>
-            Контролируемый
+            Controlled
           </Heading>
           <Text asChild size={2}>
-            <p>Управляем состоянием извне через open/onOpenChange</p>
+            <p>State is controlled externally via open/onOpenChange.</p>
           </Text>
           <Separator style={{ marginBlock: 12 }} />
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <Button variant='secondary' appearance='transparent' onClick={() => setOpen(false)}>
-              Готово
+              Done
             </Button>
-            <Button onClick={() => setOpen(false)}>Закрыть</Button>
+            <Button onClick={() => setOpen(false)}>Close</Button>
           </div>
         </PopoverContent>
       </Popover>
