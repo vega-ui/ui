@@ -11,6 +11,7 @@ export interface RangeSliderContextState {
   orientation?: 'horizontal' | 'vertical'
   size?: RangeSliderSize
   minRange?: number
+  disabled?: boolean
 }
 
 export const [RangeSliderProvider, useRangeSliderContext] = createContext<RangeSliderContextState>('RangeSliderContext', {
@@ -19,4 +20,5 @@ export const [RangeSliderProvider, useRangeSliderContext] = createContext<RangeS
   value: [0, 100],
   step: 1,
   orientation: 'horizontal',
+  disabled: false,
 })

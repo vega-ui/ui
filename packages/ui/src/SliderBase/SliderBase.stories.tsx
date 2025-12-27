@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { SliderBase, SliderBaseProps } from './SliderBase.tsx';
-import { SliderBaseProgress, SliderBaseThumb } from './components';
+import { SliderBaseHiddenInput, SliderBaseProgress, SliderBaseThumb } from './components';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof SliderBase> = {
@@ -36,7 +36,9 @@ export const Default: Story = {
     return (
       <SliderBase {...props} style={orientation === 'vertical' ? { height: '400px', ...style } : { width: '400px', ...style }}>
         <SliderBaseProgress orientation={props.orientation} value={value} />
-        <SliderBaseThumb orientation={props.orientation} value={value} />
+        <SliderBaseThumb orientation={props.orientation} value={value}>
+          <SliderBaseHiddenInput value={value} name='default' />
+        </SliderBaseThumb>
       </SliderBase>
     )
   }

@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, fireEvent, screen } from '@testing-library/react'
 import { Slider } from '../Slider.tsx'
-import { SliderThumb, SliderProgress } from '../components'
+import { SliderThumb, SliderProgress, SliderHiddenInput } from '../components'
 
 beforeEach(() => {
   Element.prototype.setPointerCapture = vi.fn()
@@ -13,7 +13,9 @@ describe('Slider', () => {
       render(
         <Slider defaultValue={50} data-testid='slider'>
           <SliderProgress data-testid='progress' />
-          <SliderThumb data-testid='thumb' />
+          <SliderThumb data-testid='thumb'>
+            <SliderHiddenInput />
+          </SliderThumb>
         </Slider>
       )
 
@@ -27,9 +29,11 @@ describe('Slider', () => {
     it('triggers onChange on pointer events', () => {
       const onChange = vi.fn()
       render(
-        <Slider onChange={onChange} data-testid='slider'>
+        <Slider onChangeValue={onChange} data-testid='slider'>
           <SliderProgress />
-          <SliderThumb />
+          <SliderThumb>
+            <SliderHiddenInput />
+          </SliderThumb>
         </Slider>
       )
       const slider = screen.getByTestId('slider')
@@ -45,8 +49,10 @@ describe('Slider', () => {
     it('responds to arrow keys and home/end', () => {
       const onChange = vi.fn()
       render(
-        <Slider value={50} onChange={onChange} data-testid='slider'>
-          <SliderThumb />
+        <Slider value={50} onChangeValue={onChange} data-testid='slider'>
+          <SliderThumb>
+            <SliderHiddenInput />
+          </SliderThumb>
           <SliderProgress />
         </Slider>
       )
@@ -57,7 +63,7 @@ describe('Slider', () => {
       fireEvent.keyDown(slider, { key: 'Home' })
       fireEvent.keyDown(slider, { key: 'End' })
 
-      const values = onChange.mock.calls.map(([, v]) => v)
+      const values = onChange.mock.calls.map(([v]) => v)
 
       expect(values).toContain(0)
       expect(values).toContain(100)
@@ -68,8 +74,10 @@ describe('Slider', () => {
     it('allows non-snapped value when using "any"', () => {
       const onChange = vi.fn()
       render(
-        <Slider step='any' onChange={onChange} data-testid='slider-any'>
-          <SliderThumb />
+        <Slider step='any' onChangeValue={onChange} data-testid='slider-any'>
+          <SliderThumb>
+            <SliderHiddenInput />
+          </SliderThumb>
           <SliderProgress />
         </Slider>
       )
@@ -84,8 +92,10 @@ describe('Slider', () => {
     it('handles pointer interaction in vertical mode', () => {
       const onChange = vi.fn()
       render(
-        <Slider orientation='vertical' onChange={onChange} data-testid='slider-vertical'>
-          <SliderThumb />
+        <Slider orientation='vertical' onChangeValue={onChange} data-testid='slider-vertical'>
+          <SliderThumb>
+            <SliderHiddenInput />
+          </SliderThumb>
           <SliderProgress />
         </Slider>
       )
@@ -100,8 +110,10 @@ describe('Slider', () => {
     it('ignores pointer interaction when disabled', () => {
       const onChange = vi.fn()
       render(
-        <Slider disabled onChange={onChange} data-testid='slider-disabled'>
-          <SliderThumb />
+        <Slider disabled onChangeValue={onChange} data-testid='slider-disabled'>
+          <SliderThumb>
+            <SliderHiddenInput />
+          </SliderThumb>
           <SliderProgress />
         </Slider>
       )

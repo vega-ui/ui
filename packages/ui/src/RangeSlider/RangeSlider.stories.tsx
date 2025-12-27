@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { RangeSlider } from './RangeSlider.tsx';
-import { RangeSliderProgress, RangeSliderThumb } from './components';
+import { RangeSliderHiddenInput, RangeSliderProgress, RangeSliderThumb } from './components';
 import { Text } from '../Text';
 import { useId, useState } from 'react';
 
@@ -20,8 +20,12 @@ const meta: Meta<typeof RangeSlider> = {
     style: { width: 400 },
     children: [
       <RangeSliderProgress />,
-      <RangeSliderThumb index={0} />,
-      <RangeSliderThumb index={1} />
+      <RangeSliderThumb index={0}>
+        <RangeSliderHiddenInput name='0' />
+      </RangeSliderThumb>,
+      <RangeSliderThumb index={1}>
+        <RangeSliderHiddenInput name='1' />
+      </RangeSliderThumb>
     ]
   },
   tags: ['autodocs'],
@@ -48,10 +52,14 @@ export const WithLabels: Story = {
           <Text asChild><label htmlFor={aId}>{value?.[0]}</label></Text>
           <Text asChild><label htmlFor={bId}>{value?.[1]}</label></Text>
         </div>
-        <RangeSlider {...props} value={value} onChange={(_, value) => setValue(value)}>
+        <RangeSlider {...props} value={value} onChangeValue={value => setValue(value)}>
           <RangeSliderProgress />
-          <RangeSliderThumb id={aId} index={0} />
-          <RangeSliderThumb id={bId} index={1} />
+          <RangeSliderThumb id={aId} index={0}>
+            <RangeSliderHiddenInput name='0' />
+          </RangeSliderThumb>
+          <RangeSliderThumb id={bId} index={1}>
+            <RangeSliderHiddenInput name='1' />
+          </RangeSliderThumb>
         </RangeSlider>
       </div>
     )

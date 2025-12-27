@@ -2,23 +2,11 @@
 
 import { CSSProperties, FC, HTMLAttributes } from 'react';
 import style from './style.module.css';
-import { VisuallyHidden } from '../../../VisuallyHidden';
 import { csx } from '@vega-ui/utils';
 import { SliderBaseOrientation, SliderBaseSize, SliderBaseVariant } from '../../types.ts';
+import { useSliderContext } from '../../../Slider';
 
 export interface SliderBaseThumbProps extends HTMLAttributes<HTMLDivElement> {
-  /**
-   * Optional name for the thumb, useful when used in a form context
-   * or when identifying thumbs in multi-thumb sliders.
-   */
-  name?: string
-
-  /**
-   * Optional ID for the outer thumb wrapper.
-   * Useful for associating the thumb with ARIA labels or inputs.
-   */
-  id?: string
-
   /**
    * The minimum allowed value for the slider.
    * Defines the start of the thumb’s valid movement range.
@@ -59,12 +47,6 @@ export interface SliderBaseThumbProps extends HTMLAttributes<HTMLDivElement> {
    * Applies both functional and visual restrictions.
    */
   disabled?: boolean
-
-  /**
-   * Optional ID specifically for the thumb element itself.
-   * Can be used for ARIA or programmatic focus targeting.
-   */
-  thumbId?: string
 }
 
 
@@ -72,7 +54,9 @@ export interface SliderBaseThumbProps extends HTMLAttributes<HTMLDivElement> {
  *  It allows users to interact with the slider by clicking and dragging to adjust the value.
  *  This component is positioned along the slider track based on the current value and responds to pointer events.
  *  It is designed to be composed within a custom slider and styled independently, supporting both horizontal and vertical orientations. */
-export const SliderBaseThumb: FC<SliderBaseThumbProps> = ({ name, id, className, value, disabled, max, min, thumbId, orientation = 'horizontal', variant = 'primary', size = 'md', style: cssStyle, ...props }) => {
+export const SliderBaseThumb: FC<SliderBaseThumbProps> = ({ className, value, disabled, max, min, orientation = 'horizontal', variant = 'primary', size = 'md', style: cssStyle, ...props }) => {
+  const { disabled: _disabled } = useSliderContext()
+  
   return (
     <div
       role='slider'
@@ -83,10 +67,9 @@ export const SliderBaseThumb: FC<SliderBaseThumbProps> = ({ name, id, className,
       aria-valuenow={value}
       aria-valuemax={max}
       aria-orientation={orientation}
-      aria-disabled={disabled}
-      data-disabled={disabled}
+      aria-disabled={disabled ?? _disabled}
+      data-disabled={disabled ?? _disabled}
       data-orientation={orientation}
-      id={thumbId}
       className={csx(style.thumb, className)}
       style={{
         ...cssStyle,
@@ -95,19 +78,6 @@ export const SliderBaseThumb: FC<SliderBaseThumbProps> = ({ name, id, className,
         '--slider-base-min': min
       } as CSSProperties}
       {...props}
-    >
-      <VisuallyHidden asChild>
-        <input
-          aria-hidden
-          readOnly
-          type='range'
-          value={value}
-          name={name}
-          id={id}
-          tabIndex={-1}
-          disabled={disabled}
-        />
-      </VisuallyHidden>
-    </div>
+    />
   )
 }
