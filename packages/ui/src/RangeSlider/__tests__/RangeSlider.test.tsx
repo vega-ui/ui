@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, fireEvent, screen } from '@testing-library/react'
 import { RangeSlider } from '../RangeSlider.tsx'
-import { RangeSliderProgress, RangeSliderThumb } from '../components'
+import { RangeSliderHiddenInput, RangeSliderProgress, RangeSliderThumb } from '../components'
 
 beforeEach(() => {
   Element.prototype.setPointerCapture = vi.fn()
@@ -12,8 +12,12 @@ describe('RangeSlider', () => {
     render(
       <RangeSlider defaultValue={[20, 80]} data-testid='slider'>
         <RangeSliderProgress />
-        <RangeSliderThumb index={0} data-testid='thumb-0' />
-        <RangeSliderThumb index={1} data-testid='thumb-1' />
+        <RangeSliderThumb index={0} data-testid='thumb-0'>
+          <RangeSliderHiddenInput name='from' />
+        </RangeSliderThumb>
+        <RangeSliderThumb index={1} data-testid='thumb-1'>
+          <RangeSliderHiddenInput name='to' />
+        </RangeSliderThumb>
       </RangeSlider>
     )
     expect(screen.getByTestId('thumb-0')).toBeDefined()
@@ -24,10 +28,14 @@ describe('RangeSlider', () => {
   it('calls onChange on pointer drag and prevents overlap if preventSkip=true', () => {
     const onChange = vi.fn()
     render(
-      <RangeSlider defaultValue={[30, 60]} onChange={onChange} preventSkip data-testid='slider'>
+      <RangeSlider defaultValue={[30, 60]} onChangeValue={onChange} preventSkip data-testid='slider'>
         <RangeSliderProgress />
-        <RangeSliderThumb index={0} data-testid='thumb-0' />
-        <RangeSliderThumb index={1} data-testid='thumb-1' />
+        <RangeSliderThumb index={0} data-testid='thumb-0'>
+          <RangeSliderHiddenInput name='from' />
+        </RangeSliderThumb>
+        <RangeSliderThumb index={1} data-testid='thumb-1'>
+          <RangeSliderHiddenInput name='to' />
+        </RangeSliderThumb>
       </RangeSlider>
     )
 
@@ -42,9 +50,13 @@ describe('RangeSlider', () => {
   it('supports keyboard interaction', () => {
     const onChange = vi.fn()
     render(
-      <RangeSlider defaultValue={[0, 100]} onChange={onChange}>
-        <RangeSliderThumb index={0} data-testid='thumb-0' />
-        <RangeSliderThumb index={1} data-testid='thumb-1' />
+      <RangeSlider defaultValue={[0, 100]} onChangeValue={onChange}>
+        <RangeSliderThumb index={0} data-testid='thumb-0'>
+          <RangeSliderHiddenInput name='from' />
+        </RangeSliderThumb>
+        <RangeSliderThumb index={1} data-testid='thumb-1'>
+          <RangeSliderHiddenInput name='to' />
+        </RangeSliderThumb>
         <RangeSliderProgress />
       </RangeSlider>
     )
@@ -59,10 +71,14 @@ describe('RangeSlider', () => {
   it('supports step="any"', () => {
     const onChange = vi.fn()
     render(
-      <RangeSlider defaultValue={[10, 90]} step='any' onChange={onChange} data-testid='slider-any'>
+      <RangeSlider defaultValue={[10, 90]} step='any' onChangeValue={onChange} data-testid='slider-any'>
         <RangeSliderProgress />
-        <RangeSliderThumb index={0} data-testid='thumb-any' />
-        <RangeSliderThumb index={1} />
+        <RangeSliderThumb index={0} data-testid='thumb-any'>
+          <RangeSliderHiddenInput name='from' />
+        </RangeSliderThumb>
+        <RangeSliderThumb index={1}>
+          <RangeSliderHiddenInput name='to' />
+        </RangeSliderThumb>
       </RangeSlider>
     )
 
@@ -74,9 +90,13 @@ describe('RangeSlider', () => {
   it('works in vertical orientation', () => {
     const onChange = vi.fn()
     render(
-      <RangeSlider defaultValue={[10, 90]} orientation='vertical' onChange={onChange} data-testid='slider-vertical'>
-        <RangeSliderThumb index={0} data-testid='thumb-vert' />
-        <RangeSliderThumb index={1} />
+      <RangeSlider defaultValue={[10, 90]} orientation='vertical' onChangeValue={onChange} data-testid='slider-vertical'>
+        <RangeSliderThumb index={0} data-testid='thumb-vert'>
+          <RangeSliderHiddenInput name='from' />
+        </RangeSliderThumb>
+        <RangeSliderThumb index={1}>
+          <RangeSliderHiddenInput name='to' />
+        </RangeSliderThumb>
         <RangeSliderProgress />
       </RangeSlider>
     )
@@ -89,9 +109,13 @@ describe('RangeSlider', () => {
   it('respects disabled state', () => {
     const onChange = vi.fn()
     render(
-      <RangeSlider disabled defaultValue={[10, 90]} onChange={onChange} data-testid='slider-disabled'>
-        <RangeSliderThumb index={0} />
-        <RangeSliderThumb index={1} />
+      <RangeSlider disabled defaultValue={[10, 90]} onChangeValue={onChange} data-testid='slider-disabled'>
+        <RangeSliderThumb index={0}>
+          <RangeSliderHiddenInput name='from' />
+        </RangeSliderThumb>
+        <RangeSliderThumb index={1}>
+          <RangeSliderHiddenInput name='to' />
+        </RangeSliderThumb>
         <RangeSliderProgress />
       </RangeSlider>
     )
@@ -104,9 +128,13 @@ describe('RangeSlider', () => {
   it('respects minRange between thumbs', () => {
     const onChange = vi.fn()
     render(
-      <RangeSlider defaultValue={[40, 45]} minRange={10} onChange={onChange}>
-        <RangeSliderThumb index={0} data-testid='thumb-0' />
-        <RangeSliderThumb index={1} />
+      <RangeSlider defaultValue={[40, 45]} minRange={10} onChangeValue={onChange}>
+        <RangeSliderThumb index={0} data-testid='thumb-0'>
+          <RangeSliderHiddenInput name='from' />
+        </RangeSliderThumb>
+        <RangeSliderThumb index={1}>
+          <RangeSliderHiddenInput name='to' />
+        </RangeSliderThumb>
         <RangeSliderProgress />
       </RangeSlider>
     )

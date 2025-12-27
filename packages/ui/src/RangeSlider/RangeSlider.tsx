@@ -7,7 +7,6 @@ import {
   KeyboardEvent,
   PropsWithChildren,
 } from 'react';
-
 import { useControlledState } from '@vega-ui/hooks';
 import { SliderBase } from '../SliderBase';
 import { RangeSliderProvider } from './contexts';
@@ -71,7 +70,7 @@ export interface RangeSliderProps extends Omit<HTMLAttributes<HTMLDivElement>, '
   /**
    * Called when either thumb value changes.
    */
-  onChange?(e: PointerEvent | KeyboardEvent, value: [number, number]): void
+  onChangeValue?(value: [number, number]): void
 
   /**
    * Whether the entire slider is disabled.
@@ -93,14 +92,14 @@ export const RangeSlider: FC<PropsWithChildren<RangeSliderProps>> = ({
   minRange = 0,
   preventSkip = true,
   children,
-  onChange,
+  onChangeValue,
   defaultValue,
   ...props
 }) => {
   const sliderRef = useRef<HTMLDivElement>(null)
-
+  
   const index = useRef<number>(null)
-  const [value, setValue] = useControlledState<[number, number]>(controlledValue, defaultValue ?? [min, max])
+  const [value, setValue] = useControlledState<[number, number]>(controlledValue, defaultValue ?? [min, max], onChangeValue)
 
   const changeValue = (index: number, val: number) => {
     const current = value[index];
@@ -138,15 +137,13 @@ export const RangeSlider: FC<PropsWithChildren<RangeSliderProps>> = ({
     element.setPointerCapture(e.pointerId)
     index.current = pointedIndex
 
-    const newValues = changeValue(pointedIndex, calcValue(e))
-    if (newValues) onChange?.(e, newValues)
+    changeValue(pointedIndex, calcValue(e))
   }
   
   const onPointerMove = (e: PointerEvent<HTMLDivElement>) => {
     if (index.current === null) return
 
     const val = calcValue(e)
-    
     const newValues = changeValue(index.current, val)
     
     if (val < value[0] && index.current !== 0) index.current = 0;
@@ -154,7 +151,6 @@ export const RangeSlider: FC<PropsWithChildren<RangeSliderProps>> = ({
     
     if (!newValues) return
 
-    onChange?.(e, newValues)
     if (newValues[0] === newValues[1] && value[index.current] !== val && preventSkip) {
       index.current = null;
       return
@@ -175,10 +171,7 @@ export const RangeSlider: FC<PropsWithChildren<RangeSliderProps>> = ({
 
       if (index === 0 && val > value[1]) return
       if (index === 1 && val < value[0]) return
-      if (val >= min) {
-        const newValues = changeValue(index, val)
-        if (newValues) onChange?.(e, newValues)
-      }
+      if (val >= min) changeValue(index, val)
 
       return
     }
@@ -190,8 +183,7 @@ export const RangeSlider: FC<PropsWithChildren<RangeSliderProps>> = ({
         ? index === 0 ? min : value[0]
         : index === 1 ? max : value[1]
       
-      const newValues = changeValue(index, val)
-      if (newValues) onChange?.(e, newValues)
+      changeValue(index, val)
 
       return
     }
@@ -210,6 +202,7 @@ export const RangeSlider: FC<PropsWithChildren<RangeSliderProps>> = ({
       step={step}
       size={size}
       orientation={orientation}
+      disabled={disabled}
     >
       <SliderBase
         disabled={disabled}

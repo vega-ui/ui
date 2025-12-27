@@ -19,7 +19,7 @@ const meta = {
   args: {},
   decorators(Story) {
     return (
-      <SegmentedControl>
+      <SegmentedControl name='default'>
         <SegmentedControlIndicator />
         <SegmentedControlItem value='1'>
           <Story />

@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes, PointerEvent, KeyboardEvent, MouseEvent, useRef, useState, useCallback } from 'react';
+import { FC, HTMLAttributes, PointerEvent, KeyboardEvent, MouseEvent, useRef, useCallback } from 'react';
 
 import { clamp } from '@vega-ui/utils';
 import { useControlledState } from '@vega-ui/hooks';
@@ -6,7 +6,7 @@ import { SliderProvider } from './contexts';
 import { SliderBase } from '../SliderBase';
 import { SliderSize } from './types.ts';
 
-export interface SliderProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange'> {
+export interface SliderProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * Controlled value of the slider.
    * Takes precedence over `defaultValue` if provided.
@@ -23,10 +23,7 @@ export interface SliderProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onCha
    * Callback fired when the slider value changes.
    * Provides the original pointer, mouse, or keyboard event and the new numeric value.
    */
-  onChange?: (
-    e: PointerEvent<HTMLDivElement> | MouseEvent<HTMLDivElement> | KeyboardEvent<HTMLDivElement>,
-    value: number
-  ) => void
+  onChangeValue?(value: number): void
 
   /**
    * The maximum allowed value for the slider.
@@ -53,11 +50,6 @@ export interface SliderProps extends Omit<HTMLAttributes<HTMLDivElement>, 'onCha
   orientation?: 'vertical' | 'horizontal'
 
   /**
-   * Optional class name for applying custom styles to the root slider element.
-   */
-  className?: string
-
-  /**
    * Visual size of the slider.
    */
   size?: SliderSize
@@ -80,7 +72,7 @@ export const Slider: FC<SliderProps> = ({
   defaultValue: controlledDefaultValue,
   value: controlledValue,
   size = 'md',
-  onChange,
+  onChangeValue,
   orientation = 'horizontal',
   disabled,
   children,
@@ -90,13 +82,12 @@ export const Slider: FC<SliderProps> = ({
 
   const defaultValue = controlledDefaultValue ? controlledDefaultValue :max < min ? min : min + (max - min) / 2;
 
-  const [value, setValue] = useControlledState(controlledValue, defaultValue)
-  const [dragging, setDragging] = useState(false)
+  const [value, setValue] = useControlledState(controlledValue, defaultValue, onChangeValue)
+  const dragging = useRef(false)
 
-  const changeValue = useCallback((e: PointerEvent<HTMLDivElement> | KeyboardEvent<HTMLDivElement> | MouseEvent<HTMLDivElement>, newValue: number) => {
+  const changeValue = useCallback((newValue: number) => {
     if (disabled || newValue === value) return
 
-    onChange?.(e, newValue)
     setValue(newValue)
   }, [])
 
@@ -110,7 +101,6 @@ export const Slider: FC<SliderProps> = ({
       : 1 - (e.clientY - rect.top) / rect.height
 
     const raw = min + (max - min) * percent
-
     if (step === 'any') return clamp(min, raw, max)
 
     const snapped = Math.round(raw / step) * step
@@ -118,14 +108,12 @@ export const Slider: FC<SliderProps> = ({
   }
 
   const onSliderPointerDown = (e: PointerEvent<HTMLDivElement>) => {
-    const val = calcValue(e)
-
-    changeValue(e, val)
+    changeValue(calcValue(e))
 
     const element = e.target as HTMLElement
     element?.setPointerCapture(e.pointerId)
-
-    setDragging(true)
+    
+    dragging.current = true;
   }
 
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
@@ -136,39 +124,36 @@ export const Slider: FC<SliderProps> = ({
       case 'ArrowLeft': {
         e.preventDefault()
         const nextValue = value - formattedStep
-        if (nextValue >= min) changeValue?.(e, nextValue)
+        if (nextValue >= min) changeValue?.(nextValue)
         return
       }
       case 'ArrowUp':
       case 'ArrowRight': {
         e.preventDefault()
         const nextValue = value + formattedStep
-        if (nextValue <= max) changeValue?.(e, nextValue)
+        if (nextValue <= max) changeValue?.(nextValue)
         return
       }
       case 'Home':
         e.preventDefault()
-        changeValue?.(e, min)
+        changeValue?.(min)
         return
       case 'End':
         e.preventDefault()
-        changeValue?.(e, max)
+        changeValue?.(max)
         return
     }
   }
 
   const onPointerMove = (e: PointerEvent<HTMLDivElement>) => {
-    if (!dragging) return
-
-    const val = calcValue(e)
-
-    changeValue(e, val)
+    if (!dragging.current) return
+    changeValue(calcValue(e))
   }
 
   return (
     <SliderProvider
       orientation={orientation}
-      step={step === 'any' ? 1 : step}
+      step={step}
       min={min}
       max={max}
       value={value}
@@ -179,11 +164,11 @@ export const Slider: FC<SliderProps> = ({
         onPointerDown={onSliderPointerDown}
         onKeyDown={onKeyDown}
         onMouseUp={() => {
-          setDragging(false)
+          dragging.current = false
         }}
         onPointerMove={onPointerMove}
         onPointerUp={() => {
-          setDragging(false)
+          dragging.current = false
         }}
         ref={sliderRef}
         min={min}

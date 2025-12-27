@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Slider } from './Slider.tsx';
-import { SliderProgress, SliderThumb } from './components';
+import { SliderHiddenInput, SliderProgress, SliderThumb } from './components';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof Slider> = {
@@ -24,7 +24,9 @@ const meta: Meta<typeof Slider> = {
     style: { width: '400px' },
     children: [
       <SliderProgress />,
-      <SliderThumb />
+      <SliderThumb>
+        <SliderHiddenInput name='default' />
+      </SliderThumb>
     ]
   },
   tags: ['autodocs'],

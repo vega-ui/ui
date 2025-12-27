@@ -27,7 +27,7 @@ const meta = {
   args: {},
   decorators(Story) {
     return (
-      <SegmentedControl>
+      <SegmentedControl name='default'>
         <Story />
       </SegmentedControl>
     )
