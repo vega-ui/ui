@@ -1,10 +1,10 @@
+'use client';
+
 import { FC, HTMLAttributes, Ref } from 'react';
-import { FloatingFocusManager, FloatingPortal } from '@floating-ui/react';
-import { RemoveScroll } from 'react-remove-scroll';
-import { SheetOverlay } from '../SheetOverlay';
-import { mergeProps, mergeRefs } from '@vega-ui/utils';
+import { csx, mergeProps, mergeRefs } from '@vega-ui/utils';
 import { useSheetContext } from '../../contexts';
-import { SheetContainer } from '../SheetContainer';
+import { useTransitionStatus } from '@floating-ui/react';
+import styles from './style.module.css'
 
 export interface SheetContentProps extends HTMLAttributes<HTMLDivElement> {
   /**
@@ -13,44 +13,31 @@ export interface SheetContentProps extends HTMLAttributes<HTMLDivElement> {
   className?: string
 
   /**
-   * Renders the sheet as an overlay above content instead of displacing layout.
-   */
-  overlaid?: boolean
-
-  /**
    * Ref forwarded to the root sheet container.
    * Useful for focus management, measurement, or animation hooks.
    */
   ref?: Ref<HTMLDivElement>
-
+  
   /**
-   * Applies a blurred background overlay behind the sheet.
-   * Enhances focus and visual depth.
+   * Applies a visual shadow to the sheet panel.
+   * Adds depth and separation from the background.
    */
-  blurredOverlay?: boolean
-
-  /**
-   * Controls visibility without unmounting the component.
-   * When `true`, the sheet is hidden but still rendered in the DOM.
-   */
-  hidden?: boolean
+  shadowed?: boolean
 }
 
 /** The SheetContent component is the main container for a sliding sheet or bottom drawer, supporting scrollable content, overlays, headers, and visibility toggling for responsive, layered UI panels */
 export const SheetContent: FC<SheetContentProps> = ({
   className,
-  overlaid = true,
-  blurredOverlay,
   ref,
-  hidden,
   children,
+  shadowed,
+  style,
   ...props
 }) => {
   const {
     context,
     contentRef,
     contentProps = {},
-    isMounted,
     transitionStatus,
     onPress,
     onDrag,
@@ -59,39 +46,25 @@ export const SheetContent: FC<SheetContentProps> = ({
     offset = 0,
     transforming,
   } = useSheetContext()
-
-  const content = (
-    <SheetContainer
-      className={className}
-      shadow={!overlaid}
+  const { status } = useTransitionStatus(context)
+  
+  const mergedStyles = { ...(status === 'open' ? { transform: `translateY(${offset}px)` } : {}), ...style }
+  
+  return (
+    <div
+      className={csx(styles.content, className)}
       onScrollCapture={onScrollCapture}
       onPointerDown={onPress}
       onPointerMove={onDrag}
       onPointerUp={onRelease}
-      hidden={overlaid ? hidden : !isMounted}
-      status={transitionStatus}
+      data-status={transitionStatus}
       ref={mergeRefs([contentRef, ref])}
-      offset={offset}
-      dragging={transforming}
+      style={mergedStyles}
+      data-dragging={transforming}
+      data-shadow={shadowed}
       {...mergeProps(contentProps, props)}
     >
       {children}
-    </SheetContainer>
-  )
-
-  return (
-    <FloatingPortal>
-      {isMounted && (
-        <FloatingFocusManager context={context}>
-          <RemoveScroll>
-            {overlaid ? (
-              <SheetOverlay blurred={blurredOverlay} hidden={!isMounted}>
-                {content}
-              </SheetOverlay>
-            ) : content}
-          </RemoveScroll>
-        </FloatingFocusManager>
-      )}
-    </FloatingPortal>
+    </div>
   )
 }

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react'
 import { Sheet } from '../Sheet.tsx';
 import { act } from 'react';
-import { SheetContent, SheetTrigger } from '../components';
+import { SheetBackdrop, SheetContent, SheetPortal, SheetTrigger } from '../components';
 
 const TRIGGER_TEXT = 'Trigger'
 const CONTENT_TEXT = 'Content'
@@ -14,9 +14,13 @@ describe('Sheet', () => {
         <SheetTrigger asChild>
           <button>{TRIGGER_TEXT}</button>
         </SheetTrigger>
-        <SheetContent>
-          {CONTENT_TEXT}
-        </SheetContent>
+        <SheetPortal>
+          <SheetBackdrop>
+            <SheetContent>
+              {CONTENT_TEXT}
+            </SheetContent>
+          </SheetBackdrop>
+        </SheetPortal>
       </Sheet>
     )
 
@@ -32,9 +36,13 @@ describe('Sheet', () => {
         <SheetTrigger asChild>
           <button>{TRIGGER_TEXT}</button>
         </SheetTrigger>
-        <SheetContent>
-          {CONTENT_TEXT}
-        </SheetContent>
+        <SheetPortal>
+          <SheetBackdrop>
+            <SheetContent>
+              {CONTENT_TEXT}
+            </SheetContent>
+          </SheetBackdrop>
+        </SheetPortal>
       </Sheet>
     )
 
