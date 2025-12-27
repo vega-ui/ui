@@ -1,0 +1,29 @@
+.indicator {
+    display: block;
+    border-radius: inherit;
+    position: absolute;
+    z-index: -1;
+    pointer-events: none;
+    box-sizing: border-box;
+    top: 0;
+    left: 0;
+    height: 100%;
+    transform: translateX(var(--segmented-control-indicator-offset));
+    width: var(--segmented-control-indicator-size);
+    transition:
+            transform var(--transition-fast-state-delay) ease-in-out,
+            width var(--transition-fast-state-delay) ease-in-out,
+            height var(--transition-fast-state-delay) ease-in-out;
+}
+
+.indicator[data-variant='primary'] {
+    background-color: var(--color-primary-500);
+}
+
+.indicator[data-variant='secondary'] {
+    background-color: var(--color-secondary-500);
+}
+
+.indicator[data-disabled='true'] {
+    background-color: var(--disable-background-color);
+}

@@ -1,11 +1,10 @@
-import { ChangeEvent, FC, HTMLAttributes, ReactNode } from 'react';
+import { FC, HTMLAttributes, Ref } from 'react';
 import style from './style.module.css';
-import { VisuallyHidden } from '../../../VisuallyHidden';
-import { useSegmentedControlContext } from '../../contexts';
-import { csx } from '@vega-ui/utils';
-import { SegmentedControlSize, SegmentedControlVariant } from '../../types.ts';
+import { SegmentedControlItemProvider, useSegmentedControlContext } from '../../contexts';
+import { csx, mergeRefs } from '@vega-ui/utils';
+import { SegmentedControlSize, SegmentedControlValue, SegmentedControlVariant } from '../../types.ts';
 
-export interface SegmentedControlItemProps extends HTMLAttributes<HTMLInputElement> {
+export interface SegmentedControlItemProps extends HTMLAttributes<HTMLLabelElement> {
   /**
    * Disables the item, preventing selection and focus.
    */
@@ -21,52 +20,44 @@ export interface SegmentedControlItemProps extends HTMLAttributes<HTMLInputEleme
    * Visual style variant of the item.
    */
   variant?: SegmentedControlVariant
-
+  
   /**
-   * The content (usually a label or icon) displayed inside the item.
+   * The unique value associated with this segment
    */
-  children?: ReactNode
-
+  value: SegmentedControlValue
+  
   /**
-   * Whether the item is currently selected.
-   * Can be controlled manually or via SegmentedControl's `value`.
+   * Ref forwarded to the underlying `<label>` element.
    */
-  checked?: boolean
-
-  /**
-   * Value associated with this item, used for identification and selection.
-   */
-  value?: string | number
+  ref?: Ref<HTMLLabelElement>
 }
 
 /** Represents an individual selectable option inside a SegmentedControl group */
 export const SegmentedControlItem: FC<SegmentedControlItemProps> = ({
   disabled,
-  checked,
   variant,
   size,
-  value,
   children,
   className,
-  onChange,
+  value,
+  ref,
   ...props
 }) => {
-  const { value: selectedValue, size: _size, onChange: _onChange, name, disabled: _disabled, variant: _variant } = useSegmentedControlContext()
-
-  const inputChecked = checked ?? selectedValue === value
-
-  const onInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    _onChange(e)
-    onChange?.(e)
-  }
+  const { size: _size, variant: _variant, disabled: _disabled, itemRef, selected } = useSegmentedControlContext()
 
   return (
-    <label data-checked={inputChecked} data-disabled={disabled} data-size={size ?? _size} data-variant={variant ?? _variant} className={csx(style.control, className)}>
-      <VisuallyHidden asChild>
-        <input onChange={onInputChange} value={value} disabled={_disabled ?? disabled} type='radio' name={name}
-               checked={inputChecked} {...props} />
-      </VisuallyHidden>
-      {children}
-    </label>
+    <SegmentedControlItemProvider value={value}>
+      <label
+        data-disabled={disabled ?? _disabled}
+        data-size={size ?? _size}
+        data-variant={variant ?? _variant}
+        data-active={selected === value}
+        className={csx(style.item, className)}
+        ref={mergeRefs([itemRef?.(value), ref])}
+        {...props}
+      >
+        {children}
+      </label>
+    </SegmentedControlItemProvider>
   )
 }
