@@ -1,7 +1,7 @@
 'use client';
 
-import { FC, HTMLAttributes, ReactNode, Ref } from 'react';
-import { FloatingFocusManager, FloatingOverlay, useTransitionStyles } from '@floating-ui/react';
+import { FC, Fragment, HTMLAttributes, ReactNode, Ref } from 'react';
+import { FloatingFocusManager, useTransitionStatus } from '@floating-ui/react';
 import { csx, mergeProps, mergeRefs } from '@vega-ui/utils';
 import styles from './style.module.css';
 import { usePopoverContext } from '../../contexts';
@@ -18,26 +18,10 @@ export interface PopoverContentProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode
 
   /**
-   * If true, prevents background scrolling while the popover is open.
-   */
-  lockScroll?: boolean
-
-  /**
    * Applies a visual shadow to the component container.
    * Adds elevation and depth, visually separating the content from the background.
    */
   shadowed?: boolean
-
-  /**
-   * Renders the popover as an overlay above the main content.
-   */
-  overlaid?: boolean
-
-  /**
-   * Applies a blurred background overlay behind the popover.
-   * Enhances visual focus and contrast.
-   */
-  blurredOverlay?: boolean
 
   /**
    * Ref forwarded to the popover content element.
@@ -49,43 +33,32 @@ export interface PopoverContentProps extends HTMLAttributes<HTMLDivElement> {
 /** The PopoverContent component defines the visible area of a Popover, supporting scroll locking, overlays, and visual effects like background blur, while rendering custom content inside a floating or overlaid panel */
 export const PopoverContent: FC<PopoverContentProps> = ({
   ref,
-  blurredOverlay,
-  overlaid,
   shadowed = true,
   className,
   children,
-  lockScroll,
+  style,
   ...props
 }) => {
-  const { open, context, contentRef, contentProps = {}, contentStyles } = usePopoverContext()
+  const { context, contentProps = {}, contentStyles } = usePopoverContext()
 
-  const { styles: transitionStyles } = useTransitionStyles(context, {
-    duration: 200,
-  });
-
-  const content = (
-    <FloatingFocusManager context={context}>
-      <div
-        ref={mergeRefs([contentRef, ref])}
-        style={{ ...transitionStyles, ...contentStyles }}
-        data-shadowed={shadowed}
-        className={csx(styles.popover, className)}
-        {...mergeProps(contentProps, props)}
-      >
-        {children}
-      </div>
-    </FloatingFocusManager>
-  )
+  const { status, isMounted } = useTransitionStatus(context);
 
   return (
-    <>
-      {open && (
-        overlaid ? (
-          <FloatingOverlay lockScroll={lockScroll} className={csx(styles.popoverOverlay, blurredOverlay ? styles.popoverOverlayBlurred : undefined)}>
-            {content}
-          </FloatingOverlay>
-        ) : content
+    <Fragment>
+      {isMounted && (
+        <FloatingFocusManager context={context}>
+          <div
+            ref={mergeRefs([context?.refs.setFloating, ref])}
+            style={{ ...contentStyles, ...style }}
+            data-shadowed={shadowed}
+            data-status={status}
+            className={csx(styles.content, className)}
+            {...mergeProps(contentProps, props)}
+          >
+            {children}
+          </div>
+        </FloatingFocusManager>
       )}
-    </>
+    </Fragment>
   )
 }

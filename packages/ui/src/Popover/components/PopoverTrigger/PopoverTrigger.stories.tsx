@@ -28,7 +28,7 @@ export const Default: Story = {
           <Button>Open</Button>
         </PopoverTrigger>
         <PopoverContent>
-          <Text>Modal content</Text>
+          <Text>Popover content</Text>
         </PopoverContent>
       </Popover>
     )
