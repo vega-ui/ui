@@ -1,4 +1,4 @@
-.control {
+.item {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -6,66 +6,69 @@
     border-radius: inherit;
     position: relative;
     outline: none;
+    white-space: nowrap;
     font-family: var(--default-font-family);
     font-weight: 500;
     height: 100%;
     cursor: pointer;
     background-color: transparent;
     color: var(--text-color);
-    padding: var(--spacing-3) var(--spacing-5);
+    padding-inline: var(--padding-inline);
+    padding-block: var(--spacing-3);
     transition: color var(--transition-fast-state-delay) ease,
-    background-color var(--transition-fast-state-delay) ease-in;
+                background-color var(--transition-fast-state-delay) ease-in;
 }
 
-.control:hover {
+.item:hover {
     background-color: var(--color-gray-accent-100);
 }
 
-.control:active {
+.item:active {
     background-color: var(--color-gray-accent-150);
 }
 
-.control[data-disabled='true'] {
-    color: var(--color-gray-accent-800) !important;
-    cursor: not-allowed;
-}
-
-.control[data-checked='true'][data-disabled='true'] {
-    color: var(--color-gray-accent-800) !important;
-}
-
-.control[data-disabled='true']:hover,
-.control[data-disabled='true']:active {
+.item[data-disabled='true']:hover,
+.item[data-disabled='true']:active {
     background-color: initial;
 }
 
-.control[data-checked='true'] {
+.item[data-active='true'] {
     color: var(--text-inverce-color);
     transition: color var(--transition-fast-state-delay) ease, background-color 0s;
 }
 
-.control[data-checked='true'],
-.control[data-checked='true']:hover,
-.control[data-checked='true']:active {
+.item[data-active='true'],
+.item[data-active='true']:hover,
+.item[data-active='true']:active {
     background-color: initial;
 }
 
-.control[data-size='xs'] {
-    font-size: var(--font-size-2);
+.item[data-disabled='true'] {
+    color: var(--disable-text-color);
+    cursor: not-allowed;
 }
 
-.control[data-size='sm'] {
+.item[data-size='xs'] {
     font-size: var(--font-size-2);
+    --padding-inline: var(--spacing-8);
 }
 
-.control[data-size='md'] {
+.item[data-size='sm'] {
+    font-size: var(--font-size-2);
+    --padding-inline: var(--spacing-10);
+}
+
+.item[data-size='md'] {
     font-size: var(--font-size-3);
+    --padding-inline: var(--spacing-12);
 }
 
-.control[data-size='lg'] {
+.item[data-size='lg'] {
     font-size: var(--font-size-4);
+    --padding-inline: var(--spacing-14);
 }
 
-.control[data-size='xl'] {
+.item[data-size='xl'] {
     font-size: var(--font-size-4);
+    --padding-inline: var(--spacing-16);
 }

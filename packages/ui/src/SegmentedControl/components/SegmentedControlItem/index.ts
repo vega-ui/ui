@@ -1,1 +1,1 @@
-export * from './SegmentedControlItem.tsx'
+export * from './SegmentedControlItem'

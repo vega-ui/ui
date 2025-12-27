@@ -2,21 +2,19 @@
 
 import { ChangeEvent } from 'react';
 import { createContext } from '@vega-ui/react-context';
-import { SegmentedControlSize, SegmentedControlVariant } from '../../types.ts';
+import { SegmentedControlSize, SegmentedControlValue, SegmentedControlVariant } from '../../types.ts';
 
 export interface SegmentedControlContextState {
-  value: string | number | undefined
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void
   size?: SegmentedControlSize
   disabled?: boolean
-  name?: string
   variant?: SegmentedControlVariant
+  selected?: SegmentedControlValue
+  name?: string
+  onChange?(e: ChangeEvent<HTMLInputElement>): void
+  itemRef?(key: SegmentedControlValue): (element: HTMLLabelElement) => void
 }
 
 export const [SegmentedControlProvider, useSegmentedControlContext] = createContext<SegmentedControlContextState>('SegmentedControlContext', {
-  value: undefined,
-  onChange: () => undefined,
   size: undefined,
   disabled: undefined,
-  name: undefined
 })
