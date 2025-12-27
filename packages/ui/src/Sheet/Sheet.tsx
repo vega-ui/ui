@@ -43,6 +43,10 @@ export interface SheetProps {
    * @default 500
    * */
   swipeTimestamp?: number
+  
+  /**
+   * Determines whether the component can be closed by user interaction.
+   */
   closable?: boolean
   /**
    * When swiping, the nearest snap point will be clearly recorded.
@@ -150,7 +154,7 @@ export const Sheet: FC<SheetProps> = ({
   const click = useClick(context, { enabled: clickEnabled });
   const dismiss = useDismiss(context, {
     outsidePressEvent: 'pointerdown',
-    enabled: dismissible
+    enabled: dismissible && closable
   });
   const role = useRole(context);
 

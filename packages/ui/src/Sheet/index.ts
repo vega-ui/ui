@@ -5,5 +5,7 @@ export {
   SheetHandle, type SheetHandleProps,
   SheetHeader, type SheetHeaderProps,
   SheetMain, type SheetMainProps,
+  SheetBackdrop, type SheetBackdropProps,
+  SheetPortal, type SheetPortalProps,
 } from './components'
 export { useSheetContext } from './contexts'
