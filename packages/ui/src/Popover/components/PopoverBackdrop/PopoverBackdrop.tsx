@@ -17,7 +17,7 @@ export type PopoverBackdropProps = BackdropProps
  */
 export const PopoverBackdrop: FC<PopoverBackdropProps> = (props) => {
   const { context } = usePopoverContext()
-  const { isMounted } = useTransitionStatus(context)
+  const { status, isMounted } = useTransitionStatus(context)
   
-  return isMounted ? <Backdrop {...props} /> : null
+  return isMounted ? <Backdrop visible={status === 'open'} {...props} /> : null
 }

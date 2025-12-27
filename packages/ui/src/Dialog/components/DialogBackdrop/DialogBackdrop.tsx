@@ -23,6 +23,6 @@ export type DialogBackdropProps = BackdropProps
  */
 
 export const DialogBackdrop: FC<DialogBackdropProps> = ({ className, ...props }) => {
-  const { fluid } = useDialogContext()
-  return <Backdrop className={csx(style.backdrop, className)} data-fluid={fluid} {...props} />
+  const { fluid, status } = useDialogContext()
+  return <Backdrop visible={status === 'open'} className={csx(style.backdrop, className)} data-fluid={fluid} {...props} />
 }

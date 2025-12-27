@@ -4,6 +4,12 @@
     z-index: 1;
 }
 
+.backdrop[data-visible='true']::after {
+    background: var(--overlay);
+    opacity: 1;
+    visibility: visible;
+}
+
 .backdrop::after {
     content: '';
     position: absolute;
@@ -12,9 +18,13 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: var(--overlay);
+    visibility: hidden;
+    transition: opacity var(--transition-slow-state-delay) ease,
+                visibility var(--transition-state-delay) ease;
+    background: transparent;
+    opacity: 0;
 }
 
 .backdrop[data-blurred='true']::after {
-    backdrop-filter: blur(2px);
+    backdrop-filter: blur(10px);
 }
