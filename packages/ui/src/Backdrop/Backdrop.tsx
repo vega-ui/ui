@@ -8,6 +8,11 @@ export interface BackdropProps extends HTMLAttributes<HTMLDivElement>, FloatingO
    * Enables a background blur effect
    */
   blurred?: boolean
+  
+  /**
+   * Backdrop visibility
+   */
+  visible?: boolean
 }
 
 /**
@@ -20,11 +25,19 @@ export interface BackdropProps extends HTMLAttributes<HTMLDivElement>, FloatingO
  * The component composes `FloatingOverlay` to handle scroll locking
  * and layering, and supports optional visual effects such as blur.
  */
-export const Backdrop: FC<PropsWithChildren<BackdropProps>> = ({ lockScroll = true, className, blurred = true, children, ...props }) => {
+export const Backdrop: FC<PropsWithChildren<BackdropProps>> = ({
+  lockScroll = true,
+  className,
+  blurred = true,
+  visible = false,
+  children,
+  ...props
+}) => {
   return (
     <FloatingOverlay
       data-blurred={blurred}
       lockScroll={lockScroll}
+      data-visible={visible}
       className={csx(style.backdrop, className)}
       {...props}
     >

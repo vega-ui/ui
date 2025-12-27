@@ -1,4 +1,5 @@
 :root {
+    --transition-slow-state-delay: 0.4s;
     --transition-state-delay: 0.25s;
     --transition-fast-state-delay: 0.15s;
 }

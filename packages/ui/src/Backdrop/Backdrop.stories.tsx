@@ -11,6 +11,7 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {},
   args: {
+    visible: true,
     lockScroll: false,
   },
   decorators(Story) {
