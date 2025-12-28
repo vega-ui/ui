@@ -1,0 +1,13 @@
+.track {
+    --meter-track-br-ratio: 1;
+    --meter-track-height: var(--meter-height);
+
+    width: calc(var(--meter-value) / var(--meter-max) * 100%);
+
+    height: var(--meter-track-height);
+    background-color: var(--meter-track-color, var(--color-primary-500));
+    border-radius: calc(var(--meter-track-height) * var(--meter-track-br-ratio));
+
+    transition: width var(--transition-state-delay) ease,
+                background-color var(--transition-state-delay) ease;
+}

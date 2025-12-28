@@ -11,7 +11,7 @@ import { Text } from '../Text';
 import { Button } from '../Button';
 import { Card } from '../Card';
 import { Lock, LockOpen } from '@vega-ui/icons';
-import { PartialMeter, PartialMeterItem } from '../PartialMeter';
+import { MeterStack, PartialMeterItem } from '../MeterStack';
 import { CSSProperties, FC, PropsWithChildren, useMemo, useState } from 'react';
 
 const meta = {
@@ -161,7 +161,7 @@ export const WithStrengthMeter: Story = {
         </PasswordField>
         
         <div style={{ display: 'grid', gap: 8 }}>
-          <PartialMeter value={getPasswordScore(value)}>
+          <MeterStack value={getPasswordScore(value)}>
             <PartialMeterItem
               value={meter.a * 0.25}
               style={{ '--meter-item-color': 'var(--color-red-accent-500)' } as CSSProperties}
@@ -178,7 +178,7 @@ export const WithStrengthMeter: Story = {
               value={meter.d * 0.25}
               style={{ '--meter-item-color': 'var(--color-green-accent-500)' } as CSSProperties}
             />
-          </PartialMeter>
+          </MeterStack>
           
           <Text asChild size={2} style={{ opacity: 0.7 }}>
             <p>

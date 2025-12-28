@@ -1,6 +1,8 @@
 .progress {
     --progress-height: var(--spacing-2);
     --progress-br-ratio: 1;
+    --progress-value: 0;
+    --progress-max: 0;
 
     height: var(--progress-height);
     border-radius: calc(var(--progress-height) * var(--progress-br-ratio));
@@ -9,29 +11,23 @@
     overflow-x: clip;
 }
 
-.progressTrack {
-    --progress-track-br-ratio: 1;
-    --progress-track-height: var(--progress-height);
-    --progress-track-color: var(--color-primary-500);
-
-    height: var(--progress-track-height);
-    background-color: var(--progress-track-color);
-    border-radius: calc(var(--progress-track-height) * var(--progress-track-br-ratio));
-
-    transition: width var(--transition-state-delay) ease;
-}
-
-.progress[data-fullwidth='true'] {
+.progress[data-full-width='true'] {
     width: 100%;
 }
 
-.progress:has(progress:indeterminate) {
+.progress[data-indeterminate='true'] {
     overflow-x: hidden;
+
+    --progress-track-width: 100%;
+    --progress-track-animation: 1.25s progressTrackIndeterminate ease-in-out infinite;
 }
 
-.progress:has(progress:indeterminate) .progressTrack {
-    width: 100%;
-    animation: 1.25s progressTrackIndeterminate ease-in-out infinite;
+.progress[data-variant='primary'] {
+    --progress-track-color: var(--color-primary-500);
+}
+
+.progress[data-variant='secondary'] {
+    --progress-track-color: var(--color-secondary-500);
 }
 
 .progress[data-size='sm'] {
@@ -44,14 +40,6 @@
 
 .progress[data-size='lg'] {
     --progress-height: var(--spacing-6);
-}
-
-.progress[data-variant='primary'] .progressTrack {
-    --progress-track-color: var(--color-primary-500);
-}
-
-.progress[data-variant='secondary'] .progressTrack {
-    --progress-track-color: var(--color-secondary-500);
 }
 
 @keyframes progressTrackIndeterminate {

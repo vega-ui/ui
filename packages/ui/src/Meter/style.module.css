@@ -15,20 +15,7 @@
     overflow-x: clip;
 }
 
-.meterTrack {
-    --meter-track-br-ratio: 1;
-    --meter-track-height: var(--meter-height);
-    --meter-track-color: var(--color-primary-500);
-
-    width: calc(var(--meter-value) / var(--meter-max) * 100%);
-    height: var(--meter-track-height);
-    background-color: var(--meter-track-color);
-    border-radius: calc(var(--meter-track-height) * var(--meter-track-br-ratio));
-
-    transition: width var(--transition-state-delay) ease;
-}
-
-.meter[data-fullwidth='true'] {
+.meter[data-full-width='true'] {
     width: 100%;
 }
 
@@ -44,22 +31,22 @@
     --meter-height: var(--spacing-6);
 }
 
-.meter[data-variant='primary'] .meterTrack {
+.meter[data-variant='primary'] {
     --meter-track-color: var(--color-primary-500);
 }
 
-.meter[data-variant='secondary'] .meterTrack {
+.meter[data-variant='secondary'] {
     --meter-track-color: var(--color-secondary-500);
 }
 
-.meter[data-state='good'] .meterTrack {
+.meter[data-state='good'] {
     --meter-track-color: var(--meter-track-optimum-color);
 }
 
-.meter[data-state='warn'] .meterTrack {
+.meter[data-state='warn'] {
     --meter-track-color: var(--meter-track-suboptimum-color);
 }
 
-.meter[data-state='bad'] .meterTrack {
+.meter[data-state='bad'] {
     --meter-track-color: var(--meter-track-even-less-good-color);
 }

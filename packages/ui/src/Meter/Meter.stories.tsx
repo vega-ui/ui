@@ -1,13 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Meter, MeterProps } from './Meter.tsx';
-
-const sizes: MeterProps['size'][] = ['sm', 'md', 'lg'] as const
-const variants: MeterProps['variant'][] = ['primary', 'secondary'] as const
+import { Meter } from './Meter.tsx';
+import { MeterTrack } from './components';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof Meter> = {
-  title: 'Feedback/Meter',
+  title: 'Feedback/Meter/Meter',
   component: Meter,
   parameters: {
     layout: 'centered',
@@ -25,6 +23,9 @@ const meta: Meta<typeof Meter> = {
       control: 'radio',
       options: ['primary', 'secondary'],
     }
+  },
+  args: {
+    children: <MeterTrack />
   },
   tags: ['autodocs'],
 };
@@ -59,28 +60,6 @@ export const WithMax: Story = {
       width: '150px',
     }
   },
-};
-
-export const Sizes: Story = {
-  render(props) {
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        {sizes.map((size, index) => <Meter value={.5} style={{ width: 100 + index * 50 + 'px' }} size={size} {...props} />)}
-      </div>
-    )
-  }
-};
-
-export const AllVariants: Story = {
-  render(props) {
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        {variants.map((variant) =>
-          sizes.map((size, index) => <Meter value={.5} style={{ width: 100 + index * 50 + 'px' }} variant={variant} size={size} {...props} />)
-        )}
-      </div>
-    )
-  }
 };
 
 export const Optimum: Story = {
