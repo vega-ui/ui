@@ -2,7 +2,7 @@ import { FC, HTMLAttributes } from 'react';
 import { usePinFieldContext } from '../../contexts';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
-import { PinFieldSize } from '../../types.ts';
+import { PinFieldSize } from '../../types';
 
 export interface PinFieldSeparatorProps extends HTMLAttributes<HTMLDivElement> {
   /**

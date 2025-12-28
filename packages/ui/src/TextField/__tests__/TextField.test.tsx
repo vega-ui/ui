@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react'
-import { TextField } from '../TextField.tsx';
+import { TextField } from '../TextField';
 import { TextFieldInput } from '../components';
 
 describe('TextField', () => {

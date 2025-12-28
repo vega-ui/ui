@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react'
-import { Sheet } from '../Sheet.tsx';
+import { Sheet } from '../Sheet';
 import { act } from 'react';
 import { SheetBackdrop, SheetContent, SheetPortal, SheetTrigger } from '../components';
 

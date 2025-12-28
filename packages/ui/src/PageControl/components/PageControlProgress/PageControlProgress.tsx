@@ -3,7 +3,7 @@ import style from './style.module.css'
 import { PageControlItem, PageControlItemProps } from '../PageControlItem';
 import { csx, mergeRefs } from '@vega-ui/utils';
 import { usePageControlContext } from '../../contexts';
-import { PageControlSize } from '../../types.ts';
+import { PageControlSize } from '../../types';
 
 export interface PageControlProgressProps extends PageControlItemProps {
   /**

@@ -2,7 +2,7 @@ import { FC, PropsWithChildren, Ref, useImperativeHandle, useRef, useState } fro
 import { useIndexes } from '@vega-ui/hooks';
 import { SnapScroller, SnapScrollerApiRef, SnapScrollerProps } from '../SnapScroller';
 import { IndexedSnapScrollerProvider } from './contexts';
-import { IndexedSnapScrollerApiRef } from './types.ts';
+import { IndexedSnapScrollerApiRef } from './types';
 
 export interface IndexedSnapScrollerProps extends SnapScrollerProps {
   /**

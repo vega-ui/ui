@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { TableHeading } from './TableHeading.tsx';
+import { TableHeading } from './TableHeading';
 import { Text } from '../../../Text';
 
 const meta = {

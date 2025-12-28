@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { AccordionTrigger } from './AccordionTrigger.tsx';
+import { AccordionTrigger } from './AccordionTrigger';
 import { Text } from '../../../Text';
-import { Accordion } from '../../Accordion.tsx';
+import { Accordion } from '../../Accordion';
 import { AccordionItem } from '../AccordionItem';
 
 const meta = {

@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext } from '@vega-ui/react-context';
-import { SwitchSize, SwitchVariant } from '../../types.ts';
+import { SwitchSize, SwitchVariant } from '../../types';
 
 export interface SwitchContextState {
   size: SwitchSize

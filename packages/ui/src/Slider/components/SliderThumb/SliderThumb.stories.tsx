@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { SliderThumb, SliderThumbProps } from './SliderThumb.tsx';
-import { Slider } from '../../Slider.tsx';
+import { SliderThumb, SliderThumbProps } from './SliderThumb';
+import { Slider } from '../../Slider';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof SliderThumb> = {

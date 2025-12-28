@@ -1,1 +1,1 @@
-export * from './SelectIcon.tsx'
+export * from './SelectIcon'

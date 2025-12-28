@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { CalendarYearPickerScroller } from './CalendarYearPickerScroller.tsx';
+import { CalendarYearPickerScroller } from './CalendarYearPickerScroller';
 import { CalendarYearPickerScrollerContent } from '../CalendarYearPickerScrollerContent';
 import { CalendarYearPickerScrollerLayout } from '../CalendarYearPickerScrollerLayout';
 

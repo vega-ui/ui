@@ -2,7 +2,7 @@
 import { FC, PropsWithChildren, ThHTMLAttributes } from 'react';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
-import { TableProps } from '../../Table.tsx';
+import { TableProps } from '../../Table';
 import { useTableContext } from '../../contexts';
 
 export interface TableHeadingProps extends ThHTMLAttributes<HTMLTableHeaderCellElement> {

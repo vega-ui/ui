@@ -1,1 +1,1 @@
-export * from './PopoverContent.tsx'
+export * from './PopoverContent'

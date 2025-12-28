@@ -7,7 +7,7 @@ import { PhoneFieldSelectValue } from '../PhoneFieldSelectValue';
 import { PhoneFieldSelectIcon } from '../PhoneFieldSelectIcon';
 import { PhoneFieldSelectPortal } from '../PhoneFieldSelectPortal';
 import { PhoneFieldSelectOption } from '../PhoneFieldSelectOption';
-import { PhoneField } from '../../PhoneField.tsx';
+import { PhoneField } from '../../PhoneField';
 import { PhoneFieldInput } from '../PhoneFieldInput';
 
 const meta = {

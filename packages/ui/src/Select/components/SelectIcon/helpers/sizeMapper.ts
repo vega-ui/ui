@@ -1,5 +1,5 @@
 import { IconSize } from '../../../../Icon';
-import { SelectSize } from '../../../types.ts';
+import { SelectSize } from '../../../types';
 
 const mapperTextSize: Record<SelectSize, IconSize> = {
   'sm': 'xs',

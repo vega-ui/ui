@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { PaginationFirstTrigger } from './PaginationFirstTrigger.tsx';
+import { PaginationFirstTrigger } from './PaginationFirstTrigger';
 import { Tooltip } from '../../../Tooltip';
 import { TooltipContent, TooltipTrigger } from '../../../Tooltip';
  

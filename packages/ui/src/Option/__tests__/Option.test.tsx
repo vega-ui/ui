@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react'
-import { Option } from '../Option.tsx';
+import { Option } from '../Option';
 
 const TEXT = 'Hello, World!';
 

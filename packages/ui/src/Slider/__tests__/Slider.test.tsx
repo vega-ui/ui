@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, fireEvent, screen } from '@testing-library/react'
-import { Slider } from '../Slider.tsx'
+import { Slider } from '../Slider'
 import { SliderThumb, SliderProgress, SliderHiddenInput } from '../components'
 
 beforeEach(() => {

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { SnapScroller } from './SnapScroller.tsx';
-import { SnapScrollerApiRef } from './types.ts'
+import { SnapScroller } from './SnapScroller';
+import { SnapScrollerApiRef } from './types'
 import { SnapScrollerContent as _SnapScrollerContent, SnapScrollerContentProps } from './components';
 import { FC, useRef, useState } from 'react';
 

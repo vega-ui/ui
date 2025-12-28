@@ -1,1 +1,1 @@
-export { useMeterStackContext, MeterStackProvider } from './context.ts'
+export { useMeterStackContext, MeterStackProvider } from './context'

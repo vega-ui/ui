@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { TooltipTrigger } from './TooltipTrigger.tsx';
+import { TooltipTrigger } from './TooltipTrigger';
 import { Button } from '../../../Button';
 import { TooltipContent } from '../TooltipContent';
-import { Tooltip } from '../../Tooltip.tsx';
+import { Tooltip } from '../../Tooltip';
 
 const meta = {
   title: 'Overlay/Tooltip/TooltipTrigger',

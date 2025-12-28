@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DialogContent } from './DialogContent.tsx';
+import { DialogContent } from './DialogContent';
 import { Text } from '../../../Text';
 import { DialogTitle } from '../DialogTitle';
 import { DialogHeader } from '../DialogHeader';
 import { DialogCloseButton } from '../DialogCloseButton';
-import { Dialog } from '../../Dialog.tsx';
+import { Dialog } from '../../Dialog';
 import { DialogTrigger } from '../DialogTrigger';
 import { Button } from '../../../Button';
 import { DialogPortal } from '../DialogPortal';

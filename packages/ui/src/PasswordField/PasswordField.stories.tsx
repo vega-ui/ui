@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { PasswordField } from './PasswordField.tsx';
+import { PasswordField } from './PasswordField';
 import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,

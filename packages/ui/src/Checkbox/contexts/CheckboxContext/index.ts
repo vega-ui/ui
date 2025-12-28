@@ -1,1 +1,1 @@
-export { CheckboxProvider, useCheckboxContext } from './context.ts'
+export { CheckboxProvider, useCheckboxContext } from './context'

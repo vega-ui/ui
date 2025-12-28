@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react'
-import { Checkbox, CheckboxProps } from '../Checkbox.tsx';
+import { Checkbox, CheckboxProps } from '../Checkbox';
 import { CheckboxCheckedIcon, CheckboxHiddenInput, CheckboxIndeterminateIcon, CheckboxIndicator } from '../components';
 
 const renderCheckbox = (props?: CheckboxProps) => {

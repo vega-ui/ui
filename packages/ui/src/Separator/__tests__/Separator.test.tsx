@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react'
-import { Separator } from '../Separator.tsx';
+import { Separator } from '../Separator';
 
 describe('Text', () => {
   it('render', () => {

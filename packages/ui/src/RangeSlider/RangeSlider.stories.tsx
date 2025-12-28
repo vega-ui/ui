@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { RangeSlider } from './RangeSlider.tsx';
+import { RangeSlider } from './RangeSlider';
 import { RangeSliderHiddenInput, RangeSliderProgress, RangeSliderThumb } from './components';
 import { Text } from '../Text';
 import { useId, useState } from 'react';

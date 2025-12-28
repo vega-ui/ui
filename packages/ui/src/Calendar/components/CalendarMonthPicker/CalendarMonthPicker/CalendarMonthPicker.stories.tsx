@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { CalendarMonthPicker } from './CalendarMonthPicker.tsx'
+import { CalendarMonthPicker } from './CalendarMonthPicker'
 import { CalendarMonthPickerLayout } from '../CalendarMonthPickerLayout';
-import { Calendar } from '../../../Calendar.tsx';
+import { Calendar } from '../../../Calendar';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof CalendarMonthPicker> = {

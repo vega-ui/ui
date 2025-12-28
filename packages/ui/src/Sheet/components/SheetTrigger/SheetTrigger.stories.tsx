@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { SheetTrigger } from './SheetTrigger.tsx';
+import { SheetTrigger } from './SheetTrigger';
 import { Text } from '../../../Text';
 import { Button } from '../../../Button';
-import { Sheet } from '../../Sheet.tsx';
+import { Sheet } from '../../Sheet';
 import { SheetContent } from '../SheetContent';
 
 const meta = {

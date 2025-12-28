@@ -2,7 +2,7 @@ import { CSSProperties, FC, HTMLAttributes } from 'react';
 
 import styles from './style.module.css'
 import { csx } from '@vega-ui/utils';
-import { ProgressSize, ProgressVariant } from './types.ts';
+import { ProgressSize, ProgressVariant } from './types';
 
 export interface ProgressProps extends HTMLAttributes<HTMLDivElement> {
   /**

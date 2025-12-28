@@ -1,1 +1,1 @@
-export * from './DayPickerLayout.tsx'
+export * from './DayPickerLayout'

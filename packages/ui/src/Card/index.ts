@@ -1,2 +1,2 @@
-export { Card, type CardProps } from './Card.tsx'
-export type { CardSize, CardAppearance } from './types.ts'
+export { Card, type CardProps } from './Card'
+export type { CardSize, CardAppearance } from './types'

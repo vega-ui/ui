@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { PageControlProgress } from './PageControlProgress.tsx';
+import { PageControlProgress } from './PageControlProgress';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof PageControlProgress> = {

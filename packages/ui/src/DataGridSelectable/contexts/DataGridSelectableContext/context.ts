@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext } from '@vega-ui/react-context';
-import { DataGridSelection } from '../../types.ts';
+import { DataGridSelection } from '../../types';
 import { DataGridCellKey } from '../../../DataGrid';
 
 export interface DataGridSelectableContextState<K> {

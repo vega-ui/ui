@@ -1,4 +1,4 @@
-import { getMonthIndex } from './getMonthIndex.ts'
+import { getMonthIndex } from './getMonthIndex'
 
 export interface GetClampedIndexOptions {
   year: number

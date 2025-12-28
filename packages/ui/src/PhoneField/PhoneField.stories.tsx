@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { PhoneField } from './PhoneField.tsx';
+import { PhoneField } from './PhoneField';
 import { Text } from '../Text';
 import { Button } from '../Button';
 import { FC, PropsWithChildren, ReactElement, useState } from 'react';
@@ -263,7 +263,7 @@ export const UncontrolledFormSubmit: Story = {
           onSubmit={(e) => {
             e.preventDefault();
             const data = new FormData(e.currentTarget);
-            setPayload(JSON.stringify(Object.fromEntries(data.entries()), null, 2));
+            setPayload(JSON.stringify(Object.fromEntries(Object.entries(data)), null, 2));
           }}
           style={{ display: 'grid', gap: 12 }}
         >

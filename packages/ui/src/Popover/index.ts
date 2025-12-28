@@ -1,4 +1,4 @@
-export { Popover, type PopoverProps } from './Popover.tsx'
+export { Popover, type PopoverProps } from './Popover'
 export { usePopoverContext } from './contexts'
 export {
   PopoverContent, type PopoverContentProps,

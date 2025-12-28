@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Fieldset } from './Fieldset.tsx';
+import { Fieldset } from './Fieldset';
 import { TextField, TextFieldInput } from '../TextField';
 import { Label } from '../Label';
 import { Button } from '../Button';

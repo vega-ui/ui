@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { MonthPickerRow } from './MonthPickerRow.tsx';
+import { MonthPickerRow } from './MonthPickerRow';
 import { MonthPickerItem } from '../MonthPickerItem';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export

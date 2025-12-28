@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
 
-import { AvatarStack } from '../AvatarStack.tsx';
+import { AvatarStack } from '../AvatarStack';
 import { AvatarFallback, AvatarImage } from '../../Avatar';
 import { AvatarStackItem } from '../components';
 

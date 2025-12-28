@@ -1,1 +1,1 @@
-export * from './useSnapPoints.ts'
+export * from './useSnapPoints'

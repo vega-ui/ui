@@ -1,1 +1,1 @@
-export { useTooltipContext, TooltipProvider } from './context.ts'
+export { useTooltipContext, TooltipProvider } from './context'

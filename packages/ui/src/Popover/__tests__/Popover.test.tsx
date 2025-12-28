@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react'
-import { Popover } from '../Popover.tsx';
+import { Popover } from '../Popover';
 import { act } from 'react';
 import { PopoverContent, PopoverTrigger } from '../components';
 

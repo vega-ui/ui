@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { SheetPortal } from './SheetPortal';
-import { Sheet } from '../../Sheet.tsx';
+import { Sheet } from '../../Sheet';
 import { SheetTrigger } from '../SheetTrigger';
 import { Button } from '../../../Button';
 import { SheetBackdrop } from '../SheetBackdrop';

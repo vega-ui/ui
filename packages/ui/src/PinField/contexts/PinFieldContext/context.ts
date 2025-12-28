@@ -2,7 +2,7 @@
 
 import { Ref, RefObject } from 'react';
 import { createContext } from '@vega-ui/react-context';
-import { PinFieldSize } from '../../types.ts';
+import { PinFieldSize } from '../../types';
 
 export interface PinFieldContextState {
   size?: PinFieldSize

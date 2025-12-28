@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { SelectOption } from './SelectOption.tsx';
+import { SelectOption } from './SelectOption';
 
 const meta = {
   title: 'Form/Selectors/Select/SelectOption',

@@ -1,4 +1,4 @@
-export { Drawer, type DrawerProps } from './Drawer.tsx'
+export { Drawer, type DrawerProps } from './Drawer'
 export {
   DrawerHeader, type DrawerHeaderProps,
   DrawerContent, type DrawerContentProps,

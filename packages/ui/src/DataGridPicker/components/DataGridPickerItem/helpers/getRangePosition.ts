@@ -1,5 +1,5 @@
 import { DataGridCellKey } from '../../../../DataGrid';
-import { DataGridPickerItemRangePosition } from '../types.ts';
+import { DataGridPickerItemRangePosition } from '../types';
 
 export interface GetRangePositionOptions {
   selected: DataGridCellKey | DataGridCellKey[] | undefined

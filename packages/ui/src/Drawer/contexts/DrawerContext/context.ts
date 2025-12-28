@@ -2,7 +2,7 @@
 
 import { createContext } from '@vega-ui/react-context';
 import { FloatingContext } from '@floating-ui/react';
-import { DrawerPosition } from '../../types.ts';
+import { DrawerPosition } from '../../types';
 
 export interface DrawerContextState {
   open: boolean

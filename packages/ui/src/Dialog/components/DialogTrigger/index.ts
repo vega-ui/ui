@@ -1,1 +1,1 @@
-export * from './DialogTrigger.tsx'
+export * from './DialogTrigger'

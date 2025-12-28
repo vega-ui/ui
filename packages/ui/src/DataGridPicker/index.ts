@@ -1,4 +1,4 @@
-export { DataGridPicker, type DataGridPickerProps } from './DataGridPicker.tsx'
+export { DataGridPicker, type DataGridPickerProps } from './DataGridPicker'
 export {
   DataGridPickerItem, type DataGridPickerItemProps,
   DataGridPickerRow, type DataGridPickerRowProps,

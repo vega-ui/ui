@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { CollapsibleTrigger } from './CollapsibleTrigger.tsx';
+import { CollapsibleTrigger } from './CollapsibleTrigger';
 import { Button } from '../../../Button';
 
 const meta = {

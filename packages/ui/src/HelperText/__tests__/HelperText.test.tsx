@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react'
-import { HelperText } from '../HelperText.tsx';
+import { HelperText } from '../HelperText';
 
 describe('HelperText', () => {
   it('render', () => {

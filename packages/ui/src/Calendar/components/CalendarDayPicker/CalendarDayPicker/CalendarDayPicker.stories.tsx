@@ -3,7 +3,7 @@ import { getWeekDayNames } from '@vega-ui/utils';
 import { CalendarDayPickerScroller } from '../CalendarDayPickerScroller';
 import { CalendarDayPickerScrollerContent } from '../CalendarDayPickerScrollerContent';
 import { CalendarDayPickerScrollerLayout } from '../CalendarDayPickerScrollerLayout';
-import { CalendarDayPicker } from './CalendarDayPicker.tsx';
+import { CalendarDayPicker } from './CalendarDayPicker';
 import { CalendarWeekLabels } from '../../CalendarWeekLabels';
 import { CalendarWeekLabel } from '../../CalendarWeekLabel';
 

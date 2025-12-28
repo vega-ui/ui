@@ -1,1 +1,1 @@
-export { usePopoverContext, PopoverProvider } from './context.ts'
+export { usePopoverContext, PopoverProvider } from './context'

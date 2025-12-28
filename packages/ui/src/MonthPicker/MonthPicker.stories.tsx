@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { FC } from 'react';
 
-import { MonthPicker } from './MonthPicker.tsx';
+import { MonthPicker } from './MonthPicker';
 import {
   MonthPickerItem,
   MonthPickerLayout,

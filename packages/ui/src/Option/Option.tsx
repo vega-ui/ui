@@ -1,7 +1,7 @@
 import { HTMLAttributes, ReactNode, Ref } from 'react';
 import styles from './style.module.css'
 import { csx } from '@vega-ui/utils';
-import { OptionSize } from './types.ts';
+import { OptionSize } from './types';
 
 export interface OptionProps<V> extends Omit<HTMLAttributes<HTMLButtonElement>, 'size'> {
   /**

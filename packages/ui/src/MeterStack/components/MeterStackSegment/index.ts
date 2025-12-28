@@ -1,1 +1,1 @@
-export * from './MeterStackSegment.tsx'
+export * from './MeterStackSegment'

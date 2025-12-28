@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { PageControlItem } from './PageControlItem.tsx';
+import { PageControlItem } from './PageControlItem';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof PageControlItem> = {

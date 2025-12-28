@@ -1,1 +1,1 @@
-export { DataGridSelectableProvider, useDataGridSelectableContext } from './context.ts'
+export { DataGridSelectableProvider, useDataGridSelectableContext } from './context'

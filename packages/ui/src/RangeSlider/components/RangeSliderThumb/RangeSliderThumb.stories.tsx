@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { RangeSliderThumb } from './RangeSliderThumb.tsx';
-import { RangeSlider } from '../../RangeSlider.tsx';
+import { RangeSliderThumb } from './RangeSliderThumb';
+import { RangeSlider } from '../../RangeSlider';
 
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export

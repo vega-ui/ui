@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext } from '@vega-ui/react-context';
-import { RangeSliderSize } from '../../types.ts';
+import { RangeSliderSize } from '../../types';
 
 export interface RangeSliderContextState {
   min: number

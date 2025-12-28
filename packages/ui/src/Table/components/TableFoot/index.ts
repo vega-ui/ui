@@ -1,1 +1,1 @@
-export * from './TableFoot.tsx'
+export * from './TableFoot'

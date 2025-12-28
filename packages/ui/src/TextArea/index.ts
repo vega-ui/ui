@@ -1,2 +1,2 @@
-export { TextArea, type TextAreaProps } from './TextArea.tsx'
-export type { TextAreaSize } from './types.ts'
+export { TextArea, type TextAreaProps } from './TextArea'
+export type { TextAreaSize } from './types'

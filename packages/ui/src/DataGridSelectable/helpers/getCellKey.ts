@@ -1,4 +1,4 @@
-import { getCellCoordinates } from './getCellCoordinates.ts';
+import { getCellCoordinates } from './getCellCoordinates';
 import { DataGridCellKey } from '../../DataGrid';
 import { Grid } from '@vega-ui/utils';
 

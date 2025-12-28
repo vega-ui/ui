@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react'
-import { VisuallyHidden } from '../VisuallyHidden.tsx';
+import { VisuallyHidden } from '../VisuallyHidden';
 
 describe('VisuallyHidden', () => {
   it('render default text element', () => {

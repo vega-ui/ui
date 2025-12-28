@@ -1,1 +1,1 @@
-export * from './CalendarPrevButton.tsx'
+export * from './CalendarPrevButton'

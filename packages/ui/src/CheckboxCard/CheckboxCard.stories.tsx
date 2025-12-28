@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { CheckboxCard } from './CheckboxCard.tsx';
+import { CheckboxCard } from './CheckboxCard';
 import {
   CheckboxCardContent, CheckboxCardControl, CheckboxCardControlCheckedIcon,
   CheckboxCardControlHiddenInput,

@@ -1,1 +1,1 @@
-export * from './createMonthPickerGrid.ts'
+export * from './createMonthPickerGrid'

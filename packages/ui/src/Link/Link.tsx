@@ -5,7 +5,7 @@ import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { Text, TextProps } from '../Text';
 import { Slot } from '../Slot';
-import { TextSize } from '../Text/types.ts';
+import { TextSize } from '../Text/types';
 
 export interface LinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
   /**

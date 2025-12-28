@@ -1,1 +1,1 @@
-export { Slot, type SlotProps } from './Slot.tsx'
+export { Slot, type SlotProps } from './Slot'

@@ -1,6 +1,6 @@
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { TableData } from './TableData.tsx';
+import { TableData } from './TableData';
 import { Text } from '../../../Text';
 
 const meta = {

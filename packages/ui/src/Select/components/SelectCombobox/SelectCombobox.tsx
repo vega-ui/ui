@@ -1,7 +1,7 @@
 import { FC, HTMLAttributes, Ref } from 'react';
 import { csx, mergeProps, mergeRefs } from '@vega-ui/utils';
 import style from './style.module.css';
-import { SelectVariant } from '../../types.ts';
+import { SelectVariant } from '../../types';
 import { useSelectContext } from '../../contexts';
 
 export interface SelectComboboxProps extends HTMLAttributes<HTMLButtonElement> {

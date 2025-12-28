@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { YearPickerScroller } from './YearPickerScroller.tsx';
+import { YearPickerScroller } from './YearPickerScroller';
 import { YearPickerScrollerContent } from '../YearPickerScrollerContent';
 import { YearPickerScrollerLayout } from '../YearPickerScrollerLayout';
 

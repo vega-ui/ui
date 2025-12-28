@@ -1,8 +1,8 @@
-// Calendar.test.tsx
+// Calendar.testx
 import { describe, it, expect, vi } from 'vitest';
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import React, { FC, PropsWithChildren, useEffect } from 'react';
-import { Calendar, type CalendarProps } from '../Calendar.tsx';
+import { Calendar, type CalendarProps } from '../Calendar';
 import {
   CalendarContent,
   CalendarDayPicker,
@@ -32,7 +32,7 @@ import {
   getWeekDayNames,
 } from '@vega-ui/utils';
 import { useCalendarContext } from '../contexts';
-import type { CalendarSelection } from '../types.ts';
+import type { CalendarSelection } from '../types';
 import { Icon } from '../../Icon';
 
 const MonthLabel: FC = () => {

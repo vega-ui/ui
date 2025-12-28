@@ -1,1 +1,1 @@
-export { useSnapScrollerContext, SnapScrollerProvider } from './context.ts'
+export { useSnapScrollerContext, SnapScrollerProvider } from './context'

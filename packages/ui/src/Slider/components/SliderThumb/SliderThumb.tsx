@@ -11,13 +11,12 @@ export type SliderThumbProps = SliderBaseThumbProps
  *  The component supports keyboard navigation, orientation-aware positioning (horizontal or vertical),
  *  and is styled according to size, variant, and disabled state.
  *  Used inside `Slider`, it enables accessible and precise value manipulation. */
-export const SliderThumb: FC<SliderThumbProps> = ({ name, id, className, ...props }) => {
+export const SliderThumb: FC<SliderThumbProps> = ({ id, className, ...props }) => {
   const { orientation, disabled } = useSliderContext()
 
   return (
     <SliderBaseThumb
       className={className}
-      name={name}
       id={id}
       orientation={orientation}
       disabled={disabled}

@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext } from '@vega-ui/react-context';
-import { AvatarGroupSize, AvatarGroupVariant } from '../../types.ts';
+import { AvatarGroupSize, AvatarGroupVariant } from '../../types';
 
 export interface AvatarGroupContextState {
   size?: AvatarGroupSize

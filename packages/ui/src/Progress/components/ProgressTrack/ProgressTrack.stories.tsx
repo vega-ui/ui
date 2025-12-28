@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { ProgressTrack } from './ProgressTrack';
-import { Progress } from '../../Progress.tsx';
+import { Progress } from '../../Progress';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof ProgressTrack> = {

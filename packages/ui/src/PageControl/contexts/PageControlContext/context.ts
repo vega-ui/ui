@@ -1,6 +1,6 @@
 'use client';
 
-import { PageControlSize, PageControlVariant } from '../../types.ts';
+import { PageControlSize, PageControlVariant } from '../../types';
 import { createContext } from '@vega-ui/react-context';
 
 export interface PageControlContextState {

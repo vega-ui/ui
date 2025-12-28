@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { IconButton, IconButtonProps } from './IconButton.tsx';
+import { IconButton, IconButtonProps } from './IconButton';
 import { GlobeIcon, Heart, MinusIcon } from '@vega-ui/icons';
 import { Icon } from '../Icon';
 

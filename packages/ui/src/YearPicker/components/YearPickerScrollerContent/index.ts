@@ -1,1 +1,1 @@
-export * from './YearPickerScrollerContent.tsx'
+export * from './YearPickerScrollerContent'

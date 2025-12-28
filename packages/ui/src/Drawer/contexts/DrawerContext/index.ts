@@ -1,1 +1,1 @@
-export { useDrawerContext, DrawerProvider } from './context.ts'
+export { useDrawerContext, DrawerProvider } from './context'

@@ -1,5 +1,5 @@
-import { CheckboxCardSize } from '../../../types.ts';
-import { TextSize } from '../../../../Text/types.ts';
+import { CheckboxCardSize } from '../../../types';
+import { TextSize } from '../../../../Text';
 
 const mapperTextSize: Record<CheckboxCardSize, TextSize> = {
   'sm': 3,

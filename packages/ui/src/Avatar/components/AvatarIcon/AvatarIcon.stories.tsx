@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { AvatarIcon } from './AvatarIcon.tsx';
-import { Avatar } from '../../Avatar.tsx';
+import { AvatarIcon } from './AvatarIcon';
+import { Avatar } from '../../Avatar';
 import { HeartPlus } from '@vega-ui/icons';
 
 const meta = {

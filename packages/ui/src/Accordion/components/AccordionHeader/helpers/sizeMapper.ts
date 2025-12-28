@@ -1,5 +1,5 @@
 import { TextProps } from '../../../../Text';
-import { AccordionSize } from '../../../types.ts';
+import { AccordionSize } from '../../../types';
 
 const mapperHeadingSize: Record<AccordionSize, TextProps['size']> = {
   'sm': 3,

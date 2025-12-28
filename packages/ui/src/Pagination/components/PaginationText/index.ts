@@ -1,1 +1,1 @@
-export * from './PaginationText.tsx'
+export * from './PaginationText'

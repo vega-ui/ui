@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { TableRow } from './TableRow.tsx';
+import { TableRow } from './TableRow';
 import { Text } from '../../../Text';
 
 const meta = {

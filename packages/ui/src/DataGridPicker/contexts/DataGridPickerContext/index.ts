@@ -1,1 +1,1 @@
-export { useDataGridPickerContext, DataGridPickerProvider } from './context.ts'
+export { useDataGridPickerContext, DataGridPickerProvider } from './context'

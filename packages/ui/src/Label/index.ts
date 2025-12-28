@@ -1,1 +1,1 @@
-export { Label, type LabelProps } from './Label.tsx'
+export { Label, type LabelProps } from './Label'

@@ -1,1 +1,1 @@
-export * from './PasswordFieldShownIcon.tsx'
+export * from './PasswordFieldShownIcon'

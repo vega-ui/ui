@@ -1,4 +1,4 @@
-export { MonthPicker, type MonthPickerProps } from './MonthPicker.tsx'
+export { MonthPicker, type MonthPickerProps } from './MonthPicker'
 export { useMonthPickerScrollerContext } from './hooks'
 export { createMonthPickerGrid } from './helpers'
 export {

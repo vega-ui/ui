@@ -1,1 +1,1 @@
-export * from './PinFieldSlot.tsx'
+export * from './PinFieldSlot'

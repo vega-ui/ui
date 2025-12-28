@@ -5,7 +5,7 @@ import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
 import { AccordionProvider } from './contexts';
 import { useControlledState } from '@vega-ui/hooks';
-import { AccordionSize } from './types.ts';
+import { AccordionSize } from './types';
 
 export interface AccordionProps extends HTMLAttributes<HTMLUListElement> {
   /**

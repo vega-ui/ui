@@ -1,1 +1,1 @@
-export { VisuallyHidden, type VisuallyHiddenProps } from './VisuallyHidden.tsx'
+export { VisuallyHidden, type VisuallyHiddenProps } from './VisuallyHidden'

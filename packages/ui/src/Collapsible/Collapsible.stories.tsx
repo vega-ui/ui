@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Collapsible } from './Collapsible.tsx';
+import { Collapsible } from './Collapsible';
 import { Text } from '../Text';
 import { CollapsibleTrigger, CollapsibleContent } from './components';
 import { Button } from '../Button';

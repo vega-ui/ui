@@ -1,4 +1,4 @@
-export { Table, type TableProps } from './Table.tsx'
+export { Table, type TableProps } from './Table'
 export {
   TableBody,
   TableData,

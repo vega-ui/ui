@@ -3,7 +3,7 @@ import style from './style.module.css'
 import { csx, mergeRefs } from '@vega-ui/utils';
 import { useDataGridContext, useDataGridRowContext } from '../../contexts';
 import { Slot } from '../../../Slot';
-import { DataGridCellKey } from '../../types.ts';
+import { DataGridCellKey } from '../../types';
 
 export interface DataGridCellProps extends HTMLAttributes<HTMLDivElement> {
   /**

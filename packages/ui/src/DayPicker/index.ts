@@ -1,4 +1,4 @@
-export { DayPicker, type DayPickerProps } from './DayPicker.tsx'
+export { DayPicker, type DayPickerProps } from './DayPicker'
 export { useDayPickerScrollerContext } from './hooks'
 export { createDayPickerGrid } from './helpers'
 export {

@@ -1,1 +1,1 @@
-export * from './PinFieldSeparator.tsx'
+export * from './PinFieldSeparator'

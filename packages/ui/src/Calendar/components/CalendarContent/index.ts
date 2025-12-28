@@ -1,1 +1,1 @@
-export * from './CalendarContent.tsx'
+export * from './CalendarContent'

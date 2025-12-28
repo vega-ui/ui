@@ -1,1 +1,1 @@
-export * from './AvatarStackItem.tsx'
+export * from './AvatarStackItem'

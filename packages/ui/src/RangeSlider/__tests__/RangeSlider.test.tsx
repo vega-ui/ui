@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, fireEvent, screen } from '@testing-library/react'
-import { RangeSlider } from '../RangeSlider.tsx'
+import { RangeSlider } from '../RangeSlider'
 import { RangeSliderHiddenInput, RangeSliderProgress, RangeSliderThumb } from '../components'
 
 beforeEach(() => {

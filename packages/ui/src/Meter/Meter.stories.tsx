@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Meter } from './Meter.tsx';
+import { Meter } from './Meter';
 import { MeterTrack } from './components';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export

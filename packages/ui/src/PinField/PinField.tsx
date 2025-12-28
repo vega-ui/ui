@@ -3,7 +3,7 @@ import { clamp, csx } from '@vega-ui/utils';
 import { useMaskito } from '@maskito/react';
 import { MaskitoOptions } from '@maskito/core';
 import { PinFieldProvider } from './contexts';
-import { PinFieldSize } from './types.ts';
+import { PinFieldSize } from './types';
 import style from './style.module.css'
 
 export interface PinFieldProps extends HTMLAttributes<HTMLDivElement> {

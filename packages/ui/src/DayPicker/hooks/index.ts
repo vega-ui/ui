@@ -1,1 +1,1 @@
-export * from './useDayPickerScrollerContext.ts'
+export * from './useDayPickerScrollerContext'

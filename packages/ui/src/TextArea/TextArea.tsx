@@ -4,7 +4,7 @@ import {
 } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
-import { TextAreaSize } from './types.ts';
+import { TextAreaSize } from './types';
 
 export interface TextAreaProps extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'size'> {
   /**

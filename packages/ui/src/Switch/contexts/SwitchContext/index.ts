@@ -1,1 +1,1 @@
-export { useSwitchContext, SwitchProvider } from './context.ts'
+export { useSwitchContext, SwitchProvider } from './context'

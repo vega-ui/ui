@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react'
-import { useIsomorphicLayoutEffect } from './useIsomophicLayoutEffect.ts';
+import { useIsomorphicLayoutEffect } from './useIsomophicLayoutEffect';
 
 type UseMediaQueryOptions = {
   defaultValue?: boolean

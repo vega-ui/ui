@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react'
-import { Button } from '../Button.tsx';
+import { Button } from '../Button';
 
 const TEXT = 'Hello, World!';
 const sizes = ['sm', 'md', 'lg'] as const;

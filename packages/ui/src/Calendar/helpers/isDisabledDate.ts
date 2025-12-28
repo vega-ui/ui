@@ -1,4 +1,4 @@
-import { CalendarDatesDisabled } from '../types.ts';
+import { CalendarDatesDisabled } from '../types';
 import { isEqualDates } from '@vega-ui/utils';
 
 export const isDisabledDate = (dayTime: number, disabled?: CalendarDatesDisabled) => {

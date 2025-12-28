@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { RangeSliderProgress } from './RangeSliderProgress.tsx';
-import { RangeSlider } from '../../RangeSlider.tsx';
+import { RangeSliderProgress } from './RangeSliderProgress';
+import { RangeSlider } from '../../RangeSlider';
 
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export

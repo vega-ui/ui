@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { IndexedSnapScroller } from './IndexedSnapScroller.tsx';
+import { IndexedSnapScroller } from './IndexedSnapScroller';
 import { IndexedSnapScrollerContent as _IndexedSnapScrollerContent, type IndexedSnapScrollerContentProps } from './components';
 import { FC } from 'react';
 import { useIndexedSnapScrollerContext } from './contexts';

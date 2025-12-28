@@ -1,1 +1,1 @@
-export { usePasswordFieldContext, PasswordFieldProvider } from './context.ts'
+export { usePasswordFieldContext, PasswordFieldProvider } from './context'

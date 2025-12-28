@@ -16,7 +16,7 @@ import {
   DataGridCoordinates,
   DataGridCellKey,
   DataGridWrap, DataGridApiRef, DataGridExcludeResolver,
-} from './types.ts';
+} from './types';
 
 export interface DataGridProps<K extends DataGridCellKey = DataGridCellKey> extends HTMLAttributes<HTMLDivElement> {
   /**

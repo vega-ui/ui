@@ -1,5 +1,5 @@
 import { FC, HTMLAttributes, PropsWithChildren } from 'react';
-import { CalendarBaseSize, CalendarBaseVariant } from './types.ts';
+import { CalendarBaseSize, CalendarBaseVariant } from './types';
 import { CalendarBaseProvider } from './contexts';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';

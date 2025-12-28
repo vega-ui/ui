@@ -1,1 +1,1 @@
-export { useSegmentedControlContext, SegmentedControlProvider } from './context.ts'
+export { useSegmentedControlContext, SegmentedControlProvider } from './context'

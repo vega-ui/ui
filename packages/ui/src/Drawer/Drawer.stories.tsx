@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Drawer } from './Drawer.tsx';
+import { Drawer } from './Drawer';
 import { Text } from '../Text';
 import { Button } from '../Button';
 import {

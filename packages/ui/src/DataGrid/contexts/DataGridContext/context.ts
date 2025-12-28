@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext } from '@vega-ui/react-context';
-import { DataGridCoordinates, DataGridCellKey } from '../../types.ts';
+import { DataGridCoordinates, DataGridCellKey } from '../../types';
 
 export interface DataGridContextState {
   active: DataGridCellKey

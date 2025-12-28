@@ -1,1 +1,1 @@
-export * from './PopoverTrigger.tsx'
+export * from './PopoverTrigger'

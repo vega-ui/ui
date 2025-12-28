@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Avatar } from './Avatar.tsx';
+import { Avatar } from './Avatar';
 import { AvatarFallback, AvatarIcon, AvatarImage } from './components';
 import { HeartPlus } from '@vega-ui/icons'; 
 

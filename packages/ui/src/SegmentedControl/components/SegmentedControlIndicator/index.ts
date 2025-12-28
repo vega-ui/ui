@@ -1,1 +1,1 @@
-export * from './SegmentedControlIndicator.tsx'
+export * from './SegmentedControlIndicator'

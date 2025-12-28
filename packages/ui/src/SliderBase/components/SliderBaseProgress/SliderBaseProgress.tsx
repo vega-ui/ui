@@ -3,7 +3,7 @@
 import { CSSProperties, FC, HTMLAttributes, PropsWithChildren } from 'react';
 import style from './style.module.css';
 import { csx } from '@vega-ui/utils';
-import { SliderBaseOrientation, SliderBaseSize } from '../../types.ts';
+import { SliderBaseOrientation, SliderBaseSize } from '../../types';
 
 export interface SliderBaseProgressProps extends HTMLAttributes<HTMLDivElement> {
   /**

@@ -1,4 +1,4 @@
-export { Calendar, type CalendarProps } from './Calendar.tsx'
+export { Calendar, type CalendarProps } from './Calendar'
 export {
   CalendarContent, type CalendarContentProps,
   CalendarHeader, type CalendarHeaderProps,
@@ -30,4 +30,4 @@ export {
   CalendarDayPickerScrollerLayout, type CalendarDayPickerScrollerLayoutProps,
 } from './components'
 export { useCalendarContext } from './contexts'
-export { type CalendarPicker, type CalendarSelection, type CalendarDatesDisabled } from './types.ts'
+export { type CalendarPicker, type CalendarSelection, type CalendarDatesDisabled } from './types'

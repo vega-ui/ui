@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DrawerContent } from './DrawerContent.tsx';
+import { DrawerContent } from './DrawerContent';
 import { Text } from '../../../Text';
 import { DrawerHeader } from '../DrawerHeader';
 import { DrawerTitle } from '../DrawerTitle';
 import { DrawerCloseButton } from '../DrawerCloseButton';
-import { Drawer } from '../../Drawer.tsx';
+import { Drawer } from '../../Drawer';
 import { DrawerTrigger } from '../DrawerTrigger';
 import { Button } from '../../../Button';
 import { DrawerPortal } from '../DrawerPortal';

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { PhoneField } from '../../PhoneField';
-import { PhoneFieldInput } from './PhoneFieldInput.tsx';
+import { PhoneFieldInput } from './PhoneFieldInput';
 
 const meta = {
   title: 'Form/Fields/PhoneField/PhoneFieldInput',

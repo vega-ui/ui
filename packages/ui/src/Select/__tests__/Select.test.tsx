@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react'
-import { Select, SelectProps } from '../Select.tsx';
+import { Select, SelectProps } from '../Select';
 import { act } from 'react';
 import { SelectCombobox, SelectHiddenSelect, SelectIcon, SelectListbox, SelectOption, SelectValue } from '../components';
 

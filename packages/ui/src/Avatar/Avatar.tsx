@@ -1,7 +1,7 @@
 import { FC, HTMLAttributes, Ref } from 'react';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
-import { AvatarSize, AvatarVariant } from './types.ts';
+import { AvatarSize, AvatarVariant } from './types';
 
 export interface AvatarProps extends HTMLAttributes<HTMLDivElement> {
   /**

@@ -4,7 +4,7 @@ import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { Text, TextProps } from '../Text';
 import { sizeMapper } from './helpers';
-import { LabelSize } from './types.ts';
+import { LabelSize } from './types';
 
 export interface LabelProps extends Omit<TextProps, 'size'> {
   /**

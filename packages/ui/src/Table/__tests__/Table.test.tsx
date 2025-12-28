@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react'
-import { Table } from '../Table.tsx';
+import { Table } from '../Table';
 import { TableBody, TableData, TableHead, TableHeading, TableRow } from '../components';
 import { Text } from '../../Text';
 

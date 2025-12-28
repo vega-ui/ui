@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { AccordionIcon } from './AccordionIcon.tsx';
+import { AccordionIcon } from './AccordionIcon';
 import { Plus } from '@vega-ui/icons';
 
 const meta = {

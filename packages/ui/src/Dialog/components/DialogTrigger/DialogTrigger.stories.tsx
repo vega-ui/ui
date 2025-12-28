@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DialogTrigger } from './DialogTrigger.tsx';
+import { DialogTrigger } from './DialogTrigger';
 import { Button } from '../../../Button';
-import { Dialog } from '../../Dialog.tsx';
+import { Dialog } from '../../Dialog';
 
 const meta = {
   title: 'Overlay/Dialog/DialogTrigger',

@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 
 import { FC } from 'react'
-import { DataGridPicker } from '../DataGridPicker.tsx'
+import { DataGridPicker } from '../DataGridPicker'
 import { DataGridPickerRow, DataGridPickerRowGroup, DataGridPickerItem } from '../components';
 
 const Grid3x2: FC = () => (

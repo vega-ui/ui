@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest'
 import { ReactElement } from 'react'
 import { render, screen, fireEvent } from '@testing-library/react'
-import { Pagination } from '../Pagination.tsx'
+import { Pagination } from '../Pagination'
 import {
   PaginationEllipsis,
   PaginationFirstTrigger,

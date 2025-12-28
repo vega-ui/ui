@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
-import { Card } from './Card.tsx';
+import { Card } from './Card';
 import { Text } from '../Text';
-import { CardAppearance, CardSize } from './types.ts';
+import { CardAppearance, CardSize } from './types';
 
 const sizes: CardSize[] = ['sm', 'md', 'lg']
 const appearance: CardAppearance[] = ['outline', 'transparent']

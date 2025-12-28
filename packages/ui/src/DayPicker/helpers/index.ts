@@ -1,1 +1,1 @@
-export * from './createDayPickerGrid.ts'
+export * from './createDayPickerGrid'

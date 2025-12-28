@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react'
-import { Drawer } from '../Drawer.tsx';
+import { Drawer } from '../Drawer';
 import { act } from 'react';
 import { DrawerContent, DrawerBackdrop, DrawerPortal, DrawerTrigger } from '../components';
 import { Text } from '../../Text';

@@ -1,7 +1,7 @@
 import { DetailedHTMLProps, FC, HTMLAttributes, ReactNode } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
-import { AlertAppearance, AlertVariant } from './types.ts';
+import { AlertAppearance, AlertVariant } from './types';
 import { AlertProvider } from './contexts';
 
 export interface AlertProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {

@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext } from '@vega-ui/react-context';
-import { AlertVariant } from '../../types.ts';
+import { AlertVariant } from '../../types';
 
 export interface AlertContextState {
   variant: AlertVariant

@@ -1,1 +1,1 @@
-export * from './PageControlProgress.tsx';
+export * from './PageControlProgress';

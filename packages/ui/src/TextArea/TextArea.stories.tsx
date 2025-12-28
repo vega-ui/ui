@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { TextArea } from './TextArea.tsx';
+import { TextArea } from './TextArea';
 
 const meta = {
   title: 'Form/Fields/TextArea',

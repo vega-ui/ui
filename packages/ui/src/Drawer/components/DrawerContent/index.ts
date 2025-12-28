@@ -1,1 +1,1 @@
-export * from './DrawerContent.tsx'
+export * from './DrawerContent'

@@ -1,9 +1,9 @@
 import { useRef, useState, useCallback } from 'react';
 import { getCurrentDate } from '@vega-ui/utils';
-import { IndexedSnapScrollerApiRef } from '../IndexedSnapScroller/types.ts';
+import { IndexedSnapScrollerApiRef } from '../IndexedSnapScroller/types';
 import { CalendarProvider } from './contexts';
 import { useControlledState } from '@vega-ui/hooks';
-import { CalendarDatesDisabled, CalendarPicker, CalendarSelection, CalendarValue } from './types.ts';
+import { CalendarDatesDisabled, CalendarPicker, CalendarSelection, CalendarValue } from './types';
 import { DataGridApiRef } from '../DataGrid';
 import { CalendarBase, CalendarBaseProps } from '../CalendarBase';
 import {

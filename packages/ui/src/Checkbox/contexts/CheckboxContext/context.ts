@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext } from '@vega-ui/react-context';
-import { CheckboxSize, CheckboxVariant } from '../../types.ts';
+import { CheckboxSize, CheckboxVariant } from '../../types';
 
 export interface CheckboxContextState {
   size?: CheckboxSize

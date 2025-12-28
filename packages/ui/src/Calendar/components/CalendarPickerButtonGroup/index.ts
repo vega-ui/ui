@@ -1,1 +1,1 @@
-export * from './CalendarPickerButtonGroup.tsx'
+export * from './CalendarPickerButtonGroup'

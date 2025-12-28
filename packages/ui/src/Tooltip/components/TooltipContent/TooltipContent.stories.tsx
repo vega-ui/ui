@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { TooltipContent } from './TooltipContent.tsx';
+import { TooltipContent } from './TooltipContent';
 import { Button } from '../../../Button';
-import { Tooltip } from '../../Tooltip.tsx';
+import { Tooltip } from '../../Tooltip';
 import { TooltipTrigger } from '../TooltipTrigger';
 
 const meta = {

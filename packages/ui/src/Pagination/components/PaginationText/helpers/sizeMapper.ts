@@ -1,5 +1,5 @@
 import { TextProps } from '../../../../Text';
-import { PaginationSize } from '../../../types.ts';
+import { PaginationSize } from '../../../types';
 
 const mapperIconSize: Record<PaginationSize, TextProps['size']> = {
   'xs': 2,

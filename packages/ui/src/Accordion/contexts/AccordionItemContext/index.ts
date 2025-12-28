@@ -1,1 +1,1 @@
-export { useAccordionItemContext, AccordionItemProvider } from './context.ts'
+export { useAccordionItemContext, AccordionItemProvider } from './context'

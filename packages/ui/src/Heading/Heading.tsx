@@ -3,7 +3,7 @@ import { ElementType, FC, HTMLAttributes, ReactNode, Ref } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { sizeMapper } from './helpers';
-import { HeadingAs, HeadingSize } from './types.ts';
+import { HeadingAs, HeadingSize } from './types';
 
 export interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {
   /**

@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { createRef } from 'react';
 import { render, screen, fireEvent, act } from '@testing-library/react';
-import { SnapScroller } from '../SnapScroller.tsx';
+import { SnapScroller } from '../SnapScroller';
 import { SnapScrollerContent } from '../components';
 
 const elementFromPointMock = vi.fn<(x: number, y: number) => Element | null>().mockReturnValue(null);
@@ -120,7 +120,7 @@ describe('SnapScroller', () => {
   
   it('exposes imperative API (element, prev, next)', () => {
     patchScrollMetrics({ width: 300, scrollWidth: 900 });
-    const apiRef = createRef<{ prev: () => void; next: () => void }>();
+    const apiRef = createRef<{ prev: () => void; next: () => void, to: () => void }>();
     
     render(
       <SnapScroller apiRef={apiRef}>

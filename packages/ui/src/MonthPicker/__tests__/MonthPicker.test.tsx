@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 
-import { MonthPicker } from '../MonthPicker.tsx';
+import { MonthPicker } from '../MonthPicker';
 import { MonthPickerItem, MonthPickerRow } from '../components';
 
 describe('MonthPicker', () => {

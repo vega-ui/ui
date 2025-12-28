@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { SheetContent } from './SheetContent.tsx';
+import { SheetContent } from './SheetContent';
 import { Text } from '../../../Text';
 import { Button } from '../../../Button';
 import { SheetTrigger } from '../SheetTrigger';
-import { Sheet } from '../../Sheet.tsx';
+import { Sheet } from '../../Sheet';
 
 const meta = {
   title: 'Overlay/Sheet/SheetContent',

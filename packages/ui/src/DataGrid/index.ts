@@ -1,6 +1,6 @@
 export {
  DataGrid, type DataGridProps
-} from './DataGrid.tsx'
+} from './DataGrid'
 export {
   DataGridCell, type DataGridCellProps,
   DataGridRow, type DataGridRowProps,
@@ -15,4 +15,4 @@ export {
   type DataGridWrap,
   type DataGridApiRef,
   type DataGridCoordinates
-} from './types.ts'
+} from './types'

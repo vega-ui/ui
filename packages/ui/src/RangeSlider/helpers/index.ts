@@ -1,3 +1,3 @@
-export * from './normalizeValue.ts'
-export * from './calculateValue.ts'
-export * from './getClosestIndex.ts'
+export * from './normalizeValue'
+export * from './calculateValue'
+export * from './getClosestIndex'

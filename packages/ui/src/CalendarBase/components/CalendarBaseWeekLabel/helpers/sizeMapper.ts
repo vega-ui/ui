@@ -1,4 +1,4 @@
-import { CalendarBaseSize } from '../../../types.ts';
+import { CalendarBaseSize } from '../../../types';
 import { TextProps } from '../../../../Text';
 
 export const sizeMapper = (size: CalendarBaseSize) => {

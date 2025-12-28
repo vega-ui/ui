@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DataGridPickerRowGroup } from './DataGridPickerRowGroup.tsx';
+import { DataGridPickerRowGroup } from './DataGridPickerRowGroup';
 import { Text } from '../../../Text';
 import { DataGridPickerItem } from '../DataGridPickerItem';
 

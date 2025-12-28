@@ -1,7 +1,7 @@
 import { DetailedHTMLProps, FC, InputHTMLAttributes, Ref } from 'react'
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils'
-import { RadioSize, RadioVariant } from './types.ts';
+import { RadioSize, RadioVariant } from './types';
 
 export interface RadioProps
   extends Omit<

@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext } from '@vega-ui/react-context';
-import { TextFieldSize } from '../../types.ts';
+import { TextFieldSize } from '../../types';
 
 export interface TextFieldContextState {
   size?: TextFieldSize

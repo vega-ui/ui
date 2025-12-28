@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 
-import { YearPicker } from '../YearPicker.tsx';
+import { YearPicker } from '../YearPicker';
 import { YearPickerItem, YearPickerRow } from '../components';
 
 describe('YearPicker', () => {

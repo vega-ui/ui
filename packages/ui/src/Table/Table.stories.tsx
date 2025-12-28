@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Table } from './Table.tsx';
+import { Table } from './Table';
 import { Text } from '../Text';
 import { TableBody, TableData, TableFoot, TableHead, TableHeading, TableRow } from './components';
 

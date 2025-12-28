@@ -1,1 +1,1 @@
-export * from './YearPickerRow.tsx'
+export * from './YearPickerRow'

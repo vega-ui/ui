@@ -4,7 +4,7 @@ import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { Text } from '../Text';
 import { sizeMapper } from './helpers';
-import { HelperTextSize } from './types.ts';
+import { HelperTextSize } from './types';
 
 export interface HelperTextProps {
   /**

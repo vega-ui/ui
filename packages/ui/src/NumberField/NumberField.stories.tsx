@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { NumberField } from './NumberField.tsx';
+import { NumberField } from './NumberField';
 import { NumberFieldDecrementButton, NumberFieldIncrementButton, NumberFieldInput } from './components';
 import { Text } from '../Text';
 import { Button } from '../Button';
@@ -128,7 +128,7 @@ export const UncontrolledWithFormSubmit: Story = {
             e.preventDefault();
             const form = e.currentTarget;
             const data = new FormData(form);
-            setPayload(JSON.stringify(Object.fromEntries(data.entries()), null, 2));
+            setPayload(JSON.stringify(Object.fromEntries(Object.entries(data)), null, 2));
           }}
           style={{ display: 'grid', gap: 12 }}
         >

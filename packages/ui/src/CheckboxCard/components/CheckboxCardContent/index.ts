@@ -1,1 +1,1 @@
-export * from './CheckboxCardContent.tsx'
+export * from './CheckboxCardContent'

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { DataGridPicker } from './DataGridPicker.tsx';
+import { DataGridPicker } from './DataGridPicker';
 import {
   DataGridPickerItem,
   DataGridPickerRowGroup,
@@ -11,7 +11,7 @@ import { IconButton } from '../IconButton';
 import { Icon } from '../Icon';
 import { ChevronLeft, ChevronRight } from '@vega-ui/icons'
 import { IndexedSnapScroller, IndexedSnapScrollerContent, useIndexedSnapScrollerContext } from '../IndexedSnapScroller';
-import { IndexedSnapScrollerApiRef } from '../IndexedSnapScroller/types.ts';
+import { IndexedSnapScrollerApiRef } from '../IndexedSnapScroller/types';
 
 const EMOJI_POOL = [
   '😀','😃','😄','😁','😆','😅','😂','🤣','😊','🙂','🙃','😉','😌','😍','🥰','😘','😗','😙','😚','😋',

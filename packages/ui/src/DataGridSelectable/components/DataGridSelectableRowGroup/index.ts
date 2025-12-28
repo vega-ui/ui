@@ -1,1 +1,1 @@
-export * from './DataGridSelectableRowGroup.tsx'
+export * from './DataGridSelectableRowGroup'

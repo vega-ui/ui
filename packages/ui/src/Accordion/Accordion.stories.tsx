@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Accordion } from './Accordion.tsx';
+import { Accordion } from './Accordion';
 import { Text } from '../Text';
 import { AccordionTrigger, AccordionContent, AccordionItem, AccordionHeader, AccordionIcon } from './components';
 import { ArrowDown } from '@vega-ui/icons';

@@ -2,7 +2,7 @@ import { CSSProperties, FC, HTMLAttributes } from 'react';
 
 import { csx } from '@vega-ui/utils';
 import { getMeterState } from './helpers';
-import { MeterSize, MeterVariant } from './types.ts';
+import { MeterSize, MeterVariant } from './types';
 import styles from './style.module.css'
 
 export interface MeterProps extends HTMLAttributes<HTMLDivElement> {

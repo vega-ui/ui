@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DataGridRow } from './DataGridRow.tsx';
+import { DataGridRow } from './DataGridRow';
 import { DataGridCell } from '../DataGridCell';
 import { Text } from '../../../Text';
 

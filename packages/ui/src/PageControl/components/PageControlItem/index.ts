@@ -1,1 +1,1 @@
-export * from './PageControlItem.tsx';
+export * from './PageControlItem';

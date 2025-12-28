@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { SelectHiddenSelect } from './SelectHiddenSelect';
-import { Select } from '../../Select.tsx';
+import { Select } from '../../Select';
 import { SelectListbox } from '../SelectListbox';
 import { SelectOption } from '../SelectOption';
 

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { TooltipArrow } from './TooltipArrow';
 import { Button } from '../../../Button';
 import { TooltipContent } from '../TooltipContent';
-import { Tooltip } from '../../Tooltip.tsx';
+import { Tooltip } from '../../Tooltip';
 import { TooltipTrigger } from '../TooltipTrigger';
 
 const meta = {

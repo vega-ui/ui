@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CalendarYearPickerScroller } from '../CalendarYearPickerScroller';
 import { CalendarYearPickerScrollerContent } from '../CalendarYearPickerScrollerContent';
 import { CalendarYearPickerScrollerLayout } from '../CalendarYearPickerScrollerLayout';
-import { CalendarYearPicker } from './CalendarYearPicker.tsx';
+import { CalendarYearPicker } from './CalendarYearPicker';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof CalendarYearPicker> = {

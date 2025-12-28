@@ -1,4 +1,4 @@
-export { SliderBase, type SliderBaseProps } from './SliderBase.tsx'
+export { SliderBase, type SliderBaseProps } from './SliderBase'
 export {
   SliderBaseThumb, type SliderBaseThumbProps,
   SliderBaseProgress, type SliderBaseProgressProps,

@@ -1,1 +1,1 @@
-export * from './PaginationLastTrigger.tsx'
+export * from './PaginationLastTrigger'

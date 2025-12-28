@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { AlertIcon } from './AlertIcon.tsx';
+import { AlertIcon } from './AlertIcon';
 import { Smile } from '@vega-ui/icons';
-import { Alert } from '../../Alert.tsx';
+import { Alert } from '../../Alert';
 import { AlertContent } from '../AlertContent';
 import { AlertMain } from '../AlertMain';
 import { AlertTitle } from '../AlertTitle';

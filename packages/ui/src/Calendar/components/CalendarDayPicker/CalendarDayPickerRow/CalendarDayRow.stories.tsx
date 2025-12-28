@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { CalendarDayPickerRow } from './CalendarDayPickerRow.tsx';
+import { CalendarDayPickerRow } from './CalendarDayPickerRow';
 import { CalendarDayPickerItem } from '../CalendarDayPickerItem';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export

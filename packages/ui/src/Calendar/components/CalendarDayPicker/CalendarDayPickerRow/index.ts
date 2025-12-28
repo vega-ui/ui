@@ -1,1 +1,1 @@
-export * from './CalendarDayPickerRow.tsx'
+export * from './CalendarDayPickerRow'

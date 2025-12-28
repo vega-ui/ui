@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { CalendarBaseHeader } from './CalendarBaseHeader.tsx';
+import { CalendarBaseHeader } from './CalendarBaseHeader';
 import { CalendarBasePrevButton } from '../CalendarBasePrevButton';
 import { Icon } from '../../../Icon';
 import { CalendarBaseNextButton } from '../CalendarBaseNextButton';

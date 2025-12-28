@@ -1,1 +1,1 @@
-export { useDataGridRowContext, DataGridRowProvider } from './context.ts'
+export { useDataGridRowContext, DataGridRowProvider } from './context'

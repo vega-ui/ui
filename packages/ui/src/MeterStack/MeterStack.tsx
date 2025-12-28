@@ -2,7 +2,7 @@ import { FC, HTMLAttributes } from 'react';
 
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
-import { MeterStackSize } from './types.ts';
+import { MeterStackSize } from './types';
 import { MeterStackProvider } from './contexts';
 
 export interface MeterStackProps extends HTMLAttributes<HTMLDivElement> {

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { SliderBase, SliderBaseProps } from './SliderBase.tsx';
+import { SliderBase, SliderBaseProps } from './SliderBase';
 import { SliderBaseHiddenInput, SliderBaseProgress, SliderBaseThumb } from './components';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export

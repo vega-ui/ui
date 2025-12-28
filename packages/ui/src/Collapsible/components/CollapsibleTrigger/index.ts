@@ -1,1 +1,1 @@
-export * from './CollapsibleTrigger.tsx'
+export * from './CollapsibleTrigger'

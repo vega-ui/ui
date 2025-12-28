@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Option } from './Option.tsx';
+import { Option } from './Option';
 
 const meta = {
   title: 'Form/Selectors/Option',

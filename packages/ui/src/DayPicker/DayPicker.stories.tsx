@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DayPicker } from './DayPicker.tsx';
+import { DayPicker } from './DayPicker';
 import {
   DayPickerItem,
   DayPickerLayout,
@@ -17,7 +17,6 @@ const meta: Meta<typeof DayPicker> = {
   title: 'Data/Pickers/DayPicker/DayPicker',
   component: DayPicker,
   args: {
-    inline: true,
     children: <DayPickerLayout />
   },
   argTypes: {

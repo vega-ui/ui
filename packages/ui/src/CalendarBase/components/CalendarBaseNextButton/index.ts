@@ -1,1 +1,1 @@
-export * from './CalendarBaseNextButton.tsx'
+export * from './CalendarBaseNextButton'

@@ -1,5 +1,5 @@
 import { TextProps } from '../../Text';
-import { HelperTextSize } from '../types.ts';
+import { HelperTextSize } from '../types';
 
 const mapperTextSize: Record<HelperTextSize, TextProps['size']> = {
   'sm': 1,

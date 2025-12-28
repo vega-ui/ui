@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Alert } from './Alert.tsx';
+import { Alert } from './Alert';
 import { Smile, X } from '@vega-ui/icons'
 import { AlertContent, AlertIcon, AlertMain, AlertTitle } from './components';
 import { IconButton } from '../IconButton';
 import { Icon } from '../Icon';
 import { Link } from '../Link';
 import { Code } from '../Code';
-import { AlertAppearance, AlertVariant } from './types.ts';
+import { AlertAppearance, AlertVariant } from './types';
 
 const variants: AlertVariant[] = ['info', 'error', 'success', 'warning']
 const appearances: AlertAppearance[] = ['fill', 'surface']

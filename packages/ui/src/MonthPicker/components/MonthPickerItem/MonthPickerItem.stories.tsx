@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { MonthPickerItem } from './MonthPickerItem.tsx';
+import { MonthPickerItem } from './MonthPickerItem';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof MonthPickerItem> = {

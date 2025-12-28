@@ -1,1 +1,1 @@
-export { usePaginationContext, PaginationProvider } from './context.ts'
+export { usePaginationContext, PaginationProvider } from './context'

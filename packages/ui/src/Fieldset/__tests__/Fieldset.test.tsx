@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react'
-import { Fieldset } from '../Fieldset.tsx';
+import { Fieldset } from '../Fieldset';
 import { FieldsetHeader, FieldsetLegend } from '../components';
 
 const TITLE = 'TITLE'

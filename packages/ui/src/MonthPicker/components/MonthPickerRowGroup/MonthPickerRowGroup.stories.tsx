@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { MonthPickerRowGroup } from './MonthPickerRowGroup.tsx';
+import { MonthPickerRowGroup } from './MonthPickerRowGroup';
 import { MonthPickerItem } from '../MonthPickerItem';
 import { MonthPickerRow } from '../MonthPickerRow';
 

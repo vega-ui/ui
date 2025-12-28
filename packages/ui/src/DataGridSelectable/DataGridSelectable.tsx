@@ -8,7 +8,7 @@ import {
 } from 'react';
 import { DataGrid, DataGridProps, DataGridResolveValue } from '../DataGrid';
 import { DataGridApiRef, DataGridCellKey } from '../DataGrid';
-import { DataGridDisabled, DataGridSelection } from './types.ts';
+import { DataGridDisabled, DataGridSelection } from './types';
 import { DataGridSelectableProvider } from './contexts';
 import { Grid, MatrixNode, mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
 import { useControlledState, useSelection } from '@vega-ui/hooks';
