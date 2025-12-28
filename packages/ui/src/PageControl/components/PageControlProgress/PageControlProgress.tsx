@@ -13,12 +13,6 @@ export interface PageControlProgressProps extends PageControlItemProps {
   index: number
   
   /**
-   * Optional class name applied to the inner animated progress line.
-   * Useful for customizing its visual appearance.
-   */
-  progressLineClassName?: string
-  
-  /**
    * Duration of the progress animation in milliseconds.
    * Controls how long the visual fill takes to complete.
    * Defaults to 5000ms if not provided.
