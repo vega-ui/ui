@@ -58,7 +58,7 @@ export const TextArea: FC<TextAreaProps> = ({
   className,
   placeholder,
   error,
-  size = 'medium',
+  size = 'md',
   fullWidth,
   ref,
   ...props
