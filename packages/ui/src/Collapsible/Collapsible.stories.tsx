@@ -12,7 +12,9 @@ const meta: Meta<typeof Collapsible> = {
   parameters: {
     layout: 'padded'
   },
-  args: {},
+  args: {
+    onChangeHidden: console.log
+  },
   tags: ['autodocs'],
 };
 
@@ -20,16 +22,14 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  render(props) {
-    return (
-      <Collapsible {...props}>
-        <CollapsibleTrigger asChild>
-          <Button appearance='transparent'>Collapse</Button>
-        </CollapsibleTrigger>
-        <CollapsibleContent>
-          <Text>Hello</Text>
-        </CollapsibleContent>
-      </Collapsible>
-    )
+  args: {
+    children: [
+      <CollapsibleTrigger asChild>
+        <Button appearance='transparent'>Collapse</Button>
+      </CollapsibleTrigger>,
+      <CollapsibleContent>
+        <Text>Hello</Text>
+      </CollapsibleContent>
+    ]
   }
 }
