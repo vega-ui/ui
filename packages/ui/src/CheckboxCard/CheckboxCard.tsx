@@ -5,7 +5,7 @@ import { CheckboxProps } from '../Checkbox';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
 import { CheckboxCardProvider } from './contexts';
-import { CheckboxCardOrientation, CheckboxVariant } from './types.ts';
+import { CheckboxCardOrientation, CheckboxVariant } from './types';
 
 export interface CheckboxCardProps extends
   Omit<CardProps, 'appearance'>,

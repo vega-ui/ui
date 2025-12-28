@@ -1,1 +1,1 @@
-export * from './SelectCombobox.tsx'
+export * from './SelectCombobox'

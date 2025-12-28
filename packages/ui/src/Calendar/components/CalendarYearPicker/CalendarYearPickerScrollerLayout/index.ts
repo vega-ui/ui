@@ -1,1 +1,1 @@
-export * from './CalendarYearPickerScrollerLayout.tsx'
+export * from './CalendarYearPickerScrollerLayout'

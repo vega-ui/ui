@@ -1,3 +1,3 @@
-export { Meter, type MeterProps } from './Meter.tsx'
+export { Meter, type MeterProps } from './Meter'
 export { MeterTrack, type MeterTrackProps } from './components'
-export type { MeterSize, MeterVariant } from './types.ts'
+export type { MeterSize, MeterVariant } from './types'

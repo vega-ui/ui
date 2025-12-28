@@ -2,7 +2,7 @@ import { FC, HTMLAttributes, Ref } from 'react';
 import style from './style.module.css';
 import { SegmentedControlItemProvider, useSegmentedControlContext } from '../../contexts';
 import { csx, mergeRefs } from '@vega-ui/utils';
-import { SegmentedControlSize, SegmentedControlValue, SegmentedControlVariant } from '../../types.ts';
+import { SegmentedControlSize, SegmentedControlValue, SegmentedControlVariant } from '../../types';
 
 export interface SegmentedControlItemProps extends HTMLAttributes<HTMLLabelElement> {
   /**

@@ -4,7 +4,7 @@ import { clamp } from '@vega-ui/utils';
 import { useControlledState } from '@vega-ui/hooks';
 import { SliderProvider } from './contexts';
 import { SliderBase } from '../SliderBase';
-import { SliderSize } from './types.ts';
+import { SliderSize } from './types';
 
 export interface SliderProps extends HTMLAttributes<HTMLDivElement> {
   /**

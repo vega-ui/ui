@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { SheetHandle } from './SheetHandle.tsx';
+import { SheetHandle } from './SheetHandle';
 
 const meta = {
   title: 'Overlay/Sheet/SheetHandle',

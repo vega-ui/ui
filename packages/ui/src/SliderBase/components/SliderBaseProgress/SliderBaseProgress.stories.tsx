@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { SliderBaseProgress, SliderBaseProgressProps } from './SliderBaseProgress.tsx';
-import { SliderBase } from '../../SliderBase.tsx';
+import { SliderBaseProgress, SliderBaseProgressProps } from './SliderBaseProgress';
+import { SliderBase } from '../../SliderBase';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof SliderBaseProgress> = {

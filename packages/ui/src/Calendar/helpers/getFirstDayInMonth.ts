@@ -1,5 +1,5 @@
-import { CalendarDatesDisabled } from '../types.ts';
-import { isDisabledDate } from './isDisabledDate.ts';
+import { CalendarDatesDisabled } from '../types';
+import { isDisabledDate } from './isDisabledDate';
 import { normalizeDate } from '@vega-ui/utils';
 
 interface GetFirstDayInMonthOptions {

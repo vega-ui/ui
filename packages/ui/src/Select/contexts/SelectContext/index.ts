@@ -1,1 +1,1 @@
-export { useSelectContext, SelectProvider } from './context.ts'
+export { useSelectContext, SelectProvider } from './context'

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { NumberFieldInput } from './NumberFieldInput';
-import { NumberField } from '../../NumberField.tsx';
+import { NumberField } from '../../NumberField';
 import { NumberFieldDecrementButton } from '../NumberFieldDecrementButton';
 import { NumberFieldIncrementButton } from '../NumberFieldIncrementButton';
 

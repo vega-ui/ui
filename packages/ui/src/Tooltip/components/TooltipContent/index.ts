@@ -1,1 +1,1 @@
-export * from './TooltipContent.tsx'
+export * from './TooltipContent'

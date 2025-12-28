@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CheckboxIndicator } from './CheckboxIndicator';
-import { Checkbox } from '../../Checkbox.tsx';
+import { Checkbox } from '../../Checkbox';
 import { CheckboxHiddenInput } from '../CheckboxHiddenInput';
 import { CheckboxCheckedIcon } from '../CheckboxCheckedIcon';
 import { CheckboxIndeterminateIcon } from '../CheckboxIndeterminateIcon';

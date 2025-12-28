@@ -1,7 +1,7 @@
 import { FC, HTMLAttributes, Ref } from 'react'
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils'
-import { SwitchSize, SwitchVariant } from './types.ts';
+import { SwitchSize, SwitchVariant } from './types';
 import { SwitchProvider } from './contexts';
 
 export interface SwitchProps extends HTMLAttributes<HTMLLabelElement> {

@@ -1,1 +1,1 @@
-export * from './SheetHeader.tsx'
+export * from './SheetHeader'

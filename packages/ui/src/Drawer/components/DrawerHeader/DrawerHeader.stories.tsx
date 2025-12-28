@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DrawerHeader } from './DrawerHeader.tsx';
+import { DrawerHeader } from './DrawerHeader';
 import { DrawerTitle } from '../DrawerTitle';
 import { DrawerCloseButton } from '../DrawerCloseButton';
 

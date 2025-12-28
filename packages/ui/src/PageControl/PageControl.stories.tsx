@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { PageControl } from './PageControl.tsx';
+import { PageControl } from './PageControl';
 import { PageControlItem, PageControlProgress } from './components';
 import { useState } from 'react';
 

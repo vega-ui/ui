@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Tooltip } from './Tooltip.tsx';
+import { Tooltip } from './Tooltip';
 import { Button } from '../Button';
 import { IconButton } from '../IconButton';
 import { Dialog, DialogBackdrop, DialogContent, DialogHeader, DialogPortal, DialogTitle, DialogTrigger } from '../Dialog';

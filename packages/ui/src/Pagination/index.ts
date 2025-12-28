@@ -1,4 +1,4 @@
-export { Pagination, type PaginationProps } from './Pagination.tsx'
+export { Pagination, type PaginationProps } from './Pagination'
 export {
   PaginationItem, type PaginationItemProps,
   PaginationFirstTrigger, type PaginationFirstTriggerProps,
@@ -9,4 +9,4 @@ export {
   PaginationText, type PaginationTextProps
 } from './components'
 export { usePaginationContext } from './contexts'
-export type { PaginationVariant, PaginationSize } from './types.ts'
+export type { PaginationVariant, PaginationSize } from './types'

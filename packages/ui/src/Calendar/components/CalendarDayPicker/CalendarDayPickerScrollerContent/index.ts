@@ -1,1 +1,1 @@
-export * from './CalendarDayPickerScrollerContent.tsx'
+export * from './CalendarDayPickerScrollerContent'

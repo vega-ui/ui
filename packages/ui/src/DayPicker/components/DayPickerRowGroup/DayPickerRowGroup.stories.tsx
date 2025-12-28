@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DayPickerRowGroup } from './DayPickerRowGroup.tsx';
+import { DayPickerRowGroup } from './DayPickerRowGroup';
 import { DayPickerItem } from '../DayPickerItem';
 import { DayPickerRow } from '../DayPickerRow';
 

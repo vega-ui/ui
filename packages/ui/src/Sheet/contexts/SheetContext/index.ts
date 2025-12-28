@@ -1,1 +1,1 @@
-export { useSheetContext, SheetProvider } from './context.ts'
+export { useSheetContext, SheetProvider } from './context'

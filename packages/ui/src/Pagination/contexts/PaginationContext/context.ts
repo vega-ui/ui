@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext } from '@vega-ui/react-context';
-import { PaginationSize, PaginationVariant } from '../../types.ts';
+import { PaginationSize, PaginationVariant } from '../../types';
 
 export interface PaginationContextState {
   size?: PaginationSize

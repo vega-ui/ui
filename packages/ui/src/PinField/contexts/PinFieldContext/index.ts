@@ -1,1 +1,1 @@
-export { PinFieldProvider, usePinFieldContext } from './context.ts'
+export { PinFieldProvider, usePinFieldContext } from './context'

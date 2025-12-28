@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DrawerPortal } from './DrawerPortal';
-import { Drawer } from '../../Drawer.tsx';
+import { Drawer } from '../../Drawer';
 import { DrawerTrigger } from '../DrawerTrigger';
 import { Button } from '../../../Button';
 import { DrawerContent } from '../DrawerContent';

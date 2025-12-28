@@ -3,7 +3,7 @@ import { FC, PropsWithChildren, TdHTMLAttributes } from 'react';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
 import { useTableContext } from '../../contexts';
-import { TableProps } from '../../Table.tsx';
+import { TableProps } from '../../Table';
 
 export interface TableDataProps extends TdHTMLAttributes<HTMLTableDataCellElement> {
   /**

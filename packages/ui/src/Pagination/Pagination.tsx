@@ -4,7 +4,7 @@ import { FC, HTMLAttributes, Ref } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { PaginationProvider } from './contexts';
-import { PaginationSize, PaginationVariant } from './types.ts';
+import { PaginationSize, PaginationVariant } from './types';
 
 export interface PaginationProps extends HTMLAttributes<HTMLElement> {
   /**

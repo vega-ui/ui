@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { PaginationEllipsis } from './PaginationEllipsis.tsx';
+import { PaginationEllipsis } from './PaginationEllipsis';
 
 const meta = {
   title: 'Navigation/Pagination/PaginationEllipsis',

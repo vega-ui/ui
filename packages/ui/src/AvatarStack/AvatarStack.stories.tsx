@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { AvatarStack } from './AvatarStack.tsx';
+import { AvatarStack } from './AvatarStack';
 import { AvatarFallback, AvatarImage } from '../Avatar';
 import { AvatarStackItem } from './components';
 

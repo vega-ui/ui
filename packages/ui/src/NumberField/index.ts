@@ -1,4 +1,4 @@
-export { NumberField, type NumberFieldProps } from './NumberField.tsx'
+export { NumberField, type NumberFieldProps } from './NumberField'
 export type { NumberFieldSize } from './types'
 export { useNumberFieldContext } from './contexts'
 export {

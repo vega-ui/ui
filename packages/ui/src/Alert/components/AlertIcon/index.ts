@@ -1,1 +1,1 @@
-export * from './AlertIcon.tsx'
+export * from './AlertIcon'

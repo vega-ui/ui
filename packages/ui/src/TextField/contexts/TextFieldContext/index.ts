@@ -1,1 +1,1 @@
-export { useTextFieldContext, TextFieldProvider } from './context.ts'
+export { useTextFieldContext, TextFieldProvider } from './context'

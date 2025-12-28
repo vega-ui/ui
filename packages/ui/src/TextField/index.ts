@@ -1,4 +1,4 @@
-export { TextField, type TextFieldProps } from './TextField.tsx'
+export { TextField, type TextFieldProps } from './TextField'
 export type { TextFieldSize } from './types'
 export {
   TextFieldInput, type TextFieldInputProps

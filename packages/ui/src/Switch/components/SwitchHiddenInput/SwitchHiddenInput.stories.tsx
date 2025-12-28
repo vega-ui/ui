@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { SwitchHiddenInput } from './SwitchHiddenInput';
 import { Button } from '../../../Button';
 import { FormEvent } from 'react';
-import { Switch } from '../../Switch.tsx';
+import { Switch } from '../../Switch';
 import { SwitchIndicator } from '../SwitchIndicator';
 
 const onSubmit = (e: FormEvent<HTMLFormElement>) => {

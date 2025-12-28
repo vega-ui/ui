@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { FC } from 'react';
 
-import { YearPicker } from './YearPicker.tsx';
+import { YearPicker } from './YearPicker';
 import {
   YearPickerItem,
   YearPickerLayout,

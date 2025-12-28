@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
-import { Progress } from '../Progress.tsx'
+import { Progress } from '../Progress'
 import { ProgressTrack } from '../components';
 
 describe('Progress', () => {

@@ -1,1 +1,1 @@
-export { Code, type CodeProps } from './Code.tsx'
+export { Code, type CodeProps } from './Code'

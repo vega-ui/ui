@@ -1,5 +1,5 @@
 import { DataGridSelectable, DataGridSelectableProps, type DataGridSelection } from '../DataGridSelectable';
-import { DataGridPickerSize, DataGridPickerVariant } from './types.ts';
+import { DataGridPickerSize, DataGridPickerVariant } from './types';
 import { DataGridPickerProvider } from './contexts';
 import { DataGridCellKey } from '../DataGrid';
 

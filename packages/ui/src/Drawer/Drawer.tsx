@@ -15,7 +15,7 @@ import {
 } from '@floating-ui/react';
 import { useControlledState } from '@vega-ui/hooks';
 import { DrawerProvider } from './contexts';
-import { DrawerPosition } from './types.ts';
+import { DrawerPosition } from './types';
 
 export interface DrawerProps {
   /**

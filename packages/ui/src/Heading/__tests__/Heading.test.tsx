@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react'
-import { Heading } from '../Heading.tsx';
+import { Heading } from '../Heading';
 
 describe('Text', () => {
   it('render default heading element', () => {

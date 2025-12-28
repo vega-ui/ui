@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { AvatarImage } from './AvatarImage.tsx';
-import { Avatar } from '../../Avatar.tsx';
+import { AvatarImage } from './AvatarImage';
+import { Avatar } from '../../Avatar';
 
 const meta = {
   title: 'Display/Avatar/AvatarImage',

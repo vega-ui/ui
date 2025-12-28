@@ -3,7 +3,7 @@
 import { CSSProperties, FC, HTMLAttributes } from 'react';
 import style from './style.module.css';
 import { csx } from '@vega-ui/utils';
-import { SliderBaseOrientation, SliderBaseSize, SliderBaseVariant } from '../../types.ts';
+import { SliderBaseOrientation, SliderBaseSize, SliderBaseVariant } from '../../types';
 import { useSliderContext } from '../../../Slider';
 
 export interface SliderBaseThumbProps extends HTMLAttributes<HTMLDivElement> {

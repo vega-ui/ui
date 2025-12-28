@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Dialog } from './Dialog.tsx';
+import { Dialog } from './Dialog';
 import { Button, ButtonProps } from '../Button';
 import { Text } from '../Text';
 import {

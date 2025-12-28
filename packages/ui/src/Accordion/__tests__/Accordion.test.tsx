@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react'
-import { Accordion } from '../Accordion.tsx';
+import { Accordion } from '../Accordion';
 import { Text } from '../../Text';
 import { AccordionContent, AccordionHeader, AccordionIcon, AccordionItem, AccordionTrigger } from '../components';
 

@@ -1,4 +1,4 @@
-export { YearPicker, type YearPickerProps } from './YearPicker.tsx'
+export { YearPicker, type YearPickerProps } from './YearPicker'
 export { useYearPickerScrollerContext } from './hooks'
 export { createYearPickerGrid } from './helpers'
 export {

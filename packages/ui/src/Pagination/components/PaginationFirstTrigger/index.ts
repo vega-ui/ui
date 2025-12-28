@@ -1,1 +1,1 @@
-export * from './PaginationFirstTrigger.tsx'
+export * from './PaginationFirstTrigger'

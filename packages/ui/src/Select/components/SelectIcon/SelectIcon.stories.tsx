@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { SelectIcon } from './SelectIcon';
-import { Select } from '../../Select.tsx';
+import { Select } from '../../Select';
 import { SelectCombobox } from '../SelectCombobox';
 import { ChevronsUpDown } from '@vega-ui/icons';
 

@@ -1,1 +1,1 @@
-export { AvatarGroupProvider, useAvatarGroupContext } from './context.ts'
+export { AvatarGroupProvider, useAvatarGroupContext } from './context'

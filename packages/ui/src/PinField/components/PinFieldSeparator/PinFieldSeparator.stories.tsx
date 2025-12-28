@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { PinFieldSeparator } from './PinFieldSeparator.tsx';
+import { PinFieldSeparator } from './PinFieldSeparator';
 
 const meta = {
   title: 'Form/Fields/PinField/PinFieldSeparator',

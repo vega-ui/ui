@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { AvatarStackItem } from './AvatarStackItem.tsx';
+import { AvatarStackItem } from './AvatarStackItem';
 import { AvatarFallback, AvatarImage } from '../../../Avatar';
 
 const meta = {

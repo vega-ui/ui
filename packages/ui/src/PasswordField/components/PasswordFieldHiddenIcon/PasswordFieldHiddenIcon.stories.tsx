@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { PasswordFieldHiddenIcon } from './PasswordFieldHiddenIcon';
 import { LockOpen } from '@vega-ui/icons';
-import { PasswordField } from '../../PasswordField.tsx';
+import { PasswordField } from '../../PasswordField';
 import { PasswordFieldToggleButton } from '../PasswordFieldToggleButton';
 import { PasswordFieldShownIcon } from '../PasswordFieldShownIcon';
 

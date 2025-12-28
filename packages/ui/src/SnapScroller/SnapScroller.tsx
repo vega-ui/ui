@@ -13,7 +13,7 @@ import style from './style.module.css'
 import { csx, mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
 import { SnapScrollerProvider } from './contexts';
 import { useRefMap } from '@vega-ui/hooks';
-import { SnapScrollerApiRef } from './types.ts';
+import { SnapScrollerApiRef } from './types';
 
 export interface SnapScrollerProps extends HTMLAttributes<HTMLDivElement> {
   /**

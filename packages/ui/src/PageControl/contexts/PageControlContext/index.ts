@@ -1,1 +1,1 @@
-export { PageControlProvider, usePageControlContext } from './context.ts'
+export { PageControlProvider, usePageControlContext } from './context'

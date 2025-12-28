@@ -2,11 +2,11 @@ import { FC, PropsWithChildren } from 'react';
 import { DataGridCellKey, useDataGridRowContext } from '../../../DataGrid';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css';
-import { DataGridPickerItemRangePosition } from './types.ts';
+import { DataGridPickerItemRangePosition } from './types';
 import { getRangePosition } from './helpers';
 import { DataGridSelectableCell, DataGridSelectableCellProps } from '../../../DataGridSelectable';
 import { useDataGridSelectableContext } from '../../../DataGridSelectable';
-import { DataGridPickerSize, DataGridPickerVariant } from '../../types.ts';
+import { DataGridPickerSize, DataGridPickerVariant } from '../../types';
 import { useDataGridPickerContext } from '../../contexts';
 
 export interface DataGridPickerItemProps extends Omit<DataGridSelectableCellProps, 'cellKey'> {

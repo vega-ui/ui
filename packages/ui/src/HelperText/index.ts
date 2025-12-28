@@ -1,1 +1,1 @@
-export { HelperText, type HelperTextProps } from './HelperText.tsx'
+export { HelperText, type HelperTextProps } from './HelperText'

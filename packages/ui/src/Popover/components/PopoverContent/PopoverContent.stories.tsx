@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { PopoverContent } from './PopoverContent.tsx';
+import { PopoverContent } from './PopoverContent';
 import { Text } from '../../../Text';
 import { Button } from '../../../Button';
 import { PopoverTrigger } from '../PopoverTrigger';
-import { Popover } from '../../Popover.tsx';
+import { Popover } from '../../Popover';
 
 const meta = {
   title: 'Overlay/Popover/PopoverContent',

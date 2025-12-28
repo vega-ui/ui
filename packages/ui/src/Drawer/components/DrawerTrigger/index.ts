@@ -1,1 +1,1 @@
-export * from './DrawerTrigger.tsx'
+export * from './DrawerTrigger'

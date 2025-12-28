@@ -2,7 +2,7 @@ import { ButtonBase, ButtonBaseProps } from '../ButtonBase';
 import { FC } from 'react';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css';
-import { IconButtonSize } from './types.ts';
+import { IconButtonSize } from './types';
 
 export interface IconButtonProps extends ButtonBaseProps {
   /**

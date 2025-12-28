@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Button, ButtonProps } from './Button.tsx';
+import { Button, ButtonProps } from './Button';
 import { Spinner } from '../Spinner';
 import { CSSProperties } from 'react';
 

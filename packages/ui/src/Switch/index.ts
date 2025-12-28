@@ -1,4 +1,4 @@
-export { Switch, type SwitchProps } from './Switch.tsx'
+export { Switch, type SwitchProps } from './Switch'
 export {
   SwitchHiddenInput, type SwitchHiddenInputProps,
   SwitchIndicator, type SwitchIndicatorProps

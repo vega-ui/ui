@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
-import { PageControl } from '../PageControl.tsx'
+import { PageControl } from '../PageControl'
 import { PageControlItem } from '../components'
 import { useState } from 'react'
 

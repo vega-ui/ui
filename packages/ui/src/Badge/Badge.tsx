@@ -1,7 +1,7 @@
 import { DetailedHTMLProps, FC, HTMLAttributes, ReactNode } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
-import { BadgeAppearance, BadgeSize, BadgeVariant } from './types.ts';
+import { BadgeAppearance, BadgeSize, BadgeVariant } from './types';
 
 export interface BadgeProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
   /**

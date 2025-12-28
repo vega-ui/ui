@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach, vi, Mock } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { IndexedSnapScroller } from '../IndexedSnapScroller.tsx';
+import { IndexedSnapScroller } from '../IndexedSnapScroller';
 import { IndexedSnapScrollerContent, IndexedSnapScrollerContentProps } from '../components';
 import { FC } from 'react';
 import { useIndexedSnapScrollerContext } from '../contexts';

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react'
-import { Card } from '../Card.tsx';
+import { Card } from '../Card';
 
 const TEXT = 'Hello, World!';
 

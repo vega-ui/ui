@@ -1,7 +1,7 @@
 import { FC, HTMLAttributes, Ref } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
-import { CheckboxSize, CheckboxVariant } from './types.ts';
+import { CheckboxSize, CheckboxVariant } from './types';
 import { CheckboxProvider } from './contexts';
 
 export interface CheckboxProps extends HTMLAttributes<HTMLLabelElement> {

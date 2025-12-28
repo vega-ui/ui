@@ -1,1 +1,1 @@
-export * from './useYearPickerScrollerContext.ts'
+export * from './useYearPickerScrollerContext'

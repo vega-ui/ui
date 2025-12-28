@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { SegmentedControl } from './SegmentedControl.tsx';
+import { SegmentedControl } from './SegmentedControl';
 import { SegmentedControlIndicator, SegmentedControlItem, SegmentedControlItemHiddenInput } from './components';
 import { Icon } from '../Icon';
 import { SunIcon, MoonIcon } from '@vega-ui/icons';

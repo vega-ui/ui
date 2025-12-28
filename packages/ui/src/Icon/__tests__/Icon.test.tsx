@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react'
-import { Icon } from '../Icon.tsx';
+import { Icon } from '../Icon';
 import { Globe } from '@vega-ui/icons';
 
 describe('Icon', () => {

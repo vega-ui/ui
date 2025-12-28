@@ -1,1 +1,1 @@
-export { useCalendarContext, CalendarProvider } from './context.ts'
+export { useCalendarContext, CalendarProvider } from './context'

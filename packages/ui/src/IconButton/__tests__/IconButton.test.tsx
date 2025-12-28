@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react'
-import { IconButton } from '../IconButton.tsx';
+import { IconButton } from '../IconButton';
 import { GlobeIcon } from '@vega-ui/icons';
 import { Icon } from '../../Icon';
 

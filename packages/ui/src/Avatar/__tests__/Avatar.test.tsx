@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react'
-import { Avatar } from '../Avatar.tsx';
+import { Avatar } from '../Avatar';
 import { AvatarFallback, AvatarIcon, AvatarImage } from '../components';
 import { HeartIcon } from '@vega-ui/icons';
 

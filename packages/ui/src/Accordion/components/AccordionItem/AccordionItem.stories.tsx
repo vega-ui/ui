@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { AccordionItem } from './AccordionItem.tsx';
+import { AccordionItem } from './AccordionItem';
 import { Text } from '../../../Text';
 import { AccordionTrigger } from '../AccordionTrigger';
 import { AccordionContent } from '../AccordionContent';
-import { Accordion } from '../../Accordion.tsx';
+import { Accordion } from '../../Accordion';
 import { AccordionHeader } from '../AccordionHeader';
 import { AccordionIcon } from '../AccordionIcon';
 

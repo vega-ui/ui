@@ -1,1 +1,1 @@
-export * from './useMonthPickerScrollerContext.ts'
+export * from './useMonthPickerScrollerContext'

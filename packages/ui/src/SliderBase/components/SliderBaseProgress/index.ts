@@ -1,1 +1,1 @@
-export * from './SliderBaseProgress.tsx'
+export * from './SliderBaseProgress'

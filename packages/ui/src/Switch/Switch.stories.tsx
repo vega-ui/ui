@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
-import { Switch } from './Switch.tsx'
+import { Switch } from './Switch'
 import { SwitchHiddenInput, SwitchIndicator } from './components';
 
 const meta = {

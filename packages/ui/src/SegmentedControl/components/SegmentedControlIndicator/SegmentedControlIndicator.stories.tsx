@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { SegmentedControlIndicator } from './SegmentedControlIndicator';
-import { SegmentedControl } from '../../SegmentedControl.tsx';
+import { SegmentedControl } from '../../SegmentedControl';
 import { SegmentedControlItem } from '../SegmentedControlItem';
 import { SegmentedControlItemHiddenInput } from '../SegmentedControlItemHiddenInput';
 

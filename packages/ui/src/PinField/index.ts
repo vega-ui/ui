@@ -1,4 +1,4 @@
-export { PinField, type PinFieldProps } from './PinField.tsx'
+export { PinField, type PinFieldProps } from './PinField'
 export {
   PinFieldSlot, type PinFieldSlotProps,
   PinFieldSeparator, type PinFieldSeparatorProps,

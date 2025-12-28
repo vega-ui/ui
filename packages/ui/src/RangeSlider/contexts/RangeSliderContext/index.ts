@@ -1,1 +1,1 @@
-export { useRangeSliderContext, RangeSliderProvider } from './context.ts'
+export { useRangeSliderContext, RangeSliderProvider } from './context'

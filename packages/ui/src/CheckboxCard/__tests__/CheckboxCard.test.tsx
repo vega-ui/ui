@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react'
-import { CheckboxCard, CheckboxCardProps } from '../CheckboxCard.tsx';
+import { CheckboxCard, CheckboxCardProps } from '../CheckboxCard';
 import {
   CheckboxCardContent, CheckboxCardControl, CheckboxCardControlCheckedIcon,
   CheckboxCardControlHiddenInput,

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { CalendarMonthPickerRow } from './CalendarMonthPickerRow.tsx'
+import { CalendarMonthPickerRow } from './CalendarMonthPickerRow'
 import { CalendarMonthPickerItem } from '../CalendarMonthPickerItem';
 import { formatMonth } from '@vega-ui/utils';
 

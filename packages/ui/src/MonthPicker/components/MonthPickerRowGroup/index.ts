@@ -1,1 +1,1 @@
-export * from './MonthPickerRowGroup.tsx'
+export * from './MonthPickerRowGroup'

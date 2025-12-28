@@ -1,2 +1,2 @@
-export { Option, type OptionProps } from './Option.tsx'
-export type { OptionSize } from './types.ts'
+export { Option, type OptionProps } from './Option'
+export type { OptionSize } from './types'

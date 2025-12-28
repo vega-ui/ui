@@ -1,1 +1,1 @@
-export * from './SheetHandle.tsx'
+export * from './SheetHandle'

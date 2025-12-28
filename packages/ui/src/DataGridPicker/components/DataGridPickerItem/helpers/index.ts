@@ -1,1 +1,1 @@
-export * from './getRangePosition.ts'
+export * from './getRangePosition'

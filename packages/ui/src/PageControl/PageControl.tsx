@@ -2,7 +2,7 @@ import { FC, HTMLAttributes, PropsWithChildren, useRef, useState, PointerEvent, 
 import { PageControlProvider } from './contexts';
 import style from './style.module.css'
 import { csx, mergeEventHandlers } from '@vega-ui/utils';
-import { PageControlSize, PageControlVariant } from './types.ts';
+import { PageControlSize, PageControlVariant } from './types';
 import { useRefMap } from '@vega-ui/hooks';
 
 export interface PageControlProps extends HTMLAttributes<HTMLUListElement> {

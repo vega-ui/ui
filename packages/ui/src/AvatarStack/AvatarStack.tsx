@@ -4,7 +4,7 @@ import { FC, HTMLAttributes, PropsWithChildren, Ref } from 'react';
 import { AvatarGroupProvider } from './contexts';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
-import { AvatarGroupSize, AvatarGroupVariant } from './types.ts';
+import { AvatarGroupSize, AvatarGroupVariant } from './types';
 
 export interface AvatarGroupProps extends HTMLAttributes<HTMLDivElement> {
   /**

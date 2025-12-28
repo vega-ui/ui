@@ -3,7 +3,7 @@
 import { ChangeEvent, CSSProperties, FC, HTMLAttributes, Ref, useLayoutEffect, useRef, useState } from 'react';
 import { csx, mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
 import { SegmentedControlProvider } from './contexts';
-import { SegmentedControlSize, SegmentedControlValue, SegmentedControlVariant } from './types.ts';
+import { SegmentedControlSize, SegmentedControlValue, SegmentedControlVariant } from './types';
 import { useControlledState, useRefMap, useResizeObserver } from '@vega-ui/hooks';
 import styles from './style.module.css';
 

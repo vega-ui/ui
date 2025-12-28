@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react'
-import { Alert } from '../Alert.tsx';
+import { Alert } from '../Alert';
 import { AlertContent, AlertIcon, AlertMain, AlertTitle } from '../components';
 
 const TEXT = 'Hello, World!';

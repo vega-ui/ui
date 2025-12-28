@@ -1,1 +1,1 @@
-export * from './YearPickerLayout.tsx'
+export * from './YearPickerLayout'

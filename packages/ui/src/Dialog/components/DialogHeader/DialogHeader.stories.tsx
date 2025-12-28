@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DialogHeader } from './DialogHeader.tsx';
+import { DialogHeader } from './DialogHeader';
 import { DialogTitle } from '../DialogTitle';
 import { DialogCloseButton } from '../DialogCloseButton';
 

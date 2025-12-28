@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DataGridSelectableRow } from './DataGridSelectableRow.tsx';
+import { DataGridSelectableRow } from './DataGridSelectableRow';
 import { DataGridSelectableCell } from '../DataGridSelectableCell';
 import { Text } from '../../../Text';
 

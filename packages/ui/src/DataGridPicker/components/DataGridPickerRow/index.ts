@@ -1,1 +1,1 @@
-export * from './DataGridPickerRow.tsx'
+export * from './DataGridPickerRow'

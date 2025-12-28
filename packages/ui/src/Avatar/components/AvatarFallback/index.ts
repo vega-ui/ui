@@ -1,1 +1,1 @@
-export * from './AvatarFallback.tsx'
+export * from './AvatarFallback'

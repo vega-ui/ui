@@ -1,1 +1,1 @@
-export { useDialogContext, DialogProvider } from './context.ts'
+export { useDialogContext, DialogProvider } from './context'

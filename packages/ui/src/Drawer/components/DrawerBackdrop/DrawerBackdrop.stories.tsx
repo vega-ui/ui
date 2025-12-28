@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DrawerBackdrop } from './DrawerBackdrop.tsx';
+import { DrawerBackdrop } from './DrawerBackdrop';
 
 const meta = {
   title: 'Overlay/Drawer/DrawerBackdrop',

@@ -1,1 +1,1 @@
-export * from './CalendarBaseWeekLabels.tsx'
+export * from './CalendarBaseWeekLabels'

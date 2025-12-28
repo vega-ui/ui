@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { PaginationText } from './PaginationText.tsx';
+import { PaginationText } from './PaginationText';
 
 const meta = {
   title: 'Navigation/Pagination/PaginationText',

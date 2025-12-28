@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { CalendarYearPickerScrollerLayout } from './CalendarYearPickerScrollerLayout.tsx';
+import { CalendarYearPickerScrollerLayout } from './CalendarYearPickerScrollerLayout';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof CalendarYearPickerScrollerLayout> = {

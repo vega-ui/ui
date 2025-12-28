@@ -1,2 +1,2 @@
-export * from './getCellCoordinates.ts'
-export * from './getCellKey.ts'
+export * from './getCellCoordinates'
+export * from './getCellKey'

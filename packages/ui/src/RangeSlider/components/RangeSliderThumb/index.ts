@@ -1,1 +1,1 @@
-export * from './RangeSliderThumb.tsx'
+export * from './RangeSliderThumb'

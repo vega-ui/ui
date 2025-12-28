@@ -1,1 +1,1 @@
-export { useTableContext, TableProvider } from './context.ts'
+export { useTableContext, TableProvider } from './context'

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { CalendarContent } from './CalendarContent.tsx';
+import { CalendarContent } from './CalendarContent';
 import { CalendarWeekLabels } from '../CalendarWeekLabels';
 import { CalendarWeekLabel } from '../CalendarWeekLabel';
 import {

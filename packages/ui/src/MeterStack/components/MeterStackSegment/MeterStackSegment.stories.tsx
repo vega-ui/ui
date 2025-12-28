@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { CSSProperties } from 'react';
-import { MeterStackSegment } from './MeterStackSegment.tsx';
-import { MeterStack } from '../../MeterStack.tsx';
+import { MeterStackSegment } from './MeterStackSegment';
+import { MeterStack } from '../../MeterStack';
  
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof MeterStackSegment> = {

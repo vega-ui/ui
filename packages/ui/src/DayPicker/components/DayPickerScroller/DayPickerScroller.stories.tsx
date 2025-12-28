@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DayPickerScroller } from './DayPickerScroller.tsx';
+import { DayPickerScroller } from './DayPickerScroller';
 import { DayPickerScrollerContent } from '../DayPickerScrollerContent';
 import { DayPickerScrollerLayout } from '../DayPickerScrollerLayout';
 

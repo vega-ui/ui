@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
 import { SwitchIndicator } from './SwitchIndicator'
-import { Switch } from '../../Switch.tsx';
+import { Switch } from '../../Switch';
 import { SwitchHiddenInput } from '../SwitchHiddenInput';
 import { Moon } from '@vega-ui/icons';
 import { Icon } from '../../../Icon';

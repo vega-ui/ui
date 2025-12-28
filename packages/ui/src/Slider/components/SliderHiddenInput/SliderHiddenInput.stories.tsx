@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { SliderHiddenInput } from './SliderHiddenInput.tsx';
+import { SliderHiddenInput } from './SliderHiddenInput';
 import { Slider } from '../../Slider';
 import { SliderThumb } from '../SliderThumb';
 import { SliderProgress } from '../SliderProgress';

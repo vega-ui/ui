@@ -1,1 +1,1 @@
-export * from './AlertTitle.tsx'
+export * from './AlertTitle'

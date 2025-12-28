@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { TextField, TextFieldProps } from './TextField.tsx';
+import { TextField, TextFieldProps } from './TextField';
 import { TextFieldInput } from './components';
 import { IconButton } from '../IconButton';
 import { Icon } from '../Icon';

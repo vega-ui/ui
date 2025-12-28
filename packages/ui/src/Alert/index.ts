@@ -1,4 +1,4 @@
-export { Alert, type AlertProps } from './Alert.tsx'
+export { Alert, type AlertProps } from './Alert'
 export { useAlertContext } from './contexts'
 export {
   AlertIcon, type AlertIconProps,

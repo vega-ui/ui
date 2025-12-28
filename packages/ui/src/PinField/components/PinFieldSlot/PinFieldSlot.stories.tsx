@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { PinFieldSlot } from './PinFieldSlot.tsx';
-import { PinField } from '../../PinField.tsx';
+import { PinFieldSlot } from './PinFieldSlot';
+import { PinField } from '../../PinField';
 import { PinFieldHiddenInput } from '../PinFieldHiddenInput';
 
 const meta = {

@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
-import { PasswordField, PasswordFieldProps } from '../PasswordField.tsx';
+import { PasswordField, PasswordFieldProps } from '../PasswordField';
 import {
   PasswordFieldInput,
   PasswordFieldToggleButton,

@@ -2,7 +2,7 @@
 
 import { ChangeEvent } from 'react';
 import { createContext } from '@vega-ui/react-context';
-import { SegmentedControlSize, SegmentedControlValue, SegmentedControlVariant } from '../../types.ts';
+import { SegmentedControlSize, SegmentedControlValue, SegmentedControlVariant } from '../../types';
 
 export interface SegmentedControlContextState {
   size?: SegmentedControlSize

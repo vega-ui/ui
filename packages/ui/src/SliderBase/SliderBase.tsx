@@ -6,7 +6,7 @@ import {
 
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
-import { SliderBaseOrientation, SliderBaseSize, SliderBaseVariant } from './types.ts';
+import { SliderBaseOrientation, SliderBaseSize, SliderBaseVariant } from './types';
 
 export interface SliderBaseProps extends HTMLAttributes<HTMLDivElement> {
   /**

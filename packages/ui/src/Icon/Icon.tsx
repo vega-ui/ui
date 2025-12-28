@@ -2,7 +2,7 @@ import { FC, ReactNode, Ref, SVGProps } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { Slot } from '../Slot';
-import { IconSize } from './types.ts';
+import { IconSize } from './types';
 
 export interface IconProps extends SVGProps<SVGElement> {
   /**

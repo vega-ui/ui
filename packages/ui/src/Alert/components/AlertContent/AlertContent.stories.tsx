@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { AlertContent } from './AlertContent.tsx';
-import { Alert } from '../../Alert.tsx';
+import { AlertContent } from './AlertContent';
+import { Alert } from '../../Alert';
 import { AlertMain } from '../AlertMain';
 import { AlertTitle } from '../AlertTitle';
 import { AlertIcon } from '../AlertIcon';

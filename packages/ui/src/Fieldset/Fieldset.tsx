@@ -2,7 +2,7 @@ import { FC, PropsWithChildren } from 'react';
 
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
-import { FieldsetAppearance } from './types.ts';
+import { FieldsetAppearance } from './types';
 
 export interface FieldsetProps {
   /**

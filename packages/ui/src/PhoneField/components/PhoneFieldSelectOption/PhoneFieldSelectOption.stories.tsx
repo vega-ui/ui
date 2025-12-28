@@ -6,7 +6,7 @@ import { PhoneFieldSelectCombobox } from '../PhoneFieldSelectCombobox';
 import { PhoneFieldSelectValue } from '../PhoneFieldSelectValue';
 import { PhoneFieldSelectIcon } from '../PhoneFieldSelectIcon';
 import { PhoneFieldSelectPortal } from '../PhoneFieldSelectPortal';
-import { PhoneField } from '../../PhoneField.tsx';
+import { PhoneField } from '../../PhoneField';
 import { PhoneFieldInput } from '../PhoneFieldInput';
 import { PhoneFieldSelectListbox } from '../PhoneFieldSelectListbox';
 

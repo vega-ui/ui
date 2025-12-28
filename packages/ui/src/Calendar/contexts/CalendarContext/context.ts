@@ -1,9 +1,9 @@
 'use client';
 
 import { RefObject } from 'react';
-import { CalendarPicker, CalendarSelection } from '../../types.ts';
+import { CalendarPicker, CalendarSelection } from '../../types';
 import { DataGridApiRef } from '../../../DataGrid';
-import { IndexedSnapScrollerApiRef } from '../../../IndexedSnapScroller/types.ts';
+import { IndexedSnapScrollerApiRef } from '../../../IndexedSnapScroller/types';
 import { createContext } from '@vega-ui/react-context';
 
 export interface CalendarContextState {

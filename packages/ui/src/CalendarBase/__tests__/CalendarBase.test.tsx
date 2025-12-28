@@ -1,7 +1,7 @@
 import { ComponentProps } from 'react';
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import { CalendarBase } from '../CalendarBase.tsx';
+import { CalendarBase } from '../CalendarBase';
 import {
   CalendarBaseHeader,
   CalendarBaseNextButton,

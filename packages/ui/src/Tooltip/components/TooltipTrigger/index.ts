@@ -1,1 +1,1 @@
-export * from './TooltipTrigger.tsx'
+export * from './TooltipTrigger'

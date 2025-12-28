@@ -1,4 +1,4 @@
-export { Accordion, type AccordionProps } from './Accordion.tsx'
+export { Accordion, type AccordionProps } from './Accordion'
 export {
   AccordionItem, type AccordionItemProps,
   AccordionTrigger, type AccordionTriggerProps,

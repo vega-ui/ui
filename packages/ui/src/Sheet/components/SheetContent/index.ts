@@ -1,1 +1,1 @@
-export * from './SheetContent.tsx'
+export * from './SheetContent'

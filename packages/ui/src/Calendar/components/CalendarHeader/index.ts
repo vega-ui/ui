@@ -1,1 +1,1 @@
-export * from './CalendarHeader.tsx'
+export * from './CalendarHeader'

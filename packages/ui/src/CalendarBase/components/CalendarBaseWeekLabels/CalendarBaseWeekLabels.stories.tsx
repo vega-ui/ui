@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { CalendarBaseWeekLabels } from './CalendarBaseWeekLabels.tsx';
+import { CalendarBaseWeekLabels } from './CalendarBaseWeekLabels';
 import { getWeekDayNames } from '@vega-ui/utils';
 import { CalendarBaseWeekLabel } from '../CalendarBaseWeekLabel';
 

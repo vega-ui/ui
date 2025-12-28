@@ -1,4 +1,4 @@
-export { Sheet, type SheetProps } from './Sheet.tsx'
+export { Sheet, type SheetProps } from './Sheet'
 export {
   SheetContent, type SheetContentProps,
   SheetTrigger, type SheetTriggerProps,

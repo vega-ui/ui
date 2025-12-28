@@ -1,1 +1,1 @@
-export * from './SheetTrigger.tsx'
+export * from './SheetTrigger'

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { CalendarPickerButtonGroup } from './CalendarPickerButtonGroup.tsx';
+import { CalendarPickerButtonGroup } from './CalendarPickerButtonGroup';
 import { CalendarMonthPickerButton } from '../CalendarMonthPickerButton';
 import { CalendarYearPickerButton } from '../CalendarYearPickerButton';
 import { formatMonth, formatYear } from '@vega-ui/utils';

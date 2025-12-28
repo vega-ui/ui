@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
-import { MeterStack } from '../MeterStack.tsx'
+import { MeterStack } from '../MeterStack'
 
 describe('MeterStack', () => {
   it('renders with default props', () => {

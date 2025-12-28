@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import { describe, it, expect } from 'vitest'
-import { Meter } from '../Meter.tsx'
+import { Meter } from '../Meter'
 import { MeterTrack } from '../components';
 
 describe('Meter', () => {

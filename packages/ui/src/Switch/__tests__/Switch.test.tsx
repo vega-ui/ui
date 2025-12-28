@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { render, screen } from '@testing-library/react'
-import { Switch } from '../Switch.tsx'
+import { Switch } from '../Switch'
 import { SwitchHiddenInput, SwitchIndicator } from '../components';
 
 describe('Switch', () => {

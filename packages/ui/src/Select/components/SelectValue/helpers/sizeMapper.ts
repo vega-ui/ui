@@ -1,4 +1,4 @@
-import { SelectSize } from '../../../types.ts';
+import { SelectSize } from '../../../types';
 import { TextSize } from '../../../../Text/types';
 
 export const sizeMapper = (size: SelectSize): TextSize => {

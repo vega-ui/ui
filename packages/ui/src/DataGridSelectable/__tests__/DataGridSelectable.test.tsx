@@ -1,24 +1,24 @@
-import { FC } from 'react'
 import { describe, it, expect, vi, beforeEach, afterEach, beforeAll } from 'vitest'
 import { render, screen, fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom'
 
-import { DataGridSelectable, DataGridSelectableProps } from '../DataGridSelectable.tsx'
+import { DataGridSelectable, DataGridSelectableProps } from '../DataGridSelectable'
 import { DataGridSelectableCell, DataGridSelectableRow, DataGridSelectableRowGroup } from '../components'
+import { DataGridSelection } from '../types';
 
 const getCell = (row: number, col: number) => {
   const grid = screen.getByRole('grid');
   return grid.querySelector(`[data-row="${row}"][data-col="${col}"]`)
 }
 
-const Grid3x2Selectable: FC<DataGridSelectableProps> = ({
+const Grid3x2Selectable = <S extends DataGridSelection>({
   defaultActive = '0:0',
-  selection = 'single',
+  selection,
   ...rest
-}) => (
+}: DataGridSelectableProps<string, S>) => (
   <DataGridSelectable
     defaultActive={defaultActive}
-    selection={selection}
+    selection={selection ?? 'single'}
     {...rest}
   >
     <DataGridSelectableRowGroup>

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react'
-import { Collapsible } from '../Collapsible.tsx';
+import { Collapsible } from '../Collapsible';
 import { Text } from '../../Text';
 import { CollapsibleContent, CollapsibleTrigger } from '../components';
 

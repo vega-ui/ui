@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { formatYear, getCurrentDate } from '@vega-ui/utils';
-import { CalendarBasePickerButton } from './CalendarBasePickerButton.tsx';
+import { CalendarBasePickerButton } from './CalendarBasePickerButton';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof CalendarBasePickerButton> = {

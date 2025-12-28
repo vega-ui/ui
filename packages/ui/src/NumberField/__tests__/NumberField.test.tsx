@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react'
-import { NumberField } from '../NumberField.tsx';
+import { NumberField } from '../NumberField';
 import { act } from 'react';
 import { NumberFieldDecrementButton, NumberFieldIncrementButton, NumberFieldInput } from '../components';
 

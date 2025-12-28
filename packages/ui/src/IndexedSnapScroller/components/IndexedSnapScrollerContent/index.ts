@@ -1,1 +1,1 @@
-export * from './IndexedSnapScrollerContent.tsx'
+export * from './IndexedSnapScrollerContent'

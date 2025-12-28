@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react'
-import { Dialog } from '../Dialog.tsx';
+import { Dialog } from '../Dialog';
 import { act } from 'react';
 import { DialogContent, DialogTrigger } from '../components';
 

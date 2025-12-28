@@ -1,4 +1,4 @@
-export * from './CalendarBase.tsx'
+export * from './CalendarBase'
 export { useCalendarBaseContext } from './contexts'
 export {
   CalendarBaseHeader, type CalendarBaseHeaderProps,
@@ -8,4 +8,4 @@ export {
   CalendarBaseNextButton, type CalendarBaseNextButtonProps,
   CalendarBasePrevButton, type CalendarBasePrevButtonProps,
 } from './components'
-export { type CalendarBaseVariant, type CalendarBaseSize } from './types.ts'
+export { type CalendarBaseVariant, type CalendarBaseSize } from './types'

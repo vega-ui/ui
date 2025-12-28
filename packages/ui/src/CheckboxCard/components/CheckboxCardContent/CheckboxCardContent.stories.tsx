@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { CheckboxCardContent } from './CheckboxCardContent.tsx';
+import { CheckboxCardContent } from './CheckboxCardContent';
 import { CheckboxCardTitle } from '../CheckboxCardTitle';
 import { CheckboxCardDescription } from '../CheckboxCardDescription';
 

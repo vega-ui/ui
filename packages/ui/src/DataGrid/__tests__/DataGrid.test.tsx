@@ -2,8 +2,8 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 
 import { FC, RefObject } from 'react';
-import { DataGrid, DataGridProps } from '../DataGrid.tsx';
-import type { DataGridApiRef } from '../types.ts';
+import { DataGrid, DataGridProps } from '../DataGrid';
+import type { DataGridApiRef } from '../types';
 import { DataGridCell, DataGridRow } from '../components';
 
 const Grid3x2: FC<DataGridProps> = ({

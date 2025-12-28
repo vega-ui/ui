@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { CalendarDayPickerScroller } from './CalendarDayPickerScroller.tsx';
+import { CalendarDayPickerScroller } from './CalendarDayPickerScroller';
 import { CalendarDayPickerScrollerContent } from '../CalendarDayPickerScrollerContent';
 import { CalendarDayPickerScrollerLayout } from '../CalendarDayPickerScrollerLayout';
 

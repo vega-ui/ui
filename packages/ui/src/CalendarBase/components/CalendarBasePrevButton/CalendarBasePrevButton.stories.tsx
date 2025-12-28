@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { ChevronLeft } from '@vega-ui/icons';
-import { CalendarBasePrevButton } from './CalendarBasePrevButton.tsx';
+import { CalendarBasePrevButton } from './CalendarBasePrevButton';
 import { Icon } from '../../../Icon';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export

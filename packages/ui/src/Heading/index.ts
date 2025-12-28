@@ -1,2 +1,2 @@
-export { Heading, type HeadingProps } from './Heading.tsx'
-export type { HeadingAs, HeadingSize } from './types.ts'
+export { Heading, type HeadingProps } from './Heading'
+export type { HeadingAs, HeadingSize } from './types'

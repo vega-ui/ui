@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { SheetHeader } from './SheetHeader.tsx';
+import { SheetHeader } from './SheetHeader';
 import { Text } from '../../../Text';
 
 const meta = {

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { HelperText } from './HelperText.tsx';
+import { HelperText } from './HelperText';
 import { TextField, TextFieldInput } from '../TextField';
 import { Label } from '../Label';
 

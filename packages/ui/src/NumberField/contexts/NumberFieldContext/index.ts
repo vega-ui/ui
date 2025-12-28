@@ -1,1 +1,1 @@
-export { useNumberFieldContext, NumberFieldProvider } from './context.ts'
+export { useNumberFieldContext, NumberFieldProvider } from './context'

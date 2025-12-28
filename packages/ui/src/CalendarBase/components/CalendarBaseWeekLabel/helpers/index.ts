@@ -1,1 +1,1 @@
-export * from './sizeMapper.ts'
+export * from './sizeMapper'

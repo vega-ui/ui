@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react'
-import { Code } from '../Code.tsx';
+import { Code } from '../Code';
 
 const TEXT = 'console.log()';
 

@@ -1,1 +1,1 @@
-export { CollapsibleProvider,  useCollapsibleContext } from './context.ts'
+export { CollapsibleProvider,  useCollapsibleContext } from './context'

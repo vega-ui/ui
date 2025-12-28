@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext } from '@vega-ui/react-context';
-import { SegmentedControlValue } from '../../types.ts';
+import { SegmentedControlValue } from '../../types';
 
 export interface segmentedControlItemContextState {
   value: SegmentedControlValue

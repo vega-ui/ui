@@ -1,2 +1,2 @@
-export { getNumberValue } from './getNumberValue.ts'
-export { getNumberMaskOptions } from './mask.ts'
+export { getNumberValue } from './getNumberValue'
+export { getNumberMaskOptions } from './mask'

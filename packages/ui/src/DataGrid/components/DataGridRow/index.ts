@@ -1,1 +1,1 @@
-export * from './DataGridRow.tsx'
+export * from './DataGridRow'

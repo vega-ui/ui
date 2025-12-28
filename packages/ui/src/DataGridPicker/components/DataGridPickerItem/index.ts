@@ -1,1 +1,1 @@
-export * from './DataGridPickerItem.tsx'
+export * from './DataGridPickerItem'

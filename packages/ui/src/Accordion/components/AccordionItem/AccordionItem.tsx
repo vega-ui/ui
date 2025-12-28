@@ -4,7 +4,7 @@ import { Separator } from '../../../Separator';
 import { Collapsible } from '../../../Collapsible';
 import style from './style.module.css'
 import { AccordionItemProvider, useAccordionContext } from '../../contexts';
-import { AccordionSize } from '../../types.ts';
+import { AccordionSize } from '../../types';
 import { csx } from '@vega-ui/utils';
 
 export interface AccordionItemProps extends HTMLAttributes<HTMLLIElement> {

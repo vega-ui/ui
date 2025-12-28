@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react'
-import { Tooltip } from '../Tooltip.tsx';
+import { Tooltip } from '../Tooltip';
 import { TooltipContent, TooltipTrigger } from '../components';
 
 const TRIGGER_TEXT = 'Trigger';

@@ -1,7 +1,7 @@
 'use client';
 
 import { createContext } from '@vega-ui/react-context';
-import { CalendarBaseSize, CalendarBaseVariant } from '../../types.ts';
+import { CalendarBaseSize, CalendarBaseVariant } from '../../types';
 
 export interface CalendarBaseContextState {
   size: CalendarBaseSize

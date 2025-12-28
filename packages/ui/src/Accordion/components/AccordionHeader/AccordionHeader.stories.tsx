@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { AccordionHeader } from './AccordionHeader.tsx';
+import { AccordionHeader } from './AccordionHeader';
 import { AccordionTrigger } from '../AccordionTrigger';
 
 const meta = {

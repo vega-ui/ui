@@ -1,2 +1,2 @@
-export { Icon, type IconProps } from './Icon.tsx'
-export { type IconSize } from './types.ts'
+export { Icon, type IconProps } from './Icon'
+export { type IconSize } from './types'

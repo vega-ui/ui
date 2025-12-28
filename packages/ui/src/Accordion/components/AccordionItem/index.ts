@@ -1,1 +1,1 @@
-export * from './AccordionItem.tsx'
+export * from './AccordionItem'

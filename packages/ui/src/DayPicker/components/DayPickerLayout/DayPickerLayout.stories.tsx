@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { DayPickerLayout } from './DayPickerLayout.tsx';
-import { DayPicker } from '../../DayPicker.tsx';
+import { DayPickerLayout } from './DayPickerLayout';
+import { DayPicker } from '../../DayPicker';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof DayPickerLayout> = {

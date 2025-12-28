@@ -1,1 +1,1 @@
-export { getMeterState } from './getMeterState.ts'
+export { getMeterState } from './getMeterState'

@@ -1,1 +1,1 @@
-export * from './AccordionTrigger.tsx'
+export * from './AccordionTrigger'

@@ -7,7 +7,7 @@ import { Text, TextProps } from '../../../Text';
 import { sizeMapper } from './helpers';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
-import { PaginationVariant } from '../../types.ts';
+import { PaginationVariant } from '../../types';
 
 export interface PaginationTextProps extends TextProps {
   /**

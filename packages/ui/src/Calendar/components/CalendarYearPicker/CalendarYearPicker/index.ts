@@ -1,1 +1,1 @@
-export * from './CalendarYearPicker.tsx'
+export * from './CalendarYearPicker'

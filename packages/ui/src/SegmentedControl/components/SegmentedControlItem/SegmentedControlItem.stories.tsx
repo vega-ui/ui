@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { SegmentedControlItem } from './SegmentedControlItem.tsx';
+import { SegmentedControlItem } from './SegmentedControlItem';
 import { SegmentedControlItemHiddenInput } from '../SegmentedControlItemHiddenInput';
-import { SegmentedControl } from '../../SegmentedControl.tsx';
+import { SegmentedControl } from '../../SegmentedControl';
 
 const meta = {
   title: 'Form/Selectors/SegmentedControl/SegmentedControlItem',

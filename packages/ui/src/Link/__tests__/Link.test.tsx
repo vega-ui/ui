@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react'
-import { Link } from '../Link.tsx';
+import { Link } from '../Link';
 
 describe('Text', () => {
   it('render default link element', () => {

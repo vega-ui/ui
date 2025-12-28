@@ -2,7 +2,7 @@ import { ButtonHTMLAttributes, FC, Ref } from 'react';
 import style from './style.module.css'
 import { usePageControlContext } from '../../contexts';
 import { csx, mergeRefs } from '@vega-ui/utils';
-import { PageControlSize, PageControlVariant } from '../../types.ts';
+import { PageControlSize, PageControlVariant } from '../../types';
 
 export interface PageControlItemProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**

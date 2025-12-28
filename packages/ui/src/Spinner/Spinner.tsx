@@ -1,7 +1,7 @@
 import { FC, HTMLAttributes, Ref } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
-import { SpinnerSize, SpinnerVariant } from './types.ts';
+import { SpinnerSize, SpinnerVariant } from './types';
 
 export interface SpinnerProps extends HTMLAttributes<HTMLDivElement> {
   /**

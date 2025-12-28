@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { YearPickerRowGroup } from './YearPickerRowGroup.tsx';
+import { YearPickerRowGroup } from './YearPickerRowGroup';
 import { YearPickerItem } from '../YearPickerItem';
 import { YearPickerRow } from '../YearPickerRow';
 

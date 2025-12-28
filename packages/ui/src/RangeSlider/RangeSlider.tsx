@@ -10,7 +10,7 @@ import {
 import { useControlledState } from '@vega-ui/hooks';
 import { SliderBase } from '../SliderBase';
 import { RangeSliderProvider } from './contexts';
-import { RangeSliderOrientation, RangeSliderSize, RangeSliderStep } from './types.ts';
+import { RangeSliderOrientation, RangeSliderSize, RangeSliderStep } from './types';
 import { calculateValue, getClosestIndex, normalizeValue } from './helpers';
 
 export interface RangeSliderProps extends Omit<HTMLAttributes<HTMLDivElement>, 'defaultValue' | 'onChange'> {

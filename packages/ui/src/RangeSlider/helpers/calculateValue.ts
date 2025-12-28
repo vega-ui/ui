@@ -1,6 +1,6 @@
 import { MouseEvent, PointerEvent } from 'react';
 import { clamp } from '@vega-ui/utils';
-import { RangeSliderOrientation, RangeSliderStep } from '../types.ts';
+import { RangeSliderOrientation, RangeSliderStep } from '../types';
 
 export interface CalculateValueOptions {
   min: number
