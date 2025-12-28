@@ -1,5 +1,128 @@
 # @vega-ui/react
 
+## 2.0.0
+
+### Major Changes
+
+- 357ab44: - Add new `Tooltip` building blocks: - `TooltipArrow`
+
+### Minor Changes
+
+- 95b6ae7: - The `Drawer` component has been refactored to support a fully composable architecture.
+
+  - Added the following subcomponents to allow flexible composition and advanced customization:
+    - `DrawerTrigger`
+    - `DrawerPortal`
+    - `DrawerOverlay`
+    - `DrawerContent`
+    - `DrawerHeader`
+    - `DrawerTitle`
+    - `DrawerCloseButton`
+
+  These additions enable fine-grained control over drawer structure, layout, focus management, and visual presentation, while preserving accessibility, focus trapping, and native interaction patterns
+
+- 50bc30f: Refactor form controls architecture and remove deprecated components.
+
+  ### Removed (breaking)
+
+  - Remove `FlagIcon` package exports and implementation.
+  - Remove `PhoneSelectField` and related subcomponents/contexts/styles.
+  - Remove legacy `SelectArrow` and `SelectPlaceholder` components.
+  - Remove legacy `NumberFieldIncrement`/`NumberFieldDecrement` components.
+  - Remove legacy `PinFieldInput` component.
+
+  ### Added
+
+  - Add new `NumberField` building blocks:
+    - `NumberFieldInput`
+    - `NumberFieldIncrementButton`
+    - `NumberFieldDecrementButton`
+    - `NumberFieldContext` (new contexts structure)
+    - `NumberField` types module
+  - Add new `PasswordField` building blocks:
+    - `PasswordFieldInput`, `PasswordFieldToggleButton`
+    - `PasswordFieldShownIcon`, `PasswordFieldHiddenIcon`
+    - `PasswordFieldContext` and component index exports
+  - Add new `PhoneField` composition:
+    - `PhoneFieldInput`
+    - `PhoneFieldSelect` + subcomponents (`Combobox`, `HiddenSelect`, `Icon`, `Listbox`, `Option`, `Portal`, `Value`)
+    - `PhoneFieldContext` and component index exports
+  - Add `PinFieldHiddenInput` component (single visually hidden input backing the slots).
+  - Add new `Select` building blocks:
+    - `SelectHiddenSelect`, `SelectIcon`, `SelectPortal`, `SelectValue` helpers
+    - `SelectOptionsContext`
+  - Add new `TextFieldInput` component and `TextFieldContext`.
+
+  ### Changed
+
+  - Update `PinField` internals, contexts, slots, separator, styles and tests.
+  - Update `Select`, `NumberField`, `PasswordField`, `PhoneField`, `TextField` internals, styles, stories and tests.
+  - Update `Option` component and related types/styles.
+  - Update `Drawer` internals and context, plus stories.
+  - Update library root exports (`packages/ui/src/index.ts`).
+
+  ### Tests
+
+  - Update existing tests for refactored components.
+  - Add/adjust stories for new subcomponents.
+
+- ca0cb2b: The Accordion component has become more composable: the AccordionIcon and the AccordionHeader have been added.
+- 35a056a: The Popover component has become more composable: the PopoverBackdrop have been added
+- 21e1d64: Made Alert more composable: added the elements alertTitle, AlertIcon, AlertMain, AlertContent
+- e58908c: Added Backdrop component
+- 7ef3f1b: The Checkbox component has become more composable: the CheckboxHiddenInput, CheckboxIndicator, CheckboxCheckedIcon and the CheckboxIndeterminateIcon have been added.
+- 9489f2e: The loading property in the button has been removed to better match the component to the overall architecture and approach
+- 4072edd: The Meter component has become more composable: MeterTrack component has been renamed AvatarGroupStackItem
+  The Progress component has become more composable: ProgressTrack component has been renamed AvatarGroupStackItem
+  The PartialTrack component has been renamed (MeterStack), PartialMeterItem is now MeterStackSegment
+- 0023797: The AvatarGroup component has become more composable: AvatarGroupPopover, AvatarGroupPopoverIcon, AvatarGroupPopoverTrigger, AvatarGroupPopoverContent, AvatarGroupCount, AvatarGroupStack components have been added, AvatarGroupItem component has been renamed AvatarGroupStackItem
+- acaabbc: The AvatarGroup component is now AvatarStack, which more reflects its spirit; Moreover, the AvatarGroupPopover and related components, as well as AvatarGroupCount, have been removed due to the fact that they inflate the codebase and can be implemented with existing primitives
+- 5c33866: The CheckboxCard component has become more composable: CheckboxCardContent, CheckboxCardTitle, CheckboxCardDescription, CheckboxCardControl, CheckboxCardControlHiddenInput, CheckboxCardControlIndicator, CheckboxCardControlCheckedIcon, CheckboxCardControlIndeterminateIcon components have been added
+- d4d1a53: Unified TextArea sizes
+- f9dacd3: The Modal component has been renamed Dialog due to the greater consistency with the naming of native web elements
+- 6fae7e6: The Fieldset component has become more composable: the FieldsetHeader and FieldsetLegend components have been added
+- bd99cb1: The Switch component has become more composable: SwitchIndicator and SwitchHiddenInput components have been added
+- 82d11c9: - The `Sheet` component has been refactored to support a fully composable architecture
+  - Added the following subcomponents to allow flexible composition and advanced customization:
+    - `SheetPortal`
+    - `SheetBackdrop`
+- 7b2c7fe: Composable Slider
+- d2a2c5a: - The `Dialog` component has been refactored to support a fully composable architecture.
+
+  - Added the following subcomponents to allow flexible composition and advanced customization:
+    - `DialogTrigger`
+    - `DialogPortal`
+    - `DialogOverlay`
+    - `DialogContent`
+    - `DialogHeader`
+    - `DialogTitle`
+    - `DialogCloseButton`
+
+  These additions enable fine-grained control over drawer structure, layout, focus management, and visual presentation, while preserving accessibility, focus trapping, and native interaction patterns
+
+- e0a38ab: The SegmentedControl component has become more composable: the SegmentedControlItemHiddenInput and SegmentedControlIndicator have been added.
+- 31b2b94: Improved backdrop animations
+- eab55a8: The responsive-ui package is no longer supported due to inconsistencies in the overall component design approach
+
+  The components that the responsive ui package contained are easily implemented using the composition of existing ones and do not require the support and development of a separate package
+
+- cfb207b: Unified all sizes
+
+### Patch Changes
+
+- afe89b4: Changed DrawerOverlay to Backdrop inside
+- f121fa6: Removed unsued wrapper from CollapsibleContent
+- 9fcad60: Fixed ts problems
+- f5fae54: Changed PageControl handler. Removed onProgressEnd (replaced by onAnimatedEnd)
+- Updated dependencies [50bc30f]
+- Updated dependencies [9fcad60]
+- Updated dependencies [e0a38ab]
+- Updated dependencies [eab55a8]
+  - @vega-ui/hooks@2.0.0
+  - @vega-ui/utils@2.0.0
+  - @vega-ui/react-context@2.0.0
+  - @vega-ui/icons@2.0.0
+
 ## 1.14.3
 
 ### Patch Changes

@@ -1,5 +1,19 @@
 # @vega-ui/theme-core
 
+## 2.0.0
+
+### Minor Changes
+
+- eab55a8: The responsive-ui package is no longer supported due to inconsistencies in the overall component design approach
+
+  The components that the responsive ui package contained are easily implemented using the composition of existing ones and do not require the support and development of a separate package
+
+### Patch Changes
+
+- Updated dependencies [31b2b94]
+- Updated dependencies [eab55a8]
+  - @vega-ui/tokens-core@2.0.0
+
 ## 1.14.3
 
 ### Patch Changes
