@@ -1,5 +1,66 @@
 # @vega-ui/hooks
 
+## 2.0.0
+
+### Minor Changes
+
+- 50bc30f: Refactor form controls architecture and remove deprecated components.
+
+  ### Removed (breaking)
+
+  - Remove `FlagIcon` package exports and implementation.
+  - Remove `PhoneSelectField` and related subcomponents/contexts/styles.
+  - Remove legacy `SelectArrow` and `SelectPlaceholder` components.
+  - Remove legacy `NumberFieldIncrement`/`NumberFieldDecrement` components.
+  - Remove legacy `PinFieldInput` component.
+
+  ### Added
+
+  - Add new `NumberField` building blocks:
+    - `NumberFieldInput`
+    - `NumberFieldIncrementButton`
+    - `NumberFieldDecrementButton`
+    - `NumberFieldContext` (new contexts structure)
+    - `NumberField` types module
+  - Add new `PasswordField` building blocks:
+    - `PasswordFieldInput`, `PasswordFieldToggleButton`
+    - `PasswordFieldShownIcon`, `PasswordFieldHiddenIcon`
+    - `PasswordFieldContext` and component index exports
+  - Add new `PhoneField` composition:
+    - `PhoneFieldInput`
+    - `PhoneFieldSelect` + subcomponents (`Combobox`, `HiddenSelect`, `Icon`, `Listbox`, `Option`, `Portal`, `Value`)
+    - `PhoneFieldContext` and component index exports
+  - Add `PinFieldHiddenInput` component (single visually hidden input backing the slots).
+  - Add new `Select` building blocks:
+    - `SelectHiddenSelect`, `SelectIcon`, `SelectPortal`, `SelectValue` helpers
+    - `SelectOptionsContext`
+  - Add new `TextFieldInput` component and `TextFieldContext`.
+
+  ### Changed
+
+  - Update `PinField` internals, contexts, slots, separator, styles and tests.
+  - Update `Select`, `NumberField`, `PasswordField`, `PhoneField`, `TextField` internals, styles, stories and tests.
+  - Update `Option` component and related types/styles.
+  - Update `Drawer` internals and context, plus stories.
+  - Update library root exports (`packages/ui/src/index.ts`).
+
+  ### Tests
+
+  - Update existing tests for refactored components.
+  - Add/adjust stories for new subcomponents.
+
+- e0a38ab: The SegmentedControl component has become more composable: the SegmentedControlItemHiddenInput and SegmentedControlIndicator have been added.
+- eab55a8: The responsive-ui package is no longer supported due to inconsistencies in the overall component design approach
+
+  The components that the responsive ui package contained are easily implemented using the composition of existing ones and do not require the support and development of a separate package
+
+### Patch Changes
+
+- 9fcad60: Fixed ts problems
+- Updated dependencies [50bc30f]
+- Updated dependencies [eab55a8]
+  - @vega-ui/utils@2.0.0
+
 ## 1.14.3
 
 ### Patch Changes
