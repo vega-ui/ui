@@ -11,12 +11,6 @@ export interface TableProps extends TableHTMLAttributes<HTMLTableElement> {
   className?: string
 
   /**
-   * Optional class name for the outer container that wraps the table.
-   * Useful for scrolling, padding, or layout constraints.
-   */
-  containerClassName?: string
-
-  /**
    * Defines the alignment strategy for table data cells.
    *
    * - 'start': Aligns content to the left
@@ -57,19 +51,16 @@ export const Table: FC<TableProps> = ({
   fullWidth,
   edgePadded = false,
   className,
-  containerClassName,
   children,
   ref,
   ...props
 }) => {
   return (
     <TableProvider dataAlign={dataAlign} edgePadded={edgePadded}>
-      <div className={csx(style.tableContainer, containerClassName)}>
-        <table {...props} data-edge-padded={edgePadded} data-full-width={fullWidth} data-full-height={fullHeight} ref={ref}
-               className={csx(style.table, className)} data-align={dataAlign}>
-          {children}
-        </table>
-      </div>
+      <table {...props} data-edge-padded={edgePadded} data-full-width={fullWidth} data-full-height={fullHeight} ref={ref}
+             className={csx(style.table, className)} data-align={dataAlign}>
+        {children}
+      </table>
     </TableProvider>
   )
 }

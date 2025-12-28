@@ -95,13 +95,3 @@ export const FullWidth: Story = {
     children: Content,
   },
 };
-
-export const OverflowScrollable: Story = {
-  args: {
-    fullWidth: true,
-    style: {
-      minWidth: '520px'
-    },
-    children: Content,
-  },
-};
