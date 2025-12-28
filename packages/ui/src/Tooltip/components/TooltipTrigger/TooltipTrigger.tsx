@@ -23,10 +23,10 @@ export interface TooltipTriggerProps extends ButtonHTMLAttributes<HTMLButtonElem
 export const TooltipTrigger: FC<TooltipTriggerProps> = ({ asChild, children, ref, ...props }) => {
   const Element = asChild ? Slot : 'button'
 
-  const { triggerRef, triggerProps = {} } = useTooltipContext()
+  const { context, triggerProps = {} } = useTooltipContext()
 
   return (
-    <Element {...mergeProps(props, triggerProps)} ref={mergeRefs([triggerRef, ref])}>
+    <Element {...mergeProps(props, triggerProps)} ref={mergeRefs([context?.refs.setReference, ref])}>
       {children}
     </Element>
   )

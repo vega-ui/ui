@@ -40,7 +40,7 @@ export const Tooltip: FC<TooltipProps> = ({
 
   const [open, setOpen] = useState(false);
 
-  const { refs, floatingStyles, context } = useFloating({
+  const { floatingStyles, context } = useFloating({
     whileElementsMounted: autoUpdate,
     middleware: [
       arrow({
@@ -77,8 +77,6 @@ export const Tooltip: FC<TooltipProps> = ({
       open={open}
       triggerProps={getReferenceProps()}
       contentProps={getFloatingProps()}
-      contentRef={refs.setFloating}
-      triggerRef={refs.setReference}
       context={context as FloatingContext<HTMLElement>}
       contentStyle={{ ...floatingStyles, ...transitionStyles }}
     >

@@ -3,11 +3,12 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Tooltip } from './Tooltip.tsx';
 import { Button } from '../Button';
 import { IconButton } from '../IconButton';
-import { Dialog, DialogContent, DialogTrigger } from '../Dialog';
-import { TextField } from '../TextField';
-import { TooltipContent, TooltipTrigger } from './components';
+import { Dialog, DialogBackdrop, DialogContent, DialogHeader, DialogPortal, DialogTitle, DialogTrigger } from '../Dialog';
+import { TextField, TextFieldInput } from '../TextField';
+import { TooltipArrow, TooltipContent, TooltipTrigger } from './components';
 import { HeartIcon, InfoIcon } from '@vega-ui/icons';
 import { Icon } from '../Icon';
+import { Text } from '../Text';
 
 const meta = {
   title: 'Overlay/Tooltip/Tooltip',
@@ -35,7 +36,8 @@ export const Default: Story = {
           <Button>Tooltip!</Button>
         </TooltipTrigger>
         <TooltipContent>
-          Hello! I'm a tooltip
+          <TooltipArrow />
+          <Text size={2}>Hello! I'm a tooltip</Text>
         </TooltipContent>
       </>
     )
@@ -50,7 +52,8 @@ export const WithIconButton: Story = {
           <IconButton><Icon><HeartIcon /></Icon></IconButton>
         </TooltipTrigger>
         <TooltipContent>
-          Support
+          <TooltipArrow />
+          <Text size={2}>Support</Text>
         </TooltipContent>
       </>
     )
@@ -65,7 +68,8 @@ export const InsideModal: Story = {
           <IconButton><Icon><InfoIcon /></Icon></IconButton>
         </TooltipTrigger>
         <TooltipContent>
-          Info
+          <TooltipArrow />
+          <Text size={2}>Info</Text>
         </TooltipContent>
       </>
     )
@@ -76,20 +80,27 @@ export const InsideModal: Story = {
         <DialogTrigger asChild>
           <Button>Open</Button>
         </DialogTrigger>
-        <DialogContent>
-          <TextField
-            endSlot={
-              <Tooltip {...props}>
-                <TooltipTrigger asChild>
-                  <IconButton appearance='transparent'><Icon><InfoIcon /></Icon></IconButton>
-                </TooltipTrigger>
-                <TooltipContent>
-                  Info
-                </TooltipContent>
-              </Tooltip>
-            }
-          />
-        </DialogContent>
+        <DialogPortal>
+          <DialogBackdrop>
+            <DialogContent>
+              <DialogHeader style={{ marginBottom: 12 }}>
+                <DialogTitle>Form</DialogTitle>
+              </DialogHeader>
+              <TextField>
+                <TextFieldInput />
+                <Tooltip {...props}>
+                  <TooltipTrigger asChild>
+                    <IconButton appearance='transparent'><Icon><InfoIcon /></Icon></IconButton>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <TooltipArrow />
+                    <Text size={2}>Info</Text>
+                  </TooltipContent>
+                </Tooltip>
+              </TextField>
+            </DialogContent>
+          </DialogBackdrop>
+        </DialogPortal>
       </Dialog>
     )
   }
