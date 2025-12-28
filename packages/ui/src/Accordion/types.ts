@@ -1,1 +1,1 @@
-export type AccordionSize = 'small' | 'medium' | 'large' | string
+export type AccordionSize = 'sm' | 'md' | 'lg' | string

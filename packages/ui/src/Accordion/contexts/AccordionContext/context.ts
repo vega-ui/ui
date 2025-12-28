@@ -13,6 +13,6 @@ export interface AccordionContextState {
 export const [AccordionProvider, useAccordionContext] = createContext<AccordionContextState>('AlertContext', {
   opened: [],
   onChangeOpened: () => undefined,
-  size: 'medium',
+  size: 'md',
   separated: false,
 })

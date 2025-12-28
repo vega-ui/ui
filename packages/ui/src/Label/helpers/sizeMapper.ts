@@ -3,9 +3,9 @@ import { LabelSize } from '../types.ts';
 
 
 const mapperTextSize: Record<LabelSize, TextProps['size']> = {
-  'small': 2,
-  'medium': 3,
-  'large': 4,
+  'sm': 2,
+  'md': 3,
+  'lg': 4,
 } as const;
 
 export const sizeMapper = (type: LabelSize) => mapperTextSize?.[type] ?? 3

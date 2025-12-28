@@ -20,7 +20,7 @@ const meta: Meta<typeof Label> = {
   argTypes: {
     size: {
       control: 'radio',
-      options: ['small', 'medium', 'large'],
+      options: ['sm', 'md', 'lg'],
     }
   },
   tags: ['autodocs'],

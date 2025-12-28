@@ -58,7 +58,7 @@ export const AccordionItem: FC<AccordionItemProps> = ({
   children,
   ...props
 }) => {
-  const { opened, onChangeOpened, separated: _separated, size: _size = 'medium' } = useAccordionContext()
+  const { opened, onChangeOpened, separated: _separated, size: _size = 'md' } = useAccordionContext()
 
   const onChange = useCallback((state: boolean) => {
     onChangeOpen?.(value, state)

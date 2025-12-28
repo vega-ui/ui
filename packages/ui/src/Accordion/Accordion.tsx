@@ -57,7 +57,7 @@ export interface AccordionProps extends HTMLAttributes<HTMLUListElement> {
  An Accordion is a UI component that toggles content visibility, allowing users to expand or collapse sections for better organization and navigation.
 */
 export const Accordion: FC<AccordionProps> = ({
-  size = 'medium',
+  size = 'md',
   defaultOpened = [],
   opened,
   onChangeOpened,

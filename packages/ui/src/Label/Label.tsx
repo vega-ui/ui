@@ -39,7 +39,7 @@ export interface LabelProps extends Omit<TextProps, 'size'> {
 }
 
 /** A Label is a UI component that provides descriptive text to identify or explain the purpose of another element, such as a form input field, button, or checkbox, improving accessibility and user understanding */
-export const Label: FC<LabelProps> = ({ className, size = 'medium', htmlFor, fontWeight = 500, children, ...props }) => {
+export const Label: FC<LabelProps> = ({ className, size = 'md', htmlFor, fontWeight = 500, children, ...props }) => {
   return (
     <Text asChild className={csx(style.label, className)} size={sizeMapper(size)} fontWeight={fontWeight} {...props}>
       <label htmlFor={htmlFor}>{children}</label>
