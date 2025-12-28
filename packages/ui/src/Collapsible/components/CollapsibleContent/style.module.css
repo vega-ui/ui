@@ -1,9 +1,8 @@
 .content {
-    transition: height var(--transition-fast-state-delay) ease;
-    overflow-y: hidden;
-}
+    --content-height: 0;
 
-.content[data-open='true'] {
+    transition: height var(--transition-state-delay) ease;
+    overflow-y: hidden;
     height: var(--content-height);
 }
 

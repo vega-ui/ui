@@ -43,10 +43,6 @@ export const Collapsible: FC<CollapsibleProps> = ({ open: controlledOpen, onChan
   }, [onChangeOpen])
 
   useEffect(() => {
-    if (controlledOpen == undefined) onControlledChangeOpen?.(open)
-  }, [open, onControlledChangeOpen, controlledOpen])
-
-  useEffect(() => {
     onChangeHidden?.(hidden)
   }, [hidden, onChangeHidden])
 
