@@ -1,0 +1,32 @@
+.meter {
+    --meter-stack-height: var(--spacing-2);
+    --meter-stack-br-ratio: 1;
+    --meter-stack-gap-ratio: 0.25;
+    --meter-stack-value: 0;
+    --meter-stack-max: 1;
+
+    height: var(--meter-stack-height);
+    border-radius: calc(var(--meter-stack-height) * var(--meter-stack-br-ratio));
+    overflow: hidden;
+
+    display: flex;
+    gap: calc(var(--meter-stack-height) * var(--meter-stack-gap-ratio));
+    background-color: var(--color-gray-accent-100);
+    overflow-x: clip;
+}
+
+.meter[data-full-width='true'] {
+    width: 100%;
+}
+
+.meter[data-size='sm'] {
+    --meter-stack-height: var(--spacing-2);
+}
+
+.meter[data-size='md'] {
+    --meter-stack-height: var(--spacing-4);
+}
+
+.meter[data-size='lg'] {
+    --meter-stack-height: var(--spacing-6);
+}

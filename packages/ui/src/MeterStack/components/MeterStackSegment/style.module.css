@@ -1,0 +1,14 @@
+.segment {
+    --meter-stack-segment-value: 0;
+    --meter-stack-segment-br-ratio: 1;
+    --meter-stack-segment-color: var(--color-primary-500);
+
+    width: calc(var(--meter-stack-segment-value) / var(--meter-stack-max) * 100%);
+    background-color: var(--meter-stack-segment-color);
+    height: 100%;
+}
+
+.segment:last-child {
+    border-top-right-radius: inherit;
+    border-bottom-right-radius: inherit;
+}

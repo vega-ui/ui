@@ -1,0 +1,15 @@
+.track {
+    --progress-track-br-ratio: 1;
+    --progress-track-height: var(--progress-height);
+
+    --dynamic-width: calc(var(--progress-value) / var(--progress-max) * 100%);
+
+    width: var(--progress-track-width, var(--dynamic-width));
+
+    height: var(--progress-track-height);
+    background-color: var(--progress-track-color);
+    border-radius: calc(var(--progress-track-height) * var(--progress-track-br-ratio));
+    animation: var(--progress-track-animation);
+
+    transition: width var(--transition-state-delay) ease;
+}

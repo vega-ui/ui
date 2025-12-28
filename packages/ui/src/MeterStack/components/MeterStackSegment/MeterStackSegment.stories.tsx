@@ -1,13 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { CSSProperties } from 'react';
-import { PartialMeterItem } from './PertialMeterItem.tsx';
-import { PartialMeter } from '../../PartialMeter.tsx';
+import { MeterStackSegment } from './MeterStackSegment.tsx';
+import { MeterStack } from '../../MeterStack.tsx';
  
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
-const meta: Meta<typeof PartialMeterItem> = {
-  title: 'Feedback/PartialMeter/PartialMeterItem',
-  component: PartialMeterItem,
+const meta: Meta<typeof MeterStackSegment> = {
+  title: 'Feedback/MeterStack/MeterStackSegment',
+  component: MeterStackSegment,
   parameters: {
     layout: 'centered',
   },
@@ -24,9 +24,9 @@ export const Default: Story = {
   },
   render(props) {
     return (
-      <PartialMeter style={{ width: '150px' }} value={1}>
-        <PartialMeterItem {...props} />
-      </PartialMeter>
+      <MeterStack style={{ width: '150px' }} value={1}>
+        <MeterStackSegment {...props} />
+      </MeterStack>
     )
   }
 };

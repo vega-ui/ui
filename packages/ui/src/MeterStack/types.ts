@@ -1,0 +1,1 @@
+export type MeterStackSize = 'sm' | 'md' | 'lg' | string

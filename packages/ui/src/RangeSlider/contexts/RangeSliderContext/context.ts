@@ -14,7 +14,7 @@ export interface RangeSliderContextState {
   disabled?: boolean
 }
 
-export const [RangeSliderProvider, useRangeSliderContext] = createContext<RangeSliderContextState>('RangeSliderContext', {
+export const [RangeSliderProvider, useRangeSliderContext] = createContext<RangeSliderContextState>('ProgressContext', {
   min: 0,
   max: 100,
   value: [0, 100],

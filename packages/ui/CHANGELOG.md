@@ -532,7 +532,7 @@
 
 ### Minor Changes
 
-- c226a32: Added new components - Meter, PartialMeter and Progress
+- c226a32: Added new components - Meter, MeterStack and Progress
 
 ### Patch Changes
 

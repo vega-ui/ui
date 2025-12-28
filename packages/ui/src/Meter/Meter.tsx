@@ -1,17 +1,11 @@
 import { CSSProperties, FC, HTMLAttributes } from 'react';
 
-import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
-import { VisuallyHidden } from '../VisuallyHidden';
 import { getMeterState } from './helpers';
 import { MeterSize, MeterVariant } from './types.ts';
+import styles from './style.module.css'
 
 export interface MeterProps extends HTMLAttributes<HTMLDivElement> {
-  /**
-   * Optional class name applied to the outer meter wrapper.
-   */
-  className?: string
-
   /**
    * Visual size of the meter component.
    * Typically maps to predefined size tokens in a design system.
@@ -22,18 +16,6 @@ export interface MeterProps extends HTMLAttributes<HTMLDivElement> {
    * Visual variant of the meter (e.g., for styling themes).
    */
   variant?: MeterVariant
-
-  /**
-   * Optional class name applied to the inner track element.
-   * Used to customize the filled part of the meter.
-   */
-  meterTrackClassName?: string
-
-  /**
-   * Unique ID for the meter element.
-   * Useful for associating with a <label>.
-   */
-  meterId?: string
 
   /**
    * Maximum possible value of the meter.
@@ -86,11 +68,8 @@ export interface MeterProps extends HTMLAttributes<HTMLDivElement> {
 /** Meter is a UI component used to display a scalar measurement within a known range, often represents values like disk usage, temperature, or performance levels relative to a minimum and maximum threshold. */
 export const Meter: FC<MeterProps> = ({
   className,
-  meterTrackClassName,
   size = 'md',
   variant = 'primary',
-  id,
-  meterId,
   min = 0,
   max = 1,
   value,
@@ -99,18 +78,26 @@ export const Meter: FC<MeterProps> = ({
   optimum,
   low,
   high,
-  style: cssStyles,
+  style,
   ...props
 }) => {
   const state = getMeterState({ value, optimum, low, high, min, max })
-  const meterStyle = { ...cssStyles, '--meter-value': value, '--meter-max': max } as CSSProperties
+  const mergedStyle = { ...style, '--meter-value': value, '--meter-max': max } as CSSProperties
 
   return (
-    <div id={meterId} data-state={state} data-fullwidth={fullWidth} className={csx(style.meter, className)} style={meterStyle} data-variant={variant} data-size={size} {...props}>
-      <div className={csx(style.meterTrack, meterTrackClassName)} />
-      <VisuallyHidden asChild>
-        <meter optimum={optimum} low={low} high={high} min={min} max={max} value={value} aria-valuetext={valueText} id={id} />
-      </VisuallyHidden>
-    </div>
+    <div
+      role='meter'
+      data-state={state}
+      data-full-width={fullWidth}
+      aria-valuetext={valueText}
+      aria-valuenow={value}
+      aria-valuemax={max}
+      aria-valuemin={min}
+      className={csx(styles.meter, className)}
+      style={mergedStyle}
+      data-variant={variant}
+      data-size={size}
+      {...props}
+    />
   );
 }
