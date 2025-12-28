@@ -11,5 +11,6 @@
     border-radius: calc(var(--progress-track-height) * var(--progress-track-br-ratio));
     animation: var(--progress-track-animation);
 
-    transition: width var(--transition-state-delay) ease;
+    transition: width var(--transition-state-delay) ease,
+                background-color var(--transition-state-delay) ease;
 }

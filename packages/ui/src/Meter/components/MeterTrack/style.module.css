@@ -8,5 +8,6 @@
     background-color: var(--meter-track-color, var(--color-primary-500));
     border-radius: calc(var(--meter-track-height) * var(--meter-track-br-ratio));
 
-    transition: width var(--transition-state-delay) ease;
+    transition: width var(--transition-state-delay) ease,
+                background-color var(--transition-state-delay) ease;
 }

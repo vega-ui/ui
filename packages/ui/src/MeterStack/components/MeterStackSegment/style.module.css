@@ -6,6 +6,8 @@
     width: calc(var(--meter-stack-segment-value) / var(--meter-stack-max) * 100%);
     background-color: var(--meter-stack-segment-color);
     height: 100%;
+    transition: width var(--transition-state-delay) ease,
+                background-color var(--transition-state-delay) ease;
 }
 
 .segment:last-child {
