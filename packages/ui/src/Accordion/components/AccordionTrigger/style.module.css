@@ -16,15 +16,15 @@
     color: inherit;
 }
 
-.triggerButton[data-size='small'] {
+.triggerButton[data-size='sm'] {
     padding: var(--spacing-6) 0;
 }
 
-.triggerButton[data-size='medium'] {
+.triggerButton[data-size='md'] {
     padding: var(--spacing-7) 0;
 }
 
-.triggerButton[data-size='large'] {
+.triggerButton[data-size='lg'] {
     padding: var(--spacing-8) 0;
 }
 

@@ -43,7 +43,7 @@ export interface HelperTextProps {
 }
 
 /** Helper Text is a UI component that provides additional guidance or information to assist users in completing a task, typically displayed below an input field or form element to clarify its purpose or offer instructions */
-export const HelperText: FC<HelperTextProps> = ({ className, size = 'medium', error, fontWeight, children }) => {
+export const HelperText: FC<HelperTextProps> = ({ className, size = 'md', error, fontWeight, children }) => {
   return (
     <Text asChild className={csx(style.helperText, className)} data-error={error} size={sizeMapper(size)} fontWeight={fontWeight}>
       <p>{children}</p>

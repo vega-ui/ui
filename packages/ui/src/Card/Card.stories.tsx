@@ -1,10 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { fn } from 'storybook/test';
-import { Card, CardProps } from './Card.tsx';
+import { Card } from './Card.tsx';
 import { Text } from '../Text';
+import { CardAppearance, CardSize } from './types.ts';
 
-const sizes: CardProps['size'][] = ['small', 'medium', 'large']
-const appearance: CardProps['appearance'][] = ['outline', 'transparent']
+const sizes: CardSize[] = ['sm', 'md', 'lg']
+const appearance: CardAppearance[] = ['outline', 'transparent']
 
 const meta = {
   title: 'Display/Card',
@@ -20,7 +21,7 @@ const meta = {
   argTypes: {
     size: {
       control: 'radio',
-      options: ['small', 'medium', 'large'],
+      options: ['sm', 'md', 'lg'],
     },
     appearance: {
       control: 'radio',

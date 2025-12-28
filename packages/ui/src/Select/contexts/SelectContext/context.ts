@@ -50,6 +50,6 @@ export const [SelectProvider, useSelectContext] = createContext<SelectContextSta
   listboxProps: {},
   comboboxProps: {},
   listboxStyles: {},
-  size: 'medium',
+  size: 'md',
   context: {} as FloatingContext,
 })

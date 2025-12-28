@@ -4,7 +4,6 @@ import { ChevronDown } from '@vega-ui/icons';
 import { Icon, IconProps } from '../../../Icon';
 import style from './style.module.css';
 import { useCollapsibleContext } from '../../../Collapsible';
-import { sizeMapper } from './helpers';
 import { useAccordionItemContext } from '../../contexts';
 
 export type AccordionIconProps = IconProps
@@ -26,7 +25,7 @@ export const AccordionIcon: FC<AccordionIconProps> = ({ className, children, ...
   const { opened } = useCollapsibleContext()
   
   return (
-    <Icon aria-hidden={true} className={csx(style.icon, className)} data-open={opened} size={sizeMapper(size)} {...props}>
+    <Icon aria-hidden={true} className={csx(style.icon, className)} data-open={opened} size={size} {...props}>
       {children ?? <ChevronDown />}
     </Icon>
   )

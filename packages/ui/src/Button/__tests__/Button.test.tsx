@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react'
 import { Button } from '../Button.tsx';
 
 const TEXT = 'Hello, World!';
-const sizes = ['small', 'medium', 'large'] as const;
+const sizes = ['sm', 'md', 'lg'] as const;
 const variants = ['primary', 'secondary'] as const;
 const appearance = ['fill', 'outline', 'ghost', 'transparent'] as const;
 

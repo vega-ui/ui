@@ -36,7 +36,7 @@ export const PaginationText: FC<PaginationTextProps> = ({
       <Text
         fontWeight={fontWeight}
         className={csx(className, style.paginationText)}
-        size={size ?? sizeMapper(_size ?? 'medium')}
+        size={size ?? sizeMapper(_size ?? 'md')}
         data-variant={variant ?? _variant}
         {...props}
       >

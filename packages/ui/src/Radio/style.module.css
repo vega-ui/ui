@@ -49,14 +49,14 @@
     border-color: var(--disable-text-color);
 }
 
-.radio[data-size='small'] {
+.radio[data-size='sm'] {
     --radio-size: var(--spacing-8);
 }
 
-.radio[data-size='medium'] {
+.radio[data-size='md'] {
     --radio-size: var(--spacing-10);
 }
 
-.radio[data-size='large'] {
+.radio[data-size='lg'] {
     --radio-size: var(--spacing-12);
 }

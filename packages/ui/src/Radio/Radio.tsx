@@ -52,7 +52,7 @@ export interface RadioProps
 /** A Radio is a UI component that allows users to select a single option from a group, ensuring only one item can be selected at a time within the set. */
 export const Radio: FC<RadioProps> = ({
   variant = 'primary',
-  size = 'medium',
+  size = 'md',
   defaultChecked,
   checked,
   className,

@@ -9,6 +9,6 @@ export interface PaginationContextState {
 }
 
 export const [PaginationProvider, usePaginationContext] = createContext<PaginationContextState>('PaginationContext', {
-  size: 'medium',
+  size: 'md',
   variant: 'primary',
 })

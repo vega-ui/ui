@@ -8,5 +8,5 @@ export interface AccordionItemContextState {
 }
 
 export const [AccordionItemProvider, useAccordionItemContext] = createContext<AccordionItemContextState>('AccordionItemContext', {
-  size: 'medium'
+  size: 'md'
 })

@@ -1,2 +1,2 @@
-export type RadioSize = 'small' | 'medium' | 'large' | string
+export type RadioSize = 'sm' | 'md' | 'lg' | string
 export type RadioVariant = 'primary' | 'secondary' | string

@@ -19,7 +19,7 @@ const meta: Meta<typeof Accordion> = {
   argTypes: {
     size: {
       control: 'radio',
-      options: ['small', 'medium', 'large'],
+      options: ['sm', 'md', 'lg'],
     }
   },
   args: {

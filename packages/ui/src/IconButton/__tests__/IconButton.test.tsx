@@ -4,7 +4,7 @@ import { IconButton } from '../IconButton.tsx';
 import { GlobeIcon } from '@vega-ui/icons';
 import { Icon } from '../../Icon';
 
-const sizes = ['small', 'medium', 'large'] as const;
+const sizes = ['sm', 'md', 'lg'] as const;
 const variants = ['primary', 'secondary'] as const;
 const appearance = ['fill', 'outline', 'ghost', 'transparent'] as const;
 
