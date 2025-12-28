@@ -2,6 +2,8 @@
     --switch-size: var(--spacing-8);
     --switch-padding: 2px;
 
+    --switch-indicator-size: calc(var(--switch-size) - var(--switch-padding) * 2);
+
     display: flex;
     align-items: center;
     border-radius: var(--switch-size);
@@ -16,19 +18,6 @@
     border-color var(--transition-state-delay) ease-in;
 }
 
-.switchControl {
-    --switch-control-size: calc(var(--switch-size) - var(--switch-padding) * 2);
-
-    background-color: var(--color-white);
-    border-radius: inherit;
-    width: var(--switch-control-size);
-    height: var(--switch-control-size);
-    transform: translateX(0%);
-    transition: 
-    transform var(--transition-fast-state-delay) ease-in,
-    width var(--transition-fast-state-delay) ease-in;
-}
-
 /* switch/hover */
 
 .switch:has(input:hover) {
@@ -38,26 +27,23 @@
 /* switch/active */
 
 .switch:has(input:active) {
+    --switch-indicator-size-ratio: .125;
+    --switch-indicator-transition-delay: .5s;
+    --switch-indicator-width: calc(var(--switch-indicator-size) * (1 + var(--switch-indicator-size-ratio)));
+
     background-color: var(--color-gray-accent-250);
-}
-
-.switch:has(input:active) .switchControl {
-    --switch-control-size-ratio: .125;
-
-    transition-delay: .5s;
-    width: calc(var(--switch-control-size) * (1 + var(--switch-control-size-ratio)));
 }
 
 /* switch/checked */
 
-.switch:has(input:checked) .switchControl {
-    transform: translateX(100%);
+.switch:has(input:checked) {
+    --switch-indicator-transform: translateX(100%);
 }
 
 /* switch/checked/active */
 
-.switch:has(input:checked:active) .switchControl {
-    transform: translateX(calc(100% - var(--switch-control-size) * var(--switch-control-size-ratio) * 2));
+.switch:has(input:checked:active) {
+    --switch-indicator-transform: translateX(calc(100% - var(--switch-indicator-size) * var(--switch-indicator-size-ratio) * 2));
 }
 
 /* switch/checked/primary */
@@ -77,20 +63,17 @@
 .switch[data-variant]:has(input:disabled) {
     cursor: not-allowed;
     background-color: var(--disable-background-color);
+    --switch-indicator-color: var(--disable-border-color);
 }
 
-.switch[data-variant]:has(input:disabled) .switchControl {
-    background-color: var(--disable-text-color);
-}
-
-.switch[data-size='small'] {
+.switch[data-size='sm'] {
     --switch-size: var(--spacing-12);
 }
 
-.switch[data-size='medium'] {
+.switch[data-size='md'] {
     --switch-size: var(--spacing-14);
 }
 
-.switch[data-size='large'] {
+.switch[data-size='lg'] {
     --switch-size: var(--spacing-16);
 }
