@@ -19,7 +19,7 @@
     width: 100%;
 }
 
-.textarea[data-size='small'] {
+.textarea[data-size='sm'] {
     --textarea-height: var(--spacing-21);
 
     padding: var(--spacing-6) var(--spacing-10);
@@ -27,7 +27,7 @@
     line-height: var(--line-height-2);
 }
 
-.textarea[data-size='medium'] {
+.textarea[data-size='md'] {
     --textarea-height: var(--spacing-24);
 
     padding: var(--spacing-6) var(--spacing-12);
@@ -35,7 +35,7 @@
     line-height: var(--line-height-3);
 }
 
-.textarea[data-size='large']  {
+.textarea[data-size='lg']  {
     --textarea-height: var(--spacing-27);
 
     padding: var(--spacing-7) var(--spacing-14);

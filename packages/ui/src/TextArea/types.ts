@@ -1,1 +1,1 @@
-export type TextAreaSize = 'small' | 'medium' | 'large' | string
+export type TextAreaSize = 'sm' | 'md' | 'lg' | string
