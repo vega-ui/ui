@@ -11,7 +11,7 @@ export interface SliderContextState {
   disabled?: boolean
 }
 
-export const [SliderProvider, useSliderContext] = createContext<SliderContextState>('SliderContext', {
+export const [SliderProvider, useSliderContext] = createContext<SliderContextState>('SwitchContext', {
   min: 0,
   max: 100,
   value: 0,

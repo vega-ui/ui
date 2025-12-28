@@ -12,7 +12,7 @@ import {
   CheckboxIndeterminateIcon,
   CheckboxIndicator,
 } from '../Checkbox';
-import { Switch } from '../Switch';
+import { Switch, SwitchHiddenInput, SwitchIndicator } from '../Switch';
 import { Radio } from '../Radio';
 
 import { FieldsetHeader, FieldsetLegend } from './components';
@@ -219,15 +219,24 @@ export const PreferencesMixedControls: Story = {
       <Stack>
         <div style={{ display: 'grid', gap: 10 }}>
           <Row>
-            <Switch size='small' defaultChecked />
+            <Switch size='sm'>
+              <SwitchIndicator />
+              <SwitchHiddenInput defaultChecked />
+            </Switch>
             <Label>Email notifications</Label>
           </Row>
           <Row>
-            <Switch size='small' />
+            <Switch size='sm'>
+              <SwitchIndicator />
+              <SwitchHiddenInput />
+            </Switch>
             <Label>Marketing updates</Label>
           </Row>
           <Row>
-            <Switch size='small' />
+            <Switch size='sm'>
+              <SwitchIndicator />
+              <SwitchHiddenInput defaultChecked />
+            </Switch>
             <Label>In-app notifications</Label>
           </Row>
         </div>

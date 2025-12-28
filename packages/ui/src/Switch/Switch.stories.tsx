@@ -1,10 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
-import { Text } from '../Text'
 import { Switch } from './Switch.tsx'
+import { SwitchHiddenInput, SwitchIndicator } from './components';
 
 const meta = {
-  title: 'Form/Selectors/Switch',
+  title: 'Form/Selectors/Switch/Switch',
   component: Switch,
   parameters: {
     layout: 'centered',
@@ -15,13 +15,21 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {},
+  args: {
+    children: [
+      <SwitchHiddenInput />,
+      <SwitchIndicator />
+    ]
+  }
 } satisfies Meta<typeof Switch>
 
 export default meta
 type Story = StoryObj<typeof meta>
 
 export const Primary: Story = {
-  args: {},
+  args: {
+    variant: 'primary',
+  },
 }
 
 export const Secondary: Story = {
@@ -32,36 +40,27 @@ export const Secondary: Story = {
 
 export const Disabled: Story = {
   args: {
-    disabled: true,
+    children: [
+      <SwitchHiddenInput disabled />,
+      <SwitchIndicator />
+    ]
   },
 }
 
 export const Checked: Story = {
   args: {
-    checked: true,
+    children: [
+      <SwitchHiddenInput checked />,
+      <SwitchIndicator />
+    ]
   },
 }
 
 export const CheckedDisabled: Story = {
   args: {
-    checked: true,
-    disabled: true,
-  },
-}
-
-export const WithLabel: Story = {
-  args: {},
-  render(props) {
-    return (
-      <Text
-        asChild
-        size={2}
-        style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-        <label>
-          <Switch {...props} />
-          Just a label
-        </label>
-      </Text>
-    )
+    children: [
+      <SwitchHiddenInput checked disabled />,
+      <SwitchIndicator />
+    ]
   },
 }
