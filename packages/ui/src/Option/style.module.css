@@ -5,6 +5,8 @@
     display: flex;
     align-items: center;
     font-family: var(--default-font-family);
+    outline: none;
+    border: none;
     padding: var(--spacing-4) var(--spacing-10);
     transition: background-color var(--transition-state-delay) ease, color var(--transition-state-delay) ease;
     cursor: pointer;
