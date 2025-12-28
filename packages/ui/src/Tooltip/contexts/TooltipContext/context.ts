@@ -8,9 +8,7 @@ export interface TooltipContextState {
   open: boolean
   changeOpen: (value: boolean) => void
   context: FloatingContext<HTMLElement>
-  triggerRef?: Ref<HTMLButtonElement>
   arrowRef?: Ref<SVGSVGElement>
-  contentRef?: Ref<HTMLDivElement>
   triggerProps?: Record<string, unknown>
   contentProps?: Record<string, unknown>
   contentStyle?: CSSProperties

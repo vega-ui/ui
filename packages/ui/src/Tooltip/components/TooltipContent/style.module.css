@@ -4,12 +4,6 @@
     border-radius: var(--radius-3);
     padding: var(--spacing-4) var(--spacing-6);
     z-index: var(--z-index-popover);
-}
 
-.arrow {
-    fill: var(--dark-color);
-}
-
-span.content {
-    color: var(--text-inverce-color);
+    --t-color: var(--text-inverce-color);
 }
