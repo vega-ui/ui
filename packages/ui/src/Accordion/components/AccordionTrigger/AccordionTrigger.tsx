@@ -1,21 +1,11 @@
 'use client';
-import { FC, PropsWithChildren, Ref } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css';
-import { CollapsibleTrigger } from '../../../Collapsible';
+import { CollapsibleTrigger, CollapsibleTriggerProps } from '../../../Collapsible';
 import { useAccordionItemContext } from '../../contexts';
 
-export interface AccordionTriggerProps {
-  /**
-   * Optional class name for the trigger button element.
-   */
-  className?: string
-  
-  /**
-   * Ref to the internal `button` element used for the trigger.
-   */
-  ref?: Ref<HTMLButtonElement>
-}
+export type AccordionTriggerProps = CollapsibleTriggerProps
 
 /**
  * AccordionTrigger is a button used to toggle the visibility of an AccordionItem.

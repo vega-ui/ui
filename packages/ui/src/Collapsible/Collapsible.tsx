@@ -1,5 +1,5 @@
 'use client';
-import { FC, ReactNode, useCallback, useEffect, useState } from 'react';
+import { FC, ReactNode, useCallback, useEffect, useId, useState } from 'react';
 import { CollapsibleProvider } from './contexts';
 import { useControlledState } from '@vega-ui/hooks';
 
@@ -27,13 +27,33 @@ export interface CollapsibleProps {
    * Can be a single node or a list of React nodes.
    */
   children?: ReactNode | ReactNode[]
+  
+  /**
+   * ID of the collapsible content element.
+   *
+   * Used to:
+   * - link trigger and content via accessibility attributes (`aria-controls`)
+   * - expose the expanded region to assistive technologies
+   * - provide a stable identifier for testing and DOM querying
+   *
+   * If not provided, an ID generated internally.
+   */
+  contentId?: string
 }
 
 /** The Collapsible component toggles visibility of its content, supporting controlled state and optional lifecycle callbacks for open and hidden changes */
-export const Collapsible: FC<CollapsibleProps> = ({ open: controlledOpen, onChangeOpen: onControlledChangeOpen, onChangeHidden, children }) => {
+export const Collapsible: FC<CollapsibleProps> = ({
+  open: controlledOpen,
+  onChangeOpen: onControlledChangeOpen,
+  onChangeHidden,
+  contentId,
+  children
+}) => {
+  const cId = useId()
+  
   const [open, onChangeOpen] = useControlledState(controlledOpen, false, onControlledChangeOpen)
   const [hidden, setHidden] = useState(false)
-
+  
   const onOpen = useCallback(() => {
     onChangeOpen?.(true)
   }, [onChangeOpen])
@@ -58,7 +78,14 @@ export const Collapsible: FC<CollapsibleProps> = ({ open: controlledOpen, onChan
   }, [open])
 
   return (
-    <CollapsibleProvider onTransitionEnd={onTransitionEnd} hidden={hidden} opened={open} open={onOpenContent} close={onClose}>
+    <CollapsibleProvider
+      contentId={contentId ?? cId}
+      onTransitionEnd={onTransitionEnd}
+      hidden={hidden}
+      opened={open}
+      open={onOpenContent}
+      close={onClose}
+    >
       {children}
     </CollapsibleProvider>
   )

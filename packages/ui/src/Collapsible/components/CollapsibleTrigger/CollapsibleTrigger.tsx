@@ -7,11 +7,6 @@ import { Slot } from '../../../Slot';
 
 export interface CollapsibleTriggerProps extends HTMLAttributes<HTMLElement> {
   /**
-   * Optional class name for custom styling of the trigger element.
-   */
-  className?: string
-
-  /**
    * If true, renders the trigger as a child component using `Slot` (e.g. <a> or <div>).
    * This allows custom semantics or styling while preserving collapsible behavior.
    */
@@ -34,7 +29,7 @@ export const CollapsibleTrigger: FC<CollapsibleTriggerProps> = ({
 }) => {
   const Element = asChild ? Slot : 'button';
 
-  const { opened, open, close } = useCollapsibleContext()
+  const { opened, open, close, contentId } = useCollapsibleContext()
 
   const onClick = (e: MouseEvent<HTMLElement>) => {
     if (opened) close()
@@ -44,8 +39,16 @@ export const CollapsibleTrigger: FC<CollapsibleTriggerProps> = ({
   }
 
   return (
-    <Element type={Element === 'button' ? 'button' : undefined} aria-expanded={opened} data-open={opened} onClick={onClick} ref={ref}
-             className={csx(style.triggerButton, className)} {...props}>
+    <Element
+      ref={ref}
+      onClick={onClick}
+      data-open={opened}
+      aria-expanded={opened}
+      aria-controls={contentId}
+      className={csx(style.triggerButton, className)}
+      type={Element === 'button' ? 'button' : undefined}
+      {...props}
+    >
       {children}
     </Element>
   )
