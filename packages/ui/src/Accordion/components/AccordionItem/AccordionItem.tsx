@@ -1,5 +1,5 @@
 'use client';
-import { FC, HTMLAttributes, ReactNode, useCallback } from 'react';
+import { FC, HTMLAttributes, useCallback } from 'react';
 import { Separator } from '../../../Separator';
 import { Collapsible } from '../../../Collapsible';
 import style from './style.module.css'
@@ -29,12 +29,6 @@ export interface AccordionItemProps extends HTMLAttributes<HTMLLIElement> {
   value: string
 
   /**
-   * The content inside the accordion item.
-   * Will be shown or hidden based on the open state.
-   */
-  children?: ReactNode | ReactNode[]
-
-  /**
    * Adds a visual separator between this item and others in the accordion group.
    * Has no effect when used directly inside an `Accordion`, as separation is handled at the group level.
    */
@@ -45,6 +39,18 @@ export interface AccordionItemProps extends HTMLAttributes<HTMLLIElement> {
    * Falls back to context value if not provided.
    */
   size?: AccordionSize
+  
+  /**
+   * ID of the collapsible content element.
+   *
+   * Used to:
+   * - link trigger and content via accessibility attributes (`aria-controls`)
+   * - expose the expanded region to assistive technologies
+   * - provide a stable identifier for testing and DOM querying
+   *
+   * If not provided, an ID generated internally.
+   */
+  contentId?: string
 }
 
 /** The AccordionItem component represents an individual collapsible section within an accordion group, supporting controlled or uncontrolled open state, a customizable trigger slot, and optional visual separation from adjacent items */
@@ -55,6 +61,7 @@ export const AccordionItem: FC<AccordionItemProps> = ({
   value,
   open,
   onChangeOpen,
+  contentId,
   children,
   ...props
 }) => {
@@ -68,7 +75,7 @@ export const AccordionItem: FC<AccordionItemProps> = ({
   return (
     <AccordionItemProvider size={size ?? _size}>
       <li className={csx(className, style.item)} {...props}>
-        <Collapsible open={open ?? opened.includes(value)} onChangeOpen={onChange}>
+        <Collapsible contentId={contentId} open={open ?? opened.includes(value)} onChangeOpen={onChange}>
           {children}
           {(separated ?? _separated) && <Separator className={style.separator} />}
         </Collapsible>

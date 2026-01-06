@@ -4,7 +4,7 @@ import style from './style.module.css';
 import { csx, mergeRefs } from '@vega-ui/utils';
 import { useCollapsibleContext } from '../../contexts';
 
-export interface CollapsibleContentProps extends HTMLAttributes<HTMLDivElement> {
+export interface CollapsibleContentProps extends Omit<HTMLAttributes<HTMLDivElement>, 'id'> {
   /**
    * Ref forwarded to the root collapsible content container.
    * Useful for measuring height, managing animation, or setting focus.
@@ -14,14 +14,14 @@ export interface CollapsibleContentProps extends HTMLAttributes<HTMLDivElement> 
 
 /** The CollapsibleContent component holds the expandable content of a Collapsible section and is shown or hidden based on the trigger state, with optional animation and accessibility support */
 export const CollapsibleContent: FC<CollapsibleContentProps> = ({
-  className,
   ref,
+  className,
   children,
   ...props
 }) => {
   const contentRef = useRef<HTMLDivElement>(null)
 
-  const { opened, onTransitionEnd, hidden } = useCollapsibleContext()
+  const { opened, onTransitionEnd, hidden, contentId } = useCollapsibleContext()
 
   useLayoutEffect(() => {
     const contentNode = contentRef.current
@@ -32,11 +32,12 @@ export const CollapsibleContent: FC<CollapsibleContentProps> = ({
 
   return (
     <div
-      ref={mergeRefs([ref, contentRef])}
-      data-open={opened}
       hidden={hidden}
+      data-open={opened}
       onTransitionEnd={onTransitionEnd}
+      ref={mergeRefs([ref, contentRef])}
       className={csx(style.content, className)}
+      id={contentId}
       {...props}
     >
       {children}
