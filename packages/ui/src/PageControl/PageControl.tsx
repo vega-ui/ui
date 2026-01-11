@@ -1,16 +1,20 @@
-import { FC, HTMLAttributes, PropsWithChildren, useRef, useState, PointerEvent, MouseEvent, KeyboardEvent, Ref, Children } from 'react';
+import { FC, HTMLAttributes, PropsWithChildren, useRef, PointerEvent, MouseEvent, KeyboardEvent, Ref } from 'react';
 import { PageControlProvider } from './contexts';
 import style from './style.module.css'
-import { csx, mergeEventHandlers } from '@vega-ui/utils';
+import { csx, mergeEventHandlers, safeSetPointerCapture } from '@vega-ui/utils';
 import { PageControlSize, PageControlVariant } from './types';
-import { useRefMap } from '@vega-ui/hooks';
+import { useControlledState, useRefMap } from '@vega-ui/hooks';
 
 export interface PageControlProps extends HTMLAttributes<HTMLUListElement> {
   /**
-   * Currently active page index (zero-based).
-   * If not provided, the component will not reflect active state.
+   * Controlled active index.
    */
   active?: number
+  
+  /**
+   * Uncontrolled initial active index.
+   */
+  defaultActive?: number
   
   /**
    * Callback that is triggered when the user selects a different page.
@@ -38,7 +42,8 @@ export interface PageControlProps extends HTMLAttributes<HTMLUListElement> {
 /** PageControl is a UI component that displays a sequence of page indicators, allowing users to navigate between steps or views. It supports interaction, active state management, and visual variants such as default or high-contrast styles. */
 export const PageControl: FC<PropsWithChildren<PageControlProps>> = ({
   ref,
-  active,
+  active: controlledActive,
+  defaultActive = 0,
   onChangeActive,
   children,
   className,
@@ -51,28 +56,32 @@ export const PageControl: FC<PropsWithChildren<PageControlProps>> = ({
   onPointerMove: _onPointerMove,
   ...props
 }) => {
-  const count = Children.count(children)
+  const [active, setActive] = useControlledState(controlledActive, defaultActive, onChangeActive)
+
   const { getItem, itemRef } = useRefMap()
   
   const y = useRef<number>(null)
-  const [moved, setMoved] = useState(false)
+  const moved = useRef(false)
   
   const changeActive = (index: number) => {
-    const activeIndex = index > count - 1 ? 0 : index < 0 ? count - 1 : index
+    const item = getItem(index);
+    if (!item) return
     
-    getItem(activeIndex)?.focus()
-    onChangeActive?.(activeIndex)
+    item.focus()
+    setActive(index)
   }
   
+  
   const changeActiveByElement = (element: HTMLElement) => {
-    const index = element.dataset?.index
+    const index = element?.dataset?.index
     if (!index || active === Number(index)) return
     
     changeActive(Number(index))
   }
   
   const onClick = (e: MouseEvent<HTMLUListElement>) => {
-    changeActiveByElement(e.target as HTMLElement)
+    const target = document.elementFromPoint(e.clientX, e.clientY)
+    changeActiveByElement(target as HTMLElement)
   }
   
   const onPointerDown = (e: PointerEvent<HTMLUListElement>) => {
@@ -82,14 +91,13 @@ export const PageControl: FC<PropsWithChildren<PageControlProps>> = ({
     const { y: elemY, bottom } = e.currentTarget.getBoundingClientRect()
     y.current = (elemY + bottom) / 2
     
-    setMoved(true)
+    moved.current = true;
   }
   
   const onPointerMove = (e: PointerEvent<HTMLUListElement>) => {
-    e.currentTarget.setPointerCapture(e.pointerId)
+    safeSetPointerCapture(e.currentTarget, e.pointerId)
     
-    if (!y.current || !moved) return
-    
+    if (!y.current || !moved.current) return
     const target = document.elementFromPoint(e.clientX, y.current)
     if (!target) return
     
@@ -97,7 +105,7 @@ export const PageControl: FC<PropsWithChildren<PageControlProps>> = ({
   }
   
   const onPointerUp = () => {
-    setMoved(false)
+    moved.current = false;
     y.current = null
   }
   
@@ -107,17 +115,13 @@ export const PageControl: FC<PropsWithChildren<PageControlProps>> = ({
     switch (e.key) {
       case 'ArrowRight': {
         e.preventDefault()
-        
-        const next = active + 1
-        changeActive(next)
+        changeActive(active + 1)
         
         return
       }
       case 'ArrowLeft': {
         e.preventDefault()
-        
-        const prev = active - 1
-        changeActive(prev)
+        changeActive(active - 1)
         
         return
       }

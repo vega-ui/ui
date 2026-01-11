@@ -17,7 +17,5 @@ export const AvatarStackItem: FC<AvatarGroupStackItemProps> = ({
 }) => {
   const { size, variant } = useAvatarGroupContext()
 
-  return (
-    <Avatar className={csx(style.avatar, className)} size={size} variant={variant} {...props} />
-  )
+  return <Avatar className={csx(style.avatar, className)} size={size} variant={variant} {...props} />
 }

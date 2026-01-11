@@ -5,12 +5,6 @@ import { AvatarSize, AvatarVariant } from './types';
 
 export interface AvatarProps extends HTMLAttributes<HTMLDivElement> {
   /**
-   * Optional custom CSS class to apply to the avatar container.
-   * Useful for extending or overriding default styles.
-   */
-  className?: string
-
-  /**
    * Ref forwarded to the root `div` element of the avatar.
    * Enables access to the DOM node, e.g., for focus or measurements.
    */

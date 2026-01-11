@@ -1,23 +1,11 @@
-import { DetailedHTMLProps, FC, HTMLAttributes, ReactNode } from 'react';
+import { DetailedHTMLProps, FC, HTMLAttributes } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { AlertAppearance, AlertVariant } from './types';
 import { AlertProvider } from './contexts';
 
 export interface AlertProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-  /**
-   * The content of the alert.
-   * Accepts a single React node or an array of nodes.
-   */
-  children?: ReactNode | ReactNode[]
-
-  /**
-   * Optional custom CSS class for the alert container.
-   * Useful for styling overrides or scoped styles.
-   */
-  className?: string
-
-  /**
+   /**
    * Visual style of the alert.
    * Determines background color, border, and icon style.
    *
@@ -48,7 +36,7 @@ export const Alert: FC<AlertProps> = ({
     <AlertProvider variant={variant}>
       <div
         ref={ref}
-        data-apperance={appearance}
+        data-appearance={appearance}
         data-variant={variant}
         className={csx(style.alert, className)}
         {...props}

@@ -5,12 +5,6 @@ import { csx } from '@vega-ui/utils';
 
 export interface SeparatorProps extends HTMLAttributes<HTMLDivElement> {
   /**
-   * Custom class name applied to the separator element.
-   * Useful for styling, theming, or scoped design tokens.
-   */
-  className?: string
-
-  /**
    * Defines the orientation of the separator.
    *
    * - 'horizontal': Divider between blocks (default)

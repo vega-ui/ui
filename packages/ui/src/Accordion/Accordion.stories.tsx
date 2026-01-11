@@ -4,6 +4,7 @@ import { Accordion } from './Accordion';
 import { Text } from '../Text';
 import { AccordionTrigger, AccordionContent, AccordionItem, AccordionHeader, AccordionIcon } from './components';
 import { ArrowDown } from '@vega-ui/icons';
+import { Separator } from '../Separator';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof Accordion> = {
@@ -34,6 +35,7 @@ const meta: Meta<typeof Accordion> = {
         <AccordionContent>
           <Text>Just a content</Text>
         </AccordionContent>
+        <Separator />
       </AccordionItem>,
       <AccordionItem key='2' value='2'>
         <AccordionHeader>
@@ -45,6 +47,7 @@ const meta: Meta<typeof Accordion> = {
         <AccordionContent>
           <Text>Just a content</Text>
         </AccordionContent>
+        <Separator />
       </AccordionItem>,
       <AccordionItem key='3' value='3'>
         <AccordionHeader>
@@ -56,6 +59,7 @@ const meta: Meta<typeof Accordion> = {
         <AccordionContent>
           <Text>Just a content</Text>
         </AccordionContent>
+        <Separator />
       </AccordionItem>
     ]
   },

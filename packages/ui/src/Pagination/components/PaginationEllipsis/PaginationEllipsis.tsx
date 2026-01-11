@@ -2,7 +2,6 @@
 
 import { FC } from 'react';
 import { Button, ButtonProps } from '../../../Button';
-import { PaginationListItem } from '../PaginationListItem';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { usePaginationContext } from '../../contexts';
@@ -19,20 +18,18 @@ export const PaginationEllipsis: FC<PaginationEllipsisProps> = ({
   const { size: _size, variant: _variant } = usePaginationContext()
 
   return (
-    <PaginationListItem>
-      <Button
-        className={csx(style.paginationEllipsis, className)}
-        variant={variant ?? _variant}
-        aria-hidden='true'
-        appearance='transparent'
-        asChild
-        size={size ?? _size}
-        {...props}
-      >
-        <div>
-          ...
-        </div>
-      </Button>
-    </PaginationListItem>
+    <Button
+      className={csx(style.paginationEllipsis, className)}
+      variant={variant ?? _variant}
+      aria-hidden='true'
+      appearance='transparent'
+      asChild
+      size={size ?? _size}
+      {...props}
+    >
+      <div>
+        ...
+      </div>
+    </Button>
   )
 }

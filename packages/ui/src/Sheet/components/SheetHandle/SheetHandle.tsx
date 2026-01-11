@@ -8,11 +8,6 @@ import style from './style.module.css'
 
 export interface SheetHandleProps extends HTMLAttributes<HTMLDivElement> {
   /**
-   * Optional class name for custom styling of the sheet handle.
-   */
-  className?: string
-
-  /**
    * Ref forwarded to the root handle element.
    * Useful for focus management, gesture tracking, or integration with animation libraries.
    */

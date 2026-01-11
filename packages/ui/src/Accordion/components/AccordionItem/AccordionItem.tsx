@@ -1,6 +1,5 @@
 'use client';
 import { FC, HTMLAttributes, useCallback } from 'react';
-import { Separator } from '../../../Separator';
 import { Collapsible } from '../../../Collapsible';
 import style from './style.module.css'
 import { AccordionItemProvider, useAccordionContext } from '../../contexts';
@@ -27,12 +26,6 @@ export interface AccordionItemProps extends HTMLAttributes<HTMLLIElement> {
    * Used for managing open state within the accordion group.
    */
   value: string
-
-  /**
-   * Adds a visual separator between this item and others in the accordion group.
-   * Has no effect when used directly inside an `Accordion`, as separation is handled at the group level.
-   */
-  separated?: boolean
   
   /**
    * Controls the size of the trigger and affects typography and spacing.
@@ -55,7 +48,6 @@ export interface AccordionItemProps extends HTMLAttributes<HTMLLIElement> {
 
 /** The AccordionItem component represents an individual collapsible section within an accordion group, supporting controlled or uncontrolled open state, a customizable trigger slot, and optional visual separation from adjacent items */
 export const AccordionItem: FC<AccordionItemProps> = ({
-  separated,
   size,
   className,
   value,
@@ -65,7 +57,7 @@ export const AccordionItem: FC<AccordionItemProps> = ({
   children,
   ...props
 }) => {
-  const { opened, onChangeOpened, separated: _separated, size: _size = 'md' } = useAccordionContext()
+  const { opened, onChangeOpened, size: _size = 'md' } = useAccordionContext()
 
   const onChange = useCallback((state: boolean) => {
     onChangeOpen?.(value, state)
@@ -77,7 +69,6 @@ export const AccordionItem: FC<AccordionItemProps> = ({
       <li className={csx(className, style.item)} {...props}>
         <Collapsible contentId={contentId} open={open ?? opened.includes(value)} onChangeOpen={onChange}>
           {children}
-          {(separated ?? _separated) && <Separator className={style.separator} />}
         </Collapsible>
       </li>
     </AccordionItemProvider>

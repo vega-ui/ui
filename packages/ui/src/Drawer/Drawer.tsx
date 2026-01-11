@@ -23,6 +23,11 @@ export interface DrawerProps {
    * When false, the drawer stays open until explicitly closed.
    */
   dismissible?: boolean
+  
+  /**
+   * Controls whether the drawer is default open.
+   */
+  defaultOpen?: boolean;
 
   /**
    * Controls whether the drawer is open.
@@ -58,11 +63,12 @@ export interface DrawerProps {
 export const Drawer: FC<DrawerProps> = ({
   dismissible = true,
   position = 'right',
+  defaultOpen = false,
   open: controlledOpen,
   onChangeOpen: controlledOnChangeOpen,
   children,
 }) => {
-  const [isOpen, setIsOpen] = useControlledState(controlledOpen, false, controlledOnChangeOpen)
+  const [isOpen, setIsOpen] = useControlledState(controlledOpen, defaultOpen, controlledOnChangeOpen)
 
   const { context } = useFloating({
     open: isOpen,

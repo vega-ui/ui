@@ -2,11 +2,17 @@ import { FC, HTMLAttributes, PropsWithChildren } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 
-export type PaginationItemProps = PropsWithChildren<HTMLAttributes<HTMLLIElement>>;
+export type PaginationListItemProps = PropsWithChildren<HTMLAttributes<HTMLLIElement>>;
 
-export const PaginationListItem: FC<PaginationItemProps> = ({ children, className, ...props }) => {
+/**
+ * PaginationListItem
+ *
+ * List item used inside Pagination.
+ * Wraps content in `<li>` and applies base styles.
+ */
+export const PaginationListItem: FC<PaginationListItemProps> = ({ children, className, ...props }) => {
   return (
-    <li {...props} className={csx(style.paginationListItem, className)}>
+    <li className={csx(style.paginationListItem, className)} {...props}>
       {children}
     </li>
   )

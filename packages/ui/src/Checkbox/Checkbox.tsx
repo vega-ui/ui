@@ -6,12 +6,6 @@ import { CheckboxProvider } from './contexts';
 
 export interface CheckboxProps extends HTMLAttributes<HTMLLabelElement> {
   /**
-   * Optional custom CSS class for the checkbox input element.
-   * Useful for styling overrides and scoped component design.
-   */
-  className?: string
-
-  /**
    * Sets the checkbox to an indeterminate visual state.
    * Often used when only some nested items are selected.
    * This state is visual only and must be controlled manually.

@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes, ReactNode, Ref } from 'react';
+import { FC, HTMLAttributes, Ref } from 'react';
 
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
@@ -6,18 +6,6 @@ import { Slot } from '../Slot';
 import { TextSize } from './types';
 
 export interface TextProps extends HTMLAttributes<HTMLSpanElement> {
-  /**
-   * Optional class name applied to the text element.
-   * Useful for design tokens, theming, or scoped overrides.
-   */
-  className?: string
-
-  /**
-   * Content of the text component.
-   * Can be plain text, formatted nodes, or nested elements.
-   */
-  children?: ReactNode | ReactNode[]
-
   /**
    * Visual size of the text, typically mapped to the design system’s type scale.
    */
@@ -61,7 +49,7 @@ export const Text: FC<TextProps> = ({
   const Element = asChild ? Slot : 'span';
 
   return (
-    <Element className={csx(style.text, className)} data-fontweight={fontWeight} data-size={size} {...props} ref={ref}>
+    <Element className={csx(style.text, className)} data-font-weight={fontWeight} data-size={size} {...props} ref={ref}>
       {children}
     </Element>
   );

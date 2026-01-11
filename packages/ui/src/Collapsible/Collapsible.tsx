@@ -9,7 +9,12 @@ export interface CollapsibleProps {
    * If provided, the component acts as a controlled component.
    */
   open?: boolean
-
+  
+  /**
+   * Controls whether the collapsible content default is expanded.
+   */
+  defaultOpen?: boolean;
+  
   /**
    * Callback fired when the open state changes.
    * Called with the next boolean value when toggled.
@@ -44,6 +49,7 @@ export interface CollapsibleProps {
 /** The Collapsible component toggles visibility of its content, supporting controlled state and optional lifecycle callbacks for open and hidden changes */
 export const Collapsible: FC<CollapsibleProps> = ({
   open: controlledOpen,
+  defaultOpen = false,
   onChangeOpen: onControlledChangeOpen,
   onChangeHidden,
   contentId,
@@ -51,8 +57,8 @@ export const Collapsible: FC<CollapsibleProps> = ({
 }) => {
   const cId = useId()
   
-  const [open, onChangeOpen] = useControlledState(controlledOpen, false, onControlledChangeOpen)
-  const [hidden, setHidden] = useState(false)
+  const [open, onChangeOpen] = useControlledState(controlledOpen, defaultOpen, onControlledChangeOpen)
+  const [hidden, setHidden] = useState(!open)
   
   const onOpen = useCallback(() => {
     onChangeOpen?.(true)
@@ -76,7 +82,7 @@ export const Collapsible: FC<CollapsibleProps> = ({
   const onTransitionEnd = useCallback(() => {
     if (!open) setHidden(true)
   }, [open])
-
+  
   return (
     <CollapsibleProvider
       contentId={contentId ?? cId}

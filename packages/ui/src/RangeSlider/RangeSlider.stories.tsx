@@ -38,6 +38,12 @@ export const Default: Story = {
   args: {},
 };
 
+export const WithDefaultValue: Story = {
+  args: {
+    defaultValue: [20, 80]
+  },
+};
+
 export const WithLabels: Story = {
   args: {},
   render(props) {

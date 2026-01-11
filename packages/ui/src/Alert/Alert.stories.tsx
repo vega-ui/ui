@@ -7,6 +7,7 @@ import { Icon } from '../Icon';
 import { Link } from '../Link';
 import { Code } from '../Code';
 import { AlertAppearance, AlertVariant } from './types';
+import { Text } from '../Text';
 
 const variants: AlertVariant[] = ['info', 'error', 'success', 'warning']
 const appearances: AlertAppearance[] = ['fill', 'surface']
@@ -110,7 +111,7 @@ export const WithCustomChildren: Story = {
       <AlertMain>
         <AlertTitle>I'm a title</AlertTitle>
         <AlertContent>
-          Hello, it's an <Link size={2}>example.com</Link>. Also let's print <Code size={2}>Hello, world!</Code>
+          Hello, it's an <Link><Text size={2}>example.com</Text></Link>. Also let's print <Code size={2}>Hello, world!</Code>
         </AlertContent>
       </AlertMain>
     ]

@@ -8,18 +8,6 @@ import { TextAreaSize } from './types';
 
 export interface TextAreaProps extends Omit<TextareaHTMLAttributes<HTMLTextAreaElement>, 'size'> {
   /**
-   * Disables the textarea, preventing user input.
-   * Also applies a visually disabled style.
-   */
-  disabled?: boolean
-
-  /**
-   * Optional class name applied to the textarea element.
-   * Useful for styling overrides or scoped design rules.
-   */
-  className?: string
-
-  /**
    * Placeholder text shown when the textarea is empty.
    */
   placeholder?: string
@@ -64,6 +52,14 @@ export const TextArea: FC<TextAreaProps> = ({
   ...props
 }) => {
   return (
-    <textarea data-size={size} data-full-width={fullWidth} data-error={error} ref={ref} placeholder={placeholder} className={csx(style.textarea, className)} {...props} />
+    <textarea
+      data-size={size}
+      data-full-width={fullWidth}
+      data-error={error}
+      ref={ref}
+      placeholder={placeholder}
+      className={csx(style.textarea, className)}
+      {...props}
+    />
   )
 }

@@ -9,6 +9,5 @@ export type CheckboxCardTitleProps = HeadingProps
 
 export const CheckboxCardTitle: FC<CheckboxCardTitleProps> = ({ className, ...props }) => {
   const { size } = useCheckboxCardContext()
-  console.log(size)
   return <Heading as='h4' className={csx(style.title, className)} size={sizeMapper(size)} {...props} />
 }

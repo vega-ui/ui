@@ -1,11 +1,11 @@
 'use client';
 
-import { ChangeEvent, FC, HTMLAttributes, Ref, useLayoutEffect, useRef } from 'react';
+import { ChangeEvent, FC, InputHTMLAttributes, Ref, useLayoutEffect, useRef } from 'react';
 import { VisuallyHidden } from '../../../VisuallyHidden';
 import { mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
 import { useCheckboxContext } from '../../contexts';
 
-export interface CheckboxHiddenInputProps extends HTMLAttributes<HTMLInputElement> {
+export interface CheckboxHiddenInputProps extends InputHTMLAttributes<HTMLInputElement> {
   /**
    *  The optional `ref` provides direct access to the underlying
    *  * `<input type="checkbox">` element for advanced use cases such

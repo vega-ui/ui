@@ -1,6 +1,6 @@
 import { FC, HTMLAttributes, PointerEvent, KeyboardEvent, MouseEvent, useRef, useCallback } from 'react';
 
-import { clamp } from '@vega-ui/utils';
+import { clamp, safeSetPointerCapture } from '@vega-ui/utils';
 import { useControlledState } from '@vega-ui/hooks';
 import { SliderProvider } from './contexts';
 import { SliderBase } from '../SliderBase';
@@ -80,7 +80,7 @@ export const Slider: FC<SliderProps> = ({
 }) => {
   const sliderRef = useRef<HTMLDivElement>(null)
 
-  const defaultValue = controlledDefaultValue ? controlledDefaultValue :max < min ? min : min + (max - min) / 2;
+  const defaultValue = controlledDefaultValue !== undefined ? controlledDefaultValue :max < min ? min : min + (max - min) / 2;
 
   const [value, setValue] = useControlledState(controlledValue, defaultValue, onChangeValue)
   const dragging = useRef(false)
@@ -111,7 +111,7 @@ export const Slider: FC<SliderProps> = ({
     changeValue(calcValue(e))
 
     const element = e.target as HTMLElement
-    element?.setPointerCapture(e.pointerId)
+    if (element) safeSetPointerCapture(element, e.pointerId)
     
     dragging.current = true;
   }

@@ -39,6 +39,12 @@ export const Default: Story = {
   args: {},
 };
 
+export const WithDefaultValue: Story = {
+  args: {
+    defaultValue: 30
+  },
+};
+
 export const Vertical: Story = {
   args: {
     orientation: 'vertical',

@@ -8,11 +8,6 @@ import style from './style.module.css'
 
 export interface SheetHeaderProps extends HTMLAttributes<HTMLDivElement> {
   /**
-   * Optional class name for custom styling of the sheet header.
-   */
-  className?: string
-
-  /**
    * Ref forwarded to the root header element.
    * Useful for focus management, measurement, or dynamic styling.
    */

@@ -6,21 +6,6 @@ import { IconButtonSize } from './types';
 
 export interface IconButtonProps extends ButtonBaseProps {
   /**
-   * Disables the button, preventing user interaction.
-   * Also applies a visually disabled state.
-   */
-  disabled?: boolean
-
-  /**
-   * Specifies the native HTML button type.
-   *
-   * - 'button': Default button behavior
-   * - 'submit': Submits a form
-   * - 'reset': Resets a form
-   */
-  type?: 'button' | 'submit' | 'reset'
-
-  /**
    * Size of the button container.
    * Controls padding and overall clickable area.
    */
@@ -31,11 +16,6 @@ export interface IconButtonProps extends ButtonBaseProps {
    * Enables polymorphic rendering — useful for making the button act as a link or custom tag.
    */
   asChild?: boolean
-
-  /**
-   * Custom class name for styling the IconButton container.
-   */
-  className?: string
 }
 
 /** Primary UI component for user interaction */
@@ -52,12 +32,12 @@ export const IconButton: FC<IconButtonProps> = ({
   return (
     <ButtonBase
       type={type}
-      {...props}
       asChild={asChild}
       ref={ref}
       disabled={disabled}
-      className={csx(style.iconButton, className)}
       data-size={size}
+      className={csx(style.iconButton, className)}
+      {...props}
     >
       {children}
     </ButtonBase>

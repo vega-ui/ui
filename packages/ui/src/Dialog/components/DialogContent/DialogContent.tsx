@@ -35,6 +35,7 @@ export const DialogContent: FC<DialogContentProps> = ({
 
   return (
     <div
+      aria-modal='true'
       data-fluid={fluid}
       data-shadowed={shadowed}
       data-status={status}

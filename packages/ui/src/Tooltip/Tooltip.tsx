@@ -17,7 +17,7 @@ export interface TooltipProps {
    * The trigger and content of the tooltip.
    * Should include TooltipTrigger and TooltipContent as children.
    */
-  children?: ReactNode
+  children?: ReactNode | ReactNode[];
 
   /**
    * Delay (in milliseconds) before the tooltip appears after hover/focus.

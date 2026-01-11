@@ -6,11 +6,6 @@ import { csx } from '@vega-ui/utils';
 
 export interface TableProps extends TableHTMLAttributes<HTMLTableElement> {
   /**
-   * Custom class name applied to the `<table>` element.
-   */
-  className?: string
-
-  /**
    * Defines the alignment strategy for table data cells.
    *
    * - 'start': Aligns content to the left

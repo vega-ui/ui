@@ -37,6 +37,9 @@ export interface OptionProps<V> extends Omit<HTMLAttributes<HTMLButtonElement>, 
    */
   ref?: Ref<HTMLButtonElement>
   
+  /**
+   * Disables the entire Option.
+   */
   disabled?: boolean
 }
 

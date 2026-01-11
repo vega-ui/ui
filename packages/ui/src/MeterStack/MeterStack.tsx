@@ -31,12 +31,6 @@ export interface MeterStackProps extends HTMLAttributes<HTMLDivElement> {
   value: number
 
   /**
-   * Visually hidden accessible label for screen readers,
-   * describing the current value (e.g., "60% fuel").
-   */
-  valueText?: string
-
-  /**
    * Whether the meter should expand to fill the width with its container.
    */
   fullWidth?: boolean

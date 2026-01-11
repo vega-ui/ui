@@ -45,7 +45,7 @@ export const AvatarImage: FC<AvatarImageProps> = ({
       onLoad={onLoad}
       onError={onError}
       alt={alt}
-      src={imageStatus === ImageStatus.ERROR ? fallbackSrc : src}
+      src={imageStatus === ImageStatus.ERROR && fallbackSrc !== undefined ? fallbackSrc : src}
       className={csx(style.image, className)}
       {...props}
     />

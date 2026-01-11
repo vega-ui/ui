@@ -21,6 +21,7 @@ import {
 import { useSnapPoints } from './hooks';
 import { useControlledState } from '@vega-ui/hooks';
 import { SheetProvider } from './contexts';
+import { safeSetPointerCapture } from '@vega-ui/utils';
 
 export interface SheetProps {
   /** The value that the Sheet will aim at when the pointer is released */
@@ -80,6 +81,11 @@ export interface SheetProps {
    * Enables snapping only to defined steps instead of continuous drag.
    */
   steppedSnapPoints?: boolean
+  
+  /**
+   * Controls whether the sheet is initially open (umcontrolled).
+   */
+  defaultOpen?: boolean
 
   /**
    * Controls whether the sheet is currently open (controlled).
@@ -120,6 +126,7 @@ export const Sheet: FC<SheetProps> = ({
   siblingThreshold = .1,
   closable = true,
   dismissible = true,
+  defaultOpen = false,
   swipeTimestamp = 500,
   defaultSnapPoint,
   steppedSnapPoints = false,
@@ -129,7 +136,7 @@ export const Sheet: FC<SheetProps> = ({
   onOpenChange: controlledOnOpenChange,
   clickEnabled = true,
 }) => {
-  const [isOpen, setIsOpen] = useControlledState(controlledOpen, false, controlledOnOpenChange)
+  const [isOpen, setIsOpen] = useControlledState(controlledOpen, defaultOpen, controlledOnOpenChange)
 
   const { refs, context } = useFloating({
     open: isOpen,
@@ -219,7 +226,7 @@ export const Sheet: FC<SheetProps> = ({
     if (refs.floating.current && !refs.floating.current.contains(e.target as Node)) return;
 
     const element = e.target as HTMLElement
-    element?.setPointerCapture(e.pointerId)
+    if (element) safeSetPointerCapture(element, e.pointerId)
 
     startTimestamp.current = e.timeStamp
     startCoordinates.current = e.clientY

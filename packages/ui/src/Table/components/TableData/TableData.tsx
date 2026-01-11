@@ -1,5 +1,5 @@
 'use client';
-import { FC, PropsWithChildren, TdHTMLAttributes } from 'react';
+import { FC, TdHTMLAttributes } from 'react';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
 import { useTableContext } from '../../contexts';
@@ -16,7 +16,7 @@ export interface TableDataProps extends TdHTMLAttributes<HTMLTableDataCellElemen
 }
 
 /** The TableData component represents a single `<td>` cell within a Table, supporting semantic HTML attributes and optional content alignment via the dataAlign prop for layout consistency */
-export const TableData: FC<PropsWithChildren<TableDataProps>> = ({ children, className, dataAlign, ...props }) => {
+export const TableData: FC<TableDataProps> = ({ children, className, dataAlign, ...props }) => {
   const { dataAlign: contextDataAlign, edgePadded } = useTableContext()
 
   return (

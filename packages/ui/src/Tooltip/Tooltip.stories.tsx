@@ -30,49 +30,43 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    children: (
-      <>
-        <TooltipTrigger asChild>
-          <Button>Tooltip!</Button>
-        </TooltipTrigger>
-        <TooltipContent>
-          <TooltipArrow />
-          <Text size={2}>Hello! I'm a tooltip</Text>
-        </TooltipContent>
-      </>
-    )
+    children: [
+      <TooltipTrigger asChild>
+        <Button>Tooltip!</Button>
+      </TooltipTrigger>,
+      <TooltipContent>
+        <TooltipArrow />
+        <Text size={2}>Hello! I'm a tooltip</Text>
+      </TooltipContent>
+    ]
   },
 };
 
 export const WithIconButton: Story = {
   args: {
-    children: (
-      <>
-        <TooltipTrigger asChild>
-          <IconButton><Icon><HeartIcon /></Icon></IconButton>
-        </TooltipTrigger>
-        <TooltipContent>
-          <TooltipArrow />
-          <Text size={2}>Support</Text>
-        </TooltipContent>
-      </>
-    )
+    children: [
+      <TooltipTrigger asChild>
+        <IconButton><Icon><HeartIcon /></Icon></IconButton>
+      </TooltipTrigger>,
+      <TooltipContent>
+        <TooltipArrow />
+        <Text size={2}>Support</Text>
+      </TooltipContent>
+    ]
   },
 };
 
 export const InsideModal: Story = {
   args: {
-    children: (
-      <>
-        <TooltipTrigger asChild>
-          <IconButton><Icon><InfoIcon /></Icon></IconButton>
-        </TooltipTrigger>
-        <TooltipContent>
-          <TooltipArrow />
-          <Text size={2}>Info</Text>
-        </TooltipContent>
-      </>
-    )
+    children: [
+      <TooltipTrigger asChild>
+        <IconButton><Icon><InfoIcon /></Icon></IconButton>
+      </TooltipTrigger>,
+      <TooltipContent>
+        <TooltipArrow />
+        <Text size={2}>Info</Text>
+      </TooltipContent>
+    ]
   },
   render(props) {
     return (

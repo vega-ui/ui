@@ -12,6 +12,7 @@ import { SliderBase } from '../SliderBase';
 import { RangeSliderProvider } from './contexts';
 import { RangeSliderOrientation, RangeSliderSize, RangeSliderStep } from './types';
 import { calculateValue, getClosestIndex, normalizeValue } from './helpers';
+import { safeSetPointerCapture } from '@vega-ui/utils';
 
 export interface RangeSliderProps extends Omit<HTMLAttributes<HTMLDivElement>, 'defaultValue' | 'onChange'> {
   /**
@@ -134,7 +135,7 @@ export const RangeSlider: FC<PropsWithChildren<RangeSliderProps>> = ({
     const pointedIndex = getIndex(e)
     if (pointedIndex === null) return
     
-    element.setPointerCapture(e.pointerId)
+    safeSetPointerCapture(element, e.pointerId)
     index.current = pointedIndex
 
     changeValue(pointedIndex, calcValue(e))
