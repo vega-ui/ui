@@ -37,15 +37,12 @@ export const Tooltip: FC<TooltipProps> = ({
   children
 }) => {
   const arrowRef = useRef(null);
-
   const [open, setOpen] = useState(false);
 
   const { floatingStyles, context } = useFloating({
     whileElementsMounted: autoUpdate,
     middleware: [
-      arrow({
-        element: arrowRef,
-      }),
+      arrow({ element: arrowRef }),
       offset(14),
       flip(),
       shift(),

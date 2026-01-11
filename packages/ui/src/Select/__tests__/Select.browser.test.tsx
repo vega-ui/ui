@@ -328,7 +328,7 @@ describe('Select', () => {
             
             await openByClick(r);
             await userEvent.click(getOptionByName(r, LABEL_SPB));
-            await toBeClosed(r);
+            await toBeUnmounted(r);
             
             expect(getHiddenSelect(r).value).toBe(VALUE_MOSCOW);
           });
@@ -656,11 +656,9 @@ describe('Select', () => {
         await openByClick(r);
         
         await userEvent.keyboard('{Escape}');
-        await toBeClosed(r);
+        await toBeUnmounted(r);
         
-        await waitFor(async () => {
-          await expect.element(getCombobox(r)).toHaveFocus();
-        });
+        await expect.element(getCombobox(r)).toHaveFocus();
       });
       
       it('restores focus to combobox after selecting with Enter', async () => {

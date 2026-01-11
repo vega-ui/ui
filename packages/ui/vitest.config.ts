@@ -15,7 +15,7 @@ export default defineConfig({
     browser: {
       enabled: true,
       provider: playwright() as unknown as BrowserBuiltinProvider,
-      // https://vitest.dev/config/browser/playwright
+      screenshotFailures: false,
       instances: [
         { browser: 'chromium' },
         { browser: 'firefox' },

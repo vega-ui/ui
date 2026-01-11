@@ -1,6 +1,6 @@
 import { ComponentProps, FC } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, render, type RenderResult, waitFor } from '@testing-library/react';
+import { cleanup, render, type RenderResult } from '@testing-library/react';
 import { userEvent } from 'vitest/browser';
 
 import { Popover } from '../Popover';
@@ -50,12 +50,12 @@ const closeByOutsideClick = async () => {
 };
 
 const waitOpened = async (r: RenderResult) => {
-  await waitFor(() => expect.element(getContent(r)).toBeInTheDocument());
-  await waitFor(() => expect.element(getContent(r)).toHaveAttribute('data-status', 'open'));
+  await expect.element(getContent(r)).toBeInTheDocument()
+  await expect.element(getContent(r)).toHaveAttribute('data-status', 'open')
 };
 
 const waitClosed = async (r: RenderResult) => {
-  await waitFor(() => expect.element(getContent(r)).not.toBeInTheDocument());
+  await expect.element(getContent(r)).not.toBeInTheDocument()
 };
 
 describe('Popover', () => {
