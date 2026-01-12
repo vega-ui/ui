@@ -8,11 +8,6 @@ import style from './style.module.css'
 
 export interface DrawerHeaderProps extends HTMLAttributes<HTMLDivElement> {
   /**
-   * Custom class name applied to the header content container.
-   */
-  className?: string
-
-  /**
    * Ref forwarded to the drawer header element.
    * Useful for measuring, scrolling into view, or focus management.
    */

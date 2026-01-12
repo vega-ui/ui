@@ -105,25 +105,25 @@ export const NumberField: FC<NumberFieldProps> = ({
   const innerInputRef = useRef<HTMLInputElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
   
-  const syncBoundaries = () => {
+  const syncBoundaries = useCallback(() => {
     const input = innerInputRef.current;
     if (!input) return;
     
     const v = input.value === '' ? NaN : getNumberValue(input.value);
-    
+
     setIsMin(Number.isFinite(v) ? v <= min : false);
     setIsMax(Number.isFinite(v) ? v >= max : false);
-  };
-
+  }, [min, max])
+  
   const inputRef = useMaskito({
     options: maskitoOptions
   })
   
-  useLayoutEffect(syncBoundaries, []);
+  useLayoutEffect(syncBoundaries, [syncBoundaries]);
   
   const onInput = useCallback(() => {
     syncBoundaries();
-  }, [])
+  }, [syncBoundaries])
   
   const changeValue = useCallback((value: number) => {
     const input = innerInputRef.current

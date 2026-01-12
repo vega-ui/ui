@@ -21,7 +21,6 @@ export type DayPickerProps<S extends DataGridSelection = 'single'> = DataGridPic
  * disabled logic, min/max constraints, and picker sizing come directly
  * from DataGridPicker.
  */
-
 export const DayPicker = <S extends DataGridSelection = 'single'>({ children, size = 'xs', ...props }: PropsWithChildren<DayPickerProps<S>>) => {
   return (
     <DataGridPicker {...props} size={size} defaultActive={getCurrentDate().getTime()}>

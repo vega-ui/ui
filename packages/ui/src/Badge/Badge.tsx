@@ -1,22 +1,9 @@
-import { DetailedHTMLProps, FC, HTMLAttributes, ReactNode } from 'react';
+import { DetailedHTMLProps, FC, HTMLAttributes } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { BadgeAppearance, BadgeSize, BadgeVariant } from './types';
 
 export interface BadgeProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-  /**
-   * The content inside the badge.
-   * Usually a short label, number, or status text.
-   * Accepts any valid React node or an array of nodes.
-   */
-  children?: ReactNode | ReactNode[]
-
-  /**
-   * Optional custom CSS class applied to the badge container.
-   * Useful for extending or overriding default styles.
-   */
-  className?: string
-
   /**
    * Semantic color style of the badge.
    * Indicates the meaning or status represented by the badge.

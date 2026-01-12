@@ -1,19 +1,9 @@
-import { DetailedHTMLProps, FC, InputHTMLAttributes, Ref } from 'react'
+import { FC, InputHTMLAttributes, Ref } from 'react'
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils'
 import { RadioSize, RadioVariant } from './types';
 
-export interface RadioProps
-  extends Omit<
-    DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
-    'size'
-  > {
-  /**
-   * Optional custom CSS class for the checkbox input element.
-   * Useful for styling overrides and scoped component design.
-   */
-  className?: string
-
+export interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
   /**
    * Controlled checked state of the checkbox.
    * Used in controlled components for full state management.
@@ -62,7 +52,6 @@ export const Radio: FC<RadioProps> = ({
 }) => {
   return (
     <input
-      {...props}
       ref={ref}
       type='radio'
       checked={checked}
@@ -71,6 +60,7 @@ export const Radio: FC<RadioProps> = ({
       className={csx(style.radio, className)}
       data-variant={variant}
       data-size={size}
+      {...props}
     />
   )
 }

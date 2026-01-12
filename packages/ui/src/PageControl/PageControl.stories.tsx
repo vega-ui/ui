@@ -31,28 +31,23 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {},
-  render(props) {
-    const [active, setActive] = useState(0)
-    
-    return (
-      <PageControl onChangeActive={setActive} active={active} {...props}>
-        <PageControlItem index={0} />
-        <PageControlItem index={1} />
-        <PageControlItem index={2} />
-        <PageControlItem index={3} />
-      </PageControl>
-    )
-  }
+  args: {
+    children: [
+      <PageControlItem index={0} />,
+      <PageControlItem index={1} />,
+      <PageControlItem index={2} />,
+      <PageControlItem index={3} />,
+    ]
+  },
 };
 
 export const Progress: Story = {
   args: {},
   render(props) {
     const [active, setActive] = useState(0)
-    
+
     return (
-      <PageControl onChangeActive={setActive} active={active} {...props}>
+      <PageControl {...props} onChangeActive={setActive} active={active}>
         <PageControlProgress index={0} onAnimationEnd={() => setActive(1)} />
         <PageControlProgress index={1} onAnimationEnd={() => setActive(2)} />
         <PageControlProgress index={2} onAnimationEnd={() => setActive(3)} />

@@ -11,15 +11,6 @@ export interface IconProps extends SVGProps<SVGElement> {
    */
   size?: IconSize
 
-  /** Optional custom class name for styling */
-  className?: string
-
-  /** Explicit width in pixels (overrides `size` if set) */
-  width?: number
-
-  /** Explicit height in pixels (overrides `size` if set) */
-  height?: number
-
   /** Ref to the SVG element */
   ref?: Ref<SVGSVGElement>
   
@@ -47,14 +38,12 @@ export const Icon: FC<IconProps> = ({
   ...props
 }) => {
   return (
-    <Slot<SVGProps<SVGElement>>
-      role='image'
-      className={csx(style.icon, className)}
+    <Slot
       ref={ref}
+      aria-hidden='true'
+      className={csx(style.icon, className)}
       data-size={width || height ? undefined : size}
       stroke='currentColor'
-      width={width}
-      height={height}
       {...props}
     >
       {children}

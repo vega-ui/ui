@@ -19,7 +19,7 @@
 
 /* Alert/Fill/Info */
 
-.alert[data-variant='info'][data-apperance='fill'] {
+.alert[data-variant='info'][data-appearance='fill'] {
     --alert-bg-color: var(--color-alert-info-filled-background);
     --alert-text-color: var(--color-alert-info-filled-text);
     --alert-border-color: var(--color-alert-info-filled-border);
@@ -27,7 +27,7 @@
 
 /* Alert/Surface/Info */
 
-.alert[data-variant='info'][data-apperance='surface'] {
+.alert[data-variant='info'][data-appearance='surface'] {
     --alert-bg-color: var(--color-alert-info-surface-background);
     --alert-text-color: var(--color-alert-info-surface-text);
     --alert-border-color: var(--color-alert-info-surface-border);
@@ -35,7 +35,7 @@
 
 /* Alert/Fill/Success */
 
-.alert[data-variant='success'][data-apperance='fill'] {
+.alert[data-variant='success'][data-appearance='fill'] {
     --alert-bg-color: var(--color-alert-success-filled-background);
     --alert-text-color: var(--color-alert-success-filled-text);
     --alert-border-color: var(--color-alert-success-filled-border);
@@ -43,7 +43,7 @@
 
 /* Alert/Surface/Success */
 
-.alert[data-variant='success'][data-apperance='surface'] {
+.alert[data-variant='success'][data-appearance='surface'] {
     --alert-bg-color: var(--color-alert-success-surface-background);
     --alert-text-color: var(--color-alert-success-surface-text);
     --alert-border-color: var(--color-alert-success-surface-border);
@@ -51,7 +51,7 @@
 
 /* Alert/Fill/Warning */
 
-.alert[data-variant='warning'][data-apperance='fill'] {
+.alert[data-variant='warning'][data-appearance='fill'] {
     --alert-bg-color: var(--color-alert-warning-filled-background);
     --alert-text-color: var(--color-alert-warning-filled-text);
     --alert-border-color: var(--color-alert-warning-filled-border);
@@ -59,7 +59,7 @@
 
 /* Alert/Surface/Warning */
 
-.alert[data-variant='warning'][data-apperance='surface'] {
+.alert[data-variant='warning'][data-appearance='surface'] {
     --alert-bg-color: var(--color-alert-warning-surface-background);
     --alert-text-color: var(--color-alert-warning-surface-text);
     --alert-border-color: var(--color-alert-warning-surface-border);
@@ -67,7 +67,7 @@
 
 /* Alert/Fill/Error */
 
-.alert[data-variant='error'][data-apperance='fill'] {
+.alert[data-variant='error'][data-appearance='fill'] {
     --alert-bg-color: var(--color-alert-error-filled-background);
     --alert-text-color: var(--color-alert-error-filled-text);
     --alert-border-color: var(--color-alert-error-filled-border);
@@ -75,7 +75,7 @@
 
 /* Alert/Surface/Error */
 
-.alert[data-variant='error'][data-apperance='surface'] {
+.alert[data-variant='error'][data-appearance='surface'] {
     --alert-bg-color: var(--color-alert-error-surface-background);
     --alert-text-color: var(--color-alert-error-surface-text);
     --alert-border-color: var(--color-alert-error-surface-border);

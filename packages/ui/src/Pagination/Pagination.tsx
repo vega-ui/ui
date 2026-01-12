@@ -8,12 +8,6 @@ import { PaginationSize, PaginationVariant } from './types';
 
 export interface PaginationProps extends HTMLAttributes<HTMLElement> {
   /**
-   * Custom class name applied to the card container.
-   * Useful for styling or layout control.
-   */
-  className?: string
-
-  /**
    * Ref forwarded to the underlying card element.
    */
   ref?: Ref<HTMLUListElement>

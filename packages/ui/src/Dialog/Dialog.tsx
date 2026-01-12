@@ -59,8 +59,8 @@ export const Dialog: FC<DialogProps> = ({
   });
 
   const click = useClick(context);
-  const role = useRole(context );
-  const dismiss = useDismiss(context, { outsidePressEvent: 'mousedown' });
+  const role = useRole(context);
+  const dismiss = useDismiss(context, { outsidePressEvent: 'pointerdown' });
 
   const { getReferenceProps, getFloatingProps } = useInteractions([
     click,

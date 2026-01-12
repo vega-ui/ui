@@ -57,7 +57,6 @@ export const SelectCombobox: FC<SelectComboboxProps> = ({
       data-variant={variant}
       data-open={open}
       aria-readonly={readOnly}
-      tabIndex={0}
       ref={mergeRefs([ref, context.refs?.setReference])}
       className={csx(style.combobox, className)}
       {...mergeProps(comboboxProps, props)}

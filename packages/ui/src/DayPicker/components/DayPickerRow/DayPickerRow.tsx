@@ -16,7 +16,5 @@ export type DayPickerRowProps = DataGridPickerRowProps
  * day-based grids.
  */
 export const DayPickerRow: FC<DayPickerRowProps> = (props) => {
-  return (
-    <DataGridPickerRow {...props} />
-  )
+  return <DataGridPickerRow {...props} />
 }

@@ -9,11 +9,6 @@ import { useDrawerContext } from '../../contexts';
 
 export interface DrawerContentProps extends HTMLAttributes<HTMLDivElement> {
   /**
-   * Custom class name applied to the drawer content container.
-   */
-  className?: string
-
-  /**
    * Ref forwarded to the drawer content element.
    * Useful for measuring, focusing, or animation hooks.
    */

@@ -1,18 +1,12 @@
 'use client';
 
-import { FC, HTMLAttributes, PropsWithChildren, Ref } from 'react';
+import { FC, HTMLAttributes, Ref } from 'react';
 import { AvatarGroupProvider } from './contexts';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { AvatarGroupSize, AvatarGroupVariant } from './types';
 
 export interface AvatarGroupProps extends HTMLAttributes<HTMLDivElement> {
-  /**
-   * Optional custom CSS class for the avatar group container.
-   * Allows styling overrides or scoped custom styles.
-   */
-  className?: string
-
   /**
    * Ref forwarded to the root `div` element of the avatar group.
    * Useful for direct DOM access (e.g., measuring width or attaching listeners).
@@ -33,7 +27,7 @@ export interface AvatarGroupProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 /** An Avatar Group is a UI component that displays multiple avatars in a compact, overlapping, or grid-like arrangement, commonly used to represent a group of users, such as team members or participants in a conversation.  */
-export const AvatarStack: FC<PropsWithChildren<AvatarGroupProps>> = ({
+export const AvatarStack: FC<AvatarGroupProps> = ({
   className,
   size = 'md',
   variant = 'primary',

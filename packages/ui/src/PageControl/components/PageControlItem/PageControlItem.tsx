@@ -38,7 +38,6 @@ export interface PageControlItemProps extends ButtonHTMLAttributes<HTMLButtonEle
 export const PageControlItem: FC<PageControlItemProps> = ({
   index,
   className,
-  children,
   variant,
   size,
   current,
@@ -65,8 +64,6 @@ export const PageControlItem: FC<PageControlItemProps> = ({
       data-variant={variant ?? _variant}
       data-size={_size ?? size}
       {...props}
-    >
-      {children}
-    </button>
+    />
   )
 }

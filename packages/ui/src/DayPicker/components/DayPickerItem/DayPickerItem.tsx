@@ -16,7 +16,5 @@ export type DayPickerItemProps = DataGridPickerItemProps
  * DataGridPicker’s single/multiple/range selection modes.
  */
 export const DayPickerItem: FC<DayPickerItemProps> = (props) => {
-  return (
-    <DataGridPickerItem {...props} />
-  )
+  return <DataGridPickerItem {...props} />
 }

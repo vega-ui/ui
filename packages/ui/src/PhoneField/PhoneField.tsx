@@ -71,9 +71,9 @@ export const PhoneField: FC<PhoneFieldProps> = ({
     const asYouType = new AsYouType()
     asYouType.input(value)
     
-    const code = asYouType.getCountry()
-    if (code) setCode(code)
-  }, [])
+    const typedCode = asYouType.getCountry()
+    if (typedCode !== undefined && typedCode !== code) setCode(typedCode)
+  }, [code])
   
   return (
     <PhoneFieldProvider

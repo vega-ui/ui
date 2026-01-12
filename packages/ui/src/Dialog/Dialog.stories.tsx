@@ -70,7 +70,6 @@ export const Minimal: Story = {
         <DialogTrigger asChild>
           <Button>Open dialog</Button>
         </DialogTrigger>
-        
         <DialogPortal>
           <DialogBackdrop>
             <DialogContent>

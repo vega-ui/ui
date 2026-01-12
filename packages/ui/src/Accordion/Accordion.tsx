@@ -41,12 +41,6 @@ export interface AccordionProps extends HTMLAttributes<HTMLUListElement> {
   defaultOpened?: string[]
 
   /**
-   * Adds visual separators (such as borders or spacing) between accordion items.
-   * Enhances readability in dense layouts.
-   */
-  separated?: boolean
-
-  /**
    * Allows multiple accordion items to be open at the same time.
    * If `false`, only one item can be open at once (classic accordion behavior).
    */
@@ -62,7 +56,6 @@ export const Accordion: FC<AccordionProps> = ({
   opened,
   onChangeOpened,
   multiple = false,
-  separated = true,
   children,
   className,
   ...props
@@ -83,7 +76,7 @@ export const Accordion: FC<AccordionProps> = ({
   }
 
   return (
-    <AccordionProvider separated={separated} opened={openedValues} onChangeOpened={onChangeOpen} size={size}>
+    <AccordionProvider opened={openedValues} onChangeOpened={onChangeOpen} size={size}>
       <ul {...props} className={csx(className, style.accordion)}>
         {children}
       </ul>

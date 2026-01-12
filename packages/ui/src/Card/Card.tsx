@@ -1,16 +1,10 @@
-import { DetailedHTMLProps, FC, HTMLAttributes, Ref } from 'react';
+import { FC, HTMLAttributes, Ref } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { CardAppearance, CardSize } from './types';
 import { Slot } from '../Slot';
 
-export interface CardProps extends DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> {
-  /**
-   * Optional custom CSS class for the card container.
-   * Use this to override or extend default styles.
-   */
-  className?: string
-
+export interface CardProps extends HTMLAttributes<HTMLElement> {
   /**
    * Specifies the size of the card.
    * Affects padding, font size, and possibly layout behavior.

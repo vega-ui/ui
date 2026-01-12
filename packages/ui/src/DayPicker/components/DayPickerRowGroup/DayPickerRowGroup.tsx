@@ -13,7 +13,5 @@ export type DayPickerRowGroupProps = DataGridPickerRowGroupProps
  * underlying DataGridPickerRowGroup.
  */
 export const DayPickerRowGroup: FC<DayPickerRowGroupProps> = (props) => {
-  return (
-    <DataGridPickerRowGroup {...props} />
-  )
+  return <DataGridPickerRowGroup {...props} />
 }

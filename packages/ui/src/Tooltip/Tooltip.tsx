@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, ReactNode, useRef, useState } from 'react';
+import { FC, HTMLAttributes, useRef, useState } from 'react';
 import {
   arrow, autoUpdate, flip, FloatingContext, offset, shift,
   useDismiss,
@@ -8,17 +8,12 @@ import {
   useHover,
   useInteractions,
   useRole,
-  useTransitionStyles
 } from '@floating-ui/react';
+import style from './style.module.css'
 import { TooltipProvider } from './contexts';
+import { csx } from '@vega-ui/utils';
 
-export interface TooltipProps {
-  /**
-   * The trigger and content of the tooltip.
-   * Should include TooltipTrigger and TooltipContent as children.
-   */
-  children?: ReactNode
-
+export interface TooltipProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * Delay (in milliseconds) before the tooltip appears after hover/focus.
    */
@@ -34,18 +29,17 @@ export interface TooltipProps {
 export const Tooltip: FC<TooltipProps> = ({
   delayOpen = 500,
   delayClose = 0,
-  children
+  className,
+  children,
+  ...props
 }) => {
   const arrowRef = useRef(null);
-
   const [open, setOpen] = useState(false);
 
   const { floatingStyles, context } = useFloating({
     whileElementsMounted: autoUpdate,
     middleware: [
-      arrow({
-        element: arrowRef,
-      }),
+      arrow({ element: arrowRef }),
       offset(14),
       flip(),
       shift(),
@@ -54,7 +48,11 @@ export const Tooltip: FC<TooltipProps> = ({
     onOpenChange: setOpen,
   });
 
-  const hover = useHover(context, { move: false, delay: { open: delayOpen, close: delayClose } });
+  const hover = useHover(context, {
+    move: false,
+    delay: { open: delayOpen, close: delayClose }
+  });
+  
   const focus = useFocus(context);
   const dismiss = useDismiss(context);
   const role = useRole(context, { role: 'tooltip' });
@@ -66,10 +64,6 @@ export const Tooltip: FC<TooltipProps> = ({
     role,
   ]);
 
-  const { styles: transitionStyles } = useTransitionStyles(context, {
-    duration: 200,
-  });
-
   return (
     <TooltipProvider
       arrowRef={arrowRef}
@@ -78,9 +72,11 @@ export const Tooltip: FC<TooltipProps> = ({
       triggerProps={getReferenceProps()}
       contentProps={getFloatingProps()}
       context={context as FloatingContext<HTMLElement>}
-      contentStyle={{ ...floatingStyles, ...transitionStyles }}
+      contentStyle={{ ...floatingStyles }}
     >
-      {children}
+      <div className={csx(style.tooltip, className)} {...props}>
+        {children}
+      </div>
     </TooltipProvider>
   )
 }

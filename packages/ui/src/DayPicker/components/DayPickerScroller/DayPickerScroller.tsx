@@ -18,7 +18,5 @@ export type DayPickerScrollerProps = IndexedSnapScrollerProps
  * - offset-based grid generation.
  */
 export const DayPickerScroller: FC<PropsWithChildren<DayPickerScrollerProps>> = (props) => {
-  return (
-    <IndexedSnapScroller {...props} />
-  )
+  return <IndexedSnapScroller {...props} />
 }

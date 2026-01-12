@@ -8,11 +8,6 @@ import styles from './style.module.css'
 
 export interface SheetContentProps extends HTMLAttributes<HTMLDivElement> {
   /**
-   * Optional class name for custom styling of the sheet container.
-   */
-  className?: string
-
-  /**
    * Ref forwarded to the root sheet container.
    * Useful for focus management, measurement, or animation hooks.
    */

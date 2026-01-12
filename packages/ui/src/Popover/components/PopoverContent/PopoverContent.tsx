@@ -1,22 +1,12 @@
 'use client';
 
-import { FC, Fragment, HTMLAttributes, ReactNode, Ref } from 'react';
+import { FC, Fragment, HTMLAttributes, Ref } from 'react';
 import { FloatingFocusManager, useTransitionStatus } from '@floating-ui/react';
 import { csx, mergeProps, mergeRefs } from '@vega-ui/utils';
 import styles from './style.module.css';
 import { usePopoverContext } from '../../contexts';
 
 export interface PopoverContentProps extends HTMLAttributes<HTMLDivElement> {
-  /**
-   * Optional class name applied to the popover content container.
-   */
-  className?: string
-
-  /**
-   * The content to display inside the popover.
-   */
-  children?: ReactNode
-
   /**
    * Applies a visual shadow to the component container.
    * Adds elevation and depth, visually separating the content from the background.

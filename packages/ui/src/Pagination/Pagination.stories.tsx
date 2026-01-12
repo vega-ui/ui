@@ -2,13 +2,15 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Pagination } from './Pagination';
 import {
   PaginationEllipsis,
-  PaginationFirstTrigger,
-  PaginationItem, PaginationLastTrigger,
-  PaginationNextTrigger,
-  PaginationPrevTrigger, PaginationText
+  PaginationItem,
+  PaginationText,
+  PaginationTriggerIconButton,
 } from './components';
 import { IconButtonProps } from '../IconButton';
 import { JSX, useState } from 'react';
+import { Icon } from '../Icon';
+import { DoubleArrowLeftIcon, DoubleArrowRightIcon, MoveLeft, MoveRight } from '@vega-ui/icons';
+import { PaginationListItem } from './components/PaginationListItem';
 
 const meta = {
   title: 'Navigation/Pagination/Pagination',
@@ -24,7 +26,7 @@ const meta = {
   argTypes: {
     size: {
       control: 'radio',
-      options: ['sm', 'md', 'lg'] as IconButtonProps['size'][],
+      options: ['xs', 'sm', 'md', 'lg', 'xl'] as IconButtonProps['size'][],
     },
     variant: {
       control: 'radio',
@@ -42,14 +44,38 @@ export const Default: Story = {
   args: {
     children: (
       <>
-        <PaginationFirstTrigger />
-        <PaginationPrevTrigger />
-        <PaginationItem>111</PaginationItem>
-        <PaginationItem>112</PaginationItem>
-        <PaginationEllipsis />
-        <PaginationItem>113</PaginationItem>
-        <PaginationNextTrigger />
-        <PaginationLastTrigger />
+        <PaginationListItem>
+          <PaginationTriggerIconButton>
+            <Icon><DoubleArrowLeftIcon /></Icon>
+          </PaginationTriggerIconButton>
+        </PaginationListItem>
+        <PaginationListItem>
+          <PaginationTriggerIconButton>
+            <Icon><MoveLeft /></Icon>
+          </PaginationTriggerIconButton>
+        </PaginationListItem>
+        <PaginationListItem>
+          <PaginationItem>111</PaginationItem>
+        </PaginationListItem>
+        <PaginationListItem>
+          <PaginationItem>112</PaginationItem>
+        </PaginationListItem>
+        <PaginationListItem>
+          <PaginationEllipsis />
+        </PaginationListItem>
+        <PaginationListItem>
+          <PaginationItem>113</PaginationItem>
+        </PaginationListItem>
+        <PaginationListItem>
+          <PaginationTriggerIconButton>
+            <Icon><DoubleArrowRightIcon /></Icon>
+          </PaginationTriggerIconButton>
+        </PaginationListItem>
+        <PaginationListItem>
+          <PaginationTriggerIconButton>
+            <Icon><MoveRight /></Icon>
+          </PaginationTriggerIconButton>
+        </PaginationListItem>
       </>
     ),
   },
@@ -66,13 +92,15 @@ export const LinkBasedPagination: Story = {
     const isLast = currentPage >= totalPages
 
     const renderPageItem = (page: number) => (
-      <PaginationItem
-        key={page}
-        href={getHref(page)}
-        current={page === currentPage}
-      >
-        {page}
-      </PaginationItem>
+      <PaginationListItem>
+        <PaginationItem
+          asChild
+          key={page}
+          current={page === currentPage}
+        >
+          <a href={getHref(page)}>{page}</a>
+        </PaginationItem>
+      </PaginationListItem>
     )
 
     const pages: JSX.Element[] = []
@@ -86,32 +114,64 @@ export const LinkBasedPagination: Story = {
         for (let i = 1; i <= 5; i++) {
           pages.push(renderPageItem(i))
         }
-        pages.push(<PaginationEllipsis key='ellipsis-end' />)
+        pages.push(
+          <PaginationListItem>
+            <PaginationEllipsis key='ellipsis-end' />
+          </PaginationListItem>
+        )
         pages.push(renderPageItem(totalPages)) 
       } else if (currentPage >= totalPages - 3) {
         pages.push(renderPageItem(1))
-        pages.push(<PaginationEllipsis key='ellipsis-start' />)
+        pages.push(
+          <PaginationListItem>
+            <PaginationEllipsis key='ellipsis-start' />
+          </PaginationListItem>
+        )
         for (let i = totalPages - 4; i <= totalPages; i++) {
           pages.push(renderPageItem(i))
         }
       } else {
         pages.push(renderPageItem(1))
-        pages.push(<PaginationEllipsis key='ellipsis-start' />)
+        pages.push(
+          <PaginationListItem>
+            <PaginationEllipsis key='ellipsis-start' />
+          </PaginationListItem>
+        )
         for (let i = currentPage - 1; i <= currentPage + 1; i++) {
           pages.push(renderPageItem(i))
         }
-        pages.push(<PaginationEllipsis key='ellipsis-end' />)
+        pages.push(
+          <PaginationListItem>
+            <PaginationEllipsis key='ellipsis-end' />
+          </PaginationListItem>
+        )
         pages.push(renderPageItem(totalPages))
       }
     }
 
     return (
       <Pagination {...props}>
-        <PaginationFirstTrigger href={getHref(1)} disabled={isFirst} />
-        <PaginationPrevTrigger href={getHref(currentPage - 1)} disabled={isFirst} />
+        <PaginationListItem>
+          <PaginationTriggerIconButton disabled={isFirst} asChild>
+            <a href={getHref(1)} aria-disabled={isFirst}><Icon><DoubleArrowLeftIcon /></Icon></a>
+          </PaginationTriggerIconButton>
+        </PaginationListItem>
+        <PaginationListItem>
+          <PaginationTriggerIconButton disabled={isFirst} asChild>
+            <a href={getHref(currentPage - 1)} aria-disabled={isFirst}><Icon><MoveLeft /></Icon></a>
+          </PaginationTriggerIconButton>
+        </PaginationListItem>
         {pages}
-        <PaginationNextTrigger href={getHref(currentPage + 1)} disabled={isLast} />
-        <PaginationLastTrigger href={getHref(totalPages)} disabled={isLast} />
+        <PaginationListItem>
+          <PaginationTriggerIconButton disabled={isLast} asChild>
+            <a href={getHref(currentPage + 1)} aria-disabled={isLast}><Icon><MoveRight /></Icon></a>
+          </PaginationTriggerIconButton>
+        </PaginationListItem>
+        <PaginationListItem>
+          <PaginationTriggerIconButton disabled={isLast} asChild>
+            <a href={getHref(totalPages)} aria-disabled={isLast}><Icon><DoubleArrowRightIcon /></Icon></a>
+          </PaginationTriggerIconButton>
+        </PaginationListItem>
       </Pagination>
     )
   },
@@ -133,30 +193,54 @@ export const ButtonBasedPagination: Story = {
 
     return (
       <Pagination {...props}>
-        <PaginationFirstTrigger disabled={isFirst} onClick={() => setPage(1)}>
-          <button />
-        </PaginationFirstTrigger>
-        <PaginationPrevTrigger disabled={isFirst} onClick={() => setPage(page - 1)}>
-          <button/>
-        </PaginationPrevTrigger>
+        <PaginationListItem>
+          <PaginationTriggerIconButton disabled={isFirst} onClick={() => setPage(1)}>
+            <Icon><DoubleArrowLeftIcon /></Icon>
+          </PaginationTriggerIconButton>
+        </PaginationListItem>
+        <PaginationListItem>
+          <PaginationTriggerIconButton disabled={isFirst} onClick={() => setPage(page - 1)}>
+            <Icon><MoveLeft /></Icon>
+          </PaginationTriggerIconButton>
+        </PaginationListItem>
 
-        {page > 3 && <PaginationItem asChild={false} onClick={() => setPage(1)}>1</PaginationItem>}
-        {page > 4 && <PaginationEllipsis />}
+        {page > 3 && (
+          <PaginationListItem>
+            <PaginationItem asChild={false} onClick={() => setPage(1)}>1</PaginationItem>
+          </PaginationListItem>
+        )}
+        {page > 4 && (
+          <PaginationListItem>
+            <PaginationEllipsis />
+          </PaginationListItem>
+        )}
 
         {Array.from({ length: 3 }, (_, i) => page - 1 + i).map((p) => {
           if (p < 1 || p > totalPages) return null
           return renderItem(p)
         })}
 
-        {page < totalPages - 3 && <PaginationEllipsis />}
-        {page < totalPages - 2 && <PaginationItem asChild={false} onClick={() => setPage(totalPages)}>{totalPages}</PaginationItem>}
-
-        <PaginationNextTrigger disabled={isLast} onClick={() => setPage(page + 1)}>
-          <button/>
-        </PaginationNextTrigger>
-        <PaginationLastTrigger disabled={isLast} onClick={() => setPage(totalPages)}>
-          <button/>
-        </PaginationLastTrigger>
+        {page < totalPages - 3 && (
+          <PaginationListItem>
+            <PaginationEllipsis />
+          </PaginationListItem>
+        )}
+        {page < totalPages - 2 && (
+          <PaginationListItem>
+            <PaginationItem onClick={() => setPage(totalPages)}>{totalPages}</PaginationItem>
+          </PaginationListItem>
+        )}
+        
+        <PaginationListItem>
+          <PaginationTriggerIconButton disabled={isLast} onClick={() => setPage(page + 1)}>
+            <Icon><MoveRight /></Icon>
+          </PaginationTriggerIconButton>
+        </PaginationListItem>
+        <PaginationListItem>
+          <PaginationTriggerIconButton disabled={isLast} onClick={() => setPage(totalPages)}>
+            <Icon><DoubleArrowRightIcon /></Icon>
+          </PaginationTriggerIconButton>
+        </PaginationListItem>
       </Pagination>
     )
   }
@@ -172,23 +256,31 @@ export const CompactPagination: StoryObj = {
 
     return (
       <Pagination>
-        <PaginationFirstTrigger disabled={isFirst} onClick={() => setPage(1)}>
-          <button />
-        </PaginationFirstTrigger>
-        <PaginationPrevTrigger disabled={isFirst} onClick={() => setPage(page - 1)}>
-          <button/>
-        </PaginationPrevTrigger>
-
+        <PaginationListItem>
+          <PaginationTriggerIconButton disabled={isFirst} onClick={() => setPage(1)}>
+            <Icon><DoubleArrowLeftIcon /></Icon>
+          </PaginationTriggerIconButton>
+        </PaginationListItem>
+        <PaginationListItem>
+          <PaginationTriggerIconButton disabled={isFirst} onClick={() => setPage(page - 1)}>
+            <Icon><MoveLeft /></Icon>
+          </PaginationTriggerIconButton>
+        </PaginationListItem>
+        
         <PaginationText>
           Page {page} of {totalPages}
         </PaginationText>
-
-        <PaginationNextTrigger disabled={isLast} onClick={() => setPage(page + 1)}>
-          <button/>
-        </PaginationNextTrigger>
-        <PaginationLastTrigger disabled={isLast} onClick={() => setPage(totalPages)}>
-          <button/>
-        </PaginationLastTrigger>
+        
+        <PaginationListItem>
+          <PaginationTriggerIconButton disabled={isLast} onClick={() => setPage(page + 1)}>
+            <Icon><MoveRight /></Icon>
+          </PaginationTriggerIconButton>
+        </PaginationListItem>
+        <PaginationListItem>
+          <PaginationTriggerIconButton disabled={isLast} onClick={() => setPage(totalPages)}>
+            <Icon><DoubleArrowRightIcon /></Icon>
+          </PaginationTriggerIconButton>
+        </PaginationListItem>
       </Pagination>
     )
   },

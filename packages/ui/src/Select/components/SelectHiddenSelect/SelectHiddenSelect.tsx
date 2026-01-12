@@ -16,10 +16,11 @@ export type SelectHiddenSelectProps = SelectHTMLAttributes<HTMLSelectElement>
 export const SelectHiddenSelect: FC<SelectHiddenSelectProps> = ({ ...props }) => {
   const { options } = useSelectOptionsContext()
   const { selected } = useSelectContext()
-  
+
   return (
     <VisuallyHidden>
-      <select defaultValue={selected} aria-hidden='true' tabIndex={-1} {...props}>
+      <select value={selected} onChange={() => {}} aria-hidden='true' tabIndex={-1} {...props}>
+        {selected === undefined || selected === '' ? <option value='' /> : null}
         {options?.map(({ label, value, disabled }) => (
           <option key={value} value={value} disabled={disabled}>
             {label}

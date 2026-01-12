@@ -1,4 +1,4 @@
-import { ElementType, FC, HTMLAttributes, ReactNode, Ref } from 'react';
+import { ElementType, FC, HTMLAttributes, Ref } from 'react';
 
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
@@ -11,18 +11,6 @@ export interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {
    * Defines semantic structure and accessibility level.
    */
   as?: HeadingAs
-
-  /**
-   * Custom class name applied to the heading element.
-   * Useful for style overrides or scoped design tokens.
-   */
-  className?: string
-
-  /**
-   * The content of the heading.
-   * Can be text, icons, or any React nodes.
-   */
-  children?: ReactNode | ReactNode[]
 
   /**
    * Visual size of the heading, independent of the `as` tag.
@@ -55,7 +43,12 @@ export const Heading: FC<HeadingProps> = ({ as, className, size, fontWeight, chi
   const headingSize = size !== undefined ? size : Element ? sizeMapper(Element) : 3;
 
   return (
-    <Element className={csx(style.heading, className)} data-fontweight={fontWeight} data-size={headingSize} {...props} ref={ref}>
+    <Element
+      ref={ref}
+      className={csx(style.heading, className)}
+      data-font-weight={fontWeight}
+      data-size={headingSize}
+      {...props}>
       {children}
     </Element>
   );

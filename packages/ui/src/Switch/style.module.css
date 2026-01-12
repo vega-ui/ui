@@ -10,18 +10,25 @@
     height: var(--switch-size);
     width: calc(var(--switch-size) * 2 - var(--switch-padding) * 2);
     padding: var(--switch-padding);
+    outline: 2px solid transparent;
     cursor: pointer;
     box-sizing: border-box;
     background-color: var(--color-gray-accent-150);
     transition: 
-    background-color var(--transition-state-delay) ease-in,
-    border-color var(--transition-state-delay) ease-in;
+        background-color var(--transition-state-delay) ease-in,
+        border-color var(--transition-state-delay) ease-in;
 }
 
 /* switch/hover */
 
 .switch:has(input:hover) {
     background-color: var(--color-gray-accent-200);
+}
+
+/* switch/focus-visible */
+
+.switch:has(input:focus-visible) {
+    outline-color: var(--focus-color);
 }
 
 /* switch/active */

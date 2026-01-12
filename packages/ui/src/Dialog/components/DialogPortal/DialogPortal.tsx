@@ -21,12 +21,12 @@ export const DialogPortal: FC<DialogPortalProps> = ({ children, ...props }) => {
   const { isMounted, context } = useDialogContext()
   
   return (
-    <FloatingPortal {...props}>
+    <FloatingPortal  {...props}>
       {isMounted && (
-        <FloatingFocusManager context={context}>
+        <FloatingFocusManager modal={true} context={context}>
           <>{children}</>
         </FloatingFocusManager>
       )}
-    </FloatingPortal>
+    </FloatingPortal >
   )
 }

@@ -7,11 +7,6 @@ import style from './style.module.css'
 
 export interface SheetMainProps extends HTMLAttributes<HTMLDivElement> {
   /**
-   * Optional class name for custom styling of the sheet main area.
-   */
-  className?: string
-
-  /**
    * Ref forwarded to the root main content element.
    * Useful for focus management, scrolling, or measuring content dimensions.
    */
