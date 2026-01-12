@@ -1,5 +1,15 @@
 # @vega-ui/react
 
+## 2.0.1
+
+### Patch Changes
+
+- 697ebd5: Improved a11y - accordion
+  - @vega-ui/hooks@2.0.1
+  - @vega-ui/icons@2.0.1
+  - @vega-ui/react-context@2.0.1
+  - @vega-ui/utils@2.0.1
+
 ## 2.0.0
 
 ### Major Changes
