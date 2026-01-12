@@ -37,8 +37,5 @@ jobs:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ hashFiles('**/pnpm-lock.yaml') }}
 
-      - name: Install Playwright browsers
-        run: pnpm -w dlx playwright install chromium --with-deps
-
       - name: Run Tests
         run: pnpm test
