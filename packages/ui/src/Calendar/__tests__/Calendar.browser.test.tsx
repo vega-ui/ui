@@ -530,22 +530,30 @@ describe('Calendar', () => {
     describe('focus', () => {
       it('month button can receive programmatic focus', async () => {
         const r = render(<CalendarTest />);
-        getMonthBtn(r).focus();
-        await expect.element(getMonthBtn(r)).toHaveFocus();
+        
+        const button = getMonthBtn(r)
+        
+        button.focus();
+        await expect.element(button).toHaveFocus();
       });
       
       it('year button can receive programmatic focus', async () => {
         const r = render(<CalendarTest />);
-        getYearBtn(r).focus();
-        await expect.element(getYearBtn(r)).toHaveFocus();
+        
+        const button = getYearBtn(r)
+        
+        button.focus();
+        await expect.element(button).toHaveFocus();
       });
     });
     
     describe('keyboard', () => {
       it('activates month picker with Enter when month button is focused', async () => {
         const r = render(<CalendarTest />);
+        const button = getMonthBtn(r)
         
-        getMonthBtn(r).focus();
+        button.focus();
+        await expect.element(button).toHaveFocus();
         await userEvent.keyboard('{Enter}');
         
         await expect.element(getMonthBtn(r)).toHaveAttribute('aria-pressed', 'true');
@@ -554,8 +562,10 @@ describe('Calendar', () => {
       
       it('activates month picker with Space when month button is focused', async () => {
         const r = render(<CalendarTest />);
+        const button = getMonthBtn(r)
         
-        getMonthBtn(r).focus();
+        button.focus();
+        await expect.element(button).toHaveFocus();
         await userEvent.keyboard(' ');
         
         await expect.element(getMonthBtn(r)).toHaveAttribute('aria-pressed', 'true');
@@ -564,8 +574,10 @@ describe('Calendar', () => {
       
       it('activates year picker with Enter when year button is focused', async () => {
         const r = render(<CalendarTest />);
+        const button = getYearBtn(r)
         
-        getYearBtn(r).focus();
+        button.focus();
+        await expect.element(button).toHaveFocus();
         await userEvent.keyboard('{Enter}');
         
         await expect.element(getYearBtn(r)).toHaveAttribute('aria-pressed', 'true');
@@ -574,8 +586,10 @@ describe('Calendar', () => {
       
       it('activates year picker with Space when year button is focused', async () => {
         const r = render(<CalendarTest />);
+        const button = getYearBtn(r)
         
-        getYearBtn(r).focus();
+        button.focus();
+        await expect.element(button).toHaveFocus();
         await userEvent.keyboard(' ');
         
         await expect.element(getYearBtn(r)).toHaveAttribute('aria-pressed', 'true');

@@ -314,7 +314,7 @@ describe('Checkbox', () => {
         
         expect(input.checked).toBe(false);
         await userEvent.keyboard(' ');
-        expect(input.checked).toBe(true);
+        expect(input).toBeChecked();
       });
     });
   });

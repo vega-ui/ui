@@ -12,8 +12,10 @@ export default defineConfig({
     react()
   ],
   test: {
+    maxWorkers: 1,
     browser: {
       enabled: true,
+      headless: true,
       provider: playwright() as unknown as BrowserBuiltinProvider,
       screenshotFailures: false,
       instances: [

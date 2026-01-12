@@ -45,7 +45,7 @@ describe('Tooltip', () => {
         
         await waitFor(() => {
           expect(queryContent(r)).toBeInTheDocument();
-        }, { timeout: 20000 });
+        });
       });
       
       it('closes on unhover', async () => {

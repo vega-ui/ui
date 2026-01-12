@@ -3,6 +3,7 @@ import { FC, HTMLAttributes, Ref } from 'react';
 import { csx, mergeProps, mergeRefs } from '@vega-ui/utils';
 import styles from './style.module.css';
 import { useTooltipContext } from '../../contexts';
+import { useTransitionStatus } from '@floating-ui/react';
 
 export interface TooltipContentProps extends HTMLAttributes<HTMLDivElement> {
   /**
@@ -21,13 +22,15 @@ export const TooltipContent: FC<TooltipContentProps> = ({
   ...props
 }) => {
   const { contentProps, context, contentStyle, open } = useTooltipContext()
+  const { status } = useTransitionStatus(context)
 
   return (
     <>
       {open && (
         <div
+          data-status={status}
           ref={mergeRefs([context?.refs.setFloating, ref])}
-          className={csx(styles.tooltip, className)}
+          className={csx(styles.tooltipContent, className)}
           style={{ ...contentStyle, ...style }}
           {...mergeProps(contentProps ?? {}, props)}
         >

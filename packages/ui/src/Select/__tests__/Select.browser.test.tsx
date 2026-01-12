@@ -291,13 +291,13 @@ describe('Select', () => {
           it('switches value when selecting another option', async () => {
             await openByClick(r);
             await userEvent.click(getOptionByName(r, LABEL_MOSCOW));
-            await toBeClosed(r);
+            await toBeUnmounted(r);
             
             expect(getHiddenSelect(r).value).toBe(VALUE_MOSCOW);
             
             await openByClick(r);
             await userEvent.click(getOptionByName(r, LABEL_SPB));
-            await toBeClosed(r);
+            await toBeUnmounted(r);
             
             expect(getHiddenSelect(r).value).toBe(VALUE_SPB);
           });
@@ -673,7 +673,7 @@ describe('Select', () => {
         });
         
         await userEvent.keyboard('{Enter}');
-        await toBeClosed(r);
+        await toBeUnmounted(r);
         
         await waitFor(async () => {
           await expect.element(getCombobox(r)).toHaveFocus();
@@ -765,7 +765,7 @@ describe('Select', () => {
         await userEvent.keyboard('{ArrowDown}');
         
         await userEvent.keyboard('{Escape}');
-        await toBeClosed(r);
+        await toBeUnmounted(r);
         
         expect(getHiddenSelect(r).value).toBe(VALUE_SPB);
         await expect.element(getValue(r)).toHaveTextContent(LABEL_SPB);

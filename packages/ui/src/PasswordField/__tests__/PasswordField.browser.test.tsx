@@ -280,7 +280,7 @@ describe('PasswordField', () => {
         getToggle(r).focus();
         await expect.element(getToggle(r)).toHaveFocus();
         
-        await userEvent.keyboard(' ');
+        await userEvent.keyboard('[Space]');
         await expect.element(getInput(r)).toHaveAttribute('type', 'text');
       });
       

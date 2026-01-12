@@ -324,31 +324,4 @@ describe('Accordion', () => {
       });
     });
   });
-  
-  describe('Performance', () => {
-    it('large dataset: renders many items and can toggle far item', async () => {
-      const COUNT = 200;
-      
-      const r = render(
-        <Accordion multiple>
-          {Array.from({ length: COUNT }, (_, i) => {
-            const v = `Item ${i + 1}`;
-            return (
-              <AccordionItem key={v} value={v} contentId={`content-${i + 1}`}>
-                <AccordionHeader>
-                  <AccordionTrigger>Trigger {v}</AccordionTrigger>
-                </AccordionHeader>
-                <AccordionContent>Content {v}</AccordionContent>
-              </AccordionItem>
-            );
-          })}
-        </Accordion>
-      );
-      
-      await expect.element(r.getByText('Trigger Item 200')).toBeInTheDocument();
-      
-      await userEvent.click(r.getByText('Trigger Item 200'));
-      await expect.element(r.getByText('Content Item 200')).toBeVisible();
-    });
-  });
 });

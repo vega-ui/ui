@@ -386,8 +386,8 @@ describe('CheckboxCard', () => {
         await expect.element(input).toHaveFocus();
         
         await expect.element(input).not.toBeChecked();
-        await userEvent.keyboard(' ');
-        await expect.element(input).toBeChecked();
+        await userEvent.keyboard('[Space]');
+        await expect.element(getInput(r)).toBeChecked();
       });
     });
   });

@@ -101,11 +101,13 @@ describe('Button', () => {
         const onClick = vi.fn();
         const r = render(<ButtonTest onClick={onClick} />);
         
-        const btn = getButton(r);
-        btn.focus();
+        const button = getButton(r);
+        button.focus();
         
         await userEvent.keyboard('{Enter}');
-        expect(onClick).toHaveBeenCalledTimes(1)
+        await waitFor(() => {
+          expect(onClick).toHaveBeenCalledTimes(1)
+        })
       });
       
       it('activates on Space', async () => {
@@ -115,9 +117,10 @@ describe('Button', () => {
         const btn = getButton(r);
         btn.focus();
         
-        await userEvent.keyboard(' ');
-        
-        await waitFor(() => expect(onClick).toHaveBeenCalledTimes(1));
+        await userEvent.keyboard('[Space]');
+        await waitFor(() => {
+          expect(onClick).toHaveBeenCalledTimes(1)
+        });
       });
       
       it('does not activate when disabled', async () => {

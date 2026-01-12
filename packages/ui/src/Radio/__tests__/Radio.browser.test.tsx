@@ -1,6 +1,6 @@
 import { ComponentProps, FC, useState } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, render, type RenderResult } from '@testing-library/react';
+import { cleanup, render, type RenderResult, waitFor } from '@testing-library/react';
 import { userEvent } from 'vitest/browser';
 
 import { Radio } from '../Radio';
@@ -125,11 +125,12 @@ describe('Radio', () => {
       
       it('can be checked via keyboard (Space)', async () => {
         const r = render(<RadioTest />);
-        const radio = getRadio(r);
         
-        radio.focus();
+        getRadio(r).focus();
         await userEvent.keyboard('[Space]');
-        await expect.element(radio).toBeChecked();
+        await waitFor(() => {
+          expect(getRadio(r)).toBeChecked()
+        })
       });
     });
   });
