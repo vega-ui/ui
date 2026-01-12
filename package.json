@@ -52,8 +52,5 @@
       "path": "git-cz"
     }
   },
-  "pnpm": {
-    "onlyBuiltDependencies": ["esbuild"]
-  },
   "packageManager": "pnpm@10.0.0"
 }
