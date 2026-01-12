@@ -45,7 +45,7 @@
   "scripts": {
     "dev": "vite build --watch",
     "build": "vite build",
-    "test": "vitest run",
+    "test": "vitest run --browser",
     "lint": "eslint",
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui",
