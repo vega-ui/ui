@@ -1,5 +1,11 @@
 # @vega-ui/theme-core
 
+## 2.0.1
+
+### Patch Changes
+
+- @vega-ui/tokens-core@2.0.1
+
 ## 2.0.0
 
 ### Minor Changes
