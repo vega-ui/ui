@@ -3,7 +3,6 @@ import { playwright } from '@vitest/browser-playwright';
 import svgr from 'vite-plugin-svgr';
 import react from '@vitejs/plugin-react'
 import tsconfigPaths from 'vite-tsconfig-paths';
-import { BrowserBuiltinProvider } from 'vitest/node';
 
 export default defineConfig({
   plugins: [
@@ -16,7 +15,7 @@ export default defineConfig({
     browser: {
       enabled: true,
       headless: true,
-      provider: playwright() as unknown as BrowserBuiltinProvider,
+      provider: playwright(),
       screenshotFailures: false,
       instances: [
         { browser: 'chromium' },

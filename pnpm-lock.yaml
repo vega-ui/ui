@@ -68,6 +68,9 @@ importers:
 
   packages/hooks:
     dependencies:
+      '@vega-ui/react-store':
+        specifier: workspace:*
+        version: link:../react-store
       '@vega-ui/utils':
         specifier: workspace:*
         version: link:../utils
@@ -146,6 +149,31 @@ importers:
         specifier: ^4.3.0
         version: 4.5.4(@types/node@22.19.5)(rollup@4.55.1)(typescript@5.8.2)(vite@6.4.1(@types/node@22.19.5))
 
+  packages/react-store:
+    dependencies:
+      '@vega-ui/react-context':
+        specifier: workspace:*
+        version: link:../react-context
+    devDependencies:
+      '@types/react':
+        specifier: ^19.0.10
+        version: 19.2.8
+      '@vitejs/plugin-react':
+        specifier: ^4.3.4
+        version: 4.7.0(vite@6.4.1(@types/node@22.19.5))
+      react:
+        specifier: ^19.0.0
+        version: 19.2.3
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.2.3(react@19.2.3)
+      vite:
+        specifier: ^6.3.5
+        version: 6.4.1(@types/node@22.19.5)
+      vite-plugin-dts:
+        specifier: ^4.3.0
+        version: 4.5.4(@types/node@22.19.5)(rollup@4.55.1)(typescript@5.8.2)(vite@6.4.1(@types/node@22.19.5))
+
   packages/theme:
     dependencies:
       '@vega-ui/tokens-core':
@@ -180,6 +208,9 @@ importers:
       '@vega-ui/react-context':
         specifier: workspace:*
         version: link:../react-context
+      '@vega-ui/react-store':
+        specifier: workspace:*
+        version: link:../react-store
       '@vega-ui/utils':
         specifier: workspace:*
         version: link:../utils
@@ -3957,16 +3988,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@svgr/plugin-jsx@8.1.0(@svgr/core@8.1.0(typescript@5.8.2))':
-    dependencies:
-      '@babel/core': 7.28.6
-      '@svgr/babel-preset': 8.1.0(@babel/core@7.28.6)
-      '@svgr/core': 8.1.0(typescript@5.8.2)
-      '@svgr/hast-util-to-babel-ast': 8.0.0
-      svg-parser: 2.0.4
-    transitivePeerDependencies:
-      - supports-color
-
   '@testing-library/dom@10.4.1':
     dependencies:
       '@babel/code-frame': 7.28.6
@@ -5756,7 +5777,7 @@ snapshots:
     dependencies:
       '@rollup/pluginutils': 5.3.0(rollup@4.55.1)
       '@svgr/core': 8.1.0(typescript@5.8.2)
-      '@svgr/plugin-jsx': 8.1.0(@svgr/core@8.1.0(typescript@5.8.2))
+      '@svgr/plugin-jsx': 8.1.0(@svgr/core@8.1.0(typescript@5.7.3))
       vite: 6.4.1(@types/node@22.19.5)
     transitivePeerDependencies:
       - rollup
