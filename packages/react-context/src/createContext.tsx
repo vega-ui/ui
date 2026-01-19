@@ -13,8 +13,7 @@ export const createContext = <D extends object | null>(name: string, defaultCont
   
   const useContext = () => {
     const context = React.useContext(Context);
-    if (context) return context;
-    return defaultContext;
+    return context !== undefined ? context : defaultContext;
   }
   
   return [Provider, useContext] as const;

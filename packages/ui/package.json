@@ -64,6 +64,7 @@
     "@vega-ui/hooks": "workspace:*",
     "@vega-ui/icons": "workspace:*",
     "@vega-ui/react-context": "workspace:*",
+    "@vega-ui/react-store": "workspace:*",
     "@vega-ui/utils": "workspace:*",
     "libphonenumber-js": "^1.12.9",
     "react": "^19.0.0",
