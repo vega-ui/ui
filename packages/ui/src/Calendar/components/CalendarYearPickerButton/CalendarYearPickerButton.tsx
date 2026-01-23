@@ -1,7 +1,7 @@
-import { FC, MouseEvent } from 'react';
+import { FC } from 'react';
 import { CalendarBasePickerButton, type CalendarBasePickerButtonProps } from '../../../CalendarBase';
 import { useCalendarContext } from '../../contexts';
-import { csx } from '@vega-ui/utils';
+import { csx, mergeEventHandlers } from '@vega-ui/utils';
 import style from './style.module.css'
 
 export type CalendarYearPickerButtonProps = CalendarBasePickerButtonProps;
@@ -13,18 +13,13 @@ export type CalendarYearPickerButtonProps = CalendarBasePickerButtonProps;
  * `useCalendarContext()`.
  */
 export const CalendarYearPickerButton: FC<CalendarYearPickerButtonProps> = ({ onClick: _onClick, className, ...props }) => {
-  const { picker, onYearPickerClick } = useCalendarContext()
-  
-  const onClick = (e: MouseEvent<HTMLButtonElement>) => {
-    _onClick?.(e)
-    onYearPickerClick?.()
-  }
+  const { picker, toggleYearPicker } = useCalendarContext()
   
   return (
     <CalendarBasePickerButton
       type='button'
       aria-pressed={picker === 'year'}
-      onClick={onClick}
+      onClick={mergeEventHandlers(_onClick, toggleYearPicker)}
       className={csx(style.button, className)}
       {...props}
     />

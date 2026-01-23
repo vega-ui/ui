@@ -3,7 +3,7 @@ import { YearPickerLayout } from './YearPickerLayout';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof YearPickerLayout> = {
-  title: 'Data/Pickers/YearPicker/YearPickerLayout',
+  title: 'Data/YearPicker/YearPickerLayout',
   component: YearPickerLayout,
   tags: ['autodocs'],
 }

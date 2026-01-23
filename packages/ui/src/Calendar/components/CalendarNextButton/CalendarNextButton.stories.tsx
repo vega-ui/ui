@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { ChevronLeft } from '@vega-ui/icons';
+import { ChevronRight } from '@vega-ui/icons';
 import { CalendarNextButton } from './CalendarNextButton';
 import { Icon } from '../../../Icon';
 
@@ -8,7 +8,7 @@ const meta: Meta<typeof CalendarNextButton> = {
   title: 'Data/Calendar/CalendarNextButton',
   component: CalendarNextButton,
   args: {
-    children: (<Icon><ChevronLeft /></Icon>)
+    children: (<Icon><ChevronRight /></Icon>)
   },
   tags: ['autodocs'],
 }

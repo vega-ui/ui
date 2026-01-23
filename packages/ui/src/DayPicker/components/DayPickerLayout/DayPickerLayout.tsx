@@ -4,6 +4,7 @@ import { DayPickerItem } from '../DayPickerItem';
 import { DayPickerRowGroup, type DayPickerRowGroupProps } from '../DayPickerRowGroup';
 import { DayPickerRow } from '../DayPickerRow';
 import { formatDay, getFirstDayOfWeek } from '@vega-ui/utils';
+import { useDayPickerContext } from '../../contexts';
 
 export interface DayPickerLayoutProps extends DayPickerRowGroupProps {
   /**
@@ -76,8 +77,8 @@ export interface DayPickerLayoutProps extends DayPickerRowGroupProps {
  * mechanics (focus, keyboard navigation, selection, disabled cells).
  */
 export const DayPickerLayout: FC<DayPickerLayoutProps> = ({
-  year = new Date().getFullYear(),
-  month = new Date().getMonth(),
+  year,
+  month,
   locale = navigator.language,
   format = 'numeric',
   rows = 6,
@@ -87,17 +88,21 @@ export const DayPickerLayout: FC<DayPickerLayoutProps> = ({
   weekStartsOn,
   ...props
 }) => {
+  const { year: _year, month: _month } = useDayPickerContext()
+
+  const grid = createDayPickerGrid({
+    year: year ?? _year,
+    month: month ?? _month,
+    rows,
+    cols,
+    offset,
+    includeOverflowDays,
+    weekStartsOn: weekStartsOn ?? getFirstDayOfWeek(locale as string)
+  })
+  
   return (
     <DayPickerRowGroup {...props}>
-      {createDayPickerGrid({
-        year,
-        month,
-        rows,
-        cols,
-        offset,
-        includeOverflowDays,
-        weekStartsOn: weekStartsOn ?? getFirstDayOfWeek(locale as string)
-      }).map(({ row, data }) => (
+      {grid.map(({ row, data }) => (
         <DayPickerRow row={row} key={row}>
           {data.map(({ col, day, year, month, inCurrentMonth }, index) => (
             <DayPickerItem

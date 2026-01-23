@@ -5,7 +5,6 @@ export {
   CalendarBaseWeekLabel, type CalendarBaseWeekLabelProps,
   CalendarBaseWeekLabels, type CalendarBaseWeekLabelsProps,
   CalendarBasePickerButton, type CalendarBasePickerButtonProps,
-  CalendarBaseNextButton, type CalendarBaseNextButtonProps,
-  CalendarBasePrevButton, type CalendarBasePrevButtonProps,
+  CalendarBaseControlIconButton, type CalendarBaseControlIconButtonProps,
 } from './components'
 export { type CalendarBaseVariant, type CalendarBaseSize } from './types'

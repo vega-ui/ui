@@ -1,5 +1,5 @@
-import { DayPickerScrollerLayout, DayPickerScrollerLayoutProps } from '../../../../DayPicker';
 import { FC } from 'react';
+import { DayPickerScrollerLayout, DayPickerScrollerLayoutProps } from '../../../../DayPicker';
 
 export type CalendarDayPickerScrollerLayoutProps = DayPickerScrollerLayoutProps
 

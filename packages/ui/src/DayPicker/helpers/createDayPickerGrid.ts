@@ -105,9 +105,7 @@ export const createDayPickerGrid = (
   const gridMonth = baseDate.getMonth();
   
   const firstWeekday = baseDate.getDay();
-  
   const startOffset = ((firstWeekday - weekStartsOn) + 7) % 7;
-  
   const daysInMonth = new Date(gridYear, gridMonth + 1, 0).getDate();
   
   let prevYear = gridYear;

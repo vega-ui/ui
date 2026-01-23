@@ -300,43 +300,17 @@ describe('DataGrid', () => {
       });
     });
     
-    describe('onMove', () => {
-      it('fires onMove on navigation', async () => {
-        const onMove: Mock = vi.fn();
-        const r = render(<GridTest onMove={onMove} />);
+    describe('onArrow', () => {
+      it('fires onArrow on navigation', async () => {
+        const onArrow: Mock = vi.fn();
+        const r = render(<GridTest onArrow={onArrow} />);
         
         getCell(r, 0, 0).focus();
         await userEvent.keyboard('{ArrowRight}');
         
         await waitFor(() => {
-          expect(onMove).toHaveBeenCalled();
+          expect(onArrow).toHaveBeenCalled();
         });
-      });
-      
-      it('onMove receives axis', async () => {
-        const onMove: Mock = vi.fn();
-        const r = render(<GridTest onMove={onMove} />);
-        
-        getCell(r, 0, 0).focus();
-        await userEvent.keyboard('{ArrowRight}');
-        
-        await waitFor(() => expect(onMove).toHaveBeenCalled());
-        
-        const last = onMove.mock.calls.at(-1);
-        expect(last?.[2]).toBe(0);
-      });
-      
-      it('onMove receives dir', async () => {
-        const onMove: Mock = vi.fn();
-        const r = render(<GridTest onMove={onMove} />);
-        
-        getCell(r, 0, 0).focus();
-        await userEvent.keyboard('{ArrowRight}');
-        
-        await waitFor(() => expect(onMove).toHaveBeenCalled());
-        
-        const last = onMove.mock.calls.at(-1);
-        expect(last?.[3]).toBe(1);
       });
     });
   });

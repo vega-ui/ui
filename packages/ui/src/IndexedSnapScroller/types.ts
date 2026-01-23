@@ -1,6 +1,6 @@
 import { SnapScrollerApiRef } from '../SnapScroller';
 
 export interface IndexedSnapScrollerApiRef extends SnapScrollerApiRef {
-  reset(start?: number, resetKeys?: boolean): void
-  indexes: number[]
+  setIndexTo(index: number): void;
+  index: number
 }

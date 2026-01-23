@@ -3,7 +3,7 @@ import { MonthPickerLayout } from './MonthPickerLayout';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof MonthPickerLayout> = {
-  title: 'Data/Pickers/MonthPicker/MonthPickerLayout',
+  title: 'Data/MonthPicker/MonthPickerLayout',
   component: MonthPickerLayout,
   tags: ['autodocs'],
 }

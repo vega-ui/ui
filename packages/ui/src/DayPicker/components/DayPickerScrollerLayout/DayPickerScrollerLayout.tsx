@@ -1,6 +1,9 @@
+'use client';
+
 import { FC } from 'react';
 import { DayPickerLayout, type DayPickerLayoutProps } from '../DayPickerLayout';
-import { useDayPickerScrollerContext } from '../../hooks';
+import { useDayPickerScrollerContext } from '../../contexts';
+import { useIndexedSnapScrollerContext } from '../../../IndexedSnapScroller';
 
 export type DayPickerScrollerLayoutProps = Omit<DayPickerLayoutProps, 'offset'>
 
@@ -15,7 +18,11 @@ export type DayPickerScrollerLayoutProps = Omit<DayPickerLayoutProps, 'offset'>
  * snapped page renders the correct shifted month.
  */
 export const DayPickerScrollerLayout: FC<DayPickerScrollerLayoutProps> = (props) => {
-  const { index } = useDayPickerScrollerContext()
+  const { index } = useIndexedSnapScrollerContext()
+  const { referenceDate } = useDayPickerScrollerContext()
   
-  return <DayPickerLayout {...props} offset={index} />
+  const year = referenceDate.getFullYear()
+  const month = referenceDate.getMonth()
+  
+  return <DayPickerLayout scope={index} year={year} month={month} offset={index} {...props} />
 }

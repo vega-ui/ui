@@ -7,11 +7,16 @@ export const useRefMap = <K, E extends HTMLElement | null>(defaultMap?: Map<K, E
     map.current.set(key, element)
   }, [])
   
+  const removeItemRef = useCallback((key: K) => {
+    map.current.delete(key)
+  }, [])
+  
   const getItem = useCallback((key: K): E | undefined => map.current.get(key), [])
   
   return {
     map,
     itemRef,
+    removeItemRef,
     getItem,
   }
 }

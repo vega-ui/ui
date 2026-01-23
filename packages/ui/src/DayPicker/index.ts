@@ -1,6 +1,5 @@
 export { DayPicker, type DayPickerProps } from './DayPicker'
-export { useDayPickerScrollerContext } from './hooks'
-export { createDayPickerGrid } from './helpers'
+export { createDayPickerGrid, getDateByIndex, getIndexByDate } from './helpers'
 export {
   DayPickerItem, type DayPickerItemProps,
   DayPickerRow, type DayPickerRowProps,
@@ -10,3 +9,4 @@ export {
   DayPickerScrollerContent, type DayPickerScrollerContentProps,
   DayPickerScrollerLayout, type DayPickerScrollerLayoutProps,
 } from './components'
+export { useDayPickerScrollerContext, useDayPickerContext } from './contexts'

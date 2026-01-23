@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CalendarBase } from './CalendarBase';
 import {
-  CalendarBaseHeader, CalendarBaseNextButton, CalendarBasePickerButton,
-  CalendarBasePrevButton, CalendarBaseWeekLabel, CalendarBaseWeekLabels
+  CalendarBaseHeader, CalendarBasePickerButton,
+  CalendarBaseControlIconButton, CalendarBaseWeekLabel, CalendarBaseWeekLabels
 } from './components';
 import { Icon } from '../Icon';
 import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
@@ -17,9 +17,9 @@ const meta: Meta<typeof CalendarBase> = {
     children: (
       <>
         <CalendarBaseHeader>
-          <CalendarBasePrevButton>
+          <CalendarBaseControlIconButton>
             <Icon><ChevronLeft /></Icon>
-          </CalendarBasePrevButton>
+          </CalendarBaseControlIconButton>
           <div style={{ display: 'flex' }}>
             <CalendarBasePickerButton>
               {formatMonth(getCurrentDate().getMonth())}
@@ -28,9 +28,9 @@ const meta: Meta<typeof CalendarBase> = {
               {formatMonth(getCurrentDate().getFullYear())}
             </CalendarBasePickerButton>
           </div>
-          <CalendarBaseNextButton>
+          <CalendarBaseControlIconButton>
             <Icon><ChevronRight /></Icon>
-          </CalendarBaseNextButton>
+          </CalendarBaseControlIconButton>
         </CalendarBaseHeader>
         <div>
           <DayPicker>

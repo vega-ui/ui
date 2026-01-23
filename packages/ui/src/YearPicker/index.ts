@@ -1,5 +1,5 @@
 export { YearPicker, type YearPickerProps } from './YearPicker'
-export { useYearPickerScrollerContext } from './hooks'
+export { useYearPickerScrollerContext, useYearPickerContext } from './contexts'
 export { createYearPickerGrid } from './helpers'
 export {
   YearPickerItem, type YearPickerItemProps,

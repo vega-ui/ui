@@ -2,8 +2,19 @@ import { PropsWithChildren } from 'react';
 import { DataGridPicker, DataGridPickerProps } from '../DataGridPicker';
 import { getCurrentDate } from '@vega-ui/utils';
 import { DataGridSelection } from '../DataGridSelectable';
+import { DayPickerProvider } from './contexts';
 
-export type DayPickerProps<S extends DataGridSelection = 'single'> = DataGridPickerProps<number, S>
+export interface DayPickerProps<S extends DataGridSelection = 'single'> extends DataGridPickerProps<number, S> {
+  /**
+   * When provided, determines the calendar year that should be shown (e.g. `2025`)
+   */
+  year?: number
+  
+  /**
+   * Zero-based month index (`0` = January, `11` = December)
+   */
+  month?: number
+}
 
 /**
  * DayPicker is a high-level calendar day selection component built on
@@ -21,10 +32,21 @@ export type DayPickerProps<S extends DataGridSelection = 'single'> = DataGridPic
  * disabled logic, min/max constraints, and picker sizing come directly
  * from DataGridPicker.
  */
-export const DayPicker = <S extends DataGridSelection = 'single'>({ children, size = 'xs', ...props }: PropsWithChildren<DayPickerProps<S>>) => {
+
+export const DayPicker = <S extends DataGridSelection = 'single'>({
+  children,
+  size = 'xs',
+  year,
+  month,
+  ...props
+}: PropsWithChildren<DayPickerProps<S>>) => {
+  const currentDate = getCurrentDate()
+  
   return (
-    <DataGridPicker {...props} size={size} defaultActive={getCurrentDate().getTime()}>
-      {children}
-    </DataGridPicker>
+    <DayPickerProvider year={year ?? currentDate.getFullYear()} month={month ?? currentDate.getMonth()}>
+      <DataGridPicker size={size} defaultActive={currentDate.getTime()} {...props}>
+        {children}
+      </DataGridPicker>
+    </DayPickerProvider>
   )
 }

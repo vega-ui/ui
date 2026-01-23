@@ -8,7 +8,7 @@ import {
   CalendarBaseHeader,
   CalendarBaseNextButton,
   CalendarBasePickerButton,
-  CalendarBasePrevButton,
+  CalendarBaseControlIconButton,
   CalendarBaseWeekLabel,
   CalendarBaseWeekLabels,
 } from '../components';
@@ -23,7 +23,7 @@ const CalendarBaseTest = (props: ComponentProps<typeof CalendarBase>) => {
       {children ?? (
         <>
           <CalendarBaseHeader data-testid='header'>
-            <CalendarBasePrevButton data-testid='prev'>Prev</CalendarBasePrevButton>
+            <CalendarBaseControlIconButton data-testid='prev'>Prev</CalendarBaseControlIconButton>
             
             <div data-testid='picker-group'>
               <CalendarBasePickerButton data-testid='month-btn'>Month</CalendarBasePickerButton>
@@ -108,7 +108,7 @@ describe('CalendarBase', () => {
       r.rerender(
         <CalendarBaseTest>
           <CalendarBaseHeader data-testid='header'>
-            <CalendarBasePrevButton data-testid='prev'>Prev</CalendarBasePrevButton>
+            <CalendarBaseControlIconButton data-testid='prev'>Prev</CalendarBaseControlIconButton>
           </CalendarBaseHeader>
           
           <CalendarBaseWeekLabels data-testid='week-labels'>

@@ -4,7 +4,7 @@ import { YearPickerScrollerLayout } from '../YearPickerScrollerLayout';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof YearPickerScrollerContent> = {
-  title: 'Data/Pickers/YearPicker/YearPickerScrollerContent',
+  title: 'Data/YearPicker/YearPickerScrollerContent',
   component: YearPickerScrollerContent,
   tags: ['autodocs'],
 }

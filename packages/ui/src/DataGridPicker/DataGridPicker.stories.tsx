@@ -5,13 +5,13 @@ import {
   DataGridPickerItem,
   DataGridPickerRowGroup,
   DataGridPickerRow,
+  DataGridPickerScroller, DataGridPickerScrollerContent, DataGridPickerScrollerRowGroup,
 } from './components';
 import { FC, useRef } from 'react';
 import { IconButton } from '../IconButton';
 import { Icon } from '../Icon';
 import { ChevronLeft, ChevronRight } from '@vega-ui/icons'
-import { IndexedSnapScroller, IndexedSnapScrollerContent, useIndexedSnapScrollerContext } from '../IndexedSnapScroller';
-import { IndexedSnapScrollerApiRef } from '../IndexedSnapScroller/types';
+import { useIndexedSnapScrollerContext, IndexedSnapScrollerApiRef } from '../IndexedSnapScroller';
 
 const EMOJI_POOL = [
   '😀','😃','😄','😁','😆','😅','😂','🤣','😊','🙂','🙃','😉','😌','😍','🥰','😘','😗','😙','😚','😋',
@@ -161,7 +161,7 @@ const DefaultSwipableLayout: FC = () => {
   );
   
   return (
-    <DataGridPickerRowGroup>
+    <DataGridPickerScrollerRowGroup>
       {grid.map((row, rowIndex) => (
         <DataGridPickerRow row={row[rowIndex]?.row} key={rowIndex}>
           {row.map((cell, columnIndex) => (
@@ -175,10 +175,24 @@ const DefaultSwipableLayout: FC = () => {
           ))}
         </DataGridPickerRow>
       ))}
-    </DataGridPickerRowGroup>
+    </DataGridPickerScrollerRowGroup>
   )
 }
 
+/**
+ * This story demonstrates a swipable DataGridPicker with range selection.
+ *
+ * When using DataGridPicker together with IndexedSnapScroller, it is important
+ * to pass the current `index` from `useIndexedSnapScrollerContext` as the `scope`
+ * for each `DataGridPickerRowGroup`.
+ *
+ * The scope allows the DataGrid to correctly associate rendered cells with
+ * the active scroller index and restore focus to the first available cell
+ * when the index changes.
+ *
+ * Without providing a scope, focus restoration may behave incorrectly when
+ * switching between pages.
+ */
 export const DefaultSwipableRange: Story = {
   args: {
     selection: 'range',
@@ -188,7 +202,7 @@ export const DefaultSwipableRange: Story = {
     const apiRef = useRef<IndexedSnapScrollerApiRef>(null)
     
     return (
-      <DataGridPicker{...props}>
+      <DataGridPicker {...props}>
         <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: '16px' }}>
           <IconButton onClick={() => apiRef?.current?.prev()} variant='secondary' appearance='transparent' size='sm'>
             <Icon><ChevronLeft /></Icon>
@@ -197,11 +211,11 @@ export const DefaultSwipableRange: Story = {
             <Icon><ChevronRight /></Icon>
           </IconButton>
         </div>
-        <IndexedSnapScroller apiRef={apiRef} style={{ width: 210 }}>
-          <IndexedSnapScrollerContent>
+        <DataGridPickerScroller apiRef={apiRef} style={{ width: 210 }}>
+          <DataGridPickerScrollerContent>
             <DefaultSwipableLayout />
-          </IndexedSnapScrollerContent>
-        </IndexedSnapScroller>
+          </DataGridPickerScrollerContent>
+        </DataGridPickerScroller>
       </DataGridPicker>
     )
   }

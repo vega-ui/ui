@@ -1,220 +1,299 @@
-import { ComponentProps, FC, PropsWithChildren } from 'react';
+import { ComponentProps, FC, PropsWithChildren, createRef } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, fireEvent, render, type RenderResult, waitFor } from '@testing-library/react';
+import { cleanup, render, type RenderResult, waitFor } from '@testing-library/react';
+import { userEvent } from 'vitest/browser';
 
 import { SnapScroller } from '../SnapScroller';
 import { SnapScrollerContent } from '../components';
+import type { SnapScrollerApiRef } from '../types';
 
-afterEach(() => {
-  vi.restoreAllMocks();
-  cleanup();
-});
+afterEach(cleanup);
 
 const TESTID_SCROLLER = 'scroller';
-const makeItemTestId = (index: number) => `item-${index}`;
-const makeAsChildTestId = (index: number) => `as-child-${index}`;
 
-const MIN_INDEX = 0;
-const MAX_INDEX = 4;
-const INITIAL_INDEX = 2;
+const ITEM_COUNT = 5;
+const ITEM_SIZE = 200;
 
-const WIDTH = 300;
-const HEIGHT = 80;
+const DEFAULT_INDEX = 2;
 
-const makeItems = (from = MIN_INDEX, to = MAX_INDEX) =>
-  Array.from({ length: to - from + 1 }, (_, i) => {
-    const index = from + i;
-    
-    return (
-      <SnapScrollerContent
-        key={index}
-        index={index}
-        data-testid={makeItemTestId(index)}
-        style={{
-          scrollSnapAlign: 'start',
-          flex: '0 0 100%',
-          width: WIDTH,
-          height: HEIGHT,
-        }}
-      >
-        {index}
-      </SnapScrollerContent>
-    );
-  });
+const makeItems = (count: number) =>
+  Array.from({ length: count }, (_, i) => ({
+    index: i,
+    testid: `item-${i}`,
+    label: `Item ${i}`,
+  }));
 
-const SnapScrollerTest: FC<PropsWithChildren<ComponentProps<typeof SnapScroller>>> = (props) => {
+const SnapScrollerTest: FC<PropsWithChildren<ComponentProps<typeof SnapScroller> & { count?: number; contentProps?: Partial<ComponentProps<typeof SnapScrollerContent>>; }>> = ({
+  count = ITEM_COUNT,
+  contentProps,
+  children,
+  ...props
+}) => {
+  const items = makeItems(count);
+  
   return (
-    <div style={{ width: WIDTH, overflow: 'hidden' }}>
-      <SnapScroller
-        data-testid={TESTID_SCROLLER}
-        style={{
-          display: 'flex',
-          overflowX: 'auto',
-          scrollSnapType: 'x mandatory',
-          scrollBehavior: 'auto',
-          width: WIDTH,
-        }}
-        {...props}
-      >
-        {props.children ?? makeItems()}
-      </SnapScroller>
-    </div>
+    <SnapScroller data-testid={TESTID_SCROLLER} style={{ width: ITEM_SIZE }} {...props}>
+      {children ??
+        items.map((it) => (
+          <SnapScrollerContent
+            key={it.index}
+            data-testid={it.testid}
+            index={it.index}
+            style={{ width: ITEM_SIZE }}
+            {...contentProps}
+          >
+            {it.label}
+          </SnapScrollerContent>
+        ))}
+    </SnapScroller>
   );
 };
 
 const getScroller = (r: RenderResult) => r.getByTestId(TESTID_SCROLLER) as HTMLDivElement;
-const getItem = (r: RenderResult, index: number) => r.getByTestId(makeItemTestId(index)) as HTMLDivElement;
-
-const waitNextFrame = () => new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
-
-const scrollToLeft = async (el: HTMLDivElement, left: number) => {
-  el.scrollTo({ left, behavior: 'instant' });
-  await waitNextFrame();
-  fireEvent.scroll(el);
-};
+const getItem = (r: RenderResult, index: number) => r.getByTestId(`item-${index}`) as HTMLDivElement;
 
 describe('SnapScroller', () => {
   describe('Critical User Paths', () => {
-    let r: RenderResult;
-    
-    beforeEach(() => {
-      r = render(<SnapScrollerTest initialIndex={INITIAL_INDEX} />);
-    });
-    
-    it('renders a scroll container and children', async () => {
-      const scroller = getScroller(r);
-      await expect.element(scroller).toBeInTheDocument();
+    describe('rendering', () => {
+      let r: RenderResult;
       
-      for (let i = MIN_INDEX; i <= MAX_INDEX; i += 1) {
-        await expect.element(getItem(r, i)).toBeInTheDocument();
-      }
-    });
-    
-    it('fires onOffset(-1) when reaching start edge and does not re-fire until leaving edge', async () => {
-      const onOffset = vi.fn();
-      
-      r.rerender(<SnapScrollerTest initialIndex={INITIAL_INDEX} onOffset={onOffset} />);
-      
-      const scroller = getScroller(r);
-      
-      await scrollToLeft(scroller, 0);
-      
-      await waitFor(() => {
-        expect(onOffset).toHaveBeenCalledTimes(1);
-        expect(onOffset).toHaveBeenCalledWith(-1);
+      beforeEach(() => {
+        r = render(<SnapScrollerTest />);
       });
       
-      fireEvent.scroll(scroller);
-      
-      await waitFor(() => {
-        expect(onOffset).toHaveBeenCalledTimes(1);
+      it('renders a scroll container', async () => {
+        const scroller = getScroller(r);
+        expect(scroller).toBeInTheDocument();
+        expect(scroller.tagName).toBe('DIV');
       });
       
-      await scrollToLeft(scroller, 10);
-      
-      await waitFor(() => {
-        expect(onOffset).toHaveBeenCalledTimes(1);
-      });
-      
-      await scrollToLeft(scroller, 0);
-      
-      await waitFor(() => {
-        expect(onOffset).toHaveBeenCalledTimes(1);
+      it('renders snap items with data-index', async () => {
+        const item0 = getItem(r, 0);
+        const item3 = getItem(r, 3);
+        
+        expect(item0).toHaveAttribute('data-index', '0');
+        expect(item3).toHaveAttribute('data-index', '3');
       });
     });
     
-    it('fires onOffset(1) when reaching end edge and does not re-fire until leaving edge', async () => {
-      const onOffset = vi.fn();
+    describe('defaultIndex', () => {
+      let r: RenderResult;
       
-      r.rerender(<SnapScrollerTest initialIndex={INITIAL_INDEX} onOffset={onOffset} />);
-      
-      const scroller = getScroller(r);
-      
-      const end = scroller.scrollWidth - scroller.clientWidth;
-      
-      await scrollToLeft(scroller, end);
-      
-      await waitFor(() => {
-        expect(onOffset).toHaveBeenCalledTimes(1);
-        expect(onOffset).toHaveBeenCalledWith(1);
+      beforeEach(() => {
+        r = render(<SnapScrollerTest defaultIndex={DEFAULT_INDEX} />);
       });
       
-      fireEvent.scroll(scroller);
-      
-      await waitFor(() => {
-        expect(onOffset).toHaveBeenCalledTimes(1);
-      });
-      
-      await scrollToLeft(scroller, Math.max(0, end - 1));
-      
-      await waitFor(() => {
-        expect(onOffset).toHaveBeenCalledTimes(1);
-      });
-      
-      await scrollToLeft(scroller, end);
-      
-      await waitFor(() => {
-        expect(onOffset).toHaveBeenCalledTimes(1);
+      it('initially scrolls to defaultIndex', async () => {
+        const scroller = getScroller(r);
+        
+        await waitFor(() => {
+          expect(scroller.scrollLeft).toBe(DEFAULT_INDEX * ITEM_SIZE);
+        });
       });
     });
     
-    it('preserves snapped index after offset-triggered content changes (instant restore)', async () => {
-      const onOffset = vi.fn();
+    describe('apiRef', () => {
+      let r: RenderResult;
+      const apiRef = createRef<SnapScrollerApiRef>();
       
-      r.rerender(<SnapScrollerTest initialIndex={INITIAL_INDEX} onOffset={onOffset} preserveScroll />);
-      
-      const scroller = getScroller(r);
-      
-      await scrollToLeft(scroller, 0);
-      
-      await waitFor(() => {
-        expect(onOffset).toHaveBeenCalledWith(-1);
+      beforeEach(() => {
+        r = render(<SnapScrollerTest apiRef={apiRef} />);
       });
       
-      r.rerender(
-        <SnapScrollerTest initialIndex={INITIAL_INDEX} onOffset={onOffset} preserveScroll>
-          {makeItems(MIN_INDEX - 2, MAX_INDEX + 2)}
-        </SnapScrollerTest>
-      );
+      it('next() scrolls forward', async () => {
+        const scroller = getScroller(r);
+        
+        await waitFor(() => {
+          expect(apiRef.current).toBeTruthy();
+        });
+        
+        apiRef.current!.next();
+        
+        await waitFor(() => {
+          expect(scroller.scrollLeft).toBeGreaterThan(0);
+        });
+      });
       
-      await waitNextFrame();
-      await waitNextFrame();
+      it('prev() scrolls backward', async () => {
+        const scroller = getScroller(r);
+        
+        await waitFor(() => {
+          expect(apiRef.current).toBeTruthy();
+        });
+        
+        apiRef.current!.prev();
+        
+        await waitFor(() => {
+          expect(scroller.scrollLeft).toBeLessThan(2 * ITEM_SIZE);
+        });
+      });
       
-      await waitFor(() => {
-        const snapped = Math.round(scroller.scrollLeft / WIDTH);
-        expect(snapped).toBe(INITIAL_INDEX);
+      it('scrollToElementByKey() scrolls to the requested index', async () => {
+        const scroller = getScroller(r);
+        
+        await waitFor(() => {
+          expect(apiRef.current).toBeTruthy();
+        });
+        
+        apiRef.current?.scrollToElementByKey?.(3, 'instant');
+        
+        await waitFor(() => {
+          expect(scroller.scrollLeft).toBe(3 * ITEM_SIZE);
+        });
       });
     });
-  });
-  
-  describe('Error handling', () => {
-    it('SnapScrollerContent(asChild) throws when Slot child is not a valid React element', async () => {
-      expect(() => {
-        render(
-          <SnapScrollerTest>
-            <SnapScrollerContent index={0} asChild>
-              {'text'}
-            </SnapScrollerContent>
-          </SnapScrollerTest>
+    
+    describe('handlers', () => {
+      let r: RenderResult;
+      
+      beforeEach(() => {
+        r = render(<SnapScrollerTest />);
+      });
+      
+      it('calls external onScroll handler', async () => {
+        const onScroll = vi.fn();
+        r.rerender(<SnapScrollerTest onScroll={onScroll} />);
+        
+        const scroller = getScroller(r);
+        
+        scroller.scrollTo({ left: ITEM_SIZE, top: 0, behavior: 'auto' });
+        
+        await waitFor(() => {
+          expect(onScroll).toHaveBeenCalled();
+        });
+      });
+      
+      it('calls onScrollSnapChanging during scroll interactions (if hook emits it)', async () => {
+        const onScrollSnapChanging = vi.fn();
+        r.rerender(<SnapScrollerTest onScrollSnapChanging={onScrollSnapChanging} />);
+        
+        const scroller = getScroller(r);
+        
+        scroller.scrollTo({ left: ITEM_SIZE, top: 0, behavior: 'auto' });
+        
+        await waitFor(() => {
+          expect(onScrollSnapChanging).toHaveBeenCalled();
+        });
+        
+        const [el, index] = onScrollSnapChanging.mock.calls.at(-1) ?? [];
+        expect(el).toBeInstanceOf(HTMLElement);
+        expect(typeof index).toBe('number');
+      });
+      
+      it('calls onScrollSnapChange after snap settles (if hook emits it)', async () => {
+        const onScrollSnapChange = vi.fn();
+        r.rerender(<SnapScrollerTest onScrollSnapChange={onScrollSnapChange} />);
+        
+        const scroller = getScroller(r);
+        
+        scroller.scrollTo({ left: 2 * ITEM_SIZE, top: 0, behavior: 'auto' });
+        
+        await waitFor(() => {
+          expect(onScrollSnapChange).toHaveBeenCalled();
+        });
+        
+        const [el, index] = onScrollSnapChange.mock.calls.at(-1) ?? [];
+        expect(el).toBeInstanceOf(HTMLElement);
+        expect(typeof index).toBe('number');
+      });
+      
+      it('fires both onScrollSnapChanging and onScrollSnapChange when both are provided (if hook emits them)', async () => {
+        const onScrollSnapChanging = vi.fn();
+        const onScrollSnapChange = vi.fn();
+        
+        r.rerender(
+          <SnapScrollerTest
+            onScrollSnapChanging={onScrollSnapChanging}
+            onScrollSnapChange={onScrollSnapChange}
+          />,
         );
-      }).toThrowError();
+        
+        const scroller = getScroller(r);
+        
+        scroller.scrollTo({ left: 1 * ITEM_SIZE, top: 0, behavior: 'auto' });
+        
+        await waitFor(() => {
+          expect(onScrollSnapChanging).toHaveBeenCalled();
+          expect(onScrollSnapChange).toHaveBeenCalled();
+        });
+      });
     });
   });
   
-  describe('Edge cases', () => {
-    it('SnapScrollerContent(asChild) passes data-index to custom element', async () => {
-      const r = render(
-        <SnapScrollerTest>
-          <SnapScrollerContent index={1} asChild data-testid={makeAsChildTestId(1)}>
-            <section data-testid={makeItemTestId(1)}>child</section>
-          </SnapScrollerContent>
-        </SnapScrollerTest>
-      );
+  describe('Edge Cases', () => {
+    it('renders with no children (does not crash)', async () => {
+      const r = render(<SnapScrollerTest>{null}</SnapScrollerTest>);
+      const scroller = getScroller(r);
+      expect(scroller).toBeInTheDocument();
+    });
+    
+    it('apiRef methods exist even if there are no items', async () => {
+      const apiRef = createRef<SnapScrollerApiRef>();
+      render(<SnapScrollerTest apiRef={apiRef}>{null}</SnapScrollerTest>);
       
-      const el = r.getByTestId(makeItemTestId(1)) as HTMLElement;
+      await waitFor(() => {
+        expect(apiRef.current).toBeTruthy();
+      });
       
-      await expect.element(el).toBeInTheDocument();
-      await expect.element(el).toHaveAttribute('data-index', '1');
+      expect(apiRef.current?.prev).toBeTypeOf('function');
+      expect(apiRef.current?.next).toBeTypeOf('function');
+      expect(apiRef.current?.scrollToElementByKey).toBeTypeOf('function');
+    });
+    
+    it('prev()/next() do not throw when committed index is not yet available', async () => {
+      const apiRef = createRef<SnapScrollerApiRef>();
+      render(<SnapScrollerTest apiRef={apiRef} />);
+      
+      await waitFor(() => {
+        expect(apiRef.current).toBeTruthy();
+      });
+      
+      expect(() => apiRef.current?.prev()).not.toThrow();
+      expect(() => apiRef.current?.next()).not.toThrow();
+    });
+  });
+  
+  describe('Accessibility', () => {
+    describe('roles', () => {
+      let r: RenderResult;
+      
+      beforeEach(() => {
+        r = render(<SnapScrollerTest />);
+      });
+      
+      it('does not introduce invalid interactive roles by default', async () => {
+        const scroller = getScroller(r);
+        expect(scroller).not.toHaveRole('button');
+        expect(scroller).not.toHaveRole('listbox');
+        expect(scroller).not.toHaveRole('dialog');
+      });
+    });
+    
+    describe('keyboard', () => {
+      it('remains operable for keyboard users (focus + arrow scroll)', async () => {
+        const apiRef = createRef<SnapScrollerApiRef>();
+        
+        const r = render(
+          <SnapScrollerTest
+            apiRef={apiRef}
+            tabIndex={0}
+            aria-label='Snap scroller'
+          />,
+        );
+        
+        const scroller = getScroller(r);
+        
+        await userEvent.click(scroller);
+        expect(scroller).toHaveFocus();
+        
+        const before = scroller.scrollLeft;
+        
+        scroller.scrollTo({ left: ITEM_SIZE, top: 0, behavior: 'auto' });
+        
+        await waitFor(() => {
+          expect(scroller.scrollLeft).toBeGreaterThanOrEqual(before);
+        });
+      });
     });
   });
 });

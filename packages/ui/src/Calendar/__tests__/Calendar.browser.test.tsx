@@ -340,7 +340,7 @@ describe('Calendar', () => {
       beforeEach(() => {
         onMonthChange = vi.fn();
         onYearChange = vi.fn();
-        r = render(<CalendarTest onMonthChange={onMonthChange} onYearChange={onYearChange} />);
+        r = render(<CalendarTest onChangeMonth={onMonthChange} onChangeYear={onYearChange} />);
       });
       
       it('does not crash on next', async () => {

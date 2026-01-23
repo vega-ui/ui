@@ -14,5 +14,6 @@ export {
   type DataGridExcludeResolver,
   type DataGridWrap,
   type DataGridApiRef,
-  type DataGridCoordinates
+  type DataGridCoordinates,
+  type DataGridScope,
 } from './types'

@@ -9,6 +9,7 @@
     "allowSyntheticDefaultImports": true,
     /* Bundler mode */
     "moduleResolution": "bundler",
+    "downlevelIteration": true,
     "allowImportingTsExtensions": false,
     "isolatedModules": true,
     "moduleDetection": "force",

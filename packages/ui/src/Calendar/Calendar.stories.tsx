@@ -6,14 +6,15 @@ import {
   CalendarDayPickerScrollerLayout,
   CalendarHeader,
   CalendarMonthPicker, CalendarMonthPickerButton,
-  CalendarMonthPickerLayout, CalendarNextButton, CalendarPickerButtonGroup, CalendarPrevButton,
+  CalendarMonthPickerLayout, CalendarNextButton,
+  CalendarNextYearGroupButton, CalendarPickerButtonGroup, CalendarPrevButton, CalendarPrevYearGroupButton,
   CalendarWeekLabel,
   CalendarWeekLabels, CalendarYearPicker,
   CalendarYearPickerButton, CalendarYearPickerScroller, CalendarYearPickerScrollerContent,
   CalendarYearPickerScrollerLayout
 } from './components';
 import { Icon } from '../Icon';
-import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
+import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from '@vega-ui/icons';
 import {
   formatDay,
   formatMonth,
@@ -44,50 +45,54 @@ const meta: Meta<typeof Calendar> = {
   title: 'Data/Calendar/Calendar',
   component: Calendar,
   args: {
-    children: (
-      <>
-        <CalendarHeader>
-          <CalendarPrevButton>
-            <Icon><ChevronLeft /></Icon>
-          </CalendarPrevButton>
-          <CalendarPickerButtonGroup>
-            <CalendarMonthPickerButton>
-              <MonthLabel />
-            </CalendarMonthPickerButton>
-            <CalendarYearPickerButton>
-              <YearLabel />
-            </CalendarYearPickerButton>
-          </CalendarPickerButtonGroup>
-          <CalendarNextButton>
-            <Icon><ChevronRight /></Icon>
-          </CalendarNextButton>
-        </CalendarHeader>
-        <CalendarContent>
-          <CalendarDayPicker>
-            <CalendarWeekLabels>
-              {getWeekDayNames(navigator.language, 'short').map((name) => (
-                <CalendarWeekLabel key={name}>{name}</CalendarWeekLabel>
-              ))}
-            </CalendarWeekLabels>
-            <CalendarDayPickerScroller>
-              <CalendarDayPickerScrollerContent>
-                <CalendarDayPickerScrollerLayout />
-              </CalendarDayPickerScrollerContent>
-            </CalendarDayPickerScroller>
-          </CalendarDayPicker>
-          <CalendarMonthPicker>
-            <CalendarMonthPickerLayout  />
-          </CalendarMonthPicker>
-          <CalendarYearPicker>
-            <CalendarYearPickerScroller>
-              <CalendarYearPickerScrollerContent>
-                <CalendarYearPickerScrollerLayout />
-              </CalendarYearPickerScrollerContent>
-            </CalendarYearPickerScroller>
-          </CalendarYearPicker>
-        </CalendarContent>
-      </>
-    )
+    children: [
+      <CalendarHeader key={0}>
+        <CalendarPrevYearGroupButton>
+          <Icon><ArrowLeft /></Icon>
+        </CalendarPrevYearGroupButton>
+        <CalendarPrevButton>
+          <Icon><ChevronLeft /></Icon>
+        </CalendarPrevButton>
+        <CalendarPickerButtonGroup>
+          <CalendarMonthPickerButton>
+            <MonthLabel />
+          </CalendarMonthPickerButton>
+          <CalendarYearPickerButton>
+            <YearLabel />
+          </CalendarYearPickerButton>
+        </CalendarPickerButtonGroup>
+        <CalendarNextButton>
+          <Icon><ChevronRight /></Icon>
+        </CalendarNextButton>
+        <CalendarNextYearGroupButton>
+          <Icon><ArrowRight /></Icon>
+        </CalendarNextYearGroupButton>
+      </CalendarHeader>,
+      <CalendarContent key={1}>
+        <CalendarDayPicker>
+          <CalendarWeekLabels>
+            {getWeekDayNames(navigator.language, 'short').map((name) => (
+              <CalendarWeekLabel key={name}>{name}</CalendarWeekLabel>
+            ))}
+          </CalendarWeekLabels>
+          <CalendarDayPickerScroller>
+            <CalendarDayPickerScrollerContent>
+              <CalendarDayPickerScrollerLayout />
+            </CalendarDayPickerScrollerContent>
+          </CalendarDayPickerScroller>
+        </CalendarDayPicker>
+        <CalendarMonthPicker>
+          <CalendarMonthPickerLayout  />
+        </CalendarMonthPicker>
+        <CalendarYearPicker>
+          <CalendarYearPickerScroller>
+            <CalendarYearPickerScrollerContent>
+              <CalendarYearPickerScrollerLayout />
+            </CalendarYearPickerScrollerContent>
+          </CalendarYearPickerScroller>
+        </CalendarYearPicker>
+      </CalendarContent>
+    ]
   },
   argTypes: {
     compact: {
@@ -131,9 +136,9 @@ export const From: Story = {
 };
 
 export const To: Story = {
-  name: 'To 0/1/2030',
+  name: 'To 0/10/2030',
   args: {
-    to: new Date(2030, 0, 1),
+    to: new Date(2030, 0, 10),
   },
 };
 
@@ -163,6 +168,19 @@ export const SelectedRange: Story = {
   },
 };
 
+export const DefaultYearAndMonth: Story = {
+  args: {
+    defaultYear: 2025,
+    defaultMonth: 0,
+  },
+};
+
+export const DefaultValue: Story = {
+  args: {
+    defaultValue: getCurrentDate(),
+  },
+};
+
 export const Compact: Story = {
   args: {
     compact: true,
@@ -179,6 +197,20 @@ export const CompactSm: Story = {
 export const CompactMd: Story = {
   args: {
     size: 'md',
+    compact: true,
+  },
+};
+
+export const CompactLg: Story = {
+  args: {
+    size: 'lg',
+    compact: true,
+  },
+};
+
+export const CompactXs: Story = {
+  args: {
+    size: 'xl',
     compact: true,
   },
 };

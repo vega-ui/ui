@@ -1,149 +1,444 @@
-import { FC, PropsWithChildren, Ref, useEffect } from 'react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { act, cleanup, render, type RenderResult } from '@testing-library/react';
+import { createRef, FC, PropsWithChildren } from 'react';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { cleanup, render, type RenderResult, waitFor } from '@testing-library/react';
 
-import { IndexedSnapScroller } from '../IndexedSnapScroller';
+import { IndexedSnapScroller, type IndexedSnapScrollerProps } from '../IndexedSnapScroller';
+import { IndexedSnapScrollerContent } from '../components';
 import { useIndexedSnapScrollerContext } from '../contexts';
 import { IndexedSnapScrollerApiRef } from '../types';
 
 afterEach(cleanup);
 
-const TESTID_PAGE_PREFIX = 'page';
-const TESTID_MOUNT_COUNT = 'mount-count';
+const TESTID = {
+  scroller: 'scroller',
+} as const;
 
-const IndexedPage: FC = () => {
-  const { index } = useIndexedSnapScrollerContext();
-  return <div data-testid={`${TESTID_PAGE_PREFIX}-${index}`}>{index}</div>;
+const ITEM_PREFIX = 'item';
+const VIEWPORT_PX = 240;
+const PAGE_PX = 240;
+
+const SIZE_5 = 5;
+const SHIFT_2 = 2;
+const START_MINUS_2 = -2;
+
+const sleep = (ms: number) => new Promise<void>((r) => setTimeout(r, ms));
+
+const getScroller = (r: RenderResult) => r.getByTestId(TESTID.scroller) as HTMLDivElement;
+
+const getItem = (r: RenderResult, index: number) => r.getByTestId(`${ITEM_PREFIX}-${index}`) as HTMLElement;
+const queryItem = (r: RenderResult, index: number) => r.queryByTestId(`${ITEM_PREFIX}-${index}`) as HTMLElement | null;
+
+const scrollToStart = async (el: HTMLDivElement) => {
+  el.scrollTo({ left: 0, behavior: 'instant' as ScrollBehavior });
+  await sleep(0);
 };
 
-const MountCounter: FC<{ onMount: () => void }> = ({ onMount }) => {
+const scrollToEnd = async (el: HTMLDivElement) => {
+  el.scrollTo({ left: el.scrollWidth - el.clientWidth, behavior: 'instant' as ScrollBehavior });
+  await sleep(0);
+};
+
+const isFullyVisibleInScroller = (scroller: HTMLElement, el: HTMLElement) => {
+  const s = scroller.getBoundingClientRect();
+  const r = el.getBoundingClientRect();
+  return r.left >= s.left && r.right <= s.right;
+};
+
+const Page: FC = () => {
   const { index } = useIndexedSnapScrollerContext();
   
-  useEffect(() => {
-    onMount();
-  }, [onMount]);
-  
-  return <div data-testid={`${TESTID_MOUNT_COUNT}-${index}`} />;
+  return (
+    <IndexedSnapScrollerContent>
+      <div
+        data-testid={`${ITEM_PREFIX}-${index}`}
+        style={{
+          width: PAGE_PX,
+          flex: `0 0 ${PAGE_PX}px`,
+          scrollSnapAlign: 'start',
+        }}
+      >
+        Item {index}
+      </div>
+    </IndexedSnapScrollerContent>
+  );
 };
 
-const IndexedSnapScrollerTest: FC<
-  PropsWithChildren<{
-    apiRef?: Ref<IndexedSnapScrollerApiRef>;
-    size?: number;
-    start?: number;
-    startDir?: -1 | 1;
-    shift?: number;
-  }>
-> = ({ children, ...props }) => {
-  return <IndexedSnapScroller {...props}>{children}</IndexedSnapScroller>;
+const IndexedSnapScrollerTest: FC<PropsWithChildren<IndexedSnapScrollerProps>> = ({ children, style, ...props }) => {
+  return (
+    <IndexedSnapScroller
+      data-testid={TESTID.scroller}
+      style={{
+        width: VIEWPORT_PX,
+        overflowX: 'auto',
+        display: 'flex',
+        scrollSnapType: 'x mandatory',
+        ...style,
+      }}
+      {...props}
+    >
+      {children ?? <Page />}
+    </IndexedSnapScroller>
+  );
 };
-
-const getPage = (r: RenderResult, index: number) =>
-  r.getByTestId(`${TESTID_PAGE_PREFIX}-${index}`);
 
 describe('IndexedSnapScroller', () => {
   describe('Critical User Paths', () => {
-    let r: RenderResult;
-    let apiRef: { current: IndexedSnapScrollerApiRef | null };
-    
-    beforeEach(() => {
-      apiRef = { current: null };
-      r = render(
-        <IndexedSnapScrollerTest apiRef={apiRef}>
-          <IndexedPage />
-        </IndexedSnapScrollerTest>,
-      );
-    });
-    
-    it('renders exactly `size` pages and each page index matches apiRef.indexes', async () => {
-      const api = apiRef.current;
-      expect(api).toBeTruthy();
+    describe('rendering & initial window', () => {
+      let r: RenderResult;
       
-      const indexes = api!.indexes;
-      expect(indexes.length).toBe(5);
-      
-      for (const idx of indexes) {
-        const page = getPage(r, idx);
-        await expect.element(page).toBeInTheDocument();
-        await expect.element(page).toHaveTextContent(String(idx));
-      }
-    });
-    
-    it('supports `startDir=1` with a consistent step between adjacent indexes', async () => {
-      r.rerender(
-        <IndexedSnapScrollerTest apiRef={apiRef} size={5} start={0} startDir={1}>
-          <IndexedPage />
-        </IndexedSnapScrollerTest>,
-      );
-      
-      const api = apiRef.current!;
-      const indexes = api.indexes;
-      
-      expect(indexes.length).toBe(5);
-      
-      const step = indexes[1] - indexes[0];
-      expect(step).toBe(1);
-      
-      for (let i = 1; i < indexes.length; i += 1) {
-        expect(indexes[i] - indexes[i - 1]).toBe(1);
-      }
-    });
-    
-    it('exposes `reset(index, resetKeys)` via apiRef and `resetKeys=true` remounts pages', async () => {
-      const SIZE = 5;
-      const onMount = vi.fn();
-      
-      r.rerender(
-        <IndexedSnapScrollerTest apiRef={apiRef} size={SIZE}>
-          <MountCounter onMount={onMount} />
-        </IndexedSnapScrollerTest>,
-      );
-      
-      const api = apiRef.current!;
-      expect(api.indexes.length).toBe(SIZE);
-      
-      await act(async () => {});
-      
-      expect(onMount).toHaveBeenCalledTimes(SIZE);
-      
-      await act(async () => {
-        api.reset(0, true);
+      beforeEach(() => {
+        r = render(
+          <IndexedSnapScrollerTest size={SIZE_5} shift={SHIFT_2} start={START_MINUS_2} startDir={1} />,
+        );
       });
       
-      await act(async () => {});
+      it('renders an initial index window based on start/size/startDir', async () => {
+        await expect.element(getItem(r, -2)).toBeInTheDocument();
+        await expect.element(getItem(r, -1)).toBeInTheDocument();
+        await expect.element(getItem(r, 0)).toBeInTheDocument();
+        await expect.element(getItem(r, 1)).toBeInTheDocument();
+        await expect.element(getItem(r, 2)).toBeInTheDocument();
+      });
       
-      expect(onMount).toHaveBeenCalledTimes(SIZE * 2);
+      it('does not render indexes outside the initial window', async () => {
+        await expect.element(queryItem(r, -3)).not.toBeInTheDocument();
+        await expect.element(queryItem(r, 3)).not.toBeInTheDocument();
+      });
+    });
+    
+    describe('defaultIndex / index initialization', () => {
+      it('uses defaultIndex when provided (uncontrolled) and builds window around it', async () => {
+        const defaultIndex = 10;
+        
+        const r = render(
+          <IndexedSnapScrollerTest
+            size={SIZE_5}
+            shift={SHIFT_2}
+            start={START_MINUS_2}
+            startDir={1}
+            defaultIndex={defaultIndex}
+          />,
+        );
+        
+        const centerOffset = Math.floor(SIZE_5 / 2);
+        const expectedStart = defaultIndex - centerOffset;
+        
+        await expect.element(getItem(r, expectedStart)).toBeInTheDocument();
+        await expect.element(getItem(r, expectedStart + 4)).toBeInTheDocument();
+      });
+      
+      it('uses index when provided (controlled) and builds window around it', async () => {
+        const index = 7;
+        
+        const r = render(
+          <IndexedSnapScrollerTest
+            size={SIZE_5}
+            shift={SHIFT_2}
+            start={START_MINUS_2}
+            startDir={1}
+            index={index}
+          />,
+        );
+        
+        const centerOffset = Math.floor(SIZE_5 / 2);
+        const expectedStart = index - centerOffset;
+        
+        await expect.element(getItem(r, expectedStart)).toBeInTheDocument();
+        await expect.element(getItem(r, expectedStart + 4)).toBeInTheDocument();
+      });
+    });
+    
+    describe('offset detection via scroll and virtual window shifting', () => {
+      it('fires onOffset(-1) and shifts window backward when scrolled to start', async () => {
+        const offsets: number[] = [];
+        
+        const r = render(
+          <IndexedSnapScrollerTest
+            size={SIZE_5}
+            shift={SHIFT_2}
+            start={START_MINUS_2}
+            startDir={1}
+            onOffset={(v) => offsets.push(v)}
+          />,
+        );
+        
+        const scroller = getScroller(r);
+        
+        await waitFor(() => {
+          expect(scroller.scrollWidth).toBeGreaterThan(scroller.clientWidth);
+        });
+        
+        await scrollToStart(scroller);
+        
+        await waitFor(() => {
+          expect(offsets).toContain(-1);
+        });
+        
+        // expected shift by 2: [-2,-1,0,1,2] -> [-4,-3,-2,-1,0]
+        await expect.element(getItem(r, -4)).toBeInTheDocument();
+        await expect.element(getItem(r, -3)).toBeInTheDocument();
+        await expect.element(getItem(r, 0)).toBeInTheDocument();
+        
+        await expect.element(queryItem(r, 1)).not.toBeInTheDocument();
+        await expect.element(queryItem(r, 2)).not.toBeInTheDocument();
+      });
+      
+      it('fires onOffset(1) and pushes window forward when scrolled to end', async () => {
+        const offsets: number[] = [];
+        
+        const r = render(
+          <IndexedSnapScrollerTest
+            size={SIZE_5}
+            shift={SHIFT_2}
+            start={START_MINUS_2}
+            startDir={1}
+            onOffset={(v) => offsets.push(v)}
+          />,
+        );
+        
+        const scroller = getScroller(r);
+        
+        await waitFor(() => {
+          expect(scroller.scrollWidth).toBeGreaterThan(scroller.clientWidth);
+        });
+        
+        await scrollToEnd(scroller);
+        
+        await waitFor(() => {
+          expect(offsets).toContain(1);
+        });
+        
+        // expected push by 2: [-2,-1,0,1,2] -> [0,1,2,3,4]
+        await expect.element(getItem(r, 0)).toBeInTheDocument();
+        await expect.element(getItem(r, 4)).toBeInTheDocument();
+        
+        await expect.element(queryItem(r, -2)).not.toBeInTheDocument();
+        await expect.element(queryItem(r, -1)).not.toBeInTheDocument();
+      });
+      
+      it('calls user onScroll handler alongside internal scroll logic', async () => {
+        let called = 0;
+        
+        const r = render(
+          <IndexedSnapScrollerTest
+            size={SIZE_5}
+            shift={SHIFT_2}
+            start={START_MINUS_2}
+            startDir={1}
+            onScroll={() => {
+              called += 1;
+            }}
+          />,
+        );
+        
+        const scroller = getScroller(r);
+        
+        await waitFor(() => {
+          expect(scroller.scrollWidth).toBeGreaterThan(scroller.clientWidth);
+        });
+        
+        scroller.scrollTo({ left: 1, behavior: 'instant' as ScrollBehavior });
+        
+        await waitFor(() => {
+          expect(called).toBeGreaterThan(0);
+        });
+      });
+    });
+    
+    describe('preserveScroll behavior', () => {
+      it('after offset at start, preserveScroll=true moves scroll away from the boundary', async () => {
+        const r = render(
+          <IndexedSnapScrollerTest
+            size={SIZE_5}
+            shift={SHIFT_2}
+            start={START_MINUS_2}
+            startDir={1}
+            preserveScroll
+          />,
+        );
+        
+        const scroller = getScroller(r);
+        
+        await waitFor(() => {
+          expect(scroller.scrollWidth).toBeGreaterThan(scroller.clientWidth);
+        });
+        
+        await scrollToStart(scroller);
+        
+        await waitFor(() => {
+          expect(getItem(r, -4)).toBeInTheDocument();
+        });
+        
+        await waitFor(() => {
+          expect(scroller.scrollLeft).toBeGreaterThan(0);
+        });
+      });
+      
+      it('after offset at end, preserveScroll=true moves scroll away from the boundary', async () => {
+        const r = render(
+          <IndexedSnapScrollerTest
+            size={SIZE_5}
+            shift={SHIFT_2}
+            start={START_MINUS_2}
+            startDir={1}
+            preserveScroll
+          />,
+        );
+        
+        const scroller = getScroller(r);
+        
+        await waitFor(() => {
+          expect(scroller.scrollWidth).toBeGreaterThan(scroller.clientWidth);
+        });
+        
+        await scrollToEnd(scroller);
+        
+        await waitFor(() => {
+          expect(getItem(r, 4)).toBeInTheDocument();
+        });
+        
+        await waitFor(() => {
+          const max = scroller.scrollWidth - scroller.clientWidth;
+          expect(Math.ceil(scroller.scrollLeft)).toBeLessThan(max);
+        });
+      });
+    });
+    
+    describe('controlled index syncing', () => {
+      it('when controlled index is outside current window, window rebuilds to include it', async () => {
+        const nextIndex = 100;
+        
+        const apiRef = createRef<IndexedSnapScrollerApiRef>();
+        
+        const r = render(
+          <IndexedSnapScrollerTest
+            size={SIZE_5}
+            shift={SHIFT_2}
+            start={START_MINUS_2}
+            startDir={1}
+            index={0}
+            apiRef={apiRef}
+          />,
+        );
+        
+        await expect.element(getItem(r, -2)).toBeInTheDocument();
+        await expect.element(getItem(r, 2)).toBeInTheDocument();
+        
+        await waitFor(() => {
+          expect(apiRef.current).toBeTruthy();
+        });
+        
+        apiRef.current!.measure();
+        
+        r.rerender(
+          <IndexedSnapScrollerTest
+            size={SIZE_5}
+            shift={SHIFT_2}
+            start={START_MINUS_2}
+            startDir={1}
+            index={nextIndex}
+            apiRef={apiRef}
+          />,
+        );
+        
+        await waitFor(() => {
+          expect(queryItem(r, nextIndex)).toBeTruthy();
+        });
+        
+        await expect.element(getItem(r, nextIndex)).toBeInTheDocument();
+      });
+      
+      it('when controlled index is within the current window, it becomes visible in the viewport', async () => {
+        const r = render(
+          <IndexedSnapScrollerTest
+            size={SIZE_5}
+            shift={SHIFT_2}
+            start={START_MINUS_2}
+            startDir={1}
+            index={0}
+          />,
+        );
+        
+        const scroller = getScroller(r);
+        
+        await waitFor(() => {
+          expect(scroller.scrollWidth).toBeGreaterThan(scroller.clientWidth);
+        });
+        
+        const nextIndex = 2;
+        
+        r.rerender(
+          <IndexedSnapScrollerTest
+            size={SIZE_5}
+            shift={SHIFT_2}
+            start={START_MINUS_2}
+            startDir={1}
+            index={nextIndex}
+          />,
+        );
+        
+        await waitFor(() => {
+          const el = getItem(r, nextIndex);
+          expect(isFullyVisibleInScroller(scroller, el)).toBe(true);
+        });
+      });
+    });
+    
+    describe('startDir patterns', () => {
+      it('renders decreasing sequence when startDir=-1', async () => {
+        const r = render(
+          <IndexedSnapScrollerTest size={SIZE_5} shift={SHIFT_2} start={START_MINUS_2} startDir={-1} />,
+        );
+        
+        await expect.element(getItem(r, -2)).toBeInTheDocument();
+        await expect.element(getItem(r, -3)).toBeInTheDocument();
+        await expect.element(getItem(r, -4)).toBeInTheDocument();
+        await expect.element(getItem(r, -5)).toBeInTheDocument();
+        await expect.element(getItem(r, -6)).toBeInTheDocument();
+        
+        await expect.element(queryItem(r, -1)).not.toBeInTheDocument();
+        await expect.element(queryItem(r, 0)).not.toBeInTheDocument();
+      });
     });
   });
   
   describe('Edge Cases', () => {
-    it('renders with `size=1`', async () => {
-      const apiRef = { current: null as IndexedSnapScrollerApiRef | null };
+    it('size=1 renders a single page index', async () => {
+      const r = render(<IndexedSnapScrollerTest size={1} shift={SHIFT_2} start={START_MINUS_2} startDir={1} />);
       
-      const r = render(
-        <IndexedSnapScrollerTest apiRef={apiRef} size={1}>
-          <IndexedPage />
-        </IndexedSnapScrollerTest>,
-      );
-      
-      const api = apiRef.current!;
-      expect(api.indexes.length).toBe(1);
-      
-      const idx = api.indexes[0];
-      await expect.element(getPage(r, idx)).toBeInTheDocument();
+      await expect.element(getItem(r, -2)).toBeInTheDocument();
+      await expect.element(queryItem(r, -1)).not.toBeInTheDocument();
+      await expect.element(queryItem(r, 0)).not.toBeInTheDocument();
     });
     
-    it('works when `children` is `null`', async () => {
-      const apiRef = { current: null as IndexedSnapScrollerApiRef | null };
+    it('does not crash when onOffset is not provided and scroll hits boundaries', async () => {
+      const r = render(<IndexedSnapScrollerTest size={SIZE_5} shift={SHIFT_2} start={START_MINUS_2} startDir={1} />);
       
-      render(
-        <IndexedSnapScrollerTest apiRef={apiRef} size={5}>
-          {null}
-        </IndexedSnapScrollerTest>,
-      );
+      const scroller = getScroller(r);
       
-      const api = apiRef.current!;
-      expect(api.indexes.length).toBe(5);
+      await waitFor(() => {
+        expect(scroller.scrollWidth).toBeGreaterThan(scroller.clientWidth);
+      });
+      
+      await scrollToStart(scroller);
+      
+      await waitFor(() => {
+        expect(getItem(r, -4)).toBeInTheDocument();
+      });
+    });
+  });
+  
+  describe('Accessibility', () => {
+    describe('roles', () => {
+      it('renders content into the document (not aria-hidden)', async () => {
+        const r = render(<IndexedSnapScrollerTest size={SIZE_5} shift={SHIFT_2} start={START_MINUS_2} startDir={1} />);
+        
+        const scroller = getScroller(r);
+        
+        await expect.element(scroller).toBeInTheDocument();
+        await expect.element(scroller).not.toHaveAttribute('aria-hidden', 'true');
+        await expect.element(getItem(r, 0)).toBeInTheDocument();
+      });
     });
   });
 });

@@ -1,0 +1,14 @@
+.button {
+    position: absolute;
+    scale: 0;
+    opacity: 0;
+    transition: scale var(--transition-slow-state-delay) ease-in-out,
+                background-color var(--transition-fast-state-delay) ease-in-out,
+                color var(--transition-fast-state-delay) ease-in-out,
+                border-color var(--transition-fast-state-delay) ease-in-out;
+}
+
+.button[data-visible='true'] {
+    scale: 1;
+    opacity: 1;
+}

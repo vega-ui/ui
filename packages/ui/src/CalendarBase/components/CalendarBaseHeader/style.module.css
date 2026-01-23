@@ -1,8 +1,9 @@
 .header {
     display: flex;
     flex-direction: row;
+    position: relative;
     justify-content: space-between;
-    margin-bottom: 24px;
     padding: 4px;
     overflow: hidden;
+    box-sizing: border-box;
 }

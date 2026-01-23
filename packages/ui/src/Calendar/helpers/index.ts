@@ -1,7 +1,3 @@
 export * from './focusPickerValue'
-export * from './getDateByIndex'
-export * from './computeStart'
 export * from './isDisabledDate'
-export * from './getMonthIndex'
-export * from './getClampedIndex'
 export * from './getFirstDayInMonth'

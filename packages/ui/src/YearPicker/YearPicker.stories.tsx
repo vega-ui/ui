@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { FC } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 
 import { YearPicker } from './YearPicker';
 import {
@@ -10,14 +10,17 @@ import {
   YearPickerScrollerContent,
   YearPickerScrollerLayout,
 } from './components';
-import { createYearPickerGrid } from './helpers';
-import { useYearPickerScrollerContext } from './hooks';
+import { createYearPickerGrid, getIndexByYear } from './helpers';
+import { useIndexedSnapScrollerContext } from '../IndexedSnapScroller';
+import { Separator } from '../Separator';
+import { NumberField, NumberFieldDecrementButton, NumberFieldIncrementButton, NumberFieldInput } from '../NumberField';
+import { getCurrentDate } from '@vega-ui/utils';
+import { useYearPickerScrollerContext } from './contexts';
 
 const meta: Meta<typeof YearPicker> = {
-  title: 'Data/Pickers/YearPicker/YearPicker',
+  title: 'Data/YearPicker/YearPicker',
   component: YearPicker,
   args: {
-    style: { width: 300 },
     children: <YearPickerLayout />,
   },
   argTypes: {
@@ -42,7 +45,7 @@ type Story = StoryObj<typeof meta>;
 
 const currentYear = new Date().getFullYear();
 
-export const DefaultSingle: Story = {
+export const SingleSelection: Story = {
   args: {
     selection: 'single',
   },
@@ -57,6 +60,19 @@ export const MultipleSelection: Story = {
 export const RangeSelection: Story = {
   args: {
     selection: 'range',
+  },
+};
+
+export const From: Story = {
+  args: {
+    from: 2030,
+    defaultActive: 2030,
+  },
+};
+
+export const To: Story = {
+  args: {
+    to: 2030,
   },
 };
 
@@ -76,7 +92,6 @@ export const DenseXsPrimary: Story = {
     selection: 'single',
     size: 'xs',
     variant: 'primary',
-    style: { width: 260 },
     children: (
       <YearPickerLayout rows={5} cols={4} start={currentYear - 10} />
     ),
@@ -88,7 +103,6 @@ export const LargeXlSecondary: Story = {
     selection: 'single',
     size: 'xl',
     variant: 'secondary',
-    style: { width: 360 },
     children: (
       <YearPickerLayout rows={3} cols={4} start={currentYear - 4} />
     ),
@@ -97,7 +111,6 @@ export const LargeXlSecondary: Story = {
 
 export const CustomWithLabels: Story = {
   args: {
-    style: { width: 420 },
     selection: 'single',
   },
   render: (props) => {
@@ -177,9 +190,6 @@ const CustomGridLayout: FC<{ start: number; rows: number; cols: number }> = ({
 );
 
 export const CustomLayout: Story = {
-  args: {
-    style: { width: 400 },
-  },
   render: (props) => (
     <YearPicker {...props}>
       <CustomGridLayout start={currentYear - 12} rows={5} cols={5} />
@@ -190,25 +200,58 @@ export const CustomLayout: Story = {
 export const Swipable: Story = {
   args: {
     selection: 'range',
-    style: { width: 320 },
   },
   render: (props) => (
     <YearPicker {...props}>
       <YearPickerScroller>
         <YearPickerScrollerContent>
-          <YearPickerScrollerLayout rows={4} cols={3} start={currentYear} />
+          <YearPickerScrollerLayout />
         </YearPickerScrollerContent>
       </YearPickerScroller>
     </YearPicker>
   ),
 };
 
+export const SwipableControlled: Story = {
+  args: {
+    selection: 'single',
+  },
+  render: (props) => {
+    const [year, setYear] = useState(getCurrentDate().getFullYear())
+    
+    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+      const year = Number(e.currentTarget.value.replace(/\s/i, ''))
+      if (isNaN(year)) return
+      setYear(year)
+    }
+    
+    return (
+      <div>
+        <NumberField>
+          <NumberFieldDecrementButton />
+          <NumberFieldInput min={0} onChange={onChange} />
+          <NumberFieldIncrementButton />
+        </NumberField>
+        <Separator style={{ marginBlock: 12 }} />
+        <YearPicker year={year} {...props}>
+          <YearPickerScroller>
+            <YearPickerScrollerContent>
+              <YearPickerScrollerLayout rows={4} cols={3} />
+            </YearPickerScrollerContent>
+          </YearPickerScroller>
+        </YearPicker>
+      </div>
+    )
+  },
+};
+
 const CustomSwipableYearPickerRows: FC = () => {
-  const { index } = useYearPickerScrollerContext();
+  const { index } = useIndexedSnapScrollerContext();
+  const { referenceYear } = useYearPickerScrollerContext()
   
   return (
     <>
-      {createYearPickerGrid({ start: currentYear, rows: 4, cols: 3, offset: index }).map(
+      {createYearPickerGrid({ start: referenceYear, rows: 10, cols: 4, offset: index }).map(
         ({ row, data }) => (
           <YearPickerRow row={row} key={row}>
             {data.map(({ col, year }) => (
@@ -236,7 +279,6 @@ const CustomSwipableYearPickerRows: FC = () => {
 export const SwipableCustomLayout: Story = {
   args: {
     selection: 'range',
-    style: { width: 360 },
   },
   render: (props) => (
     <YearPicker {...props}>
@@ -247,4 +289,99 @@ export const SwipableCustomLayout: Story = {
       </YearPickerScroller>
     </YearPicker>
   ),
+};
+
+/**
+ * SwipableControlledCustomLayout
+ *
+ * Demonstrates a fully controlled `YearPicker` configuration with
+ * a custom, non-standard year layout and swipe-based navigation.
+ *
+ * In this example, the year grid does not follow the default layout
+ * (e.g. 3×4 = 12 years per page). Instead, it renders a custom layout
+ * of 4×10 = 40 years per page.
+ *
+ * Because the number and structure of years per page differs from the
+ * default implementation (and may even vary between pages), the
+ * `YearPickerScroller` cannot infer how a calendar year maps to a
+ * scroller index on its own.
+ *
+ * To resolve this, a custom `getIndexByYear` function is explicitly
+ * provided. This function maps a calendar year to the corresponding
+ * scroller page index relative to the `referenceYear`.
+ *
+ * ### Key points
+ *
+ * - The `YearPicker` is **controlled** via the `year` prop.
+ * - The year value is updated through an external `NumberField`.
+ * - A **custom swipeable year layout** (`CustomSwipableYearPickerRows`)
+ *   is rendered inside `YearPickerScrollerContent`.
+ * - A custom `getIndexByYear` implementation is required whenever:
+ *   - the year grid size is non-standard (e.g. 4×10 = 40),
+ *   - the number of years per page differs from the default,
+ *   - or the grouping of years is variable or non-contiguous.
+ *
+ * ### `getIndexByYear`
+ *
+ * The `getIndexByYear` function is responsible for answering the question:
+ *
+ * > “On which scroller page does this year belong?”
+ *
+ * It receives:
+ * - `referenceYear` — the logical origin of the timeline
+ * - `year` — the calendar year to resolve
+ *
+ * It must return the scroller page index that contains the given year.
+ *
+ * ```ts
+ * (referenceYear: number, year: number) => number
+ * ```
+ *
+ * The function can be:
+ * - **implemented inline**, as shown in this example, or
+ * - **imported from a shared helper**, such as the built-in
+ *   `getIndexByYear` utility, when the layout follows a predictable rule
+ *   (e.g. fixed-size pages).
+ *
+ * ### Notes
+ *
+ * - When using the default year layout (3×4 = 12 years),
+ *   providing `getIndexByYear` is optional.
+ * - For any custom or variable layout, `getIndexByYear` becomes mandatory
+ *   to keep the scroller, layout, and controlled `year` state in sync.
+ *
+ * This pattern ensures that `YearPickerScroller` remains layout-agnostic
+ * while still supporting fully customized year grids.
+ */
+export const SwipableControlledCustomLayout: Story = {
+  args: {
+    selection: 'range',
+  },
+  render: (props) => {
+    const [year, setYear] = useState(getCurrentDate().getFullYear())
+    
+    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+      const year = Number(e.currentTarget.value.replace(/\s/i, ''))
+      if (isNaN(year)) return
+      setYear(year)
+    }
+    
+    return (
+      <div>
+        <NumberField>
+          <NumberFieldDecrementButton />
+          <NumberFieldInput min={0} onChange={onChange} />
+          <NumberFieldIncrementButton />
+        </NumberField>
+        <Separator style={{ marginBlock: 12 }} />
+        <YearPicker year={year} {...props}>
+          <YearPickerScroller getIndexByYear={(referenceYear, year) => getIndexByYear(referenceYear, year, 40)}>
+            <YearPickerScrollerContent>
+              <CustomSwipableYearPickerRows />
+            </YearPickerScrollerContent>
+          </YearPickerScroller>
+        </YearPicker>
+      </div>
+    )
+  },
 };

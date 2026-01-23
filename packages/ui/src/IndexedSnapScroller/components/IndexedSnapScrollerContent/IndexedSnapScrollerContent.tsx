@@ -7,7 +7,5 @@ export type IndexedSnapScrollerContentProps = Omit<SnapScrollerContentProps, 'in
 export const IndexedSnapScrollerContent: FC<IndexedSnapScrollerContentProps> = ({ ...props }) => {
   const { index } = useIndexedSnapScrollerContext()
   
-  return (
-    <SnapScrollerContent index={index} {...props} />
-  )
+  return <SnapScrollerContent index={index} {...props} />
 }

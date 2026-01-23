@@ -1,6 +1,6 @@
 .content {
     background: var(--surface-ultrathin);
-    border-radius: var(--radius-3);
+    border-radius: var(--radius-5);
     width: max-content;
     padding: var(--spacing-8);
     z-index: 1;

@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "jsx": "react-jsx",
+    "downlevelIteration": true
   },
   "exclude": ["**/*/**.stories.(tsx|ts)", "**/*/__tests__/"],
   "include": ["src"]

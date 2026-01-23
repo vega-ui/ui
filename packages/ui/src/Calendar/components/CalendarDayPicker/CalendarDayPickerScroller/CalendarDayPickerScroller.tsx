@@ -12,18 +12,14 @@ export type CalendarDayPickerScrollerProps = DayPickerScrollerProps;
  * calendar’s internal month navigation model and exposes a unified
  * imperative API reference for external control.
  */
-export const CalendarDayPickerScroller: FC<CalendarDayPickerScrollerProps> = ({ onSnap: _onSnap, apiRef, ...props }) => {
-  const { onSnap, scrollerApiRef } = useCalendarContext()
-  
-  const onSnapIndex = (index: number) => {
-    _onSnap?.(index)
-    onSnap?.(index)
-  }
+export const CalendarDayPickerScroller: FC<CalendarDayPickerScrollerProps> = ({ apiRef, ...props }) => {
+  const { scrollerApiRef, changePeriod, referenceDate } = useCalendarContext()
   
   return (
     <DayPickerScroller
-      onSnap={onSnapIndex}
+      referenceDate={referenceDate}
       apiRef={mergeRefs([scrollerApiRef, apiRef])}
+      onChangePeriod={changePeriod}
       {...props}
     />
   )

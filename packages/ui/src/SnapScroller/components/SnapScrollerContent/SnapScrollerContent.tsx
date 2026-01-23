@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes, PropsWithChildren, Ref } from 'react';
+import { FC, HTMLAttributes, PropsWithChildren, Ref, useEffect } from 'react';
 import { csx, mergeRefs } from '@vega-ui/utils';
 import { Slot } from '../../../Slot';
 import { useSnapScrollerContext } from '../../contexts';
@@ -33,9 +33,15 @@ export const SnapScrollerContent: FC<PropsWithChildren<SnapScrollerContentProps>
   children,
   ...props
 }) => {
-  const { itemRef } = useSnapScrollerContext()
+  const { itemRef, removeItemRef } = useSnapScrollerContext()
   
   const Element = asChild ? Slot : 'div'
+  
+  useEffect(() => {
+    return () => {
+      removeItemRef(index)
+    }
+  }, [])
 
   return (
     <Element

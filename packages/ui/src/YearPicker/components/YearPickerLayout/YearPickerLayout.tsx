@@ -1,9 +1,10 @@
 import { FC } from 'react';
-import { createYearPickerGrid } from '../../helpers';
+import { createYearPickerGrid, getIndexByYear } from '../../helpers';
 import { YearPickerItem } from '../YearPickerItem';
 import { YearPickerRowGroup, YearPickerRowGroupProps } from '../YearPickerRowGroup';
 import { YearPickerRow } from '../YearPickerRow';
 import { formatYear } from '@vega-ui/utils';
+import { useYearPickerContext } from '../../contexts';
 
 export interface YearPickerLayoutProps extends YearPickerRowGroupProps {
   /**
@@ -25,6 +26,8 @@ export interface YearPickerLayoutProps extends YearPickerRowGroupProps {
   /**
    * Starting year for the grid’s base calculation.
    * If omitted, the helper falls back to its internal defaults.
+   *
+   * @default 1970
    */
   start?: number;
   
@@ -68,17 +71,20 @@ export interface YearPickerLayoutProps extends YearPickerRowGroupProps {
  * both for static pickers and for paged scroller setups.
  */
 export const YearPickerLayout: FC<YearPickerLayoutProps> = ({
-  start,
+  start = 2000,
   rows = 4,
   cols = 3,
-  offset = 0,
+  offset,
   locale = navigator.language,
   format = 'numeric',
   ...props
 }) => {
+  const { year } = useYearPickerContext()
+  const offsetByYear = getIndexByYear(start, year, rows * cols)
+  
   return (
     <YearPickerRowGroup {...props}>
-      {createYearPickerGrid({ start, rows, cols, offset }).map(({ row, data }) => (
+      {createYearPickerGrid({ start, rows, cols, offset: offset ?? offsetByYear }).map(({ row, data }) => (
         <YearPickerRow row={row} key={row}>
           {data.map(({ col, year }) => (
             <YearPickerItem col={col} value={year} key={year}>

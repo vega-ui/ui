@@ -4,7 +4,7 @@ import { YearPickerItem } from '../YearPickerItem';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof YearPickerRow> = {
-  title: 'Data/Pickers/YearPicker/YearPickerRow',
+  title: 'Data/YearPicker/YearPickerRow',
   component: YearPickerRow,
   tags: ['autodocs'],
 }

@@ -1,10 +1,10 @@
-import { FC, MouseEvent } from 'react';
-import { CalendarBaseNextButton, CalendarBaseNextButtonProps } from '../../../CalendarBase';
+import { FC } from 'react';
+import { CalendarBaseControlIconButton, CalendarBaseControlIconButtonProps } from '../../../CalendarBase';
 import { useCalendarContext } from '../../contexts';
 import style from './style.module.css'
-import { csx } from '@vega-ui/utils';
+import { csx, mergeEventHandlers } from '@vega-ui/utils';
 
-export type CalendarNextButtonProps = CalendarBaseNextButtonProps
+export type CalendarNextButtonProps = CalendarBaseControlIconButtonProps
 
 /**
  * `CalendarNextButton` is the calendar-scoped "next" navigation control
@@ -13,23 +13,18 @@ export type CalendarNextButtonProps = CalendarBaseNextButtonProps
  * navigation, range constraints, and picker-mode state.
  */
 export const CalendarNextButton: FC<CalendarNextButtonProps> = ({ disabled, className, onClick: _onClick, ...props }) => {
-  const { to, year, month, picker, next } = useCalendarContext()
+  const { to, year, month, picker, nextPeriod } = useCalendarContext()
   
   const outOfRangeTo = to ? (year >= to.getFullYear() && month >= to.getMonth()) : false
   const _disabled = disabled || (picker !== 'day' || outOfRangeTo)
   
-  const onClick = (e: MouseEvent<HTMLButtonElement>) => {
-    _onClick?.(e)
-    next?.()
-  }
-  
   return (
-    <CalendarBaseNextButton
+    <CalendarBaseControlIconButton
       type='button'
       disabled={_disabled}
       className={csx(style.button, className)}
       data-visible={picker === 'day' && !outOfRangeTo}
-      onClick={onClick}
+      onClick={mergeEventHandlers(_onClick, nextPeriod)}
       {...props}
     />
   )
