@@ -6,7 +6,6 @@ import { cleanup, render, type RenderResult, within } from '@testing-library/rea
 import { CalendarBase } from '../CalendarBase';
 import {
   CalendarBaseHeader,
-  CalendarBaseNextButton,
   CalendarBasePickerButton,
   CalendarBaseControlIconButton,
   CalendarBaseWeekLabel,
@@ -30,7 +29,7 @@ const CalendarBaseTest = (props: ComponentProps<typeof CalendarBase>) => {
               <CalendarBasePickerButton data-testid='year-btn'>Year</CalendarBasePickerButton>
             </div>
             
-            <CalendarBaseNextButton data-testid='next'>Next</CalendarBaseNextButton>
+            <CalendarBaseControlIconButton data-testid='next'>Next</CalendarBaseControlIconButton>
           </CalendarBaseHeader>
           
           <div data-testid='body'>
