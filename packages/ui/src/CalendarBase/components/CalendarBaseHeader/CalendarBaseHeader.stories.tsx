@@ -2,7 +2,6 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CalendarBaseHeader } from './CalendarBaseHeader';
 import { CalendarBaseControlIconButton } from '../CalendarBaseControlIconButton';
 import { Icon } from '../../../Icon';
-import { CalendarBaseNextButton } from '../CalendarBaseNextButton';
 import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
 import { formatMonth, formatYear } from '@vega-ui/utils';
 import { CalendarBasePickerButton } from '../CalendarBasePickerButton';
@@ -25,9 +24,9 @@ const meta: Meta<typeof CalendarBaseHeader> = {
             {formatYear(2026)}
           </CalendarBasePickerButton>
         </div>
-        <CalendarBaseNextButton>
+        <CalendarBaseControlIconButton>
           <Icon><ChevronRight /></Icon>
-        </CalendarBaseNextButton>
+        </CalendarBaseControlIconButton>
       </>
     )
   },
