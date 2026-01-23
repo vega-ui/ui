@@ -2,7 +2,6 @@ import { FC } from 'react';
 import { YearPickerScroller, YearPickerScrollerProps } from '../../../../YearPicker';
 import { useCalendarContext } from '../../../contexts';
 import { mergeRefs } from '@vega-ui/utils';
-import { getIndexByYear } from '../../../../YearPicker/helpers';
 
 export type CalendarYearPickerScrollerProps = YearPickerScrollerProps
 
