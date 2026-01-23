@@ -5,7 +5,7 @@ import {
   DataGridPickerItem,
   DataGridPickerRowGroup,
   DataGridPickerRow,
-  DataGridPickerScroller, DataGridPickerScrollerContent, DataGridPickerScrollerRowGroup,
+  DataGridPickerScroller, DataGridPickerScrollerContent,
 } from './components';
 import { FC, useRef } from 'react';
 import { IconButton } from '../IconButton';
@@ -161,7 +161,7 @@ const DefaultSwipableLayout: FC = () => {
   );
   
   return (
-    <DataGridPickerScrollerRowGroup>
+    <DataGridPickerRowGroup scope={index}>
       {grid.map((row, rowIndex) => (
         <DataGridPickerRow row={row[rowIndex]?.row} key={rowIndex}>
           {row.map((cell, columnIndex) => (
@@ -175,7 +175,7 @@ const DefaultSwipableLayout: FC = () => {
           ))}
         </DataGridPickerRow>
       ))}
-    </DataGridPickerScrollerRowGroup>
+    </DataGridPickerRowGroup>
   )
 }
 
