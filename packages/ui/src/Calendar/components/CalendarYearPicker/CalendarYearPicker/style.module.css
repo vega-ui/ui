@@ -1,6 +1,8 @@
 .picker {
     position: absolute;
     width: 100%;
+    padding: 4px;
+    box-sizing: border-box;
     top: 0;
     left: 0;
     right: 0;

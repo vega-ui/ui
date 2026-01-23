@@ -4,6 +4,7 @@ import { useCalendarBaseContext } from '../../../../CalendarBase';
 import { useCalendarContext } from '../../../contexts';
 import { type DataGridSelection } from '../../../../DataGridSelectable';
 import style from './style.module.css';
+import { csx } from '@vega-ui/utils';
 
 export type CalendarDayPickerProps<S extends DataGridSelection = 'single'> = DayPickerProps<S>
 
@@ -11,29 +12,40 @@ export type CalendarDayPickerProps<S extends DataGridSelection = 'single'> = Day
  * `CalendarDayPicker` is the day-level view of `Calendar` that bridges the
  * high-level calendar state with the low-level `DayPicker` grid.
  * */
-export const CalendarDayPicker = <S extends DataGridSelection = 'single'>({ onSelectCell, ...props }: CalendarDayPickerProps<S>) => {
+export const CalendarDayPicker = <S extends DataGridSelection = 'single'>({
+  onSelectCell,
+  className,
+  ...props
+}: CalendarDayPickerProps<S>) => {
   const {
     dayPickerApiRef,
     activeDay,
     onSelectDay,
     changeActiveDay,
+    defaultValue,
     picker,
     value,
     selection,
     from,
     to,
+    year,
+    month,
   } = useCalendarContext()
   const { size, variant } = useCalendarBaseContext()
   
   const selected = Array.isArray(value) ? value.map((v: Date) => v.getTime()) : value?.getTime()
+  const defaultSelected = Array.isArray(defaultValue) ? defaultValue.map((v: Date) => v.getTime()) : defaultValue?.getTime()
   
   const onSelect = (value: number | number[]) => {
     onSelectDay?.(value)
     onSelectCell?.(value as S extends 'single' ? number : number[])
   }
-  
+
   return (
     <DayPicker
+      year={year}
+      month={month}
+      defaultSelected={defaultSelected}
       disabled={isDisabledDate}
       apiRef={dayPickerApiRef}
       active={activeDay}
@@ -47,7 +59,7 @@ export const CalendarDayPicker = <S extends DataGridSelection = 'single'>({ onSe
       to={to?.getTime()}
       from={from?.getTime()}
       data-visible={picker === 'day'}
-      className={style.picker}
+      className={csx(style.picker, className)}
       {...props}
     />
   )

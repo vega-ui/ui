@@ -3,16 +3,14 @@ import {
   HTMLAttributes,
   PropsWithChildren,
   Ref,
-  UIEvent,
   useCallback,
   useImperativeHandle,
-  useLayoutEffect,
   useRef,
 } from 'react';
 import style from './style.module.css'
 import { csx, mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
 import { SnapScrollerProvider } from './contexts';
-import { useRefMap } from '@vega-ui/hooks';
+import { useScrollSnap } from '@vega-ui/hooks';
 import { SnapScrollerApiRef } from './types';
 
 export interface SnapScrollerProps extends HTMLAttributes<HTMLDivElement> {
@@ -30,31 +28,36 @@ export interface SnapScrollerProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * Initial index of the item to snap to on mount.
    */
-  initialIndex?: number
+  defaultIndex?: number
   
   /**
-   * Preserve the currently snapped item after content changes
-   * (e.g., when pages are prepended/appended). If `true`, the scroller will
-   * restore the same snapped index using an immediate `scrollIntoView`.
+   * Fired when a scroll snap operation has fully completed
+   * and the scroller has settled on a new snap index.
    *
-   * @default true
-   */
-  preserveScroll?: boolean;
-  
-  /**
-   * Fires when the scroll position reaches the start or the end of the content.
-   * - `-1` — reached the start (left/top edge)
-   * - `+1` — reached the end (right/bottom edge)
+   * This callback is invoked after all scrolling and snapping
+   * animations have finished and the active snap position
+   * is considered stable.
    *
-   * Useful for infinite loading: append/prepend pages based on the direction.
+   * @param element - The root scroller element.
+   * @param index - The resolved snap index after snapping completes.
    */
-  onOffset?(value: number): void;
+  onScrollSnapChange?(element: HTMLElement, index: number): void
   
   /**
-   * Fires when the snapped item (by `scroll-snap-align: start`) changes.
-   * Receives the snapped page/index number extracted from the item’s `data-index`.
+   * Fired while a scroll snap operation is in progress and
+   * the active snap index is still changing.
+   *
+   * This callback may be invoked multiple times during a
+   * single scroll or swipe interaction as the scroller
+   * approaches its final snap position.
+   *
+   * Useful for optimistic UI updates, previews, or
+   * synchronizing transient state during scrolling.
+   *
+   * @param element - The root scroller element.
+   * @param index - The current candidate snap index.
    */
-  onSnap?(index: number): void;
+  onScrollSnapChanging?(element: HTMLElement, index: number): void
 }
 
 /**
@@ -67,135 +70,67 @@ export interface SnapScrollerProps extends HTMLAttributes<HTMLDivElement> {
  */
 export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
   ref,
-  onOffset,
   className,
   onScroll: _onScroll,
-  onSnap,
-  preserveScroll = true,
-  initialIndex = 0,
+  onScrollSnapChange,
+  onScrollSnapChanging,
+  defaultIndex,
   children,
   apiRef,
   ...props
 }) => {
-  const { itemRef, getItem } = useRefMap<number, HTMLElement>()
-  
-  const index = useRef<number | undefined>(initialIndex)
   const scrollerRef = useRef<HTMLDivElement>(null)
-  const lastDelta = useRef(0)
   
-  const scroll = (offsetWidth: number, element?: HTMLDivElement) => {
-    const scroller: HTMLDivElement | null = element ?? scrollerRef.current
-    if (!scroller) return
-    scroller.scrollTo({ left: offsetWidth, behavior: 'instant' })
-  }
-
-  const scrollToMiddle = (element?: HTMLDivElement) => {
-    const scroller = element ?? scrollerRef.current
-    if (!scroller) return
-
-    const middle = Math.trunc(scroller.scrollWidth / 2)
-    if (middle) scroll(middle, scroller)
-  }
-
-  const setScrollRef = useCallback((element: HTMLDivElement) => {
-    if (scrollerRef.current) return
-    scrollToMiddle(element)
-    scrollerRef.current = element
-  }, [])
+  const {
+    onScroll,
+    itemRef,
+    removeItemRef,
+    scrollToElementByKey,
+    getCommited,
+    getPending,
+    measure
+  } = useScrollSnap<number, HTMLDivElement>({
+    scrollerRef,
+    onSnapChanging: onScrollSnapChanging,
+    onSnapChange: onScrollSnapChange,
+  })
   
-  const getSnappedStart = (scroller: HTMLElement) => {
-    const r = scroller.getBoundingClientRect();
-    const x = r.left + 1;
-    const y = r.top + Math.min(r.height - 1, Math.max(1, r.height / 2));
-    let el = document.elementFromPoint(x, y) as HTMLElement | null;
-    
-    if (!el) return null;
-    while (el && el.parentElement !== scroller) el = el.parentElement;
-    return el && el.parentElement === scroller ? el : null;
-  }
+  const didInitScroll = useRef(false)
   
-  const getSnappedIndex = (element: HTMLElement) => {
-    const snappedElement = getSnappedStart(element)
-    if (!snappedElement) return
-    
-    const index = snappedElement.dataset.index
-    if (index === undefined) return
-    
-    return Number(index)
-  }
-  
-  const scrollTo = (to: number, behavior?: ScrollBehavior) => {
-    const item = getItem(to)
-    item?.scrollIntoView({ behavior: behavior ?? 'smooth', inline: 'nearest', block: 'nearest' })
-  }
-
   const scrollByDelta = (delta: number) => {
-    const scroller = scrollerRef.current
-    if (!scroller) return
-    
-    const current = getSnappedIndex(scroller)
-    if (current === undefined) return
-    
-    scrollTo(current + delta)
-  }
+    const index = getCommited()
+    if (index === undefined) return
+
+    scrollToElementByKey(index + delta, 'smooth');
+  };
   
   useImperativeHandle(apiRef, () => ({
     prev() {
-      scrollByDelta(-1)
+      scrollByDelta(-1);
     },
     next() {
-      scrollByDelta(1)
+      scrollByDelta(1);
     },
-    to(index: number, behavior?: ScrollBehavior) {
-      scrollTo(index, behavior)
-    }
-  }))
+    scrollToElementByKey,
+    getCommited,
+    getPending,
+    measure,
+  }));
   
-  const onScroll = (e: UIEvent<HTMLDivElement>) => {
-    const target = e.currentTarget
-    const { scrollWidth, clientWidth, scrollLeft } = target
+  const setScrollRef = useCallback((element: HTMLDivElement) => {
+    if (scrollerRef.current) return;
+    scrollerRef.current = element;
     
-    const snapped = getSnappedIndex(target)
-  
-    if (snapped !== undefined && snapped !== index.current && lastDelta.current === 0) {
-      onSnap?.(snapped)
-      index.current = snapped
-    }
+    if (didInitScroll.current) return;
+    didInitScroll.current = true;
     
-    if (Math.floor(scrollLeft) <= 0 && lastDelta.current !== -1) {
-      onOffset?.(-1);
-      lastDelta.current = -1;
-      return
-    }
-    
-    if (Math.ceil(scrollLeft) >= scrollWidth - clientWidth && lastDelta.current !== 1) {
-      onOffset?.(1);
-      lastDelta.current = 1;
-      return
-    }
-  }
-  
-  useLayoutEffect(() => {
-    if (!preserveScroll || lastDelta.current === 0) return
-    
-    const el = scrollerRef.current;
-    if (!el) return;
-    
-    const current = index.current
-    if (current === undefined) return;
-    
-    const next = getItem(current);
-    
-    requestAnimationFrame(() => {
-      lastDelta.current = 0;
-      next?.scrollIntoView({ behavior: 'instant', inline: 'nearest', block: 'nearest' });
-    })
-  });
+    if (defaultIndex !== undefined) scrollToElementByKey(defaultIndex, 'instant');
+  }, [defaultIndex]);
 
   return (
-    <SnapScrollerProvider itemRef={itemRef}>
+    <SnapScrollerProvider removeItemRef={removeItemRef} itemRef={itemRef}>
       <div
-        onScroll={mergeEventHandlers(onScroll, _onScroll)}
+        onScroll={mergeEventHandlers(_onScroll, onScroll)}
         ref={mergeRefs([setScrollRef, ref])}
         className={csx(className, style.scrollView)}
         {...props}

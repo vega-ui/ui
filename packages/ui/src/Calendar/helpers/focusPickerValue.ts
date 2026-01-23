@@ -3,10 +3,8 @@ import { DataGridApiRef } from '../../DataGrid';
 export const focusPickerValue = <K = number>(api: DataGridApiRef<K> | null, value: K) => {
   if (!api) return
   
-  const position = api.keyMap.get(value)
-  if (!position) return;
-  
-  const element = api.grid.getNode(position)
+  const element = api.grid.getNodeByKey(value)?.payload
   if (!element) return;
-  element.payload?.focus({ preventScroll: true })
+  
+  element.focus({ preventScroll: true })
 }

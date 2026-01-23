@@ -3,6 +3,7 @@ import { MonthPicker, MonthPickerProps } from '../../../../MonthPicker';
 import { useCalendarContext } from '../../../contexts';
 import { useCalendarBaseContext } from '../../../../CalendarBase';
 import style from './style.module.css'
+import { csx } from '@vega-ui/utils';
 
 export interface CalendarMonthPickerProps extends Omit<MonthPickerProps, 'to' | 'from'> {
   /**
@@ -20,7 +21,7 @@ export interface CalendarMonthPickerProps extends Omit<MonthPickerProps, 'to' | 
  * constrained navigation, and synchronized UI behavior for the
  * month-selection view inside the `Calendar` component.
  */
-export const CalendarMonthPicker: FC<CalendarMonthPickerProps> = ({ onSelectCell, onClose, ...props }) => {
+export const CalendarMonthPicker: FC<CalendarMonthPickerProps> = ({ onSelectCell, className, onClose, ...props }) => {
   const {
     from,
     to,
@@ -31,25 +32,26 @@ export const CalendarMonthPicker: FC<CalendarMonthPickerProps> = ({ onSelectCell
     changeActiveMonth,
     monthPickerApiRef,
     closeMonthPicker,
-    onSelectMonth,
+    changeMonth,
   } = useCalendarContext()
   const { size, variant } = useCalendarBaseContext()
   
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Escape') {
+      e.stopPropagation()
       onClose?.(e)
       closeMonthPicker?.()
     }
   }
   
   const onSelect = (month: number) => {
-    onSelectMonth?.(month)
+    changeMonth?.(month)
     onSelectCell?.(month)
   }
   
   const toMonth = to && year === to.getFullYear() ? to.getMonth() : undefined
   const fromMonth = from && year === from.getFullYear() ? from.getMonth() : undefined
-  
+
   return (
     <MonthPicker
       onKeyDown={onKeyDown}
@@ -62,7 +64,7 @@ export const CalendarMonthPicker: FC<CalendarMonthPickerProps> = ({ onSelectCell
       variant={variant}
       size={size}
       data-visible={picker === 'month'}
-      className={style.picker}
+      className={csx(style.picker, className)}
       defaultActive={month}
       selected={month}
       selection='single'

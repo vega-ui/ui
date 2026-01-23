@@ -4,7 +4,7 @@ import { DayPicker } from '../../DayPicker';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof DayPickerLayout> = {
-  title: 'Data/Pickers/DayPicker/DayPickerLayout',
+  title: 'Data/DayPicker/DayPickerLayout',
   component: DayPickerLayout,
   tags: ['autodocs'],
   decorators(Story) {

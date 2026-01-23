@@ -12,10 +12,8 @@ import { useControlledState, useGrid, useMap } from '@vega-ui/hooks';
 
 import { DataGridProvider } from './contexts';
 import {
-  DataGridExclude,
-  DataGridCoordinates,
-  DataGridCellKey,
-  DataGridWrap, DataGridApiRef, DataGridExcludeResolver,
+  DataGridExclude, DataGridCoordinates, DataGridCellKey,
+  DataGridWrap, DataGridApiRef, DataGridExcludeResolver, DataGridScope,
 } from './types';
 
 export interface DataGridProps<K extends DataGridCellKey = DataGridCellKey> extends HTMLAttributes<HTMLDivElement> {
@@ -73,18 +71,9 @@ export interface DataGridProps<K extends DataGridCellKey = DataGridCellKey> exte
   rowDelta?: number;
   
   /**
-   * Fires on each Arrow navigation step after focus changes.
-   * @param e   Keyboard event
-   * @param node Target matrix node (newly focused)
-   * @param axis 0 — horizontal, 1 — vertical
-   * @param dir  -1 — backward/up, 1 — forward/down
+   * Fires on each Arrow navigation step after focus changes
    */
-  onMove?(
-    e: KeyboardEvent<HTMLDivElement>,
-    node: MatrixNode<HTMLElement, K>,
-    axis: 0 | 1,
-    dir: -1 | 1
-  ): void;
+  onArrow?(e: KeyboardEvent<HTMLDivElement>, node: MatrixNode<HTMLElement, K>, prevNode: MatrixNode<HTMLElement, K>): void;
 }
 
 /**
@@ -94,40 +83,45 @@ export interface DataGridProps<K extends DataGridCellKey = DataGridCellKey> exte
  * imperative API (`apiRef`) for advanced integrations.
  */
 export const DataGrid = <K extends DataGridCellKey = DataGridCellKey>({
+  wrap,
   children,
   apiRef,
   className,
   rowDelta,
   exclude,
   active: _active,
-  defaultActive,
+  defaultActive = '' as K,
   onChangeActive,
   onKeyDown: _onKeyDown,
-  wrap,
-  ref,
-  onMove,
+  onArrow,
   ...props
 }: PropsWithChildren<DataGridProps<K>>) => {
   const wrapH = ['horizontal', 'both'].includes(wrap ?? '')
   const wrapV = ['vertical', 'both'].includes(wrap ?? '')
 
   const grid = useGrid<HTMLDivElement, K>()
-  const keyMap = useMap<K, DataGridCoordinates>()
-  
-  useImperativeHandle(apiRef, () => ({
-    grid,
-    keyMap,
-  }), [grid, keyMap])
-  
-  const [active, setActive] = useControlledState<K>(_active, defaultActive ?? '' as K, onChangeActive)
+  const scopes = useMap<DataGridScope, DataGridCellKey[]>()
 
-  const setItemRef = useCallback((coordinates: DataGridCoordinates, key: K) => (element: HTMLDivElement) => {
-    keyMap.set(key, coordinates)
-    grid.addNode(coordinates, key, element)
-  }, [])
+  const [active, setActive] = useControlledState<K>(_active, defaultActive ?? '' as K, onChangeActive)
   
-  const changeActive = (node: MatrixNode<HTMLElement, K>) => {
-    if (node.key) setActive(node.key)
+  useImperativeHandle(apiRef, () => ({ grid, scopes }), [])
+
+  const setItemRef = useCallback((coordinates: DataGridCoordinates, key: K, scope: DataGridScope) => (element: HTMLDivElement) => {
+    grid.addNode(coordinates, key, element)
+    
+    const currentScope = scopes.get(scope) ?? []
+    scopes.set(scope, [...currentScope, key])
+  }, [])
+
+  const removeItemRef = useCallback((coordinates: DataGridCoordinates, key: K, scope: DataGridScope) => {
+    grid.removeNode(coordinates)
+    
+    const currentScope = scopes.get(scope) ?? []
+    scopes.set(scope, currentScope.filter(v => v !== key))
+    if (scopes.get(scope)?.length === 0) scopes.delete(scope)
+  }, [])
+
+  const changeFocus = (node: MatrixNode<HTMLElement, K>) => {
     node.payload?.focus()
   }
 
@@ -140,9 +134,18 @@ export const DataGrid = <K extends DataGridCellKey = DataGridCellKey>({
     return key === exclude
   }, [exclude])
   
+  const getNodeByArrowKey = (coordinates: [number, number], key: string) => {
+    if (key === 'ArrowLeft') return grid.before(coordinates, 0, wrapH)
+    if (key === 'ArrowRight') return grid.after(coordinates, 0, wrapH)
+    if (key === 'ArrowDown') return grid.after(coordinates, 1, wrapV)
+    if (key === 'ArrowUp') return grid.before(coordinates, 1, wrapV)
+  }
+  
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    const activePosition = keyMap.get(active)
-    if (!activePosition) return
+    const activeNode = grid.getNodeByKey(active)
+    if (!activeNode) return
+    
+    const activePosition = activeNode.index
     
     switch (e.key) {
       case 'ArrowLeft':
@@ -151,87 +154,74 @@ export const DataGrid = <K extends DataGridCellKey = DataGridCellKey>({
       case 'ArrowUp': {
         e.preventDefault()
         
-        const getNode = (key: string) => {
-          if (key === 'ArrowLeft') return grid.before(activePosition, 0, wrapH)
-          if (key === 'ArrowRight') return grid.after(activePosition, 0, wrapH)
-          if (key === 'ArrowDown') return grid.after(activePosition, 1, wrapV)
-          if (key === 'ArrowUp') return grid.before(activePosition, 1, wrapV)
-        }
-        
-        const nextNode = getNode(e.key)
+        const nextNode = getNodeByArrowKey(activePosition, e.key)
         if (!nextNode) return
         
-        changeActive(nextNode)
-        
-        const axis = ['ArrowLeft', 'ArrowRight'].includes(e.key) ? 0 : 1
-        const dir = ['ArrowLeft', 'ArrowUp'].includes(e.key) ? -1 : 1
-        
-        onMove?.(e, nextNode, axis, dir)
+        changeFocus(nextNode)
+        onArrow?.(e, nextNode, activeNode)
         
         return
       }
       case 'PageUp': {
         e.preventDefault()
-        
+
         const firstRow = rowDelta !== undefined
           ? grid.getRowByDelta(activePosition[0], -rowDelta) ?? grid.firstRow()
           : grid.firstRow()
         if (!firstRow) return
-        
+
         const node = grid.getNode([firstRow.index, activePosition[1]])
         if (!node) return
-        
-        changeActive(node)
+
+        changeFocus(node)
         return
       }
       case 'PageDown': {
         e.preventDefault()
-        
+
         const lastRow = rowDelta !== undefined
           ? grid.getRowByDelta(activePosition[0], rowDelta) ?? grid.lastRow()
           : grid.lastRow()
         if (!lastRow) return
-        
+
         const node = grid.getNode([lastRow.index, activePosition[1]])
         if (!node) return
-        
-        changeActive(node)
+
+        changeFocus(node)
         return
       }
       case 'Home': {
         e.preventDefault()
-        
+
         if (e.ctrlKey) {
           const firstNode = grid.firstRow()?.first()
           if (!firstNode) return
-          
-          changeActive(firstNode)
+
+          changeFocus(firstNode)
           return
         }
-        
+
         const first = grid.getRow(activePosition[0])?.first()
         if (!first) return
-        
-        changeActive(first)
-        
+
+        changeFocus(first)
         return
       }
       case 'End': {
         e.preventDefault()
-        
+
         if (e.ctrlKey) {
           const lastNode = grid.lastRow()?.last()
           if (!lastNode) return
-          
-          changeActive(lastNode)
+
+          changeFocus(lastNode)
           return
         }
-        
+
         const last = grid.getRow(activePosition[0])?.last()
         if (!last) return
-        
-        changeActive(last)
-        
+
+        changeFocus(last)
         return
       }
     }
@@ -239,14 +229,16 @@ export const DataGrid = <K extends DataGridCellKey = DataGridCellKey>({
 
   return (
     <DataGridProvider
+      grid={grid}
       active={active}
-      onChangeActive={setActive}
-      itemRef={setItemRef}
+      scopes={scopes}
       excluded={excluded}
+      setItemRef={setItemRef}
+      changeActive={setActive}
+      removeItemRef={removeItemRef}
     >
       <div
         role='grid'
-        ref={ref}
         onKeyDown={mergeEventHandlers(onKeyDown, _onKeyDown)}
         className={csx(style.grid, className)}
         {...props}

@@ -11,7 +11,7 @@ import { DataGridApiRef, DataGridCellKey } from '../DataGrid';
 import { DataGridDisabled, DataGridSelection } from './types';
 import { DataGridSelectableProvider } from './contexts';
 import { Grid, MatrixNode, mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
-import { useControlledState, useSelection } from '@vega-ui/hooks';
+import { useSelection } from '@vega-ui/hooks';
 import { getCellKey } from './helpers';
 
 export interface DataGridSelectableProps<K extends DataGridCellKey = DataGridCellKey, S extends DataGridSelection = 'single'> extends DataGridProps<K> {
@@ -125,19 +125,15 @@ export const DataGridSelectable = <K extends DataGridCellKey = DataGridCellKey, 
   resolveRange: _resolveRange,
   equals: _equals,
   compare: _compare,
-  active: _active,
   defaultActive,
   selected: _selected,
   defaultSelected,
   onSelectCell,
-  onChangeActive,
-  onMove: _onMove,
   onPointerDown: _onPointerDown,
   onPointerMove: _onPointerMove,
+  onArrow: _onArrow,
   ...props
 }: PropsWithChildren<DataGridSelectableProps<K, S>>) => {
-  const [active, setActive] = useControlledState(_active, defaultActive ?? '' as K, onChangeActive)
-  
   const apiRef = useRef<DataGridApiRef<K>>(null)
   const expanding = useRef(false)
   const index = useRef<0 | 1 | undefined>(undefined)
@@ -154,11 +150,13 @@ export const DataGridSelectable = <K extends DataGridCellKey = DataGridCellKey, 
   }, [_compare])
   
   const resolveRange = useCallback((start: K, end: K) => {
-    const { grid, keyMap } = apiRef.current ?? {}
-    const startCoord = keyMap?.get(start)
-    const endCoord = keyMap?.get(end)
+    const grid = apiRef.current?.grid
+    if (!grid) return [start, end]
     
-    if (!startCoord || !endCoord || !grid || !_resolveRange) return [start, end]
+    const startCoord = grid.getNodeByKey(start)?.index
+    const endCoord = grid.getNodeByKey(end)?.index
+    
+    if (!startCoord || !endCoord || !_resolveRange) return [start, end]
     
     if (grid.compare(startCoord, endCoord) > 0) return _resolveRange({ index: endCoord, key: end }, { index: startCoord, key: start }, grid)
     return _resolveRange({ index: startCoord, key: start }, { index: endCoord, key: end }, grid)
@@ -179,31 +177,21 @@ export const DataGridSelectable = <K extends DataGridCellKey = DataGridCellKey, 
 
   const onSelect = useCallback((key: K) => {
     if (expanding.current) return
-    const { keyMap, grid } = apiRef.current ?? {}
-    if (!grid || !keyMap) return;
-    const position = keyMap.get(key)
-    if (!position) return
-    
-    const node = grid.getNode(position)
-    if (!node || node.key === undefined) return
-
-    toggle(node.key)
-    setActive(node.key)
+    toggle(key)
   }, [toggle])
   
-  const onMove = useCallback((e: KeyboardEvent<HTMLDivElement>, node: MatrixNode<HTMLElement, K>, axis: 0 | 1, dir: -1 | 1) => {
-    _onMove?.(e, node, axis, dir)
+  const onArrow = (e: KeyboardEvent<HTMLDivElement>, node: MatrixNode<HTMLElement, K>, prevNode: MatrixNode<HTMLElement, K>) => {
+    _onArrow?.(e, node, prevNode)
     
-    const keyMap = apiRef.current?.keyMap
-    if (!keyMap) return;
+    const previousKey = prevNode?.key
+    
     const [start] = edges()
-    
-    const edge = start !== undefined && active !== undefined
-      ? equals(start, active) ? 0 : 1
+    const edge = start !== undefined && previousKey !== undefined
+      ? equals(start, previousKey) ? 0 : 1
       : undefined
-
+    
     if (e.shiftKey && expandable && node.key !== undefined) expand(node.key, edge)
-  }, [_onMove, active, edges, expand])
+  }
   
   const rangeExpandable = expandable && Array.isArray(selected) && selected.length !== 0 && selection === 'range'
 
@@ -277,7 +265,6 @@ export const DataGridSelectable = <K extends DataGridCellKey = DataGridCellKey, 
     return exclude === key
   }, [exclude, excludeDisabled, isDisabled])
   
-  
   return (
     <DataGridSelectableProvider
       onSelect={onSelect}
@@ -291,11 +278,9 @@ export const DataGridSelectable = <K extends DataGridCellKey = DataGridCellKey, 
       <DataGrid
         {...props}
         exclude={excluded}
+        onArrow={onArrow}
         apiRef={mergeRefs([_apiRef, apiRef])}
-        active={active}
-        onChangeActive={setActive}
         defaultActive={defaultActive}
-        onMove={onMove}
         onPointerDown={mergeEventHandlers(onPointerDown, _onPointerDown)}
         onPointerMove={mergeEventHandlers(onPointerMove, _onPointerMove)}
       >

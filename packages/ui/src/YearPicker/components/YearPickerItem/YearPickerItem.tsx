@@ -14,7 +14,5 @@ export type YearPickerItemProps = DataGridPickerItemProps
  * picker’s size and variant settings.
  */
 export const YearPickerItem: FC<YearPickerItemProps> = (props) => {
-  return (
-    <DataGridPickerItem {...props} />
-  )
+  return <DataGridPickerItem {...props} />
 }

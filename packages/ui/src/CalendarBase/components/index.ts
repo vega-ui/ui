@@ -1,5 +1,4 @@
-export * from './CalendarBasePrevButton'
-export * from './CalendarBaseNextButton'
+export * from './CalendarBaseControlIconButton'
 export * from './CalendarBaseWeekLabels'
 export * from './CalendarBaseWeekLabel'
 export * from './CalendarBaseHeader'

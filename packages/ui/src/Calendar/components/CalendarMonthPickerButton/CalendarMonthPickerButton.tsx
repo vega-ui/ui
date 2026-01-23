@@ -1,7 +1,7 @@
-import { FC, MouseEvent } from 'react';
+import { FC } from 'react';
 import { CalendarBasePickerButton, CalendarBasePickerButtonProps } from '../../../CalendarBase';
 import { useCalendarContext } from '../../contexts';
-import { csx } from '@vega-ui/utils';
+import { csx, mergeEventHandlers } from '@vega-ui/utils';
 import style from './style.module.css'
 
 export type CalendarMonthPickerButtonProps = CalendarBasePickerButtonProps
@@ -12,17 +12,12 @@ export type CalendarMonthPickerButtonProps = CalendarBasePickerButtonProps
  * into the `Calendar` state machine via `useCalendarContext()`.
  */
 export const CalendarMonthPickerButton: FC<CalendarMonthPickerButtonProps> = ({ onClick: _onClick, className, ...props }) => {
-  const { picker, onMonthPickerClick } = useCalendarContext()
-  
-  const onClick = (e: MouseEvent<HTMLButtonElement>) => {
-    _onClick?.(e)
-    onMonthPickerClick?.()
-  }
+  const { picker, toggleMonthPicker } = useCalendarContext()
   
   return (
     <CalendarBasePickerButton
-      onClick={onClick}
       type='button'
+      onClick={mergeEventHandlers(_onClick, toggleMonthPicker)}
       aria-pressed={picker === 'month'}
       className={csx(style.button, className)}
       {...props}

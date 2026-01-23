@@ -1,10 +1,12 @@
-import { ComponentProps } from 'react';
+import { ComponentProps, FC } from 'react';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
 import { userEvent } from 'vitest/browser';
 
 import { DayPicker } from '../DayPicker';
 import { DayPickerLayout } from '../components';
+import { getCurrentDate } from '@vega-ui/utils';
+import { useDayPickerContext } from '../contexts';
 
 afterEach(cleanup);
 
@@ -16,8 +18,26 @@ const COLS = 7;
 const SIZE_DEFAULT = 'xs';
 const SIZE_LG = 'lg';
 
+const YEAR_A = 2025;
+const MONTH_A = 6;
+
+const TESTID_CTX_YEAR = 'ctx-year';
+const TESTID_CTX_MONTH = 'ctx-month';
+
+const PeriodContext: FC = () => {
+  const { year, month } = useDayPickerContext();
+  
+  return (
+    <>
+      <div data-testid={TESTID_CTX_YEAR}>{year}</div>
+      <div data-testid={TESTID_CTX_MONTH}>{month}</div>
+    </>
+  );
+};
+
 const DayPickerTest = (props?: Partial<ComponentProps<typeof DayPicker>>) => (
   <DayPicker {...props}>
+    <PeriodContext />
     <DayPickerLayout
       year={YEAR}
       month={MONTH}
@@ -41,6 +61,9 @@ const getFirstInteractiveCell = (r: RenderResult) =>
   getCells(r).find(
     (el) => el.textContent?.trim() && el.getAttribute('aria-disabled') !== 'true'
   ) as HTMLDivElement;
+
+const getCtxYear = (r: RenderResult) => r.getByTestId(TESTID_CTX_YEAR);
+const getCtxMonth = (r: RenderResult) => r.getByTestId(TESTID_CTX_MONTH);
 
 describe('DayPicker', () => {
   describe('Critical User Paths', () => {
@@ -88,6 +111,46 @@ describe('DayPicker', () => {
         
         const cell = getFirstInteractiveCell(r);
         await expect.element(cell).toHaveAttribute('data-size', SIZE_LG);
+      });
+    });
+    
+    describe('year/month props', () => {
+      let r: RenderResult;
+      
+      beforeEach(() => {
+        r = render(<DayPickerTest />);
+      });
+      
+      it('defaults year/month to getCurrentDate() when not provided', async () => {
+        const now = getCurrentDate();
+        
+        await expect.element(getCtxYear(r)).toHaveTextContent(String(now.getFullYear()));
+        await expect.element(getCtxMonth(r)).toHaveTextContent(String(now.getMonth()));
+      });
+      
+      it('provides year/month from props to context', async () => {
+        r.rerender(<DayPickerTest year={YEAR_A} month={MONTH_A} />);
+        
+        await expect.element(getCtxYear(r)).toHaveTextContent(String(YEAR_A));
+        await expect.element(getCtxMonth(r)).toHaveTextContent(String(MONTH_A));
+      });
+      
+      it('when only year is provided, month defaults to getCurrentDate().getMonth()', async () => {
+        const now = getCurrentDate();
+        
+        r.rerender(<DayPickerTest year={YEAR_A} />);
+        
+        await expect.element(getCtxYear(r)).toHaveTextContent(String(YEAR_A));
+        await expect.element(getCtxMonth(r)).toHaveTextContent(String(now.getMonth()));
+      });
+      
+      it('when only month is provided, year defaults to getCurrentDate().getFullYear()', async () => {
+        const now = getCurrentDate();
+        
+        r.rerender(<DayPickerTest month={MONTH_A} />);
+        
+        await expect.element(getCtxYear(r)).toHaveTextContent(String(now.getFullYear()));
+        await expect.element(getCtxMonth(r)).toHaveTextContent(String(MONTH_A));
       });
     });
   });

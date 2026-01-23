@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CalendarBaseHeader } from './CalendarBaseHeader';
-import { CalendarBasePrevButton } from '../CalendarBasePrevButton';
+import { CalendarBaseControlIconButton } from '../CalendarBaseControlIconButton';
 import { Icon } from '../../../Icon';
 import { CalendarBaseNextButton } from '../CalendarBaseNextButton';
 import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
@@ -14,9 +14,9 @@ const meta: Meta<typeof CalendarBaseHeader> = {
   args: {
     children: (
       <>
-        <CalendarBasePrevButton>
+        <CalendarBaseControlIconButton>
           <Icon><ChevronLeft /></Icon>
-        </CalendarBasePrevButton>
+        </CalendarBaseControlIconButton>
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <CalendarBasePickerButton>
             {formatMonth(1)}

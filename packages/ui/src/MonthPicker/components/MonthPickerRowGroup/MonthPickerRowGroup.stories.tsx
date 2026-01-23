@@ -5,7 +5,7 @@ import { MonthPickerRow } from '../MonthPickerRow';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof MonthPickerRowGroup> = {
-  title: 'Data/Pickers/MonthPicker/MonthPickerRowGroup',
+  title: 'Data/MonthPicker/MonthPickerRowGroup',
   component: MonthPickerRowGroup,
   tags: ['autodocs'],
 }

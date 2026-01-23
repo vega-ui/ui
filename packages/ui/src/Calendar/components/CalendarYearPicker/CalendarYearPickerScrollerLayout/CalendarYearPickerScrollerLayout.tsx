@@ -1,5 +1,6 @@
 import { FC } from 'react';
 import { YearPickerScrollerLayout, YearPickerScrollerLayoutProps } from '../../../../YearPicker';
+import { useCalendarContext } from '../../../contexts';
 
 export type CalendarYearPickerScrollerLayoutProps = YearPickerScrollerLayoutProps
 
@@ -10,5 +11,6 @@ export type CalendarYearPickerScrollerLayoutProps = YearPickerScrollerLayoutProp
  * container while delegating all behavior to the underlying implementation.
  */
 export const CalendarYearPickerScrollerLayout: FC<CalendarYearPickerScrollerLayoutProps>  = (props) => {
-  return <YearPickerScrollerLayout {...props} />
+  const { referenceDate } = useCalendarContext()
+  return <YearPickerScrollerLayout start={referenceDate.getFullYear()} {...props} />
 }

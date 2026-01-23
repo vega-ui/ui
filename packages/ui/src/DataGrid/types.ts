@@ -2,10 +2,11 @@ import { Grid } from '@vega-ui/utils';
 
 export type DataGridWrap = 'horizontal' | 'vertical' | 'both'
 export type DataGridCellKey = string | number;
+export type DataGridScope = string | number;
 
 export interface DataGridApiRef<K> {
   grid: Grid<HTMLElement, K>
-  keyMap: Map<K, DataGridCoordinates>
+  scopes: Map<DataGridScope, DataGridCellKey[]>
 }
 
 export type DataGridCoordinates = [number, number];

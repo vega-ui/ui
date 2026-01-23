@@ -8,19 +8,27 @@ export interface UseIndexesOptions {
   shift: number
 }
 
-export const useIndexes = (options: UseIndexesOptions) => {
-  const { start, startDir, shift: indexesShift, size } = options
+export const useIndexes = ({
+  start,
+  startDir,
+  shift: indexesShift,
+  size,
+}: UseIndexesOptions) => {
   const [indexes, setIndexes] = useState<number[]>(getOffsetIndexes(start, startDir, size))
   
   const shift = useCallback(() => {
-    const start = indexes[0] + indexesShift
-    setIndexes(getOffsetIndexes(start, -1, size))
-  }, [indexes, indexesShift, size])
+    setIndexes((prev) => {
+      const start = prev[0] + indexesShift;
+      return getOffsetIndexes(start, -1, size);
+    });
+  }, [indexesShift, size]);
   
   const push = useCallback(() => {
-    const end = indexes[indexes.length - 1] - indexesShift
-    setIndexes(getOffsetIndexes(end, 1, size))
-  }, [indexes, indexesShift, size])
+    setIndexes((prev) => {
+      const end = prev[prev.length - 1] - indexesShift;
+      return getOffsetIndexes(end, 1, size);
+    });
+  }, [indexesShift, size]);
   
   const reset = useCallback((s = start) => {
     setIndexes(getOffsetIndexes(s, startDir, size))

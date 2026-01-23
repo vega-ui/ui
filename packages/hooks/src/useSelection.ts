@@ -65,8 +65,10 @@ export const useSelection = <K, const M extends Selection>({
   
   const isDisabled = useCallback((key?: K) => {
     if (key === undefined) return false
+    
     if (min !== undefined && compare(key, min) === -1) return true
-    if (max !== undefined && compare?.(key, max) === 1) return true
+    if (max !== undefined && compare(key, max) === 1) return true
+    
     if (typeof disabled === 'function') return (disabled as SelectionDisabledResolver<K>)(key)
     if (Array.isArray(disabled)) return disabled.includes(key)
     

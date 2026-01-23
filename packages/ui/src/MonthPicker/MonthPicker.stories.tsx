@@ -11,7 +11,7 @@ import {
 import { createMonthPickerGrid } from './helpers';
 
 const meta: Meta<typeof MonthPicker> = {
-  title: 'Data/Pickers/MonthPicker/MonthPicker',
+  title: 'Data/MonthPicker/MonthPicker',
   component: MonthPicker,
   args: {
     style: { width: 300 },

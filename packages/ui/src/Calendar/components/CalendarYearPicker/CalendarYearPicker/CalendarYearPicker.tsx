@@ -31,22 +31,35 @@ export const CalendarYearPicker: FC<CalendarYearPickerProps> = ({ className, api
     changeActiveYear,
     yearPickerApiRef,
     closeYearPicker,
-    onSelectYear,
+    changeYear,
   } = useCalendarContext()
   const { size, variant } = useCalendarBaseContext()
   
-  const toYear = to ? to.getFullYear() : undefined
-  const fromYear = from ? from.getFullYear() : undefined
+  const getMaxSelectableYear = (to: Date): number => {
+    const t = to.getTime();
+    const last = new Date(t - 1);
+    return last.getFullYear();
+  };
   
+  const getMinSelectableYear = (from: Date): number => {
+    const t = from.getTime();
+    const first = new Date(t + 1);
+    return first.getFullYear();
+  };
+  
+  const toYear = to ? getMaxSelectableYear(to) : undefined
+  const fromYear = from ? getMinSelectableYear(from) : undefined
+
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === 'Escape') {
+      e.stopPropagation()
       onClose?.(e)
       closeYearPicker?.()
     }
   }
   
   const onSelect = (year: number) => {
-    onSelectYear?.(year)
+    changeYear?.(year)
     onSelectCell?.(year)
   }
   
@@ -57,6 +70,7 @@ export const CalendarYearPicker: FC<CalendarYearPickerProps> = ({ className, api
       selected={year}
       active={activeYear}
       defaultActive={year}
+      year={year}
       onChangeActive={changeActiveYear}
       variant={variant}
       size={size}

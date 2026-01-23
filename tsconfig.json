@@ -12,9 +12,7 @@
       "@vega-ui/react": ["./packages/ui/src/index.ts"],
       "@vega-ui/react/*": ["./packages/ui/src/*"],
       "@vega-ui/react-context": ["./packages/react-context/src/index.ts"],
-      "@vega-ui/react-context/*": ["./packages/react-context/src/*"],
-      "@vega-ui/react-store": ["./packages/react-store/src/index.ts"],
-      "@vega-ui/react-store/*": ["./packages/react-store/src/*"]
+      "@vega-ui/react-context/*": ["./packages/react-context/src/*"]
     }
   },
   "exclude": ["node_modules"]

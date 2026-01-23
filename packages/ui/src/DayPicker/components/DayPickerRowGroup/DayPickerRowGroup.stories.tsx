@@ -5,7 +5,7 @@ import { DayPickerRow } from '../DayPickerRow';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof DayPickerRowGroup> = {
-  title: 'Data/Pickers/DayPicker/DayPickerRowGroup',
+  title: 'Data/DayPicker/DayPickerRowGroup',
   component: DayPickerRowGroup,
   tags: ['autodocs'],
 }

@@ -41,7 +41,6 @@
   },
   "dependencies": {
     "@vega-ui/utils": "workspace:*",
-    "@vega-ui/react-store": "workspace:*",
     "react": "^19.0.0"
   },
   "devDependencies": {

@@ -2,8 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { IndexedSnapScroller } from './IndexedSnapScroller';
 import { IndexedSnapScrollerContent as _IndexedSnapScrollerContent, type IndexedSnapScrollerContentProps } from './components';
-import { FC } from 'react';
+import { ChangeEvent, FC, useState } from 'react';
 import { useIndexedSnapScrollerContext } from './contexts';
+import { NumberField, NumberFieldDecrementButton, NumberFieldIncrementButton, NumberFieldInput } from '../NumberField';
 
 const IndexedSnapScrollerContent: FC<IndexedSnapScrollerContentProps> = ({ style, ...props }) => {
   const { index } = useIndexedSnapScrollerContext()
@@ -47,12 +48,48 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {},
+  args: {
+    style: {  width: 300, gap: 12 },
+    children: <IndexedSnapScrollerContent />
+  },
+};
+
+
+export const WithDefaultIndex: Story = {
+  args: {
+    ...Default.args,
+    defaultIndex: 10,
+  },
+};
+
+export const Controlled: Story = {
+  args: {
+    style: { marginTop: 24 }
+  },
   render(props) {
+    const [index, setIndex] = useState(0)
+    
+    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+      const value = Number(e.currentTarget.value.replace(/\s/i, ''))
+      setIndex(value)
+    }
+    
+    const onScrollSnapChanging = (element: HTMLElement, index: number) => {
+      setIndex(index)
+      props?.onScrollSnapChanging?.(element, index)
+    }
+    
     return (
-      <IndexedSnapScroller {...props} style={{  width: 300, gap: 12 }}>
-        <IndexedSnapScrollerContent />
-      </IndexedSnapScroller>
+      <div>
+        <NumberField>
+          <NumberFieldDecrementButton />
+          <NumberFieldInput placeholder='Index' value={index} onChange={onChange} />
+          <NumberFieldIncrementButton />
+        </NumberField>
+        <IndexedSnapScroller {...props} onScrollSnapChanging={onScrollSnapChanging} index={index}>
+          <IndexedSnapScrollerContent />
+        </IndexedSnapScroller>
+      </div>
     )
   }
 };

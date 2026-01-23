@@ -1,7 +1,7 @@
-import { FC, HTMLAttributes, PropsWithChildren, Ref } from 'react';
+import { FC, HTMLAttributes, PropsWithChildren, Ref, useLayoutEffect } from 'react';
 import style from './style.module.css'
-import { csx, mergeRefs } from '@vega-ui/utils';
-import { useDataGridContext, useDataGridRowContext } from '../../contexts';
+import { csx, mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
+import { useDataGridContext, useDataGridRowContext, useDataGridRowGroupContext } from '../../contexts';
 import { Slot } from '../../../Slot';
 import { DataGridCellKey } from '../../types';
 
@@ -51,18 +51,28 @@ export const DataGridCell: FC<PropsWithChildren<DataGridCellProps>> = ({
   className,
   excluded,
   cellKey,
+  onFocus: _onFocus,
   ...props
 }) => {
   const Element = asChild ? Slot : 'div'
   
-  const { itemRef, active, excluded: _excluded } = useDataGridContext()
+  const { setItemRef, removeItemRef, changeActive, active, excluded: _excluded } = useDataGridContext()
+  const { scope } = useDataGridRowGroupContext()
   const { row } = useDataGridRowContext()
   
   const key = cellKey ?? `${row}:${col}`
-  const coordinates = [row, col] as [number, number]
   const focusable = key === active
-  
   const excludedCell = excluded || _excluded(key)
+  
+  useLayoutEffect(() => {
+    return () => {
+      removeItemRef([row, col], key, scope)
+    }
+  }, [row, col, key]);
+  
+  const onFocus = () => {
+    changeActive(key)
+  }
   
   return (
     <Element
@@ -70,8 +80,9 @@ export const DataGridCell: FC<PropsWithChildren<DataGridCellProps>> = ({
       data-row={row}
       data-col={col}
       data-key={cellKey}
+      onFocus={mergeEventHandlers(_onFocus, onFocus)}
       tabIndex={focusable ? 0 : -1}
-      ref={mergeRefs([ref, !excludedCell ? itemRef(coordinates, key) : undefined])}
+      ref={mergeRefs([ref, excludedCell ? undefined : setItemRef([row, col], key, scope)])}
       className={csx(style.cell, className)}
       {...props}
     >
