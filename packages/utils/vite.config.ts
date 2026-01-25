@@ -18,8 +18,7 @@ export default defineConfig({
       entry: resolve(__dirname, './src/index.ts'),
       fileName: (_, entryName) => {
         return `${entryName}.js`
-      },
-      name: 'AdaraCloudUI',
+      }
     },
     chunkSizeWarningLimit: 10000,
     rollupOptions: {
