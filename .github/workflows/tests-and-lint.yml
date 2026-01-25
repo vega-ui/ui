@@ -32,29 +32,29 @@ jobs:
       - name: Run Linter
         run: pnpm run lint
 
-      - name: Resolve package versions
-        id: resolve-package-versions
+      - name: Resolve Playwright version
+        id: resolve-playwright
         shell: bash
-        run: >
-          echo "$(
+        run: |
           node -e "
-           const fs = require('fs');
-           const lock = fs.readFileSync('pnpm-lock.yaml', 'utf8');
-           const match = lock.match(/^\s*playwright@(\d+\.\d+\.\d+):/m);
-           if (!match) throw new Error('Playwright not found in pnpm-lock.yaml');
-           const version = match[1];
-           console.log(`PLAYWRIGHT_VERSION=${version}`);
-          "
-          )" >> $GITHUB_OUTPUT
+            const fs = require('fs');
+            const lock = fs.readFileSync('pnpm-lock.yaml', 'utf8');
+            const match = lock.match(/^\\s*playwright@(\\d+\\.\\d+\\.\\d+):/m);
+            if (!match) {
+              console.error('Playwright not found in pnpm-lock.yaml');
+              process.exit(1);
+            }
+            console.log('PLAYWRIGHT_VERSION=' + match[1]);
+          " >> "$GITHUB_OUTPUT"
 
       - name: Print versions
         shell: bash
-        run: echo "${{ toJson(steps.resolve-package-versions.outputs) }}"
+        run: echo "${{ toJson(steps.resolve-playwright.outputs) }}"
 
       - name: Check resolved package versions
         shell: bash
         if: |
-          contains(fromJSON('[null, "", "undefined"]'), steps.resolve-package-versions.outputs.PLAYWRIGHT_VERSION)
+          contains(fromJSON('[null, "", "undefined"]'), steps.resolve-playwright.outputs.PLAYWRIGHT_VERSION)
         run: echo "Failed to resolve package versions. See log above." && exit 1
 
       - name: Cache Playwright
@@ -62,7 +62,7 @@ jobs:
         id: playwright-cache
         with:
           path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
-          key: ${{ runner.os }}-playwright-${{ steps.resolve-package-versions.outputs.PLAYWRIGHT_VERSION }}
+          key: ${{ runner.os }}-playwright-${{ steps.resolve-playwright.outputs.PLAYWRIGHT_VERSION }}
           restore-keys: |
             ${{ runner.os }}-playwright-
 
