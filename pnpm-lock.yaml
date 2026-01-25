@@ -53,6 +53,9 @@ importers:
       git-cz:
         specifier: ^4.9.0
         version: 4.9.0
+      playwright:
+        specifier: ^1.57.0
+        version: 1.57.0
       storybook:
         specifier: ^9.1.13
         version: 9.1.17(@testing-library/dom@10.4.1)(prettier@2.8.8)(vite@6.4.1(@types/node@22.19.5))
