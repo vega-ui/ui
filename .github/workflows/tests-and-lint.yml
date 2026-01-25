@@ -32,14 +32,44 @@ jobs:
       - name: Run Linter
         run: pnpm run lint
 
-      - name: Cache Playwright browsers
-        uses: actions/cache@v4
+      - name: Resolve Playwright version
+        id: resolve-playwright
+        shell: bash
+        run: |
+          node -e "
+            const fs = require('fs');
+            const lock = fs.readFileSync('pnpm-lock.yaml', 'utf8');
+            const match = lock.match(/^\\s*playwright@(\\d+\\.\\d+\\.\\d+):/m);
+            if (!match) {
+              console.error('Playwright not found in pnpm-lock.yaml');
+              process.exit(1);
+            }
+            console.log('PLAYWRIGHT_VERSION=' + match[1]);
+          " >> "$GITHUB_OUTPUT"
+
+      - name: Print versions
+        shell: bash
+        run: echo "${{ toJson(steps.resolve-playwright.outputs) }}"
+
+      - name: Check resolved package versions
+        shell: bash
+        if: |
+          contains(fromJSON('[null, "", "undefined"]'), steps.resolve-playwright.outputs.PLAYWRIGHT_VERSION)
+        run: echo "Failed to resolve package versions. See log above." && exit 1
+
+      - name: Cache Playwright
+        uses: actions/cache@v5
+        id: playwright-cache
         with:
           path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ hashFiles('pnpm-lock.yaml') }}
+          key: ${{ runner.os }}-playwright-${{ steps.resolve-playwright.outputs.PLAYWRIGHT_VERSION }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-
 
-      - name: Install Playwright browsers
-        run: pnpm --filter @vega-ui/react exec playwright install --with-deps
+      - name: Install Playwright Dependencies
+        shell: bash
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: pnpm exec playwright install --with-deps --only-shell
 
       - name: Run Tests
         run: pnpm test
