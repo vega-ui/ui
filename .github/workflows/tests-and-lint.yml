@@ -61,7 +61,7 @@ jobs:
         uses: actions/cache@v5
         id: playwright-cache
         with:
-          path: ${{ env.PLAYWRIGHT_BROWSERS_PATH }}
+          path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ steps.resolve-playwright.outputs.PLAYWRIGHT_VERSION }}
           restore-keys: |
             ${{ runner.os }}-playwright-
