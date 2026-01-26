@@ -10,16 +10,17 @@ export type SliderThumbProps = SliderBaseThumbProps
  *  Positioned along the track based on the current value, it reflects user input and provides visual feedback.
  *  The component supports keyboard navigation, orientation-aware positioning (horizontal or vertical),
  *  and is styled according to size, variant, and disabled state.
- *  Used inside `Slider`, it enables accessible and precise value manipulation. */
-export const SliderThumb: FC<SliderThumbProps> = ({ id, className, ...props }) => {
-  const { orientation, disabled } = useSliderContext()
+ *  Used inside `Slider`, it enables accessible and precise value manipulation.
+ */
+export const SliderThumb: FC<SliderThumbProps> = ({ id, className, disabled, ...props }) => {
+  const { orientation, disabled: _disabled } = useSliderContext()
 
   return (
     <SliderBaseThumb
       className={className}
       id={id}
       orientation={orientation}
-      disabled={disabled}
+      disabled={disabled ?? _disabled}
       {...props}
     />
   )

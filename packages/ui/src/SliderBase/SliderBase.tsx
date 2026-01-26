@@ -1,9 +1,4 @@
-import {
-  FC,
-  HTMLAttributes,
-  CSSProperties, Ref
-} from 'react';
-
+import { FC, HTMLAttributes, CSSProperties, Ref } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { SliderBaseOrientation, SliderBaseSize, SliderBaseVariant } from './types';
