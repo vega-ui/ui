@@ -68,7 +68,7 @@ jobs:
 
       - name: Install Playwright Dependencies
         shell: bash
-        run: pnpm exec playwright install --with-deps сhromium webkit firefox
+        run: pnpm exec playwright install --with-deps chromium-headless-shell webkit firefox
 
       - name: Run Tests
         run: pnpm test
