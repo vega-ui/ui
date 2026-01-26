@@ -1,5 +1,15 @@
 # @vega-ui/react
 
+## 2.1.1
+
+### Patch Changes
+
+- Updated dependencies [60ef267]
+  - @vega-ui/hooks@2.1.1
+  - @vega-ui/icons@2.1.1
+  - @vega-ui/react-context@2.1.1
+  - @vega-ui/utils@2.1.1
+
 ## 2.1.0
 
 ### Minor Changes

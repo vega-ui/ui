@@ -1,5 +1,12 @@
 # @vega-ui/hooks
 
+## 2.1.1
+
+### Patch Changes
+
+- 60ef267: Removed unused hook - useMediaQuery
+  - @vega-ui/utils@2.1.1
+
 ## 2.1.0
 
 ### Minor Changes
