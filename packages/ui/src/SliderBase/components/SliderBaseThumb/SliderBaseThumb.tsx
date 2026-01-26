@@ -4,7 +4,6 @@ import { CSSProperties, FC, HTMLAttributes } from 'react';
 import style from './style.module.css';
 import { csx } from '@vega-ui/utils';
 import { SliderBaseOrientation, SliderBaseSize, SliderBaseVariant } from '../../types';
-import { useSliderContext } from '../../../Slider';
 
 export interface SliderBaseThumbProps extends HTMLAttributes<HTMLDivElement> {
   /**
@@ -55,8 +54,6 @@ export interface SliderBaseThumbProps extends HTMLAttributes<HTMLDivElement> {
  *  This component is positioned along the slider track based on the current value and responds to pointer events.
  *  It is designed to be composed within a custom slider and styled independently, supporting both horizontal and vertical orientations. */
 export const SliderBaseThumb: FC<SliderBaseThumbProps> = ({ className, value, disabled, max, min, orientation = 'horizontal', variant = 'primary', size = 'md', style: cssStyle, ...props }) => {
-  const { disabled: _disabled } = useSliderContext()
-  
   return (
     <div
       role='slider'
@@ -67,8 +64,8 @@ export const SliderBaseThumb: FC<SliderBaseThumbProps> = ({ className, value, di
       aria-valuenow={value}
       aria-valuemax={max}
       aria-orientation={orientation}
-      aria-disabled={disabled ?? _disabled}
-      data-disabled={disabled ?? _disabled}
+      aria-disabled={disabled}
+      data-disabled={disabled}
       data-orientation={orientation}
       className={csx(style.thumb, className)}
       style={{

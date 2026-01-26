@@ -68,8 +68,7 @@ jobs:
 
       - name: Install Playwright Dependencies
         shell: bash
-        if: steps.playwright-cache.outputs.cache-hit != 'true'
-        run: pnpm exec playwright install --with-deps --only-shell
+        run: pnpm exec playwright install --with-deps
 
       - name: Run Tests
         run: pnpm test
