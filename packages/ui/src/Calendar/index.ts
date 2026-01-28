@@ -30,6 +30,8 @@ export {
   CalendarDayPickerScrollerLayout, type CalendarDayPickerScrollerLayoutProps,
   CalendarNextYearGroupButton, type CalendarNextYearGroupButtonProps,
   CalendarPrevYearGroupButton, type CalendarPrevYearGroupButtonProps,
+  CalendarYearLabel, type CalendarYearLabelProps,
+  CalendarMonthLabel, type CalendarMonthLabelProps,
 } from './components'
 export { useCalendarContext } from './contexts'
 export { type CalendarPicker, type CalendarSelection, type CalendarDatesDisabled } from './types'

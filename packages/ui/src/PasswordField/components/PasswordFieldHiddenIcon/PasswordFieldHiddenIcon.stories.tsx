@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { PasswordFieldHiddenIcon } from './PasswordFieldHiddenIcon';
 import { LockOpen } from '@vega-ui/icons';
 import { PasswordField } from '../../PasswordField';
-import { PasswordFieldToggleButton } from '../PasswordFieldToggleButton';
+import { PasswordFieldToggleIconButton } from '../PasswordFieldToggleIconButton';
 import { PasswordFieldShownIcon } from '../PasswordFieldShownIcon';
 
 const meta = {
@@ -17,10 +17,10 @@ const meta = {
   decorators(Story) {
     return (
       <PasswordField>
-        <PasswordFieldToggleButton>
+        <PasswordFieldToggleIconButton>
           <PasswordFieldShownIcon />
           <Story />
-        </PasswordFieldToggleButton>
+        </PasswordFieldToggleIconButton>
       </PasswordField>
     )
   }

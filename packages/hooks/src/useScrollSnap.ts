@@ -159,20 +159,18 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
 
   useMutationObserver(scrollerRef, scheduleMeasure, {
     childList: true,
-    subtree: true,
-    characterData: true,
-    attributes: true,
+    subtree: true
   })
   
   useResizeObserver(scrollerRef, scheduleMeasure)
   
   const commit = useCallback(() => {
     const { key, element } = getPointed()
+    
     if (key !== null && key === committedKey.current) return;
     
     committedKey.current = key;
     pendingKey.current = key;
-    
     onSnapChange?.(element, key);
   }, [onSnapChange, getPointed])
   

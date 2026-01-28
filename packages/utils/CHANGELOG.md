@@ -25,7 +25,7 @@
     - `NumberFieldContext` (new contexts structure)
     - `NumberField` types module
   - Add new `PasswordField` building blocks:
-    - `PasswordFieldInput`, `PasswordFieldToggleButton`
+    - `PasswordFieldInput`, `PasswordFieldToggleIconButton`
     - `PasswordFieldShownIcon`, `PasswordFieldHiddenIcon`
     - `PasswordFieldContext` and component index exports
   - Add new `PhoneField` composition:

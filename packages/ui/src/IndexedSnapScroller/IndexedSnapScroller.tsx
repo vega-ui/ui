@@ -163,7 +163,7 @@ export const IndexedSnapScroller: FC<PropsWithChildren<IndexedSnapScrollerProps>
     if (!api) return
     
     // Sync controlled state
-    if (index === undefined || index === api.getPending()) return
+    if (index === undefined || (index === api.getPending() || index === api.getCommited())) return
     setIndexTo(index)
   }, [index])
   

@@ -26,10 +26,8 @@ export const CalendarMonthPicker: FC<CalendarMonthPickerProps> = ({ onSelectCell
     from,
     to,
     picker,
-    activeMonth,
     year,
     month,
-    changeActiveMonth,
     monthPickerApiRef,
     closeMonthPicker,
     changeMonth,
@@ -58,8 +56,6 @@ export const CalendarMonthPicker: FC<CalendarMonthPickerProps> = ({ onSelectCell
       from={fromMonth}
       to={toMonth}
       apiRef={monthPickerApiRef}
-      active={activeMonth}
-      onChangeActive={changeActiveMonth}
       inert={picker !== 'month'}
       variant={variant}
       size={size}

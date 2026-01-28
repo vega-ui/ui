@@ -8,7 +8,7 @@ import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleButton,
+  PasswordFieldToggleIconButton,
 } from '../components';
 
 afterEach(cleanup);
@@ -38,10 +38,10 @@ const PasswordFieldTest: FC<ComponentProps<typeof PasswordField>> = (props) => {
             autoComplete='current-password'
           />
           
-          <PasswordFieldToggleButton data-testid={TESTID_TOGGLE} aria-label={TOGGLE_LABEL}>
+          <PasswordFieldToggleIconButton data-testid={TESTID_TOGGLE} aria-label={TOGGLE_LABEL}>
             <PasswordFieldShownIcon data-testid={TESTID_SHOWN_ICON} />
             <PasswordFieldHiddenIcon data-testid={TESTID_HIDDEN_ICON} />
-          </PasswordFieldToggleButton>
+          </PasswordFieldToggleIconButton>
         </>
       )}
     </PasswordField>
@@ -130,10 +130,10 @@ describe('PasswordField', () => {
       r.rerender(
         <PasswordFieldTest disabled>
           <PasswordFieldInput data-testid={TESTID_INPUT} disabled={false} placeholder={PLACEHOLDER} />
-          <PasswordFieldToggleButton data-testid={TESTID_TOGGLE} aria-label={TOGGLE_LABEL}>
+          <PasswordFieldToggleIconButton data-testid={TESTID_TOGGLE} aria-label={TOGGLE_LABEL}>
             <PasswordFieldShownIcon data-testid={TESTID_SHOWN_ICON} />
             <PasswordFieldHiddenIcon data-testid={TESTID_HIDDEN_ICON} />
-          </PasswordFieldToggleButton>
+          </PasswordFieldToggleIconButton>
         </PasswordFieldTest>,
       );
       
@@ -145,14 +145,14 @@ describe('PasswordField', () => {
       r.rerender(
         <PasswordFieldTest disabled>
           <PasswordFieldInput data-testid={TESTID_INPUT} placeholder={PLACEHOLDER} />
-          <PasswordFieldToggleButton
+          <PasswordFieldToggleIconButton
             data-testid={TESTID_TOGGLE}
             aria-label={TOGGLE_LABEL}
             disabled={false}
           >
             <PasswordFieldShownIcon data-testid={TESTID_SHOWN_ICON} />
             <PasswordFieldHiddenIcon data-testid={TESTID_HIDDEN_ICON} />
-          </PasswordFieldToggleButton>
+          </PasswordFieldToggleIconButton>
         </PasswordFieldTest>,
       );
       
@@ -166,12 +166,12 @@ describe('PasswordField', () => {
       const r = render(
         <PasswordFieldTest>
           <PasswordFieldInput data-testid={TESTID_INPUT} placeholder={PLACEHOLDER} />
-          <PasswordFieldToggleButton data-testid={TESTID_TOGGLE} aria-label={TOGGLE_LABEL}>
+          <PasswordFieldToggleIconButton data-testid={TESTID_TOGGLE} aria-label={TOGGLE_LABEL}>
             <PasswordFieldShownIcon data-testid={TESTID_SHOWN_ICON}>
               <span>{CUSTOM_SHOWN}</span>
             </PasswordFieldShownIcon>
             <PasswordFieldHiddenIcon data-testid={TESTID_HIDDEN_ICON} />
-          </PasswordFieldToggleButton>
+          </PasswordFieldToggleIconButton>
         </PasswordFieldTest>,
       );
       
@@ -182,12 +182,12 @@ describe('PasswordField', () => {
       const r = render(
         <PasswordFieldTest>
           <PasswordFieldInput data-testid={TESTID_INPUT} placeholder={PLACEHOLDER} />
-          <PasswordFieldToggleButton data-testid={TESTID_TOGGLE} aria-label={TOGGLE_LABEL}>
+          <PasswordFieldToggleIconButton data-testid={TESTID_TOGGLE} aria-label={TOGGLE_LABEL}>
             <PasswordFieldShownIcon data-testid={TESTID_SHOWN_ICON} />
             <PasswordFieldHiddenIcon data-testid={TESTID_HIDDEN_ICON}>
               <span>{CUSTOM_HIDDEN}</span>
             </PasswordFieldHiddenIcon>
-          </PasswordFieldToggleButton>
+          </PasswordFieldToggleIconButton>
         </PasswordFieldTest>,
       );
       
@@ -198,14 +198,14 @@ describe('PasswordField', () => {
       const r = render(
         <PasswordFieldTest>
           <PasswordFieldInput data-testid={TESTID_INPUT} placeholder={PLACEHOLDER} />
-          <PasswordFieldToggleButton data-testid={TESTID_TOGGLE} aria-label={TOGGLE_LABEL}>
+          <PasswordFieldToggleIconButton data-testid={TESTID_TOGGLE} aria-label={TOGGLE_LABEL}>
             <PasswordFieldShownIcon data-testid={TESTID_SHOWN_ICON}>
               <span>{CUSTOM_SHOWN}</span>
             </PasswordFieldShownIcon>
             <PasswordFieldHiddenIcon data-testid={TESTID_HIDDEN_ICON}>
               <span>{CUSTOM_HIDDEN}</span>
             </PasswordFieldHiddenIcon>
-          </PasswordFieldToggleButton>
+          </PasswordFieldToggleIconButton>
         </PasswordFieldTest>,
       );
       
@@ -217,14 +217,14 @@ describe('PasswordField', () => {
       const r = render(
         <PasswordFieldTest>
           <PasswordFieldInput data-testid={TESTID_INPUT} placeholder={PLACEHOLDER} />
-          <PasswordFieldToggleButton data-testid={TESTID_TOGGLE} aria-label={TOGGLE_LABEL}>
+          <PasswordFieldToggleIconButton data-testid={TESTID_TOGGLE} aria-label={TOGGLE_LABEL}>
             <PasswordFieldShownIcon data-testid={TESTID_SHOWN_ICON}>
               <span>{CUSTOM_SHOWN}</span>
             </PasswordFieldShownIcon>
             <PasswordFieldHiddenIcon data-testid={TESTID_HIDDEN_ICON}>
               <span>{CUSTOM_HIDDEN}</span>
             </PasswordFieldHiddenIcon>
-          </PasswordFieldToggleButton>
+          </PasswordFieldToggleIconButton>
         </PasswordFieldTest>,
       );
       

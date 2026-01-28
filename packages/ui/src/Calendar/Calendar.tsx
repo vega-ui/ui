@@ -5,7 +5,7 @@ import { useControlledState } from '@vega-ui/hooks';
 import { CalendarDatesDisabled, CalendarPicker, CalendarSelection, CalendarValue } from './types';
 import { DataGridApiRef } from '../DataGrid';
 import { CalendarBase, CalendarBaseProps } from '../CalendarBase';
-import { focusPickerValue, getFirstDayInMonth } from './helpers';
+import { focusPickerValue, getAvailableDate } from './helpers';
 import { getClampedDate, getCurrentDate } from '@vega-ui/utils';
 
 export interface CalendarProps<S extends CalendarSelection = 'single'> extends Omit<CalendarBaseProps, 'onChange' | 'defaultValue'> {
@@ -82,17 +82,10 @@ export interface CalendarProps<S extends CalendarSelection = 'single'> extends O
   disabled?: CalendarDatesDisabled;
   
   /**
-   * Fires when the visible year changes (e.g., via scrolling or picker).
+   * Fires when the visible date changes (e.g., via scrolling or picker).
    * This event represents *view navigation*, not selection.
    */
-  onChangeYear?(year: number): void;
-  
-  /**
-   * Fires when the visible month changes (e.g., via arrow navigation,
-   * scrolling, or month picker). The argument is the month index
-   * (0–11) of the currently displayed month.
-   */
-  onChangeMonth?(month: number): void;
+  onChangeDate?(date: Date): void;
   
   /**
    * Fires when the selected value changes.
@@ -119,24 +112,14 @@ export interface CalendarProps<S extends CalendarSelection = 'single'> extends O
   referenceDate?: Date;
   
   /**
-   * Controlled visible year.
+   * Controlled visible date.
    */
-  year?: number;
+  date?: Date;
   
   /**
-   * Initial visible year for uncontrolled usage.
+   * Initial visible date for uncontrolled usage.
    */
-  defaultYear?: number;
-  
-  /**
-   * Controlled visible month (0–11).
-   */
-  month?: number;
-  
-  /**
-   * Initial visible month for uncontrolled usage.
-   */
-  defaultMonth?: number;
+  defaultDate?: Date;
   
   /**
    * Controlled active (focused) day value.
@@ -153,37 +136,7 @@ export interface CalendarProps<S extends CalendarSelection = 'single'> extends O
   /**
    * Fires when the active day changes due to keyboard or programmatic focus.
    */
-  onChangeActiveDay?(activeDay: number): void;
-  
-  /**
-   * Controlled active month value.
-   */
-  activeMonth?: number;
-  
-  /**
-   * Initial active month for uncontrolled usage.
-   */
-  defaultActiveMonth?: number;
-  
-  /**
-   * Fires when the active month changes.
-   */
-  onChangeActiveMonth?(activeMonth: number): void;
-  
-  /**
-   * Controlled active year value.
-   */
-  activeYear?: number;
-  
-  /**
-   * Initial active year for uncontrolled usage.
-   */
-  defaultActiveYear?: number;
-  
-  /**
-   * Fires when the active year changes.
-   */
-  onChangeActiveYear?(activeYear: number): void;
+  onChangeActiveDay?(activeDay: number | undefined): void;
 }
 
 /**
@@ -205,25 +158,16 @@ export const Calendar = <S extends CalendarSelection>({
   size = 'xs',
   defaultValue,
   referenceDate,
-  year: _year,
-  month: _month,
-  defaultYear,
-  defaultMonth,
+  date: _date,
+  defaultDate = getCurrentDate(),
   defaultActiveDay,
-  defaultActiveYear = defaultYear,
-  defaultActiveMonth = defaultMonth,
-  activeMonth: _activeMonth,
-  activeYear: _activeYear,
   activeDay: _activeDay,
-  onChangeActiveYear,
-  onChangeActiveMonth,
   onChangeActiveDay,
   variant = 'secondary',
   selection = 'single' as S,
   defaultPicker = 'day',
   onChangePicker,
-  onChangeMonth,
-  onChangeYear,
+  onChangeDate,
   onChange,
   children,
   ...props
@@ -231,47 +175,30 @@ export const Calendar = <S extends CalendarSelection>({
   const reference = referenceDate ?? new Date(1970, 0, 1)
   const currentDate = getCurrentDate()
   
-  const [year, setYear] = useControlledState(_year, defaultYear ?? currentDate.getFullYear(), onChangeYear)
-  const [month, setMonth] = useControlledState(_month, defaultMonth ?? currentDate.getMonth(), onChangeMonth)
-  
+  const [date, setDate] = useControlledState<Date>(_date, defaultDate, onChangeDate)
   const [activePicker, setActivePicker] = useControlledState(picker, defaultPicker, onChangePicker)
-  
   const [activeDay, setActiveDay] = useControlledState(_activeDay, defaultActiveDay ?? currentDate.getTime(), onChangeActiveDay)
-  const [activeMonth, setActiveMonth] = useControlledState(_activeMonth, defaultActiveMonth ?? currentDate.getMonth(), onChangeActiveMonth)
-  const [activeYear, setActiveYear] = useControlledState(_activeYear, defaultActiveYear ?? currentDate.getFullYear(), onChangeActiveYear)
 
   const dayPickerApiRef = useRef<DataGridApiRef<number>>(null)
   const monthPickerApiRef = useRef<DataGridApiRef<number>>(null)
   const yearPickerApiRef = useRef<DataGridApiRef<number>>(null)
   
-  const apiRef = useRef<IndexedSnapScrollerApiRef>(null)
-  const apiYearRef = useRef<IndexedSnapScrollerApiRef>(null)
+  const scrollerApiRef = useRef<IndexedSnapScrollerApiRef>(null)
+  const yearScrollerApiRef = useRef<IndexedSnapScrollerApiRef>(null)
   
-  const syncActiveDayAndFocus = useCallback((year: number, month: number) => {
-    const active = new Date(activeDay)
-    if (active.getMonth() === month && active.getFullYear() === year) return
+  const getAvailableByDate = (year: number, month: number) => {
+    const date = new Date(activeDay).getDate()
     
-    const firstDayTime = getFirstDayInMonth({ year, month, from, to, disabled })?.getTime()
-    if (firstDayTime === undefined) return;
+    const lastDay = new Date(year, month + 1, 0).getDate()
+    const candidate = new Date(year, month, Math.min(date, lastDay))
     
-    requestAnimationFrame(() => focusPickerValue(dayPickerApiRef.current, firstDayTime))
-  }, [])
+    return getAvailableDate(candidate, { from, to, disabled })
+  }
   
-  const nextPeriod = useCallback(() => {
-    apiRef.current?.next()
-  }, [])
-  
-  const prevPeriod = useCallback(() => {
-    apiRef.current?.prev()
-  }, [])
-  
-  const nextYearGroup = useCallback(() => {
-    apiYearRef.current?.next()
-  }, [])
-  
-  const prevYearGroup = useCallback(() => {
-    apiYearRef.current?.prev()
-  }, [])
+  const focusAvailable = (year: number, month: number) => {
+    const resolved = getAvailableByDate(year, month)
+    if (resolved) requestAnimationFrame(() => focusPickerValue(dayPickerApiRef.current, resolved.getTime()))
+  }
   
   const openDayPicker = useCallback(() => {
     setActivePicker('day')
@@ -279,39 +206,51 @@ export const Calendar = <S extends CalendarSelection>({
   
   const closePicker = useCallback(() => {
     openDayPicker()
-    focusPickerValue(dayPickerApiRef.current, activeDay)
+    requestAnimationFrame(() => {
+      focusPickerValue(dayPickerApiRef.current, activeDay)
+    })
   }, [openDayPicker, activeDay])
   
-  const changePeriod = useCallback((y: number, m: number) => {
-    if (y !== year) setYear(y)
-    if (m !== month) setMonth(m)
-  }, [year, month])
-  
-  const changeMonth = useCallback((value: number) => {
-    setMonth(value)
-    setActiveMonth(value)
+  const changePeriod = (y: number, m: number) => {
+    const d = new Date(date)
+    d.setFullYear(y)
+    d.setMonth(m)
+    
+    setDate(d)
+    
+    const resolved = getAvailableByDate(y, m)
+    if (!resolved) return
+    
+    requestAnimationFrame(() => setActiveDay(resolved.getTime()))
+  }
+
+  const changeMonth = (value: number) => {
+    const d = new Date(date)
+    d.setMonth(value)
+    
+    setDate(d)
     
     openDayPicker()
-    
-    syncActiveDayAndFocus(year, value)
-  }, [openDayPicker, syncActiveDayAndFocus, year])
+    focusAvailable(d.getFullYear(), value)
+  }
   
-  const changeYear = useCallback((value: number) => {
-    const clamped = getClampedDate(new Date(value, month), from, to)
+  const changeYear = (value: number) => {
+    const clamped = getClampedDate(new Date(value, date.getMonth()), from, to)
     const clampedMonth = clamped.getMonth()
+    const d = new Date(date)
     
-    if (clampedMonth !== month) {
-      setMonth(clampedMonth)
-      setActiveMonth(clampedMonth)
+    if (clampedMonth !== date.getMonth()) {
+      d.setMonth(clampedMonth)
+      setDate(d)
     }
     
-    setYear(value)
-    setActiveYear(value)
-
-    openDayPicker()
+    d.setFullYear(value)
     
-    syncActiveDayAndFocus(value, clampedMonth)
-  }, [openDayPicker, syncActiveDayAndFocus, month, from, to])
+    setDate(d)
+    
+    openDayPicker()
+    focusAvailable(value, clampedMonth)
+  }
   
   const onSelectDay = useCallback((day: number | number[]) => {
     const value = Array.isArray(day) ? day.map(d => new Date(d)) : new Date(day)
@@ -325,8 +264,8 @@ export const Calendar = <S extends CalendarSelection>({
     }
     
     setActivePicker('month')
-    requestAnimationFrame(() => focusPickerValue(monthPickerApiRef.current, month))
-  }, [activePicker, month, openDayPicker])
+    requestAnimationFrame(() => focusPickerValue(monthPickerApiRef.current, date.getMonth()))
+  }, [activePicker, date, openDayPicker])
 
   const toggleYearPicker = useCallback(() => {
     if (activePicker === 'year') {
@@ -335,33 +274,35 @@ export const Calendar = <S extends CalendarSelection>({
     }
     
     setActivePicker('year')
-    requestAnimationFrame(() => focusPickerValue(yearPickerApiRef.current, year))
-  }, [activePicker, year, openDayPicker])
+    requestAnimationFrame(() => focusPickerValue(yearPickerApiRef.current, date.getFullYear()))
+  }, [activePicker, date, openDayPicker])
+  
+  const nextPeriod = useCallback(() => scrollerApiRef.current?.next(), [])
+  const nextYearGroup = useCallback(() => yearScrollerApiRef.current?.next(), [])
+  const prevPeriod = useCallback(() => scrollerApiRef.current?.prev(), [])
+  const prevYearGroup = useCallback(() => yearScrollerApiRef.current?.prev(), [])
   
   return (
     <CalendarProvider
-      from={from}
       to={to}
-      year={year}
-      month={month}
+      value={value}
+      from={from}
+      disabled={disabled}
+      year={date.getFullYear()}
+      month={date.getMonth()}
       nextPeriod={nextPeriod}
       nextYearGroup={nextYearGroup}
       prevPeriod={prevPeriod}
       prevYearGroup={prevYearGroup}
-      value={value}
       defaultValue={defaultValue}
       selection={selection}
       activeDay={activeDay}
       picker={activePicker}
-      activeYear={activeYear}
       referenceDate={reference}
-      activeMonth={activeMonth}
       changePicker={setActivePicker}
       changeActiveDay={setActiveDay}
-      changeActiveYear={setActiveYear}
-      changeActiveMonth={setActiveMonth}
-      scrollerApiRef={apiRef}
-      scrollerYearApiRef={apiYearRef}
+      scrollerApiRef={scrollerApiRef}
+      scrollerYearApiRef={yearScrollerApiRef}
       dayPickerApiRef={dayPickerApiRef}
       yearPickerApiRef={yearPickerApiRef}
       monthPickerApiRef={monthPickerApiRef}

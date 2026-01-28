@@ -1,9 +1,9 @@
 'use client';
 
 import { RefObject } from 'react';
-import { CalendarPicker, CalendarSelection } from '../../types';
+import { CalendarDatesDisabled, CalendarPicker, CalendarSelection } from '../../types';
 import { DataGridApiRef } from '../../../DataGrid';
-import { IndexedSnapScrollerApiRef } from '../../../IndexedSnapScroller/types';
+import { IndexedSnapScrollerApiRef } from '../../../IndexedSnapScroller';
 import { createContext } from '@vega-ui/react-context';
 
 export interface CalendarContextState {
@@ -12,21 +12,18 @@ export interface CalendarContextState {
   year: number
   month: number
   referenceDate: Date
-  activeYear: number
-  activeMonth: number
   activeDay: number
   picker: CalendarPicker
   selection: CalendarSelection
-  value?: Date | [Date, Date] | Date[]
-  defaultValue?: Date | [Date, Date] | Date[]
+  value?: Date | [Date?, Date?] | Date[]
+  defaultValue?: Date | [Date?, Date?] | Date[]
+  disabled?: CalendarDatesDisabled
   scrollerApiRef: RefObject<IndexedSnapScrollerApiRef | null>
   scrollerYearApiRef: RefObject<IndexedSnapScrollerApiRef | null>
   yearPickerApiRef: RefObject<DataGridApiRef<number> | null>
   dayPickerApiRef: RefObject<DataGridApiRef<number> | null>
   monthPickerApiRef: RefObject<DataGridApiRef<number> | null>
   changePicker(picker: CalendarPicker): void
-  changeActiveYear(year: number): void
-  changeActiveMonth(month: number): void
   changeActiveDay(day: number): void
   closeYearPicker?(): void
   closeMonthPicker?(): void
@@ -47,8 +44,6 @@ export const [CalendarProvider, useCalendarContext] = createContext<CalendarCont
   month: new Date().getMonth(),
   referenceDate: new Date(),
   activeDay: new Date().getDate(),
-  activeMonth: new Date().getMonth(),
-  activeYear: new Date().getFullYear(),
   dayPickerApiRef: { current: null },
   monthPickerApiRef: { current: null },
   yearPickerApiRef: { current: null },
@@ -56,8 +51,6 @@ export const [CalendarProvider, useCalendarContext] = createContext<CalendarCont
   scrollerYearApiRef: { current: null },
   changePicker() {},
   changeActiveDay() {},
-  changeActiveYear() {},
-  changeActiveMonth() {},
   selection: 'single',
   picker: 'day',
 })

@@ -93,6 +93,8 @@ interface EmojiCell {
   col: number;
 }
 
+const matrix = Array.from({ length: 5 }, (_, row) => Array.from({ length: 5 }, (_, col) => [row, col] ))
+
 const meta = {
   title: 'Data/DataGridPicker/DataGridPicker',
   component: DataGridPicker,
@@ -102,6 +104,19 @@ const meta = {
   tags: ['autodocs'],
   args: {
     size: 'sm',
+    children: (
+      <DataGridPickerRowGroup>
+        {matrix.map((row, index) => (
+          <DataGridPickerRow row={index} key={index}>
+            {row.map(([, col]) => (
+              <DataGridPickerItem col={col} key={col}>
+                {col + 1}
+              </DataGridPickerItem>
+            ))}
+          </DataGridPickerRow>
+        ))}
+      </DataGridPickerRowGroup>
+    )
   },
   argTypes: {
     selection: {
@@ -126,28 +141,13 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const matrix = Array.from({ length: 5 }, (_, row) => Array.from({ length: 5 }, (_, col) => [row, col] ))
-
 export const Default: Story = {
   args: {
-    defaultActive: '0:0',
-    children: (
-      <DataGridPickerRowGroup>
-        {matrix.map((row, index) => (
-          <DataGridPickerRow row={index} key={index}>
-            {row.map(([, col]) => (
-              <DataGridPickerItem col={col} key={col}>
-                {col + 1}
-              </DataGridPickerItem>
-            ))}
-          </DataGridPickerRow>
-        ))}
-      </DataGridPickerRowGroup>
-    )
+    defaultActive: '0:0'
   }
 };
 
-const DefaultSwipableLayout: FC = () => {
+const SwipableLayout: FC = () => {
   const { index } = useIndexedSnapScrollerContext()
   
   const makeKey = (index: number, row: number, col: number, emoji: string) => `${index}:${row}:${col}:${emoji.codePointAt(0)}`;
@@ -193,10 +193,10 @@ const DefaultSwipableLayout: FC = () => {
  * Without providing a scope, focus restoration may behave incorrectly when
  * switching between pages.
  */
-export const DefaultSwipableRange: Story = {
+export const SwipableRange: Story = {
   args: {
     selection: 'range',
-    defaultActive: '1:5:0:9992'
+    defaultActive: '0:0:0:128546'
   },
   render(props) {
     const apiRef = useRef<IndexedSnapScrollerApiRef>(null)
@@ -213,7 +213,7 @@ export const DefaultSwipableRange: Story = {
         </div>
         <DataGridPickerScroller apiRef={apiRef} style={{ width: 210 }}>
           <DataGridPickerScrollerContent>
-            <DefaultSwipableLayout />
+            <SwipableLayout />
           </DataGridPickerScrollerContent>
         </DataGridPickerScroller>
       </DataGridPicker>

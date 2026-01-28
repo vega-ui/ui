@@ -41,7 +41,7 @@ export const DataGridSelectableCell: FC<DataGridSelectableCellProps> = ({
   
   const onClick = (e: MouseEvent<HTMLDivElement>) => {
     if (key === undefined || disabled) return
-
+    
     e.preventDefault()
     onSelect?.(key)
   }

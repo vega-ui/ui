@@ -4,12 +4,12 @@ import {
   CalendarContent, CalendarDayPicker, CalendarDayPickerItem, CalendarDayPickerRow,
   CalendarDayPickerRowGroup, CalendarDayPickerScroller, CalendarDayPickerScrollerContent,
   CalendarDayPickerScrollerLayout,
-  CalendarHeader,
+  CalendarHeader, CalendarMonthLabel,
   CalendarMonthPicker, CalendarMonthPickerButton,
   CalendarMonthPickerLayout, CalendarNextButton,
   CalendarNextYearGroupButton, CalendarPickerButtonGroup, CalendarPrevButton, CalendarPrevYearGroupButton,
   CalendarWeekLabel,
-  CalendarWeekLabels, CalendarYearPicker,
+  CalendarWeekLabels, CalendarYearLabel, CalendarYearPicker,
   CalendarYearPickerButton, CalendarYearPickerScroller, CalendarYearPickerScrollerContent,
   CalendarYearPickerScrollerLayout
 } from './components';
@@ -17,8 +17,6 @@ import { Icon } from '../Icon';
 import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from '@vega-ui/icons';
 import {
   formatDay,
-  formatMonth,
-  formatYear,
   getCurrentDate,
   getFirstDayOfWeek,
   getNextDate,
@@ -29,16 +27,6 @@ import { createDayPickerGrid } from '../DayPicker';
 import { useIndexedSnapScrollerContext } from '../IndexedSnapScroller';
 import { Badge } from '../Badge';
 import { FC, Fragment } from 'react';
-
-const MonthLabel = () => {
-  const { month } = useCalendarContext()
-  return formatMonth(month, navigator.language, 'long')
-}
-
-const YearLabel = () => {
-  const { year } = useCalendarContext()
-  return formatYear(year, navigator.language, 'numeric')
-}
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof Calendar> = {
@@ -55,10 +43,10 @@ const meta: Meta<typeof Calendar> = {
         </CalendarPrevButton>
         <CalendarPickerButtonGroup>
           <CalendarMonthPickerButton>
-            <MonthLabel />
+            <CalendarMonthLabel />
           </CalendarMonthPickerButton>
           <CalendarYearPickerButton>
-            <YearLabel />
+            <CalendarYearLabel />
           </CalendarYearPickerButton>
         </CalendarPickerButtonGroup>
         <CalendarNextButton>
@@ -142,6 +130,17 @@ export const To: Story = {
   },
 };
 
+export const Disabled: Story = {
+  args: {
+    disabled: [
+      new Date(getCurrentDate().getFullYear(), getCurrentDate().getMonth(), 10),
+      new Date(getCurrentDate().getFullYear(), getCurrentDate().getMonth(), 11),
+      new Date(getCurrentDate().getFullYear(), getCurrentDate().getMonth(), 12),
+      new Date(getCurrentDate().getFullYear(), getCurrentDate().getMonth(), 13),
+    ],
+  },
+};
+
 export const MultipleSelection: Story = {
   args: {
     selection: 'multiple',
@@ -168,10 +167,9 @@ export const SelectedRange: Story = {
   },
 };
 
-export const DefaultYearAndMonth: Story = {
+export const DefaultDate: Story = {
   args: {
-    defaultYear: 2025,
-    defaultMonth: 0,
+    defaultDate: new Date(2020, 0),
   },
 };
 
@@ -267,10 +265,10 @@ export const CompactWithCustomDatesItems: Story = {
           </CalendarPrevButton>
           <CalendarPickerButtonGroup>
             <CalendarMonthPickerButton>
-              <MonthLabel />
+              <CalendarMonthLabel />
             </CalendarMonthPickerButton>
             <CalendarYearPickerButton>
-              <YearLabel />
+              <CalendarYearLabel />
             </CalendarYearPickerButton>
           </CalendarPickerButtonGroup>
           <CalendarNextButton>
