@@ -4,7 +4,7 @@ import { useTextFieldContext } from '../../../TextField/contexts';
 import { usePasswordFieldContext } from '../../contexts';
 import style from './style.module.css';
 
-export type PasswordFieldToggleButtonProps = IconButtonProps
+export type PasswordFieldToggleIconButtonProps = IconButtonProps
 
 /**
  * `PasswordFieldToggleButton` is an action button used within `PasswordField`
@@ -17,7 +17,7 @@ export type PasswordFieldToggleButtonProps = IconButtonProps
  * The button does not manage any state itself and is intended to be composed
  * with visibility icons inside `PasswordField`.
  */
-export const PasswordFieldToggleIconButton: FC<PasswordFieldToggleButtonProps> = ({ disabled, children, ...props }) => {
+export const PasswordFieldToggleIconButton: FC<PasswordFieldToggleIconButtonProps> = ({ disabled, children, ...props }) => {
   const { size } = useTextFieldContext()
   const { toggleShow, disabled: _disabled } = usePasswordFieldContext()
   

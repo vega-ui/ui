@@ -4,5 +4,5 @@ export {
   PasswordFieldInput, type PasswordFieldInputProps,
   PasswordFieldHiddenIcon, type PasswordFieldHiddenIconProps,
   PasswordFieldShownIcon, type PasswordFieldShownIconProps,
-  PasswordFieldToggleButton, type PasswordFieldToggleButtonProps,
+  PasswordFieldToggleIconButton, type PasswordFieldToggleIconButtonProps,
 } from './components'
