@@ -236,6 +236,7 @@ export const DataGridSelectable = <K extends DataGridCellKey = DataGridCellKey, 
     }
 
     expand(key, index.current)
+    el?.focus({ preventScroll: true })
     
     if (compare(key, end) > 0) index.current = 1
     if (compare(key, start) < 0) index.current = 0

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { PasswordFieldInput } from './PasswordFieldInput';
 import { PasswordField } from '../../PasswordField';
-import { PasswordFieldToggleButton } from '../PasswordFieldToggleButton';
+import { PasswordFieldToggleIconButton } from '../PasswordFieldToggleIconButton';
 import { PasswordFieldHiddenIcon } from '../PasswordFieldHiddenIcon';
 import { PasswordFieldShownIcon } from '../PasswordFieldShownIcon';
 
@@ -18,10 +18,10 @@ const meta = {
     return (
       <PasswordField>
         <Story />
-        <PasswordFieldToggleButton>
+        <PasswordFieldToggleIconButton>
           <PasswordFieldHiddenIcon />
           <PasswordFieldShownIcon />
-        </PasswordFieldToggleButton>
+        </PasswordFieldToggleIconButton>
       </PasswordField>
     )
   }

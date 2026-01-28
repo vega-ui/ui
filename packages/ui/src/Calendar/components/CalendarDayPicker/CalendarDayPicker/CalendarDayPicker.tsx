@@ -30,23 +30,26 @@ export const CalendarDayPicker = <S extends DataGridSelection = 'single'>({
     to,
     year,
     month,
+    disabled
   } = useCalendarContext()
   const { size, variant } = useCalendarBaseContext()
   
-  const selected = Array.isArray(value) ? value.map((v: Date) => v.getTime()) : value?.getTime()
-  const defaultSelected = Array.isArray(defaultValue) ? defaultValue.map((v: Date) => v.getTime()) : defaultValue?.getTime()
+  const selected = Array.isArray(value) ? value.map((v: Date | undefined) => v?.getTime()).filter(Boolean) as number[] : value?.getTime()
+  const defaultSelected = Array.isArray(defaultValue) ? defaultValue.map((v: Date | undefined) => v?.getTime()).filter(Boolean) as number[] : defaultValue?.getTime()
   
   const onSelect = (value: number | number[]) => {
     onSelectDay?.(value)
     onSelectCell?.(value as S extends 'single' ? number : number[])
   }
+  
+  const isDisabled = (day: number) => isDisabledDate(day, disabled ?? [])
 
   return (
     <DayPicker
       year={year}
       month={month}
       defaultSelected={defaultSelected}
-      disabled={isDisabledDate}
+      disabled={isDisabled}
       apiRef={dayPickerApiRef}
       active={activeDay}
       onChangeActive={changeActiveDay}

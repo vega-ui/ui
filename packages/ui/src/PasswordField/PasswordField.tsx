@@ -5,6 +5,10 @@ import { TextField, TextFieldProps } from '../TextField';
 import { PasswordFieldProvider } from './contexts';
 
 export interface PasswordFieldProps extends TextFieldProps {
+  /**
+   * Disables the password field.
+   * Prevents user input and interaction, and applies the disabled visual state.
+   */
   disabled?: boolean
 }
 

@@ -17,14 +17,14 @@ export type PasswordFieldToggleButtonProps = IconButtonProps
  * The button does not manage any state itself and is intended to be composed
  * with visibility icons inside `PasswordField`.
  */
-export const PasswordFieldToggleButton: FC<PasswordFieldToggleButtonProps> = ({ disabled, children, ...props }) => {
+export const PasswordFieldToggleIconButton: FC<PasswordFieldToggleButtonProps> = ({ disabled, children, ...props }) => {
   const { size } = useTextFieldContext()
   const { toggleShow, disabled: _disabled } = usePasswordFieldContext()
   
   return (
     <IconButton
-      className={style.controlButton}
       size={size}
+      className={style.controlButton}
       disabled={disabled ?? _disabled}
       variant='secondary'
       appearance='transparent'

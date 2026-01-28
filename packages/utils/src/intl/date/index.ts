@@ -1,3 +1,5 @@
 export * from './formatYear'
 export * from './formatMonth'
 export * from './formatDay'
+export * from './getDateFormat'
+export * from './getDateSeparator'

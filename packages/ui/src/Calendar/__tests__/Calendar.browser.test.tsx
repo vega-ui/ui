@@ -334,13 +334,11 @@ describe('Calendar', () => {
     
     describe('when clicking prev/next while day picker is visible', () => {
       let r: RenderResult;
-      let onMonthChange: Mock;
-      let onYearChange: Mock;
+      let onChangeDate: Mock;
       
       beforeEach(() => {
-        onMonthChange = vi.fn();
-        onYearChange = vi.fn();
-        r = render(<CalendarTest onChangeMonth={onMonthChange} onChangeYear={onYearChange} />);
+        onChangeDate = vi.fn();
+        r = render(<CalendarTest onChangeDate={onChangeDate} />);
       });
       
       it('does not crash on next', async () => {
@@ -355,12 +353,12 @@ describe('Calendar', () => {
       
       it('may call onMonthChange/onYearChange on next (document current behavior)', async () => {
         await userEvent.click(getNext(r));
-        expect(onMonthChange.mock.calls.length + onYearChange.mock.calls.length).toBeGreaterThanOrEqual(0);
+        expect(onChangeDate.mock.calls.length).toBeGreaterThanOrEqual(0);
       });
       
       it('may call onMonthChange/onYearChange on prev (document current behavior)', async () => {
         await userEvent.click(getPrev(r));
-        expect(onMonthChange.mock.calls.length + onYearChange.mock.calls.length).toBeGreaterThanOrEqual(0);
+        expect(onChangeDate.mock.calls.length).toBeGreaterThanOrEqual(0);
       });
     });
   });

@@ -21,13 +21,13 @@ export type DataGridPickerScrollerProps = IndexedSnapScrollerProps
  *
  * If the active cell already belongs to the current scope, no focus change occurs.
  */
-export const DataGridPickerScroller: FC<DataGridPickerScrollerProps> = ({ onScrollSnapChange: _onScrollSnapChange, ...props }) => {
+export const DataGridPickerScroller: FC<DataGridPickerScrollerProps> = ({ onScrollSnapChanging: _onScrollSnapChanging, ...props }) => {
   const { scopes, grid, excluded, changeActive, active } = useDataGridContext()
   
   const getFirstScopedKey = (index: number) => {
     const scope = scopes.get(index)
     if (!scope) return;
-    
+
     const firstKey = scope[0]
     if (firstKey === undefined || scope.includes(active)) return
     
@@ -40,12 +40,12 @@ export const DataGridPickerScroller: FC<DataGridPickerScrollerProps> = ({ onScro
     return nextActive
   }
   
-  const onScrollSnapChange = (element: HTMLElement, index: number) => {
-    _onScrollSnapChange?.(element, index)
+  const onScrollSnapChanging = (element: HTMLElement, index: number) => {
+    _onScrollSnapChanging?.(element, index)
     
     const first = getFirstScopedKey(index)
     if (first) changeActive(first)
   }
   
-  return <IndexedSnapScroller {...props} onScrollSnapChange={onScrollSnapChange} />
+  return <IndexedSnapScroller {...props} onScrollSnapChanging={onScrollSnapChanging} />
 }

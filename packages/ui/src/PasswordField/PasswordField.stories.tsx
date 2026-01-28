@@ -5,7 +5,7 @@ import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleButton,
+  PasswordFieldToggleIconButton,
 } from './components';
 import { Text } from '../Text';
 import { Button } from '../Button';
@@ -21,7 +21,7 @@ const meta = {
     PasswordFieldHiddenIcon,
     PasswordFieldInput,
     PasswordFieldShownIcon,
-    PasswordFieldToggleButton,
+    PasswordFieldToggleIconButton,
   },
   parameters: {
     layout: 'centered',
@@ -38,10 +38,10 @@ const meta = {
   args: {
     children: [
       <PasswordFieldInput key={0} placeholder='Password' autoComplete='current-password' />,
-      <PasswordFieldToggleButton key={1} aria-label='Toggle password visibility'>
+      <PasswordFieldToggleIconButton key={1} aria-label='Toggle password visibility'>
         <PasswordFieldShownIcon />
         <PasswordFieldHiddenIcon />
-      </PasswordFieldToggleButton>,
+      </PasswordFieldToggleIconButton>,
     ],
   },
 } satisfies Meta<typeof PasswordField>;
@@ -63,10 +63,10 @@ export const Sizes: Story = {
       {(['sm', 'md', 'lg'] as const).map((size) => (
         <PasswordField key={size} size={size} {...props}>
           <PasswordFieldInput placeholder={`Size: ${size}`} />
-          <PasswordFieldToggleButton aria-label='Toggle password visibility'>
+          <PasswordFieldToggleIconButton aria-label='Toggle password visibility'>
             <PasswordFieldShownIcon />
             <PasswordFieldHiddenIcon />
-          </PasswordFieldToggleButton>
+          </PasswordFieldToggleIconButton>
         </PasswordField>
       ))}
     </Stack>
@@ -78,10 +78,10 @@ export const Disabled: Story = {
     disabled: true,
     children: [
       <PasswordFieldInput key={0} placeholder='Disabled password' />,
-      <PasswordFieldToggleButton key={1} aria-label='Toggle password visibility'>
+      <PasswordFieldToggleIconButton key={1} aria-label='Toggle password visibility'>
         <PasswordFieldShownIcon />
         <PasswordFieldHiddenIcon />
-      </PasswordFieldToggleButton>
+      </PasswordFieldToggleIconButton>
     ]
   },
 };
@@ -92,14 +92,14 @@ export const CustomIcons: Story = {
     <Stack>
       <PasswordField {...props}>
         <PasswordFieldInput placeholder='Password' autoComplete='current-password' />
-        <PasswordFieldToggleButton aria-label='Toggle password visibility'>
+        <PasswordFieldToggleIconButton aria-label='Toggle password visibility'>
           <PasswordFieldShownIcon>
             <Lock />
           </PasswordFieldShownIcon>
           <PasswordFieldHiddenIcon>
             <LockOpen />
           </PasswordFieldHiddenIcon>
-        </PasswordFieldToggleButton>
+        </PasswordFieldToggleIconButton>
       </PasswordField>
     </Stack>
   ),
@@ -154,10 +154,10 @@ export const WithStrengthMeter: Story = {
             value={value}
             onChange={(e) => setValue(e.currentTarget.value)}
           />
-          <PasswordFieldToggleButton aria-label='Toggle password visibility'>
+          <PasswordFieldToggleIconButton aria-label='Toggle password visibility'>
             <PasswordFieldShownIcon />
             <PasswordFieldHiddenIcon />
-          </PasswordFieldToggleButton>
+          </PasswordFieldToggleIconButton>
         </PasswordField>
         
         <div style={{ display: 'grid', gap: 8 }}>
