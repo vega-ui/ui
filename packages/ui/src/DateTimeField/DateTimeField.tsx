@@ -114,7 +114,7 @@ export const DateTimeField: FC<DateTimeFieldProps> = ({
   ...props
 }) => {
   const [date, setDate] = useState<Date | undefined>(undefined)
-  const [time, setTime] = useState<string>('00:00');
+  const [time, setTime] = useState<string>('00:00:00');
   
   const lastStringified = useRef<string>('')
   
