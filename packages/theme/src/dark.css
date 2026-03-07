@@ -32,7 +32,7 @@
     --surface-shadow: var(--black-shadow);
 
     --surface-ultrathin: #131519;
-    --surface-thin: var(--color-gray-accent-50);
+    --surface-thin: var(--color-gray-accent-0);
     --surface-regular: var(--color-gray-accent-50);
     --surface-thick: var(--color-gray-accent-100);
     --surface-ultrathick: var(--color-gray-accent-150);
