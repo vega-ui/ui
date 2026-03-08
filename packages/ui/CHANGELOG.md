@@ -1,5 +1,15 @@
 # @vega-ui/react
 
+## 2.2.1
+
+### Patch Changes
+
+- 66317ef: Changed switch colors
+  - @vega-ui/hooks@2.2.1
+  - @vega-ui/icons@2.2.1
+  - @vega-ui/react-context@2.2.1
+  - @vega-ui/utils@2.2.1
+
 ## 2.2.0
 
 ### Minor Changes
