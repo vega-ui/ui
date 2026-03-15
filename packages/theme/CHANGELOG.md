@@ -1,5 +1,13 @@
 # @vega-ui/theme-core
 
+## 2.2.1
+
+### Patch Changes
+
+- 160db7b: Changed surface ultrathin color
+- 0260c02: Changed surface thin color
+  - @vega-ui/tokens-core@2.2.1
+
 ## 2.2.0
 
 ### Patch Changes

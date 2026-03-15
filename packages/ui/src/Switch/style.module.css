@@ -13,7 +13,7 @@
     outline: 2px solid transparent;
     cursor: pointer;
     box-sizing: border-box;
-    background-color: var(--color-gray-accent-150);
+    background-color: var(--color-gray-accent-200);
     transition: 
         background-color var(--transition-state-delay) ease-in,
         border-color var(--transition-state-delay) ease-in;
@@ -22,7 +22,7 @@
 /* switch/hover */
 
 .switch:has(input:hover) {
-    background-color: var(--color-gray-accent-200);
+    background-color: var(--color-gray-accent-250);
 }
 
 /* switch/focus-visible */
@@ -38,7 +38,7 @@
     --switch-indicator-transition-delay: .5s;
     --switch-indicator-width: calc(var(--switch-indicator-size) * (1 + var(--switch-indicator-size-ratio)));
 
-    background-color: var(--color-gray-accent-250);
+    background-color: var(--color-gray-accent-300);
 }
 
 /* switch/checked */
