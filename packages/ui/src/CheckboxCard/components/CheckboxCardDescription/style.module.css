@@ -1,4 +1,4 @@
 .description {
-    color: var(--color-gray-accent-500);
+    color: var(--label-tertiary);
     max-width: 350px;
 }

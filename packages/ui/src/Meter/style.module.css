@@ -11,42 +11,42 @@
     height: var(--meter-height);
     border-radius: calc(var(--meter-height) * var(--meter-br-ratio));
 
-    background-color: var(--color-gray-accent-100);
+    background-color: var(--fills-secondary);
     overflow-x: clip;
 }
 
-.meter[data-full-width='true'] {
+.meter:where([data-full-width='true']) {
     width: 100%;
 }
 
-.meter[data-size='sm'] {
+.meter:where([data-size='sm']) {
     --meter-height: var(--spacing-2);
 }
 
-.meter[data-size='md'] {
+.meter:where([data-size='md']) {
     --meter-height: var(--spacing-4);
 }
 
-.meter[data-size='lg'] {
+.meter:where([data-size='lg']) {
     --meter-height: var(--spacing-6);
 }
 
-.meter[data-variant='primary'] {
+.meter:where([data-variant='primary']) {
     --meter-track-color: var(--color-primary-500);
 }
 
-.meter[data-variant='secondary'] {
+.meter:where([data-variant='secondary']) {
     --meter-track-color: var(--color-secondary-500);
 }
 
-.meter[data-state='good'] {
+.meter:where([data-state='good']) {
     --meter-track-color: var(--meter-track-optimum-color);
 }
 
-.meter[data-state='warn'] {
+.meter:where([data-state='warn']) {
     --meter-track-color: var(--meter-track-suboptimum-color);
 }
 
-.meter[data-state='bad'] {
+.meter:where([data-state='bad']) {
     --meter-track-color: var(--meter-track-even-less-good-color);
 }

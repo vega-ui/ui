@@ -4,22 +4,22 @@
     padding: 4px;
 }
 
-.content[data-size='xs'] {
+.content:where([data-size='xs']) {
     min-width: calc(7 * var(--spacing-18) + 4px);
 }
 
-.content[data-size='sm'] {
+.content:where([data-size='sm']) {
     min-width: calc(7 * var(--spacing-21) + 4px);
 }
 
-.content[data-size='md'] {
+.content:where([data-size='md']) {
     min-width: calc(7 * var(--spacing-24) + 4px);
 }
 
-.content[data-size='lg'] {
+.content:where([data-size='lg']) {
     min-width: calc(7 * var(--spacing-27) + 4px);
 }
 
-.content[data-size='xl'] {
+.content:where([data-size='xl']) {
     min-width: calc(7 * var(--spacing-30) + 4px);
 }

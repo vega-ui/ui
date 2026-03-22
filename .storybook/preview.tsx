@@ -1,4 +1,3 @@
-import '../packages/theme/src/index.css'
 import './style.css'
 
 import { withThemeByClassName } from '@storybook/addon-themes';
@@ -8,10 +7,10 @@ const preview = {
     withThemeByClassName({
       themes: {
         light: 'light',
-        dark: 'dark',
+        dark: 'dark'
       },
       defaultTheme: 'light',
-    })
+    }),
   ],
   parameters: {
     docs: {
@@ -24,6 +23,7 @@ const preview = {
         date: /Date$/i,
       },
     },
+    a11y: {},
   },
 };
 

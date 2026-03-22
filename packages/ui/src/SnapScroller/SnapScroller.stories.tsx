@@ -23,7 +23,7 @@ const SnapScrollerContent: FC<SnapScrollerContentProps> = ({ children, style, ..
         width: '100%',
         height: 120,
         border: '1px solid var(--color-blue-accent-700)',
-        background: 'var(--color-blue-accent-0)',
+        background: 'var(--color-blue-accent-50)',
         boxSizing: 'border-box',
         borderRadius: 12,
         fontSize: 24,
@@ -112,7 +112,7 @@ export const HighlightChanged: Story = {
               width: 200,
               scale: active === index ? 0.9 : undefined,
               border: active === index ? '1px solid var(--color-blue-accent-700)' : '1px solid var(--color-gray-accent-700)',
-              background: active === index ? 'var(--color-blue-accent-0)' : 'var(--color-gray-accent-0)',
+              background: active === index ? 'var(--color-blue-accent-50)' : 'var(--color-gray-accent-50)',
               color: active === index ? 'var(--color-blue-accent-700)' : 'var(--color-gray-accent-500)',
             }}
             index={index}

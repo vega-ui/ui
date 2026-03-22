@@ -4,6 +4,10 @@
 
     --switch-indicator-size: calc(var(--switch-size) - var(--switch-padding) * 2);
 
+    --switch-background-color: var(--fills-secondary);
+    --switch-background-color-hover: var(--fills-secondary-hover);
+    --switch-background-color-active: var(--fills-secondary-active);
+
     display: flex;
     align-items: center;
     border-radius: var(--switch-size);
@@ -13,74 +17,80 @@
     outline: 2px solid transparent;
     cursor: pointer;
     box-sizing: border-box;
-    background-color: var(--color-gray-accent-200);
-    transition: 
+    background-color: var(--switch-background-color);
+    transition:
         background-color var(--transition-state-delay) ease-in,
         border-color var(--transition-state-delay) ease-in;
 }
 
-/* switch/hover */
+/* sizes */
 
-.switch:has(input:hover) {
-    background-color: var(--color-gray-accent-250);
+.switch:where([data-size='sm']) {
+    --switch-size: var(--spacing-12);
 }
 
-/* switch/focus-visible */
-
-.switch:has(input:focus-visible) {
-    outline-color: var(--focus-color);
+.switch:where([data-size='md']) {
+    --switch-size: var(--spacing-14);
 }
 
-/* switch/active */
-
-.switch:has(input:active) {
-    --switch-indicator-size-ratio: .125;
-    --switch-indicator-transition-delay: .5s;
-    --switch-indicator-width: calc(var(--switch-indicator-size) * (1 + var(--switch-indicator-size-ratio)));
-
-    background-color: var(--color-gray-accent-300);
+.switch:where([data-size='lg']) {
+    --switch-size: var(--spacing-16);
 }
 
-/* switch/checked */
+/* checked indicator position */
 
 .switch:has(input:checked) {
     --switch-indicator-transform: translateX(100%);
 }
 
-/* switch/checked/active */
+/* primary/checked */
 
-.switch:has(input:checked:active) {
-    --switch-indicator-transform: translateX(calc(100% - var(--switch-indicator-size) * var(--switch-indicator-size-ratio) * 2));
+.switch:where([data-variant='primary']):has(input:checked) {
+    --switch-background-color: var(--color-primary-500);
+    --switch-background-color-hover: var(--color-primary-600);
+    --switch-background-color-active: var(--color-primary-700);
 }
 
-/* switch/checked/primary */
+/* secondary/checked */
 
-.switch[data-variant='primary']:has(input:checked) {
-    background-color: var(--color-primary-500);
+.switch:where([data-variant='secondary']):has(input:checked) {
+    --switch-background-color: var(--color-secondary-500);
+    --switch-background-color-hover: var(--color-secondary-600);
+    --switch-background-color-active: var(--color-secondary-700);
 }
 
-/* switch/checked/secondary */
+/* disabled */
 
-.switch[data-variant='secondary']:has(input:checked) {
-    background-color: var(--color-secondary-500);
-}
-
-/* switch/disabled */
-
-.switch[data-variant]:has(input:disabled) {
+.switch:has(input:disabled) {
     cursor: not-allowed;
-    background-color: var(--disable-background-color);
+    --switch-background-color: var(--disable-background-color);
+    --switch-background-color-hover: var(--disable-background-color);
+    --switch-background-color-active: var(--disable-background-color);
     --switch-indicator-color: var(--disable-border-color);
 }
 
-.switch[data-size='sm'] {
-    --switch-size: var(--spacing-12);
+/* focus */
+
+.switch:has(input:focus-visible) {
+    outline-color: var(--focus-color);
 }
 
-.switch[data-size='md'] {
-    --switch-size: var(--spacing-14);
+/* interactive states */
+
+.switch:not(:has(input:disabled)):has(input:hover) {
+    background-color: var(--switch-background-color-hover);
 }
 
-.switch[data-size='lg'] {
-    --switch-size: var(--spacing-16);
+.switch:not(:has(input:disabled)):has(input:active) {
+    --switch-indicator-size-ratio: .125;
+    --switch-indicator-transition-delay: .5s;
+    --switch-indicator-width: calc(var(--switch-indicator-size) * (1 + var(--switch-indicator-size-ratio)));
+
+    background-color: var(--switch-background-color-active);
+}
+
+/* checked/active indicator position adjustment */
+
+.switch:not(:has(input:disabled)):has(input:checked:active) {
+    --switch-indicator-transform: translateX(calc(100% - var(--switch-indicator-size) * var(--switch-indicator-size-ratio) * 2));
 }

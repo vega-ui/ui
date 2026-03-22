@@ -3,7 +3,8 @@ import { Icon } from '../../../Icon';
 import { IconButton, IconButtonProps } from '../../../IconButton';
 import { MinusIcon } from '@vega-ui/icons';
 import { useNumberFieldContext } from '../../contexts';
-import { mergeEventHandlers } from '@vega-ui/utils';
+import { csx, mergeEventHandlers } from '@vega-ui/utils';
+import style from './style.module.css';
 
 export type NumberFieldDecrementProps = IconButtonProps
 
@@ -20,16 +21,17 @@ export type NumberFieldDecrementProps = IconButtonProps
  */
 export const NumberFieldDecrementButton: FC<NumberFieldDecrementProps> = ({
   disabled,
+  className,
   children,
   onClick: _onClick,
   ...props
 }) => {
   const { decrement, disabled: _disabled, isMin, size } = useNumberFieldContext()
-  
+
   const onClick = () => {
     decrement()
   }
-  
+
   return (
     <IconButton
       disabled={(disabled ?? _disabled) || isMin}
@@ -37,6 +39,7 @@ export const NumberFieldDecrementButton: FC<NumberFieldDecrementProps> = ({
       appearance='transparent'
       onClick={mergeEventHandlers(onClick, _onClick)}
       size={size}
+      className={csx(style.button, className)}
       {...props}
     >
       {children ?? <Icon><MinusIcon/></Icon>}

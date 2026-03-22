@@ -1,150 +1,148 @@
 .pickerItem {
-    --data-grid-picker-item-hover-bc: var(--color-gray-accent-0);
-    --data-grid-picker-item-active-bc: var(--color-gray-accent-100);
-    --data-grid-picker-item-selected-bc: var(--color-secondary-500);
-    --data-grid-picker-item-selected-hover-bc: var(--color-secondary-600);
-    --data-grid-picker-item-selected-active-bc: var(--color-secondary-700);
-    --data-grid-picker-item-selected-tc: var(--text-inverce-color);
-    --data-grid-picker-item-range-bc: var(--color-gray-accent-50);
-    --data-grid-picker-item-range-hover-bc: var(--color-gray-accent-150);
-    --data-grid-picker-item-range-active-bc: var(--color-gray-accent-200);
-
     --data-grid-picker-item-size: var(--spacing-18);
     --data-grid-picker-item-br-ratio: 0.333;
+
+    --picker-item-color: var(--text-color);
+    --picker-item-background-color: transparent;
+    --picker-item-background-color-hover: var(--fills-quaternary-hover);
+    --picker-item-background-color-active: var(--fills-quaternary-active);
+
+    --picker-item-selected-color: var(--text-color-inverce);
+    --picker-item-selected-background-color: transparent;
+    --picker-item-selected-background-color-hover: transparent;
+    --picker-item-selected-background-color-active: transparent;
+
+    --picker-item-range-background-color: var(--fills-tertiary);
+    --picker-item-range-background-color-hover: var(--fills-tertiary-hover);
+    --picker-item-range-background-color-active: var(--fills-tertiary-active);
 
     position: relative;
     font-size: var(--font-size-2);
     font-family: var(--default-font-family);
-    color: var(--text-color);
+    color: var(--picker-item-color);
+    background-color: var(--picker-item-background-color);
     height: var(--data-grid-picker-item-size);
     min-width: var(--data-grid-picker-item-size);
     cursor: pointer;
-
     border-radius: calc(var(--data-grid-picker-item-size) * var(--data-grid-picker-item-br-ratio));
 }
 
-.pickerItem[data-range='start'],
-.pickerItem[data-range='end'] {
-    touch-action: none;
+/* sizes */
+
+.pickerItem:where([data-size='xs']) {
+    --data-grid-picker-item-size: var(--spacing-18);
+    font-size: var(--font-size-2);
 }
 
-/* Hover */
-.pickerItem:hover {
-    background-color: var(--data-grid-picker-item-hover-bc);
+.pickerItem:where([data-size='sm']) {
+    --data-grid-picker-item-size: var(--spacing-21);
+    font-size: var(--font-size-2);
 }
 
-/* Active */
-.pickerItem:active {
-    background-color: var(--data-grid-picker-item-active-bc);
+.pickerItem:where([data-size='md']) {
+    --data-grid-picker-item-size: var(--spacing-24);
+    font-size: var(--font-size-3);
 }
 
-/* Disabled */
-.pickerItem[aria-disabled='true'] {
-    cursor: not-allowed;
-    color: var(--disable-placeholder-text-color);
-    background: initial;
-    touch-action: none;
-    pointer-events: none;
+.pickerItem:where([data-size='lg']) {
+    --data-grid-picker-item-size: var(--spacing-27);
+    font-size: var(--font-size-4);
 }
 
-/* Selected */
+.pickerItem:where([data-size='xl']) {
+    --data-grid-picker-item-size: var(--spacing-30);
+    font-size: var(--font-size-4);
+}
+
+/* variants */
+
+.pickerItem:where([data-variant='primary']) {
+    --picker-item-selected-color: var(--color-white);
+    --picker-item-selected-background-color: var(--color-primary-500);
+    --picker-item-selected-background-color-hover: var(--color-primary-600);
+    --picker-item-selected-background-color-active: var(--color-primary-700);
+}
+
+.pickerItem:where([data-variant='secondary']) {
+    --picker-item-selected-color: var(--text-color-inverce);
+    --picker-item-selected-background-color: var(--color-secondary-500);
+    --picker-item-selected-background-color-hover: var(--color-secondary-600);
+    --picker-item-selected-background-color-active: var(--color-secondary-700);
+}
+
+/* selected */
+
 .pickerItem[aria-selected='true']:not([data-range='between']) {
-    background-color: var(--data-grid-picker-item-selected-bc);
-    color: var(--data-grid-picker-item-selected-tc);
+    --picker-item-color: var(--picker-item-selected-color);
+    --picker-item-background-color: var(--picker-item-selected-background-color);
+    --picker-item-background-color-hover: var(--picker-item-selected-background-color-hover);
+    --picker-item-background-color-active: var(--picker-item-selected-background-color-active);
 }
 
-/* Selected/Hover */
-.pickerItem[aria-selected='true']:not([data-range='between']):hover {
-    background-color: var(--data-grid-picker-item-selected-hover-bc);
+/* range between */
+
+.pickerItem:where([data-range='between']) {
+    --picker-item-background-color: transparent;
+    --picker-item-background-color-hover: var(--picker-item-range-background-color-hover);
+    --picker-item-background-color-active: var(--picker-item-range-background-color-active);
 }
 
-/* Selected/Active */
-.pickerItem[aria-selected='true']:not([data-range='between']):active {
-    background-color: var(--data-grid-picker-item-selected-active-bc);
-}
-
-/* Ranged/Enabled */
-.pickerItem[data-range]:after {
+.pickerItem:where([data-range]):after {
     content: '';
     position: absolute;
     top: 0;
     z-index: -1;
     width: 100%;
     height: 100%;
-    background: var(--data-grid-picker-item-range-bc);
+    background: var(--picker-item-range-background-color);
     inset: 0;
 }
 
-.pickerItem[data-range='start']:after {
+.pickerItem:where([data-range='start']) {
+    touch-action: none;
+}
+
+.pickerItem:where([data-range='start']):after {
     border-top-left-radius: inherit;
     border-bottom-left-radius: inherit;
 }
 
-.pickerItem[data-range='end']:after {
+.pickerItem:where([data-range='end']) {
+    touch-action: none;
+}
+
+.pickerItem:where([data-range='end']):after {
     border-top-right-radius: inherit;
     border-bottom-right-radius: inherit;
 }
 
-/* Ranged/Hover */
-.pickerItem[data-range='between']:hover {
-    background-color: var(--data-grid-picker-item-range-hover-bc);
+/* disabled */
+
+.pickerItem[aria-disabled='true'] {
+    cursor: not-allowed;
+    color: var(--disable-label-text-color);
+    background: initial;
+    touch-action: none;
+    pointer-events: none;
 }
 
-/* Ranged/Active */
-.pickerItem[data-range='between']:active {
-    background-color: var(--data-grid-picker-item-range-active-bc);
-}
-
-/* Ranged/Disabled */
 .pickerItem[aria-disabled='true'][aria-selected='true']:not([data-range='between']) {
     background: var(--disable-background-color);
-    color: var(--disable-placeholder-text-color);
+    color: var(--disable-label-text-color);
 }
 
-.pickerItem[aria-disabled='true'][aria-selected='true']:after {
-    background: var(--color-gray-accent-0);
-}
+/* focus */
 
-/* Focus-visible */
 .pickerItem:focus-visible {
     outline: 2px solid var(--focus-color);
 }
 
-.pickerItem[data-variant='secondary'] {
-    --data-grid-picker-item-selected-bc: var(--color-secondary-500);
-    --data-grid-picker-item-selected-hover-bc: var(--color-secondary-600);
-    --data-grid-picker-item-selected-active-bc: var(--color-secondary-700);
-    --data-grid-picker-item-selected-tc: var(--text-inverce-color);
+/* interactive states */
+
+.pickerItem:not([aria-disabled='true']):hover {
+    --picker-item-background-color: var(--picker-item-background-color-hover);
 }
 
-.pickerItem[data-variant='primary'] {
-    --data-grid-picker-item-selected-bc: var(--color-primary-500);
-    --data-grid-picker-item-selected-hover-bc: var(--color-primary-600);
-    --data-grid-picker-item-selected-active-bc: var(--color-primary-700);
-    --data-grid-picker-item-selected-tc: var(--color-white)
-}
-
-.pickerItem[data-size='xs'] {
-    --data-grid-picker-item-size: var(--spacing-18);
-    font-size: var(--font-size-2);
-}
-
-.pickerItem[data-size='sm'] {
-    --data-grid-picker-item-size: var(--spacing-21);
-    font-size: var(--font-size-2);
-}
-
-.pickerItem[data-size='md'] {
-    --data-grid-picker-item-size: var(--spacing-24);
-    font-size: var(--font-size-3);
-}
-
-.pickerItem[data-size='lg'] {
-    --data-grid-picker-item-size: var(--spacing-27);
-    font-size: var(--font-size-4);
-}
-
-.pickerItem[data-size='xl'] {
-    --data-grid-picker-item-size: var(--spacing-30);
-    font-size: var(--font-size-4);
+.pickerItem:not([aria-disabled='true']):active {
+    --picker-item-background-color: var(--picker-item-background-color-active);
 }

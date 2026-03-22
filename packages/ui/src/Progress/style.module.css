@@ -7,38 +7,38 @@
     height: var(--progress-height);
     border-radius: calc(var(--progress-height) * var(--progress-br-ratio));
 
-    background-color: var(--color-gray-accent-100);
+    background-color: var(--fills-secondary);
     overflow-x: clip;
 }
 
-.progress[data-full-width='true'] {
+.progress:where([data-full-width='true']) {
     width: 100%;
 }
 
-.progress[data-indeterminate='true'] {
+.progress:where([data-indeterminate='true']) {
     overflow-x: hidden;
 
     --progress-track-width: 100%;
     --progress-track-animation: 1.25s progressTrackIndeterminate ease-in-out infinite;
 }
 
-.progress[data-variant='primary'] {
+.progress:where([data-variant='primary']) {
     --progress-track-color: var(--color-primary-500);
 }
 
-.progress[data-variant='secondary'] {
+.progress:where([data-variant='secondary']) {
     --progress-track-color: var(--color-secondary-500);
 }
 
-.progress[data-size='sm'] {
+.progress:where([data-size='sm']) {
     --progress-height: var(--spacing-2);
 }
 
-.progress[data-size='md'] {
+.progress:where([data-size='md']) {
     --progress-height: var(--spacing-4);
 }
 
-.progress[data-size='lg'] {
+.progress:where([data-size='lg']) {
     --progress-height: var(--spacing-6);
 }
 

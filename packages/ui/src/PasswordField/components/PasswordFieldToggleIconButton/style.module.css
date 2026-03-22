@@ -1,3 +1,11 @@
 .button {
     --icon-button-size: var(--input-height);
+
+    --button-color: var(--text-color);
+    --button-color-hover: var(--text-color);
+    --button-color-active: var(--text-color);
+
+    --button-background-color: transparent;
+    --button-background-color-hover: var(--fills-quaternary-hover);
+    --button-background-color-active: var(--fills-quaternary-active);
 }

@@ -5,14 +5,14 @@
     --select-br-ratio: 0.333;
 }
 
-.select[data-size='sm'] {
+.select:where([data-size='sm']) {
     --select-size: var(--spacing-21);
 }
 
-.select[data-size='md'] {
+.select:where([data-size='md']) {
     --select-size: var(--spacing-24);
 }
 
-.select[data-size='lg'] {
+.select:where([data-size='lg']) {
     --select-size: var(--spacing-27);
 }

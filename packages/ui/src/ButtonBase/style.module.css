@@ -1,7 +1,17 @@
 .buttonBase {
+    --button-color: inherit;
+    --button-color-hover: inherit;
+    --button-color-active: inherit;
+
+    --button-background-color: transparent;
+    --button-background-color-hover: transparent;
+    --button-background-color-active: transparent;
+
+    --button-border-color: transparent;
+    --button-border-color-hover: transparent;
+    --button-border-color-active: transparent;
+
     outline: none;
-    border: none;
-    background: none;
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
     font-family: var(--default-font-family);
@@ -10,6 +20,10 @@
     transition: background-color var(--transition-fast-state-delay) ease-in-out,
                 color var(--transition-fast-state-delay) ease-in-out,
                 border-color var(--transition-fast-state-delay) ease-in-out;
+
+    border: 2px solid var(--button-border-color);
+    background: var(--button-background-color);
+    color: var(--button-color);
 }
 
 .buttonBase:disabled,
@@ -22,186 +36,192 @@
     outline: 3px solid var(--focus-color);
 }
 
+.buttonBase:not(:disabled):not([aria-disabled='true']):hover {
+    color: var(--button-color-hover);
+    background: var(--button-background-color-hover);
+    border-color: var(--button-border-color-hover);
+}
+
+.buttonBase:not(:disabled):not([aria-disabled='true']):active {
+    color: var(--button-color-active);
+    background: var(--button-background-color-active);
+    border-color: var(--button-border-color-active);
+}
+
 /* Primary Fill */
 
-.buttonBase[data-variant='primary'][data-appearance='fill'] {
-    background-color: var(--color-primary-500);
-    color: var(--color-white);
+.buttonBase:where([data-variant='primary'][data-appearance='fill']) {
+    --button-color: var(--color-white);
+    --button-color-hover: var(--color-white);
+    --button-color-active: var(--color-white);
+
+    --button-background-color: var(--color-primary-500);
+    --button-background-color-hover: var(--color-primary-600);
+    --button-background-color-active: var(--color-primary-700);
+
+    --button-border-color: transparent;
+    --button-border-color-hover: transparent;
+    --button-border-color-active: transparent;
 }
 
-.buttonBase[data-variant='primary'][data-appearance='fill']:hover {
-    background-color: var(--color-primary-600);
-}
-
-.buttonBase[data-variant='primary'][data-appearance='fill']:active {
-    background-color: var(--color-primary-700);
-}
-
-.buttonBase[data-variant='primary'][data-appearance='fill']:disabled,
-.buttonBase[data-variant='primary'][data-appearance='fill'][aria-disabled='true'] {
-    background-color: var(--disable-background-color);
-    color: var(--disable-text-color);
+.buttonBase:where([data-variant='primary'][data-appearance='fill']):disabled,
+.buttonBase:where([data-variant='primary'][data-appearance='fill'])[aria-disabled='true'] {
+    --button-background-color: var(--disable-background-color);
+    --button-color: var(--disable-text-color);
 }
 
 /* Primary Outline */
 
-.buttonBase[data-variant='primary'][data-appearance='outline'] {
-    border: 2px solid var(--color-primary-500);
-    color: var(--color-primary-500);
+.buttonBase:where([data-variant='primary'][data-appearance='outline']) {
+    --button-border-color: var(--color-primary-500);
+    --button-border-color-hover: var(--color-primary-600);
+    --button-border-color-active: var(--color-primary-700);
+
+    --button-color: var(--color-primary-500);
+    --button-color-hover: var(--color-primary-600);
+    --button-color-active: var(--color-primary-700);
+
+    --button-background-color: transparent;
+    --button-background-color-hover: var(--color-primary-0);
+    --button-background-color-active: var(--color-primary-100);
 }
 
-.buttonBase[data-variant='primary'][data-appearance='outline']:hover {
-    border-color: var(--color-primary-600);
-    background-color: var(--color-primary-0);
-    color: var(--color-primary-600);
-}
-
-.buttonBase[data-variant='primary'][data-appearance='outline']:active {
-    border-color: var(--color-primary-700);
-    background-color: var(--color-primary-50);
-    color: var(--color-primary-700);
-}
-
-.buttonBase[data-variant='primary'][data-appearance='outline']:disabled,
-.buttonBase[data-variant='primary'][data-appearance='outline'][aria-disabled='true'] {
-    border-color: var(--disable-border-color);
-    color: var(--disable-text-color);
-    background: none;
+.buttonBase:where([data-variant='primary'][data-appearance='outline']):disabled,
+.buttonBase:where([data-variant='primary'][data-appearance='outline'])[aria-disabled='true'] {
+    --button-border-color: var(--disable-border-color);
+    --button-color: var(--disable-text-color);
+    --button-background-color: transparent;
 }
 
 /* Primary Ghost */
 
-.buttonBase[data-variant='primary'][data-appearance='ghost'] {
-    background-color: var(--color-primary-50);
-    color: var(--color-primary-500);
+.buttonBase:where([data-variant='primary'][data-appearance='ghost']) {
+    --button-border-color: transparent;
+    --button-border-color-hover: transparent;
+    --button-border-color-active: transparent;
+
+    --button-color: var(--color-primary-500);
+    --button-color-hover: var(--color-primary-600);
+    --button-color-active: var(--color-primary-700);
+
+    --button-background-color: var(--color-primary-0);
+    --button-background-color-hover: var(--color-primary-100);
+    --button-background-color-active: var(--color-primary-200);
 }
 
-.buttonBase[data-variant='primary'][data-appearance='ghost']:hover {
-    background-color: var(--color-primary-100);
-    color: var(--color-primary-600);
-}
-
-.buttonBase[data-variant='primary'][data-appearance='ghost']:active {
-    background-color: var(--color-primary-150);
-    color: var(--color-primary-700);
-}
-
-.buttonBase[data-variant='primary'][data-appearance='ghost']:disabled,
-.buttonBase[data-variant='primary'][data-appearance='ghost'][aria-disabled='true'] {
-    background-color: var(--disable-background-color);
-    color: var(--disable-text-color);
+.buttonBase:where([data-variant='primary'][data-appearance='ghost']):disabled,
+.buttonBase:where([data-variant='primary'][data-appearance='ghost'])[aria-disabled='true'] {
+    --button-background-color: var(--disable-background-color);
+    --button-color: var(--disable-text-color);
 }
 
 /* Primary Transparent */
 
-.buttonBase[data-variant='primary'][data-appearance='transparent'] {
-    background: none;
-    color: var(--color-primary-500);
+.buttonBase:where([data-variant='primary'][data-appearance='transparent']) {
+    --button-border-color: transparent;
+    --button-border-color-hover: transparent;
+    --button-border-color-active: transparent;
+
+    --button-color: var(--color-primary-500);
+    --button-color-hover: var(--color-primary-600);
+    --button-color-active: var(--color-primary-700);
+
+    --button-background-color: transparent;
+    --button-background-color-hover: var(--color-primary-0);
+    --button-background-color-active: var(--color-primary-100);
 }
 
-.buttonBase[data-variant='primary'][data-appearance='transparent']:hover {
-    background-color: var(--color-primary-50);
-    color: var(--color-primary-500);
-}
-
-.buttonBase[data-variant='primary'][data-appearance='transparent']:active {
-    background-color: var(--color-primary-100);
-    color: var(--color-primary-500);
-}
-
-.buttonBase[data-variant='primary'][data-appearance='transparent']:disabled,
-.buttonBase[data-variant='primary'][data-appearance='transparent'][aria-disabled='true'] {
-    color: var(--disable-text-color);
-    background: none;
+.buttonBase:where([data-variant='primary'][data-appearance='transparent']):disabled,
+.buttonBase:where([data-variant='primary'][data-appearance='transparent'])[aria-disabled='true'] {
+    --button-color: var(--disable-text-color);
+    --button-background-color: transparent;
 }
 
 /* Secondary Fill */
 
-.buttonBase[data-variant='secondary'][data-appearance='fill'] {
-    background-color: var(--color-secondary-500);
-    color: var(--text-inverce-color);
+.buttonBase:where([data-variant='secondary'][data-appearance='fill']) {
+    --button-color: var(--text-color-inverce);
+    --button-color-hover: var(--text-color-inverce);
+    --button-color-active: var(--text-color-inverce);
+
+    --button-background-color: var(--color-secondary-500);
+    --button-background-color-hover: var(--color-secondary-600);
+    --button-background-color-active: var(--color-secondary-700);
+
+    --button-border-color: transparent;
+    --button-border-color-hover: transparent;
+    --button-border-color-active: transparent;
 }
 
-.buttonBase[data-variant='secondary'][data-appearance='fill']:hover {
-    background-color: var(--color-secondary-600);
-}
-
-.buttonBase[data-variant='secondary'][data-appearance='fill']:active {
-    background-color: var(--color-secondary-700);
-}
-
-.buttonBase[data-variant='secondary'][data-appearance='fill']:disabled,
-.buttonBase[data-variant='secondary'][data-appearance='fill'][aria-disabled='true'] {
-    background-color: var(--disable-background-color);
-    color: var(--disable-text-color);
+.buttonBase:where([data-variant='secondary'][data-appearance='fill']):disabled,
+.buttonBase:where([data-variant='secondary'][data-appearance='fill'])[aria-disabled='true'] {
+    --button-background-color: var(--disable-background-color);
+    --button-color: var(--disable-text-color);
 }
 
 /* Secondary Outline */
 
-.buttonBase[data-variant='secondary'][data-appearance='outline'] {
-    border: 2px solid var(--color-secondary-500);
-    color: var(--color-secondary-500);
+.buttonBase:where([data-variant='secondary'][data-appearance='outline']) {
+    --button-border-color: var(--color-secondary-500);
+    --button-border-color-hover: var(--color-secondary-600);
+    --button-border-color-active: var(--color-secondary-700);
+
+    --button-color: var(--color-secondary-500);
+    --button-color-hover: var(--color-secondary-600);
+    --button-color-active: var(--color-secondary-700);
+
+    --button-background-color: transparent;
+    --button-background-color-hover: var(--color-secondary-0);
+    --button-background-color-active: var(--color-secondary-100);
 }
 
-.buttonBase[data-variant='secondary'][data-appearance='outline']:hover {
-    border-color: var(--color-secondary-600);
-    background-color: var(--color-secondary-0);
-    color: var(--color-secondary-600);
-}
-
-.buttonBase[data-variant='secondary'][data-appearance='outline']:active {
-    border-color: var(--color-secondary-700);
-    background-color: var(--color-secondary-50);
-    color: var(--color-secondary-700);
-}
-
-.buttonBase[data-variant='secondary'][data-appearance='outline']:disabled,
-.buttonBase[data-variant='secondary'][data-appearance='outline'][aria-disabled='true'] {
-    border-color: var(--disable-border-color);
-    color: var(--disable-text-color);
-    background: none;
+.buttonBase:where([data-variant='secondary'][data-appearance='outline']):disabled,
+.buttonBase:where([data-variant='secondary'][data-appearance='outline'])[aria-disabled='true'] {
+    --button-border-color: var(--disable-border-color);
+    --button-color: var(--disable-text-color);
+    --button-background-color: transparent;
 }
 
 /* Secondary Ghost */
 
-.buttonBase[data-variant='secondary'][data-appearance='ghost'] {
-    background-color: var(--color-secondary-50);
-    color: var(--color-secondary-500);
+.buttonBase:where([data-variant='secondary'][data-appearance='ghost']) {
+    --button-border-color: transparent;
+    --button-border-color-hover: transparent;
+    --button-border-color-active: transparent;
+
+    --button-color: var(--color-secondary-500);
+    --button-color-hover: var(--color-secondary-600);
+    --button-color-active: var(--color-secondary-700);
+
+    --button-background-color: var(--color-secondary-0);
+    --button-background-color-hover: var(--color-secondary-100);
+    --button-background-color-active: var(--color-secondary-200);
 }
 
-.buttonBase[data-variant='secondary'][data-appearance='ghost']:hover {
-    background-color: var(--color-secondary-100);
-    color: var(--color-secondary-600);
-}
-
-.buttonBase[data-variant='secondary'][data-appearance='ghost']:active {
-    background-color: var(--color-secondary-150);
-    color: var(--color-secondary-700);
-}
-
-.buttonBase[data-variant='secondary'][data-appearance='ghost']:disabled,
-.buttonBase[data-variant='secondary'][data-appearance='ghost'][aria-disabled='true'] {
-    background-color: var(--disable-background-color);
-    color: var(--disable-text-color);
+.buttonBase:where([data-variant='secondary'][data-appearance='ghost']):disabled,
+.buttonBase:where([data-variant='secondary'][data-appearance='ghost'])[aria-disabled='true'] {
+    --button-background-color: var(--disable-background-color);
+    --button-color: var(--disable-text-color);
 }
 
 /* Secondary Transparent */
 
-.buttonBase[data-variant='secondary'][data-appearance='transparent'] {
-    background: none;
-    color: var(--color-secondary-500);
+.buttonBase:where([data-variant='secondary'][data-appearance='transparent']) {
+    --button-border-color: transparent;
+    --button-border-color-hover: transparent;
+    --button-border-color-active: transparent;
+
+    --button-color: var(--color-secondary-500);
+    --button-color-hover: var(--color-secondary-600);
+    --button-color-active: var(--color-secondary-700);
+
+    --button-background-color: transparent;
+    --button-background-color-hover: var(--color-secondary-0);
+    --button-background-color-active: var(--color-secondary-100);
 }
 
-.buttonBase[data-variant='secondary'][data-appearance='transparent']:hover {
-    background-color: var(--color-secondary-50);
-}
-
-.buttonBase[data-variant='secondary'][data-appearance='transparent']:active {
-    background-color: var(--color-secondary-100);
-}
-
-.buttonBase[data-variant='secondary'][data-appearance='transparent']:disabled,
-.buttonBase[data-variant='secondary'][data-appearance='transparent'][aria-disabled='true'] {
-    color: var(--disable-text-color);
-    background: none;
+.buttonBase:where([data-variant='secondary'][data-appearance='transparent']):disabled,
+.buttonBase:where([data-variant='secondary'][data-appearance='transparent'])[aria-disabled='true'] {
+    --button-color: var(--disable-text-color);
+    --button-background-color: transparent;
 }

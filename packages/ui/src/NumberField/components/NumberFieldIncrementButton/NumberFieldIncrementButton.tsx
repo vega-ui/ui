@@ -3,7 +3,8 @@ import { Icon } from '../../../Icon';
 import { IconButton, IconButtonProps } from '../../../IconButton';
 import { PlusIcon } from '@vega-ui/icons';
 import { useNumberFieldContext } from '../../contexts';
-import { mergeEventHandlers } from '@vega-ui/utils';
+import { csx, mergeEventHandlers } from '@vega-ui/utils';
+import style from './style.module.css';
 
 export type NumberFieldIncrementProps = IconButtonProps
 
@@ -20,23 +21,25 @@ export type NumberFieldIncrementProps = IconButtonProps
  */
 export const NumberFieldIncrementButton: FC<NumberFieldIncrementProps> = ({
   disabled,
+  className,
   onClick: _onClick,
   children,
   ...props
 }) => {
   const { increment, disabled: _disabled, isMax, size } = useNumberFieldContext()
-  
+
   const onClick = () => {
     increment()
   }
-  
+
   return (
     <IconButton
-      disabled={(disabled ?? _disabled) || isMax }
+      disabled={(disabled ?? _disabled) || isMax}
       size={size}
       onClick={mergeEventHandlers(onClick, _onClick)}
       variant='secondary'
       appearance='transparent'
+      className={csx(style.button, className)}
       {...props}>
       {children ?? <Icon><PlusIcon/></Icon>}
     </IconButton>

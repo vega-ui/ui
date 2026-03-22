@@ -15,40 +15,40 @@
     border-radius: calc(var(--avatar-size) * var(--avatar-br-ratio));
 }
 
-.avatar[data-variant='primary'] {
-    background-color: var(--color-primary-50);
+.avatar:where([data-variant='primary']) {
+    background-color: var(--color-primary-0);
     color: var(--color-primary-500);
 }
 
-.avatar[data-variant='secondary'] {
-    background-color: var(--color-secondary-50);
+.avatar:where([data-variant='secondary']) {
+    background-color: var(--color-secondary-0);
     color: var(--text-color);
 }
 
-.avatar[data-size='2xs'] {
+.avatar:where([data-size='2xs']) {
     --avatar-size: var(--spacing-8);
 }
 
-.avatar[data-size='xs'] {
+.avatar:where([data-size='xs']) {
     --avatar-size: var(--spacing-10);
 }
 
-.avatar[data-size='sm'] {
+.avatar:where([data-size='sm']) {
     --avatar-size: var(--spacing-12);
 }
 
-.avatar[data-size='md'] {
+.avatar:where([data-size='md']) {
     --avatar-size: var(--spacing-16);
 }
 
-.avatar[data-size='lg'] {
+.avatar:where([data-size='lg']) {
     --avatar-size: var(--spacing-21);
 }
 
-.avatar[data-size='xl'] {
+.avatar:where([data-size='xl']) {
     --avatar-size: var(--spacing-24);
 }
 
-.avatar[data-size='2xl'] {
+.avatar:where([data-size='2xl']) {
     --avatar-size: var(--spacing-27);
 }

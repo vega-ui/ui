@@ -3,10 +3,10 @@
     white-space: nowrap;
 }
 
-.paginationText[data-variant='primary'] {
+.paginationText:where([data-variant='primary']) {
     color: var(--color-primary-500);
 }
 
-.paginationText[data-variant='secondary'] {
+.paginationText:where([data-variant='secondary']) {
     color: var(--color-secondary-500);
 }

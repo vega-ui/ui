@@ -8,6 +8,6 @@
   transition: transform var(--transition-fast-state-delay) ease-in-out;
 }
 
-.picker[data-visible='false'] {
+.picker:where([data-visible='false']) {
   transform: translateY(100%);
 }

@@ -16,14 +16,14 @@
             height var(--transition-fast-state-delay) ease-in-out;
 }
 
-.indicator[data-variant='primary'] {
+.indicator:where([data-variant='primary']) {
     background-color: var(--color-primary-500);
 }
 
-.indicator[data-variant='secondary'] {
+.indicator:where([data-variant='secondary']) {
     background-color: var(--color-secondary-500);
 }
 
-.indicator[data-disabled='true'] {
+.indicator:where([data-disabled='true']) {
     background-color: var(--disable-background-color);
 }

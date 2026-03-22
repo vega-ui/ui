@@ -8,11 +8,11 @@
     transition: scale var(--transition-state-delay) ease;
 }
 
-.dialog[data-shadowed='true'] {
+.dialog:where([data-shadowed='true']) {
     box-shadow: var(--surface-shadow);
 }
 
-.dialog[data-fluid='true'] {
+.dialog:where([data-fluid='true']) {
     width: 100%;
     max-width: initial;
     height: 100%;
@@ -21,6 +21,6 @@
     box-sizing: border-box;
 }
 
-.dialog[data-status='open'] {
+.dialog:where([data-status='open']) {
     scale: 1;
 }

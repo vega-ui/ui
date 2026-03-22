@@ -24,7 +24,7 @@ export const Default: Story = {
       width: 300,
       height: 120,
       border: '1px solid var(--color-blue-accent-700)',
-      background: 'var(--color-blue-accent-0)',
+      background: 'var(--color-blue-accent-50)',
       boxSizing: 'border-box',
       borderRadius: 12,
       fontSize: 24,

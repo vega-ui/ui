@@ -15,6 +15,7 @@ import {
 import { Card } from '../Card';
 import { FC } from 'react';
 import { useDialogContext } from './contexts';
+import { TextField, TextFieldInput } from '../TextField';
 
 const meta = {
   title: 'Overlay/Dialog/Dialog',
@@ -138,6 +139,37 @@ export const WithHeaderAndClose: Story = {
                   Not now
                 </DialogCloseActionButton>
               </div>
+            </DialogContent>
+          </DialogBackdrop>
+        </DialogPortal>
+      </>
+    ),
+  },
+};
+
+export const TextFieldInside: Story = {
+  args: {
+    children: (
+      <>
+        <DialogTrigger asChild>
+          <Button>Open dialog</Button>
+        </DialogTrigger>
+        
+        <DialogPortal>
+          <DialogBackdrop>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>TextField</DialogTitle>
+                <DialogCloseButton />
+              </DialogHeader>
+              
+              <Paragraph>
+                This dialog demonstrates a typical confirm flow: TextField inside.
+              </Paragraph>
+              
+              <TextField>
+                <TextFieldInput placeholder='Placeholder' />
+              </TextField>
             </DialogContent>
           </DialogBackdrop>
         </DialogPortal>

@@ -1,9 +1,0 @@
-.triggerButton {
-    background: none;
-    border: none;
-    padding: 0;
-}
-
-.triggerButton:focus-visible {
-    outline: 2px solid var(--focus-color);
-}

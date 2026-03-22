@@ -1,5 +1,5 @@
 .handle {
-    touch-action: none !important;
+    touch-action: none;
     position: relative;
     width: 100%;
     box-sizing: border-box;
@@ -10,7 +10,7 @@
 .handle:after {
     content: '';
     position: absolute;
-    background: var(--color-gray-accent-200);
+    background: var(--separator-opaque);
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);

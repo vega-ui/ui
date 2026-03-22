@@ -1,10 +1,10 @@
 .icon {
-    --select-icon-color: var(--field-placeholder-color);
+    --select-icon-color: var(--label-tertiary);
 
     color: var(--select-icon-color);
     transition: transform var(--transition-fast-state-delay) ease-in-out;
 }
 
-.icon[data-open='true'] {
+.icon:where([data-open='true']) {
     transform: rotate(180deg);
 }

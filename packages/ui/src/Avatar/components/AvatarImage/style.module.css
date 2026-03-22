@@ -7,6 +7,6 @@
     aspect-ratio: 1 / 1;
 }
 
-.image[data-status='loaded'] {
+.image:where([data-status='loaded']) {
     display: initial;
 }

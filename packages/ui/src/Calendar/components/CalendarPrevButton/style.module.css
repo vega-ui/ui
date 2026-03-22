@@ -7,6 +7,6 @@
     border-color var(--transition-fast-state-delay) ease-in-out;
 }
 
-.button[data-visible='true'] {
+.button:where([data-visible='true']) {
     transform: translateX(0);
 }

@@ -9,10 +9,10 @@
     transition: transform var(--transition-fast-state-delay) ease-in-out;
 }
 
-.picker[data-visible='false'] {
+.picker:where([data-visible='false']) {
     transform: translateY(calc(-100% - 2px));
 }
 
-.picker[data-visible='true'] {
+.picker:where([data-visible='true']) {
     transform: translateY(0);
 }

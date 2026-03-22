@@ -2,10 +2,10 @@
     border-collapse: collapse;
 }
 
-.table[data-full-width='true'] {
+.table:where([data-full-width='true']) {
     width: 100%;
 }
 
-.table[data-full-height='true'] {
+.table:where([data-full-height='true']) {
     height: 100%;
 }

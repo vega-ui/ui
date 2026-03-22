@@ -143,7 +143,7 @@ export const WithActions: Story = {
                 <div style={{ display: 'flex', gap: 10, marginTop: 8 }}>
                   <Button size='sm' fullWidth>Send invite</Button>
                   <DrawerCloseButton asChild>
-                    <Button size='sm' fullWidth variant='secondary'>
+                    <Button style={{ minWidth: 140 }} size='sm' fullWidth variant='secondary'>
                       Cancel
                     </Button>
                   </DrawerCloseButton>

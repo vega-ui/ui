@@ -2,7 +2,7 @@ import { ButtonHTMLAttributes, FC, Ref } from 'react';
 import style from './style.module.css'
 import { usePageControlContext } from '../../contexts';
 import { csx, mergeRefs } from '@vega-ui/utils';
-import { PageControlSize, PageControlVariant } from '../../types';
+import { PageControlSize } from '../../types';
 
 export interface PageControlItemProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
@@ -15,12 +15,6 @@ export interface PageControlItemProps extends ButtonHTMLAttributes<HTMLButtonEle
    * Ref forwarded to the underlying button element.
    */
   ref?: Ref<HTMLButtonElement>
-  
-  /**
-   * Visual variant of the page control item.
-   * Inherits available values from `PageControlVariant`, such as 'default' or 'high-contrast'.
-   */
-  variant?: PageControlVariant
   
   /**
    * Forces this item to be marked as active, regardless of the context.
@@ -38,13 +32,12 @@ export interface PageControlItemProps extends ButtonHTMLAttributes<HTMLButtonEle
 export const PageControlItem: FC<PageControlItemProps> = ({
   index,
   className,
-  variant,
   size,
   current,
   ref,
   ...props
 }) => {
-  const { active, variant: _variant, size: _size, itemRef } = usePageControlContext()
+  const { active, size: _size, itemRef } = usePageControlContext()
   
   const _current = active === index
   const selected = current ?? _current
@@ -61,7 +54,6 @@ export const PageControlItem: FC<PageControlItemProps> = ({
       className={csx(style.pageControlItem, className)}
       aria-selected={selected}
       data-active={selected}
-      data-variant={variant ?? _variant}
       data-size={_size ?? size}
       {...props}
     />

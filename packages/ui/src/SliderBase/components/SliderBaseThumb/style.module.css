@@ -1,6 +1,4 @@
 .thumb {
-    --slider-base-thumb-border-color: var(--color-primary-500);
-    --slider-base-thumb-color: var(--light-color);
     --slider-base-thumb-size: calc(var(--slider-size) * 3);
     --slider-base-thumb-br-ratio: 1;
     --slider-base-thumb-bw-ratio: 0.2;
@@ -22,16 +20,17 @@
                 background-color var(--transition-state-delay) ease-in-out;
 }
 
-.thumb[data-orientation='horizontal'] {
+.thumb:where([data-orientation='horizontal']) {
     left: calc((var(--slider-base-value) / var(--slider-base-max) * 100%) - (var(--slider-base-thumb-size) / 2));
 }
 
-.thumb[data-orientation='vertical'] {
+.thumb:where([data-orientation='vertical']) {
     bottom: calc((var(--slider-base-value) / var(--slider-base-max) * 100%) - (var(--slider-base-thumb-size) / 2));
 }
 
 .thumb:hover {
     --slider-base-thumb-bw-ratio: 0.25;
+    --slider-base-thumb-border-color: var(--slider-base-thumb-border-color-hover);
 }
 
 .thumb:focus-visible {
@@ -40,4 +39,5 @@
 
 .thumb:active {
     --slider-base-thumb-bw-ratio: 0.3;
+    --slider-base-thumb-border-color: var(--slider-base-thumb-border-color-active);
 }

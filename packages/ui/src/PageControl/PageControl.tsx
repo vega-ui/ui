@@ -2,7 +2,7 @@ import { FC, HTMLAttributes, PropsWithChildren, useRef, PointerEvent, MouseEvent
 import { PageControlProvider } from './contexts';
 import style from './style.module.css'
 import { csx, mergeEventHandlers, safeSetPointerCapture } from '@vega-ui/utils';
-import { PageControlSize, PageControlVariant } from './types';
+import { PageControlSize } from './types';
 import { useControlledState, useRefMap } from '@vega-ui/hooks';
 
 export interface PageControlProps extends HTMLAttributes<HTMLUListElement> {
@@ -23,12 +23,6 @@ export interface PageControlProps extends HTMLAttributes<HTMLUListElement> {
   onChangeActive?: (value: number) => void
   
   /**
-   * Visual variant of the component.
-   * Controls the appearance and style of page indicators (e.g. default or high-contrast).
-   */
-  variant?: PageControlVariant
-  
-  /**
    * Ref forwarded to the underlying <ul> element.
    */
   ref?: Ref<HTMLUListElement>
@@ -47,7 +41,6 @@ export const PageControl: FC<PropsWithChildren<PageControlProps>> = ({
   onChangeActive,
   children,
   className,
-  variant = 'default',
   size = 'md',
   onKeyDown: _onKeyDown,
   onClick: _onClick,
@@ -129,7 +122,7 @@ export const PageControl: FC<PropsWithChildren<PageControlProps>> = ({
   }
 
   return (
-    <PageControlProvider itemRef={itemRef} size={size} variant={variant} active={active}>
+    <PageControlProvider itemRef={itemRef} size={size} active={active}>
       <ul
         role='tablist'
         ref={ref}

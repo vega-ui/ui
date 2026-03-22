@@ -20,14 +20,14 @@
     border-radius: calc(var(--select-size) * var(--select-listbox-br-ratio));
 }
 
-.listbox[data-status='open'] {
+.listbox:where([data-status='open']) {
     scale: 1;
     opacity: 1;
 }
 
-.listbox[data-status='initial'],
-.listbox[data-status='unmounted'],
-.listbox[data-status='close'] {
+.listbox:where([data-status='initial']),
+.listbox:where([data-status='unmounted']),
+.listbox:where([data-status='close']) {
     scale: 0;
     opacity: 0;
 }

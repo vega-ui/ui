@@ -5,6 +5,6 @@
     box-sizing: border-box;
 }
 
-.backdrop[data-fluid='true'] {
+.backdrop:where([data-fluid='true']) {
     padding: 0;
 }

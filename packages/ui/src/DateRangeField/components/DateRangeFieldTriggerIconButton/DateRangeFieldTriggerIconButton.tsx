@@ -4,6 +4,8 @@ import { Icon } from '../../../Icon';
 import { CalendarIcon } from '@vega-ui/icons';
 import { useDateRangeFieldContext } from '../../contexts';
 import { useTextFieldContext } from '../../../TextField/contexts';
+import { csx } from '@vega-ui/utils';
+import style from './style.module.css';
 
 export type DateRangeFieldTriggerIconButtonProps = IconButtonProps
 
@@ -15,12 +17,12 @@ export type DateRangeFieldTriggerIconButtonProps = IconButtonProps
  * Provides a clickable icon button that opens the associated calendar picker,
  * visually indicating that a date can be selected.
  */
-export const DateRangeFieldTriggerIconButton: FC<DateRangeFieldTriggerIconButtonProps> = ({ children, ...props }) => {
+export const DateRangeFieldTriggerIconButton: FC<DateRangeFieldTriggerIconButtonProps> = ({ children, className, ...props }) => {
   const { size } = useTextFieldContext()
   const { disabled } = useDateRangeFieldContext()
-  
+
   return (
-    <IconButton size={size} variant='secondary' appearance='transparent' disabled={disabled} {...props}>
+    <IconButton size={size} variant='secondary' appearance='transparent' disabled={disabled} className={csx(style.button, className)} {...props}>
       {children ?? <Icon><CalendarIcon /></Icon>}
     </IconButton>
   )

@@ -15,15 +15,7 @@ const meta: Meta<typeof PageControl> = {
       url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/VegaUI--Community-?node-id=2943-6670&t=HpDBe4lBNsmz9mds-4',
     },
   },
-  argTypes: {
-    variant: {
-      control: 'radio',
-      options: [
-        'default',
-        'high-contrast',
-      ]
-    }
-  },
+  argTypes: {},
   tags: ['autodocs'],
 };
 

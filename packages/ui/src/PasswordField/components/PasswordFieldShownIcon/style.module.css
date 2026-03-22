@@ -1,3 +1,3 @@
-.icon[data-hidden='true'] {
+.icon:where([data-hidden='true']) {
     display: none;
 }

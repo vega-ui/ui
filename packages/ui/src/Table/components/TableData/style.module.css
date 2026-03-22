@@ -2,27 +2,27 @@
     padding: 12px;
 }
 
-.data[data-align='start'] {
+.data:where([data-align='start']) {
     text-align: start;
 }
 
-.data[data-align='center'] {
+.data:where([data-align='center']) {
     text-align: center;
 }
 
-.data[data-align='end'] {
+.data:where([data-align='end']) {
     text-align: end;
 }
 
-.data[data-align='between'] {
+.data:where([data-align='between']) {
     text-align: center;
 }
 
-.data[data-align='between']:first-child {
+.data:where([data-align='between']):first-child {
     text-align: start;
 }
 
-.data[data-align='between']:last-child {
+.data:where([data-align='between']):last-child {
     text-align: end;
 }
 
