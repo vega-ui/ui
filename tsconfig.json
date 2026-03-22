@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "jsx": "react-jsx",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "paths": {
       "@vega-ui/utils": ["./packages/utils/src/index.ts"],

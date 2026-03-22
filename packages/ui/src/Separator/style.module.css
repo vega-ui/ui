@@ -1,15 +1,15 @@
 .separator {
     width: 100%;
     height: 1px;
-    background: var(--color-gray-accent-150);
+    background: var(--color-gray-accent-200);
 }
 
-.separator[data-orientation="horizontal"] {
+.separator:where([data-orientation="horizontal"]) {
     height: 1px;
     width: 100%;
 }
 
-.separator[data-orientation="vertical"] {
+.separator:where([data-orientation="vertical"]) {
     height: 100%;
     width: 1px;
 }

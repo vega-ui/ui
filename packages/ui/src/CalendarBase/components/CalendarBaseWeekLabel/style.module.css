@@ -1,5 +1,5 @@
 .label {
-    color: var(--color-gray-accent-500) !important;
     text-align: center;
+    color: var(--label-tertiary);
     min-height: var(--spacing-18);
 }

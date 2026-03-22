@@ -2,8 +2,7 @@
 import { useSelectContext, useSelectOptionsContext } from '../../contexts';
 import { Option, OptionProps } from '../../../Option';
 import { useListItem } from '@floating-ui/react';
-import { csx, mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
-import style from './style.module.css'
+import { mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
 import { createPortal } from 'react-dom';
 import { useLayoutEffect, useRef } from 'react';
 
@@ -13,7 +12,6 @@ export type SelectOptionProps<V> = OptionProps<V>
 export const SelectOption = <V extends string | number>({
   value,
   children,
-  className,
   disabled,
   onClick: _onClick,
   ...props
@@ -46,7 +44,6 @@ export const SelectOption = <V extends string | number>({
         selected={selected}
         focusable={focusable}
         ref={mergeRefs([ref, optionRef])}
-        className={csx(style.option, className)}
         {...itemProps({ ...props, onClick: mergeEventHandlers(onClick, _onClick) })}
       >
         {children}

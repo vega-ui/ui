@@ -5,7 +5,7 @@
     display: flex;
     align-items: center;
     position: relative;
-    background-color: var(--field-background-color);
+    background-color: var(--fills-tertiary);
     outline: 1px solid transparent;
     box-sizing: border-box;
     cursor: text;
@@ -15,34 +15,34 @@
     border-radius: calc(var(--input-height) * var(--input-br-ratio));
 }
 
-.field[data-size='sm'] {
+.field:where([data-size='sm']) {
     --input-height: var(--spacing-21);
 }
 
-.field[data-size='md'] {
+.field:where([data-size='md']) {
     --input-height: var(--spacing-24);
 }
 
-.field[data-size='lg'] {
+.field:where([data-size='lg']) {
     --input-height: var(--spacing-27);
 }
 
 /* textField/hover */
 
 .field:has(input:hover) {
-    background-color: var(--field-background-hover-color);
+    background-color: var(--fills-tertiary-hover);
 }
 
 /* textField/active */
 
 .field:has(input:active),
 .field:has(input:focus-visible) {
-    outline-color: var(--field-border-focus-color);
+    outline-color: var(--color-primary-500);
 }
 
 /* textField/error */
 
-.field[data-error='true'] {
+.field:where([data-error='true']) {
     outline-color: var(--color-error);
 }
 

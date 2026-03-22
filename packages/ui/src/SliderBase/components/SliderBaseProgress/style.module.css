@@ -1,5 +1,4 @@
 .progress {
-    --slider-base-progress-color: var(--color-primary-500);
     --slider-base-progress-from: 0;
     --slider-base-progress-to: var(--slider-base-value);
     --slider-base-progress-diff: 0;
@@ -14,13 +13,13 @@
     transition: background-color var(--transition-state-delay) ease-in-out;
 }
 
-.progress[data-orientation='horizontal'] {
+.progress:where([data-orientation='horizontal']) {
     height: 100%;
     width: calc(var(--slider-base-progress-diff) / var(--slider-base-max) * 100%);
     left: calc(var(--slider-base-progress-from) / var(--slider-base-max) * 100%);
 }
 
-.progress[data-orientation='vertical'] {
+.progress:where([data-orientation='vertical']) {
     width: 100%;
     height: calc(var(--slider-base-progress-diff) / var(--slider-base-max) * 100%);
     bottom: calc(var(--slider-base-progress-from) / var(--slider-base-max) * 100%);

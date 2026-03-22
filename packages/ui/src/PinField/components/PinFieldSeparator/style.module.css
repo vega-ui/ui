@@ -1,16 +1,16 @@
 .separator {
     height: 1px;
-    background-color: var(--color-gray-accent-150);
+    background-color: var(--separator-opaque);
 }
 
-.separator[data-size='sm'] {
+.separator:where([data-size='sm']) {
     width: var(--spacing-10);
 }
 
-.separator[data-size='md'] {
+.separator:where([data-size='md']) {
     width: var(--spacing-12);
 }
 
-.separator[data-size='lg'] {
+.separator:where([data-size='lg']) {
     width: var(--spacing-14);
 }

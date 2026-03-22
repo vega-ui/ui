@@ -6,6 +6,6 @@
     height: var(--content-height);
 }
 
-.content[data-open='false'] {
+.content:where([data-open='false']) {
     height: 0;
 }

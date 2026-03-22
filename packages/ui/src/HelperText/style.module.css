@@ -1,8 +1,8 @@
-p.helperText {
+.helperText {
     display: inline-block;
-    color: var(--color-gray-accent-500);
+    color: var(--label-tertiary);
 }
 
-.helperText[data-error='true'] {
+.helperText:where([data-error='true']) {
     color: var(--color-error);
 }

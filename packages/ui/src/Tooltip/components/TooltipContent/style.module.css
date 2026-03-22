@@ -1,7 +1,7 @@
 .tooltipContent {
-    --t-color: var(--text-inverce-color);
+    --t-color: var(--text-color);
 
-    background: var(--dark-color);
+    background: var(--surface-ultrathin);
     box-shadow: var(--surface-shadow);
     border-radius: var(--radius-3);
     padding: var(--spacing-4) var(--spacing-6);
@@ -11,6 +11,6 @@
     transition: scale var(--transition-fast-state-delay) ease;
 }
 
-.tooltipContent[data-status='open'] {
+.tooltipContent:where([data-status='open']) {
     scale: 1;
 }

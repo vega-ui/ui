@@ -1,7 +1,5 @@
 'use client';
 import { FC, HTMLAttributes, MouseEvent, Ref } from 'react';
-import { csx } from '@vega-ui/utils';
-import style from './style.module.css';
 import { useCollapsibleContext } from '../../contexts';
 import { Slot } from '../../../Slot';
 
@@ -45,7 +43,7 @@ export const CollapsibleTrigger: FC<CollapsibleTriggerProps> = ({
       data-open={opened}
       aria-expanded={opened}
       aria-controls={contentId}
-      className={csx(style.triggerButton, className)}
+      className={className}
       type={Element === 'button' ? 'button' : undefined}
       {...props}
     >

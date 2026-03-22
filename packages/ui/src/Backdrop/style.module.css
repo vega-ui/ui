@@ -25,6 +25,6 @@
     opacity: 0;
 }
 
-.backdrop[data-blurred='true']::after {
-    backdrop-filter: blur(10px);
+.backdrop:where([data-blurred='true'])::after {
+    backdrop-filter: blur(20px);
 }

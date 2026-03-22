@@ -4,7 +4,7 @@
 
     display: flex;
     font-family: var(--default-font-family);
-    background-color: var(--field-background-color);
+    background-color: var(--fills-tertiary);
     color: var(--text-color);
     outline: 1px solid transparent;
     border: none;
@@ -15,11 +15,11 @@
     min-height: var(--textarea-height);
 }
 
-.textarea[data-full-width='true'] {
+.textarea:where([data-full-width='true']) {
     width: 100%;
 }
 
-.textarea[data-size='sm'] {
+.textarea:where([data-size='sm']) {
     --textarea-height: var(--spacing-21);
 
     padding: var(--spacing-6) var(--spacing-10);
@@ -27,7 +27,7 @@
     line-height: var(--line-height-2);
 }
 
-.textarea[data-size='md'] {
+.textarea:where([data-size='md']) {
     --textarea-height: var(--spacing-24);
 
     padding: var(--spacing-6) var(--spacing-12);
@@ -35,7 +35,7 @@
     line-height: var(--line-height-3);
 }
 
-.textarea[data-size='lg']  {
+.textarea:where([data-size='lg'])  {
     --textarea-height: var(--spacing-27);
 
     padding: var(--spacing-7) var(--spacing-14);
@@ -44,25 +44,25 @@
 }
 
 .textarea::placeholder {
-    color: var(--field-placeholder-color);
+    color: var(--label-tertiary);
 }
 
 /* textArea/hover */
 
 .textarea:hover {
-    background-color: var(--field-background-hover-color);
+    background-color: var(--fills-tertiary-hover);
 }
 
 /* textArea/focus | textArea/active */
 
 .textarea:focus,
 .textarea:active {
-    outline-color: var(--field-border-focus-color);
+    outline-color: var(--color-primary-500);
 }
 
 /* textArea/error */
 
-.textarea[data-error='true'] {
+.textarea:where([data-error='true']) {
     outline-color: var(--color-error);
 }
 
@@ -75,5 +75,5 @@
 }
 
 .textarea:disabled::placeholder {
-    color: var(--disable-placeholder-text-color);
+    color: var(--disable-label-text-color);
 }

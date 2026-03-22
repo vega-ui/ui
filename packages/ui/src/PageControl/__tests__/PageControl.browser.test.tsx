@@ -59,7 +59,7 @@ describe('PageControl', () => {
         
         it('renders tablist and tabs', async () => {
           await expect.element(getList(r)).toHaveRole('tablist');
-          expect(getAllTabs(r)).toHaveLength(3);
+          expect(getAllTabs(r)).toHaveLength(4);
           for (const tab of getAllTabs(r)) {
             await expect.element(tab).toHaveRole('tab');
           }

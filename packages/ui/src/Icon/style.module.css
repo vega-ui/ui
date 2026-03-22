@@ -3,34 +3,34 @@
     width: var(--icon-size);
 }
 
-.icon[data-size='4xs'] {
+.icon:where([data-size='4xs']) {
     --icon-size: 8px;
 }
 
-.icon[data-size='3xs'] {
+.icon:where([data-size='3xs']) {
     --icon-size: 10px;
 }
 
-.icon[data-size='2xs'] {
+.icon:where([data-size='2xs']) {
     --icon-size: 12px;
 }
 
-.icon[data-size='xs'] {
+.icon:where([data-size='xs']) {
     --icon-size: 14px;
 }
 
-.icon[data-size='sm'] {
+.icon:where([data-size='sm']) {
     --icon-size: 16px;
 }
 
-.icon[data-size='md'] {
+.icon:where([data-size='md']) {
     --icon-size: 18px;
 }
 
-.icon[data-size='lg'] {
+.icon:where([data-size='lg']) {
     --icon-size: 22px;
 }
 
-.icon[data-size='xl'] {
+.icon:where([data-size='xl']) {
     --icon-size: 28px;
 }

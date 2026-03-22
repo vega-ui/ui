@@ -2,6 +2,10 @@
     --segmented-control-height: var(--spacing-21);
     --segmented-control-br-ratio: 0.333;
 
+    --segmented-control-background-color: var(--fills-tertiary);
+    --segmented-control-background-color-hover: var(--fills-tertiary-hover);
+    --segmented-control-background-color-active: var(--fills-tertiary-active);
+
     --segmented-control-indicator-offset: 0;
     --segmented-control-indicator-size: 100%;
 
@@ -14,7 +18,7 @@
     box-sizing: border-box;
 
     height: var(--segmented-control-height);
-    background-color: var(--color-gray-accent-50);
+    background-color: var(--segmented-control-background-color);
     border-radius: calc(var(--segmented-control-height) * var(--segmented-control-br-ratio));
 }
 
@@ -22,22 +26,22 @@
     outline: 2px solid var(--focus-color);
 }
 
-.segmentedControl[data-size='xs'] {
+.segmentedControl:where([data-size='xs']) {
     --segmented-control-height: var(--spacing-18);
 }
 
-.segmentedControl[data-size='sm'] {
+.segmentedControl:where([data-size='sm']) {
     --segmented-control-height: var(--spacing-21);
 }
 
-.segmentedControl[data-size='md'] {
+.segmentedControl:where([data-size='md']) {
     --segmented-control-height: var(--spacing-24);
 }
 
-.segmentedControl[data-size='lg'] {
+.segmentedControl:where([data-size='lg']) {
     --segmented-control-height: var(--spacing-27);
 }
 
-.segmentedControl[data-size='xl'] {
+.segmentedControl:where([data-size='xl']) {
     --segmented-control-height: var(--spacing-30);
 }

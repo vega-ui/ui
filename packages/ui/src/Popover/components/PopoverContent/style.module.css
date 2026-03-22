@@ -9,18 +9,18 @@
             opacity var(--transition-state-delay) ease;
 }
 
-.content[data-shadowed='true'] {
+.content:where([data-shadowed='true']) {
     box-shadow: var(--surface-shadow);
 }
 
-.content[data-status='open'] {
+.content:where([data-status='open']) {
     scale: 1;
     opacity: 1;
 }
 
-.content[data-status='initial'],
-.content[data-status='unmounted'],
-.content[data-status='close'] {
+.content:where([data-status='initial']),
+.content:where([data-status='unmounted']),
+.content:where([data-status='close']) {
     scale: 0;
     opacity: 0;
 }

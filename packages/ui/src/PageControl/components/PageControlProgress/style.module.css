@@ -1,18 +1,22 @@
 .pageControlProgress {
+    cursor: pointer;
     position: relative;
     border: none;
     overflow: hidden;
     width: var(--page-control-item-size);
     transition: width var(--transition-state-delay) ease-in-out,
                 background-color var(--transition-fast-state-delay) linear;
+    background: oklch(from var(--label-primary) l c h / 0.3);
 }
 
-.pageControlProgress[data-active='true'] {
+.pageControlProgress:where([data-active='true']) {
     width: calc(var(--page-control-item-size) * 3);
-    background-color: var(--page-control-item-enabled-color);
+
+    --page-item-background-color: var(--fills-primary);
+    --page-item-background-color-hover: var(--fills-primary);
 }
 
-.pageControlProgress[data-active='true']:after {
+.pageControlProgress:where([data-active='true']):after {
     content: '';
     display: block;
     position: absolute;
@@ -20,7 +24,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: var(--page-control-item-active-color);
+    background-color: var(--page-item-background-color-active);
     border-radius: inherit;
 
     animation: forwards progress var(--duration) linear;

@@ -41,7 +41,7 @@ export const PageControlProgress: FC<PageControlProgressProps> = ({
   className,
   index,
   duration = 5000,
-  current,
+  current: _current,
   size,
   style: _style,
   ref,
@@ -51,7 +51,7 @@ export const PageControlProgress: FC<PageControlProgressProps> = ({
   const progressRef = useRef<HTMLButtonElement>(null)
   const [progressValue, setProgressValue] = useState(0)
   
-  const isCurrent = current ?? (active === index)
+  const current = _current ?? (active === index)
   
   useEffect(() => {
     const el = progressRef.current
@@ -80,13 +80,13 @@ export const PageControlProgress: FC<PageControlProgressProps> = ({
   
   return (
     <PageControlItem
-      ref={mergeRefs([ref, progressRef])}
       index={index}
-      role={isCurrent ? 'meter' : undefined}
-      aria-valuemax={isCurrent ? 100 : undefined}
-      aria-valuenow={isCurrent ? progressValue : undefined}
-      className={csx(style.pageControlProgress, className)}
       size={size ?? _size}
+      role={current ? 'meter' : 'tab'}
+      ref={mergeRefs([ref, progressRef])}
+      aria-valuemax={current ? 100 : undefined}
+      aria-valuenow={current ? progressValue : undefined}
+      className={csx(style.pageControlProgress, className)}
       style={{
         '--duration': `${duration}ms`,
         ..._style

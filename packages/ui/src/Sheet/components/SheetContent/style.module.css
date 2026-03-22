@@ -17,7 +17,7 @@
     will-change: transform;
 }
 
-.content[data-shadow='true'] {
+.content:where([data-shadow='true']) {
     box-shadow: var(--surface-shadow);
 }
 
@@ -31,17 +31,17 @@
     background: var(--surface-ultrathin);
 }
 
-.content[data-status='open'] {
+.content:where([data-status='open']) {
     transform: translateY(0);
 }
 
-.content[data-status='initial'],
-.content[data-status='unmounted'],
-.content[data-status='close'] {
+.content:where([data-status='initial']),
+.content:where([data-status='unmounted']),
+.content:where([data-status='close']) {
     transform: translateY(100%);
 }
 
-.content[data-dragging='true'] {
+.content:where([data-dragging='true']) {
     transition: none;
 }
 

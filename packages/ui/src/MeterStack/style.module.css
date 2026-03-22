@@ -11,22 +11,22 @@
 
     display: flex;
     gap: calc(var(--meter-stack-height) * var(--meter-stack-gap-ratio));
-    background-color: var(--color-gray-accent-100);
+    background-color: var(--fills-secondary);
     overflow-x: clip;
 }
 
-.meter[data-full-width='true'] {
+.meter:where([data-full-width='true']) {
     width: 100%;
 }
 
-.meter[data-size='sm'] {
+.meter:where([data-size='sm']) {
     --meter-stack-height: var(--spacing-2);
 }
 
-.meter[data-size='md'] {
+.meter:where([data-size='md']) {
     --meter-stack-height: var(--spacing-4);
 }
 
-.meter[data-size='lg'] {
+.meter:where([data-size='lg']) {
     --meter-stack-height: var(--spacing-6);
 }

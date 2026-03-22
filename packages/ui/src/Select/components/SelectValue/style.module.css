@@ -9,6 +9,6 @@
     color: var(--select-value-color, var(--text-color));
 }
 
-.value[data-placeholder='true'] {
-    color: var(--select-placeholder-color, var(--field-placeholder-color));
+.value:where([data-placeholder='true']) {
+    color: var(--select-placeholder-color, var(--label-tertiary));
 }

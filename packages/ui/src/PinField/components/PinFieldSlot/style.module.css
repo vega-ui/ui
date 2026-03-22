@@ -13,12 +13,12 @@
                 background-color var(--transition-state-delay) ease;
     will-change: outline-color;
     font-family: var(--default-font-family);
-    background-color: var(--field-background-color);
+    background-color: var(--fills-tertiary);
     color: var(--text-color);
     cursor: text;
 }
 
-.slot[data-size='sm'] {
+.slot:where([data-size='sm']) {
     --input-height: var(--spacing-21);
     --cursor-height: var(--text-font-size-2);
 
@@ -26,7 +26,7 @@
     line-height: var(--line-height-2);
 }
 
-.slot[data-size='md'] {
+.slot:where([data-size='md']) {
     --input-height: var(--spacing-24);
     --cursor-height: var(--text-font-size-3);
 
@@ -34,7 +34,7 @@
     line-height: var(--line-height-3);
 }
 
-.slot[data-size='lg'] {
+.slot:where([data-size='lg']) {
     --input-height: var(--spacing-27);
     --cursor-height: var(--text-font-size-4);
 
@@ -54,29 +54,29 @@
 
 /* slot/error */
 
-.slot[data-error='true'] {
+.slot:where([data-error='true']) {
     outline-color: var(--color-error);
 }
 
 /* slot/hover */
 
 .slot:hover {
-    background-color: var(--field-background-hover-color);
+    background-color: var(--fills-tertiary-hover);
 }
 
 /* slot/active */
 
-.slot[data-active='true']:not([data-disabled='true']) {
+.slot:where([data-active='true']):not([data-disabled='true']) {
     outline-color: var(--color-primary-500);
 }
 
-.slot[data-caret='true'][data-placeholder='true'][data-disabled='false']:before {
+.slot:where([data-caret='true'][data-placeholder='true'][data-disabled='false']):before {
     visibility: visible;
 }
 
 /* slot/disabled */
 
-.slot[data-disabled='true'] {
+.slot:where([data-disabled='true']) {
     cursor: not-allowed;
     background-color: var(--disable-background-color);
     color: var(--disable-text-color);
@@ -85,14 +85,14 @@
 
 /* placeholder */
 
-.slot[data-placeholder='true'] {
-    color: var(--field-placeholder-color);
+.slot:where([data-placeholder='true']) {
+    color: var(--label-tertiary);
 }
 
 /* placeholder/disable */
 
-.slot[data-disabled='true'][data-placeholder='true'] {
-    color: var(--disable-placeholder-text-color);
+.slot:where([data-disabled='true'][data-placeholder='true']) {
+    color: var(--disable-label-text-color);
 }
 
 @keyframes cursor-blink {

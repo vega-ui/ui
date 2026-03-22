@@ -1,31 +1,34 @@
 .card {
+    --card-border-color: transparent;
+    --card-background-color: transparent;
+
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     box-sizing: border-box;
-    border: 1px solid transparent;
+    border: 1px solid var(--card-border-color);
+    background: var(--card-background-color);
 }
 
-.card[data-size='sm'] {
+.card:where([data-size='sm']) {
     padding: clamp(var(--spacing-8), 3vw, var(--spacing-10));
     border-radius: var(--radius-5);
 }
 
-.card[data-size='md'] {
+.card:where([data-size='md']) {
     padding: clamp(var(--spacing-12), 3vw, var(--spacing-14));
     border-radius: var(--radius-5);
 }
 
-.card[data-size='lg'] {
+.card:where([data-size='lg']) {
     padding: clamp(var(--spacing-14), 3vw, var(--spacing-16));
     border-radius: var(--radius-6);
 }
 
-.card[data-appearance='outline'] {
-    border-color: var(--color-gray-accent-150);
+.card:where([data-appearance='outline']) {
+    --card-border-color: var(--border-color);
 }
 
-.card[data-appearance='transparent'] {
-    background-color: transparent;
-    border-color: transparent;
+.card:where([data-appearance='transparent']) {
+    --card-border-color: transparent;
 }

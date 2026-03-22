@@ -1,5 +1,7 @@
+// This file has been automatically migrated to valid ESM format by Storybook.
 import { createRequire } from 'node:module';
 import { dirname, join } from 'node:path';
+
 import type { StorybookConfig } from '@storybook/react-vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import svgr from 'vite-plugin-svgr'
@@ -13,7 +15,8 @@ const config: StorybookConfig = {
     getAbsolutePath('@storybook/addon-onboarding'),
     getAbsolutePath('@storybook/addon-themes'),
     getAbsolutePath('@storybook/addon-designs'),
-    getAbsolutePath('@storybook/addon-docs')
+    getAbsolutePath('@storybook/addon-docs'),
+    getAbsolutePath('@storybook/addon-a11y'),
   ],
   framework: {
     name: getAbsolutePath('@storybook/react-vite'),
@@ -34,7 +37,7 @@ const config: StorybookConfig = {
         svgrOptions: {
           ref: true,
         }
-      })
+      }),
     ]
     if (config.build) config.build.sourcemap = false;
     return config;
