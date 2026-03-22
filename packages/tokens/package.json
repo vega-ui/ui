@@ -1,6 +1,6 @@
 {
   "name": "@vega-ui/tokens-core",
-  "version": "2.2.1",
+  "version": "2.3.0",
   "description": "CSS tokens for @vega-ui/react",
   "license": "MIT",
   "keywords": [
