@@ -52,17 +52,17 @@
 /* Alert/Fill/Warning */
 
 .alert:where([data-variant='warning'][data-appearance='fill']) {
-    --alert-background-color: var(--color-orange-accent-100);
-    --alert-color: var(--color-orange-accent-800);
+    --alert-background-color: var(--color-amber-accent-100);
+    --alert-color: var(--color-amber-accent-800);
     --alert-border-color: transparent;
 }
 
 /* Alert/Surface/Warning */
 
 .alert:where([data-variant='warning'][data-appearance='surface']) {
-    --alert-background-color: var(--color-orange-accent-0);
-    --alert-color: var(--color-orange-accent-700);
-    --alert-border-color: var(--color-orange-accent-700);
+    --alert-background-color: var(--color-amber-accent-0);
+    --alert-color: var(--color-amber-accent-700);
+    --alert-border-color: var(--color-amber-accent-700);
 }
 
 /* Alert/Fill/Error */

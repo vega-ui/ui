@@ -15,21 +15,21 @@
                            FILLS
     ============================================ */
 
-    --fills-primary: oklch(0.96 0.065 252 / .24);
-    --fills-primary-hover: oklch(0.96 0.065 252 / .28);
-    --fills-primary-active: oklch(0.96 0.065 252 / .32);
+    --fills-primary: oklch(0.98 0.05 264 / 0.24);
+    --fills-primary-hover: oklch(0.98 0.05 264 / 0.28);
+    --fills-primary-active: oklch(0.98 0.05 264 / 0.32);
 
-    --fills-secondary: oklch(0.98 0.05 252 / .08);
-    --fills-secondary-hover: oklch(0.98 0.05 252 / .12);
-    --fills-secondary-active: oklch(0.98 0.05 252 / .16);
+    --fills-secondary: oklch(0.98 0.05 264 / 0.08);
+    --fills-secondary-hover: oklch(0.98 0.05 264 / 0.12);
+    --fills-secondary-active: oklch(0.98 0.05 264 / 0.16);
 
-    --fills-tertiary: oklch(0.98 0.05 252 / .04);
-    --fills-tertiary-hover: oklch(0.98 0.05 252 / .06);
-    --fills-tertiary-active: oklch(0.98 0.05 252 / .08);
+    --fills-tertiary: oklch(0.98 0.05 264 / 0.04);
+    --fills-tertiary-hover: oklch(0.98 0.05 264 / 0.06);
+    --fills-tertiary-active: oklch(0.98 0.05 264 / 0.08);
 
-    --fills-quaternary: oklch(0.98 0.05 252 / .02);
-    --fills-quaternary-hover: oklch(0.98 0.05 252 / .04);
-    --fills-quaternary-active: oklch(0.98 0.05 252 / .06);
+    --fills-quaternary: oklch(0.98 0.05 264 / 0.02);
+    --fills-quaternary-hover: oklch(0.98 0.05 264 / 0.04);
+    --fills-quaternary-active: oklch(0.98 0.05 264 / 0.06);
 
     /* ============================================
                            LABELS
@@ -69,12 +69,8 @@
     ============================================ */
 
     --surface-shadow: var(--black-shadow);
-
-    --surface-ultrathin: oklch(0.20 .010 252);
-    --surface-thin: oklch(0.22 0.0125 252);
-    --surface-regular: oklch(0.24 0.0125 252);
-    --surface-thick: oklch(0.26 0.0125 252);
-    --surface-ultrathick: oklch(0.28 0.015 252);
+    --surface-primary: oklch(0.20 0.014 264);
+    --surface-secondary: oklch(0.21 0.012 264);
 
     /* ============================================
                            COLORS

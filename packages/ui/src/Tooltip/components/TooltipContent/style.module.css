@@ -1,7 +1,7 @@
 .tooltipContent {
     --t-color: var(--text-color);
 
-    background: var(--surface-ultrathin);
+    background: var(--surface-secondary);
     box-shadow: var(--surface-shadow);
     border-radius: var(--radius-3);
     padding: var(--spacing-4) var(--spacing-6);

@@ -1,6 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 
+const STEPS = ['0','100','200','300','400','500','600','700','800','900','1000'];
+
 const Swatch = ({ name, step, variant }: { name: string; step: string; variant?: string }) => {
     const varName = variant ? `--color-${name}-${variant}-${step}` : `--color-${name}-${step}`;
     return (
@@ -12,10 +14,10 @@ const Swatch = ({ name, step, variant }: { name: string; step: string; variant?:
 };
 
 const SwatchRow = ({ name, variant, label }: { name: string; variant?: string; label: string }) => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 4, flex: 1, maxWidth: 600 }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 4, flex: 1, maxWidth: 400 }}>
         <span style={{ fontSize: 10, fontWeight: 500, color: '#6b7280' }}>{label}</span>
         <div style={{ display: 'flex', gap: 3 }}>
-            {['0','100','200','300','400','500','600','700','800','900','1000'].map(step => (
+            {STEPS.map(step => (
                 <Swatch key={step} name={name} step={step} variant={variant} />
             ))}
         </div>
