@@ -50,6 +50,10 @@
 
 /* Primary Fill */
 
+.buttonBase:where([data-variant='primary']) {
+    --button-chroma-ratio: 0.03;
+}
+
 .buttonBase:where([data-variant='primary'][data-appearance='fill']) {
     --button-color: var(--color-white);
     --button-color-hover: var(--color-white);
@@ -82,8 +86,8 @@
     --button-color-active: var(--color-primary-700);
 
     --button-background-color: transparent;
-    --button-background-color-hover: var(--color-primary-0);
-    --button-background-color-active: var(--color-primary-100);
+    --button-background-color-hover: oklch(from var(--color-primary-500) l calc(c + var(--button-chroma-ratio)) h / 0.10);
+    --button-background-color-active: oklch(from var(--color-primary-500) l calc(c + var(--button-chroma-ratio)) h / 0.15);
 }
 
 .buttonBase:where([data-variant='primary'][data-appearance='outline']):disabled,
@@ -104,9 +108,9 @@
     --button-color-hover: var(--color-primary-600);
     --button-color-active: var(--color-primary-700);
 
-    --button-background-color: var(--color-primary-0);
-    --button-background-color-hover: var(--color-primary-100);
-    --button-background-color-active: var(--color-primary-200);
+    --button-background-color: oklch(from var(--color-primary-500) l calc(c + var(--button-chroma-ratio)) h / 0.10);
+    --button-background-color-hover: oklch(from var(--color-primary-500) l calc(c + var(--button-chroma-ratio)) h / 0.15);
+    --button-background-color-active: oklch(from var(--color-primary-500) l calc(c + var(--button-chroma-ratio)) h / 0.20);
 }
 
 .buttonBase:where([data-variant='primary'][data-appearance='ghost']):disabled,
@@ -127,8 +131,8 @@
     --button-color-active: var(--color-primary-700);
 
     --button-background-color: transparent;
-    --button-background-color-hover: var(--color-primary-0);
-    --button-background-color-active: var(--color-primary-100);
+    --button-background-color-hover: oklch(from var(--color-primary-500) l calc(c + var(--button-chroma-ratio)) h / 0.10);
+    --button-background-color-active: oklch(from var(--color-primary-500) l calc(c + var(--button-chroma-ratio)) h / 0.15);
 }
 
 .buttonBase:where([data-variant='primary'][data-appearance='transparent']):disabled,
@@ -171,8 +175,8 @@
     --button-color-active: var(--color-secondary-700);
 
     --button-background-color: transparent;
-    --button-background-color-hover: var(--color-secondary-0);
-    --button-background-color-active: var(--color-secondary-100);
+    --button-background-color-hover: oklch(from var(--color-secondary-500) l calc(c + var(--button-chroma-ratio)) h / 0.10);
+    --button-background-color-active: oklch(from var(--color-secondary-500) l calc(c + var(--button-chroma-ratio)) h / 0.15);
 }
 
 .buttonBase:where([data-variant='secondary'][data-appearance='outline']):disabled,
@@ -193,9 +197,9 @@
     --button-color-hover: var(--color-secondary-600);
     --button-color-active: var(--color-secondary-700);
 
-    --button-background-color: var(--color-secondary-0);
-    --button-background-color-hover: var(--color-secondary-100);
-    --button-background-color-active: var(--color-secondary-200);
+    --button-background-color: oklch(from var(--color-secondary-500) l calc(c + var(--button-chroma-ratio)) h / 0.10);
+    --button-background-color-hover: oklch(from var(--color-secondary-500) l calc(c + var(--button-chroma-ratio)) h / 0.15);
+    --button-background-color-active: oklch(from var(--color-secondary-500) l calc(c + var(--button-chroma-ratio)) h / 0.20);
 }
 
 .buttonBase:where([data-variant='secondary'][data-appearance='ghost']):disabled,
@@ -216,8 +220,8 @@
     --button-color-active: var(--color-secondary-700);
 
     --button-background-color: transparent;
-    --button-background-color-hover: var(--color-secondary-0);
-    --button-background-color-active: var(--color-secondary-100);
+    --button-background-color-hover: oklch(from var(--color-secondary-500) l calc(c + var(--button-chroma-ratio)) h / 0.10);
+    --button-background-color-active: oklch(from var(--color-secondary-500) l calc(c + var(--button-chroma-ratio)) h / 0.15);
 }
 
 .buttonBase:where([data-variant='secondary'][data-appearance='transparent']):disabled,

@@ -1,6 +1,7 @@
 @import "../packages/theme/src/index.css";
 
-html, body, #storybook-root, .docs-story  {
+.sbdocs.sbdocs-preview.sb-unstyled,
+.sb-show-main {
     background-color: var(--background-color);
     color: var(--text-color);
 }

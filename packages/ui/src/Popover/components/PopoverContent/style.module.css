@@ -1,5 +1,5 @@
 .content {
-    background: var(--surface-ultrathin);
+    background: var(--surface-primary);
     border-radius: var(--radius-5);
     width: max-content;
     padding: var(--spacing-8);

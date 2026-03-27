@@ -11,6 +11,7 @@
     flex-shrink: 0;
     flex-direction: row;
     align-items: center;
+    white-space: nowrap;
     justify-content: center;
     gap: var(--spacing-8);
     box-sizing: border-box;
@@ -128,23 +129,23 @@
 /* Warning variant */
 
 .badge:where([data-variant='warning']) {
-    --badge-color: var(--color-orange-accent-800);
-    --badge-background-color: var(--color-orange-accent-100);
+    --badge-color: var(--color-amber-accent-800);
+    --badge-background-color: var(--color-amber-accent-100);
 }
 
 .badge:where([data-variant='warning'][data-appearance='outline']) {
-    --badge-color: var(--color-orange-accent-500);
+    --badge-color: var(--color-amber-accent-500);
     --badge-background-color: transparent;
-    --badge-border-color: var(--color-orange-accent-500);
+    --badge-border-color: var(--color-amber-accent-500);
 }
 
 .badge:where([data-variant='warning'][data-appearance='fill']) {
     --badge-color: var(--color-white);
-    --badge-background-color: var(--color-orange-accent-500);
+    --badge-background-color: var(--color-amber-accent-500);
 }
 
 .badge:where([data-variant='warning'][data-appearance='surface']) {
-    --badge-color: var(--color-orange-accent-700);
-    --badge-background-color: var(--color-orange-accent-0);
-    --badge-border-color: var(--color-orange-accent-700);
+    --badge-color: var(--color-amber-accent-700);
+    --badge-background-color: var(--color-amber-accent-0);
+    --badge-border-color: var(--color-amber-accent-700);
 }

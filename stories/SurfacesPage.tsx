@@ -1,14 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 
-const surfaces = [
-    { token: '--surface-ultrathick', label: 'ultrathick' },
-    { token: '--surface-thick',     label: 'thick' },
-    { token: '--surface-regular',   label: 'regular' },
-    { token: '--surface-thin',      label: 'thin' },
-    { token: '--surface-ultrathin', label: 'ultrathin' },
-];
-
 const fillGroups = [
     {
         label: 'Primary',
@@ -87,54 +79,6 @@ const GroupLabel = ({ children }: { children: React.ReactNode }) => (
     </div>
 );
 
-const SurfaceStack = () => (
-    <div style={{
-        position: 'relative',
-        backgroundColor: 'var(--background-color)',
-        border: '1px solid var(--border-color)',
-        borderRadius: 16,
-        padding: 24,
-        fontFamily: 'sans-serif',
-    }}>
-        <div style={{ fontSize: 11, color: 'var(--label-quaternary)', fontFamily: 'monospace', marginBottom: 16 }}>
-            --background-color (page)
-        </div>
-        {surfaces.reduce((inner, { token, label }) => (
-            <div style={{
-                backgroundColor: `var(${token})`,
-                borderRadius: 12,
-                padding: 16,
-            }}>
-                <div style={{
-                    fontSize: 11,
-                    color: 'var(--label-tertiary)',
-                    fontFamily: 'monospace',
-                    marginBottom: inner ? 12 : 0,
-                }}>
-                    {token} ({label})
-                </div>
-                {inner}
-            </div>
-        ), null as React.ReactNode)}
-    </div>
-);
-
-const SurfaceSwatches = () => (
-    <div style={{ display: 'flex', gap: 12 }}>
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <div style={{
-                height: 48,
-                borderRadius: 8,
-                backgroundColor: 'var(--background-color)',
-            }} />
-            <span style={{ fontSize: 11, color: 'var(--label-tertiary)', fontFamily: 'monospace' }}>background</span>
-        </div>
-        {surfaces.map(({ token, label }) => (
-            <Token key={token} name={token} label={label} />
-        ))}
-    </div>
-);
-
 const FillsRow = () => (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24 }}>
         {fillGroups.map(({ label, tokens, sublabels }) => (
@@ -181,12 +125,6 @@ export const SurfacesPage = () => (
         padding: 48,
         boxSizing: 'border-box',
     }}>
-        <Section title='Surface — Stack'>
-            <SurfaceStack />
-        </Section>
-        <Section title='Surface — Swatches'>
-            <SurfaceSwatches />
-        </Section>
         <Section title='Fills'>
             <FillsRow />
         </Section>
