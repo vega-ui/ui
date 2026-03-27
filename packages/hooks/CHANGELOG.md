@@ -1,5 +1,11 @@
 # @vega-ui/hooks
 
+## 2.3.1
+
+### Patch Changes
+
+- @vega-ui/utils@2.3.1
+
 ## 2.3.0
 
 ### Patch Changes
