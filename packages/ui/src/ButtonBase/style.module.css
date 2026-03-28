@@ -143,6 +143,10 @@
 
 /* Secondary Fill */
 
+.buttonBase:where([data-variant='secondary']) {
+    --button-chroma-ratio: 0.05;
+}
+
 .buttonBase:where([data-variant='secondary'][data-appearance='fill']) {
     --button-color: var(--text-color-inverce);
     --button-color-hover: var(--text-color-inverce);
