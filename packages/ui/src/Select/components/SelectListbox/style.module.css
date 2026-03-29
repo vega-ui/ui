@@ -7,7 +7,7 @@
     padding: var(--spacing-4);
     outline: none;
     box-sizing: border-box;
-    background: var(--surface);
+    background: var(--surface-secondary);
     box-shadow: var(--surface-shadow);
     width: max-content;
     z-index: 1;
