@@ -206,8 +206,9 @@ describe('IndexedSnapScroller', () => {
         
         await waitFor(() => {
           expect(offsets).toContain(1);
+          expect(queryItem(r, 4)).toBeInTheDocument();
         });
-        
+
         // expected push by 2: [-2,-1,0,1,2] -> [0,1,2,3,4]
         await expect.element(getItem(r, 0)).toBeInTheDocument();
         await expect.element(getItem(r, 4)).toBeInTheDocument();
