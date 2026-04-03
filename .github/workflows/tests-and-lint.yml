@@ -32,6 +32,9 @@ jobs:
       - name: Run Linter
         run: pnpm run lint
 
+      - name: Validate Docs
+        run: pnpm docs:validate
+
       - name: Resolve Playwright version
         id: resolve-playwright
         shell: bash

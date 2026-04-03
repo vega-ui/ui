@@ -1,113 +1,106 @@
-# Vega UI
+# @vega-ui/react
 
-React component library, written by developers for developers 🩵
+React component library for VegaUI.
+
+## Requirements
+
+- `react` `^19.0.0`
+- `react-dom` `^19.0.0`
+- a bundler that can import package CSS
 
 ## Installation
 
-Install @vega-ui/react with
-
-**npm:**
+Install the component package together with the global theme package:
 
 ```bash
-  npm i @vega-ui/react
+pnpm add @vega-ui/react @vega-ui/theme-core
 ```
 
-**yarn:**
+Why both:
 
-```bash
-  yarn add @vega-ui/react
+- `@vega-ui/react` provides components and compiled component CSS
+- `@vega-ui/theme-core` provides the semantic theme variables those components rely on
+
+## Styles
+
+Import the theme and component stylesheet once near the application entrypoint:
+
+```tsx
+import '@vega-ui/theme-core';
+import '@vega-ui/react/style.css';
 ```
 
-## Start
-
-Connect the styles first. You can do this using a js file, however, we recommend that you connect using ``@import`` and defining layers so that there are no conflicts with specificity.
+If your app uses CSS layers, keep VegaUI below app-specific overrides:
 
 ```css
-  @import url('@/shared/styles/normalize.css') layer(reset);
-  @import url('@vega-ui/react/style.css') layer(library);
+@import url('@/shared/styles/normalize.css') layer(reset);
+@import url('@vega-ui/theme-core') layer(theme);
+@import url('@vega-ui/react/style.css') layer(library);
 
-  @layer reset, library, components, overrides;
+@layer reset, theme, library, app, overrides;
 ```
 
-Setup fonts
+## Quick Start
 
-**Next:**
-
-```typescript jsx
-    import { Montserrat } from 'next/font/google';
-
-    const montserratSans = Montserrat({
-      subsets: ['latin', 'cyrillic'],
-      display: 'swap',
-      weight: ['400', '500', '700', '900']
-    });
-```
-
-**Google Fonts:**
-
-```html
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-```
-
-Start using
-
-```typescript
-  import { Button } from '@vega-ui/react';
-
-  ...
-
-  <Button>Hello, world!</Button>
-```
-
-## Types
-
-### 📌 Note: Correct typing with `as={Component<'tag'>}`
-
-When passing a component to the `as` prop, and that component is itself a **generic polymorphic component**, such as:
+Apply a theme class at the app boundary, then render components normally:
 
 ```tsx
-function Link<T extends React.ElementType = 'a'>(props: { as?: T } & ...) { ... }
+import '@vega-ui/theme-core';
+import '@vega-ui/react/style.css';
+import { Button } from '@vega-ui/react';
+
+export function App() {
+  return (
+    <div className='light'>
+      <Button>Save changes</Button>
+    </div>
+  );
+}
 ```
 
-TypeScript **cannot infer the concrete type `T`** if you simply write:
+Built-in theme classes are `.light` and `.dark`.
+
+## Common Import Paths
 
 ```tsx
-<Wrapper as={Link} /> // ❌ Event types will be `any`
+import { Button, Dialog, Select, TextField } from '@vega-ui/react';
+import type { ButtonProps, SelectProps } from '@vega-ui/react';
 ```
 
-To retain full typing support (e.g. `onClick(e)` as `MouseEvent<HTMLAnchorElement>`), you must **explicitly instantiate the generic**:
+The package also exposes per-component entrypoints:
 
 ```tsx
-<Wrapper as={Link<'a'>} /> // ✅ All event types, refs, and attributes are fully typed
+import { Button } from '@vega-ui/react/Button';
 ```
 
-This approach guarantees:
+## Local Development
 
-- Automatic attribute inference (`href`, `type`, `disabled`, etc.)
-- Correct DOM event typing (`onClick`, `onChange`, `onSubmit`, etc.)
-- Full type safety without `any`
-- No wrappers, factories, or custom utilities needed
-
----
-
-> 💡 It is recommended to use `Component<'tag'>` inside `as` when the component you are passing is itself generic and supports polymorphism.
-
-## Running Tests
-
-To run tests, run the following command
+From the repository root:
 
 ```bash
-  npm run test
+pnpm install
+pnpm storybook
+pnpm --filter @vega-ui/react test
+pnpm docs:validate
 ```
 
+Package-local scripts:
 
-## Contributing
+```bash
+pnpm --filter @vega-ui/react build
+pnpm --filter @vega-ui/react test
+pnpm --filter @vega-ui/react check-types
+```
 
-Contributions are always welcome!
+## Documentation
 
-See `contributing.md` for ways to get started.
+- [Getting Started](../../docs/getting-started.md)
+- [Styling Model](../../docs/styling/README.md)
+- [Component Docs](../../docs/components/README.md)
 
-Please adhere to this project's `code of conduct`.
+## Common Mistakes
 
+- importing `@vega-ui/react/style.css` without `@vega-ui/theme-core`
+- applying `.light` or `.dark` too deep in the tree instead of around the app shell
+- using raw palette tokens in app overrides instead of semantic theme variables
+- assuming the component package is fully themed without an app-level theme class
