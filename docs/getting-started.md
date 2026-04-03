@@ -58,7 +58,7 @@ export function App() {
 }
 ```
 
-Available built-in theme classes are `.light` and `.dark`. For custom themes, see [themes.md](/Users/slava/WebstormProjects/ui/docs/styling/themes.md).
+Available built-in theme classes are `.light` and `.dark`. For custom themes, see [themes.md](./styling/themes.md).
 
 ## Fonts
 

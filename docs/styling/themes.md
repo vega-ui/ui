@@ -1,6 +1,6 @@
 # Themes
 
-VegaUI ships a separate theme layer in `@vega-ui/theme-core`. The package entrypoint is [packages/theme/src/index.css](/Users/slava/WebstormProjects/ui/packages/theme/src/index.css), which imports both [light.css](/Users/slava/WebstormProjects/ui/packages/theme/src/light.css) and [dark.css](/Users/slava/WebstormProjects/ui/packages/theme/src/dark.css).
+VegaUI ships a separate theme layer in `@vega-ui/theme-core`. The package entrypoint is [packages/theme/src/index.css](../../packages/theme/src/index.css), which imports both [light.css](../../packages/theme/src/light.css) and [dark.css](../../packages/theme/src/dark.css).
 
 ## Theme Model
 
