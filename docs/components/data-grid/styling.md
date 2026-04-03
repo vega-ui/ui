@@ -17,7 +17,7 @@ The current root implementation does not expose a stable `--data-grid-*` variabl
 
 ### Root
 
-The root [DataGrid style](/Users/slava/WebstormProjects/ui/packages/ui/src/DataGrid/style.module.css) only declares the base grid layout.
+The root [DataGrid style](../../../packages/ui/src/DataGrid/style.module.css) only declares the base grid layout.
 
 ### Cells
 

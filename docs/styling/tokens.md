@@ -1,6 +1,6 @@
 # Tokens
 
-Global tokens live in `@vega-ui/tokens-core`. The package entrypoint [packages/tokens/src/index.css](/Users/slava/WebstormProjects/ui/packages/tokens/src/index.css) imports the token groups used across VegaUI:
+Global tokens live in `@vega-ui/tokens-core`. The package entrypoint [packages/tokens/src/index.css](../../packages/tokens/src/index.css) imports the token groups used across VegaUI:
 
 - `colors.css`
 - `typography.css`
@@ -24,7 +24,7 @@ The token package provides raw building blocks, not component behavior.
 
 ## Color Guidance
 
-The strongest rule from [packages/tokens/README.md](/Users/slava/WebstormProjects/ui/packages/tokens/README.md) is:
+The strongest rule from [packages/tokens/README.md](../../packages/tokens/README.md) is:
 
 - use raw palette tokens only to define semantics
 - use semantic accent tokens inside components

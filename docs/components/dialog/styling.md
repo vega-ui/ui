@@ -19,7 +19,7 @@ The current implementation does not expose a large documented `--dialog-*` varia
 
 ### Content
 
-[DialogContent](/Users/slava/WebstormProjects/ui/packages/ui/src/Dialog/components/DialogContent/style.module.css) uses:
+[DialogContent](../../../packages/ui/src/Dialog/components/DialogContent/style.module.css) uses:
 
 - `--surface-primary`
 - `--surface-shadow`
@@ -28,7 +28,7 @@ The current implementation does not expose a large documented `--dialog-*` varia
 
 ### Backdrop
 
-[DialogBackdrop](/Users/slava/WebstormProjects/ui/packages/ui/src/Dialog/components/DialogBackdrop/style.module.css) relies on spacing and the shared overlay model rather than a large component-local variable set.
+[DialogBackdrop](../../../packages/ui/src/Dialog/components/DialogBackdrop/style.module.css) relies on spacing and the shared overlay model rather than a large component-local variable set.
 
 ## State And Variant Interaction
 

@@ -58,10 +58,10 @@ Most components in `packages/ui/src/<Component>/` follow a repeatable structure:
 
 Example:
 
-- [packages/ui/src/TextField/TextField.tsx](/Users/slava/WebstormProjects/ui/packages/ui/src/TextField/TextField.tsx)
-- [packages/ui/src/TextField/components/TextFieldInput/TextFieldInput.tsx](/Users/slava/WebstormProjects/ui/packages/ui/src/TextField/components/TextFieldInput/TextFieldInput.tsx)
-- [packages/ui/src/TextField/style.module.css](/Users/slava/WebstormProjects/ui/packages/ui/src/TextField/style.module.css)
-- [packages/ui/src/TextField/__tests__/TextField.browser.test.tsx](/Users/slava/WebstormProjects/ui/packages/ui/src/TextField/__tests__/TextField.browser.test.tsx)
+- [packages/ui/src/TextField/TextField.tsx](../packages/ui/src/TextField/TextField.tsx)
+- [packages/ui/src/TextField/components/TextFieldInput/TextFieldInput.tsx](../packages/ui/src/TextField/components/TextFieldInput/TextFieldInput.tsx)
+- [packages/ui/src/TextField/style.module.css](../packages/ui/src/TextField/style.module.css)
+- [packages/ui/src/TextField/__tests__/TextField.browser.test.tsx](../packages/ui/src/TextField/__tests__/TextField.browser.test.tsx)
 
 ## Stories, Tests, And Docs
 
