@@ -23,7 +23,7 @@ const meta = {
     },
     appearance: {
       control: 'radio',
-      options: ['fill', 'outline', 'ghost'],
+      options: ['fill', 'outline', 'ghost', 'surface'],
     },
     size: {
       control: 'radio',
