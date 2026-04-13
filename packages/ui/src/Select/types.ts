@@ -5,5 +5,5 @@ export interface SelectNativeOption<V> {
   index: number
 }
 
-export type SelectSize = 'sm' | 'md' | 'lg' | string
+export type SelectSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | string
 export type SelectVariant = 'inline' | 'field' | string

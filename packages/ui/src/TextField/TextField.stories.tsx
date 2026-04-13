@@ -9,7 +9,7 @@ import { Text } from '../Text';
 import { Minus, Plus } from '@vega-ui/icons';
 import { FC, useMemo, useState } from 'react';
 
-const sizes: TextFieldProps['size'][] = ['sm', 'md', 'lg'];
+const sizes: TextFieldProps['size'][] = ['xs', 'sm', 'md', 'lg', 'xl'];
 
 const meta = {
   title: 'Form/Fields/TextField/TextField',
@@ -26,7 +26,7 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {
-    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
+    size: { control: 'radio', options: sizes },
     error: { control: 'boolean' },
   },
 } satisfies Meta<typeof TextField>;

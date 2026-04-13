@@ -14,21 +14,21 @@
 }
 
 .iconButton:where([data-size='xs']) {
-    --icon-button-size: var(--spacing-18);
+    --icon-button-size: var(--spacing-16);
 }
 
 .iconButton:where([data-size='sm']) {
-    --icon-button-size: var(--spacing-21);
+    --icon-button-size: var(--spacing-18);
 }
 
 .iconButton:where([data-size='md']) {
-    --icon-button-size: var(--spacing-24);
+    --icon-button-size: var(--spacing-21);
 }
 
 .iconButton:where([data-size='lg']) {
-    --icon-button-size: var(--spacing-27);
+    --icon-button-size: var(--spacing-24);
 }
 
 .iconButton:where([data-size='xl']) {
-    --icon-button-size: var(--spacing-30);
+    --icon-button-size: var(--spacing-26);
 }

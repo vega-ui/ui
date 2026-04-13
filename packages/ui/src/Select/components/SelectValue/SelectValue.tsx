@@ -1,9 +1,8 @@
 import { FC, useLayoutEffect } from 'react';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css';
-import { Text, TextProps } from '../../../Text';
+import { TextProps } from '../../../Text';
 import { useSelectContext } from '../../contexts';
-import { sizeMapper } from './helpers';
 
 export interface SelectValueProps extends TextProps {
   /**
@@ -25,7 +24,7 @@ export interface SelectValueProps extends TextProps {
  * - a placeholder when no value is selected.
  */
 export const SelectValue: FC<SelectValueProps> = ({ className, placeholder, children, ...props }) => {
-  const { size, selected, valueRef, onHasValueChildrenChange } = useSelectContext()
+  const { selected, valueRef, onHasValueChildrenChange } = useSelectContext()
 
   const hasSelected = selected !== '' && selected !== undefined
   const hasPlaceholder = placeholder !== undefined
@@ -36,14 +35,13 @@ export const SelectValue: FC<SelectValueProps> = ({ className, placeholder, chil
   }, [onHasValueChildrenChange, hasChildren])
 
   return (
-    <Text
+    <span
       ref={valueRef}
       data-placeholder={hasPlaceholder && !hasSelected}
-      size={sizeMapper(size ?? 'md')}
       className={csx(style.value, className)}
       {...props}
     >
       {hasSelected ? children : <>{placeholder}</>}
-    </Text>
+    </span>
   )
 }

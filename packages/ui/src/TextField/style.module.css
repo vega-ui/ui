@@ -15,16 +15,24 @@
     border-radius: calc(var(--input-height) * var(--input-br-ratio));
 }
 
+.field:where([data-size='xs']) {
+    --input-height: var(--spacing-16);
+}
+
 .field:where([data-size='sm']) {
-    --input-height: var(--spacing-21);
+    --input-height: var(--spacing-18);
 }
 
 .field:where([data-size='md']) {
-    --input-height: var(--spacing-24);
+    --input-height: var(--spacing-21);
 }
 
 .field:where([data-size='lg']) {
-    --input-height: var(--spacing-27);
+    --input-height: var(--spacing-24);
+}
+
+.field:where([data-size='xl']) {
+    --input-height: var(--spacing-26);
 }
 
 /* textField/hover */
