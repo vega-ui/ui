@@ -54,7 +54,7 @@
     ============================================ */
 
     --separator-opaque: var(--color-gray-200);
-    --separator-non-opaque: oklch(0.45 0.125 252 / 0.10);
+    --separator-non-opaque: var(--fills-secondary);
 
     /* ============================================
                            BORDERS
