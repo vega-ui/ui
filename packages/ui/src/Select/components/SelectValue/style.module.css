@@ -6,6 +6,7 @@
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
+    font-size: inherit;
     color: var(--select-value-color, var(--text-color));
 }
 

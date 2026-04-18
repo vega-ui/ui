@@ -18,8 +18,16 @@
     cursor: text;
 }
 
+.slot:where([data-size='xs']) {
+    --input-height: var(--spacing-15);
+    --cursor-height: var(--text-font-size-2);
+
+    font-size: var(--text-font-size-2);
+    line-height: var(--line-height-2);
+}
+
 .slot:where([data-size='sm']) {
-    --input-height: var(--spacing-21);
+    --input-height: var(--spacing-18);
     --cursor-height: var(--text-font-size-2);
 
     font-size: var(--text-font-size-2);
@@ -27,7 +35,7 @@
 }
 
 .slot:where([data-size='md']) {
-    --input-height: var(--spacing-24);
+    --input-height: var(--spacing-21);
     --cursor-height: var(--text-font-size-3);
 
     font-size: var(--text-font-size-3);
@@ -35,6 +43,14 @@
 }
 
 .slot:where([data-size='lg']) {
+    --input-height: var(--spacing-24);
+    --cursor-height: var(--text-font-size-4);
+
+    font-size: var(--text-font-size-4);
+    line-height: var(--line-height-4);
+}
+
+.slot:where([data-size='xl']) {
     --input-height: var(--spacing-27);
     --cursor-height: var(--text-font-size-4);
 

@@ -27,21 +27,21 @@
 }
 
 .segmentedControl:where([data-size='xs']) {
-    --segmented-control-height: var(--spacing-18);
+    --segmented-control-height: var(--spacing-16);
 }
 
 .segmentedControl:where([data-size='sm']) {
-    --segmented-control-height: var(--spacing-21);
+    --segmented-control-height: var(--spacing-18);
 }
 
 .segmentedControl:where([data-size='md']) {
-    --segmented-control-height: var(--spacing-24);
+    --segmented-control-height: var(--spacing-21);
 }
 
 .segmentedControl:where([data-size='lg']) {
-    --segmented-control-height: var(--spacing-27);
+    --segmented-control-height: var(--spacing-24);
 }
 
 .segmentedControl:where([data-size='xl']) {
-    --segmented-control-height: var(--spacing-30);
+    --segmented-control-height: var(--spacing-26);
 }

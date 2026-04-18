@@ -28,7 +28,7 @@ const meta = {
     min: { type: 'number' },
     max: { type: 'number' },
     step: { type: 'number' },
-    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
+    size: { control: 'radio', options: ['xs', 'sm', 'md', 'lg', 'xl'] },
     disabled: { control: 'boolean' },
   },
   args: {},

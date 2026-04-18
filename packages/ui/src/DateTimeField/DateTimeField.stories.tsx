@@ -26,6 +26,9 @@ const meta = {
   component: DateTimeField,
   parameters: { layout: 'centered' },
   tags: ['autodocs'],
+  argTypes: {
+    size: { control: 'radio', options: ['xs', 'sm', 'md', 'lg', 'xl'] },
+  },
   args: {
     dateFormat: getDateFormat(navigator.language) as MaskitoDateMode,
     dateSeparator: getDateSeparator(navigator.language),

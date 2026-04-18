@@ -40,7 +40,7 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {
-    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
+    size: { control: 'radio', options: ['xs', 'sm', 'md', 'lg', 'xl'] },
     variant: { control: 'radio', options: ['field', 'inline'] },
     disabled: { control: 'boolean' },
   },

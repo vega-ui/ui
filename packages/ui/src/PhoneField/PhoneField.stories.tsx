@@ -37,7 +37,7 @@ const meta = {
   parameters: { layout: 'centered' },
   tags: ['autodocs'],
   argTypes: {
-    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
+    size: { control: 'radio', options: ['xs', 'sm', 'md', 'lg', 'xl'] },
     strictMask: { control: 'boolean' },
     error: { control: 'boolean' },
   },

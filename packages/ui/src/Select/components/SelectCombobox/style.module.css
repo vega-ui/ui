@@ -12,25 +12,35 @@
     cursor: pointer;
     border: none;
     font-family: var(--default-font-family);
-    font-size: var(--font-size-3);
     box-sizing: border-box;
     height: var(--select-size);
+    padding-inline: var(--spacing-10);
     border-radius: calc(var(--select-size) * var(--select-combobox-br-ratio));
 }
 
+.combobox:where([data-size='xs']) {
+    gap: var(--spacing-6);
+    font-size: var(--font-size-2);
+}
+
 .combobox:where([data-size='sm']) {
-    padding: var(--spacing-5) var(--spacing-8);
     gap: var(--spacing-8);
+    font-size: var(--font-size-2);
 }
 
 .combobox:where([data-size='md']) {
-    padding: var(--spacing-5) var(--spacing-10);
     gap: var(--spacing-10);
+    font-size: var(--font-size-3);
 }
 
 .combobox:where([data-size='lg']) {
-    padding: var(--spacing-5) var(--spacing-10);
     gap: var(--spacing-12);
+    font-size: var(--font-size-4);
+}
+
+.combobox:where([data-size='xl']) {
+    gap: var(--spacing-14);
+    font-size: var(--font-size-4);
 }
 
 .combobox:where([data-variant='field']) {
