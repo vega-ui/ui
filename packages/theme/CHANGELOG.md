@@ -1,5 +1,13 @@
 # @vega-ui/theme-core
 
+## 2.4.0
+
+### Patch Changes
+
+- 0bd6953: Fixed separator color
+- Updated dependencies [a77ab19]
+  - @vega-ui/tokens-core@2.4.0
+
 ## 2.3.1
 
 ### Patch Changes

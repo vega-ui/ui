@@ -1,5 +1,19 @@
 # @vega-ui/react
 
+## 2.4.0
+
+### Minor Changes
+
+- a77ab19: Changed xs, sm, md, lg, xl sizes of all components
+
+### Patch Changes
+
+- 47f3ced: Fixed select listbox background
+  - @vega-ui/hooks@2.4.0
+  - @vega-ui/icons@2.4.0
+  - @vega-ui/react-context@2.4.0
+  - @vega-ui/utils@2.4.0
+
 ## 2.3.1
 
 ### Patch Changes

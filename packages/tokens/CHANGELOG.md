@@ -1,5 +1,11 @@
 # @vega-ui/tokens-core
 
+## 2.4.0
+
+### Minor Changes
+
+- a77ab19: Changed xs, sm, md, lg, xl sizes of all components
+
 ## 2.3.1
 
 ### Patch Changes
