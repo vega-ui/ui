@@ -1,6 +1,6 @@
 {
   "name": "@vega-ui/react-context",
-  "version": "2.3.1",
+  "version": "2.4.0",
   "description": "Context utils for @vega-ui/react",
   "license": "MIT",
   "keywords": [
