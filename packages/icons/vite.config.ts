@@ -4,6 +4,7 @@ import dts from 'vite-plugin-dts'
 import svgr from 'vite-plugin-svgr'
 import react from '@vitejs/plugin-react'
 import tsconfigPaths from 'vite-tsconfig-paths';
+import * as packageJson from './package.json';
 
 export default defineConfig({
   base: '/',
@@ -33,7 +34,7 @@ export default defineConfig({
     },
     chunkSizeWarningLimit: 10000,
     rollupOptions: {
-      external: ['react', 'react-dom', 'react/jsx-runtime', '@floating-ui/react', 'react-remove-scroll', '@vega-ui/helpers', '@vega-ui/hooks', 'lucide-react'],
+      external: [...Object.keys(packageJson.dependencies), ...Object.keys(packageJson.peerDependencies), 'react/jsx-runtime'],
       output: {
         preserveModules: true,
         globals: {
