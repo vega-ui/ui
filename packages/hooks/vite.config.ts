@@ -26,7 +26,7 @@ export default defineConfig({
     },
     chunkSizeWarningLimit: 10000,
     rollupOptions: {
-      external: [...Object.keys(packageJson.dependencies), 'react/jsx-runtime'],
+      external: [...Object.keys(packageJson.dependencies), ...Object.keys(packageJson.peerDependencies), 'react/jsx-runtime'],
       output: {
         preserveModules: true,
         globals: {
