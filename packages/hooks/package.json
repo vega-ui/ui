@@ -16,7 +16,8 @@
   },
   "homepage": "https://github.com/vega-ui/ui#readme",
   "type": "module",
-  "main": "./dist/index.ts",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
