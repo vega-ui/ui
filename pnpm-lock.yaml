@@ -115,8 +115,8 @@ importers:
   packages/icons:
     dependencies:
       lucide-react:
-        specifier: latest
-        version: 0.577.0(react@19.2.3)
+        specifier: ^1.23.0
+        version: 1.23.0(react@19.2.3)
     devDependencies:
       '@types/react':
         specifier: ^19.0.10
@@ -2096,8 +2096,8 @@ packages:
     resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==}
     engines: {node: '>=10'}
 
-  lucide-react@0.577.0:
-    resolution: {integrity: sha512-4LjoFv2eEPwYDPg/CUdBJQSDfPyzXCRrVW1X7jrx/trgxnxkHFjnVZINbzvzxjN70dxychOfg+FTYwBiS3pQ5A==}
+  lucide-react@1.23.0:
+    resolution: {integrity: sha512-38BpJcD0JhFosxHApP/BYsBetLpQFRoTRzEzstM/XCc3jsAG7wqaY1lgVwxiUe3xqYE+lNxo2PkCmYwXWrwwIw==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
@@ -4921,7 +4921,7 @@ snapshots:
     dependencies:
       yallist: 4.0.0
 
-  lucide-react@0.577.0(react@19.2.3):
+  lucide-react@1.23.0(react@19.2.3):
     dependencies:
       react: 19.2.3
 
