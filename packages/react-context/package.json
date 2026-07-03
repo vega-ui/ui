@@ -36,6 +36,9 @@
     "build": "vite build",
     "check-types": "tsc --noEmit"
   },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  },
   "devDependencies": {
     "@types/react": "^19.0.10",
     "@vitejs/plugin-react": "^4.3.4",
