@@ -361,6 +361,47 @@ describe('Slider', () => {
       await expect.element(getInput(r)).toHaveValue(String(MIN));
     });
     
+    it('returns to the initial value after moving away (ArrowRight then ArrowLeft)', async () => {
+      const STEP = 10;
+      const r = render(<SliderTest defaultValue={DEFAULT_VALUE} step={STEP} />);
+
+      const thumb = getThumb(r);
+      thumb.focus();
+
+      await userEvent.keyboard('{ArrowRight}');
+      await userEvent.keyboard('{ArrowLeft}');
+
+      await expect.element(getInput(r)).toHaveValue(String(DEFAULT_VALUE));
+    });
+
+    it('does not repeat onChangeValue for the same value during drag', async () => {
+      const onChangeValue = vi.fn();
+      const r = render(<SliderTest defaultValue={DEFAULT_VALUE} onChangeValue={onChangeValue} />);
+
+      const thumb = getThumb(r);
+
+      fireEvent.pointerDown(thumb, { pointerId: 1, pointerType: 'touch', clientX: 999, clientY: 0 });
+      fireEvent.pointerMove(thumb, { pointerId: 1, pointerType: 'touch', clientX: 999, clientY: 0 });
+      fireEvent.pointerUp(thumb, { pointerId: 1, pointerType: 'touch', clientX: 999, clientY: 0 });
+
+      expect(onChangeValue).toHaveBeenCalledTimes(1);
+    });
+
+    it('stops reacting when disabled after mount', async () => {
+      const onChangeValue = vi.fn();
+      const r = render(<SliderTest defaultValue={DEFAULT_VALUE} onChangeValue={onChangeValue} />);
+
+      r.rerender(<SliderTest defaultValue={DEFAULT_VALUE} disabled onChangeValue={onChangeValue} />);
+
+      const thumb = getThumb(r);
+      thumb.focus();
+
+      await userEvent.keyboard('{ArrowRight}');
+
+      expect(onChangeValue).not.toHaveBeenCalled();
+      await expect.element(getInput(r)).toHaveValue(String(DEFAULT_VALUE));
+    });
+
     it('uses computed defaultValue when defaultValue is not provided', async () => {
       const r = render(<SliderTest />);
       
