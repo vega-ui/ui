@@ -16,6 +16,9 @@
     "url": "https://github.com/vega-ui/ui/issues"
   },
   "homepage": "https://github.com/vega-ui/ui#readme",
+  "engines": {
+    "node": ">=22.6.0"
+  },
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",

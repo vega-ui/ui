@@ -16,11 +16,7 @@ export default defineConfig({
       insertTypesEntry: true,
       tsconfigPath: './tsconfig.app.json'
     }),
-    svgr({
-      svgrOptions: {
-        ref: true,
-      }
-    })
+    svgr()
   ],
   build: {
     sourcemap: true,
