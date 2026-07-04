@@ -240,6 +240,47 @@ describe('SnapScroller', () => {
       expect(apiRef.current?.scrollToElementByKey).toBeTypeOf('function');
     });
     
+    it('does not emit snap callbacks when a snap point resolves to a stale item', async () => {
+      const onScrollSnapChanging = vi.fn();
+      const onScrollSnapChange = vi.fn();
+      const apiRef = createRef<SnapScrollerApiRef>();
+
+      const content = (secondIndex: number) => (
+        <>
+          <SnapScrollerContent data-testid='item-0' index={0} style={{ width: ITEM_SIZE, flexShrink: 0 }}>
+            Item 0
+          </SnapScrollerContent>
+          <SnapScrollerContent data-testid='item-1' index={secondIndex} style={{ width: ITEM_SIZE, flexShrink: 0 }}>
+            Item 1
+          </SnapScrollerContent>
+        </>
+      );
+
+      const props = { apiRef, onScrollSnapChanging, onScrollSnapChange };
+      const r = render(<SnapScrollerTest {...props}>{content(1)}</SnapScrollerTest>);
+      const scroller = getScroller(r);
+
+      await waitFor(() => {
+        expect(apiRef.current?.getCommited?.()).toBe(0);
+      });
+
+      r.rerender(<SnapScrollerTest {...props}>{content(5)}</SnapScrollerTest>);
+
+      scroller.scrollTo({ left: 150, top: 0, behavior: 'auto' });
+
+      await waitFor(() => {
+        expect(apiRef.current?.getPending?.()).toBe(1);
+      });
+
+      scroller.dispatchEvent(new Event('scrollend'));
+      await waitFor(() => {
+        expect(apiRef.current?.getCommited?.()).toBe(1);
+      });
+
+      expect(onScrollSnapChanging).not.toHaveBeenCalled();
+      expect(onScrollSnapChange).not.toHaveBeenCalled();
+    });
+
     it('prev()/next() do not throw when committed index is not yet available', async () => {
       const apiRef = createRef<SnapScrollerApiRef>();
       render(<SnapScrollerTest apiRef={apiRef} />);
