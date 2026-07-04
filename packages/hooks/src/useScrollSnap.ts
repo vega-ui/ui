@@ -115,13 +115,15 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
     
     const scrollOffset = axis === 'x' ? s.scrollLeft : s.scrollTop;
     const pointsArray = Array.from(points.values()).sort((a, b) => a - b);
-    
+
     const nearestIndex = nearest(pointsArray, scrollOffset)
+    if (nearestIndex === -1) return { key: null, element: null }
+
     const nearestOffset = pointsArray[nearestIndex]
-    
-    const key = points.getByValue(nearestOffset)
-    const element = items.getByKey(key)
-    
+
+    const key = points.getByValue(nearestOffset) ?? null
+    const element = (key !== null ? items.getByKey(key) : null) ?? null
+
     return { key, element }
   }, [axis])
   
@@ -131,18 +133,24 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
     for (const key of items.keys()) {
       const element = items.getByKey(key);
       if (!element) continue;
-      points.set(key, calculateSnapPoint(element));
+
+      const point = calculateSnapPoint(element);
+      if (point == null) continue;
+
+      points.set(key, point);
     }
-    
+
     const pointed = getPointed();
-    const existsCommitted = committedKey.current !== undefined && items.getByKey(committedKey.current) != null;
-    
-    if (committedKey.current === undefined || !existsCommitted) {
+    if (!pointed) return;
+
+    const existsCommitted = committedKey.current !== null && items.getByKey(committedKey.current) != null;
+
+    if (!existsCommitted) {
       committedKey.current = pointed.key;
       pendingKey.current = pointed.key;
       return;
     }
-    
+
     if (pointed.key !== committedKey.current) {
       committedKey.current = pointed.key;
       pendingKey.current = pointed.key;
@@ -165,13 +173,16 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
   useResizeObserver(scrollerRef, scheduleMeasure)
   
   const commit = useCallback(() => {
-    const { key, element } = getPointed()
-    
-    if (key !== null && key === committedKey.current) return;
-    
+    const pointed = getPointed()
+    if (!pointed) return;
+
+    const { key, element } = pointed;
+
+    if (key === committedKey.current) return;
+
     committedKey.current = key;
     pendingKey.current = key;
-    onSnapChange?.(element, key);
+    if (element && key !== null) onSnapChange?.(element, key);
   }, [onSnapChange, getPointed])
   
   const scheduleCommitFallback = useCallback(() => {
@@ -187,12 +198,15 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
       rafScrollId.current = null;
       
       if (!points.size) scheduleMeasure();
-      
-      const { key, element } = getPointed(target)
-      
+
+      const pointed = getPointed(target)
+      if (!pointed) return;
+
+      const { key, element } = pointed;
+
       if (key !== pendingKey.current) {
         pendingKey.current = key;
-        onSnapChanging?.(element, key);
+        if (element && key !== null) onSnapChanging?.(element, key);
       }
 
       // Native-like: commit only on real scroll end when possible
@@ -207,9 +221,9 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
     if (!points.size) scheduleMeasure();
     
     const key = items.getByValue(el)
-    const target = points.getByKey(key) ?? calculateSnapPoint(el);
-    
-    if (!Number.isFinite(target)) return;
+    const target = (key !== undefined ? points.getByKey(key) : undefined) ?? calculateSnapPoint(el);
+
+    if (target == null || !Number.isFinite(target)) return;
 
     if (axis === 'y') {
       scroller.scrollTo({ top: target, behavior });
