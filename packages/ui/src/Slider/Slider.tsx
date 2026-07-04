@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes, PointerEvent, KeyboardEvent, MouseEvent, useRef, useCallback } from 'react';
+import { FC, HTMLAttributes, PointerEvent, KeyboardEvent, MouseEvent, useRef } from 'react';
 
 import { clamp, safeSetPointerCapture } from '@vega-ui/utils';
 import { useControlledState } from '@vega-ui/hooks';
@@ -85,11 +85,11 @@ export const Slider: FC<SliderProps> = ({
   const [value, setValue] = useControlledState(controlledValue, defaultValue, onChangeValue)
   const dragging = useRef(false)
 
-  const changeValue = useCallback((newValue: number) => {
+  const changeValue = (newValue: number) => {
     if (disabled || newValue === value) return
 
     setValue(newValue)
-  }, [])
+  }
 
   const calcValue = (e: PointerEvent | MouseEvent) => {
     const track = sliderRef.current
