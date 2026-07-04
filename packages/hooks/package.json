@@ -15,6 +15,11 @@
     "url": "https://github.com/vega-ui/ui/issues"
   },
   "homepage": "https://github.com/vega-ui/ui#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vega-ui/ui.git",
+    "directory": "packages/hooks"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",

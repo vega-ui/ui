@@ -12,9 +12,14 @@
   ],
   "author": "VegaUI Team",
   "bugs": {
-    "url": "https://github.com/vega-ui/react/issues"
+    "url": "https://github.com/vega-ui/ui/issues"
   },
-  "homepage": "https://github.com/vega-ui/react#readme",
+  "homepage": "https://github.com/vega-ui/ui#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vega-ui/ui.git",
+    "directory": "packages/ui"
+  },
   "type": "module",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",

@@ -16,6 +16,10 @@
     "url": "https://github.com/vega-ui/ui/issues"
   },
   "homepage": "https://github.com/vega-ui/ui#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vega-ui/ui.git"
+  },
   "engines": {
     "node": ">=22.6.0"
   },
