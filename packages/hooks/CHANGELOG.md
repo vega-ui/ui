@@ -1,5 +1,55 @@
 # @vega-ui/hooks
 
+## 2.5.0
+
+### Patch Changes
+
+- 1007aae: Fix broken `main` field in hooks, utils and react-context
+
+  In `@vega-ui/hooks`, `@vega-ui/utils` and `@vega-ui/react-context` the `main` field pointed to `./dist/index.ts` — a file that doesn't exist in `dist/` (the build only outputs `.js` and `.d.ts`). Modern bundlers masked the problem by resolving through the `exports` map, but environments that rely on `main` (Node without conditional exports support, Jest with legacy resolution, ts-node, CDNs like esm.sh) got `MODULE_NOT_FOUND` or tried to parse TypeScript as JS.
+
+  Changes:
+
+  - `main` now points to `./dist/index.js`
+  - added `module: "./dist/index.js"` (consistent with `@vega-ui/react`)
+  - added the missing top-level `types: "./dist/index.d.ts"` to utils and react-context so resolvers that don't support `exports` can find the type declarations
+
+- 9834a4c: Remove React from `dependencies`, keep it only in `peerDependencies`
+
+  `react` (and `react-dom` in `@vega-ui/react`) were declared in both `dependencies` and `peerDependencies`. With strict resolution (Yarn PnP, pnpm with `shamefully-hoist=false`, strict npm) consumers ended up with two copies of React — `Invalid hook call`, contexts not matching, rendering breaking with no clear error.
+
+  Changes:
+
+  - removed `react`/`react-dom` from `dependencies` in `@vega-ui/react`, `@vega-ui/hooks` and `@vega-ui/icons`; they stay in `peerDependencies` and were added to `devDependencies` for local development
+  - `vite.config.ts` of `@vega-ui/react` and `@vega-ui/hooks` derived rollup `external` from `Object.keys(dependencies)` only, so React would have been bundled into `dist` after this change — externals now include `peerDependencies` as well
+
+- 5ebae4b: Fix inverted `useIsomorphicLayoutEffect`
+
+  The ternary picked `useLayoutEffect` on the server and `useEffect` in the browser — exactly backwards. On SSR this triggered React's "useLayoutEffect does nothing on the server" warning; in the browser, everything built on the hook (`useLatest`, and through it layout measurements in `useResize`/`useScrollSnap` consumers) ran after paint instead of before it, allowing a frame of stale layout.
+
+  Also renamed the file to fix the typo: `useIsomophicLayoutEffect.ts` → `useIsomorphicLayoutEffect.ts` (internal only — the exported name was always spelled correctly).
+
+- c652925: Fix crash paths and null/undefined confusion in `useScrollSnap`
+
+  `getPointed()` returns `undefined` when the scroller ref is not attached, but `measure()` dereferenced its result unconditionally (TypeError on mount when the scroller renders later, or when calling the public `measure()` too early), and `commit()` destructured it unconditionally (TypeError when the scroller leaves the DOM while a debounced commit is pending). With an empty scroller (no registered items) `onSnapChange`/`onSnapChanging` fired with `(undefined, undefined)` despite their `(el: HTMLElement, key: K)` signatures, and the `key !== null` guard in `commit` never worked because `key` was `K | undefined`, never `null`.
+
+  Now: `getPointed` normalizes misses to `null` and all callers guard against an absent scroller; snap callbacks only fire with a real element and key; `measure()` skips items whose snap point cannot be computed instead of storing `undefined` in the points map; `scrollToElement` no longer looks up points with an `undefined` key.
+
+- 0ffc52f: `useSelection`: optional `compare` no longer crashes; new `compare` util
+
+  `compare?` was declared optional but invoked unconditionally in `edges`, `isSelected` and `isDisabled` — range selection or `min`/`max` clamping without a user-provided comparator threw `compare is not a function` (while `expand` had a guard, confirming the option was meant to be optional).
+
+  - `@vega-ui/utils` now exports `compare` — a three-way comparator constrained to the new `Comparable` type (`number | string | bigint | Date`), so types with no universal ordering (objects, symbols) are rejected at compile time; covered with unit tests
+  - `useSelection` falls back to it when no `compare` is passed, mirroring the existing `equals ?? Object.is` pattern; pass an explicit `compare` for non-primitive key types
+  - `expand` no longer silently no-ops without a user comparator
+  - empty or `undefined` `selected` no longer produces `undefined` range edges: `edges()` returns `[]`, `isSelected` returns `false` instead of comparing `undefined`
+  - `DataGridSelectable` reuses the shared `compare` instead of its own inline duplicate of the same fallback (no behavior change)
+
+- Updated dependencies [1007aae]
+- Updated dependencies [55a8c44]
+- Updated dependencies [0ffc52f]
+  - @vega-ui/utils@2.5.0
+
 ## 2.4.0
 
 ### Patch Changes

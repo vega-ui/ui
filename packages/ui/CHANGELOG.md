@@ -1,5 +1,48 @@
 # @vega-ui/react
 
+## 2.5.0
+
+### Patch Changes
+
+- 9834a4c: Remove React from `dependencies`, keep it only in `peerDependencies`
+
+  `react` (and `react-dom` in `@vega-ui/react`) were declared in both `dependencies` and `peerDependencies`. With strict resolution (Yarn PnP, pnpm with `shamefully-hoist=false`, strict npm) consumers ended up with two copies of React — `Invalid hook call`, contexts not matching, rendering breaking with no clear error.
+
+  Changes:
+
+  - removed `react`/`react-dom` from `dependencies` in `@vega-ui/react`, `@vega-ui/hooks` and `@vega-ui/icons`; they stay in `peerDependencies` and were added to `devDependencies` for local development
+  - `vite.config.ts` of `@vega-ui/react` and `@vega-ui/hooks` derived rollup `external` from `Object.keys(dependencies)` only, so React would have been bundled into `dist` after this change — externals now include `peerDependencies` as well
+
+- 0ffc52f: `useSelection`: optional `compare` no longer crashes; new `compare` util
+
+  `compare?` was declared optional but invoked unconditionally in `edges`, `isSelected` and `isDisabled` — range selection or `min`/`max` clamping without a user-provided comparator threw `compare is not a function` (while `expand` had a guard, confirming the option was meant to be optional).
+
+  - `@vega-ui/utils` now exports `compare` — a three-way comparator constrained to the new `Comparable` type (`number | string | bigint | Date`), so types with no universal ordering (objects, symbols) are rejected at compile time; covered with unit tests
+  - `useSelection` falls back to it when no `compare` is passed, mirroring the existing `equals ?? Object.is` pattern; pass an explicit `compare` for non-primitive key types
+  - `expand` no longer silently no-ops without a user comparator
+  - empty or `undefined` `selected` no longer produces `undefined` range edges: `edges()` returns `[]`, `isSelected` returns `false` instead of comparing `undefined`
+  - `DataGridSelectable` reuses the shared `compare` instead of its own inline duplicate of the same fallback (no behavior change)
+
+- 25c721b: Fix stale closure in Slider's `changeValue`
+
+  `changeValue` was wrapped in `useCallback` with empty deps, freezing `value` and `disabled` at their first-render values. Consequences: the slider could never return to its initial value (keyboard stepping got stuck one step away from it, clicking the initial track position was ignored); the same-value dedup guard compared against the initial value instead of the current one, so `onChangeValue` fired repeatedly with identical values during drags; toggling `disabled` after mount had no effect on interactions (an initially enabled slider stayed interactive when disabled, an initially disabled one stayed dead when enabled).
+
+  The memoization served no purpose — `changeValue` is only used by handlers that are recreated on every render — so it is now a plain function reading fresh props. Covered with regression tests for all three symptoms.
+
+- Updated dependencies [1007aae]
+- Updated dependencies [55a8c44]
+- Updated dependencies [9834a4c]
+- Updated dependencies [5ebae4b]
+- Updated dependencies [c652925]
+- Updated dependencies [df6f7c1]
+- Updated dependencies [d6954e8]
+- Updated dependencies [77c7685]
+- Updated dependencies [0ffc52f]
+  - @vega-ui/react-context@2.5.0
+  - @vega-ui/hooks@2.5.0
+  - @vega-ui/utils@2.5.0
+  - @vega-ui/icons@2.5.0
+
 ## 2.4.0
 
 ### Minor Changes
