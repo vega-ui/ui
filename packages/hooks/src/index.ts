@@ -1,5 +1,5 @@
 export * from './useResize'
-export * from './useIsomophicLayoutEffect'
+export * from './useIsomorphicLayoutEffect'
 export * from './useLatest'
 export * from './useControlledState'
 export * from './useRefMap'
