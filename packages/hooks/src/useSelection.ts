@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { compare as defaultCompare } from '@vega-ui/utils';
 import { useControlledState } from './useControlledState';
+import { useEventCallback } from './useEventCallback';
 
 export type Selection = 'single' | 'multiple' | 'range'
 export type SelectedValue<M extends Selection, K> = M extends 'single' ? K : K[]
@@ -36,6 +37,7 @@ export const useSelection = <K, const M extends Selection>({
 
   const eq = useMemo(() => equals ?? ((a: K, b: K) => Object.is(a, b)), [equals])
   const comparator = useMemo(() => compare ?? (defaultCompare as unknown as (a: K, b: K) => -1 | 0 | 1), [compare])
+  const resolveRangeOrDefault = useEventCallback(resolveRange ?? ((start: K, end: K): K[] => [start, end]))
 
   const edges = useCallback((): [K, K] | [] => {
     if (selection !== 'range') return []
@@ -99,7 +101,7 @@ export const useSelection = <K, const M extends Selection>({
 
       setSelected([key] as SelectedValue<M, K>)
     }
-  }, [eq, selected])
+  }, [eq, selected, selection, setSelected])
 
   const select = useCallback((key: K) => {
     if (isDisabled(key)) return
@@ -116,9 +118,7 @@ export const useSelection = <K, const M extends Selection>({
       if (eq(start, key)) return
 
       if (array.length === 1) {
-        const range = resolveRange
-          ? resolveRange(start, key)
-          : [start, key]
+        const range = resolveRangeOrDefault(start, key)
         setSelected(range as SelectedValue<M, K>)
         return
       }
@@ -136,12 +136,11 @@ export const useSelection = <K, const M extends Selection>({
     }
     
     setSelected(key as SelectedValue<M, K>)
-  }, [selection, selected, eq, resolveRange, isDisabled])
+  }, [selection, selected, eq, resolveRangeOrDefault, isDisabled, setSelected])
 
   const resolvedRange = useCallback((start: K, end: K): SelectedValue<M, K> => {
-    const value = resolveRange ? resolveRange(start, end) : [start, end]
-    return value as SelectedValue<M, K>
-  }, [resolveRange])
+    return resolveRangeOrDefault(start, end) as SelectedValue<M, K>
+  }, [resolveRangeOrDefault])
   
   const expand = useCallback((key: K, edge?: 0 | 1) => {
     if (selection !== 'range') return
@@ -178,7 +177,7 @@ export const useSelection = <K, const M extends Selection>({
       setSelected(resolvedRange(start, key))
       return
     }
-  }, [selection, comparator, eq, resolvedRange, edges])
+  }, [selection, comparator, eq, resolvedRange, edges, setSelected])
   
   const toggle = useCallback((key: K) => {
     if (isSelected(key)) unselect(key)

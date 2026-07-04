@@ -68,7 +68,7 @@ export const DataGridCell: FC<PropsWithChildren<DataGridCellProps>> = ({
     return () => {
       removeItemRef([row, col], key, scope)
     }
-  }, [row, col, key]);
+  }, [row, col, key, scope, removeItemRef]);
   
   const onFocus = () => {
     changeActive(key)

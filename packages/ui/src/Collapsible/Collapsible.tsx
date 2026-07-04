@@ -1,7 +1,7 @@
 'use client';
 import { FC, ReactNode, useCallback, useEffect, useId, useState } from 'react';
 import { CollapsibleProvider } from './contexts';
-import { useControlledState } from '@vega-ui/hooks';
+import { useControlledState, useEventCallback } from '@vega-ui/hooks';
 
 export interface CollapsibleProps {
   /**
@@ -51,7 +51,7 @@ export const Collapsible: FC<CollapsibleProps> = ({
   open: controlledOpen,
   defaultOpen = false,
   onChangeOpen: onControlledChangeOpen,
-  onChangeHidden,
+  onChangeHidden: _onChangeHidden,
   contentId,
   children
 }) => {
@@ -68,8 +68,10 @@ export const Collapsible: FC<CollapsibleProps> = ({
     onChangeOpen?.(false)
   }, [onChangeOpen])
 
+  const onChangeHidden = useEventCallback(_onChangeHidden)
+
   useEffect(() => {
-    onChangeHidden?.(hidden)
+    onChangeHidden(hidden)
   }, [hidden, onChangeHidden])
 
   const onOpenContent = useCallback(() => {

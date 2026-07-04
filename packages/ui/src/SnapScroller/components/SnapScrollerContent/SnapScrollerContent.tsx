@@ -41,6 +41,8 @@ export const SnapScrollerContent: FC<PropsWithChildren<SnapScrollerContentProps>
     return () => {
       removeItemRef(index)
     }
+    // unmount-only: a cleanup on index change would delete freshly re-keyed neighbor entries
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

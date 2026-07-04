@@ -34,7 +34,7 @@ export const SelectOption = <V extends string | number>({
     addOption({ value, disabled: disabledOption, label, index })
     
     return () => removeOption({ value, disabled: disabledOption, label, index })
-  }, [value, disabledOption, index])
+  }, [value, disabledOption, index, addOption, removeOption])
   
   return (
     <>

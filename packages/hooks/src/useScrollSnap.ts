@@ -1,6 +1,7 @@
 import { RefObject, UIEvent, useCallback, useEffect, useLayoutEffect, useRef } from 'react';
 import { useMutationObserver } from './useMutationObserver';
 import { useResizeObserver } from './useResizeObserver';
+import { useEventCallback } from './useEventCallback';
 import { nearest } from '@vega-ui/utils';
 import { useBiMap } from './useBiMap';
 
@@ -76,8 +77,8 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
   align = 'start',
   getSnapPoint,
   respectScrollPadding = true,
-  onSnapChanging,
-  onSnapChange,
+  onSnapChanging: _onSnapChanging,
+  onSnapChange: _onSnapChange,
   scrollEndDebounceMs = 80,
 }: UseScrollSnapOptions<K, E>) => {
   const points = useBiMap<K, number>()
@@ -85,11 +86,16 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
   
   const setItemRef = useCallback((key: K) => (element: HTMLElement) => {
     items.set(key, element);
-  }, [])
-  
+  }, [items])
+
   const removeItemRef = useCallback((key: K) => {
     items?.deleteByKey(key)
-  }, [])
+  }, [items])
+
+  const onSnapChanging = useEventCallback(_onSnapChanging)
+  const onSnapChange = useEventCallback(_onSnapChange)
+  const customSnapPoint = useEventCallback(getSnapPoint)
+  const hasCustomSnapPoint = getSnapPoint != null
   
   const committedKey = useRef<K | null>(null);
   const pendingKey = useRef<K | null>(null);
@@ -104,10 +110,10 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
     const scroller = scrollerRef.current;
     if (!scroller) return;
 
-    return getSnapPoint
-      ? getSnapPoint(scroller, element, axis, align)
+    return hasCustomSnapPoint
+      ? customSnapPoint(scroller, element, axis, align)
       : defaultGetSnapPoint(scroller, element, axis, align, respectScrollPadding);
-  }, [respectScrollPadding, axis, align])
+  }, [respectScrollPadding, axis, align, hasCustomSnapPoint, customSnapPoint, scrollerRef])
   
   const getPointed = useCallback((scroller?: HTMLElement) => {
     const s = scroller ?? scrollerRef.current;
@@ -125,7 +131,7 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
     const element = (key !== null ? items.getByKey(key) : null) ?? null
 
     return { key, element }
-  }, [axis])
+  }, [axis, points, items, scrollerRef])
   
   const measure = useCallback(() => {
     points.clear();
@@ -182,7 +188,7 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
 
     committedKey.current = key;
     pendingKey.current = key;
-    if (element && key !== null) onSnapChange?.(element, key);
+    if (element && key !== null) onSnapChange(element, key);
   }, [onSnapChange, getPointed])
   
   const scheduleCommitFallback = useCallback(() => {
@@ -206,13 +212,13 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
 
       if (key !== pendingKey.current) {
         pendingKey.current = key;
-        if (element && key !== null) onSnapChanging?.(element, key);
+        if (element && key !== null) onSnapChanging(element, key);
       }
 
       // Native-like: commit only on real scroll end when possible
       if (!hasNativeScrollEndRef.current) scheduleCommitFallback();
     });
-  }, [onSnapChanging, scheduleMeasure, scheduleCommitFallback]);
+  }, [onSnapChanging, scheduleMeasure, scheduleCommitFallback, getPointed, points]);
   
   const scrollToElement = useCallback((el: HTMLElement, behavior: ScrollBehavior = 'smooth') => {
     const scroller = scrollerRef.current;
@@ -231,14 +237,14 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
     }
     
     scroller.scrollTo({ left: target, behavior });
-  }, [axis, scheduleMeasure, calculateSnapPoint])
+  }, [axis, scheduleMeasure, calculateSnapPoint, items, points, scrollerRef])
   
   const scrollToElementByKey = useCallback((key: K, behavior: ScrollBehavior = 'smooth') => {
     const item = items.getByKey(key as K)
     if (!item) return
     
     scrollToElement(item, behavior)
-  }, [scrollToElement])
+  }, [scrollToElement, items])
   
   const getCommited = useCallback(() => committedKey.current, [])
   const getPending = useCallback(() => pendingKey.current, [])

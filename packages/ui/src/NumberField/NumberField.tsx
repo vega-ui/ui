@@ -10,6 +10,7 @@ import {
 import { TextField, TextFieldProps } from '../TextField';
 import style from './style.module.css'
 import { clamp, csx, dispatchEvents, mergeRefs, setValue } from '@vega-ui/utils';
+import { useEventCallback } from '@vega-ui/hooks';
 import { getNumberMaskOptions, getNumberValue } from './helpers';
 import { useMaskito } from '@maskito/react';
 import { NumberFieldProvider } from './contexts';
@@ -166,7 +167,7 @@ export const NumberField: FC<NumberFieldProps> = ({
 
     const nextValue = clamp(min, getNumberValue(value) - step, max);
     changeValue(nextValue)
-  }, [min, step, changeValue])
+  }, [min, max, step, changeValue])
 
   const onKeyDown = (e: KeyboardEvent) => {
     if (e.key === 'ArrowUp') {
@@ -180,21 +181,20 @@ export const NumberField: FC<NumberFieldProps> = ({
     }
   }
   
-  const onWheel = useCallback((e: WheelEvent) => {
-    if (!changeOnWheel) return
+  const onWheel = useEventCallback((e: WheelEvent) => {
     e.preventDefault()
-    
+
     if (e.deltaY < 0) increment()
     else decrement()
-  }, [increment, decrement, changeOnWheel])
+  })
 
   useEffect(() => {
     const elem = wrapperRef.current
-    if (!elem) return
+    if (!elem || !changeOnWheel) return
 
     elem.addEventListener('wheel', onWheel)
     return () => elem.removeEventListener('wheel', onWheel)
-  }, [onWheel]);
+  }, [onWheel, changeOnWheel]);
 
   return (
     <NumberFieldProvider

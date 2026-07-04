@@ -142,7 +142,7 @@ export const IndexedSnapScroller: FC<PropsWithChildren<IndexedSnapScrollerProps>
 
     const start = indexes[0]
     reset(computeStart(start, key, nextIndex))
-  }, [indexes])
+  }, [indexes, reset])
   
   const preserveScrollPosition = useCallback(() => {
     if (!preserveScroll) return;
@@ -165,7 +165,7 @@ export const IndexedSnapScroller: FC<PropsWithChildren<IndexedSnapScrollerProps>
     // Sync controlled state
     if (index === undefined || (index === api.getPending() || index === api.getCommited())) return
     setIndexTo(index)
-  }, [index])
+  }, [index, setIndexTo])
   
   const offset = (value: number) => {
     onOffset?.(value)

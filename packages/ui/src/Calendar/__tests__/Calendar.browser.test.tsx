@@ -420,6 +420,24 @@ describe('Calendar', () => {
   });
   
   describe('Edge Cases', () => {
+    it('calls the latest onChange after it changes between renders', async () => {
+      const initialOnChange = vi.fn();
+      const nextOnChange = vi.fn();
+
+      const r = render(<CalendarTest onChange={initialOnChange} />);
+      r.rerender(<CalendarTest onChange={nextOnChange} />);
+
+      const day = r
+        .getAllByText('15')
+        .find((el) => el.closest('[role="gridcell"]')?.getAttribute('aria-disabled') === 'false');
+
+      await userEvent.click(day!);
+
+      expect(nextOnChange).toHaveBeenCalledTimes(1);
+      expect(nextOnChange).toHaveBeenCalledWith(expect.any(Date));
+      expect(initialOnChange).not.toHaveBeenCalled();
+    });
+
     it('supports multiple calendars rendered together: renders two month picker buttons', async () => {
       const r = render(
         <>
