@@ -10,7 +10,7 @@ import { DataGrid, DataGridProps, DataGridResolveValue } from '../DataGrid';
 import { DataGridApiRef, DataGridCellKey } from '../DataGrid';
 import { DataGridDisabled, DataGridSelection } from './types';
 import { DataGridSelectableProvider } from './contexts';
-import { Grid, MatrixNode, mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
+import { Grid, MatrixNode, compare as defaultCompare, mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
 import { useSelection } from '@vega-ui/hooks';
 import { getCellKey } from './helpers';
 
@@ -146,7 +146,7 @@ export const DataGridSelectable = <K extends DataGridCellKey = DataGridCellKey, 
   
   const compare = useCallback((a: K, b: K) => {
     if (_compare) return _compare(a, b)
-    return a < b ? -1 : a > b ? 1 : 0
+    return defaultCompare(a, b)
   }, [_compare])
   
   const resolveRange = useCallback((start: K, end: K) => {
