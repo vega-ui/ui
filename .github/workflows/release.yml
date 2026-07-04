@@ -29,12 +29,12 @@ jobs:
           token: ${{ secrets.PAT_GITHUB }}
 
       - name: Install pnpm
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: '22'
+          node-version: '24'
 
       - name: Install dependencies
         run: pnpm install
@@ -49,7 +49,7 @@ jobs:
           git config --global user.name "Adara Cloud CI"
 
       - name: Publish versions
-        uses: changesets/action@v1.4.9
+        uses: changesets/action@v1.9.0
         with:
           commit: "chore: update versions"
           title: "chore: update versions"
@@ -58,7 +58,6 @@ jobs:
           setupGitUser: false
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_GITHUB }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_ENV: "production"
 
       - name: Build storybook
