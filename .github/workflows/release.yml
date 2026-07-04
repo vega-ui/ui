@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+concurrency:
+  group: "release-pages"
+  cancel-in-progress: false
+
 permissions:
   pages: write
   id-token: write
