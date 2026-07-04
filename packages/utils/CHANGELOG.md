@@ -1,5 +1,39 @@
 # @vega-ui/utils
 
+## 2.5.0
+
+### Minor Changes
+
+- 0ffc52f: `useSelection`: optional `compare` no longer crashes; new `compare` util
+
+  `compare?` was declared optional but invoked unconditionally in `edges`, `isSelected` and `isDisabled` — range selection or `min`/`max` clamping without a user-provided comparator threw `compare is not a function` (while `expand` had a guard, confirming the option was meant to be optional).
+
+  - `@vega-ui/utils` now exports `compare` — a three-way comparator constrained to the new `Comparable` type (`number | string | bigint | Date`), so types with no universal ordering (objects, symbols) are rejected at compile time; covered with unit tests
+  - `useSelection` falls back to it when no `compare` is passed, mirroring the existing `equals ?? Object.is` pattern; pass an explicit `compare` for non-primitive key types
+  - `expand` no longer silently no-ops without a user comparator
+  - empty or `undefined` `selected` no longer produces `undefined` range edges: `edges()` returns `[]`, `isSelected` returns `false` instead of comparing `undefined`
+  - `DataGridSelectable` reuses the shared `compare` instead of its own inline duplicate of the same fallback (no behavior change)
+
+### Patch Changes
+
+- 1007aae: Fix broken `main` field in hooks, utils and react-context
+
+  In `@vega-ui/hooks`, `@vega-ui/utils` and `@vega-ui/react-context` the `main` field pointed to `./dist/index.ts` — a file that doesn't exist in `dist/` (the build only outputs `.js` and `.d.ts`). Modern bundlers masked the problem by resolving through the `exports` map, but environments that rely on `main` (Node without conditional exports support, Jest with legacy resolution, ts-node, CDNs like esm.sh) got `MODULE_NOT_FOUND` or tried to parse TypeScript as JS.
+
+  Changes:
+
+  - `main` now points to `./dist/index.js`
+  - added `module: "./dist/index.js"` (consistent with `@vega-ui/react`)
+  - added the missing top-level `types: "./dist/index.d.ts"` to utils and react-context so resolvers that don't support `exports` can find the type declarations
+
+- 55a8c44: Sync rollup externals with real dependencies
+
+  `vite.config.ts` of icons and utils listed externals manually, including `@vega-ui/helpers` — a package that doesn't exist in the monorepo — plus entries these packages never import (`@floating-ui/react`, `react-remove-scroll`, `@vega-ui/hooks`). Hand-written lists drift from real dependencies; a stray module matching a dead entry would silently produce a broken bundle.
+
+  - **icons**: externals are now derived from `Object.keys(packageJson.dependencies)` + `Object.keys(packageJson.peerDependencies)` (same pattern as `@vega-ui/react` and `@vega-ui/hooks`), so the "don't bundle this" contract always matches the declared dependencies.
+  - **utils**: the package has no runtime dependencies at all (React appears only in type imports), so the list is trimmed to the explicit `['react', 'react-dom', 'react/jsx-runtime']` safety net.
+  - `resolveJsonModule: true` added to `tsconfig.node.json` of ui/hooks/icons (their vite configs import `package.json`); the empty `tsconfig.node.json` of utils filled in to match the other packages.
+
 ## 2.4.0
 
 ## 2.3.1
