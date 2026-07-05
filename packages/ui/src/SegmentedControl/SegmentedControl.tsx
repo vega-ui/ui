@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEvent, CSSProperties, FC, HTMLAttributes, Ref, useLayoutEffect, useRef, useState } from 'react';
+import { ChangeEvent, CSSProperties, FC, HTMLAttributes, Ref, useCallback, useLayoutEffect, useRef, useState } from 'react';
 import { csx, mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
 import { SegmentedControlProvider } from './contexts';
 import { SegmentedControlSize, SegmentedControlValue, SegmentedControlVariant } from './types';
@@ -81,13 +81,13 @@ export const SegmentedControl: FC<SegmentedControlProps> = ({
   const [indicatorSize, setIndicatorSize] = useState(0)
   const [indicatorOffsetLeft, setIndicatorOffsetLeft] = useState(0)
   
-  const syncIndicatorParams = (value: SegmentedControlValue) => {
+  const syncIndicatorParams = useCallback((value: SegmentedControlValue) => {
     const item = getItem(value)
     if (!item) return;
-    
+
     setIndicatorOffsetLeft(item.offsetLeft)
     setIndicatorSize(item.clientWidth)
-  }
+  }, [getItem])
   
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.currentTarget.value
@@ -96,7 +96,7 @@ export const SegmentedControl: FC<SegmentedControlProps> = ({
   
   useLayoutEffect(() => {
     if (value !== undefined) syncIndicatorParams(value)
-  }, [value])
+  }, [value, syncIndicatorParams])
   
   useResizeObserver(controlRef, () => syncIndicatorParams(value))
   

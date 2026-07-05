@@ -212,7 +212,7 @@ export const Select = <V extends string | number>({
     setSelectedIndex(index)
     select(value)
     setOpen(false)
-  }, [])
+  }, [select, setOpen])
 
   const { status } = useTransitionStatus(context);
   
@@ -220,12 +220,12 @@ export const Select = <V extends string | number>({
     const { index, ...data } = option
     indexValueMap.set(index, data.value)
     setOptions(p => [...p, option])
-  }, [])
+  }, [indexValueMap])
   
   const removeOption = useCallback((option: SelectNativeOption<V>) => {
     setOptions(p => p.filter(v => v.value !== option.value))
     indexValueMap.delete(option.index)
-  }, [])
+  }, [indexValueMap])
   
   return (
     <SelectProvider

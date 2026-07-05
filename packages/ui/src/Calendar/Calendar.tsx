@@ -1,7 +1,7 @@
 import { useCallback, useRef } from 'react';
 import { IndexedSnapScrollerApiRef } from '../IndexedSnapScroller';
 import { CalendarProvider } from './contexts';
-import { useControlledState } from '@vega-ui/hooks';
+import { useControlledState, useEventCallback } from '@vega-ui/hooks';
 import { CalendarDatesDisabled, CalendarPicker, CalendarSelection, CalendarValue } from './types';
 import { DataGridApiRef } from '../DataGrid';
 import { CalendarBase, CalendarBaseProps } from '../CalendarBase';
@@ -202,7 +202,7 @@ export const Calendar = <S extends CalendarSelection>({
   
   const openDayPicker = useCallback(() => {
     setActivePicker('day')
-  }, [])
+  }, [setActivePicker])
   
   const closePicker = useCallback(() => {
     openDayPicker()
@@ -252,10 +252,10 @@ export const Calendar = <S extends CalendarSelection>({
     focusAvailable(value, clampedMonth)
   }
   
-  const onSelectDay = useCallback((day: number | number[]) => {
+  const onSelectDay = useEventCallback((day: number | number[]) => {
     const value = Array.isArray(day) ? day.map(d => new Date(d)) : new Date(day)
     onChange?.(value as CalendarValue<S>)
-  }, [])
+  })
   
   const toggleMonthPicker = useCallback(() => {
     if (activePicker === 'month') {
@@ -265,7 +265,7 @@ export const Calendar = <S extends CalendarSelection>({
     
     setActivePicker('month')
     requestAnimationFrame(() => focusPickerValue(monthPickerApiRef.current, date.getMonth()))
-  }, [activePicker, date, openDayPicker])
+  }, [activePicker, date, openDayPicker, setActivePicker])
 
   const toggleYearPicker = useCallback(() => {
     if (activePicker === 'year') {
@@ -275,7 +275,7 @@ export const Calendar = <S extends CalendarSelection>({
     
     setActivePicker('year')
     requestAnimationFrame(() => focusPickerValue(yearPickerApiRef.current, date.getFullYear()))
-  }, [activePicker, date, openDayPicker])
+  }, [activePicker, date, openDayPicker, setActivePicker])
   
   const nextPeriod = useCallback(() => scrollerApiRef.current?.next(), [])
   const nextYearGroup = useCallback(() => yearScrollerApiRef.current?.next(), [])

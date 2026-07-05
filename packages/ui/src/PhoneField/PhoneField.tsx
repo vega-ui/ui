@@ -63,7 +63,7 @@ export const PhoneField: FC<PhoneFieldProps> = ({
     })
     
     innerRef.current?.focus()
-  }, [])
+  }, [setCode])
   
   const onInput = useCallback((e: FormEvent<HTMLInputElement>) => {
     const value = e.currentTarget.value
@@ -73,7 +73,7 @@ export const PhoneField: FC<PhoneFieldProps> = ({
     
     const typedCode = asYouType.getCountry()
     if (typedCode !== undefined && typedCode !== code) setCode(typedCode)
-  }, [code])
+  }, [code, setCode])
   
   return (
     <PhoneFieldProvider

@@ -125,7 +125,7 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
     didInitScroll.current = true;
     
     if (defaultIndex !== undefined) scrollToElementByKey(defaultIndex, 'instant');
-  }, [defaultIndex]);
+  }, [defaultIndex, scrollToElementByKey]);
 
   return (
     <SnapScrollerProvider removeItemRef={removeItemRef} itemRef={itemRef}>

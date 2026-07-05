@@ -21,6 +21,9 @@ export function useMutationObserver<T extends Node>(
     observer.observe(target, options ?? { childList: true });
     
     return () => observer.disconnect();
+    // options itself is intentionally not a dependency: its fields are listed one by one,
+    // so inline options objects don't reconnect the observer on every render
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     ref,
     options?.attributes,

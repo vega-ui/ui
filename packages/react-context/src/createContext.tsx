@@ -5,6 +5,9 @@ export const createContext = <D extends object | null>(name: string, defaultCont
   Context.displayName = name + 'Context';
   
   const Provider: FC<PropsWithChildren<D>> = ({ children, ...props }) => {
+    // Intentional shallow-by-value memoization: the context value keeps its identity
+    // as long as every prop is referentially equal. The dep list can't be a literal here.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const value = useMemo(() => props, Object.values(props)) as D;
     return <Context.Provider value={value}>{children}</Context.Provider>;
   };

@@ -104,14 +104,14 @@ export const DataGrid = <K extends DataGridCellKey = DataGridCellKey>({
 
   const [active, setActive] = useControlledState<K>(_active, defaultActive ?? '' as K, onChangeActive)
   
-  useImperativeHandle(apiRef, () => ({ grid, scopes }), [])
+  useImperativeHandle(apiRef, () => ({ grid, scopes }), [grid, scopes])
 
   const setItemRef = useCallback((coordinates: DataGridCoordinates, key: K, scope: DataGridScope) => (element: HTMLDivElement) => {
     grid.addNode(coordinates, key, element)
     
     const currentScope = scopes.get(scope) ?? []
     scopes.set(scope, [...currentScope, key])
-  }, [])
+  }, [grid, scopes])
 
   const removeItemRef = useCallback((coordinates: DataGridCoordinates, key: K, scope: DataGridScope) => {
     grid.removeNode(coordinates)
@@ -119,7 +119,7 @@ export const DataGrid = <K extends DataGridCellKey = DataGridCellKey>({
     const currentScope = scopes.get(scope) ?? []
     scopes.set(scope, currentScope.filter(v => v !== key))
     if (scopes.get(scope)?.length === 0) scopes.delete(scope)
-  }, [])
+  }, [grid, scopes])
 
   const changeFocus = (node: MatrixNode<HTMLElement, K>) => {
     node.payload?.focus()
