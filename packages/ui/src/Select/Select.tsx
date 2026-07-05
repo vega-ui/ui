@@ -166,8 +166,8 @@ export const Select = <V extends string | number>({
     setSelectedIndex(index)
     
     const value = indexValueMap.get(index)
-    if (!value) return
-    
+    if (value === undefined) return
+
     select(value)
   }
   
