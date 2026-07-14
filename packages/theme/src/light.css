@@ -37,8 +37,8 @@
 
     --label-primary: var(--text-color);
     --label-secondary: var(--color-gray-700);
-    --label-tertiary: var(--color-gray-500);
-    --label-quaternary: var(--color-gray-300);
+    --label-tertiary: var(--color-gray-600);
+    --label-quaternary: var(--color-gray-500);
 
     /* ============================================
                            DISABLE
