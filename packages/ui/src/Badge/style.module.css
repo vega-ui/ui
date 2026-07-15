@@ -6,6 +6,7 @@
     --badge-background-color: var(--color-blue-accent-500);
     --badge-border-color: transparent;
     --badge-color: var(--color-white);
+    --badge-chroma-ratio: 0.03;
 
     display: inline-flex;
     flex-shrink: 0;
@@ -57,8 +58,8 @@
 /* Info variant */
 
 .badge:where([data-variant='info'][data-appearance='ghost']) {
-    --badge-color: var(--color-blue-accent-800);
-    --badge-background-color: var(--color-blue-accent-100);
+    --badge-color: var(--color-blue-accent-600);
+    --badge-background-color: oklch(from var(--color-blue-500) l calc(c + var(--badge-chroma-ratio)) h / 0.10);
 }
 
 .badge:where([data-variant='info'][data-appearance='outline']) {
@@ -80,9 +81,9 @@
 
 /* Success variant */
 
-.badge:where([data-variant='success']) {
-    --badge-color: var(--color-green-accent-800);
-    --badge-background-color: var(--color-green-accent-100);
+.badge:where([data-variant='success'][data-appearance='ghost']) {
+    --badge-color: var(--color-green-accent-600);
+    --badge-background-color: oklch(from var(--color-green-500) l calc(c + var(--badge-chroma-ratio)) h / 0.10);
 }
 
 .badge:where([data-variant='success'][data-appearance='outline']) {
@@ -104,9 +105,9 @@
 
 /* Error variant */
 
-.badge:where([data-variant='error']) {
-    --badge-color: var(--color-red-accent-800);
-    --badge-background-color: var(--color-red-accent-100);
+.badge:where([data-variant='error'][data-appearance='ghost']) {
+    --badge-color: var(--color-red-accent-600);
+    --badge-background-color: oklch(from var(--color-red-500) l calc(c + var(--badge-chroma-ratio)) h / 0.10);
 }
 
 .badge:where([data-variant='error'][data-appearance='outline']) {
@@ -128,9 +129,9 @@
 
 /* Warning variant */
 
-.badge:where([data-variant='warning']) {
-    --badge-color: var(--color-amber-accent-800);
-    --badge-background-color: var(--color-amber-accent-100);
+.badge:where([data-variant='warning'][data-appearance='ghost']) {
+    --badge-color: var(--color-amber-accent-600);
+    --badge-background-color: oklch(from var(--color-amber-500) l calc(c + var(--badge-chroma-ratio)) h / 0.10);
 }
 
 .badge:where([data-variant='warning'][data-appearance='outline']) {
