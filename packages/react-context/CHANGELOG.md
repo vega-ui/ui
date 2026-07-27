@@ -1,5 +1,7 @@
 # @vega-ui/react-context
 
+## 2.6.0
+
 ## 2.5.0
 
 ### Patch Changes
