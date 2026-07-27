@@ -58,7 +58,7 @@
 /* Info variant */
 
 .badge:where([data-variant='info'][data-appearance='ghost']) {
-    --badge-color: var(--color-blue-accent-600);
+    --badge-color: var(--color-blue-accent-700);
     --badge-background-color: oklch(from var(--color-blue-500) l calc(c + var(--badge-chroma-ratio)) h / 0.10);
 }
 
@@ -82,7 +82,7 @@
 /* Success variant */
 
 .badge:where([data-variant='success'][data-appearance='ghost']) {
-    --badge-color: var(--color-green-accent-600);
+    --badge-color: var(--color-green-accent-700);
     --badge-background-color: oklch(from var(--color-green-500) l calc(c + var(--badge-chroma-ratio)) h / 0.10);
 }
 
@@ -106,7 +106,7 @@
 /* Error variant */
 
 .badge:where([data-variant='error'][data-appearance='ghost']) {
-    --badge-color: var(--color-red-accent-600);
+    --badge-color: var(--color-red-accent-700);
     --badge-background-color: oklch(from var(--color-red-500) l calc(c + var(--badge-chroma-ratio)) h / 0.10);
 }
 
@@ -130,7 +130,7 @@
 /* Warning variant */
 
 .badge:where([data-variant='warning'][data-appearance='ghost']) {
-    --badge-color: var(--color-amber-accent-600);
+    --badge-color: var(--color-amber-accent-700);
     --badge-background-color: oklch(from var(--color-amber-500) l calc(c + var(--badge-chroma-ratio)) h / 0.10);
 }
 
