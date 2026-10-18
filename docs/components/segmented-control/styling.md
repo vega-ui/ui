@@ -2,7 +2,7 @@
 
 ## Overview
 
-`SegmentedControl` styling is split across the root track, item-level content, and the animated indicator. The root owns measured indicator geometry through CSS variables.
+`SegmentedControl` styling is split across the root track, item-level content, and the animated indicator. The indicator follows the checked segment through CSS anchor positioning — no JS measurement.
 
 ## Public CSS Variables
 
@@ -10,13 +10,11 @@
 | --- | --- | --- |
 | `--segmented-control-height` | `SegmentedControl` | Overall control height. |
 | `--segmented-control-background-color` | `SegmentedControl` | Track background. |
-| `--segmented-control-indicator-offset` | `SegmentedControlIndicator` | Indicator x-position. |
-| `--segmented-control-indicator-size` | `SegmentedControlIndicator` | Indicator width. |
 
 ## Part-Level Variables
 
 - `SegmentedControl`: root track, size model, and focus outline.
-- `SegmentedControlItem`: label sizing, padding, and active or disabled text treatment.
+- `SegmentedControlItem`: label sizing, padding, and active or disabled text treatment. The active segment is the one whose radio is checked — target it with `:has(input:checked)`.
 - `SegmentedControlIndicator`: animated selected-state surface.
 - `SegmentedControlItemHiddenInput`: semantic carrier for native radio-group behavior.
 
@@ -42,6 +40,7 @@
 
 ## Do Not Override
 
-- Do not hard-code indicator geometry that conflicts with measured item widths.
+- Do not hard-code indicator geometry: `left` and `width` come from the checked segment's anchor.
+- Browsers without CSS anchor positioning hide the indicator and paint the checked segment's own background instead.
 - Do not weaken root focus visibility.
 - Do not force very uneven item padding if labels already vary in length.

@@ -34,5 +34,6 @@
 ## State Model
 
 - `SegmentedControl` can be uncontrolled through `defaultValue` or controlled through `value` and `onChange`.
-- The root measures item width and offset to position `SegmentedControlIndicator`.
+- In uncontrolled mode the native radio group owns the selection: clicks, keyboard, form reset and programmatic `checked` changes all apply without React state.
+- `SegmentedControlIndicator` is anchored to the checked segment in CSS, so it follows any of those changes.
 - `useSegmentedControlContext` is available for advanced wrappers and custom compositions.

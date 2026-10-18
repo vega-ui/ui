@@ -1,7 +1,7 @@
 import { FC, HTMLAttributes, Ref } from 'react';
 import style from './style.module.css';
 import { SegmentedControlItemProvider, useSegmentedControlContext } from '../../contexts';
-import { csx, mergeRefs } from '@vega-ui/utils';
+import { csx } from '@vega-ui/utils';
 import { SegmentedControlSize, SegmentedControlValue, SegmentedControlVariant } from '../../types';
 
 export interface SegmentedControlItemProps extends HTMLAttributes<HTMLLabelElement> {
@@ -43,7 +43,7 @@ export const SegmentedControlItem: FC<SegmentedControlItemProps> = ({
   ref,
   ...props
 }) => {
-  const { size: _size, variant: _variant, disabled: _disabled, itemRef, selected } = useSegmentedControlContext()
+  const { size: _size, variant: _variant, disabled: _disabled } = useSegmentedControlContext()
 
   return (
     <SegmentedControlItemProvider value={value}>
@@ -51,9 +51,8 @@ export const SegmentedControlItem: FC<SegmentedControlItemProps> = ({
         data-disabled={disabled ?? _disabled}
         data-size={size ?? _size}
         data-variant={variant ?? _variant}
-        data-active={selected === value}
         className={csx(style.item, className)}
-        ref={mergeRefs([itemRef?.(value), ref])}
+        ref={ref}
         {...props}
       >
         {children}

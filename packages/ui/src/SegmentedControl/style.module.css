@@ -6,8 +6,7 @@
     --segmented-control-background-color-hover: var(--fills-tertiary-hover);
     --segmented-control-background-color-active: var(--fills-tertiary-active);
 
-    --segmented-control-indicator-offset: 0;
-    --segmented-control-indicator-size: 100%;
+    --segmented-control-indicator-display: none;
 
     display: grid;
     align-items: center;
@@ -20,6 +19,10 @@
     height: var(--segmented-control-height);
     background-color: var(--segmented-control-background-color);
     border-radius: calc(var(--segmented-control-height) * var(--segmented-control-br-ratio));
+}
+
+.segmentedControl:has(input[type='radio']:checked) {
+    --segmented-control-indicator-display: block;
 }
 
 .segmentedControl:has(:focus-visible) {

@@ -18,8 +18,10 @@ export type SegmentedControlItemHiddenInputProps = Omit<InputHTMLAttributes<HTML
  *   correct context and behavior
  */
 export const SegmentedControlItemHiddenInput: FC<SegmentedControlItemHiddenInputProps> = ({ className, onChange: _onChange, ...props }) => {
-  const { onChange, name, disabled, selected } = useSegmentedControlContext()
+  const { onChange, name, disabled, selected, defaultSelected } = useSegmentedControlContext()
   const { value } = useSegmentedControlItemContext()
+  
+  const controlled = selected !== undefined
   
   return (
     <VisuallyHidden asChild>
@@ -27,7 +29,8 @@ export const SegmentedControlItemHiddenInput: FC<SegmentedControlItemHiddenInput
         className={csx(style.input, className)}
         onChange={mergeEventHandlers(onChange, _onChange)}
         disabled={disabled}
-        checked={value === selected}
+        checked={controlled ? value === selected : undefined}
+        defaultChecked={controlled ? undefined : value === defaultSelected}
         type='radio'
         {...props}
         value={value}

@@ -51,7 +51,9 @@
     --padding-inline: var(--spacing-16);
 }
 
-.item:where([data-active='true']) {
+.item:where(:has(input[type='radio']:checked)) {
+    anchor-name: --segmented-control-active;
+
     --item-color: var(--text-color-inverce);
     --item-background-color-hover: transparent;
     --item-background-color-active: transparent;
@@ -74,4 +76,24 @@
 
 .item:not([data-disabled='true']):active {
     background-color: var(--item-background-color-active);
+}
+
+@supports not (anchor-name: --segmented-control-active) {
+    .item:where([data-variant='primary']) {
+        --item-indicator-color: var(--color-primary-500);
+    }
+
+    .item:where([data-variant='secondary']) {
+        --item-indicator-color: var(--color-secondary-500);
+    }
+
+    .item:where([data-disabled='true']) {
+        --item-indicator-color: var(--disable-background-color);
+    }
+
+    .item:where(:has(input[type='radio']:checked)) {
+        --item-background-color: var(--item-indicator-color);
+        --item-background-color-hover: var(--item-indicator-color);
+        --item-background-color-active: var(--item-indicator-color);
+    }
 }

@@ -1,19 +1,27 @@
 .indicator {
-    display: block;
+    display: var(--segmented-control-indicator-display, block);
     border-radius: inherit;
     position: absolute;
     z-index: -1;
     pointer-events: none;
     box-sizing: border-box;
     top: 0;
-    left: 0;
     height: 100%;
-    transform: translateX(var(--segmented-control-indicator-offset));
-    width: var(--segmented-control-indicator-size);
+
+    position-anchor: --segmented-control-active;
+    left: anchor(left);
+    width: anchor-size(width);
+
     transition:
-            transform var(--transition-fast-state-delay) ease-in-out,
+            left var(--transition-fast-state-delay) ease-in-out,
             width var(--transition-fast-state-delay) ease-in-out,
             height var(--transition-fast-state-delay) ease-in-out;
+}
+
+@supports not (anchor-name: --segmented-control-active) {
+    .indicator {
+        display: none;
+    }
 }
 
 .indicator:where([data-variant='primary']) {
