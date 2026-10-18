@@ -9,9 +9,9 @@ export interface SegmentedControlContextState {
   disabled?: boolean
   variant?: SegmentedControlVariant
   selected?: SegmentedControlValue
+  defaultSelected?: SegmentedControlValue
   name?: string
   onChange?(e: ChangeEvent<HTMLInputElement>): void
-  itemRef?(key: SegmentedControlValue): (element: HTMLLabelElement) => void
 }
 
 export const [SegmentedControlProvider, useSegmentedControlContext] = createContext<SegmentedControlContextState>('SegmentedControlContext', {

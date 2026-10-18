@@ -8,16 +8,16 @@ The highlighted indicator appears offset or sized incorrectly.
 
 ### Likely Cause
 
-Custom layout or dynamic content changed item geometry in a way that was not tested with the indicator measurement model.
+The indicator resolves its anchor inside the nearest positioned ancestor. A custom wrapper with `position: relative/absolute` between the root and the items, or overriding the root `position`, breaks the anchor lookup.
 
 ### How To Verify
 
 - Test the control with realistic labels and container width.
-- Check whether item widths or layout wrappers change after render.
+- Check for positioned wrappers between `SegmentedControl` and its items.
 
 ### Fix
 
-- Keep item layout stable.
+- Keep items direct children of the root, without positioned wrappers.
 - Retest custom widths, separators, and dynamic label changes.
 
 ## Control Looks Right But Does Not Behave Like A Radio Group

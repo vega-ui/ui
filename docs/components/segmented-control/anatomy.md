@@ -2,13 +2,13 @@
 
 ## Overview
 
-`SegmentedControl` is a [compound component](../../glossary.md#compound-component) for always-visible mutually exclusive options with a shared indicator, item-level hidden inputs, and root-managed selected-state geometry.
+`SegmentedControl` is a [compound component](../../glossary.md#compound-component) for always-visible mutually exclusive options with a shared indicator, item-level hidden inputs, and a CSS-anchored selected-state indicator.
 
 ## Required Parts
 
 ### `SegmentedControl`
 
-Required. Owns selected value, size, variant, disabled state, and indicator positioning.
+Required. Owns the group `name`, the controlled `value` or the initial `defaultValue`, size, variant, and disabled state.
 
 ### `SegmentedControlItem`
 

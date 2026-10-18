@@ -106,6 +106,15 @@ const getInput2 = (r: RenderResult) => r.getByTestId(TESTID_INPUT_2) as HTMLInpu
 
 const getSubmit = (r: RenderResult) => r.getByTestId(SUBMIT_TESTID) as HTMLButtonElement;
 
+const expectIndicatorOver = async (indicator: HTMLElement, item: HTMLElement) => {
+  await expect.poll(() => {
+    const i = indicator.getBoundingClientRect();
+    const t = item.getBoundingClientRect();
+    
+    return [Math.round(i.left - t.left), Math.round(i.width - t.width)];
+  }).toEqual([0, 0]);
+};
+
 describe('SegmentedControl', () => {
   describe('Critical User Paths', () => {
     describe('uncontrolled', () => {
@@ -144,9 +153,7 @@ describe('SegmentedControl', () => {
         await expect.element(getInput1(r)).not.toBeChecked();
         await expect.element(getInput2(r)).not.toBeChecked();
         
-        await expect.element(getItem0(r)).toHaveAttribute('data-active', 'true');
-        await expect.element(getItem1(r)).toHaveAttribute('data-active', 'false');
-        await expect.element(getItem2(r)).toHaveAttribute('data-active', 'false');
+        await expectIndicatorOver(getIndicator(r), getItem0(r));
       });
       
       it('changes selection by clicking a segment (label)', async () => {
@@ -156,9 +163,7 @@ describe('SegmentedControl', () => {
         await expect.element(getInput1(r)).toBeChecked();
         await expect.element(getInput2(r)).not.toBeChecked();
         
-        await expect.element(getItem0(r)).toHaveAttribute('data-active', 'false');
-        await expect.element(getItem1(r)).toHaveAttribute('data-active', 'true');
-        await expect.element(getItem2(r)).toHaveAttribute('data-active', 'false');
+        await expectIndicatorOver(getIndicator(r), getItem1(r));
       });
       
       it('updates disabled state to indicator and items via data attributes', async () => {
@@ -215,10 +220,12 @@ describe('SegmentedControl', () => {
         
         await expect.element(getInput0(r)).toBeChecked();
         await expect.element(getInput1(r)).not.toBeChecked();
+        await expectIndicatorOver(getIndicator(r), getItem0(r));
         
         r.rerender(<SegmentedControlTest value={VALUE_1} onChange={onChange} />);
         await expect.element(getInput0(r)).not.toBeChecked();
         await expect.element(getInput1(r)).toBeChecked();
+        await expectIndicatorOver(getIndicator(r), getItem1(r));
       });
     });
   });
@@ -241,6 +248,29 @@ describe('SegmentedControl', () => {
       });
     });
     
+    it('restores defaultValue on native form reset (uncontrolled)', async () => {
+      let submitted: Record<string, string> | null = null;
+
+      const r = render(
+        <FormTest onSubmit={(d) => (submitted = d)}>
+          <SegmentedControlTest defaultValue={VALUE_0} />
+        </FormTest>
+      );
+
+      await userEvent.click(getItem2(r));
+      (r.getByTestId(FORM_TESTID) as HTMLFormElement).reset();
+
+      await expect.element(getInput0(r)).toBeChecked();
+      await expect.element(getInput2(r)).not.toBeChecked();
+
+      await expectIndicatorOver(getIndicator(r), getItem0(r));
+
+      await userEvent.click(getSubmit(r));
+      expect(submitted).toEqual({
+        [NAME]: VALUE_0,
+      });
+    });
+
     it('supports empty defaultValue (no selection)', async () => {
       const r = render(<SegmentedControlTest defaultValue='' />);
       
@@ -248,9 +278,39 @@ describe('SegmentedControl', () => {
       await expect.element(getInput1(r)).not.toBeChecked();
       await expect.element(getInput2(r)).not.toBeChecked();
       
-      await expect.element(getItem0(r)).toHaveAttribute('data-active', 'false');
-      await expect.element(getItem1(r)).toHaveAttribute('data-active', 'false');
-      await expect.element(getItem2(r)).toHaveAttribute('data-active', 'false');
+      await expect.element(getIndicator(r)).not.toBeVisible();
+    });
+    
+    it('follows a programmatic selection that fires no events (uncontrolled)', async () => {
+      const r = render(<SegmentedControlTest defaultValue={VALUE_0} />);
+      
+      getInput2(r).checked = true;
+      
+      await expectIndicatorOver(getIndicator(r), getItem2(r));
+    });
+    
+    it('keeps indicators of several controls on a page independent', async () => {
+      const r = render(
+        <>
+          <SegmentedControlTest defaultValue={VALUE_0} />
+          <SegmentedControl name='other'>
+            <SegmentedControlIndicator data-testid='other-indicator' />
+            <SegmentedControlItem value={VALUE_0}>
+              {VALUE_0}
+              <SegmentedControlItemHiddenInput />
+            </SegmentedControlItem>
+            <SegmentedControlItem data-testid='other-item' value={VALUE_1}>
+              {VALUE_1}
+              <SegmentedControlItemHiddenInput />
+            </SegmentedControlItem>
+          </SegmentedControl>
+        </>
+      );
+      
+      await userEvent.click(r.getByTestId('other-item'));
+      
+      await expectIndicatorOver(getIndicator(r), getItem0(r));
+      await expectIndicatorOver(r.getByTestId('other-indicator'), r.getByTestId('other-item'));
     });
   });
   

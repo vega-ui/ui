@@ -35,6 +35,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     name: 'default',
+    defaultValue: '1',
     children: [
       <SegmentedControlItem value='1'>
         <SegmentedControlItemHiddenInput />
@@ -55,7 +56,8 @@ export const Default: Story = {
 
 export const Separated: Story = {
   args: {
-    name: 'default',
+    name: 'separated',
+    defaultValue: '1',
     style: {
       display: 'flex',
       width: 'min-content',
@@ -82,7 +84,8 @@ export const Separated: Story = {
 
 export const MinContent: Story = {
   args: {
-    name: 'default',
+    name: 'min-content',
+    defaultValue: '1',
     style: {
       display: 'flex',
       width: 'min-content',
@@ -107,7 +110,7 @@ export const MinContent: Story = {
 
 export const Disabled: Story = {
   args: {
-    name: 'default',
+    name: 'disabled',
     disabled: true,
     children: MinContent.args.children,
   },
@@ -115,7 +118,7 @@ export const Disabled: Story = {
 
 export const SelectedDisabled: Story = {
   args: {
-    name: 'default',
+    name: 'selected-disabled',
     disabled: true,
     value: '2',
     children: MinContent.args.children,
@@ -124,7 +127,8 @@ export const SelectedDisabled: Story = {
 
 export const DifferentLength: Story = {
   args: {
-    name: 'default',
+    name: 'different-length',
+    defaultValue: '2',
     style: {
       display: 'flex',
     },
@@ -149,6 +153,7 @@ export const DifferentLength: Story = {
 export const Primary: Story = {
   args: {
     ...Default.args,
+    name: 'primary',
     variant: 'primary',
   },
   render: Default.render
@@ -157,6 +162,7 @@ export const Primary: Story = {
 export const Secondary: Story = {
   args: {
     ...Default.args,
+    name: 'secondary',
     variant: 'secondary',
   },
   render: Default.render
