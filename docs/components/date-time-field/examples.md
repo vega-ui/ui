@@ -374,8 +374,8 @@ const calendar = (
   dateSeparator='/'
   timeFormat='HH:MM'
   timeStep={15}
-  min={new Date(2026, 6, 1, 9, 0)}
-  max={new Date(2026, 6, 31, 18, 0)}
+  min='2026-07-01T09:00'
+  max='2026-07-31T18:00'
 >
   <DateTimeFieldInput />
   <Popover placement='bottom-end'>

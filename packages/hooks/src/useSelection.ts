@@ -4,7 +4,7 @@ import { useControlledState } from './useControlledState';
 import { useEventCallback } from './useEventCallback';
 
 export type Selection = 'single' | 'multiple' | 'range'
-export type SelectedValue<M extends Selection, K> = M extends 'single' ? K : K[]
+export type SelectedValue<M extends Selection, K> = M extends 'single' ? K | null : K[]
 export type SelectionDisabledResolver<K> = ((value: K) => boolean)
 export type SelectedDisabled<K> = K | K[] | SelectionDisabledResolver<K>
 
@@ -54,7 +54,7 @@ export const useSelection = <K, const M extends Selection>({
   }, [selected, selection, comparator])
 
   const isSelected = useCallback((key: K | undefined) => {
-    if (selected === undefined || key === undefined) return false
+    if (selected === undefined || selected === null || key === undefined) return false
 
     if (Array.isArray(selected)) {
       if (selection === 'range') {

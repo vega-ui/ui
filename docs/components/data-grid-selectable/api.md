@@ -12,8 +12,8 @@
 | `expandable` | `boolean` | `true` | No | Enables expanding selection ranges (Shift + Arrow or mouse drag). |
 | `defaultActive` | `K` | `—` | No | Uncontrolled initial active cell. |
 | `active` | `K` | `—` | No | Controlled active cell. |
-| `selected` | `(S extends 'single' ? K : K[]) \\| undefined` | `—` | No | Controlled selected cells. |
-| `defaultSelected` | `(S extends 'single' ? K : K[]) \\| undefined` | `—` | No | Uncontrolled initial selected cells. |
+| `selected` | `(S extends 'single' ? K \\| null : K[]) \\| undefined` | `—` | No | Controlled selected cells. |
+| `defaultSelected` | `(S extends 'single' ? K : K[]) \\| undefined` | `—` | No | Uncontrolled initially selected cells. |
 | `from` | `K` | `—` | No | Range boundaries. |
 | `to` | `K` | `—` | No | — |
 | `resolveRange` | `(start: DataGridResolveValue<K>, end: DataGridResolveValue<K>, grid: Grid<HTMLElement, K>) => K[]` | `—` | No | Custom range resolution logic for `selection="range"`. |

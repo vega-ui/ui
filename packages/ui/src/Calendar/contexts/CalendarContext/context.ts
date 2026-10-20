@@ -15,9 +15,10 @@ export interface CalendarContextState {
   activeDay: number
   picker: CalendarPicker
   selection: CalendarSelection
-  value?: Date | [Date?, Date?] | Date[]
-  defaultValue?: Date | [Date?, Date?] | Date[]
-  disabled?: CalendarDatesDisabled
+  value?: number | null | number[]
+  defaultValue?: number | null | number[]
+  disabled?: boolean
+  disabledDates?: CalendarDatesDisabled
   scrollerApiRef: RefObject<IndexedSnapScrollerApiRef | null>
   scrollerYearApiRef: RefObject<IndexedSnapScrollerApiRef | null>
   yearPickerApiRef: RefObject<DataGridApiRef<number> | null>

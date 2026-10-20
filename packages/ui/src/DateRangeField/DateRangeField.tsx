@@ -1,8 +1,9 @@
-import { FC, useRef, useState } from 'react';
+import { FC, useMemo, useRef, useState } from 'react';
 import { TextField, TextFieldProps } from '../TextField';
 import { DateRangeFieldProvider } from './contexts';
 import { CalendarDatesDisabled } from '../Calendar';
 import { MaskitoDateMode } from '@maskito/kit';
+import { parseISODate } from '@vega-ui/utils';
 
 export interface DateRangeFieldProps extends TextFieldProps {
   /**
@@ -42,18 +43,18 @@ export interface DateRangeFieldProps extends TextFieldProps {
   rangeSeparator?: string
   
   /**
-   * Minimum allowed date.
+   * Minimum allowed date as a `YYYY-MM-DD` string.
    * Dates earlier than this value cannot be selected
    * and will be clamped or rejected during input parsing.
    */
-  min?: Date
+  min?: string
   
   /**
-   * Maximum allowed date.
+   * Maximum allowed date as a `YYYY-MM-DD` string.
    * Dates later than this value cannot be selected
    * and will be clamped or rejected during input parsing.
    */
-  max?: Date
+  max?: string
   
   /**
    * Rules for disabling specific dates in the calendar.
@@ -78,7 +79,9 @@ export interface DateRangeFieldProps extends TextFieldProps {
  * formatted range or by selecting dates from a calendar, while keeping both
  * representations synchronized.
  */
-export const DateRangeField: FC<DateRangeFieldProps> = ({ format, disabled, separator, max, min, disabledDates, rangeSeparator = ' – ', ...props }) => {
+export const DateRangeField: FC<DateRangeFieldProps> = ({ format, disabled, separator, max: _max, min: _min, disabledDates, rangeSeparator = ' – ', ...props }) => {
+  const min = useMemo(() => parseISODate(_min), [_min])
+  const max = useMemo(() => parseISODate(_max), [_max])
   const [date, setDate] = useState<[Date?, Date?]>([])
   const lastStringified = useRef<string>('')
   

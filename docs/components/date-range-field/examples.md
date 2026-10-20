@@ -373,11 +373,7 @@ const calendar = (
   format='dd/MM/yyyy'
   separator='/'
   rangeSeparator=' - '
-  disabledDates={[
-    new Date(2026, 5, 12),
-    new Date(2026, 5, 13),
-    new Date(2026, 5, 14),
-  ]}
+  disabledDates={['2026-06-12', '2026-06-13', '2026-06-14']}
 >
   <DateRangeFieldInput />
   <Popover placement='bottom-end'>

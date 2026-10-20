@@ -1,8 +1,9 @@
-import { FC, useRef, useState } from 'react';
+import { FC, useMemo, useRef, useState } from 'react';
 import { TextField, TextFieldProps } from '../TextField';
 import { DateFieldProvider } from './contexts';
 import { CalendarDatesDisabled } from '../Calendar';
 import { MaskitoDateMode } from '@maskito/kit';
+import { parseISODate } from '@vega-ui/utils';
 
 export interface DateFieldProps extends TextFieldProps {
   /**
@@ -27,18 +28,18 @@ export interface DateFieldProps extends TextFieldProps {
   separator: string
   
   /**
-   * Minimum allowed date.
+   * Minimum allowed date as a `YYYY-MM-DD` string.
    * Dates earlier than this value cannot be selected
    * and will be clamped or rejected during input parsing.
    */
-  min?: Date
+  min?: string
   
   /**
-   * Maximum allowed date.
+   * Maximum allowed date as a `YYYY-MM-DD` string.
    * Dates later than this value cannot be selected
    * and will be clamped or rejected during input parsing.
    */
-  max?: Date
+  max?: string
   
   /**
    * Rules for disabling specific dates in the calendar.
@@ -48,7 +49,7 @@ export interface DateFieldProps extends TextFieldProps {
   
   /**
    * Disables the field.
-   * Prevents user input and interaction, and applies the disabled visual state.
+   * Prevents user input and interaction and applies the disabled visual state.
    */
   disabled?: boolean
 }
@@ -64,7 +65,9 @@ export interface DateFieldProps extends TextFieldProps {
  * This component acts as the coordination layer between the visual TextField,
  * date parsing/formatting logic, and the interactive calendar UI.
  */
-export const DateField: FC<DateFieldProps> = ({ format, separator, max, min, disabledDates, disabled, ...props }) => {
+export const DateField: FC<DateFieldProps> = ({ format, separator, max: _max, min: _min, disabledDates, disabled, ...props }) => {
+  const min = useMemo(() => parseISODate(_min), [_min])
+  const max = useMemo(() => parseISODate(_max), [_max])
   const [date, setDate] = useState<Date | undefined>(undefined)
   const lastStringified = useRef<string>('')
   

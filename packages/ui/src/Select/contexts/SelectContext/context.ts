@@ -5,7 +5,7 @@ import { createContext } from '@vega-ui/react-context';
 import { SelectSize, SelectVariant } from '../../types';
 import { FloatingContext } from '@floating-ui/react';
 
-type Value = string | number | undefined
+type Value = string | number | null | undefined
 
 export interface SelectContextState {
   size?: SelectSize

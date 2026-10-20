@@ -57,11 +57,12 @@ export interface DataGridSelectableProps<K extends DataGridCellKey = DataGridCel
   
   /**
    * Controlled selected cells.
+   * In `'single'` mode `null` means controlled with nothing selected.
    */
-  selected?: (S extends 'single' ? K : K[]) | undefined;
+  selected?: (S extends 'single' ? K | null : K[]) | undefined;
   
   /**
-   * Uncontrolled initial selected cells.
+   * Uncontrolled initially selected cells.
    */
   defaultSelected?: (S extends 'single' ? K : K[]) | undefined;
   

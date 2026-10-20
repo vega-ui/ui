@@ -9,8 +9,8 @@
 | `format` | `string` | `—` | Yes | Date format pattern used for input masking and parsing. |
 | `separator` | `string` | `—` | Yes | Character used to separate date segments in the input. |
 | `rangeSeparator` | `string` | `' – '` | No | Separator used between the start and end dates in the range input. |
-| `min` | `Date` | `—` | No | Minimum allowed date. |
-| `max` | `Date` | `—` | No | Maximum allowed date. |
+| `min` | `string` | `—` | No | Minimum allowed date as a `YYYY-MM-DD` string. |
+| `max` | `string` | `—` | No | Maximum allowed date as a `YYYY-MM-DD` string. |
 | `disabledDates` | `CalendarDatesDisabled` | `—` | No | Rules for disabling specific dates in the calendar. |
 | `disabled` | `boolean` | `—` | No | Disables the field. |
 <!-- AUTO-GENERATED:ROOT_API:end -->

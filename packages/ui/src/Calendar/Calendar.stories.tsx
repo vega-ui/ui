@@ -17,6 +17,7 @@ import { Icon } from '../Icon';
 import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from '@vega-ui/icons';
 import {
   formatDay,
+  formatISODate,
   getCurrentDate,
   getFirstDayOfWeek,
   getNextDate,
@@ -111,33 +112,34 @@ export const Default: Story = {
 
 export const Selected: Story = {
   args: {
-    selection: 'range',
-    value: getCurrentDate()
+    value: formatISODate(getCurrentDate())
   },
 };
 
-export const From: Story = {
-  name: 'From 0/1/2020',
+export const Min: Story = {
+  name: 'Min 2020-01-01',
   args: {
-    from: new Date(2020, 0, 1),
+    min: '2020-01-01',
   },
 };
 
-export const To: Story = {
-  name: 'To 0/10/2030',
+export const Max: Story = {
+  name: 'Max 2030-01-10',
   args: {
-    to: new Date(2030, 0, 10),
+    max: '2030-01-10',
+  },
+};
+
+export const DisabledDates: Story = {
+  args: {
+    disabledDates: [10, 11, 12, 13].map(day => formatISODate(new Date(getCurrentDate().getFullYear(), getCurrentDate().getMonth(), day))),
   },
 };
 
 export const Disabled: Story = {
   args: {
-    disabled: [
-      new Date(getCurrentDate().getFullYear(), getCurrentDate().getMonth(), 10),
-      new Date(getCurrentDate().getFullYear(), getCurrentDate().getMonth(), 11),
-      new Date(getCurrentDate().getFullYear(), getCurrentDate().getMonth(), 12),
-      new Date(getCurrentDate().getFullYear(), getCurrentDate().getMonth(), 13),
-    ],
+    disabled: true,
+    defaultValue: formatISODate(getCurrentDate()),
   },
 };
 
@@ -150,7 +152,7 @@ export const MultipleSelection: Story = {
 export const SelectedMultiple: Story = {
   args: {
     selection: 'multiple',
-    value: [getNextDate(getCurrentDate(), -1), getNextDate(getCurrentDate(), 1)],
+    value: [formatISODate(getNextDate(getCurrentDate(), -1)), formatISODate(getNextDate(getCurrentDate(), 1))],
   },
 };
 
@@ -163,19 +165,19 @@ export const RangeSelection: Story = {
 export const SelectedRange: Story = {
   args: {
     selection: 'range',
-    value: [getNextDate(getCurrentDate(), -1), getNextDate(getCurrentDate(), 1)],
+    value: [formatISODate(getNextDate(getCurrentDate(), -1)), formatISODate(getNextDate(getCurrentDate(), 1))],
   },
 };
 
-export const DefaultDate: Story = {
+export const DefaultMonth: Story = {
   args: {
-    defaultDate: new Date(2020, 0),
+    defaultMonth: '2020-01-01',
   },
 };
 
 export const DefaultValue: Story = {
   args: {
-    defaultValue: getCurrentDate(),
+    defaultValue: formatISODate(getCurrentDate()),
   },
 };
 

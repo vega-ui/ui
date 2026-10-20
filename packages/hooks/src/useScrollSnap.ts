@@ -154,12 +154,6 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
     if (!existsCommitted) {
       committedKey.current = pointed.key;
       pendingKey.current = pointed.key;
-      return;
-    }
-
-    if (pointed.key !== committedKey.current) {
-      committedKey.current = pointed.key;
-      pendingKey.current = pointed.key;
     }
   }, [calculateSnapPoint, getPointed, items, points]);
 
@@ -186,10 +180,15 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
 
     if (key === committedKey.current) return;
 
+    const changing = key !== pendingKey.current
+
     committedKey.current = key;
     pendingKey.current = key;
-    if (element && key !== null) onSnapChange(element, key);
-  }, [onSnapChange, getPointed])
+    if (!element || key === null) return;
+
+    if (changing) onSnapChanging(element, key);
+    onSnapChange(element, key);
+  }, [onSnapChanging, onSnapChange, getPointed])
   
   const scheduleCommitFallback = useCallback(() => {
     if (endTimerId.current != null) window.clearTimeout(endTimerId.current);
@@ -243,6 +242,7 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
     const item = items.getByKey(key as K)
     if (!item) return
     
+    if (behavior === 'instant') pendingKey.current = key
     scrollToElement(item, behavior)
   }, [scrollToElement, items])
   

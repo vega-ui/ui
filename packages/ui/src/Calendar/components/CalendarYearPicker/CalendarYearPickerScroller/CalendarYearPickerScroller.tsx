@@ -13,12 +13,13 @@ export type CalendarYearPickerScrollerProps = YearPickerScrollerProps
  * the underlying year-picker implementation.
  */
 export const CalendarYearPickerScroller: FC<CalendarYearPickerScrollerProps> = ({ apiRef, ...props }) => {
-  const { referenceDate, scrollerYearApiRef } = useCalendarContext()
+  const { referenceDate, scrollerYearApiRef, disabled } = useCalendarContext()
   
   return (
     <YearPickerScroller
       apiRef={mergeRefs([scrollerYearApiRef, apiRef])}
       referenceYear={referenceDate.getFullYear()}
+      inert={disabled || undefined}
       {...props}
     />
   )

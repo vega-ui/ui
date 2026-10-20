@@ -13,13 +13,14 @@ export type CalendarDayPickerScrollerProps = DayPickerScrollerProps;
  * imperative API reference for external control.
  */
 export const CalendarDayPickerScroller: FC<CalendarDayPickerScrollerProps> = ({ apiRef, ...props }) => {
-  const { scrollerApiRef, changePeriod, referenceDate } = useCalendarContext()
+  const { scrollerApiRef, changePeriod, referenceDate, disabled } = useCalendarContext()
   
   return (
     <DayPickerScroller
       referenceDate={referenceDate}
       apiRef={mergeRefs([scrollerApiRef, apiRef])}
       onChangePeriod={changePeriod}
+      inert={disabled || undefined}
       {...props}
     />
   )

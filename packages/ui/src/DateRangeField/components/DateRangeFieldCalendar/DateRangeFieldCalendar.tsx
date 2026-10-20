@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Calendar, CalendarProps } from '../../../Calendar';
 import { useDateRangeFieldContext } from '../../contexts';
 import { maskitoStringifyDate } from '@maskito/kit';
-import { dispatchEvents, setValue as setNativeValue } from '@vega-ui/utils';
+import { dispatchEvents, setValue as setNativeValue, formatISODate, parseISODate } from '@vega-ui/utils';
 
 export type DateRangeFieldCalendarProps = CalendarProps<'range'>
 
@@ -12,7 +12,7 @@ export type DateRangeFieldCalendarProps = CalendarProps<'range'>
  *
  * Purpose:
  * Provides a visual calendar interface for selecting a start and end date
- * within a specified range, while keeping the associated TextField input
+ * within a specified range while keeping the associated TextField input
  * synchronized.
  *
  * Features:
@@ -20,7 +20,7 @@ export type DateRangeFieldCalendarProps = CalendarProps<'range'>
  * - Allows disabling specific dates through custom rules.
  * - Updates the shared input value when a date or range is selected.
  */
-export const DateRangeFieldCalendar: FC<DateRangeFieldCalendarProps> = ({ onChange: _onChange, ...props }) => {
+export const DateRangeFieldCalendar: FC<DateRangeFieldCalendarProps> = ({ onChangeValue: _onChangeValue, ...props }) => {
   const {
     max,
     min,
@@ -34,8 +34,10 @@ export const DateRangeFieldCalendar: FC<DateRangeFieldCalendarProps> = ({ onChan
     lastStringified
   } = useDateRangeFieldContext()
   
-  const onChange = (value: [Date, Date] | [Date]) => {
-    _onChange?.(value)
+  const onChangeValue = (iso: [start: string, end: string]) => {
+    _onChangeValue?.(iso)
+    
+    const value: [Date?, Date?] = [parseISODate(iso[0]), parseISODate(iso[1])]
     changeDate(value)
     
     const [start, end] = value
@@ -48,7 +50,6 @@ export const DateRangeFieldCalendar: FC<DateRangeFieldCalendarProps> = ({ onChan
     const stringified = `${stringifiedStartDate}${stringifiedEndDate ? rangeSeparator : ''}${stringifiedEndDate}`
     
     lastStringified.current = stringified;
-    console.log(stringified)
     setNativeValue(input, stringified)
     dispatchEvents(input)
   }
@@ -56,14 +57,12 @@ export const DateRangeFieldCalendar: FC<DateRangeFieldCalendarProps> = ({ onChan
   return (
     <Calendar
       compact
-      to={max}
-      from={min}
-      value={date}
+      max={formatISODate(max)}
+      min={formatISODate(min)}
+      value={[formatISODate(date[0]), formatISODate(date[1])]}
       selection='range'
-      defaultDate={date?.[0]}
-      onChange={onChange}
-      disabled={disabledDates}
-      defaultActiveDay={date?.[0]?.getTime()}
+      onChangeValue={onChangeValue}
+      disabledDates={disabledDates}
       {...props}
     />
   )

@@ -19,9 +19,9 @@ export type CalendarPrevYearGroupButtonProps = CalendarBaseControlIconButtonProp
  * switching to the previous year group.
  */
 export const CalendarPrevYearGroupButton: FC<CalendarPrevYearGroupButtonProps> = ({ disabled, className, onClick: _onClick, ...props }) => {
-  const { picker, prevYearGroup } = useCalendarContext()
+  const { picker, prevYearGroup, disabled: calendarDisabled } = useCalendarContext()
   
-  const _disabled = disabled || picker !== 'year'
+  const _disabled = disabled || calendarDisabled || picker !== 'year'
 
   return (
     <CalendarBaseControlIconButton

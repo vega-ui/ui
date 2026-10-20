@@ -31,6 +31,7 @@ export const CalendarMonthPicker: FC<CalendarMonthPickerProps> = ({ onSelectCell
     monthPickerApiRef,
     closeMonthPicker,
     changeMonth,
+    disabled,
   } = useCalendarContext()
   const { size, variant } = useCalendarBaseContext()
   
@@ -64,6 +65,7 @@ export const CalendarMonthPicker: FC<CalendarMonthPickerProps> = ({ onSelectCell
       defaultActive={month}
       selected={month}
       selection='single'
+      disabled={disabled ? () => true : undefined}
       onSelectCell={onSelect}
       {...props}
     />

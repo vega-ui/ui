@@ -128,7 +128,7 @@ const calendar = (
 );
 
 <FormRow label='Contract start' error='Enter a valid future date.'>
-  <DateField format='dd.MM.yyyy' separator='.' min={new Date()}>
+  <DateField format='dd.MM.yyyy' separator='.' min={formatISODate(new Date())}>
     <DateFieldInput aria-invalid='true' />
     <Popover placement='bottom-end'>
       <PopoverTrigger asChild>

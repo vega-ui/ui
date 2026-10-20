@@ -34,4 +34,4 @@ export {
   CalendarMonthLabel, type CalendarMonthLabelProps,
 } from './components'
 export { useCalendarContext } from './contexts'
-export { type CalendarPicker, type CalendarSelection, type CalendarDatesDisabled } from './types'
+export { type CalendarPicker, type CalendarSelection, type CalendarDatesDisabled, type CalendarValue } from './types'

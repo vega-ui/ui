@@ -12,12 +12,13 @@ export type CalendarYearPickerButtonProps = CalendarBasePickerButtonProps;
  * connects user interaction to the `Calendar` state machine through
  * `useCalendarContext()`.
  */
-export const CalendarYearPickerButton: FC<CalendarYearPickerButtonProps> = ({ onClick: _onClick, className, ...props }) => {
-  const { picker, toggleYearPicker } = useCalendarContext()
+export const CalendarYearPickerButton: FC<CalendarYearPickerButtonProps> = ({ onClick: _onClick, className, disabled, ...props }) => {
+  const { picker, toggleYearPicker, disabled: calendarDisabled } = useCalendarContext()
   
   return (
     <CalendarBasePickerButton
       type='button'
+      disabled={disabled || calendarDisabled}
       aria-pressed={picker === 'year'}
       onClick={mergeEventHandlers(_onClick, toggleYearPicker)}
       className={csx(style.button, className)}

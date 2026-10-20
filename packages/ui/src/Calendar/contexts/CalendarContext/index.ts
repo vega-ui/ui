@@ -1,1 +1,1 @@
-export { useCalendarContext, CalendarProvider } from './context'
+export { useCalendarContext, CalendarProvider, type CalendarContextState } from './context'

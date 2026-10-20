@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { IndexedSnapScrollerApiRef } from '../IndexedSnapScroller';
 import { CalendarProvider } from './contexts';
 import { useControlledState, useEventCallback } from '@vega-ui/hooks';
@@ -6,29 +6,29 @@ import { CalendarDatesDisabled, CalendarPicker, CalendarSelection, CalendarValue
 import { DataGridApiRef } from '../DataGrid';
 import { CalendarBase, CalendarBaseProps } from '../CalendarBase';
 import { focusPickerValue, getAvailableDate } from './helpers';
-import { getClampedDate, getCurrentDate } from '@vega-ui/utils';
+import { formatISODate, getClampedDate, getCurrentDate, getMonthStart, isSameMonth, normalizeDate, parseISODate, parseISODateTimestamps } from '@vega-ui/utils';
 
 export interface CalendarProps<S extends CalendarSelection = 'single'> extends Omit<CalendarBaseProps, 'onChange' | 'defaultValue'> {
   /**
-   * Upper date boundary for navigation and selection.
+   * Latest selectable date as a `YYYY-MM-DD` string.
    * - Months and years beyond this date become unavailable.
    * - Day, Month, and Year pickers use this to disable or clamp navigation.
    */
-  to?: Date;
+  max?: string;
   
   /**
-   * Lower date boundary for navigation and selection.
+   * Earliest selectable date as a `YYYY-MM-DD` string.
    * - Months and years before this date become unavailable.
    * - All pickers respect this constraint when computing active ranges.
    */
-  from?: Date;
+  min?: string;
   
   /**
    * Selection mode.
-   * Determines the structure of the returned `value`:
-   * - 'single'   — a single `Date`
-   * - 'multiple' — an array of `Date`
-   * - 'range'    — a tuple `[start: Date | null, end: Date | null]`
+   * Determines the structure of `value`, all dates are `YYYY-MM-DD` strings:
+   * - 'single'   — a string, `''` when nothing is selected
+   * - 'multiple' — an array of strings
+   * - 'range'    — a `[start, end]` tuple, `''` marks an unset bound
    *
    * Default: `'single'`
    */
@@ -36,65 +36,51 @@ export interface CalendarProps<S extends CalendarSelection = 'single'> extends O
   
   /**
    * Controls which picker view is currently active.
-   * - 'day'   — standard calendar grid
+   * - 'day' — standard calendar grid
    * - 'month' — month selection view
-   * - 'year'  — year selection view
+   * - 'year' — year selection view
    *
    * When controlled, it overrides the internal picker state.
    */
   picker?: CalendarPicker;
   
   /**
-   * Controlled selection value.
-   * Shape depends on the `selection` mode:
-   * - single:   `Date | undefined`
-   * - multiple: `Date[] | undefined`
-   * - range:    `[Date | null, Date | null] | undefined`
+   * Controlled selection value, shaped by the `selection` mode.
+   * Malformed or non-existent dates are treated as unselected.
    */
   value?: CalendarValue<S>;
   
   /**
-   * Uncontrolled initial selection value.
-   * Shape depends on the `selection` mode:
-   * - single:   `Date | undefined`
-   * - multiple: `Date[] | undefined`
-   * - range:    `[Date | null, Date | null] | undefined`
+   * Uncontrolled initial selection value, shaped by the `selection` mode.
    */
   defaultValue?: CalendarValue<S>;
   
   /**
    * Uncontrolled initial picker view.
-   * Used only on first render when `picker` is not controlled.
+   * Used only on the first render when `picker` is not controlled.
    *
    * Default: `'day'`
    */
   defaultPicker?: CalendarPicker;
   
   /**
-   * Disables specific dates.
-   * Can be:
-   * - a single `Date`
-   * - an array of `Date`
-   * - a predicate `(date: Date) => boolean`
-   *
-   * Used to gray out or prevent interaction with certain days in the grid.
+   * Disables the whole calendar: no date can be selected and navigation is off.
    */
-  disabled?: CalendarDatesDisabled;
+  disabled?: boolean;
   
   /**
-   * Fires when the visible date changes (e.g., via scrolling or picker).
-   * This event represents *view navigation*, not selection.
+   * Dates that cannot be selected, as `YYYY-MM-DD` strings:
+   * - a single date
+   * - an array of dates
+   * - a predicate `(date: string) => boolean`
    */
-  onChangeDate?(date: Date): void;
+  disabledDates?: CalendarDatesDisabled;
   
   /**
-   * Fires when the selected value changes.
-   * The value type depends on the selected mode:
-   * - 'single'   → `Date | undefined`
-   * - 'multiple' → `Date[]`
-   * - 'range'    → `[Date | null, Date | null]`
+   * Fires when the user changes the selection.
+   * The value is shaped by the `selection` mode.
    */
-  onChange?(value: CalendarValue<S>): void;
+  onChangeValue?(value: CalendarValue<S>): void;
   
   /**
    * Fires when the active picker view changes.
@@ -104,39 +90,26 @@ export interface CalendarProps<S extends CalendarSelection = 'single'> extends O
   onChangePicker?(picker: CalendarPicker): void;
   
   /**
-   * Reference date used as a logical anchor for indexed or virtualized pickers.
+   * Controlled visible month, given as a `YYYY-MM-DD` string of any day
+   * in that month.
+   */
+  month?: string;
+  
+  /**
+   * Initial visible month for uncontrolled usage, given as a `YYYY-MM-DD`
+   * string of any day in that month.
    *
-   * This does not affect selection directly, but helps stabilize
-   * scroll-based navigation.
+   * Default: the month of the selected date, otherwise the current month
    */
-  referenceDate?: Date;
+  defaultMonth?: string;
   
   /**
-   * Controlled visible date.
+   * Fires with the first day of the visible month as a `YYYY-MM-DD` string
+   * when the visible month changes
+   * (e.g., via scrolling or the month and year pickers).
+   * This event represents view navigation, not selection.
    */
-  date?: Date;
-  
-  /**
-   * Initial visible date for uncontrolled usage.
-   */
-  defaultDate?: Date;
-  
-  /**
-   * Controlled active (focused) day value.
-   *
-   * Represented as a timestamp for consistency across pickers.
-   */
-  activeDay?: number;
-  
-  /**
-   * Initial active day for uncontrolled usage.
-   */
-  defaultActiveDay?: number;
-  
-  /**
-   * Fires when the active day changes due to keyboard or programmatic focus.
-   */
-  onChangeActiveDay?(activeDay: number | undefined): void;
+  onChangeMonth?(month: string): void;
 }
 
 /**
@@ -148,36 +121,58 @@ export interface CalendarProps<S extends CalendarSelection = 'single'> extends O
  * It coordinates day, month, and year views; synchronizes scroll-based
  * navigation with visible dates; and manages controlled/uncontrolled
  * selection state for single, multiple, and range selection modes.
+ *
+ * All dates in its API are `YYYY-MM-DD` strings, like native date inputs;
+ * the visible month is given by any of its days.
+ *
+ * Keyboard focus starts on the selected day when it is in the visible month,
+ * otherwise on today, otherwise on the first available day of the month.
  */
 export const Calendar = <S extends CalendarSelection>({
-  to,
-  from,
+  max,
+  min,
   value,
   picker,
   disabled,
+  disabledDates,
   size = 'xs',
   defaultValue,
-  referenceDate,
-  date: _date,
-  defaultDate = getCurrentDate(),
-  defaultActiveDay,
-  activeDay: _activeDay,
-  onChangeActiveDay,
+  month: _month,
+  defaultMonth,
   variant = 'secondary',
   selection = 'single' as S,
   defaultPicker = 'day',
   onChangePicker,
-  onChangeDate,
-  onChange,
+  onChangeMonth,
+  onChangeValue,
   children,
   ...props
 }: CalendarProps<S>) => {
-  const reference = referenceDate ?? new Date(1970, 0, 1)
   const currentDate = getCurrentDate()
   
-  const [date, setDate] = useControlledState<Date>(_date, defaultDate, onChangeDate)
+  const firstSelected = [value ?? defaultValue].flat().map(date => parseISODate(date)).find(Boolean)
+  const initialMonth = defaultMonth || formatISODate(firstSelected ?? currentDate)
+  
+  const [month, setMonth] = useControlledState(_month, initialMonth, onChangeMonth)
   const [activePicker, setActivePicker] = useControlledState(picker, defaultPicker, onChangePicker)
-  const [activeDay, setActiveDay] = useControlledState(_activeDay, defaultActiveDay ?? currentDate.getTime(), onChangeActiveDay)
+  
+  const date = useMemo(() => getMonthStart(parseISODate(month) ?? getCurrentDate()), [month])
+  
+  const setDate = (next: Date) => {
+    if (!isSameMonth(next, date)) setMonth(formatISODate(getMonthStart(next)))
+  }
+  
+  const from = parseISODate(min)
+  const to = parseISODate(max)
+  
+  const [activeDay, setActiveDay] = useState(() => {
+    const today = normalizeDate(currentDate)
+    
+    if (firstSelected && isSameMonth(firstSelected, date)) return firstSelected.getTime()
+    if (isSameMonth(today, date)) return today.getTime()
+    
+    return (getAvailableDate(date, { from, to, disabled: disabledDates }) ?? date).getTime()
+  })
 
   const dayPickerApiRef = useRef<DataGridApiRef<number>>(null)
   const monthPickerApiRef = useRef<DataGridApiRef<number>>(null)
@@ -192,7 +187,7 @@ export const Calendar = <S extends CalendarSelection>({
     const lastDay = new Date(year, month + 1, 0).getDate()
     const candidate = new Date(year, month, Math.min(date, lastDay))
     
-    return getAvailableDate(candidate, { from, to, disabled })
+    return getAvailableDate(candidate, { from, to, disabled: disabledDates })
   }
   
   const focusAvailable = (year: number, month: number) => {
@@ -253,8 +248,14 @@ export const Calendar = <S extends CalendarSelection>({
   }
   
   const onSelectDay = useEventCallback((day: number | number[]) => {
-    const value = Array.isArray(day) ? day.map(d => new Date(d)) : new Date(day)
-    onChange?.(value as CalendarValue<S>)
+    if (!Array.isArray(day)) {
+      onChangeValue?.(formatISODate(new Date(day)) as CalendarValue<S>)
+      return
+    }
+
+    const dates = day.map(d => formatISODate(new Date(d)))
+    const next = selection === 'range' ? [dates[0] ?? '', dates[1] ?? ''] : dates
+    onChangeValue?.(next as CalendarValue<S>)
   })
   
   const toggleMonthPicker = useCallback(() => {
@@ -285,20 +286,21 @@ export const Calendar = <S extends CalendarSelection>({
   return (
     <CalendarProvider
       to={to}
-      value={value}
+      value={parseISODateTimestamps(value)}
       from={from}
       disabled={disabled}
+      disabledDates={disabledDates}
       year={date.getFullYear()}
       month={date.getMonth()}
       nextPeriod={nextPeriod}
       nextYearGroup={nextYearGroup}
       prevPeriod={prevPeriod}
       prevYearGroup={prevYearGroup}
-      defaultValue={defaultValue}
+      defaultValue={parseISODateTimestamps(defaultValue)}
       selection={selection}
       activeDay={activeDay}
       picker={activePicker}
-      referenceDate={reference}
+      referenceDate={new Date(1970, 0, 1)}
       changePicker={setActivePicker}
       changeActiveDay={setActiveDay}
       scrollerApiRef={scrollerApiRef}
@@ -315,7 +317,13 @@ export const Calendar = <S extends CalendarSelection>({
       toggleMonthPicker={toggleMonthPicker}
       toggleYearPicker={toggleYearPicker}
     >
-      <CalendarBase size={size} variant={variant} {...props}>
+      <CalendarBase
+        size={size}
+        variant={variant}
+        aria-disabled={disabled || undefined}
+        data-disabled={disabled || undefined}
+        {...props}
+      >
         {children}
       </CalendarBase>
     </CalendarProvider>

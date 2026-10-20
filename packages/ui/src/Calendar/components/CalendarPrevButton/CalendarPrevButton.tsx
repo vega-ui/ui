@@ -13,10 +13,10 @@ export type CalendarPrevButtonProps = CalendarBaseControlIconButtonProps
  * state, range constraints, and picker-mode awareness.
  */
 export const CalendarPrevButton: FC<CalendarPrevButtonProps> = ({ disabled, className, onClick: _onClick, ...props }) => {
-  const { from, year, month, picker, prevPeriod } = useCalendarContext()
+  const { from, year, month, picker, prevPeriod, disabled: calendarDisabled } = useCalendarContext()
   
   const outOfRangeFrom = from ? (year <= from.getFullYear() && month <= from.getMonth()) : false
-  const _disabled = disabled || (picker !== 'day' || outOfRangeFrom)
+  const _disabled = disabled || calendarDisabled || picker !== 'day' || outOfRangeFrom
   
   return (
     <CalendarBaseControlIconButton

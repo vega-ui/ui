@@ -92,6 +92,15 @@ const getYearBtn = (r: RenderResult) => r.getByTestId('year-picker-button') as H
 
 const getContent = (r: RenderResult) => r.getByTestId('content');
 
+const getDay = (r: RenderResult, iso: string) => {
+  const [year, month, day] = iso.split('-').map(Number);
+  const key = new Date(year, month - 1, day).getTime();
+  
+  return getContent(r).querySelector(`[role="gridcell"][data-key="${key}"]`) as HTMLElement;
+};
+
+const getSelectedDays = (r: RenderResult) => r.getByTestId('day-picker').querySelectorAll('[role="gridcell"][aria-selected="true"]');
+
 const getDayPicker = (r: RenderResult) => r.getByTestId('day-picker');
 const getMonthPicker = (r: RenderResult) => r.getByTestId('month-picker');
 const getYearPicker = (r: RenderResult) => r.getByTestId('year-picker');
@@ -334,11 +343,11 @@ describe('Calendar', () => {
     
     describe('when clicking prev/next while day picker is visible', () => {
       let r: RenderResult;
-      let onChangeDate: Mock;
+      let onChangeMonth: Mock;
       
       beforeEach(() => {
-        onChangeDate = vi.fn();
-        r = render(<CalendarTest onChangeDate={onChangeDate} />);
+        onChangeMonth = vi.fn();
+        r = render(<CalendarTest defaultMonth='2026-01-15' onChangeMonth={onChangeMonth} />);
       });
       
       it('does not crash on next', async () => {
@@ -351,15 +360,378 @@ describe('Calendar', () => {
         await expect.element(getPrev(r)).toBeInTheDocument();
       });
       
-      it('may call onMonthChange/onYearChange on next (document current behavior)', async () => {
+      it('reports the first day of the next visible month', async () => {
         await userEvent.click(getNext(r));
-        expect(onChangeDate.mock.calls.length).toBeGreaterThanOrEqual(0);
+        await expect.poll(() => onChangeMonth.mock.lastCall?.[0]).toBe('2026-02-01');
       });
       
-      it('may call onMonthChange/onYearChange on prev (document current behavior)', async () => {
+      it('reports the first day of the previous visible month', async () => {
         await userEvent.click(getPrev(r));
-        expect(onChangeDate.mock.calls.length).toBeGreaterThanOrEqual(0);
+        await expect.poll(() => onChangeMonth.mock.lastCall?.[0]).toBe('2025-12-01');
       });
+    });
+  });
+  
+  describe('Value API', () => {
+    it('selects the controlled YYYY-MM-DD value', async () => {
+      const r = render(<CalendarTest value='2026-01-15' defaultMonth='2026-01-01' onChangeValue={vi.fn()} />);
+      
+      await expect.element(getDay(r, '2026-01-15')).toHaveAttribute('aria-selected', 'true');
+    });
+    
+    it('clears the selection when the controlled value becomes empty', async () => {
+      const r = render(<CalendarTest value='2026-01-15' defaultMonth='2026-01-01' onChangeValue={vi.fn()} />);
+      await expect.element(getDay(r, '2026-01-15')).toHaveAttribute('aria-selected', 'true');
+      
+      r.rerender(<CalendarTest value='' defaultMonth='2026-01-01' onChangeValue={vi.fn()} />);
+      await expect.poll(() => getSelectedDays(r).length).toBe(0);
+    });
+    
+    it('keeps an empty controlled value empty when a day is clicked', async () => {
+      const onChangeValue = vi.fn();
+      const r = render(<CalendarTest value='' defaultMonth='2026-01-01' onChangeValue={onChangeValue} />);
+      
+      await userEvent.click(getDay(r, '2026-01-15'));
+      
+      expect(onChangeValue).toHaveBeenCalledWith('2026-01-15');
+      expect(getSelectedDays(r)).toHaveLength(0);
+    });
+    
+    it('treats a malformed or non-existent value as unselected', async () => {
+      const r = render(<CalendarTest value='2026-02-31' defaultMonth='2026-02-01' onChangeValue={vi.fn()} />);
+      
+      await expect.element(getDay(r, '2026-02-15')).toBeInTheDocument();
+      expect(getSelectedDays(r)).toHaveLength(0);
+    });
+    
+    it('selects defaultValue in uncontrolled mode', async () => {
+      const r = render(<CalendarTest defaultValue='2026-01-15' defaultMonth='2026-01-01' />);
+      
+      await expect.element(getDay(r, '2026-01-15')).toHaveAttribute('aria-selected', 'true');
+    });
+    
+    it('reports a picked day as a YYYY-MM-DD string', async () => {
+      const onChangeValue = vi.fn();
+      const r = render(<CalendarTest defaultMonth='2026-01-01' onChangeValue={onChangeValue} />);
+      
+      await userEvent.click(getDay(r, '2026-01-15'));
+      
+      expect(onChangeValue).toHaveBeenLastCalledWith('2026-01-15');
+      await expect.element(getDay(r, '2026-01-15')).toHaveAttribute('aria-selected', 'true');
+    });
+    
+    it('does not report a change when the already selected day is clicked again', async () => {
+      const onChangeValue = vi.fn();
+      const r = render(<CalendarTest defaultValue='2026-01-15' onChangeValue={onChangeValue} />);
+      
+      await userEvent.click(getDay(r, '2026-01-15'));
+      
+      expect(onChangeValue).not.toHaveBeenCalled();
+      
+      await userEvent.click(getDay(r, '2026-01-16'));
+      
+      expect(onChangeValue).toHaveBeenCalledTimes(1);
+      expect(onChangeValue).toHaveBeenCalledWith('2026-01-16');
+    });
+    
+    it('does not report a change when a controlled selected day is clicked again', async () => {
+      const onChangeValue = vi.fn();
+      const r = render(<CalendarTest value='2026-01-15' onChangeValue={onChangeValue} />);
+      
+      await userEvent.click(getDay(r, '2026-01-15'));
+      
+      expect(onChangeValue).not.toHaveBeenCalled();
+      
+      await userEvent.click(getDay(r, '2026-01-16'));
+      
+      expect(onChangeValue).toHaveBeenCalledTimes(1);
+      expect(onChangeValue).toHaveBeenCalledWith('2026-01-16');
+    });
+    
+    it('reports a range as a [start, end] tuple with an empty unset bound', async () => {
+      const onChangeValue = vi.fn();
+      const r = render(<CalendarTest selection='range' defaultMonth='2026-01-01' onChangeValue={onChangeValue} />);
+      
+      await userEvent.click(getDay(r, '2026-01-10'));
+      expect(onChangeValue).toHaveBeenLastCalledWith(['2026-01-10', '']);
+      
+      await userEvent.click(getDay(r, '2026-01-15'));
+      expect(onChangeValue).toHaveBeenLastCalledWith(['2026-01-10', '2026-01-15']);
+    });
+    
+    it('selects a controlled range', async () => {
+      const r = render(
+        <CalendarTest selection='range' value={['2026-01-10', '2026-01-12']} defaultMonth='2026-01-01' onChangeValue={vi.fn()} />,
+      );
+      
+      await expect.element(getDay(r, '2026-01-10')).toHaveAttribute('aria-selected', 'true');
+      await expect.element(getDay(r, '2026-01-11')).toHaveAttribute('aria-selected', 'true');
+      await expect.element(getDay(r, '2026-01-12')).toHaveAttribute('aria-selected', 'true');
+      await expect.element(getDay(r, '2026-01-13')).toHaveAttribute('aria-selected', 'false');
+    });
+    
+    it('reports multiple selection as an array of YYYY-MM-DD strings', async () => {
+      const onChangeValue = vi.fn();
+      const r = render(<CalendarTest selection='multiple' defaultMonth='2026-01-01' onChangeValue={onChangeValue} />);
+      
+      await userEvent.click(getDay(r, '2026-01-10'));
+      await userEvent.click(getDay(r, '2026-01-12'));
+      
+      expect(onChangeValue).toHaveBeenLastCalledWith(['2026-01-10', '2026-01-12']);
+    });
+    
+    it('shows the month given by defaultMonth', async () => {
+      const r = render(<CalendarTest defaultMonth='2020-03-20' />);
+      
+      await expect.element(getDay(r, '2020-03-15')).toBeInTheDocument();
+    });
+    
+    it('shows a controlled month given by any of its days and reports navigation as the first day', async () => {
+      const onChangeMonth = vi.fn();
+      const r = render(<CalendarTest month='2026-05-31' onChangeMonth={onChangeMonth} />);
+      
+      await expect.element(getDay(r, '2026-05-31')).toBeInTheDocument();
+      
+      await userEvent.click(getNext(r));
+      await expect.poll(() => onChangeMonth.mock.lastCall?.[0]).toBe('2026-06-01');
+    });
+    
+    it('disables days outside min and max', async () => {
+      const r = render(<CalendarTest min='2026-01-10' max='2026-01-20' defaultMonth='2026-01-01' />);
+      
+      await expect.element(getDay(r, '2026-01-09')).toHaveAttribute('aria-disabled', 'true');
+      await expect.element(getDay(r, '2026-01-10')).toHaveAttribute('aria-disabled', 'false');
+      await expect.element(getDay(r, '2026-01-20')).toHaveAttribute('aria-disabled', 'false');
+      await expect.element(getDay(r, '2026-01-21')).toHaveAttribute('aria-disabled', 'true');
+    });
+    
+    it('disables dates listed in disabledDates', async () => {
+      const r = render(<CalendarTest disabledDates={['2026-01-15']} defaultMonth='2026-01-01' />);
+      
+      await expect.element(getDay(r, '2026-01-15')).toHaveAttribute('aria-disabled', 'true');
+      await expect.element(getDay(r, '2026-01-16')).toHaveAttribute('aria-disabled', 'false');
+    });
+    
+    it('passes YYYY-MM-DD strings to a disabledDates predicate', async () => {
+      const r = render(<CalendarTest disabledDates={(date) => date.endsWith('-13')} defaultMonth='2026-01-01' />);
+      
+      await expect.element(getDay(r, '2026-01-13')).toHaveAttribute('aria-disabled', 'true');
+      await expect.element(getDay(r, '2026-01-14')).toHaveAttribute('aria-disabled', 'false');
+    });
+  });
+  
+  describe('initial month and keyboard focus', () => {
+    afterEach(() => {
+      vi.useRealTimers();
+    });
+    
+    it('shows the month of the selected date by default', async () => {
+      const r = render(<CalendarTest defaultValue='2020-03-10' />);
+      
+      await expect.element(getDay(r, '2020-03-10')).toHaveAttribute('aria-selected', 'true');
+    });
+    
+    it('focuses the selected day when it is in the visible month', async () => {
+      vi.setSystemTime(new Date(2026, 2, 20));
+      const r = render(<CalendarTest value='2026-03-10' onChangeValue={vi.fn()} />);
+      
+      await expect.element(getDay(r, '2026-03-10')).toHaveAttribute('tabindex', '0');
+      await expect.element(getDay(r, '2026-03-20')).toHaveAttribute('tabindex', '-1');
+    });
+    
+    it('focuses today when nothing is selected in the visible month', async () => {
+      vi.setSystemTime(new Date(2026, 2, 20));
+      const r = render(<CalendarTest defaultMonth='2026-03-01' />);
+      
+      await expect.element(getDay(r, '2026-03-20')).toHaveAttribute('tabindex', '0');
+    });
+    
+    it('focuses the first available day when neither the selection nor today is in the visible month', async () => {
+      vi.setSystemTime(new Date(2026, 2, 20));
+      const r = render(<CalendarTest defaultMonth='2020-03-01' min='2020-03-05' />);
+      
+      await expect.element(getDay(r, '2020-03-05')).toHaveAttribute('tabindex', '0');
+    });
+  });
+  
+  describe('navigation keeps the focused day', () => {
+    const getMonthCell = (r: RenderResult, month: number) =>
+      getMonthPicker(r).querySelector(`[role="gridcell"][data-key="${month}"]`) as HTMLElement;
+    const getYearCell = (r: RenderResult, year: number) =>
+      getYearPicker(r).querySelector(`[role="gridcell"][data-key="${year}"]`) as HTMLElement;
+    
+    it('moves focus to the same day of the next month', async () => {
+      const r = render(<CalendarTest defaultValue='2026-01-15' />);
+      
+      await userEvent.click(getNext(r));
+      
+      await expect.element(getDay(r, '2026-02-15')).toHaveAttribute('tabindex', '0');
+    });
+    
+    it('clamps the focused day to the length of the next month', async () => {
+      const r = render(<CalendarTest defaultValue='2026-01-31' />);
+      
+      await userEvent.click(getNext(r));
+      
+      await expect.element(getDay(r, '2026-02-28')).toHaveAttribute('tabindex', '0');
+    });
+    
+    it('skips a disabled day when moving focus to another month', async () => {
+      const r = render(<CalendarTest defaultValue='2026-01-15' disabledDates={['2026-02-15']} />);
+      
+      await userEvent.click(getNext(r));
+      
+      await expect.element(getDay(r, '2026-02-16')).toHaveAttribute('tabindex', '0');
+    });
+    
+    it('moves focus to the nearest day available by a disabledDates predicate', async () => {
+      const r = render(<CalendarTest defaultValue='2026-01-15' disabledDates={(date) => date === '2026-02-15' || date === '2026-02-16'} />);
+      
+      await userEvent.click(getNext(r));
+      
+      await expect.element(getDay(r, '2026-02-14')).toHaveAttribute('tabindex', '0');
+    });
+    
+    it('steps back from a disabled last day after clamping to the month length', async () => {
+      const r = render(<CalendarTest defaultValue='2026-01-31' disabledDates={['2026-02-28']} />);
+      
+      await userEvent.click(getNext(r));
+      
+      await expect.element(getDay(r, '2026-02-27')).toHaveAttribute('tabindex', '0');
+    });
+    
+    it('clamps focus to max when the same day is past it', async () => {
+      const r = render(<CalendarTest defaultValue='2026-01-15' max='2026-02-10' />);
+      
+      await userEvent.click(getNext(r));
+      
+      await expect.element(getDay(r, '2026-02-10')).toHaveAttribute('tabindex', '0');
+    });
+    
+    it('moves focus back to the same day of the previous month', async () => {
+      const r = render(<CalendarTest defaultValue='2026-03-15' />);
+      
+      await userEvent.click(getPrev(r));
+      
+      await expect.element(getDay(r, '2026-02-15')).toHaveAttribute('tabindex', '0');
+    });
+    
+    it('moves focus across the year boundary', async () => {
+      const r = render(<CalendarTest defaultValue='2026-12-15' />);
+      
+      await userEvent.click(getNext(r));
+      
+      await expect.element(getDay(r, '2027-01-15')).toHaveAttribute('tabindex', '0');
+    });
+    
+    it('moves focus to the same day of a month picked in the month picker', async () => {
+      const r = render(<CalendarTest defaultValue='2026-01-15' />);
+      
+      await userEvent.click(getMonthBtn(r));
+      await expect.element(getMonthCell(r, 0)).toHaveFocus();
+      await userEvent.keyboard('{ArrowRight}{ArrowRight}{Enter}');
+      
+      await expect.element(getDay(r, '2026-03-15')).toHaveAttribute('tabindex', '0');
+    });
+    
+    it('moves focus to the same day of a year picked in the year picker', async () => {
+      const r = render(<CalendarTest defaultValue='2026-01-15' />);
+      
+      await userEvent.click(getYearBtn(r));
+      await userEvent.click(getYearCell(r, 2027));
+      
+      await expect.element(getDay(r, '2027-01-15')).toHaveAttribute('tabindex', '0');
+    });
+  });
+  
+  describe('fast scrolling', () => {
+    const getScroller = (r: RenderResult) => r.getByTestId('day-scroller');
+    
+    const nextFrame = () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    
+    it('reports every month passed while scrolling quickly', async () => {
+      const onChangeMonth = vi.fn();
+      const r = render(
+        <div>
+          <CalendarTest compact defaultMonth='2026-01-01' onChangeMonth={onChangeMonth}>
+            <CalendarContent data-testid='content'>
+              <CalendarDayPicker data-testid='day-picker'>
+                <CalendarWeekLabels>
+                  {['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].map((label) => (
+                    <CalendarWeekLabel key={label}>{label}</CalendarWeekLabel>
+                  ))}
+                </CalendarWeekLabels>
+                <CalendarDayPickerScroller data-testid='day-scroller'>
+                  <CalendarDayPickerScrollerContent>
+                    <CalendarDayPickerScrollerLayout />
+                  </CalendarDayPickerScrollerContent>
+                </CalendarDayPickerScroller>
+              </CalendarDayPicker>
+            </CalendarContent>
+          </CalendarTest>
+        </div>,
+      );
+      
+      await expect.poll(() => getScroller(r)?.scrollLeft).toBeGreaterThan(0);
+      await nextFrame();
+      
+      for (let step = 0; step < 3; step++) {
+        const scroller = getScroller(r)!;
+        scroller.scrollBy({ left: scroller.clientWidth, behavior: 'instant' });
+        await nextFrame();
+      }
+      
+      await expect.poll(() => onChangeMonth.mock.calls.map(([month]) => month)).toEqual(['2026-02-01', '2026-03-01', '2026-04-01']);
+      await expect.element(getDay(r, '2026-04-15')).toBeInTheDocument();
+    });
+  });
+  
+  describe('year picker keyboard', () => {
+    const getYear = (r: RenderResult, year: number) =>
+      getYearPicker(r).querySelector(`[role="gridcell"][data-key="${year}"]`) as HTMLElement;
+    
+    it('starts on the visible year and moves with arrow keys', async () => {
+      const r = render(<CalendarTest defaultMonth='2026-01-01' />);
+      
+      await userEvent.click(getYearBtn(r));
+      await expect.element(getYear(r, 2026)).toHaveAttribute('tabindex', '0');
+      await expect.element(getYear(r, 2026)).toHaveFocus();
+      
+      await userEvent.keyboard('{ArrowRight}');
+      
+      await expect.element(getYear(r, 2027)).toHaveAttribute('tabindex', '0');
+      await expect.element(getYear(r, 2027)).toHaveFocus();
+    });
+  });
+  
+  describe('disabled', () => {
+    let r: RenderResult;
+    const onChangeValue = vi.fn();
+    
+    beforeEach(() => {
+      onChangeValue.mockClear();
+      r = render(<CalendarTest disabled defaultMonth='2026-01-01' onChangeValue={onChangeValue} data-testid='calendar' />);
+    });
+    
+    it('marks the root as aria-disabled', async () => {
+      await expect.element(r.getByTestId('calendar')).toHaveAttribute('aria-disabled', 'true');
+    });
+    
+    it('disables navigation and picker buttons', async () => {
+      await expect.element(getPrev(r)).toBeDisabled();
+      await expect.element(getNext(r)).toBeDisabled();
+      await expect.element(getMonthBtn(r)).toBeDisabled();
+      await expect.element(getYearBtn(r)).toBeDisabled();
+    });
+    
+    it('disables every day', async () => {
+      await expect.element(getDay(r, '2026-01-15')).toHaveAttribute('aria-disabled', 'true');
+    });
+    
+    it('does not select a clicked day', async () => {
+      await userEvent.click(getDay(r, '2026-01-15'), { force: true });
+      
+      expect(onChangeValue).not.toHaveBeenCalled();
     });
   });
   
@@ -420,12 +792,12 @@ describe('Calendar', () => {
   });
   
   describe('Edge Cases', () => {
-    it('calls the latest onChange after it changes between renders', async () => {
+    it('calls the latest onChangeValue after it changes between renders', async () => {
       const initialOnChange = vi.fn();
       const nextOnChange = vi.fn();
 
-      const r = render(<CalendarTest onChange={initialOnChange} />);
-      r.rerender(<CalendarTest onChange={nextOnChange} />);
+      const r = render(<CalendarTest onChangeValue={initialOnChange} />);
+      r.rerender(<CalendarTest onChangeValue={nextOnChange} />);
 
       const day = r
         .getAllByText('15')
@@ -434,7 +806,7 @@ describe('Calendar', () => {
       await userEvent.click(day!);
 
       expect(nextOnChange).toHaveBeenCalledTimes(1);
-      expect(nextOnChange).toHaveBeenCalledWith(expect.any(Date));
+      expect(nextOnChange).toHaveBeenCalledWith(expect.stringMatching(/^\d{4}-\d{2}-15$/));
       expect(initialOnChange).not.toHaveBeenCalled();
     });
 

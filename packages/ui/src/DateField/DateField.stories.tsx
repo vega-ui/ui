@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DateField } from './DateField';
 import { DateFieldCalendar, DateFieldInput, DateFieldTriggerIconButton } from './components';
 import { MaskitoDateMode } from '@maskito/kit';
-import { getCurrentDate, getDateFormat, getDateSeparator, getWeekDayNames } from '@vega-ui/utils';
+import { formatISODate, getCurrentDate, getDateFormat, getDateSeparator, getWeekDayNames } from '@vega-ui/utils';
 import { Popover, PopoverContent, PopoverTrigger } from '../Popover';
 import { Icon } from '../Icon';
 import {
@@ -105,26 +105,20 @@ export const Default: Story = {
 export const Min: Story = {
   name: 'Min 1/1/2020',
   args: {
-    min: new Date(2020, 0, 1)
+    min: '2020-01-01'
   },
 };
 
 export const Max: Story = {
   name: 'Max 1/1/2030',
   args: {
-    max: new Date(2030, 0, 1)
+    max: '2030-01-01'
   },
 };
 
 export const DisabledDates: Story = {
   args: {
-    disabledDates: [
-      new Date(getCurrentDate().getFullYear(), getCurrentDate().getMonth(), 1),
-      new Date(getCurrentDate().getFullYear(), getCurrentDate().getMonth(), 2),
-      new Date(getCurrentDate().getFullYear(), getCurrentDate().getMonth(), 3),
-      new Date(getCurrentDate().getFullYear(), getCurrentDate().getMonth(), 4),
-      new Date(getCurrentDate().getFullYear(), getCurrentDate().getMonth(), 5),
-    ]
+    disabledDates: [1, 2, 3, 4, 5].map(day => formatISODate(new Date(getCurrentDate().getFullYear(), getCurrentDate().getMonth(), day)))
   },
 };
 

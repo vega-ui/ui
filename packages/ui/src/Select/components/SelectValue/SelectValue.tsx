@@ -26,7 +26,7 @@ export interface SelectValueProps extends TextProps {
 export const SelectValue: FC<SelectValueProps> = ({ className, placeholder, children, ...props }) => {
   const { selected, valueRef, onHasValueChildrenChange } = useSelectContext()
 
-  const hasSelected = selected !== '' && selected !== undefined
+  const hasSelected = selected !== '' && selected !== null && selected !== undefined
   const hasPlaceholder = placeholder !== undefined
   const hasChildren = children !== undefined
   

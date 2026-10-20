@@ -13,10 +13,10 @@ export type CalendarNextButtonProps = CalendarBaseControlIconButtonProps
  * navigation, range constraints, and picker-mode state.
  */
 export const CalendarNextButton: FC<CalendarNextButtonProps> = ({ disabled, className, onClick: _onClick, ...props }) => {
-  const { to, year, month, picker, nextPeriod } = useCalendarContext()
+  const { to, year, month, picker, nextPeriod, disabled: calendarDisabled } = useCalendarContext()
   
   const outOfRangeTo = to ? (year >= to.getFullYear() && month >= to.getMonth()) : false
-  const _disabled = disabled || (picker !== 'day' || outOfRangeTo)
+  const _disabled = disabled || calendarDisabled || picker !== 'day' || outOfRangeTo
   
   return (
     <CalendarBaseControlIconButton

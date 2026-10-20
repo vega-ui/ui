@@ -8,23 +8,20 @@
 <!-- AUTO-GENERATED:ROOT_API:start -->
 | Prop | Type | Default | Required | Notes |
 | --- | --- | --- | --- | --- |
-| `to` | `Date` | `—` | No | Upper date boundary for navigation and selection. |
-| `from` | `Date` | `—` | No | Lower date boundary for navigation and selection. |
+| `max` | `string` | `—` | No | Latest selectable date as a `YYYY-MM-DD` string. |
+| `min` | `string` | `—` | No | Earliest selectable date as a `YYYY-MM-DD` string. |
 | `selection` | `S` | `'single' as S` | No | Selection mode. |
 | `picker` | `CalendarPicker` | `—` | No | Controls which picker view is currently active. |
-| `value` | `CalendarValue<S>` | `—` | No | Controlled selection value. |
-| `defaultValue` | `CalendarValue<S>` | `—` | No | Uncontrolled initial selection value. |
+| `value` | `CalendarValue<S>` | `—` | No | Controlled selection value, shaped by the `selection` mode. |
+| `defaultValue` | `CalendarValue<S>` | `—` | No | Uncontrolled initial selection value, shaped by the `selection` mode. |
 | `defaultPicker` | `CalendarPicker` | `'day'` | No | Uncontrolled initial picker view. |
-| `disabled` | `CalendarDatesDisabled` | `—` | No | Disables specific dates. |
-| `onChangeDate` | `(date: Date) => void` | `—` | No | Fires when the visible date changes (e.g., via scrolling or picker). |
-| `onChange` | `(value: CalendarValue<S>) => void` | `—` | No | Fires when the selected value changes. |
+| `disabled` | `boolean` | `—` | No | Disables the whole calendar: no date can be selected and navigation is off. |
+| `disabledDates` | `CalendarDatesDisabled` | `—` | No | Dates that cannot be selected, as `YYYY-MM-DD` strings: - a single date - an array of dates - a predicate `(date: string) => boolean` |
+| `onChangeValue` | `(value: CalendarValue<S>) => void` | `—` | No | Fires when the user changes the selection. |
 | `onChangePicker` | `(picker: CalendarPicker) => void` | `—` | No | Fires when the active picker view changes. |
-| `referenceDate` | `Date` | `—` | No | Reference date used as a logical anchor for indexed or virtualized pickers. |
-| `date` | `Date` | `—` | No | Controlled visible date. |
-| `defaultDate` | `Date` | `getCurrentDate()` | No | Initial visible date for uncontrolled usage. |
-| `activeDay` | `number` | `—` | No | Controlled active (focused) day value. |
-| `defaultActiveDay` | `number` | `—` | No | Initial active day for uncontrolled usage. |
-| `onChangeActiveDay` | `(activeDay: number \\\| undefined) => void` | `—` | No | Fires when the active day changes due to keyboard or programmatic focus. |
+| `month` | `string` | `—` | No | Controlled visible month, given as a `YYYY-MM-DD` string of any day in that month. |
+| `defaultMonth` | `string` | `—` | No | Initial visible month for uncontrolled usage, given as a `YYYY-MM-DD` string of any day in that month. |
+| `onChangeMonth` | `(month: string) => void` | `—` | No | Fires with the first day of the visible month as a `YYYY-MM-DD` string when the visible month changes (e.g., via scrolling or the month and year pickers). |
 <!-- AUTO-GENERATED:ROOT_API:end -->
 
 ## Child Parts API
@@ -60,7 +57,8 @@ Advanced hook for custom picker layouts and rendering.
 | `CalendarProps` | Root prop type | Main integration surface. |
 | `CalendarPicker` | active picker union | Day, month, or year picker mode. |
 | `CalendarSelection` | selection union | `single`, `multiple`, or `range`. |
-| `CalendarDatesDisabled` | disabled-date contract | Supports richer disabled-date logic. |
+| `CalendarValue` | selection value by mode | `YYYY-MM-DD` string, `[start, end]` tuple, or array of strings. |
+| `CalendarDatesDisabled` | disabled-date contract | `YYYY-MM-DD` string, array of strings, or a `(date: string) => boolean` predicate. |
 
 ## State Model
 

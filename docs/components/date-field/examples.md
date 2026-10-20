@@ -372,13 +372,9 @@ const calendar = (
 <DateField
   format='dd/MM/yyyy'
   separator='/'
-  min={new Date(2026, 0, 1)}
-  max={new Date(2026, 11, 31)}
-  disabledDates={[
-    new Date(2026, 4, 1),
-    new Date(2026, 4, 9),
-    new Date(2026, 4, 10),
-  ]}
+  min='2026-01-01'
+  max='2026-12-31'
+  disabledDates={['2026-05-01', '2026-05-09', '2026-05-10']}
 >
   <DateFieldInput />
   <Popover placement='bottom-end'>

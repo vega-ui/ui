@@ -1,15 +1,11 @@
 import { CalendarDatesDisabled } from '../types';
-import { isEqualDates } from '@vega-ui/utils';
+import { formatISODate } from '@vega-ui/utils';
 
 export const isDisabledDate = (dayTime: number, disabled: CalendarDatesDisabled) => {
-  const date = new Date(dayTime)
+  const date = formatISODate(new Date(dayTime))
   
-  if (Array.isArray(disabled)) {
-    if (disabled.length === 0) return false;
-    return disabled.some(d => isEqualDates(d, date))
-  }
-  
+  if (Array.isArray(disabled)) return disabled.includes(date)
   if (typeof disabled === 'function') return disabled(date)
   
-  return isEqualDates(date, disabled as Date)
+  return disabled === date
 }

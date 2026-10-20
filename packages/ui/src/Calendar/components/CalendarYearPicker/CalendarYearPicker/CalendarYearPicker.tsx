@@ -27,11 +27,10 @@ export const CalendarYearPicker: FC<CalendarYearPickerProps> = ({ className, api
     to,
     picker,
     year,
-    activeYear,
-    changeActiveYear,
     yearPickerApiRef,
     closeYearPicker,
     changeYear,
+    disabled,
   } = useCalendarContext()
   const { size, variant } = useCalendarBaseContext()
   
@@ -68,10 +67,8 @@ export const CalendarYearPicker: FC<CalendarYearPickerProps> = ({ className, api
       selection='single'
       data-visible={picker === 'year'}
       selected={year}
-      active={activeYear}
       defaultActive={year}
       year={year}
-      onChangeActive={changeActiveYear}
       variant={variant}
       size={size}
       inert={picker !== 'year'}
@@ -80,6 +77,7 @@ export const CalendarYearPicker: FC<CalendarYearPickerProps> = ({ className, api
       className={csx(style.picker, className)}
       apiRef={mergeRefs([apiRef, yearPickerApiRef])}
       onKeyDown={mergeEventHandlers(_onKeyDown, onKeyDown)}
+      disabled={disabled ? () => true : undefined}
       onSelectCell={onSelect}
       {...props}
     />

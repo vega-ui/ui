@@ -11,8 +11,8 @@
 | `timeStep` | `number` | `1` | No | Step increment for time segments. |
 | `separator` | `string` | `', '` | No | Character used to separate segments (date and time) in the input. |
 | `dateSeparator` | `string` | `'.'` | No | Character used to separate date segments in the input. |
-| `min` | `Date` | `—` | No | Minimum allowed date. |
-| `max` | `Date` | `—` | No | Maximum allowed date. |
+| `min` | `string` | `—` | No | Minimum allowed date–time as a `YYYY-MM-DDTHH:mm[:ss]` string. |
+| `max` | `string` | `—` | No | Maximum allowed date–time as a `YYYY-MM-DDTHH:mm[:ss]` string. |
 | `disabledDates` | `CalendarDatesDisabled` | `—` | No | Rules for disabling specific dates in the calendar. |
 | `disabled` | `boolean` | `—` | No | Disables the field. |
 <!-- AUTO-GENERATED:ROOT_API:end -->

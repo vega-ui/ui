@@ -19,9 +19,9 @@ export type CalendarNextYearGroupButtonProps = CalendarBaseControlIconButtonProp
  * responsible for switching to the next year group.
  */
 export const CalendarNextYearGroupButton: FC<CalendarNextYearGroupButtonProps> = ({ disabled, className, onClick: _onClick, ...props }) => {
-  const { picker, nextYearGroup } = useCalendarContext()
+  const { picker, nextYearGroup, disabled: calendarDisabled } = useCalendarContext()
   
-  const _disabled = disabled || picker !== 'year'
+  const _disabled = disabled || calendarDisabled || picker !== 'year'
   
   return (
     <CalendarBaseControlIconButton

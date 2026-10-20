@@ -11,12 +11,13 @@ export type CalendarMonthPickerButtonProps = CalendarBasePickerButtonProps
  * the month-picker view. It wraps `CalendarBasePickerButton` and wires it
  * into the `Calendar` state machine via `useCalendarContext()`.
  */
-export const CalendarMonthPickerButton: FC<CalendarMonthPickerButtonProps> = ({ onClick: _onClick, className, ...props }) => {
-  const { picker, toggleMonthPicker } = useCalendarContext()
+export const CalendarMonthPickerButton: FC<CalendarMonthPickerButtonProps> = ({ onClick: _onClick, className, disabled, ...props }) => {
+  const { picker, toggleMonthPicker, disabled: calendarDisabled } = useCalendarContext()
   
   return (
     <CalendarBasePickerButton
       type='button'
+      disabled={disabled || calendarDisabled}
       onClick={mergeEventHandlers(_onClick, toggleMonthPicker)}
       aria-pressed={picker === 'month'}
       className={csx(style.button, className)}

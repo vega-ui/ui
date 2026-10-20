@@ -37,7 +37,7 @@ import {
   CalendarYearPickerScrollerLayout,
 } from '../../Calendar';
 
-import { getWeekDayNames } from '@vega-ui/utils';
+import { getWeekDayNames, formatMonth } from '@vega-ui/utils';
 import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from '@vega-ui/icons';
 
 afterEach(cleanup);
@@ -92,7 +92,7 @@ const DateRangeFieldTest: FC<Partial<DateRangeFieldProps>> = ({
                 <CalendarYearLabel />
               </CalendarYearPickerButton>
             </CalendarPickerButtonGroup>
-            <CalendarNextButton>
+            <CalendarNextButton aria-label='Next month'>
               <Icon><ChevronRight /></Icon>
             </CalendarNextButton>
             <CalendarNextYearGroupButton>
@@ -225,6 +225,19 @@ describe('DateRangeField', () => {
       expect(onChange).not.toHaveBeenCalled();
     });
     
+    it('does not change the range when the calendar navigates to another month', async () => {
+      const r = render(<DateRangeFieldTest />);
+
+      await userEvent.type(getInput(r), `10.01.2026${RANGE_SEPARATOR}15.01.2026`);
+      await userEvent.click(getTrigger(r));
+      r.getByRole('button', { name: 'Next month' }).focus();
+      await userEvent.keyboard('{Enter}');
+      await expect.element(getCalendarRoot(r)).toHaveTextContent(formatMonth(1, navigator.language, 'long'));
+      await new Promise((resolve) => setTimeout(resolve, 300));
+
+      await expect.element(getInput(r)).toHaveValue(`10.01.2026${RANGE_SEPARATOR}15.01.2026`);
+    });
+
     it('does not crash when opening calendar with empty value', async () => {
       const r = render(<DateRangeFieldTest />);
       

@@ -182,8 +182,8 @@ describe('DateTimeField', () => {
     });
     
     it('respects min/max when selecting date via calendar', async () => {
-      const min = new Date(2026, 0, 10);
-      const max = new Date(2026, 0, 20);
+      const min = '2026-01-10T00:00';
+      const max = '2026-01-20T00:00';
       
       r.rerender(<DateTimeFieldTest min={min} max={max} />);
       
@@ -199,6 +199,131 @@ describe('DateTimeField', () => {
   });
   
   describe('Edge Cases', () => {
+    describe('calendar navigation follows the WAI-ARIA date picker pattern', () => {
+      const getPickerCell = (r: RenderResult, key: number) =>
+        getContent(r).querySelector(`[data-visible="true"] [role="gridcell"][data-key="${key}"]`) as HTMLElement;
+
+      const press = async (r: RenderResult, button: string) => {
+        r.getByRole('button', { name: button }).focus();
+        await userEvent.keyboard('{Enter}');
+      };
+
+      const open = async (r: RenderResult, typed: string) => {
+        await userEvent.type(getInput(r), typed);
+        await userEvent.click(getTrigger(r));
+      };
+
+      const settle = () => new Promise((resolve) => setTimeout(resolve, 300));
+
+      it('keeps the value and moves focus to the same day of the next month', async () => {
+        const r = render(<DateTimeFieldTest />);
+
+        await open(r, '15.01.2026, 12:30');
+        await press(r, 'Next month');
+
+        await expect.element(getCell(r, new Date(2026, 1, 15))).toHaveAttribute('tabindex', '0');
+        await settle();
+        await expect.element(getInput(r)).toHaveValue('15.01.2026, 12:30');
+      });
+
+      it('keeps the value and moves focus to the same day of the previous month', async () => {
+        const r = render(<DateTimeFieldTest />);
+
+        await open(r, '15.03.2026, 12:30');
+        await press(r, 'Previous month');
+
+        await expect.element(getCell(r, new Date(2026, 1, 15))).toHaveAttribute('tabindex', '0');
+        await settle();
+        await expect.element(getInput(r)).toHaveValue('15.03.2026, 12:30');
+      });
+
+      it('keeps the value when a month is picked in the month picker', async () => {
+        const r = render(<DateTimeFieldTest />);
+
+        await open(r, '15.01.2026, 12:30');
+        await press(r, 'Open month picker');
+        await expect.element(getPickerCell(r, 0)).toHaveFocus();
+        await userEvent.keyboard('{ArrowRight}{ArrowRight}{Enter}');
+
+        await expect.element(getCell(r, new Date(2026, 2, 15))).toHaveAttribute('tabindex', '0');
+        await settle();
+        await expect.element(getInput(r)).toHaveValue('15.01.2026, 12:30');
+      });
+
+      it('keeps the value when a year is picked in the year picker', async () => {
+        const r = render(<DateTimeFieldTest />);
+
+        await open(r, '15.01.2026, 12:30');
+        await press(r, 'Open year picker');
+        await expect.element(getPickerCell(r, 2026)).toHaveFocus();
+        await userEvent.keyboard('{ArrowRight}{Enter}');
+
+        await expect.element(getCell(r, new Date(2027, 0, 15))).toHaveAttribute('tabindex', '0');
+        await settle();
+        await expect.element(getInput(r)).toHaveValue('15.01.2026, 12:30');
+      });
+
+      it('keeps the value while scrolling through months', async () => {
+        const r = render(<DateTimeFieldTest />);
+
+        await open(r, '15.01.2026, 12:30');
+
+        const getScroller = () => {
+          let element = getCell(r, new Date(2026, 0, 15))?.parentElement ?? null;
+          while (element && element.scrollWidth <= element.clientWidth) element = element.parentElement;
+          return element;
+        };
+        await expect.poll(() => getScroller()?.scrollLeft).toBeGreaterThan(0);
+
+        const onChange = vi.fn();
+        getInput(r).addEventListener('change', onChange);
+
+        const nextFrame = () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+        for (let step = 0; step < 3; step++) {
+          const scroller = getScroller()!;
+          scroller.scrollBy({ left: scroller.clientWidth, behavior: 'instant' });
+          await nextFrame();
+        }
+
+        await expect.element(getCell(r, new Date(2026, 3, 15))).toHaveAttribute('tabindex', '0');
+        await settle();
+        await expect.element(getInput(r)).toHaveValue('15.01.2026, 12:30');
+        expect(onChange).not.toHaveBeenCalled();
+      });
+
+      it('writes a day picked after navigating', async () => {
+        const r = render(<DateTimeFieldTest />);
+
+        await open(r, '15.01.2026, 12:30');
+        await press(r, 'Next month');
+        await pickDate(r, new Date(2026, 1, 10));
+
+        await expect.element(getInput(r)).toHaveValue('10.02.2026, 12:30');
+      });
+
+      it('closes on Escape without changing the value', async () => {
+        const r = render(<DateTimeFieldTest />);
+
+        await open(r, '15.01.2026, 12:30');
+        await press(r, 'Next month');
+        await expect.element(getCell(r, new Date(2026, 1, 15))).toHaveAttribute('tabindex', '0');
+        await userEvent.keyboard('{Escape}');
+
+        await expect.poll(() => r.queryByTestId(TESTID_CONTENT)).toBeNull();
+        await expect.element(getInput(r)).toHaveValue('15.01.2026, 12:30');
+      });
+
+      it('keeps an empty field empty while navigating', async () => {
+        const r = render(<DateTimeFieldTest />);
+
+        await userEvent.click(getTrigger(r));
+        await press(r, 'Next month');
+        await settle();
+
+        await expect.element(getInput(r)).toHaveValue('');
+      });
+    });
+
     it('ignores invalid datetime input and does not sync calendar', async () => {
       const onChange = vi.fn();
       const r = render(<DateTimeFieldTest onChange={onChange} />);

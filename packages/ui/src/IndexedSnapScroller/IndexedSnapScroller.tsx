@@ -180,12 +180,14 @@ export const IndexedSnapScroller: FC<PropsWithChildren<IndexedSnapScrollerProps>
     const target = e.currentTarget;
     const { scrollWidth, clientWidth, scrollLeft } = target;
 
-    if (Math.floor(scrollLeft) <= 0) {
+    const maxScrollLeft = scrollWidth - clientWidth
+
+    if (scrollLeft <= 1) {
       offset(-1);
       return;
     }
-    
-    if (Math.ceil(scrollLeft) >= scrollWidth - clientWidth) {
+
+    if (scrollLeft >= maxScrollLeft - 1) {
       offset(1);
       return;
     }

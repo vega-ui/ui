@@ -101,7 +101,7 @@
 ```tsx
 <Calendar
   selection='range'
-  value={[getNextDate(getCurrentDate(), -1), getNextDate(getCurrentDate(), 1)]}
+  value={['2026-04-09', '2026-04-11']}
 >
   <CalendarHeader>
     <CalendarPrevButton><Icon><ChevronLeft /></Icon></CalendarPrevButton>
@@ -229,9 +229,9 @@
 ```tsx
 <Calendar
   selection='single'
-  from={new Date(2026, 0, 1)}
-  to={new Date(2026, 11, 31)}
-  disabled={[new Date(2026, 3, 10), new Date(2026, 3, 11)]}
+  min='2026-01-01'
+  max='2026-12-31'
+  disabledDates={['2026-04-10', '2026-04-11']}
 >
   <CalendarHeader>
     <CalendarPrevButton><Icon><ChevronLeft /></Icon></CalendarPrevButton>
@@ -274,10 +274,7 @@
 
 ```tsx
 <Calendar
-  disabled={[
-    new Date(getCurrentDate().getFullYear(), getCurrentDate().getMonth(), 10),
-    new Date(getCurrentDate().getFullYear(), getCurrentDate().getMonth(), 11),
-  ]}
+  disabledDates={['2026-04-10', '2026-04-11']}
 >
   <CalendarHeader>
     <CalendarPrevButton><Icon><ChevronLeft /></Icon></CalendarPrevButton>

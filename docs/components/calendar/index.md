@@ -120,4 +120,4 @@ Typical composition:
 - Forgetting that `selection` changes the expected value model.
 - Passing serialized business dates instead of `Date` objects.
 - Customizing picker internals without retesting navigation flow.
-- Combining `from`, `to`, and disabled dates without validating the resulting UX.
+- Combining `min`, `max`, and `disabledDates` without validating the resulting UX.
