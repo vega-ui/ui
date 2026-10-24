@@ -76,11 +76,12 @@ export const useSelection = <K, const M extends Selection>({
     if (min !== undefined && comparator(key, min) === -1) return true
     if (max !== undefined && comparator(key, max) === 1) return true
     
+    if (disabled === undefined) return false
     if (typeof disabled === 'function') return (disabled as SelectionDisabledResolver<K>)(key)
-    if (Array.isArray(disabled)) return disabled.includes(key)
+    if (Array.isArray(disabled)) return disabled.some((k) => eq(k, key))
     
-    return disabled === key
-  }, [disabled, min, max, comparator])
+    return eq(disabled, key)
+  }, [disabled, min, max, comparator, eq])
   
   const unselect = useCallback((key: K) => {
     if (selection === 'multiple') {
