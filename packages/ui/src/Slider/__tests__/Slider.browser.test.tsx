@@ -67,10 +67,16 @@ const FormTest: FC<PropsWithChildren<{ onSubmit: (data: Record<string, string>) 
 };
 
 const getRoot = (r: RenderResult) => r.getByTestId(TESTID_ROOT);
+
 const getProgress = (r: RenderResult) => r.getByTestId(TESTID_PROGRESS);
 
 const getThumb = (r: RenderResult) => r.getByTestId(TESTID_THUMB);
 const getInput = (r: RenderResult) => r.getByTestId(TESTID_INPUT) as HTMLInputElement;
+
+const pointAt = (r: RenderResult, fraction: number) => {
+  const rect = getRoot(r).getBoundingClientRect();
+  return { pointerId: 1, pointerType: 'mouse', clientX: rect.left + rect.width * fraction, clientY: rect.top };
+};
 
 describe('Slider', () => {
   describe('Critical User Paths', () => {
@@ -414,13 +420,6 @@ describe('Slider', () => {
       
       await expect.element(getInput(r)).toHaveValue('10');
     });
-  });
-  
-  describe('Native range parity', () => {
-    const pointAt = (r: RenderResult, fraction: number) => {
-      const rect = getRoot(r).getBoundingClientRect();
-      return { pointerId: 1, pointerType: 'mouse', clientX: rect.left + rect.width * fraction, clientY: rect.top };
-    };
 
     it('keeps keyboard and dragging working with user handlers', async () => {
       const onKeyDown = vi.fn();
