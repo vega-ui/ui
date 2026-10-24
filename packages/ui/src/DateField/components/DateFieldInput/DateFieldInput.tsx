@@ -1,52 +1,43 @@
-import { FC, FormEvent, useMemo } from 'react';
+import { FC, useMemo } from 'react';
 import { TextFieldInput, TextFieldInputProps } from '../../../TextField';
 import { useMaskito } from '@maskito/react';
-import { maskitoDateOptionsGenerator, maskitoParseDate } from '@maskito/kit';
 import { useDateFieldContext } from '../../contexts';
-import { mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
+import { mergeRefs, parseTemplateDate } from '@vega-ui/utils';
+import { getDateMaskOptions } from '../../helpers';
 
 export type DateFieldInputProps = TextFieldInputProps
 
 /**
  * DateFieldInput — a masked date text input used inside DateField.
  *
- * Applies a date mask based on the current format and separator,
- * enforces min/max date constraints, and parses the input value on each
- * `input` event. When a valid date is entered, it calls `changeDate`
- * from context.
+ * Applies a date mask based on the current format, separator and calendar
+ * system, enforces min/max date constraints, and keeps the field's date in
+ * sync with the text: it is parsed on mount (native `defaultValue`), on each
+ * `input` event and after a form reset, and becomes `undefined` while the
+ * text is empty or incomplete. When `min` or `max` change, the text is
+ * normalized again like typing does, dispatching `input`.
  *
  * Integrates with DateFieldContext for format, separator, boundaries,
- * change handler, and shared input ref. Merges internal and external refs
- * and `onInput` handlers.
+ * change handler, and shared input ref. Merges internal and external refs.
  */
-export const DateFieldInput: FC<DateFieldInputProps> = ({ ref, onInput: _onInput, ...props }) => {
-  const { format, separator, inputRef, min, max, changeDate, lastStringified, disabled } = useDateFieldContext()
+export const DateFieldInput: FC<DateFieldInputProps> = ({ ref, ...props }) => {
+  const { template, calendar, inputRef, min, max, changeDate, disabled } = useDateFieldContext()
   
-  const options = useMemo(() => maskitoDateOptionsGenerator({
-    mode: format,
-    separator,
+  const options = useMemo(() => getDateMaskOptions({
+    template,
+    calendar,
+    min,
     max,
-    min
-  }), [format, separator, min, max]);
+    onSync: (value) => changeDate(parseTemplateDate(calendar, value, template)),
+  }), [template, calendar, min, max, changeDate]);
   
   const innerInputRef = useMaskito({ options });
-  
-  const onInput = (event: FormEvent<HTMLInputElement>) => {
-    const value = event.currentTarget.value
-    if (value === lastStringified.current) return;
-    
-    const parseDate = maskitoParseDate(value, { mode: format, separator, min, max });
-    
-    if (!parseDate) return
-    changeDate?.(parseDate)
-  }
-  
+
   return (
     <TextFieldInput
       type='text'
       inputMode='numeric'
       disabled={disabled}
-      onInput={mergeEventHandlers(onInput, _onInput)}
       ref={mergeRefs([innerInputRef, ref, inputRef])}
       {...props}
     />

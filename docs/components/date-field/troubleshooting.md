@@ -17,56 +17,42 @@ The trigger icon button renders, but clicking it never shows a calendar.
 
 ### Fix
 
-Compose the trigger and calendar through `Popover`.
+Compose the trigger and calendar through `Popover`, inside `DateField`.
 
 ```tsx
-const calendar = (
-  <>
-    <CalendarHeader>
-      <CalendarPrevYearGroupButton><Icon><ArrowLeft /></Icon></CalendarPrevYearGroupButton>
-      <CalendarPrevButton><Icon><ChevronLeft /></Icon></CalendarPrevButton>
-      <CalendarPickerButtonGroup>
-        <CalendarMonthPickerButton><CalendarMonthLabel /></CalendarMonthPickerButton>
-        <CalendarYearPickerButton><CalendarYearLabel /></CalendarYearPickerButton>
-      </CalendarPickerButtonGroup>
-      <CalendarNextButton><Icon><ChevronRight /></Icon></CalendarNextButton>
-      <CalendarNextYearGroupButton><Icon><ArrowRight /></Icon></CalendarNextYearGroupButton>
-    </CalendarHeader>
-    <CalendarContent>
-      <CalendarDayPicker>
-        <CalendarWeekLabels>
-          {getWeekDayNames(navigator.language, 'short').map((name) => (
-            <CalendarWeekLabel key={name}>{name}</CalendarWeekLabel>
-          ))}
-        </CalendarWeekLabels>
-        <CalendarDayPickerScroller>
-          <CalendarDayPickerScrollerContent>
-            <CalendarDayPickerScrollerLayout />
-          </CalendarDayPickerScrollerContent>
-        </CalendarDayPickerScroller>
-      </CalendarDayPicker>
-      <CalendarMonthPicker>
-        <CalendarMonthPickerLayout />
-      </CalendarMonthPicker>
-      <CalendarYearPicker>
-        <CalendarYearPickerScroller>
-          <CalendarYearPickerScrollerContent>
-            <CalendarYearPickerScrollerLayout />
-          </CalendarYearPickerScrollerContent>
-        </CalendarYearPickerScroller>
-      </CalendarYearPicker>
-    </CalendarContent>
-  </>
-);
-
-<DateField format='dd/MM/yyyy' separator='/'>
-  <DateFieldInput />
+<DateField format='dd.MM.yyyy' separator='.'>
+  <DateFieldInput aria-label='Due date' />
   <Popover placement='bottom-end'>
     <PopoverTrigger asChild>
-      <DateFieldTriggerIconButton />
+      <DateFieldTriggerIconButton aria-label='Choose date' />
     </PopoverTrigger>
     <PopoverContent>
-      <DateFieldCalendar>{calendar}</DateFieldCalendar>
+      <DateFieldCalendar>
+        <CalendarHeader>
+          <CalendarPrevButton aria-label='Previous month' />
+          <CalendarViewButtonGroup>
+            <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
+            <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
+          </CalendarViewButtonGroup>
+          <CalendarNextButton aria-label='Next month' />
+        </CalendarHeader>
+        <CalendarContent>
+          <CalendarDays>
+            <CalendarWeekdays>
+              <CalendarWeekday />
+            </CalendarWeekdays>
+            <CalendarWeeks>
+              <CalendarDay />
+            </CalendarWeeks>
+          </CalendarDays>
+          <CalendarMonths>
+            <CalendarMonth />
+          </CalendarMonths>
+          <CalendarYears>
+            <CalendarYear />
+          </CalendarYears>
+        </CalendarContent>
+      </DateFieldCalendar>
     </PopoverContent>
   </Popover>
 </DateField>
@@ -91,21 +77,38 @@ The input format shown to users does not match parsing behavior.
 
 Keep visible guidance, parsing rules, and validation copy aligned around the same format.
 
-## Min And Max Look Enforced In The Calendar But Not In Product Logic
+## Submitted Value Is Not An ISO Date
 
 ### Symptom
 
-The picker blocks some dates, but submit logic or API payload preparation still accepts them.
+The form submits `15.01.2026` instead of `2026-01-15`.
 
 ### Likely Cause
 
-Date constraints were treated as visual calendar rules instead of shared product validation.
+`DateFieldInput` is a native input, and `name` submits its typed text.
 
 ### How To Verify
 
-- Submit an out-of-range value through the form flow.
-- Compare UI rules with server or submit validation.
+- Read the field from `FormData` in the submit handler.
 
 ### Fix
 
-Apply the same date constraints in both UI composition and final validation.
+Parse the text with `parseTemplateDate` from `@vega-ui/i18n`, passing the lowercase template of the field (`dd.mm.yyyy` for `format='dd.MM.yyyy' separator='.'`) and the same calendar, as in [Form/Integration](./examples.md#formintegration).
+
+## Disabled Dates Can Still Be Typed
+
+### Symptom
+
+The calendar blocks some days, but typing one of them is accepted and submitted.
+
+### Likely Cause
+
+`min` and `max` clamp typed dates, but `disabledDates` applies only to the calendar.
+
+### How To Verify
+
+- Type a disabled day and submit the form.
+
+### Fix
+
+Check the same `disabledDates` rule in submit validation and on the server.

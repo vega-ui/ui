@@ -7,6 +7,14 @@
     border-color var(--transition-fast-state-delay) ease-in-out;
 }
 
+.button:where(:dir(rtl)) {
+    transform: translateX(calc(100% + 4px));
+}
+
 .button:where([data-visible='true']) {
     transform: translateX(0);
+}
+
+.icon:where(:dir(rtl)) {
+    transform: scaleX(-1);
 }

@@ -81,6 +81,9 @@ export interface DataGridProps<K extends DataGridCellKey = DataGridCellKey> exte
  * and active-cell focus. It supports Arrow, PageUp/PageDown, Home/End,
  * optional wrapping, exclusion of specific cells from traversal, and an
  * imperative API (`apiRef`) for advanced integrations.
+ *
+ * ArrowLeft / ArrowRight follow the text direction of the grid, so they are
+ * mirrored in a right-to-left context.
  */
 export const DataGrid = <K extends DataGridCellKey = DataGridCellKey>({
   wrap,
@@ -134,14 +137,16 @@ export const DataGrid = <K extends DataGridCellKey = DataGridCellKey>({
     return key === exclude
   }, [exclude])
   
-  const getNodeByArrowKey = (coordinates: [number, number], key: string) => {
-    if (key === 'ArrowLeft') return grid.before(coordinates, 0, wrapH)
-    if (key === 'ArrowRight') return grid.after(coordinates, 0, wrapH)
+  const getNodeByArrowKey = (coordinates: [number, number], key: string, rtl: boolean) => {
+    if (key === 'ArrowLeft') return rtl ? grid.after(coordinates, 0, wrapH) : grid.before(coordinates, 0, wrapH)
+    if (key === 'ArrowRight') return rtl ? grid.before(coordinates, 0, wrapH) : grid.after(coordinates, 0, wrapH)
     if (key === 'ArrowDown') return grid.after(coordinates, 1, wrapV)
     if (key === 'ArrowUp') return grid.before(coordinates, 1, wrapV)
   }
   
   const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
+    if (e.defaultPrevented) return
+    
     const activeNode = grid.getNodeByKey(active)
     if (!activeNode) return
     
@@ -154,7 +159,8 @@ export const DataGrid = <K extends DataGridCellKey = DataGridCellKey>({
       case 'ArrowUp': {
         e.preventDefault()
         
-        const nextNode = getNodeByArrowKey(activePosition, e.key)
+        const rtl = getComputedStyle(e.currentTarget).direction === 'rtl'
+        const nextNode = getNodeByArrowKey(activePosition, e.key, rtl)
         if (!nextNode) return
         
         changeFocus(nextNode)

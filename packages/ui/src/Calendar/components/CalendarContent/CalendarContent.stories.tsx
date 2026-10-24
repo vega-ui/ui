@@ -1,14 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CalendarContent } from './CalendarContent';
-import { CalendarWeekLabels } from '../CalendarWeekLabels';
-import { CalendarWeekLabel } from '../CalendarWeekLabel';
-import {
-  CalendarDayPicker,
-  CalendarDayPickerScroller,
-  CalendarDayPickerScrollerContent,
-  CalendarDayPickerScrollerLayout
-} from '../CalendarDayPicker';
-import { getFirstDayOfWeek, getWeekDayNames } from '@vega-ui/utils';
+import { CalendarDays } from '../CalendarDays';
+import { CalendarWeekdays } from '../CalendarWeekdays';
+import { CalendarWeekday } from '../CalendarWeekday';
+import { CalendarWeeks } from '../CalendarWeeks';
+import { CalendarDay } from '../CalendarDay';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof CalendarContent> = {
@@ -16,21 +12,15 @@ const meta: Meta<typeof CalendarContent> = {
   component: CalendarContent,
   args: {
     children: (
-      <>
-        <CalendarDayPicker>
-          <CalendarWeekLabels>
-            {getWeekDayNames(navigator.language, 'short', getFirstDayOfWeek()).map((name) => (
-              <CalendarWeekLabel key={name}>{name}</CalendarWeekLabel>
-            ))}
-          </CalendarWeekLabels>
-          <CalendarDayPickerScroller>
-            <CalendarDayPickerScrollerContent>
-              <CalendarDayPickerScrollerLayout />
-            </CalendarDayPickerScrollerContent>
-          </CalendarDayPickerScroller>
-        </CalendarDayPicker>
-      </>
-    )
+      <CalendarDays>
+        <CalendarWeekdays>
+          <CalendarWeekday />
+        </CalendarWeekdays>
+        <CalendarWeeks>
+          <CalendarDay />
+        </CalendarWeeks>
+      </CalendarDays>
+    ),
   },
   tags: ['autodocs'],
 }

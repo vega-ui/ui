@@ -1,5 +1,7 @@
 # DateRangeField Patterns
 
+`CalendarPopover` in the snippets below is the local component from [Basic](./examples.md#basic): the trigger and `DateRangeFieldCalendar` with the calendar parts inside a `Popover`.
+
 ## Range Field With Popover Calendar
 
 When to use:
@@ -9,65 +11,54 @@ When to use:
 
 Composition notes:
 
-- Keep `DateRangeFieldInput` as the primary entry surface.
-- Mount `DateRangeFieldCalendar` inside `PopoverContent`.
+- Keep `DateRangeFieldInput` as the primary entry surface and label it.
+- Mount `DateRangeFieldCalendar` inside `PopoverContent`; the first picked day writes the start, the second the end.
 
 Trade-offs:
 
 - Saves layout space.
-- Requires explicit incomplete-range handling.
+- Requires explicit incomplete-range handling: a single date is a valid entry.
 
 ```tsx
-const calendar = (
-  <>
-    <CalendarHeader>
-      <CalendarPrevYearGroupButton><Icon><ArrowLeft /></Icon></CalendarPrevYearGroupButton>
-      <CalendarPrevButton><Icon><ChevronLeft /></Icon></CalendarPrevButton>
-      <CalendarPickerButtonGroup>
-        <CalendarMonthPickerButton><CalendarMonthLabel /></CalendarMonthPickerButton>
-        <CalendarYearPickerButton><CalendarYearLabel /></CalendarYearPickerButton>
-      </CalendarPickerButtonGroup>
-      <CalendarNextButton><Icon><ChevronRight /></Icon></CalendarNextButton>
-      <CalendarNextYearGroupButton><Icon><ArrowRight /></Icon></CalendarNextYearGroupButton>
-    </CalendarHeader>
-    <CalendarContent>
-      <CalendarDayPicker>
-        <CalendarWeekLabels>
-          {getWeekDayNames(navigator.language, 'short').map((name) => (
-            <CalendarWeekLabel key={name}>{name}</CalendarWeekLabel>
-          ))}
-        </CalendarWeekLabels>
-        <CalendarDayPickerScroller>
-          <CalendarDayPickerScrollerContent>
-            <CalendarDayPickerScrollerLayout />
-          </CalendarDayPickerScrollerContent>
-        </CalendarDayPickerScroller>
-      </CalendarDayPicker>
-      <CalendarMonthPicker>
-        <CalendarMonthPickerLayout />
-      </CalendarMonthPicker>
-      <CalendarYearPicker>
-        <CalendarYearPickerScroller>
-          <CalendarYearPickerScrollerContent>
-            <CalendarYearPickerScrollerLayout />
-          </CalendarYearPickerScrollerContent>
-        </CalendarYearPickerScroller>
-      </CalendarYearPicker>
-    </CalendarContent>
-  </>
-);
-
-<DateRangeField format='dd/MM/yyyy' separator='/' rangeSeparator=' - '>
-  <DateRangeFieldInput />
-  <Popover placement='bottom-end'>
-    <PopoverTrigger asChild>
-      <DateRangeFieldTriggerIconButton />
-    </PopoverTrigger>
-    <PopoverContent>
-      <DateRangeFieldCalendar>{calendar}</DateRangeFieldCalendar>
-    </PopoverContent>
-  </Popover>
-</DateRangeField>
+<>
+  <Label htmlFor='stay'>Stay</Label>
+  <DateRangeField format='dd.MM.yyyy' separator='.' rangeSeparator=' - '>
+    <DateRangeFieldInput id='stay' />
+    <Popover placement='bottom-end'>
+      <PopoverTrigger asChild>
+        <DateRangeFieldTriggerIconButton aria-label='Choose dates' />
+      </PopoverTrigger>
+      <PopoverContent>
+        <DateRangeFieldCalendar>
+          <CalendarHeader>
+            <CalendarPrevButton aria-label='Previous month' />
+            <CalendarViewButtonGroup>
+              <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
+              <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
+            </CalendarViewButtonGroup>
+            <CalendarNextButton aria-label='Next month' />
+          </CalendarHeader>
+          <CalendarContent>
+            <CalendarDays>
+              <CalendarWeekdays>
+                <CalendarWeekday />
+              </CalendarWeekdays>
+              <CalendarWeeks>
+                <CalendarDay />
+              </CalendarWeeks>
+            </CalendarDays>
+            <CalendarMonths>
+              <CalendarMonth />
+            </CalendarMonths>
+            <CalendarYears>
+              <CalendarYear />
+            </CalendarYears>
+          </CalendarContent>
+        </DateRangeFieldCalendar>
+      </PopoverContent>
+    </Popover>
+  </DateRangeField>
+</>
 ```
 
 ## Range Field In Filter Drawers
@@ -88,62 +79,18 @@ Trade-offs:
 - Adds overlay coordination complexity.
 
 ```tsx
-const calendar = (
-  <>
-    <CalendarHeader>
-      <CalendarPrevYearGroupButton><Icon><ArrowLeft /></Icon></CalendarPrevYearGroupButton>
-      <CalendarPrevButton><Icon><ChevronLeft /></Icon></CalendarPrevButton>
-      <CalendarPickerButtonGroup>
-        <CalendarMonthPickerButton><CalendarMonthLabel /></CalendarMonthPickerButton>
-        <CalendarYearPickerButton><CalendarYearLabel /></CalendarYearPickerButton>
-      </CalendarPickerButtonGroup>
-      <CalendarNextButton><Icon><ChevronRight /></Icon></CalendarNextButton>
-      <CalendarNextYearGroupButton><Icon><ArrowRight /></Icon></CalendarNextYearGroupButton>
-    </CalendarHeader>
-    <CalendarContent>
-      <CalendarDayPicker>
-        <CalendarWeekLabels>
-          {getWeekDayNames(navigator.language, 'short').map((name) => (
-            <CalendarWeekLabel key={name}>{name}</CalendarWeekLabel>
-          ))}
-        </CalendarWeekLabels>
-        <CalendarDayPickerScroller>
-          <CalendarDayPickerScrollerContent>
-            <CalendarDayPickerScrollerLayout />
-          </CalendarDayPickerScrollerContent>
-        </CalendarDayPickerScroller>
-      </CalendarDayPicker>
-      <CalendarMonthPicker>
-        <CalendarMonthPickerLayout />
-      </CalendarMonthPicker>
-      <CalendarYearPicker>
-        <CalendarYearPickerScroller>
-          <CalendarYearPickerScrollerContent>
-            <CalendarYearPickerScrollerLayout />
-          </CalendarYearPickerScrollerContent>
-        </CalendarYearPickerScroller>
-      </CalendarYearPicker>
-    </CalendarContent>
-  </>
-);
-
 <Drawer>
   <DrawerTrigger asChild>
-    <Button>Open filters</Button>
+    <Button>Filters</Button>
   </DrawerTrigger>
   <DrawerPortal>
     <DrawerBackdrop>
       <DrawerContent>
-        <DateRangeField format='dd/MM/yyyy' separator='/' rangeSeparator=' - '>
-          <DateRangeFieldInput />
-          <Popover placement='bottom-end'>
-            <PopoverTrigger asChild>
-              <DateRangeFieldTriggerIconButton />
-            </PopoverTrigger>
-            <PopoverContent>
-              <DateRangeFieldCalendar>{calendar}</DateRangeFieldCalendar>
-            </PopoverContent>
-          </Popover>
+        <DrawerTitle>Filters</DrawerTitle>
+        <Label htmlFor='created'>Created</Label>
+        <DateRangeField format='dd.MM.yyyy' separator='.' rangeSeparator=' - '>
+          <DateRangeFieldInput id='created' name='created' />
+          <CalendarPopover />
         </DateRangeField>
       </DrawerContent>
     </DrawerBackdrop>
@@ -160,65 +107,28 @@ When to use:
 
 Composition notes:
 
-- Keep range semantics and validation copy near the field.
-- Align disabled dates with backend reporting rules.
+- Use native `required` and a `pattern` for the full range; `min` and `max` are already enforced while typing, and a reversed range is swapped.
+- `disabledDates` applies only to the calendar, so align it with backend reporting rules and repeat it on submit.
 
 Trade-offs:
 
 - Stronger validation clarity.
-- More verbose copy and state handling.
+- The submitted value is the typed text, so the submit handler splits and parses it.
 
 ```tsx
-const calendar = (
-  <>
-    <CalendarHeader>
-      <CalendarPrevYearGroupButton><Icon><ArrowLeft /></Icon></CalendarPrevYearGroupButton>
-      <CalendarPrevButton><Icon><ChevronLeft /></Icon></CalendarPrevButton>
-      <CalendarPickerButtonGroup>
-        <CalendarMonthPickerButton><CalendarMonthLabel /></CalendarMonthPickerButton>
-        <CalendarYearPickerButton><CalendarYearLabel /></CalendarYearPickerButton>
-      </CalendarPickerButtonGroup>
-      <CalendarNextButton><Icon><ChevronRight /></Icon></CalendarNextButton>
-      <CalendarNextYearGroupButton><Icon><ArrowRight /></Icon></CalendarNextYearGroupButton>
-    </CalendarHeader>
-    <CalendarContent>
-      <CalendarDayPicker>
-        <CalendarWeekLabels>
-          {getWeekDayNames(navigator.language, 'short').map((name) => (
-            <CalendarWeekLabel key={name}>{name}</CalendarWeekLabel>
-          ))}
-        </CalendarWeekLabels>
-        <CalendarDayPickerScroller>
-          <CalendarDayPickerScrollerContent>
-            <CalendarDayPickerScrollerLayout />
-          </CalendarDayPickerScrollerContent>
-        </CalendarDayPickerScroller>
-      </CalendarDayPicker>
-      <CalendarMonthPicker>
-        <CalendarMonthPickerLayout />
-      </CalendarMonthPicker>
-      <CalendarYearPicker>
-        <CalendarYearPickerScroller>
-          <CalendarYearPickerScrollerContent>
-            <CalendarYearPickerScrollerLayout />
-          </CalendarYearPickerScrollerContent>
-        </CalendarYearPickerScroller>
-      </CalendarYearPicker>
-    </CalendarContent>
-  </>
-);
-
-<FormRow label='Reporting period' error='Choose both dates inside the current quarter.'>
-  <DateRangeField format='dd.MM.yyyy' separator='.' rangeSeparator=' – '>
-    <DateRangeFieldInput aria-invalid='true' />
-    <Popover placement='bottom-end'>
-      <PopoverTrigger asChild>
-        <DateRangeFieldTriggerIconButton />
-      </PopoverTrigger>
-      <PopoverContent>
-        <DateRangeFieldCalendar>{calendar}</DateRangeFieldCalendar>
-      </PopoverContent>
-    </Popover>
+<form>
+  <Label htmlFor='quarter'>Reporting period</Label>
+  <DateRangeField format='dd.MM.yyyy' separator='.' rangeSeparator=' - ' min='2026-07-01' max='2026-09-30'>
+    <DateRangeFieldInput
+      id='quarter'
+      name='period'
+      required
+      pattern='\d{2}\.\d{2}\.\d{4} - \d{2}\.\d{2}\.\d{4}'
+      aria-describedby='quarter-hint'
+    />
+    <CalendarPopover />
   </DateRangeField>
-</FormRow>
+  <HelperText id='quarter-hint'>Both dates inside the third quarter of 2026.</HelperText>
+  <Button type='submit'>Export</Button>
+</form>
 ```

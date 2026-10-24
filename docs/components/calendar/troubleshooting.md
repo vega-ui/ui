@@ -27,16 +27,16 @@ Users can still navigate to or interact with dates that should be unavailable.
 
 ### Likely Cause
 
-Custom day rendering did not preserve disabled or excluded behavior.
+A custom day template renders its own element instead of `CalendarDay`, so disabled and excluded behavior is lost.
 
 ### How To Verify
 
-- compare custom cells with the default picker behavior
+- compare the custom template with a plain `<CalendarDay />`
 - test both pointer and keyboard interaction
 
 ### Fix
 
-- preserve disabled and excluded state handling in custom day items
+- render the custom content inside `CalendarDay`, which keeps disabled and excluded state handling
 
 ## Custom Calendar Content Breaks Navigation
 
@@ -46,7 +46,7 @@ Switching between day, month, and year views becomes inconsistent.
 
 ### Likely Cause
 
-Child picker families were customized as if they were unrelated components.
+Views or header controls were rebuilt as if they were unrelated components.
 
 ### How To Verify
 

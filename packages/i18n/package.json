@@ -1,0 +1,58 @@
+{
+  "name": "@vega-ui/i18n",
+  "version": "0.0.0",
+  "description": "Locale and calendar system support for @vega-ui/react",
+  "license": "MIT",
+  "keywords": [
+    "ui-kit",
+    "ui",
+    "i18n",
+    "calendar",
+    "ts",
+    "typescript",
+    "js"
+  ],
+  "author": "VegaUI Team",
+  "bugs": {
+    "url": "https://github.com/vega-ui/ui/issues"
+  },
+  "homepage": "https://github.com/vega-ui/ui#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vega-ui/ui.git",
+    "directory": "packages/i18n"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    }
+  },
+  "files": [
+    "dist/*"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build",
+    "check-types": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest --watch"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5",
+    "vite-plugin-dts": "^4.5.4",
+    "vite-tsconfig-paths": "^6.0.5"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "packageManager": "pnpm@10.0.0"
+}

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CalendarBaseWeekLabel } from './CalendarBaseWeekLabel';
-import { getWeekDayNames } from '@vega-ui/utils';
+import { getWeekDayNames } from '@vega-ui/i18n';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof CalendarBaseWeekLabel> = {

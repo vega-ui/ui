@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DayPickerScroller } from './DayPickerScroller';
 import { DayPickerScrollerContent } from '../DayPickerScrollerContent';
 import { DayPickerScrollerLayout } from '../DayPickerScrollerLayout';
+import { DayPickerCell } from '../DayPickerCell';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof DayPickerScroller> = {
@@ -22,19 +23,22 @@ export const Default: Story = {
   args: {
     children: (
       <DayPickerScrollerContent>
-        <DayPickerScrollerLayout />
+        <DayPickerScrollerLayout>
+          <DayPickerCell />
+        </DayPickerScrollerLayout>
       </DayPickerScrollerContent>
     )
   },
 };
 
-export const WithDefaultYear: Story = {
+export const WithDefaultMonth: Story = {
   args: {
-    defaultYear: 2025,
-    defaultMonth: 1,
+    defaultMonth: '2025-02-01',
     children: (
       <DayPickerScrollerContent>
-        <DayPickerScrollerLayout />
+        <DayPickerScrollerLayout>
+          <DayPickerCell />
+        </DayPickerScrollerLayout>
       </DayPickerScrollerContent>
     )
   },

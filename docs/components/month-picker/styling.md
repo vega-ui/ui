@@ -23,7 +23,7 @@ Visual month arrangement is driven by the composed row and item grid parts plus 
 ## State And Variant Interaction
 
 - Selection, disabled, and active styling come from the underlying picker primitives.
-- Grid shape changes through layout props such as `rows`, `cols`, and `start`, not through dedicated CSS variables.
+- Grid shape changes through the `cols` layout prop, not through dedicated CSS variables.
 
 ## Examples
 
@@ -31,7 +31,9 @@ Visual month arrangement is driven by the composed row and item grid parts plus 
 
 ```tsx
 <MonthPicker>
-  <MonthPickerLayout rows={4} cols={3} start={0} />
+  <MonthPickerLayout cols={3}>
+    <MonthPickerCell />
+  </MonthPickerLayout>
 </MonthPicker>
 ```
 

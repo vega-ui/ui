@@ -2,12 +2,14 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CalendarHeader } from './CalendarHeader';
 import { CalendarPrevButton } from '../CalendarPrevButton';
 import { Icon } from '../../../Icon';
-import { CalendarPickerButtonGroup } from '../CalendarPickerButtonGroup';
-import { CalendarMonthPickerButton } from '../CalendarMonthPickerButton';
-import { CalendarYearPickerButton } from '../CalendarYearPickerButton';
+import { CalendarViewButtonGroup } from '../CalendarViewButtonGroup';
+import { CalendarViewButton } from '../CalendarViewButton';
 import { CalendarNextButton } from '../CalendarNextButton';
 import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
-import { formatMonth, formatYear } from '@vega-ui/utils';
+import { formatCalendarDate, gregorianCalendar } from '@vega-ui/i18n';
+
+const monthName = (date: string) => formatCalendarDate(gregorianCalendar, date, navigator.language, { month: 'long' });
+const yearName = (date: string) => formatCalendarDate(gregorianCalendar, date, navigator.language, { year: 'numeric' });
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof CalendarHeader> = {
@@ -19,14 +21,14 @@ const meta: Meta<typeof CalendarHeader> = {
         <CalendarPrevButton>
           <Icon><ChevronLeft /></Icon>
         </CalendarPrevButton>
-        <CalendarPickerButtonGroup>
-          <CalendarMonthPickerButton>
-            {formatMonth(1)}
-          </CalendarMonthPickerButton>
-          <CalendarYearPickerButton>
-            {formatYear(2026)}
-          </CalendarYearPickerButton>
-        </CalendarPickerButtonGroup>
+        <CalendarViewButtonGroup>
+          <CalendarViewButton view='month'>
+            {monthName('2026-02-01')}
+          </CalendarViewButton>
+          <CalendarViewButton view='year'>
+            {yearName('2026-01-01')}
+          </CalendarViewButton>
+        </CalendarViewButtonGroup>
         <CalendarNextButton>
           <Icon><ChevronRight /></Icon>
         </CalendarNextButton>

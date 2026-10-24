@@ -24,6 +24,8 @@ Optional trigger affordance for opening a calendar overlay.
 
 Optional visual range picker that should usually be mounted inside `Popover`.
 
+Its children are the `Calendar` parts: `CalendarHeader` with `CalendarPrevButton`, `CalendarViewButtonGroup` (`CalendarViewButton view='month'` and `view='year'`), and `CalendarNextButton`, then `CalendarContent` with `CalendarDays`, `CalendarMonths`, and `CalendarYears`. The calendar takes `locale` and `calendar` from `DateRangeField`.
+
 ## Composition Order
 
 1. `DateRangeField`
@@ -31,6 +33,7 @@ Optional visual range picker that should usually be mounted inside `Popover`.
 3. `Popover`
 4. `DateRangeFieldTriggerIconButton`
 5. `DateRangeFieldCalendar`
+6. `CalendarHeader` and `CalendarContent` with the calendar views
 
 ## Valid Composition Patterns
 
@@ -39,43 +42,33 @@ Optional visual range picker that should usually be mounted inside `Popover`.
   <DateRangeFieldInput />
   <Popover placement='bottom-end'>
     <PopoverTrigger asChild>
-      <DateRangeFieldTriggerIconButton />
+      <DateRangeFieldTriggerIconButton aria-label='Choose dates' />
     </PopoverTrigger>
     <PopoverContent>
       <DateRangeFieldCalendar>
         <CalendarHeader>
-          <CalendarPrevYearGroupButton><Icon><ArrowLeft /></Icon></CalendarPrevYearGroupButton>
-          <CalendarPrevButton><Icon><ChevronLeft /></Icon></CalendarPrevButton>
-          <CalendarPickerButtonGroup>
-            <CalendarMonthPickerButton><CalendarMonthLabel /></CalendarMonthPickerButton>
-            <CalendarYearPickerButton><CalendarYearLabel /></CalendarYearPickerButton>
-          </CalendarPickerButtonGroup>
-          <CalendarNextButton><Icon><ChevronRight /></Icon></CalendarNextButton>
-          <CalendarNextYearGroupButton><Icon><ArrowRight /></Icon></CalendarNextYearGroupButton>
+          <CalendarPrevButton aria-label='Previous month' />
+          <CalendarViewButtonGroup>
+            <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
+            <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
+          </CalendarViewButtonGroup>
+          <CalendarNextButton aria-label='Next month' />
         </CalendarHeader>
         <CalendarContent>
-          <CalendarDayPicker>
-            <CalendarWeekLabels>
-              {getWeekDayNames(navigator.language, 'short').map((name) => (
-                <CalendarWeekLabel key={name}>{name}</CalendarWeekLabel>
-              ))}
-            </CalendarWeekLabels>
-            <CalendarDayPickerScroller>
-              <CalendarDayPickerScrollerContent>
-                <CalendarDayPickerScrollerLayout />
-              </CalendarDayPickerScrollerContent>
-            </CalendarDayPickerScroller>
-          </CalendarDayPicker>
-          <CalendarMonthPicker>
-            <CalendarMonthPickerLayout />
-          </CalendarMonthPicker>
-          <CalendarYearPicker>
-            <CalendarYearPickerScroller>
-              <CalendarYearPickerScrollerContent>
-                <CalendarYearPickerScrollerLayout />
-              </CalendarYearPickerScrollerContent>
-            </CalendarYearPickerScroller>
-          </CalendarYearPicker>
+          <CalendarDays>
+            <CalendarWeekdays>
+              <CalendarWeekday />
+            </CalendarWeekdays>
+            <CalendarWeeks>
+              <CalendarDay />
+            </CalendarWeeks>
+          </CalendarDays>
+          <CalendarMonths>
+            <CalendarMonth />
+          </CalendarMonths>
+          <CalendarYears>
+            <CalendarYear />
+          </CalendarYears>
         </CalendarContent>
       </DateRangeFieldCalendar>
     </PopoverContent>

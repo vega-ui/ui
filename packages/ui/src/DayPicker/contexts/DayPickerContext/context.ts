@@ -1,13 +1,16 @@
 'use client';
 
 import { createContext } from '@vega-ui/react-context';
+import { CalendarSystem, getDefaultLocale, gregorianCalendar } from '@vega-ui/i18n';
 
 export interface DayPickerContextData {
-  year?: number
-  month?: number
+  month: string
+  calendar: CalendarSystem
+  locale: string
 }
 
-export const [DayPickerProvider, useDayPickerContext] = createContext<DayPickerContextData>('YearPickerContext', {
-  year: undefined,
-  month: undefined,
+export const [DayPickerProvider, useDayPickerContext] = createContext<DayPickerContextData>('DayPickerContext', {
+  month: '',
+  calendar: gregorianCalendar,
+  locale: getDefaultLocale(),
 })

@@ -13,7 +13,7 @@ export default mergeConfig(
       browser: {
         enabled: true,
         headless: true,
-        provider: playwright(),
+        provider: playwright({ contextOptions: { locale: 'en-US', timezoneId: 'UTC' } }),
         screenshotFailures: false,
         instances: [
           { browser: 'chromium' },

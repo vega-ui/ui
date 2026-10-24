@@ -1,1 +1,0 @@
-export const isEqualDates = (a: Date | null, b: Date | null) => a?.getTime?.() === b?.getTime?.()

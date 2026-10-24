@@ -16,6 +16,10 @@ Required. Owns the month selection state model through `DataGridPicker`.
 
 Optional default month-grid renderer.
 
+### `MonthPickerCell`
+
+Cell template. Children of `MonthPickerLayout` are required and rendered once per month inside a cell context read by `useMonthPickerCellContext()`; usually `<MonthPickerCell />`. Put custom content inside `MonthPickerCell` to keep selection, focus, and disabled states.
+
 ### `MonthPickerRowGroup`, `MonthPickerRow`, `MonthPickerItem`
 
 Optional low-level month-grid composition parts.
@@ -29,7 +33,9 @@ Optional low-level month-grid composition parts.
 
 ```tsx
 <MonthPicker>
-  <MonthPickerLayout rows={4} cols={3} start={0} />
+  <MonthPickerLayout cols={3}>
+    <MonthPickerCell />
+  </MonthPickerLayout>
 </MonthPicker>
 ```
 

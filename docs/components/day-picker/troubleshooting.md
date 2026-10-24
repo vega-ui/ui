@@ -8,15 +8,15 @@ The UI shows a month grid, but it is not the period users expected.
 
 ### Likely Cause
 
-Visible `year` / `month` or scroller offset logic is not aligned.
+The visible `month`, the `calendar` system, or the scroller's `defaultMonth` are not aligned.
 
 ### How To Verify
 
-- inspect the effective `year`, `month`, and current scroller index
+- inspect the effective `month`, `calendar`, and the value passed to `onChangePeriod`
 
 ### Fix
 
-Use one clear period source of truth and keep any scroller mapping consistent with it.
+Use one `YYYY-MM-DD` month as the source of truth and pass the same `calendar` to every part that renders it.
 
 ## Custom Day Rendering Loses Selection Or Focus Clarity
 
@@ -48,8 +48,8 @@ Scroller period mapping and rendered month content are not synchronized tightly 
 
 ### How To Verify
 
-- log the current scroller index and resolved year/month while paging
+- log the month passed to `onChangePeriod` while paging
 
 ### Fix
 
-Keep one authoritative date/index mapping and derive both labels and content from it.
+Derive labels from the month reported by `onChangePeriod` instead of computing it from the scroller index.

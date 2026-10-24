@@ -10,6 +10,7 @@
 
 ## Focus Behavior
 
+- Without `defaultActive`, the tab stop is today when it is in the visible month, otherwise the first selected day in it, otherwise its first day; when you change `month` later, pass `active` / `onChangeActive` to keep the tab stop in view
 - Focus and active cell behavior should remain visible across selected, excluded, and disabled dates.
 
 ## Screen Reader Semantics

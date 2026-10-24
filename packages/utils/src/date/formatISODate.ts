@@ -1,4 +1,4 @@
-import { padDatePart } from './padDatePart'
+import { padDatePart } from '@vega-ui/i18n'
 
 /**
  * Formats a date as a `YYYY-MM-DD` string — the value format of a native

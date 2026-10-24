@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DayPickerScrollerLayout } from './DayPickerScrollerLayout';
+import { DayPickerCell } from '../DayPickerCell';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof DayPickerScrollerLayout> = {
@@ -12,5 +13,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-  args: {},
+  args: {
+    children: <DayPickerCell />,
+  },
 };

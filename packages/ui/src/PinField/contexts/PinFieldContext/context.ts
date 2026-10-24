@@ -17,7 +17,6 @@ export interface PinFieldContextState {
   value: string
   setActive(position: number): void
   setSelectedAll(all: boolean): void
-  setValue(value: string): void
   syncActive(index?: number, expand?: boolean): void
 }
 
@@ -31,6 +30,5 @@ export const [PinFieldProvider, usePinFieldContext] = createContext<PinFieldCont
   value: '',
   setActive() {},
   setSelectedAll() {},
-  setValue() {},
   syncActive() {},
 })

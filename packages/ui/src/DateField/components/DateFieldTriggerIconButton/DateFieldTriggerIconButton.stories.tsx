@@ -2,9 +2,10 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { DateFieldTriggerIconButton } from './DateFieldTriggerIconButton';
 import { DateField } from '../../DateField';
-import { getDateFormat, getDateSeparator } from '@vega-ui/utils';
+
 import { CalendarDays } from '@vega-ui/icons';
 import { Icon } from '../../../Icon';
+import { getDateFormat, getDateSeparator, gregorianCalendar } from '@vega-ui/i18n';
 
 const meta = {
   title: 'Form/Fields/DateField/DateFieldTriggerIconButton',
@@ -14,7 +15,7 @@ const meta = {
   args: {},
   decorators(Story) {
     return (
-      <DateField format={getDateFormat(navigator.language)} separator={getDateSeparator(navigator.language)}>
+      <DateField format={getDateFormat(gregorianCalendar, navigator.language)} separator={getDateSeparator(gregorianCalendar, navigator.language)}>
         <Story />
       </DateField>
     )

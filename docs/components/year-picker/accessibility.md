@@ -10,6 +10,7 @@
 
 ## Focus Behavior
 
+- Without `defaultActive`, the tab stop is the visible `year`, which is always on the page in view
 - Focus should remain visible as the year grid pages across larger ranges.
 
 ## Screen Reader Semantics

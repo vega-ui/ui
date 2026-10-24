@@ -1,57 +1,52 @@
 'use client';
 
 import { RefObject } from 'react';
-import { CalendarDatesDisabled, CalendarPicker, CalendarSelection } from '../../types';
+import { CalendarSystem, getDefaultLocale, gregorianCalendar } from '@vega-ui/i18n';
+import { CalendarDatesDisabled, CalendarSelection, CalendarView } from '../../types';
 import { DataGridApiRef } from '../../../DataGrid';
 import { IndexedSnapScrollerApiRef } from '../../../IndexedSnapScroller';
 import { createContext } from '@vega-ui/react-context';
 
 export interface CalendarContextState {
-  to?: Date
-  from?: Date
-  year: number
-  month: number
-  referenceDate: Date
-  activeDay: number
-  picker: CalendarPicker
+  to?: string
+  from?: string
+  month: string
+  calendar: CalendarSystem
+  locale: string
+  activeDay: string
+  view: CalendarView
   selection: CalendarSelection
-  value?: number | null | number[]
-  defaultValue?: number | null | number[]
+  value?: string | null | string[]
+  defaultValue?: string | null | string[]
   disabled?: boolean
   disabledDates?: CalendarDatesDisabled
   scrollerApiRef: RefObject<IndexedSnapScrollerApiRef | null>
   scrollerYearApiRef: RefObject<IndexedSnapScrollerApiRef | null>
-  yearPickerApiRef: RefObject<DataGridApiRef<number> | null>
-  dayPickerApiRef: RefObject<DataGridApiRef<number> | null>
-  monthPickerApiRef: RefObject<DataGridApiRef<number> | null>
-  changePicker(picker: CalendarPicker): void
-  changeActiveDay(day: number): void
-  closeYearPicker?(): void
-  closeMonthPicker?(): void
-  changePeriod?(year: number, month: number): void
-  changeYear?(year: number): void
-  changeMonth?(month: number): void
-  onSelectDay?(day: number | number[]): void
-  toggleMonthPicker?(): void
-  toggleYearPicker?(): void
-  prevPeriod?(): void
-  nextPeriod?(): void
-  nextYearGroup?(): void
-  prevYearGroup?(): void
+  yearPickerApiRef: RefObject<DataGridApiRef<string> | null>
+  dayPickerApiRef: RefObject<DataGridApiRef<string> | null>
+  monthPickerApiRef: RefObject<DataGridApiRef<string> | null>
+  changeActiveDay(day: string): void
+  closeView?(): void
+  changePeriod?(month: string): void
+  changeYear?(year: string): void
+  changeMonth?(month: string): void
+  onSelectDay?(day: string | string[]): void
+  toggleView?(view: Exclude<CalendarView, 'day'>): void
+  prev?(): void
+  next?(): void
 }
 
 export const [CalendarProvider, useCalendarContext] = createContext<CalendarContextState>('CalendarContext', {
-  year: new Date().getFullYear(),
-  month: new Date().getMonth(),
-  referenceDate: new Date(),
-  activeDay: new Date().getDate(),
+  month: '',
+  calendar: gregorianCalendar,
+  locale: getDefaultLocale(),
+  activeDay: '',
   dayPickerApiRef: { current: null },
   monthPickerApiRef: { current: null },
   yearPickerApiRef: { current: null },
   scrollerApiRef: { current: null },
   scrollerYearApiRef: { current: null },
-  changePicker() {},
   changeActiveDay() {},
   selection: 'single',
-  picker: 'day',
+  view: 'day',
 })

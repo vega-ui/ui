@@ -2,7 +2,7 @@
 
 import { createContext } from '@vega-ui/react-context';
 import { NumberFieldSize } from '../../types';
-import { InputEvent, Ref } from 'react';
+import { Ref } from 'react';
 
 export interface NumberFieldContextState {
   size?: NumberFieldSize
@@ -15,7 +15,6 @@ export interface NumberFieldContextState {
   inputRef?: Ref<HTMLInputElement>
   decrement(): void
   increment(): void
-  onInput?(e: InputEvent<HTMLInputElement>): void
 }
 
 export const [NumberFieldProvider, useNumberFieldContext] = createContext<NumberFieldContextState>('PhoneFieldContext', {

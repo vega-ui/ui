@@ -36,7 +36,9 @@ Day-cell appearance comes from the underlying picker item primitives and calenda
 <DayPicker>
   <DayPickerScroller>
     <DayPickerScrollerContent>
-      <DayPickerScrollerLayout />
+      <DayPickerScrollerLayout>
+        <DayPickerCell />
+      </DayPickerScrollerLayout>
     </DayPickerScrollerContent>
   </DayPickerScroller>
 </DayPicker>

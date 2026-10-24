@@ -1,12 +1,17 @@
-import { FC } from 'react';
-import { createYearPickerGrid, getIndexByYear } from '../../helpers';
-import { YearPickerItem } from '../YearPickerItem';
+import { FC, ReactNode, useMemo } from 'react';
+import { createCalendarDateFormatter, getCalendarYearsDistance } from '@vega-ui/i18n';
+import { createYearPickerGrid } from '../../helpers';
 import { YearPickerRowGroup, YearPickerRowGroupProps } from '../YearPickerRowGroup';
 import { YearPickerRow } from '../YearPickerRow';
-import { formatYear } from '@vega-ui/utils';
-import { useYearPickerContext } from '../../contexts';
+import { YearPickerCellProvider, useYearPickerContext } from '../../contexts';
 
 export interface YearPickerLayoutProps extends YearPickerRowGroupProps {
+  /**
+   * Template of a year cell, rendered once for every year of the page.
+   * Read the year with `useYearPickerCellContext()`; usually `<YearPickerCell />`.
+   */
+  children: ReactNode;
+  
   /**
    * Number of grid rows to render.
    * Controls vertical density of the year matrix.
@@ -24,72 +29,65 @@ export interface YearPickerLayoutProps extends YearPickerRowGroupProps {
   cols?: number;
   
   /**
-   * Starting year for the grid’s base calculation.
-   * If omitted, the helper falls back to its internal defaults.
-   *
-   * @default 1970
+   * First year of page `0`, given as a `YYYY-MM-DD` string of any day in it.
+   * Pages are aligned to it. Defaults to the visible year of the YearPicker.
    */
-  start?: number;
+  start?: string;
   
   /**
-   * Logical page offset applied during grid generation.
-   * Used together with scroller systems (e.g., IndexedSnapScroller)
-   * to shift the displayed decade or page of years.
-   *
-   * @default 0
+   * Page index relative to `start`.
+   * Defaults to the page containing the visible year of the YearPicker.
    */
   offset?: number;
   
   /**
-   * Locales passed to Intl.DateTimeFormat when rendering year labels.
-   * Allows adapting the year format to the user’s locale or a custom
-   * locale list (e.g., `"en"`, `"ru-RU"`, `["fr", "en-GB"]`).
-   *
-   * @default browser locale
+   * Locale used for formatting years.
+   * Defaults to the locale of the picker.
    */
-  locale?: Intl.LocalesArgument;
+  locale?: string;
   
   /**
-   * Formatting style for the displayed year.
-   * Mirrors the `year` option of Intl.DateTimeFormat — e.g. `"numeric"`
-   * or `"2-digit"`. Useful for compact or locale-specific year output.
-   *
+   * Year display format (from `Intl.DateTimeFormatOptions`).
    * @default "numeric"
    */
   format?: Intl.DateTimeFormatOptions['year'];
 }
 
 /**
- * YearPickerLayout is a ready-to-use grid layout for rendering a block
- * of years inside the YearPicker. It builds a structured matrix using
- * `createYearPickerGrid` and renders rows and cells through the semantic
- * YearPickerRow/YearPickerItem primitives.
- *
- * The component is fully layout-driven: it does not manage selection or
- * scrolling logic. It simply generates a year grid based on the provided
- * dimensions (rows × cols), starting year, and offset, making it suitable
- * both for static pickers and for paged scroller setups.
+ * YearPickerLayout renders a page of consecutive years of the YearPicker's
+ * calendar system, with locale-aware year labels.
  */
 export const YearPickerLayout: FC<YearPickerLayoutProps> = ({
-  start = 2000,
+  start: _start,
   rows = 4,
   cols = 3,
-  offset,
-  locale = navigator.language,
+  offset: _offset,
+  locale: _locale,
   format = 'numeric',
+  children,
   ...props
 }) => {
-  const { year } = useYearPickerContext()
-  const offsetByYear = getIndexByYear(start, year, rows * cols)
+  const { year, calendar, locale: contextLocale } = useYearPickerContext()
+  const locale = _locale ?? contextLocale
+  const formatYear = useMemo(() => createCalendarDateFormatter(calendar, locale, { year: format }), [locale, format, calendar])
+  
+  const start = _start ?? year
+  const offset = _offset ?? Math.floor(getCalendarYearsDistance(calendar, start, year) / (rows * cols))
   
   return (
     <YearPickerRowGroup {...props}>
-      {createYearPickerGrid({ start, rows, cols, offset: offset ?? offsetByYear }).map(({ row, data }) => (
+      {createYearPickerGrid({ start, rows, cols, offset, calendar }).map(({ row, data }) => (
         <YearPickerRow row={row} key={row}>
           {data.map(({ col, year }) => (
-            <YearPickerItem col={col} value={year} key={year}>
-              {formatYear(year, locale, format)}
-            </YearPickerItem>
+            <YearPickerCellProvider
+              key={year}
+              col={col}
+              date={year}
+              fields={calendar.toFields(year)}
+              label={formatYear(year)}
+            >
+              {children}
+            </YearPickerCellProvider>
           ))}
         </YearPickerRow>
       ))}

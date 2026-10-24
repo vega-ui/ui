@@ -1,75 +1,65 @@
-import { FC, PropsWithChildren, useRef } from 'react';
+import { FC, PropsWithChildren, useRef, useState } from 'react';
+import { addCalendarYears, getCalendarYearStart, getCalendarYearsDistance } from '@vega-ui/i18n';
 import { IndexedSnapScrollerApiRef } from '../../../IndexedSnapScroller';
 import { useYearPickerContext, YearPickerScrollerProvider } from '../../contexts';
-import { getCurrentDate, mergeRefs } from '@vega-ui/utils';
-import { getIndexByYear as defaultGetIndexByYear } from '../../helpers';
+import { formatISODate, getCurrentDate, mergeRefs } from '@vega-ui/utils';
 import { DataGridPickerScroller, type DataGridPickerScrollerProps } from '../../../DataGridPicker';
 
 export interface YearPickerScrollerProps extends DataGridPickerScrollerProps {
   /**
-   * A reference (anchor) year used as the logical origin for index calculation.
-   *
-   * All page indices are resolved relative to this year. Changing the
-   * `referenceYear` effectively shifts the entire year grid timeline
-   * without altering grouping or layout logic.
-   *
-   * @default 1970
+   * Called when a page of years is scrolled into view, with the first day of
+   * the first year of that page as a `YYYY-MM-DD` string in the YearPicker's
+   * calendar system.
    */
-  referenceYear?: number
-  
+  onChangePeriod?(year: string): void
+
   /**
-   * The initial year used to determine the default scroller page
-   * when the component is uncontrolled.
-   *
-   * If no explicit `year` is provided via YearPicker context,
-   * the scroller will resolve this year to a page index using
-   * `getIndexByYear` and snap to the corresponding group on mount.
-   *
-   * Falls back to the current calendar year when omitted.
+   * Initial year for uncontrolled usage outside a YearPicker,
+   * given as a `YYYY-MM-DD` string of any day in it.
+   * Defaults to the current year.
    */
-  defaultYear?: number
-  
+  defaultYear?: string
+
   /**
-   * Maps a calendar year to the corresponding scroller page index.
-   * Use this to support custom grouping logic (variable page sizes,
-   * non-contiguous groups, etc.).
+   * Number of years on a page; must match the page size of the layout.
+   * @default 12
    */
-  getIndexByYear?(year: number, referenceYear: number): number
+  period?: number
 }
 
 /**
  * YearPickerScroller is a semantic wrapper around IndexedSnapScroller
  * that provides paged, scroll-snap navigation for year grids.
- * It enables smooth decade-style scrolling, preserves the active page,
- * and integrates seamlessly with YearPicker layouts. The component
- * accepts all SnapScroller props and adds no custom logic of its own.
+ * Pages hold `period` consecutive years counted in the YearPicker's
+ * calendar system from the year the scroller started on.
  */
 export const YearPickerScroller: FC<PropsWithChildren<YearPickerScrollerProps>> = ({
   apiRef,
-  referenceYear = 1970,
   defaultYear,
-  getIndexByYear,
+  period = 12,
+  onChangePeriod,
+  onScrollSnapChanging: _onScrollSnapChanging,
   ...props
 }) => {
-  const { year } = useYearPickerContext()
+  const { year, calendar } = useYearPickerContext()
   
   const scrollerApiRef = useRef<IndexedSnapScrollerApiRef>(null)
-  const currentYear = getCurrentDate().getFullYear()
+  const [referenceYear] = useState(() => getCalendarYearStart(calendar, year || defaultYear || formatISODate(getCurrentDate())))
   
-  const getIndex = (year: number) => {
-    if (getIndexByYear !== undefined) return getIndexByYear(year, referenceYear)
-    return defaultGetIndexByYear(year, referenceYear)
+  const index = year ? Math.floor(getCalendarYearsDistance(calendar, referenceYear, year) / period) : undefined
+  
+  const onSnapChanging = (element: HTMLElement, index: number) => {
+    onChangePeriod?.(addCalendarYears(calendar, referenceYear, index * period))
+    _onScrollSnapChanging?.(element, index)
   }
-  
-  const index = year !== undefined ? getIndex(year) : undefined
-  const defaultIndex = index === undefined ? getIndex(defaultYear ?? currentYear) : undefined
   
   return (
     <YearPickerScrollerProvider referenceYear={referenceYear}>
       <DataGridPickerScroller
         index={index}
-        defaultIndex={defaultIndex}
+        defaultIndex={index ?? 0}
         apiRef={mergeRefs([apiRef, scrollerApiRef])}
+        onScrollSnapChanging={onSnapChanging}
         {...props}
       />
     </YearPickerScrollerProvider>

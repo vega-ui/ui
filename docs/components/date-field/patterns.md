@@ -1,5 +1,7 @@
 # DateField Patterns
 
+`CalendarPopover` in the snippets below is the local component from [Basic](./examples.md#basic): the trigger and `DateFieldCalendar` with the calendar parts inside a `Popover`.
+
 ## Date Field With Popover Calendar
 
 When to use:
@@ -9,8 +11,8 @@ When to use:
 
 Composition notes:
 
-- Keep `DateFieldInput` as the primary surface.
-- Mount `DateFieldCalendar` inside `PopoverContent` and use `DateFieldTriggerIconButton` as the trigger.
+- Keep `DateFieldInput` as the primary surface and label it.
+- Mount `DateFieldCalendar` inside `PopoverContent` and use `DateFieldTriggerIconButton` with an `aria-label` as the trigger.
 
 Trade-offs:
 
@@ -18,56 +20,45 @@ Trade-offs:
 - Requires overlay testing inside dialogs, drawers, and scroll containers.
 
 ```tsx
-const calendar = (
-  <>
-    <CalendarHeader>
-      <CalendarPrevYearGroupButton><Icon><ArrowLeft /></Icon></CalendarPrevYearGroupButton>
-      <CalendarPrevButton><Icon><ChevronLeft /></Icon></CalendarPrevButton>
-      <CalendarPickerButtonGroup>
-        <CalendarMonthPickerButton><CalendarMonthLabel /></CalendarMonthPickerButton>
-        <CalendarYearPickerButton><CalendarYearLabel /></CalendarYearPickerButton>
-      </CalendarPickerButtonGroup>
-      <CalendarNextButton><Icon><ChevronRight /></Icon></CalendarNextButton>
-      <CalendarNextYearGroupButton><Icon><ArrowRight /></Icon></CalendarNextYearGroupButton>
-    </CalendarHeader>
-    <CalendarContent>
-      <CalendarDayPicker>
-        <CalendarWeekLabels>
-          {getWeekDayNames(navigator.language, 'short').map((name) => (
-            <CalendarWeekLabel key={name}>{name}</CalendarWeekLabel>
-          ))}
-        </CalendarWeekLabels>
-        <CalendarDayPickerScroller>
-          <CalendarDayPickerScrollerContent>
-            <CalendarDayPickerScrollerLayout />
-          </CalendarDayPickerScrollerContent>
-        </CalendarDayPickerScroller>
-      </CalendarDayPicker>
-      <CalendarMonthPicker>
-        <CalendarMonthPickerLayout />
-      </CalendarMonthPicker>
-      <CalendarYearPicker>
-        <CalendarYearPickerScroller>
-          <CalendarYearPickerScrollerContent>
-            <CalendarYearPickerScrollerLayout />
-          </CalendarYearPickerScrollerContent>
-        </CalendarYearPickerScroller>
-      </CalendarYearPicker>
-    </CalendarContent>
-  </>
-);
-
-<DateField format='dd/MM/yyyy' separator='/'>
-  <DateFieldInput />
-  <Popover placement='bottom-end'>
-    <PopoverTrigger asChild>
-      <DateFieldTriggerIconButton />
-    </PopoverTrigger>
-    <PopoverContent>
-      <DateFieldCalendar>{calendar}</DateFieldCalendar>
-    </PopoverContent>
-  </Popover>
-</DateField>
+<>
+  <Label htmlFor='start-date'>Start date</Label>
+  <DateField format='dd.MM.yyyy' separator='.'>
+    <DateFieldInput id='start-date' />
+    <Popover placement='bottom-end'>
+      <PopoverTrigger asChild>
+        <DateFieldTriggerIconButton aria-label='Choose date' />
+      </PopoverTrigger>
+      <PopoverContent>
+        <DateFieldCalendar>
+          <CalendarHeader>
+            <CalendarPrevButton aria-label='Previous month' />
+            <CalendarViewButtonGroup>
+              <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
+              <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
+            </CalendarViewButtonGroup>
+            <CalendarNextButton aria-label='Next month' />
+          </CalendarHeader>
+          <CalendarContent>
+            <CalendarDays>
+              <CalendarWeekdays>
+                <CalendarWeekday />
+              </CalendarWeekdays>
+              <CalendarWeeks>
+                <CalendarDay />
+              </CalendarWeeks>
+            </CalendarDays>
+            <CalendarMonths>
+              <CalendarMonth />
+            </CalendarMonths>
+            <CalendarYears>
+              <CalendarYear />
+            </CalendarYears>
+          </CalendarContent>
+        </DateFieldCalendar>
+      </PopoverContent>
+    </Popover>
+  </DateField>
+</>
 ```
 
 ## Date Field In Validation-Heavy Forms
@@ -79,67 +70,31 @@ When to use:
 
 Composition notes:
 
-- Keep error and helper text at the form-row level.
-- Treat `min`, `max`, and `disabledDates` as shared validation rules.
+- Use native `required` and `pattern` on `DateFieldInput` for presence and completeness; `min` and `max` are already enforced while typing.
+- `disabledDates` is enforced only in the calendar, so repeat that rule in submit validation.
+- Show the error with `error` on the root and `HelperText error`, linked through `aria-describedby`.
 
 Trade-offs:
 
-- More explicit validation.
-- Requires disciplined copy for format and invalid-state guidance.
+- Native constraint validation with no extra library.
+- The submitted value is the typed text, so the server or submit handler parses it.
 
 ```tsx
-const calendar = (
-  <>
-    <CalendarHeader>
-      <CalendarPrevYearGroupButton><Icon><ArrowLeft /></Icon></CalendarPrevYearGroupButton>
-      <CalendarPrevButton><Icon><ChevronLeft /></Icon></CalendarPrevButton>
-      <CalendarPickerButtonGroup>
-        <CalendarMonthPickerButton><CalendarMonthLabel /></CalendarMonthPickerButton>
-        <CalendarYearPickerButton><CalendarYearLabel /></CalendarYearPickerButton>
-      </CalendarPickerButtonGroup>
-      <CalendarNextButton><Icon><ChevronRight /></Icon></CalendarNextButton>
-      <CalendarNextYearGroupButton><Icon><ArrowRight /></Icon></CalendarNextYearGroupButton>
-    </CalendarHeader>
-    <CalendarContent>
-      <CalendarDayPicker>
-        <CalendarWeekLabels>
-          {getWeekDayNames(navigator.language, 'short').map((name) => (
-            <CalendarWeekLabel key={name}>{name}</CalendarWeekLabel>
-          ))}
-        </CalendarWeekLabels>
-        <CalendarDayPickerScroller>
-          <CalendarDayPickerScrollerContent>
-            <CalendarDayPickerScrollerLayout />
-          </CalendarDayPickerScrollerContent>
-        </CalendarDayPickerScroller>
-      </CalendarDayPicker>
-      <CalendarMonthPicker>
-        <CalendarMonthPickerLayout />
-      </CalendarMonthPicker>
-      <CalendarYearPicker>
-        <CalendarYearPickerScroller>
-          <CalendarYearPickerScrollerContent>
-            <CalendarYearPickerScrollerLayout />
-          </CalendarYearPickerScrollerContent>
-        </CalendarYearPickerScroller>
-      </CalendarYearPicker>
-    </CalendarContent>
-  </>
-);
-
-<FormRow label='Contract start' error='Enter a valid future date.'>
-  <DateField format='dd.MM.yyyy' separator='.' min={formatISODate(new Date())}>
-    <DateFieldInput aria-invalid='true' />
-    <Popover placement='bottom-end'>
-      <PopoverTrigger asChild>
-        <DateFieldTriggerIconButton />
-      </PopoverTrigger>
-      <PopoverContent>
-        <DateFieldCalendar>{calendar}</DateFieldCalendar>
-      </PopoverContent>
-    </Popover>
+<form>
+  <Label htmlFor='contract-start'>Contract start</Label>
+  <DateField format='dd.MM.yyyy' separator='.' min='2026-01-01'>
+    <DateFieldInput
+      id='contract-start'
+      name='contractStart'
+      required
+      pattern='\d{2}\.\d{2}\.\d{4}'
+      aria-describedby='contract-start-hint'
+    />
+    <CalendarPopover />
   </DateField>
-</FormRow>
+  <HelperText id='contract-start-hint'>dd.mm.yyyy, from 1 January 2026.</HelperText>
+  <Button type='submit'>Continue</Button>
+</form>
 ```
 
 ## Date Field Inside Modal Workflows
@@ -160,65 +115,46 @@ Trade-offs:
 - Increases overlay coordination complexity.
 
 ```tsx
-const calendar = (
-  <>
-    <CalendarHeader>
-      <CalendarPrevYearGroupButton><Icon><ArrowLeft /></Icon></CalendarPrevYearGroupButton>
-      <CalendarPrevButton><Icon><ChevronLeft /></Icon></CalendarPrevButton>
-      <CalendarPickerButtonGroup>
-        <CalendarMonthPickerButton><CalendarMonthLabel /></CalendarMonthPickerButton>
-        <CalendarYearPickerButton><CalendarYearLabel /></CalendarYearPickerButton>
-      </CalendarPickerButtonGroup>
-      <CalendarNextButton><Icon><ChevronRight /></Icon></CalendarNextButton>
-      <CalendarNextYearGroupButton><Icon><ArrowRight /></Icon></CalendarNextYearGroupButton>
-    </CalendarHeader>
-    <CalendarContent>
-      <CalendarDayPicker>
-        <CalendarWeekLabels>
-          {getWeekDayNames(navigator.language, 'short').map((name) => (
-            <CalendarWeekLabel key={name}>{name}</CalendarWeekLabel>
-          ))}
-        </CalendarWeekLabels>
-        <CalendarDayPickerScroller>
-          <CalendarDayPickerScrollerContent>
-            <CalendarDayPickerScrollerLayout />
-          </CalendarDayPickerScrollerContent>
-        </CalendarDayPickerScroller>
-      </CalendarDayPicker>
-      <CalendarMonthPicker>
-        <CalendarMonthPickerLayout />
-      </CalendarMonthPicker>
-      <CalendarYearPicker>
-        <CalendarYearPickerScroller>
-          <CalendarYearPickerScrollerContent>
-            <CalendarYearPickerScrollerLayout />
-          </CalendarYearPickerScrollerContent>
-        </CalendarYearPickerScroller>
-      </CalendarYearPicker>
-    </CalendarContent>
-  </>
-);
-
-<Dialog>
-  <DialogTrigger asChild>
-    <Button>Schedule review</Button>
-  </DialogTrigger>
-  <DialogPortal>
-    <DialogBackdrop>
-      <DialogContent>
-        <DateField format='dd/MM/yyyy' separator='/'>
-          <DateFieldInput />
-          <Popover placement='bottom-end'>
-            <PopoverTrigger asChild>
-              <DateFieldTriggerIconButton />
-            </PopoverTrigger>
-            <PopoverContent>
-              <DateFieldCalendar>{calendar}</DateFieldCalendar>
-            </PopoverContent>
-          </Popover>
+<Drawer>
+  <DrawerTrigger asChild>
+    <Button>Reschedule</Button>
+  </DrawerTrigger>
+  <DrawerPortal>
+    <DrawerBackdrop>
+      <DrawerContent>
+        <DrawerTitle>Reschedule</DrawerTitle>
+        <Label htmlFor='new-date'>New date</Label>
+        <DateField format='dd.MM.yyyy' separator='.'>
+          <DateFieldInput id='new-date' />
+          <CalendarPopover />
         </DateField>
-      </DialogContent>
-    </DialogBackdrop>
-  </DialogPortal>
-</Dialog>
+      </DrawerContent>
+    </DrawerBackdrop>
+  </DrawerPortal>
+</Drawer>
+```
+
+## Date Field In A Non-Gregorian Calendar
+
+When to use:
+
+- Users type and read dates in a Persian, Hebrew, Japanese, Buddhist, Islamic, or other calendar.
+
+Composition notes:
+
+- Create the calendar once with `createCalendarSystem`, outside the component (see [Dates And Calendar Systems](../../i18n.md#calendar-system-adapter)), and pass it to the `calendar` prop of the root, together with `locale`.
+- Typing is validated in that calendar, for example day 31 of Persian month 6 or Hebrew month 13; `min` and `max` stay ISO `YYYY-MM-DD` strings.
+
+Trade-offs:
+
+- Native month lengths and leap months without changing the stored value.
+- Month lengths and eras come from the `Intl` data of the runtime.
+
+```tsx
+const persianCalendar = createCalendarSystem('persian');
+
+<DateField format='yyyy/MM/dd' separator='/' min='2026-03-21' locale='fa-IR' calendar={persianCalendar}>
+  <DateFieldInput aria-label='تاریخ' />
+  <CalendarPopover />
+</DateField>
 ```

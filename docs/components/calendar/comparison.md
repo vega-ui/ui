@@ -31,7 +31,7 @@ Use `DateRangeField` when:
 
 Use `Calendar` when:
 
-- you need header controls and picker switching
+- you need header controls and view switching
 - the product should not manage date-view coordination itself
 
 Use `DayPicker` when:
@@ -42,20 +42,20 @@ Use `DayPicker` when:
 
 Use `Calendar` when:
 
-- the user should move between picker modes in one coordinated control
+- the user should move between day, month, and year views in one coordinated control
 
 Use the lower-level picker components when:
 
-- the UX needs only one picker family
+- the UX needs only one of the day, month, or year grids
 
 ## Choose This Component When
 
 - the date should be chosen visually
 - range or multi-date selection matters
-- the full picker family should stay coordinated
+- the day, month, and year views should stay coordinated
 
 ## Do Not Choose This Component When
 
 - a plain field is enough
-- only one picker family is needed
+- only one of the day, month, or year grids is needed
 - the UI cannot afford the visual size of a calendar surface

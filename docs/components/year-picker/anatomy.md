@@ -16,6 +16,10 @@ Required. Owns year selection behavior and visible year context.
 
 Optional default year-grid renderer.
 
+### `YearPickerCell`
+
+Cell template. Children of `YearPickerLayout` and `YearPickerScrollerLayout` are required and rendered once per year inside a cell context read by `useYearPickerCellContext()`; usually `<YearPickerCell />`. Put custom content inside `YearPickerCell` to keep selection, focus, and disabled states.
+
 ### `YearPickerRowGroup`, `YearPickerRow`, `YearPickerItem`
 
 Optional low-level grid composition parts.
@@ -36,7 +40,9 @@ Optional paged year-range scroller infrastructure.
 <YearPicker>
   <YearPickerScroller>
     <YearPickerScrollerContent>
-      <YearPickerScrollerLayout />
+      <YearPickerScrollerLayout>
+        <YearPickerCell />
+      </YearPickerScrollerLayout>
     </YearPickerScrollerContent>
   </YearPickerScroller>
 </YearPicker>
@@ -44,7 +50,7 @@ Optional paged year-range scroller infrastructure.
 
 ## Invalid Composition Patterns
 
-### Visible year and scroller index mapped inconsistently
+### Scroller `period` that differs from the layout page size
 
 The user sees one period while the paging logic thinks it is on another.
 

@@ -1,83 +1,65 @@
-import { FC } from 'react';
+import { FC, ReactNode, useMemo } from 'react';
+import { createCalendarDateFormatter } from '@vega-ui/i18n';
 import { createMonthPickerGrid } from '../../helpers';
-import { MonthPickerItem } from '../MonthPickerItem';
 import { MonthPickerRowGroup, type MonthPickerRowGroupProps } from '../MonthPickerRowGroup';
 import { MonthPickerRow } from '../MonthPickerRow';
-import { formatMonth } from '@vega-ui/utils';
+import { MonthPickerCellProvider, useMonthPickerContext } from '../../contexts';
 
 export interface MonthPickerLayoutProps extends MonthPickerRowGroupProps {
   /**
-   * Number of grid rows.
-   * Determines vertical density of rendered months.
-   *
-   * @default 4
+   * Template of a month cell, rendered once for every month of the year.
+   * Read the month with `useMonthPickerCellContext()`; usually `<MonthPickerCell />`.
    */
-  rows?: number;
+  children: ReactNode;
   
   /**
-   * Number of grid columns.
-   * Determines horizontal density of rendered months.
-   *
+   * Number of columns; rows are added as needed for all months of the year.
    * @default 3
    */
   cols?: number;
   
   /**
-   * Starting month index (0 = January).
-   * Defines the first month rendered in the matrix.
-   *
-   * @default 0
+   * Locale used for formatting month names.
+   * Defaults to the locale of the picker.
    */
-  start?: number;
+  locale?: string;
   
   /**
-   * Locale used to format month names via Intl.DateTimeFormat.
-   * Can be a single locale or a fallback list.
-   *
-   * @default navigator.language
-   */
-  locale?: Intl.LocalesArgument;
-  
-  /**
-   * Formatting style for month labels.
-   * Mirrors the `month` option of Intl.DateTimeFormat.
-   * Common values: `"long"`, `"short"`, `"narrow"`.
-   *
+   * Month display format (from `Intl.DateTimeFormatOptions`).
    * @default "long"
    */
   format?: Intl.DateTimeFormatOptions['month'];
 }
 
 /**
- * MonthPickerLayout is a composable grid layout for rendering
- * month-selection views inside MonthPicker. It generates a matrix
- * of months using `createMonthPickerGrid` and renders them through
- * MonthPickerRowGroup → MonthPickerRow → MonthPickerItem.
- *
- * The layout is fully declarative and can be customized through:
- * - grid dimensions (`rows`, `cols`)
- * - starting month offset (`start`)
- * - localized month formatting (`locale`, `format`)
- *
- * This component is often used as the default layout inside <MonthPicker>,
- * but can also serve as a base for fully custom month UIs.
+ * MonthPickerLayout renders all months of the MonthPicker's year in its
+ * calendar system, with locale-aware month names.
  */
 export const MonthPickerLayout: FC<MonthPickerLayoutProps> = ({
-  start = 0,
-  rows = 4,
   cols = 3,
-  locale = navigator.language,
+  locale: _locale,
   format = 'long',
+  children,
   ...props
 }) => {
+  const { year, calendar, locale: contextLocale } = useMonthPickerContext()
+  const locale = _locale ?? contextLocale
+  const formatMonth = useMemo(() => createCalendarDateFormatter(calendar, locale, { month: format }), [locale, format, calendar])
+  
   return (
     <MonthPickerRowGroup {...props}>
-      {createMonthPickerGrid({ start, rows, cols }).map(({ row, data }) => (
+      {createMonthPickerGrid({ year, calendar, cols }).map(({ row, data }) => (
         <MonthPickerRow row={row} key={row}>
           {data.map(({ col, month }) => (
-            <MonthPickerItem col={col} value={month} key={month}>
-              {formatMonth(month, locale, format)}
-            </MonthPickerItem>
+            <MonthPickerCellProvider
+              key={month}
+              col={col}
+              date={month}
+              fields={calendar.toFields(month)}
+              label={formatMonth(month)}
+            >
+              {children}
+            </MonthPickerCellProvider>
           ))}
         </MonthPickerRow>
       ))}

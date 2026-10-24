@@ -1,15 +1,8 @@
 import { FC } from 'react';
 import { useCalendarContext } from '../../contexts';
-import { formatMonth } from '@vega-ui/utils';
+import { formatCalendarDate } from '@vega-ui/i18n';
 
 export interface CalendarMonthLabelProps {
-  /**
-   * Locale used to format the month name.
-   * If not provided, the browser's locale (`navigator.language`) is used.
-   * This controls the language of the displayed month.
-   */
-  locale?: Intl.LocalesArgument
-  
   /**
    * Month display format (from `Intl.DateTimeFormatOptions`).
    * Defines how the month name should appear.
@@ -29,12 +22,13 @@ export interface CalendarMonthLabelProps {
  * as a localized string.
  *
  * The month date is retrieved from `CalendarContext` and formatted using
- * the `Intl.DateTimeFormat` API via the `formatMonth` utility.
+ * the `Intl.DateTimeFormat` API in the locale and calendar system of the `Calendar`.
  *
  * This component is purely visual and does not contain calendar logic,
  * navigation, or state handling.
  */
-export const CalendarMonthLabel: FC<CalendarMonthLabelProps> = ({ locale, format = 'long' }) => {
-  const { month } = useCalendarContext()
-  return formatMonth(month, locale ?? navigator.language, format)
+export const CalendarMonthLabel: FC<CalendarMonthLabelProps> = ({ format = 'long' }) => {
+  const { month, calendar, locale } = useCalendarContext()
+  
+  return formatCalendarDate(calendar, month, locale, { month: format })
 }

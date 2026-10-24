@@ -25,7 +25,6 @@ export interface PinFieldHiddenInputProps extends DetailedHTMLProps<InputHTMLAtt
  *
  * The component is fully integrated with `usePinFieldContext()` and is responsible for:
  * - Synchronizing the active cell index based on caret/selection position (`syncActive`)
- * - Writing the current value into PinField state on input (`setValue`)
  * - Resetting the active cell on blur (`setActive(-1)`)
  * - Detecting “select all” state and reflecting it in PinField (`setSelectedAll`)
  *
@@ -55,7 +54,6 @@ export const PinFieldHiddenInput: FC<PinFieldHiddenInputProps> = ({
     innerInputRef,
     setActive,
     syncActive,
-    setValue,
     maxLength,
     setSelectedAll,
   } = usePinFieldContext()
@@ -71,12 +69,8 @@ export const PinFieldHiddenInput: FC<PinFieldHiddenInputProps> = ({
   }
   
   const onInput = (e: InputEvent<HTMLInputElement>) => {
-    const input = e.currentTarget;
-    const value = input.value;
+    if (e.currentTarget.selectionStart === null) return;
     
-    if (input.selectionStart === null) return;
-    
-    setValue(value)
     requestAnimationFrame(() => syncActive())
   }
   

@@ -14,7 +14,7 @@
 import {
   Calendar,
   type CalendarProps,
-  type CalendarPicker,
+  type CalendarView,
   type CalendarSelection,
   type CalendarDatesDisabled,
 } from '@vega-ui/react';
@@ -23,7 +23,7 @@ import {
 ## Exported Types
 
 - `CalendarProps`
-- `CalendarPicker`
+- `CalendarView`
 - `CalendarSelection`
 - `CalendarDatesDisabled`
 
@@ -32,38 +32,28 @@ import {
 ```tsx
 <Calendar selection='single'>
   <CalendarHeader>
-    <CalendarPrevYearGroupButton><Icon><ArrowLeft /></Icon></CalendarPrevYearGroupButton>
-    <CalendarPrevButton><Icon><ChevronLeft /></Icon></CalendarPrevButton>
-    <CalendarPickerButtonGroup>
-      <CalendarMonthPickerButton><CalendarMonthLabel /></CalendarMonthPickerButton>
-      <CalendarYearPickerButton><CalendarYearLabel /></CalendarYearPickerButton>
-    </CalendarPickerButtonGroup>
-    <CalendarNextButton><Icon><ChevronRight /></Icon></CalendarNextButton>
-    <CalendarNextYearGroupButton><Icon><ArrowRight /></Icon></CalendarNextYearGroupButton>
+    <CalendarPrevButton aria-label='Previous' />
+    <CalendarViewButtonGroup>
+      <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
+      <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
+    </CalendarViewButtonGroup>
+    <CalendarNextButton aria-label='Next' />
   </CalendarHeader>
   <CalendarContent>
-    <CalendarDayPicker>
-      <CalendarWeekLabels>
-        {getWeekDayNames(navigator.language, 'short').map((name) => (
-          <CalendarWeekLabel key={name}>{name}</CalendarWeekLabel>
-        ))}
-      </CalendarWeekLabels>
-      <CalendarDayPickerScroller>
-        <CalendarDayPickerScrollerContent>
-          <CalendarDayPickerScrollerLayout />
-        </CalendarDayPickerScrollerContent>
-      </CalendarDayPickerScroller>
-    </CalendarDayPicker>
-    <CalendarMonthPicker>
-      <CalendarMonthPickerLayout />
-    </CalendarMonthPicker>
-    <CalendarYearPicker>
-      <CalendarYearPickerScroller>
-        <CalendarYearPickerScrollerContent>
-          <CalendarYearPickerScrollerLayout />
-        </CalendarYearPickerScrollerContent>
-      </CalendarYearPickerScroller>
-    </CalendarYearPicker>
+    <CalendarDays>
+      <CalendarWeekdays>
+        <CalendarWeekday />
+      </CalendarWeekdays>
+      <CalendarWeeks>
+        <CalendarDay />
+      </CalendarWeeks>
+    </CalendarDays>
+    <CalendarMonths>
+      <CalendarMonth />
+    </CalendarMonths>
+    <CalendarYears>
+      <CalendarYear />
+    </CalendarYears>
   </CalendarContent>
 </Calendar>
 ```
@@ -74,28 +64,29 @@ import {
 
 ## Optional Parts
 
-- `CalendarHeader`, `CalendarPrevButton`, `CalendarNextButton`: navigation chrome
-- `CalendarPickerButtonGroup`, `CalendarMonthPickerButton`, `CalendarYearPickerButton`: view-switching controls
-- `CalendarContent`: wrapper for the active picker view
-- `CalendarWeekLabels`, `CalendarWeekLabel`: weekday header chrome
-- `CalendarDayPicker*`, `CalendarMonthPicker*`, `CalendarYearPicker*`: coordinated picker families
+- `CalendarHeader`, `CalendarPrevButton`, `CalendarNextButton`: navigation chrome; previous and next follow the current view
+- `CalendarViewButtonGroup`, `CalendarViewButton`: month and year view toggles
+- `CalendarMonthLabel`, `CalendarYearLabel`: labels of the visible month and year
+- `CalendarContent`: wrapper for the views
+- `CalendarDays`, `CalendarMonths`, `CalendarYears`: day, month, and year views
+- `CalendarDay`, `CalendarMonth`, `CalendarYear`: cell templates of the views, with `useCalendarDayContext`, `useCalendarMonthContext`, `useCalendarYearContext`
 
 ## Composition Order
 
 Typical composition:
 
 1. `Calendar`
-2. `CalendarHeader`
-3. picker buttons and navigation controls
-4. `CalendarContent`
-5. `CalendarDayPicker` or `CalendarMonthPicker` or `CalendarYearPicker`
+2. `CalendarHeader` with `CalendarPrevButton`, `CalendarViewButtonGroup`, `CalendarNextButton`
+3. `CalendarContent`
+4. `CalendarDays`, `CalendarMonths`, `CalendarYears`; only the current `view` is visible
 
 ## Variants
 
 - Selection: `single`, `multiple`, `range`
 - View switching: day, month, year
 - Density: `compact` plus size variants
-- Composition depth: root-only usage versus fully customized picker layouts
+- Composition depth: default views versus custom cell templates
+- Locale and calendar system: `locale` and `calendar` root props, defaulting to the runtime locale and the Gregorian calendar; see [Dates And Calendar Systems](../../i18n.md#locale-and-calendar-props)
 
 ## Related Docs
 
@@ -112,12 +103,13 @@ Typical composition:
 
 - Selection mode changes the value shape.
 - Disabled-date constraints can come from a value list or predicate logic.
-- Custom picker layouts should be retested for keyboard flow, excluded days, and visible period changes.
-- `Calendar` expects real `Date` objects at the component boundary; serialization belongs in the application layer.
+- Custom cell templates should be retested for keyboard flow, overflow days, and visible period changes.
+- `value`, `defaultValue`, `min`, `max`, `month`, and `disabledDates` are ISO `YYYY-MM-DD` strings in every calendar system; only the grid and labels follow `calendar`.
+- Non-Gregorian calendars come from `createCalendarSystem`; see [Dates And Calendar Systems](../../i18n.md#calendar-system-adapter).
 
 ## Common Mistakes
 
 - Forgetting that `selection` changes the expected value model.
-- Passing serialized business dates instead of `Date` objects.
-- Customizing picker internals without retesting navigation flow.
+- Passing `Date` objects, timestamps, or display-calendar strings instead of ISO `YYYY-MM-DD` strings.
+- Reading the day number from the ISO `date` of a cell instead of `label` or `fields.day`; it is wrong in non-Gregorian calendars.
 - Combining `min`, `max`, and `disabledDates` without validating the resulting UX.

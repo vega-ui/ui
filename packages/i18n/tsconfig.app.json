@@ -1,0 +1,5 @@
+{
+  "extends": "../../tsconfig.build.json",
+  "exclude": ["**/*/**.stories.(tsx|ts)", "**/*/__tests__/"],
+  "include": ["src", "../../global.d.ts"]
+}

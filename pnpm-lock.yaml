@@ -112,6 +112,18 @@ importers:
         specifier: ^6.0.5
         version: 6.0.5(typescript@5.8.2)(vite@6.4.1(@types/node@22.19.5))
 
+  packages/i18n:
+    devDependencies:
+      vite:
+        specifier: ^6.3.5
+        version: 6.4.1(@types/node@22.19.5)
+      vite-plugin-dts:
+        specifier: ^4.5.4
+        version: 4.5.4(@types/node@22.19.5)(rollup@4.55.1)(typescript@5.8.2)(vite@6.4.1(@types/node@22.19.5))
+      vite-tsconfig-paths:
+        specifier: ^6.0.5
+        version: 6.0.5(typescript@5.8.2)(vite@6.4.1(@types/node@22.19.5))
+
   packages/icons:
     dependencies:
       lucide-react:
@@ -192,6 +204,9 @@ importers:
       '@vega-ui/hooks':
         specifier: workspace:*
         version: link:../hooks
+      '@vega-ui/i18n':
+        specifier: workspace:*
+        version: link:../i18n
       '@vega-ui/icons':
         specifier: workspace:*
         version: link:../icons
@@ -243,6 +258,10 @@ importers:
         version: 6.0.5(typescript@5.8.2)(vite@6.4.1(@types/node@22.19.5))
 
   packages/utils:
+    dependencies:
+      '@vega-ui/i18n':
+        specifier: workspace:*
+        version: link:../i18n
     devDependencies:
       '@types/react':
         specifier: ^19.0.10
@@ -1723,6 +1742,7 @@ packages:
   eslint@9.39.2:
     resolution: {integrity: sha512-LEyamqS7W5HB3ujJyvi0HQK/dtVINZvd5mAAp9eT5S/ujByGjiZLCzPcHVzuXbpJDJF/cxwHlfceVUDZ2lnSTw==}
     engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
     peerDependencies:
       jiti: '*'

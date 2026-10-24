@@ -1,4 +1,6 @@
 import { FC } from 'react';
+import { ChevronLeft } from '@vega-ui/icons';
+import { Icon } from '../../../Icon';
 import { CalendarBaseControlIconButton, type CalendarBaseControlIconButtonProps } from '../../../CalendarBase';
 import { useCalendarContext } from '../../contexts';
 import style from './style.module.css'
@@ -7,25 +9,29 @@ import { csx, mergeEventHandlers } from '@vega-ui/utils';
 export type CalendarPrevButtonProps = CalendarBaseControlIconButtonProps
 
 /**
- * `CalendarPrevButton` is the calendar-integrated "previous" navigation
- * control, responsible for moving the visible month backward in the
- * day-picker view. It wraps `CalendarBaseControlIconButton` and applies calendar
- * state, range constraints, and picker-mode awareness.
+ * `CalendarPrevButton` shows the previous page of the current view: the
+ * previous month in the days, the previous page of years in the years. It is
+ * hidden in the months and when the previous month is before `min`.
+ *
+ * It shows a chevron by default; pass `children` to replace it. The icon has
+ * no text, so give the button an `aria-label`.
  */
-export const CalendarPrevButton: FC<CalendarPrevButtonProps> = ({ disabled, className, onClick: _onClick, ...props }) => {
-  const { from, year, month, picker, prevPeriod, disabled: calendarDisabled } = useCalendarContext()
+export const CalendarPrevButton: FC<CalendarPrevButtonProps> = ({ children, disabled, className, onClick: _onClick, ...props }) => {
+  const { from, month, view, prev, disabled: calendarDisabled } = useCalendarContext()
   
-  const outOfRangeFrom = from ? (year <= from.getFullYear() && month <= from.getMonth()) : false
-  const _disabled = disabled || calendarDisabled || picker !== 'day' || outOfRangeFrom
+  const outOfRange = view === 'day' && from !== undefined && from >= month
+  const visible = view !== 'month' && !outOfRange
   
   return (
     <CalendarBaseControlIconButton
       type='button'
-      disabled={_disabled}
+      disabled={disabled || calendarDisabled || !visible}
       className={csx(className, style.button)}
-      data-visible={picker === 'day' && !outOfRangeFrom}
-      onClick={mergeEventHandlers(_onClick, prevPeriod)}
+      data-visible={visible}
+      onClick={mergeEventHandlers(prev, _onClick)}
       {...props}
-    />
+    >
+      {children ?? <Icon className={style.icon}><ChevronLeft /></Icon>}
+    </CalendarBaseControlIconButton>
   )
 }

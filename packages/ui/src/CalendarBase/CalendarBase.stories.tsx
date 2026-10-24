@@ -6,8 +6,12 @@ import {
 } from './components';
 import { Icon } from '../Icon';
 import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
-import { formatMonth, getCurrentDate, getWeekDayNames } from '@vega-ui/utils';
-import { DayPicker, DayPickerScroller, DayPickerScrollerContent, DayPickerScrollerLayout } from '../DayPicker';
+import { getCurrentDate, formatISODate } from '@vega-ui/utils';
+import { formatCalendarDate, gregorianCalendar, getWeekDayNames } from '@vega-ui/i18n';
+import { DayPicker, DayPickerScroller, DayPickerScrollerContent, DayPickerCell, DayPickerScrollerLayout } from '../DayPicker';
+
+const monthName = (date: string) => formatCalendarDate(gregorianCalendar, date, navigator.language, { month: 'long' });
+const yearName = (date: string) => formatCalendarDate(gregorianCalendar, date, navigator.language, { year: 'numeric' });
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof CalendarBase> = {
@@ -22,10 +26,10 @@ const meta: Meta<typeof CalendarBase> = {
           </CalendarBaseControlIconButton>
           <div style={{ display: 'flex' }}>
             <CalendarBasePickerButton>
-              {formatMonth(getCurrentDate().getMonth())}
+              {monthName(formatISODate(getCurrentDate()))}
             </CalendarBasePickerButton>
             <CalendarBasePickerButton>
-              {formatMonth(getCurrentDate().getFullYear())}
+              {yearName(formatISODate(getCurrentDate()))}
             </CalendarBasePickerButton>
           </div>
           <CalendarBaseControlIconButton>
@@ -41,7 +45,9 @@ const meta: Meta<typeof CalendarBase> = {
             </CalendarBaseWeekLabels>
             <DayPickerScroller>
               <DayPickerScrollerContent>
-                <DayPickerScrollerLayout />
+                <DayPickerScrollerLayout>
+                  <DayPickerCell />
+                </DayPickerScrollerLayout>
               </DayPickerScrollerContent>
             </DayPickerScroller>
           </DayPicker>

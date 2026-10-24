@@ -9,6 +9,9 @@
 - Typing should remain possible without opening the calendar.
 - The trigger icon button should stay reachable through tab order.
 - Keyboard users should be able to understand whether they are editing the date, the time, or both.
+- Inside the calendar, `PageUp` / `PageDown` move focus to the same day of the previous / next month and `Shift+PageUp` / `Shift+PageDown` to the same day of the previous / next year, clamped to the month length and to `min` / `max`; the value changes only when a day is picked with `Enter` or `Space`.
+- Typing is validated in the field's calendar system: a single digit that cannot start a two-digit segment is zero-padded, complete segments are clamped (the day to the month length), and a complete value is clamped to `min` / `max`.
+- `ArrowUp` / `ArrowDown` step the minutes or seconds under the caret by `timeStep` and the hours by one, like a native `datetime-local` input with `step`, wrapping around the segment range.
 
 ## Focus Behavior
 

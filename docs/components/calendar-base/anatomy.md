@@ -60,8 +60,10 @@ Optional weekday header cell.
       <CalendarBaseWeekLabel key={name}>{name}</CalendarBaseWeekLabel>
     ))}
   </CalendarBaseWeekLabels>
-  <DayPicker year={2026} month={4}>
-    <DayPickerLayout includeOverflowDays />
+  <DayPicker month='2026-05-01'>
+    <DayPickerLayout includeOverflowDays>
+      <DayPickerCell />
+    </DayPickerLayout>
   </DayPicker>
 </CalendarBase>
 ```

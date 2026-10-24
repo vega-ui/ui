@@ -1,5 +1,7 @@
 # DateTimeField Patterns
 
+`CalendarPopover` in the snippets below is the local component from [Basic](./examples.md#basic): the trigger and `DateTimeFieldCalendar` with the calendar parts inside a `Popover`.
+
 ## Timestamp Field With Popover Calendar
 
 When to use:
@@ -9,8 +11,8 @@ When to use:
 
 Composition notes:
 
-- Keep `DateTimeFieldInput` as the primary surface.
-- Mount `DateTimeFieldCalendar` inside `PopoverContent`.
+- Keep `DateTimeFieldInput` as the primary surface and label it.
+- Mount `DateTimeFieldCalendar` inside `PopoverContent`; picking a day keeps the typed time.
 
 Trade-offs:
 
@@ -18,56 +20,45 @@ Trade-offs:
 - Requires clear formatting and timezone guidance.
 
 ```tsx
-const calendar = (
-  <>
-    <CalendarHeader>
-      <CalendarPrevYearGroupButton><Icon><ArrowLeft /></Icon></CalendarPrevYearGroupButton>
-      <CalendarPrevButton><Icon><ChevronLeft /></Icon></CalendarPrevButton>
-      <CalendarPickerButtonGroup>
-        <CalendarMonthPickerButton><CalendarMonthLabel /></CalendarMonthPickerButton>
-        <CalendarYearPickerButton><CalendarYearLabel /></CalendarYearPickerButton>
-      </CalendarPickerButtonGroup>
-      <CalendarNextButton><Icon><ChevronRight /></Icon></CalendarNextButton>
-      <CalendarNextYearGroupButton><Icon><ArrowRight /></Icon></CalendarNextYearGroupButton>
-    </CalendarHeader>
-    <CalendarContent>
-      <CalendarDayPicker>
-        <CalendarWeekLabels>
-          {getWeekDayNames(navigator.language, 'short').map((name) => (
-            <CalendarWeekLabel key={name}>{name}</CalendarWeekLabel>
-          ))}
-        </CalendarWeekLabels>
-        <CalendarDayPickerScroller>
-          <CalendarDayPickerScrollerContent>
-            <CalendarDayPickerScrollerLayout />
-          </CalendarDayPickerScrollerContent>
-        </CalendarDayPickerScroller>
-      </CalendarDayPicker>
-      <CalendarMonthPicker>
-        <CalendarMonthPickerLayout />
-      </CalendarMonthPicker>
-      <CalendarYearPicker>
-        <CalendarYearPickerScroller>
-          <CalendarYearPickerScrollerContent>
-            <CalendarYearPickerScrollerLayout />
-          </CalendarYearPickerScrollerContent>
-        </CalendarYearPickerScroller>
-      </CalendarYearPicker>
-    </CalendarContent>
-  </>
-);
-
-<DateTimeField dateFormat='dd/MM/yyyy' dateSeparator='/' timeFormat='HH:MM'>
-  <DateTimeFieldInput />
-  <Popover placement='bottom-end'>
-    <PopoverTrigger asChild>
-      <DateTimeFieldTriggerIconButton />
-    </PopoverTrigger>
-    <PopoverContent>
-      <DateTimeFieldCalendar>{calendar}</DateTimeFieldCalendar>
-    </PopoverContent>
-  </Popover>
-</DateTimeField>
+<>
+  <Label htmlFor='starts-at'>Starts at</Label>
+  <DateTimeField dateFormat='dd.MM.yyyy'>
+    <DateTimeFieldInput id='starts-at' />
+    <Popover placement='bottom-end'>
+      <PopoverTrigger asChild>
+        <DateTimeFieldTriggerIconButton aria-label='Choose date' />
+      </PopoverTrigger>
+      <PopoverContent>
+        <DateTimeFieldCalendar>
+          <CalendarHeader>
+            <CalendarPrevButton aria-label='Previous month' />
+            <CalendarViewButtonGroup>
+              <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
+              <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
+            </CalendarViewButtonGroup>
+            <CalendarNextButton aria-label='Next month' />
+          </CalendarHeader>
+          <CalendarContent>
+            <CalendarDays>
+              <CalendarWeekdays>
+                <CalendarWeekday />
+              </CalendarWeekdays>
+              <CalendarWeeks>
+                <CalendarDay />
+              </CalendarWeeks>
+            </CalendarDays>
+            <CalendarMonths>
+              <CalendarMonth />
+            </CalendarMonths>
+            <CalendarYears>
+              <CalendarYear />
+            </CalendarYears>
+          </CalendarContent>
+        </DateTimeFieldCalendar>
+      </PopoverContent>
+    </Popover>
+  </DateTimeField>
+</>
 ```
 
 ## Timestamp Field In Scheduling Forms
@@ -80,7 +71,8 @@ When to use:
 Composition notes:
 
 - Keep helper text explicit about timezone and expected format.
-- Align `min`, `max`, and `timeStep` with scheduling business rules.
+- Align `min`, `max`, and `timeStep` with scheduling business rules; `min` and `max` clamp typed values, `timeStep` only drives arrow-key stepping.
+- The submitted value is the typed text; parse it with `parseTemplateDate` before sending.
 
 Trade-offs:
 
@@ -88,63 +80,21 @@ Trade-offs:
 - More validation and copy complexity than a plain date field.
 
 ```tsx
-const calendar = (
-  <>
-    <CalendarHeader>
-      <CalendarPrevYearGroupButton><Icon><ArrowLeft /></Icon></CalendarPrevYearGroupButton>
-      <CalendarPrevButton><Icon><ChevronLeft /></Icon></CalendarPrevButton>
-      <CalendarPickerButtonGroup>
-        <CalendarMonthPickerButton><CalendarMonthLabel /></CalendarMonthPickerButton>
-        <CalendarYearPickerButton><CalendarYearLabel /></CalendarYearPickerButton>
-      </CalendarPickerButtonGroup>
-      <CalendarNextButton><Icon><ChevronRight /></Icon></CalendarNextButton>
-      <CalendarNextYearGroupButton><Icon><ArrowRight /></Icon></CalendarNextYearGroupButton>
-    </CalendarHeader>
-    <CalendarContent>
-      <CalendarDayPicker>
-        <CalendarWeekLabels>
-          {getWeekDayNames(navigator.language, 'short').map((name) => (
-            <CalendarWeekLabel key={name}>{name}</CalendarWeekLabel>
-          ))}
-        </CalendarWeekLabels>
-        <CalendarDayPickerScroller>
-          <CalendarDayPickerScrollerContent>
-            <CalendarDayPickerScrollerLayout />
-          </CalendarDayPickerScrollerContent>
-        </CalendarDayPickerScroller>
-      </CalendarDayPicker>
-      <CalendarMonthPicker>
-        <CalendarMonthPickerLayout />
-      </CalendarMonthPicker>
-      <CalendarYearPicker>
-        <CalendarYearPickerScroller>
-          <CalendarYearPickerScrollerContent>
-            <CalendarYearPickerScrollerLayout />
-          </CalendarYearPickerScrollerContent>
-        </CalendarYearPickerScroller>
-      </CalendarYearPicker>
-    </CalendarContent>
-  </>
-);
-
-<FormRow label='Publish at' hint='Stored in the workspace timezone.'>
-  <DateTimeField
-    dateFormat='dd.MM.yyyy'
-    dateSeparator='.'
-    timeFormat='HH:MM'
-    timeStep={15}
-  >
-    <DateTimeFieldInput />
-    <Popover placement='bottom-end'>
-      <PopoverTrigger asChild>
-        <DateTimeFieldTriggerIconButton />
-      </PopoverTrigger>
-      <PopoverContent>
-        <DateTimeFieldCalendar>{calendar}</DateTimeFieldCalendar>
-      </PopoverContent>
-    </Popover>
+<form>
+  <Label htmlFor='publish-at'>Publish at</Label>
+  <DateTimeField dateFormat='dd.MM.yyyy' timeStep={15} min='2026-07-01T00:00'>
+    <DateTimeFieldInput
+      id='publish-at'
+      name='publishAt'
+      required
+      pattern='\d{2}\.\d{2}\.\d{4}, \d{2}:\d{2}'
+      aria-describedby='publish-at-hint'
+    />
+    <CalendarPopover />
   </DateTimeField>
-</FormRow>
+  <HelperText id='publish-at-hint'>dd.mm.yyyy, hh:mm in the workspace timezone.</HelperText>
+  <Button type='submit'>Schedule</Button>
+</form>
 ```
 
 ## Timestamp Field Inside Mobile-First Sheets
@@ -165,45 +115,6 @@ Trade-offs:
 - Increases overlay and focus coordination complexity.
 
 ```tsx
-const calendar = (
-  <>
-    <CalendarHeader>
-      <CalendarPrevYearGroupButton><Icon><ArrowLeft /></Icon></CalendarPrevYearGroupButton>
-      <CalendarPrevButton><Icon><ChevronLeft /></Icon></CalendarPrevButton>
-      <CalendarPickerButtonGroup>
-        <CalendarMonthPickerButton><CalendarMonthLabel /></CalendarMonthPickerButton>
-        <CalendarYearPickerButton><CalendarYearLabel /></CalendarYearPickerButton>
-      </CalendarPickerButtonGroup>
-      <CalendarNextButton><Icon><ChevronRight /></Icon></CalendarNextButton>
-      <CalendarNextYearGroupButton><Icon><ArrowRight /></Icon></CalendarNextYearGroupButton>
-    </CalendarHeader>
-    <CalendarContent>
-      <CalendarDayPicker>
-        <CalendarWeekLabels>
-          {getWeekDayNames(navigator.language, 'short').map((name) => (
-            <CalendarWeekLabel key={name}>{name}</CalendarWeekLabel>
-          ))}
-        </CalendarWeekLabels>
-        <CalendarDayPickerScroller>
-          <CalendarDayPickerScrollerContent>
-            <CalendarDayPickerScrollerLayout />
-          </CalendarDayPickerScrollerContent>
-        </CalendarDayPickerScroller>
-      </CalendarDayPicker>
-      <CalendarMonthPicker>
-        <CalendarMonthPickerLayout />
-      </CalendarMonthPicker>
-      <CalendarYearPicker>
-        <CalendarYearPickerScroller>
-          <CalendarYearPickerScrollerContent>
-            <CalendarYearPickerScrollerLayout />
-          </CalendarYearPickerScrollerContent>
-        </CalendarYearPickerScroller>
-      </CalendarYearPicker>
-    </CalendarContent>
-  </>
-);
-
 <Sheet>
   <SheetTrigger asChild>
     <Button>Reschedule</Button>
@@ -211,16 +122,10 @@ const calendar = (
   <SheetPortal>
     <SheetBackdrop>
       <SheetContent>
-        <DateTimeField dateFormat='dd/MM/yyyy' dateSeparator='/' timeFormat='HH:MM'>
-          <DateTimeFieldInput />
-          <Popover placement='bottom-end'>
-            <PopoverTrigger asChild>
-              <DateTimeFieldTriggerIconButton />
-            </PopoverTrigger>
-            <PopoverContent>
-              <DateTimeFieldCalendar>{calendar}</DateTimeFieldCalendar>
-            </PopoverContent>
-          </Popover>
+        <Label htmlFor='new-time'>New time</Label>
+        <DateTimeField dateFormat='dd.MM.yyyy'>
+          <DateTimeFieldInput id='new-time' />
+          <CalendarPopover />
         </DateTimeField>
       </SheetContent>
     </SheetBackdrop>

@@ -43,6 +43,9 @@
     "test": "vitest run",
     "test:watch": "vitest --watch"
   },
+  "dependencies": {
+    "@vega-ui/i18n": "workspace:*"
+  },
   "devDependencies": {
     "@types/react": "^19.0.10",
     "vite": "^6.3.5",

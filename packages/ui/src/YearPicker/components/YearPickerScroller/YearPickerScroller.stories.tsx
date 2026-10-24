@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { YearPickerScroller } from './YearPickerScroller';
 import { YearPickerScrollerContent } from '../YearPickerScrollerContent';
 import { YearPickerScrollerLayout } from '../YearPickerScrollerLayout';
+import { YearPickerCell } from '../YearPickerCell';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof YearPickerScroller> = {
@@ -17,7 +18,9 @@ export const Default: Story = {
   args: {
     children: (
       <YearPickerScrollerContent>
-        <YearPickerScrollerLayout />
+        <YearPickerScrollerLayout>
+          <YearPickerCell />
+        </YearPickerScrollerLayout>
       </YearPickerScrollerContent>
     )
   },

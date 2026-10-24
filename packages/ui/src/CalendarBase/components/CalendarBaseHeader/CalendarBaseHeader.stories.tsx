@@ -3,8 +3,11 @@ import { CalendarBaseHeader } from './CalendarBaseHeader';
 import { CalendarBaseControlIconButton } from '../CalendarBaseControlIconButton';
 import { Icon } from '../../../Icon';
 import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
-import { formatMonth, formatYear } from '@vega-ui/utils';
+import { formatCalendarDate, gregorianCalendar } from '@vega-ui/i18n';
 import { CalendarBasePickerButton } from '../CalendarBasePickerButton';
+
+const monthName = (date: string) => formatCalendarDate(gregorianCalendar, date, navigator.language, { month: 'long' });
+const yearName = (date: string) => formatCalendarDate(gregorianCalendar, date, navigator.language, { year: 'numeric' });
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof CalendarBaseHeader> = {
@@ -18,10 +21,10 @@ const meta: Meta<typeof CalendarBaseHeader> = {
         </CalendarBaseControlIconButton>
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <CalendarBasePickerButton>
-            {formatMonth(1)}
+            {monthName('2026-02-01')}
           </CalendarBasePickerButton>
           <CalendarBasePickerButton>
-            {formatYear(2026)}
+            {yearName('2026-01-01')}
           </CalendarBasePickerButton>
         </div>
         <CalendarBaseControlIconButton>

@@ -209,7 +209,7 @@ describe('Accordion', () => {
   describe('Edge Cases', () => {
     it('empty children: renders ul', async () => {
       const r = render(<Accordion />);
-      await expect.element(r.container.querySelector('ul')!).toBeInTheDocument();
+      await expect.element(r.getByRole('list')).toBeInTheDocument();
     });
     
     describe('defaultOpened contains missing value', () => {

@@ -16,19 +16,16 @@ export const useIndexes = ({
 }: UseIndexesOptions) => {
   const [indexes, setIndexes] = useState<number[]>(getOffsetIndexes(start, startDir, size))
   
-  const shift = useCallback(() => {
+  const extend = useCallback((dir: -1 | 1) => {
     setIndexes((prev) => {
-      const start = prev[0] + indexesShift;
-      return getOffsetIndexes(start, -1, size);
+      if (dir > 0) return [...prev, ...getOffsetIndexes(prev[prev.length - 1] + 1, 1, indexesShift)];
+      return [...getOffsetIndexes(prev[0] - indexesShift, 1, indexesShift), ...prev];
     });
-  }, [indexesShift, size]);
+  }, [indexesShift]);
   
-  const push = useCallback(() => {
-    setIndexes((prev) => {
-      const end = prev[prev.length - 1] - indexesShift;
-      return getOffsetIndexes(end, 1, size);
-    });
-  }, [indexesShift, size]);
+  const center = useCallback((index: number) => {
+    setIndexes(getOffsetIndexes(index - Math.floor(size / 2), 1, size));
+  }, [size]);
   
   const reset = useCallback((s = start) => {
     setIndexes(getOffsetIndexes(s, startDir, size))
@@ -36,8 +33,8 @@ export const useIndexes = ({
   
   return {
     indexes,
-    push,
-    shift,
+    extend,
+    center,
     reset,
   }
 }

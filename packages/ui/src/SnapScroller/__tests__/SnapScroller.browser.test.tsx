@@ -337,4 +337,71 @@ describe('SnapScroller', () => {
       });
     });
   });
+  
+  describe('right-to-left', () => {
+    const RtlTest: FC<ComponentProps<typeof SnapScrollerTest>> = (props) => (
+      <div dir='rtl'>
+        <SnapScrollerTest {...props} />
+      </div>
+    );
+    
+    const isVisibleIn = (scroller: HTMLElement, element: HTMLElement) => {
+      const outer = scroller.getBoundingClientRect();
+      const inner = element.getBoundingClientRect();
+      
+      return inner.left >= outer.left - 1 && inner.right <= outer.right + 1;
+    };
+    
+    it('lays the items out from right to left', async () => {
+      const r = render(<RtlTest />);
+      
+      expect(getItem(r, 1).getBoundingClientRect().left).toBeLessThan(getItem(r, 0).getBoundingClientRect().left);
+    });
+    
+    it('initially scrolls to defaultIndex', async () => {
+      const r = render(<RtlTest defaultIndex={DEFAULT_INDEX} />);
+      
+      await expect.poll(() => getScroller(r).scrollLeft).toBe(-DEFAULT_INDEX * ITEM_SIZE);
+      expect(isVisibleIn(getScroller(r), getItem(r, DEFAULT_INDEX))).toBe(true);
+    });
+    
+    it('next() scrolls to the left and prev() back to the right', async () => {
+      const apiRef = createRef<SnapScrollerApiRef>();
+      const onScrollSnapChange = vi.fn();
+      const r = render(<RtlTest apiRef={apiRef} onScrollSnapChange={onScrollSnapChange} />);
+      
+      await expect.poll(() => apiRef.current).toBeTruthy();
+      
+      apiRef.current!.next();
+      await expect.poll(() => onScrollSnapChange.mock.lastCall?.[1]).toBe(1);
+      await expect.poll(() => getScroller(r).scrollLeft).toBeCloseTo(-ITEM_SIZE, 0);
+      
+      apiRef.current!.prev();
+      await expect.poll(() => onScrollSnapChange.mock.lastCall?.[1]).toBe(0);
+      await expect.poll(() => getScroller(r).scrollLeft).toBeCloseTo(0, 0);
+    });
+    
+    it('scrollToElementByKey() aligns items narrower than the viewport to the inline start', async () => {
+      const apiRef = createRef<SnapScrollerApiRef>();
+      const r = render(<RtlTest apiRef={apiRef} style={{ width: ITEM_SIZE * 2 }} />);
+      
+      await expect.poll(() => apiRef.current).toBeTruthy();
+      
+      apiRef.current!.scrollToElementByKey(2, 'instant');
+      
+      await expect.poll(() => getScroller(r).scrollLeft).toBe(-2 * ITEM_SIZE);
+      expect(getItem(r, 2).getBoundingClientRect().right).toBeCloseTo(getScroller(r).getBoundingClientRect().right, 0);
+    });
+    
+    it('reports the snapped item after a swipe to the left', async () => {
+      const onScrollSnapChange = vi.fn();
+      const r = render(<RtlTest onScrollSnapChange={onScrollSnapChange} />);
+      const scroller = getScroller(r);
+      
+      await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+      scroller.scrollTo({ left: -3 * ITEM_SIZE, behavior: 'instant' });
+      
+      await expect.poll(() => onScrollSnapChange.mock.lastCall?.[1]).toBe(3);
+    });
+  });
 });

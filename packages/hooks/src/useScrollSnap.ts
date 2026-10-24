@@ -13,10 +13,23 @@ const parsePx = (v: string | null | undefined) => {
   return Number.isFinite(n) ? n : 0;
 }
 
-const getScrollPaddingStart = (scroller: HTMLElement, axis: ScrollSnapAxis) => {
-  const cs = getComputedStyle(scroller);
+const getScrollPaddingStart = (cs: CSSStyleDeclaration, axis: ScrollSnapAxis) => {
   if (axis === 'x') return parsePx(cs.scrollPaddingInlineStart || cs.scrollPaddingLeft);
   return parsePx(cs.scrollPaddingBlockStart || cs.scrollPaddingTop);
+}
+
+interface ScrollerLayout {
+  padStart: number;
+  rtl: boolean;
+}
+
+const readScrollerLayout = (scroller: HTMLElement, axis: ScrollSnapAxis, respectScrollPadding: boolean): ScrollerLayout => {
+  const cs = getComputedStyle(scroller);
+  
+  return {
+    padStart: respectScrollPadding ? getScrollPaddingStart(cs, axis) : 0,
+    rtl: axis === 'x' && cs.direction === 'rtl',
+  };
 }
 
 const getElementOffsetInScroller = (
@@ -35,7 +48,7 @@ const getElementOffsetInScroller = (
   return offset;
 };
 
-const defaultGetSnapPoint = (scroller: HTMLElement, el: HTMLElement, axis: ScrollSnapAxis, align: ScrollSnapAlign, respectScrollPadding: boolean) => {
+const defaultGetSnapPoint = (scroller: HTMLElement, el: HTMLElement, axis: ScrollSnapAxis, align: ScrollSnapAlign, { padStart, rtl }: ScrollerLayout) => {
   if (!scroller.contains(el)) {
     return axis === 'x' ? scroller.scrollLeft : scroller.scrollTop;
   }
@@ -48,10 +61,14 @@ const defaultGetSnapPoint = (scroller: HTMLElement, el: HTMLElement, axis: Scrol
   const elCenterInScroll = elStartInScroll + elSize / 2;
   const elEndInScroll = elStartInScroll + elSize;
   
-  const padStart = respectScrollPadding ? getScrollPaddingStart(scroller, axis) : 0;
+  if (align === 'center') return elCenterInScroll - viewportSize / 2;
+  
+  if (rtl) {
+    if (align === 'start') return elEndInScroll - viewportSize + padStart;
+    return elStartInScroll;
+  }
   
   if (align === 'start') return elStartInScroll - padStart;
-  if (align === 'center') return elCenterInScroll - viewportSize / 2;
   return elEndInScroll - viewportSize;
 };
 
@@ -106,13 +123,12 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
   
   const hasNativeScrollEndRef = useRef(false);
   
-  const calculateSnapPoint = useCallback((element: HTMLElement) => {
+  const calculateSnapPoint = useCallback((element: HTMLElement, layout?: ScrollerLayout) => {
     const scroller = scrollerRef.current;
     if (!scroller) return;
+    if (hasCustomSnapPoint) return customSnapPoint(scroller, element, axis, align);
 
-    return hasCustomSnapPoint
-      ? customSnapPoint(scroller, element, axis, align)
-      : defaultGetSnapPoint(scroller, element, axis, align, respectScrollPadding);
+    return defaultGetSnapPoint(scroller, element, axis, align, layout ?? readScrollerLayout(scroller, axis, respectScrollPadding));
   }, [respectScrollPadding, axis, align, hasCustomSnapPoint, customSnapPoint, scrollerRef])
   
   const getPointed = useCallback((scroller?: HTMLElement) => {
@@ -136,11 +152,16 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
   const measure = useCallback(() => {
     points.clear();
     
+    const scroller = scrollerRef.current;
+    if (!scroller) return;
+    
+    const layout = readScrollerLayout(scroller, axis, respectScrollPadding);
+    
     for (const key of items.keys()) {
       const element = items.getByKey(key);
       if (!element) continue;
 
-      const point = calculateSnapPoint(element);
+      const point = calculateSnapPoint(element, layout);
       if (point == null) continue;
 
       points.set(key, point);
@@ -155,7 +176,7 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
       committedKey.current = pointed.key;
       pendingKey.current = pointed.key;
     }
-  }, [calculateSnapPoint, getPointed, items, points]);
+  }, [calculateSnapPoint, getPointed, items, points, scrollerRef, axis, respectScrollPadding]);
 
   const scheduleMeasure = useCallback(() => {
     if (rafMeasureId.current != null) return;
@@ -240,10 +261,11 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
   
   const scrollToElementByKey = useCallback((key: K, behavior: ScrollBehavior = 'smooth') => {
     const item = items.getByKey(key as K)
-    if (!item) return
+    if (!item) return false
     
     if (behavior === 'instant') pendingKey.current = key
     scrollToElement(item, behavior)
+    return true
   }, [scrollToElement, items])
   
   const getCommited = useCallback(() => committedKey.current, [])

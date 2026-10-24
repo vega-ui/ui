@@ -2,7 +2,7 @@
 
 ## Overview
 
-`DayPicker` wraps `DataGridPicker` and adds day-grid-specific context such as visible `year` and `month`. Layout can be static or scroller-driven.
+`DayPicker` wraps `DataGridPicker` and adds day-grid-specific context: the visible `month` (first day as a `YYYY-MM-DD` string) and the `calendar` system. Layout can be static or scroller-driven.
 
 ## Required Parts
 
@@ -15,6 +15,10 @@ Required. Owns day-grid selection mode and visible period context.
 ### `DayPickerLayout`
 
 Optional default day-grid renderer.
+
+### `DayPickerCell`
+
+Cell template. Children of `DayPickerLayout` and `DayPickerScrollerLayout` are required and rendered once per day inside a cell context read by `useDayPickerCellContext()`; usually `<DayPickerCell />`. Put custom content inside `DayPickerCell` to keep selection, focus, and disabled states.
 
 ### `DayPickerRowGroup`, `DayPickerRow`, `DayPickerItem`
 
@@ -36,7 +40,9 @@ Optional scroller-based paging infrastructure for month navigation.
 <DayPicker>
   <DayPickerScroller>
     <DayPickerScrollerContent>
-      <DayPickerScrollerLayout includeOverflowDays />
+      <DayPickerScrollerLayout includeOverflowDays>
+        <DayPickerCell />
+      </DayPickerScrollerLayout>
     </DayPickerScrollerContent>
   </DayPickerScroller>
 </DayPicker>

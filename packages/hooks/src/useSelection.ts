@@ -118,7 +118,7 @@ export const useSelection = <K, const M extends Selection>({
       if (eq(start, key)) return
 
       if (array.length === 1) {
-        const range = resolveRangeOrDefault(start, key)
+        const range = comparator(start, key) > 0 ? resolveRangeOrDefault(key, start) : resolveRangeOrDefault(start, key)
         setSelected(range as SelectedValue<M, K>)
         return
       }
@@ -136,7 +136,7 @@ export const useSelection = <K, const M extends Selection>({
     }
     
     setSelected(key as SelectedValue<M, K>)
-  }, [selection, selected, eq, resolveRangeOrDefault, isDisabled, setSelected])
+  }, [selection, selected, eq, comparator, resolveRangeOrDefault, isDisabled, setSelected])
 
   const resolvedRange = useCallback((start: K, end: K): SelectedValue<M, K> => {
     return resolveRangeOrDefault(start, end) as SelectedValue<M, K>

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { formatISODateTime, parseISODateTime } from '../../date';
+import { parseISODateTime } from '../../date';
 
 describe('parseISODateTime', () => {
   it('parses hours and minutes as local time', () => {
@@ -13,11 +13,6 @@ describe('parseISODateTime', () => {
 
   it('parses seconds', () => {
     expect(parseISODateTime('2025-05-12T14:30:15')?.getSeconds()).toBe(15);
-  });
-
-  it('round-trips with formatISODateTime', () => {
-    expect(formatISODateTime(parseISODateTime('2025-05-12T14:30:15')!)).toBe('2025-05-12T14:30:15');
-    expect(formatISODateTime(parseISODateTime('2025-05-12T14:30')!)).toBe('2025-05-12T14:30');
   });
 
   it.each([
