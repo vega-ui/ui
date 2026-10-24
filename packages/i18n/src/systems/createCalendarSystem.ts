@@ -86,6 +86,7 @@ export const createCalendarSystem = (identifier: string): CalendarSystem => {
   const days = new Map<string, IntlDayParts>()
   const years = new Map<string, IntlYearInfo>()
   const anchors = new Map<string | undefined, string>()
+  const directions = new Map<string | undefined, number>()
 
   const getYearKey = (era: string | undefined, year: number) => `${era ?? ''}:${year}`
 
@@ -199,7 +200,7 @@ export const createCalendarSystem = (identifier: string): CalendarSystem => {
     throw new RangeError(`Unknown era of the ${identifier} calendar: ${era}`)
   }
 
-  const getYearDirection = (date: string) => {
+  const readYearDirection = (date: string) => {
     const { era, year } = readDay(date)
     const next = readDay(addISODays(date, BEYOND_YEAR_DAYS))
     const previous = readDay(addISODays(date, -BEYOND_YEAR_DAYS))
@@ -208,6 +209,18 @@ export const createCalendarSystem = (identifier: string): CalendarSystem => {
     if (previous.era === era) return previous.year > year ? -1 : 1
 
     return 1
+  }
+
+  const getYearDirection = (date: string) => {
+    const { era } = readDay(date)
+
+    const cached = directions.get(era)
+    if (cached) return cached
+
+    const direction = readYearDirection(date)
+    directions.set(era, direction)
+
+    return direction
   }
 
   const getNeighbourYear = (year: IntlYearInfo, distance: number) => {

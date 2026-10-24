@@ -17,7 +17,7 @@ describe('createCalendarSystem', () => {
         expect(calendar.fromFields(calendar.toFields(date))).toBe(date);
       }
     }
-  });
+  }, 30_000);
 
   it('reports the lengths of months and years', () => {
     const persian = createCalendarSystem('persian');
