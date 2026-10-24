@@ -100,6 +100,7 @@ describe('NumberField', () => {
     describe('wheel', () => {
       it('wheel up increments when changeOnWheel=true', async () => {
         const input = getInput(r);
+        input.focus();
         
         fireEvent.wheel(input, { deltaY: -10 });
         
@@ -110,6 +111,7 @@ describe('NumberField', () => {
       
       it('wheel down decrements when changeOnWheel=true', async () => {
         const input = getInput(r);
+        input.focus();
         
         fireEvent.wheel(input, { deltaY: 10 });
         
@@ -125,6 +127,15 @@ describe('NumberField', () => {
         input.focus();
         
         fireEvent.wheel(input, { deltaY: -10 });
+        await expect.element(input).toHaveValue('');
+      });
+
+      it('leaves the value and the page scroll alone without focus', async () => {
+        const input = getInput(r);
+
+        const notPrevented = fireEvent.wheel(input, { deltaY: -10 });
+
+        expect(notPrevented).toBe(true);
         await expect.element(input).toHaveValue('');
       });
     });
@@ -232,6 +243,30 @@ describe('NumberField', () => {
       (r.getByTestId('form') as HTMLFormElement).reset();
       
       await expect.element(getIncrement(r)).toBeEnabled();
+    });
+
+    it('keeps the precision of a fractional step', async () => {
+      const r = render(<NumberFieldTest step={0.1} />);
+      const input = getInput(r);
+
+      await userEvent.type(input, '0.7');
+      await userEvent.keyboard('{ArrowUp}');
+      await expect.element(input).toHaveValue('0.8');
+
+      await userEvent.keyboard('{ArrowUp}{ArrowUp}{ArrowUp}{ArrowDown}');
+      await expect.element(input).toHaveValue('1');
+    });
+
+    it('keeps the arrow keys working with a user onKeyDown', async () => {
+      const onKeyDown = vi.fn();
+      const r = render(<NumberFieldTest onKeyDown={onKeyDown} />);
+      const input = getInput(r);
+
+      await userEvent.type(input, '3');
+      await userEvent.keyboard('{ArrowUp}');
+
+      await expect.element(input).toHaveValue('4');
+      expect(onKeyDown).toHaveBeenCalled();
     });
   });
   

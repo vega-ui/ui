@@ -34,5 +34,7 @@
 ## State Model
 
 - The root tracks whether the current value is at min or max.
-- Arrow keys and optional wheel events step the value through root logic.
+- Arrow keys and optional wheel events step the value through root logic. Like `<input type="number">`, the wheel steps only the focused field; without focus it scrolls the page.
+- A step keeps the decimals of the value and of `step` (`0.7` + `0.1` gives `0.8`).
+- A root `onKeyDown` runs after the built-in arrow handling and does not replace it.
 - Input value remains native string input until parsed or clamped by the numeric helpers.

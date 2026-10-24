@@ -1,4 +1,5 @@
 import { clamp } from './clamp'
+import { countDecimals } from './countDecimals'
 
 export interface SnapToStepOptions {
   min: number
@@ -15,11 +16,8 @@ export interface SnapToStepOptions {
 export const snapToStep = (value: number, { min, max, step }: SnapToStepOptions) => {
   if (step === 'any' || step <= 0) return clamp(min, value, max)
 
-  const minDecimals = String(min).split('.')[1]?.length ?? 0
-  const stepDecimals = String(step).split('.')[1]?.length ?? 0
-
   const steps = Math.round((clamp(min, value, max) - min) / step)
   const lastStep = Math.floor(Number(((max - min) / step).toPrecision(12)))
 
-  return Number((min + Math.min(steps, lastStep) * step).toFixed(Math.max(minDecimals, stepDecimals)))
+  return Number((min + Math.min(steps, lastStep) * step).toFixed(Math.max(countDecimals(min), countDecimals(step))))
 }

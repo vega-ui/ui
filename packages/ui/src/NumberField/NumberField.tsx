@@ -9,7 +9,7 @@ import {
 } from 'react';
 import { TextField, TextFieldProps } from '../TextField';
 import style from './style.module.css'
-import { clamp, csx, dispatchEvents, mergeRefs, setValue } from '@vega-ui/utils';
+import { addWithPrecision, clamp, csx, dispatchEvents, mergeEventHandlers, mergeRefs, setValue } from '@vega-ui/utils';
 import { useEventCallback } from '@vega-ui/hooks';
 import { getNumberMaskOptions, getNumberValue } from './helpers';
 import { useMaskito } from '@maskito/react';
@@ -89,6 +89,7 @@ export const NumberField: FC<NumberFieldProps> = ({
   maximumFractionDigits = 2,
   children,
   ref,
+  onKeyDown: _onKeyDown,
   ...props
 }) => {
   const [isMin, setIsMin] = useState(false);
@@ -139,7 +140,7 @@ export const NumberField: FC<NumberFieldProps> = ({
       return
     }
 
-    const nextValue = clamp(min, getNumberValue(value) + step, max);
+    const nextValue = clamp(min, addWithPrecision(getNumberValue(value), step), max);
     changeValue(nextValue)
   }, [max, min, step, changeValue])
 
@@ -155,7 +156,7 @@ export const NumberField: FC<NumberFieldProps> = ({
       return
     }
 
-    const nextValue = clamp(min, getNumberValue(value) - step, max);
+    const nextValue = clamp(min, addWithPrecision(getNumberValue(value), -step), max);
     changeValue(nextValue)
   }, [min, max, step, changeValue])
 
@@ -172,6 +173,8 @@ export const NumberField: FC<NumberFieldProps> = ({
   }
   
   const onWheel = useEventCallback((e: WheelEvent) => {
+    if (e.target !== document.activeElement) return
+
     e.preventDefault()
 
     if (e.deltaY < 0) increment()
@@ -202,7 +205,7 @@ export const NumberField: FC<NumberFieldProps> = ({
         ref={mergeRefs([ref, wrapperRef])}
         size={size}
         className={csx(style.numberTextField, className)}
-        onKeyDown={onKeyDown}
+        onKeyDown={mergeEventHandlers(onKeyDown, _onKeyDown)}
         {...props}
       >
         {children}
