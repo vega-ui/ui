@@ -388,6 +388,32 @@ describe('Select', () => {
           });
         });
         
+        it('selects an option with a falsy value (0) by typing', async () => {
+          const onSelectValue = vi.fn();
+
+          const r2 = render(
+            <Select data-testid='select-numeric' onSelectValue={onSelectValue}>
+              <SelectCombobox data-testid='combobox-numeric'>
+                <SelectValue placeholder={PLACEHOLDER} />
+              </SelectCombobox>
+
+              <SelectPortal>
+                <SelectListbox>
+                  <SelectOption value={0}>Zero</SelectOption>
+                  <SelectOption value={1}>One</SelectOption>
+                </SelectListbox>
+              </SelectPortal>
+            </Select>,
+          );
+
+          (r2.getByTestId('combobox-numeric') as HTMLElement).focus();
+          await userEvent.keyboard('zer');
+
+          await waitFor(() => {
+            expect(onSelectValue).toHaveBeenCalledWith(0);
+          });
+        });
+
         it('does not auto-select while open (typing only searches)', async () => {
           const onSelectValue = vi.fn();
           r.rerender(<SelectTest defaultValue='' onOpenChange={vi.fn()} onSelectValue={onSelectValue} />);
