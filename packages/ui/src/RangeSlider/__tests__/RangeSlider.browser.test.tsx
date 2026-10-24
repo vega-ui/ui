@@ -1,6 +1,6 @@
 import { ComponentProps, FC, FormEvent, PropsWithChildren } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, render, type RenderResult } from '@testing-library/react';
+import { cleanup, fireEvent, render, type RenderResult } from '@testing-library/react';
 import { userEvent } from 'vitest/browser';
 
 import { RangeSlider } from '../RangeSlider';
@@ -72,6 +72,7 @@ const FormTest: FC<PropsWithChildren<{ onSubmit: (data: Record<string, string>) 
 };
 
 const getRoot = (r: RenderResult) => r.getByTestId(TESTID_ROOT);
+
 const getProgress = (r: RenderResult) => r.getByTestId(TESTID_PROGRESS);
 
 const getThumb0 = (r: RenderResult) => r.getByTestId(TESTID_THUMB_0);
@@ -79,6 +80,11 @@ const getThumb1 = (r: RenderResult) => r.getByTestId(TESTID_THUMB_1);
 
 const getInput0 = (r: RenderResult) => r.getByTestId(TESTID_INPUT_0) as HTMLInputElement;
 const getInput1 = (r: RenderResult) => r.getByTestId(TESTID_INPUT_1) as HTMLInputElement;
+
+const pointAt = (r: RenderResult, fraction: number) => {
+  const rect = getRoot(r).getBoundingClientRect();
+  return { pointerId: 1, pointerType: 'mouse', clientX: rect.left + rect.width * fraction, clientY: rect.top };
+};
 
 describe('RangeSlider', () => {
   describe('Critical User Paths', () => {
@@ -484,8 +490,97 @@ describe('RangeSlider', () => {
       await userEvent.keyboard('{ArrowRight}');
       await expect.element(getInput0(r)).toHaveValue('30');
     });
+
+    it('keeps keyboard and dragging working with user handlers', async () => {
+      const onKeyDown = vi.fn();
+      const onPointerDown = vi.fn();
+      const onChangeValue = vi.fn();
+      const r = render(<RangeSliderTest defaultValue={DEFAULT_VALUE} step={10} onKeyDown={onKeyDown} onPointerDown={onPointerDown} onChangeValue={onChangeValue} />);
+
+      getThumb0(r).focus();
+      await userEvent.keyboard('{ArrowRight}');
+
+      expect(onChangeValue).toHaveBeenLastCalledWith([30, 80]);
+      expect(onKeyDown).toHaveBeenCalledTimes(1);
+
+      fireEvent.pointerDown(getRoot(r), pointAt(r, 1));
+
+      expect(onChangeValue).toHaveBeenLastCalledWith([30, MAX]);
+      expect(onPointerDown).toHaveBeenCalledTimes(1);
+    });
+
+    it('counts pointer steps from min', async () => {
+      const onChangeValue = vi.fn();
+      const r = render(<RangeSliderTest min={1} max={9} step={2} defaultValue={[1, 7]} onChangeValue={onChangeValue} />);
+
+      fireEvent.pointerDown(getRoot(r), pointAt(r, 0.375));
+
+      expect(onChangeValue).toHaveBeenLastCalledWith([1, 5]);
+    });
+
+    it('moves the left thumb to min when the step overshoots it', async () => {
+      const onChangeValue = vi.fn();
+      const r = render(<RangeSliderTest defaultValue={[3, 80]} step={5} onChangeValue={onChangeValue} />);
+
+      getThumb0(r).focus();
+      await userEvent.keyboard('{ArrowLeft}');
+
+      expect(onChangeValue).toHaveBeenLastCalledWith([MIN, 80]);
+    });
+
+    it('keeps the right thumb within max', async () => {
+      const onChangeValue = vi.fn();
+      const r = render(<RangeSliderTest defaultValue={[20, 97]} step={5} onChangeValue={onChangeValue} />);
+
+      getThumb1(r).focus();
+      await userEvent.keyboard('{ArrowRight}{ArrowRight}');
+
+      expect(onChangeValue).toHaveBeenCalledTimes(1);
+      expect(onChangeValue).toHaveBeenLastCalledWith([20, MAX]);
+    });
+
+    it('moves a thumb up to the other one when the step overshoots it', async () => {
+      const onChangeValue = vi.fn();
+      const r = render(<RangeSliderTest defaultValue={[20, 25]} step={10} onChangeValue={onChangeValue} />);
+
+      getThumb0(r).focus();
+      await userEvent.keyboard('{ArrowRight}');
+
+      expect(onChangeValue).toHaveBeenLastCalledWith([25, 25]);
+    });
+
+    it('stops End at the last step that fits in max', async () => {
+      const onChangeValue = vi.fn();
+      const r = render(<RangeSliderTest defaultValue={[0, 30]} step={30} onChangeValue={onChangeValue} />);
+
+      getThumb1(r).focus();
+      await userEvent.keyboard('{End}');
+
+      expect(onChangeValue).toHaveBeenLastCalledWith([0, 90]);
+    });
+
+    it('keeps the precision of a fractional step', async () => {
+      const onChangeValue = vi.fn();
+      const r = render(<RangeSliderTest min={0} max={1} step={0.1} defaultValue={[0.1, 0.9]} onChangeValue={onChangeValue} />);
+
+      getThumb0(r).focus();
+      await userEvent.keyboard('{ArrowRight}{ArrowRight}');
+
+      expect(onChangeValue).toHaveBeenLastCalledWith([0.3, 0.9]);
+    });
+
+    it('stops dragging on pointercancel', async () => {
+      const onChangeValue = vi.fn();
+      const r = render(<RangeSliderTest defaultValue={DEFAULT_VALUE} onChangeValue={onChangeValue} />);
+
+      fireEvent.pointerDown(getRoot(r), pointAt(r, 0.9));
+      fireEvent.pointerCancel(getRoot(r), pointAt(r, 0.9));
+      fireEvent.pointerMove(getRoot(r), pointAt(r, 1));
+
+      expect(onChangeValue).toHaveBeenLastCalledWith([20, 90]);
+    });
   });
-  
+
   describe('Accessibility', () => {
     describe('roles', () => {
       let r: RenderResult;

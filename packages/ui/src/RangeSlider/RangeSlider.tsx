@@ -12,7 +12,7 @@ import { SliderBase } from '../SliderBase';
 import { RangeSliderProvider } from './contexts';
 import { RangeSliderOrientation, RangeSliderSize, RangeSliderStep } from './types';
 import { calculateValue, getClosestIndex, normalizeValue } from './helpers';
-import { safeSetPointerCapture } from '@vega-ui/utils';
+import { mergeEventHandlers, safeSetPointerCapture, snapToStep } from '@vega-ui/utils';
 
 export interface RangeSliderProps extends Omit<HTMLAttributes<HTMLDivElement>, 'defaultValue' | 'onChange'> {
   /**
@@ -95,6 +95,11 @@ export const RangeSlider: FC<PropsWithChildren<RangeSliderProps>> = ({
   children,
   onChangeValue,
   defaultValue,
+  onKeyDown: _onKeyDown,
+  onPointerDown: _onPointerDown,
+  onPointerMove: _onPointerMove,
+  onPointerUp: _onPointerUp,
+  onPointerCancel: _onPointerCancel,
   ...props
 }) => {
   const sliderRef = useRef<HTMLDivElement>(null)
@@ -168,11 +173,10 @@ export const RangeSlider: FC<PropsWithChildren<RangeSliderProps>> = ({
 
     if (['ArrowDown', 'ArrowUp', 'ArrowLeft', 'ArrowRight'].includes(e.key)) {
       e.preventDefault()
-      const val = ['ArrowDown', 'ArrowLeft'].includes(e.key) ? value[index] - formattedStep : value[index] + formattedStep
+      const delta = ['ArrowDown', 'ArrowLeft'].includes(e.key) ? -formattedStep : formattedStep
+      const val = snapToStep(value[index] + delta, { min, max, step })
 
-      if (index === 0 && val > value[1]) return
-      if (index === 1 && val < value[0]) return
-      if (val >= min) changeValue(index, val)
+      changeValue(index, index === 0 ? Math.min(val, value[1]) : Math.max(val, value[0]))
 
       return
     }
@@ -182,7 +186,7 @@ export const RangeSlider: FC<PropsWithChildren<RangeSliderProps>> = ({
 
       const val = e.key === 'Home'
         ? index === 0 ? min : value[0]
-        : index === 1 ? max : value[1]
+        : index === 1 ? snapToStep(max, { min, max, step }) : value[1]
       
       changeValue(index, val)
 
@@ -190,7 +194,7 @@ export const RangeSlider: FC<PropsWithChildren<RangeSliderProps>> = ({
     }
   }
   
-  const onPointerUp = () => {
+  const stopDragging = () => {
     index.current = null;
   }
 
@@ -212,10 +216,11 @@ export const RangeSlider: FC<PropsWithChildren<RangeSliderProps>> = ({
         size={size}
         min={min}
         max={max}
-        onKeyDown={onKeyDown}
-        onPointerDown={onPointerDown}
-        onPointerMove={onPointerMove}
-        onPointerUp={onPointerUp}
+        onKeyDown={mergeEventHandlers(onKeyDown, _onKeyDown)}
+        onPointerDown={mergeEventHandlers(onPointerDown, _onPointerDown)}
+        onPointerMove={mergeEventHandlers(onPointerMove, _onPointerMove)}
+        onPointerUp={mergeEventHandlers(stopDragging, _onPointerUp)}
+        onPointerCancel={mergeEventHandlers(stopDragging, _onPointerCancel)}
         {...props}
       >
         {children}

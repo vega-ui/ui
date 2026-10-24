@@ -36,3 +36,5 @@
 - The root supports controlled and uncontrolled value models.
 - Pointer and keyboard input both update the same root value.
 - When `step='any'`, pointer movement is not snapped.
+- Like `<input type="range">`, steps count from `min`, the value stays within `min` and the last step that fits in `max`, and keeps the precision of `step` (`step={0.1}` gives `0.3`, not `0.30000000000000004`).
+- Handlers passed to the root (`onKeyDown`, `onPointerDown`, …) run after the built-in ones and do not replace them.
