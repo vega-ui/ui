@@ -64,6 +64,7 @@ Fixes:
 - `IndexedSnapScroller` re-syncs to a controlled `index` only when that prop changes, so the year picker no longer jumps back to the visible year after scrolling
 - `Calendar` month and year arrows no longer stop working after a few clicks: each click moves one page from the page the scroll is already heading to (clicks during a smooth scroll were lost in Firefox), the window grows when the target is outside it, and focus keeps the same day across quick month changes
 - `@vega-ui/hooks` (breaking): `useIndexes` replaces `push()` / `shift()` with `extend(dir)` (grow the window at an edge without moving existing pages) and `center(index)` (re-center the window on a page); `useScrollSnap`'s `scrollToElementByKey` returns whether the item exists
+- `@vega-ui/hooks` `useSelection` matches `disabled` keys with `equals`, like selection: object keys with a custom `equals` (`{ row, col }`) are blocked, not only the same reference
 
 Removed unused APIs (breaking):
 - `@vega-ui/react`: `useMonthPickerScrollerContext` (an alias of `useIndexedSnapScrollerContext`; `MonthPicker` has no scroller)
