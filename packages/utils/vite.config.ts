@@ -1,5 +1,5 @@
 /// <reference types="vitest/config" />
-import { defineConfig } from 'vite'
+import { defaultServerConditions, defineConfig } from 'vite'
 import { resolve } from 'path'
 import dts from 'vite-plugin-dts'
 import * as packageJson from './package.json'
@@ -29,6 +29,9 @@ export default defineConfig({
         preserveModules: true,
       },
     },
+  },
+  ssr: {
+    resolve: { conditions: ['source', ...defaultServerConditions] },
   },
   test: {
     env: { LANG: 'en_US.UTF-8', TZ: 'UTC' },

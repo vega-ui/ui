@@ -1,4 +1,5 @@
 import { defineProject, mergeConfig } from 'vitest/config'
+import { defaultClientConditions } from 'vite'
 import { playwright } from '@vitest/browser-playwright';
 import svgr from 'vite-plugin-svgr';
 import react from '@vitejs/plugin-react'
@@ -8,6 +9,7 @@ export default mergeConfig(
   configShared,
   defineProject({
     plugins: [svgr(), react()],
+    resolve: { conditions: ['source', ...defaultClientConditions] },
     test: {
       maxWorkers: 1,
       browser: {
