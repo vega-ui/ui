@@ -1,7 +1,7 @@
 import { ComponentProps, FC } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
-import { userEvent } from 'vitest/browser';
+import { page, userEvent } from 'vitest/browser';
 
 import { Popover } from '../Popover';
 import { PopoverTrigger, PopoverContent, PopoverBackdrop } from '../components';
@@ -54,8 +54,8 @@ const waitOpened = async (r: RenderResult) => {
   await expect.element(getContent(r)).toHaveAttribute('data-status', 'open')
 };
 
-const waitClosed = async (r: RenderResult) => {
-  await expect.element(getContent(r)).not.toBeInTheDocument()
+const waitClosed = async () => {
+  await expect.element(page.getByTestId(TESTID_CONTENT)).not.toBeInTheDocument()
 };
 
 describe('Popover', () => {
@@ -89,7 +89,7 @@ describe('Popover', () => {
         await waitOpened(r);
         
         await closeByOutsideClick();
-        await waitClosed(r);
+        await waitClosed();
         
         await expect.element(queryBackdrop(r)).not.toBeInTheDocument();
       });
@@ -113,7 +113,7 @@ describe('Popover', () => {
         await waitOpened(r);
         
         await closeByOutsideClick();
-        await waitClosed(r);
+        await waitClosed();
         
         await expect.element(queryBackdrop(r)).not.toBeInTheDocument();
       });
@@ -233,7 +233,7 @@ describe('Popover', () => {
         await waitOpened(r);
         
         await closeByEscape();
-        await waitClosed(r);
+        await waitClosed();
       });
     });
     
@@ -248,7 +248,7 @@ describe('Popover', () => {
         await expect.element(getFocusableInside(r)).toHaveFocus();
         
         await closeByEscape();
-        await waitClosed(r);
+        await waitClosed();
         
         await expect.element(getTrigger(r)).toHaveFocus();
       });

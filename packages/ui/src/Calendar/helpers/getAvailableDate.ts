@@ -1,39 +1,37 @@
+import { CalendarSystem, isSameCalendarMonth, addISODays } from '@vega-ui/i18n';
 import { isDisabledDate } from './isDisabledDate';
-import { normalizeDate } from '@vega-ui/utils';
 import { CalendarDatesDisabled } from '../types';
 
 interface GetAvailableDateOptions {
-  from?: Date;
-  to?: Date;
+  from?: string;
+  to?: string;
   disabled?: CalendarDatesDisabled;
 }
 
-export const getAvailableDate = (date: Date, { from, to, disabled }: GetAvailableDateOptions): Date | null => {
-  let d = normalizeDate(date)
+export const getAvailableDate = (
+  calendar: CalendarSystem,
+  date: string,
+  { from, to, disabled = [] }: GetAvailableDateOptions
+): string | undefined => {
+  let day = date
   
-  if (from && d < normalizeDate(from)) d = normalizeDate(from)
-  if (to && d > normalizeDate(to)) d = normalizeDate(to)
+  if (from && day < from) day = from
+  if (to && day > to) day = to
   
-  if (!isDisabledDate(d.getTime(), disabled ?? [])) return d
+  const isAvailable = (candidate: string) =>
+    !isDisabledDate(candidate, disabled) && (!from || candidate >= from) && (!to || candidate <= to)
   
-  const month = d.getMonth()
+  if (isAvailable(day)) return day
   
-  const forward = new Date(d)
-  const backward = new Date(d)
-  
-  while (true) {
-    forward.setDate(forward.getDate() + 1)
-    if (forward.getMonth() === month) {
-      if (!isDisabledDate(forward.getTime(), disabled ?? [])) return forward
-    }
+  for (let distance = 1; ; distance++) {
+    const forward = addISODays(day, distance)
+    const backward = addISODays(day, -distance)
     
-    backward.setDate(backward.getDate() - 1)
-    if (backward.getMonth() === month) {
-      if (!isDisabledDate(backward.getTime(), disabled ?? [])) return backward
-    }
+    const forwardInMonth = isSameCalendarMonth(calendar, forward, day)
+    const backwardInMonth = isSameCalendarMonth(calendar, backward, day)
     
-    if (forward.getMonth() !== month && backward.getMonth() !== month) break
+    if (forwardInMonth && isAvailable(forward)) return forward
+    if (backwardInMonth && isAvailable(backward)) return backward
+    if (!forwardInMonth && !backwardInMonth) return undefined
   }
-  
-  return null
 }

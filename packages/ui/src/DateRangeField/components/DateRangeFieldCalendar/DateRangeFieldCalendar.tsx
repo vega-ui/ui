@@ -1,8 +1,7 @@
 import { FC } from 'react';
 import { Calendar, CalendarProps } from '../../../Calendar';
 import { useDateRangeFieldContext } from '../../contexts';
-import { maskitoStringifyDate } from '@maskito/kit';
-import { dispatchEvents, setValue as setNativeValue, formatISODate, parseISODate } from '@vega-ui/utils';
+import { dispatchEvents, setValue as setNativeValue, formatTemplateDate } from '@vega-ui/utils';
 
 export type DateRangeFieldCalendarProps = CalendarProps<'range'>
 
@@ -26,30 +25,27 @@ export const DateRangeFieldCalendar: FC<DateRangeFieldCalendarProps> = ({ onChan
     min,
     date,
     inputRef,
-    format,
-    separator,
+    template,
+    calendar,
+    locale,
     changeDate,
     disabledDates,
-    rangeSeparator,
-    lastStringified
+    rangeSeparator
   } = useDateRangeFieldContext()
   
   const onChangeValue = (iso: [start: string, end: string]) => {
     _onChangeValue?.(iso)
     
-    const value: [Date?, Date?] = [parseISODate(iso[0]), parseISODate(iso[1])]
-    changeDate(value)
-    
-    const [start, end] = value
+    const [start, end] = iso
+    changeDate(iso)
     
     const input = inputRef?.current
     if (!input) return
 
-    const stringifiedStartDate = start ? maskitoStringifyDate(start, { mode: format, separator, min, max }) : ''
-    const stringifiedEndDate = end ? maskitoStringifyDate(end, { mode: format, separator, min, max }) : ''
+    const stringifiedStartDate = start ? formatTemplateDate(calendar, start, template) : ''
+    const stringifiedEndDate = end ? formatTemplateDate(calendar, end, template) : ''
     const stringified = `${stringifiedStartDate}${stringifiedEndDate ? rangeSeparator : ''}${stringifiedEndDate}`
     
-    lastStringified.current = stringified;
     setNativeValue(input, stringified)
     dispatchEvents(input)
   }
@@ -57,9 +53,11 @@ export const DateRangeFieldCalendar: FC<DateRangeFieldCalendarProps> = ({ onChan
   return (
     <Calendar
       compact
-      max={formatISODate(max)}
-      min={formatISODate(min)}
-      value={[formatISODate(date[0]), formatISODate(date[1])]}
+      max={max}
+      min={min}
+      value={date}
+      calendar={calendar}
+      locale={locale}
       selection='range'
       onChangeValue={onChangeValue}
       disabledDates={disabledDates}

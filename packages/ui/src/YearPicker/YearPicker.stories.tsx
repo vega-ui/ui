@@ -1,27 +1,66 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { ChangeEvent, FC, useState } from 'react';
-
+import { FC, ReactNode, useState } from 'react';
 import { YearPicker } from './YearPicker';
 import {
+  YearPickerCell,
   YearPickerItem,
   YearPickerLayout,
-  YearPickerRow, YearPickerRowGroup,
+  YearPickerRow,
+  YearPickerRowGroup,
   YearPickerScroller,
   YearPickerScrollerContent,
   YearPickerScrollerLayout,
 } from './components';
-import { createYearPickerGrid, getIndexByYear } from './helpers';
-import { useIndexedSnapScrollerContext } from '../IndexedSnapScroller';
-import { Separator } from '../Separator';
-import { NumberField, NumberFieldDecrementButton, NumberFieldIncrementButton, NumberFieldInput } from '../NumberField';
-import { getCurrentDate } from '@vega-ui/utils';
-import { useYearPickerScrollerContext } from './contexts';
+import { useYearPickerCellContext } from './contexts';
+import { createYearPickerGrid } from './helpers';
+import { Button } from '../Button';
+import { Card } from '../Card';
+import { Code } from '../Code';
+import { Heading } from '../Heading';
+import { Text } from '../Text';
+import { addCalendarYears, getCalendarYearStart, gregorianCalendar, createCalendarSystem } from '@vega-ui/i18n';
+import { formatISODate, getCurrentDate } from '@vega-ui/utils';
+
+const calendarSystems = [
+  { name: 'Japanese', locale: 'ja-JP', calendar: createCalendarSystem('japanese'), year: '2019-05-01', start: '2014-01-01', note: 'Heisei 31 is followed by Reiwa 1 in 2019' },
+  { name: 'Buddhist', locale: 'th-TH', calendar: createCalendarSystem('buddhist'), year: undefined, start: undefined, note: 'Years count from 543 BCE' },
+  { name: 'Persian', locale: 'fa-IR', calendar: createCalendarSystem('persian'), year: undefined, start: undefined, note: 'Years start at Nowruz in March' },
+  { name: 'Islamic', locale: 'ar-SA', calendar: createCalendarSystem('islamic-umalqura'), year: undefined, start: undefined, note: 'Lunar years of 354 or 355 days' },
+];
+
+const thisYear = getCalendarYearStart(gregorianCalendar, formatISODate(getCurrentDate()));
+const shift = (years: number) => addCalendarYears(gregorianCalendar, thisYear, years);
+
+const zodiac = ['Monkey', 'Rooster', 'Dog', 'Pig', 'Rat', 'Ox', 'Tiger', 'Rabbit', 'Dragon', 'Snake', 'Horse', 'Goat'];
+
+const Stack: FC<{ children: ReactNode; gap?: number }> = ({ children, gap = 12 }) => (
+  <div style={{ display: 'flex', flexDirection: 'column', gap }}>{children}</div>
+);
+
+const Row: FC<{ children: ReactNode }> = ({ children }) => (
+  <div style={{ display: 'flex', flexWrap: 'wrap', gap: 24, alignItems: 'flex-start' }}>{children}</div>
+);
+
+const Caption: FC<{ children: ReactNode }> = ({ children }) => (
+  <Text size={2} style={{ color: 'var(--color-gray-accent-600)' }}>{children}</Text>
+);
+
+const YearScroller: FC = () => (
+  <YearPickerScroller>
+    <YearPickerScrollerContent>
+      <YearPickerScrollerLayout>
+        <YearPickerCell />
+      </YearPickerScrollerLayout>
+    </YearPickerScrollerContent>
+  </YearPickerScroller>
+);
 
 const meta: Meta<typeof YearPicker> = {
   title: 'Data/YearPicker/YearPicker',
   component: YearPicker,
+  parameters: { layout: 'centered' },
   args: {
-    children: <YearPickerLayout />,
+    children: <YearPickerLayout><YearPickerCell /></YearPickerLayout>,
   },
   argTypes: {
     selection: {
@@ -43,345 +82,299 @@ const meta: Meta<typeof YearPicker> = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const currentYear = new Date().getFullYear();
-
-export const SingleSelection: Story = {
-  args: {
-    selection: 'single',
-  },
+/**
+ * A page of 12 years starting from the current year. Each year is keyed by
+ * its first day as an ISO string, e.g. `2026-01-01`.
+ */
+export const Default: Story = {
+  args: {},
 };
 
-export const MultipleSelection: Story = {
-  args: {
-    selection: 'multiple',
-  },
-};
-
-export const RangeSelection: Story = {
-  args: {
-    selection: 'range',
-  },
-};
-
-export const From: Story = {
-  args: {
-    from: 2030,
-    defaultActive: 2030,
-  },
-};
-
-export const To: Story = {
-  args: {
-    to: 2030,
-  },
-};
-
-export const RangeWithBounds: Story = {
-  args: {
-    selection: 'range',
-    from: currentYear - 2,
-    to: currentYear + 2,
-    children: (
-      <YearPickerLayout rows={4} cols={3} start={currentYear - 6} />
-    ),
-  },
-};
-
-export const DenseXsPrimary: Story = {
-  args: {
-    selection: 'single',
-    size: 'xs',
-    variant: 'primary',
-    children: (
-      <YearPickerLayout rows={5} cols={4} start={currentYear - 10} />
-    ),
-  },
-};
-
-export const LargeXlSecondary: Story = {
-  args: {
-    selection: 'single',
-    size: 'xl',
-    variant: 'secondary',
-    children: (
-      <YearPickerLayout rows={3} cols={4} start={currentYear - 4} />
-    ),
-  },
-};
-
-export const CustomWithLabels: Story = {
-  args: {
-    selection: 'single',
-  },
-  render: (props) => {
-    const labels = [
-      'Year of the Tiger',
-      'Year of the Rabbit',
-      'Year of the Dragon',
-      'Year of the Snake',
-      'Year of the Horse',
-      'Year of the Goat',
-    ];
-    
-    const getLabel = (year: number) =>
-      labels[Math.abs(year) % labels.length];
-    
-    const start = 2025;
-    const rows = 4;
-    const cols = 3;
-    const grid = createYearPickerGrid({ start, rows, cols, offset: 0 });
-    
-    return (
-      <YearPicker {...props}>
-        <YearPickerRowGroup>
-          {grid.map(({ row, data }) => (
-            <YearPickerRow row={row} key={row}>
-              {data.map(({ col, year }) => (
-                <YearPickerItem
-                  col={col}
-                  value={year}
-                  key={year}
-                  style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    alignItems: 'center',
-                    gap: 2,
-                    padding: 6,
-                  }}
-                >
-                  <span style={{ fontWeight: 500 }}>
-                    {year}
-                  </span>
-                  <span
-                    style={{
-                      fontSize: 12,
-                      color: 'var(--color-gray-accent-600)',
-                      textAlign: 'center',
-                    }}
-                  >
-                    {getLabel(year)}
-                  </span>
-                </YearPickerItem>
-              ))}
-            </YearPickerRow>
-          ))}
-        </YearPickerRowGroup>
-      </YearPicker>
-    );
-  },
-};
-
-const CustomGridLayout: FC<{ start: number; rows: number; cols: number }> = ({
- start,
- rows,
- cols,
-}) => (
-  <>
-    {createYearPickerGrid({ start, rows, cols, offset: 0 }).map(({ row, data }) => (
-      <YearPickerRow row={row} key={row}>
-        {data.map(({ col, year }) => (
-          <YearPickerItem col={col} value={year} key={year}>
-            {year}
-          </YearPickerItem>
-        ))}
-      </YearPickerRow>
-    ))}
-  </>
-);
-
-export const CustomLayout: Story = {
-  render: (props) => (
-    <YearPicker {...props}>
-      <CustomGridLayout start={currentYear - 12} rows={5} cols={5} />
-    </YearPicker>
-  ),
-};
-
-export const Swipable: Story = {
-  args: {
-    selection: 'range',
-  },
-  render: (props) => (
-    <YearPicker {...props}>
-      <YearPickerScroller>
-        <YearPickerScrollerContent>
-          <YearPickerScrollerLayout />
-        </YearPickerScrollerContent>
-      </YearPickerScroller>
-    </YearPicker>
-  ),
-};
-
-export const SwipableControlled: Story = {
-  args: {
-    selection: 'single',
-  },
-  render: (props) => {
-    const [year, setYear] = useState(getCurrentDate().getFullYear())
-    
-    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-      const year = Number(e.currentTarget.value.replace(/\s/i, ''))
-      if (isNaN(year)) return
-      setYear(year)
-    }
-    
-    return (
-      <div>
-        <NumberField>
-          <NumberFieldDecrementButton />
-          <NumberFieldInput min={0} onChange={onChange} />
-          <NumberFieldIncrementButton />
-        </NumberField>
-        <Separator style={{ marginBlock: 12 }} />
-        <YearPicker year={year} {...props}>
-          <YearPickerScroller>
-            <YearPickerScrollerContent>
-              <YearPickerScrollerLayout rows={4} cols={3} />
-            </YearPickerScrollerContent>
-          </YearPickerScroller>
+/**
+ * `selection` switches between one year, any set of years, and a range
+ * between two years.
+ */
+export const SelectionModes: Story = {
+  render: () => (
+    <Row>
+      <Stack>
+        <Caption>single</Caption>
+        <YearPicker selection='single' defaultSelected={thisYear}>
+          <YearPickerLayout>
+            <YearPickerCell />
+          </YearPickerLayout>
         </YearPicker>
-      </div>
-    )
-  },
-};
-
-const CustomSwipableYearPickerRows: FC = () => {
-  const { index } = useIndexedSnapScrollerContext();
-  const { referenceYear } = useYearPickerScrollerContext()
-  
-  return (
-    <>
-      {createYearPickerGrid({ start: referenceYear, rows: 10, cols: 4, offset: index }).map(
-        ({ row, data }) => (
-          <YearPickerRow row={row} key={row}>
-            {data.map(({ col, year }) => (
-              <YearPickerItem
-                col={col}
-                value={year}
-                key={year}
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: 2,
-                }}
-              >
-                <span>{year}</span>
-              </YearPickerItem>
-            ))}
-          </YearPickerRow>
-        )
-      )}
-    </>
-  );
-};
-
-export const SwipableCustomLayout: Story = {
-  args: {
-    selection: 'range',
-  },
-  render: (props) => (
-    <YearPicker {...props}>
-      <YearPickerScroller>
-        <YearPickerScrollerContent>
-          <CustomSwipableYearPickerRows />
-        </YearPickerScrollerContent>
-      </YearPickerScroller>
-    </YearPicker>
+      </Stack>
+      <Stack>
+        <Caption>multiple</Caption>
+        <YearPicker selection='multiple' defaultSelected={[thisYear, shift(2), shift(5)]}>
+          <YearPickerLayout>
+            <YearPickerCell />
+          </YearPickerLayout>
+        </YearPicker>
+      </Stack>
+      <Stack>
+        <Caption>range</Caption>
+        <YearPicker selection='range' defaultSelected={[shift(1), shift(4)]}>
+          <YearPickerLayout>
+            <YearPickerCell />
+          </YearPickerLayout>
+        </YearPicker>
+      </Stack>
+    </Row>
   ),
 };
 
 /**
- * SwipableControlledCustomLayout
- *
- * Demonstrates a fully controlled `YearPicker` configuration with
- * a custom, non-standard year layout and swipe-based navigation.
- *
- * In this example, the year grid does not follow the default layout
- * (e.g. 3×4 = 12 years per page). Instead, it renders a custom layout
- * of 4×10 = 40 years per page.
- *
- * Because the number and structure of years per page differs from the
- * default implementation (and may even vary between pages), the
- * `YearPickerScroller` cannot infer how a calendar year maps to a
- * scroller index on its own.
- *
- * To resolve this, a custom `getIndexByYear` function is explicitly
- * provided. This function maps a calendar year to the corresponding
- * scroller page index relative to the `referenceYear`.
- *
- * ### Key points
- *
- * - The `YearPicker` is **controlled** via the `year` prop.
- * - The year value is updated through an external `NumberField`.
- * - A **custom swipeable year layout** (`CustomSwipableYearPickerRows`)
- *   is rendered inside `YearPickerScrollerContent`.
- * - A custom `getIndexByYear` implementation is required whenever:
- *   - the year grid size is non-standard (e.g. 4×10 = 40),
- *   - the number of years per page differs from the default,
- *   - or the grouping of years is variable or non-contiguous.
- *
- * ### `getIndexByYear`
- *
- * The `getIndexByYear` function is responsible for answering the question:
- *
- * > “On which scroller page does this year belong?”
- *
- * It receives:
- * - `referenceYear` — the logical origin of the timeline
- * - `year` — the calendar year to resolve
- *
- * It must return the scroller page index that contains the given year.
- *
- * ```ts
- * (referenceYear: number, year: number) => number
- * ```
- *
- * The function can be:
- * - **implemented inline**, as shown in this example, or
- * - **imported from a shared helper**, such as the built-in
- *   `getIndexByYear` utility, when the layout follows a predictable rule
- *   (e.g. fixed-size pages).
- *
- * ### Notes
- *
- * - When using the default year layout (3×4 = 12 years),
- *   providing `getIndexByYear` is optional.
- * - For any custom or variable layout, `getIndexByYear` becomes mandatory
- *   to keep the scroller, layout, and controlled `year` state in sync.
- *
- * This pattern ensures that `YearPickerScroller` remains layout-agnostic
- * while still supporting fully customized year grids.
+ * `selected` and `onSelectCell` make the selection controlled. In single mode
+ * `null` means controlled with nothing selected.
  */
-export const SwipableControlledCustomLayout: Story = {
+export const Controlled: Story = {
+  render: () => {
+    const [selected, setSelected] = useState<string | null>(thisYear);
+
+    return (
+      <Row>
+        <YearPicker selected={selected} onSelectCell={setSelected}>
+          <YearPickerLayout>
+            <YearPickerCell />
+          </YearPickerLayout>
+        </YearPicker>
+        <Card style={{ minWidth: 220 }}>
+          <Stack>
+            <Heading as='h3' size={4}>State</Heading>
+            <Caption>selected</Caption>
+            <Code>{JSON.stringify(selected)}</Code>
+            <div style={{ display: 'flex', gap: 8 }}>
+              <Button size='sm' onClick={() => setSelected(thisYear)}>This year</Button>
+              <Button size='sm' variant='secondary' onClick={() => setSelected(null)}>Clear</Button>
+            </div>
+          </Stack>
+        </Card>
+      </Row>
+    );
+  },
+};
+
+/**
+ * `from` and `to` limit the selectable years; years outside the bounds
+ * cannot be selected or focused. The layout `start` shows a page around them.
+ */
+export const Bounds: Story = {
   args: {
     selection: 'range',
+    from: shift(-2),
+    to: shift(2),
+    children: <YearPickerLayout start={shift(-6)}><YearPickerCell /></YearPickerLayout>,
   },
-  render: (props) => {
-    const [year, setYear] = useState(getCurrentDate().getFullYear())
-    
-    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-      const year = Number(e.currentTarget.value.replace(/\s/i, ''))
-      if (isNaN(year)) return
-      setYear(year)
-    }
-    
+};
+
+/**
+ * `disabled` takes a year, an array of years or a predicate. Here the next
+ * year and the year after it cannot be picked.
+ */
+export const DisabledYears: Story = {
+  args: {
+    selection: 'multiple',
+    disabled: [shift(1), shift(2)],
+  },
+};
+
+/**
+ * Every `size`, from the dense `xs` (the default) to `xl`.
+ */
+export const Sizes: Story = {
+  render: (props) => (
+    <Row>
+      {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
+        <Stack key={size}>
+          <Caption>{size}</Caption>
+          <YearPicker {...props} size={size} defaultSelected={thisYear} />
+        </Stack>
+      ))}
+    </Row>
+  ),
+};
+
+/**
+ * Both `variant` presets, shown with a selected cell.
+ */
+export const Variants: Story = {
+  render: (props) => (
+    <Row>
+      {(['primary', 'secondary'] as const).map((variant) => (
+        <Stack key={variant}>
+          <Caption>{variant}</Caption>
+          <YearPicker {...props} variant={variant} defaultSelected={thisYear} />
+        </Stack>
+      ))}
+    </Row>
+  ),
+};
+
+/**
+ * `YearPickerScroller` pages through years by swiping or scrolling.
+ * `YearPickerScrollerLayout` renders the years of each page. A page can hold
+ * any number of years: `period` on the scroller must match `rows × cols` of
+ * the layout, so a `year` maps to the page that holds it.
+ */
+export const Swipable: Story = {
+  args: {
+    selection: 'range',
+    children: (
+      <YearPickerScroller period={20}>
+        <YearPickerScrollerContent>
+          <YearPickerScrollerLayout rows={5} cols={4}>
+            <YearPickerCell />
+          </YearPickerScrollerLayout>
+        </YearPickerScrollerContent>
+      </YearPickerScroller>
+    ),
+  },
+};
+
+/**
+ * `year` on the root scrolls the pages to the page that contains it, and the
+ * scroller reports the first year of the page in view through
+ * `onChangePeriod`, so both stay in sync.
+ */
+export const SwipableControlled: Story = {
+  render: () => {
+    const [year, setYear] = useState(thisYear);
+
     return (
-      <div>
-        <NumberField>
-          <NumberFieldDecrementButton />
-          <NumberFieldInput min={0} onChange={onChange} />
-          <NumberFieldIncrementButton />
-        </NumberField>
-        <Separator style={{ marginBlock: 12 }} />
-        <YearPicker year={year} {...props}>
-          <YearPickerScroller getIndexByYear={(referenceYear, year) => getIndexByYear(referenceYear, year, 40)}>
+      <Stack>
+        <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+          <Button size='sm' variant='secondary' onClick={() => setYear(addCalendarYears(gregorianCalendar, year, -12))}>−12 years</Button>
+          <Code>{year.slice(0, 4)}</Code>
+          <Button size='sm' variant='secondary' onClick={() => setYear(addCalendarYears(gregorianCalendar, year, 12))}>+12 years</Button>
+        </div>
+        <YearPicker year={year}>
+          <YearPickerScroller onChangePeriod={setYear}>
             <YearPickerScrollerContent>
-              <CustomSwipableYearPickerRows />
+              <YearPickerScrollerLayout>
+                <YearPickerCell />
+              </YearPickerScrollerLayout>
             </YearPickerScrollerContent>
           </YearPickerScroller>
         </YearPicker>
-      </div>
-    )
+      </Stack>
+    );
+  },
+};
+
+/**
+ * Years in several calendar systems, each with its own `calendar` and
+ * `locale`. The Japanese page crosses the change from the Heisei to the
+ * Reiwa era: 2019 holds two cells, Heisei 31 and Reiwa 1.
+ */
+export const CalendarSystems: Story = {
+  render: () => (
+    <Row>
+      {calendarSystems.map(({ name, locale, calendar, year, start, note }) => (
+        <Card key={name}>
+          <Stack gap={8}>
+            <Heading as='h3' size={4}>{name}</Heading>
+            <Caption>{locale} · {note}</Caption>
+            <YearPicker calendar={calendar} locale={locale} year={year}>
+              <YearPickerLayout start={start}>
+                <YearPickerCell />
+              </YearPickerLayout>
+            </YearPicker>
+          </Stack>
+        </Card>
+      ))}
+    </Row>
+  ),
+};
+
+/**
+ * `locale` on the root sets the numerals of every year label.
+ */
+export const Locales: Story = {
+  render: (props) => (
+    <Row>
+      {['en-US', 'ar-EG', 'fa-IR', 'hi-IN-u-nu-deva'].map((locale) => (
+        <Stack key={locale}>
+          <Caption>{locale}</Caption>
+          <YearPicker {...props} locale={locale} defaultSelected={thisYear} />
+        </Stack>
+      ))}
+    </Row>
+  ),
+};
+
+/**
+ * The picker follows the text direction it is rendered in, like native
+ * elements: here `dir="rtl"` on a wrapper. Years run from right to left,
+ * ArrowRight moves to the previous year and ArrowLeft to the next one, and
+ * the next page of the scroller is on the left. Direction is never taken
+ * from `locale`.
+ */
+export const RightToLeft: Story = {
+  render: (props) => (
+    <Row>
+      {['ar-EG', 'he-IL'].map((locale) => (
+        <Stack key={locale}>
+          <Caption>{locale}</Caption>
+          <div dir='rtl'>
+            <YearPicker {...props} locale={locale} defaultSelected={thisYear}>
+              <YearScroller />
+            </YearPicker>
+          </div>
+        </Stack>
+      ))}
+    </Row>
+  ),
+};
+
+const ZodiacYear: FC = () => {
+  const { label, fields } = useYearPickerCellContext();
+
+  return (
+    <YearPickerCell style={{ display: 'flex', flexDirection: 'column', gap: 2, paddingBlock: 6 }}>
+      <span style={{ fontWeight: 500 }}>{label}</span>
+      <span style={{ fontSize: 12, color: 'var(--color-gray-accent-600)' }}>{fields ? zodiac[fields.year % 12] : ''}</span>
+    </YearPickerCell>
+  );
+};
+
+/**
+ * The children of `YearPickerLayout` are the template of a year: it is
+ * rendered once per cell and reads its year with `useYearPickerCellContext()`.
+ * Here every year shows its Chinese zodiac animal.
+ */
+export const CustomCell: Story = {
+  args: {
+    style: { width: 360 },
+    children: (
+      <YearPickerLayout>
+        <ZodiacYear />
+      </YearPickerLayout>
+    ),
+  },
+};
+
+/**
+ * Full control over the grid: rows and cells are built by hand from
+ * `createYearPickerGrid` and rendered with `YearPickerRow` and
+ * `YearPickerItem`. Prefer a layout with a cell template; use this only when
+ * the layout itself has to change.
+ */
+export const LowLevelGrid: Story = {
+  args: {
+    children: (
+      <YearPickerRowGroup>
+        {createYearPickerGrid({ start: shift(-12), rows: 5, cols: 5 }).map(({ row, data }) => (
+          <YearPickerRow row={row} key={row}>
+            {data.map(({ col, year }) => (
+              <YearPickerItem col={col} value={year} key={year}>
+                {year.slice(0, 4)}
+              </YearPickerItem>
+            ))}
+          </YearPickerRow>
+        ))}
+      </YearPickerRowGroup>
+    ),
   },
 };

@@ -2,7 +2,7 @@
 
 ## Overview
 
-`Calendar` owns visible date, picker mode, selection state, disabled-date rules, and keyboard coordination across the exported picker families.
+`Calendar` owns the visible month, the current view, selection state, disabled-date rules, locale and calendar system, and keyboard coordination across the day, month, and year views.
 
 ## Required Parts
 
@@ -11,119 +11,112 @@
 Root provider for the date-selection model.
 
 - Required: yes
-- Owns: picker state, date state, selection state, disabled-date logic
+- Owns: view state, visible month, selection state, disabled-date logic, `locale` and `calendar`
 
 ## Optional Parts
 
 ### `CalendarHeader`
 
-Header wrapper for navigation and picker switching.
-
-### `CalendarContent`
-
-Main content wrapper for the active picker view.
+Header wrapper for navigation and view switching.
 
 ### `CalendarPrevButton` / `CalendarNextButton`
 
-Month navigation controls for the current visible date.
+Show the previous or next page of the current view: the previous or next month in the days, the previous or next page of years in the years. Hidden in the months view, and in the days when the previous or next month is outside `min` / `max`.
 
-### `CalendarPickerButtonGroup`
+### `CalendarViewButtonGroup`
 
-Wrapper for month and year picker-trigger buttons.
+Keeps the view buttons together between the previous and next buttons.
 
-### `CalendarMonthPickerButton` / `CalendarYearPickerButton`
+### `CalendarViewButton`
 
-Switch the coordinated calendar state into month or year selection mode.
+`view='month'` or `view='year'` toggles that view; pressing it again goes back to the days. It is pressed (`aria-pressed`) while its view is shown.
 
-### `CalendarWeekLabels` / `CalendarWeekLabel`
+### `CalendarMonthLabel` / `CalendarYearLabel`
 
-Weekday header chrome for the day-picker view.
+Visible month and year in the locale and calendar system of the root.
 
-### `CalendarDayPicker*`
+### `CalendarContent`
 
-Day-grid family used for daily selection and current-month navigation.
+Main content wrapper for the views.
 
-### `CalendarMonthPicker*`
+### `CalendarDays`
 
-Month-grid family used to switch the visible month quickly.
+Day view. Its children are `CalendarWeekdays` and `CalendarWeeks`.
 
-### `CalendarYearPicker*`
+### `CalendarWeekdays`
 
-Year-grid family used to switch the visible year quickly.
+Row of weekday names in the locale of the root, starting on the first day of its week. Prop: `format` (`'long' | 'short' | 'narrow'`, default `'short'`). Its required children are the template of a weekday, usually `<CalendarWeekday />`; read the weekday with `useCalendarWeekdayContext()`.
+
+### `CalendarWeeks`
+
+Day grid, week by week, swipeable between months. Props: `format`, `includeOverflowDays`.
+
+### `CalendarMonths`
+
+Month view: the months of the visible year, 12 or 13 depending on the calendar system. Props: `cols`, `format`.
+
+### `CalendarYears`
+
+Year view: pages of years, swipeable. Prop: `format`.
+
+### `CalendarDay` / `CalendarMonth` / `CalendarYear`
+
+Cell templates. Children of `CalendarWeeks`, `CalendarMonths`, and `CalendarYears` are required and rendered once per cell inside a cell context; usually `<CalendarDay />`, `<CalendarMonth />`, or `<CalendarYear />`, which shows the formatted label. Read the cell with `useCalendarDayContext()`, `useCalendarMonthContext()`, or `useCalendarYearContext()`.
 
 ## Composition Order
 
 Typical composition:
 
 1. `Calendar`
-2. `CalendarHeader`
-3. navigation buttons and picker buttons
-4. `CalendarContent`
-5. one active picker family at a time
+2. `CalendarHeader` with navigation buttons and view buttons
+3. `CalendarContent`
+4. `CalendarDays`, `CalendarMonths`, `CalendarYears`; only the current view is visible
 
 ## Valid Composition Patterns
 
 ```tsx
 <Calendar>
   <CalendarHeader>
-    <CalendarPrevYearGroupButton>
-      <Icon><ArrowLeft /></Icon>
-    </CalendarPrevYearGroupButton>
-    <CalendarPrevButton>
-      <Icon><ChevronLeft /></Icon>
-    </CalendarPrevButton>
-    <CalendarPickerButtonGroup>
-      <CalendarMonthPickerButton>
+    <CalendarPrevButton aria-label='Previous' />
+    <CalendarViewButtonGroup>
+      <CalendarViewButton view='month'>
         <CalendarMonthLabel />
-      </CalendarMonthPickerButton>
-      <CalendarYearPickerButton>
+      </CalendarViewButton>
+      <CalendarViewButton view='year'>
         <CalendarYearLabel />
-      </CalendarYearPickerButton>
-    </CalendarPickerButtonGroup>
-    <CalendarNextButton>
-      <Icon><ChevronRight /></Icon>
-    </CalendarNextButton>
-    <CalendarNextYearGroupButton>
-      <Icon><ArrowRight /></Icon>
-    </CalendarNextYearGroupButton>
+      </CalendarViewButton>
+    </CalendarViewButtonGroup>
+    <CalendarNextButton aria-label='Next' />
   </CalendarHeader>
   <CalendarContent>
-    <CalendarDayPicker>
-      <CalendarWeekLabels>
-        {getWeekDayNames(navigator.language, 'short').map((name) => (
-          <CalendarWeekLabel key={name}>{name}</CalendarWeekLabel>
-        ))}
-      </CalendarWeekLabels>
-      <CalendarDayPickerScroller>
-        <CalendarDayPickerScrollerContent>
-          <CalendarDayPickerScrollerLayout />
-        </CalendarDayPickerScrollerContent>
-      </CalendarDayPickerScroller>
-    </CalendarDayPicker>
-    <CalendarMonthPicker>
-      <CalendarMonthPickerLayout />
-    </CalendarMonthPicker>
-    <CalendarYearPicker>
-      <CalendarYearPickerScroller>
-        <CalendarYearPickerScrollerContent>
-          <CalendarYearPickerScrollerLayout />
-        </CalendarYearPickerScrollerContent>
-      </CalendarYearPickerScroller>
-    </CalendarYearPicker>
+    <CalendarDays>
+      <CalendarWeekdays>
+        <CalendarWeekday />
+      </CalendarWeekdays>
+      <CalendarWeeks>
+        <CalendarDay />
+      </CalendarWeeks>
+    </CalendarDays>
+    <CalendarMonths>
+      <CalendarMonth />
+    </CalendarMonths>
+    <CalendarYears>
+      <CalendarYear />
+    </CalendarYears>
   </CalendarContent>
 </Calendar>
 ```
 
 ## Invalid Composition Patterns
 
-### Picker parts outside `Calendar`
+### View parts outside `Calendar`
 
-The picker families rely on root context. Moving them outside `Calendar` breaks coordination.
+The views and cell templates rely on root context. Moving them outside `Calendar` breaks coordination.
 
-### Custom day items without retesting excluded and disabled states
+### Custom cell templates without `CalendarDay`
 
-This can weaken selection, keyboard flow, and off-month behavior.
+A template must render `CalendarDay` (or `CalendarMonth`, `CalendarYear`) as the cell; content goes inside it. Without it the grid loses selection, focus, and disabled states.
 
-### Treating day, month, and year pickers as isolated widgets
+### Treating day, month, and year views as isolated widgets
 
 They are coordinated views of the same calendar state model, not unrelated components.

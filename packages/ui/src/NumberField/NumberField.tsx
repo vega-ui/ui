@@ -5,7 +5,7 @@ import {
   Ref, useEffect,
   useRef,
   KeyboardEvent,
-  useCallback, useState, useLayoutEffect,
+  useCallback, useMemo, useState,
 } from 'react';
 import { TextField, TextFieldProps } from '../TextField';
 import style from './style.module.css'
@@ -94,37 +94,27 @@ export const NumberField: FC<NumberFieldProps> = ({
   const [isMin, setIsMin] = useState(false);
   const [isMax, setIsMax] = useState(false);
   
-  const maskitoOptions = getNumberMaskOptions({
+  const maskitoOptions = useMemo(() => getNumberMaskOptions({
     max,
     min,
     minusSign: '-',
     precision,
     allowEmpty,
-    maximumFractionDigits
-  })
+    maximumFractionDigits,
+    onSync: (value) => {
+      const number = value === '' ? NaN : getNumberValue(value);
+
+      setIsMin(Number.isFinite(number) && number <= min);
+      setIsMax(Number.isFinite(number) && number >= max);
+    },
+  }), [max, min, precision, allowEmpty, maximumFractionDigits])
 
   const innerInputRef = useRef<HTMLInputElement>(null)
   const wrapperRef = useRef<HTMLDivElement>(null)
   
-  const syncBoundaries = useCallback(() => {
-    const input = innerInputRef.current;
-    if (!input) return;
-    
-    const v = input.value === '' ? NaN : getNumberValue(input.value);
-
-    setIsMin(Number.isFinite(v) ? v <= min : false);
-    setIsMax(Number.isFinite(v) ? v >= max : false);
-  }, [min, max])
-  
   const inputRef = useMaskito({
     options: maskitoOptions
   })
-  
-  useLayoutEffect(syncBoundaries, [syncBoundaries]);
-  
-  const onInput = useCallback(() => {
-    syncBoundaries();
-  }, [syncBoundaries])
   
   const changeValue = useCallback((value: number) => {
     const input = innerInputRef.current
@@ -206,7 +196,6 @@ export const NumberField: FC<NumberFieldProps> = ({
       increment={increment}
       decrement={decrement}
       disabled={disabled}
-      onInput={onInput}
       inputRef={mergeRefs([inputRef, innerInputRef])}
     >
       <TextField

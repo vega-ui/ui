@@ -556,4 +556,53 @@ describe('DataGrid', () => {
       });
     });
   });
+
+  describe('right-to-left', () => {
+    const renderRtl = (props?: Partial<ComponentProps<typeof DataGrid>>) => render(
+      <div dir='rtl'>
+        <GridTest {...props} />
+      </div>
+    );
+    
+    it('lays the cells out from right to left', async () => {
+      const r = renderRtl();
+      
+      expect(getCell(r, 0, 1).getBoundingClientRect().left).toBeLessThan(getCell(r, 0, 0).getBoundingClientRect().left);
+    });
+    
+    it('ArrowLeft moves to the next cell and ArrowRight to the previous one', async () => {
+      const r = renderRtl();
+      
+      getCell(r, 0, 0).focus();
+      await userEvent.keyboard('{ArrowLeft}');
+      await expect.element(getCell(r, 0, 1)).toHaveFocus();
+      
+      await userEvent.keyboard('{ArrowRight}');
+      await expect.element(getCell(r, 0, 0)).toHaveFocus();
+    });
+    
+    it('wraps ArrowLeft to the next row', async () => {
+      const r = renderRtl({ wrap: 'horizontal' });
+      
+      getCell(r, 0, 2).focus();
+      await userEvent.keyboard('{ArrowLeft}');
+      await expect.element(getCell(r, 1, 0)).toHaveFocus();
+    });
+    
+    it('follows the dir attribute of the grid itself', async () => {
+      const r = render(<GridTest dir='rtl' />);
+      
+      getCell(r, 0, 0).focus();
+      await userEvent.keyboard('{ArrowLeft}');
+      await expect.element(getCell(r, 0, 1)).toHaveFocus();
+    });
+    
+    it('keeps ArrowUp and ArrowDown unchanged', async () => {
+      const r = renderRtl();
+      
+      getCell(r, 0, 1).focus();
+      await userEvent.keyboard('{ArrowDown}');
+      await expect.element(getCell(r, 1, 1)).toHaveFocus();
+    });
+  });
 });

@@ -249,6 +249,35 @@ describe('PinField', () => {
       })
     });
     
+    it('clears the slots after the form is reset', async () => {
+      const r = render(
+        <form data-testid='form'>
+          <PinFieldTest maxLength={4} />
+        </form>,
+      );
+      
+      await userEvent.type(getInput(r), VALUE_12);
+      await expect.element(getSlot0(r)).toHaveTextContent('1');
+      
+      (r.getByTestId('form') as HTMLFormElement).reset();
+      
+      await expect.element(getSlot0(r)).toHaveTextContent(PLACEHOLDER[0]);
+      await expect.element(getSlot1(r)).toHaveTextContent(PLACEHOLDER[1]);
+    });
+    
+    it('shows the default value in the slots', async () => {
+      const r = render(
+        <PinFieldTest maxLength={4}>
+          <PinFieldHiddenInput data-testid={TESTID_INPUT} defaultValue={VALUE_12} />
+          <PinFieldSlot data-testid={SLOT_0} index={0} />
+          <PinFieldSlot data-testid={SLOT_1} index={1} />
+        </PinFieldTest>,
+      );
+      
+      await expect.element(getSlot0(r)).toHaveTextContent('1');
+      await expect.element(getSlot1(r)).toHaveTextContent('2');
+    });
+    
     it('does not set selectedAll when value is empty (select all on empty)', async () => {
       const r = render(<PinFieldTest maxLength={4} />);
       

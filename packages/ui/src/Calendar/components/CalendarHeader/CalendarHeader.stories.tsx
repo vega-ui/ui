@@ -1,47 +1,74 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CalendarHeader } from './CalendarHeader';
+import { Calendar } from '../../Calendar';
 import { CalendarPrevButton } from '../CalendarPrevButton';
-import { Icon } from '../../../Icon';
-import { CalendarPickerButtonGroup } from '../CalendarPickerButtonGroup';
-import { CalendarMonthPickerButton } from '../CalendarMonthPickerButton';
-import { CalendarYearPickerButton } from '../CalendarYearPickerButton';
 import { CalendarNextButton } from '../CalendarNextButton';
-import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
-import { formatMonth, formatYear } from '@vega-ui/utils';
+import { CalendarViewButtonGroup } from '../CalendarViewButtonGroup';
+import { CalendarViewButton } from '../CalendarViewButton';
+import { CalendarMonthLabel } from '../CalendarMonthLabel';
+import { CalendarYearLabel } from '../CalendarYearLabel';
+import { CalendarContent } from '../CalendarContent';
+import { CalendarDays } from '../CalendarDays';
+import { CalendarWeekdays } from '../CalendarWeekdays';
+import { CalendarWeekday } from '../CalendarWeekday';
+import { CalendarWeeks } from '../CalendarWeeks';
+import { CalendarDay } from '../CalendarDay';
+import { CalendarMonths } from '../CalendarMonths';
+import { CalendarMonth } from '../CalendarMonth';
+import { CalendarYears } from '../CalendarYears';
+import { CalendarYear } from '../CalendarYear';
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof CalendarHeader> = {
   title: 'Data/Calendar/CalendarHeader',
   component: CalendarHeader,
   args: {
     children: (
       <>
-        <CalendarPrevButton>
-          <Icon><ChevronLeft /></Icon>
-        </CalendarPrevButton>
-        <CalendarPickerButtonGroup>
-          <CalendarMonthPickerButton>
-            {formatMonth(1)}
-          </CalendarMonthPickerButton>
-          <CalendarYearPickerButton>
-            {formatYear(2026)}
-          </CalendarYearPickerButton>
-        </CalendarPickerButtonGroup>
-        <CalendarNextButton>
-          <Icon><ChevronRight /></Icon>
-        </CalendarNextButton>
+        <CalendarPrevButton aria-label='Previous' />
+        <CalendarViewButtonGroup>
+          <CalendarViewButton view='month'>
+            <CalendarMonthLabel />
+          </CalendarViewButton>
+          <CalendarViewButton view='year'>
+            <CalendarYearLabel />
+          </CalendarViewButton>
+        </CalendarViewButtonGroup>
+        <CalendarNextButton aria-label='Next' />
       </>
-    )
+    ),
   },
-  parameters: {
-    layout: 'padded',
+  decorators(Story) {
+    return (
+      <Calendar compact>
+        <Story />
+        <CalendarContent>
+          <CalendarDays>
+            <CalendarWeekdays>
+              <CalendarWeekday />
+            </CalendarWeekdays>
+            <CalendarWeeks>
+              <CalendarDay />
+            </CalendarWeeks>
+          </CalendarDays>
+          <CalendarMonths>
+            <CalendarMonth />
+          </CalendarMonths>
+          <CalendarYears>
+            <CalendarYear />
+          </CalendarYears>
+        </CalendarContent>
+      </Calendar>
+    );
   },
   tags: ['autodocs'],
-}
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * The previous and next buttons around the month and year view buttons.
+ */
 export const Default: Story = {
   args: {},
 };

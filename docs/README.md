@@ -16,6 +16,7 @@ This directory is the starting point for project-level documentation outside Sto
 - `glossary.md`: shared terminology used across component documentation
 - `families/`: decision-oriented navigation across related component groups
 - `styling/`: global theming, tokens, and CSS variable model
+- `i18n.md`: ISO date values, root `locale` and `calendar` props, and calendar system adapters from `@vega-ui/i18n`
 - `components/`: component usage, API notes, type exports, and edge cases
 - `components/structure.md`: declared file structure for per-component documentation
 - `component-template.md`: template for documenting the remaining components

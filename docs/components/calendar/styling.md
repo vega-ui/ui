@@ -2,7 +2,7 @@
 
 ## Overview
 
-`Calendar` styling is distributed across header controls, content sizing, and picker-family layouts. Most customization should start at the theme level.
+`Calendar` styling is distributed across header controls, content sizing, and the day, month, and year views. Most customization should start at the theme level.
 
 ## Public CSS Variables
 
@@ -11,8 +11,8 @@ The current implementation exposes more sizing and layout behavior than stable `
 | Variable | Used By | Purpose |
 | --- | --- | --- |
 | spacing tokens | `CalendarContent` | size-dependent layout width |
-| transition tokens | picker families and nav buttons | animated view changes |
-| button tokens | picker buttons | inherited button-like sizing |
+| transition tokens | views and nav buttons | animated view changes |
+| button tokens | view buttons | inherited button-like sizing |
 
 ## Part-Level Variables
 
@@ -24,15 +24,15 @@ The current implementation exposes more sizing and layout behavior than stable `
 
 Navigation buttons rely on transition tokens and shared button styling patterns.
 
-### Picker Families
+### Views
 
-Day, month, and year picker families animate view changes through shared transition tokens.
+`CalendarDays`, `CalendarMonths`, and `CalendarYears` animate view changes through shared transition tokens.
 
 ## State And Variant Interaction
 
 - `compact` changes density expectations
-- size changes the content width and picker spacing
-- custom day-cell rendering affects perceived density more than root styling does
+- size changes the content width and view spacing
+- custom day templates affect perceived density more than root styling does
 
 ## Examples
 

@@ -207,6 +207,32 @@ describe('NumberField', () => {
       await userEvent.click(getDecrement(r));
       await waitFor(() => expect(input).toHaveValue('5'));
     });
+    
+    it('disables increment when the default value is at max', async () => {
+      const r = render(
+        <NumberField max={5}>
+          <NumberFieldInput data-testid={TESTID_INPUT} defaultValue='5' />
+          <NumberFieldIncrementButton data-testid={TESTID_INCREMENT} />
+        </NumberField>,
+      );
+      
+      await expect.element(getIncrement(r)).toBeDisabled();
+    });
+    
+    it('enables the buttons again after the form is reset', async () => {
+      const r = render(
+        <form data-testid='form'>
+          <NumberFieldTest max={5} />
+        </form>,
+      );
+      
+      await userEvent.type(getInput(r), '5');
+      await expect.element(getIncrement(r)).toBeDisabled();
+      
+      (r.getByTestId('form') as HTMLFormElement).reset();
+      
+      await expect.element(getIncrement(r)).toBeEnabled();
+    });
   });
   
   describe('Accessibility', () => {

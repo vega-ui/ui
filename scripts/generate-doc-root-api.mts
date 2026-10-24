@@ -214,7 +214,7 @@ function normalizeTypeText(value: string): string {
 }
 
 function cleanCodeText(value: string): string {
-  return value.replace(/\s+/g, ' ').trim();
+  return value.replace(/[ \t\r\n]+/g, ' ').trim();
 }
 
 function escapeCell(value: string): string {

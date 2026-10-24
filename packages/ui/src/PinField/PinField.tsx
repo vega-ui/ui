@@ -1,5 +1,5 @@
-import { FC, HTMLAttributes, Ref, useCallback, useRef, useState } from 'react';
-import { clamp, csx } from '@vega-ui/utils';
+import { FC, HTMLAttributes, Ref, useCallback, useMemo, useRef, useState } from 'react';
+import { clamp, csx, subscribeInputValue } from '@vega-ui/utils';
 import { useMaskito } from '@maskito/react';
 import { MaskitoOptions } from '@maskito/core';
 import { PinFieldProvider } from './contexts';
@@ -66,9 +66,10 @@ export const PinField: FC<PinFieldProps> = ({
 
   const inputRef = useRef<HTMLInputElement>(null)
 
-  const options: MaskitoOptions = {
-    mask: mask ?? /^\d+$/
-  }
+  const options = useMemo<MaskitoOptions>(() => ({
+    mask: mask ?? /^\d+$/,
+    plugins: [(element) => subscribeInputValue(element, setValue)],
+  }), [mask])
   
   const inputMaskitoRef = useMaskito({ options });
   
@@ -97,7 +98,6 @@ export const PinField: FC<PinFieldProps> = ({
       inputRef={inputMaskitoRef}
       syncActive={syncActive}
       setActive={setActive}
-      setValue={setValue}
       value={value}
       active={active}
       error={error}

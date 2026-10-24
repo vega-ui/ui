@@ -13,6 +13,7 @@
 ```tsx
 import {
   DayPicker,
+  DayPickerCell,
   DayPickerItem,
   DayPickerLayout,
   DayPickerRow,
@@ -21,8 +22,14 @@ import {
   DayPickerScrollerContent,
   DayPickerScrollerLayout,
   createDayPickerGrid,
-  getDateByIndex,
-  getIndexByDate,
+  useDayPickerCellContext,
+  useDayPickerContext,
+  useDayPickerScrollerContext,
+  type DayPickerGridCell,
+  type DayPickerGridOptions,
+  type DayPickerGridRow,
+  type DayPickerCellContextData,
+  type DayPickerCellProps,
   type DayPickerItemProps,
   type DayPickerLayoutProps,
   type DayPickerProps,
@@ -41,15 +48,20 @@ import {
 - `DayPickerRowGroupProps`
 - `DayPickerRowProps`
 - `DayPickerItemProps`
+- `DayPickerCellProps`
+- `DayPickerCellContextData`
 - `DayPickerScrollerProps`
 - `DayPickerScrollerContentProps`
 - `DayPickerScrollerLayoutProps`
+- `DayPickerGridCell`, `DayPickerGridRow`, `DayPickerGridOptions`
 
 ## Minimal Composition
 
 ```tsx
 <DayPicker>
-  <DayPickerLayout />
+  <DayPickerLayout>
+    <DayPickerCell />
+  </DayPickerLayout>
 </DayPicker>
 ```
 
@@ -63,6 +75,7 @@ import {
 - `DayPickerRowGroup`
 - `DayPickerRow`
 - `DayPickerItem`
+- `DayPickerCell`: the cell, placed as the template of the layouts
 - `DayPickerScroller`
 - `DayPickerScrollerContent`
 - `DayPickerScrollerLayout`
@@ -70,14 +83,15 @@ import {
 ## Composition Order
 
 1. `DayPicker`
-2. either `DayPickerLayout` or custom row/item composition
+2. either `DayPickerLayout` with a cell template as children (`<DayPickerCell />` or a custom one) or custom row/item composition
 3. optional scroller wrapper for paged month navigation
 
 ## Variants
 
 - Selection: `single`, `multiple`, `range`
 - Layout: static grid or scroller-based month paging
-- Period: explicit `year` / `month` or current-date defaults
+- Period: explicit `month` (a `YYYY-MM-DD` string of any day in it) or the current month
+- Locale and calendar system: `locale` and `calendar` props, defaulting to the runtime locale and the Gregorian calendar
 
 ## Related Docs
 
@@ -95,9 +109,11 @@ import {
 - Overflow-day inclusion changes both visual density and selection behavior.
 - Disabled, selected, excluded, and focused dates must remain distinguishable.
 - Scrollable month paging adds another synchronization layer for visible period state.
+- Cell keys (`selected`, `from`, `to`, `disabled`, `active`) are `YYYY-MM-DD` days in every calendar system; only the grid shape and labels follow `calendar`.
 
 ## Common Mistakes
 
-- Reimplementing date-grid math instead of using the helpers.
+- Reimplementing date-grid math instead of using `createDayPickerGrid`.
+- Passing numeric years, zero-based months, or timestamps instead of `YYYY-MM-DD` strings.
 - Losing selection visibility in custom `DayPickerItem` rendering.
 - Treating it like a consumer-ready calendar instead of a low-level picker subsystem.

@@ -1,35 +1,44 @@
-import { ComponentProps } from 'react';
+import { ComponentProps, useState } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi, type Mock } from 'vitest';
-import { userEvent } from 'vitest/browser';
+import { page, userEvent, type Locator } from 'vitest/browser';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
 
 import { Calendar } from '../Calendar';
 import {
   CalendarContent,
-  CalendarDayPicker,
-  CalendarDayPickerScroller,
-  CalendarDayPickerScrollerContent,
-  CalendarDayPickerScrollerLayout,
+  CalendarDays,
   CalendarHeader,
-  CalendarMonthPicker,
-  CalendarMonthPickerButton,
-  CalendarMonthPickerLayout,
+  CalendarMonths,
   CalendarNextButton,
-  CalendarPickerButtonGroup,
   CalendarPrevButton,
-  CalendarWeekLabel,
-  CalendarWeekLabels,
-  CalendarYearPicker,
-  CalendarYearPickerButton,
-  CalendarYearPickerScroller,
-  CalendarYearPickerScrollerContent,
-  CalendarYearPickerScrollerLayout,
+  CalendarViewButton,
+  CalendarViewButtonGroup,
+  CalendarYears,
+  CalendarMonthLabel,
+  CalendarYearLabel,
+  CalendarDay,
+  type CalendarDayProps,
+  CalendarMonth,
+  CalendarYear,
+  CalendarWeekdays, CalendarWeekday,
+  CalendarWeeks,
 } from '../components';
+import { useCalendarContext, useCalendarDayContext, useCalendarMonthContext, useCalendarYearContext } from '../contexts';
+import { createCalendarSystem, formatCalendarDate, gregorianCalendar, type CalendarSystem } from '@vega-ui/i18n';
 
 afterEach(cleanup);
 
 const MonthLabel = () => <span data-testid='month-label'>Month</span>;
 const YearLabel = () => <span data-testid='year-label'>Year</span>;
+
+const LabeledDay = ({ children }: CalendarDayProps) => {
+  const { date } = useCalendarDayContext();
+  const { locale, calendar } = useCalendarContext();
+
+  if (date === undefined) return <CalendarDay />;
+
+  return <CalendarDay aria-label={formatCalendarDate(calendar, date, locale, { dateStyle: 'full' })}>{children}</CalendarDay>;
+};
 
 const CalendarTest = (props: ComponentProps<typeof Calendar>) => {
   const { children, ...rest } = props;
@@ -41,42 +50,33 @@ const CalendarTest = (props: ComponentProps<typeof Calendar>) => {
           <CalendarHeader>
             <CalendarPrevButton data-testid='prev-button'>Prev</CalendarPrevButton>
             
-            <CalendarPickerButtonGroup data-testid='picker-group'>
-              <CalendarMonthPickerButton data-testid='month-picker-button'>
+            <CalendarViewButtonGroup data-testid='picker-group'>
+              <CalendarViewButton view='month' data-testid='month-picker-button'>
                 <MonthLabel />
-              </CalendarMonthPickerButton>
-              <CalendarYearPickerButton data-testid='year-picker-button'>
+              </CalendarViewButton>
+              <CalendarViewButton view='year' data-testid='year-picker-button'>
                 <YearLabel />
-              </CalendarYearPickerButton>
-            </CalendarPickerButtonGroup>
+              </CalendarViewButton>
+            </CalendarViewButtonGroup>
             
             <CalendarNextButton data-testid='next-button'>Next</CalendarNextButton>
           </CalendarHeader>
           
           <CalendarContent data-testid='content'>
-            <CalendarDayPicker data-testid='day-picker'>
-              <CalendarWeekLabels data-testid='week-labels'>
-                <CalendarWeekLabel data-testid='week-label'>Mon</CalendarWeekLabel>
-              </CalendarWeekLabels>
-              
-              <CalendarDayPickerScroller data-testid='day-scroller'>
-                <CalendarDayPickerScrollerContent data-testid='day-scroller-content'>
-                  <CalendarDayPickerScrollerLayout data-testid='day-scroller-layout' />
-                </CalendarDayPickerScrollerContent>
-              </CalendarDayPickerScroller>
-            </CalendarDayPicker>
-            
-            <CalendarMonthPicker data-testid='month-picker'>
-              <CalendarMonthPickerLayout data-testid='month-picker-layout' />
-            </CalendarMonthPicker>
-            
-            <CalendarYearPicker data-testid='year-picker'>
-              <CalendarYearPickerScroller data-testid='year-scroller'>
-                <CalendarYearPickerScrollerContent data-testid='year-scroller-content'>
-                  <CalendarYearPickerScrollerLayout data-testid='year-scroller-layout' />
-                </CalendarYearPickerScrollerContent>
-              </CalendarYearPickerScroller>
-            </CalendarYearPicker>
+            <CalendarDays data-testid='day-picker'>
+              <CalendarWeekdays>
+                <CalendarWeekday />
+              </CalendarWeekdays>
+              <CalendarWeeks>
+                <LabeledDay />
+              </CalendarWeeks>
+            </CalendarDays>
+            <CalendarMonths data-testid='month-picker'>
+              <CalendarMonth />
+            </CalendarMonths>
+            <CalendarYears data-testid='year-picker'>
+              <CalendarYear />
+            </CalendarYears>
           </CalendarContent>
         </>
       )}
@@ -92,18 +92,34 @@ const getYearBtn = (r: RenderResult) => r.getByTestId('year-picker-button') as H
 
 const getContent = (r: RenderResult) => r.getByTestId('content');
 
-const getDay = (r: RenderResult, iso: string) => {
-  const [year, month, day] = iso.split('-').map(Number);
-  const key = new Date(year, month - 1, day).getTime();
-  
-  return getContent(r).querySelector(`[role="gridcell"][data-key="${key}"]`) as HTMLElement;
-};
+const getDayName = (iso: string, { calendar = gregorianCalendar, locale = 'en-US' }: { calendar?: CalendarSystem; locale?: string } = {}) =>
+  formatCalendarDate(calendar, iso, locale, { dateStyle: 'full' });
+
+const getDay = (r: RenderResult, iso: string, options?: { calendar?: CalendarSystem; locale?: string }) =>
+  page.elementLocator(getContent(r)).getByRole('gridcell', { name: getDayName(iso, options), exact: true });
+
+const getDayInPicker = (r: RenderResult, iso: string) =>
+  page.elementLocator(r.getByTestId('day-picker')).getByRole('gridcell', { name: getDayName(iso), exact: true });
 
 const getSelectedDays = (r: RenderResult) => r.getByTestId('day-picker').querySelectorAll('[role="gridcell"][aria-selected="true"]');
 
 const getDayPicker = (r: RenderResult) => r.getByTestId('day-picker');
 const getMonthPicker = (r: RenderResult) => r.getByTestId('month-picker');
 const getYearPicker = (r: RenderResult) => r.getByTestId('year-picker');
+
+const getYear = (r: RenderResult, year: number) =>
+  page.elementLocator(getYearPicker(r)).getByRole('gridcell', { name: String(year), exact: true });
+
+const isPageVisible = (cell: Locator) => {
+  const cellPage = cell.query()?.closest('[data-index]');
+  const scroller = cellPage?.parentElement;
+  if (!cellPage || !scroller) return false;
+  
+  const outer = scroller.getBoundingClientRect();
+  const inner = cellPage.getBoundingClientRect();
+  
+  return inner.left >= outer.left - 1 && inner.right <= outer.right + 1;
+};
 
 describe('Calendar', () => {
   describe('Critical User Paths', () => {
@@ -459,6 +475,69 @@ describe('Calendar', () => {
       expect(onChangeValue).toHaveBeenLastCalledWith(['2026-01-10', '2026-01-15']);
     });
     
+    it('reports a range picked backwards in [start, end] order', async () => {
+      const onChangeValue = vi.fn();
+      const r = render(<CalendarTest selection='range' defaultMonth='2026-01-01' onChangeValue={onChangeValue} />);
+      
+      await userEvent.click(getDay(r, '2026-01-15'));
+      await userEvent.click(getDay(r, '2026-01-10'));
+      
+      expect(onChangeValue).toHaveBeenLastCalledWith(['2026-01-10', '2026-01-15']);
+    });
+    
+    it('reports a controlled range picked backwards in [start, end] order', async () => {
+      const Controlled = ({ onChangeValue }: { onChangeValue(value: [string, string]): void }) => {
+        const [value, setValue] = useState<[string, string]>(['', '']);
+        
+        const change = (next: [string, string]) => {
+          setValue(next);
+          onChangeValue(next);
+        };
+        
+        return <Calendar selection='range' value={value} defaultMonth='2026-01-01' onChangeValue={change}><CalendarDays data-testid='day-picker'><CalendarWeeks><LabeledDay /></CalendarWeeks></CalendarDays></Calendar>;
+      };
+      
+      const onChangeValue = vi.fn();
+      const r = render(<Controlled onChangeValue={onChangeValue} />);
+      
+      await userEvent.click(getDayInPicker(r, '2026-01-15'));
+      await userEvent.click(getDayInPicker(r, '2026-01-10'));
+      
+      expect(onChangeValue).toHaveBeenLastCalledWith(['2026-01-10', '2026-01-15']);
+      await expect.element(getDayInPicker(r, '2026-01-12')).toHaveAttribute('aria-selected', 'true');
+    });
+    
+    it('types onChangeValue as a single date when selection is omitted', async () => {
+      const Single = () => {
+        const [value, setValue] = useState('');
+        
+        return <Calendar value={value} defaultMonth='2026-01-01' onChangeValue={setValue}><CalendarDays data-testid='day-picker'><CalendarWeeks><LabeledDay /></CalendarWeeks></CalendarDays></Calendar>;
+      };
+      
+      const r = render(<Single />);
+      
+      await userEvent.click(getDayInPicker(r, '2026-01-12'));
+      
+      await expect.element(getDayInPicker(r, '2026-01-12')).toHaveAttribute('aria-selected', 'true');
+    });
+    
+    it('types onChangeValue by the selection mode', () => {
+      const typed = (
+        <>
+          <Calendar onChangeValue={(value: string) => value} />
+          <Calendar selection='single' onChangeValue={(value: string) => value} />
+          <Calendar selection='multiple' onChangeValue={(value: string[]) => value} />
+          <Calendar selection='range' onChangeValue={(value: [string, string]) => value} />
+          {/* @ts-expect-error a range is not a single date */}
+          <Calendar selection='range' onChangeValue={(value: string) => value} />
+          {/* @ts-expect-error a single date is not an array */}
+          <Calendar onChangeValue={(value: string[]) => value} />
+        </>
+      );
+      
+      expect(typed).toBeTruthy();
+    });
+    
     it('selects a controlled range', async () => {
       const r = render(
         <CalendarTest selection='range' value={['2026-01-10', '2026-01-12']} defaultMonth='2026-01-01' onChangeValue={vi.fn()} />,
@@ -554,11 +633,72 @@ describe('Calendar', () => {
     });
   });
   
+  describe('page keys', () => {
+    const press = async (r: RenderResult, from: string, keys: string) => {
+      getDay(r, from).element().focus();
+      await userEvent.keyboard(keys);
+    };
+    
+    it('moves focus to the same day of the next and previous month', async () => {
+      const r = render(<CalendarTest defaultValue='2026-01-15' />);
+      
+      await press(r, '2026-01-15', '{PageDown}');
+      await expect.element(getDay(r, '2026-02-15')).toHaveFocus();
+      
+      await userEvent.keyboard('{PageUp}{PageUp}');
+      await expect.element(getDay(r, '2025-12-15')).toHaveFocus();
+    });
+    
+    it('moves focus to the same day of the next and previous year with Shift', async () => {
+      const r = render(<CalendarTest defaultValue='2026-01-15' />);
+      
+      await press(r, '2026-01-15', '{Shift>}{PageDown}{/Shift}');
+      await expect.element(getDay(r, '2027-01-15')).toHaveFocus();
+      
+      await userEvent.keyboard('{Shift>}{PageUp}{PageUp}{/Shift}');
+      await expect.element(getDay(r, '2025-01-15')).toHaveFocus();
+    });
+    
+    it('clamps the day to the length of the month', async () => {
+      const r = render(<CalendarTest defaultValue='2026-01-31' />);
+      
+      await press(r, '2026-01-31', '{PageDown}');
+      
+      await expect.element(getDay(r, '2026-02-28')).toHaveFocus();
+    });
+    
+    it('stops at max', async () => {
+      const r = render(<CalendarTest defaultValue='2026-01-15' max='2026-02-10' />);
+      
+      await press(r, '2026-01-15', '{Shift>}{PageDown}{/Shift}');
+      
+      await expect.element(getDay(r, '2026-02-10')).toHaveFocus();
+    });
+    
+    it('does not change the value', async () => {
+      const onChangeValue = vi.fn();
+      const r = render(<CalendarTest defaultValue='2026-01-15' onChangeValue={onChangeValue} />);
+      
+      await press(r, '2026-01-15', '{PageDown}');
+      await expect.element(getDay(r, '2026-02-15')).toHaveFocus();
+      
+      expect(onChangeValue).not.toHaveBeenCalled();
+    });
+    
+    it('moves by months of the calendar system', async () => {
+      const calendar = createCalendarSystem('persian');
+      const r = render(<CalendarTest calendar={calendar} defaultValue='2025-04-20' />);
+      
+      getDay(r, '2025-04-20', { calendar }).element().focus();
+      await userEvent.keyboard('{PageDown}');
+      
+      await expect.element(getDay(r, '2025-05-21', { calendar })).toHaveFocus();
+    });
+  });
+  
   describe('navigation keeps the focused day', () => {
-    const getMonthCell = (r: RenderResult, month: number) =>
-      getMonthPicker(r).querySelector(`[role="gridcell"][data-key="${month}"]`) as HTMLElement;
-    const getYearCell = (r: RenderResult, year: number) =>
-      getYearPicker(r).querySelector(`[role="gridcell"][data-key="${year}"]`) as HTMLElement;
+    const getMonthCell = (r: RenderResult, month: string) =>
+      page.elementLocator(getMonthPicker(r)).getByRole('gridcell', { name: month, exact: true });
     
     it('moves focus to the same day of the next month', async () => {
       const r = render(<CalendarTest defaultValue='2026-01-15' />);
@@ -628,7 +768,7 @@ describe('Calendar', () => {
       const r = render(<CalendarTest defaultValue='2026-01-15' />);
       
       await userEvent.click(getMonthBtn(r));
-      await expect.element(getMonthCell(r, 0)).toHaveFocus();
+      await expect.element(getMonthCell(r, 'January')).toHaveFocus();
       await userEvent.keyboard('{ArrowRight}{ArrowRight}{Enter}');
       
       await expect.element(getDay(r, '2026-03-15')).toHaveAttribute('tabindex', '0');
@@ -638,14 +778,14 @@ describe('Calendar', () => {
       const r = render(<CalendarTest defaultValue='2026-01-15' />);
       
       await userEvent.click(getYearBtn(r));
-      await userEvent.click(getYearCell(r, 2027));
+      await userEvent.click(getYear(r, 2027));
       
       await expect.element(getDay(r, '2027-01-15')).toHaveAttribute('tabindex', '0');
     });
   });
   
   describe('fast scrolling', () => {
-    const getScroller = (r: RenderResult) => r.getByTestId('day-scroller');
+    const getScroller = (r: RenderResult) => getDayPicker(r).querySelector<HTMLElement>('[class*="scrollView"]');
     
     const nextFrame = () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
     
@@ -655,18 +795,14 @@ describe('Calendar', () => {
         <div>
           <CalendarTest compact defaultMonth='2026-01-01' onChangeMonth={onChangeMonth}>
             <CalendarContent data-testid='content'>
-              <CalendarDayPicker data-testid='day-picker'>
-                <CalendarWeekLabels>
-                  {['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].map((label) => (
-                    <CalendarWeekLabel key={label}>{label}</CalendarWeekLabel>
-                  ))}
-                </CalendarWeekLabels>
-                <CalendarDayPickerScroller data-testid='day-scroller'>
-                  <CalendarDayPickerScrollerContent>
-                    <CalendarDayPickerScrollerLayout />
-                  </CalendarDayPickerScrollerContent>
-                </CalendarDayPickerScroller>
-              </CalendarDayPicker>
+              <CalendarDays data-testid='day-picker'>
+                <CalendarWeekdays>
+                  <CalendarWeekday />
+                </CalendarWeekdays>
+                <CalendarWeeks>
+                  <LabeledDay />
+                </CalendarWeeks>
+              </CalendarDays>
             </CalendarContent>
           </CalendarTest>
         </div>,
@@ -675,21 +811,313 @@ describe('Calendar', () => {
       await expect.poll(() => getScroller(r)?.scrollLeft).toBeGreaterThan(0);
       await nextFrame();
       
-      for (let step = 0; step < 3; step++) {
+      for (let step = 0; step < 5; step++) {
         const scroller = getScroller(r)!;
         scroller.scrollBy({ left: scroller.clientWidth, behavior: 'instant' });
         await nextFrame();
       }
       
-      await expect.poll(() => onChangeMonth.mock.calls.map(([month]) => month)).toEqual(['2026-02-01', '2026-03-01', '2026-04-01']);
-      await expect.element(getDay(r, '2026-04-15')).toBeInTheDocument();
+      await expect.poll(() => onChangeMonth.mock.calls.map(([month]) => month)).toEqual(['2026-02-01', '2026-03-01', '2026-04-01', '2026-05-01', '2026-06-01']);
+      await expect.element(getDay(r, '2026-06-15')).toBeInTheDocument();
+    });
+  });
+  
+  describe('cell templates', () => {
+    const PricedDay = () => {
+      const { date, label, fields } = useCalendarDayContext();
+      
+      return (
+        <LabeledDay>
+          <span>{label}</span>
+          <span data-testid={`price-${date}`}>{fields?.day === 15 ? '30$' : ''}</span>
+        </LabeledDay>
+      );
+    };
+    
+    const ShortMonth = () => {
+      const { label } = useCalendarMonthContext();
+      return <CalendarMonth>{label.slice(0, 3)}</CalendarMonth>;
+    };
+    
+    const MarkedYear = () => {
+      const { label } = useCalendarYearContext();
+      return <CalendarYear>{`* ${label}`}</CalendarYear>;
+    };
+    
+    it('renders a custom day template for every day and keeps selection working', async () => {
+      const onChangeValue = vi.fn();
+      const r = render(
+        <CalendarTest defaultMonth='2026-03-01' onChangeValue={onChangeValue}>
+          <CalendarContent data-testid='content'>
+            <CalendarDays data-testid='day-picker'>
+              <CalendarWeekdays>
+                <CalendarWeekday />
+              </CalendarWeekdays>
+              <CalendarWeeks>
+                <PricedDay />
+              </CalendarWeeks>
+            </CalendarDays>
+          </CalendarContent>
+        </CalendarTest>
+      );
+      
+      await expect.element(r.getByTestId('price-2026-03-15')).toHaveTextContent('30$');
+      await expect.element(getDay(r, '2026-03-15')).toHaveTextContent('1530$');
+      
+      await userEvent.click(getDay(r, '2026-03-15'));
+      
+      expect(onChangeValue).toHaveBeenCalledWith('2026-03-15');
+    });
+    
+    it('renders custom month and year templates', async () => {
+      const r = render(
+        <CalendarTest defaultMonth='2026-03-01' locale='en-US'>
+          <CalendarContent data-testid='content'>
+            <CalendarMonths data-testid='month-picker'>
+              <ShortMonth />
+            </CalendarMonths>
+            <CalendarYears data-testid='year-picker'>
+              <MarkedYear />
+            </CalendarYears>
+          </CalendarContent>
+        </CalendarTest>
+      );
+      
+      await expect.element(page.elementLocator(getMonthPicker(r)).getByRole('gridcell', { name: 'Mar', exact: true })).toHaveAttribute('data-key', '2026-03-01');
+      await expect.element(page.elementLocator(getYearPicker(r)).getByRole('gridcell', { name: '* 2026', exact: true })).toHaveAttribute('data-key', '2026-01-01');
+    });
+  });
+  
+  describe('views', () => {
+    it('shows the weekday names in the order of the locale', async () => {
+      const r = render(<CalendarTest locale='de-DE' />);
+      
+      await expect.poll(() => r.getAllByRole('columnheader')[0].textContent).toBe('Mo');
+    });
+    
+    it('formats the weekday names with the format of CalendarWeekdays', async () => {
+      const r = render(
+        <CalendarTest locale='en-US'>
+          <CalendarContent data-testid='content'>
+            <CalendarDays data-testid='day-picker'>
+              <CalendarWeekdays format='long'>
+                <CalendarWeekday />
+              </CalendarWeekdays>
+              <CalendarWeeks>
+                <LabeledDay />
+              </CalendarWeeks>
+            </CalendarDays>
+          </CalendarContent>
+        </CalendarTest>
+      );
+      const labels = () => Array.from(getDayPicker(r).querySelectorAll('[role="columnheader"]')).map((el) => el.textContent);
+      
+      await expect.poll(() => labels()).toEqual(['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']);
+    });
+    
+    it('renders chevrons in the previous and next buttons by default', async () => {
+      const r = render(
+        <Calendar>
+          <CalendarPrevButton data-testid='prev' aria-label='Previous' />
+          <CalendarNextButton data-testid='next' aria-label='Next' />
+        </Calendar>
+      );
+      
+      expect(r.getByTestId('prev').querySelector('svg')).not.toBeNull();
+      expect(r.getByTestId('next').querySelector('svg')).not.toBeNull();
+    });
+    
+    it('opens the view given by defaultView', async () => {
+      const r = render(<CalendarTest defaultView='month' />);
+      
+      await expect.element(getMonthPicker(r)).toHaveAttribute('data-visible', 'true');
+      await expect.element(getMonthBtn(r)).toHaveAttribute('aria-pressed', 'true');
+    });
+    
+    it('reports view changes', async () => {
+      const onChangeView = vi.fn();
+      const r = render(<CalendarTest onChangeView={onChangeView} />);
+      
+      await userEvent.click(getYearBtn(r));
+      
+      expect(onChangeView).toHaveBeenCalledWith('year');
+    });
+    
+    it('hides the previous and next buttons in the month view', async () => {
+      const r = render(<CalendarTest defaultView='month' defaultMonth='2026-03-01' />);
+      
+      await expect.element(getPrev(r)).toHaveAttribute('data-visible', 'false');
+      await expect.element(getNext(r)).toHaveAttribute('data-visible', 'false');
+    });
+    
+    it('pages through years with the previous and next buttons in the year view', async () => {
+      const r = render(<CalendarTest defaultView='year' defaultMonth='2026-03-01' style={{ width: 320 }} />);
+      
+      await expect.element(getNext(r)).toHaveAttribute('data-visible', 'true');
+      await expect.poll(() => isPageVisible(getYear(r, 2026))).toBe(true);
+      
+      await userEvent.click(getNext(r));
+      await expect.poll(() => isPageVisible(getYear(r, 2038))).toBe(true);
+      
+      await userEvent.click(getPrev(r));
+      await expect.poll(() => isPageVisible(getYear(r, 2026))).toBe(true);
+    });
+  });
+  
+  describe('locale', () => {
+    const LocaleTest = (props: ComponentProps<typeof Calendar>) => (
+      <Calendar defaultValue='2026-03-15' data-testid='root' {...props}>
+        <span data-testid='month'><CalendarMonthLabel /></span>
+        <CalendarContent data-testid='content'>
+          <CalendarDays data-testid='day-picker'>
+            <CalendarWeekdays>
+              <CalendarWeekday />
+            </CalendarWeekdays>
+            <CalendarWeeks>
+              <LabeledDay />
+            </CalendarWeeks>
+          </CalendarDays>
+        </CalendarContent>
+      </Calendar>
+    );
+    
+    const getColumn = (r: RenderResult, iso: string, locale: string) => {
+      const cell = getDay(r, iso, { locale }).element();
+      return Array.from(cell.parentElement?.children ?? []).indexOf(cell);
+    };
+    
+    it('formats every part in the locale given on the root and sets lang', async () => {
+      const r = render(<LocaleTest locale='de-DE' />);
+      
+      await expect.element(r.getByTestId('month')).toHaveTextContent('März');
+      await expect.element(r.getByTestId('root')).toHaveAttribute('lang', 'de-DE');
+    });
+    
+    it('starts the week on the first day of the locale', async () => {
+      const r = render(<LocaleTest locale='en-US' />);
+      
+      await expect.poll(() => getColumn(r, '2026-03-01', 'en-US')).toBe(0);
+      
+      r.rerender(<LocaleTest locale='de-DE' />);
+      
+      await expect.poll(() => getColumn(r, '2026-03-01', 'de-DE')).toBe(6);
+    });
+    
+    it('shows bare day numbers in locales that add a suffix to a standalone day', async () => {
+      const r = render(<LocaleTest locale='ja-JP' />);
+      
+      await expect.element(getDay(r, '2026-03-15', { locale: 'ja-JP' })).toHaveTextContent(/^15$/);
+    });
+    
+  });
+  
+  describe('non-Gregorian calendar', () => {
+    const persian = createCalendarSystem('persian');
+    const hebrew = createCalendarSystem('hebrew');
+    
+    const getMonthCells = (r: RenderResult) => getMonthPicker(r).querySelectorAll('[role="gridcell"]');
+    
+    it('shows the Persian month containing the value', async () => {
+      const r = render(<CalendarTest calendar={persian} defaultValue='2025-03-21' />);
+      
+      await expect.element(getDay(r, '2025-03-21', { calendar: persian })).toHaveAttribute('aria-selected', 'true');
+      await expect.element(getDay(r, '2025-03-21', { calendar: persian })).toHaveTextContent('1');
+      await expect.element(getDay(r, '2025-04-20', { calendar: persian })).toHaveTextContent('31');
+      await expect.element(getDay(r, '2025-04-20', { calendar: persian })).not.toHaveAttribute('aria-disabled', 'true');
+    });
+    
+    it('moves to the next Persian month and reports its first day', async () => {
+      const onChangeMonth = vi.fn();
+      const r = render(<CalendarTest calendar={persian} defaultValue='2025-03-21' onChangeMonth={onChangeMonth} />);
+      
+      await userEvent.click(getNext(r));
+      
+      await expect.element(getDay(r, '2025-04-21', { calendar: persian })).toHaveAttribute('tabindex', '0');
+      await expect.poll(() => onChangeMonth.mock.lastCall).toEqual(['2025-04-21']);
+    });
+    
+    it('labels the month and year in the calendar system', async () => {
+      const r = render(
+        <Calendar calendar={persian} locale='en-US' defaultValue='2025-03-21'>
+          <span data-testid='month'><CalendarMonthLabel /></span>
+          <span data-testid='year'><CalendarYearLabel /></span>
+        </Calendar>
+      );
+      
+      await expect.element(r.getByTestId('month')).toHaveTextContent('Farvardin');
+      await expect.element(r.getByTestId('year')).toHaveTextContent('1404');
+    });
+    
+    it('lists the 13 months of a Hebrew leap year in the month picker', async () => {
+      const r = render(<CalendarTest calendar={hebrew} defaultValue='2024-03-15' />);
+      
+      await userEvent.click(getMonthBtn(r));
+      
+      expect(getMonthCells(r)).toHaveLength(13);
+    });
+  });
+  
+  describe('rapid arrow clicks', () => {
+    it('moves one month per click past the rendered window', async () => {
+      const onChangeMonth = vi.fn();
+      const r = render(<CalendarTest defaultValue='2026-01-15' onChangeMonth={onChangeMonth} />);
+      
+      for (let click = 0; click < 8; click++) {
+        await userEvent.click(getNext(r));
+      }
+      
+      await expect.poll(() => onChangeMonth.mock.lastCall, { timeout: 5000 }).toEqual(['2026-09-01']);
+      await expect.element(getDay(r, '2026-09-15')).toHaveAttribute('tabindex', '0');
+      
+      for (let click = 0; click < 8; click++) {
+        await userEvent.click(getPrev(r));
+      }
+      
+      await expect.poll(() => onChangeMonth.mock.lastCall, { timeout: 5000 }).toEqual(['2026-01-01']);
+      await expect.element(getDay(r, '2026-01-15')).toHaveAttribute('tabindex', '0');
+    });
+  });
+  
+  describe('year picker scrolling', () => {
+    const nextFrame = () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    
+    const getYearScroller = (r: RenderResult) => getYearPicker(r).querySelector<HTMLElement>('[class*="scrollView"]')!;
+    
+    it('keeps scrolling past the window without jumping back to the visible year', async () => {
+      const r = render(
+        <CalendarTest defaultMonth='2026-01-01' defaultView='year' style={{ width: 320 }}>
+          <CalendarContent>
+            <CalendarDays>
+              <CalendarWeekdays>
+                <CalendarWeekday />
+              </CalendarWeekdays>
+              <CalendarWeeks>
+                <LabeledDay />
+              </CalendarWeeks>
+            </CalendarDays>
+            <CalendarYears data-testid='year-picker'>
+              <CalendarYear />
+            </CalendarYears>
+          </CalendarContent>
+        </CalendarTest>
+      );
+      
+      const scroller = getYearScroller(r);
+      await expect.poll(() => scroller.scrollLeft).toBeGreaterThan(0);
+      
+      for (const year of [2038, 2050, 2062]) {
+        scroller.scrollBy({ left: scroller.clientWidth, behavior: 'instant' });
+        await expect.poll(() => isPageVisible(getYear(r, year))).toBe(true);
+        await nextFrame();
+      }
+      
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      
+      expect(isPageVisible(getYear(r, 2062))).toBe(true);
     });
   });
   
   describe('year picker keyboard', () => {
-    const getYear = (r: RenderResult, year: number) =>
-      getYearPicker(r).querySelector(`[role="gridcell"][data-key="${year}"]`) as HTMLElement;
-    
     it('starts on the visible year and moves with arrow keys', async () => {
       const r = render(<CalendarTest defaultMonth='2026-01-01' />);
       
@@ -745,25 +1173,20 @@ describe('Calendar', () => {
       const r = render(
         <CalendarTest>
           <CalendarContent data-testid='content'>
-            <CalendarDayPicker data-testid='day-picker'>
-              <CalendarDayPickerScroller data-testid='day-scroller'>
-                <CalendarDayPickerScrollerContent data-testid='day-scroller-content'>
-                  <CalendarDayPickerScrollerLayout data-testid='day-scroller-layout' />
-                </CalendarDayPickerScrollerContent>
-              </CalendarDayPickerScroller>
-            </CalendarDayPicker>
-            
-            <CalendarMonthPicker data-testid='month-picker'>
-              <CalendarMonthPickerLayout data-testid='month-picker-layout' />
-            </CalendarMonthPicker>
-            
-            <CalendarYearPicker data-testid='year-picker'>
-              <CalendarYearPickerScroller data-testid='year-scroller'>
-                <CalendarYearPickerScrollerContent data-testid='year-scroller-content'>
-                  <CalendarYearPickerScrollerLayout data-testid='year-scroller-layout' />
-                </CalendarYearPickerScrollerContent>
-              </CalendarYearPickerScroller>
-            </CalendarYearPicker>
+            <CalendarDays data-testid='day-picker'>
+              <CalendarWeekdays>
+                <CalendarWeekday />
+              </CalendarWeekdays>
+              <CalendarWeeks>
+                <LabeledDay />
+              </CalendarWeeks>
+            </CalendarDays>
+            <CalendarMonths data-testid='month-picker'>
+              <CalendarMonth />
+            </CalendarMonths>
+            <CalendarYears data-testid='year-picker'>
+              <CalendarYear />
+            </CalendarYears>
           </CalendarContent>
         </CalendarTest>,
       );
@@ -775,13 +1198,14 @@ describe('Calendar', () => {
       const r = render(
         <CalendarTest>
           <CalendarContent data-testid='content'>
-            <CalendarDayPicker data-testid='day-picker'>
-              <CalendarDayPickerScroller data-testid='day-scroller'>
-                <CalendarDayPickerScrollerContent data-testid='day-scroller-content'>
-                  <CalendarDayPickerScrollerLayout data-testid='day-scroller-layout' />
-                </CalendarDayPickerScrollerContent>
-              </CalendarDayPickerScroller>
-            </CalendarDayPicker>
+            <CalendarDays data-testid='day-picker'>
+              <CalendarWeekdays>
+                <CalendarWeekday />
+              </CalendarWeekdays>
+              <CalendarWeeks>
+                <LabeledDay />
+              </CalendarWeeks>
+            </CalendarDays>
           </CalendarContent>
         </CalendarTest>,
       );
@@ -843,9 +1267,9 @@ describe('Calendar', () => {
       const r = render(
         <CalendarTest>
           <CalendarContent data-testid='content-x'>
-            <CalendarMonthPicker data-testid='month-picker-x'>
-              <CalendarMonthPickerLayout data-testid='month-picker-layout-x' />
-            </CalendarMonthPicker>
+            <CalendarMonths data-testid='month-picker-x'>
+              <CalendarMonth />
+            </CalendarMonths>
           </CalendarContent>
         </CalendarTest>,
       );
@@ -857,28 +1281,14 @@ describe('Calendar', () => {
       const r = render(
         <CalendarTest>
           <CalendarContent data-testid='content-x'>
-            <CalendarMonthPicker data-testid='month-picker-x'>
-              <CalendarMonthPickerLayout data-testid='month-picker-layout-x' />
-            </CalendarMonthPicker>
+            <CalendarMonths data-testid='month-picker-x'>
+              <CalendarMonth />
+            </CalendarMonths>
           </CalendarContent>
         </CalendarTest>,
       );
       
       await expect.element(r.getByTestId('month-picker-x')).toBeInTheDocument();
-    });
-    
-    it('supports overriding data-testid on wrappers: month picker layout', async () => {
-      const r = render(
-        <CalendarTest>
-          <CalendarContent data-testid='content-x'>
-            <CalendarMonthPicker data-testid='month-picker-x'>
-              <CalendarMonthPickerLayout data-testid='month-picker-layout-x' />
-            </CalendarMonthPicker>
-          </CalendarContent>
-        </CalendarTest>,
-      );
-      
-      await expect.element(r.getByTestId('month-picker-layout-x')).toBeInTheDocument();
     });
   });
   

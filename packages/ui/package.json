@@ -67,6 +67,7 @@
     "@maskito/phone": "^3.4.0",
     "@maskito/react": "^3.4.0",
     "@vega-ui/hooks": "workspace:*",
+    "@vega-ui/i18n": "workspace:*",
     "@vega-ui/icons": "workspace:*",
     "@vega-ui/react-context": "workspace:*",
     "@vega-ui/utils": "workspace:*",

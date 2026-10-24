@@ -1,77 +1,92 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { DateRangeFieldCalendar } from './DateRangeFieldCalendar';
-import { getWeekDayNames } from '@vega-ui/utils';
+import { DateRangeField } from '../../DateRangeField';
+import { DateRangeFieldInput } from '../DateRangeFieldInput';
+import { DateRangeFieldTriggerIconButton } from '../DateRangeFieldTriggerIconButton';
+import { Popover, PopoverContent, PopoverTrigger } from '../../../Popover';
 import {
-  CalendarContent, CalendarDayPicker, CalendarDayPickerScroller, CalendarDayPickerScrollerContent,
-  CalendarDayPickerScrollerLayout,
-  CalendarHeader, CalendarMonthLabel,
-  CalendarMonthPicker, CalendarMonthPickerButton,
-  CalendarMonthPickerLayout, CalendarNextButton, CalendarNextYearGroupButton,
-  CalendarPickerButtonGroup,
+  CalendarContent,
+  CalendarDays,
+  CalendarHeader,
+  CalendarMonthLabel,
+  CalendarMonth,
+  CalendarMonths,
+  CalendarNextButton,
   CalendarPrevButton,
-  CalendarPrevYearGroupButton, CalendarWeekLabel, CalendarWeekLabels, CalendarYearLabel,
-  CalendarYearPicker, CalendarYearPickerButton, CalendarYearPickerScroller, CalendarYearPickerScrollerContent,
-  CalendarYearPickerScrollerLayout
+  CalendarViewButton,
+  CalendarViewButtonGroup,
+  CalendarWeekdays,
+  CalendarWeekday,
+  CalendarDay,
+  CalendarWeeks,
+  CalendarYearLabel,
+  CalendarYear,
+  CalendarYears,
 } from '../../../Calendar';
-import { Icon } from '../../../Icon';
-import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from '@vega-ui/icons';
+import { getDateFormat, getDateSeparator, gregorianCalendar } from '@vega-ui/i18n';
 
+const format = getDateFormat(gregorianCalendar);
+const separator = getDateSeparator(gregorianCalendar);
+
+/**
+ * The calendar of the field, rendered in its popover the way the field
+ * composes it: picking a day writes it to the field's input.
+ */
 const meta = {
   title: 'Form/Fields/DateRangeField/DateRangeFieldCalendar',
   component: DateRangeFieldCalendar,
   parameters: { layout: 'centered' },
   tags: ['autodocs'],
   args: {
-    children: [
-      <CalendarHeader key={0}>
-        <CalendarPrevYearGroupButton>
-          <Icon><ArrowLeft /></Icon>
-        </CalendarPrevYearGroupButton>
-        <CalendarPrevButton>
-          <Icon><ChevronLeft /></Icon>
-        </CalendarPrevButton>
-        <CalendarPickerButtonGroup>
-          <CalendarMonthPickerButton>
-            <CalendarMonthLabel />
-          </CalendarMonthPickerButton>
-          <CalendarYearPickerButton>
-            <CalendarYearLabel />
-          </CalendarYearPickerButton>
-        </CalendarPickerButtonGroup>
-        <CalendarNextButton>
-          <Icon><ChevronRight /></Icon>
-        </CalendarNextButton>
-        <CalendarNextYearGroupButton>
-          <Icon><ArrowRight /></Icon>
-        </CalendarNextYearGroupButton>
-      </CalendarHeader>,
-      <CalendarContent key={1}>
-        <CalendarDayPicker>
-          <CalendarWeekLabels>
-            {getWeekDayNames(navigator.language, 'short').map((name) => (
-              <CalendarWeekLabel key={name}>{name}</CalendarWeekLabel>
-            ))}
-          </CalendarWeekLabels>
-          <CalendarDayPickerScroller>
-            <CalendarDayPickerScrollerContent>
-              <CalendarDayPickerScrollerLayout />
-            </CalendarDayPickerScrollerContent>
-          </CalendarDayPickerScroller>
-        </CalendarDayPicker>
-        <CalendarMonthPicker>
-          <CalendarMonthPickerLayout  />
-        </CalendarMonthPicker>
-        <CalendarYearPicker>
-          <CalendarYearPickerScroller>
-            <CalendarYearPickerScrollerContent>
-              <CalendarYearPickerScrollerLayout />
-            </CalendarYearPickerScrollerContent>
-          </CalendarYearPickerScroller>
-        </CalendarYearPicker>
-      </CalendarContent>
-    ]
-  }
+    children: (
+      <>
+        <CalendarHeader>
+          <CalendarPrevButton aria-label='Previous' />
+          <CalendarViewButtonGroup>
+            <CalendarViewButton view='month'>
+              <CalendarMonthLabel />
+            </CalendarViewButton>
+            <CalendarViewButton view='year'>
+              <CalendarYearLabel />
+            </CalendarViewButton>
+          </CalendarViewButtonGroup>
+          <CalendarNextButton aria-label='Next' />
+        </CalendarHeader>
+        <CalendarContent>
+          <CalendarDays>
+            <CalendarWeekdays format='narrow'>
+              <CalendarWeekday />
+            </CalendarWeekdays>
+            <CalendarWeeks>
+              <CalendarDay />
+            </CalendarWeeks>
+          </CalendarDays>
+          <CalendarMonths>
+            <CalendarMonth />
+          </CalendarMonths>
+          <CalendarYears>
+            <CalendarYear />
+          </CalendarYears>
+        </CalendarContent>
+      </>
+    ),
+  },
+  decorators(Story) {
+    return (
+      <DateRangeField format={format} separator={separator}>
+        <DateRangeFieldInput aria-label='Date' />
+        <Popover placement='bottom-end' defaultOpen>
+          <PopoverTrigger asChild>
+            <DateRangeFieldTriggerIconButton aria-label='Open calendar' />
+          </PopoverTrigger>
+          <PopoverContent>
+            <Story />
+          </PopoverContent>
+        </Popover>
+      </DateRangeField>
+    );
+  },
 } satisfies Meta<typeof DateRangeFieldCalendar>;
 
 export default meta;

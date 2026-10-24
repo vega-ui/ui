@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { DateTimeFieldInput } from './DateTimeFieldInput';
 import { DateTimeField } from '../../DateTimeField';
-import { getDateFormat, getDateSeparator } from '@vega-ui/utils';
+import { getDateFormat, getDateSeparator, gregorianCalendar } from '@vega-ui/i18n';
 
 const meta = {
   title: 'Form/Fields/DateTimeField/DateTimeFieldInput',
@@ -12,7 +12,7 @@ const meta = {
   args: {},
   decorators(Story) {
     return (
-      <DateTimeField dateFormat={getDateFormat(navigator.language)} dateSeparator={getDateSeparator(navigator.language)}>
+      <DateTimeField dateFormat={getDateFormat(gregorianCalendar)} dateSeparator={getDateSeparator(gregorianCalendar)}>
         <Story />
       </DateTimeField>
     )

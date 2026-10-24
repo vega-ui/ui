@@ -2,35 +2,30 @@
 
 import { RefObject } from 'react'
 import { createContext } from '@vega-ui/react-context';
-import { MaskitoDateMode, MaskitoTimeMode } from '@maskito/kit';
+import { CalendarSystem, gregorianCalendar } from '@vega-ui/i18n';
 import { CalendarDatesDisabled } from '../../../Calendar';
 
 export interface DateTimeFieldContextState {
-  date?: Date
+  date?: string
   time: string
   timeStep?: number
-  dateFormat: MaskitoDateMode
-  timeFormat: MaskitoTimeMode
-  separator: string
+  template: string
+  calendar: CalendarSystem
+  locale?: string
   disabled?: boolean
   changeTime(time: string): void
-  changeDate(date: Date | undefined): void
-  dateSeparator: string
+  changeDate(date: string | undefined): void
   disabledDates?: CalendarDatesDisabled
   inputRef?: RefObject<HTMLInputElement | null>
-  lastStringified: RefObject<string>
-  min?: Date
-  max?: Date
+  min?: string
+  max?: string
 }
 
 export const [DateTimeFieldProvider, useDateTimeFieldContext] = createContext<DateTimeFieldContextState>('DateTimeFieldContext', {
   time: '',
   timeStep: 1,
-  dateFormat: 'dd/mm/yyyy',
-  timeFormat: 'HH:MM',
-  separator: ', ',
-  lastStringified: { current: '' },
-  dateSeparator: '.',
+  template: 'dd.mm.yyyy, HH:MM',
+  calendar: gregorianCalendar,
   changeDate() {},
   changeTime() {}
 })

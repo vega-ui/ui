@@ -1,9 +1,9 @@
-import { FC, useMemo, useRef, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import { TextField, TextFieldProps } from '../TextField';
 import { DateFieldProvider } from './contexts';
 import { CalendarDatesDisabled } from '../Calendar';
-import { MaskitoDateMode } from '@maskito/kit';
-import { parseISODate } from '@vega-ui/utils';
+import { parseISODate, getDateTemplate } from '@vega-ui/utils';
+import { CalendarSystem, gregorianCalendar } from '@vega-ui/i18n';
 
 export interface DateFieldProps extends TextFieldProps {
   /**
@@ -52,6 +52,20 @@ export interface DateFieldProps extends TextFieldProps {
    * Prevents user input and interaction and applies the disabled visual state.
    */
   disabled?: boolean
+  
+  /**
+   * Calendar system the date is typed and picked in. The value stays a
+   * `YYYY-MM-DD` day.
+   * Defaults to the Gregorian calendar.
+   */
+  calendar?: CalendarSystem
+  
+  /**
+   * BCP 47 locale of the calendar popup (month and day names, first day of
+   * the week), e.g. `de-DE`. The typed format still comes from `format`.
+   * Defaults to the locale of the runtime, like `Intl`.
+   */
+  locale?: string
 }
 
 /**
@@ -65,18 +79,14 @@ export interface DateFieldProps extends TextFieldProps {
  * This component acts as the coordination layer between the visual TextField,
  * date parsing/formatting logic, and the interactive calendar UI.
  */
-export const DateField: FC<DateFieldProps> = ({ format, separator, max: _max, min: _min, disabledDates, disabled, ...props }) => {
-  const min = useMemo(() => parseISODate(_min), [_min])
-  const max = useMemo(() => parseISODate(_max), [_max])
-  const [date, setDate] = useState<Date | undefined>(undefined)
-  const lastStringified = useRef<string>('')
+export const DateField: FC<DateFieldProps> = ({ format, separator, max: _max, min: _min, disabledDates, disabled, calendar = gregorianCalendar, locale, ...props }) => {
+  const min = parseISODate(_min) ? _min : undefined
+  const max = parseISODate(_max) ? _max : undefined
+  const [date, setDate] = useState<string | undefined>(undefined)
   
   const inputInnerRef = useRef<HTMLInputElement>(null)
   
-  const normalizedFormat = format.toLowerCase()
-    .replace(/[^a-z/]/g, '/')
-    .replace(/\/+/g, '/')
-    .replace(/\/$/, '') as MaskitoDateMode
+  const template = getDateTemplate(format, separator)
   
   return (
     <DateFieldProvider
@@ -87,9 +97,9 @@ export const DateField: FC<DateFieldProps> = ({ format, separator, max: _max, mi
       disabledDates={disabledDates}
       inputRef={inputInnerRef}
       changeDate={setDate}
-      lastStringified={lastStringified}
-      format={normalizedFormat}
-      separator={separator}
+      template={template}
+      calendar={calendar}
+      locale={locale}
     >
       <TextField {...props} />
     </DateFieldProvider>

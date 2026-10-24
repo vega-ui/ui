@@ -6,13 +6,14 @@
 
 ## Summary
 
-`YearPicker` is the year-selection subsystem of the calendar family. It builds on `DataGridPicker`, supports static or scroller-based year grids, and exposes year-to-index helpers for paged decade-like navigation.
+`YearPicker` is the year-selection subsystem of the calendar family. It builds on `DataGridPicker`, supports static or scroller-based year grids, and pages years in fixed-size groups (`period`, `12` by default) for decade-like navigation.
 
 ## Imports
 
 ```tsx
 import {
   YearPicker,
+  YearPickerCell,
   YearPickerItem,
   YearPickerLayout,
   YearPickerRow,
@@ -21,6 +22,11 @@ import {
   YearPickerScrollerContent,
   YearPickerScrollerLayout,
   createYearPickerGrid,
+  useYearPickerCellContext,
+  useYearPickerContext,
+  useYearPickerScrollerContext,
+  type YearPickerCellContextData,
+  type YearPickerCellProps,
   type YearPickerItemProps,
   type YearPickerLayoutProps,
   type YearPickerProps,
@@ -39,6 +45,8 @@ import {
 - `YearPickerRowGroupProps`
 - `YearPickerRowProps`
 - `YearPickerItemProps`
+- `YearPickerCellProps`
+- `YearPickerCellContextData`
 - `YearPickerScrollerProps`
 - `YearPickerScrollerContentProps`
 - `YearPickerScrollerLayoutProps`
@@ -47,7 +55,9 @@ import {
 
 ```tsx
 <YearPicker>
-  <YearPickerLayout />
+  <YearPickerLayout>
+    <YearPickerCell />
+  </YearPickerLayout>
 </YearPicker>
 ```
 
@@ -61,6 +71,7 @@ import {
 - `YearPickerRowGroup`
 - `YearPickerRow`
 - `YearPickerItem`
+- `YearPickerCell`: the cell, placed as the template of the layouts
 - `YearPickerScroller`
 - `YearPickerScrollerContent`
 - `YearPickerScrollerLayout`
@@ -68,14 +79,15 @@ import {
 ## Composition Order
 
 1. `YearPicker`
-2. either `YearPickerLayout` or custom row/item composition
+2. either `YearPickerLayout` with a cell template as children (`<YearPickerCell />` or a custom one) or custom row/item composition
 3. optional scroller layer for paged year ranges
 
 ## Variants
 
 - Selection: `single`, `multiple`, `range`
 - Layout: static grid or scroller-based year paging
-- Period: explicit visible `year` or current-year defaults
+- Period: explicit visible `year` (a `YYYY-MM-DD` string of any day in it) or the current year
+- Locale and calendar system: `locale` and `calendar` props, defaulting to the runtime locale and the Gregorian calendar; eras are handled by the adapter
 
 ## Related Docs
 
@@ -92,7 +104,7 @@ import {
 
 - Large year ranges require extra testing for focus, paging, and visible context.
 - `year` controls the visible period, not just selection.
-- Scroller mode introduces another mapping layer between visible year and page index.
+- Scroller mode pages by `period` years; a `period` that differs from the layout's `rows × cols` shows the wrong range.
 
 ## Common Mistakes
 

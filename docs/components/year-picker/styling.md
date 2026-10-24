@@ -34,7 +34,9 @@ Grid and scroller presentation come from the composed row, item, and scroller pa
 <YearPicker>
   <YearPickerScroller>
     <YearPickerScrollerContent>
-      <YearPickerScrollerLayout />
+      <YearPickerScrollerLayout>
+        <YearPickerCell />
+      </YearPickerScrollerLayout>
     </YearPickerScrollerContent>
   </YearPickerScroller>
 </YearPicker>

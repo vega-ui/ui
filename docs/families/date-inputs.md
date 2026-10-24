@@ -30,3 +30,4 @@ Use this page when the product stores dates, ranges, or timestamps and the main 
 - Filters and settings forms: [DateField](../components/date-field/), [DateRangeField](../components/date-range-field/)
 - Scheduling or booking flows: [DateTimeField](../components/date-time-field/), [DateRangeField](../components/date-range-field/)
 - Always-visible visual picking: [Calendar](../components/calendar/)
+- Non-Gregorian calendars, locale, and the ISO date value contract: [Dates And Calendar Systems](../i18n.md)

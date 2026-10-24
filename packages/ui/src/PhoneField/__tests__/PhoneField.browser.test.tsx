@@ -1,4 +1,5 @@
-import { ComponentProps, FC } from 'react';
+import { ComponentProps, FC, useState } from 'react';
+import type { CountryCode } from 'libphonenumber-js';
 import { afterEach, beforeEach, describe, expect, it, Mock, vi } from 'vitest';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
 import { userEvent } from 'vitest/browser';
@@ -31,7 +32,7 @@ const PLACEHOLDER = '+7';
 const DEFAULT_CODE = 'RU' as const;
 const NEXT_CODE = 'US' as const;
 
-const PhoneFieldTest: FC<ComponentProps<typeof PhoneField>> = (props) => {
+const PhoneFieldTest: FC<ComponentProps<typeof PhoneField> & { inputDefaultValue?: string }> = ({ inputDefaultValue, ...props }) => {
   return (
     <PhoneField {...props}>
       <PhoneFieldSelect data-testid={TESTID_SELECT}>
@@ -63,6 +64,7 @@ const PhoneFieldTest: FC<ComponentProps<typeof PhoneField>> = (props) => {
         data-testid={TESTID_INPUT}
         autoComplete={AUTOCOMPLETE}
         placeholder={PLACEHOLDER}
+        defaultValue={inputDefaultValue}
       />
     </PhoneField>
   );
@@ -187,6 +189,32 @@ describe('PhoneField', () => {
           expect(onChangeCode.mock.calls.length).toBe(1);
           expect(onChangeCode).toHaveBeenCalledWith('US');
         });
+        
+        it('detects the country of the default value', async () => {
+          r.rerender(<></>);
+          const next = render(<PhoneFieldTest strictMask={false} defaultCode={DEFAULT_CODE} inputDefaultValue='+1 234 567-8900' />);
+          
+          await expect.element(getHiddenSelect(next)).toHaveValue('US');
+        });
+        
+        it('detects the country again after the form is reset', async () => {
+          r.rerender(<></>);
+          const next = render(
+            <form data-testid='form'>
+              <PhoneFieldTest strictMask={false} inputDefaultValue='+7 912 345-67-89' />
+            </form>,
+          );
+          await expect.element(getHiddenSelect(next)).toHaveValue('RU');
+          
+          const input = getInput(next);
+          await userEvent.clear(input);
+          await userEvent.type(input, '+1 234 567-8900');
+          await expect.element(getHiddenSelect(next)).toHaveValue('US');
+          
+          (next.getByTestId('form') as HTMLFormElement).reset();
+          
+          await expect.element(getHiddenSelect(next)).toHaveValue('RU');
+        });
       });
       
       describe('strictMask', () => {
@@ -254,6 +282,30 @@ describe('PhoneField', () => {
           
           r.rerender(<PhoneFieldTest code={CONTROLLED_NEXT} onChangeCode={onChangeCode} />);
           await expect.element(hiddenSelect).toHaveValue(CONTROLLED_NEXT);
+        });
+        
+        it('does not write the calling code of a country rejected by a controlled parent', async () => {
+          const before = getInput(r).value;
+          
+          await selectCountry(r, CONTROLLED_NEXT);
+          await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+          
+          expect(getInput(r).value).toBe(before);
+        });
+      });
+      
+      describe('accepted country selection', () => {
+        const ControlledTest = () => {
+          const [code, setCode] = useState<CountryCode>('RU');
+          return <PhoneFieldTest code={code} onChangeCode={setCode} />;
+        };
+        
+        it('writes the calling code of a country accepted by a controlled parent', async () => {
+          const r = render(<ControlledTest />);
+          
+          await selectCountry(r, 'FR');
+          
+          await expect.poll(() => getInput(r).value).toMatch(/^\+33/);
         });
       });
       

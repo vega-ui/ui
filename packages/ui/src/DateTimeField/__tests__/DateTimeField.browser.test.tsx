@@ -1,33 +1,50 @@
 import { FC } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
-import { userEvent } from 'vitest/browser';
+import { page, userEvent, type Locator } from 'vitest/browser';
 
 import { DateTimeField, type DateTimeFieldProps } from '../DateTimeField';
 import {
   DateTimeFieldInput,
   DateTimeFieldCalendar,
   DateTimeFieldTriggerIconButton,
+  type DateTimeFieldInputProps,
 } from '../components';
 
 import { Popover, PopoverTrigger, PopoverContent } from '../../Popover';
 import {
-  CalendarContent, CalendarDayPicker, CalendarDayPickerScroller, CalendarDayPickerScrollerContent,
-  CalendarDayPickerScrollerLayout,
-  CalendarHeader, CalendarMonthLabel,
-  CalendarMonthPicker, CalendarMonthPickerButton,
-  CalendarMonthPickerLayout, CalendarNextButton, CalendarNextYearGroupButton,
-  CalendarPickerButtonGroup,
+  CalendarHeader,
+  CalendarContent,
   CalendarPrevButton,
-  CalendarPrevYearGroupButton, CalendarWeekLabel, CalendarWeekLabels, CalendarYearLabel,
-  CalendarYearPicker, CalendarYearPickerButton, CalendarYearPickerScroller, CalendarYearPickerScrollerContent,
-  CalendarYearPickerScrollerLayout
+  CalendarNextButton,
+  CalendarViewButtonGroup,
+  CalendarViewButton,
+  CalendarMonthLabel,
+  CalendarYearLabel,
+  CalendarDays, CalendarWeekdays, CalendarWeekday, CalendarDay,
+  CalendarWeeks,
+  CalendarMonth,
+  CalendarMonths,
+  CalendarYear,
+  CalendarYears,
+  useCalendarContext,
+  useCalendarDayContext,
 } from '../../Calendar';
 import { Icon } from '../../Icon';
-import { ArrowLeft, ArrowRight, ChevronLeft, ChevronRight } from '@vega-ui/icons';
-import { getWeekDayNames } from '@vega-ui/utils';
+import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
+import { formatISODate } from '@vega-ui/utils';
+import { createCalendarSystem, formatCalendarDate, gregorianCalendar, type CalendarSystem } from '@vega-ui/i18n';
 
 afterEach(cleanup);
+
+const LabeledDay = () => {
+  const { date } = useCalendarDayContext();
+  const { locale, calendar } = useCalendarContext();
+
+  if (date === undefined) return <CalendarDay />;
+
+  return <CalendarDay aria-label={formatCalendarDate(calendar, date, locale, { dateStyle: 'full' })} />;
+};
 
 beforeEach(() => {
   vi.setSystemTime(new Date(2026, 0, 1))
@@ -41,9 +58,10 @@ const TESTID_CALENDAR = 'datetimefield-calendar';
 const FORMAT = 'dd.MM.yyyy';
 const SEPARATOR = ', ';
 
-const DateTimeFieldTest: FC<Partial<DateTimeFieldProps>> = ({
+const DateTimeFieldTest: FC<Partial<DateTimeFieldProps> & { inputProps?: DateTimeFieldInputProps }> = ({
   onInput,
   onChange,
+  inputProps,
   ...props
 }) => (
   <DateTimeField dateFormat={FORMAT} separator={SEPARATOR} {...props}>
@@ -51,68 +69,49 @@ const DateTimeFieldTest: FC<Partial<DateTimeFieldProps>> = ({
       data-testid={TESTID_INPUT}
       onInput={onInput}
       onChange={onChange}
+      {...inputProps}
     />
     <Popover>
       <PopoverTrigger asChild>
         <DateTimeFieldTriggerIconButton aria-label='Open calendar' data-testid={TESTID_TRIGGER} />
       </PopoverTrigger>
       <PopoverContent data-testid={TESTID_CONTENT}>
-        <DateTimeFieldCalendar data-testid={TESTID_CALENDAR}>
+        <DateTimeFieldCalendar data-testid={TESTID_CALENDAR} style={{ width: 320 }}>
           <CalendarHeader>
-            <CalendarPrevYearGroupButton aria-label='Previous year group'>
-              <Icon>
-                <ArrowLeft />
-              </Icon>
-            </CalendarPrevYearGroupButton>
             <CalendarPrevButton aria-label='Previous month'>
               <Icon>
                 <ChevronLeft />
               </Icon>
             </CalendarPrevButton>
-            <CalendarPickerButtonGroup>
-              <CalendarMonthPickerButton aria-label='Open month picker'>
+            <CalendarViewButtonGroup>
+              <CalendarViewButton view='month' aria-label='Open month picker'>
                 <CalendarMonthLabel />
-              </CalendarMonthPickerButton>
-              <CalendarYearPickerButton aria-label='Open year picker'>
+              </CalendarViewButton>
+              <CalendarViewButton view='year' aria-label='Open year picker'>
                 <CalendarYearLabel />
-              </CalendarYearPickerButton>
-            </CalendarPickerButtonGroup>
+              </CalendarViewButton>
+            </CalendarViewButtonGroup>
             <CalendarNextButton aria-label='Next month'>
               <Icon>
                 <ChevronRight />
               </Icon>
             </CalendarNextButton>
-            <CalendarNextYearGroupButton aria-label='Next year group'>
-              <Icon>
-                <ArrowRight />
-              </Icon>
-            </CalendarNextYearGroupButton>
           </CalendarHeader>
           <CalendarContent>
-            <CalendarDayPicker>
-              <CalendarWeekLabels>
-                {getWeekDayNames(navigator.language, 'short').map((name) => (
-                  <CalendarWeekLabel key={name}>{name}</CalendarWeekLabel>
-                ))}
-              </CalendarWeekLabels>
-              <CalendarDayPickerScroller>
-                <CalendarDayPickerScrollerContent>
-                  <CalendarDayPickerScrollerLayout />
-                </CalendarDayPickerScrollerContent>
-              </CalendarDayPickerScroller>
-            </CalendarDayPicker>
-            
-            <CalendarMonthPicker>
-              <CalendarMonthPickerLayout />
-            </CalendarMonthPicker>
-            
-            <CalendarYearPicker>
-              <CalendarYearPickerScroller>
-                <CalendarYearPickerScrollerContent>
-                  <CalendarYearPickerScrollerLayout />
-                </CalendarYearPickerScrollerContent>
-              </CalendarYearPickerScroller>
-            </CalendarYearPicker>
+            <CalendarDays>
+              <CalendarWeekdays>
+                <CalendarWeekday />
+              </CalendarWeekdays>
+              <CalendarWeeks>
+                <LabeledDay />
+              </CalendarWeeks>
+            </CalendarDays>
+            <CalendarMonths>
+              <CalendarMonth />
+            </CalendarMonths>
+            <CalendarYears>
+              <CalendarYear />
+            </CalendarYears>
           </CalendarContent>
         </DateTimeFieldCalendar>
       </PopoverContent>
@@ -126,13 +125,11 @@ const getTrigger = (r: RenderResult) => r.getByTestId(TESTID_TRIGGER);
 const queryContent = (r: RenderResult) => r.queryByTestId(TESTID_CONTENT);
 const getContent = (r: RenderResult) => r.getByTestId(TESTID_CONTENT);
 const getCalendar = (r: RenderResult) => r.getByTestId(TESTID_CALENDAR);
-const getCell = (r: RenderResult, date: Date) =>
-  getContent(r).querySelector(
-    `[role="gridcell"][data-key="${date.getTime()}"]`
-  ) as HTMLElement;
+const getCell = (r: RenderResult, date: Date, calendar: CalendarSystem = gregorianCalendar) =>
+  page.elementLocator(getContent(r)).getByRole('gridcell', { name: formatCalendarDate(calendar, formatISODate(date), 'en-US', { dateStyle: 'full' }), exact: true });
 
-const pickDate = async (r: RenderResult, date: Date) => {
-  const cell = getCell(r, date);
+const pickDate = async (r: RenderResult, date: Date, calendar?: CalendarSystem) => {
+  const cell = getCell(r, date, calendar);
   await userEvent.click(cell);
 };
 
@@ -200,8 +197,11 @@ describe('DateTimeField', () => {
   
   describe('Edge Cases', () => {
     describe('calendar navigation follows the WAI-ARIA date picker pattern', () => {
-      const getPickerCell = (r: RenderResult, key: number) =>
-        getContent(r).querySelector(`[data-visible="true"] [role="gridcell"][data-key="${key}"]`) as HTMLElement;
+      const getMonthCell = (r: RenderResult, month: string) =>
+        page.elementLocator(getContent(r)).getByRole('gridcell', { name: month, exact: true });
+
+      const getYearCell = (r: RenderResult, year: string) =>
+        page.elementLocator(getContent(r)).getByRole('gridcell', { name: year, exact: true });
 
       const press = async (r: RenderResult, button: string) => {
         r.getByRole('button', { name: button }).focus();
@@ -214,6 +214,27 @@ describe('DateTimeField', () => {
       };
 
       const settle = () => new Promise((resolve) => setTimeout(resolve, 300));
+
+      const isPageVisible = (cell: Locator) => {
+        const cellPage = cell.query()?.closest('[data-index]');
+        const scroller = cellPage?.parentElement;
+        if (!cellPage || !scroller) return false;
+
+        const outer = scroller.getBoundingClientRect();
+        const inner = cellPage.getBoundingClientRect();
+
+        return inner.left >= outer.left - 1 && inner.right <= outer.right + 1;
+      };
+
+      const isPageCentered = (cell: Locator) => {
+        const cellPage = cell.query()?.closest('[data-index]');
+        const scroller = cellPage?.parentElement;
+        if (!cellPage || !scroller) return false;
+
+        const pages = Array.from(scroller.children);
+
+        return pages.indexOf(cellPage) === Math.floor(pages.length / 2);
+      };
 
       it('keeps the value and moves focus to the same day of the next month', async () => {
         const r = render(<DateTimeFieldTest />);
@@ -242,7 +263,7 @@ describe('DateTimeField', () => {
 
         await open(r, '15.01.2026, 12:30');
         await press(r, 'Open month picker');
-        await expect.element(getPickerCell(r, 0)).toHaveFocus();
+        await expect.element(getMonthCell(r, 'January')).toHaveFocus();
         await userEvent.keyboard('{ArrowRight}{ArrowRight}{Enter}');
 
         await expect.element(getCell(r, new Date(2026, 2, 15))).toHaveAttribute('tabindex', '0');
@@ -255,7 +276,7 @@ describe('DateTimeField', () => {
 
         await open(r, '15.01.2026, 12:30');
         await press(r, 'Open year picker');
-        await expect.element(getPickerCell(r, 2026)).toHaveFocus();
+        await expect.element(getYearCell(r, '2026')).toHaveFocus();
         await userEvent.keyboard('{ArrowRight}{Enter}');
 
         await expect.element(getCell(r, new Date(2027, 0, 15))).toHaveAttribute('tabindex', '0');
@@ -269,7 +290,7 @@ describe('DateTimeField', () => {
         await open(r, '15.01.2026, 12:30');
 
         const getScroller = () => {
-          let element = getCell(r, new Date(2026, 0, 15))?.parentElement ?? null;
+          let element = getCell(r, new Date(2026, 0, 15)).element().parentElement;
           while (element && element.scrollWidth <= element.clientWidth) element = element.parentElement;
           return element;
         };
@@ -277,12 +298,10 @@ describe('DateTimeField', () => {
 
         const onChange = vi.fn();
         getInput(r).addEventListener('change', onChange);
-
-        const nextFrame = () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-        for (let step = 0; step < 3; step++) {
+        for (let month = 1; month <= 3; month++) {
           const scroller = getScroller()!;
           scroller.scrollBy({ left: scroller.clientWidth, behavior: 'instant' });
-          await nextFrame();
+          await expect.element(getCell(r, new Date(2026, month, 15))).toHaveAttribute('tabindex', '0');
         }
 
         await expect.element(getCell(r, new Date(2026, 3, 15))).toHaveAttribute('tabindex', '0');
@@ -296,6 +315,9 @@ describe('DateTimeField', () => {
 
         await open(r, '15.01.2026, 12:30');
         await press(r, 'Next month');
+        await expect.element(getCell(r, new Date(2026, 1, 15))).toHaveAttribute('tabindex', '0');
+        await expect.poll(() => isPageVisible(getCell(r, new Date(2026, 1, 10)))).toBe(true);
+        await expect.poll(() => isPageCentered(getCell(r, new Date(2026, 1, 10)))).toBe(true);
         await pickDate(r, new Date(2026, 1, 10));
 
         await expect.element(getInput(r)).toHaveValue('10.02.2026, 12:30');
@@ -343,6 +365,139 @@ describe('DateTimeField', () => {
     });
   });
   
+  describe('typing', () => {
+    it('steps the time segment at the caret with arrow keys', async () => {
+      const r = render(<DateTimeFieldTest timeStep={15} />);
+      const input = getInput(r);
+      
+      await userEvent.type(input, '15.01.2026, 12:30');
+      input.setSelectionRange(16, 16);
+      await userEvent.keyboard('{ArrowUp}');
+      
+      await expect.element(input).toHaveValue('15.01.2026, 12:45');
+    });
+    
+    it('wraps the stepped time segment around its range', async () => {
+      const r = render(<DateTimeFieldTest />);
+      const input = getInput(r);
+      
+      await userEvent.type(input, '15.01.2026, 00:30');
+      input.setSelectionRange(13, 13);
+      await userEvent.keyboard('{ArrowDown}');
+      
+      await expect.element(input).toHaveValue('15.01.2026, 23:30');
+    });
+    
+    it('steps the hours by one whatever the time step', async () => {
+      const r = render(<DateTimeFieldTest timeStep={15} />);
+      const input = getInput(r);
+      
+      await userEvent.type(input, '15.01.2026, 12:30');
+      input.setSelectionRange(13, 13);
+      await userEvent.keyboard('{ArrowUp}');
+      
+      await expect.element(input).toHaveValue('15.01.2026, 13:30');
+    });
+    
+    it('clamps the time to its range', async () => {
+      const r = render(<DateTimeFieldTest />);
+      
+      await userEvent.type(getInput(r), '15.01.2026, 25:30');
+      
+      await expect.element(getInput(r)).toHaveValue('15.01.2026, 23:30');
+    });
+
+    it('accepts the digits of other numbering systems', async () => {
+      const r = render(<DateTimeFieldTest />);
+
+      await userEvent.type(getInput(r), '۱۵.۰۱.۲۰۲۶, ۰۸:۳۰');
+
+      await expect.element(getInput(r)).toHaveValue('15.01.2026, 08:30');
+    });
+  });
+  
+  describe('field state follows the input', () => {
+    const expectSelected = async (r: RenderResult, date: Date) => {
+      await userEvent.click(getTrigger(r));
+      await expect.element(getCell(r, date)).toHaveAttribute('aria-selected', 'true');
+    };
+
+    const expectNotSelected = async (r: RenderResult, date: Date) => {
+      await userEvent.click(getTrigger(r));
+      await expect.element(getCalendar(r)).toBeInTheDocument();
+      await expect.element(getCell(r, date)).not.toHaveAttribute('aria-selected', 'true');
+    };
+
+    it('clears the selection and the time when the text is cleared', async () => {
+      const r = render(<DateTimeFieldTest />);
+
+      await userEvent.type(getInput(r), '15.01.2026, 12:30');
+      await userEvent.clear(getInput(r));
+
+      await expectNotSelected(r, new Date(2026, 0, 15));
+      await pickDate(r, new Date(2026, 0, 20));
+      await expect.element(getInput(r)).toHaveValue('20.01.2026, 00:00');
+    });
+
+    it('clears the selection when the text becomes incomplete', async () => {
+      const r = render(<DateTimeFieldTest />);
+
+      await userEvent.type(getInput(r), '15.01.2026, 12:30{Backspace}');
+
+      await expectNotSelected(r, new Date(2026, 0, 15));
+    });
+
+    it('takes the date and the time of the native defaultValue', async () => {
+      const r = render(<DateTimeFieldTest inputProps={{ defaultValue: '15.01.2026, 12:30' }} />);
+
+      await expectSelected(r, new Date(2026, 0, 15));
+      await pickDate(r, new Date(2026, 0, 20));
+      await expect.element(getInput(r)).toHaveValue('20.01.2026, 12:30');
+    });
+
+    it('follows the text restored by a reset button', async () => {
+      const r = render(
+        <form>
+          <DateTimeFieldTest inputProps={{ defaultValue: '10.01.2026, 08:15' }} />
+          <button type='reset'>Reset</button>
+        </form>
+      );
+
+      await userEvent.clear(getInput(r));
+      await userEvent.type(getInput(r), '15.01.2026, 12:30');
+      await userEvent.click(r.getByRole('button', { name: 'Reset' }));
+
+      await expect.element(getInput(r)).toHaveValue('10.01.2026, 08:15');
+      await expectSelected(r, new Date(2026, 0, 10));
+    });
+
+    it('clamps the typed text when min changes and dispatches input', async () => {
+      const onInput = vi.fn();
+      const r = render(<DateTimeFieldTest onInput={onInput} />);
+
+      await userEvent.type(getInput(r), '05.01.2026, 12:30');
+      onInput.mockClear();
+      r.rerender(<DateTimeFieldTest onInput={onInput} min='2026-01-10T09:00' />);
+
+      await expect.element(getInput(r)).toHaveValue('10.01.2026, 09:00');
+      expect(onInput).toHaveBeenCalledTimes(1);
+      await expectSelected(r, new Date(2026, 0, 10));
+    });
+  });
+
+  describe('calendar systems', () => {
+    it('writes a picked Persian day and keeps the time', async () => {
+      const persian = createCalendarSystem('persian');
+      const r = render(<DateTimeFieldTest calendar={persian} />);
+      
+      await userEvent.type(getInput(r), '01.01.1404, 12:30');
+      await userEvent.click(getTrigger(r));
+      await pickDate(r, new Date(2025, 2, 22), persian);
+      
+      await expect.element(getInput(r)).toHaveValue('02.01.1404, 12:30');
+    });
+  });
+  
   describe('Accessibility', () => {
     describe('roles', () => {
       let r: RenderResult;
@@ -368,7 +523,7 @@ describe('DateTimeField', () => {
         await userEvent.click(getTrigger(r));
         
         const cell = getCell(r, new Date(2026, 0, 15));
-        cell.focus();
+        cell.element().focus();
         
         await expect.element(cell).toHaveFocus();
         await userEvent.keyboard('{Enter}');

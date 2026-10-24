@@ -72,6 +72,8 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
   ref,
   className,
   onScroll: _onScroll,
+  onWheel: _onWheel,
+  onTouchStart: _onTouchStart,
   onScrollSnapChange,
   onScrollSnapChanging,
   defaultIndex,
@@ -80,6 +82,7 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
   ...props
 }) => {
   const scrollerRef = useRef<HTMLDivElement>(null)
+  const target = useRef<number | null>(null)
   
   const {
     onScroll,
@@ -92,16 +95,26 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
   } = useScrollSnap<number, HTMLDivElement>({
     scrollerRef,
     onSnapChanging: onScrollSnapChanging,
-    onSnapChange: onScrollSnapChange,
+    onSnapChange(element, index) {
+      if (index === target.current) target.current = null
+      onScrollSnapChange?.(element, index)
+    },
   })
   
   const didInitScroll = useRef(false)
   
+  const releaseTarget = () => {
+    target.current = null
+  }
+  
   const scrollByDelta = (delta: number) => {
-    const index = getCommited()
-    if (index === undefined) return
+    if (getCommited() == null) measure()
+    
+    const index = target.current ?? getCommited()
+    if (index == null) return
 
-    scrollToElementByKey(index + delta, 'smooth');
+    const next = index + delta
+    if (scrollToElementByKey(next, 'smooth')) target.current = next
   };
   
   useImperativeHandle(apiRef, () => ({
@@ -130,7 +143,9 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
   return (
     <SnapScrollerProvider removeItemRef={removeItemRef} itemRef={itemRef}>
       <div
-        onScroll={mergeEventHandlers(_onScroll, onScroll)}
+        onScroll={mergeEventHandlers(onScroll, _onScroll)}
+        onWheel={mergeEventHandlers(releaseTarget, _onWheel)}
+        onTouchStart={mergeEventHandlers(releaseTarget, _onTouchStart)}
         ref={mergeRefs([setScrollRef, ref])}
         className={csx(className, style.scrollView)}
         {...props}

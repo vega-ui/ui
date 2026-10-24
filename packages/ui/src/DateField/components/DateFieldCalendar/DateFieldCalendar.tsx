@@ -1,8 +1,7 @@
 import { FC } from 'react';
 import { Calendar, CalendarProps } from '../../../Calendar';
 import { useDateFieldContext } from '../../contexts';
-import { maskitoStringifyDate } from '@maskito/kit';
-import { dispatchEvents, setValue as setNativeValue, formatISODate, parseISODate } from '@vega-ui/utils';
+import { dispatchEvents, setValue as setNativeValue, formatTemplateDate } from '@vega-ui/utils';
 
 export type DateFieldCalendarProps = CalendarProps
 
@@ -21,27 +20,24 @@ export const DateFieldCalendar: FC<DateFieldCalendarProps> = ({ onChangeValue: _
     max,
     min,
     inputRef,
-    format,
-    separator,
+    template,
+    calendar,
+    locale,
     date,
     disabledDates,
-    changeDate,
-    lastStringified
+    changeDate
   } = useDateFieldContext()
 
   const onChangeValue = (iso: string) => {
     _onChangeValue?.(iso)
 
-    const value = parseISODate(iso)
-    if (!value) return
+    if (!iso) return
 
     const input = inputRef?.current
     if (!input) return
 
-    const stringified = maskitoStringifyDate(value, { mode: format, separator, min, max });
-    lastStringified.current = stringified;
-
-    changeDate(value)
+    const stringified = formatTemplateDate(calendar, iso, template);
+    changeDate(iso)
 
     setNativeValue(input, stringified)
     dispatchEvents(input)
@@ -50,9 +46,11 @@ export const DateFieldCalendar: FC<DateFieldCalendarProps> = ({ onChangeValue: _
   return (
     <Calendar
       compact
-      max={formatISODate(max)}
-      min={formatISODate(min)}
-      value={formatISODate(date)}
+      max={max}
+      min={min}
+      value={date ?? ''}
+      calendar={calendar}
+      locale={locale}
       onChangeValue={onChangeValue}
       disabledDates={disabledDates}
       {...props}

@@ -1,12 +1,13 @@
-import { FC, FormEvent, useCallback, useRef } from 'react';
+import { FC, useCallback, useMemo, useRef } from 'react';
 import { TextField, TextFieldProps } from '../TextField';
 import { useMaskito } from '@maskito/react'
+import { MaskitoOptions } from '@maskito/core';
 import { maskitoPhoneOptionsGenerator } from '@maskito/phone';
 import metadata from 'libphonenumber-js/min/metadata';
 import { AsYouType, CountryCode, getCountryCallingCode } from 'libphonenumber-js';
 import { PhoneFieldProvider } from './contexts';
-import { dispatchEvents, mergeRefs, setValue } from '@vega-ui/utils';
-import { useControlledState } from '@vega-ui/hooks';
+import { dispatchEvents, mergeRefs, setValue, subscribeInputValue } from '@vega-ui/utils';
+import { useControlledState, useLatest } from '@vega-ui/hooks';
 
 export interface PhoneFieldProps extends TextFieldProps {
   /**
@@ -43,42 +44,56 @@ export const PhoneField: FC<PhoneFieldProps> = ({
   ...props
 }) => {
   const [code, setCode] = useControlledState(_code, defaultCode, onChangeCode)
+  const codeRef = useLatest(code)
   
   const innerRef = useRef<HTMLInputElement>(null)
-  const inputRef = useMaskito({
-    options: maskitoPhoneOptionsGenerator({
+  const selectingRef = useRef(false)
+
+  const options = useMemo<MaskitoOptions>(() => {
+    const { plugins, ...phoneOptions } = maskitoPhoneOptionsGenerator({
       metadata,
       strict: strictMask,
       countryIsoCode: code,
-    }),
-  })
+    })
+
+    const onSync = (value: string) => {
+      if (selectingRef.current) return
+
+      const asYouType = new AsYouType()
+      asYouType.input(value)
+
+      const typedCode = asYouType.getCountry()
+      if (typedCode !== undefined && typedCode !== code) setCode(typedCode)
+    }
+
+    return { ...phoneOptions, plugins: [...plugins, (element) => subscribeInputValue(element, onSync)] }
+  }, [strictMask, code, setCode])
+
+  const inputRef = useMaskito({ options })
+  
+  const writeCallingCode = useCallback((value: CountryCode) => {
+    const input = innerRef.current
+    if (!input || codeRef.current !== value) return
+    
+    setValue(input, `+${getCountryCallingCode(value)}`)
+    dispatchEvents(input)
+  }, [codeRef])
   
   const onSelect = useCallback((value: CountryCode) => {
+    selectingRef.current = true
     setCode(value)
     
     requestAnimationFrame(() => {
-      if (!innerRef.current) return
-      setValue(innerRef.current, `+${getCountryCallingCode(value)}`)
-      dispatchEvents(innerRef.current)
+      writeCallingCode(value)
+      selectingRef.current = false
     })
     
     innerRef.current?.focus()
-  }, [setCode])
-  
-  const onInput = useCallback((e: FormEvent<HTMLInputElement>) => {
-    const value = e.currentTarget.value
-    
-    const asYouType = new AsYouType()
-    asYouType.input(value)
-    
-    const typedCode = asYouType.getCountry()
-    if (typedCode !== undefined && typedCode !== code) setCode(typedCode)
-  }, [code, setCode])
+  }, [setCode, writeCallingCode])
   
   return (
     <PhoneFieldProvider
       inputRef={mergeRefs([inputRef, innerRef])}
-      onInput={onInput}
       onSelectValue={onSelect}
       code={code}
     >

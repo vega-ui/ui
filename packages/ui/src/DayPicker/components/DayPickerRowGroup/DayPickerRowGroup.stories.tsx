@@ -3,12 +3,11 @@ import { DayPickerRowGroup } from './DayPickerRowGroup';
 import { DayPickerItem } from '../DayPickerItem';
 import { DayPickerRow } from '../DayPickerRow';
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof DayPickerRowGroup> = {
   title: 'Data/DayPicker/DayPickerRowGroup',
   component: DayPickerRowGroup,
   tags: ['autodocs'],
-}
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -33,7 +32,7 @@ export const Default: Story = {
         <DayPickerItem col={4}>12</DayPickerItem>
         <DayPickerItem col={5}>13</DayPickerItem>
         <DayPickerItem col={6}>14</DayPickerItem>
-      </DayPickerRow>
-    ]
+      </DayPickerRow>,
+    ],
   },
 };

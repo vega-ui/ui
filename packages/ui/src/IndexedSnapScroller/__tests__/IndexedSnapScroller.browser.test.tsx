@@ -28,12 +28,16 @@ const getScroller = (r: RenderResult) => r.getByTestId(TESTID.scroller) as HTMLD
 const getItem = (r: RenderResult, index: number) => r.getByTestId(`${ITEM_PREFIX}-${index}`) as HTMLElement;
 const queryItem = (r: RenderResult, index: number) => r.queryByTestId(`${ITEM_PREFIX}-${index}`) as HTMLElement | null;
 
+const nextFrame = () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+
 const scrollToStart = async (el: HTMLDivElement) => {
+  await nextFrame();
   el.scrollTo({ left: 0, behavior: 'instant' as ScrollBehavior });
   await sleep(0);
 };
 
 const scrollToEnd = async (el: HTMLDivElement) => {
+  await nextFrame();
   el.scrollTo({ left: el.scrollWidth - el.clientWidth, behavior: 'instant' as ScrollBehavior });
   await sleep(0);
 };
@@ -303,6 +307,30 @@ describe('IndexedSnapScroller', () => {
           expect(Math.ceil(scroller.scrollLeft)).toBeLessThan(max);
         });
       });
+
+      it('keeps a scroll made right after a snap settles', async () => {
+        const r = render(<IndexedSnapScrollerTest defaultIndex={0} />);
+        const scroller = getScroller(r);
+
+        await waitFor(() => {
+          expect(isFullyVisibleInScroller(scroller, getItem(r, 0))).toBe(true);
+        });
+
+        await nextFrame();
+        await sleep(200);
+
+        scroller.addEventListener('scrollend', () => {
+          scroller.scrollBy({ left: PAGE_PX, behavior: 'instant' });
+        }, { once: true });
+        scroller.scrollBy({ left: PAGE_PX, behavior: 'instant' });
+
+        await waitFor(() => {
+          expect(queryItem(r, 4)).toBeInTheDocument();
+        });
+
+        await sleep(200);
+        expect(isFullyVisibleInScroller(scroller, getItem(r, 2))).toBe(true);
+      });
     });
     
     describe('controlled index syncing', () => {
@@ -440,6 +468,81 @@ describe('IndexedSnapScroller', () => {
         await expect.element(scroller).not.toHaveAttribute('aria-hidden', 'true');
         await expect.element(getItem(r, 0)).toBeInTheDocument();
       });
+    });
+  });
+  
+  describe('right-to-left', () => {
+    const RtlTest: FC<PropsWithChildren<IndexedSnapScrollerProps>> = (props) => (
+      <div dir='rtl'>
+        <IndexedSnapScrollerTest size={SIZE_5} shift={SHIFT_2} start={START_MINUS_2} startDir={1} {...props} />
+      </div>
+    );
+    
+    it('shows the initial index in view', async () => {
+      const r = render(<RtlTest defaultIndex={0} />);
+      
+      await waitFor(() => {
+        expect(isFullyVisibleInScroller(getScroller(r), getItem(r, 0))).toBe(true);
+      });
+      expect(getItem(r, 1).getBoundingClientRect().left).toBeLessThan(getItem(r, 0).getBoundingClientRect().left);
+    });
+    
+    it('next() shows the next index on the left, prev() the previous one on the right', async () => {
+      const apiRef = createRef<IndexedSnapScrollerApiRef>();
+      const r = render(<RtlTest defaultIndex={0} apiRef={apiRef} />);
+      
+      await waitFor(() => {
+        expect(isFullyVisibleInScroller(getScroller(r), getItem(r, 0))).toBe(true);
+      });
+      
+      apiRef.current!.next();
+      await waitFor(() => {
+        expect(isFullyVisibleInScroller(getScroller(r), getItem(r, 1))).toBe(true);
+      });
+      
+      apiRef.current!.prev();
+      apiRef.current!.prev();
+      await waitFor(() => {
+        expect(isFullyVisibleInScroller(getScroller(r), getItem(r, -1))).toBe(true);
+      });
+    });
+    
+    it('fires onOffset(1) and extends the window when scrolled to the left end', async () => {
+      const offsets: number[] = [];
+      const r = render(<RtlTest onOffset={(v) => offsets.push(v)} />);
+      const scroller = getScroller(r);
+      
+      await waitFor(() => {
+        expect(scroller.scrollWidth).toBeGreaterThan(scroller.clientWidth);
+      });
+      
+      await nextFrame();
+      scroller.scrollTo({ left: -(scroller.scrollWidth - scroller.clientWidth), behavior: 'instant' });
+      
+      await waitFor(() => {
+        expect(offsets).toContain(1);
+        expect(queryItem(r, 4)).toBeInTheDocument();
+      });
+    });
+    
+    it('keeps the snapped page in view when the window is re-centered', async () => {
+      const r = render(<RtlTest defaultIndex={0} />);
+      const scroller = getScroller(r);
+      
+      await waitFor(() => {
+        expect(isFullyVisibleInScroller(scroller, getItem(r, 0))).toBe(true);
+      });
+      
+      await nextFrame();
+      scroller.scrollBy({ left: -PAGE_PX, behavior: 'instant' });
+      
+      await waitFor(() => {
+        expect(queryItem(r, 3)).toBeInTheDocument();
+        expect(queryItem(r, -2)).not.toBeInTheDocument();
+      });
+      
+      await sleep(200);
+      expect(isFullyVisibleInScroller(scroller, getItem(r, 1))).toBe(true);
     });
   });
 });

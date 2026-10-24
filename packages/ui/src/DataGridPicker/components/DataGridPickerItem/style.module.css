@@ -103,8 +103,8 @@
 }
 
 .pickerItem:where([data-range='start']):after {
-    border-top-left-radius: inherit;
-    border-bottom-left-radius: inherit;
+    border-start-start-radius: inherit;
+    border-end-start-radius: inherit;
 }
 
 .pickerItem:where([data-range='end']) {
@@ -112,8 +112,8 @@
 }
 
 .pickerItem:where([data-range='end']):after {
-    border-top-right-radius: inherit;
-    border-bottom-right-radius: inherit;
+    border-start-end-radius: inherit;
+    border-end-end-radius: inherit;
 }
 
 /* disabled */

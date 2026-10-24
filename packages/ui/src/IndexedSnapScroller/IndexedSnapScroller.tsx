@@ -1,4 +1,5 @@
-import { FC, PropsWithChildren, Ref, UIEvent, useCallback, useLayoutEffect, useRef } from 'react';
+import { FC, PropsWithChildren, Ref, UIEvent, useCallback, useImperativeHandle, useLayoutEffect, useRef } from 'react';
+import { flushSync } from 'react-dom';
 import { useIndexes } from '@vega-ui/hooks';
 import { SnapScroller, SnapScrollerApiRef, SnapScrollerProps } from '../SnapScroller';
 import { IndexedSnapScrollerProvider } from './contexts';
@@ -36,11 +37,9 @@ export interface IndexedSnapScrollerProps extends SnapScrollerProps {
   size?: number;
   
   /**
-   * Number of index units to shift when reaching scroll boundaries.
-   * - When `onOffset` yields `-1`, the window shifts backward.
-   * - When `onOffset` yields `1`, the window shifts forward.
-   *
-   * Used to dynamically prepend or append pages based on scroll.
+   * Number of pages appended when a scroll reaches the end of the window,
+   * so a fast swipe keeps going. Once the scroll settles, the window is
+   * re-centered on the snapped page.
    *
    * @default 2
    */
@@ -72,9 +71,9 @@ export interface IndexedSnapScrollerProps extends SnapScrollerProps {
   apiRef?: Ref<IndexedSnapScrollerApiRef>
   
   /**
-   * Fires when the scroll position reaches the start or the end of the content.
-   * - `-1` — reached the start (left/top edge)
-   * - `+1` — reached the end (right/bottom edge)
+   * Fires when the window grows at an edge.
+   * - `-1` — the scroll settled on the first page (left/top edge)
+   * - `+1` — the scroll reached the end (right/bottom edge)
    *
    * Useful for infinite loading: append/prepend pages based on the direction.
    */
@@ -83,9 +82,10 @@ export interface IndexedSnapScrollerProps extends SnapScrollerProps {
 
 /**
  * IndexedSnapScroller extends `SnapScroller` with virtualized,
- * index-based paging. It maintains a sliding window of page indexes
- * and automatically shifts the window when the user scrolls to the
- * start or end of the snap area. Each rendered child is wrapped in an
+ * index-based paging. It maintains a sliding window of page indexes:
+ * pages are appended while a scroll reaches the end, and the window is
+ * re-centered on the snapped page once the scroll settles, so pages never
+ * move under an ongoing scroll. Each rendered child is wrapped in an
  * `IndexedSnapScrollerContext` with its corresponding index, allowing
  * dynamic page generation based on the current virtual index.
  */
@@ -96,7 +96,10 @@ export const IndexedSnapScroller: FC<PropsWithChildren<IndexedSnapScrollerProps>
   startDir = 1,
   onOffset,
   preserveScroll = true,
+  onScrollSnapChange: _onScrollSnapChange,
   onScroll: _onScroll,
+  onWheel: _onWheel,
+  onTouchStart: _onTouchStart,
   defaultIndex,
   ref,
   children,
@@ -123,8 +126,13 @@ export const IndexedSnapScroller: FC<PropsWithChildren<IndexedSnapScrollerProps>
       ? defaultIndex - centerOffset
       : start
   
-  const { indexes, shift, push, reset } = useIndexes({ start: initialStart, startDir, size, shift: indexShift })
+  const { indexes, extend, center, reset } = useIndexes({ start: initialStart, startDir, size, shift: indexShift })
   const hasBeenOffset = useRef(false)
+  const anchor = useRef<{ key: number; offset: number } | null>(null)
+  const syncedIndex = useRef(index)
+  const target = useRef<number | null>(null)
+  const scrollTarget = useRef<number | null>(null)
+  const isRebuilding = useRef(false)
 
   const setIndexTo = useCallback((nextIndex: number) => {
     const api = innerApiRef.current
@@ -138,59 +146,120 @@ export const IndexedSnapScroller: FC<PropsWithChildren<IndexedSnapScrollerProps>
     
     // Otherwise, we reinitialize the index array
     const key = api.getCommited()
-    if (key == null) return;
+    if (key == null) {
+      center(nextIndex)
+      return
+    }
 
     const start = indexes[0]
     reset(computeStart(start, key, nextIndex))
-  }, [indexes, reset])
+  }, [indexes, reset, center])
   
   const preserveScrollPosition = useCallback(() => {
     if (!preserveScroll) return;
     
     const api = innerApiRef.current
-    if (!api) return;
-    
-    const key = api.getPending()
-    
-    api.measure()
-    api.scrollToElementByKey(key, 'instant');
+    const scroller = innerRef.current
+    if (!api || !scroller) return;
     
     hasBeenOffset.current = false;
+    api.measure()
+    
+    const element = anchor.current && scroller.querySelector(`:scope > [data-index="${anchor.current.key}"]`)
+    if (!anchor.current || !element) return
+    
+    const offset = element.getBoundingClientRect().left - scroller.getBoundingClientRect().left
+    scroller.scrollTo({ left: scroller.scrollLeft + offset - anchor.current.offset, behavior: 'instant' })
   }, [preserveScroll])
 
   useLayoutEffect(() => {
     const api = innerApiRef.current
     if (!api) return
     
-    // Sync controlled state
-    if (index === undefined || (index === api.getPending() || index === api.getCommited())) return
+    if (index === undefined) return
+    if (index === syncedIndex.current && !isRebuilding.current) return
+    
+    syncedIndex.current = index
+    isRebuilding.current = false
+    
+    if (index === api.getPending() || index === api.getCommited()) return
+    
+    isRebuilding.current = !indexes.includes(index)
     setIndexTo(index)
-  }, [index, setIndexTo])
+  }, [index, indexes, setIndexTo])
   
-  const offset = (value: number) => {
-    onOffset?.(value)
+  const onScroll = (e: UIEvent<HTMLDivElement>) => {
+    const { scrollWidth, clientWidth, scrollLeft } = e.currentTarget;
+    if (Math.abs(scrollLeft) < scrollWidth - clientWidth - 1) return;
     
-    if (value === -1) shift()
-    if (value === 1) push()
+    onOffset?.(1)
+    extend(1)
+  };
+  
+  const anchorTo = (key: number) => {
+    const scroller = innerRef.current
+    const element = scroller?.querySelector(`:scope > [data-index="${key}"]`)
+    if (!scroller || !element) return
     
+    anchor.current = { key, offset: element.getBoundingClientRect().left - scroller.getBoundingClientRect().left }
     hasBeenOffset.current = true;
   }
   
-  const onScroll = (e: UIEvent<HTMLDivElement>) => {
-    const target = e.currentTarget;
-    const { scrollWidth, clientWidth, scrollLeft } = target;
-
-    const maxScrollLeft = scrollWidth - clientWidth
-
-    if (scrollLeft <= 1) {
-      offset(-1);
-      return;
+  const releaseTarget = () => {
+    target.current = null
+  }
+  
+  const step = (delta: number) => {
+    const api = innerApiRef.current
+    if (!api) return
+    
+    if (api.getCommited() == null) api.measure()
+    
+    const base = target.current ?? api.getCommited()
+    if (base == null) return
+    
+    const next = base + delta
+    target.current = next
+    
+    if (indexes.includes(next)) {
+      api.scrollToElementByKey(next, 'smooth')
+      return
     }
-
-    if (scrollLeft >= maxScrollLeft - 1) {
-      offset(1);
-      return;
+    
+    anchorTo(indexes[0])
+    scrollTarget.current = next
+    extend(next < indexes[0] ? -1 : 1)
+  }
+  
+  useImperativeHandle(apiRef, () => {
+    const api = innerApiRef.current as SnapScrollerApiRef
+    
+    return {
+      ...api,
+      next() {
+        step(1)
+      },
+      prev() {
+        step(-1)
+      },
+      setIndexTo,
+      index: api.getCommited(),
     }
+  })
+  
+  const onScrollSnapChange = (element: HTMLElement, key: number) => {
+    _onScrollSnapChange?.(element, key)
+    
+    if (target.current !== null && key !== target.current) return
+    target.current = null
+    
+    if (key === indexes[0]) onOffset?.(-1)
+    
+    const isCentered = indexes.length === size && indexes[centerOffset] === key
+    if (isCentered) return
+    
+    anchorTo(key)
+    flushSync(() => center(key))
   };
   
   useLayoutEffect(() => {
@@ -198,12 +267,24 @@ export const IndexedSnapScroller: FC<PropsWithChildren<IndexedSnapScrollerProps>
     preserveScrollPosition()
   });
   
+  useLayoutEffect(() => {
+    const key = scrollTarget.current
+    if (key === null || !indexes.includes(key)) return
+    
+    scrollTarget.current = null
+    innerApiRef.current?.measure()
+    innerApiRef.current?.scrollToElementByKey(key, 'smooth')
+  });
+  
   return (
     <SnapScroller
       ref={mergeRefs([innerRef, ref])}
       defaultIndex={initial}
-      apiRef={mergeRefs([apiRef, innerApiRef])}
+      apiRef={innerApiRef}
       onScroll={mergeEventHandlers(onScroll, _onScroll)}
+      onWheel={mergeEventHandlers(releaseTarget, _onWheel)}
+      onTouchStart={mergeEventHandlers(releaseTarget, _onTouchStart)}
+      onScrollSnapChange={onScrollSnapChange}
       {...props}
     >
       {indexes.map((index) => (

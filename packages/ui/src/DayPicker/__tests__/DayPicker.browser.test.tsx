@@ -1,50 +1,51 @@
 import { ComponentProps, FC } from 'react';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
-import { userEvent } from 'vitest/browser';
+import { page, userEvent } from 'vitest/browser';
 
 import { DayPicker } from '../DayPicker';
-import { DayPickerLayout } from '../components';
-import { getCurrentDate } from '@vega-ui/utils';
-import { useDayPickerContext } from '../contexts';
+import { DayPickerCell, DayPickerLayout, DayPickerScroller, DayPickerScrollerContent, DayPickerScrollerLayout } from '../components';
+import { formatISODate, getCurrentDate } from '@vega-ui/utils';
+import { useDayPickerCellContext, useDayPickerContext } from '../contexts';
+import { createCalendarSystem, formatCalendarDate, gregorianCalendar } from '@vega-ui/i18n';
 
 afterEach(cleanup);
 
-const YEAR = 2024;
-const MONTH = 0;
+const MONTH = '2024-01-15';
 const ROWS = 6;
-const COLS = 7;
 
 const SIZE_DEFAULT = 'xs';
 const SIZE_LG = 'lg';
 
-const YEAR_A = 2025;
-const MONTH_A = 6;
+const MONTH_A = '2025-07-20';
+const MONTH_A_START = '2025-07-01';
 
-const TESTID_CTX_YEAR = 'ctx-year';
 const TESTID_CTX_MONTH = 'ctx-month';
 
 const PeriodContext: FC = () => {
-  const { year, month } = useDayPickerContext();
+  const { month } = useDayPickerContext();
   
-  return (
-    <>
-      <div data-testid={TESTID_CTX_YEAR}>{year}</div>
-      <div data-testid={TESTID_CTX_MONTH}>{month}</div>
-    </>
-  );
+  return <div data-testid={TESTID_CTX_MONTH}>{month}</div>;
+};
+
+const LabeledCell: FC = () => {
+  const { date } = useDayPickerCellContext();
+  const { locale, calendar } = useDayPickerContext();
+  
+  if (date === undefined) return <DayPickerCell />;
+  
+  return <DayPickerCell aria-label={formatCalendarDate(calendar, date, locale, { dateStyle: 'full' })} />;
 };
 
 const DayPickerTest = (props?: Partial<ComponentProps<typeof DayPicker>>) => (
   <DayPicker {...props}>
     <PeriodContext />
     <DayPickerLayout
-      year={YEAR}
       month={MONTH}
       rows={ROWS}
-      cols={COLS}
-      includeOverflowDays
-    />
+      includeOverflowDays>
+      <LabeledCell />
+    </DayPickerLayout>
   </DayPicker>
 );
 
@@ -62,7 +63,9 @@ const getFirstInteractiveCell = (r: RenderResult) =>
     (el) => el.textContent?.trim() && el.getAttribute('aria-disabled') !== 'true'
   ) as HTMLDivElement;
 
-const getCtxYear = (r: RenderResult) => r.getByTestId(TESTID_CTX_YEAR);
+const getDay = (r: RenderResult, day: string, locale = 'en-US') =>
+  page.elementLocator(r.container).getByRole('gridcell', { name: formatCalendarDate(gregorianCalendar, day, locale, { dateStyle: 'full' }), exact: true });
+
 const getCtxMonth = (r: RenderResult) => r.getByTestId(TESTID_CTX_MONTH);
 
 describe('DayPicker', () => {
@@ -114,44 +117,70 @@ describe('DayPicker', () => {
       });
     });
     
-    describe('year/month props', () => {
+    describe('month prop', () => {
       let r: RenderResult;
       
       beforeEach(() => {
         r = render(<DayPickerTest />);
       });
       
-      it('defaults year/month to getCurrentDate() when not provided', async () => {
+      it('defaults month to the current month when not provided', async () => {
         const now = getCurrentDate();
+        const start = formatISODate(new Date(now.getFullYear(), now.getMonth(), 1));
         
-        await expect.element(getCtxYear(r)).toHaveTextContent(String(now.getFullYear()));
-        await expect.element(getCtxMonth(r)).toHaveTextContent(String(now.getMonth()));
+        await expect.element(getCtxMonth(r)).toHaveTextContent(start);
       });
       
-      it('provides year/month from props to context', async () => {
-        r.rerender(<DayPickerTest year={YEAR_A} month={MONTH_A} />);
-        
-        await expect.element(getCtxYear(r)).toHaveTextContent(String(YEAR_A));
-        await expect.element(getCtxMonth(r)).toHaveTextContent(String(MONTH_A));
-      });
-      
-      it('when only year is provided, month defaults to getCurrentDate().getMonth()', async () => {
-        const now = getCurrentDate();
-        
-        r.rerender(<DayPickerTest year={YEAR_A} />);
-        
-        await expect.element(getCtxYear(r)).toHaveTextContent(String(YEAR_A));
-        await expect.element(getCtxMonth(r)).toHaveTextContent(String(now.getMonth()));
-      });
-      
-      it('when only month is provided, year defaults to getCurrentDate().getFullYear()', async () => {
-        const now = getCurrentDate();
-        
+      it('provides the first day of the month from props to context', async () => {
         r.rerender(<DayPickerTest month={MONTH_A} />);
         
-        await expect.element(getCtxYear(r)).toHaveTextContent(String(now.getFullYear()));
-        await expect.element(getCtxMonth(r)).toHaveTextContent(String(MONTH_A));
+        await expect.element(getCtxMonth(r)).toHaveTextContent(MONTH_A_START);
       });
+    });
+  });
+  
+  describe('range selection', () => {
+    it('reports the bounds in order when the range is picked backwards', async () => {
+      const onSelectCell = vi.fn();
+      const r = render(<DayPickerTest selection='range' onSelectCell={onSelectCell} />);
+
+      await userEvent.click(getDay(r, '2024-01-20'));
+      await userEvent.click(getDay(r, '2024-01-10'));
+
+      expect(onSelectCell).toHaveBeenLastCalledWith(['2024-01-10', '2024-01-20']);
+    });
+  });
+
+  describe('cell template', () => {
+    const MarkedDay: FC = () => {
+      const { date, label, fields } = useDayPickerCellContext();
+      
+      return <DayPickerCell data-testid={`day-${date}`}>{`${label}/${fields?.month}`}</DayPickerCell>;
+    };
+    
+    it('renders the layout children once per day with the day in context', async () => {
+      const r = render(
+        <DayPicker month='2026-03-10'>
+          <DayPickerLayout>
+            <MarkedDay />
+          </DayPickerLayout>
+        </DayPicker>
+      );
+      
+      await expect.element(r.getByTestId('day-2026-03-15')).toHaveTextContent('15/3');
+      await expect.element(r.getByTestId('day-2026-03-31')).toHaveTextContent('31/3');
+    });
+    
+    it('gives the fields and label in the calendar system and locale of the picker', async () => {
+      const r = render(
+        <DayPicker month='2025-03-21' calendar={createCalendarSystem('persian')} locale='en-US'>
+          <DayPickerLayout>
+            <MarkedDay />
+          </DayPickerLayout>
+        </DayPicker>
+      );
+      
+      await expect.element(r.getByTestId('day-2025-03-21')).toHaveTextContent('1/1');
     });
   });
   
@@ -212,6 +241,107 @@ describe('DayPicker', () => {
         
         await userEvent.keyboard(' ');
         await expect.element(cell).toHaveAttribute('aria-selected', 'true');
+      });
+    });
+    
+    describe('right-to-left', () => {
+      const RtlTest = () => (
+        <div dir='rtl'>
+          <DayPicker month='2024-03-01' defaultActive='2024-03-13' locale='ar-EG'>
+            <DayPickerLayout weekStartsOn={6}>
+              <LabeledCell />
+            </DayPickerLayout>
+          </DayPicker>
+        </div>
+      );
+      
+      const getRtlDay = (r: RenderResult, day: string) => getDay(r, day, 'ar-EG');
+      
+      it('puts the first day of the week on the right', async () => {
+        const r = render(<RtlTest />);
+        
+        const saturday = getRtlDay(r, '2024-03-09').element();
+        const friday = getRtlDay(r, '2024-03-15').element();
+        
+        expect(saturday.getAttribute('data-col')).toBe('0');
+        expect(saturday.getBoundingClientRect().left).toBeGreaterThan(friday.getBoundingClientRect().left);
+      });
+      
+      it('ArrowRight moves to the previous day and ArrowLeft to the next day', async () => {
+        const r = render(<RtlTest />);
+        
+        getRtlDay(r, '2024-03-13').element().focus();
+        await userEvent.keyboard('{ArrowRight}');
+        await expect.element(getRtlDay(r, '2024-03-12')).toHaveFocus();
+        
+        await userEvent.keyboard('{ArrowLeft}{ArrowLeft}');
+        await expect.element(getRtlDay(r, '2024-03-14')).toHaveFocus();
+      });
+    });
+    
+    describe('tab stop', () => {
+      const getTabbables = (r: RenderResult) => getCells(r).filter((el) => el.getAttribute('tabindex') === '0');
+      
+      const TabStopTest = (props?: Partial<ComponentProps<typeof DayPicker>>) => (
+        <>
+          <button type='button'>before</button>
+          <DayPicker month='2024-03-01' {...props}>
+            <DayPickerLayout>
+              <LabeledCell />
+            </DayPickerLayout>
+          </DayPicker>
+        </>
+      );
+      
+      it('falls back to the first day of the visible month when today is not in it', async () => {
+        const r = render(<TabStopTest />);
+        
+        await expect.poll(() => getTabbables(r)).toHaveLength(1);
+        await expect.element(getDay(r, '2024-03-01')).toHaveAttribute('tabindex', '0');
+      });
+      
+      it('prefers the selected day of the visible month', async () => {
+        const r = render(<TabStopTest defaultSelected='2024-03-10' />);
+        
+        await expect.poll(() => getTabbables(r)).toHaveLength(1);
+        await expect.element(getDay(r, '2024-03-10')).toHaveAttribute('tabindex', '0');
+      });
+      
+      it('prefers the active day when it is in the visible month', async () => {
+        const r = render(<TabStopTest defaultActive='2024-03-20' defaultSelected='2024-03-10' />);
+        
+        await expect.poll(() => getTabbables(r)).toHaveLength(1);
+        await expect.element(getDay(r, '2024-03-20')).toHaveAttribute('tabindex', '0');
+      });
+
+      it('Tab moves focus into the grid and arrows continue from there', async () => {
+        const r = render(<TabStopTest />);
+        
+        r.getByRole('button').focus();
+        await userEvent.tab();
+        await expect.element(getDay(r, '2024-03-01')).toHaveFocus();
+        
+        await userEvent.keyboard('{ArrowRight}');
+        await expect.element(getDay(r, '2024-03-02')).toHaveFocus();
+        await expect.poll(() => getTabbables(r)).toHaveLength(1);
+        await expect.element(getDay(r, '2024-03-02')).toHaveAttribute('tabindex', '0');
+      });
+      
+      it('keeps the tab stop on the visible month of a scroller', async () => {
+        const r = render(
+          <DayPicker month='2024-03-01'>
+            <DayPickerScroller>
+              <DayPickerScrollerContent>
+                <DayPickerScrollerLayout>
+                  <LabeledCell />
+                </DayPickerScrollerLayout>
+              </DayPickerScrollerContent>
+            </DayPickerScroller>
+          </DayPicker>
+        );
+        
+        await expect.poll(() => getTabbables(r)).toHaveLength(1);
+        await expect.element(getDay(r, '2024-03-01')).toHaveAttribute('tabindex', '0');
       });
     });
   });

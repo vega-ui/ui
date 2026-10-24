@@ -1,20 +1,22 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CalendarBaseWeekLabel } from './CalendarBaseWeekLabel';
-import { getWeekDayNames } from '@vega-ui/utils';
+import { getWeekDayNames } from '@vega-ui/i18n';
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof CalendarBaseWeekLabel> = {
   title: 'Data/CalendarBase/CalendarBaseWeekLabel',
   component: CalendarBaseWeekLabel,
   args: {
-    children: getWeekDayNames(navigator.language, 'long', 0)[0]
+    children: getWeekDayNames('en-US', 'short')[0],
   },
   tags: ['autodocs'],
-}
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * A weekday column header in the text size of the surrounding `CalendarBase`.
+ */
 export const Default: Story = {
   args: {},
 };

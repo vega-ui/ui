@@ -10,6 +10,7 @@
 
 ## Focus Behavior
 
+- Without `defaultActive`, the tab stop is the current month when it is in the visible year, otherwise the first selected month in it, otherwise its first month
 - Focus should remain visible on the current month item, including custom layouts.
 
 ## Screen Reader Semantics

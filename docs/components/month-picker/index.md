@@ -13,11 +13,16 @@
 ```tsx
 import {
   MonthPicker,
+  MonthPickerCell,
   MonthPickerItem,
   MonthPickerLayout,
   MonthPickerRow,
   MonthPickerRowGroup,
   createMonthPickerGrid,
+  useMonthPickerCellContext,
+  useMonthPickerContext,
+  type MonthPickerCellContextData,
+  type MonthPickerCellProps,
   type MonthPickerItemProps,
   type MonthPickerLayoutProps,
   type MonthPickerProps,
@@ -33,12 +38,16 @@ import {
 - `MonthPickerRowGroupProps`
 - `MonthPickerRowProps`
 - `MonthPickerItemProps`
+- `MonthPickerCellProps`
+- `MonthPickerCellContextData`
 
 ## Minimal Composition
 
 ```tsx
 <MonthPicker>
-  <MonthPickerLayout />
+  <MonthPickerLayout>
+    <MonthPickerCell />
+  </MonthPickerLayout>
 </MonthPicker>
 ```
 
@@ -52,16 +61,19 @@ import {
 - `MonthPickerRowGroup`
 - `MonthPickerRow`
 - `MonthPickerItem`
+- `MonthPickerCell`: the cell, placed as the template of the layouts
 
 ## Composition Order
 
 1. `MonthPicker`
-2. either `MonthPickerLayout` or custom row/item composition
+2. either `MonthPickerLayout` with a cell template as children (`<MonthPickerCell />` or a custom one) or custom row/item composition
 
 ## Variants
 
 - Selection: `single`, `multiple`, `range`
-- Layout density: different `rows`, `cols`, and starting month
+- Layout density: `cols`; rows follow the number of months in the year
+- Period: explicit `year` (a `YYYY-MM-DD` string of any day in it) or the current year
+- Locale and calendar system: `locale` and `calendar` props, defaulting to the runtime locale and the Gregorian calendar
 - Label formatting: locale-driven month names
 
 ## Related Docs
@@ -85,4 +97,5 @@ import {
 
 - Hardcoding month labels while the rest of the app is localized.
 - Recreating the month grid manually instead of using `createMonthPickerGrid`.
+- Assuming every year has 12 months or that months are zero-based numbers.
 - Treating it as a generic content grid instead of a month-selection system.

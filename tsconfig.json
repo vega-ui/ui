@@ -14,7 +14,9 @@
       "@vega-ui/react": ["./packages/ui/src/index.ts"],
       "@vega-ui/react/*": ["./packages/ui/src/*"],
       "@vega-ui/react-context": ["./packages/react-context/src/index.ts"],
-      "@vega-ui/react-context/*": ["./packages/react-context/src/*"]
+      "@vega-ui/react-context/*": ["./packages/react-context/src/*"],
+      "@vega-ui/i18n": ["./packages/i18n/src/index.ts"],
+      "@vega-ui/i18n/*": ["./packages/i18n/src/*"]
     }
   },
   "exclude": ["node_modules"]

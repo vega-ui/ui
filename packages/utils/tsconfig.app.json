@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.build.json",
   "compilerOptions": {
     "types": ["vite-plugin-svgr/client"],
+    "paths": {},
   },
   "exclude": ["**/*/**.stories.(tsx|ts)", "**/*/__tests__/"],
   "include": ["src", "../../global.d.ts"]

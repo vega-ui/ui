@@ -1,9 +1,9 @@
-import { FC, useMemo, useRef, useState } from 'react';
+import { FC, useRef, useState } from 'react';
 import { TextField, TextFieldProps } from '../TextField';
 import { DateTimeFieldProvider } from './contexts';
 import { CalendarDatesDisabled } from '../Calendar';
-import { MaskitoDateMode } from '@maskito/kit';
-import { parseISODateTime } from '@vega-ui/utils';
+import { parseISODateTime, getDateTimeTemplate } from '@vega-ui/utils';
+import { CalendarSystem, gregorianCalendar } from '@vega-ui/i18n';
 
 export interface DateTimeFieldProps extends TextFieldProps {
   /**
@@ -18,26 +18,21 @@ export interface DateTimeFieldProps extends TextFieldProps {
   dateFormat: string
   
   /**
-   * Time format pattern used for time input masking and parsing.
+   * Time format pattern used for time input masking and parsing, in the
+   * notation of `dateFormat` (Unicode date patterns).
    * Defines which time segments are available in the input.
    *
    * Examples:
-   * - "HH:MM" — hours and minutes.
-   * - "HH:MM:SS" — hours, minutes, and seconds.
+   * - "HH:mm" — hours and minutes.
+   * - "HH:mm:ss" — hours, minutes, and seconds.
    */
-  timeFormat?: 'HH:MM' | 'HH:MM:SS'
+  timeFormat?: 'HH:mm' | 'HH:mm:ss'
   
   /**
-   * Step increment for time segments.
-   * Controls the granularity of time changes when typing or using the picker.
-   *
-   * For example:
-   * - `0` — disallow any value.
-   * - `1` — allows any value.
-   * - `5` — minutes/seconds can be changed in 5-unit increments.
-   * - `15` — common for quarter-hour selection.
-   *
-   * The step is applied according to the active `timeFormat`.
+   * Step of ArrowUp / ArrowDown on the minutes or seconds under the caret,
+   * wrapping around the segment's range. Like a native `datetime-local`
+   * input with `step`, the hours always move by one. `0` turns arrow
+   * stepping off. Typed values are not snapped to the step.
    */
   timeStep?: number
   
@@ -84,6 +79,20 @@ export interface DateTimeFieldProps extends TextFieldProps {
    * Prevents user input and interaction, and applies the disabled visual state.
    */
   disabled?: boolean
+  
+  /**
+   * Calendar system the date is typed and picked in. The value stays a
+   * `YYYY-MM-DDTHH:mm[:ss]` string.
+   * Defaults to the Gregorian calendar.
+   */
+  calendar?: CalendarSystem
+  
+  /**
+   * BCP 47 locale of the calendar popup (month and day names, first day of
+   * the week), e.g. `de-DE`. The typed format still comes from `format`.
+   * Defaults to the locale of the runtime, like `Intl`.
+   */
+  locale?: string
 }
 
 /**
@@ -104,7 +113,7 @@ export interface DateTimeFieldProps extends TextFieldProps {
  */
 export const DateTimeField: FC<DateTimeFieldProps> = ({
   dateFormat,
-  timeFormat = 'HH:MM',
+  timeFormat = 'HH:mm',
   separator = ', ',
   timeStep = 1,
   max: _max,
@@ -112,21 +121,18 @@ export const DateTimeField: FC<DateTimeFieldProps> = ({
   disabledDates,
   dateSeparator = '.',
   disabled,
+  calendar = gregorianCalendar,
+  locale,
   ...props
 }) => {
-  const min = useMemo(() => parseISODateTime(_min), [_min])
-  const max = useMemo(() => parseISODateTime(_max), [_max])
-  const [date, setDate] = useState<Date | undefined>(undefined)
+  const min = parseISODateTime(_min) ? _min : undefined
+  const max = parseISODateTime(_max) ? _max : undefined
+  const [date, setDate] = useState<string | undefined>(undefined)
   const [time, setTime] = useState<string>('00:00:00');
-  
-  const lastStringified = useRef<string>('')
   
   const inputInnerRef = useRef<HTMLInputElement>(null)
   
-  const normalizedFormat = dateFormat.toLowerCase()
-    .replace(/[^a-z/]/g, '/')
-    .replace(/\/+/g, '/')
-    .replace(/\/$/, '') as MaskitoDateMode
+  const template = getDateTimeTemplate({ dateFormat, dateSeparator, separator, timeFormat })
   
   return (
     <DateTimeFieldProvider
@@ -136,15 +142,13 @@ export const DateTimeField: FC<DateTimeFieldProps> = ({
       time={time}
       timeStep={timeStep}
       disabled={disabled}
-      dateSeparator={dateSeparator}
       disabledDates={disabledDates}
       inputRef={inputInnerRef}
       changeDate={setDate}
       changeTime={setTime}
-      lastStringified={lastStringified}
-      dateFormat={normalizedFormat}
-      timeFormat={timeFormat}
-      separator={separator}
+      template={template}
+      calendar={calendar}
+      locale={locale}
     >
       <TextField {...props} />
     </DateTimeFieldProvider>

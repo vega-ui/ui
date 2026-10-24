@@ -34,43 +34,33 @@ import {
   <DateRangeFieldInput />
   <Popover placement='bottom-end'>
     <PopoverTrigger asChild>
-      <DateRangeFieldTriggerIconButton />
+      <DateRangeFieldTriggerIconButton aria-label='Choose dates' />
     </PopoverTrigger>
     <PopoverContent>
       <DateRangeFieldCalendar>
         <CalendarHeader>
-          <CalendarPrevYearGroupButton><Icon><ArrowLeft /></Icon></CalendarPrevYearGroupButton>
-          <CalendarPrevButton><Icon><ChevronLeft /></Icon></CalendarPrevButton>
-          <CalendarPickerButtonGroup>
-            <CalendarMonthPickerButton><CalendarMonthLabel /></CalendarMonthPickerButton>
-            <CalendarYearPickerButton><CalendarYearLabel /></CalendarYearPickerButton>
-          </CalendarPickerButtonGroup>
-          <CalendarNextButton><Icon><ChevronRight /></Icon></CalendarNextButton>
-          <CalendarNextYearGroupButton><Icon><ArrowRight /></Icon></CalendarNextYearGroupButton>
+          <CalendarPrevButton aria-label='Previous month' />
+          <CalendarViewButtonGroup>
+            <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
+            <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
+          </CalendarViewButtonGroup>
+          <CalendarNextButton aria-label='Next month' />
         </CalendarHeader>
         <CalendarContent>
-          <CalendarDayPicker>
-            <CalendarWeekLabels>
-              {getWeekDayNames(navigator.language, 'short').map((name) => (
-                <CalendarWeekLabel key={name}>{name}</CalendarWeekLabel>
-              ))}
-            </CalendarWeekLabels>
-            <CalendarDayPickerScroller>
-              <CalendarDayPickerScrollerContent>
-                <CalendarDayPickerScrollerLayout />
-              </CalendarDayPickerScrollerContent>
-            </CalendarDayPickerScroller>
-          </CalendarDayPicker>
-          <CalendarMonthPicker>
-            <CalendarMonthPickerLayout />
-          </CalendarMonthPicker>
-          <CalendarYearPicker>
-            <CalendarYearPickerScroller>
-              <CalendarYearPickerScrollerContent>
-                <CalendarYearPickerScrollerLayout />
-              </CalendarYearPickerScrollerContent>
-            </CalendarYearPickerScroller>
-          </CalendarYearPicker>
+          <CalendarDays>
+            <CalendarWeekdays>
+              <CalendarWeekday />
+            </CalendarWeekdays>
+            <CalendarWeeks>
+              <CalendarDay />
+            </CalendarWeeks>
+          </CalendarDays>
+          <CalendarMonths>
+            <CalendarMonth />
+          </CalendarMonths>
+          <CalendarYears>
+            <CalendarYear />
+          </CalendarYears>
         </CalendarContent>
       </DateRangeFieldCalendar>
     </PopoverContent>
@@ -112,6 +102,7 @@ import {
 - [Accessibility](./accessibility.md)
 - [Comparison](./comparison.md)
 - [Troubleshooting](./troubleshooting.md)
+- Locale and calendar system: `locale` and `calendar` root props, defaulting to the runtime locale and the Gregorian calendar; see [Dates And Calendar Systems](../../i18n.md#locale-and-calendar-props)
 
 ## Edge Cases
 
@@ -122,6 +113,7 @@ import {
 
 ## Common Mistakes
 
+- Passing `Date` objects or display-format strings to `min` / `max` instead of ISO `YYYY-MM-DD` strings.
 - Treating the start and end date as unrelated values.
 - Leaving the meaning of the range ambiguous in labels or helper text.
 - Relying on visual calendar blocking without matching validation rules.

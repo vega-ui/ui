@@ -3,9 +3,9 @@
 import { createContext } from '@vega-ui/react-context';
 
 export interface YearPickerScrollerContextData {
-  referenceYear: number
+  referenceYear: string
 }
 
 export const [YearPickerScrollerProvider, useYearPickerScrollerContext] = createContext<YearPickerScrollerContextData>('YearPickerScrollerContext', {
-  referenceYear: 1970
+  referenceYear: ''
 })

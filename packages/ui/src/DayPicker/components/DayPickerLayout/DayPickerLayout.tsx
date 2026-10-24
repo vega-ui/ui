@@ -1,12 +1,18 @@
-import { FC } from 'react';
+import { FC, ReactNode, useMemo } from 'react';
 import { createDayPickerGrid } from '../../helpers';
-import { DayPickerItem } from '../DayPickerItem';
 import { DayPickerRowGroup, type DayPickerRowGroupProps } from '../DayPickerRowGroup';
 import { DayPickerRow } from '../DayPickerRow';
-import { formatDay, getFirstDayOfWeek } from '@vega-ui/utils';
-import { useDayPickerContext } from '../../contexts';
+
+import { createCalendarDayFormatter, getFirstDayOfWeek } from '@vega-ui/i18n';
+import { DayPickerCellProvider, useDayPickerContext } from '../../contexts';
 
 export interface DayPickerLayoutProps extends DayPickerRowGroupProps {
+  /**
+   * Template of a day cell, rendered once for every day of the grid.
+   * Read the day with `useDayPickerCellContext()`; usually `<DayPickerCell />`.
+   */
+  children: ReactNode;
+  
   /**
    * Number of grid rows (typically 5 or 6 depending on the month).
    * @default 6
@@ -14,27 +20,14 @@ export interface DayPickerLayoutProps extends DayPickerRowGroupProps {
   rows?: number;
   
   /**
-   * Number of columns. Always 7 for a classic week layout.
-   * @default 7
+   * Month to render, given as a `YYYY-MM-DD` string of any day in it.
+   * Defaults to the month of the parent DayPicker.
    */
-  cols?: number;
+  month?: string;
   
   /**
-   * Base year for generating the calendar.
-   * Defaults to the current year.
-   */
-  year?: number;
-  
-  /**
-   * Base month index (0–11) for generating the calendar.
-   * Defaults to the current month.
-   */
-  month?: number;
-  
-  /**
-   * Logical page offset (e.g., used with scrollers to shift between
-   * previous/next months without recalculating start month externally).
-   * Each offset = +1 means "month + 1".
+   * Page index used to keep row indexes unique when several months
+   * are rendered side by side (e.g., by a scroller).
    * @default 0
    */
   offset?: number;
@@ -48,9 +41,9 @@ export interface DayPickerLayoutProps extends DayPickerRowGroupProps {
   
   /**
    * Locale used for formatting the day label.
-   * Defaults to the browser's current locale.
+   * Defaults to the locale of the picker.
    */
-  locale?: Intl.LocalesArgument;
+  locale?: string;
   
   /**
    * Display format of the day (Intl.DateTimeFormat).
@@ -69,51 +62,54 @@ export interface DayPickerLayoutProps extends DayPickerRowGroupProps {
 /**
  * DayPickerLayout is the default grid renderer for DayPicker.
  *
- * It generates a complete calendar month view using `createDayPickerGrid`,
- * handling offsets, overflow days, and locale-aware day formatting.
+ * It generates a complete month view in the DayPicker's calendar system
+ * using `createDayPickerGrid`, handling overflow days and locale-aware day
+ * formatting.
  *
- * Each generated day is rendered as a DayPickerItem inside a Row and
- * RowGroup structure, enabling full integration with DataGridPicker
- * mechanics (focus, keyboard navigation, selection, disabled cells).
+ * Its children are the template of a day cell, rendered once per day inside
+ * the cell context (`useDayPickerCellContext`), usually `<DayPickerCell />`.
+ * Cells sit in a Row and RowGroup structure, so focus,
+ * keyboard navigation, selection and disabled cells work as in DataGridPicker.
  */
 export const DayPickerLayout: FC<DayPickerLayoutProps> = ({
-  year,
   month,
-  locale = navigator.language,
+  locale: _locale,
   format = 'numeric',
   rows = 6,
-  cols = 7,
   offset = 0,
   includeOverflowDays = false,
   weekStartsOn,
+  children,
   ...props
 }) => {
-  const { year: _year, month: _month } = useDayPickerContext()
+  const { month: contextMonth, calendar, locale: contextLocale } = useDayPickerContext()
+  const locale = _locale ?? contextLocale
+  const formatDay = useMemo(() => createCalendarDayFormatter(calendar, locale, format), [locale, format, calendar])
 
   const grid = createDayPickerGrid({
-    year: year ?? _year,
-    month: month ?? _month,
+    month: month ?? contextMonth,
+    calendar,
     rows,
-    cols,
     offset,
     includeOverflowDays,
-    weekStartsOn: weekStartsOn ?? getFirstDayOfWeek(locale as string)
+    weekStartsOn: weekStartsOn ?? getFirstDayOfWeek(locale)
   })
   
   return (
     <DayPickerRowGroup {...props}>
       {grid.map(({ row, data }) => (
         <DayPickerRow row={row} key={row}>
-          {data.map(({ col, day, year, month, inCurrentMonth }, index) => (
-            <DayPickerItem
-              disabled={!inCurrentMonth}
-              excluded={!inCurrentMonth}
+          {data.map(({ col, date, inCurrentMonth }) => (
+            <DayPickerCellProvider
+              key={col}
               col={col}
-              value={day !== undefined ? new Date(year, month, day).getTime() : undefined}
-              key={index}
+              date={date}
+              fields={date === undefined ? undefined : calendar.toFields(date)}
+              label={date === undefined ? '' : formatDay(date)}
+              inMonth={inCurrentMonth}
             >
-              {day !== undefined ? formatDay(day, month, year, locale, format) : undefined}
-            </DayPickerItem>
+              {children}
+            </DayPickerCellProvider>
           ))}
         </DayPickerRow>
       ))}

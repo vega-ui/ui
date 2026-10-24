@@ -1,12 +1,22 @@
-import { useCallback, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { IndexedSnapScrollerApiRef } from '../IndexedSnapScroller';
 import { CalendarProvider } from './contexts';
 import { useControlledState, useEventCallback } from '@vega-ui/hooks';
-import { CalendarDatesDisabled, CalendarPicker, CalendarSelection, CalendarValue } from './types';
+import { CalendarDatesDisabled, CalendarView, CalendarSelection, CalendarValue } from './types';
 import { DataGridApiRef } from '../DataGrid';
 import { CalendarBase, CalendarBaseProps } from '../CalendarBase';
 import { focusPickerValue, getAvailableDate } from './helpers';
-import { formatISODate, getClampedDate, getCurrentDate, getMonthStart, isSameMonth, normalizeDate, parseISODate, parseISODateTimestamps } from '@vega-ui/utils';
+import { formatISODate, getCurrentDate, parseISODate, sanitizeISODates } from '@vega-ui/utils';
+import {
+  CalendarSystem,
+  getCalendarMonthStart,
+  getCalendarYearStart,
+  getSameDayInCalendarMonth,
+  getSameMonthInCalendarYear,
+  isSameCalendarMonth,
+  getDefaultLocale,
+  gregorianCalendar,
+} from '@vega-ui/i18n';
 
 export interface CalendarProps<S extends CalendarSelection = 'single'> extends Omit<CalendarBaseProps, 'onChange' | 'defaultValue'> {
   /**
@@ -28,21 +38,19 @@ export interface CalendarProps<S extends CalendarSelection = 'single'> extends O
    * Determines the structure of `value`, all dates are `YYYY-MM-DD` strings:
    * - 'single'   — a string, `''` when nothing is selected
    * - 'multiple' — an array of strings
-   * - 'range'    — a `[start, end]` tuple, `''` marks an unset bound
+   * - 'range'    — a `[start, end]` tuple with `start` not after `end`, `''` marks an unset bound
    *
    * Default: `'single'`
    */
   selection?: S;
   
   /**
-   * Controls which picker view is currently active.
-   * - 'day' — standard calendar grid
-   * - 'month' — month selection view
-   * - 'year' — year selection view
-   *
-   * When controlled, it overrides the internal picker state.
+   * Controlled visible view:
+   * - 'day' — the days of the visible month (`CalendarDays`)
+   * - 'month' — the months of the visible year (`CalendarMonths`)
+   * - 'year' — pages of years (`CalendarYears`)
    */
-  picker?: CalendarPicker;
+  view?: CalendarView;
   
   /**
    * Controlled selection value, shaped by the `selection` mode.
@@ -56,12 +64,11 @@ export interface CalendarProps<S extends CalendarSelection = 'single'> extends O
   defaultValue?: CalendarValue<S>;
   
   /**
-   * Uncontrolled initial picker view.
-   * Used only on the first render when `picker` is not controlled.
+   * Initial view for uncontrolled usage.
    *
    * Default: `'day'`
    */
-  defaultPicker?: CalendarPicker;
+  defaultView?: CalendarView;
   
   /**
    * Disables the whole calendar: no date can be selected and navigation is off.
@@ -83,11 +90,9 @@ export interface CalendarProps<S extends CalendarSelection = 'single'> extends O
   onChangeValue?(value: CalendarValue<S>): void;
   
   /**
-   * Fires when the active picker view changes.
-   * Useful for synchronizing UI (e.g., closing external popovers or
-   * updating analytics on mode switches).
+   * Fires when the visible view changes.
    */
-  onChangePicker?(picker: CalendarPicker): void;
+  onChangeView?(view: CalendarView): void;
   
   /**
    * Controlled visible month, given as a `YYYY-MM-DD` string of any day
@@ -110,6 +115,19 @@ export interface CalendarProps<S extends CalendarSelection = 'single'> extends O
    * This event represents view navigation, not selection.
    */
   onChangeMonth?(month: string): void;
+  
+  /**
+   * Calendar system the calendar is shown in. Values stay `YYYY-MM-DD` days.
+   * Defaults to the Gregorian calendar.
+   */
+  calendar?: CalendarSystem;
+  
+  /**
+   * BCP 47 locale of month and day names and of the first day of the week,
+   * e.g. `de-DE`. Applies to all parts of the calendar and sets `lang` on the root.
+   * Defaults to the locale of the runtime, like `Intl`.
+   */
+  locale?: string;
 }
 
 /**
@@ -123,205 +141,197 @@ export interface CalendarProps<S extends CalendarSelection = 'single'> extends O
  * selection state for single, multiple, and range selection modes.
  *
  * All dates in its API are `YYYY-MM-DD` strings, like native date inputs;
- * the visible month is given by any of its days.
+ * the visible month is given by any of its days. Months, years and their
+ * names follow the `calendar` system, so the same API works with any
+ * calendar of the world.
  *
  * Keyboard focus starts on the selected day when it is in the visible month,
  * otherwise on today, otherwise on the first available day of the month.
  */
-export const Calendar = <S extends CalendarSelection>({
+export const Calendar = <S extends CalendarSelection = 'single'>({
   max,
   min,
   value,
-  picker,
+  view: _view,
   disabled,
   disabledDates,
   size = 'xs',
   defaultValue,
   month: _month,
   defaultMonth,
+  calendar = gregorianCalendar,
+  locale: _locale,
   variant = 'secondary',
   selection = 'single' as S,
-  defaultPicker = 'day',
-  onChangePicker,
+  defaultView = 'day',
+  onChangeView,
   onChangeMonth,
   onChangeValue,
   children,
   ...props
 }: CalendarProps<S>) => {
-  const currentDate = getCurrentDate()
+  const locale = _locale ?? getDefaultLocale()
+  const today = formatISODate(getCurrentDate())
   
-  const firstSelected = [value ?? defaultValue].flat().map(date => parseISODate(date)).find(Boolean)
-  const initialMonth = defaultMonth || formatISODate(firstSelected ?? currentDate)
+  const firstSelected = [value ?? defaultValue].flat().find(date => parseISODate(date))
   
-  const [month, setMonth] = useControlledState(_month, initialMonth, onChangeMonth)
-  const [activePicker, setActivePicker] = useControlledState(picker, defaultPicker, onChangePicker)
+  const [month, setMonth] = useControlledState(_month, defaultMonth || firstSelected || today, onChangeMonth)
+  const [view, setView] = useControlledState(_view, defaultView, onChangeView)
   
-  const date = useMemo(() => getMonthStart(parseISODate(month) ?? getCurrentDate()), [month])
+  const visibleMonth = useMemo(
+    () => getCalendarMonthStart(calendar, parseISODate(month) ? month : today),
+    [calendar, month, today]
+  )
   
-  const setDate = (next: Date) => {
-    if (!isSameMonth(next, date)) setMonth(formatISODate(getMonthStart(next)))
+  const showMonth = (next: string) => {
+    if (!isSameCalendarMonth(calendar, next, visibleMonth)) setMonth(getCalendarMonthStart(calendar, next))
   }
   
-  const from = parseISODate(min)
-  const to = parseISODate(max)
+  const from = parseISODate(min) ? min : undefined
+  const to = parseISODate(max) ? max : undefined
   
   const [activeDay, setActiveDay] = useState(() => {
-    const today = normalizeDate(currentDate)
+    if (firstSelected && isSameCalendarMonth(calendar, firstSelected, visibleMonth)) return firstSelected
+    if (isSameCalendarMonth(calendar, today, visibleMonth)) return today
     
-    if (firstSelected && isSameMonth(firstSelected, date)) return firstSelected.getTime()
-    if (isSameMonth(today, date)) return today.getTime()
-    
-    return (getAvailableDate(date, { from, to, disabled: disabledDates }) ?? date).getTime()
+    return getAvailableDate(calendar, visibleMonth, { from, to, disabled: disabledDates }) ?? visibleMonth
   })
 
-  const dayPickerApiRef = useRef<DataGridApiRef<number>>(null)
-  const monthPickerApiRef = useRef<DataGridApiRef<number>>(null)
-  const yearPickerApiRef = useRef<DataGridApiRef<number>>(null)
+  const dayPickerApiRef = useRef<DataGridApiRef<string>>(null)
+  const monthPickerApiRef = useRef<DataGridApiRef<string>>(null)
+  const yearPickerApiRef = useRef<DataGridApiRef<string>>(null)
   
   const scrollerApiRef = useRef<IndexedSnapScrollerApiRef>(null)
   const yearScrollerApiRef = useRef<IndexedSnapScrollerApiRef>(null)
   
-  const getAvailableByDate = (year: number, month: number) => {
-    const date = new Date(activeDay).getDate()
-    
-    const lastDay = new Date(year, month + 1, 0).getDate()
-    const candidate = new Date(year, month, Math.min(date, lastDay))
-    
-    return getAvailableDate(candidate, { from, to, disabled: disabledDates })
+  const scheduledDay = useRef<string | null>(null)
+  
+  useEffect(() => {
+    if (activeDay === scheduledDay.current) scheduledDay.current = null
+  }, [activeDay])
+  
+  const getAvailableInMonth = (month: string, day = activeDay) =>
+    getAvailableDate(calendar, getSameDayInCalendarMonth(calendar, day, month), { from, to, disabled: disabledDates })
+  
+  const focusAvailable = (month: string) => {
+    const resolved = getAvailableInMonth(month)
+    if (resolved) requestAnimationFrame(() => focusPickerValue(dayPickerApiRef.current, resolved))
   }
   
-  const focusAvailable = (year: number, month: number) => {
-    const resolved = getAvailableByDate(year, month)
-    if (resolved) requestAnimationFrame(() => focusPickerValue(dayPickerApiRef.current, resolved.getTime()))
-  }
+  const openDays = useCallback(() => {
+    setView('day')
+  }, [setView])
   
-  const openDayPicker = useCallback(() => {
-    setActivePicker('day')
-  }, [setActivePicker])
-  
-  const closePicker = useCallback(() => {
-    openDayPicker()
+  const closeView = useCallback(() => {
+    openDays()
     requestAnimationFrame(() => {
       focusPickerValue(dayPickerApiRef.current, activeDay)
     })
-  }, [openDayPicker, activeDay])
+  }, [openDays, activeDay])
   
-  const changePeriod = (y: number, m: number) => {
-    const d = new Date(date)
-    d.setFullYear(y)
-    d.setMonth(m)
+  const changePeriod = (month: string) => {
+    showMonth(month)
     
-    setDate(d)
-    
-    const resolved = getAvailableByDate(y, m)
+    const resolved = getAvailableInMonth(month, scheduledDay.current ?? activeDay)
     if (!resolved) return
     
-    requestAnimationFrame(() => setActiveDay(resolved.getTime()))
+    scheduledDay.current = resolved
+    requestAnimationFrame(() => setActiveDay(resolved))
   }
 
-  const changeMonth = (value: number) => {
-    const d = new Date(date)
-    d.setMonth(value)
+  const changeMonth = (month: string) => {
+    showMonth(month)
     
-    setDate(d)
-    
-    openDayPicker()
-    focusAvailable(d.getFullYear(), value)
+    openDays()
+    focusAvailable(month)
   }
   
-  const changeYear = (value: number) => {
-    const clamped = getClampedDate(new Date(value, date.getMonth()), from, to)
-    const clampedMonth = clamped.getMonth()
-    const d = new Date(date)
+  const changeYear = (year: string) => {
+    let month = getSameMonthInCalendarYear(calendar, visibleMonth, year)
     
-    if (clampedMonth !== date.getMonth()) {
-      d.setMonth(clampedMonth)
-      setDate(d)
-    }
+    if (from && month < getCalendarMonthStart(calendar, from)) month = getCalendarMonthStart(calendar, from)
+    if (to && month > getCalendarMonthStart(calendar, to)) month = getCalendarMonthStart(calendar, to)
     
-    d.setFullYear(value)
+    showMonth(month)
     
-    setDate(d)
-    
-    openDayPicker()
-    focusAvailable(value, clampedMonth)
+    openDays()
+    focusAvailable(month)
   }
   
-  const onSelectDay = useEventCallback((day: number | number[]) => {
+  const onSelectDay = useEventCallback((day: string | string[]) => {
     if (!Array.isArray(day)) {
-      onChangeValue?.(formatISODate(new Date(day)) as CalendarValue<S>)
+      onChangeValue?.(day as CalendarValue<S>)
       return
     }
 
-    const dates = day.map(d => formatISODate(new Date(d)))
-    const next = selection === 'range' ? [dates[0] ?? '', dates[1] ?? ''] : dates
-    onChangeValue?.(next as CalendarValue<S>)
+    if (selection !== 'range') {
+      onChangeValue?.(day as CalendarValue<S>)
+      return
+    }
+
+    const [start = '', end = ''] = day
+    onChangeValue?.([start, end] as CalendarValue<S>)
   })
   
-  const toggleMonthPicker = useCallback(() => {
-    if (activePicker === 'month') {
-      openDayPicker()
+  const toggleView = useCallback((next: Exclude<CalendarView, 'day'>) => {
+    if (view === next) {
+      openDays()
       return
     }
     
-    setActivePicker('month')
-    requestAnimationFrame(() => focusPickerValue(monthPickerApiRef.current, date.getMonth()))
-  }, [activePicker, date, openDayPicker, setActivePicker])
-
-  const toggleYearPicker = useCallback(() => {
-    if (activePicker === 'year') {
-      openDayPicker()
+    setView(next)
+    
+    if (next === 'month') {
+      requestAnimationFrame(() => focusPickerValue(monthPickerApiRef.current, visibleMonth))
       return
     }
     
-    setActivePicker('year')
-    requestAnimationFrame(() => focusPickerValue(yearPickerApiRef.current, date.getFullYear()))
-  }, [activePicker, date, openDayPicker, setActivePicker])
+    requestAnimationFrame(() => focusPickerValue(yearPickerApiRef.current, getCalendarYearStart(calendar, visibleMonth)))
+  }, [view, calendar, visibleMonth, openDays, setView])
   
-  const nextPeriod = useCallback(() => scrollerApiRef.current?.next(), [])
-  const nextYearGroup = useCallback(() => yearScrollerApiRef.current?.next(), [])
-  const prevPeriod = useCallback(() => scrollerApiRef.current?.prev(), [])
-  const prevYearGroup = useCallback(() => yearScrollerApiRef.current?.prev(), [])
+  const getViewScroller = useCallback(() => {
+    if (view === 'day') return scrollerApiRef.current
+    if (view === 'year') return yearScrollerApiRef.current
+  }, [view])
+  
+  const prev = useCallback(() => getViewScroller()?.prev(), [getViewScroller])
+  const next = useCallback(() => getViewScroller()?.next(), [getViewScroller])
   
   return (
     <CalendarProvider
       to={to}
-      value={parseISODateTimestamps(value)}
+      value={sanitizeISODates(value)}
       from={from}
       disabled={disabled}
       disabledDates={disabledDates}
-      year={date.getFullYear()}
-      month={date.getMonth()}
-      nextPeriod={nextPeriod}
-      nextYearGroup={nextYearGroup}
-      prevPeriod={prevPeriod}
-      prevYearGroup={prevYearGroup}
-      defaultValue={parseISODateTimestamps(defaultValue)}
+      month={visibleMonth}
+      calendar={calendar}
+      locale={locale}
+      prev={prev}
+      next={next}
+      defaultValue={sanitizeISODates(defaultValue)}
       selection={selection}
       activeDay={activeDay}
-      picker={activePicker}
-      referenceDate={new Date(1970, 0, 1)}
-      changePicker={setActivePicker}
+      view={view}
       changeActiveDay={setActiveDay}
       scrollerApiRef={scrollerApiRef}
       scrollerYearApiRef={yearScrollerApiRef}
       dayPickerApiRef={dayPickerApiRef}
       yearPickerApiRef={yearPickerApiRef}
       monthPickerApiRef={monthPickerApiRef}
-      closeMonthPicker={closePicker}
-      closeYearPicker={closePicker}
+      closeView={closeView}
       changeYear={changeYear}
       changeMonth={changeMonth}
       changePeriod={changePeriod}
       onSelectDay={onSelectDay}
-      toggleMonthPicker={toggleMonthPicker}
-      toggleYearPicker={toggleYearPicker}
+      toggleView={toggleView}
     >
       <CalendarBase
         size={size}
         variant={variant}
         aria-disabled={disabled || undefined}
         data-disabled={disabled || undefined}
+        lang={_locale}
         {...props}
       >
         {children}
