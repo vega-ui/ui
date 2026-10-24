@@ -38,3 +38,5 @@
 - The root supports controlled and uncontrolled tuple state.
 - `minRange` and `preventSkip` influence how close thumbs may come and whether one gesture may pass the other.
 - Each thumb exposes a narrower min/max contract through thumb context.
+- Like `<input type="range">`, steps count from `min`, values stay within `min` and the last step that fits in `max`, and keep the precision of `step`. An arrow key whose step would pass the other thumb stops at it.
+- Handlers passed to the root (`onKeyDown`, `onPointerDown`, …) run after the built-in ones and do not replace them.
