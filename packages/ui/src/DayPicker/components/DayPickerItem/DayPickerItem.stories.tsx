@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { DayPickerItem } from './DayPickerItem';
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof DayPickerItem> = {
   title: 'Data/DayPicker/DayPickerItem',
   component: DayPickerItem,
@@ -14,15 +13,15 @@ const meta: Meta<typeof DayPickerItem> = {
     size: {
       control: 'radio',
       options: ['xs', 'sm', 'md', 'lg', 'xl'],
-    }
-  }
-}
+    },
+  },
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    children: 1
+    children: 1,
   },
 };

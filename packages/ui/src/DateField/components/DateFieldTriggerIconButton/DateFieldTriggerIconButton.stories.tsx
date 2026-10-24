@@ -15,7 +15,7 @@ const meta = {
   args: {},
   decorators(Story) {
     return (
-      <DateField format={getDateFormat(gregorianCalendar, navigator.language)} separator={getDateSeparator(gregorianCalendar, navigator.language)}>
+      <DateField format={getDateFormat(gregorianCalendar)} separator={getDateSeparator(gregorianCalendar)}>
         <Story />
       </DateField>
     )

@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { DateRangeFieldCalendar } from './DateRangeFieldCalendar';
+import { DateRangeField } from '../../DateRangeField';
+import { DateRangeFieldInput } from '../DateRangeFieldInput';
+import { DateRangeFieldTriggerIconButton } from '../DateRangeFieldTriggerIconButton';
+import { Popover, PopoverContent, PopoverTrigger } from '../../../Popover';
 import {
   CalendarContent,
   CalendarDays,
@@ -12,14 +16,23 @@ import {
   CalendarPrevButton,
   CalendarViewButton,
   CalendarViewButtonGroup,
-  CalendarWeekdays, CalendarWeekday,
+  CalendarWeekdays,
+  CalendarWeekday,
   CalendarDay,
   CalendarWeeks,
   CalendarYearLabel,
   CalendarYear,
   CalendarYears,
 } from '../../../Calendar';
+import { getDateFormat, getDateSeparator, gregorianCalendar } from '@vega-ui/i18n';
 
+const format = getDateFormat(gregorianCalendar);
+const separator = getDateSeparator(gregorianCalendar);
+
+/**
+ * The calendar of the field, rendered in its popover the way the field
+ * composes it: picking a day writes it to the field's input.
+ */
 const meta = {
   title: 'Form/Fields/DateRangeField/DateRangeFieldCalendar',
   component: DateRangeFieldCalendar,
@@ -42,7 +55,7 @@ const meta = {
         </CalendarHeader>
         <CalendarContent>
           <CalendarDays>
-            <CalendarWeekdays>
+            <CalendarWeekdays format='narrow'>
               <CalendarWeekday />
             </CalendarWeekdays>
             <CalendarWeeks>
@@ -58,6 +71,21 @@ const meta = {
         </CalendarContent>
       </>
     ),
+  },
+  decorators(Story) {
+    return (
+      <DateRangeField format={format} separator={separator}>
+        <DateRangeFieldInput aria-label='Date' />
+        <Popover placement='bottom-end' defaultOpen>
+          <PopoverTrigger asChild>
+            <DateRangeFieldTriggerIconButton aria-label='Open calendar' />
+          </PopoverTrigger>
+          <PopoverContent>
+            <Story />
+          </PopoverContent>
+        </Popover>
+      </DateRangeField>
+    );
   },
 } satisfies Meta<typeof DateRangeFieldCalendar>;
 

@@ -15,7 +15,7 @@ import { Card } from '../Card';
 import { Code } from '../Code';
 import { Heading } from '../Heading';
 import { Text } from '../Text';
-import { addCalendarMonths, formatCalendarDate, getCalendarMonthStart, gregorianCalendar, createCalendarSystem } from '@vega-ui/i18n';
+import { addCalendarMonths, formatCalendarDate, getCalendarMonthStart, getCalendarYearStart, gregorianCalendar, createCalendarSystem } from '@vega-ui/i18n';
 import { formatISODate, getCurrentDate } from '@vega-ui/utils';
 
 const calendarSystems = [
@@ -27,6 +27,9 @@ const calendarSystems = [
 
 const thisMonth = getCalendarMonthStart(gregorianCalendar, formatISODate(getCurrentDate()));
 const shift = (months: number) => addCalendarMonths(gregorianCalendar, thisMonth, months);
+const thisYear = getCalendarYearStart(gregorianCalendar, thisMonth);
+const monthOfYear = (index: number) => addCalendarMonths(gregorianCalendar, thisYear, index);
+const isSummer = (month: string) => [6, 7, 8].includes(gregorianCalendar.toFields(month).month);
 
 const Stack: FC<{ children: ReactNode; gap?: number }> = ({ children, gap = 12 }) => (
   <div style={{ display: 'flex', flexDirection: 'column', gap }}>{children}</div>
@@ -144,14 +147,25 @@ export const Controlled: Story = {
 
 /**
  * `from` and `to` limit the selectable months; months outside the bounds
- * cannot be selected or focused. Here only March to September is available.
+ * cannot be selected or focused. Here only March to September of the current
+ * year is available.
  */
 export const Bounds: Story = {
   args: {
     selection: 'range',
-    year: '2026-01-01',
-    from: '2026-03-01',
-    to: '2026-09-01',
+    from: monthOfYear(2),
+    to: monthOfYear(8),
+  },
+};
+
+/**
+ * `disabled` takes a month, an array of months or a predicate. Here the
+ * summer months cannot be picked.
+ */
+export const DisabledMonths: Story = {
+  args: {
+    selection: 'multiple',
+    disabled: isSummer,
   },
 };
 
@@ -226,6 +240,27 @@ export const Locales: Story = {
         <Stack key={locale}>
           <Caption>{locale}</Caption>
           <MonthPicker {...props} locale={locale} defaultSelected={thisMonth} />
+        </Stack>
+      ))}
+    </Row>
+  ),
+};
+
+/**
+ * The picker follows the text direction it is rendered in, like native
+ * elements: here `dir="rtl"` on a wrapper. Months run from right to left,
+ * ArrowRight moves to the previous month and ArrowLeft to the next one.
+ * Direction is never taken from `locale`.
+ */
+export const RightToLeft: Story = {
+  render: (props) => (
+    <Row>
+      {['ar-EG', 'he-IL'].map((locale) => (
+        <Stack key={locale}>
+          <Caption>{locale}</Caption>
+          <div dir='rtl'>
+            <MonthPicker {...props} locale={locale} defaultSelected={thisMonth} />
+          </div>
         </Stack>
       ))}
     </Row>

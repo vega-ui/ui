@@ -1,6 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { DateFieldCalendar } from './DateFieldCalendar';
+import { DateField } from '../../DateField';
+import { DateFieldInput } from '../DateFieldInput';
+import { DateFieldTriggerIconButton } from '../DateFieldTriggerIconButton';
+import { Popover, PopoverContent, PopoverTrigger } from '../../../Popover';
 import {
   CalendarContent,
   CalendarDays,
@@ -12,14 +16,23 @@ import {
   CalendarPrevButton,
   CalendarViewButton,
   CalendarViewButtonGroup,
-  CalendarWeekdays, CalendarWeekday,
+  CalendarWeekdays,
+  CalendarWeekday,
   CalendarDay,
   CalendarWeeks,
   CalendarYearLabel,
   CalendarYear,
   CalendarYears,
 } from '../../../Calendar';
+import { getDateFormat, getDateSeparator, gregorianCalendar } from '@vega-ui/i18n';
 
+const format = getDateFormat(gregorianCalendar);
+const separator = getDateSeparator(gregorianCalendar);
+
+/**
+ * The calendar of the field, rendered in its popover the way the field
+ * composes it: picking a day writes it to the field's input.
+ */
 const meta = {
   title: 'Form/Fields/DateField/DateFieldCalendar',
   component: DateFieldCalendar,
@@ -42,7 +55,7 @@ const meta = {
         </CalendarHeader>
         <CalendarContent>
           <CalendarDays>
-            <CalendarWeekdays>
+            <CalendarWeekdays format='narrow'>
               <CalendarWeekday />
             </CalendarWeekdays>
             <CalendarWeeks>
@@ -58,6 +71,21 @@ const meta = {
         </CalendarContent>
       </>
     ),
+  },
+  decorators(Story) {
+    return (
+      <DateField format={format} separator={separator}>
+        <DateFieldInput aria-label='Date' />
+        <Popover placement='bottom-end' defaultOpen>
+          <PopoverTrigger asChild>
+            <DateFieldTriggerIconButton aria-label='Open calendar' />
+          </PopoverTrigger>
+          <PopoverContent>
+            <Story />
+          </PopoverContent>
+        </Popover>
+      </DateField>
+    );
   },
 } satisfies Meta<typeof DateFieldCalendar>;
 

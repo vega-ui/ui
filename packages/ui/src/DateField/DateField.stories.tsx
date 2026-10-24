@@ -3,7 +3,7 @@ import { FC, FormEvent, ReactNode, useState } from 'react';
 
 import { DateField } from './DateField';
 import { DateFieldCalendar, DateFieldInput, DateFieldInputProps, DateFieldTriggerIconButton } from './components';
-import { formatISODate, getCurrentDate, getNextDate, parseISODate, parseTemplateDate } from '@vega-ui/utils';
+import { formatISODate, getCurrentDate, getDateTemplate, getNextDate, parseISODate, parseTemplateDate } from '@vega-ui/utils';
 import { Popover, PopoverContent, PopoverTrigger } from '../Popover';
 import { Label } from '../Label';
 import { HelperText } from '../HelperText';
@@ -20,7 +20,8 @@ import {
   CalendarPrevButton,
   CalendarViewButton,
   CalendarViewButtonGroup,
-  CalendarWeekdays, CalendarWeekday,
+  CalendarWeekdays,
+  CalendarWeekday,
   CalendarDay,
   CalendarWeeks,
   CalendarYearLabel,
@@ -30,11 +31,11 @@ import {
 import { gregorianCalendar, createCalendarSystem, getDateFormat, getDateSeparator } from '@vega-ui/i18n';
 
 const calendarSystems = [
-  { name: 'Gregorian', locale: 'en-US', calendar: gregorianCalendar, format: 'MM/DD/YYYY', separator: '/' },
-  { name: 'Persian', locale: 'fa-IR', calendar: createCalendarSystem('persian'), format: 'YYYY/MM/DD', separator: '/' },
-  { name: 'Hebrew', locale: 'he-IL', calendar: createCalendarSystem('hebrew'), format: 'DD.MM.YYYY', separator: '.' },
-  { name: 'Buddhist', locale: 'th-TH', calendar: createCalendarSystem('buddhist'), format: 'DD/MM/YYYY', separator: '/' },
-  { name: 'Islamic', locale: 'ar-SA', calendar: createCalendarSystem('islamic-umalqura'), format: 'DD/MM/YYYY', separator: '/' },
+  { name: 'Gregorian', locale: 'en-US', calendar: gregorianCalendar },
+  { name: 'Persian', locale: 'fa-IR', calendar: createCalendarSystem('persian') },
+  { name: 'Hebrew', locale: 'he-IL', calendar: createCalendarSystem('hebrew') },
+  { name: 'Buddhist', locale: 'th-TH', calendar: createCalendarSystem('buddhist') },
+  { name: 'Islamic', locale: 'ar-SA', calendar: createCalendarSystem('islamic-umalqura') },
 ];
 
 const shift = (days: number) => formatISODate(getNextDate(getCurrentDate(), days));
@@ -123,7 +124,8 @@ const SubmitForm: FC<{ children: ReactNode }> = ({ children }) => {
 };
 
 const stayFormat = 'DD.MM.YYYY';
-const stayTemplate = 'dd.mm.yyyy';
+const staySeparator = '.';
+const stayTemplate = getDateTemplate(stayFormat, staySeparator);
 
 const getDayAfter = (date?: string) => {
   const parsed = parseISODate(date);
@@ -141,20 +143,18 @@ const StayDates: FC = () => {
   return (
     <Grid>
       <FormItem id='check-in' label='Check-in' hint={checkIn ?? 'Not set yet'}>
-        <DateField format={stayFormat} separator='.' min={shift(0)}>
+        <DateField format={stayFormat} separator={staySeparator} min={shift(0)}>
           <DateFieldParts id='check-in' placeholder={stayFormat} onInput={onCheckInInput} />
         </DateField>
       </FormItem>
       <FormItem id='check-out' label='Check-out' hint={`From ${getDayAfter(checkIn)}`}>
-        <DateField format={stayFormat} separator='.' min={getDayAfter(checkIn)}>
+        <DateField format={stayFormat} separator={staySeparator} min={getDayAfter(checkIn)}>
           <DateFieldParts id='check-out' placeholder={stayFormat} />
         </DateField>
       </FormItem>
     </Grid>
   );
 };
-
-const format = getDateFormat(gregorianCalendar, navigator.language);
 
 const meta = {
   title: 'Form/Fields/DateField/DateField',
@@ -165,10 +165,16 @@ const meta = {
     size: { control: 'radio', options: ['xs', 'sm', 'md', 'lg', 'xl'] },
   },
   args: {
-    format,
-    separator: getDateSeparator(gregorianCalendar, navigator.language),
-    children: <DateFieldParts placeholder={format} />,
+    format: getDateFormat(gregorianCalendar),
+    separator: getDateSeparator(gregorianCalendar),
   },
+  render: (props) => (
+    <FormItem id='birthday' label='Date of birth' hint={`Type it as ${props.format} or pick it in the calendar`}>
+      <DateField {...props}>
+        <DateFieldParts id='birthday' placeholder={props.format} />
+      </DateField>
+    </FormItem>
+  ),
 } satisfies Meta<typeof DateField>;
 
 export default meta;
@@ -178,22 +184,12 @@ export const Default: Story = {
   args: {},
 };
 
-export const WithLabel: Story = {
-  render: (props) => (
-    <FormItem id='birthday' label='Date of birth' hint={`Type it as ${format} or pick it in the calendar`}>
-      <DateField {...props}>
-        <DateFieldParts id='birthday' placeholder={format} />
-      </DateField>
-    </FormItem>
-  ),
-};
-
 export const MinMax: Story = {
   name: 'Min and max',
   render: (props) => (
     <FormItem id='delivery' label='Delivery date' hint='Within the next 30 days'>
       <DateField {...props} min={shift(1)} max={shift(30)}>
-        <DateFieldParts id='delivery' placeholder={format} />
+        <DateFieldParts id='delivery' placeholder={props.format} />
       </DateField>
     </FormItem>
   ),
@@ -204,7 +200,7 @@ export const DisabledDates: Story = {
   render: (props) => (
     <FormItem id='meeting' label='Meeting day' hint='Weekdays only'>
       <DateField {...props} disabledDates={isWeekend}>
-        <DateFieldParts id='meeting' placeholder={format} />
+        <DateFieldParts id='meeting' placeholder={props.format} />
       </DateField>
     </FormItem>
   ),
@@ -258,12 +254,34 @@ export const Locales: Story = {
 export const CalendarSystems: Story = {
   render: (props) => (
     <Grid>
-      {calendarSystems.map(({ name, locale, calendar, format, separator }) => (
+      {calendarSystems.map(({ name, locale, calendar }) => (
         <FormItem key={name} id={name} label={name} hint={locale}>
-          <DateField {...props} locale={locale} calendar={calendar} format={format} separator={separator}>
-            <DateFieldParts id={name} placeholder={format} />
+          <DateField {...props} locale={locale} calendar={calendar} format={getDateFormat(calendar, locale)} separator={getDateSeparator(calendar, locale)}>
+            <DateFieldParts id={name} placeholder={getDateFormat(calendar, locale)} />
           </DateField>
         </FormItem>
+      ))}
+    </Grid>
+  ),
+};
+
+/**
+ * The field follows the text direction it is rendered in, like native
+ * inputs: here `dir="rtl"` on a wrapper. The calendar button moves to the
+ * left, and the weeks of the calendar run from right to left. Direction is
+ * never taken from `locale`.
+ */
+export const RightToLeft: Story = {
+  render: (props) => (
+    <Grid>
+      {['ar-EG', 'he-IL'].map((locale) => (
+        <div key={locale} dir='rtl'>
+          <FormItem id={`rtl-${locale}`} label={locale} hint={getDateFormat(gregorianCalendar, locale)}>
+            <DateField {...props} locale={locale} format={getDateFormat(gregorianCalendar, locale)} separator={getDateSeparator(gregorianCalendar, locale)}>
+              <DateFieldParts id={`rtl-${locale}`} placeholder={getDateFormat(gregorianCalendar, locale)} />
+            </DateField>
+          </FormItem>
+        </div>
       ))}
     </Grid>
   ),
@@ -280,7 +298,7 @@ export const Form: Story = {
     <SubmitForm>
       <FormItem id='birthday-form' label='Date of birth'>
         <DateField {...props}>
-          <DateFieldParts id='birthday-form' name='birthday' placeholder={format} required />
+          <DateFieldParts id='birthday-form' name='birthday' placeholder={props.format} required />
         </DateField>
       </FormItem>
     </SubmitForm>

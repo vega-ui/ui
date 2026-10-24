@@ -1,49 +1,74 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CalendarHeader } from './CalendarHeader';
+import { Calendar } from '../../Calendar';
 import { CalendarPrevButton } from '../CalendarPrevButton';
-import { Icon } from '../../../Icon';
+import { CalendarNextButton } from '../CalendarNextButton';
 import { CalendarViewButtonGroup } from '../CalendarViewButtonGroup';
 import { CalendarViewButton } from '../CalendarViewButton';
-import { CalendarNextButton } from '../CalendarNextButton';
-import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
-import { formatCalendarDate, gregorianCalendar } from '@vega-ui/i18n';
+import { CalendarMonthLabel } from '../CalendarMonthLabel';
+import { CalendarYearLabel } from '../CalendarYearLabel';
+import { CalendarContent } from '../CalendarContent';
+import { CalendarDays } from '../CalendarDays';
+import { CalendarWeekdays } from '../CalendarWeekdays';
+import { CalendarWeekday } from '../CalendarWeekday';
+import { CalendarWeeks } from '../CalendarWeeks';
+import { CalendarDay } from '../CalendarDay';
+import { CalendarMonths } from '../CalendarMonths';
+import { CalendarMonth } from '../CalendarMonth';
+import { CalendarYears } from '../CalendarYears';
+import { CalendarYear } from '../CalendarYear';
 
-const monthName = (date: string) => formatCalendarDate(gregorianCalendar, date, navigator.language, { month: 'long' });
-const yearName = (date: string) => formatCalendarDate(gregorianCalendar, date, navigator.language, { year: 'numeric' });
-
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof CalendarHeader> = {
   title: 'Data/Calendar/CalendarHeader',
   component: CalendarHeader,
   args: {
     children: (
       <>
-        <CalendarPrevButton>
-          <Icon><ChevronLeft /></Icon>
-        </CalendarPrevButton>
+        <CalendarPrevButton aria-label='Previous' />
         <CalendarViewButtonGroup>
           <CalendarViewButton view='month'>
-            {monthName('2026-02-01')}
+            <CalendarMonthLabel />
           </CalendarViewButton>
           <CalendarViewButton view='year'>
-            {yearName('2026-01-01')}
+            <CalendarYearLabel />
           </CalendarViewButton>
         </CalendarViewButtonGroup>
-        <CalendarNextButton>
-          <Icon><ChevronRight /></Icon>
-        </CalendarNextButton>
+        <CalendarNextButton aria-label='Next' />
       </>
-    )
+    ),
   },
-  parameters: {
-    layout: 'padded',
+  decorators(Story) {
+    return (
+      <Calendar compact>
+        <Story />
+        <CalendarContent>
+          <CalendarDays>
+            <CalendarWeekdays>
+              <CalendarWeekday />
+            </CalendarWeekdays>
+            <CalendarWeeks>
+              <CalendarDay />
+            </CalendarWeeks>
+          </CalendarDays>
+          <CalendarMonths>
+            <CalendarMonth />
+          </CalendarMonths>
+          <CalendarYears>
+            <CalendarYear />
+          </CalendarYears>
+        </CalendarContent>
+      </Calendar>
+    );
   },
   tags: ['autodocs'],
-}
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * The previous and next buttons around the month and year view buttons.
+ */
 export const Default: Story = {
   args: {},
 };

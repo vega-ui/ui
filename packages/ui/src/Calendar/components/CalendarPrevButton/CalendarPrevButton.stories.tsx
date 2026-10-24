@@ -1,21 +1,49 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { ChevronRight } from '@vega-ui/icons';
 import { CalendarPrevButton } from './CalendarPrevButton';
-import { Icon } from '../../../Icon';
+import { Calendar } from '../../Calendar';
+import { CalendarHeader } from '../CalendarHeader';
+import { CalendarMonthLabel } from '../CalendarMonthLabel';
+import { CalendarYearLabel } from '../CalendarYearLabel';
+import { CalendarContent } from '../CalendarContent';
+import { CalendarDays } from '../CalendarDays';
+import { CalendarWeeks } from '../CalendarWeeks';
+import { CalendarDay } from '../CalendarDay';
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof CalendarPrevButton> = {
   title: 'Data/Calendar/CalendarPrevButton',
   component: CalendarPrevButton,
   args: {
-    children: (<Icon><ChevronRight /></Icon>)
+    'aria-label': 'Previous month',
+  },
+  decorators(Story) {
+    return (
+      <Calendar compact>
+        <CalendarHeader>
+          <Story />
+          <span>
+            <CalendarMonthLabel /> <CalendarYearLabel />
+          </span>
+        </CalendarHeader>
+        <CalendarContent>
+          <CalendarDays>
+            <CalendarWeeks>
+              <CalendarDay />
+            </CalendarWeeks>
+          </CalendarDays>
+        </CalendarContent>
+      </Calendar>
+    );
   },
   tags: ['autodocs'],
-}
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * Shows the previous month. It renders a chevron, mirrored in right-to-left
+ * text, so it needs an `aria-label`.
+ */
 export const Default: Story = {
   args: {},
 };

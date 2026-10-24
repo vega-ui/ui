@@ -3,7 +3,6 @@ import { DayPickerLayout } from './DayPickerLayout';
 import { DayPicker } from '../../DayPicker';
 import { DayPickerCell } from '../DayPickerCell';
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof DayPickerLayout> = {
   title: 'Data/DayPicker/DayPickerLayout',
   component: DayPickerLayout,
@@ -13,9 +12,9 @@ const meta: Meta<typeof DayPickerLayout> = {
       <DayPicker size='xs'>
         <Story />
       </DayPicker>
-    )
-  }
-}
+    );
+  },
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;

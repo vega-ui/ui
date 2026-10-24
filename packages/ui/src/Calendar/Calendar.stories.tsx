@@ -26,15 +26,15 @@ import { Card } from '../Card';
 import { Code } from '../Code';
 import { Heading } from '../Heading';
 import { Text } from '../Text';
-import { CalendarSystem, formatCalendarDate, gregorianCalendar, createCalendarSystem } from '@vega-ui/i18n';
+import { CalendarSystem, formatCalendarDate, getDefaultLocale, gregorianCalendar, createCalendarSystem } from '@vega-ui/i18n';
 import { formatISODate, getCurrentDate, getNextDate, parseISODate } from '@vega-ui/utils';
 
 const calendarSystems = [
-  { name: 'Gregorian', locale: 'en-US', calendar: gregorianCalendar, format: 'MM/DD/YYYY', separator: '/' },
-  { name: 'Persian', locale: 'fa-IR', calendar: createCalendarSystem('persian'), format: 'YYYY/MM/DD', separator: '/' },
-  { name: 'Hebrew', locale: 'he-IL', calendar: createCalendarSystem('hebrew'), format: 'DD.MM.YYYY', separator: '.' },
-  { name: 'Buddhist', locale: 'th-TH', calendar: createCalendarSystem('buddhist'), format: 'DD/MM/YYYY', separator: '/' },
-  { name: 'Islamic', locale: 'ar-SA', calendar: createCalendarSystem('islamic-umalqura'), format: 'DD/MM/YYYY', separator: '/' },
+  { name: 'Gregorian', locale: 'en-US', calendar: gregorianCalendar },
+  { name: 'Persian', locale: 'fa-IR', calendar: createCalendarSystem('persian') },
+  { name: 'Hebrew', locale: 'he-IL', calendar: createCalendarSystem('hebrew') },
+  { name: 'Buddhist', locale: 'th-TH', calendar: createCalendarSystem('buddhist') },
+  { name: 'Islamic', locale: 'ar-SA', calendar: createCalendarSystem('islamic-umalqura') },
 ];
 
 interface CalendarPartsProps {
@@ -101,7 +101,11 @@ const meta: Meta<typeof Calendar> = {
   },
   argTypes: {
     compact: {
-      control: 'boolean'
+      control: 'boolean',
+    },
+    locale: {
+      control: 'select',
+      options: ['en-US', 'de-DE', 'ja-JP', 'ar-EG', 'he-IL'],
     },
     variant: {
       control: 'radio',
@@ -114,45 +118,87 @@ const meta: Meta<typeof Calendar> = {
     selection: {
       control: 'radio',
       options: ['single', 'multiple', 'range'],
-    }
+    },
   },
   tags: ['autodocs'],
-}
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+/**
+ * The current month in the Gregorian calendar, with the header to switch
+ * between the days, the months and the years. Keyboard focus starts on today.
+ */
 export const Default: Story = {
   args: {},
 };
 
-export const DefaultValue: Story = {
-  args: {
-    defaultValue: today,
-  },
-};
-
+/**
+ * `defaultMonth` sets the month shown first, given as any of its days.
+ */
 export const DefaultMonth: Story = {
   args: {
     defaultMonth: '2020-01-01',
   },
 };
 
-export const MinMax: Story = {
-  name: 'Min and max',
+/**
+ * `selection` switches between one day, any set of days, and a range between
+ * two days. `defaultValue` is shaped by the mode: a string, an array, or a
+ * `[start, end]` tuple.
+ */
+export const SelectionModes: Story = {
+  render: () => (
+    <Row>
+      <Stack>
+        <Caption>single</Caption>
+        <Calendar compact selection='single' defaultValue={today}>
+          <CalendarParts />
+        </Calendar>
+      </Stack>
+      <Stack>
+        <Caption>multiple</Caption>
+        <Calendar compact selection='multiple' defaultValue={[shift(-3), today, shift(3)]}>
+          <CalendarParts />
+        </Calendar>
+      </Stack>
+      <Stack>
+        <Caption>range</Caption>
+        <Calendar compact selection='range' defaultValue={[shift(-2), shift(4)]}>
+          <CalendarParts />
+        </Calendar>
+      </Stack>
+    </Row>
+  ),
+};
+
+/**
+ * `min` and `max` limit the selectable days; days, months and years outside
+ * the bounds cannot be selected, and the previous and next buttons hide at
+ * the bounds. Here only the last week and the next month are available.
+ */
+export const Bounds: Story = {
   args: {
     min: shift(-7),
     max: shift(30),
   },
 };
 
-export const DisabledDates: Story = {
-  name: 'Disabled dates (weekends)',
+/**
+ * `disabledDates` takes a day, an array of days or a predicate. Here weekends
+ * cannot be picked.
+ */
+export const DisabledDays: Story = {
   args: {
     disabledDates: isWeekend,
   },
 };
 
+/**
+ * `disabled` turns off the whole calendar: no day can be selected and
+ * navigation is off. The selected day stays visible.
+ */
 export const Disabled: Story = {
   args: {
     disabled: true,
@@ -160,33 +206,28 @@ export const Disabled: Story = {
   },
 };
 
-export const MultipleSelection: Story = {
-  args: {
-    selection: 'multiple',
-    defaultValue: [shift(-3), today, shift(3)],
-  },
-};
-
-export const RangeSelection: Story = {
-  args: {
-    selection: 'range',
-    defaultValue: [shift(-2), shift(4)],
-  },
-};
-
+/**
+ * Both `variant` presets, shown with a selected day.
+ */
 export const Variants: Story = {
+  args: {
+    compact: true,
+  },
   render: (props) => (
     <Row>
       {(['primary', 'secondary'] as const).map((variant) => (
         <Stack key={variant}>
           <Caption>{variant}</Caption>
-          <Calendar {...props} compact variant={variant} defaultValue={today} />
+          <Calendar {...props} variant={variant} defaultValue={today} />
         </Stack>
       ))}
     </Row>
   ),
 };
 
+/**
+ * Every `size`, from the dense `xs` (the default) to `xl`.
+ */
 export const Sizes: Story = {
   args: {
     compact: true,
@@ -208,12 +249,40 @@ export const Sizes: Story = {
  * numbers and the first day of the week. No provider is needed.
  */
 export const Locales: Story = {
+  args: {
+    compact: true,
+  },
   render: (props) => (
     <Row>
       {['en-US', 'de-DE', 'ja-JP', 'ar-EG'].map((locale) => (
         <Stack key={locale}>
           <Caption>{locale}</Caption>
-          <Calendar {...props} compact locale={locale} defaultValue={today} />
+          <Calendar {...props} locale={locale} defaultValue={today} />
+        </Stack>
+      ))}
+    </Row>
+  ),
+};
+
+/**
+ * The calendar follows the text direction it is rendered in, like native
+ * elements: here `dir="rtl"` on a wrapper. Weeks run from right to left, the
+ * previous and next buttons swap sides and their chevrons are mirrored,
+ * ArrowRight moves to the previous day and ArrowLeft to the next one, and the
+ * next month slides in from the left. Direction is never taken from `locale`.
+ */
+export const RightToLeft: Story = {
+  args: {
+    compact: true,
+  },
+  render: (props) => (
+    <Row>
+      {['ar-EG', 'he-IL'].map((locale) => (
+        <Stack key={locale}>
+          <Caption>{locale}</Caption>
+          <div dir='rtl'>
+            <Calendar {...props} locale={locale} defaultValue={today} />
+          </div>
         </Stack>
       ))}
     </Row>
@@ -259,8 +328,9 @@ export const Controlled: Story = {
 };
 
 /**
- * A booking calendar: past days are unavailable through `min`, weekends
- * through a `disabledDates` predicate, and the range is summarized aside.
+ * A booking calendar built from the props above: past days are unavailable
+ * through `min`, weekends through a `disabledDates` predicate, and the
+ * controlled range is summarized aside in the default locale.
  */
 export const Booking: Story = {
   render: () => {
@@ -270,7 +340,11 @@ export const Booking: Story = {
     const endDate = parseISODate(end);
     const nights = startDate && endDate ? Math.round((endDate.getTime() - startDate.getTime()) / 86_400_000) : 0;
 
-    const format = (date: string) => date ? formatCalendarDate(calendarSystems[0].calendar, date, navigator.language, { dateStyle: 'medium' }) : '—';
+    const format = (date: string) => {
+      if (!date) return '—';
+
+      return formatCalendarDate(gregorianCalendar, date, getDefaultLocale(), { dateStyle: 'medium' });
+    };
 
     return (
       <Row>
@@ -300,24 +374,22 @@ interface CalendarSystemCardProps {
   onChangeValue(value: string): void;
 }
 
-const CalendarSystemCard: FC<CalendarSystemCardProps> = ({ name, locale, calendar, value, onChangeValue }) => {
-  return (
-    <Card>
-      <Stack gap={8}>
-        <Heading as='h3' size={4}>{name}</Heading>
-        <Caption>{locale}</Caption>
-        <Calendar compact locale={locale} calendar={calendar} value={value} onChangeValue={onChangeValue}>
-          <CalendarParts weekdays='narrow' />
-        </Calendar>
-      </Stack>
-    </Card>
-  );
-};
+const CalendarSystemCard: FC<CalendarSystemCardProps> = ({ name, locale, calendar, value, onChangeValue }) => (
+  <Card>
+    <Stack gap={8}>
+      <Heading as='h3' size={4}>{name}</Heading>
+      <Caption>{locale}</Caption>
+      <Calendar compact locale={locale} calendar={calendar} value={value} onChangeValue={onChangeValue}>
+        <CalendarParts weekdays='narrow' />
+      </Calendar>
+    </Stack>
+  </Card>
+);
 
 /**
  * One ISO value shown in several calendar systems. Each calendar takes its
- * `locale` and `calendar` props; picking a day in any of
- * them updates all of them.
+ * own `calendar` and `locale`; picking a day in any of them updates all of
+ * them.
  */
 export const CalendarSystems: Story = {
   render: () => {
@@ -352,9 +424,12 @@ const keys = [
  * moves focus; the value changes when a day is selected.
  */
 export const Keyboard: Story = {
+  args: {
+    compact: true,
+  },
   render: (props) => (
     <Row>
-      <Calendar {...props} compact defaultValue={today} />
+      <Calendar {...props} defaultValue={today} />
       <Card>
         <Stack gap={8}>
           <Heading as='h3' size={4}>Keyboard</Heading>
@@ -372,36 +447,37 @@ export const Keyboard: Story = {
   ),
 };
 
-const DateBadge: FC<{ day?: number }> = ({ day }) => {
-  if (!day) return <Fragment />
-
-  if (day % 6 === 0) return <Badge size='xs'>30$</Badge>
-  if (day % 5 === 0) return <Badge variant='info' size='xs'>39$</Badge>
-  if (day % 2 === 0) return <Badge variant='error' size='xs'>120$</Badge>
-  return <Badge variant='warning' size='xs'>50$</Badge>
-}
+const getPrice = (day: number) => {
+  if (day % 6 === 0) return { variant: 'success', price: '30$' } as const;
+  if (day % 5 === 0) return { variant: 'info', price: '39$' } as const;
+  if (day % 2 === 0) return { variant: 'error', price: '120$' } as const;
+  return { variant: 'warning', price: '50$' } as const;
+};
 
 const PricedDay: FC = () => {
-  const { label, fields } = useCalendarDayContext()
+  const { label, fields, inMonth } = useCalendarDayContext();
+
+  if (!inMonth || !fields) return <CalendarDay />;
+
+  const { variant, price } = getPrice(fields.day);
 
   return (
     <CalendarDay style={{ display: 'flex', flexDirection: 'column', gap: 4, minHeight: 'min-content', paddingBlock: 12 }}>
       <span>{label}</span>
-      <DateBadge day={fields?.day} />
+      <Badge size='xs' variant={variant}>{price}</Badge>
     </CalendarDay>
-  )
-}
+  );
+};
 
 /**
- * Days can render any content: the children of `CalendarWeeks` are the
- * template of a day, which reads its day with `useCalendarDayContext()`.
- * Here every day shows a price.
+ * The children of `CalendarWeeks` are the template of a day: it is rendered
+ * once per cell and reads its day with `useCalendarDayContext()`.
+ * `CalendarDay` keeps the default behavior and takes custom content. Here
+ * every day of the month shows a price; overflow days keep the plain number.
  */
-export const CustomDayContent: Story = {
+export const CustomCell: Story = {
   args: {
     style: { width: 480 },
-    children: (
-      <CalendarParts includeOverflowDays day={<PricedDay />} />
-    )
+    children: <CalendarParts includeOverflowDays day={<PricedDay />} />,
   },
 };

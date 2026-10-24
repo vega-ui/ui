@@ -4,12 +4,11 @@ import { YearPickerScrollerContent } from '../YearPickerScrollerContent';
 import { YearPickerScrollerLayout } from '../YearPickerScrollerLayout';
 import { YearPickerCell } from '../YearPickerCell';
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof YearPickerScroller> = {
   title: 'Data/YearPicker/YearPickerScroller',
   component: YearPickerScroller,
   tags: ['autodocs'],
-}
+};
 
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -22,6 +21,19 @@ export const Default: Story = {
           <YearPickerCell />
         </YearPickerScrollerLayout>
       </YearPickerScrollerContent>
-    )
+    ),
+  },
+};
+
+export const WithDefaultYear: Story = {
+  args: {
+    defaultYear: '2000-01-01',
+    children: (
+      <YearPickerScrollerContent>
+        <YearPickerScrollerLayout>
+          <YearPickerCell />
+        </YearPickerScrollerLayout>
+      </YearPickerScrollerContent>
+    ),
   },
 };

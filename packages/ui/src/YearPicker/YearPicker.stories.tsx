@@ -45,6 +45,16 @@ const Caption: FC<{ children: ReactNode }> = ({ children }) => (
   <Text size={2} style={{ color: 'var(--color-gray-accent-600)' }}>{children}</Text>
 );
 
+const YearScroller: FC = () => (
+  <YearPickerScroller>
+    <YearPickerScrollerContent>
+      <YearPickerScrollerLayout>
+        <YearPickerCell />
+      </YearPickerScrollerLayout>
+    </YearPickerScrollerContent>
+  </YearPickerScroller>
+);
+
 const meta: Meta<typeof YearPicker> = {
   title: 'Data/YearPicker/YearPicker',
   component: YearPicker,
@@ -160,6 +170,17 @@ export const Bounds: Story = {
 };
 
 /**
+ * `disabled` takes a year, an array of years or a predicate. Here the next
+ * year and the year after it cannot be picked.
+ */
+export const DisabledYears: Story = {
+  args: {
+    selection: 'multiple',
+    disabled: [shift(1), shift(2)],
+  },
+};
+
+/**
  * Every `size`, from the dense `xs` (the default) to `xl`.
  */
 export const Sizes: Story = {
@@ -193,15 +214,17 @@ export const Variants: Story = {
 
 /**
  * `YearPickerScroller` pages through years by swiping or scrolling.
- * `YearPickerScrollerLayout` renders the years of each page.
+ * `YearPickerScrollerLayout` renders the years of each page. A page can hold
+ * any number of years: `period` on the scroller must match `rows × cols` of
+ * the layout, so a `year` maps to the page that holds it.
  */
 export const Swipable: Story = {
   args: {
     selection: 'range',
     children: (
-      <YearPickerScroller>
+      <YearPickerScroller period={20}>
         <YearPickerScrollerContent>
-          <YearPickerScrollerLayout>
+          <YearPickerScrollerLayout rows={5} cols={4}>
             <YearPickerCell />
           </YearPickerScrollerLayout>
         </YearPickerScrollerContent>
@@ -211,8 +234,9 @@ export const Swipable: Story = {
 };
 
 /**
- * `year` on the root scrolls the pages to the page that contains it. The
- * scroller does not report the page in view, so the year only flows in.
+ * `year` on the root scrolls the pages to the page that contains it, and the
+ * scroller reports the first year of the page in view through
+ * `onChangePeriod`, so both stay in sync.
  */
 export const SwipableControlled: Story = {
   render: () => {
@@ -226,7 +250,7 @@ export const SwipableControlled: Story = {
           <Button size='sm' variant='secondary' onClick={() => setYear(addCalendarYears(gregorianCalendar, year, 12))}>+12 years</Button>
         </div>
         <YearPicker year={year}>
-          <YearPickerScroller>
+          <YearPickerScroller onChangePeriod={setYear}>
             <YearPickerScrollerContent>
               <YearPickerScrollerLayout>
                 <YearPickerCell />
@@ -236,24 +260,6 @@ export const SwipableControlled: Story = {
         </YearPicker>
       </Stack>
     );
-  },
-};
-
-/**
- * A scroller page can hold any number of years. `period` on the scroller must
- * match `rows × cols` of the layout, so a `year` maps to the page that holds it.
- */
-export const SwipablePageSize: Story = {
-  args: {
-    children: (
-      <YearPickerScroller period={20}>
-        <YearPickerScrollerContent>
-          <YearPickerScrollerLayout rows={5} cols={4}>
-            <YearPickerCell />
-          </YearPickerScrollerLayout>
-        </YearPickerScrollerContent>
-      </YearPickerScroller>
-    ),
   },
 };
 
@@ -300,20 +306,25 @@ export const Locales: Story = {
 
 /**
  * The picker follows the text direction it is rendered in, like native
- * elements: here `dir="rtl"` on the root. Years run from right to left,
- * ArrowRight moves to the previous year, and the next page is on the left.
+ * elements: here `dir="rtl"` on a wrapper. Years run from right to left,
+ * ArrowRight moves to the previous year and ArrowLeft to the next one, and
+ * the next page of the scroller is on the left. Direction is never taken
+ * from `locale`.
  */
 export const RightToLeft: Story = {
   render: (props) => (
-    <YearPicker {...props} dir='rtl' locale='ar-EG' defaultSelected={thisYear}>
-      <YearPickerScroller>
-        <YearPickerScrollerContent>
-          <YearPickerScrollerLayout>
-            <YearPickerCell />
-          </YearPickerScrollerLayout>
-        </YearPickerScrollerContent>
-      </YearPickerScroller>
-    </YearPicker>
+    <Row>
+      {['ar-EG', 'he-IL'].map((locale) => (
+        <Stack key={locale}>
+          <Caption>{locale}</Caption>
+          <div dir='rtl'>
+            <YearPicker {...props} locale={locale} defaultSelected={thisYear}>
+              <YearScroller />
+            </YearPicker>
+          </div>
+        </Stack>
+      ))}
+    </Row>
   ),
 };
 
@@ -335,6 +346,7 @@ const ZodiacYear: FC = () => {
  */
 export const CustomCell: Story = {
   args: {
+    style: { width: 360 },
     children: (
       <YearPickerLayout>
         <ZodiacYear />

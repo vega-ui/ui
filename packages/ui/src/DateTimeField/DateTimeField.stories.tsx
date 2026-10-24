@@ -3,7 +3,7 @@ import { FC, FormEvent, ReactNode, useState } from 'react';
 
 import { DateTimeField } from './DateTimeField';
 import { DateTimeFieldCalendar, DateTimeFieldInput, DateTimeFieldInputProps, DateTimeFieldTriggerIconButton } from './components';
-import { formatISODate, getCurrentDate, getNextDate, parseISODate } from '@vega-ui/utils';
+import { formatISODate, getCurrentDate, getDateTimeTemplate, getNextDate, getTimeTemplate, parseISODate, parseTemplateDate } from '@vega-ui/utils';
 import { Popover, PopoverContent, PopoverTrigger } from '../Popover';
 import { Label } from '../Label';
 import { HelperText } from '../HelperText';
@@ -20,7 +20,8 @@ import {
   CalendarPrevButton,
   CalendarViewButton,
   CalendarViewButtonGroup,
-  CalendarWeekdays, CalendarWeekday,
+  CalendarWeekdays,
+  CalendarWeekday,
   CalendarDay,
   CalendarWeeks,
   CalendarYearLabel,
@@ -30,15 +31,17 @@ import {
 import { gregorianCalendar, createCalendarSystem, getDateFormat, getDateSeparator } from '@vega-ui/i18n';
 
 const calendarSystems = [
-  { name: 'Gregorian', locale: 'en-US', calendar: gregorianCalendar, format: 'MM/DD/YYYY', separator: '/' },
-  { name: 'Persian', locale: 'fa-IR', calendar: createCalendarSystem('persian'), format: 'YYYY/MM/DD', separator: '/' },
-  { name: 'Hebrew', locale: 'he-IL', calendar: createCalendarSystem('hebrew'), format: 'DD.MM.YYYY', separator: '.' },
-  { name: 'Buddhist', locale: 'th-TH', calendar: createCalendarSystem('buddhist'), format: 'DD/MM/YYYY', separator: '/' },
-  { name: 'Islamic', locale: 'ar-SA', calendar: createCalendarSystem('islamic-umalqura'), format: 'DD/MM/YYYY', separator: '/' },
+  { name: 'Gregorian', locale: 'en-US', calendar: gregorianCalendar },
+  { name: 'Persian', locale: 'fa-IR', calendar: createCalendarSystem('persian') },
+  { name: 'Hebrew', locale: 'he-IL', calendar: createCalendarSystem('hebrew') },
+  { name: 'Buddhist', locale: 'th-TH', calendar: createCalendarSystem('buddhist') },
+  { name: 'Islamic', locale: 'ar-SA', calendar: createCalendarSystem('islamic-umalqura') },
 ];
 
 const shift = (days: number) => formatISODate(getNextDate(getCurrentDate(), days));
 const isWeekend = (date: string) => [0, 6].includes(parseISODate(date)?.getDay() ?? -1);
+
+const getPlaceholder = (dateFormat: string, timeFormat = 'HH:mm', separator = ', ') => `${dateFormat}${separator}${getTimeTemplate(timeFormat)}`;
 
 const DateTimeFieldParts: FC<DateTimeFieldInputProps> = (props) => (
   <>
@@ -122,7 +125,37 @@ const SubmitForm: FC<{ children: ReactNode }> = ({ children }) => {
   );
 };
 
-const dateFormat = getDateFormat(gregorianCalendar, navigator.language);
+const meetingDateFormat = 'DD.MM.YYYY';
+const meetingDateSeparator = '.';
+const meetingTemplate = getDateTimeTemplate({ dateFormat: meetingDateFormat, dateSeparator: meetingDateSeparator, separator: ', ', timeFormat: 'HH:mm' });
+
+const MeetingTime: FC = () => {
+  const [start, setStart] = useState<string | undefined>(undefined);
+
+  const onStartInput = (event: FormEvent<HTMLInputElement>) => {
+    setStart(parseTemplateDate(gregorianCalendar, event.currentTarget.value, meetingTemplate));
+  };
+
+  const getEndHint = () => {
+    if (!start) return 'Any time';
+    return `From ${start}`;
+  };
+
+  return (
+    <Grid>
+      <FormItem id='meeting-start' label='Start' hint={start ?? 'Not set yet'}>
+        <DateTimeField dateFormat={meetingDateFormat} dateSeparator={meetingDateSeparator}>
+          <DateTimeFieldParts id='meeting-start' placeholder={getPlaceholder(meetingDateFormat)} onInput={onStartInput} />
+        </DateTimeField>
+      </FormItem>
+      <FormItem id='meeting-end' label='End' hint={getEndHint()}>
+        <DateTimeField dateFormat={meetingDateFormat} dateSeparator={meetingDateSeparator} min={start}>
+          <DateTimeFieldParts id='meeting-end' placeholder={getPlaceholder(meetingDateFormat)} />
+        </DateTimeField>
+      </FormItem>
+    </Grid>
+  );
+};
 
 const meta = {
   title: 'Form/Fields/DateTimeField/DateTimeField',
@@ -134,10 +167,16 @@ const meta = {
     timeFormat: { control: 'radio', options: ['HH:mm', 'HH:mm:ss'] },
   },
   args: {
-    dateFormat,
-    dateSeparator: getDateSeparator(gregorianCalendar, navigator.language),
-    children: <DateTimeFieldParts placeholder={`${dateFormat}, HH:MM`} />,
+    dateFormat: getDateFormat(gregorianCalendar),
+    dateSeparator: getDateSeparator(gregorianCalendar),
   },
+  render: (props) => (
+    <FormItem id='departure' label='Departure' hint={`${getPlaceholder(props.dateFormat, props.timeFormat, props.separator)} — local time`}>
+      <DateTimeField {...props}>
+        <DateTimeFieldParts id='departure' placeholder={getPlaceholder(props.dateFormat, props.timeFormat, props.separator)} />
+      </DateTimeField>
+    </FormItem>
+  ),
 } satisfies Meta<typeof DateTimeField>;
 
 export default meta;
@@ -147,20 +186,9 @@ export const Default: Story = {
   args: {},
 };
 
-export const WithLabel: Story = {
-  render: (props) => (
-    <FormItem id='departure' label='Departure' hint={`${dateFormat}, HH:MM — local time`}>
-      <DateTimeField {...props}>
-        <DateTimeFieldParts id='departure' placeholder={`${dateFormat}, HH:MM`} />
-      </DateTimeField>
-    </FormItem>
-  ),
-};
-
 export const WithSeconds: Story = {
   args: {
     timeFormat: 'HH:mm:ss',
-    children: <DateTimeFieldParts placeholder={`${dateFormat}, HH:MM:SS`} />,
   },
 };
 
@@ -172,7 +200,7 @@ export const TimeStep: Story = {
   render: (props) => (
     <FormItem id='slot' label='Appointment' hint='Put the caret in the minutes and press ↑ / ↓ to move by 15 minutes'>
       <DateTimeField {...props} timeStep={15}>
-        <DateTimeFieldParts id='slot' placeholder={`${dateFormat}, HH:MM`} />
+        <DateTimeFieldParts id='slot' placeholder={getPlaceholder(props.dateFormat, props.timeFormat, props.separator)} />
       </DateTimeField>
     </FormItem>
   ),
@@ -187,7 +215,7 @@ export const MinMax: Story = {
   render: (props) => (
     <FormItem id='pickup' label='Pickup' hint={`From ${shift(1)} 09:00 to ${shift(14)} 18:00`}>
       <DateTimeField {...props} min={`${shift(1)}T09:00`} max={`${shift(14)}T18:00`}>
-        <DateTimeFieldParts id='pickup' placeholder={`${dateFormat}, HH:MM`} />
+        <DateTimeFieldParts id='pickup' placeholder={getPlaceholder(props.dateFormat, props.timeFormat, props.separator)} />
       </DateTimeField>
     </FormItem>
   ),
@@ -195,9 +223,13 @@ export const MinMax: Story = {
 
 export const DisabledDates: Story = {
   name: 'Disabled dates (weekends)',
-  args: {
-    disabledDates: isWeekend,
-  },
+  render: (props) => (
+    <FormItem id='meeting' label='Meeting' hint='Weekdays only'>
+      <DateTimeField {...props} disabledDates={isWeekend}>
+        <DateTimeFieldParts id='meeting' placeholder={getPlaceholder(props.dateFormat, props.timeFormat, props.separator)} />
+      </DateTimeField>
+    </FormItem>
+  ),
 };
 
 export const Disabled: Story = {
@@ -223,16 +255,16 @@ export const Sizes: Story = {
 
 /**
  * The date segment order and separator come from `dateFormat` and
- * `dateSeparator`; the time part is always `HH:MM`. The calendar popup
+ * `dateSeparator`, the time segments from `timeFormat`. The calendar popup
  * follows the `locale` prop (month names, first day of the week).
  */
 export const Locales: Story = {
   render: (props) => (
     <Grid>
       {['en-US', 'de-DE', 'ja-JP', 'fr-FR'].map((locale) => (
-        <FormItem key={locale} id={locale} label={locale} hint={`${getDateFormat(gregorianCalendar, locale)}, HH:MM`}>
+        <FormItem key={locale} id={locale} label={locale} hint={getPlaceholder(getDateFormat(gregorianCalendar, locale), props.timeFormat, props.separator)}>
           <DateTimeField {...props} locale={locale} dateFormat={getDateFormat(gregorianCalendar, locale)} dateSeparator={getDateSeparator(gregorianCalendar, locale)}>
-            <DateTimeFieldParts id={locale} placeholder={`${getDateFormat(gregorianCalendar, locale)}, HH:MM`} />
+            <DateTimeFieldParts id={locale} placeholder={getPlaceholder(getDateFormat(gregorianCalendar, locale), props.timeFormat, props.separator)} />
           </DateTimeField>
         </FormItem>
       ))}
@@ -247,12 +279,34 @@ export const Locales: Story = {
 export const CalendarSystems: Story = {
   render: (props) => (
     <Grid>
-      {calendarSystems.map(({ name, locale, calendar, format, separator }) => (
+      {calendarSystems.map(({ name, locale, calendar }) => (
         <FormItem key={name} id={name} label={name} hint={locale}>
-          <DateTimeField {...props} locale={locale} calendar={calendar} dateFormat={format} dateSeparator={separator}>
-            <DateTimeFieldParts id={name} placeholder={`${format}, HH:MM`} />
+          <DateTimeField {...props} locale={locale} calendar={calendar} dateFormat={getDateFormat(calendar, locale)} dateSeparator={getDateSeparator(calendar, locale)}>
+            <DateTimeFieldParts id={name} placeholder={getPlaceholder(getDateFormat(calendar, locale), props.timeFormat, props.separator)} />
           </DateTimeField>
         </FormItem>
+      ))}
+    </Grid>
+  ),
+};
+
+/**
+ * The field follows the text direction it is rendered in, like native
+ * inputs: here `dir="rtl"` on a wrapper. The calendar button moves to the
+ * left, and the weeks of the calendar run from right to left. Direction is
+ * never taken from `locale`.
+ */
+export const RightToLeft: Story = {
+  render: (props) => (
+    <Grid>
+      {['ar-EG', 'he-IL'].map((locale) => (
+        <div key={locale} dir='rtl'>
+          <FormItem id={`rtl-${locale}`} label={locale} hint={getDateFormat(gregorianCalendar, locale)}>
+            <DateTimeField {...props} locale={locale} dateFormat={getDateFormat(gregorianCalendar, locale)} dateSeparator={getDateSeparator(gregorianCalendar, locale)}>
+              <DateTimeFieldParts id={`rtl-${locale}`} placeholder={getPlaceholder(getDateFormat(gregorianCalendar, locale), props.timeFormat, props.separator)} />
+            </DateTimeField>
+          </FormItem>
+        </div>
       ))}
     </Grid>
   ),
@@ -270,9 +324,20 @@ export const Form: Story = {
     <SubmitForm>
       <FormItem id='departure-form' label='Departure'>
         <DateTimeField {...props}>
-          <DateTimeFieldParts id='departure-form' name='departure' placeholder={`${dateFormat}, HH:MM`} required />
+          <DateTimeFieldParts id='departure-form' name='departure' placeholder={getPlaceholder(props.dateFormat, props.timeFormat, props.separator)} required />
         </DateTimeField>
       </FormItem>
     </SubmitForm>
   ),
+};
+
+/**
+ * Two fields that depend on each other without a value API: the start
+ * input's `onInput` parses the typed or picked text with
+ * `parseTemplateDate`, and the end `min` follows it — an end typed before
+ * the start is clamped to it, also when the start changes later.
+ */
+export const Dependent: Story = {
+  name: 'Dependent (meeting end follows the start)',
+  render: () => <MeetingTime />,
 };

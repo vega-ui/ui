@@ -19,7 +19,7 @@ import { Card } from '../Card';
 import { Code } from '../Code';
 import { Heading } from '../Heading';
 import { Text } from '../Text';
-import { addCalendarMonths, gregorianCalendar, createCalendarSystem } from '@vega-ui/i18n';
+import { addCalendarMonths, gregorianCalendar, createCalendarSystem, getDefaultLocale, getFirstDayOfWeek } from '@vega-ui/i18n';
 import { formatISODate, getCurrentDate, getNextDate, parseISODate } from '@vega-ui/utils';
 
 const calendarSystems = [
@@ -374,14 +374,15 @@ export const CustomCell: Story = {
  * Full control over the grid: rows and cells are built by hand from
  * `createDayPickerGrid` and rendered with `DayPickerRow` and `DayPickerItem`.
  * Prefer a layout with a cell template; use this only when the layout itself
- * has to change. Inside a scroller, pass `offset` so row indexes stay
+ * has to change. Pass `weekStartsOn` from `getFirstDayOfWeek` to match the
+ * week of the layout, which follows the locale. Inside a scroller, pass `offset` so row indexes stay
  * unique across pages.
  */
 export const LowLevelGrid: Story = {
   args: {
     children: (
       <DayPickerRowGroup>
-        {createDayPickerGrid({ month: today, includeOverflowDays: true }).map(({ row, data }) => (
+        {createDayPickerGrid({ month: today, includeOverflowDays: true, weekStartsOn: getFirstDayOfWeek(getDefaultLocale()) }).map(({ row, data }) => (
           <DayPickerRow row={row} key={row}>
             {data.map(({ col, date, day, inCurrentMonth }) => (
               <DayPickerItem col={col} value={date} excluded={!inCurrentMonth} disabled={!inCurrentMonth} key={col}>

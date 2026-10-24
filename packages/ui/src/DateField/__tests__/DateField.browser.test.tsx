@@ -212,6 +212,16 @@ describe('DateField', () => {
         return inner.left >= outer.left - 1 && inner.right <= outer.right + 1;
       };
 
+      const isPageCentered = (cell: Locator) => {
+        const cellPage = cell.query()?.closest('[data-index]');
+        const scroller = cellPage?.parentElement;
+        if (!cellPage || !scroller) return false;
+
+        const pages = Array.from(scroller.children);
+
+        return pages.indexOf(cellPage) === Math.floor(pages.length / 2);
+      };
+
       it('keeps the value and moves focus to the same day of the next month', async () => {
         const r = render(<DateFieldTest />);
 
@@ -293,6 +303,7 @@ describe('DateField', () => {
         await press(r, 'Next month');
         await expect.element(getCell(r, new Date(2026, 1, 15))).toHaveAttribute('tabindex', '0');
         await expect.poll(() => isPageVisible(getCell(r, new Date(2026, 1, 10)))).toBe(true);
+        await expect.poll(() => isPageCentered(getCell(r, new Date(2026, 1, 10)))).toBe(true);
         await pickDate(r, new Date(2026, 1, 10));
 
         await expect.element(getInput(r)).toHaveValue('10.02.2026');
