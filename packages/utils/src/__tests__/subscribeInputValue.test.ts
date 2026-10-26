@@ -37,7 +37,7 @@ describe('subscribeInputValue', () => {
     expect(onValue).toHaveBeenLastCalledWith('03.04.2026');
   });
 
-  it('reports the text after the form is reset', async () => {
+  it('reports the default text when the form is reset', () => {
     const { form, input } = setup();
     const onValue = vi.fn();
     subscribeInputValue(input, onValue);
@@ -45,7 +45,7 @@ describe('subscribeInputValue', () => {
 
     form.reset();
 
-    await expect.poll(() => onValue.mock.lastCall).toEqual(['01.02.2026']);
+    expect(onValue).toHaveBeenLastCalledWith('01.02.2026');
   });
 
   it('stops reporting after unsubscribe', () => {

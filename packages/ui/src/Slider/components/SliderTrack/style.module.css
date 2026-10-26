@@ -1,0 +1,15 @@
+.track {
+    position: relative;
+    flex: 1;
+
+    background-color: var(--fills-secondary);
+    border-radius: calc(var(--slider-size) * var(--slider-br-ratio));
+}
+
+.track:where([data-orientation='horizontal']) {
+    height: var(--slider-size);
+}
+
+.track:where([data-orientation='vertical']) {
+    width: var(--slider-size);
+}

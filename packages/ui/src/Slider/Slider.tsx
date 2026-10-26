@@ -1,53 +1,59 @@
-import { FC, HTMLAttributes, PointerEvent, KeyboardEvent, MouseEvent, useRef } from 'react';
+'use client';
 
-import { mergeEventHandlers, safeSetPointerCapture, snapToStep } from '@vega-ui/utils';
-import { useControlledState } from '@vega-ui/hooks';
+import { CSSProperties, HTMLAttributes, Ref, useRef } from 'react';
+import { clamp, csx, mergeRefs, snapToStep } from '@vega-ui/utils';
+import { useControlledState, useFormReset } from '@vega-ui/hooks';
 import { SliderProvider } from './contexts';
-import { SliderBase } from '../SliderBase';
-import { SliderSize } from './types';
+import { orderValues, getPosition, getThumbBounds } from './helpers';
+import { SliderOrientation, SliderSize, SliderVariant } from './types';
+import style from './style.module.css'
 
-export interface SliderProps extends HTMLAttributes<HTMLDivElement> {
+export interface SliderProps<V extends number | number[] = number> extends Omit<HTMLAttributes<HTMLDivElement>, 'defaultValue'> {
   /**
-   * Controlled value of the slider.
-   * Takes precedence over `defaultValue` if provided.
+   * Controlled value: a number for one thumb, or an array with one entry
+   * per `SliderThumb` by its `index`.
    */
-  value?: number
+  value?: V
 
   /**
-   * Initial value of the slider for uncontrolled usage.
-   * Used only if `value` is not specified.
+   * Initial value for uncontrolled usage: a number for one thumb, or an array
+   * with one entry per `SliderThumb` by its `index`. Defaults to the middle of
+   * the range, like `<input type="range">`.
    */
-  defaultValue?: number
+  defaultValue?: V
 
   /**
-   * Callback fired when the slider value changes.
-   * Provides the original pointer, mouse, or keyboard event and the new numeric value.
+   * Called when a thumb changes, with a number or an array, in the shape of
+   * `value` or `defaultValue`.
    */
-  onChangeValue?(value: number): void
+  onChangeValue?(value: NoInfer<V>): void
 
   /**
-   * The maximum allowed value for the slider.
-   * Defaults to 100 if not specified.
-   */
-  max?: number
-
-  /**
-   * The minimum allowed value for the slider.
-   * Defaults to 0 if not specified.
+   * The minimum allowed value. Defaults to `0`.
    */
   min?: number
 
   /**
-   * The granularity with which the value can be incremented or decremented.
-   * A number or `'any'` for unrestricted precision.
+   * The maximum allowed value. Defaults to `100`.
+   */
+  max?: number
+
+  /**
+   * The granularity of the values, a number or `'any'`. Defaults to `1`.
    */
   step?: number | 'any'
 
   /**
-   * Orientation of the slider.
-   * `'horizontal'` (default) or `'vertical'`.
+   * The minimum distance between neighbouring thumbs, in steps. Defaults to `0`.
+   * Has no effect with `step='any'`, which has no step to count; use a small
+   * numeric step such as `0.01` to keep a gap.
    */
-  orientation?: 'vertical' | 'horizontal'
+  minStepsBetweenThumbs?: number
+
+  /**
+   * `'horizontal'` (default) or `'vertical'`, which grows from the bottom.
+   */
+  orientation?: SliderOrientation
 
   /**
    * Visual size of the slider.
@@ -55,133 +61,101 @@ export interface SliderProps extends HTMLAttributes<HTMLDivElement> {
   size?: SliderSize
 
   /**
-   * Whether the slider is disabled and non-interactive.
+   * Visual styling variant.
+   */
+  variant?: SliderVariant
+
+  /**
+   * Disables all thumbs.
    */
   disabled?: boolean
+
+  /**
+   * Form field name of the thumbs, unless a thumb sets its own.
+   */
+  name?: string
+
+  /**
+   * Ref to the root element.
+   */
+  ref?: Ref<HTMLDivElement>
 }
 
-
-/** Slider is a high-level UI component that allows users to select a numeric value from a defined range by dragging a thumb along a track.
- *  It combines visual and interactive elements such as the track, progress bar, and thumb, and supports various configurations like size, orientation, step precision, and accessibility.
- *  Commonly used for form inputs, media controls, settings, and data filtering, the Slider component can be either controlled or uncontrolled. */
-export const Slider: FC<SliderProps> = ({
+/** Slider lets users pick one or several numbers from a range by dragging thumbs along a track.
+ *  Each `SliderThumb` is a native `<input type="range">` limited by its neighbors, so keyboard,
+ *  form submission, and assistive technologies work as with the native element. */
+export const Slider = <V extends number | number[] = number>({
   className,
+  value,
+  defaultValue,
+  onChangeValue,
   min = 0,
   max = 100,
   step = 1,
-  defaultValue: controlledDefaultValue,
-  value: controlledValue,
-  size = 'md',
-  onChangeValue,
+  minStepsBetweenThumbs = 0,
   orientation = 'horizontal',
+  size = 'md',
+  variant = 'primary',
   disabled,
+  name,
+  style: cssStyle,
+  ref,
   children,
-  onPointerDown: _onPointerDown,
-  onPointerMove: _onPointerMove,
-  onPointerUp: _onPointerUp,
-  onPointerCancel: _onPointerCancel,
-  onMouseUp: _onMouseUp,
-  onKeyDown: _onKeyDown,
   ...props
-}) => {
-  const sliderRef = useRef<HTMLDivElement>(null)
+}: SliderProps<V>) => {
+  const rootRef = useRef<HTMLDivElement>(null)
 
-  const defaultValue = controlledDefaultValue !== undefined ? controlledDefaultValue :max < min ? min : min + (max - min) / 2;
+  const initialValue = defaultValue ?? (max < min ? min : snapToStep(min + (max - min) / 2, { min, max, step })) as V
+  const [current, setCurrent] = useControlledState(value, initialValue, onChangeValue)
 
-  const [value, setValue] = useControlledState(controlledValue, defaultValue, onChangeValue)
-  const dragging = useRef(false)
+  const gap = step === 'any' ? 0 : minStepsBetweenThumbs * step
 
-  const changeValue = (newValue: number) => {
-    if (disabled || newValue === value) return
+  const currentValues: number[] = Array.isArray(current) ? current : [current as number]
+  const snappedValues = currentValues.map((value) => snapToStep(value, { min, max, step }))
+  const values = orderValues(snappedValues, { min, max, gap })
+  const setValues = (next: number[]) => setCurrent((Array.isArray(current) ? next : next[0]) as V)
 
-    setValue(newValue)
+  const changeThumb = (index: number, next: number) => {
+    const [low, high] = getThumbBounds(values, index, { min, max, gap })
+    const clamped = clamp(low, next, high)
+    if (clamped === values[index]) return
+
+    setValues(values.map((current, i) => (i === index ? clamped : current)))
   }
 
-  const calcValue = (e: PointerEvent | MouseEvent) => {
-    const track = sliderRef.current
-    if (!track) return min
-    const rect = track.getBoundingClientRect()
-
-    const percent = orientation === 'horizontal'
-      ? (e.clientX - rect.left) / rect.width
-      : 1 - (e.clientY - rect.top) / rect.height
-
-    return snapToStep(min + (max - min) * percent, { min, max, step })
-  }
-
-  const onSliderPointerDown = (e: PointerEvent<HTMLDivElement>) => {
-    changeValue(calcValue(e))
-
-    const element = e.target as HTMLElement
-    if (element) safeSetPointerCapture(element, e.pointerId)
-    
-    dragging.current = true;
-  }
-
-  const onKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
-    const formattedStep = step === 'any' ? 1 : step
-
-    switch (e.key) {
-      case 'ArrowDown':
-      case 'ArrowLeft': {
-        e.preventDefault()
-        changeValue(snapToStep(value - formattedStep, { min, max, step }))
-        return
-      }
-      case 'ArrowUp':
-      case 'ArrowRight': {
-        e.preventDefault()
-        changeValue(snapToStep(value + formattedStep, { min, max, step }))
-        return
-      }
-      case 'Home':
-        e.preventDefault()
-        changeValue(min)
-        return
-      case 'End':
-        e.preventDefault()
-        changeValue(snapToStep(max, { min, max, step }))
-        return
-    }
-  }
-
-  const onPointerMove = (e: PointerEvent<HTMLDivElement>) => {
-    if (!dragging.current) return
-    changeValue(calcValue(e))
-  }
-
-  const stopDragging = () => {
-    dragging.current = false
-  }
+  useFormReset(rootRef, () => {
+    if (value !== undefined) return
+    setCurrent(initialValue)
+  })
 
   return (
     <SliderProvider
-      orientation={orientation}
-      step={step}
       min={min}
       max={max}
-      value={value}
+      step={step}
+      gap={gap}
+      orientation={orientation}
       disabled={disabled}
+      name={name}
+      values={values}
+      changeThumb={changeThumb}
     >
-      <SliderBase
-        orientation={orientation}
-        onPointerDown={mergeEventHandlers(onSliderPointerDown, _onPointerDown)}
-        onKeyDown={mergeEventHandlers(onKeyDown, _onKeyDown)}
-        onMouseUp={mergeEventHandlers(stopDragging, _onMouseUp)}
-        onPointerMove={mergeEventHandlers(onPointerMove, _onPointerMove)}
-        onPointerUp={mergeEventHandlers(stopDragging, _onPointerUp)}
-        onPointerCancel={mergeEventHandlers(stopDragging, _onPointerCancel)}
-        ref={sliderRef}
-        min={min}
-        max={max}
-        value={value}
-        className={className}
+      <div
+        className={csx(style.slider, className)}
         data-size={size}
-        disabled={disabled}
+        data-variant={variant}
+        data-orientation={orientation}
+        data-disabled={Boolean(disabled)}
+        ref={mergeRefs([rootRef, ref])}
+        style={{
+          '--slider-range-start': values.length > 1 ? getPosition(values[0], min, max) : 0,
+          '--slider-range-end': getPosition(values.at(-1) ?? min, min, max),
+          ...cssStyle,
+        } as CSSProperties}
         {...props}
       >
         {children}
-      </SliderBase>
+      </div>
     </SliderProvider>
-  );
+  )
 }
