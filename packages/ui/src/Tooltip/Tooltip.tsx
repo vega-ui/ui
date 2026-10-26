@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, HTMLAttributes, useRef, useState } from 'react';
+import { FC, HTMLAttributes, useRef } from 'react';
 import {
   arrow, autoUpdate, flip, FloatingContext, offset, shift,
   useDismiss,
@@ -9,6 +9,7 @@ import {
   useInteractions,
   useRole,
 } from '@floating-ui/react';
+import { useControlledState } from '@vega-ui/hooks';
 import style from './style.module.css'
 import { TooltipProvider } from './contexts';
 import { csx } from '@vega-ui/utils';
@@ -23,18 +24,39 @@ export interface TooltipProps extends HTMLAttributes<HTMLDivElement> {
    * Delay (in milliseconds) before the tooltip disappears after blur/unhover.
    */
   delayClose?: number
+
+  /**
+   * Controls the open state of the tooltip.
+   * When set, the component becomes controlled.
+   */
+  open?: boolean
+
+  /**
+   * Initial open state for uncontrolled usage.
+   */
+  defaultOpen?: boolean
+
+  /**
+   * Callback fired when the open state changes.
+   *
+   * @param state - The new open state (`true` or `false`)
+   */
+  onOpenChange?(state: boolean): void
 }
 
 /** A Tooltip is a UI component that provides brief, context-sensitive information when a user hovers over or focuses on an element, often displayed as a small popup near the element */
 export const Tooltip: FC<TooltipProps> = ({
   delayOpen = 500,
   delayClose = 0,
+  open: controlledOpen,
+  defaultOpen = false,
+  onOpenChange,
   className,
   children,
   ...props
 }) => {
   const arrowRef = useRef(null);
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useControlledState(controlledOpen, defaultOpen, onOpenChange);
 
   const { floatingStyles, context } = useFloating({
     whileElementsMounted: autoUpdate,

@@ -1,5 +1,5 @@
 import { ComponentProps, FC } from 'react';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, type RenderResult, waitFor } from '@testing-library/react';
 import { userEvent } from 'vitest/browser';
 
@@ -31,6 +31,58 @@ const queryContent = (r: RenderResult) => r.queryByTestId(TESTID_CONTENT) as HTM
 
 describe('Tooltip', () => {
   describe('Critical User Paths', () => {
+    describe('uncontrolled', () => {
+      it('starts open with defaultOpen', () => {
+        const r = render(<TooltipTest defaultOpen />);
+
+        expect(queryContent(r)).toBeInTheDocument();
+      });
+
+      it('reports opening on hover', async () => {
+        const onOpenChange = vi.fn();
+        const r = render(<TooltipTest delayOpen={0} onOpenChange={onOpenChange} />);
+
+        await userEvent.hover(getTrigger(r));
+
+        await waitFor(() => {
+          expect(onOpenChange).toHaveBeenLastCalledWith(true);
+        });
+      });
+    });
+
+    describe('controlled', () => {
+      it('shows the content while open is true', () => {
+        const r = render(<TooltipTest open />);
+
+        expect(queryContent(r)).toBeInTheDocument();
+      });
+
+      it('stays closed on hover until the parent opens it', async () => {
+        const onOpenChange = vi.fn();
+        const r = render(<TooltipTest open={false} delayOpen={0} onOpenChange={onOpenChange} />);
+
+        await userEvent.hover(getTrigger(r));
+        await waitFor(() => {
+          expect(onOpenChange).toHaveBeenLastCalledWith(true);
+        });
+
+        expect(queryContent(r)).not.toBeInTheDocument();
+      });
+
+      it('stays open on Escape until the parent closes it', async () => {
+        const onOpenChange = vi.fn();
+        const r = render(<TooltipTest open onOpenChange={onOpenChange} />);
+
+        getTrigger(r).focus();
+        await userEvent.keyboard('{Escape}');
+        await waitFor(() => {
+          expect(onOpenChange).toHaveBeenLastCalledWith(false);
+        });
+
+        expect(queryContent(r)).toBeInTheDocument();
+      });
+    });
+
     describe('open/close', () => {
       let r: RenderResult;
       

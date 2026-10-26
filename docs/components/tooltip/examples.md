@@ -38,6 +38,22 @@ const [copied, setCopied] = useState(false);
 </Tooltip>
 ```
 
+### Controlled/Stateful: controlled open state
+
+```tsx
+const [open, setOpen] = useState(false);
+
+<Tooltip open={open} onOpenChange={setOpen}>
+  <TooltipTrigger asChild>
+    <Button>Save draft</Button>
+  </TooltipTrigger>
+  <TooltipContent>
+    <TooltipArrow />
+    <Text size={2}>Saved automatically every minute.</Text>
+  </TooltipContent>
+</Tooltip>
+```
+
 ## Form/Integration
 
 ### Form/Integration: field helper tooltip

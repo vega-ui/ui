@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { useState } from 'react';
 
 import { Tooltip } from './Tooltip';
 import { Button } from '../Button';
@@ -39,6 +40,28 @@ export const Default: Story = {
         <Text size={2}>Hello! I'm a tooltip</Text>
       </TooltipContent>
     ]
+  },
+};
+
+export const Controlled: Story = {
+  render: () => {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <div style={{ display: 'flex', gap: 12 }}>
+        <Tooltip open={open} onOpenChange={setOpen}>
+          <TooltipTrigger asChild>
+            <Button>Save draft</Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <TooltipArrow />
+            <Text size={2}>Saved automatically every minute</Text>
+          </TooltipContent>
+        </Tooltip>
+        <Button variant='secondary' onClick={() => setOpen(true)}>Show hint</Button>
+        <Button variant='secondary' onClick={() => setOpen(false)}>Hide hint</Button>
+      </div>
+    );
   },
 };
 
