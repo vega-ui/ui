@@ -2,54 +2,61 @@
 
 ## Overview
 
-`Slider` styling is inherited from `SliderBase` and its shared thumb/progress parts. The public-looking contract is mostly `--slider-base-*` and shared size variables rather than `--slider-*` component-local tokens.
+`Slider` sets its size and colors as CSS variables on the root; `SliderTrack`, `SliderRange`, `SliderThumbInput` and `SliderThumbIndicator` read them. Thumb and range positions are CSS variables written by the slider, so custom styles can use them too.
 
 ## Public CSS Variables
 
 | Variable | Used By | Purpose |
 | --- | --- | --- |
-| `--slider-size` | base track and thumb sizing | base visual scale |
-| `--slider-br-ratio` | base track | border-radius ratio |
-| `--slider-base-progress-color` | progress | filled track color |
-| `--slider-base-thumb-color` | thumb | thumb fill color |
-| `--slider-base-thumb-border-color` | thumb | default thumb border |
-| `--slider-base-thumb-border-color-hover` | thumb | hover border |
-| `--slider-base-thumb-border-color-active` | thumb | active border |
+| `--slider-size` | track, thumb | base visual scale, the track thickness |
+| `--slider-br-ratio` | track | border-radius ratio |
+| `--slider-thumb-size` | root, thumb | thumb size, `--slider-size * 3` by default; also the root thickness |
+| `--slider-range-color` | range | filled track color |
+| `--slider-thumb-color` | thumb | thumb fill color |
+| `--slider-thumb-border-color` | thumb | default thumb border |
+| `--slider-thumb-border-color-hover` | thumb | hover border |
+| `--slider-thumb-border-color-active` | thumb | active border |
 | `--focus-color` | thumb focus | focus outline |
 
 ## Part-Level Variables
 
 ### Root
 
-`SliderBase` sets size, orientation, current value CSS variables, and default progress/thumb colors by variant.
+Sets `--slider-range-start` and `--slider-range-end`, from `0` at `min` to `1` at `max`.
 
 ### Thumb
 
-`SliderBaseThumb` maps thumb size to the shared slider size and positions itself using `--slider-base-value`.
+`SliderThumb` sets `--slider-thumb-position`, from `0` to `1`, and `--slider-thumb-start`/`--slider-thumb-end`, the part of the track its input covers; CSS variables set in its `style` reach both parts. `SliderThumbIndicator` is the visible handle and takes any `className`, `style` and content. Change the thumb size with `--slider-thumb-size`, not `width`/`height` of the indicator: the native thumb that takes the pointer uses the variable. `SliderThumbInput` is invisible, stretched over its part of the track and cut by `clip-path` at the midpoints to its neighbours (`--slider-thumb-clip-start`/`--slider-thumb-clip-end`); it takes the pointer, and its hover, active, focus and disabled states restyle the indicator of the same `SliderThumb`.
 
-### Progress
+### Range
 
-`SliderBaseProgress` uses `from` and `to` values to compute the filled span.
+`SliderRange` spans from `--slider-range-start` to `--slider-range-end`.
 
 ## State And Variant Interaction
 
-- size maps to `--slider-size`
-- primary and secondary variants remap progress and thumb border colors
-- disabled remaps progress and thumb colors to disabled tokens
+- `size` maps to `--slider-size`
+- `primary` and `secondary` variants remap range and thumb border colors
+- `disabled` remaps range and thumb colors to disabled tokens; a disabled thumb alone does the same for its thumb
+- hover, active, focus and disabled states of a thumb follow its native input
 
 ## Examples
 
 ### Secondary slider
 
 ```tsx
-<Slider data-variant='secondary'>
-  <SliderProgress />
-  <SliderThumb />
+<Slider variant='secondary'>
+  <SliderTrack>
+    <SliderRange />
+  </SliderTrack>
+  <SliderThumb>
+    <SliderThumbInput aria-label='Value' />
+    <SliderThumbIndicator />
+  </SliderThumb>
 </Slider>
 ```
 
 ## Do Not Override
 
-- breaking the relationship between base track size and thumb size
+- breaking the relationship between track size and thumb size
 - removing focus styling from the thumb
-- inventing slider-specific CSS variables that do not exist in source
+- making the native input visible or changing its size

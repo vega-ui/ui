@@ -9,17 +9,21 @@ Use `Slider` when approximate value adjustment is more important than exact typi
 - Use `Slider` for quick relative adjustment.
 - Use `NumberField` for exact numeric control.
 
-## `Slider` vs `RangeSlider`
+## One thumb vs several
 
-- Use `Slider` for one scalar value.
-- Use `RangeSlider` for min/max selection.
+- One `SliderThumb` selects a single value.
+- Two `SliderThumb`s select a range; `minStepsBetweenThumbs` keeps the ends apart.
+
+## `Slider` vs `<input type="range">`
+
+- Each thumb is the native input, so form and keyboard behavior is the same.
+- `Slider` adds the design-system look, several thumbs over one track and the range fill.
 
 ## Choose This Component When
 
-- one bounded value is adjusted frequently
+- one or a few bounded values are adjusted frequently
 - dragging is a better fit than typing
 
 ## Do Not Choose This Component When
 
 - exact entry matters most
-- two coordinated values are needed instead of one

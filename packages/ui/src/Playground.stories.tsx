@@ -17,7 +17,7 @@ import {
   SegmentedControlItemHiddenInput,
 } from './SegmentedControl/components';
 import { Slider } from './Slider/Slider';
-import { SliderHiddenInput, SliderProgress, SliderThumb } from './Slider/components';
+import { SliderRange, SliderThumb, SliderThumbIndicator, SliderThumbInput, SliderTrack } from './Slider/components';
 
 const meta = {
   title: 'Playground',
@@ -177,9 +177,12 @@ export const Playground: Story = {
           max={100}
           step={1}
         >
-          <SliderProgress />
+          <SliderTrack>
+            <SliderRange />
+          </SliderTrack>
           <SliderThumb>
-            <SliderHiddenInput name='range' />
+            <SliderThumbInput name='range' aria-label='Range' />
+            <SliderThumbIndicator />
           </SliderThumb>
         </Slider>
 

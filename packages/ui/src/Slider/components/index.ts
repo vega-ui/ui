@@ -1,3 +1,5 @@
+export * from './SliderTrack'
+export * from './SliderRange'
 export * from './SliderThumb'
-export * from './SliderProgress'
-export * from './SliderHiddenInput'
+export * from './SliderThumbInput'
+export * from './SliderThumbIndicator'

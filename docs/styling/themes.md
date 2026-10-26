@@ -35,7 +35,7 @@ These are the main variables application code and component styles should rely o
 | `--border-color-hover` | interactive border emphasis | hover-state border progression for border-driven surfaces |
 | `--color-error` | validation and error feedback | `TextField`, `TextArea`, `PinField`, `HelperText` |
 | `--fills-primary` | accent-selected fill | checked `Checkbox`, checked `Radio`, page control progress |
-| `--fills-secondary` | neutral track or subdued fill | `Progress`, `Meter`, `MeterStack`, `SliderBase`, `Code`, off `Switch` |
+| `--fills-secondary` | neutral track or subdued fill | `Progress`, `Meter`, `MeterStack`, `Slider`, `Code`, off `Switch` |
 | `--label-primary` | strong indicator label | page control active indicators and derived emphasis fills |
 | `--label-secondary` | muted secondary text | `Fieldset` legend text, `Code` foreground, secondary metadata |
 | `--disable-text-color` | disabled primary content | disabled button text, disabled field values, disabled segmented items |
@@ -95,7 +95,7 @@ Think about theme variables in these families first:
 These semantic types come from how the UI package actually uses the variables:
 
 - `accent-soft-fill`: selected or checked states such as `Checkbox`, `Radio`, and page-control progress
-- `neutral-track-fill`: tracks and neutral bars such as `Progress`, `Meter`, `MeterStack`, and `SliderBase`
+- `neutral-track-fill`: tracks and neutral bars such as `Progress`, `Meter`, `MeterStack`, and `Slider`
 - `field-surface`: input-like controls such as `TextField`, `TextArea`, `PinField`, and `SelectCombobox`
 - `micro-surface-*`: low-emphasis hover and active surfaces for icon buttons, trigger buttons, and picker items
 - `container-surface`: primary overlay or panel surfaces such as `DialogContent`, `DrawerContent`, and `SheetContent`

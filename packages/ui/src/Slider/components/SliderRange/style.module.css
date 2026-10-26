@@ -1,0 +1,20 @@
+.range {
+    position: absolute;
+
+    border-radius: inherit;
+    background-color: var(--slider-range-color);
+
+    transition: background-color var(--transition-state-delay) ease-in-out;
+}
+
+.range:where([data-orientation='horizontal']) {
+    height: 100%;
+    inset-inline-start: calc(var(--slider-range-start) * 100%);
+    width: calc((var(--slider-range-end) - var(--slider-range-start)) * 100%);
+}
+
+.range:where([data-orientation='vertical']) {
+    width: 100%;
+    bottom: calc(var(--slider-range-start) * 100%);
+    height: calc((var(--slider-range-end) - var(--slider-range-start)) * 100%);
+}

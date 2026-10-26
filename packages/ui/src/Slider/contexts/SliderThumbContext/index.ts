@@ -1,0 +1,1 @@
+export { useSliderThumbContext, SliderThumbProvider } from './context'

@@ -2,56 +2,76 @@
 
 ## Overview
 
-`Slider` wraps `SliderBase` and coordinates one scalar value. Child parts derive orientation, disabled state, and current value from root context.
+`Slider` holds the values of all thumbs and the shared settings (`min`, `max`, `step`, `orientation`, `disabled`, `name`). Each `SliderThumb` groups a `SliderThumbInput`, a native `<input type="range">` laid over its part of the track between its neighbours, and a `SliderThumbIndicator` drawn at its value.
 
 ## Required Parts
 
 ### `Slider`
 
-Required. Owns the value model, pointer handling, keyboard handling, and range constraints.
-
-### `SliderProgress`
-
-Required in normal composition. Visualizes the filled portion from `min` to current value.
+Required. Passes range settings to the thumbs and keeps neighbouring thumbs apart. A vertical slider needs a height from its parent.
 
 ### `SliderThumb`
 
-Required. The draggable and keyboard-focusable handle.
+Required. One handle: `index` picks its entry of the root `value` and the position variables are set for its parts.
+
+### `SliderThumbInput`
+
+Required, a direct child of `SliderThumb`. A controlled native range input: focus, keyboard, form value and accessibility come from the browser; its `min` and `max` are the neighbours.
 
 ## Optional Parts
 
-### `SliderHiddenInput`
+### `SliderThumbIndicator`
 
-Optional but recommended for native form participation and additional browser semantics.
+The visual handle, a direct child of `SliderThumb`. It can hold any content: a value bubble, an icon, an image. It lets the pointer through to the native input under it.
+
+### `SliderTrack`
+
+The visible rail. Without it the thumbs still work over an invisible track.
+
+### `SliderRange`
+
+The filled part of the rail: from `min` to a single thumb, or between the first and the last thumbs.
 
 ## Composition Order
 
 1. `Slider`
-2. `SliderProgress`
-3. `SliderThumb`
-4. `SliderHiddenInput`
+2. `SliderTrack` > `SliderRange`
+3. `SliderThumb`, one per value
+   1. `SliderThumbInput`
+   2. `SliderThumbIndicator`
 
 ## Valid Composition Patterns
 
 ```tsx
-<Slider defaultValue={30} style={{ width: 400 }}>
-  <SliderProgress />
-  <SliderThumb>
-    <SliderHiddenInput name='volume' />
+<Slider defaultValue={[20, 80]} name='price' style={{ width: 400 }}>
+  <SliderTrack>
+    <SliderRange />
+  </SliderTrack>
+  <SliderThumb index={0}>
+    <SliderThumbInput aria-label='Minimum price' />
+    <SliderThumbIndicator />
+  </SliderThumb>
+  <SliderThumb index={1}>
+    <SliderThumbInput aria-label='Maximum price' />
+    <SliderThumbIndicator />
   </SliderThumb>
 </Slider>
 ```
 
 ## Invalid Composition Patterns
 
-### Root without thumb
+### Root without thumbs
 
-The track renders, but users cannot interact with the control.
+The track renders, but there is nothing to interact with or submit.
 
-### Hidden input rendered outside the thumb/root composition
+### Thumbs outside the root
 
-The value contract becomes harder to reason about and may no longer reflect the slider state correctly.
+`SliderThumb` reads its settings from the root and is positioned over the root track.
+
+### Input or indicator outside `SliderThumb`
+
+They read their `index` from `SliderThumb`; the hover, active, focus and disabled styles of the indicator follow the input of the same `SliderThumb`.
 
 ### Vertical slider without a height
 
-The control technically renders, but interaction space collapses.
+The control renders, but the interaction space collapses.

@@ -6,65 +6,83 @@
 
 ## Summary
 
-`Slider` is a [compound component](../../glossary.md#compound-component) for selecting one numeric value from a bounded range. It composes a base track, a progress fill, a thumb, and an optional hidden input for native form participation.
+`Slider` is a [compound component](../../glossary.md#compound-component) for selecting one or several numbers from a bounded range. Every `SliderThumbInput` is a native `<input type="range">` laid over one `SliderTrack`, so keyboard, focus, form submission and reset, and assistive technologies behave like the native element. Two thumbs make a range slider.
 
 ## Imports
 
 ```tsx
 import {
   Slider,
-  SliderHiddenInput,
-  SliderProgress,
+  SliderRange,
   SliderThumb,
-  type SliderHiddenInputProps,
-  type SliderProgressProps,
+  SliderThumbInput,
+  SliderThumbIndicator,
+  SliderTrack,
+  useSliderContext,
+  useSliderThumbContext,
+  type SliderOrientation,
   type SliderProps,
+  type SliderRangeProps,
   type SliderSize,
   type SliderThumbProps,
+  type SliderThumbInputProps,
+  type SliderThumbIndicatorProps,
+  type SliderTrackProps,
+  type SliderVariant,
 } from '@vega-ui/react';
 ```
 
 ## Exported Types
 
 - `SliderProps`
+- `SliderTrackProps`
+- `SliderRangeProps`
 - `SliderThumbProps`
-- `SliderProgressProps`
-- `SliderHiddenInputProps`
+- `SliderThumbInputProps`
+- `SliderThumbIndicatorProps`
 - `SliderSize`
+- `SliderVariant`
+- `SliderOrientation`
 
 ## Minimal Composition
 
 ```tsx
-<Slider>
-  <SliderProgress />
+<Slider defaultValue={30} name='volume'>
+  <SliderTrack>
+    <SliderRange />
+  </SliderTrack>
   <SliderThumb>
-    <SliderHiddenInput name='volume' />
+    <SliderThumbInput aria-label='Volume' />
+    <SliderThumbIndicator />
   </SliderThumb>
 </Slider>
 ```
 
 ## Required Parts
 
-- `Slider`: root state and track container
-- `SliderProgress`: filled track from min to current value
-- `SliderThumb`: interactive handle
+- `Slider`: root, values of all thumbs and shared range settings
+- `SliderThumb`: one handle per value
+- `SliderThumbInput`: the native range input of a handle
 
 ## Optional Parts
 
-- `SliderHiddenInput`: native range input for form participation and extra browser semantics
+- `SliderTrack`: the visible rail
+- `SliderRange`: the filled part of the rail, inside `SliderTrack`
+- `SliderThumbIndicator`: the visual handle; without it the thumb is invisible
 
 ## Composition Order
 
 1. `Slider`
-2. `SliderProgress`
-3. `SliderThumb`
-4. `SliderHiddenInput`
+2. `SliderTrack` > `SliderRange`
+3. `SliderThumb`, one per value, `index` in order from `min` to `max`, with `SliderThumbInput` and `SliderThumbIndicator` inside
 
 ## Variants
 
 - Size: `sm`, `md`, `lg`
+- Variant: `primary`, `secondary`
 - Orientation: `horizontal` or `vertical`
-- Value model: controlled or uncontrolled
+- Thumbs: one value or a range of several
+- Value model: controlled or uncontrolled on the root, a number for one thumb or an array for several
 - Step: numeric step or `'any'`
 
 ## Related Docs
@@ -82,10 +100,12 @@ import {
 
 - Exact values are harder to target with a slider than with typed input.
 - Vertical sliders need an explicit height.
-- `SliderHiddenInput` is recommended when the value should submit with native forms.
+- Thumbs cannot pass each other; `minStepsBetweenThumbs` keeps a gap between them.
+- Without `value` or `defaultValue` the slider has one thumb in the middle, like `<input type="range">`.
 
 ## Common Mistakes
 
 - Using a slider where exact numeric entry is the primary need.
 - Forgetting visible value feedback for precision-sensitive flows.
-- Omitting `SliderHiddenInput` when the value must participate in native form submission.
+- Leaving thumbs without `aria-label` or `aria-labelledby`.
+- Rendering a different number of `SliderThumb`s than values, or giving two thumbs the same `index`.

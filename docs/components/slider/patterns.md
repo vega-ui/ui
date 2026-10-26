@@ -18,34 +18,44 @@ Trade-offs:
 
 ```tsx
 <Slider defaultValue={60} style={{ width: 400 }}>
-  <SliderProgress />
+  <SliderTrack>
+    <SliderRange />
+  </SliderTrack>
   <SliderThumb>
-    <SliderHiddenInput name='brightness' />
+    <SliderThumbInput name='brightness' aria-label='Brightness' />
+    <SliderThumbIndicator />
   </SliderThumb>
 </Slider>
 ```
 
-## Form-Submitted Slider
+## Price Range Filter
 
 When to use:
 
-- a native form should submit the scalar value
+- users pick a lower and an upper bound
 
 Composition notes:
 
-- include `SliderHiddenInput`
-- keep the control inside the form boundary
+- label both thumbs
+- set `minStepsBetweenThumbs` when the bounds must not meet
 
 Trade-offs:
 
-- easy native submission
-- still needs surrounding label/value context
+- one control for two related values
+- thumbs close together are harder to grab; a click on the track moves the nearest one
 
 ```tsx
-<Slider defaultValue={50}>
-  <SliderProgress />
-  <SliderThumb>
-    <SliderHiddenInput name='volume' />
+<Slider min={0} max={1000} step={10} minStepsBetweenThumbs={1} defaultValue={[100, 600]} name='price' style={{ width: 400 }}>
+  <SliderTrack>
+    <SliderRange />
+  </SliderTrack>
+  <SliderThumb index={0}>
+    <SliderThumbInput aria-label='Minimum price' />
+    <SliderThumbIndicator />
+  </SliderThumb>
+  <SliderThumb index={1}>
+    <SliderThumbInput aria-label='Maximum price' />
+    <SliderThumbIndicator />
   </SliderThumb>
 </Slider>
 ```
@@ -68,9 +78,12 @@ Trade-offs:
 
 ```tsx
 <Slider orientation='vertical' style={{ height: 240 }}>
-  <SliderProgress />
+  <SliderTrack>
+    <SliderRange />
+  </SliderTrack>
   <SliderThumb>
-    <SliderHiddenInput name='brightness' />
+    <SliderThumbInput name='brightness' aria-label='Brightness' />
+    <SliderThumbIndicator />
   </SliderThumb>
 </Slider>
 ```

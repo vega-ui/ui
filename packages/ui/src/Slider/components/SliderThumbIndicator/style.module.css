@@ -1,0 +1,46 @@
+.indicator {
+    --slider-thumb-br-ratio: 1;
+    --slider-thumb-bw-ratio: 0.2;
+
+    position: absolute;
+    pointer-events: none;
+
+    box-sizing: border-box;
+    width: var(--slider-thumb-size);
+    height: var(--slider-thumb-size);
+
+    background-color: var(--slider-thumb-color);
+    border-radius: calc(var(--slider-thumb-size) * var(--slider-thumb-br-ratio));
+    box-shadow: inset 0 0 0 calc(var(--slider-thumb-size) * var(--slider-thumb-bw-ratio)) var(--slider-thumb-border-color);
+
+    transition: box-shadow var(--transition-state-delay) ease-in-out,
+                background-color var(--transition-state-delay) ease-in-out;
+}
+
+.indicator:where([data-orientation='horizontal']) {
+    top: 0;
+    inset-inline-start: calc(var(--slider-thumb-position) * 100% - var(--slider-thumb-size) / 2);
+}
+
+.indicator:where([data-orientation='vertical']) {
+    left: 0;
+    bottom: calc(var(--slider-thumb-position) * 100% - var(--slider-thumb-size) / 2);
+}
+
+[data-slider-thumb]:has(> input:hover:enabled) > .indicator {
+    --slider-thumb-bw-ratio: 0.25;
+    --slider-thumb-border-color: var(--slider-thumb-border-color-hover);
+}
+
+[data-slider-thumb]:has(> input:active:enabled) > .indicator {
+    --slider-thumb-bw-ratio: 0.3;
+    --slider-thumb-border-color: var(--slider-thumb-border-color-active);
+}
+
+[data-slider-thumb]:has(> input:focus-visible) > .indicator {
+    outline: 2px solid var(--focus-color);
+}
+
+[data-slider-thumb]:has(> input:disabled) > .indicator {
+    --slider-thumb-border-color: var(--disable-label-text-color);
+}
