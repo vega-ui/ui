@@ -1,23 +1,22 @@
 # PasswordField Troubleshooting
 
-## Clicking The Toggle Moves Focus Unexpectedly
+## The Browser Does Not Offer To Save The Password
 
 ### Symptom
 
-After toggling visibility, focus does not stay where users expect.
+The browser does not offer to save the password, or a shown password appears in the autofill suggestions of other fields.
 
 ### Likely Cause
 
-Custom composition replaced the shipped toggle flow that returns focus to the input.
+The password was shown when the form was submitted, so the input had `type='text'` and the browser treated it as a plain text field.
 
 ### How To Verify
 
-- test with the default toggle composition
-- compare focus behavior after each click
+- submit the form with the password shown and with it hidden, and compare
 
 ### Fix
 
-Keep `PasswordFieldToggleIconButton` in the composition or replicate its focus-restoration behavior.
+Control `shown` and set it to `false` in the `onSubmit` handler of the form, before the browser collects the values.
 
 ## Autofill Behaves Differently Across Browsers
 

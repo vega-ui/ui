@@ -3,24 +3,25 @@ import { IconButton, IconButtonProps } from '../../../IconButton';
 import { useTextFieldContext } from '../../../TextField/contexts';
 import { usePasswordFieldContext } from '../../contexts';
 import style from './style.module.css';
-import { csx } from '@vega-ui/utils';
+import { csx, mergeEventHandlers } from '@vega-ui/utils';
 
 export type PasswordFieldToggleIconButtonProps = IconButtonProps
 
 /**
- * `PasswordFieldToggleButton` is an action button used within `PasswordField`
- * to toggle password visibility.
+ * `PasswordFieldToggleIconButton` is an action button used within `PasswordField`
+ * to toggle password visibility. It keeps the focus and exposes the visibility
+ * with `aria-pressed`, so give it a fixed label such as "Show password".
  *
- * It connects to `PasswordField` context to switch between hidden and shown
+ * It connects to the ` PasswordField ` context to switch between hidden and shown
  * states and inherits sizing from the surrounding `TextField` for visual
  * consistency.
  *
  * The button does not manage any state itself and is intended to be composed
  * with visibility icons inside `PasswordField`.
  */
-export const PasswordFieldToggleIconButton: FC<PasswordFieldToggleIconButtonProps> = ({ disabled, className, children, ...props }) => {
+export const PasswordFieldToggleIconButton: FC<PasswordFieldToggleIconButtonProps> = ({ disabled, className, children, onClick, ...props }) => {
   const { size } = useTextFieldContext()
-  const { toggleShow, disabled: _disabled } = usePasswordFieldContext()
+  const { shown, toggleShow, disabled: _disabled } = usePasswordFieldContext()
   
   return (
     <IconButton
@@ -29,7 +30,8 @@ export const PasswordFieldToggleIconButton: FC<PasswordFieldToggleIconButtonProp
       disabled={disabled ?? _disabled}
       variant='secondary'
       appearance='transparent'
-      onClick={toggleShow}
+      aria-pressed={shown}
+      onClick={mergeEventHandlers(toggleShow, onClick)}
       {...props}
     >
       {children}

@@ -7,6 +7,9 @@
 | Prop | Type | Default | Required | Notes |
 | --- | --- | --- | --- | --- |
 | `disabled` | `boolean` | `—` | No | Disables the password field. |
+| `shown` | `boolean` | `—` | No | Controls whether the password is shown as plain text. |
+| `defaultShown` | `boolean` | `false` | No | Initial visibility for uncontrolled usage. |
+| `onChangeShown` | `(shown: boolean) => void` | `—` | No | Called when the visibility is toggled. |
 <!-- AUTO-GENERATED:ROOT_API:end -->
 
 ## Child Parts
@@ -26,6 +29,7 @@
 
 ## State Model
 
-- The root owns `shown` state internally.
+- Visibility can be controlled with `shown` and `onChangeShown`, or uncontrolled with `defaultShown`.
 - `PasswordFieldInput` switches its `type` based on context.
-- The toggle button updates root state and then returns focus to the input.
+- The toggle button flips the visibility and keeps the focus where the browser put it, like a native button; it exposes the visibility with `aria-pressed`.
+- A custom `onClick` on the toggle runs after the toggle, it does not replace it.

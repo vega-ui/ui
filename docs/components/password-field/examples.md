@@ -7,7 +7,7 @@
 ```tsx
 <PasswordField>
   <PasswordFieldInput placeholder='Password' autoComplete='current-password' />
-  <PasswordFieldToggleIconButton aria-label='Toggle password visibility'>
+  <PasswordFieldToggleIconButton aria-label='Show password'>
     <PasswordFieldShownIcon />
     <PasswordFieldHiddenIcon />
   </PasswordFieldToggleIconButton>
@@ -28,13 +28,27 @@ const [value, setValue] = useState('');
       value={value}
       onChange={(e) => setValue(e.currentTarget.value)}
     />
-    <PasswordFieldToggleIconButton aria-label='Toggle password visibility'>
+    <PasswordFieldToggleIconButton aria-label='Show password'>
       <PasswordFieldShownIcon />
       <PasswordFieldHiddenIcon />
     </PasswordFieldToggleIconButton>
   </PasswordField>
   <HelperText>Use 12+ characters, mixed case, numbers, and symbols.</HelperText>
 </>
+```
+
+### Controlled/Stateful: controlled visibility
+
+```tsx
+const [shown, setShown] = useState(false);
+
+<PasswordField shown={shown} onChangeShown={setShown}>
+  <PasswordFieldInput autoComplete='current-password' />
+  <PasswordFieldToggleIconButton aria-label='Show password'>
+    <PasswordFieldShownIcon />
+    <PasswordFieldHiddenIcon />
+  </PasswordFieldToggleIconButton>
+</PasswordField>
 ```
 
 ## Form/Integration
@@ -46,7 +60,7 @@ const [value, setValue] = useState('');
   <Label htmlFor='password'>Password</Label>
   <PasswordField>
     <PasswordFieldInput id='password' autoComplete='current-password' />
-    <PasswordFieldToggleIconButton aria-label='Toggle password visibility'>
+    <PasswordFieldToggleIconButton aria-label='Show password'>
       <PasswordFieldShownIcon />
       <PasswordFieldHiddenIcon />
     </PasswordFieldToggleIconButton>
@@ -61,7 +75,7 @@ const [value, setValue] = useState('');
 ```tsx
 <PasswordField>
   <PasswordFieldInput autoComplete='new-password' />
-  <PasswordFieldToggleIconButton aria-label='Toggle password visibility'>
+  <PasswordFieldToggleIconButton aria-label='Show password'>
     <PasswordFieldShownIcon><Lock /></PasswordFieldShownIcon>
     <PasswordFieldHiddenIcon><LockOpen /></PasswordFieldHiddenIcon>
   </PasswordFieldToggleIconButton>
@@ -76,7 +90,7 @@ const [value, setValue] = useState('');
 <>
   <PasswordField error>
     <PasswordFieldInput autoComplete='new-password' />
-    <PasswordFieldToggleIconButton aria-label='Toggle password visibility'>
+    <PasswordFieldToggleIconButton aria-label='Show password'>
       <PasswordFieldShownIcon />
       <PasswordFieldHiddenIcon />
     </PasswordFieldToggleIconButton>
@@ -92,7 +106,7 @@ const [value, setValue] = useState('');
 ```tsx
 <PasswordField disabled>
   <PasswordFieldInput placeholder='Disabled password' />
-  <PasswordFieldToggleIconButton aria-label='Toggle password visibility'>
+  <PasswordFieldToggleIconButton aria-label='Show password'>
     <PasswordFieldShownIcon />
     <PasswordFieldHiddenIcon />
   </PasswordFieldToggleIconButton>
@@ -106,7 +120,7 @@ const [value, setValue] = useState('');
 ```tsx
 <PasswordField>
   <PasswordFieldInput autoComplete='new-password' />
-  <PasswordFieldToggleIconButton aria-label='Toggle password visibility'>
+  <PasswordFieldToggleIconButton aria-label='Show password'>
     <PasswordFieldShownIcon />
     <PasswordFieldHiddenIcon />
   </PasswordFieldToggleIconButton>

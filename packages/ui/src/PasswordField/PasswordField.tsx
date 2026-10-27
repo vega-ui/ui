@@ -1,35 +1,49 @@
 'use client';
 
-import { FC, useCallback, useRef, useState } from 'react';
+import { FC, useRef } from 'react';
+import { useControlledState } from '@vega-ui/hooks';
 import { TextField, TextFieldProps } from '../TextField';
 import { PasswordFieldProvider } from './contexts';
 
 export interface PasswordFieldProps extends TextFieldProps {
   /**
    * Disables the password field.
-   * Prevents user input and interaction, and applies the disabled visual state.
+   * Prevents user input and interaction and applies the disabled visual state.
    */
   disabled?: boolean
+
+  /**
+   * Controls whether the password is shown as plain text.
+   * When set, the component becomes controlled.
+   */
+  shown?: boolean
+
+  /**
+   * Initial visibility for uncontrolled usage.
+   */
+  defaultShown?: boolean
+
+  /**
+   * Called when the visibility is toggled.
+   */
+  onChangeShown?(shown: boolean): void
 }
 
-/** A PasswordField is a UI component that allows users to input passwords or secure pin codes */
+/** A PasswordField is a UI component that allows users to input passwords or secure pin codes. */
 export const PasswordField: FC<PasswordFieldProps> = ({
   ref,
   size,
   disabled,
+  shown: controlledShown,
+  defaultShown = false,
+  onChangeShown,
   children,
   ...props
 }) => {
   const inputRef = useRef<HTMLInputElement>(null)
-  const [shown, setShown] = useState(false)
+  const [shown, setShown] = useControlledState(controlledShown, defaultShown, onChangeShown)
 
-  const toggleShow = useCallback(() => {
-    setShown(p => !p)
-    inputRef.current?.focus()
-    requestAnimationFrame(() => {
-      inputRef.current?.setSelectionRange(-1, -1);
-    })
-  }, [])
+  const toggleShow = () => setShown(!shown)
 
   return (
     <PasswordFieldProvider

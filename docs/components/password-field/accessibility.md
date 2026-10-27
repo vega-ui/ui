@@ -3,7 +3,7 @@
 ## Labeling
 
 - Pair the field with a visible `Label`.
-- The toggle button needs an explicit accessible label.
+- The toggle button needs a fixed accessible label such as "Show password"; its state is announced through `aria-pressed`.
 
 ## Keyboard Behavior
 
@@ -12,12 +12,12 @@
 
 ## Focus Behavior
 
-- Toggling visibility should preserve or return focus to the input.
+- Toggling keeps the focus on the toggle button, so keyboard and screen reader users hear the new state and mobile keyboards do not open.
 
 ## Screen Reader Semantics
 
 - The actual control is still a native input.
-- The toggle should announce its purpose clearly.
+- The toggle is announced as a toggle button, pressed while the password is shown.
 
 ## Form Semantics
 

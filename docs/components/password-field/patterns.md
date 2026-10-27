@@ -19,7 +19,7 @@ Trade-offs:
 ```tsx
 <PasswordField>
   <PasswordFieldInput autoComplete='current-password' />
-  <PasswordFieldToggleIconButton aria-label='Toggle password visibility'>
+  <PasswordFieldToggleIconButton aria-label='Show password'>
     <PasswordFieldShownIcon />
     <PasswordFieldHiddenIcon />
   </PasswordFieldToggleIconButton>
@@ -46,7 +46,7 @@ Trade-offs:
 <>
   <PasswordField>
     <PasswordFieldInput autoComplete='new-password' />
-    <PasswordFieldToggleIconButton aria-label='Toggle password visibility'>
+    <PasswordFieldToggleIconButton aria-label='Show password'>
       <PasswordFieldShownIcon />
       <PasswordFieldHiddenIcon />
     </PasswordFieldToggleIconButton>
@@ -74,7 +74,7 @@ Trade-offs:
 ```tsx
 <PasswordField>
   <PasswordFieldInput />
-  <PasswordFieldToggleIconButton aria-label='Toggle password visibility'>
+  <PasswordFieldToggleIconButton aria-label='Show password'>
     <PasswordFieldShownIcon><Lock /></PasswordFieldShownIcon>
     <PasswordFieldHiddenIcon><LockOpen /></PasswordFieldHiddenIcon>
   </PasswordFieldToggleIconButton>
