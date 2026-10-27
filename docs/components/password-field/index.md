@@ -38,7 +38,7 @@ import {
 ```tsx
 <PasswordField>
   <PasswordFieldInput placeholder='Password' autoComplete='current-password' />
-  <PasswordFieldToggleIconButton aria-label='Toggle password visibility'>
+  <PasswordFieldToggleIconButton aria-label='Show password'>
     <PasswordFieldShownIcon />
     <PasswordFieldHiddenIcon />
   </PasswordFieldToggleIconButton>

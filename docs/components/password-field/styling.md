@@ -36,7 +36,7 @@ The root inherits the same wrapper contract as `TextField`.
 ```tsx
 <PasswordField>
   <PasswordFieldInput />
-  <PasswordFieldToggleIconButton aria-label='Toggle password visibility'>
+  <PasswordFieldToggleIconButton aria-label='Show password'>
     <PasswordFieldShownIcon><Lock /></PasswordFieldShownIcon>
     <PasswordFieldHiddenIcon><LockOpen /></PasswordFieldHiddenIcon>
   </PasswordFieldToggleIconButton>

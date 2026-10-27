@@ -41,7 +41,7 @@ Optional icon for the hidden state.
 ```tsx
 <PasswordField>
   <PasswordFieldInput autoComplete='new-password' />
-  <PasswordFieldToggleIconButton aria-label='Toggle password visibility'>
+  <PasswordFieldToggleIconButton aria-label='Show password'>
     <PasswordFieldShownIcon />
     <PasswordFieldHiddenIcon />
   </PasswordFieldToggleIconButton>

@@ -1,5 +1,5 @@
 import { ComponentProps, FC } from 'react';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
 import { userEvent } from 'vitest/browser';
 
@@ -20,7 +20,7 @@ const TESTID_SHOWN_ICON = 'shown-icon';
 const TESTID_HIDDEN_ICON = 'hidden-icon';
 
 const PLACEHOLDER = 'Password';
-const TOGGLE_LABEL = 'Toggle password visibility';
+const TOGGLE_LABEL = 'Show password';
 
 const CUSTOM_SHOWN = 'custom-shown';
 const CUSTOM_HIDDEN = 'custom-hidden';
@@ -87,23 +87,45 @@ describe('PasswordField', () => {
       await expect.element(getInput(r)).toHaveAttribute('type', 'password');
     });
     
-    it('keeps focus on input after toggling (first toggle)', async () => {
-      await userEvent.click(getInput(r));
-      await expect.element(getInput(r)).toHaveFocus();
-      
+    it('does not move the focus to the input on a toggle click', async () => {
       await userEvent.click(getToggle(r));
-      await expect.element(getInput(r)).toHaveFocus();
+      await expect.element(getInput(r)).toHaveAttribute('type', 'text');
+
+      expect(document.activeElement).not.toBe(getInput(r));
     });
-    
-    it('keeps focus on input after toggling (second toggle)', async () => {
-      await userEvent.click(getInput(r));
-      await userEvent.click(getToggle(r));
-      await expect.element(getInput(r)).toHaveFocus();
-      
-      await userEvent.click(getToggle(r));
-      await expect.element(getInput(r)).toHaveFocus();
+
+    it('starts shown with defaultShown', async () => {
+      r.unmount();
+      r = render(<PasswordFieldTest defaultShown />);
+
+      await expect.element(getInput(r)).toHaveAttribute('type', 'text');
     });
-    
+
+    it('reports the visibility on toggle', async () => {
+      const onChangeShown = vi.fn();
+      r.rerender(<PasswordFieldTest onChangeShown={onChangeShown} />);
+
+      await userEvent.click(getToggle(r));
+
+      expect(onChangeShown).toHaveBeenLastCalledWith(true);
+    });
+
+    it('shows the password while shown is true', async () => {
+      r.rerender(<PasswordFieldTest shown />);
+
+      await expect.element(getInput(r)).toHaveAttribute('type', 'text');
+    });
+
+    it('keeps the password hidden until the parent shows it', async () => {
+      const onChangeShown = vi.fn();
+      r.rerender(<PasswordFieldTest shown={false} onChangeShown={onChangeShown} />);
+
+      await userEvent.click(getToggle(r));
+
+      expect(onChangeShown).toHaveBeenLastCalledWith(true);
+      await expect.element(getInput(r)).toHaveAttribute('type', 'password');
+    });
+
     it('reflects initial state via icons data-hidden attributes', async () => {
       await expect.element(getShownIcon(r)).toHaveAttribute('data-hidden', 'false');
       await expect.element(getHiddenIcon(r)).toHaveAttribute('data-hidden', 'true');
@@ -162,6 +184,21 @@ describe('PasswordField', () => {
   });
   
   describe('Edge Cases', () => {
+    it('keeps toggling with a custom onClick on the toggle', async () => {
+      const onClick = vi.fn();
+      const r = render(
+        <PasswordFieldTest>
+          <PasswordFieldInput data-testid={TESTID_INPUT} placeholder={PLACEHOLDER} />
+          <PasswordFieldToggleIconButton data-testid={TESTID_TOGGLE} aria-label={TOGGLE_LABEL} onClick={onClick} />
+        </PasswordFieldTest>,
+      );
+
+      await userEvent.click(getToggle(r));
+
+      expect(onClick).toHaveBeenCalledOnce();
+      await expect.element(getInput(r)).toHaveAttribute('type', 'text');
+    });
+
     it('supports custom shown icon children', async () => {
       const r = render(
         <PasswordFieldTest>
@@ -246,6 +283,14 @@ describe('PasswordField', () => {
       it('exposes an accessible label on the toggle button', async () => {
         await expect.element(r.getByLabelText(TOGGLE_LABEL)).toBeInTheDocument();
       });
+
+      it('exposes the visibility with aria-pressed on the toggle', async () => {
+        await expect.element(getToggle(r)).toHaveAttribute('aria-pressed', 'false');
+
+        await userEvent.click(getToggle(r));
+
+        await expect.element(getToggle(r)).toHaveAttribute('aria-pressed', 'true');
+      });
     });
     
     describe('roles', () => {
@@ -265,11 +310,13 @@ describe('PasswordField', () => {
     });
     
     describe('focus', () => {
-      it('focus returns to input after toggling (mouse)', async () => {
+      it('keeps focus on the toggle after toggling with the keyboard', async () => {
         const r = render(<PasswordFieldTest />);
-        
-        await userEvent.click(getToggle(r));
-        await expect.element(getInput(r)).toHaveFocus();
+
+        getToggle(r).focus();
+        await userEvent.keyboard('{Enter}');
+
+        await expect.element(getToggle(r)).toHaveFocus();
       });
     });
     

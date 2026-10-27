@@ -38,7 +38,7 @@ const meta = {
   args: {
     children: [
       <PasswordFieldInput key={0} placeholder='Password' autoComplete='current-password' />,
-      <PasswordFieldToggleIconButton key={1} aria-label='Toggle password visibility'>
+      <PasswordFieldToggleIconButton key={1} aria-label='Show password'>
         <PasswordFieldShownIcon />
         <PasswordFieldHiddenIcon />
       </PasswordFieldToggleIconButton>,
@@ -57,13 +57,39 @@ export const Default: Story = {
   args: {},
 };
 
+export const Controlled: Story = {
+  render: (args) => {
+    const [shown, setShown] = useState(false);
+
+    return (
+      <div style={{ display: 'grid', gap: 12, width: 320 }}>
+        <PasswordField {...args} shown={shown} onChangeShown={setShown}>
+          <PasswordFieldInput placeholder='New password' autoComplete='new-password' />
+          <PasswordFieldToggleIconButton aria-label='Show password'>
+            <PasswordFieldShownIcon />
+            <PasswordFieldHiddenIcon />
+          </PasswordFieldToggleIconButton>
+        </PasswordField>
+        <PasswordField {...args} shown={shown} onChangeShown={setShown}>
+          <PasswordFieldInput placeholder='Repeat password' autoComplete='new-password' />
+          <PasswordFieldToggleIconButton aria-label='Show repeated password'>
+            <PasswordFieldShownIcon />
+            <PasswordFieldHiddenIcon />
+          </PasswordFieldToggleIconButton>
+        </PasswordField>
+        <Text size={2}>Both fields share one visibility state.</Text>
+      </div>
+    );
+  },
+};
+
 export const Sizes: Story = {
   render: (props) => (
     <Stack>
       {(['sm', 'md', 'lg'] as const).map((size) => (
         <PasswordField key={size} size={size} {...props}>
           <PasswordFieldInput placeholder={`Size: ${size}`} />
-          <PasswordFieldToggleIconButton aria-label='Toggle password visibility'>
+          <PasswordFieldToggleIconButton aria-label='Show password'>
             <PasswordFieldShownIcon />
             <PasswordFieldHiddenIcon />
           </PasswordFieldToggleIconButton>
@@ -78,7 +104,7 @@ export const Disabled: Story = {
     disabled: true,
     children: [
       <PasswordFieldInput key={0} placeholder='Disabled password' />,
-      <PasswordFieldToggleIconButton key={1} aria-label='Toggle password visibility'>
+      <PasswordFieldToggleIconButton key={1} aria-label='Show password'>
         <PasswordFieldShownIcon />
         <PasswordFieldHiddenIcon />
       </PasswordFieldToggleIconButton>
@@ -92,7 +118,7 @@ export const CustomIcons: Story = {
     <Stack>
       <PasswordField {...props}>
         <PasswordFieldInput placeholder='Password' autoComplete='current-password' />
-        <PasswordFieldToggleIconButton aria-label='Toggle password visibility'>
+        <PasswordFieldToggleIconButton aria-label='Show password'>
           <PasswordFieldShownIcon>
             <Lock />
           </PasswordFieldShownIcon>
@@ -154,7 +180,7 @@ export const WithStrengthMeter: Story = {
             value={value}
             onChange={(e) => setValue(e.currentTarget.value)}
           />
-          <PasswordFieldToggleIconButton aria-label='Toggle password visibility'>
+          <PasswordFieldToggleIconButton aria-label='Show password'>
             <PasswordFieldShownIcon />
             <PasswordFieldHiddenIcon />
           </PasswordFieldToggleIconButton>
