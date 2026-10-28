@@ -48,6 +48,30 @@ describe('mergeProps', () => {
     expect(calls).toEqual(['called']);
   });
 
+  test('keeps an event handler when a later one is undefined', () => {
+    const calls: string[] = [];
+
+    const result = mergeProps<{ onClick?: () => void }>(
+      {
+        onClick: () => calls.push('called'),
+      },
+      {
+        onClick: undefined,
+      }
+    );
+
+    result.onClick?.();
+    expect(calls).toEqual(['called']);
+  });
+
+  test('keeps the style when a later one is undefined', () => {
+    const result = mergeProps<{ style?: { color: string } }>(
+      { style: { color: 'red' } },
+      { style: undefined }
+    );
+    expect(result.style).toEqual({ color: 'red' });
+  });
+
   test('preserves the first non-undefined id', () => {
     const result = mergeProps(
       { id: 'foo' },

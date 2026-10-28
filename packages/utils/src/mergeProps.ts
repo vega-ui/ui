@@ -34,6 +34,10 @@ export function mergeProps<T extends Record<string, unknown>>(...args: T[]): T {
       const newValue = props[key];
       const existingValue = result[key];
 
+      if (newValue === undefined && (key === 'style' || /^on[A-Z]/.test(key))) {
+        continue;
+      }
+
       if (
         typeof existingValue === 'function' &&
         typeof newValue === 'function' &&
