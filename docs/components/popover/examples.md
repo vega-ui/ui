@@ -22,7 +22,7 @@
 ```tsx
 const [open, setOpen] = useState(false);
 
-<Popover open={open} onOpenChange={setOpen}>
+<Popover open={open} onChangeOpen={setOpen}>
   <PopoverTrigger asChild>
     <Button>Open popover</Button>
   </PopoverTrigger>

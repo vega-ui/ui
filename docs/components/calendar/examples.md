@@ -170,7 +170,7 @@ const DatePicker = () => {
   };
 
   return (
-    <Popover open={open} onOpenChange={setOpen} placement='bottom-start' role='dialog'>
+    <Popover open={open} onChangeOpen={setOpen} placement='bottom-start' role='dialog'>
       <PopoverTrigger asChild>
         <Button variant='secondary'>
           {date ? formatCalendarDate(gregorianCalendar, date, 'en-US', { dateStyle: 'medium' }) : 'Pick a date'}

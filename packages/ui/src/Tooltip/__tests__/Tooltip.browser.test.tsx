@@ -39,13 +39,13 @@ describe('Tooltip', () => {
       });
 
       it('reports opening on hover', async () => {
-        const onOpenChange = vi.fn();
-        const r = render(<TooltipTest delayOpen={0} onOpenChange={onOpenChange} />);
+        const onChangeOpen = vi.fn();
+        const r = render(<TooltipTest delayOpen={0} onChangeOpen={onChangeOpen} />);
 
         await userEvent.hover(getTrigger(r));
 
         await waitFor(() => {
-          expect(onOpenChange).toHaveBeenLastCalledWith(true);
+          expect(onChangeOpen).toHaveBeenLastCalledWith(true);
         });
       });
     });
@@ -58,25 +58,25 @@ describe('Tooltip', () => {
       });
 
       it('stays closed on hover until the parent opens it', async () => {
-        const onOpenChange = vi.fn();
-        const r = render(<TooltipTest open={false} delayOpen={0} onOpenChange={onOpenChange} />);
+        const onChangeOpen = vi.fn();
+        const r = render(<TooltipTest open={false} delayOpen={0} onChangeOpen={onChangeOpen} />);
 
         await userEvent.hover(getTrigger(r));
         await waitFor(() => {
-          expect(onOpenChange).toHaveBeenLastCalledWith(true);
+          expect(onChangeOpen).toHaveBeenLastCalledWith(true);
         });
 
         expect(queryContent(r)).not.toBeInTheDocument();
       });
 
       it('stays open on Escape until the parent closes it', async () => {
-        const onOpenChange = vi.fn();
-        const r = render(<TooltipTest open onOpenChange={onOpenChange} />);
+        const onChangeOpen = vi.fn();
+        const r = render(<TooltipTest open onChangeOpen={onChangeOpen} />);
 
         getTrigger(r).focus();
         await userEvent.keyboard('{Escape}');
         await waitFor(() => {
-          expect(onOpenChange).toHaveBeenLastCalledWith(false);
+          expect(onChangeOpen).toHaveBeenLastCalledWith(false);
         });
 
         expect(queryContent(r)).toBeInTheDocument();

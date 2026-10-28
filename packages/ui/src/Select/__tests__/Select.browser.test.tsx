@@ -115,7 +115,7 @@ describe('Select', () => {
           let r: RenderResult;
           
           beforeEach(() => {
-            r = render(<SelectTest defaultValue='' onOpenChange={vi.fn()} onSelectValue={vi.fn()} />);
+            r = render(<SelectTest defaultValue='' onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />);
           });
           
           it('renders placeholder when defaultValue is empty', async () => {
@@ -131,7 +131,7 @@ describe('Select', () => {
           let r: RenderResult;
           
           beforeEach(() => {
-            r = render(<SelectTest defaultValue={VALUE_MOSCOW} onOpenChange={vi.fn()} onSelectValue={vi.fn()} />);
+            r = render(<SelectTest defaultValue={VALUE_MOSCOW} onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />);
           });
           
           it('does not render placeholder state when defaultValue is non-empty', async () => {
@@ -152,7 +152,7 @@ describe('Select', () => {
             let r: RenderResult;
             
             beforeEach(() => {
-              r = render(<SelectTest defaultOpen={false} onOpenChange={vi.fn()} onSelectValue={vi.fn()} />);
+              r = render(<SelectTest defaultOpen={false} onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />);
             });
             
             it('starts closed', async () => {
@@ -185,7 +185,7 @@ describe('Select', () => {
             let r: RenderResult;
             
             beforeEach(() => {
-              r = render(<SelectTest defaultOpen onOpenChange={vi.fn()} onSelectValue={vi.fn()} />);
+              r = render(<SelectTest defaultOpen onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />);
             });
             
             it('starts opened', async () => {
@@ -202,60 +202,60 @@ describe('Select', () => {
         describe('controlled', () => {
           describe('open=false', () => {
             let r: RenderResult;
-            const onOpenChange = vi.fn();
+            const onChangeOpen = vi.fn();
             
             beforeEach(() => {
-              onOpenChange.mockReset();
-              r = render(<SelectTest open={false} onOpenChange={onOpenChange} onSelectValue={vi.fn()} />);
+              onChangeOpen.mockReset();
+              r = render(<SelectTest open={false} onChangeOpen={onChangeOpen} onChangeValue={vi.fn()} />);
             });
             
             it('stays closed while open prop is false', async () => {
               await toBeUnmounted(r)
             });
             
-            it('click requests open via onOpenChange(true)', async () => {
+            it('click requests open via onChangeOpen(true)', async () => {
               await userEvent.click(getCombobox(r));
-              expect(onOpenChange).toHaveBeenCalledWith(true);
+              expect(onChangeOpen).toHaveBeenCalledWith(true);
             });
             
-            it('Escape does not open and does not call onOpenChange(true)', async () => {
+            it('Escape does not open and does not call onChangeOpen(true)', async () => {
               await userEvent.keyboard('{Escape}');
-              expect(onOpenChange).not.toHaveBeenCalledWith(true);
+              expect(onChangeOpen).not.toHaveBeenCalledWith(true);
               await toBeUnmounted(r)
             });
             
             it('opens when open becomes true (rerender)', async () => {
-              r.rerender(<SelectTest open onOpenChange={onOpenChange} onSelectValue={vi.fn()} />);
+              r.rerender(<SelectTest open onChangeOpen={onChangeOpen} onChangeValue={vi.fn()} />);
               await toBeOpened(r);
             });
             
             it('closes when open becomes false (rerender)', async () => {
-              r.rerender(<SelectTest open onOpenChange={onOpenChange} onSelectValue={vi.fn()} />);
+              r.rerender(<SelectTest open onChangeOpen={onChangeOpen} onChangeValue={vi.fn()} />);
               await toBeOpened(r);
               
-              r.rerender(<SelectTest open={false} onOpenChange={onOpenChange} onSelectValue={vi.fn()} />);
+              r.rerender(<SelectTest open={false} onChangeOpen={onChangeOpen} onChangeValue={vi.fn()} />);
               await toBeClosed(r);
             });
           });
           
           describe('open=true', () => {
             let r: RenderResult;
-            const onOpenChange = vi.fn();
+            const onChangeOpen = vi.fn();
             
             beforeEach(() => {
-              r = render(<SelectTest open onOpenChange={onOpenChange} onSelectValue={vi.fn()} />)
+              r = render(<SelectTest open onChangeOpen={onChangeOpen} onChangeValue={vi.fn()} />)
             })
             
-            it('Escape requests close via onOpenChange(false)', async () => {
-              r.rerender(<SelectTest open onOpenChange={onOpenChange} onSelectValue={vi.fn()} />)
+            it('Escape requests close via onChangeOpen(false)', async () => {
+              r.rerender(<SelectTest open onChangeOpen={onChangeOpen} onChangeValue={vi.fn()} />)
               await userEvent.keyboard('{Escape}');
-              expect(onOpenChange).toHaveBeenCalledWith(false);
+              expect(onChangeOpen).toHaveBeenCalledWith(false);
             });
             
-            it('outside click requests close via onOpenChange(false)', async () => {
-              r.rerender(<SelectTest open onOpenChange={onOpenChange} onSelectValue={vi.fn()} />)
+            it('outside click requests close via onChangeOpen(false)', async () => {
+              r.rerender(<SelectTest open onChangeOpen={onChangeOpen} onChangeValue={vi.fn()} />)
               await userEvent.click(document.body);
-              expect(onOpenChange).toHaveBeenCalledWith(false);
+              expect(onChangeOpen).toHaveBeenCalledWith(false);
             });
           })
         })
@@ -266,17 +266,17 @@ describe('Select', () => {
           let r: RenderResult;
           
           beforeEach(() => {
-            r = render(<SelectTest defaultValue='' onOpenChange={vi.fn()} onSelectValue={vi.fn()} />);
+            r = render(<SelectTest defaultValue='' onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />);
           });
           
-          it('selects option by click: calls onSelectValue and closes', async () => {
-            const onSelectValue = vi.fn();
-            r.rerender(<SelectTest defaultValue='' onOpenChange={vi.fn()} onSelectValue={onSelectValue} />);
+          it('selects option by click: calls onChangeValue and closes', async () => {
+            const onChangeValue = vi.fn();
+            r.rerender(<SelectTest defaultValue='' onChangeOpen={vi.fn()} onChangeValue={onChangeValue} />);
             
             await openByClick(r);
             await userEvent.click(getOptionByName(r, LABEL_SPB));
             
-            expect(onSelectValue).toHaveBeenCalledWith(VALUE_SPB);
+            expect(onChangeValue).toHaveBeenCalledWith(VALUE_SPB);
             await toBeClosed(r);
           });
           
@@ -307,24 +307,24 @@ describe('Select', () => {
           let r: RenderResult;
           
           beforeEach(() => {
-            r = render(<SelectTest value={VALUE_MOSCOW} onOpenChange={vi.fn()} onSelectValue={vi.fn()} />);
+            r = render(<SelectTest value={VALUE_MOSCOW} onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />);
           });
           
-          it('emits onSelectValue with next value', async () => {
-            const onSelectValue = vi.fn();
-            r.rerender(<SelectTest value={VALUE_MOSCOW} onOpenChange={vi.fn()} onSelectValue={onSelectValue} />);
+          it('emits onChangeValue with next value', async () => {
+            const onChangeValue = vi.fn();
+            r.rerender(<SelectTest value={VALUE_MOSCOW} onChangeOpen={vi.fn()} onChangeValue={onChangeValue} />);
             
             await openByClick(r);
             await userEvent.click(getOptionByName(r, LABEL_SPB));
             
             await waitFor(() => {
-              expect(onSelectValue).toHaveBeenCalledWith(VALUE_SPB);
+              expect(onChangeValue).toHaveBeenCalledWith(VALUE_SPB);
             });
           });
           
           it('does not change hidden select value without external update', async () => {
-            const onSelectValue = vi.fn();
-            r.rerender(<SelectTest value={VALUE_MOSCOW} onOpenChange={vi.fn()} onSelectValue={onSelectValue} />);
+            const onChangeValue = vi.fn();
+            r.rerender(<SelectTest value={VALUE_MOSCOW} onChangeOpen={vi.fn()} onChangeValue={onChangeValue} />);
             
             await openByClick(r);
             await userEvent.click(getOptionByName(r, LABEL_SPB));
@@ -334,7 +334,7 @@ describe('Select', () => {
           });
           
           it('reflects external value update into hidden native select', async () => {
-            r.rerender(<SelectTest value={VALUE_SPB} onOpenChange={vi.fn()} onSelectValue={vi.fn()} />);
+            r.rerender(<SelectTest value={VALUE_SPB} onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />);
             expect(getHiddenSelect(r).value).toBe(VALUE_SPB);
           });
         });
@@ -346,7 +346,7 @@ describe('Select', () => {
         let r: RenderResult;
         
         beforeEach(() => {
-          r = render(<SelectTest defaultValue='' onOpenChange={vi.fn()} onSelectValue={vi.fn()} />);
+          r = render(<SelectTest defaultValue='' onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />);
         });
         
         it('selects matching option when closed by typing (updates hidden select + value UI)', async () => {
@@ -376,23 +376,23 @@ describe('Select', () => {
           await expect.element(getValue(r)).toHaveTextContent(LABEL_SPB);
         });
         
-        it('calls onSelectValue when selecting by typing while closed', async () => {
-          const onSelectValue = vi.fn();
-          r.rerender(<SelectTest defaultValue='' onOpenChange={vi.fn()} onSelectValue={onSelectValue} />);
+        it('calls onChangeValue when selecting by typing while closed', async () => {
+          const onChangeValue = vi.fn();
+          r.rerender(<SelectTest defaultValue='' onChangeOpen={vi.fn()} onChangeValue={onChangeValue} />);
           
           getCombobox(r).focus();
           await userEvent.keyboard('mos');
           
           await waitFor(() => {
-            expect(onSelectValue).toHaveBeenCalledWith(VALUE_MOSCOW);
+            expect(onChangeValue).toHaveBeenCalledWith(VALUE_MOSCOW);
           });
         });
         
         it('selects an option with a falsy value (0) by typing', async () => {
-          const onSelectValue = vi.fn();
+          const onChangeValue = vi.fn();
 
           const r2 = render(
-            <Select data-testid='select-numeric' onSelectValue={onSelectValue}>
+            <Select data-testid='select-numeric' onChangeValue={onChangeValue}>
               <SelectCombobox data-testid='combobox-numeric'>
                 <SelectValue placeholder={PLACEHOLDER} />
               </SelectCombobox>
@@ -410,13 +410,13 @@ describe('Select', () => {
           await userEvent.keyboard('zer');
 
           await waitFor(() => {
-            expect(onSelectValue).toHaveBeenCalledWith(0);
+            expect(onChangeValue).toHaveBeenCalledWith(0);
           });
         });
 
         it('does not auto-select while open (typing only searches)', async () => {
-          const onSelectValue = vi.fn();
-          r.rerender(<SelectTest defaultValue='' onOpenChange={vi.fn()} onSelectValue={onSelectValue} />);
+          const onChangeValue = vi.fn();
+          r.rerender(<SelectTest defaultValue='' onChangeOpen={vi.fn()} onChangeValue={onChangeValue} />);
           
           await openByClick(r);
           
@@ -425,7 +425,7 @@ describe('Select', () => {
           
           await userEvent.keyboard('nov');
           
-          expect(onSelectValue).not.toHaveBeenCalled();
+          expect(onChangeValue).not.toHaveBeenCalled();
           expect(getHiddenSelect(r).value).toBe(before);
           await toBeOpened(r)
         });
@@ -433,19 +433,19 @@ describe('Select', () => {
       
       describe('disabled', () => {
         it('does not select by typing when disabled', async () => {
-          const onSelectValue = vi.fn();
+          const onChangeValue = vi.fn();
           const r = render(
             <SelectTest
               typeMatchEnabled={false}
-              onOpenChange={vi.fn()}
-              onSelectValue={onSelectValue}
+              onChangeOpen={vi.fn()}
+              onChangeValue={onChangeValue}
             />
           );
           
           getCombobox(r).focus();
           await userEvent.keyboard('nov');
           
-          expect(onSelectValue).not.toHaveBeenCalled();
+          expect(onChangeValue).not.toHaveBeenCalled();
           expect(getHiddenSelect(r).value).toBe('');
           await expect.element(getValue(r)).toHaveTextContent(PLACEHOLDER);
         });
@@ -456,7 +456,7 @@ describe('Select', () => {
       let r: RenderResult;
       
       beforeEach(() => {
-        r = render(<SelectTest disabled defaultValue='' onOpenChange={vi.fn()} onSelectValue={vi.fn()} />);
+        r = render(<SelectTest disabled defaultValue='' onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />);
       });
       
       it('renders combobox as disabled button', async () => {
@@ -491,7 +491,7 @@ describe('Select', () => {
       let r: RenderResult;
       
       beforeEach(() => {
-        r = render(<SelectTest readOnly defaultValue='' onOpenChange={vi.fn()} onSelectValue={vi.fn()} />);
+        r = render(<SelectTest readOnly defaultValue='' onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />);
       });
       
       it('keeps combobox enabled but exposes aria-readonly=true', async () => {
@@ -556,7 +556,7 @@ describe('Select', () => {
       
       const r = render(
         <FormTest onSubmit={(d) => (submitted = d)}>
-          <SelectTest defaultValue='' onOpenChange={vi.fn()} onSelectValue={vi.fn()} />
+          <SelectTest defaultValue='' onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />
         </FormTest>
       );
       
@@ -572,7 +572,7 @@ describe('Select', () => {
       
       const r = render(
         <FormTest onSubmit={(d) => (submitted = d)}>
-          <SelectTest defaultValue={VALUE_MOSCOW} onOpenChange={vi.fn()} onSelectValue={vi.fn()} />
+          <SelectTest defaultValue={VALUE_MOSCOW} onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />
         </FormTest>
       );
       
@@ -588,7 +588,7 @@ describe('Select', () => {
       
       const r = render(
         <FormTest onSubmit={(d) => (submitted = d)}>
-          <SelectTest value={VALUE_MOSCOW} defaultValue='' onOpenChange={vi.fn()} onSelectValue={vi.fn()} />
+          <SelectTest value={VALUE_MOSCOW} defaultValue='' onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />
         </FormTest>
       );
       
@@ -610,8 +610,8 @@ describe('Select', () => {
           <SelectTest
             disabled
             defaultValue={VALUE_MOSCOW}
-            onOpenChange={vi.fn()}
-            onSelectValue={vi.fn()}
+            onChangeOpen={vi.fn()}
+            onChangeValue={vi.fn()}
           />
         </FormTest>
       );
@@ -626,7 +626,7 @@ describe('Select', () => {
       
       const r = render(
         <FormTest onSubmit={(d) => (submitted = d)}>
-          <SelectTest readOnly defaultValue={VALUE_MOSCOW} onOpenChange={vi.fn()} onSelectValue={vi.fn()} />
+          <SelectTest readOnly defaultValue={VALUE_MOSCOW} onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />
         </FormTest>
       );
       
@@ -644,7 +644,7 @@ describe('Select', () => {
       let r: RenderResult;
       
       beforeEach(() => {
-        r = render(<SelectTest defaultValue='' onOpenChange={vi.fn()} onSelectValue={vi.fn()} />);
+        r = render(<SelectTest defaultValue='' onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />);
       });
       
       it('combobox has role=combobox', async () => {
@@ -668,7 +668,7 @@ describe('Select', () => {
       let r: RenderResult;
       
       beforeEach(() => {
-        r = render(<SelectTest defaultValue='' onOpenChange={vi.fn()} onSelectValue={vi.fn()} />);
+        r = render(<SelectTest defaultValue='' onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />);
       });
       
       it('hidden native select is aria-hidden and not tabbable', async () => {
@@ -689,7 +689,7 @@ describe('Select', () => {
     
     describe('focus', () => {
       it('moves focus to the first option when opened by ArrowDown', async () => {
-        const r = render(<SelectTest defaultValue='' onOpenChange={vi.fn()} onSelectValue={vi.fn()} />);
+        const r = render(<SelectTest defaultValue='' onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />);
         
         getCombobox(r).focus();
         await expect.element(getCombobox(r)).toHaveFocus();
@@ -703,7 +703,7 @@ describe('Select', () => {
       });
       
       it('restores focus to combobox after closing with Escape', async () => {
-        const r = render(<SelectTest defaultValue='' onOpenChange={vi.fn()} onSelectValue={vi.fn()} />);
+        const r = render(<SelectTest defaultValue='' onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />);
         
         await openByClick(r);
         
@@ -714,7 +714,7 @@ describe('Select', () => {
       });
       
       it('restores focus to combobox after selecting with Enter', async () => {
-        const r = render(<SelectTest defaultValue='' onOpenChange={vi.fn()} onSelectValue={vi.fn()} />);
+        const r = render(<SelectTest defaultValue='' onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />);
         
         getCombobox(r).focus();
         await userEvent.keyboard('{ArrowDown}');
@@ -735,7 +735,7 @@ describe('Select', () => {
     
     describe('keyboard', () => {
       it('ArrowDown opens; ArrowDown/ArrowUp move focus with loop', async () => {
-        const r = render(<SelectTest defaultValue='' onOpenChange={vi.fn()} onSelectValue={vi.fn()} />);
+        const r = render(<SelectTest defaultValue='' onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />);
         
         getCombobox(r).focus();
         await userEvent.keyboard('{ArrowDown}');
@@ -759,7 +759,7 @@ describe('Select', () => {
       });
       
       it('Home focuses first option and End focuses last option', async () => {
-        const r = render(<SelectTest defaultValue='' onOpenChange={vi.fn()} onSelectValue={vi.fn()} />);
+        const r = render(<SelectTest defaultValue='' onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />);
         
         getCombobox(r).focus();
         await userEvent.keyboard('{ArrowDown}');
@@ -773,7 +773,7 @@ describe('Select', () => {
       });
       
       it('Enter selects focused option and closes (uncontrolled)', async () => {
-        const r = render(<SelectTest defaultValue='' onOpenChange={vi.fn()} onSelectValue={vi.fn()} />);
+        const r = render(<SelectTest defaultValue='' onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />);
         
         getCombobox(r).focus();
         await userEvent.keyboard('{ArrowDown}');
@@ -790,7 +790,7 @@ describe('Select', () => {
       });
       
       it('Space selects focused option and closes (uncontrolled)', async () => {
-        const r = render(<SelectTest defaultValue='' onOpenChange={vi.fn()} onSelectValue={vi.fn()} />);
+        const r = render(<SelectTest defaultValue='' onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />);
         
         getCombobox(r).focus();
         await userEvent.keyboard('{ArrowDown}');
@@ -808,7 +808,7 @@ describe('Select', () => {
       });
       
       it('Escape closes without changing value', async () => {
-        const r = render(<SelectTest defaultValue={VALUE_SPB} onOpenChange={vi.fn()} onSelectValue={vi.fn()} />);
+        const r = render(<SelectTest defaultValue={VALUE_SPB} onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />);
         
         expect(getHiddenSelect(r).value).toBe(VALUE_SPB);
         

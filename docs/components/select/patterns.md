@@ -55,7 +55,7 @@ When to use:
 Composition notes:
 
 - store selection in React state
-- pass `value` and `onSelectValue`
+- pass `value` and `onChangeValue`
 - provide a separate clear action
 
 Trade-offs:
@@ -76,7 +76,7 @@ const [value, setValue] = useState<string | number | undefined>('medium');
     Clear
   </Button>
 
-  <Select value={value} onSelectValue={setValue}>
+  <Select value={value} onChangeValue={setValue}>
     <SelectHiddenSelect />
     <SelectCombobox>
       <SelectValue placeholder='Select incident priority' />

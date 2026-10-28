@@ -37,7 +37,7 @@ const [open, setOpen] = useState(false);
 <>
   <Button onClick={() => setOpen(true)}>Open dialog</Button>
 
-  <Dialog open={open} onOpenChange={setOpen}>
+  <Dialog open={open} onChangeOpen={setOpen}>
     <DialogPortal>
       <DialogBackdrop>
         <DialogContent>

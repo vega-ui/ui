@@ -103,7 +103,7 @@ export interface SheetProps {
    *
    * @param value - The new open state (`true` or `false`).
    */
-  onOpenChange?: (value: boolean) => void
+  onChangeOpen?: (value: boolean) => void
 
   /**
    * The content rendered inside the sheet.
@@ -133,10 +133,10 @@ export const Sheet: FC<SheetProps> = ({
   activeSnapPoint: controlledActiveSnapPoint,
   onChangeActiveSnapPoint,
   open: controlledOpen,
-  onOpenChange: controlledOnOpenChange,
+  onChangeOpen: controlledOnChangeOpen,
   clickEnabled = true,
 }) => {
-  const [isOpen, setIsOpen] = useControlledState(controlledOpen, defaultOpen, controlledOnOpenChange)
+  const [isOpen, setIsOpen] = useControlledState(controlledOpen, defaultOpen, controlledOnChangeOpen)
 
   const { refs, context } = useFloating({
     open: isOpen,

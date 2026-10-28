@@ -10,7 +10,7 @@
 | `placement` | `Placement` | `'bottom'` | No | Preferred placement of the popover relative to its trigger. |
 | `open` | `boolean` | `—` | No | Controls the open state of the popover. |
 | `defaultOpen` | `boolean` | `false` | No | Initial open state for uncontrolled usage. |
-| `onOpenChange` | `(state: boolean) => void` | `—` | No | Callback fired when the open state changes. |
+| `onChangeOpen` | `(state: boolean) => void` | `—` | No | Callback fired when the open state changes. |
 | `role` | `'listbox' \\| 'dialog'` | `—` | No | Defines the ARIA role of the popover content for accessibility. |
 <!-- AUTO-GENERATED:ROOT_API:end -->
 

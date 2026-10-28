@@ -10,7 +10,7 @@
 | --- | --- | --- | --- | --- |
 | `open` | `boolean` | `—` | No | the modal is currently open. |
 | `defaultOpen` | `boolean` | `false` | No | the modal is default open. |
-| `onOpenChange` | `(state: boolean) => void` | `—` | No | Callback fired when the modal's open state changes. |
+| `onChangeOpen` | `(state: boolean) => void` | `—` | No | Callback fired when the modal's open state changes. |
 | `children` | `ReactNode \\| ReactNode[]` | `—` | No | content rendered inside the dialog. |
 | `fluid` | `boolean` | `—` | No | Makes the dialog fluid, allowing it to stretch responsively within its container. |
 <!-- AUTO-GENERATED:ROOT_API:end -->

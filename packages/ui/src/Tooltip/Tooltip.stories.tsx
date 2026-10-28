@@ -49,7 +49,7 @@ export const Controlled: Story = {
 
     return (
       <div style={{ display: 'flex', gap: 12 }}>
-        <Tooltip open={open} onOpenChange={setOpen}>
+        <Tooltip open={open} onChangeOpen={setOpen}>
           <TooltipTrigger asChild>
             <Button>Save draft</Button>
           </TooltipTrigger>

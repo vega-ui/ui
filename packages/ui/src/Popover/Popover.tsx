@@ -38,7 +38,7 @@ export interface PopoverProps extends HTMLAttributes<HTMLDivElement> {
    *
    * @param state - The new open state (`true` or `false`)
    */
-  onOpenChange?(state: boolean): void
+  onChangeOpen?(state: boolean): void
 
   /**
    * Defines the ARIA role of the popover content for accessibility.
@@ -55,11 +55,11 @@ export const Popover: FC<PopoverProps> = ({
   role: ariaRole,
   open: controlledOpen,
   defaultOpen = false,
-  onOpenChange,
+  onChangeOpen,
   className,
   children,
 }) => {
-  const [open, setOpen] = useControlledState(controlledOpen, defaultOpen, onOpenChange);
+  const [open, setOpen] = useControlledState(controlledOpen, defaultOpen, onChangeOpen);
 
   const { floatingStyles, context } = useFloating({
     whileElementsMounted: autoUpdate,

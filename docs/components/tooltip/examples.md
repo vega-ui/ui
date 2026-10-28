@@ -43,7 +43,7 @@ const [copied, setCopied] = useState(false);
 ```tsx
 const [open, setOpen] = useState(false);
 
-<Tooltip open={open} onOpenChange={setOpen}>
+<Tooltip open={open} onChangeOpen={setOpen}>
   <TooltipTrigger asChild>
     <Button>Save draft</Button>
   </TooltipTrigger>

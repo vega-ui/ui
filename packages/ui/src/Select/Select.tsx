@@ -58,7 +58,7 @@ export interface SelectProps<V extends string | number = string> extends HTMLAtt
    *
    * @param value - The selected option value
    */
-  onSelectValue?(value: V | undefined): void
+  onChangeValue?(value: V | undefined): void
 
   /**
    * Ref to the trigger button element.
@@ -82,7 +82,7 @@ export interface SelectProps<V extends string | number = string> extends HTMLAtt
    *
    * Useful for synchronizing the Select state with external logic.
    */
-  onOpenChange?(open: boolean): void
+  onChangeOpen?(open: boolean): void
   
   /**
    * Sets the initial open state of the Select when used
@@ -112,11 +112,11 @@ export const Select = <V extends string | number>({
   size = 'md',
   value,
   defaultValue,
-  onSelectValue,
+  onChangeValue,
   open: _open,
   defaultOpen = false,
   typeMatchEnabled = true,
-  onOpenChange,
+  onChangeOpen,
   ref,
   ...props
 }: SelectProps<V>) => {
@@ -128,7 +128,7 @@ export const Select = <V extends string | number>({
     selection: 'single',
     defaultSelected: defaultValue ?? null,
     selected: value,
-    onSelect: onSelectValue,
+    onSelect: onChangeValue,
   })
   
   const [hasValueChildren, setHasValueChildren] = useState(false)
@@ -139,7 +139,7 @@ export const Select = <V extends string | number>({
   
   const valueRef = useRef<HTMLSpanElement>(null)
 
-  const [open, setOpen] = useControlledState(_open, defaultOpen, onOpenChange);
+  const [open, setOpen] = useControlledState(_open, defaultOpen, onChangeOpen);
   
   const [selectedIndex, setSelectedIndex] = useState(-1)
   const [activeIndex, setActiveIndex] = useState<number | null>(0);
