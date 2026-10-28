@@ -1,5 +1,4 @@
 export * from './useResize'
-export * from './useIsomorphicLayoutEffect'
 export * from './useLatest'
 export * from './useEventCallback'
 export * from './useControlledState'

@@ -5,9 +5,9 @@
 ### Basic: bounded quantity field
 
 ```tsx
-<NumberField min={0} max={10}>
+<NumberField min={0} max={10} defaultValue={0}>
   <NumberFieldDecrementButton />
-  <NumberFieldInput defaultValue={0} />
+  <NumberFieldInput />
   <NumberFieldIncrementButton />
 </NumberField>
 ```
@@ -20,15 +20,9 @@
 const [value, setValue] = useState(3);
 
 <>
-  <NumberField min={0} max={10}>
+  <NumberField min={0} max={10} value={value} onChangeValue={setValue}>
     <NumberFieldDecrementButton />
-    <NumberFieldInput
-      value={String(value)}
-      onChange={(e) => {
-        const n = Number(e.currentTarget.value);
-        if (Number.isFinite(n)) setValue(n);
-      }}
-    />
+    <NumberFieldInput />
     <NumberFieldIncrementButton />
   </NumberField>
   <Button variant='secondary' onClick={() => setValue(0)}>
@@ -43,9 +37,9 @@ const [value, setValue] = useState(3);
 
 ```tsx
 <form>
-  <NumberField min={0} max={99}>
+  <NumberField min={0} max={99} defaultValue={2}>
     <NumberFieldDecrementButton />
-    <NumberFieldInput name='quantity' defaultValue={2} />
+    <NumberFieldInput name='quantity' />
     <NumberFieldIncrementButton />
   </NumberField>
   <Button type='submit'>Submit</Button>
@@ -57,9 +51,9 @@ const [value, setValue] = useState(3);
 ### Layout/Overlay: compact quantity row
 
 ```tsx
-<NumberField min={1} max={12}>
+<NumberField min={1} max={12} defaultValue={1}>
   <NumberFieldDecrementButton />
-  <NumberFieldInput defaultValue={1} />
+  <NumberFieldInput />
   <NumberFieldIncrementButton />
 </NumberField>
 ```
@@ -96,9 +90,9 @@ const [value, setValue] = useState(3);
 ### Edge: decimal stepping
 
 ```tsx
-<NumberField min={0} max={5} step={0.25}>
+<NumberField min={0} max={5} step={0.25} defaultValue={1}>
   <NumberFieldDecrementButton />
-  <NumberFieldInput defaultValue={1} />
+  <NumberFieldInput />
   <NumberFieldIncrementButton />
 </NumberField>
 ```

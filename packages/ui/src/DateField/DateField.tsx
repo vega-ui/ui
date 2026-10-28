@@ -2,10 +2,29 @@ import { FC, useRef, useState } from 'react';
 import { TextField, TextFieldProps } from '../TextField';
 import { DateFieldProvider } from './contexts';
 import { CalendarDatesDisabled } from '../Calendar';
-import { parseISODate, getDateTemplate } from '@vega-ui/utils';
+import { useControlledState, useFormReset } from '@vega-ui/hooks';
+import { formatTemplateDate, parseISODate, parseTemplateDate, getDateTemplate } from '@vega-ui/utils';
 import { CalendarSystem, gregorianCalendar } from '@vega-ui/i18n';
 
-export interface DateFieldProps extends TextFieldProps {
+export interface DateFieldProps extends Omit<TextFieldProps, 'defaultValue'> {
+  /**
+   * Controlled date as a `YYYY-MM-DD` string, `''` while the field has no
+   * complete date.
+   */
+  value?: string
+
+  /**
+   * Initial date for uncontrolled usage as a `YYYY-MM-DD` string.
+   * Defaults to `''`, an empty field.
+   */
+  defaultValue?: string
+
+  /**
+   * Called with the `YYYY-MM-DD` date when it changes, `''` when the text is
+   * emptied or incomplete.
+   */
+  onChangeValue?(value: string): void
+
   /**
    * Date format pattern used for input masking and parsing.
    * Defines the order of date segments.
@@ -79,14 +98,47 @@ export interface DateFieldProps extends TextFieldProps {
  * This component acts as the coordination layer between the visual TextField,
  * date parsing/formatting logic, and the interactive calendar UI.
  */
-export const DateField: FC<DateFieldProps> = ({ format, separator, max: _max, min: _min, disabledDates, disabled, calendar = gregorianCalendar, locale, ...props }) => {
+export const DateField: FC<DateFieldProps> = ({
+  format,
+  separator,
+  max: _max,
+  min: _min,
+  disabledDates,
+  disabled,
+  calendar = gregorianCalendar,
+  locale,
+  value,
+  defaultValue = '',
+  onChangeValue,
+  ...props
+}) => {
   const min = parseISODate(_min) ? _min : undefined
   const max = parseISODate(_max) ? _max : undefined
-  const [date, setDate] = useState<string | undefined>(undefined)
+  const [date, setDate] = useControlledState(value, defaultValue, onChangeValue)
+  const [text, setText] = useState('')
   
   const inputInnerRef = useRef<HTMLInputElement>(null)
   
   const template = getDateTemplate(format, separator)
+
+  const getDate = (text: string) => parseTemplateDate(calendar, text, template) ?? ''
+  const getText = (date: string) => date ? formatTemplateDate(calendar, date, template) : ''
+
+  const shownText = getDate(text) === date ? text : getText(date)
+
+  const changeText = (text: string) => {
+    setText(text)
+
+    const nextDate = getDate(text)
+    if (nextDate !== date) setDate(nextDate)
+  }
+
+  useFormReset(inputInnerRef, () => {
+    if (value !== undefined) return
+
+    setText(getText(defaultValue))
+    setDate(defaultValue)
+  })
   
   return (
     <DateFieldProvider
@@ -96,7 +148,8 @@ export const DateField: FC<DateFieldProps> = ({ format, separator, max: _max, mi
       disabled={disabled}
       disabledDates={disabledDates}
       inputRef={inputInnerRef}
-      changeDate={setDate}
+      text={shownText}
+      changeText={changeText}
       template={template}
       calendar={calendar}
       locale={locale}

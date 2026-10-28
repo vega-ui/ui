@@ -2,7 +2,7 @@
 
 ## Overview
 
-`PinField` coordinates one hidden input with several visible slots. The root owns active index, value, placeholder state, and optional selection-all behavior.
+`PinField` coordinates one visually hidden input with several visible slots. The root owns active index, value, placeholder state, and optional selection-all behavior.
 
 ## Required Parts
 
@@ -10,7 +10,7 @@
 
 Required. Owns root state including active slot and current value.
 
-### `PinFieldHiddenInput`
+### `PinFieldInput`
 
 Required. Stores the real input value, handles selection and keyboard input, and keeps browser semantics intact.
 
@@ -27,7 +27,7 @@ Optional visual divider between logical groups of slots.
 ## Composition Order
 
 1. `PinField`
-2. `PinFieldHiddenInput`
+2. `PinFieldInput`
 3. `PinFieldSlot` items in index order
 4. optional separators between slot groups
 
@@ -35,7 +35,7 @@ Optional visual divider between logical groups of slots.
 
 ```tsx
 <PinField maxLength={6}>
-  <PinFieldHiddenInput />
+  <PinFieldInput />
   <PinFieldSlot index={0} />
   <PinFieldSlot index={1} />
   <PinFieldSlot index={2} />
@@ -48,7 +48,7 @@ Optional visual divider between logical groups of slots.
 
 ## Invalid Composition Patterns
 
-### Slots without the hidden input
+### Slots without `PinFieldInput`
 
 The UI renders, but the actual input model is missing.
 

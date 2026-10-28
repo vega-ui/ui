@@ -7,6 +7,8 @@ import { CountryCode } from 'libphonenumber-js';
 export interface PhoneFieldContextState {
   inputRef?: Ref<HTMLInputElement | null>
   onSelectValue?(value: CountryCode): void
+  phone?: string
+  changePhone?(value: string): void
   code?: CountryCode
 }
 

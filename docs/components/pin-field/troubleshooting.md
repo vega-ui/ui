@@ -8,16 +8,16 @@ The segmented UI renders, but typed characters do not appear in the slots.
 
 ### Likely Cause
 
-`PinFieldHiddenInput` is missing from the composition.
+`PinFieldInput` is missing from the composition.
 
 ### How To Verify
 
 - inspect the rendered composition
-- confirm the hidden input is present inside the root
+- confirm `PinFieldInput` is present inside the root
 
 ### Fix
 
-Add `PinFieldHiddenInput` inside `PinField`.
+Add `PinFieldInput` inside `PinField`.
 
 ## Slot Order Feels Wrong Or Caret Movement Is Confusing
 

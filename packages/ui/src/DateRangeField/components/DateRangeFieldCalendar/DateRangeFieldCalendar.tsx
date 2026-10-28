@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Calendar, CalendarProps } from '../../../Calendar';
 import { useDateRangeFieldContext } from '../../contexts';
-import { dispatchEvents, setValue as setNativeValue, formatTemplateDate } from '@vega-ui/utils';
+import { formatTemplateRange, writeInputValue } from '@vega-ui/utils';
 
 export type DateRangeFieldCalendarProps = CalendarProps<'range'>
 
@@ -28,7 +28,6 @@ export const DateRangeFieldCalendar: FC<DateRangeFieldCalendarProps> = ({ onChan
     template,
     calendar,
     locale,
-    changeDate,
     disabledDates,
     rangeSeparator
   } = useDateRangeFieldContext()
@@ -36,18 +35,10 @@ export const DateRangeFieldCalendar: FC<DateRangeFieldCalendarProps> = ({ onChan
   const onChangeValue = (iso: [start: string, end: string]) => {
     _onChangeValue?.(iso)
     
-    const [start, end] = iso
-    changeDate(iso)
-    
     const input = inputRef?.current
     if (!input) return
 
-    const stringifiedStartDate = start ? formatTemplateDate(calendar, start, template) : ''
-    const stringifiedEndDate = end ? formatTemplateDate(calendar, end, template) : ''
-    const stringified = `${stringifiedStartDate}${stringifiedEndDate ? rangeSeparator : ''}${stringifiedEndDate}`
-    
-    setNativeValue(input, stringified)
-    dispatchEvents(input)
+    writeInputValue(input, formatTemplateRange(calendar, iso, template, rangeSeparator))
   }
   
   return (

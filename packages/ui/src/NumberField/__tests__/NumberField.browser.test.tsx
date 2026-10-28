@@ -1,4 +1,4 @@
-import { ComponentProps, FC } from 'react';
+import { ComponentProps, FC, useState } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, type RenderResult, waitFor } from '@testing-library/react';
 import { userEvent } from 'vitest/browser';
@@ -32,6 +32,84 @@ const getInput = (r: RenderResult) => r.getByTestId(TESTID_INPUT) as HTMLInputEl
 
 describe('NumberField', () => {
   describe('Critical User Paths', () => {
+    describe('controlled input', () => {
+      const ControlledNumberFieldTest: FC<Partial<ComponentProps<typeof NumberField>> & { accept?(value: number): boolean }> = ({ accept = () => true, ...props }) => {
+        const [value, setValue] = useState(NaN);
+
+        return (
+          <>
+            <NumberField {...props} value={value} onChangeValue={(next) => accept(next) && setValue(next)}>
+              <NumberFieldDecrementButton data-testid={TESTID_DECREMENT} />
+              <NumberFieldInput data-testid={TESTID_INPUT} />
+              <NumberFieldIncrementButton data-testid={TESTID_INCREMENT} />
+            </NumberField>
+            <button type='button' onClick={() => setValue(10)}>Fill</button>
+          </>
+        );
+      };
+
+      it('keeps the typed value that reaches max', async () => {
+        cleanup();
+        const r = render(<ControlledNumberFieldTest max={10} />);
+
+        await userEvent.type(getInput(r), '10');
+
+        await expect.element(getInput(r)).toHaveValue('10');
+        await expect.element(getIncrement(r)).toBeDisabled();
+      });
+
+      it('disables increment for a max value set outside', async () => {
+        cleanup();
+        const r = render(<ControlledNumberFieldTest max={10} />);
+
+        await userEvent.click(r.getByRole('button', { name: 'Fill' }));
+
+        await expect.element(getIncrement(r)).toBeDisabled();
+      });
+
+      it('shows a value set outside', async () => {
+        cleanup();
+        const r = render(<ControlledNumberFieldTest />);
+
+        await userEvent.click(r.getByRole('button', { name: 'Fill' }));
+
+        await expect.element(getInput(r)).toHaveValue('10');
+      });
+
+      it('reverts a keystroke the parent rejects', async () => {
+        cleanup();
+        const r = render(<ControlledNumberFieldTest accept={(value) => !(value > 5)} />);
+
+        await userEvent.type(getInput(r), '57');
+
+        await expect.element(getInput(r)).toHaveValue('5');
+      });
+
+      it('keeps calling onChange of the input', async () => {
+        cleanup();
+        const onChange = vi.fn();
+        const r = render(
+          <NumberField>
+            <NumberFieldInput data-testid={TESTID_INPUT} onChange={onChange} />
+          </NumberField>,
+        );
+
+        await userEvent.type(getInput(r), '1');
+
+        expect(onChange).toHaveBeenCalled();
+      });
+
+      it('steps the controlled value', async () => {
+        cleanup();
+        const r = render(<ControlledNumberFieldTest />);
+
+        await userEvent.click(getIncrement(r));
+        await userEvent.click(getIncrement(r));
+
+        await expect.element(getInput(r)).toHaveValue('1');
+      });
+    });
+
     let r: RenderResult;
     
     beforeEach(() => {
@@ -221,8 +299,8 @@ describe('NumberField', () => {
     
     it('disables increment when the default value is at max', async () => {
       const r = render(
-        <NumberField max={5}>
-          <NumberFieldInput data-testid={TESTID_INPUT} defaultValue='5' />
+        <NumberField max={5} defaultValue={5}>
+          <NumberFieldInput data-testid={TESTID_INPUT} />
           <NumberFieldIncrementButton data-testid={TESTID_INCREMENT} />
         </NumberField>,
       );
@@ -243,6 +321,22 @@ describe('NumberField', () => {
       (r.getByTestId('form') as HTMLFormElement).reset();
       
       await expect.element(getIncrement(r)).toBeEnabled();
+    });
+
+    it('restores defaultValue after the form is reset', async () => {
+      const r = render(
+        <form data-testid='form'>
+          <NumberFieldTest defaultValue={3} />
+        </form>,
+      );
+
+      await expect.element(getInput(r)).toHaveValue('3');
+      await userEvent.click(getIncrement(r));
+      await expect.element(getInput(r)).toHaveValue('4');
+
+      (r.getByTestId('form') as HTMLFormElement).reset();
+
+      await expect.element(getInput(r)).toHaveValue('3');
     });
 
     it('keeps the precision of a fractional step', async () => {

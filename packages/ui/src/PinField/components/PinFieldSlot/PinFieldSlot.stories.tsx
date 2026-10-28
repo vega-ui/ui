@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { PinFieldSlot } from './PinFieldSlot';
 import { PinField } from '../../PinField';
-import { PinFieldHiddenInput } from '../PinFieldHiddenInput';
+import { PinFieldInput } from '../PinFieldInput';
 
 const meta = {
   title: 'Form/Fields/PinField/PinFieldSlot',
@@ -25,7 +25,7 @@ export const Default: Story = {
   decorators(Story) {
     return (
       <PinField maxLength={1}>
-        <PinFieldHiddenInput />
+        <PinFieldInput />
         <Story />
       </PinField>
     )

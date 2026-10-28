@@ -7,14 +7,12 @@ import {
   KeyboardEvent,
   Ref,
   SyntheticEvent,
-  useLayoutEffect,
 } from 'react';
-import { useFormReset } from '@vega-ui/hooks';
 import { mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
 import { usePinFieldContext } from '../../contexts';
 import { VisuallyHidden } from '../../../VisuallyHidden';
 
-export interface PinFieldInputProps extends Omit<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'disabled' | 'maxLength'> {
+export interface PinFieldInputProps extends Omit<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'disabled' | 'maxLength' | 'value' | 'defaultValue'> {
   ref?: Ref<HTMLInputElement>
 }
 
@@ -24,8 +22,8 @@ export interface PinFieldInputProps extends Omit<DetailedHTMLProps<InputHTMLAttr
  * It stores the full PIN value in one place while the visible pin “cells” render the
  * per-character representation. The input is hidden via `VisuallyHidden` but remains
  * focusable and accessible for keyboard input, screen readers, and browser autofill.
- * It takes `value`, `defaultValue` and `onChange` like a native `<input>`; `disabled`
- * and `maxLength` come from `PinField`, so the slots and the input always agree.
+ * The code, `disabled` and `maxLength` come from `PinField`, so the slots and the
+ * input always agree; `onChange` and `onInput` still report each edit of the text.
  *
  * The component is fully integrated with `usePinFieldContext()` and is responsible for:
  * - Synchronizing the active cell index based on caret/selection position (`syncActive`)
@@ -43,7 +41,6 @@ export interface PinFieldInputProps extends Omit<DetailedHTMLProps<InputHTMLAttr
  */
 export const PinFieldInput: FC<PinFieldInputProps> = ({
   ref,
-  value,
   inputMode = 'numeric',
   onKeyDown: _onKeyDown,
   onBlur: _onBlur,
@@ -58,6 +55,7 @@ export const PinFieldInput: FC<PinFieldInputProps> = ({
     inputRef,
     innerInputRef,
     placeholder,
+    value,
     setValue,
     setActive,
     syncActive,
@@ -65,16 +63,6 @@ export const PinFieldInput: FC<PinFieldInputProps> = ({
     setSelectedAll,
   } = usePinFieldContext()
   
-  useLayoutEffect(() => {
-    if (!innerInputRef.current) return
-    setValue(innerInputRef.current.value)
-  }, [value, innerInputRef, setValue])
-
-  useFormReset(innerInputRef, () => {
-    if (!innerInputRef.current) return
-    setValue(innerInputRef.current.defaultValue)
-  })
-
   const onFocus = (e: FocusEvent<HTMLInputElement>) => {
     const input = e.currentTarget
     const value = input.value
@@ -140,8 +128,8 @@ export const PinFieldInput: FC<PinFieldInputProps> = ({
       <input
         disabled={disabled}
         aria-invalid={error}
-        value={value}
         placeholder={placeholder}
+        value={value}
         inputMode={inputMode}
         maxLength={maxLength}
         data-error={error}

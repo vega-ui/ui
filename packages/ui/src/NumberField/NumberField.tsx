@@ -9,13 +9,28 @@ import {
 } from 'react';
 import { TextField, TextFieldProps } from '../TextField';
 import style from './style.module.css'
-import { addWithPrecision, clamp, csx, dispatchEvents, mergeEventHandlers, mergeRefs, setValue } from '@vega-ui/utils';
-import { useEventCallback } from '@vega-ui/hooks';
-import { getNumberMaskOptions, getNumberValue } from './helpers';
+import { addWithPrecision, clamp, csx, mergeEventHandlers, mergeRefs, writeInputValue } from '@vega-ui/utils';
+import { useControlledState, useEventCallback, useFormReset } from '@vega-ui/hooks';
+import { formatNumberValue, getNumberMaskOptions, getNumberValue } from './helpers';
 import { useMaskito } from '@maskito/react';
 import { NumberFieldProvider } from './contexts';
 
-export interface NumberFieldProps extends TextFieldProps {
+export interface NumberFieldProps extends Omit<TextFieldProps, 'defaultValue'> {
+  /**
+   * Controlled value. `NaN` means the field is empty.
+   */
+  value?: number
+
+  /**
+   * Initial value for uncontrolled usage. Defaults to `NaN`, an empty field.
+   */
+  defaultValue?: number
+
+  /**
+   * Called with the number when it changes, `NaN` when the field is emptied.
+   */
+  onChangeValue?(value: number): void
+
   /**
    * Amount to increment or decrement the value by when using arrow keys or spinner controls.
    */
@@ -90,11 +105,16 @@ export const NumberField: FC<NumberFieldProps> = ({
   children,
   ref,
   onKeyDown: _onKeyDown,
+  value: controlledValue,
+  defaultValue = NaN,
+  onChangeValue,
   ...props
 }) => {
-  const [isMin, setIsMin] = useState(false);
-  const [isMax, setIsMax] = useState(false);
-  
+  const [number, setNumber] = useControlledState(controlledValue, defaultValue, onChangeValue)
+  const [text, setText] = useState('')
+  const isMin = Number.isFinite(number) && number <= min
+  const isMax = Number.isFinite(number) && number >= max
+
   const maskitoOptions = useMemo(() => getNumberMaskOptions({
     max,
     min,
@@ -102,12 +122,6 @@ export const NumberField: FC<NumberFieldProps> = ({
     precision,
     allowEmpty,
     maximumFractionDigits,
-    onSync: (value) => {
-      const number = value === '' ? NaN : getNumberValue(value);
-
-      setIsMin(Number.isFinite(number) && number <= min);
-      setIsMax(Number.isFinite(number) && number >= max);
-    },
   }), [max, min, precision, allowEmpty, maximumFractionDigits])
 
   const innerInputRef = useRef<HTMLInputElement>(null)
@@ -115,6 +129,22 @@ export const NumberField: FC<NumberFieldProps> = ({
   
   const inputRef = useMaskito({
     options: maskitoOptions
+  })
+
+  const shownText = Object.is(getNumberValue(text), number) ? text : formatNumberValue(number, maskitoOptions)
+
+  const changeText = (value: string) => {
+    setText(value)
+
+    const nextNumber = getNumberValue(value)
+    if (!Object.is(nextNumber, number)) setNumber(nextNumber)
+  }
+
+  useFormReset(innerInputRef, () => {
+    if (controlledValue !== undefined) return
+
+    setText(formatNumberValue(defaultValue, maskitoOptions))
+    setNumber(defaultValue)
   })
   
   const changeValue = useCallback((value: number) => {
@@ -124,8 +154,7 @@ export const NumberField: FC<NumberFieldProps> = ({
     const currentValue = input.value
     if (currentValue === String(value)) return;
     
-    setValue(input, String(value))
-    dispatchEvents(input)
+    writeInputValue(input, String(value))
   }, [])
 
   const increment = useCallback(() => {
@@ -198,6 +227,8 @@ export const NumberField: FC<NumberFieldProps> = ({
       min={min}
       increment={increment}
       decrement={decrement}
+      text={shownText}
+      changeText={changeText}
       disabled={disabled}
       inputRef={mergeRefs([inputRef, innerInputRef])}
     >

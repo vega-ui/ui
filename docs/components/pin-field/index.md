@@ -6,17 +6,17 @@
 
 ## Summary
 
-`PinField` is a [compound component](../../glossary.md#compound-component) for fixed-length codes such as OTPs and PINs. A hidden input stores the real value while visible slots render each character position, making segmented code entry the primary interaction model rather than a styling effect.
+`PinField` is a [compound component](../../glossary.md#compound-component) for fixed-length codes such as OTPs and PINs. A visually hidden input stores the real value while visible slots render each character position, making segmented code entry the primary interaction model rather than a styling effect.
 
 ## Imports
 
 ```tsx
 import {
   PinField,
-  PinFieldHiddenInput,
+  PinFieldInput,
   PinFieldSeparator,
   PinFieldSlot,
-  type PinFieldHiddenInputProps,
+  type PinFieldInputProps,
   type PinFieldProps,
   type PinFieldSeparatorProps,
   type PinFieldSize,
@@ -27,7 +27,7 @@ import {
 ## Exported Types
 
 - `PinFieldProps`
-- `PinFieldHiddenInputProps`
+- `PinFieldInputProps`
 - `PinFieldSlotProps`
 - `PinFieldSeparatorProps`
 - `PinFieldSize`
@@ -36,7 +36,7 @@ import {
 
 ```tsx
 <PinField maxLength={4}>
-  <PinFieldHiddenInput />
+  <PinFieldInput />
   <PinFieldSlot index={0} />
   <PinFieldSlot index={1} />
   <PinFieldSlot index={2} />
@@ -47,7 +47,7 @@ import {
 ## Required Parts
 
 - `PinField`: root state container
-- `PinFieldHiddenInput`: single hidden backing input
+- `PinFieldInput`: single hidden backing input
 - `PinFieldSlot`: visible per-character slot
 
 ## Optional Parts
@@ -57,7 +57,7 @@ import {
 ## Composition Order
 
 1. `PinField`
-2. `PinFieldHiddenInput`
+2. `PinFieldInput`
 3. one or more `PinFieldSlot`
 4. optional `PinFieldSeparator`
 
@@ -82,11 +82,11 @@ import {
 
 - Paste behavior and caret synchronization are core to usability.
 - Slot order must stay aligned with `maxLength`.
-- The hidden input is what participates in native form behavior and focus handling.
+- `PinFieldInput` is what participates in native form behavior and focus handling.
 - The backend code policy, allowed characters, and client-side mask should stay aligned instead of being inferred independently.
 
 ## Common Mistakes
 
-- Forgetting `PinFieldHiddenInput`.
+- Forgetting `PinFieldInput`.
 - Rendering fewer or more slots than the intended code length supports.
 - Using a mask that does not match the backend code format.

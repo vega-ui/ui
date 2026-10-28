@@ -2,10 +2,29 @@ import { FC, useRef, useState } from 'react';
 import { TextField, TextFieldProps } from '../TextField';
 import { DateRangeFieldProvider } from './contexts';
 import { CalendarDatesDisabled } from '../Calendar';
-import { parseISODate, getDateTemplate } from '@vega-ui/utils';
+import { useControlledState, useFormReset } from '@vega-ui/hooks';
+import { formatTemplateRange, parseISODate, parseTemplateRange, getDateTemplate } from '@vega-ui/utils';
 import { CalendarSystem, gregorianCalendar } from '@vega-ui/i18n';
 
-export interface DateRangeFieldProps extends TextFieldProps {
+export interface DateRangeFieldProps extends Omit<TextFieldProps, 'defaultValue'> {
+  /**
+   * Controlled range as a `[start, end]` tuple of `YYYY-MM-DD` strings.
+   * A bound is `''` while it is not complete; without a start the range is
+   * empty.
+   */
+  value?: [start: string, end: string]
+
+  /**
+   * Initial range for uncontrolled usage, like `value`.
+   * Defaults to `['', '']`, an empty field.
+   */
+  defaultValue?: [start: string, end: string]
+
+  /**
+   * Called with the range when it changes.
+   */
+  onChangeValue?(value: [start: string, end: string]): void
+
   /**
    * Date format pattern used for input masking and parsing.
    * Defines the order of date segments.
@@ -106,25 +125,48 @@ export const DateRangeField: FC<DateRangeFieldProps> = ({
   rangeSeparator = ' – ',
   calendar = gregorianCalendar,
   locale,
+  value,
+  defaultValue = ['', ''],
+  onChangeValue,
   ...props
 }) => {
   const min = parseISODate(_min) ? _min : undefined
   const max = parseISODate(_max) ? _max : undefined
-  const [date, setDate] = useState<[start: string, end: string]>(['', ''])
+  const [range, setRange] = useControlledState(value, defaultValue, onChangeValue)
+  const [text, setText] = useState('')
   
   const inputInnerRef = useRef<HTMLInputElement>(null)
   
   const template = getDateTemplate(format, separator)
+
+  const textRange = parseTemplateRange(calendar, text, template, rangeSeparator)
+  const isTextShown = textRange[0] === range[0] && textRange[1] === range[1]
+  const shownText = isTextShown ? text : formatTemplateRange(calendar, range, template, rangeSeparator)
+
+  const changeText = (text: string) => {
+    setText(text)
+
+    const [start, end] = parseTemplateRange(calendar, text, template, rangeSeparator)
+    if (start !== range[0] || end !== range[1]) setRange([start, end])
+  }
+
+  useFormReset(inputInnerRef, () => {
+    if (value !== undefined) return
+
+    setText(formatTemplateRange(calendar, defaultValue, template, rangeSeparator))
+    setRange(defaultValue)
+  })
   
   return (
     <DateRangeFieldProvider
       max={max}
       min={min}
-      date={date}
+      date={range}
+      text={shownText}
+      changeText={changeText}
       disabledDates={disabledDates}
       disabled={disabled}
       inputRef={inputInnerRef}
-      changeDate={setDate}
       template={template}
       calendar={calendar}
       locale={locale}

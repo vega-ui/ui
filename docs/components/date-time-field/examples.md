@@ -186,13 +186,13 @@ function JobForm() {
 
 ### Disabled: locked execution time
 
-`disabled` on the root disables the input and the calendar trigger. `defaultValue` is the native initial text; the field parses it like typed text, so the calendar opens with that day selected.
+`disabled` on the root disables the input and the calendar trigger. `defaultValue` on the root is the initial `YYYY-MM-DDTHH:mm` timestamp; the input shows it in the format and the calendar opens with that day selected.
 
 ```tsx
 <>
   <Label htmlFor='executed-at'>Executed at</Label>
-  <DateTimeField dateFormat='dd.MM.yyyy' disabled>
-    <DateTimeFieldInput id='executed-at' defaultValue='15.07.2026, 09:30' />
+  <DateTimeField dateFormat='dd.MM.yyyy' disabled defaultValue='2026-07-15T09:30'>
+    <DateTimeFieldInput id='executed-at' />
     <CalendarPopover />
   </DateTimeField>
 </>

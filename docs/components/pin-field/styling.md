@@ -2,7 +2,7 @@
 
 ## Overview
 
-`PinField` styling is divided between the slot grid, the visible slots, and the optional separator. The hidden input is visually hidden and does not define the surface contract.
+`PinField` styling is divided between the slot grid, the visible slots, and the optional separator. `PinFieldInput` is visually hidden and does not define the surface contract.
 
 ## Public CSS Variables
 
@@ -43,7 +43,7 @@ The separator uses size-specific width tokens and a 1px line.
 
 ```tsx
 <PinField maxLength={6}>
-  <PinFieldHiddenInput />
+  <PinFieldInput />
   <PinFieldSlot index={0} />
   <PinFieldSlot index={1} />
   <PinFieldSlot index={2} />

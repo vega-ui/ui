@@ -1,11 +1,10 @@
 import type { RefObject } from 'react'
-import { useRef } from 'react'
-import { useIsomorphicLayoutEffect } from './useIsomorphicLayoutEffect'
+import { useLayoutEffect, useRef } from 'react'
 
 export const useLatest = <T>(value: T): RefObject<T> => {
   const ref = useRef(value)
 
-  useIsomorphicLayoutEffect(() => {
+  useLayoutEffect(() => {
     ref.current = value
   }, [value])
 

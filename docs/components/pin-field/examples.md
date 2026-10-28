@@ -6,7 +6,7 @@
 
 ```tsx
 <PinField placeholder='••••' maxLength={4}>
-  <PinFieldHiddenInput />
+  <PinFieldInput />
   <PinFieldSlot index={0} />
   <PinFieldSlot index={1} />
   <PinFieldSlot index={2} />
@@ -20,12 +20,29 @@
 
 ```tsx
 <PinField mask={/^[A-Za-z0-9]+$/} placeholder='A1B2' maxLength={4}>
-  <PinFieldHiddenInput />
+  <PinFieldInput />
   <PinFieldSlot index={0} />
   <PinFieldSlot index={1} />
   <PinFieldSlot index={2} />
   <PinFieldSlot index={3} />
 </PinField>
+```
+
+### Controlled/Stateful: clear the code after a failed check
+
+```tsx
+const [code, setCode] = useState('');
+
+<>
+  <PinField maxLength={4} value={code} onChangeValue={setCode}>
+    <PinFieldInput aria-label='Verification code' />
+    <PinFieldSlot index={0} />
+    <PinFieldSlot index={1} />
+    <PinFieldSlot index={2} />
+    <PinFieldSlot index={3} />
+  </PinField>
+  <Button onClick={() => setCode('')}>Clear</Button>
+</>
 ```
 
 ## Form/Integration
@@ -34,7 +51,7 @@
 
 ```tsx
 <PinField placeholder='••••••' maxLength={6}>
-  <PinFieldHiddenInput name='otp' />
+  <PinFieldInput name='otp' />
   <PinFieldSlot index={0} />
   <PinFieldSlot index={1} />
   <PinFieldSlot index={2} />
@@ -50,7 +67,7 @@
 
 ```tsx
 <PinField maxLength={4}>
-  <PinFieldHiddenInput />
+  <PinFieldInput />
   <PinFieldSlot index={0} />
   <PinFieldSlot index={1} />
   <PinFieldSeparator />
@@ -66,7 +83,7 @@
 ```tsx
 <>
   <PinField error maxLength={4}>
-    <PinFieldHiddenInput />
+    <PinFieldInput />
     <PinFieldSlot index={0} />
     <PinFieldSlot index={1} />
     <PinFieldSlot index={2} />
@@ -82,7 +99,7 @@
 
 ```tsx
 <PinField disabled maxLength={4}>
-  <PinFieldHiddenInput />
+  <PinFieldInput />
   <PinFieldSlot index={0} />
   <PinFieldSlot index={1} />
   <PinFieldSlot index={2} />
@@ -96,7 +113,7 @@
 
 ```tsx
 <PinField maxLength={8}>
-  <PinFieldHiddenInput />
+  <PinFieldInput />
   <PinFieldSlot index={0} />
   <PinFieldSlot index={1} />
   <PinFieldSlot index={2} />

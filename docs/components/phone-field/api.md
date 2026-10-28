@@ -8,6 +8,9 @@
 <!-- AUTO-GENERATED:ROOT_API:start -->
 | Prop | Type | Default | Required | Notes |
 | --- | --- | --- | --- | --- |
+| `value` | `string` | `—` | No | Controlled phone number, as the text of the input. |
+| `defaultValue` | `string` | `''` | No | Initial phone number for uncontrolled usage. |
+| `onChangeValue` | `(value: string) => void` | `—` | No | Called with the phone number when it changes. |
 | `code` | `CountryCode` | `—` | No | ISO 3166-1 alpha-2 country code used to determine the phone mask format. |
 | `defaultCode` | `CountryCode` | `'' as CountryCode` | No | ISO 3166-1 alpha-2 country code used to determine the phone mask format. |
 | `onChangeCode` | `(code: CountryCode) => void` | `—` | No | ISO 3166-1 alpha-2 country code used to determine the phone mask format. |

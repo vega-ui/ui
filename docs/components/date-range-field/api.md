@@ -6,6 +6,9 @@
 <!-- AUTO-GENERATED:ROOT_API:start -->
 | Prop | Type | Default | Required | Notes |
 | --- | --- | --- | --- | --- |
+| `value` | `[start: string, end: string]` | `—` | No | Controlled range as a `[start, end]` tuple of `YYYY-MM-DD` strings. |
+| `defaultValue` | `[start: string, end: string]` | `['', '']` | No | Initial range for uncontrolled usage, like `value`. |
+| `onChangeValue` | `(value: [start: string, end: string]) => void` | `—` | No | Called with the range when it changes. |
 | `format` | `string` | `—` | Yes | Date format pattern used for input masking and parsing. |
 | `separator` | `string` | `—` | Yes | Character used to separate date segments in the input. |
 | `rangeSeparator` | `string` | `' – '` | No | Separator used between the start and end dates in the range input, by default an en dash between non-breaking spaces (`'\u00A0–\u00A0'`). |
@@ -34,7 +37,7 @@
 
 - The root owns a connected date pair, not two unrelated date values.
 - Partial entry is common during editing and should be handled explicitly.
-- The range follows the input text: it is parsed from `defaultValue`, on every `input` event, and after a form reset. While the start date is empty or incomplete the range is empty; while only the end is incomplete the range has just its start.
+- The root takes `value`, `defaultValue` and `onChangeValue` as a `[start, end]` tuple of `YYYY-MM-DD` days; `DateRangeFieldInput` shows it in `format` and still fires its own `onChange` and `onInput`. While the start date is empty or incomplete the range is `['', '']`; while only the end is incomplete the range has just its start. A form reset restores `defaultValue` unless the field is controlled.
 - When `min` or `max` change, both typed dates are clamped again like typing does, firing `input`.
 - `rangeSeparator` affects visible composition and parsing expectations.
 - Constraint props should stay aligned with actual form and reporting rules.

@@ -11,8 +11,9 @@ export interface DateRangeFieldContextState {
   calendar: CalendarSystem
   locale?: string
   rangeSeparator: string
+  text?: string
   disabled?: boolean
-  changeDate(date: [start: string, end: string]): void
+  changeText?(text: string): void
   disabledDates?: CalendarDatesDisabled
   inputRef?: RefObject<HTMLInputElement | null>
   min?: string
@@ -24,5 +25,4 @@ export const [DateRangeFieldProvider, useDateRangeFieldContext] = createContext<
   calendar: gregorianCalendar,
   rangeSeparator: ' – ',
   date: ['', ''],
-  changeDate() {}
 })

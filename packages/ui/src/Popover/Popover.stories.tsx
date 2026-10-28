@@ -291,7 +291,7 @@ export const ControlledExample: Story = {
     return (
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
-          <Button variant='secondary' onClick={() => setOpen(!open)}>
+          <Button variant='secondary'>
             {open ? 'Close' : 'Open'} Popover
           </Button>
         </PopoverTrigger>

@@ -34,9 +34,9 @@ Optional. Steps the value down.
 ## Valid Composition Patterns
 
 ```tsx
-<NumberField min={0} max={10}>
+<NumberField min={0} max={10} defaultValue={0}>
   <NumberFieldDecrementButton />
-  <NumberFieldInput defaultValue={0} />
+  <NumberFieldInput />
   <NumberFieldIncrementButton />
 </NumberField>
 ```

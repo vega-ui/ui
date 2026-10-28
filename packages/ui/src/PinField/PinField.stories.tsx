@@ -1,11 +1,13 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { useState } from 'react';
 
 import { PinField } from './PinField';
 import {
-  PinFieldHiddenInput,
+  PinFieldInput,
   PinFieldSeparator,
   PinFieldSlot,
 } from './components';
+import { Button } from '../Button';
 
 const meta = {
   title: 'Form/Fields/PinField/PinField',
@@ -40,7 +42,7 @@ export const FourDigitPIN: Story = {
     placeholder: '••••',
     maxLength: 4,
     children: [
-      <PinFieldHiddenInput />,
+      <PinFieldInput />,
       <PinFieldSlot index={0} />,
       <PinFieldSlot index={1} />,
       <PinFieldSlot index={2} />,
@@ -56,7 +58,7 @@ export const SixDigitOTP: Story = {
     placeholder: '••••••',
     maxLength: 6,
     children: [
-      <PinFieldHiddenInput />,
+      <PinFieldInput />,
       <PinFieldSlot index={0} />,
       <PinFieldSlot index={1} />,
       <PinFieldSlot index={2} />,
@@ -77,7 +79,7 @@ export const GroupedWithSeparator: Story = {
   args: {
     maxLength: 4,
     children: [
-      <PinFieldHiddenInput />,
+      <PinFieldInput />,
       <PinFieldSlot index={0} />,
       <PinFieldSlot index={1} />,
       <PinFieldSeparator />,
@@ -93,7 +95,7 @@ export const LongGroupedCode: Story = {
   args: {
     maxLength: 8,
     children: [
-      <PinFieldHiddenInput />,
+      <PinFieldInput />,
       <PinFieldSlot index={0} />,
       <PinFieldSlot index={1} />,
       <PinFieldSlot index={2} />,
@@ -119,7 +121,7 @@ export const AlphabeticCode: Story = {
     placeholder: 'ABCD',
     maxLength: 4,
     children: [
-      <PinFieldHiddenInput />,
+      <PinFieldInput />,
       <PinFieldSlot index={0} />,
       <PinFieldSlot index={1} />,
       <PinFieldSlot index={2} />,
@@ -136,7 +138,7 @@ export const AlphaNumericCode: Story = {
     placeholder: 'A1B2',
     maxLength: 4,
     children: [
-      <PinFieldHiddenInput />,
+      <PinFieldInput />,
       <PinFieldSlot index={0} />,
       <PinFieldSlot index={1} />,
       <PinFieldSlot index={2} />,
@@ -156,7 +158,7 @@ export const ErrorState: Story = {
     maxLength: 4,
     error: true,
     children: [
-      <PinFieldHiddenInput />,
+      <PinFieldInput />,
       <PinFieldSlot index={0} />,
       <PinFieldSlot index={1} />,
       <PinFieldSlot index={2} />,
@@ -171,11 +173,31 @@ export const Disabled: Story = {
     maxLength: 4,
     disabled: true,
     children: [
-      <PinFieldHiddenInput />,
+      <PinFieldInput />,
       <PinFieldSlot index={0} />,
       <PinFieldSlot index={1} />,
       <PinFieldSlot index={2} />,
       <PinFieldSlot index={3} />,
     ],
+  },
+};
+
+/** Controlled code, cleared after a failed check */
+export const Controlled: Story = {
+  render: (args) => {
+    const [code, setCode] = useState('');
+
+    return (
+      <div style={{ display: 'grid', gap: 12, justifyItems: 'start' }}>
+        <PinField {...args} maxLength={4} value={code} onChangeValue={setCode}>
+          <PinFieldInput aria-label='Verification code' />
+          <PinFieldSlot index={0} />
+          <PinFieldSlot index={1} />
+          <PinFieldSlot index={2} />
+          <PinFieldSlot index={3} />
+        </PinField>
+        <Button onClick={() => setCode('')}>Clear</Button>
+      </div>
+    );
   },
 };

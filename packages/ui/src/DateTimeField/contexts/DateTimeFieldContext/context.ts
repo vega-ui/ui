@@ -7,14 +7,14 @@ import { CalendarDatesDisabled } from '../../../Calendar';
 
 export interface DateTimeFieldContextState {
   date?: string
+  text?: string
   time: string
   timeStep?: number
   template: string
   calendar: CalendarSystem
   locale?: string
   disabled?: boolean
-  changeTime(time: string): void
-  changeDate(date: string | undefined): void
+  changeText?(text: string): void
   disabledDates?: CalendarDatesDisabled
   inputRef?: RefObject<HTMLInputElement | null>
   min?: string
@@ -26,6 +26,4 @@ export const [DateTimeFieldProvider, useDateTimeFieldContext] = createContext<Da
   timeStep: 1,
   template: 'dd.mm.yyyy, HH:MM',
   calendar: gregorianCalendar,
-  changeDate() {},
-  changeTime() {}
 })

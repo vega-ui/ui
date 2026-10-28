@@ -18,7 +18,7 @@ Trade-offs:
 
 ```tsx
 <PinField maxLength={6}>
-  <PinFieldHiddenInput name='otp' />
+  <PinFieldInput name='otp' />
   <PinFieldSlot index={0} />
   <PinFieldSlot index={1} />
   <PinFieldSlot index={2} />
@@ -46,7 +46,7 @@ Trade-offs:
 
 ```tsx
 <PinField maxLength={4}>
-  <PinFieldHiddenInput />
+  <PinFieldInput />
   <PinFieldSlot index={0} />
   <PinFieldSlot index={1} />
   <PinFieldSeparator />
@@ -73,7 +73,7 @@ Trade-offs:
 
 ```tsx
 <PinField mask={/^[A-Za-z0-9]+$/} maxLength={4}>
-  <PinFieldHiddenInput />
+  <PinFieldInput />
   <PinFieldSlot index={0} />
   <PinFieldSlot index={1} />
   <PinFieldSlot index={2} />
