@@ -13,7 +13,7 @@
 | `variant` | `SelectVariant` | `'field'` | No | Visual style variant for the select control. |
 | `size` | `SelectSize` | `'md'` | No | Visual size of the select control. |
 | `value` | `V \\| undefined` | `—` | No | currently selected value (controlled). |
-| `defaultValue` | `V \\| undefined` | `'' as V` | No | default selected value (uncontrolled). |
+| `defaultValue` | `V \\| undefined` | `—` | No | default selected value (uncontrolled). |
 | `onSelectValue` | `(value: V \\\| undefined) => void` | `—` | No | Callback fired when an option is selected. |
 | `ref` | `Ref<HTMLDivElement>` | `—` | No | Ref to the trigger button element. |
 | `open` | `boolean` | `—` | No | Controls the open state of the Select dropdown. |
