@@ -10,7 +10,7 @@ import {
 import style from './style.module.css'
 import { csx, mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
 import { SnapScrollerProvider } from './contexts';
-import { useScrollSnap } from '@vega-ui/hooks';
+import { useEventCallback, useScrollSnap } from '@vega-ui/hooks';
 import { SnapScrollerApiRef } from './types';
 
 export interface SnapScrollerProps extends HTMLAttributes<HTMLDivElement> {
@@ -107,7 +107,7 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
     target.current = null
   }
   
-  const scrollByDelta = (delta: number) => {
+  const scrollByDelta = useEventCallback((delta: number) => {
     if (getCommited() == null) measure()
     
     const index = target.current ?? getCommited()
@@ -115,7 +115,7 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
 
     const next = index + delta
     if (scrollToElementByKey(next, 'smooth')) target.current = next
-  };
+  });
   
   useImperativeHandle(apiRef, () => ({
     prev() {
@@ -128,10 +128,10 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
     getCommited,
     getPending,
     measure,
-  }));
+  }), [scrollByDelta, scrollToElementByKey, getCommited, getPending, measure]);
   
-  const setScrollRef = useCallback((element: HTMLDivElement) => {
-    if (scrollerRef.current) return;
+  const setScrollRef = useCallback((element: HTMLDivElement | null) => {
+    if (!element || scrollerRef.current) return;
     scrollerRef.current = element;
     
     if (didInitScroll.current) return;

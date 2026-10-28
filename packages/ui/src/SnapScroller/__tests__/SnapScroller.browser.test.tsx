@@ -221,6 +221,15 @@ describe('SnapScroller', () => {
   });
   
   describe('Edge Cases', () => {
+    it('keeps the same apiRef across renders', () => {
+      const apiRef = vi.fn();
+      const r = render(<SnapScrollerTest apiRef={apiRef} />);
+
+      r.rerender(<SnapScrollerTest apiRef={apiRef} />);
+
+      expect(apiRef).toHaveBeenCalledTimes(1);
+    });
+
     it('renders with no children (does not crash)', async () => {
       const r = render(<SnapScrollerTest>{null}</SnapScrollerTest>);
       const scroller = getScroller(r);
