@@ -1,1 +1,1 @@
-export type TextFieldSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | string
+export type TextFieldSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | (string & {})

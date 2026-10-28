@@ -1,1 +1,1 @@
-export type IconButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | string
+export type IconButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | (string & {})

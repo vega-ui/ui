@@ -86,7 +86,7 @@ Use it only when the exported parts are insufficient for the desired composition
 | Type | Definition | Notes |
 | --- | --- | --- |
 | `SelectProps<V extends string \| number = string>` | Root prop type | Generic value type for selection. |
-| `SelectSize` | `'sm' \| 'md' \| 'lg' \| string` | Visual size token. |
+| `SelectSize` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| string` | Visual size token. |
 | `SelectVariant` | `'inline' \| 'field' \| string` | Visual trigger variant. |
 
 ## State Model

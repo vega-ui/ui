@@ -1,1 +1,1 @@
-export type TextAreaSize = 'sm' | 'md' | 'lg' | string
+export type TextAreaSize = 'sm' | 'md' | 'lg' | (string & {})
