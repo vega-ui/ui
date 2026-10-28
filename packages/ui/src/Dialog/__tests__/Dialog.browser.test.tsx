@@ -190,15 +190,15 @@ describe('Dialog', () => {
         });
       });
       
-      it('calls onOpenChange(true) on trigger interaction', async () => {
-        const onOpenChange = vi.fn();
-        r.rerender(<DialogTest open={false} onOpenChange={onOpenChange} />);
+      it('calls onChangeOpen(true) on trigger interaction', async () => {
+        const onChangeOpen = vi.fn();
+        r.rerender(<DialogTest open={false} onChangeOpen={onChangeOpen} />);
         
         await openByTrigger(r);
         
         await waitFor(() => {
-          expect(onOpenChange).toHaveBeenCalledTimes(1);
-          expect(onOpenChange).toHaveBeenLastCalledWith(true);
+          expect(onChangeOpen).toHaveBeenCalledTimes(1);
+          expect(onChangeOpen).toHaveBeenLastCalledWith(true);
         });
       });
       
@@ -207,40 +207,40 @@ describe('Dialog', () => {
         await toBeOpened(r);
       });
       
-      it('calls onOpenChange(false) on outside press when open=true', async () => {
-        const onOpenChange = vi.fn();
-        r.rerender(<DialogTest open onOpenChange={onOpenChange} />);
+      it('calls onChangeOpen(false) on outside press when open=true', async () => {
+        const onChangeOpen = vi.fn();
+        r.rerender(<DialogTest open onChangeOpen={onChangeOpen} />);
         await toBeOpened(r);
         
         await closeByOutsideClick();
         
-        expect(onOpenChange).toHaveBeenCalledTimes(1);
-        expect(onOpenChange).toHaveBeenLastCalledWith(false);
+        expect(onChangeOpen).toHaveBeenCalledTimes(1);
+        expect(onChangeOpen).toHaveBeenLastCalledWith(false);
       });
       
-      it('calls onOpenChange(false) on close button click when open=true', async () => {
-        const onOpenChange = vi.fn();
-        r.rerender(<DialogTest open onOpenChange={onOpenChange} />);
+      it('calls onChangeOpen(false) on close button click when open=true', async () => {
+        const onChangeOpen = vi.fn();
+        r.rerender(<DialogTest open onChangeOpen={onChangeOpen} />);
         await toBeOpened(r);
         
         await closeByCloseButton(r);
         
         await waitFor(() => {
-          expect(onOpenChange).toHaveBeenCalledTimes(1);
-          expect(onOpenChange).toHaveBeenLastCalledWith(false);
+          expect(onChangeOpen).toHaveBeenCalledTimes(1);
+          expect(onChangeOpen).toHaveBeenLastCalledWith(false);
         });
       });
       
       it('does not close itself until parent updates open=false', async () => {
-        const onOpenChange = vi.fn();
-        r.rerender(<DialogTest open onOpenChange={onOpenChange} />);
+        const onChangeOpen = vi.fn();
+        r.rerender(<DialogTest open onChangeOpen={onChangeOpen} />);
         
         await toBeOpened(r);
         await closeByOutsideClick();
         
-        expect(onOpenChange).toHaveBeenCalledWith(false);
+        expect(onChangeOpen).toHaveBeenCalledWith(false);
         
-        r.rerender(<DialogTest open={false} onOpenChange={onOpenChange} />);
+        r.rerender(<DialogTest open={false} onChangeOpen={onChangeOpen} />);
         await toBeClosed(r);
       });
     });

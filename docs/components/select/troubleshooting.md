@@ -154,7 +154,7 @@ The component is used in controlled mode, but the parent state is not updated to
 ### How To Verify
 
 - inspect the current `value` prop
-- confirm whether `onSelectValue` updates the same source of truth
+- confirm whether `onChangeValue` updates the same source of truth
 
 ### Fix
 
@@ -163,7 +163,7 @@ Use one source of truth for the controlled value and update it directly.
 ```tsx
 const [value, setValue] = useState<string | number | undefined>();
 
-<Select value={value} onSelectValue={setValue}>
+<Select value={value} onChangeValue={setValue}>
   <SelectHiddenSelect />
   <SelectCombobox>
     <SelectValue placeholder='Select framework' />

@@ -92,7 +92,7 @@ const MonthFilter = () => {
   };
 
   return (
-    <Popover open={open} onOpenChange={setOpen} placement='bottom-start' role='dialog'>
+    <Popover open={open} onChangeOpen={setOpen} placement='bottom-start' role='dialog'>
       <PopoverTrigger asChild>
         <Button variant='secondary'>
           {formatCalendarDate(gregorianCalendar, month, 'en-US', { month: 'short', year: 'numeric' })}

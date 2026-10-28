@@ -210,21 +210,21 @@ describe('Sheet', () => {
       describe('controlled', () => {
         describe('open=false', () => {
           let r: RenderResult;
-          const onOpenChange = vi.fn();
+          const onChangeOpen = vi.fn();
           
           beforeEach(() => {
-            r = render(<SheetTest open={false} onOpenChange={onOpenChange} />);
+            r = render(<SheetTest open={false} onChangeOpen={onChangeOpen} />);
           });
           
           it('is closed initially', async () => {
             await waitClosed(r)
           });
           
-          it('requests open on trigger click (calls onOpenChange(true))', async () => {
+          it('requests open on trigger click (calls onChangeOpen(true))', async () => {
             await userEvent.click(getTrigger(r));
             
-            expect(onOpenChange).toHaveBeenCalledTimes(1);
-            expect(onOpenChange).toHaveBeenCalledWith(true);
+            expect(onChangeOpen).toHaveBeenCalledTimes(1);
+            expect(onChangeOpen).toHaveBeenCalledWith(true);
             
             await expect.element(queryPortal(r)).not.toBeInTheDocument();
             await expect.element(queryContent(r)).not.toBeInTheDocument();
@@ -233,9 +233,9 @@ describe('Sheet', () => {
           it('opens only after parent updates open=true', async () => {
             await userEvent.click(getTrigger(r));
             
-            expect(onOpenChange).toHaveBeenCalledWith(true);
+            expect(onChangeOpen).toHaveBeenCalledWith(true);
             
-            r.rerender(<SheetTest open onOpenChange={onOpenChange} />);
+            r.rerender(<SheetTest open onChangeOpen={onChangeOpen} />);
             
             await expect.element(getPortal(r)).toBeInTheDocument();
             await expect.element(getContent(r)).toBeInTheDocument();
@@ -245,10 +245,10 @@ describe('Sheet', () => {
         
         describe('open=true', () => {
           let r: RenderResult;
-          const onOpenChange = vi.fn();
+          const onChangeOpen = vi.fn();
           
           beforeEach(() => {
-            r = render(<SheetTest open onOpenChange={onOpenChange} />);
+            r = render(<SheetTest open onChangeOpen={onChangeOpen} />);
           });
           
           it('is opened initially', async () => {
@@ -258,13 +258,13 @@ describe('Sheet', () => {
             await waitOpened(r);
           });
           
-          it('requests close on outside pointerdown (calls onOpenChange(false)) and stays mounted until parent updates', async () => {
+          it('requests close on outside pointerdown (calls onChangeOpen(false)) and stays mounted until parent updates', async () => {
             await waitOpened(r);
             
             fireEvent.pointerDown(document.body);
             
-            expect(onOpenChange).toHaveBeenCalledTimes(1);
-            expect(onOpenChange).toHaveBeenCalledWith(false);
+            expect(onChangeOpen).toHaveBeenCalledTimes(1);
+            expect(onChangeOpen).toHaveBeenCalledWith(false);
             
             await expect.element(getPortal(r)).toBeInTheDocument();
             await expect.element(getContent(r)).toBeInTheDocument();
@@ -275,9 +275,9 @@ describe('Sheet', () => {
             await waitOpened(r);
             
             fireEvent.pointerDown(document.body);
-            expect(onOpenChange).toHaveBeenCalledWith(false);
+            expect(onChangeOpen).toHaveBeenCalledWith(false);
             
-            r.rerender(<SheetTest open={false} onOpenChange={onOpenChange} />);
+            r.rerender(<SheetTest open={false} onChangeOpen={onChangeOpen} />);
             
             await waitClosed(r);
           });
@@ -452,23 +452,23 @@ describe('Sheet', () => {
       
       describe('controlled', () => {
         it('does not request open when clickEnabled=false', async () => {
-          const onOpenChange = vi.fn();
-          const r = render(<SheetTest open={false} onOpenChange={onOpenChange} clickEnabled={false} />);
+          const onChangeOpen = vi.fn();
+          const r = render(<SheetTest open={false} onChangeOpen={onChangeOpen} clickEnabled={false} />);
           
           await userEvent.click(getTrigger(r));
           
-          expect(onOpenChange).not.toHaveBeenCalled();
+          expect(onChangeOpen).not.toHaveBeenCalled();
           await expect.element(queryContent(r)).not.toBeInTheDocument();
         });
         
         it('requests open when clickEnabled=true', async () => {
-          const onOpenChange = vi.fn();
-          const r = render(<SheetTest open={false} onOpenChange={onOpenChange} clickEnabled />);
+          const onChangeOpen = vi.fn();
+          const r = render(<SheetTest open={false} onChangeOpen={onChangeOpen} clickEnabled />);
           
           await userEvent.click(getTrigger(r));
           
-          expect(onOpenChange).toHaveBeenCalledTimes(1);
-          expect(onOpenChange).toHaveBeenCalledWith(true);
+          expect(onChangeOpen).toHaveBeenCalledTimes(1);
+          expect(onChangeOpen).toHaveBeenCalledWith(true);
         });
       });
     });
@@ -502,27 +502,27 @@ describe('Sheet', () => {
       
       describe('controlled', () => {
         it('does not request close on outside pointerdown when dismissible=false', async () => {
-          const onOpenChange = vi.fn();
-          const r = render(<SheetTest open dismissible={false} onOpenChange={onOpenChange} />);
+          const onChangeOpen = vi.fn();
+          const r = render(<SheetTest open dismissible={false} onChangeOpen={onChangeOpen} />);
           
           await waitOpened(r);
           
           fireEvent.pointerDown(document.body);
           
-          expect(onOpenChange).not.toHaveBeenCalled();
+          expect(onChangeOpen).not.toHaveBeenCalled();
           await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
         });
         
         it('requests close on outside pointerdown when dismissible=true (and closable=true by default)', async () => {
-          const onOpenChange = vi.fn();
-          const r = render(<SheetTest open dismissible onOpenChange={onOpenChange} />);
+          const onChangeOpen = vi.fn();
+          const r = render(<SheetTest open dismissible onChangeOpen={onChangeOpen} />);
           
           await waitOpened(r);
           
           fireEvent.pointerDown(document.body);
           
-          expect(onOpenChange).toHaveBeenCalledTimes(1);
-          expect(onOpenChange).toHaveBeenCalledWith(false);
+          expect(onChangeOpen).toHaveBeenCalledTimes(1);
+          expect(onChangeOpen).toHaveBeenCalledWith(false);
           
           await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
         });
@@ -558,27 +558,27 @@ describe('Sheet', () => {
       
       describe('controlled', () => {
         it('does not request close on outside pointerdown when closable=false', async () => {
-          const onOpenChange = vi.fn();
-          const r = render(<SheetTest open closable={false} onOpenChange={onOpenChange} />);
+          const onChangeOpen = vi.fn();
+          const r = render(<SheetTest open closable={false} onChangeOpen={onChangeOpen} />);
           
           await waitOpened(r);
           
           fireEvent.pointerDown(document.body);
           
-          expect(onOpenChange).not.toHaveBeenCalled();
+          expect(onChangeOpen).not.toHaveBeenCalled();
           await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
         });
         
         it('requests close on outside pointerdown when closable=true (and dismissible=true by default)', async () => {
-          const onOpenChange = vi.fn();
-          const r = render(<SheetTest open closable onOpenChange={onOpenChange} />);
+          const onChangeOpen = vi.fn();
+          const r = render(<SheetTest open closable onChangeOpen={onChangeOpen} />);
           
           await waitOpened(r);
           
           fireEvent.pointerDown(document.body);
           
-          expect(onOpenChange).toHaveBeenCalledTimes(1);
-          expect(onOpenChange).toHaveBeenCalledWith(false);
+          expect(onChangeOpen).toHaveBeenCalledTimes(1);
+          expect(onChangeOpen).toHaveBeenCalledWith(false);
           
           await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
         });
@@ -647,14 +647,14 @@ describe('Sheet', () => {
     });
     
     it('does not request close on outside press when controlled and dismissible=true but closable=false', async () => {
-      const onOpenChange = vi.fn();
-      const r = render(<SheetTest open dismissible closable={false} onOpenChange={onOpenChange} />);
+      const onChangeOpen = vi.fn();
+      const r = render(<SheetTest open dismissible closable={false} onChangeOpen={onChangeOpen} />);
       
       await waitOpened(r);
       
       fireEvent.pointerDown(document.body);
       
-      expect(onOpenChange).not.toHaveBeenCalled();
+      expect(onChangeOpen).not.toHaveBeenCalled();
       await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
     });
     

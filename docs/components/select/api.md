@@ -14,10 +14,10 @@
 | `size` | `SelectSize` | `'md'` | No | Visual size of the select control. |
 | `value` | `V \\| undefined` | `—` | No | currently selected value (controlled). |
 | `defaultValue` | `V \\| undefined` | `—` | No | default selected value (uncontrolled). |
-| `onSelectValue` | `(value: V \\\| undefined) => void` | `—` | No | Callback fired when an option is selected. |
+| `onChangeValue` | `(value: V \\\| undefined) => void` | `—` | No | Callback fired when an option is selected. |
 | `ref` | `Ref<HTMLDivElement>` | `—` | No | Ref to the trigger button element. |
 | `open` | `boolean` | `—` | No | Controls the open state of the Select dropdown. |
-| `onOpenChange` | `(open: boolean) => void` | `—` | No | Callback fired when the open state changes. |
+| `onChangeOpen` | `(open: boolean) => void` | `—` | No | Callback fired when the open state changes. |
 | `defaultOpen` | `boolean` | `false` | No | Sets the initial open state of the Select when used in uncontrolled mode. |
 | `typeMatchEnabled` | `boolean` | `true` | No | Enables type-based matching for typeahead navigation. |
 <!-- AUTO-GENERATED:ROOT_API:end -->

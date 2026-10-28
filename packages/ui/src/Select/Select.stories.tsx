@@ -225,7 +225,7 @@ export const ControlledOpen: Story = {
           </Button>
         </Row>
         
-        <Select {...props} open={open} onOpenChange={setOpen} defaultValue='beta'>
+        <Select {...props} open={open} onChangeOpen={setOpen} defaultValue='beta'>
           <SelectHiddenSelect />
           <SelectCombobox>
             <SelectValue placeholder='Pick an option' />
@@ -286,7 +286,7 @@ export const ControlledValueWithClear: Story = {
           </Text>
         </Card>
         
-        <Select {...props} value={value} onSelectValue={setValue}>
+        <Select {...props} value={value} onChangeValue={setValue}>
           <SelectHiddenSelect />
           <SelectCombobox>
             <SelectValue placeholder='Select priority' />
@@ -416,7 +416,7 @@ export const NestedDialogFlow: Story = {
                 </Text>
                 
                 <div style={{ marginTop: 14, display: 'grid', gap: 12 }}>
-                  <Select {...props} value={selected} onSelectValue={setSelected}>
+                  <Select {...props} value={selected} onChangeValue={setSelected}>
                     <SelectHiddenSelect />
                     <SelectCombobox>
                       <SelectValue placeholder='Select a template' />
@@ -471,7 +471,7 @@ export const WithFilterSearch: Story = {
       setSearch(e.currentTarget.value)
     }
     
-    const onOpenChange = (open: boolean) => {
+    const onChangeOpen = (open: boolean) => {
       if (!open) setSearch('')
     }
     
@@ -480,7 +480,7 @@ export const WithFilterSearch: Story = {
     }
     
     return (
-      <Select {...props} onOpenChange={onOpenChange} onSelectValue={setSelected} value={selected}>
+      <Select {...props} onChangeOpen={onChangeOpen} onChangeValue={setSelected} value={selected}>
         <SelectHiddenSelect />
         <SelectCombobox>
           <SelectValue placeholder='Select an item'>

@@ -41,7 +41,7 @@ export interface TooltipProps extends HTMLAttributes<HTMLDivElement> {
    *
    * @param state - The new open state (`true` or `false`)
    */
-  onOpenChange?(state: boolean): void
+  onChangeOpen?(state: boolean): void
 }
 
 /** A Tooltip is a UI component that provides brief, context-sensitive information when a user hovers over or focuses on an element, often displayed as a small popup near the element */
@@ -50,13 +50,13 @@ export const Tooltip: FC<TooltipProps> = ({
   delayClose = 0,
   open: controlledOpen,
   defaultOpen = false,
-  onOpenChange,
+  onChangeOpen,
   className,
   children,
   ...props
 }) => {
   const arrowRef = useRef(null);
-  const [open, setOpen] = useControlledState(controlledOpen, defaultOpen, onOpenChange);
+  const [open, setOpen] = useControlledState(controlledOpen, defaultOpen, onChangeOpen);
 
   const { floatingStyles, context } = useFloating({
     whileElementsMounted: autoUpdate,

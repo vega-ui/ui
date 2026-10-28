@@ -19,7 +19,7 @@
 | `defaultOpen` | `boolean` | `false` | No | Controls whether the sheet is initially open (umcontrolled). |
 | `open` | `boolean` | `—` | No | Controls whether the sheet is currently open (controlled). |
 | `clickEnabled` | `boolean` | `true` | No | Enables interaction via outside click. |
-| `onOpenChange` | `(value: boolean) => void` | `—` | No | Callback fired when the open state changes. |
+| `onChangeOpen` | `(value: boolean) => void` | `—` | No | Callback fired when the open state changes. |
 | `children` | `ReactNode \\| ReactNode[]` | `—` | No | content rendered inside the sheet. |
 | `ref` | `Ref<HTMLDivElement>` | `—` | No | Ref to the root container of the sheet. |
 <!-- AUTO-GENERATED:ROOT_API:end -->

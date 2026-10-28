@@ -19,17 +19,17 @@ export type PhoneFieldSelectProps = Omit<SelectProps, 'defaultValue' | 'value'>
  *
  * The component acts as a controlled Select:
  * - `value` is driven by PhoneField context
- * - `onSelectValue` is composed: both local and PhoneField handlers are called
+ * - `onChangeValue` is composed: both local and PhoneField handlers are called
  *
  * This component is not intended to be used standalone.
  * It should always be rendered within a PhoneField.
  */
-export const PhoneFieldSelect: FC<PhoneFieldSelectProps> = ({ className, onSelectValue, ...props }) => {
+export const PhoneFieldSelect: FC<PhoneFieldSelectProps> = ({ className, onChangeValue, ...props }) => {
   const { onSelectValue: _onSelectValue, code } = usePhoneFieldContext()
   const { size } = useTextFieldContext()
   
   const onSelect = (value: CountryCode) => {
-    onSelectValue?.(value)
+    onChangeValue?.(value)
     _onSelectValue?.(value)
   }
   return (
@@ -37,7 +37,7 @@ export const PhoneFieldSelect: FC<PhoneFieldSelectProps> = ({ className, onSelec
       size={size}
       className={csx(style.select, className)}
       value={code}
-      onSelectValue={onSelect}
+      onChangeValue={onSelect}
       {...props}
     />
   )

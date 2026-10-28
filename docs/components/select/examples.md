@@ -38,7 +38,7 @@ const [value, setValue] = useState<string | number | undefined>('medium');
     Clear
   </Button>
 
-  <Select value={value} onSelectValue={setValue}>
+  <Select value={value} onChangeValue={setValue}>
     <SelectHiddenSelect />
     <SelectCombobox>
       <SelectValue placeholder='Select incident priority' />
@@ -65,7 +65,7 @@ const [open, setOpen] = useState(false);
     {open ? 'Close' : 'Open'}
   </Button>
 
-  <Select open={open} onOpenChange={setOpen} defaultValue='beta'>
+  <Select open={open} onChangeOpen={setOpen} defaultValue='beta'>
     <SelectHiddenSelect />
     <SelectCombobox>
       <SelectValue placeholder='Pick an option' />

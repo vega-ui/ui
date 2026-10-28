@@ -28,7 +28,7 @@ export interface DialogProps {
    * Callback fired when the modal's open state changes.
    * Receives the next boolean state.
    */
-  onOpenChange?(state: boolean): void
+  onChangeOpen?(state: boolean): void
 
   /**
    * The content rendered inside the dialog.
@@ -46,12 +46,12 @@ export interface DialogProps {
 /** A Dialog is a UI component that displays content in a layer above the main page, often used for alerts, forms, or confirmations, requiring user interaction before returning to the main content */
 export const Dialog: FC<DialogProps> = ({
   open: controlledOpen,
-  onOpenChange,
+  onChangeOpen,
   fluid,
   defaultOpen = false,
   children,
 }) => {
-  const [open, setOpen] = useControlledState(controlledOpen, defaultOpen, onOpenChange)
+  const [open, setOpen] = useControlledState(controlledOpen, defaultOpen, onChangeOpen)
 
   const { context } = useFloating({
     open,

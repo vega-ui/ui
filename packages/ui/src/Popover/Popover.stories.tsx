@@ -289,7 +289,7 @@ export const ControlledExample: Story = {
     const [open, setOpen] = useState(false);
     
     return (
-      <Popover open={open} onOpenChange={setOpen}>
+      <Popover open={open} onChangeOpen={setOpen}>
         <PopoverTrigger asChild>
           <Button variant='secondary'>
             {open ? 'Close' : 'Open'} Popover
@@ -301,7 +301,7 @@ export const ControlledExample: Story = {
             Controlled
           </Heading>
           <Text asChild size={2}>
-            <p>State is controlled externally via open/onOpenChange.</p>
+            <p>State is controlled externally via open/onChangeOpen.</p>
           </Text>
           <Separator style={{ marginBlock: 12 }} />
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
