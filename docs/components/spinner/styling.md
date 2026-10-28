@@ -31,7 +31,7 @@ The root uses a radial/conic gradient plus mask to render the animated ring.
 ### Secondary loading indicator
 
 ```tsx
-<Spinner size={5} variant='secondary' />
+<Spinner size={5} variant='secondary' aria-label='Loading' />
 ```
 
 ## Do Not Override

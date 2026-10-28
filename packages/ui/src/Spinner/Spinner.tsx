@@ -33,6 +33,6 @@ export const Spinner: FC<SpinnerProps> = ({
   ...props
 }) => {
   return (
-    <div ref={ref} data-size={size} data-variant={variant} className={csx(style.spinner, className)} {...props} />
+    <div ref={ref} role='progressbar' data-size={size} data-variant={variant} className={csx(style.spinner, className)} {...props} />
   )
 }

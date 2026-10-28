@@ -87,9 +87,22 @@ describe('Spinner', () => {
         const spinner = getSpinner(r);
         await expect.element(spinner).not.toHaveRole('button');
       });
+
+      it('is an indeterminate progressbar like <progress> without a value', async () => {
+        const spinner = getSpinner(r);
+
+        await expect.element(spinner).toHaveRole('progressbar');
+        await expect.element(spinner).not.toHaveAttribute('aria-valuenow');
+      });
     });
     
     describe('aria', () => {
+      it('takes its accessible name from aria-label', async () => {
+        const r = render(<SpinnerTest aria-label='Loading orders' />);
+
+        await expect.element(r.getByRole('progressbar', { name: 'Loading orders' })).toBeInTheDocument();
+      });
+
       it('allows aria attributes to be passed through', async () => {
         const r = render(<SpinnerTest aria-hidden='true' />);
         
