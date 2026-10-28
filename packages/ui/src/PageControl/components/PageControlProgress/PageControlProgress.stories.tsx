@@ -13,15 +13,6 @@ const meta: Meta<typeof PageControlProgress> = {
       url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/VegaUI--Community-?node-id=2945-6792&t=HpDBe4lBNsmz9mds-4',
     },
   },
-  argTypes: {
-    variant: {
-      control: 'radio',
-      options: [
-        'default',
-        'high-contrast',
-      ]
-    }
-  },
   tags: ['autodocs'],
 };
 

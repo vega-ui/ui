@@ -32,6 +32,43 @@ jobs:
       - name: Validate Docs
         run: pnpm docs:validate
 
+      - name: Typecheck
+        run: pnpm --filter @vega-ui/react exec tsc -p tsconfig.app.json --noEmit
+
+      - name: Run Unit Tests
+        run: pnpm turbo run test --filter=@vega-ui/utils --filter=@vega-ui/i18n
+
+  browser-tests:
+    name: Browser Tests (${{ matrix.browser }})
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - browser: chromium
+            playwright: chromium-headless-shell
+          - browser: firefox
+            playwright: firefox
+          - browser: webkit
+            playwright: webkit
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
       - name: Resolve Playwright version
         id: resolve-playwright
         shell: bash
@@ -62,13 +99,17 @@ jobs:
         id: playwright-cache
         with:
           path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-${{ steps.resolve-playwright.outputs.PLAYWRIGHT_VERSION }}
+          key: ${{ runner.os }}-playwright-${{ matrix.browser }}-${{ steps.resolve-playwright.outputs.PLAYWRIGHT_VERSION }}
           restore-keys: |
-            ${{ runner.os }}-playwright-
+            ${{ runner.os }}-playwright-${{ matrix.browser }}-
 
       - name: Install Playwright Dependencies
         shell: bash
-        run: pnpm exec playwright install --with-deps chromium-headless-shell webkit firefox
+        run: pnpm exec playwright install --with-deps ${{ matrix.playwright }}
 
-      - name: Run Tests
-        run: pnpm test
+      - name: Run Hooks Tests
+        if: matrix.browser == 'chromium'
+        run: pnpm turbo run test --filter=@vega-ui/hooks
+
+      - name: Run UI Tests
+        run: pnpm --filter @vega-ui/react exec vitest run --project ${{ matrix.browser }}
