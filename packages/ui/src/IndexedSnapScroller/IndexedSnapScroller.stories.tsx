@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { IndexedSnapScroller } from './IndexedSnapScroller';
 import { IndexedSnapScrollerContent as _IndexedSnapScrollerContent, type IndexedSnapScrollerContentProps } from './components';
-import { ChangeEvent, FC, useState } from 'react';
+import { FC, useState } from 'react';
 import { useIndexedSnapScrollerContext } from './contexts';
 import { NumberField, NumberFieldDecrementButton, NumberFieldIncrementButton, NumberFieldInput } from '../NumberField';
 
@@ -69,10 +69,6 @@ export const Controlled: Story = {
   render(props) {
     const [index, setIndex] = useState(0)
     
-    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
-      const value = Number(e.currentTarget.value.replace(/\s/i, ''))
-      setIndex(value)
-    }
     
     const onScrollSnapChanging = (element: HTMLElement, index: number) => {
       setIndex(index)
@@ -81,9 +77,9 @@ export const Controlled: Story = {
     
     return (
       <div>
-        <NumberField>
+        <NumberField value={index} onChangeValue={setIndex}>
           <NumberFieldDecrementButton />
-          <NumberFieldInput placeholder='Index' value={index} onChange={onChange} />
+          <NumberFieldInput placeholder='Index' />
           <NumberFieldIncrementButton />
         </NumberField>
         <IndexedSnapScroller {...props} onScrollSnapChanging={onScrollSnapChanging} index={index}>

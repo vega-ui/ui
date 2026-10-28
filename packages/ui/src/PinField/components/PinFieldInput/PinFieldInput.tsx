@@ -6,22 +6,24 @@ import {
   InputHTMLAttributes,
   KeyboardEvent,
   Ref,
-  SyntheticEvent
+  SyntheticEvent,
 } from 'react';
 import { mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
 import { usePinFieldContext } from '../../contexts';
 import { VisuallyHidden } from '../../../VisuallyHidden';
 
-export interface PinFieldHiddenInputProps extends DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement> {
+export interface PinFieldInputProps extends Omit<DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, 'disabled' | 'maxLength' | 'value' | 'defaultValue'> {
   ref?: Ref<HTMLInputElement>
 }
 
 /**
- * PinFieldHiddenInput is the single, visually hidden `<input>` that backs the PinField UI.
+ * PinFieldInput is the single, visually hidden `<input>` that backs the PinField UI.
  *
  * It stores the full PIN value in one place while the visible pin “cells” render the
  * per-character representation. The input is hidden via `VisuallyHidden` but remains
  * focusable and accessible for keyboard input, screen readers, and browser autofill.
+ * The code, `disabled` and `maxLength` come from `PinField`, so the slots and the
+ * input always agree; `onChange` and `onInput` still report each edit of the text.
  *
  * The component is fully integrated with `usePinFieldContext()` and is responsible for:
  * - Synchronizing the active cell index based on caret/selection position (`syncActive`)
@@ -37,7 +39,7 @@ export interface PinFieldHiddenInputProps extends DetailedHTMLProps<InputHTMLAtt
  *   selection state is up to date before computing the next active index.
  * - External event handlers passed via props are merged with internal handlers.
  */
-export const PinFieldHiddenInput: FC<PinFieldHiddenInputProps> = ({
+export const PinFieldInput: FC<PinFieldInputProps> = ({
   ref,
   inputMode = 'numeric',
   onKeyDown: _onKeyDown,
@@ -52,6 +54,9 @@ export const PinFieldHiddenInput: FC<PinFieldHiddenInputProps> = ({
     disabled,
     inputRef,
     innerInputRef,
+    placeholder,
+    value,
+    setValue,
     setActive,
     syncActive,
     maxLength,
@@ -69,6 +74,7 @@ export const PinFieldHiddenInput: FC<PinFieldHiddenInputProps> = ({
   }
   
   const onInput = (e: InputEvent<HTMLInputElement>) => {
+    setValue(e.currentTarget.value)
     if (e.currentTarget.selectionStart === null) return;
     
     requestAnimationFrame(() => syncActive())
@@ -78,13 +84,15 @@ export const PinFieldHiddenInput: FC<PinFieldHiddenInputProps> = ({
     const input = e.currentTarget
     const value = input.value
     const start= input.selectionStart
-    
-    if (e.key === 'ArrowUp') {
+
+    if (e.shiftKey) return
+
+    if (e.key === 'ArrowUp' || e.key === 'Home') {
       e.preventDefault()
       syncActive(0)
     }
     
-    if (e.key === 'ArrowDown') {
+    if (e.key === 'ArrowDown' || e.key === 'End') {
       e.preventDefault()
       syncActive(value.length)
     }
@@ -120,6 +128,8 @@ export const PinFieldHiddenInput: FC<PinFieldHiddenInputProps> = ({
       <input
         disabled={disabled}
         aria-invalid={error}
+        placeholder={placeholder}
+        value={value}
         inputMode={inputMode}
         maxLength={maxLength}
         data-error={error}

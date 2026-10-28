@@ -6,6 +6,9 @@
 <!-- AUTO-GENERATED:ROOT_API:start -->
 | Prop | Type | Default | Required | Notes |
 | --- | --- | --- | --- | --- |
+| `value` | `number` | `—` | No | Controlled value. |
+| `defaultValue` | `number` | `NaN` | No | Initial value for uncontrolled usage. |
+| `onChangeValue` | `(value: number) => void` | `—` | No | Called with the number when it changes, `NaN` when the field is emptied. |
 | `step` | `number` | `1` | No | Amount to increment or decrement the value by when using arrow keys or spinner controls. |
 | `min` | `number` | `Number.MIN_SAFE_INTEGER` | No | Minimum allowed value for the input. |
 | `max` | `number` | `Number.MAX_SAFE_INTEGER` | No | Maximum allowed value for the input. |
@@ -37,4 +40,4 @@
 - Arrow keys and optional wheel events step the value through root logic. Like `<input type="number">`, the wheel steps only the focused field; without focus it scrolls the page.
 - A step keeps the decimals of the value and of `step` (`0.7` + `0.1` gives `0.8`).
 - A root `onKeyDown` runs after the built-in arrow handling and does not replace it.
-- Input value remains native string input until parsed or clamped by the numeric helpers.
+- The root takes `value`, `defaultValue` and `onChangeValue` as a number, `NaN` for an empty field; `NumberFieldInput` shows the formatted text and still fires its own `onChange` and `onInput`. A form reset restores `defaultValue` unless the field is controlled.

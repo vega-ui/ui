@@ -1,6 +1,6 @@
 import { MASKITO_DEFAULT_OPTIONS, MaskitoOptions, maskitoInitialCalibrationPlugin } from '@maskito/core';
 import { CalendarSystem, toLatinDigits } from '@vega-ui/i18n';
-import { subscribeInputValue, normalizeTemplateDate, parseTemplateDate } from '@vega-ui/utils';
+import { normalizeTemplateDate, parseTemplateDate } from '@vega-ui/utils';
 
 export interface GetDateRangeMaskOptions {
   template: string;
@@ -8,10 +8,9 @@ export interface GetDateRangeMaskOptions {
   calendar: CalendarSystem;
   min?: string;
   max?: string;
-  onSync(value: string): void;
 }
 
-export const getDateRangeMaskOptions = ({ template, separator, calendar, min, max, onSync }: GetDateRangeMaskOptions): MaskitoOptions => {
+export const getDateRangeMaskOptions = ({ template, separator, calendar, min, max }: GetDateRangeMaskOptions): MaskitoOptions => {
   const dateMask = Array.from(template, (char) => /[dmy]/.test(char) ? /\d/ : char)
 
   return {
@@ -42,7 +41,6 @@ export const getDateRangeMaskOptions = ({ template, separator, calendar, min, ma
     ],
     plugins: [
       maskitoInitialCalibrationPlugin(),
-      (element) => subscribeInputValue(element, onSync),
     ],
   }
 }

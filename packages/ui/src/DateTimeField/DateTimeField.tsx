@@ -2,10 +2,36 @@ import { FC, useRef, useState } from 'react';
 import { TextField, TextFieldProps } from '../TextField';
 import { DateTimeFieldProvider } from './contexts';
 import { CalendarDatesDisabled } from '../Calendar';
-import { parseISODateTime, getDateTimeTemplate } from '@vega-ui/utils';
+import { useControlledState, useFormReset } from '@vega-ui/hooks';
+import {
+  formatTemplateDate,
+  getDateTimeTemplate,
+  getISODatePart,
+  getISOTimePart,
+  parseISODateTime,
+  parseTemplateDate,
+} from '@vega-ui/utils';
 import { CalendarSystem, gregorianCalendar } from '@vega-ui/i18n';
 
-export interface DateTimeFieldProps extends TextFieldProps {
+export interface DateTimeFieldProps extends Omit<TextFieldProps, 'defaultValue'> {
+  /**
+   * Controlled date and time as a `YYYY-MM-DDTHH:mm` string (with `:ss` when
+   * the format has seconds), `''` while the field has no complete value.
+   */
+  value?: string
+
+  /**
+   * Initial date and time for uncontrolled usage, like `value`.
+   * Defaults to `''`, an empty field.
+   */
+  defaultValue?: string
+
+  /**
+   * Called with the date and time when they change, `''` when the text is
+   * emptied or incomplete.
+   */
+  onChangeValue?(value: string): void
+
   /**
    * Date format pattern used for input masking and parsing.
    * Defines the order of date segments.
@@ -40,8 +66,8 @@ export interface DateTimeFieldProps extends TextFieldProps {
    * Character used to separate segments (date and time) in the input.
    *
    * Examples:
-   * - ", "
-   * - "- "
+   * - ","
+   * - "-"
    */
   separator?: string
   
@@ -76,7 +102,7 @@ export interface DateTimeFieldProps extends TextFieldProps {
   
   /**
    * Disables the field.
-   * Prevents user input and interaction, and applies the disabled visual state.
+   * Prevents user input and interaction and applies the disabled visual state.
    */
   disabled?: boolean
   
@@ -123,29 +149,51 @@ export const DateTimeField: FC<DateTimeFieldProps> = ({
   disabled,
   calendar = gregorianCalendar,
   locale,
+  value,
+  defaultValue = '',
+  onChangeValue,
   ...props
 }) => {
   const min = parseISODateTime(_min) ? _min : undefined
   const max = parseISODateTime(_max) ? _max : undefined
-  const [date, setDate] = useState<string | undefined>(undefined)
-  const [time, setTime] = useState<string>('00:00:00');
+  const [dateTime, setDateTime] = useControlledState(value, defaultValue, onChangeValue)
+  const [text, setText] = useState('')
   
   const inputInnerRef = useRef<HTMLInputElement>(null)
   
   const template = getDateTimeTemplate({ dateFormat, dateSeparator, separator, timeFormat })
+
+  const getDateTime = (text: string) => parseTemplateDate(calendar, text, template) ?? ''
+  const getText = (dateTime: string) => dateTime ? formatTemplateDate(calendar, dateTime, template) : ''
+
+  const shownText = getDateTime(text) === dateTime ? text : getText(dateTime)
+
+  const changeText = (text: string) => {
+    setText(text)
+
+    const nextDateTime = getDateTime(text)
+    if (nextDateTime !== dateTime) setDateTime(nextDateTime)
+  }
+
+  useFormReset(inputInnerRef, () => {
+    if (value !== undefined) return
+
+    setText(getText(defaultValue))
+    setDateTime(defaultValue)
+  })
   
   return (
     <DateTimeFieldProvider
       max={max}
       min={min}
-      date={date}
-      time={time}
+      date={getISODatePart(dateTime)}
+      time={getISOTimePart(dateTime) ?? '00:00:00'}
+      text={shownText}
+      changeText={changeText}
       timeStep={timeStep}
       disabled={disabled}
       disabledDates={disabledDates}
       inputRef={inputInnerRef}
-      changeDate={setDate}
-      changeTime={setTime}
       template={template}
       calendar={calendar}
       locale={locale}

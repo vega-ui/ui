@@ -30,7 +30,7 @@ export const PinFieldSlot: FC<PinFieldSlotProps> = ({
   } = usePinFieldContext()
   
   const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
-    if (!innerInputRef?.current || disabled) return;
+    if (!innerInputRef.current || disabled) return;
     
     e.preventDefault();
     innerInputRef.current.focus();

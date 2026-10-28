@@ -18,12 +18,8 @@
 const [value, setValue] = useState('');
 
 <>
-  <PhoneField code='US' strictMask>
-    <PhoneFieldInput
-      value={value}
-      onChange={(e) => setValue(e.currentTarget.value)}
-      placeholder='+1 (___) ___-____'
-    />
+  <PhoneField code='US' strictMask value={value} onChangeValue={setValue}>
+    <PhoneFieldInput placeholder='+1 (___) ___-____' />
   </PhoneField>
   <Button variant='secondary' onClick={() => setValue('')}>
     Clear

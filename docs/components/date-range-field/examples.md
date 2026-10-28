@@ -196,13 +196,13 @@ function CoverageForm() {
 
 ### Disabled: locked billing period
 
-`disabled` on the root disables the input and the calendar trigger. `defaultValue` is the native initial text; the field parses it like typed text, so the calendar opens with that range selected.
+`disabled` on the root disables the input and the calendar trigger. `defaultValue` on the root is the initial `[start, end]` range of `YYYY-MM-DD` days; the input shows it in `format` and the calendar opens with that range selected.
 
 ```tsx
 <>
   <Label htmlFor='billing-period'>Billing period</Label>
-  <DateRangeField format='dd.MM.yyyy' separator='.' rangeSeparator=' - ' disabled>
-    <DateRangeFieldInput id='billing-period' defaultValue='01.01.2026 - 31.03.2026' />
+  <DateRangeField format='dd.MM.yyyy' separator='.' rangeSeparator=' - ' disabled defaultValue={['2026-01-01', '2026-03-31']}>
+    <DateRangeFieldInput id='billing-period' />
     <CalendarPopover />
   </DateRangeField>
 </>

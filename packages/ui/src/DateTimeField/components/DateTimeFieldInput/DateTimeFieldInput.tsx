@@ -1,11 +1,11 @@
-import { FC, useMemo } from 'react';
+import { FC, FormEvent, useMemo } from 'react';
 import { TextFieldInput, TextFieldInputProps } from '../../../TextField';
 import { useMaskito } from '@maskito/react';
 import { useDateTimeFieldContext } from '../../contexts';
-import { getISODatePart, getISOTimePart, mergeRefs, parseTemplateDate } from '@vega-ui/utils';
+import { mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
 import { getDateTimeMaskOptions } from '../../helpers';
 
-export type DateTimeFieldInputProps = TextFieldInputProps
+export type DateTimeFieldInputProps = Omit<TextFieldInputProps, 'value' | 'defaultValue'>
 
 /**
  * DateTimeFieldInput — a masked text input for entering date and time values.
@@ -17,12 +17,11 @@ export type DateTimeFieldInputProps = TextFieldInputProps
  * This component represents the input side of the DateTimeField and works in
  * tandem with the calendar component to maintain a consistent date–time state.
  *
- * The text is parsed on mount (native `defaultValue`), on each `input` event
- * and after a form reset; while it is empty or incomplete the field has no
- * date and the time falls back to midnight. When `min` or `max` change, the
- * text is normalized again like typing does, dispatching `input`.
+ * The date and time come from `DateTimeField`; `onChange` and `onInput` still
+ * report each edit of the text. When `min` or `max` change, the text is
+ * normalized again like typing does, dispatching `input`.
  */
-export const DateTimeFieldInput: FC<DateTimeFieldInputProps> = ({ ref, ...props }) => {
+export const DateTimeFieldInput: FC<DateTimeFieldInputProps> = ({ ref, onInput, ...props }) => {
   const {
     template,
     calendar,
@@ -30,8 +29,8 @@ export const DateTimeFieldInput: FC<DateTimeFieldInputProps> = ({ ref, ...props 
     inputRef,
     min,
     max,
-    changeDate,
-    changeTime,
+    text,
+    changeText,
     disabled
   } = useDateTimeFieldContext()
   
@@ -41,22 +40,20 @@ export const DateTimeFieldInput: FC<DateTimeFieldInputProps> = ({ ref, ...props 
     min,
     max,
     step: timeStep,
-    onSync: (value) => {
-      const dateTime = parseTemplateDate(calendar, value, template)
-
-      changeDate(getISODatePart(dateTime))
-      changeTime(getISOTimePart(dateTime) ?? '00:00:00')
-    },
-  }), [template, calendar, min, max, timeStep, changeDate, changeTime]);
+  }), [template, calendar, min, max, timeStep]);
   
-  const innerInputRef = useMaskito({ options });
+  const maskitoRef = useMaskito({ options });
+
+  const onDateTimeInput = (event: FormEvent<HTMLInputElement>) => changeText?.(event.currentTarget.value)
 
   return (
     <TextFieldInput
       type='text'
       inputMode='numeric'
       disabled={disabled}
-      ref={mergeRefs([innerInputRef, ref, inputRef])}
+      value={text}
+      onInput={mergeEventHandlers(onDateTimeInput, onInput)}
+      ref={mergeRefs([maskitoRef, ref, inputRef])}
       {...props}
     />
   )

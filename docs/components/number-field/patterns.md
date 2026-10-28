@@ -17,9 +17,9 @@ Trade-offs:
 - denser than a simple text input
 
 ```tsx
-<NumberField min={1} max={12}>
+<NumberField min={1} max={12} defaultValue={1}>
   <NumberFieldDecrementButton />
-  <NumberFieldInput defaultValue={1} />
+  <NumberFieldInput />
   <NumberFieldIncrementButton />
 </NumberField>
 ```
@@ -41,9 +41,9 @@ Trade-offs:
 - more fragile than integer-only flows
 
 ```tsx
-<NumberField step={0.25} maximumFractionDigits={2}>
+<NumberField step={0.25} maximumFractionDigits={2} defaultValue={1}>
   <NumberFieldDecrementButton />
-  <NumberFieldInput defaultValue={1} />
+  <NumberFieldInput />
   <NumberFieldIncrementButton />
 </NumberField>
 ```
@@ -65,9 +65,9 @@ Trade-offs:
 - still needs backend validation
 
 ```tsx
-<NumberField min={0} max={99}>
+<NumberField min={0} max={99} defaultValue={2}>
   <NumberFieldDecrementButton />
-  <NumberFieldInput name='quantity' defaultValue={2} />
+  <NumberFieldInput name='quantity' />
   <NumberFieldIncrementButton />
 </NumberField>
 ```

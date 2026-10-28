@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
 
@@ -127,6 +127,51 @@ const pickDate = async (r: RenderResult, date: Date, calendar?: CalendarSystem) 
 
 describe('DateField', () => {
   describe('Critical User Paths', () => {
+    describe('controlled input', () => {
+      const ControlledDateFieldTest: FC<Partial<DateFieldProps>> = (props) => {
+        const [value, setValue] = useState('');
+
+        return (
+          <>
+            <DateFieldTest {...props} value={value} onChangeValue={setValue} />
+            <button type='button' onClick={() => setValue('2026-01-15')}>Fill</button>
+          </>
+        );
+      };
+
+      it('keeps the typed text and selects the date', async () => {
+        cleanup();
+        const r = render(<ControlledDateFieldTest />);
+
+        await userEvent.type(getInput(r), '15.01.2026');
+
+        await expect.element(getInput(r)).toHaveValue('15.01.2026');
+        await userEvent.click(getTrigger(r));
+        await expect.element(getCell(r, new Date(2026, 0, 15))).toHaveAttribute('aria-selected', 'true');
+      });
+
+      it('reports the typed date as ISO', async () => {
+        cleanup();
+        const onChangeValue = vi.fn();
+        const r = render(<DateFieldTest onChangeValue={onChangeValue} />);
+
+        await userEvent.type(getInput(r), '15.01.2026');
+
+        expect(onChangeValue).toHaveBeenLastCalledWith('2026-01-15');
+      });
+
+      it('selects the date of a value set outside', async () => {
+        cleanup();
+        const r = render(<ControlledDateFieldTest />);
+
+        await userEvent.click(r.getByRole('button', { name: 'Fill' }));
+
+        await expect.element(getInput(r)).toHaveValue('15.01.2026');
+        await userEvent.click(getTrigger(r));
+        await expect.element(getCell(r, new Date(2026, 0, 15))).toHaveAttribute('aria-selected', 'true');
+      });
+    });
+
     let r: RenderResult;
     const onInput = vi.fn();
     
@@ -352,186 +397,187 @@ describe('DateField', () => {
       await userEvent.click(getTrigger(r));
       await expect.element(getCalendarRoot(r)).toBeInTheDocument();
     });
+
+    describe('typing', () => {
+      it('pads a day digit that cannot start a two-digit day', async () => {
+        const r = render(<DateFieldTest />);
+      
+        await userEvent.type(getInput(r), '4');
+      
+        await expect.element(getInput(r)).toHaveValue('04');
+      });
+    
+      it('clamps the day to the length of the month', async () => {
+        const r = render(<DateFieldTest />);
+      
+        await userEvent.type(getInput(r), '31.02.2026');
+      
+        await expect.element(getInput(r)).toHaveValue('28.02.2026');
+      });
+    
+      it('clamps a typed date to min and max', async () => {
+        const r = render(<DateFieldTest min='2026-01-10' max='2026-01-20' />);
+      
+        await userEvent.type(getInput(r), '05.01.2026');
+      
+        await expect.element(getInput(r)).toHaveValue('10.01.2026');
+      });
+
+      it('accepts the digits of other numbering systems', async () => {
+        const r = render(<DateFieldTest />);
+
+        await userEvent.type(getInput(r), '١٥.٠١.٢٠٢٦');
+
+        await expect.element(getInput(r)).toHaveValue('15.01.2026');
+      });
+    });
+  
+    describe('field state follows the input', () => {
+      const expectSelected = async (r: RenderResult, date: Date) => {
+        await userEvent.click(getTrigger(r));
+        await expect.element(getCell(r, date)).toHaveAttribute('aria-selected', 'true');
+      };
+
+      const expectNotSelected = async (r: RenderResult, date: Date) => {
+        await userEvent.click(getTrigger(r));
+        await expect.element(getCalendarRoot(r)).toBeInTheDocument();
+        await expect.element(getCell(r, date)).not.toHaveAttribute('aria-selected', 'true');
+      };
+
+      it('clears the selection when the text is cleared', async () => {
+        const r = render(<DateFieldTest />);
+
+        await userEvent.type(getInput(r), '15.01.2026');
+        await userEvent.clear(getInput(r));
+
+        await expectNotSelected(r, new Date(2026, 0, 15));
+      });
+
+      it('clears the selection when the text becomes incomplete', async () => {
+        const r = render(<DateFieldTest />);
+
+        await userEvent.type(getInput(r), '15.01.2026{Backspace}');
+
+        await expectNotSelected(r, new Date(2026, 0, 15));
+      });
+
+      it('selects a picked day typed again after clearing', async () => {
+        const r = render(<DateFieldTest />);
+
+        await userEvent.click(getTrigger(r));
+        await pickDate(r, new Date(2026, 0, 15));
+        await userEvent.keyboard('{Escape}');
+        await expect.poll(() => queryContent(r)).toBeNull();
+        await userEvent.clear(getInput(r));
+        await userEvent.type(getInput(r), '15.01.2026');
+
+        await expectSelected(r, new Date(2026, 0, 15));
+      });
+
+      it('selects the day of defaultValue', async () => {
+        const r = render(<DateFieldTest defaultValue='2026-01-15' />);
+
+        await expectSelected(r, new Date(2026, 0, 15));
+      });
+
+      it('follows the text restored by form.reset()', async () => {
+        const r = render(
+          <form data-testid='form'>
+            <DateFieldTest defaultValue='2026-01-10' />
+          </form>
+        );
+
+        await userEvent.clear(getInput(r));
+        await userEvent.type(getInput(r), '15.01.2026');
+        (r.getByTestId('form') as HTMLFormElement).reset();
+
+        await expect.element(getInput(r)).toHaveValue('10.01.2026');
+        await expectSelected(r, new Date(2026, 0, 10));
+      });
+
+      it('clears the selection when a reset button empties the text', async () => {
+        const r = render(
+          <form>
+            <DateFieldTest />
+            <button type='reset'>Reset</button>
+          </form>
+        );
+
+        await userEvent.type(getInput(r), '15.01.2026');
+        await userEvent.click(r.getByRole('button', { name: 'Reset' }));
+
+        await expect.element(getInput(r)).toHaveValue('');
+        await expectNotSelected(r, new Date(2026, 0, 15));
+      });
+
+      it('clamps the typed text when min changes and dispatches input', async () => {
+        const onInput = vi.fn();
+        const r = render(<DateFieldTest onInput={onInput} />);
+
+        await userEvent.type(getInput(r), '05.01.2026');
+        onInput.mockClear();
+        r.rerender(<DateFieldTest onInput={onInput} min='2026-01-10' />);
+
+        await expect.element(getInput(r)).toHaveValue('10.01.2026');
+        expect(onInput).toHaveBeenCalledTimes(1);
+        await expectSelected(r, new Date(2026, 0, 10));
+      });
+
+      it('clamps the typed text when max changes', async () => {
+        const r = render(<DateFieldTest />);
+
+        await userEvent.type(getInput(r), '25.01.2026');
+        r.rerender(<DateFieldTest max='2026-01-20' />);
+
+        await expect.element(getInput(r)).toHaveValue('20.01.2026');
+        await expectSelected(r, new Date(2026, 0, 20));
+      });
+    });
+
+    describe('calendar systems', () => {
+      const persian = createCalendarSystem('persian');
+    
+      it('accepts a day that exists only in the Persian calendar', async () => {
+        const r = render(<DateFieldTest calendar={persian} />);
+      
+        await userEvent.type(getInput(r), '31.06.1404');
+        await userEvent.click(getTrigger(r));
+      
+        await expect.element(getInput(r)).toHaveValue('31.06.1404');
+        await expect.element(getCell(r, new Date(2025, 8, 22), persian)).toHaveAttribute('aria-selected', 'true');
+      });
+    
+      it('writes a picked day in the Persian calendar', async () => {
+        const r = render(<DateFieldTest calendar={persian} />);
+      
+        await userEvent.type(getInput(r), '01.01.1404');
+        await userEvent.click(getTrigger(r));
+        await pickDate(r, new Date(2025, 2, 22), persian);
+      
+        await expect.element(getInput(r)).toHaveValue('02.01.1404');
+      });
+    
+      it('accepts the 13th month of a Hebrew leap year', async () => {
+        const r = render(<DateFieldTest calendar={createCalendarSystem('hebrew')} />);
+      
+        await userEvent.type(getInput(r), '01.13.5784');
+      
+        await expect.element(getInput(r)).toHaveValue('01.13.5784');
+      });
+    
+      it('shows the calendar popup in the locale of the field', async () => {
+        const r = render(<DateFieldTest locale='de-DE' />);
+      
+        await userEvent.type(getInput(r), '15.03.2026');
+        await userEvent.click(getTrigger(r));
+      
+        await expect.element(getCalendarRoot(r)).toHaveTextContent('März');
+        await expect.element(getCalendarRoot(r)).toHaveAttribute('lang', 'de-DE');
+      });
+    
+    });
   });
   
-  describe('typing', () => {
-    it('pads a day digit that cannot start a two-digit day', async () => {
-      const r = render(<DateFieldTest />);
-      
-      await userEvent.type(getInput(r), '4');
-      
-      await expect.element(getInput(r)).toHaveValue('04');
-    });
-    
-    it('clamps the day to the length of the month', async () => {
-      const r = render(<DateFieldTest />);
-      
-      await userEvent.type(getInput(r), '31.02.2026');
-      
-      await expect.element(getInput(r)).toHaveValue('28.02.2026');
-    });
-    
-    it('clamps a typed date to min and max', async () => {
-      const r = render(<DateFieldTest min='2026-01-10' max='2026-01-20' />);
-      
-      await userEvent.type(getInput(r), '05.01.2026');
-      
-      await expect.element(getInput(r)).toHaveValue('10.01.2026');
-    });
-
-    it('accepts the digits of other numbering systems', async () => {
-      const r = render(<DateFieldTest />);
-
-      await userEvent.type(getInput(r), '١٥.٠١.٢٠٢٦');
-
-      await expect.element(getInput(r)).toHaveValue('15.01.2026');
-    });
-  });
-  
-  describe('field state follows the input', () => {
-    const expectSelected = async (r: RenderResult, date: Date) => {
-      await userEvent.click(getTrigger(r));
-      await expect.element(getCell(r, date)).toHaveAttribute('aria-selected', 'true');
-    };
-
-    const expectNotSelected = async (r: RenderResult, date: Date) => {
-      await userEvent.click(getTrigger(r));
-      await expect.element(getCalendarRoot(r)).toBeInTheDocument();
-      await expect.element(getCell(r, date)).not.toHaveAttribute('aria-selected', 'true');
-    };
-
-    it('clears the selection when the text is cleared', async () => {
-      const r = render(<DateFieldTest />);
-
-      await userEvent.type(getInput(r), '15.01.2026');
-      await userEvent.clear(getInput(r));
-
-      await expectNotSelected(r, new Date(2026, 0, 15));
-    });
-
-    it('clears the selection when the text becomes incomplete', async () => {
-      const r = render(<DateFieldTest />);
-
-      await userEvent.type(getInput(r), '15.01.2026{Backspace}');
-
-      await expectNotSelected(r, new Date(2026, 0, 15));
-    });
-
-    it('selects a picked day typed again after clearing', async () => {
-      const r = render(<DateFieldTest />);
-
-      await userEvent.click(getTrigger(r));
-      await pickDate(r, new Date(2026, 0, 15));
-      await userEvent.keyboard('{Escape}');
-      await expect.poll(() => queryContent(r)).toBeNull();
-      await userEvent.clear(getInput(r));
-      await userEvent.type(getInput(r), '15.01.2026');
-
-      await expectSelected(r, new Date(2026, 0, 15));
-    });
-
-    it('selects the day of the native defaultValue', async () => {
-      const r = render(<DateFieldTest inputProps={{ defaultValue: '15.01.2026' }} />);
-
-      await expectSelected(r, new Date(2026, 0, 15));
-    });
-
-    it('follows the text restored by form.reset()', async () => {
-      const r = render(
-        <form data-testid='form'>
-          <DateFieldTest inputProps={{ defaultValue: '10.01.2026' }} />
-        </form>
-      );
-
-      await userEvent.clear(getInput(r));
-      await userEvent.type(getInput(r), '15.01.2026');
-      (r.getByTestId('form') as HTMLFormElement).reset();
-
-      await expect.element(getInput(r)).toHaveValue('10.01.2026');
-      await expectSelected(r, new Date(2026, 0, 10));
-    });
-
-    it('clears the selection when a reset button empties the text', async () => {
-      const r = render(
-        <form>
-          <DateFieldTest />
-          <button type='reset'>Reset</button>
-        </form>
-      );
-
-      await userEvent.type(getInput(r), '15.01.2026');
-      await userEvent.click(r.getByRole('button', { name: 'Reset' }));
-
-      await expect.element(getInput(r)).toHaveValue('');
-      await expectNotSelected(r, new Date(2026, 0, 15));
-    });
-
-    it('clamps the typed text when min changes and dispatches input', async () => {
-      const onInput = vi.fn();
-      const r = render(<DateFieldTest onInput={onInput} />);
-
-      await userEvent.type(getInput(r), '05.01.2026');
-      onInput.mockClear();
-      r.rerender(<DateFieldTest onInput={onInput} min='2026-01-10' />);
-
-      await expect.element(getInput(r)).toHaveValue('10.01.2026');
-      expect(onInput).toHaveBeenCalledTimes(1);
-      await expectSelected(r, new Date(2026, 0, 10));
-    });
-
-    it('clamps the typed text when max changes', async () => {
-      const r = render(<DateFieldTest />);
-
-      await userEvent.type(getInput(r), '25.01.2026');
-      r.rerender(<DateFieldTest max='2026-01-20' />);
-
-      await expect.element(getInput(r)).toHaveValue('20.01.2026');
-      await expectSelected(r, new Date(2026, 0, 20));
-    });
-  });
-
-  describe('calendar systems', () => {
-    const persian = createCalendarSystem('persian');
-    
-    it('accepts a day that exists only in the Persian calendar', async () => {
-      const r = render(<DateFieldTest calendar={persian} />);
-      
-      await userEvent.type(getInput(r), '31.06.1404');
-      await userEvent.click(getTrigger(r));
-      
-      await expect.element(getInput(r)).toHaveValue('31.06.1404');
-      await expect.element(getCell(r, new Date(2025, 8, 22), persian)).toHaveAttribute('aria-selected', 'true');
-    });
-    
-    it('writes a picked day in the Persian calendar', async () => {
-      const r = render(<DateFieldTest calendar={persian} />);
-      
-      await userEvent.type(getInput(r), '01.01.1404');
-      await userEvent.click(getTrigger(r));
-      await pickDate(r, new Date(2025, 2, 22), persian);
-      
-      await expect.element(getInput(r)).toHaveValue('02.01.1404');
-    });
-    
-    it('accepts the 13th month of a Hebrew leap year', async () => {
-      const r = render(<DateFieldTest calendar={createCalendarSystem('hebrew')} />);
-      
-      await userEvent.type(getInput(r), '01.13.5784');
-      
-      await expect.element(getInput(r)).toHaveValue('01.13.5784');
-    });
-    
-    it('shows the calendar popup in the locale of the field', async () => {
-      const r = render(<DateFieldTest locale='de-DE' />);
-      
-      await userEvent.type(getInput(r), '15.03.2026');
-      await userEvent.click(getTrigger(r));
-      
-      await expect.element(getCalendarRoot(r)).toHaveTextContent('März');
-      await expect.element(getCalendarRoot(r)).toHaveAttribute('lang', 'de-DE');
-    });
-    
-  });
   
   describe('Accessibility', () => {
     describe('roles', () => {

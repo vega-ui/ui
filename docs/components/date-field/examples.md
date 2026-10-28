@@ -185,13 +185,13 @@ function RenewalForm() {
 
 ### Disabled: locked contract date
 
-`disabled` on the root disables the input and the calendar trigger. `defaultValue` is the native initial text; the field parses it like typed text, so the calendar opens with that day selected.
+`disabled` on the root disables the input and the calendar trigger. `defaultValue` on the root is the initial `YYYY-MM-DD` day; the input shows it in `format` and the calendar opens with that day selected.
 
 ```tsx
 <>
   <Label htmlFor='signed-on'>Signed on</Label>
-  <DateField format='dd.MM.yyyy' separator='.' disabled>
-    <DateFieldInput id='signed-on' defaultValue='15.01.2026' />
+  <DateField format='dd.MM.yyyy' separator='.' disabled defaultValue='2026-01-15'>
+    <DateFieldInput id='signed-on' />
     <CalendarPopover />
   </DateField>
 </>

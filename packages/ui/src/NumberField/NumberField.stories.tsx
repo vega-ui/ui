@@ -77,9 +77,9 @@ export const WithMinMax: Story = {
   },
   render: (props) => (
     <Stack>
-      <NumberField {...props}>
+      <NumberField {...props} defaultValue={0}>
         <NumberFieldDecrementButton />
-        <NumberFieldInput defaultValue={0} inputMode='numeric' />
+        <NumberFieldInput inputMode='numeric' />
         <NumberFieldIncrementButton />
       </NumberField>
       
@@ -97,9 +97,10 @@ export const StepAndDecimals: Story = {
     min: 0,
     max: 5,
     step: .25,
+    defaultValue: 1,
     children: [
       <NumberFieldDecrementButton key={0} />,
-      <NumberFieldInput key={1} defaultValue={1} />,
+      <NumberFieldInput key={1} />,
       <NumberFieldIncrementButton />
     ]
   },
@@ -132,9 +133,9 @@ export const UncontrolledWithFormSubmit: Story = {
           }}
           style={{ display: 'grid', gap: 12 }}
         >
-          <NumberField {...props} min={0} max={99}>
+          <NumberField {...props} min={0} max={99} defaultValue={2}>
             <NumberFieldDecrementButton />
-            <NumberFieldInput name='quantity' defaultValue={2} />
+            <NumberFieldInput name='quantity' />
             <NumberFieldIncrementButton />
           </NumberField>
           
@@ -159,16 +160,9 @@ export const ControlledValue: Story = {
     
     return (
       <Stack>
-        <NumberField {...props} min={0} max={10}>
+        <NumberField {...props} min={0} max={10} value={value} onChangeValue={setValue}>
           <NumberFieldDecrementButton />
-          <NumberFieldInput
-            value={String(value)}
-            onChange={(e) => {
-              const n = Number(e.currentTarget.value);
-              if (Number.isFinite(n)) setValue(n);
-              else if (e.currentTarget.value === '') setValue(0);
-            }}
-          />
+          <NumberFieldInput />
           <NumberFieldIncrementButton />
         </NumberField>
         
@@ -227,9 +221,9 @@ export const NestedInCardLayout: Story = {
         </Text>
         
         <div style={{ marginTop: 12 }}>
-          <NumberField {...props} min={1} max={12}>
+          <NumberField {...props} min={1} max={12} defaultValue={1}>
             <NumberFieldDecrementButton />
-            <NumberFieldInput defaultValue={1} />
+            <NumberFieldInput />
             <NumberFieldIncrementButton />
           </NumberField>
         </div>
@@ -244,9 +238,9 @@ export const NestedInCardLayout: Story = {
         </Text>
         
         <div style={{ marginTop: 12 }}>
-          <NumberField {...props} min={0} max={50} step={0.5}>
+          <NumberField {...props} min={0} max={50} step={0.5} defaultValue={10}>
             <NumberFieldDecrementButton />
-            <NumberFieldInput defaultValue={10} />
+            <NumberFieldInput />
             <NumberFieldIncrementButton />
           </NumberField>
         </div>

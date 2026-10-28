@@ -4,12 +4,29 @@ import { useMaskito } from '@maskito/react'
 import { MaskitoOptions } from '@maskito/core';
 import { maskitoPhoneOptionsGenerator } from '@maskito/phone';
 import metadata from 'libphonenumber-js/min/metadata';
-import { AsYouType, CountryCode, getCountryCallingCode } from 'libphonenumber-js';
+import { CountryCode, getCountryCallingCode } from 'libphonenumber-js';
 import { PhoneFieldProvider } from './contexts';
-import { dispatchEvents, mergeRefs, setValue, subscribeInputValue } from '@vega-ui/utils';
-import { useControlledState, useLatest } from '@vega-ui/hooks';
+import { getTypedCountry } from './helpers';
+import { mergeRefs, writeInputValue } from '@vega-ui/utils';
+import { useControlledState, useFormReset, useLatest } from '@vega-ui/hooks';
 
-export interface PhoneFieldProps extends TextFieldProps {
+export interface PhoneFieldProps extends Omit<TextFieldProps, 'defaultValue'> {
+  /**
+   * Controlled phone number, as the text of the input.
+   */
+  value?: string
+
+  /**
+   * Initial phone number for uncontrolled usage. Defaults to `''`.
+   * Its country is selected unless `code` is set.
+   */
+  defaultValue?: string
+
+  /**
+   * Called with the phone number when it changes.
+   */
+  onChangeValue?(value: string): void
+
   /**
    * ISO 3166-1 alpha-2 country code used to determine the phone mask format.
    * Example: 'US', 'RU', 'FR'.
@@ -39,35 +56,44 @@ export const PhoneField: FC<PhoneFieldProps> = ({
   defaultCode = '' as CountryCode,
   code: _code,
   onChangeCode,
+  value: controlledValue,
+  defaultValue = '',
+  onChangeValue,
   children,
   strictMask = true,
   ...props
 }) => {
-  const [code, setCode] = useControlledState(_code, defaultCode, onChangeCode)
+  const [code, setCode] = useControlledState(_code, getTypedCountry(defaultValue) ?? defaultCode, onChangeCode)
+  const [phone, setPhone] = useControlledState(controlledValue, defaultValue, onChangeValue)
   const codeRef = useLatest(code)
   
   const innerRef = useRef<HTMLInputElement>(null)
   const selectingRef = useRef(false)
 
-  const options = useMemo<MaskitoOptions>(() => {
-    const { plugins, ...phoneOptions } = maskitoPhoneOptionsGenerator({
-      metadata,
-      strict: strictMask,
-      countryIsoCode: code,
-    })
+  const options = useMemo<MaskitoOptions>(() => maskitoPhoneOptionsGenerator({
+    metadata,
+    strict: strictMask,
+    countryIsoCode: code,
+  }), [strictMask, code])
 
-    const onSync = (value: string) => {
-      if (selectingRef.current) return
+  const detectCode = (value: string) => {
+    const typedCode = getTypedCountry(value)
+    if (typedCode !== undefined && typedCode !== code) setCode(typedCode)
+  }
 
-      const asYouType = new AsYouType()
-      asYouType.input(value)
+  const changePhone = (value: string) => {
+    setPhone(value)
+    if (selectingRef.current) return
 
-      const typedCode = asYouType.getCountry()
-      if (typedCode !== undefined && typedCode !== code) setCode(typedCode)
-    }
+    detectCode(value)
+  }
 
-    return { ...phoneOptions, plugins: [...plugins, (element) => subscribeInputValue(element, onSync)] }
-  }, [strictMask, code, setCode])
+  useFormReset(innerRef, () => {
+    if (controlledValue !== undefined) return
+
+    setPhone(defaultValue)
+    detectCode(defaultValue)
+  })
 
   const inputRef = useMaskito({ options })
   
@@ -75,8 +101,7 @@ export const PhoneField: FC<PhoneFieldProps> = ({
     const input = innerRef.current
     if (!input || codeRef.current !== value) return
     
-    setValue(input, `+${getCountryCallingCode(value)}`)
-    dispatchEvents(input)
+    writeInputValue(input, `+${getCountryCallingCode(value)}`)
   }, [codeRef])
   
   const onSelect = useCallback((value: CountryCode) => {
@@ -95,6 +120,8 @@ export const PhoneField: FC<PhoneFieldProps> = ({
     <PhoneFieldProvider
       inputRef={mergeRefs([inputRef, innerRef])}
       onSelectValue={onSelect}
+      phone={phone}
+      changePhone={changePhone}
       code={code}
     >
       <TextField {...props}>

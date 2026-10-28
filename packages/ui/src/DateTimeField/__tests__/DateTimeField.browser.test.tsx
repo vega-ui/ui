@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
 import { page, userEvent, type Locator } from 'vitest/browser';
@@ -135,6 +135,51 @@ const pickDate = async (r: RenderResult, date: Date, calendar?: CalendarSystem) 
 
 describe('DateTimeField', () => {
   describe('Critical User Paths', () => {
+    describe('controlled input', () => {
+      const ControlledDateTimeFieldTest: FC<Partial<DateTimeFieldProps>> = (props) => {
+        const [value, setValue] = useState('');
+
+        return (
+          <>
+            <DateTimeFieldTest {...props} value={value} onChangeValue={setValue} />
+            <button type='button' onClick={() => setValue('2026-01-15T12:30')}>Fill</button>
+          </>
+        );
+      };
+
+      it('keeps the typed text and selects the date', async () => {
+        cleanup();
+        const r = render(<ControlledDateTimeFieldTest />);
+
+        await userEvent.type(getInput(r), '15.01.2026, 12:30');
+
+        await expect.element(getInput(r)).toHaveValue('15.01.2026, 12:30');
+        await userEvent.click(getTrigger(r));
+        await expect.element(getCell(r, new Date(2026, 0, 15))).toHaveAttribute('aria-selected', 'true');
+      });
+
+      it('reports the typed date and time as ISO', async () => {
+        cleanup();
+        const onChangeValue = vi.fn();
+        const r = render(<DateTimeFieldTest onChangeValue={onChangeValue} />);
+
+        await userEvent.type(getInput(r), '15.01.2026, 12:30');
+
+        expect(onChangeValue).toHaveBeenLastCalledWith('2026-01-15T12:30');
+      });
+
+      it('selects the date of a value set outside', async () => {
+        cleanup();
+        const r = render(<ControlledDateTimeFieldTest />);
+
+        await userEvent.click(r.getByRole('button', { name: 'Fill' }));
+
+        await expect.element(getInput(r)).toHaveValue('15.01.2026, 12:30');
+        await userEvent.click(getTrigger(r));
+        await expect.element(getCell(r, new Date(2026, 0, 15))).toHaveAttribute('aria-selected', 'true');
+      });
+    });
+
     let r: RenderResult;
     const onInput = vi.fn();
     
@@ -363,140 +408,141 @@ describe('DateTimeField', () => {
       await userEvent.click(getTrigger(r));
       await expect.element(getCalendar(r)).toBeInTheDocument();
     });
+
+    describe('typing', () => {
+      it('steps the time segment at the caret with arrow keys', async () => {
+        const r = render(<DateTimeFieldTest timeStep={15} />);
+        const input = getInput(r);
+      
+        await userEvent.type(input, '15.01.2026, 12:30');
+        input.setSelectionRange(16, 16);
+        await userEvent.keyboard('{ArrowUp}');
+      
+        await expect.element(input).toHaveValue('15.01.2026, 12:45');
+      });
+    
+      it('wraps the stepped time segment around its range', async () => {
+        const r = render(<DateTimeFieldTest />);
+        const input = getInput(r);
+      
+        await userEvent.type(input, '15.01.2026, 00:30');
+        input.setSelectionRange(13, 13);
+        await userEvent.keyboard('{ArrowDown}');
+      
+        await expect.element(input).toHaveValue('15.01.2026, 23:30');
+      });
+    
+      it('steps the hours by one whatever the time step', async () => {
+        const r = render(<DateTimeFieldTest timeStep={15} />);
+        const input = getInput(r);
+      
+        await userEvent.type(input, '15.01.2026, 12:30');
+        input.setSelectionRange(13, 13);
+        await userEvent.keyboard('{ArrowUp}');
+      
+        await expect.element(input).toHaveValue('15.01.2026, 13:30');
+      });
+    
+      it('clamps the time to its range', async () => {
+        const r = render(<DateTimeFieldTest />);
+      
+        await userEvent.type(getInput(r), '15.01.2026, 25:30');
+      
+        await expect.element(getInput(r)).toHaveValue('15.01.2026, 23:30');
+      });
+
+      it('accepts the digits of other numbering systems', async () => {
+        const r = render(<DateTimeFieldTest />);
+
+        await userEvent.type(getInput(r), '۱۵.۰۱.۲۰۲۶, ۰۸:۳۰');
+
+        await expect.element(getInput(r)).toHaveValue('15.01.2026, 08:30');
+      });
+    });
+  
+    describe('field state follows the input', () => {
+      const expectSelected = async (r: RenderResult, date: Date) => {
+        await userEvent.click(getTrigger(r));
+        await expect.element(getCell(r, date)).toHaveAttribute('aria-selected', 'true');
+      };
+
+      const expectNotSelected = async (r: RenderResult, date: Date) => {
+        await userEvent.click(getTrigger(r));
+        await expect.element(getCalendar(r)).toBeInTheDocument();
+        await expect.element(getCell(r, date)).not.toHaveAttribute('aria-selected', 'true');
+      };
+
+      it('clears the selection and the time when the text is cleared', async () => {
+        const r = render(<DateTimeFieldTest />);
+
+        await userEvent.type(getInput(r), '15.01.2026, 12:30');
+        await userEvent.clear(getInput(r));
+
+        await expectNotSelected(r, new Date(2026, 0, 15));
+        await pickDate(r, new Date(2026, 0, 20));
+        await expect.element(getInput(r)).toHaveValue('20.01.2026, 00:00');
+      });
+
+      it('clears the selection when the text becomes incomplete', async () => {
+        const r = render(<DateTimeFieldTest />);
+
+        await userEvent.type(getInput(r), '15.01.2026, 12:30{Backspace}');
+
+        await expectNotSelected(r, new Date(2026, 0, 15));
+      });
+
+      it('takes the date and the time of defaultValue', async () => {
+        const r = render(<DateTimeFieldTest defaultValue='2026-01-15T12:30' />);
+
+        await expectSelected(r, new Date(2026, 0, 15));
+        await pickDate(r, new Date(2026, 0, 20));
+        await expect.element(getInput(r)).toHaveValue('20.01.2026, 12:30');
+      });
+
+      it('follows the text restored by a reset button', async () => {
+        const r = render(
+          <form>
+            <DateTimeFieldTest defaultValue='2026-01-10T08:15' />
+            <button type='reset'>Reset</button>
+          </form>
+        );
+
+        await userEvent.clear(getInput(r));
+        await userEvent.type(getInput(r), '15.01.2026, 12:30');
+        await userEvent.click(r.getByRole('button', { name: 'Reset' }));
+
+        await expect.element(getInput(r)).toHaveValue('10.01.2026, 08:15');
+        await expectSelected(r, new Date(2026, 0, 10));
+      });
+
+      it('clamps the typed text when min changes and dispatches input', async () => {
+        const onInput = vi.fn();
+        const r = render(<DateTimeFieldTest onInput={onInput} />);
+
+        await userEvent.type(getInput(r), '05.01.2026, 12:30');
+        onInput.mockClear();
+        r.rerender(<DateTimeFieldTest onInput={onInput} min='2026-01-10T09:00' />);
+
+        await expect.element(getInput(r)).toHaveValue('10.01.2026, 09:00');
+        expect(onInput).toHaveBeenCalledTimes(1);
+        await expectSelected(r, new Date(2026, 0, 10));
+      });
+    });
+
+    describe('calendar systems', () => {
+      it('writes a picked Persian day and keeps the time', async () => {
+        const persian = createCalendarSystem('persian');
+        const r = render(<DateTimeFieldTest calendar={persian} />);
+      
+        await userEvent.type(getInput(r), '01.01.1404, 12:30');
+        await userEvent.click(getTrigger(r));
+        await pickDate(r, new Date(2025, 2, 22), persian);
+      
+        await expect.element(getInput(r)).toHaveValue('02.01.1404, 12:30');
+      });
+    });
   });
   
-  describe('typing', () => {
-    it('steps the time segment at the caret with arrow keys', async () => {
-      const r = render(<DateTimeFieldTest timeStep={15} />);
-      const input = getInput(r);
-      
-      await userEvent.type(input, '15.01.2026, 12:30');
-      input.setSelectionRange(16, 16);
-      await userEvent.keyboard('{ArrowUp}');
-      
-      await expect.element(input).toHaveValue('15.01.2026, 12:45');
-    });
-    
-    it('wraps the stepped time segment around its range', async () => {
-      const r = render(<DateTimeFieldTest />);
-      const input = getInput(r);
-      
-      await userEvent.type(input, '15.01.2026, 00:30');
-      input.setSelectionRange(13, 13);
-      await userEvent.keyboard('{ArrowDown}');
-      
-      await expect.element(input).toHaveValue('15.01.2026, 23:30');
-    });
-    
-    it('steps the hours by one whatever the time step', async () => {
-      const r = render(<DateTimeFieldTest timeStep={15} />);
-      const input = getInput(r);
-      
-      await userEvent.type(input, '15.01.2026, 12:30');
-      input.setSelectionRange(13, 13);
-      await userEvent.keyboard('{ArrowUp}');
-      
-      await expect.element(input).toHaveValue('15.01.2026, 13:30');
-    });
-    
-    it('clamps the time to its range', async () => {
-      const r = render(<DateTimeFieldTest />);
-      
-      await userEvent.type(getInput(r), '15.01.2026, 25:30');
-      
-      await expect.element(getInput(r)).toHaveValue('15.01.2026, 23:30');
-    });
-
-    it('accepts the digits of other numbering systems', async () => {
-      const r = render(<DateTimeFieldTest />);
-
-      await userEvent.type(getInput(r), '۱۵.۰۱.۲۰۲۶, ۰۸:۳۰');
-
-      await expect.element(getInput(r)).toHaveValue('15.01.2026, 08:30');
-    });
-  });
-  
-  describe('field state follows the input', () => {
-    const expectSelected = async (r: RenderResult, date: Date) => {
-      await userEvent.click(getTrigger(r));
-      await expect.element(getCell(r, date)).toHaveAttribute('aria-selected', 'true');
-    };
-
-    const expectNotSelected = async (r: RenderResult, date: Date) => {
-      await userEvent.click(getTrigger(r));
-      await expect.element(getCalendar(r)).toBeInTheDocument();
-      await expect.element(getCell(r, date)).not.toHaveAttribute('aria-selected', 'true');
-    };
-
-    it('clears the selection and the time when the text is cleared', async () => {
-      const r = render(<DateTimeFieldTest />);
-
-      await userEvent.type(getInput(r), '15.01.2026, 12:30');
-      await userEvent.clear(getInput(r));
-
-      await expectNotSelected(r, new Date(2026, 0, 15));
-      await pickDate(r, new Date(2026, 0, 20));
-      await expect.element(getInput(r)).toHaveValue('20.01.2026, 00:00');
-    });
-
-    it('clears the selection when the text becomes incomplete', async () => {
-      const r = render(<DateTimeFieldTest />);
-
-      await userEvent.type(getInput(r), '15.01.2026, 12:30{Backspace}');
-
-      await expectNotSelected(r, new Date(2026, 0, 15));
-    });
-
-    it('takes the date and the time of the native defaultValue', async () => {
-      const r = render(<DateTimeFieldTest inputProps={{ defaultValue: '15.01.2026, 12:30' }} />);
-
-      await expectSelected(r, new Date(2026, 0, 15));
-      await pickDate(r, new Date(2026, 0, 20));
-      await expect.element(getInput(r)).toHaveValue('20.01.2026, 12:30');
-    });
-
-    it('follows the text restored by a reset button', async () => {
-      const r = render(
-        <form>
-          <DateTimeFieldTest inputProps={{ defaultValue: '10.01.2026, 08:15' }} />
-          <button type='reset'>Reset</button>
-        </form>
-      );
-
-      await userEvent.clear(getInput(r));
-      await userEvent.type(getInput(r), '15.01.2026, 12:30');
-      await userEvent.click(r.getByRole('button', { name: 'Reset' }));
-
-      await expect.element(getInput(r)).toHaveValue('10.01.2026, 08:15');
-      await expectSelected(r, new Date(2026, 0, 10));
-    });
-
-    it('clamps the typed text when min changes and dispatches input', async () => {
-      const onInput = vi.fn();
-      const r = render(<DateTimeFieldTest onInput={onInput} />);
-
-      await userEvent.type(getInput(r), '05.01.2026, 12:30');
-      onInput.mockClear();
-      r.rerender(<DateTimeFieldTest onInput={onInput} min='2026-01-10T09:00' />);
-
-      await expect.element(getInput(r)).toHaveValue('10.01.2026, 09:00');
-      expect(onInput).toHaveBeenCalledTimes(1);
-      await expectSelected(r, new Date(2026, 0, 10));
-    });
-  });
-
-  describe('calendar systems', () => {
-    it('writes a picked Persian day and keeps the time', async () => {
-      const persian = createCalendarSystem('persian');
-      const r = render(<DateTimeFieldTest calendar={persian} />);
-      
-      await userEvent.type(getInput(r), '01.01.1404, 12:30');
-      await userEvent.click(getTrigger(r));
-      await pickDate(r, new Date(2025, 2, 22), persian);
-      
-      await expect.element(getInput(r)).toHaveValue('02.01.1404, 12:30');
-    });
-  });
   
   describe('Accessibility', () => {
     describe('roles', () => {

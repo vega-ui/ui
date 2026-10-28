@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { PinFieldHiddenInput } from './PinFieldHiddenInput';
+import { PinFieldInput } from './PinFieldInput';
 import { PinField } from '../../PinField';
 import { PinFieldSlot } from '../PinFieldSlot';
 
 const meta = {
-  title: 'Form/Fields/PinField/PinFieldHiddenInput',
-  component: PinFieldHiddenInput,
+  title: 'Form/Fields/PinField/PinFieldInput',
+  component: PinFieldInput,
   parameters: {
     layout: 'centered',
   },
@@ -23,7 +23,7 @@ const meta = {
       </PinField>
     )
   }
-} satisfies Meta<typeof PinFieldHiddenInput>;
+} satisfies Meta<typeof PinFieldInput>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

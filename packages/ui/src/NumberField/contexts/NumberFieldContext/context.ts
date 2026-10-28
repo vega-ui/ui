@@ -15,9 +15,11 @@ export interface NumberFieldContextState {
   inputRef?: Ref<HTMLInputElement>
   decrement(): void
   increment(): void
+  text?: string
+  changeText?(text: string): void
 }
 
-export const [NumberFieldProvider, useNumberFieldContext] = createContext<NumberFieldContextState>('PhoneFieldContext', {
+export const [NumberFieldProvider, useNumberFieldContext] = createContext<NumberFieldContextState>('NumberFieldContext', {
   size: 'md',
   error: false,
   decrement() {
@@ -25,5 +27,5 @@ export const [NumberFieldProvider, useNumberFieldContext] = createContext<Number
   },
   increment() {
     return
-  }
+  },
 })

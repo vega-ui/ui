@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import { Calendar, CalendarProps } from '../../../Calendar';
 import { useDateTimeFieldContext } from '../../contexts';
-import { dispatchEvents, getISODatePart, setValue as setNativeValue, formatTemplateDate, normalizeTemplateDate } from '@vega-ui/utils';
+import { getISODatePart, formatTemplateDate, normalizeTemplateDate, writeInputValue } from '@vega-ui/utils';
 
 export type DateTimeFieldCalendarProps = CalendarProps
 
@@ -29,7 +29,6 @@ export const DateTimeFieldCalendar: FC<DateTimeFieldCalendarProps> = ({ onChange
     date,
     time,
     disabledDates,
-    changeDate
   } = useDateTimeFieldContext()
 
   const onChangeValue = (iso: string) => {
@@ -43,10 +42,7 @@ export const DateTimeFieldCalendar: FC<DateTimeFieldCalendarProps> = ({ onChange
     const formatted = formatTemplateDate(calendar, `${iso}T${time}`, template)
     const stringified = normalizeTemplateDate(calendar, formatted, template, { min, max })
 
-    changeDate(iso)
-
-    setNativeValue(input, stringified)
-    dispatchEvents(input)
+    writeInputValue(input, stringified)
   }
 
   return (

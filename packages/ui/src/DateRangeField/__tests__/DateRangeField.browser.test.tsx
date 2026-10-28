@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
 import { page, userEvent } from 'vitest/browser';
@@ -145,6 +145,53 @@ const pickDate = async (r: RenderResult, date: Date, calendar?: CalendarSystem) 
 
 describe('DateRangeField', () => {
   describe('Critical User Paths', () => {
+    describe('controlled input', () => {
+      const ControlledDateRangeFieldTest: FC<Partial<DateRangeFieldProps>> = (props) => {
+        const [value, setValue] = useState<[start: string, end: string]>(['', '']);
+
+        return (
+          <>
+            <DateRangeFieldTest {...props} value={value} onChangeValue={setValue} />
+            <button type='button' onClick={() => setValue(['2026-01-10', '2026-01-15'])}>Fill</button>
+          </>
+        );
+      };
+
+      it('keeps the typed text and selects the date', async () => {
+        cleanup();
+        const r = render(<ControlledDateRangeFieldTest />);
+
+        await userEvent.type(getInput(r), `10.01.2026${RANGE_SEPARATOR}15.01.2026`);
+
+        await expect.element(getInput(r)).toHaveValue(`10.01.2026${RANGE_SEPARATOR}15.01.2026`);
+        await userEvent.click(getTrigger(r));
+        await expect.element(getCell(r, new Date(2026, 0, 10))).toHaveAttribute('aria-selected', 'true');
+        await expect.element(getCell(r, new Date(2026, 0, 15))).toHaveAttribute('aria-selected', 'true');
+      });
+
+      it('reports the typed range as ISO', async () => {
+        cleanup();
+        const onChangeValue = vi.fn();
+        const r = render(<DateRangeFieldTest onChangeValue={onChangeValue} />);
+
+        await userEvent.type(getInput(r), `10.01.2026${RANGE_SEPARATOR}15.01.2026`);
+
+        expect(onChangeValue).toHaveBeenLastCalledWith(['2026-01-10', '2026-01-15']);
+      });
+
+      it('selects the range of a value set outside', async () => {
+        cleanup();
+        const r = render(<ControlledDateRangeFieldTest />);
+
+        await userEvent.click(r.getByRole('button', { name: 'Fill' }));
+
+        await expect.element(getInput(r)).toHaveValue(`10.01.2026${RANGE_SEPARATOR}15.01.2026`);
+        await userEvent.click(getTrigger(r));
+        await expect.element(getCell(r, new Date(2026, 0, 10))).toHaveAttribute('aria-selected', 'true');
+        await expect.element(getCell(r, new Date(2026, 0, 15))).toHaveAttribute('aria-selected', 'true');
+      });
+    });
+
     let r: RenderResult;
     const onInput = vi.fn();
     
@@ -185,7 +232,7 @@ describe('DateRangeField', () => {
     it('typing a valid range keeps calendar in sync', async () => {
       const input = getInput(r);
       
-      await userEvent.type(input, '10.01.2026 – 15.01.2026');
+      await userEvent.type(input, `10.01.2026${RANGE_SEPARATOR}15.01.2026`);
       await userEvent.click(getTrigger(r));
       
       await expect.element(getCalendarRoot(r)).toBeInTheDocument();
@@ -231,105 +278,106 @@ describe('DateRangeField', () => {
       await userEvent.click(getTrigger(r));
       await expect.element(getCalendarRoot(r)).toBeInTheDocument();
     });
+
+    describe('typing', () => {
+      it('swaps a reversed range', async () => {
+        const r = render(<DateRangeFieldTest />);
+      
+        await userEvent.type(getInput(r), `15.01.2026${RANGE_SEPARATOR}10.01.2026`);
+      
+        await expect.element(getInput(r)).toHaveValue(`10.01.2026${RANGE_SEPARATOR}15.01.2026`);
+      });
+
+      it('accepts the digits of other numbering systems', async () => {
+        const r = render(<DateRangeFieldTest />);
+
+        await userEvent.type(getInput(r), `١٠.٠١.٢٠٢٦${RANGE_SEPARATOR}١٥.٠١.٢٠٢٦`);
+
+        await expect.element(getInput(r)).toHaveValue(`10.01.2026${RANGE_SEPARATOR}15.01.2026`);
+      });
+    });
+  
+    describe('field state follows the input', () => {
+      const openCalendar = async (r: RenderResult) => {
+        await userEvent.click(getTrigger(r));
+        await expect.element(getCalendarRoot(r)).toBeInTheDocument();
+      };
+
+      it('clears the range when the text is cleared', async () => {
+        const r = render(<DateRangeFieldTest />);
+
+        await userEvent.type(getInput(r), `10.01.2026${RANGE_SEPARATOR}15.01.2026`);
+        await userEvent.clear(getInput(r));
+        await openCalendar(r);
+
+        await expect.element(getCell(r, new Date(2026, 0, 10))).not.toHaveAttribute('aria-selected', 'true');
+        await expect.element(getCell(r, new Date(2026, 0, 15))).not.toHaveAttribute('aria-selected', 'true');
+      });
+
+      it('drops the end date when it becomes incomplete', async () => {
+        const r = render(<DateRangeFieldTest />);
+
+        await userEvent.type(getInput(r), `10.01.2026${RANGE_SEPARATOR}15.01.2026{Backspace}`);
+        await openCalendar(r);
+
+        await expect.element(getCell(r, new Date(2026, 0, 10))).toHaveAttribute('aria-selected', 'true');
+        await expect.element(getCell(r, new Date(2026, 0, 15))).not.toHaveAttribute('aria-selected', 'true');
+      });
+
+      it('selects the range of defaultValue', async () => {
+        const r = render(<DateRangeFieldTest defaultValue={['2026-01-10', '2026-01-15']} />);
+        await openCalendar(r);
+
+        await expect.element(getCell(r, new Date(2026, 0, 10))).toHaveAttribute('aria-selected', 'true');
+        await expect.element(getCell(r, new Date(2026, 0, 15))).toHaveAttribute('aria-selected', 'true');
+      });
+
+      it('follows the text emptied by a reset button', async () => {
+        const r = render(
+          <form>
+            <DateRangeFieldTest />
+            <button type='reset'>Reset</button>
+          </form>
+        );
+
+        await userEvent.type(getInput(r), `10.01.2026${RANGE_SEPARATOR}15.01.2026`);
+        await userEvent.click(r.getByRole('button', { name: 'Reset' }));
+        await expect.element(getInput(r)).toHaveValue('');
+        await openCalendar(r);
+
+        await expect.element(getCell(r, new Date(2026, 0, 10))).not.toHaveAttribute('aria-selected', 'true');
+      });
+
+      it('clamps both typed dates when min and max change and dispatches input', async () => {
+        const onInput = vi.fn();
+        const r = render(<DateRangeFieldTest onInput={onInput} />);
+
+        await userEvent.type(getInput(r), `05.01.2026${RANGE_SEPARATOR}25.01.2026`);
+        onInput.mockClear();
+        r.rerender(<DateRangeFieldTest onInput={onInput} min='2026-01-10' max='2026-01-20' />);
+
+        await expect.element(getInput(r)).toHaveValue(`10.01.2026${RANGE_SEPARATOR}20.01.2026`);
+        expect(onInput).toHaveBeenCalledTimes(1);
+        await openCalendar(r);
+        await expect.element(getCell(r, new Date(2026, 0, 10))).toHaveAttribute('aria-selected', 'true');
+        await expect.element(getCell(r, new Date(2026, 0, 20))).toHaveAttribute('aria-selected', 'true');
+      });
+    });
+
+    describe('calendar systems', () => {
+      it('writes a range picked in the Persian calendar', async () => {
+        const persian = createCalendarSystem('persian');
+        const r = render(<DateRangeFieldTest calendar={persian} />);
+      
+        await userEvent.type(getInput(r), '01.01.1404');
+        await userEvent.click(getTrigger(r));
+        await pickDate(r, new Date(2025, 2, 25), persian);
+      
+        await expect.element(getInput(r)).toHaveValue(`01.01.1404${RANGE_SEPARATOR}05.01.1404`);
+      });
+    });
   });
   
-  describe('typing', () => {
-    it('swaps a reversed range', async () => {
-      const r = render(<DateRangeFieldTest />);
-      
-      await userEvent.type(getInput(r), `15.01.2026${RANGE_SEPARATOR}10.01.2026`);
-      
-      await expect.element(getInput(r)).toHaveValue(`10.01.2026${RANGE_SEPARATOR}15.01.2026`);
-    });
-
-    it('accepts the digits of other numbering systems', async () => {
-      const r = render(<DateRangeFieldTest />);
-
-      await userEvent.type(getInput(r), `١٠.٠١.٢٠٢٦${RANGE_SEPARATOR}١٥.٠١.٢٠٢٦`);
-
-      await expect.element(getInput(r)).toHaveValue(`10.01.2026${RANGE_SEPARATOR}15.01.2026`);
-    });
-  });
-  
-  describe('field state follows the input', () => {
-    const openCalendar = async (r: RenderResult) => {
-      await userEvent.click(getTrigger(r));
-      await expect.element(getCalendarRoot(r)).toBeInTheDocument();
-    };
-
-    it('clears the range when the text is cleared', async () => {
-      const r = render(<DateRangeFieldTest />);
-
-      await userEvent.type(getInput(r), `10.01.2026${RANGE_SEPARATOR}15.01.2026`);
-      await userEvent.clear(getInput(r));
-      await openCalendar(r);
-
-      await expect.element(getCell(r, new Date(2026, 0, 10))).not.toHaveAttribute('aria-selected', 'true');
-      await expect.element(getCell(r, new Date(2026, 0, 15))).not.toHaveAttribute('aria-selected', 'true');
-    });
-
-    it('drops the end date when it becomes incomplete', async () => {
-      const r = render(<DateRangeFieldTest />);
-
-      await userEvent.type(getInput(r), `10.01.2026${RANGE_SEPARATOR}15.01.2026{Backspace}`);
-      await openCalendar(r);
-
-      await expect.element(getCell(r, new Date(2026, 0, 10))).toHaveAttribute('aria-selected', 'true');
-      await expect.element(getCell(r, new Date(2026, 0, 15))).not.toHaveAttribute('aria-selected', 'true');
-    });
-
-    it('selects the range of the native defaultValue', async () => {
-      const r = render(<DateRangeFieldTest inputProps={{ defaultValue: `10.01.2026${RANGE_SEPARATOR}15.01.2026` }} />);
-      await openCalendar(r);
-
-      await expect.element(getCell(r, new Date(2026, 0, 10))).toHaveAttribute('aria-selected', 'true');
-      await expect.element(getCell(r, new Date(2026, 0, 15))).toHaveAttribute('aria-selected', 'true');
-    });
-
-    it('follows the text emptied by a reset button', async () => {
-      const r = render(
-        <form>
-          <DateRangeFieldTest />
-          <button type='reset'>Reset</button>
-        </form>
-      );
-
-      await userEvent.type(getInput(r), `10.01.2026${RANGE_SEPARATOR}15.01.2026`);
-      await userEvent.click(r.getByRole('button', { name: 'Reset' }));
-      await expect.element(getInput(r)).toHaveValue('');
-      await openCalendar(r);
-
-      await expect.element(getCell(r, new Date(2026, 0, 10))).not.toHaveAttribute('aria-selected', 'true');
-    });
-
-    it('clamps both typed dates when min and max change and dispatches input', async () => {
-      const onInput = vi.fn();
-      const r = render(<DateRangeFieldTest onInput={onInput} />);
-
-      await userEvent.type(getInput(r), `05.01.2026${RANGE_SEPARATOR}25.01.2026`);
-      onInput.mockClear();
-      r.rerender(<DateRangeFieldTest onInput={onInput} min='2026-01-10' max='2026-01-20' />);
-
-      await expect.element(getInput(r)).toHaveValue(`10.01.2026${RANGE_SEPARATOR}20.01.2026`);
-      expect(onInput).toHaveBeenCalledTimes(1);
-      await openCalendar(r);
-      await expect.element(getCell(r, new Date(2026, 0, 10))).toHaveAttribute('aria-selected', 'true');
-      await expect.element(getCell(r, new Date(2026, 0, 20))).toHaveAttribute('aria-selected', 'true');
-    });
-  });
-
-  describe('calendar systems', () => {
-    it('writes a range picked in the Persian calendar', async () => {
-      const persian = createCalendarSystem('persian');
-      const r = render(<DateRangeFieldTest calendar={persian} />);
-      
-      await userEvent.type(getInput(r), '01.01.1404');
-      await userEvent.click(getTrigger(r));
-      await pickDate(r, new Date(2025, 2, 25), persian);
-      
-      await expect.element(getInput(r)).toHaveValue(`01.01.1404${RANGE_SEPARATOR}05.01.1404`);
-    });
-  });
   
   describe('Accessibility', () => {
     it('supports keyboard selection', async () => {

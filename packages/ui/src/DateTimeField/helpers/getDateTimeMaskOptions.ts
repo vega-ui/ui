@@ -1,6 +1,6 @@
 import { MASKITO_DEFAULT_OPTIONS, MaskitoOptions, maskitoInitialCalibrationPlugin, maskitoUpdateElement } from '@maskito/core';
 import { CalendarSystem, toLatinDigits } from '@vega-ui/i18n';
-import { subscribeInputValue, normalizeTemplateDate, stepTimeSegment } from '@vega-ui/utils';
+import { normalizeTemplateDate, stepTimeSegment } from '@vega-ui/utils';
 
 export interface GetDateTimeMaskOptions {
   template: string;
@@ -8,10 +8,9 @@ export interface GetDateTimeMaskOptions {
   min?: string;
   max?: string;
   step?: number;
-  onSync(value: string): void;
 }
 
-export const getDateTimeMaskOptions = ({ template, calendar, min, max, step, onSync }: GetDateTimeMaskOptions): MaskitoOptions => ({
+export const getDateTimeMaskOptions = ({ template, calendar, min, max, step }: GetDateTimeMaskOptions): MaskitoOptions => ({
   ...MASKITO_DEFAULT_OPTIONS,
   mask: Array.from(template, (char) => /[dmyHMS]/.test(char) ? /\d/ : char),
   overwriteMode: 'replace',
@@ -31,7 +30,6 @@ export const getDateTimeMaskOptions = ({ template, calendar, min, max, step, onS
   ],
   plugins: [
     maskitoInitialCalibrationPlugin(),
-    (element) => subscribeInputValue(element, onSync),
     (element) => {
       const listener = (event: KeyboardEvent) => {
         if (!step) return

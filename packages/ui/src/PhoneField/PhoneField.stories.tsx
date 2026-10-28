@@ -298,13 +298,11 @@ export const Controlled: Story = {
       <Stack>
         <Helper>Controlled usage: the value is stored in React state.</Helper>
         
-        <PhoneField {...props} code='US' strictMask>
+        <PhoneField {...props} code='US' strictMask value={value} onChangeValue={setValue}>
           <PhoneFieldInput
             name='phone'
             autoComplete='tel'
             placeholder='+1 (___) ___-____'
-            value={value}
-            onChange={(e) => setValue(e.currentTarget.value)}
           />
         </PhoneField>
         

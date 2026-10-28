@@ -7,6 +7,7 @@ import { userEvent } from 'vitest/browser';
 import { PhoneField } from '../PhoneField';
 import {
   PhoneFieldInput,
+  type PhoneFieldInputProps,
   PhoneFieldSelect,
   PhoneFieldSelectCombobox,
   PhoneFieldSelectHiddenSelect,
@@ -32,7 +33,7 @@ const PLACEHOLDER = '+7';
 const DEFAULT_CODE = 'RU' as const;
 const NEXT_CODE = 'US' as const;
 
-const PhoneFieldTest: FC<ComponentProps<typeof PhoneField> & { inputDefaultValue?: string }> = ({ inputDefaultValue, ...props }) => {
+const PhoneFieldTest: FC<ComponentProps<typeof PhoneField> & { inputProps?: PhoneFieldInputProps }> = ({ inputProps, ...props }) => {
   return (
     <PhoneField {...props}>
       <PhoneFieldSelect data-testid={TESTID_SELECT}>
@@ -64,7 +65,7 @@ const PhoneFieldTest: FC<ComponentProps<typeof PhoneField> & { inputDefaultValue
         data-testid={TESTID_INPUT}
         autoComplete={AUTOCOMPLETE}
         placeholder={PLACEHOLDER}
-        defaultValue={inputDefaultValue}
+        {...inputProps}
       />
     </PhoneField>
   );
@@ -93,6 +94,40 @@ const selectCountry = async (r: RenderResult, code: string) => {
 
 describe('PhoneField', () => {
   describe('Critical User Paths', () => {
+    describe('controlled input', () => {
+      const ControlledPhoneFieldTest: FC<ComponentProps<typeof PhoneFieldTest>> = (props) => {
+        const [value, setValue] = useState('');
+
+        return <PhoneFieldTest {...props} value={value} onChangeValue={setValue} />;
+      };
+
+      it('keeps the typed number when it changes the country', async () => {
+        const r = render(<ControlledPhoneFieldTest strictMask={false} />);
+
+        await userEvent.type(getInput(r), '+1 234 567-8900');
+
+        await expect.element(getHiddenSelect(r)).toHaveValue('US');
+        await expect.poll(() => getInput(r).value.replace(/\D/g, '')).toBe('12345678900');
+      });
+
+      it('keeps calling onChange of the input', async () => {
+        const onChange = vi.fn();
+        const r = render(<ControlledPhoneFieldTest strictMask={false} inputProps={{ onChange }} />);
+
+        await userEvent.type(getInput(r), '+1');
+
+        expect(onChange).toHaveBeenCalled();
+      });
+
+      it('writes the calling code of a selected country', async () => {
+        const r = render(<ControlledPhoneFieldTest defaultCode={DEFAULT_CODE} />);
+
+        await selectCountry(r, NEXT_CODE);
+
+        await expect.element(getInput(r)).toHaveValue('+1 ');
+      });
+    });
+
     describe('default', () => {
       let r: RenderResult;
       
@@ -192,7 +227,7 @@ describe('PhoneField', () => {
         
         it('detects the country of the default value', async () => {
           r.rerender(<></>);
-          const next = render(<PhoneFieldTest strictMask={false} defaultCode={DEFAULT_CODE} inputDefaultValue='+1 234 567-8900' />);
+          const next = render(<PhoneFieldTest strictMask={false} defaultCode={DEFAULT_CODE} defaultValue='+1 234 567-8900' />);
           
           await expect.element(getHiddenSelect(next)).toHaveValue('US');
         });
@@ -201,7 +236,7 @@ describe('PhoneField', () => {
           r.rerender(<></>);
           const next = render(
             <form data-testid='form'>
-              <PhoneFieldTest strictMask={false} inputDefaultValue='+7 912 345-67-89' />
+              <PhoneFieldTest strictMask={false} defaultValue='+7 912 345-67-89' />
             </form>,
           );
           await expect.element(getHiddenSelect(next)).toHaveValue('RU');

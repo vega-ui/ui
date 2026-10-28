@@ -1,6 +1,5 @@
 import { MaskitoOptions, maskitoUpdateElement } from '@maskito/core';
 import { maskitoEventHandler, maskitoNumberOptionsGenerator } from '@maskito/kit';
-import { subscribeInputValue } from '@vega-ui/utils';
 
 export interface GetNumberMaskOptions {
   min?: number;
@@ -15,11 +14,10 @@ export interface GetNumberMaskOptions {
   minusSign?: string;
   allowEmpty?: boolean;
   maximumFractionDigits?: number
-  onSync(value: string): void
 }
 
 export const getNumberMaskOptions = (options: GetNumberMaskOptions): Required<MaskitoOptions> => {
-  const { allowEmpty, min, maximumFractionDigits = 2, onSync, ...maskitoOptions } = options
+  const { allowEmpty, min, maximumFractionDigits = 2, ...maskitoOptions } = options
   
   const { plugins, ...numberOptions } = maskitoNumberOptionsGenerator({
     minusSign: '-',
@@ -37,7 +35,6 @@ export const getNumberMaskOptions = (options: GetNumberMaskOptions): Required<Ma
           maskitoUpdateElement(element, min !== Number.MIN_SAFE_INTEGER && min !== undefined ? min.toString() : '0');
         }
       }),
-      (element) => subscribeInputValue(element, onSync),
     ],
   } satisfies MaskitoOptions
 }

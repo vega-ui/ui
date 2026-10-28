@@ -1,11 +1,11 @@
-import { FC, useMemo } from 'react';
+import { FC, FormEvent, useMemo } from 'react';
 import { TextFieldInput, TextFieldInputProps } from '../../../TextField';
 import { useMaskito } from '@maskito/react';
 import { useDateRangeFieldContext } from '../../contexts';
-import { mergeRefs, parseTemplateRange } from '@vega-ui/utils';
+import { mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
 import { getDateRangeMaskOptions } from '../../helpers';
 
-export type DateRangeFieldInputProps = TextFieldInputProps
+export type DateRangeFieldInputProps = Omit<TextFieldInputProps, 'value' | 'defaultValue'>
 
 /**
  * DateRangeFieldInput — the text input component for DateRangeField that
@@ -13,15 +13,13 @@ export type DateRangeFieldInputProps = TextFieldInputProps
  *
  * Purpose:
  * Provides a controlled text input for entering a start and end date, using
- * masking to enforce formatting and separators. Synchronizes the input with
- * the shared date range state: the text is parsed on mount (native
- * `defaultValue`), on each `input` event and after a form reset, and the
- * range is empty while the start date is empty or incomplete. When `min` or
- * `max` change, the text is normalized again like typing does, dispatching
- * `input`.
+ * masking to enforce formatting and separators. The range comes from
+ * `DateRangeField`; `onChange` and `onInput` still report each edit of the
+ * text. When `min` or `max` change, the text is normalized again like typing
+ * does, dispatching `input`.
  */
-export const DateRangeFieldInput: FC<DateRangeFieldInputProps> = ({ ref, ...props }) => {
-  const { template, calendar, rangeSeparator, inputRef, disabled, min, max, changeDate } = useDateRangeFieldContext()
+export const DateRangeFieldInput: FC<DateRangeFieldInputProps> = ({ ref, onInput, ...props }) => {
+  const { template, calendar, rangeSeparator, inputRef, disabled, min, max, text, changeText } = useDateRangeFieldContext()
   
   const options = useMemo(() => getDateRangeMaskOptions({
     template,
@@ -29,17 +27,20 @@ export const DateRangeFieldInput: FC<DateRangeFieldInputProps> = ({ ref, ...prop
     calendar,
     min,
     max,
-    onSync: (value) => changeDate(parseTemplateRange(calendar, value, template, rangeSeparator)),
-  }), [template, rangeSeparator, calendar, min, max, changeDate]);
+  }), [template, rangeSeparator, calendar, min, max]);
   
-  const innerInputRef = useMaskito({ options });
+  const maskitoRef = useMaskito({ options });
+
+  const onRangeInput = (event: FormEvent<HTMLInputElement>) => changeText?.(event.currentTarget.value)
 
   return (
     <TextFieldInput
       type='text'
       inputMode='numeric'
       disabled={disabled}
-      ref={mergeRefs([innerInputRef, ref, inputRef])}
+      value={text}
+      onInput={mergeEventHandlers(onRangeInput, onInput)}
+      ref={mergeRefs([maskitoRef, ref, inputRef])}
       {...props}
     />
   )
