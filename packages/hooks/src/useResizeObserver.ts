@@ -1,4 +1,5 @@
-import { RefObject, useEffect, useRef } from 'react';
+import { RefObject, useEffect } from 'react';
+import { useLatest } from './useLatest';
 
 export type UseResizeObserverOptions = {
   box?: ResizeObserverBoxOptions;
@@ -9,8 +10,7 @@ export function useResizeObserver<T extends Element>(
   callback: (entry: ResizeObserverEntry) => void,
   options?: UseResizeObserverOptions,
 ) {
-  const callbackRef = useRef(callback);
-  callbackRef.current = callback;
+  const callbackRef = useLatest(callback);
   
   useEffect(() => {
     const el = ref.current;
@@ -25,5 +25,5 @@ export function useResizeObserver<T extends Element>(
     });
     
     return () => observer.disconnect();
-  }, [ref, options?.box]);
+  }, [ref, callbackRef, options?.box]);
 }

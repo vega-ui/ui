@@ -1,4 +1,5 @@
-import { RefObject, useEffect, useRef } from 'react';
+import { RefObject, useEffect } from 'react';
+import { useLatest } from './useLatest';
 
 export type UseMutationObserverOptions = MutationObserverInit;
 
@@ -7,8 +8,7 @@ export function useMutationObserver<T extends Node>(
   callback: (mutations: MutationRecord[], observer: MutationObserver) => void,
   options?: UseMutationObserverOptions,
 ) {
-  const callbackRef = useRef(callback);
-  callbackRef.current = callback;
+  const callbackRef = useLatest(callback);
   
   useEffect(() => {
     const target = ref.current;
@@ -26,6 +26,7 @@ export function useMutationObserver<T extends Node>(
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     ref,
+    callbackRef,
     options?.attributes,
     options?.attributeFilter,
     options?.attributeOldValue,
