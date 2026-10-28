@@ -18,8 +18,8 @@ Trade-offs:
 
 ```tsx
 <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-  <Spinner size={2} />
-  <Text size={2}>Syncing member permissions</Text>
+  <Spinner size={2} aria-labelledby='sync-status' />
+  <Text id='sync-status' size={2}>Syncing member permissions</Text>
 </div>
 ```
 
@@ -41,7 +41,7 @@ Trade-offs:
 
 ```tsx
 <div style={{ display: 'grid', placeItems: 'center', minHeight: 120 }}>
-  <Spinner size={5} variant='secondary' />
+  <Spinner size={5} variant='secondary' aria-label='Loading section' />
 </div>
 ```
 
@@ -63,6 +63,6 @@ Trade-offs:
 
 ```tsx
 <Button disabled>
-  <Spinner size={2} />
+  <Spinner size={2} aria-label='Saving' />
 </Button>
 ```

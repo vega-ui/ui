@@ -28,7 +28,7 @@ import {
 ## Basic Usage
 
 ```tsx
-<Spinner size={3} />
+<Spinner size={3} aria-label='Loading' />
 ```
 
 ## Variants

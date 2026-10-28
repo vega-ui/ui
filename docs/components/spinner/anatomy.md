@@ -22,8 +22,8 @@ There are no exported child parts.
 
 ```tsx
 <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
-  <Spinner size={2} />
-  <Text size={2}>Syncing member permissions</Text>
+  <Spinner size={2} aria-labelledby='sync-status' />
+  <Text id='sync-status' size={2}>Syncing member permissions</Text>
 </div>
 ```
 
