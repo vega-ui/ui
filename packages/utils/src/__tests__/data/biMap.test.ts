@@ -117,6 +117,39 @@ describe('BiMap', () => {
     expect(snap).toEqual([['A', 1]]);
   });
   
+  it('deletes a key whose value is undefined', () => {
+    const map = new BiMap<string, number | undefined>([['A', undefined]]);
+
+    expect(map.deleteByKey('A')).toBe(true);
+    expect(map.size).toBe(0);
+    expect(map.hasValue(undefined)).toBe(false);
+  });
+
+  it('deletes a value whose key is undefined', () => {
+    const map = new BiMap<string | undefined, number>([[undefined, 1]]);
+
+    expect(map.deleteByValue(1)).toBe(true);
+    expect(map.size).toBe(0);
+    expect(map.hasKey(undefined)).toBe(false);
+  });
+
+  it('drops the undefined value of a key set again', () => {
+    const map = new BiMap<string, number | undefined>([['A', undefined]]);
+    map.set('A', 1);
+
+    expect(map.hasValue(undefined)).toBe(false);
+    expect(map.getByValue(1)).toBe('A');
+  });
+
+  it('drops the undefined key of a value set again', () => {
+    const map = new BiMap<string | undefined, number>([[undefined, 1]]);
+    map.set('B', 1);
+
+    expect(map.size).toBe(1);
+    expect(map.hasKey(undefined)).toBe(false);
+    expect(map.getByKey('B')).toBe(1);
+  });
+
   it('supports symbol keys', () => {
     const k = Symbol('key');
     const v = Symbol('value');

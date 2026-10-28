@@ -11,11 +11,8 @@ export class BiMap<K, V> {
   }
   
   set(k: K, v: V) {
-    const prevV = this.keyToValue.get(k);
-    const prevK = this.valueToKey.get(v);
-    
-    if (prevV !== undefined && prevV !== v) this.valueToKey.delete(prevV);
-    if (prevK !== undefined && prevK !== k) this.keyToValue.delete(prevK);
+    if (this.keyToValue.has(k)) this.valueToKey.delete(this.keyToValue.get(k) as V);
+    if (this.valueToKey.has(v)) this.keyToValue.delete(this.valueToKey.get(v) as K);
     
     this.keyToValue.set(k, v);
     this.valueToKey.set(v, k);
@@ -39,18 +36,16 @@ export class BiMap<K, V> {
   }
   
   deleteByKey(k: K) {
-    const v = this.keyToValue.get(k);
-    if (v === undefined) return false;
+    if (!this.keyToValue.has(k)) return false;
+    this.valueToKey.delete(this.keyToValue.get(k) as V);
     this.keyToValue.delete(k);
-    this.valueToKey.delete(v);
     return true;
   }
   
   deleteByValue(v: V) {
-    const k = this.valueToKey.get(v);
-    if (k === undefined) return false;
+    if (!this.valueToKey.has(v)) return false;
+    this.keyToValue.delete(this.valueToKey.get(v) as K);
     this.valueToKey.delete(v);
-    this.keyToValue.delete(k);
     return true;
   }
   
