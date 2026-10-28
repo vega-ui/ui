@@ -4,8 +4,11 @@ import { cleanup, render, type RenderResult } from '@testing-library/react';
 
 import { MeterStack } from '../MeterStack';
 import { MeterStackSegment } from '../components';
+import '../../../../tokens/src/index.css';
 
 afterEach(cleanup);
+
+const SIZES = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
 
 const TESTID_METER = 'meter';
 const TESTID_SEGMENT_1 = 'segment-1';
@@ -103,6 +106,20 @@ describe('MeterStack', () => {
   });
   
   describe('Edge Cases', () => {
+    it('grows with every size', () => {
+      const r = render(
+        <>
+          {SIZES.map((size) => (
+            <MeterStackTest key={size} data-testid={size} size={size} />
+          ))}
+        </>
+      );
+      const sizes = SIZES.map((size) => r.getByTestId(size).getBoundingClientRect().height);
+
+      expect(new Set(sizes).size).toBe(SIZES.length);
+      expect(sizes).toEqual([...sizes].sort((a, b) => a - b));
+    });
+
     it('supports empty children', async () => {
       const r = render(<MeterStackTest>{null}</MeterStackTest>);
       await expect.element(getMeter(r)).toBeInTheDocument();

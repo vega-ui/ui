@@ -53,7 +53,7 @@ import {
 
 ## Variants
 
-- Size: `sm`, `md`, `lg`
+- Size: `xs`, `sm`, `md`, `lg`, `xl`
 - State model: controlled or uncontrolled `active`
 - Item style: static dot or progress indicator
 

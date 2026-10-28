@@ -18,6 +18,10 @@
 
 /* sizes */
 
+.checkbox:where([data-size='xs']) {
+    --checkbox-size: var(--spacing-6);
+}
+
 .checkbox:where([data-size='sm']) {
     --checkbox-size: var(--spacing-8);
 }
@@ -28,6 +32,10 @@
 
 .checkbox:where([data-size='lg']) {
     --checkbox-size: var(--spacing-12);
+}
+
+.checkbox:where([data-size='xl']) {
+    --checkbox-size: var(--spacing-14);
 }
 
 /* primary/checked | primary/indeterminate */

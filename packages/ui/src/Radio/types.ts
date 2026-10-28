@@ -1,2 +1,2 @@
-export type RadioSize = 'sm' | 'md' | 'lg' | (string & {})
+export type RadioSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | (string & {})
 export type RadioVariant = 'primary' | 'secondary' | (string & {})

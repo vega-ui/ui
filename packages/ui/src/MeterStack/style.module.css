@@ -19,6 +19,10 @@
     width: 100%;
 }
 
+.meter:where([data-size='xs']) {
+    --meter-stack-height: var(--spacing-1);
+}
+
 .meter:where([data-size='sm']) {
     --meter-stack-height: var(--spacing-2);
 }
@@ -29,4 +33,8 @@
 
 .meter:where([data-size='lg']) {
     --meter-stack-height: var(--spacing-6);
+}
+
+.meter:where([data-size='xl']) {
+    --meter-stack-height: var(--spacing-8);
 }

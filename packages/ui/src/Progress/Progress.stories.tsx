@@ -17,7 +17,7 @@ const meta: Meta<typeof Progress> = {
   argTypes: {
     size: {
       control: 'radio',
-      options: ['sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
     variant: {
       control: 'radio',

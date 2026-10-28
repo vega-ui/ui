@@ -5,8 +5,11 @@ import { userEvent } from 'vitest/browser';
 
 import { Switch } from '../Switch';
 import { SwitchHiddenInput, SwitchIndicator } from '../components';
+import '../../../../tokens/src/index.css';
 
 afterEach(cleanup);
+
+const SIZES = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
 
 const TESTID_SWITCH = 'switch';
 const TESTID_INPUT = 'input';
@@ -112,6 +115,20 @@ describe('Switch', () => {
   });
   
   describe('Edge Cases', () => {
+    it('grows with every size', () => {
+      const r = render(
+        <>
+          {SIZES.map((size) => (
+            <SwitchTest key={size} data-testid={size} size={size} />
+          ))}
+        </>
+      );
+      const sizes = SIZES.map((size) => r.getByTestId(size).getBoundingClientRect().height);
+
+      expect(new Set(sizes).size).toBe(SIZES.length);
+      expect(sizes).toEqual([...sizes].sort((a, b) => a - b));
+    });
+
     it('submits no value when unchecked', async () => {
       let submitted: Record<string, string> | null = null;
       

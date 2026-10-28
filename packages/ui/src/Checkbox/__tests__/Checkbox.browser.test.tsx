@@ -10,8 +10,11 @@ import {
   CheckboxIndicator,
   CheckboxIndeterminateIcon,
 } from '../components';
+import '../../../../tokens/src/index.css';
 
 afterEach(cleanup);
+
+const SIZES = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
 
 const TESTID_ROOT = 'checkbox';
 const TESTID_INPUT = 'hidden-input';
@@ -211,6 +214,22 @@ describe('Checkbox', () => {
   });
   
   describe('Edge Cases', () => {
+    it('grows with every size', () => {
+      const r = render(
+        <>
+          {SIZES.map((size) => (
+            <Checkbox key={size} size={size}>
+              <CheckboxIndicator data-testid={size} />
+            </Checkbox>
+          ))}
+        </>
+      );
+      const sizes = SIZES.map((size) => r.getByTestId(size).getBoundingClientRect().width);
+
+      expect(new Set(sizes).size).toBe(SIZES.length);
+      expect(sizes).toEqual([...sizes].sort((a, b) => a - b));
+    });
+
     it('indeterminate sets the native input.indeterminate property', async () => {
       const r = render(<CheckboxTest indeterminate />);
       expect(getInput(r)).toBePartiallyChecked()

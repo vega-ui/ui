@@ -27,7 +27,7 @@ import { Option, type OptionProps, type OptionSize } from '@vega-ui/react';
 
 ## Variants
 
-- Size: `sm`, `md`, `lg`
+- Size: `xs`, `sm`, `md`, `lg`, `xl`
 - State: selected, focusable, disabled
 - Content: plain label or richer icon/text row
 

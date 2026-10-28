@@ -27,6 +27,10 @@
     touch-action: pan-x pinch-zoom;
 }
 
+.slider:where([data-size='xs']) {
+    --slider-size: calc(var(--spacing) * 1.5);
+}
+
 .slider:where([data-size='sm']) {
     --slider-size: var(--spacing-2);
 }
@@ -37,6 +41,10 @@
 
 .slider:where([data-size='lg']) {
     --slider-size: var(--spacing-4);
+}
+
+.slider:where([data-size='xl']) {
+    --slider-size: var(--spacing-5);
 }
 
 .slider:where([data-variant='primary']) {

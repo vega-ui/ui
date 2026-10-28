@@ -1,1 +1,1 @@
-export type HelperTextSize = 'sm' | 'md' | 'lg' | (string & {})
+export type HelperTextSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | (string & {})

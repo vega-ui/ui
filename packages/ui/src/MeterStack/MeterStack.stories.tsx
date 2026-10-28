@@ -21,7 +21,7 @@ const meta: Meta<typeof MeterStack> = {
   argTypes: {
     size: {
       control: 'radio',
-      options: ['sm', 'md', 'lg'],
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
     }
   },
   tags: ['autodocs'],

@@ -5,8 +5,11 @@ import { userEvent } from 'vitest/browser';
 
 import { Slider, SliderProps } from '../Slider';
 import { SliderRange, SliderThumb, SliderThumbIndicator, SliderThumbInput, SliderTrack } from '../components';
+import '../../../../tokens/src/index.css';
 
 afterEach(cleanup);
+
+const SIZES = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
 
 const TESTID_ROOT = 'slider';
 const TESTID_RANGE = 'range';
@@ -483,6 +486,22 @@ describe('Slider', () => {
   });
 
   describe('Edge Cases', () => {
+    it('grows with every size', () => {
+      const r = render(
+        <>
+          {SIZES.map((size) => (
+            <Slider key={size} size={size} style={{ width: '200px' }}>
+              <SliderTrack data-testid={size} />
+            </Slider>
+          ))}
+        </>
+      );
+      const sizes = SIZES.map((size) => r.getByTestId(size).getBoundingClientRect().height);
+
+      expect(new Set(sizes).size).toBe(SIZES.length);
+      expect(sizes).toEqual([...sizes].sort((a, b) => a - b));
+    });
+
     describe('thumbs', () => {
       it('snaps values off the step grid like the native input', () => {
         const r = render(

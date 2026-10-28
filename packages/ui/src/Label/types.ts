@@ -1,1 +1,1 @@
-export type LabelSize = 'sm' | 'md' | 'lg' | (string & {});
+export type LabelSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | (string & {});

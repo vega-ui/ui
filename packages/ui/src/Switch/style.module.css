@@ -25,6 +25,10 @@
 
 /* sizes */
 
+.switch:where([data-size='xs']) {
+    --switch-size: var(--spacing-10);
+}
+
 .switch:where([data-size='sm']) {
     --switch-size: var(--spacing-12);
 }
@@ -35,6 +39,10 @@
 
 .switch:where([data-size='lg']) {
     --switch-size: var(--spacing-16);
+}
+
+.switch:where([data-size='xl']) {
+    --switch-size: var(--spacing-18);
 }
 
 /* checked indicator position */

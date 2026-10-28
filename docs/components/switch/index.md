@@ -56,7 +56,7 @@ import {
 
 ## Variants
 
-- Sizes: `sm`, `md`, `lg`
+- Sizes: `xs`, `sm`, `md`, `lg`, `xl`
 - Variants: `primary`, `secondary`
 - States: unchecked, checked, disabled
 

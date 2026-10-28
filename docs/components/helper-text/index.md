@@ -26,7 +26,7 @@ import { HelperText, type HelperTextProps } from '@vega-ui/react';
 
 ## Variants
 
-- Size: `sm`, `md`, `lg`
+- Size: `xs`, `sm`, `md`, `lg`, `xl`
 - State: default helper copy or `error`
 - Placement: below fields, selectors, or grouped controls
 

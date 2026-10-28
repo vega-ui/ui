@@ -12,6 +12,7 @@ export default mergeConfig(
     resolve: { conditions: ['source', ...defaultClientConditions] },
     test: {
       maxWorkers: 1,
+      css: true,
       browser: {
         enabled: true,
         headless: true,

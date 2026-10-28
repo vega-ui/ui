@@ -18,6 +18,10 @@
 
 /* sizes */
 
+.radio:where([data-size='xs']) {
+    --radio-size: var(--spacing-6);
+}
+
 .radio:where([data-size='sm']) {
     --radio-size: var(--spacing-8);
 }
@@ -28,6 +32,10 @@
 
 .radio:where([data-size='lg']) {
     --radio-size: var(--spacing-12);
+}
+
+.radio:where([data-size='xl']) {
+    --radio-size: var(--spacing-14);
 }
 
 /* primary/checked */

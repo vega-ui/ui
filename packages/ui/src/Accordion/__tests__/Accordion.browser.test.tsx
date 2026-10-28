@@ -10,6 +10,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '../components';
+import '../../../../tokens/src/index.css';
 
 const ITEMS = ['One', 'Two', 'Three'] as const;
 
@@ -35,6 +36,8 @@ const getTrigger = (r: RenderResult, val: (typeof ITEMS)[number]) => r.getByText
 const getContent = (r: RenderResult, val: (typeof ITEMS)[number]) => r.getByText(`Content ${val}`);
 
 afterEach(cleanup);
+
+const SIZES = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
 
 describe('Accordion', () => {
   describe('Critical User Paths', () => {
@@ -207,6 +210,26 @@ describe('Accordion', () => {
   });
   
   describe('Edge Cases', () => {
+    it('grows with every size', () => {
+      const r = render(
+        <>
+          {SIZES.map((size) => (
+            <Accordion key={size} size={size}>
+              <AccordionItem value={size}>
+                <AccordionHeader>
+                  <AccordionTrigger>{size}</AccordionTrigger>
+                </AccordionHeader>
+              </AccordionItem>
+            </Accordion>
+          ))}
+        </>
+      );
+      const sizes = SIZES.map((size) => r.getByRole('button', { name: size }).getBoundingClientRect().height);
+
+      expect(new Set(sizes).size).toBe(SIZES.length);
+      expect(sizes).toEqual([...sizes].sort((a, b) => a - b));
+    });
+
     it('empty children: renders ul', async () => {
       const r = render(<Accordion />);
       await expect.element(r.getByRole('list')).toBeInTheDocument();

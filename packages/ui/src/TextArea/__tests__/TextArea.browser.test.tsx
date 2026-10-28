@@ -4,8 +4,11 @@ import { cleanup, render, type RenderResult } from '@testing-library/react';
 import { userEvent } from 'vitest/browser';
 
 import { TextArea } from '../TextArea';
+import '../../../../tokens/src/index.css';
 
 afterEach(cleanup);
+
+const SIZES = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
 
 const TESTID = 'textarea';
 
@@ -99,6 +102,20 @@ describe('TextArea', () => {
   });
   
   describe('Edge Cases', () => {
+    it('grows with every size', () => {
+      const r = render(
+        <>
+          {SIZES.map((size) => (
+            <TextAreaTest key={size} data-testid={size} size={size} />
+          ))}
+        </>
+      );
+      const sizes = SIZES.map((size) => parseFloat(getComputedStyle(r.getByTestId(size)).minHeight));
+
+      expect(new Set(sizes).size).toBe(SIZES.length);
+      expect(sizes).toEqual([...sizes].sort((a, b) => a - b));
+    });
+
     it('renders empty value without crashing', async () => {
       const r = render(<TextAreaTest value='' />);
       const textarea = getTextarea(r);

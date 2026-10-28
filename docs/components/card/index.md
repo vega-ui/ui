@@ -36,7 +36,7 @@ import {
 
 ## Variants
 
-- Sizes: `sm`, `md`, `lg`
+- Sizes: `xs`, `sm`, `md`, `lg`, `xl`
 - Appearances: `outline`, `transparent`
 - Composition: default `article` or `asChild`
 

@@ -3,8 +3,11 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
 
 import { Card } from '../Card';
+import '../../../../tokens/src/index.css';
 
 afterEach(cleanup);
+
+const SIZES = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
 
 const CARD_TEXT = 'Card';
 
@@ -78,6 +81,20 @@ describe('Card', () => {
   });
   
   describe('Edge Cases', () => {
+    it('grows with every size', () => {
+      const r = render(
+        <>
+          {SIZES.map((size) => (
+            <CardTest key={size} data-testid={size} size={size} />
+          ))}
+        </>
+      );
+      const sizes = SIZES.map((size) => parseFloat(getComputedStyle(r.getByTestId(size)).paddingTop));
+
+      expect(new Set(sizes).size).toBe(SIZES.length);
+      expect(sizes).toEqual([...sizes].sort((a, b) => a - b));
+    });
+
     it('renders with no children (empty)', async () => {
       const r = render(
         <Card data-testid='card' />
