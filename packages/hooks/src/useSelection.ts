@@ -67,7 +67,7 @@ export const useSelection = <K, const M extends Selection>({
       return selected.some(k => eq(k, key))
     }
 
-    return eq(selected as SelectedValue<'single', K>, key)
+    return eq(selected as K, key)
   }, [selection, selected, eq, edges, comparator])
 
   const isDisabled = useCallback((key?: K) => {
