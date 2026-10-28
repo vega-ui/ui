@@ -32,7 +32,7 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {
-    size: { control: 'radio', options: ['sm', 'md', 'lg'] },
+    size: { control: 'radio', options: ['xs', 'sm', 'md', 'lg', 'xl'] },
     disabled: { control: 'boolean' },
   },
   args: {
@@ -86,7 +86,7 @@ export const Controlled: Story = {
 export const Sizes: Story = {
   render: (props) => (
     <Stack>
-      {(['sm', 'md', 'lg'] as const).map((size) => (
+      {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
         <PasswordField key={size} size={size} {...props}>
           <PasswordFieldInput placeholder={`Size: ${size}`} />
           <PasswordFieldToggleIconButton aria-label='Show password'>

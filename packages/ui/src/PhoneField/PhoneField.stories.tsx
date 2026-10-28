@@ -146,7 +146,7 @@ export const WithSelectAndIcons: Story = {
 export const Sizes: Story = {
   render: (props) => (
     <Stack>
-      {(['sm', 'md', 'lg'] as const).map((size) => (
+      {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
         <PhoneField key={size} size={size} code='RU' {...props}>
           <PhoneFieldInput placeholder={`Size: ${size}`} />
         </PhoneField>

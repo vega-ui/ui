@@ -3,8 +3,11 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
 
 import { Meter } from '../Meter';
+import '../../../../tokens/src/index.css';
 
 afterEach(cleanup);
+
+const SIZES = ['sm', 'md', 'lg'] as const;
 
 const TESTID_METER = 'meter';
 
@@ -93,6 +96,20 @@ describe('Meter', () => {
   });
   
   describe('Edge Cases', () => {
+    it('grows with every size', () => {
+      const r = render(
+        <>
+          {SIZES.map((size) => (
+            <MeterTest key={size} data-testid={size} size={size} value={DEFAULT_VALUE} />
+          ))}
+        </>
+      );
+      const sizes = SIZES.map((size) => r.getByTestId(size).getBoundingClientRect().height);
+
+      expect(new Set(sizes).size).toBe(SIZES.length);
+      expect(sizes).toEqual([...sizes].sort((a, b) => a - b));
+    });
+
     it('supports negative values', async () => {
       const r = render(<MeterTest value={-10} min={-100} max={100} />);
       await expect.element(getMeter(r)).toHaveAttribute('aria-valuenow', '-10');

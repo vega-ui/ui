@@ -58,7 +58,7 @@ export const Default: Story = {
 export const Sizes: Story = {
   render: (props) => (
     <Stack>
-      {(['sm', 'md', 'lg'] as const).map((size) => (
+      {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
         <NumberField key={size} size={size} {...props}>
           <NumberFieldDecrementButton />
           <NumberFieldInput placeholder={`Size: ${size}`} />

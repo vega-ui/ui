@@ -1,1 +1,1 @@
-export type OptionSize = 'sm' | 'md' | 'lg' | (string & {})
+export type OptionSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | (string & {})

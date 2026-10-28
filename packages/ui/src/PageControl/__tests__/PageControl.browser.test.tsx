@@ -5,8 +5,11 @@ import { userEvent } from 'vitest/browser';
 
 import { PageControl } from '../PageControl';
 import { PageControlItem, PageControlProgress } from '../components';
+import '../../../../tokens/src/index.css';
 
 afterEach(cleanup);
+
+const SIZES = ['sm', 'md', 'lg'] as const;
 
 const TESTID_LIST = 'pagecontrol';
 const TESTID_TAB = (i: number) => `tab-${i}`;
@@ -218,6 +221,24 @@ describe('PageControl', () => {
     });
   });
   
+  describe('Edge Cases', () => {
+    it('grows with every size', () => {
+      const r = render(
+        <>
+          {SIZES.map((size) => (
+            <PageControl key={size} size={size}>
+              <PageControlItem data-testid={size} index={0} />
+            </PageControl>
+          ))}
+        </>
+      );
+      const sizes = SIZES.map((size) => r.getByTestId(size).getBoundingClientRect().width);
+
+      expect(new Set(sizes).size).toBe(SIZES.length);
+      expect(sizes).toEqual([...sizes].sort((a, b) => a - b));
+    });
+  });
+
   describe('Accessibility', () => {
     describe('keyboard', () => {
       it('ArrowRight moves selection and focus to next tab', async () => {

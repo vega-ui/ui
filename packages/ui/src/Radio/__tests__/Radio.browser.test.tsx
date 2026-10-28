@@ -4,8 +4,11 @@ import { cleanup, render, type RenderResult, waitFor } from '@testing-library/re
 import { userEvent } from 'vitest/browser';
 
 import { Radio } from '../Radio';
+import '../../../../tokens/src/index.css';
 
 afterEach(cleanup);
+
+const SIZES = ['sm', 'md', 'lg'] as const;
 
 const TESTID = 'radio';
 
@@ -100,6 +103,20 @@ describe('Radio', () => {
   });
   
   describe('Edge Cases', () => {
+    it('grows with every size', () => {
+      const r = render(
+        <>
+          {SIZES.map((size) => (
+            <Radio key={size} data-testid={size} size={size} />
+          ))}
+        </>
+      );
+      const sizes = SIZES.map((size) => r.getByTestId(size).getBoundingClientRect().width);
+
+      expect(new Set(sizes).size).toBe(SIZES.length);
+      expect(sizes).toEqual([...sizes].sort((a, b) => a - b));
+    });
+
     it('supports defaultChecked for uncontrolled usage', async () => {
       const r = render(<RadioTest defaultChecked />);
       await expect.element(getRadio(r)).toBeChecked();

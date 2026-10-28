@@ -4,8 +4,11 @@ import { cleanup, render, type RenderResult } from '@testing-library/react';
 
 import { Progress } from '../Progress';
 import { ProgressTrack } from '../components';
+import '../../../../tokens/src/index.css';
 
 afterEach(cleanup);
+
+const SIZES = ['sm', 'md', 'lg'] as const;
 
 const TESTID_PROGRESS = 'progress';
 const TESTID_TRACK = 'track';
@@ -80,6 +83,20 @@ describe('Progress', () => {
   });
   
   describe('Edge Cases', () => {
+    it('grows with every size', () => {
+      const r = render(
+        <>
+          {SIZES.map((size) => (
+            <ProgressTest key={size} data-testid={size} size={size} value={VALUE} />
+          ))}
+        </>
+      );
+      const sizes = SIZES.map((size) => r.getByTestId(size).getBoundingClientRect().height);
+
+      expect(new Set(sizes).size).toBe(SIZES.length);
+      expect(sizes).toEqual([...sizes].sort((a, b) => a - b));
+    });
+
     it('renders without value', async () => {
       const r = render(<ProgressTest />);
       await expect.element(getProgress(r)).toBeInTheDocument();
