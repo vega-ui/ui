@@ -12,14 +12,14 @@ export const useResize = () => {
       setHeight(window.innerHeight)
     }
 
-    if (height === 0 || width === 0) onChange()
+    onChange()
 
     window.addEventListener('resize', onChange, { signal: controller.signal })
 
     return () => {
       controller.abort()
     }
-  }, [height, width])
+  }, [])
 
   return { height, width }
 }
