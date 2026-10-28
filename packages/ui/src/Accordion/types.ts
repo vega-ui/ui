@@ -1,1 +1,1 @@
-export type AccordionSize = 'sm' | 'md' | 'lg' | string
+export type AccordionSize = 'sm' | 'md' | 'lg' | (string & {})

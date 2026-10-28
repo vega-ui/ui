@@ -1,1 +1,1 @@
-export type PinFieldSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | string
+export type PinFieldSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | (string & {})

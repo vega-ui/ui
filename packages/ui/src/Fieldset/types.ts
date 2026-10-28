@@ -1,1 +1,1 @@
-export type FieldsetAppearance = 'transparent' | 'outlined' | string
+export type FieldsetAppearance = 'transparent' | 'outlined' | (string & {})
