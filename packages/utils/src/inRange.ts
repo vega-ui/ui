@@ -1,1 +1,7 @@
-export const inRange = (value: number, range: readonly [number, number] | readonly []) => range.length === 0 ? false : value >= range[0] && value <= range[1] || value <= range[1] && value >= range[0]
+export const inRange = (value: number, range: readonly [number, number] | readonly []) => {
+  if (range.length === 0) return false
+
+  const [start, end] = range
+
+  return value >= Math.min(start, end) && value <= Math.max(start, end)
+}
