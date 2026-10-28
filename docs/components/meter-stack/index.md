@@ -51,7 +51,7 @@ import {
 
 ## Variants
 
-- Size: `xs`, `sm`, `md`, `lg`, `xl`
+- Size: `sm`, `md`, `lg`
 - Layout: fixed width or `fullWidth`
 - Segment model: any number of ordered segments
 

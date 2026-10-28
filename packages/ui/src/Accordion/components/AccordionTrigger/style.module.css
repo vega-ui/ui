@@ -16,10 +16,6 @@
     color: inherit;
 }
 
-.triggerButton:where([data-size='xs']) {
-    padding: var(--spacing-5) 0;
-}
-
 .triggerButton:where([data-size='sm']) {
     padding: var(--spacing-6) 0;
 }
@@ -30,10 +26,6 @@
 
 .triggerButton:where([data-size='lg']) {
     padding: var(--spacing-8) 0;
-}
-
-.triggerButton:where([data-size='xl']) {
-    padding: var(--spacing-9) 0;
 }
 
 .triggerButton:focus-visible {

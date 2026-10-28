@@ -37,10 +37,6 @@
     outline: 2px solid var(--focus-color);
 }
 
-.pageControlItem:where([data-size='xs']) {
-    --page-control-item-size: 6px;
-}
-
 .pageControlItem:where([data-size='sm']) {
     --page-control-item-size: 8px;
 }
@@ -51,8 +47,4 @@
 
 .pageControlItem:where([data-size='lg']) {
     --page-control-item-size: 16px;
-}
-
-.pageControlItem:where([data-size='xl']) {
-    --page-control-item-size: 20px;
 }

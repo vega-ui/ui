@@ -4,7 +4,7 @@ import { Card } from './Card';
 import { Text } from '../Text';
 import { CardAppearance, CardSize } from './types';
 
-const sizes: CardSize[] = ['xs', 'sm', 'md', 'lg', 'xl']
+const sizes: CardSize[] = ['sm', 'md', 'lg']
 const appearance: CardAppearance[] = ['outline', 'transparent']
 
 const meta = {
@@ -21,7 +21,7 @@ const meta = {
   argTypes: {
     size: {
       control: 'radio',
-      options: ['xs', 'sm', 'md', 'lg', 'xl'],
+      options: ['sm', 'md', 'lg'],
     },
     appearance: {
       control: 'radio',

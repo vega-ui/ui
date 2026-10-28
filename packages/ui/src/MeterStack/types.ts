@@ -1,1 +1,1 @@
-export type MeterStackSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | (string & {})
+export type MeterStackSize = 'sm' | 'md' | 'lg' | (string & {})

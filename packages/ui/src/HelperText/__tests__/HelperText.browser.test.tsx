@@ -43,12 +43,6 @@ describe('HelperText', () => {
     it('supports custom size', async () => {
       r.rerender(<HelperTextTest size='lg' />);
       await expect.element(getRoot(r)).toHaveAttribute('data-size', '3');
-      
-      r.rerender(<HelperTextTest size='xs' />);
-      await expect.element(getRoot(r)).toHaveAttribute('data-size', '1');
-      
-      r.rerender(<HelperTextTest size='xl' />);
-      await expect.element(getRoot(r)).toHaveAttribute('data-size', '4');
     });
     
     it('sets data-error=true when error is enabled', async () => {

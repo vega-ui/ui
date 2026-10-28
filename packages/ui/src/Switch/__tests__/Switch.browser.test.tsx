@@ -9,7 +9,7 @@ import '../../../../tokens/src/index.css';
 
 afterEach(cleanup);
 
-const SIZES = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+const SIZES = ['sm', 'md', 'lg'] as const;
 
 const TESTID_SWITCH = 'switch';
 const TESTID_INPUT = 'input';

@@ -55,12 +55,6 @@ describe('Label', () => {
       
       r.rerender(<LabelTest size='lg' />);
       await expect.element(getLabel(r)).toHaveAttribute(`data-${SIZE}`, '4');
-      
-      r.rerender(<LabelTest size='xs' />);
-      await expect.element(getLabel(r)).toHaveAttribute(`data-${SIZE}`, '1');
-      
-      r.rerender(<LabelTest size='xl' />);
-      await expect.element(getLabel(r)).toHaveAttribute(`data-${SIZE}`, '5');
     });
     
     it('supports fontWeight prop', async () => {

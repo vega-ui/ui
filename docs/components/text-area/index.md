@@ -17,7 +17,7 @@ import { TextArea, type TextAreaProps, type TextAreaSize } from '@vega-ui/react'
 ## Exported Types
 
 - `TextAreaProps`
-- `TextAreaSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | string`
+- `TextAreaSize = 'sm' | 'md' | 'lg' | string`
 
 ## Basic Usage
 
@@ -27,7 +27,7 @@ import { TextArea, type TextAreaProps, type TextAreaSize } from '@vega-ui/react'
 
 ## Variants
 
-- Size: `xs`, `sm`, `md`, `lg`, `xl`
+- Size: `sm`, `md`, `lg`
 - State: default, `error`, disabled
 - Layout: regular width or `fullWidth`
 - Value model: controlled or uncontrolled

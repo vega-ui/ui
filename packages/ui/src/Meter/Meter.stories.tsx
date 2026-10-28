@@ -17,7 +17,7 @@ const meta: Meta<typeof Meter> = {
   argTypes: {
     size: {
       control: 'radio',
-      options: ['xs', 'sm', 'md', 'lg', 'xl'],
+      options: ['sm', 'md', 'lg'],
     },
     variant: {
       control: 'radio',

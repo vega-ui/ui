@@ -46,7 +46,7 @@ A named visual or behavioral mode such as `field`, `inline`, `secondary`, or `gh
 
 A size mode that maps to spacing, height, radius, or typography decisions. The library uses two scales:
 
-- controls and containers take a named size from `xs` to `xl`; `Avatar` extends it to `2xs`–`2xl` and `Icon` down to `4xs`
+- controls and containers take a named size from `xs` to `xl`; some components take only `sm`–`lg` (each component page lists its sizes), `Avatar` extends the scale to `2xs`–`2xl` and `Icon` down to `4xs`
 - typography and text-sized parts (`Heading`, `Text`, `Spinner`) take a number from `1` to `11`, the step of the font-size tokens `--font-size-1` … `--font-size-11`
 
 Both scales also accept a custom value that you style yourself.

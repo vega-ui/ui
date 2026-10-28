@@ -37,7 +37,7 @@ const getContent = (r: RenderResult, val: (typeof ITEMS)[number]) => r.getByText
 
 afterEach(cleanup);
 
-const SIZES = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+const SIZES = ['sm', 'md', 'lg'] as const;
 
 describe('Accordion', () => {
   describe('Critical User Paths', () => {

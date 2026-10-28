@@ -7,7 +7,7 @@ import '../../../../tokens/src/index.css';
 
 afterEach(cleanup);
 
-const SIZES = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
+const SIZES = ['sm', 'md', 'lg'] as const;
 
 const CARD_TEXT = 'Card';
 

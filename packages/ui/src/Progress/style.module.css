@@ -30,10 +30,6 @@
     --progress-track-color: var(--color-secondary-500);
 }
 
-.progress:where([data-size='xs']) {
-    --progress-height: var(--spacing-1);
-}
-
 .progress:where([data-size='sm']) {
     --progress-height: var(--spacing-2);
 }
@@ -44,10 +40,6 @@
 
 .progress:where([data-size='lg']) {
     --progress-height: var(--spacing-6);
-}
-
-.progress:where([data-size='xl']) {
-    --progress-height: var(--spacing-8);
 }
 
 @keyframes progressTrackIndeterminate {

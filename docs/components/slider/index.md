@@ -78,7 +78,7 @@ import {
 
 ## Variants
 
-- Size: `xs`, `sm`, `md`, `lg`, `xl`
+- Size: `sm`, `md`, `lg`
 - Variant: `primary`, `secondary`
 - Orientation: `horizontal` or `vertical`
 - Thumbs: one value or a range of several

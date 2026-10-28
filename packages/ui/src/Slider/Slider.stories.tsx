@@ -21,7 +21,7 @@ const meta: Meta<SliderStoryProps> = {
   argTypes: {
     size: {
       control: 'radio',
-      options: ['xs', 'sm', 'md', 'lg', 'xl'],
+      options: ['sm', 'md', 'lg'],
     },
     variant: {
       control: 'radio',
@@ -339,7 +339,7 @@ export const Equalizer: Story = {
 export const Sizes: Story = {
   render: (args) => (
     <div style={{ ...column, gap: 24 }}>
-      {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
+      {(['sm', 'md', 'lg'] as const).map((size) => (
         <Slider key={size} {...args} size={size} defaultValue={[30, 70]} style={{ width: '100%' }}>
           <SliderTrack>
             <SliderRange />

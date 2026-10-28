@@ -1,1 +1,1 @@
-export type PageControlSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | (string & {})
+export type PageControlSize = 'sm' | 'md' | 'lg' | (string & {})

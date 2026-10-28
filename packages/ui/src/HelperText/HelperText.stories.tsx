@@ -21,7 +21,7 @@ const meta: Meta<typeof HelperText> = {
   argTypes: {
     size: {
       control: 'radio',
-      options: ['xs', 'sm', 'md', 'lg', 'xl'],
+      options: ['sm', 'md', 'lg'],
     },
   },
   tags: ['autodocs'],
