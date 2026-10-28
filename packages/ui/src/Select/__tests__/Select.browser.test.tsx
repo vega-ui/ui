@@ -525,6 +525,32 @@ describe('Select', () => {
   });
   
   describe('Edge Cases', () => {
+    describe('option with an empty value', () => {
+      const LABEL_ANY = 'Any city';
+
+      const EmptyOptionSelectTest: FC<ComponentProps<typeof Select>> = (props) => (
+        <Select data-testid={TESTID_ROOT} {...props}>
+          <SelectCombobox data-testid={TESTID_COMBOBOX}>
+            <SelectValue data-testid={TESTID_VALUE} placeholder={PLACEHOLDER} />
+          </SelectCombobox>
+          <SelectPortal>
+            <SelectListbox data-testid={TESTID_LISTBOX}>
+              <SelectOption value=''>{LABEL_ANY}</SelectOption>
+              <SelectOption value={VALUE_MOSCOW}>{LABEL_MOSCOW}</SelectOption>
+            </SelectListbox>
+          </SelectPortal>
+        </Select>
+      );
+
+      it('is not selected without defaultValue', async () => {
+        const r = render(<EmptyOptionSelectTest />);
+
+        await userEvent.click(getCombobox(r));
+
+        await expect.element(r.getByRole('option', { name: LABEL_ANY })).not.toHaveAttribute('aria-selected', 'true');
+      });
+    });
+
     it('submits empty string when nothing selected (defaultValue="")', async () => {
       let submitted: Record<string, string> | null = null;
       

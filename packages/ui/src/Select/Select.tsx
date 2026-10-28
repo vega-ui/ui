@@ -111,7 +111,7 @@ export const Select = <V extends string | number>({
   variant = 'field',
   size = 'md',
   value,
-  defaultValue = '' as V,
+  defaultValue,
   onSelectValue,
   open: _open,
   defaultOpen = false,
@@ -126,7 +126,7 @@ export const Select = <V extends string | number>({
   
   const { selected, select, isSelected } = useSelection<V, 'single'>({
     selection: 'single',
-    defaultSelected: defaultValue,
+    defaultSelected: defaultValue ?? null,
     selected: value,
     onSelect: onSelectValue,
   })
