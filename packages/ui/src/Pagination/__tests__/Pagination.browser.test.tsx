@@ -108,7 +108,7 @@ describe('Pagination', () => {
     
     it('renders ellipsis', async () => {
       await expect.element(getEllipsis(r)).toBeInTheDocument();
-      await expect.element(getEllipsis(r)).toHaveTextContent('...');
+      await expect.element(getEllipsis(r)).toHaveTextContent('…');
     });
   });
   
@@ -144,6 +144,15 @@ describe('Pagination', () => {
         const r = render(<PaginationTest />);
         await expect.element(getPrev(r)).toHaveAttribute('aria-label', 'Previous page');
         await expect.element(getNext(r)).toHaveAttribute('aria-label', 'Next page');
+      });
+    });
+
+    describe('focus', () => {
+      it('ellipsis is not focusable', async () => {
+        const r = render(<PaginationTest />);
+        getEllipsis(r).focus();
+
+        await expect.element(getEllipsis(r)).not.toHaveFocus();
       });
     });
     
