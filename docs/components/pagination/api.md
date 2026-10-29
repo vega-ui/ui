@@ -6,8 +6,8 @@
 <!-- AUTO-GENERATED:ROOT_API:start -->
 | Prop | Type | Default | Required | Notes |
 | --- | --- | --- | --- | --- |
-| `ref` | `Ref<HTMLUListElement>` | `—` | No | Ref forwarded to the underlying card element. |
-| `size` | `PaginationSize` | `'md'` | No | Visual size of the card, inherited from IconButtonProps. |
+| `ref` | `Ref<HTMLUListElement>` | `—` | No | Ref forwarded to the underlying list element. |
+| `size` | `PaginationSize` | `'md'` | No | Visual size of the pagination items, inherited from IconButtonProps. |
 | `variant` | `PaginationVariant` | `'primary'` | No | Visual variant of the component. |
 <!-- AUTO-GENERATED:ROOT_API:end -->
 
