@@ -10,7 +10,7 @@
     background: var(--surface-secondary);
     box-shadow: var(--surface-shadow);
     width: max-content;
-    z-index: 1;
+    z-index: var(--z-index-popover);
     overflow: auto;
     max-height: 250px;
     min-width: 100%;

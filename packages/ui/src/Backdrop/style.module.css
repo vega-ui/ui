@@ -1,7 +1,7 @@
 .backdrop {
     box-sizing: border-box;
     overflow-x: hidden;
-    z-index: 1;
+    z-index: var(--z-index-overlay);
 }
 
 .backdrop[data-visible='true']::after {
@@ -19,7 +19,7 @@
     right: 0;
     bottom: 0;
     visibility: hidden;
-    transition: opacity var(--transition-slow-state-delay) ease,
+    transition: opacity var(--transition-state-delay) ease,
                 visibility var(--transition-state-delay) ease;
     background: transparent;
     opacity: 0;
