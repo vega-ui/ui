@@ -1,5 +1,5 @@
 import { ComponentProps, FC } from 'react';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, type RenderResult } from '@testing-library/react';
 import { userEvent } from 'vitest/browser';
 
@@ -236,6 +236,20 @@ describe('PageControl', () => {
 
       expect(new Set(sizes).size).toBe(SIZES.length);
       expect(sizes).toEqual([...sizes].sort((a, b) => a - b));
+    });
+
+    it('cancels the progress animation frame on unmount', () => {
+      const cancel = vi.spyOn(window, 'cancelAnimationFrame');
+      const r = render(
+        <PageControl defaultActive={0}>
+          <PageControlProgress index={0} />
+        </PageControl>
+      );
+
+      r.unmount();
+
+      expect(cancel).toHaveBeenCalled();
+      cancel.mockRestore();
     });
   });
 
