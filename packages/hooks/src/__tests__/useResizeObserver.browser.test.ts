@@ -55,12 +55,15 @@ describe('useResizeObserver', () => {
     const target = createTarget();
     const first = vi.fn();
     const second = vi.fn();
-    const { rerender } = await renderHook((props?: { callback: () => void }) => useResizeObserver({ current: target }, props?.callback ?? first));
+    const ref = { current: target };
+    const { rerender } = await renderHook((props?: { callback: () => void }) => useResizeObserver(ref, props?.callback ?? first));
+    await expect.poll(() => first).toHaveBeenCalledOnce();
 
     await rerender({ callback: second });
+    target.style.width = '200px';
 
-    await expect.poll(() => second).toHaveBeenCalled();
-    expect(first).not.toHaveBeenCalled();
+    await expect.poll(() => second).toHaveBeenCalledOnce();
+    expect(first).toHaveBeenCalledOnce();
   });
 
   it('stops observing on unmount', async () => {

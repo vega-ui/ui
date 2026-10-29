@@ -7,6 +7,7 @@ export default mergeConfig(
   configShared,
   defineProject({
     esbuild: { jsx: 'automatic' },
+    optimizeDeps: { include: ['react/jsx-dev-runtime'] },
     resolve: { conditions: ['source', ...defaultClientConditions] },
     test: {
       browser: {
