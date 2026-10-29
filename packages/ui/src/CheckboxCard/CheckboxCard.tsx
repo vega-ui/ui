@@ -39,7 +39,7 @@ export const CheckboxCard: FC<CheckboxCardProps> = ({
   return (
     <CheckboxCardProvider
       checked={checked}
-      onChangedChecked={onChangeChecked}
+      onChangeChecked={onChangeChecked}
       defaultChecked={defaultChecked}
       disabled={disabled}
       indeterminate={indeterminate}
