@@ -26,12 +26,16 @@ export const PaginationItem: FC<PaginationItemProps> = ({
   current,
   variant,
   size,
+  asChild,
+  type = asChild ? undefined : 'button',
   ...props
 }) => {
   const { size: _size, variant: _variant } = usePaginationContext()
 
   return (
     <Button
+      type={type}
+      asChild={asChild}
       aria-current={current ? 'page' : undefined}
       className={csx(style.paginationItem, className)}
       variant={variant ?? _variant}

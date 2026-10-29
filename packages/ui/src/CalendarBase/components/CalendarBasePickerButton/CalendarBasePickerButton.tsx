@@ -10,11 +10,12 @@ export type CalendarBasePickerButtonProps = ButtonProps
  * picker. It wraps the generic `Button` component while binding its styling
  * to the calendar’s configuration through `useBaseCalendarContext()`.
  */
-export const CalendarBasePickerButton: FC<CalendarBasePickerButtonProps> = ({ children, ...props }) => {
+export const CalendarBasePickerButton: FC<CalendarBasePickerButtonProps> = ({ children, type = 'button', ...props }) => {
   const { size, variant } = useCalendarBaseContext()
   
   return (
     <Button
+      type={type}
       size={size satisfies ButtonProps['size']}
       variant={variant}
       appearance='transparent'

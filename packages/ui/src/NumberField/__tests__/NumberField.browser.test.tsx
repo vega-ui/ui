@@ -281,6 +281,19 @@ describe('NumberField', () => {
   });
   
   describe('Edge Cases', () => {
+    it('does not submit the surrounding form on step button click', async () => {
+      const onSubmit = vi.fn();
+      const r = render(
+        <form onSubmit={(e) => { e.preventDefault(); onSubmit(); }}>
+          <NumberFieldTest />
+        </form>
+      );
+
+      await userEvent.click(getIncrement(r));
+
+      expect(onSubmit).not.toHaveBeenCalled();
+    });
+
     it('uses min instead of 0 when incrementing from empty and min is set', async () => {
       const r = render(<NumberFieldTest min={5} />);
       const input = getInput(r);

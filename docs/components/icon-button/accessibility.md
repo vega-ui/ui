@@ -21,7 +21,8 @@ Always provide an explicit accessible label because visible text is usually abse
 
 ## Form Semantics
 
-- `type='button'` is the default.
+- There is no default `type`: like a native `<button>`, `IconButton` submits the surrounding form.
+- Set `type='button'` for actions that must not submit.
 - Use `type='submit'` only when an icon-only submit action is still clear in context.
 
 ## Accessibility Risks

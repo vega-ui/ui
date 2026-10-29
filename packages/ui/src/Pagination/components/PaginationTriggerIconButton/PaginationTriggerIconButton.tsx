@@ -14,12 +14,16 @@ export const PaginationTriggerIconButton: FC<PaginationTriggerIconButtonProps> =
   size,
   variant,
   children,
+  asChild,
+  type = asChild ? undefined : 'button',
   ...props
 }) => {
   const { size: _size, variant: _variant } = usePaginationContext()
 
   return (
     <IconButton
+      type={type}
+      asChild={asChild}
       variant={variant ?? _variant}
       appearance='ghost'
       size={size ?? _size}

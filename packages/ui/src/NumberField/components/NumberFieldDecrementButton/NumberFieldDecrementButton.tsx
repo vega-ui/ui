@@ -24,6 +24,7 @@ export const NumberFieldDecrementButton: FC<NumberFieldDecrementProps> = ({
   className,
   children,
   onClick: _onClick,
+  type = 'button',
   ...props
 }) => {
   const { decrement, disabled: _disabled, isMin, size } = useNumberFieldContext()
@@ -34,6 +35,7 @@ export const NumberFieldDecrementButton: FC<NumberFieldDecrementProps> = ({
 
   return (
     <IconButton
+      type={type}
       disabled={(disabled ?? _disabled) || isMin}
       variant='secondary'
       appearance='transparent'

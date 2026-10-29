@@ -17,12 +17,12 @@ export type DateTimeFieldTriggerIconButtonProps = IconButtonProps
  * Provides a clickable icon button that opens the associated calendar picker,
  * visually indicating that a date can be selected.
  */
-export const DateTimeFieldTriggerIconButton: FC<DateTimeFieldTriggerIconButtonProps> = ({ children, className, ...props }) => {
+export const DateTimeFieldTriggerIconButton: FC<DateTimeFieldTriggerIconButtonProps> = ({ children, className, type = 'button', ...props }) => {
   const { size } = useTextFieldContext()
   const { disabled } = useDateTimeFieldContext()
 
   return (
-    <IconButton size={size} variant='secondary' appearance='transparent' disabled={disabled} className={csx(style.button, className)} {...props}>
+    <IconButton type={type} size={size} variant='secondary' appearance='transparent' disabled={disabled} className={csx(style.button, className)} {...props}>
       {children ?? <Icon><CalendarIcon /></Icon>}
     </IconButton>
   )
