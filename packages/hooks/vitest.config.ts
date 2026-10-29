@@ -6,6 +6,7 @@ import configShared from '../../vitest.shared'
 export default mergeConfig(
   configShared,
   defineProject({
+    esbuild: { jsx: 'automatic' },
     resolve: { conditions: ['source', ...defaultClientConditions] },
     test: {
       browser: {
