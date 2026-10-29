@@ -13,7 +13,6 @@ export default tseslint.config([
   tseslint.configs.recommended,
   {
     files: ['**/*.ts', '**/*.tsx'],
-    ignores: ['!.storybook'],
     plugins: { 'react-hooks': reactHooks },
     rules: {
       quotes: ['error', 'single'],
