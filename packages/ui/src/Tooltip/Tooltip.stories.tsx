@@ -32,10 +32,10 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     children: [
-      <TooltipTrigger asChild>
+      <TooltipTrigger key={0} asChild>
         <Button>Tooltip!</Button>
       </TooltipTrigger>,
-      <TooltipContent>
+      <TooltipContent key={1}>
         <TooltipArrow />
         <Text size={2}>Hello! I'm a tooltip</Text>
       </TooltipContent>
@@ -68,10 +68,10 @@ export const Controlled: Story = {
 export const WithIconButton: Story = {
   args: {
     children: [
-      <TooltipTrigger asChild>
+      <TooltipTrigger key={0} asChild>
         <IconButton><Icon><HeartIcon /></Icon></IconButton>
       </TooltipTrigger>,
-      <TooltipContent>
+      <TooltipContent key={1}>
         <TooltipArrow />
         <Text size={2}>Support</Text>
       </TooltipContent>
@@ -82,10 +82,10 @@ export const WithIconButton: Story = {
 export const InsideModal: Story = {
   args: {
     children: [
-      <TooltipTrigger asChild>
+      <TooltipTrigger key={0} asChild>
         <IconButton><Icon><InfoIcon /></Icon></IconButton>
       </TooltipTrigger>,
-      <TooltipContent>
+      <TooltipContent key={1}>
         <TooltipArrow />
         <Text size={2}>Info</Text>
       </TooltipContent>

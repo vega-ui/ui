@@ -181,7 +181,7 @@ export const ScrollableContent: Story = {
                 
                 <div style={{ display: 'grid', gap: 10, marginTop: 14 }}>
                   {Array.from({ length: 30 }).map((_, i) => (
-                    <Card size='sm'>
+                    <Card key={i} size='sm'>
                       <Heading size={2} fontWeight={600}>
                         Event #{i + 1}
                       </Heading>

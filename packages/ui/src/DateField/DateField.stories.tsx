@@ -252,6 +252,7 @@ export const Locales: Story = {
  * Hebrew leap month is valid, while the value stays an ISO day.
  */
 export const CalendarSystems: Story = {
+  name: 'Calendar systems',
   render: (props) => (
     <Grid>
       {calendarSystems.map(({ name, locale, calendar }) => (
@@ -272,6 +273,7 @@ export const CalendarSystems: Story = {
  * never taken from `locale`.
  */
 export const RightToLeft: Story = {
+  name: 'Right to left',
   render: (props) => (
     <Grid>
       {['ar-EG', 'he-IL'].map((locale) => (

@@ -23,7 +23,7 @@ const meta = {
         <DrawerTitle>Title</DrawerTitle>
         <DrawerCloseButton />
       </DrawerHeader>,
-      <Text key={0}>
+      <Text key={1}>
         Content
       </Text>
     ]

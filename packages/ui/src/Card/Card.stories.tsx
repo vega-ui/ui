@@ -54,7 +54,7 @@ export const AllVariants: Story = {
       <div style={{ display: 'grid', gap: '12px', gridTemplateColumns: `repeat(${sizes.length}, 1fr)`, alignItems: 'center' }}>
         {appearance.map((app) => (
           sizes.map((size) => (
-            <Card appearance={app} size={size}>
+            <Card key={`${app}-${size}`} appearance={app} size={size}>
               <Text>I'm a card!</Text>
             </Card>
           ))
@@ -74,7 +74,7 @@ export const Sizes: Story = {
     return (
       <div style={{ display: 'flex', gap: '12px', flexDirection: 'column', alignItems: 'center' }}>
         {sizes.map((size) => (
-          <Card size={size}>
+          <Card key={size} size={size}>
             <Text>I'm a card!</Text>
           </Card>
         ))}

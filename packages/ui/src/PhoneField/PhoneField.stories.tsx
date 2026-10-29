@@ -65,6 +65,7 @@ export const Default: Story = {
 };
 
 export const WithSelect: Story = {
+  name: 'With select',
   args: {
     defaultCode: 'RU',
     strictMask: false,
@@ -83,7 +84,7 @@ export const WithSelect: Story = {
           <PhoneFieldSelectPortal>
             <PhoneFieldSelectListbox>
               {options.map((code) => (
-                <PhoneFieldSelectOption value={code}>
+                <PhoneFieldSelectOption key={code} value={code}>
                   {code}
                 </PhoneFieldSelectOption>
               ))}
@@ -102,6 +103,7 @@ const SelectedValue: FC<{ options: Array<{ code: CountryCode, icon: ReactElement
 }
 
 export const WithSelectAndIcons: Story = {
+  name: 'With select and icons',
   args: {
     defaultCode: 'RU',
     strictMask: false,
@@ -126,7 +128,7 @@ export const WithSelectAndIcons: Story = {
           <PhoneFieldSelectPortal>
             <PhoneFieldSelectListbox>
               {options.map(({ code, icon, label, post }) => (
-                <PhoneFieldSelectOption value={code}>
+                <PhoneFieldSelectOption key={code} value={code}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
                     {icon}
                     {label}

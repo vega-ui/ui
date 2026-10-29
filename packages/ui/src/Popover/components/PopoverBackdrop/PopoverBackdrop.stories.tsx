@@ -1,5 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { PopoverBackdrop } from './PopoverBackdrop';
+import { Popover } from '../../Popover';
+import { PopoverTrigger } from '../PopoverTrigger';
+import { PopoverContent } from '../PopoverContent';
+import { Button } from '../../../Button';
+import { Text } from '../../../Text';
 
 const meta = {
   title: 'Overlay/Popover/PopoverBackdrop',
@@ -15,7 +20,15 @@ const meta = {
   decorators(Story) {
     return (
       <div style={{ width: 1000, height: 300 }}>
-        <Story />
+        <Popover defaultOpen>
+          <PopoverTrigger asChild>
+            <Button>Open popover</Button>
+          </PopoverTrigger>
+          <Story />
+          <PopoverContent>
+            <Text>The backdrop dims the page behind the popover.</Text>
+          </PopoverContent>
+        </Popover>
       </div>
     )
   }

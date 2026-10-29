@@ -61,13 +61,13 @@ export const Default: Story = {
 export const Flags: Story = {
   args: {
     children: [
-      <PhoneFieldSelectOption value='RU'>
+      <PhoneFieldSelectOption key={0} value='RU'>
         🇷🇺
       </PhoneFieldSelectOption>,
-      <PhoneFieldSelectOption value='US'>
+      <PhoneFieldSelectOption key={1} value='US'>
         🇺🇸
       </PhoneFieldSelectOption>,
-      <PhoneFieldSelectOption value='IT'>
+      <PhoneFieldSelectOption key={2} value='IT'>
         🇮🇹
       </PhoneFieldSelectOption>
     ]

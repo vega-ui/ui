@@ -453,6 +453,7 @@ export const NestedDialogFlow: Story = {
 };
 
 export const WithFilterSearch: Story = {
+  name: 'With filter search',
   args: {
     typeMatchEnabled: false
   },

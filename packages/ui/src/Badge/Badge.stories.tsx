@@ -76,7 +76,7 @@ export const Variants: Story = {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
         {variants.map((variant) => (
-          <Badge title={`I'm a ${variant} variant`} variant={variant}>Badge</Badge>
+          <Badge key={variant} title={`I'm a ${variant} variant`} variant={variant}>Badge</Badge>
         ))}
       </div>
     )

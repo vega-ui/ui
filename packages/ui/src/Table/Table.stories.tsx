@@ -21,7 +21,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const Content = [
-  <TableHead>
+  <TableHead key={0}>
     <TableRow>
       <TableHeading>
         <Text>Модель</Text>
@@ -34,7 +34,7 @@ const Content = [
       </TableHeading>
     </TableRow>
   </TableHead>,
-  <TableBody>
+  <TableBody key={1}>
     <TableRow>
       <TableData>
         <Text>iPhone 12 Pro</Text>
@@ -69,7 +69,7 @@ const Content = [
       </TableData>
     </TableRow>
   </TableBody>,
-  <TableFoot>
+  <TableFoot key={2}>
     <TableRow>
       <TableData>
         <Text>Средняя цена:</Text>

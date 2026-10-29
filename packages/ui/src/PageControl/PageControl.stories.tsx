@@ -25,10 +25,10 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     children: [
-      <PageControlItem index={0} />,
-      <PageControlItem index={1} />,
-      <PageControlItem index={2} />,
-      <PageControlItem index={3} />,
+      <PageControlItem key={0} index={0} />,
+      <PageControlItem key={1} index={1} />,
+      <PageControlItem key={2} index={2} />,
+      <PageControlItem key={3} index={3} />,
     ]
   },
 };

@@ -37,19 +37,19 @@ export const Default: Story = {
     name: 'default',
     defaultValue: '1',
     children: [
-      <SegmentedControlItem value='1'>
+      <SegmentedControlItem key={0} value='1'>
         <SegmentedControlItemHiddenInput />
         Apple
       </SegmentedControlItem>,
-      <SegmentedControlItem value='2'>
+      <SegmentedControlItem key={1} value='2'>
         <SegmentedControlItemHiddenInput />
         Orange
       </SegmentedControlItem>,
-      <SegmentedControlItem value='3'>
+      <SegmentedControlItem key={2} value='3'>
         <SegmentedControlItemHiddenInput />
         Blueberry
       </SegmentedControlItem>,
-      <SegmentedControlIndicator />
+      <SegmentedControlIndicator key={3} />
     ]
   },
 };
@@ -63,21 +63,21 @@ export const Separated: Story = {
       width: 'min-content',
     },
     children: [
-      <SegmentedControlItem value='1'>
+      <SegmentedControlItem key={0} value='1'>
         <SegmentedControlItemHiddenInput />
         Apple
       </SegmentedControlItem>,
-      <Separator style={{ height: '80%' }} orientation='vertical' />,
-      <SegmentedControlItem value='2'>
+      <Separator key={1} style={{ height: '80%' }} orientation='vertical' />,
+      <SegmentedControlItem key={2} value='2'>
         <SegmentedControlItemHiddenInput />
         Orange
       </SegmentedControlItem>,
-      <Separator style={{ height: '80%' }} orientation='vertical' />,
-      <SegmentedControlItem value='3'>
+      <Separator key={3} style={{ height: '80%' }} orientation='vertical' />,
+      <SegmentedControlItem key={4} value='3'>
         <SegmentedControlItemHiddenInput />
         Blueberry
       </SegmentedControlItem>,
-      <SegmentedControlIndicator />
+      <SegmentedControlIndicator key={5} />
     ]
   },
 };
@@ -91,19 +91,19 @@ export const MinContent: Story = {
       width: 'min-content',
     },
     children: [
-      <SegmentedControlItem value='1'>
+      <SegmentedControlItem key={0} value='1'>
         <SegmentedControlItemHiddenInput />
         Apple
       </SegmentedControlItem>,
-      <SegmentedControlItem value='2'>
+      <SegmentedControlItem key={1} value='2'>
         <SegmentedControlItemHiddenInput />
         Orange
       </SegmentedControlItem>,
-      <SegmentedControlItem value='3'>
+      <SegmentedControlItem key={2} value='3'>
         <SegmentedControlItemHiddenInput />
         Blueberry
       </SegmentedControlItem>,
-      <SegmentedControlIndicator />
+      <SegmentedControlIndicator key={3} />
     ]
   },
 };
@@ -133,19 +133,19 @@ export const DifferentLength: Story = {
       display: 'flex',
     },
     children: [
-      <SegmentedControlItem value='1'>
+      <SegmentedControlItem key={0} value='1'>
         <SegmentedControlItemHiddenInput />
         Short
       </SegmentedControlItem>,
-      <SegmentedControlItem value='2'>
+      <SegmentedControlItem key={1} value='2'>
         <SegmentedControlItemHiddenInput />
         Loooooong
       </SegmentedControlItem>,
-      <SegmentedControlItem value='3'>
+      <SegmentedControlItem key={2} value='3'>
         <SegmentedControlItemHiddenInput />
         Short
       </SegmentedControlItem>,
-      <SegmentedControlIndicator />
+      <SegmentedControlIndicator key={3} />
     ]
   },
 };
@@ -174,15 +174,15 @@ export const WithIcon: Story = {
     variant: 'secondary',
     name: 'icon',
     children: [
-      <SegmentedControlItem value='1'>
+      <SegmentedControlItem key={0} value='1'>
         <SegmentedControlItemHiddenInput />
         <Icon size='sm'><SunIcon /></Icon>
       </SegmentedControlItem>,
-      <SegmentedControlItem value='2'>
+      <SegmentedControlItem key={1} value='2'>
         <SegmentedControlItemHiddenInput />
         <Icon size='sm'><MoonIcon /></Icon>
       </SegmentedControlItem>,
-      <SegmentedControlIndicator />
+      <SegmentedControlIndicator key={2} />
     ]
   }
 };

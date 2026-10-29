@@ -190,19 +190,19 @@ export const WithStrengthMeter: Story = {
           <MeterStack value={getPasswordScore(value)}>
             <MeterStackSegment
               value={meter.a * 0.25}
-              style={{ '--meter-item-color': 'var(--color-red-accent-500)' } as CSSProperties}
+              style={{ '--meter-stack-segment-color': 'var(--color-red-accent-500)' } as CSSProperties}
             />
             <MeterStackSegment
               value={meter.b * 0.25}
-              style={{ '--meter-item-color': 'var(--color-orange-accent-500)' } as CSSProperties}
+              style={{ '--meter-stack-segment-color': 'var(--color-orange-accent-500)' } as CSSProperties}
             />
             <MeterStackSegment
               value={meter.c * 0.25}
-              style={{ '--meter-item-color': 'var(--color-yellow-accent-500)' } as CSSProperties}
+              style={{ '--meter-stack-segment-color': 'var(--color-yellow-accent-500)' } as CSSProperties}
             />
             <MeterStackSegment
               value={meter.d * 0.25}
-              style={{ '--meter-item-color': 'var(--color-green-accent-500)' } as CSSProperties}
+              style={{ '--meter-stack-segment-color': 'var(--color-green-accent-500)' } as CSSProperties}
             />
           </MeterStack>
           

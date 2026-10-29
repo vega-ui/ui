@@ -93,6 +93,7 @@ export const WithMinMax: Story = {
 };
 
 export const StepAndDecimals: Story = {
+  name: 'Step and decimals',
   args: {
     min: 0,
     max: 5,
@@ -101,7 +102,7 @@ export const StepAndDecimals: Story = {
     children: [
       <NumberFieldDecrementButton key={0} />,
       <NumberFieldInput key={1} />,
-      <NumberFieldIncrementButton />
+      <NumberFieldIncrementButton key={2} />
     ]
   },
 };
@@ -210,6 +211,7 @@ export const WithExternalFocusControl: Story = {
 };
 
 export const NestedInCardLayout: Story = {
+  name: 'Nested in card layout',
   render: (props) => (
     <div style={{ display: 'grid', gap: 16, maxWidth: 520 }}>
       <Card>

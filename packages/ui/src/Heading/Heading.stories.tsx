@@ -39,7 +39,7 @@ export const Each: Story = {
     return (
       <>
         {types.map((type) => (
-          <Heading as={type}>Заголовок</Heading>
+          <Heading key={type} as={type}>Заголовок</Heading>
         ))}
       </>
     )

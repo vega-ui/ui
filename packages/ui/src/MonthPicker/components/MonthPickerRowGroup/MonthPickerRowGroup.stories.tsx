@@ -15,12 +15,12 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     children: [
-      <MonthPickerRow row={0}>
+      <MonthPickerRow key={0} row={0}>
         <MonthPickerItem col={0}>Jan</MonthPickerItem>
         <MonthPickerItem col={1}>Feb</MonthPickerItem>
         <MonthPickerItem col={2}>Mar</MonthPickerItem>
       </MonthPickerRow>,
-      <MonthPickerRow row={1}>
+      <MonthPickerRow key={1} row={1}>
         <MonthPickerItem col={0}>Apr</MonthPickerItem>
         <MonthPickerItem col={1}>May</MonthPickerItem>
         <MonthPickerItem col={2}>Jun</MonthPickerItem>

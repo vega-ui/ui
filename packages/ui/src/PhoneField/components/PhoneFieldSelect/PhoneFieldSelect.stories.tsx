@@ -71,12 +71,12 @@ const EmojiValue = () => {
 export const Default: Story = {
   args: {
     children: [
-      <PhoneFieldSelectHiddenSelect />,
-      <PhoneFieldSelectCombobox>
+      <PhoneFieldSelectHiddenSelect key={0} />,
+      <PhoneFieldSelectCombobox key={1}>
         <PhoneFieldSelectValue />
         <PhoneFieldSelectIcon />
       </PhoneFieldSelectCombobox>,
-      <PhoneFieldSelectPortal>
+      <PhoneFieldSelectPortal key={2}>
         <PhoneFieldSelectListbox>
           <PhoneFieldSelectOption value='RU'>RU</PhoneFieldSelectOption>
           <PhoneFieldSelectOption value='US'>US</PhoneFieldSelectOption>
@@ -90,12 +90,12 @@ export const Default: Story = {
 export const FlagsInList: Story = {
   args: {
     children: [
-      <PhoneFieldSelectHiddenSelect />,
-      <PhoneFieldSelectCombobox>
+      <PhoneFieldSelectHiddenSelect key={0} />,
+      <PhoneFieldSelectCombobox key={1}>
         <PhoneFieldSelectValue />
         <PhoneFieldSelectIcon />
       </PhoneFieldSelectCombobox>,
-      <PhoneFieldSelectPortal>
+      <PhoneFieldSelectPortal key={2}>
         <PhoneFieldSelectListbox>
           {countries.map(({ value, label, code, Flag }) => (
             <PhoneFieldSelectOption key={value} value={value}>
@@ -115,12 +115,12 @@ export const FlagsInList: Story = {
 export const FlagOnlyValueStory: Story = {
   args: {
     children: [
-      <PhoneFieldSelectHiddenSelect />,
-      <PhoneFieldSelectCombobox>
+      <PhoneFieldSelectHiddenSelect key={0} />,
+      <PhoneFieldSelectCombobox key={1}>
         <FlagOnlyValue />
         <PhoneFieldSelectIcon />
       </PhoneFieldSelectCombobox>,
-      <PhoneFieldSelectPortal>
+      <PhoneFieldSelectPortal key={2}>
         <PhoneFieldSelectListbox>
           {countries.map(({ value, label, code, Flag }) => (
             <PhoneFieldSelectOption key={value} value={value}>
@@ -142,12 +142,12 @@ export const FlagOnlyValueStory: Story = {
 export const Emoji: Story = {
   args: {
     children: [
-      <PhoneFieldSelectHiddenSelect />,
-      <PhoneFieldSelectCombobox>
+      <PhoneFieldSelectHiddenSelect key={0} />,
+      <PhoneFieldSelectCombobox key={1}>
         <EmojiValue />
         <PhoneFieldSelectIcon />
       </PhoneFieldSelectCombobox>,
-      <PhoneFieldSelectPortal>
+      <PhoneFieldSelectPortal key={2}>
         <PhoneFieldSelectListbox>
           <PhoneFieldSelectOption value='RU'>🇷🇺 Russia <span style={{ marginLeft: 'auto' }}>+7</span></PhoneFieldSelectOption>
           <PhoneFieldSelectOption value='US'>🇺🇸 United States <span style={{ marginLeft: 'auto' }}>+1</span></PhoneFieldSelectOption>
@@ -162,8 +162,8 @@ export const Disabled: Story = {
   args: {
     disabled: true,
     children: [
-      <PhoneFieldSelectHiddenSelect />,
-      <PhoneFieldSelectCombobox>
+      <PhoneFieldSelectHiddenSelect key={0} />,
+      <PhoneFieldSelectCombobox key={1}>
         <FlagOnlyValue />
         <PhoneFieldSelectIcon />
       </PhoneFieldSelectCombobox>,

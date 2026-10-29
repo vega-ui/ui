@@ -17,9 +17,9 @@ export const Default: Story = {
   args: {
     row: 1,
     children: [
-      <DataGridPickerItem col={1}><Text size={2}>1</Text></DataGridPickerItem>,
-      <DataGridPickerItem col={2}><Text size={2}>2</Text></DataGridPickerItem>,
-      <DataGridPickerItem col={3}><Text size={2}>3</Text></DataGridPickerItem>,
+      <DataGridPickerItem key={0} col={1}><Text size={2}>1</Text></DataGridPickerItem>,
+      <DataGridPickerItem key={1} col={2}><Text size={2}>2</Text></DataGridPickerItem>,
+      <DataGridPickerItem key={2} col={3}><Text size={2}>3</Text></DataGridPickerItem>,
     ]
   },
 };

@@ -33,10 +33,10 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     children: [
-      <MeterStackSegment value={.15} style={{ '--meter-stack-segment-color': 'var(--color-blue-accent-100)' } as CSSProperties} />,
-      <MeterStackSegment value={.35} style={{ '--meter-stack-segment-color': 'var(--color-blue-accent-300)' } as CSSProperties} />,
-      <MeterStackSegment value={.2} style={{ '--meter-stack-segment-color': 'var(--color-blue-accent-500)' } as CSSProperties} />,
-      <MeterStackSegment value={.05} style={{ '--meter-stack-segment-color': 'var(--color-blue-accent-700)' } as CSSProperties} />
+      <MeterStackSegment key={0} value={.15} style={{ '--meter-stack-segment-color': 'var(--color-blue-accent-100)' } as CSSProperties} />,
+      <MeterStackSegment key={1} value={.35} style={{ '--meter-stack-segment-color': 'var(--color-blue-accent-300)' } as CSSProperties} />,
+      <MeterStackSegment key={2} value={.2} style={{ '--meter-stack-segment-color': 'var(--color-blue-accent-500)' } as CSSProperties} />,
+      <MeterStackSegment key={3} value={.05} style={{ '--meter-stack-segment-color': 'var(--color-blue-accent-700)' } as CSSProperties} />
     ]
   },
 };

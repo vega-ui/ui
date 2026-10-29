@@ -39,7 +39,7 @@ export const Each: Story = {
     return (
       <div style={{ display: 'flex', gap: '16px', flexDirection: 'column' }}>
         {sizes.map((size, index) => (
-            <Text size={size}>{(index + 1).toString()}: Hello</Text>
+            <Text key={size} size={size}>{(index + 1).toString()}: Hello</Text>
           ))}
       </div>
     )

@@ -20,7 +20,7 @@ const meta = {
   argTypes: {},
   args: {
     children: [
-      <DialogBackdrop>
+      <DialogBackdrop key={0}>
         <DialogContent key={1}>
           <DialogHeader>
             <DialogTitle>Title</DialogTitle>
