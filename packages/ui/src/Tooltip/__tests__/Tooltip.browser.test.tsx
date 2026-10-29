@@ -81,6 +81,22 @@ describe('Tooltip', () => {
 
         expect(queryContent(r)).toBeInTheDocument();
       });
+
+      it('keeps the content mounted while the close transition runs', async () => {
+        const r = render(<TooltipTest open />);
+        await waitFor(() => {
+          expect(queryContent(r)).toHaveAttribute('data-status', 'open');
+        });
+
+        r.rerender(<TooltipTest open={false} />);
+
+        await waitFor(() => {
+          expect(queryContent(r)).toHaveAttribute('data-status', 'close');
+        });
+        await waitFor(() => {
+          expect(queryContent(r)).not.toBeInTheDocument();
+        });
+      });
     });
 
     describe('open/close', () => {
