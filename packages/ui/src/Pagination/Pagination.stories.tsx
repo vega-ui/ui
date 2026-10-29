@@ -92,10 +92,9 @@ export const LinkBasedPagination: Story = {
     const isLast = currentPage >= totalPages
 
     const renderPageItem = (page: number) => (
-      <PaginationListItem>
+      <PaginationListItem key={page}>
         <PaginationItem
           asChild
-          key={page}
           current={page === currentPage}
         >
           <a href={getHref(page)}>{page}</a>
@@ -115,16 +114,16 @@ export const LinkBasedPagination: Story = {
           pages.push(renderPageItem(i))
         }
         pages.push(
-          <PaginationListItem>
-            <PaginationEllipsis key='ellipsis-end' />
+          <PaginationListItem key='ellipsis-end'>
+            <PaginationEllipsis />
           </PaginationListItem>
         )
         pages.push(renderPageItem(totalPages)) 
       } else if (currentPage >= totalPages - 3) {
         pages.push(renderPageItem(1))
         pages.push(
-          <PaginationListItem>
-            <PaginationEllipsis key='ellipsis-start' />
+          <PaginationListItem key='ellipsis-start'>
+            <PaginationEllipsis />
           </PaginationListItem>
         )
         for (let i = totalPages - 4; i <= totalPages; i++) {
@@ -133,16 +132,16 @@ export const LinkBasedPagination: Story = {
       } else {
         pages.push(renderPageItem(1))
         pages.push(
-          <PaginationListItem>
-            <PaginationEllipsis key='ellipsis-start' />
+          <PaginationListItem key='ellipsis-start'>
+            <PaginationEllipsis />
           </PaginationListItem>
         )
         for (let i = currentPage - 1; i <= currentPage + 1; i++) {
           pages.push(renderPageItem(i))
         }
         pages.push(
-          <PaginationListItem>
-            <PaginationEllipsis key='ellipsis-end' />
+          <PaginationListItem key='ellipsis-end'>
+            <PaginationEllipsis />
           </PaginationListItem>
         )
         pages.push(renderPageItem(totalPages))
