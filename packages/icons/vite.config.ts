@@ -26,7 +26,6 @@ export default defineConfig({
       fileName: (_, entryName) => {
         return `${entryName}.js`;
       },
-      name: 'AdaraCloudUI',
     },
     chunkSizeWarningLimit: 10000,
     rollupOptions: {
