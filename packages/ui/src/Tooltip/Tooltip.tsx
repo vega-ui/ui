@@ -94,7 +94,7 @@ export const Tooltip: FC<TooltipProps> = ({
       triggerProps={getReferenceProps()}
       contentProps={getFloatingProps()}
       context={context as FloatingContext<HTMLElement>}
-      contentStyle={{ ...floatingStyles }}
+      contentStyle={floatingStyles}
     >
       <div className={csx(style.tooltip, className)} {...props}>
         {children}
