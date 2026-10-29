@@ -25,6 +25,7 @@ export const PasswordFieldToggleIconButton: FC<PasswordFieldToggleIconButtonProp
   
   return (
     <IconButton
+      type='button'
       size={size}
       className={csx(style.button, className)}
       disabled={disabled ?? _disabled}

@@ -1,23 +1,23 @@
 # Button Troubleshooting
 
-## Button Does Not Submit The Form
+## Button Submits The Form Unexpectedly
 
 ### Symptom
 
-The button is inside a form, but clicking it does not submit.
+The button is inside a form, and clicking it submits the form.
 
 ### Likely Cause
 
-`Button` defaults to `type='button'`.
+`Button` has no default `type`, so like a native `<button>` it is a submit button inside a form.
 
 ### How To Verify
 
 - Inspect the rendered `type`.
-- Check whether submit behavior was expected but never configured.
+- Check whether the button was meant to submit the form.
 
 ### Fix
 
-- Set `type='submit'` when the button should submit the form.
+- Set `type='button'` when the button should not submit the form.
 
 ## Polymorphic Button Behaves Strangely
 

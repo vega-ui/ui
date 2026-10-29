@@ -34,6 +34,7 @@ export const NumberFieldDecrementButton: FC<NumberFieldDecrementProps> = ({
 
   return (
     <IconButton
+      type='button'
       disabled={(disabled ?? _disabled) || isMin}
       variant='secondary'
       appearance='transparent'

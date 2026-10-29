@@ -22,7 +22,6 @@ export interface IconButtonProps extends ButtonBaseProps {
 export const IconButton: FC<IconButtonProps> = ({
   size = 'md',
   disabled,
-  type = 'button',
   className,
   children,
   asChild,
@@ -31,7 +30,6 @@ export const IconButton: FC<IconButtonProps> = ({
 }) => {
   return (
     <ButtonBase
-      type={type}
       asChild={asChild}
       ref={ref}
       disabled={disabled}

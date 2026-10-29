@@ -45,7 +45,7 @@ import { Button, type ButtonProps, type ButtonSize } from '@vega-ui/react';
 
 ## Edge Cases
 
-- `type` defaults to `button`, which avoids accidental form submission.
+- `type` has no default: inside a form, `Button` submits it like a native `<button>`. With `asChild`, no `type` is passed to the child.
 - `asChild` swaps the underlying element while preserving VegaUI button styling.
 - Custom size, variant, or appearance strings require matching CSS support.
 - If the interaction is primarily navigation or the meaning is already icon-recognizable, `Link` or `IconButton` may communicate intent better.

@@ -1,6 +1,7 @@
 import { ComponentProps, FC } from 'react';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
+import { userEvent } from 'vitest/browser';
 
 import { Pagination } from '../Pagination';
 import {
@@ -112,6 +113,20 @@ describe('Pagination', () => {
   });
   
   describe('Edge Cases', () => {
+    it('does not submit the surrounding form on trigger click', async () => {
+      const onSubmit = vi.fn();
+      const r = render(
+        <form onSubmit={(e) => { e.preventDefault(); onSubmit(); }}>
+          <PaginationTest />
+        </form>
+      );
+
+      await userEvent.click(getNext(r));
+      await userEvent.click(getItem112(r));
+
+      expect(onSubmit).not.toHaveBeenCalled();
+    });
+
     it('renders without optional Pagination props', async () => {
       const r = render(<PaginationTest />);
       await expect.element(getRoot(r)).toBeInTheDocument();

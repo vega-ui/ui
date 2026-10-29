@@ -22,7 +22,7 @@ export const DateRangeFieldTriggerIconButton: FC<DateRangeFieldTriggerIconButton
   const { disabled } = useDateRangeFieldContext()
 
   return (
-    <IconButton size={size} variant='secondary' appearance='transparent' disabled={disabled} className={csx(style.button, className)} {...props}>
+    <IconButton type='button' size={size} variant='secondary' appearance='transparent' disabled={disabled} className={csx(style.button, className)} {...props}>
       {children ?? <Icon><CalendarIcon /></Icon>}
     </IconButton>
   )

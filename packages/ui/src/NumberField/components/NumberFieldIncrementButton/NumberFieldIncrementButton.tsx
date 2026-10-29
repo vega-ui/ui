@@ -34,6 +34,7 @@ export const NumberFieldIncrementButton: FC<NumberFieldIncrementProps> = ({
 
   return (
     <IconButton
+      type='button'
       disabled={(disabled ?? _disabled) || isMax}
       size={size}
       onClick={mergeEventHandlers(onClick, _onClick)}

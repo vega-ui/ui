@@ -30,7 +30,6 @@ export const Button: FC<ButtonProps> = ({
    children,
    variant = 'primary',
    appearance = 'fill',
-   type = 'button',
    className,
    fullWidth,
    asChild,
@@ -39,7 +38,6 @@ export const Button: FC<ButtonProps> = ({
 }) => {
   return (
     <ButtonBase
-      type={type}
       asChild={asChild}
       data-full-width={fullWidth}
       className={csx(style.button, className)}

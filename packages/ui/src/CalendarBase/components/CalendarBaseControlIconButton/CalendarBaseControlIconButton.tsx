@@ -15,6 +15,7 @@ export const CalendarBaseControlIconButton: FC<CalendarBaseControlIconButtonProp
   
   return (
     <IconButton
+      type='button'
       appearance='ghost'
       variant={variant satisfies IconButtonProps['variant']}
       size={size satisfies IconButtonProps['size']}

@@ -184,6 +184,19 @@ describe('PasswordField', () => {
   });
   
   describe('Edge Cases', () => {
+    it('does not submit the surrounding form on toggle click', async () => {
+      const onSubmit = vi.fn();
+      const r = render(
+        <form onSubmit={(e) => { e.preventDefault(); onSubmit(); }}>
+          <PasswordFieldTest />
+        </form>
+      );
+
+      await userEvent.click(getToggle(r));
+
+      expect(onSubmit).not.toHaveBeenCalled();
+    });
+
     it('keeps toggling with a custom onClick on the toggle', async () => {
       const onClick = vi.fn();
       const r = render(

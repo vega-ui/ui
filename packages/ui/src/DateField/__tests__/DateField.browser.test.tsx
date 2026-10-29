@@ -227,6 +227,19 @@ describe('DateField', () => {
   });
   
   describe('Edge Cases', () => {
+    it('does not submit the surrounding form on trigger click', async () => {
+      const onSubmit = vi.fn();
+      const r = render(
+        <form onSubmit={(e) => { e.preventDefault(); onSubmit(); }}>
+          <DateFieldTest />
+        </form>
+      );
+
+      await userEvent.click(getTrigger(r));
+
+      expect(onSubmit).not.toHaveBeenCalled();
+    });
+
     describe('calendar navigation follows the WAI-ARIA date picker pattern', () => {
       const getMonthCell = (r: RenderResult, month: string) =>
         page.elementLocator(getContent(r)).getByRole('gridcell', { name: month, exact: true });

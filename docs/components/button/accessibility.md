@@ -22,7 +22,8 @@ Button text should describe the action clearly. If the content is icon-only, use
 
 ## Form Semantics
 
-- `type='button'` is the default and avoids accidental submission.
+- There is no default `type`: like a native `<button>`, `Button` submits the surrounding form.
+- Set `type='button'` for actions that must not submit.
 - Use `type='submit'` deliberately when the button belongs to a form submit flow.
 
 ## Accessibility Risks

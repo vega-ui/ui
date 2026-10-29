@@ -15,6 +15,7 @@ export const CalendarBasePickerButton: FC<CalendarBasePickerButtonProps> = ({ ch
   
   return (
     <Button
+      type='button'
       size={size satisfies ButtonProps['size']}
       variant={variant}
       appearance='transparent'

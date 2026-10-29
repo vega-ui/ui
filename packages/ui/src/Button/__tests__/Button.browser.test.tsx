@@ -41,7 +41,7 @@ describe('Button', () => {
     it('applies default props to root', async () => {
       const btn = getButton(r);
       
-      await expect.element(btn).toHaveAttribute('type', 'button');
+      await expect.element(btn).not.toHaveAttribute('type');
       await expect.element(btn).toHaveAttribute('data-size', 'md');
     });
     
@@ -71,6 +71,11 @@ describe('Button', () => {
   });
   
   describe('Edge Cases', () => {
+    it('does not set type on the child element with asChild', async () => {
+      const r = render(<Button asChild><a href='#' data-testid='link'>Link</a></Button>);
+      await expect.element(r.getByTestId('link')).not.toHaveAttribute('type');
+    });
+
     it('renders without children (no crash)', async () => {
       const r = render(<Button />);
       await expect.element(r.getByRole('button')).toBeInTheDocument();

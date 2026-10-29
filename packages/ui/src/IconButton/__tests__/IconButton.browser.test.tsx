@@ -71,6 +71,13 @@ describe('IconButton', () => {
     });
   });
   
+  describe('Edge Cases', () => {
+    it('does not set type on the child element with asChild', async () => {
+      const r = render(<IconButton asChild aria-label='Link'><a href='#' data-testid='link' /></IconButton>);
+      await expect.element(r.getByTestId('link')).not.toHaveAttribute('type');
+    });
+  });
+
   describe('Accessibility', () => {
     describe('roles', () => {
       it('exposes button role', async () => {

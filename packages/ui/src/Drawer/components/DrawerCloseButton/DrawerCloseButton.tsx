@@ -33,6 +33,7 @@ export const DrawerCloseButton: FC<DrawerCloseButtonProps> = ({ onClick: _onClic
   
   return (
     <IconButton
+      type='button'
       onClick={mergeEventHandlers(onClick, _onClick)}
       aria-label='close'
       variant='secondary'

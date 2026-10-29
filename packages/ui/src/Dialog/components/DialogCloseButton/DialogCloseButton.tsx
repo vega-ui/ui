@@ -33,6 +33,7 @@ export const DialogCloseButton: FC<DialogCloseButtonProps> = ({ onClick: _onClic
   
   return (
     <IconButton
+      type='button'
       onClick={mergeEventHandlers(onClick, _onClick)}
       size='md'
       variant='secondary'
