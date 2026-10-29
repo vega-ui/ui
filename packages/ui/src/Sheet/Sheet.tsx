@@ -50,12 +50,9 @@ export interface SheetProps {
    */
   closable?: boolean
   /**
-   * When swiping, the nearest snap point will be clearly recorded.
-   *
-   * @default false
-   */
-  /**
    * Whether the sheet can be dismissed by clicking outside or swiping down.
+   *
+   * @default true
    */
   dismissible?: boolean
 
