@@ -6,14 +6,14 @@ import { csx } from '@vega-ui/utils';
 import { PaginationProvider } from './contexts';
 import { PaginationSize, PaginationVariant } from './types';
 
-export interface PaginationProps extends HTMLAttributes<HTMLElement> {
+export interface PaginationProps extends HTMLAttributes<HTMLUListElement> {
   /**
-   * Ref forwarded to the underlying card element.
+   * Ref forwarded to the underlying list element.
    */
   ref?: Ref<HTMLUListElement>
 
   /**
-   * Visual size of the card, inherited from IconButtonProps.
+   * Visual size of the pagination items, inherited from IconButtonProps.
    * Controls padding, font size, or spacing according to the design system scale.
    */
   size?: PaginationSize
