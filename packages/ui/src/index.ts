@@ -1,4 +1,6 @@
 export * from './Button'
+export * from './ButtonBase'
+export * from './Slot'
 export * from './Icon'
 export * from './Text'
 export * from './Heading'
