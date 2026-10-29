@@ -5,7 +5,7 @@ import { RadioSize, RadioVariant } from './types';
 
 export interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'size'> {
   /**
-   * Controlled checked state of the checkbox.
+   * Controlled checked state of the radio.
    * Used in controlled components for full state management.
    */
   checked?: boolean
@@ -17,24 +17,24 @@ export interface RadioProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
   defaultChecked?: boolean
 
   /**
-   * Visual variant of the checkbox, for theme or context switching.
+   * Visual variant of the radio, for theme or context switching.
    */
   variant?: RadioVariant
 
   /**
-   * Size of the checkbox input and its visual marker.
+   * Size of the radio input.
    */
   size?: RadioSize
 
   /**
-   * Disables the checkbox, making it non-interactive.
+   * Disables the radio, making it non-interactive.
    * Also applies a visually disabled style.
    */
   disabled?: boolean
 
   /**
    * Ref to the native `<input type="radio">` element.
-   * Useful for managing focus, setting indeterminate manually, etc.
+   * Useful for managing focus.
    */
   ref?: Ref<HTMLInputElement>
 }

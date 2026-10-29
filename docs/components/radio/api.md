@@ -6,11 +6,11 @@
 <!-- AUTO-GENERATED:ROOT_API:start -->
 | Prop | Type | Default | Required | Notes |
 | --- | --- | --- | --- | --- |
-| `checked` | `boolean` | `—` | No | Controlled checked state of the checkbox. |
+| `checked` | `boolean` | `—` | No | Controlled checked state of the radio. |
 | `defaultChecked` | `boolean` | `—` | No | Initial checked state for uncontrolled usage. |
-| `variant` | `RadioVariant` | `'primary'` | No | Visual variant of the checkbox, for theme or context switching. |
-| `size` | `RadioSize` | `'md'` | No | Size of the checkbox input and its visual marker. |
-| `disabled` | `boolean` | `—` | No | Disables the checkbox, making it non-interactive. |
+| `variant` | `RadioVariant` | `'primary'` | No | Visual variant of the radio, for theme or context switching. |
+| `size` | `RadioSize` | `'md'` | No | Size of the radio input. |
+| `disabled` | `boolean` | `—` | No | Disables the radio, making it non-interactive. |
 | `ref` | `Ref<HTMLInputElement>` | `—` | No | Ref to the native `<input type="radio">` element. |
 <!-- AUTO-GENERATED:ROOT_API:end -->
 
