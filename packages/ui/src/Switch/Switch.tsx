@@ -1,10 +1,10 @@
-import { FC, HTMLAttributes, Ref } from 'react'
+import { FC, LabelHTMLAttributes, Ref } from 'react'
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils'
 import { SwitchSize, SwitchVariant } from './types';
 import { SwitchProvider } from './contexts';
 
-export interface SwitchProps extends HTMLAttributes<HTMLLabelElement> {
+export interface SwitchProps extends LabelHTMLAttributes<HTMLLabelElement> {
   /**
    * Visual variant of the checkbox, for theme or context switching.
    */
