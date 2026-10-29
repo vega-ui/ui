@@ -49,7 +49,7 @@
     --checkbox-border-color: var(--color-secondary-500);
     --checkbox-border-color-hover: var(--color-secondary-600);
     --checkbox-border-color-active: var(--color-secondary-700);
-    --checkbox-color: var(--text-color-inverce);
+    --checkbox-color: var(--text-color-inverse);
 }
 
 /* disabled */

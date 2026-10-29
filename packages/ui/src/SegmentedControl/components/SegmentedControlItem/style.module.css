@@ -54,7 +54,7 @@
 .item:where(:has(input[type='radio']:checked)) {
     anchor-name: --segmented-control-active;
 
-    --item-color: var(--text-color-inverce);
+    --item-color: var(--text-color-inverse);
     --item-background-color-hover: transparent;
     --item-background-color-active: transparent;
 

@@ -7,7 +7,7 @@
     --overlay: rgba(0, 0, 0, 0.35);
 
     --text-color: #FFF;
-    --text-color-inverce: #000;
+    --text-color-inverse: #000;
 
     --color-error: var(--color-red-accent-500);
 

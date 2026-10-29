@@ -7,7 +7,7 @@
     --picker-item-background-color-hover: var(--fills-quaternary-hover);
     --picker-item-background-color-active: var(--fills-quaternary-active);
 
-    --picker-item-selected-color: var(--text-color-inverce);
+    --picker-item-selected-color: var(--text-color-inverse);
     --picker-item-selected-background-color: transparent;
     --picker-item-selected-background-color-hover: transparent;
     --picker-item-selected-background-color-active: transparent;
@@ -64,7 +64,7 @@
 }
 
 .pickerItem:where([data-variant='secondary']) {
-    --picker-item-selected-color: var(--text-color-inverce);
+    --picker-item-selected-color: var(--text-color-inverse);
     --picker-item-selected-background-color: var(--color-secondary-500);
     --picker-item-selected-background-color-hover: var(--color-secondary-600);
     --picker-item-selected-background-color-active: var(--color-secondary-700);
