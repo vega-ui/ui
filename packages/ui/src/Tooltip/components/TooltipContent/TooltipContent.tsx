@@ -21,12 +21,12 @@ export const TooltipContent: FC<TooltipContentProps> = ({
   style,
   ...props
 }) => {
-  const { contentProps, context, contentStyle, open } = useTooltipContext()
-  const { status } = useTransitionStatus(context)
+  const { contentProps, context, contentStyle } = useTooltipContext()
+  const { status, isMounted } = useTransitionStatus(context)
 
   return (
     <>
-      {open && (
+      {isMounted && (
         <div
           data-status={status}
           ref={mergeRefs([context?.refs.setFloating, ref])}
