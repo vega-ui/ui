@@ -1,6 +1,6 @@
 'use client';
 
-import { RefObject, useEffect, useMemo, useRef } from 'react';
+import { RefObject, useMemo } from 'react';
 import { useControlledState, useResize } from '@vega-ui/hooks';
 import { inRange } from '@vega-ui/utils';
 
@@ -15,11 +15,6 @@ interface UseSnapPointsOptions {
 export const useSnapPoints = ({ snapPoints, containerRef, defaultSnapPoint, activeSnapPoint: controlledActiveSnapPoint, onChangeActiveSnapPoint }: UseSnapPointsOptions) => {
   const { height } = useResize()
 
-  const defaultSet = useRef(false)
-
-  const defaultActiveSnapPoint = defaultSnapPoint !== undefined ? 0 : snapPoints ? snapPoints?.length - 1 : 0
-  const [activeSnapPoint, setActiveSnapPoint] = useControlledState(controlledActiveSnapPoint, defaultActiveSnapPoint, onChangeActiveSnapPoint)
-
   const hasSnapPoints = useMemo(() => snapPoints !== undefined && snapPoints.length !== 0, [snapPoints])
 
   const containerHeight = containerRef?.current?.clientHeight ?? height
@@ -28,23 +23,22 @@ export const useSnapPoints = ({ snapPoints, containerRef, defaultSnapPoint, acti
     snapPoints ? snapPoints?.map((v: string | number) => typeof v === 'number' ? ((1 - v) * containerHeight) : (containerHeight - parseFloat(v))) : []
   , [snapPoints, containerHeight])
 
-  const sortedSnapPointsInDimensions = useMemo(() => [...snapPointsInDimensions].sort((a, b) => a - b), [snapPointsInDimensions])
+  const snapPointsOrder = useMemo(() =>
+    snapPointsInDimensions.map((_, index) => index).sort((a, b) => snapPointsInDimensions[a] - snapPointsInDimensions[b])
+  , [snapPointsInDimensions])
 
-  useEffect(() => {
-    if (!defaultSet.current && defaultSnapPoint !== undefined) {
-      setActiveSnapPoint(sortedSnapPointsInDimensions.findIndex(v => v === snapPointsInDimensions[defaultSnapPoint]))
-      defaultSet.current = true
-    }
-  }, [defaultSnapPoint, setActiveSnapPoint, snapPointsInDimensions, sortedSnapPointsInDimensions]);
+  const sortedSnapPointsInDimensions = useMemo(() => snapPointsOrder.map(index => snapPointsInDimensions[index]), [snapPointsOrder, snapPointsInDimensions])
 
-  const activeSnapPointValue = useMemo(() =>
-    sortedSnapPointsInDimensions.length !== 0
-      ? sortedSnapPointsInDimensions[activeSnapPoint]
-      : 0
-    , [sortedSnapPointsInDimensions, activeSnapPoint]
-  )
+  const defaultActiveSnapPoint = defaultSnapPoint ?? snapPointsOrder[snapPointsOrder.length - 1] ?? 0
+  const [activeSnapPoint, setActiveSnapPoint] = useControlledState(controlledActiveSnapPoint, defaultActiveSnapPoint, onChangeActiveSnapPoint)
 
-  const isFirstSnapPoint = useMemo(() => activeSnapPoint === 0, [activeSnapPoint])
+  const activeSnapPointPosition = snapPointsOrder.indexOf(activeSnapPoint)
+
+  const activeSnapPointValue = snapPointsInDimensions[activeSnapPoint] ?? 0
+
+  const isFirstSnapPoint = activeSnapPointPosition === 0
+
+  const setActiveSnapPointPosition = (position: number) => setActiveSnapPoint(snapPointsOrder[position])
 
   const findClosestSnapPointIndex = (dimension: number, direction?: -1 | 1) => {
     const firstSnapPoint = sortedSnapPointsInDimensions[0]
@@ -77,8 +71,9 @@ export const useSnapPoints = ({ snapPoints, containerRef, defaultSnapPoint, acti
     findClosestSnapPointIndex,
     activeSnapPointValue,
     snapPointsInDimensions,
-    activeSnapPoint,
+    activeSnapPointPosition,
     sortedSnapPointsInDimensions,
-    setActiveSnapPoint
+    setActiveSnapPoint,
+    setActiveSnapPointPosition
   }
 }

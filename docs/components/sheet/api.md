@@ -12,8 +12,8 @@
 | `swipeTimestamp` | `number` | `500` | No | time in milliseconds needed to make a decision on switching to threshold snap points |
 | `closable` | `boolean` | `true` | No | Determines whether the component can be closed by user interaction. |
 | `dismissible` | `boolean` | `true` | No | the sheet can be dismissed by clicking outside or swiping down. |
-| `activeSnapPoint` | `number` | `—` | No | currently active snap point index (controlled). |
-| `defaultSnapPoint` | `number` | `—` | No | initial snap point index when uncontrolled. |
+| `activeSnapPoint` | `number` | `—` | No | currently active snap point (controlled), as an index into `snapPoints`. |
+| `defaultSnapPoint` | `number` | `—` | No | initial snap point when uncontrolled, as an index into `snapPoints`. |
 | `onChangeActiveSnapPoint` | `(activeSnapPoint: number) => void` | `—` | No | Callback fired when the active snap point changes. |
 | `steppedSnapPoints` | `boolean` | `false` | No | Enables snapping only to defined steps instead of continuous drag. |
 | `defaultOpen` | `boolean` | `false` | No | Controls whether the sheet is initially open (umcontrolled). |
@@ -49,5 +49,6 @@
 
 - Open state can be controlled or uncontrolled.
 - Snap points affect the visible interaction model, not just layout.
+- `defaultSnapPoint`, `activeSnapPoint`, and the `onChangeActiveSnapPoint` value are indexes into `snapPoints` in the order you pass them, whatever the visual order.
 - `closable={false}` should be reserved for flows with a clear completion path.
 - `useSheetContext` is available for advanced wrappers and controls.
