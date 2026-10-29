@@ -268,7 +268,7 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
     return true
   }, [scrollToElement, items])
   
-  const getCommited = useCallback(() => committedKey.current, [])
+  const getCommitted = useCallback(() => committedKey.current, [])
   const getPending = useCallback(() => pendingKey.current, [])
   
   useLayoutEffect(() => {
@@ -311,7 +311,7 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
     onScroll,
     scrollToElement,
     scrollToElementByKey,
-    getCommited,
+    getCommitted,
     getPending,
     measure
   };

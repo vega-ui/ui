@@ -89,7 +89,7 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
     itemRef,
     removeItemRef,
     scrollToElementByKey,
-    getCommited,
+    getCommitted,
     getPending,
     measure
   } = useScrollSnap<number, HTMLDivElement>({
@@ -108,9 +108,9 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
   }
   
   const scrollByDelta = useEventCallback((delta: number) => {
-    if (getCommited() == null) measure()
+    if (getCommitted() == null) measure()
     
-    const index = target.current ?? getCommited()
+    const index = target.current ?? getCommitted()
     if (index == null) return
 
     const next = index + delta
@@ -125,10 +125,10 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
       scrollByDelta(1);
     },
     scrollToElementByKey,
-    getCommited,
+    getCommitted,
     getPending,
     measure,
-  }), [scrollByDelta, scrollToElementByKey, getCommited, getPending, measure]);
+  }), [scrollByDelta, scrollToElementByKey, getCommitted, getPending, measure]);
   
   const setScrollRef = useCallback((element: HTMLDivElement | null) => {
     if (!element || scrollerRef.current) return;
