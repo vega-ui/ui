@@ -1,10 +1,10 @@
-import { FC, HTMLAttributes, Ref } from 'react';
+import { FC, LabelHTMLAttributes, Ref } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { CheckboxSize, CheckboxVariant } from './types';
 import { CheckboxProvider } from './contexts';
 
-export interface CheckboxProps extends HTMLAttributes<HTMLLabelElement> {
+export interface CheckboxProps extends LabelHTMLAttributes<HTMLLabelElement> {
   /**
    * Sets the checkbox to an indeterminate visual state.
    * Often used when only some nested items are selected.
