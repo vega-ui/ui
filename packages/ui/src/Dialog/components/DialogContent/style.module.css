@@ -1,11 +1,14 @@
 .dialog {
     scale: .75;
+    opacity: 0;
     background: var(--surface-primary);
     border-radius: var(--radius-6);
     padding: var(--spacing-14) var(--spacing-12);
     min-width: clamp(220px, 70vw, 500px);
     max-width: 600px;
-    transition: scale var(--transition-state-delay) ease;
+    transition:
+            scale var(--transition-state-delay) ease,
+            opacity var(--transition-state-delay) ease;
 }
 
 .dialog:where([data-shadowed='true']) {
@@ -23,4 +26,5 @@
 
 .dialog:where([data-status='open']) {
     scale: 1;
+    opacity: 1;
 }
