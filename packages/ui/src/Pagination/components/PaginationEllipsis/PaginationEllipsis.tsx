@@ -28,7 +28,7 @@ export const PaginationEllipsis: FC<PaginationEllipsisProps> = ({
       {...props}
     >
       <div>
-        ...
+        …
       </div>
     </Button>
   )
