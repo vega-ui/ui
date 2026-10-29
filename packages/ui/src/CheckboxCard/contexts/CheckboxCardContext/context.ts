@@ -7,7 +7,7 @@ export interface CheckboxCardContextState {
   size: CheckboxCardSize
   variant: CheckboxVariant
   checked?: boolean
-  onChangedChecked?(value: boolean): void
+  onChangeChecked?(value: boolean): void
   defaultChecked?: boolean
   indeterminate?: boolean
   disabled?: boolean

@@ -9,7 +9,7 @@ export const CheckboxCardControl: FC<CheckboxCardControlProps> = (props) => {
   const {
     size,
     variant,
-    onChangedChecked,
+    onChangeChecked,
     defaultChecked,
     checked,
     indeterminate,
@@ -19,7 +19,7 @@ export const CheckboxCardControl: FC<CheckboxCardControlProps> = (props) => {
   return (
     <Checkbox
       variant={variant}
-      onChangeChecked={onChangedChecked}
+      onChangeChecked={onChangeChecked}
       defaultChecked={defaultChecked}
       checked={checked}
       indeterminate={indeterminate}
