@@ -24,7 +24,7 @@ export type DialogCloseButtonProps = IconButtonProps
  * This component is intended to be used within `DialogHeader` or other
  * drawer action areas and does not manage drawer state independently.
  */
-export const DialogCloseButton: FC<DialogCloseButtonProps> = ({ onClick: _onClick, children, ...props }) => {
+export const DialogCloseButton: FC<DialogCloseButtonProps> = ({ onClick: _onClick, children, type = 'button', ...props }) => {
   const { changeOpen } = useDialogContext()
   
   const onClick = () => {
@@ -33,7 +33,7 @@ export const DialogCloseButton: FC<DialogCloseButtonProps> = ({ onClick: _onClic
   
   return (
     <IconButton
-      type='button'
+      type={type}
       onClick={mergeEventHandlers(onClick, _onClick)}
       size='md'
       variant='secondary'

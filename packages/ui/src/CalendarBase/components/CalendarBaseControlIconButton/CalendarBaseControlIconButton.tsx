@@ -10,12 +10,12 @@ export type CalendarBaseControlIconButtonProps = IconButtonProps
  * It wraps the generic `IconButton` while automatically applying the
  * calendar’s active styling configuration.
  */
-export const CalendarBaseControlIconButton: FC<CalendarBaseControlIconButtonProps> = ({ children, ...props }) => {
+export const CalendarBaseControlIconButton: FC<CalendarBaseControlIconButtonProps> = ({ children, type = 'button', ...props }) => {
   const { size, variant } = useCalendarBaseContext()
   
   return (
     <IconButton
-      type='button'
+      type={type}
       appearance='ghost'
       variant={variant satisfies IconButtonProps['variant']}
       size={size satisfies IconButtonProps['size']}

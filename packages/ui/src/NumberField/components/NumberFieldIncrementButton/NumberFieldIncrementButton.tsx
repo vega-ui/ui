@@ -24,6 +24,7 @@ export const NumberFieldIncrementButton: FC<NumberFieldIncrementProps> = ({
   className,
   onClick: _onClick,
   children,
+  type = 'button',
   ...props
 }) => {
   const { increment, disabled: _disabled, isMax, size } = useNumberFieldContext()
@@ -34,7 +35,7 @@ export const NumberFieldIncrementButton: FC<NumberFieldIncrementProps> = ({
 
   return (
     <IconButton
-      type='button'
+      type={type}
       disabled={(disabled ?? _disabled) || isMax}
       size={size}
       onClick={mergeEventHandlers(onClick, _onClick)}

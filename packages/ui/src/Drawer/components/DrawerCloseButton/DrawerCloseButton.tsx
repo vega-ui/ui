@@ -24,7 +24,7 @@ export type DrawerCloseButtonProps = IconButtonProps
  * This component is intended to be used within `DrawerHeader` or other
  * drawer action areas and does not manage drawer state independently.
  */
-export const DrawerCloseButton: FC<DrawerCloseButtonProps> = ({ onClick: _onClick, children, ...props }) => {
+export const DrawerCloseButton: FC<DrawerCloseButtonProps> = ({ onClick: _onClick, children, type = 'button', ...props }) => {
   const { onChangeOpen } = useDrawerContext()
   
   const onClick = () => {
@@ -33,7 +33,7 @@ export const DrawerCloseButton: FC<DrawerCloseButtonProps> = ({ onClick: _onClic
   
   return (
     <IconButton
-      type='button'
+      type={type}
       onClick={mergeEventHandlers(onClick, _onClick)}
       aria-label='close'
       variant='secondary'
