@@ -325,6 +325,16 @@ describe('Drawer', () => {
         
         await expect.element(getClose(r)).toHaveFocus();
       });
+
+      it('returns focus to the trigger on close', async () => {
+        const r = render(<DrawerTest defaultOpen />);
+        await waitOpened(r);
+
+        await userEvent.keyboard('{Escape}');
+        await waitClosed(r);
+
+        await expect.element(getTrigger(r)).toHaveFocus();
+      });
     });
     
     describe('keyboard', () => {

@@ -31,7 +31,7 @@ export const DrawerTrigger: FC<DrawerTriggerProps> = ({
   const { context, triggerProps = {} } = useDrawerContext()
 
   return (
-    <Element {...mergeProps(props, triggerProps)} ref={mergeRefs([context?.refs?.setFloating, ref])}>
+    <Element {...mergeProps(props, triggerProps)} ref={mergeRefs([context?.refs?.setReference, ref])}>
       {children}
     </Element>
   )
