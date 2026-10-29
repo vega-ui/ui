@@ -254,6 +254,19 @@ describe('Drawer', () => {
   });
   
   describe('Edge cases', () => {
+    it('does not submit the surrounding form on trigger click', async () => {
+      const onSubmit = vi.fn();
+      const r = render(
+        <form onSubmit={(e) => { e.preventDefault(); onSubmit(); }}>
+          <DrawerTest />
+        </form>
+      );
+
+      await userEvent.click(getTrigger(r));
+
+      expect(onSubmit).not.toHaveBeenCalled();
+    });
+
     describe('nested drawers', () => {
       let r: RenderResult;
       

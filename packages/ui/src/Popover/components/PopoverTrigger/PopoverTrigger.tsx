@@ -31,7 +31,7 @@ export const PopoverTrigger: FC<PopoverTriggerProps> = ({
   const { context, triggerProps = {} } = usePopoverContext()
 
   return (
-    <Element {...mergeProps(props, triggerProps)} ref={mergeRefs([context?.refs.setReference, ref])}>
+    <Element type={Element === 'button' ? 'button' : undefined} {...mergeProps(props, triggerProps)} ref={mergeRefs([context?.refs.setReference, ref])}>
       {children}
     </Element>
   )

@@ -26,7 +26,7 @@ export const TooltipTrigger: FC<TooltipTriggerProps> = ({ asChild, children, ref
   const { context, triggerProps = {} } = useTooltipContext()
 
   return (
-    <Element {...mergeProps(props, triggerProps)} ref={mergeRefs([context?.refs.setReference, ref])}>
+    <Element type={Element === 'button' ? 'button' : undefined} {...mergeProps(props, triggerProps)} ref={mergeRefs([context?.refs.setReference, ref])}>
       {children}
     </Element>
   )

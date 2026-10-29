@@ -179,6 +179,19 @@ describe('Popover', () => {
   });
   
   describe('Edge Cases', () => {
+    it('does not submit the surrounding form on trigger click', async () => {
+      const onSubmit = vi.fn();
+      const r = render(
+        <form onSubmit={(e) => { e.preventDefault(); onSubmit(); }}>
+          <PopoverTest />
+        </form>
+      );
+
+      await userEvent.click(getTrigger(r));
+
+      expect(onSubmit).not.toHaveBeenCalled();
+    });
+
     it('does not render backdrop when it is not provided', async () => {
       const r = render(<PopoverTest withBackdrop={false} />);
       
