@@ -64,11 +64,6 @@
       "path": "git-cz"
     }
   },
-  "eslintConfig": {
-    "extends": [
-      "plugin:storybook/recommended"
-    ]
-  },
   "publishConfig": {
     "access": "public"
   },
