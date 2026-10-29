@@ -59,7 +59,6 @@ const meta: Meta<typeof Accordion> = {
         <AccordionContent>
           <Text>Just a content</Text>
         </AccordionContent>
-        <Separator />
       </AccordionItem>
     ]
   },

@@ -1,7 +1,3 @@
 .item {
     list-style-type: none;
 }
-
-.item:last-child .separator {
-    display: none;
-}
