@@ -1,7 +1,7 @@
 .paginationEllipsis:where([data-size]) {
     aspect-ratio: 1 / 1;
     cursor: text;
-    --padding-inline: var(--padding-block);
+    --padding-inline: 0;
 }
 
 .paginationEllipsis:where([data-variant][data-appearance]):focus,
