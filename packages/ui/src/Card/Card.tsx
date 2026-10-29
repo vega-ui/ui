@@ -18,10 +18,10 @@ export interface CardProps extends HTMLAttributes<HTMLElement> {
   appearance?: CardAppearance
 
   /**
-   * Ref forwarded to the card’s root element (`<div>`).
+   * Ref forwarded to the card’s root element (`<article>`, or the child element with `asChild`).
    * Useful for DOM measurements, scrolling, or imperative logic.
    */
-  ref?: Ref<HTMLDivElement>
+  ref?: Ref<HTMLElement>
   
   /**
    * If true, renders the trigger as a child element using `Slot`.
