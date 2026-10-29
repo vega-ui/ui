@@ -587,6 +587,19 @@ describe('Sheet', () => {
   });
   
   describe('Edge Cases', () => {
+    it('does not submit the surrounding form on trigger click', async () => {
+      const onSubmit = vi.fn();
+      const r = render(
+        <form onSubmit={(e) => { e.preventDefault(); onSubmit(); }}>
+          <SheetTest />
+        </form>
+      );
+
+      await userEvent.click(getTrigger(r));
+
+      expect(onSubmit).not.toHaveBeenCalled();
+    });
+
     it('does not throw when rendered with no children', async () => {
       const r = render(<Sheet />);
       await expect.element(r.container).toBeInTheDocument();

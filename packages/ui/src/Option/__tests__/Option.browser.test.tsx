@@ -69,6 +69,19 @@ describe('Option', () => {
   });
   
   describe('Edge Cases', () => {
+    it('does not submit the surrounding form on click', async () => {
+      const onSubmit = vi.fn();
+      const r = render(
+        <form onSubmit={(e) => { e.preventDefault(); onSubmit(); }}>
+          <OptionTest />
+        </form>
+      );
+
+      await userEvent.click(getOption(r));
+
+      expect(onSubmit).not.toHaveBeenCalled();
+    });
+
     it('renders without children', async () => {
       const r = render(
         <Option data-testid={TESTID_OPTION} value={VALUE} />

@@ -57,6 +57,7 @@ export const Option = <V extends string | number>({
 }: OptionProps<V>) => {
   return (
     <button
+      type='button'
       role='option'
       ref={ref}
       onClick={onClick}

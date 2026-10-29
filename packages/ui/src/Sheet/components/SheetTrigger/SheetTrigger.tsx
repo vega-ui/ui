@@ -31,7 +31,7 @@ export const SheetTrigger: FC<SheetTriggerProps> = ({
   const { triggerRef, triggerProps = {} } = useSheetContext()
 
   return (
-    <Element {...mergeProps(props, triggerProps)} ref={mergeRefs([triggerRef, ref])}>
+    <Element type={Element === 'button' ? 'button' : undefined} {...mergeProps(props, triggerProps)} ref={mergeRefs([triggerRef, ref])}>
       {children}
     </Element>
   )

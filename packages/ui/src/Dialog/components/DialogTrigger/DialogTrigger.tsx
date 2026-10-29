@@ -26,7 +26,7 @@ export const DialogTrigger: FC<DialogTriggerProps> = ({ asChild, children, ref, 
   const { context, triggerProps } = useDialogContext()
 
   return (
-    <Element {...mergeProps(props, triggerProps ?? {})} ref={mergeRefs([context.refs?.setReference, ref])}>
+    <Element type={Element === 'button' ? 'button' : undefined} {...mergeProps(props, triggerProps ?? {})} ref={mergeRefs([context.refs?.setReference, ref])}>
       {children}
     </Element>
   )

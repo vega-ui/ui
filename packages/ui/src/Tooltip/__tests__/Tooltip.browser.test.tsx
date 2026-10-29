@@ -154,6 +154,21 @@ describe('Tooltip', () => {
     });
   });
   
+  describe('Edge Cases', () => {
+    it('does not submit the surrounding form on trigger click', async () => {
+      const onSubmit = vi.fn();
+      const r = render(
+        <form onSubmit={(e) => { e.preventDefault(); onSubmit(); }}>
+          <TooltipTest />
+        </form>
+      );
+
+      await userEvent.click(getTrigger(r));
+
+      expect(onSubmit).not.toHaveBeenCalled();
+    });
+  });
+
   describe('Accessibility', () => {
     describe('roles', () => {
       let r: RenderResult;
