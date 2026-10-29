@@ -202,6 +202,14 @@ describe('Popover', () => {
       await waitOpened(r);
       await expect.element(getContent(r)).toHaveAttribute('data-shadowed', 'false');
     });
+
+    it('passes html attributes to the root element', async () => {
+      const r = render(<PopoverTest id='popover' data-testid='root' style={{ zIndex: 10 }} />);
+
+      const root = r.getByTestId('root');
+      await expect.element(root).toHaveAttribute('id', 'popover');
+      await expect.element(root).toHaveStyle({ zIndex: '10' });
+    });
   });
   
   describe('Accessibility', () => {
