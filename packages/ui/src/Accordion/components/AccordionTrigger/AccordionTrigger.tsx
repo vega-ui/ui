@@ -16,11 +16,12 @@ export const AccordionTrigger: FC<PropsWithChildren<AccordionTriggerProps>> = ({
   className,
   children,
   ref,
+  ...props
 }) => {
   const { size } = useAccordionItemContext()
 
   return (
-    <CollapsibleTrigger ref={ref} className={csx(style.triggerButton, className)} data-size={size}>
+    <CollapsibleTrigger ref={ref} className={csx(style.triggerButton, className)} data-size={size} {...props}>
       {children}
     </CollapsibleTrigger>
   )
