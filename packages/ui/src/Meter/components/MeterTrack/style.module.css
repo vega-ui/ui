@@ -2,7 +2,7 @@
     --meter-track-br-ratio: 1;
     --meter-track-height: var(--meter-height);
 
-    width: calc(var(--meter-value) / var(--meter-max) * 100%);
+    width: calc((clamp(var(--meter-min), var(--meter-value), var(--meter-max)) - var(--meter-min)) / (var(--meter-max) - var(--meter-min)) * 100%);
 
     height: var(--meter-track-height);
     background-color: var(--meter-track-color, var(--color-primary-500));
