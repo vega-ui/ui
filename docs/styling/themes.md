@@ -63,7 +63,7 @@ These are the main variables application code and component styles should rely o
 | `--surface-secondary` | `floating-surface` | floating surface for listboxes, popovers, and tooltips |
 | `--surface-shadow` | `elevation-shadow` | shadow for elevated surfaces |
 | `--text-color` | `content-primary` | default readable content color |
-| `--text-color-inverce` | `content-on-accent` | readable content color on accent-filled backgrounds |
+| `--text-color-inverse` | `content-on-accent` | readable content color on accent-filled backgrounds |
 | `--label-primary` | `label-strong` | strong UI label or indicator color |
 | `--label-secondary` | `label-muted` | secondary label or metadata color |
 | `--label-tertiary` | `label-subtle` | placeholder, helper, and subdued label color |

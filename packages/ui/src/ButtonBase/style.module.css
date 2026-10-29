@@ -148,9 +148,9 @@
 }
 
 .buttonBase:where([data-variant='secondary'][data-appearance='fill']) {
-    --button-color: var(--text-color-inverce);
-    --button-color-hover: var(--text-color-inverce);
-    --button-color-active: var(--text-color-inverce);
+    --button-color: var(--text-color-inverse);
+    --button-color-hover: var(--text-color-inverse);
+    --button-color-active: var(--text-color-inverse);
 
     --button-background-color: var(--color-secondary-500);
     --button-background-color-hover: var(--color-secondary-600);
