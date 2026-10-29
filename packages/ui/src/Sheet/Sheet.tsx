@@ -57,20 +57,20 @@ export interface SheetProps {
   dismissible?: boolean
 
   /**
-   * The currently active snap point index (controlled).
+   * The currently active snap point (controlled), as an index into `snapPoints`.
    * Defines the vertical height or position of the sheet.
    */
   activeSnapPoint?: number
 
   /**
-   * The initial snap point index when uncontrolled.
+   * The initial snap point when uncontrolled, as an index into `snapPoints`.
    */
   defaultSnapPoint?: number
 
   /**
    * Callback fired when the active snap point changes.
    *
-   * @param activeSnapPoint - The index of the newly activated snap point.
+   * @param activeSnapPoint - The index into `snapPoints` of the newly activated snap point.
    */
   onChangeActiveSnapPoint?: (activeSnapPoint: number) => void
 
@@ -142,7 +142,7 @@ export const Sheet: FC<SheetProps> = ({
 
   const [transforming, setTransforming] = useState<boolean>(false)
 
-  const { defaultActiveSnapPoint, activeSnapPointValue, findClosestSnapPointIndex, setActiveSnapPoint, activeSnapPoint, hasSnapPoints, sortedSnapPointsInDimensions } = useSnapPoints({
+  const { defaultActiveSnapPoint, activeSnapPointValue, findClosestSnapPointIndex, setActiveSnapPoint, setActiveSnapPointPosition, activeSnapPointPosition, hasSnapPoints, sortedSnapPointsInDimensions } = useSnapPoints({
     snapPoints,
     defaultSnapPoint,
     activeSnapPoint: controlledActiveSnapPoint,
@@ -193,7 +193,7 @@ export const Sheet: FC<SheetProps> = ({
     const snapPointIndex = findClosestSnapPointIndex(pos, direction)
     if (snapPointIndex === undefined) return
 
-    setActiveSnapPoint(snapPointIndex)
+    setActiveSnapPointPosition(snapPointIndex)
   }
 
   const couldDrag = (element: HTMLElement) => {
@@ -272,11 +272,11 @@ export const Sheet: FC<SheetProps> = ({
     const handleEdgeSwipe = () => {
       if (direction === 1) {
         if (closable) onClose()
-        else if (hasSnapPoints) setActiveSnapPoint(sortedSnapPointsInDimensions.length - 1)
+        else if (hasSnapPoints) setActiveSnapPointPosition(sortedSnapPointsInDimensions.length - 1)
       }
 
       if (direction === -1) {
-        if (hasSnapPoints) setActiveSnapPoint(0)
+        if (hasSnapPoints) setActiveSnapPointPosition(0)
       }
     }
 
@@ -287,9 +287,13 @@ export const Sheet: FC<SheetProps> = ({
 
     // Handle stepped snap points
     if (steppedSnapPoints && hasSnapPoints) {
-      if (isEdgeSwipe && direction === 1) onClose()
-      if (direction === 1 && activeSnapPoint !== sortedSnapPointsInDimensions.length - 1) setActiveSnapPoint(activeSnapPoint + 1)
-      if (direction === -1 && activeSnapPoint !== 0) setActiveSnapPoint(activeSnapPoint - 1)
+      if (isEdgeSwipe && direction === 1 && closable) {
+        onClose()
+        return
+      }
+
+      if (direction === 1 && activeSnapPointPosition !== sortedSnapPointsInDimensions.length - 1) setActiveSnapPointPosition(activeSnapPointPosition + 1)
+      if (direction === -1 && activeSnapPointPosition !== 0) setActiveSnapPointPosition(activeSnapPointPosition - 1)
 
       clear()
       return

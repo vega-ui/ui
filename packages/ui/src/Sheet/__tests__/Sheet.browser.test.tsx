@@ -46,6 +46,16 @@ const SheetTest: FC<PropsWithChildren<ComponentProps<typeof Sheet>>> = (props) =
   </Sheet>
 );
 
+const TallSheetTest: FC<ComponentProps<typeof Sheet>> = (props) => (
+  <Sheet {...props}>
+    <SheetPortal>
+      <SheetContent data-testid={TESTID_CONTENT} style={{ height: 400 }}>
+        <SheetMain data-testid={TESTID_MAIN}>{LOREM}</SheetMain>
+      </SheetContent>
+    </SheetPortal>
+  </Sheet>
+);
+
 const getTrigger = (r: RenderResult) => r.getByTestId(TESTID_TRIGGER) as HTMLButtonElement;
 
 const queryPortal = (r: RenderResult) => r.queryByTestId(TESTID_PORTAL) as HTMLDivElement | null;
@@ -396,6 +406,47 @@ describe('Sheet', () => {
       });
       
       describe('steppedSnapPoints', () => {
+        it('closes on edge swipe down without moving to the next snap point', async () => {
+          const onChangeActiveSnapPoint = vi.fn();
+          
+          const r = render(
+            <TallSheetTest
+              defaultOpen
+              snapPoints={[0.5, 1]}
+              defaultSnapPoint={1}
+              steppedSnapPoints
+              onChangeActiveSnapPoint={onChangeActiveSnapPoint}
+            />
+          );
+          
+          await waitOpened(r);
+          await swipe(getMain(r), 200, 450);
+          
+          await waitClosed(r);
+          expect(onChangeActiveSnapPoint).not.toHaveBeenCalledWith(0);
+        });
+        
+        it('moves to the next snap point on edge swipe down when closable is false', async () => {
+          const onChangeActiveSnapPoint = vi.fn();
+          
+          const r = render(
+            <TallSheetTest
+              defaultOpen
+              closable={false}
+              snapPoints={[0.5, 1]}
+              defaultSnapPoint={1}
+              steppedSnapPoints
+              onChangeActiveSnapPoint={onChangeActiveSnapPoint}
+            />
+          );
+          
+          await waitOpened(r);
+          await swipe(getMain(r), 200, 450);
+          
+          expect(onChangeActiveSnapPoint.mock.calls).toEqual([[0]]);
+          await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
+        });
+        
         it('moves to next/prev snap point per swipe direction when steppedSnapPoints=true', async () => {
           const onChangeActiveSnapPoint = vi.fn();
           
@@ -418,6 +469,63 @@ describe('Sheet', () => {
           // swipe down (direction 1) => move to next snap point
           await swipe(getMain(r), 200, 450);
           expect(onChangeActiveSnapPoint).toHaveBeenCalled();
+        });
+      });
+
+      describe('indexes follow snapPoints order', () => {
+        const UNSORTED_SNAP_POINTS = [0.25, 1, 0.5];
+        
+        it('does not call onChangeActiveSnapPoint on mount with defaultSnapPoint', async () => {
+          const onChangeActiveSnapPoint = vi.fn();
+          
+          const r = render(
+            <SheetTest
+              defaultOpen
+              snapPoints={UNSORTED_SNAP_POINTS}
+              defaultSnapPoint={1}
+              onChangeActiveSnapPoint={onChangeActiveSnapPoint}
+            />
+          );
+          
+          await waitOpened(r);
+          
+          expect(onChangeActiveSnapPoint).not.toHaveBeenCalled();
+        });
+        
+        it('opens at defaultSnapPoint', async () => {
+          const r = render(<SheetTest defaultOpen snapPoints={UNSORTED_SNAP_POINTS} defaultSnapPoint={1} />);
+          
+          await waitOpened(r);
+          
+          expect(getContent(r).style.transform).toBe('translateY(0px)');
+        });
+        
+        it('applies controlled activeSnapPoint as an index into snapPoints', async () => {
+          const r = render(<SheetTest defaultOpen snapPoints={UNSORTED_SNAP_POINTS} activeSnapPoint={1} />);
+          
+          await waitOpened(r);
+          
+          expect(getContent(r).style.transform).toBe('translateY(0px)');
+        });
+        
+        it('reports an index into snapPoints via onChangeActiveSnapPoint', async () => {
+          const onChangeActiveSnapPoint = vi.fn();
+          
+          const r = render(
+            <TallSheetTest
+              defaultOpen
+              snapPoints={UNSORTED_SNAP_POINTS}
+              defaultSnapPoint={1}
+              steppedSnapPoints
+              onChangeActiveSnapPoint={onChangeActiveSnapPoint}
+            />
+          );
+          
+          await waitOpened(r);
+          await swipe(getMain(r), 200, 220);
+          
+          expect(onChangeActiveSnapPoint.mock.calls).toEqual([[2]]);
+          await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
         });
       });
     })
