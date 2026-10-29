@@ -63,6 +63,7 @@ export const Accordion: FC<AccordionProps> = ({
   const [openedValues, setOpenedValues] = useControlledState<string[]>(opened, defaultOpened, onChangeOpened)
 
   const open = (value: string) => {
+    if (openedValues.includes(value)) return
     setOpenedValues(multiple ? [...openedValues, value] : [value])
   }
 
