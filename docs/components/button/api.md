@@ -25,3 +25,4 @@
 - `Button` is mostly stateless from the component API perspective.
 - Disabled, loading, and visual state are usually driven by the consumer.
 - `asChild` changes rendering semantics while preserving VegaUI button styling.
+- `disabled` is not applied with `asChild`, because the child element owns its semantics. A disabled link is an `<a>` without `href`; add `aria-disabled="true"` to get the disabled styling and announcement.
