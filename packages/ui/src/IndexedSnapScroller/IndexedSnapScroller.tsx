@@ -145,7 +145,7 @@ export const IndexedSnapScroller: FC<PropsWithChildren<IndexedSnapScrollerProps>
     }
     
     // Otherwise, we reinitialize the index array
-    const key = api.getCommited()
+    const key = api.getCommitted()
     if (key == null) {
       center(nextIndex)
       return
@@ -182,7 +182,7 @@ export const IndexedSnapScroller: FC<PropsWithChildren<IndexedSnapScrollerProps>
     syncedIndex.current = index
     isRebuilding.current = false
     
-    if (index === api.getPending() || index === api.getCommited()) return
+    if (index === api.getPending() || index === api.getCommitted()) return
     
     isRebuilding.current = !indexes.includes(index)
     setIndexTo(index)
@@ -213,9 +213,9 @@ export const IndexedSnapScroller: FC<PropsWithChildren<IndexedSnapScrollerProps>
     const api = innerApiRef.current
     if (!api) return
     
-    if (api.getCommited() == null) api.measure()
+    if (api.getCommitted() == null) api.measure()
     
-    const base = target.current ?? api.getCommited()
+    const base = target.current ?? api.getCommitted()
     if (base == null) return
     
     const next = base + delta
@@ -243,7 +243,7 @@ export const IndexedSnapScroller: FC<PropsWithChildren<IndexedSnapScrollerProps>
         step(-1)
       },
       setIndexTo,
-      index: api.getCommited(),
+      index: api.getCommitted(),
     }
   })
   

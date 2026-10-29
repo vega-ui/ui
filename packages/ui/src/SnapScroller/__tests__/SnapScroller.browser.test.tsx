@@ -270,7 +270,7 @@ describe('SnapScroller', () => {
       const scroller = getScroller(r);
 
       await waitFor(() => {
-        expect(apiRef.current?.getCommited?.()).toBe(0);
+        expect(apiRef.current?.getCommitted?.()).toBe(0);
       });
 
       r.rerender(<SnapScrollerTest {...props}>{content(5)}</SnapScrollerTest>);
@@ -283,7 +283,7 @@ describe('SnapScroller', () => {
 
       scroller.dispatchEvent(new Event('scrollend'));
       await waitFor(() => {
-        expect(apiRef.current?.getCommited?.()).toBe(1);
+        expect(apiRef.current?.getCommitted?.()).toBe(1);
       });
 
       expect(onScrollSnapChanging).not.toHaveBeenCalled();

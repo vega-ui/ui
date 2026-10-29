@@ -15,5 +15,5 @@ export interface SnapScrollerApiRef<K = number> {
   scrollToElementByKey(key: K, behavior?: ScrollBehavior): void
   measure(): void
   getPending(): K | null
-  getCommited(): K | null
+  getCommitted(): K | null
 }
