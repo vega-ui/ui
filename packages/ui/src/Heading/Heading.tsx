@@ -40,7 +40,7 @@ export interface HeadingProps extends HTMLAttributes<HTMLHeadingElement> {
 /** The Heading component renders a semantic HTML heading (h1–h6) with customizable visual size and font weight, enabling flexible typography while preserving document structure */
 export const Heading: FC<HeadingProps> = ({ as, className, size, fontWeight, children, ref, ...props }) => {
   const Element: ElementType = as || 'h1';
-  const headingSize = size !== undefined ? size : Element ? sizeMapper(Element) : 3;
+  const headingSize = size ?? sizeMapper(Element);
 
   return (
     <Element
