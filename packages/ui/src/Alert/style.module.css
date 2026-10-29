@@ -1,7 +1,8 @@
 .alert {
-    --alert-background-color: var(--color-blue-accent-100);
-    --alert-color: var(--color-blue-accent-800);
+    --alert-background-color: oklch(from var(--color-blue-500) l calc(c + var(--alert-chroma-ratio)) h / 0.10);
+    --alert-color: var(--color-blue-accent-700);
     --alert-border-color: transparent;
+    --alert-chroma-ratio: 0.03;
 
     display: flex;
     flex-direction: row;
@@ -19,8 +20,8 @@
 /* Alert/Fill/Info */
 
 .alert:where([data-variant='info'][data-appearance='fill']) {
-    --alert-background-color: var(--color-blue-accent-100);
-    --alert-color: var(--color-blue-accent-800);
+    --alert-background-color: oklch(from var(--color-blue-500) l calc(c + var(--alert-chroma-ratio)) h / 0.10);
+    --alert-color: var(--color-blue-accent-700);
     --alert-border-color: transparent;
 }
 
@@ -35,8 +36,8 @@
 /* Alert/Fill/Success */
 
 .alert:where([data-variant='success'][data-appearance='fill']) {
-    --alert-background-color: var(--color-green-accent-100);
-    --alert-color: var(--color-green-accent-800);
+    --alert-background-color: oklch(from var(--color-green-500) l calc(c + var(--alert-chroma-ratio)) h / 0.10);
+    --alert-color: var(--color-green-accent-700);
     --alert-border-color: transparent;
 }
 
@@ -51,8 +52,8 @@
 /* Alert/Fill/Warning */
 
 .alert:where([data-variant='warning'][data-appearance='fill']) {
-    --alert-background-color: var(--color-amber-accent-100);
-    --alert-color: var(--color-amber-accent-800);
+    --alert-background-color: oklch(from var(--color-amber-500) l calc(c + var(--alert-chroma-ratio)) h / 0.10);
+    --alert-color: var(--color-amber-accent-700);
     --alert-border-color: transparent;
 }
 
@@ -67,8 +68,8 @@
 /* Alert/Fill/Error */
 
 .alert:where([data-variant='error'][data-appearance='fill']) {
-    --alert-background-color: var(--color-red-accent-100);
-    --alert-color: var(--color-red-accent-800);
+    --alert-background-color: oklch(from var(--color-red-500) l calc(c + var(--alert-chroma-ratio)) h / 0.10);
+    --alert-color: var(--color-red-accent-700);
     --alert-border-color: transparent;
 }
 
