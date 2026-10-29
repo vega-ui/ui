@@ -72,6 +72,7 @@ describe('MatrixIndexes', () => {
     expect(m.tail(0)).toEqual([]);
     expect(m.tail(1)).toEqual([5]);
     expect(m.tail(2)).toEqual([4, 5]);
+    expect(m.tail(7)).toEqual([1, 2, 3, 4, 5]);
     expect(m.tail(10)).toEqual([1, 2, 3, 4, 5]);
   });
   

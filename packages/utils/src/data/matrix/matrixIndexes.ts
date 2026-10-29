@@ -46,7 +46,7 @@ export class MatrixIndexes {
   }
   
   tail(count: number) {
-    return this.indexes.slice(this.indexes.length - count)
+    return this.indexes.slice(Math.max(0, this.indexes.length - count))
   }
   
   private lowerBound(index: number) {
