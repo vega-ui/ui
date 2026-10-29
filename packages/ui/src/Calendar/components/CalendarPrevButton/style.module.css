@@ -1,6 +1,6 @@
 .button {
     position: relative;
-    transform: translateX(calc(-100% - 4px));
+    transform: translateX(calc(-100% - var(--spacing-2)));
     transition: transform var(--transition-fast-state-delay) ease-in-out,
     background-color var(--transition-fast-state-delay) ease-in-out,
     color var(--transition-fast-state-delay) ease-in-out,
@@ -8,7 +8,7 @@
 }
 
 .button:where(:dir(rtl)) {
-    transform: translateX(calc(100% + 4px));
+    transform: translateX(calc(100% + var(--spacing-2)));
 }
 
 .button:where([data-visible='true']) {

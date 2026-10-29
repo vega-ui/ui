@@ -1,5 +1,5 @@
 .data {
-    padding: 12px;
+    padding: var(--spacing-6);
 }
 
 .data:where([data-align='start']) {

@@ -1,7 +1,7 @@
 .picker {
     position: absolute;
     width: 100%;
-    padding: 4px;
+    padding: var(--spacing-2);
     box-sizing: border-box;
     top: 0;
     right: 0;
@@ -10,7 +10,7 @@
 }
 
 .picker:where([data-visible='false']) {
-    transform: translateY(calc(-100% - 2px));
+    transform: translateY(calc(-100% - var(--spacing-1)));
 }
 
 .picker:where([data-visible='true']) {
