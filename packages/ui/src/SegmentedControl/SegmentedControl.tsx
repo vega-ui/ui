@@ -51,7 +51,7 @@ export interface SegmentedControlProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * The name of the underlying radio group.
    *
-   * All `SegmentedControlItemHiddenInput` elements share this name,
+   * All `SegmentedControlItemInput` elements share this name,
    * allowing the segmented control to behave as a single native
    * radio group for form submission and accessibility.
    */

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite'
 
 import { SwitchIndicator } from './SwitchIndicator'
 import { Switch } from '../../Switch';
-import { SwitchHiddenInput } from '../SwitchHiddenInput';
+import { SwitchInput } from '../SwitchInput';
 import { Moon } from '@vega-ui/icons';
 import { Icon } from '../../../Icon';
 
@@ -21,7 +21,7 @@ const meta = {
   decorators(Story) {
     return (
       <Switch>
-        <SwitchHiddenInput />
+        <SwitchInput />
         <Story />
       </Switch>
     )

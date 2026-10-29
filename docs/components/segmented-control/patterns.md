@@ -19,11 +19,11 @@ Trade-offs:
 ```tsx
 <SegmentedControl name='view' defaultValue='week'>
   <SegmentedControlItem value='day'>
-    <SegmentedControlItemHiddenInput />
+    <SegmentedControlItemInput />
     Day
   </SegmentedControlItem>
   <SegmentedControlItem value='week'>
-    <SegmentedControlItemHiddenInput />
+    <SegmentedControlItemInput />
     Week
   </SegmentedControlItem>
   <SegmentedControlIndicator />
@@ -49,15 +49,15 @@ Trade-offs:
 ```tsx
 <SegmentedControl name='theme' defaultValue='system'>
   <SegmentedControlItem value='light'>
-    <SegmentedControlItemHiddenInput />
+    <SegmentedControlItemInput />
     Light
   </SegmentedControlItem>
   <SegmentedControlItem value='system'>
-    <SegmentedControlItemHiddenInput />
+    <SegmentedControlItemInput />
     System
   </SegmentedControlItem>
   <SegmentedControlItem value='dark'>
-    <SegmentedControlItemHiddenInput />
+    <SegmentedControlItemInput />
     Dark
   </SegmentedControlItem>
   <SegmentedControlIndicator />
@@ -94,11 +94,11 @@ Trade-offs:
         </DialogHeader>
         <SegmentedControl name='density' defaultValue='comfortable'>
           <SegmentedControlItem value='compact'>
-            <SegmentedControlItemHiddenInput />
+            <SegmentedControlItemInput />
             Compact
           </SegmentedControlItem>
           <SegmentedControlItem value='comfortable'>
-            <SegmentedControlItemHiddenInput />
+            <SegmentedControlItemInput />
             Comfortable
           </SegmentedControlItem>
           <SegmentedControlIndicator />

@@ -24,10 +24,10 @@ The surrounding field or layout should make the purpose of the exclusive choice 
 ## Form Semantics
 
 - `name` is required for native radio-group behavior.
-- Use `SegmentedControlItemHiddenInput` when the control participates in native forms.
+- Use `SegmentedControlItemInput` when the control participates in native forms.
 
 ## Accessibility Risks
 
 - Icon-only segments without accessible meaning.
 - Too many options or wildly uneven label lengths.
-- Missing hidden inputs in form-driven flows.
+- Missing `SegmentedControlItemInput` in an item.

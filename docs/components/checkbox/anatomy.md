@@ -16,7 +16,7 @@ Required for the visible control surface.
 
 ## Optional Parts
 
-### `CheckboxHiddenInput`
+### `CheckboxInput`
 
 Recommended when the checkbox should participate in native forms.
 
@@ -31,7 +31,7 @@ Optional indeterminate-state icon inside the indicator.
 ## Composition Order
 
 1. `Checkbox`
-2. `CheckboxHiddenInput`
+2. `CheckboxInput`
 3. `CheckboxIndicator`
 4. `CheckboxCheckedIcon`
 5. `CheckboxIndeterminateIcon`
@@ -41,7 +41,7 @@ Optional indeterminate-state icon inside the indicator.
 
 ```tsx
 <Checkbox>
-  <CheckboxHiddenInput />
+  <CheckboxInput />
   <CheckboxIndicator>
     <CheckboxCheckedIcon />
     <CheckboxIndeterminateIcon />
@@ -52,9 +52,9 @@ Optional indeterminate-state icon inside the indicator.
 
 ## Invalid Composition Patterns
 
-### Visual indicator without a hidden input in real forms
+### Visual indicator without `CheckboxInput`
 
-This breaks native form participation.
+This leaves no focusable control and breaks native form participation.
 
 ### Indeterminate used as a final persisted state by accident
 

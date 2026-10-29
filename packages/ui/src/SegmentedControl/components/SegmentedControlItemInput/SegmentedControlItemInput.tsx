@@ -4,10 +4,10 @@ import { useSegmentedControlContext, useSegmentedControlItemContext } from '../.
 import { csx, mergeEventHandlers } from '@vega-ui/utils';
 import style from './style.module.css'
 
-export type SegmentedControlItemHiddenInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'name'>
+export type SegmentedControlItemInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'name'>
 
 /**
- * SegmentedControlItemHiddenInput
+ * SegmentedControlItemInput
  *
  * A visually hidden native `<input type="radio">` used to integrate
  * `SegmentedControl` with native form behavior and accessibility APIs.
@@ -17,7 +17,7 @@ export type SegmentedControlItemHiddenInputProps = Omit<InputHTMLAttributes<HTML
  * - It should be rendered within a `SegmentedControlItem` to ensure
  *   correct context and behavior
  */
-export const SegmentedControlItemHiddenInput: FC<SegmentedControlItemHiddenInputProps> = ({ className, onChange: _onChange, ...props }) => {
+export const SegmentedControlItemInput: FC<SegmentedControlItemInputProps> = ({ className, onChange: _onChange, ...props }) => {
   const { onChange, name, disabled, selected, defaultSelected } = useSegmentedControlContext()
   const { value } = useSegmentedControlItemContext()
   

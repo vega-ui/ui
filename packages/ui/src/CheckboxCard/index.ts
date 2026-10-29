@@ -4,7 +4,7 @@ export {
   CheckboxCardTitle, type CheckboxCardTitleProps,
   CheckboxCardDescription, type CheckboxCardDescriptionProps,
   CheckboxCardControl, type CheckboxCardControlProps,
-  CheckboxCardControlHiddenInput, type CheckboxCardControlHiddenInputProps,
+  CheckboxCardControlInput, type CheckboxCardControlInputProps,
   CheckboxCardControlIndeterminateIcon, type CheckboxCardControlIndeterminateIconProps,
   CheckboxCardControlCheckedIcon, type CheckboxCardControlCheckedIconProps
 } from './components'

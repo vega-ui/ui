@@ -6,25 +6,6 @@ import { CheckboxProvider } from './contexts';
 
 export interface CheckboxProps extends LabelHTMLAttributes<HTMLLabelElement> {
   /**
-   * Sets the checkbox to an indeterminate visual state.
-   * Often used when only some nested items are selected.
-   * This state is visual only and must be controlled manually.
-   */
-  indeterminate?: boolean
-
-  /**
-   * Controlled checked state of the checkbox.
-   * Used in controlled components for full state management.
-   */
-  checked?: boolean
-
-  /**
-   * Initial checked state for uncontrolled usage.
-   * Mirrors the native `defaultChecked` HTML behavior.
-   */
-  defaultChecked?: boolean
-
-  /**
    * Visual variant of the checkbox, for theme or context switching.
    */
   variant?: CheckboxVariant
@@ -35,19 +16,7 @@ export interface CheckboxProps extends LabelHTMLAttributes<HTMLLabelElement> {
   size?: CheckboxSize
 
   /**
-   * Callback function fired when the checkbox state changes.
-   */
-  onChangeChecked?(value: boolean): void
-
-  /**
-   * Disables the checkbox, making it non-interactive.
-   * Also applies a visually disabled style.
-   */
-  disabled?: boolean
-
-  /**
    * Ref to the native label element.
-   * Useful for managing focus, setting indeterminate manually, etc.
    */
   ref?: Ref<HTMLLabelElement>
 }
@@ -57,25 +26,12 @@ export const Checkbox: FC<CheckboxProps> = ({
   ref,
   variant = 'primary',
   size = 'md',
-  indeterminate,
-  checked,
-  defaultChecked,
   className,
-  disabled,
-  onChangeChecked,
   children,
  ...props
 }) => {
   return (
-    <CheckboxProvider
-      size={size}
-      indeterminate={indeterminate}
-      defaultChecked={defaultChecked}
-      checked={checked}
-      onChangeChecked={onChangeChecked}
-      disabled={disabled}
-      variant={variant}
-    >
+    <CheckboxProvider size={size} variant={variant}>
       <label
         className={csx(style.checkbox, className)}
         data-size={size}

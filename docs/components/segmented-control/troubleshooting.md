@@ -28,7 +28,7 @@ The segmented control changes visually, but native form or radio-group behavior 
 
 ### Likely Cause
 
-`SegmentedControlItemHiddenInput` was omitted or `name` was not set correctly.
+`SegmentedControlItemInput` was omitted or `name` was not set correctly.
 
 ### How To Verify
 
@@ -37,7 +37,7 @@ The segmented control changes visually, but native form or radio-group behavior 
 
 ### Fix
 
-- Render `SegmentedControlItemHiddenInput` inside each item.
+- Render `SegmentedControlItemInput` inside each item.
 - Keep the required `name` consistent across the group.
 
 ## Labels Feel Too Uneven

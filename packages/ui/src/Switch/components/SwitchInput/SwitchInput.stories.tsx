@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { SwitchHiddenInput } from './SwitchHiddenInput';
+import { SwitchInput } from './SwitchInput';
 import { Button } from '../../../Button';
 import { FormEvent } from 'react';
 import { Switch } from '../../Switch';
@@ -15,8 +15,8 @@ const onSubmit = (e: FormEvent<HTMLFormElement>) => {
 }
 
 const meta = {
-  title: 'Form/Selectors/Switch/SliderHiddenInput',
-  component: SwitchHiddenInput,
+  title: 'Form/Selectors/Switch/SwitchInput',
+  component: SwitchInput,
   parameters: {
     layout: 'centered',
     design: {
@@ -40,7 +40,7 @@ const meta = {
       </form>
     )
   }
-} satisfies Meta<typeof SwitchHiddenInput>;
+} satisfies Meta<typeof SwitchInput>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

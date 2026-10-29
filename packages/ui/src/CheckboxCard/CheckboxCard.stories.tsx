@@ -1,10 +1,25 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { ComponentProps } from 'react';
 import { CheckboxCard } from './CheckboxCard';
 import {
   CheckboxCardContent, CheckboxCardControl, CheckboxCardControlCheckedIcon,
-  CheckboxCardControlHiddenInput,
+  CheckboxCardControlInput,
   CheckboxCardControlIndeterminateIcon, CheckboxCardControlIndicator, CheckboxCardDescription, CheckboxCardTitle
 } from './components';
+
+const parts = (input: ComponentProps<typeof CheckboxCardControlInput> = {}) => [
+  <CheckboxCardContent key={0}>
+    <CheckboxCardTitle>What is Lorem Ipsum?</CheckboxCardTitle>
+    <CheckboxCardDescription>Lorem Ipsum is simply dummy text of the printing and typesetting industry</CheckboxCardDescription>
+  </CheckboxCardContent>,
+  <CheckboxCardControl key={1}>
+    <CheckboxCardControlInput {...input} />
+    <CheckboxCardControlIndicator>
+      <CheckboxCardControlCheckedIcon />
+      <CheckboxCardControlIndeterminateIcon />
+    </CheckboxCardControlIndicator>
+  </CheckboxCardControl>
+]
 
 const meta = {
   title: 'Form/Selectors/CheckboxCard/CheckboxCard',
@@ -32,19 +47,7 @@ const meta = {
     }
   },
   args: {
-    children: [
-      <CheckboxCardContent key={0}>
-        <CheckboxCardTitle>What is Lorem Ipsum?</CheckboxCardTitle>
-        <CheckboxCardDescription>Lorem Ipsum is simply dummy text of the printing and typesetting industry</CheckboxCardDescription>
-      </CheckboxCardContent>,
-      <CheckboxCardControl key={1}>
-        <CheckboxCardControlHiddenInput />
-        <CheckboxCardControlIndicator>
-          <CheckboxCardControlCheckedIcon />
-          <CheckboxCardControlIndeterminateIcon />
-        </CheckboxCardControlIndicator>
-      </CheckboxCardControl>
-    ],
+    children: parts(),
   },
 } satisfies Meta<typeof CheckboxCard>;
 
@@ -55,19 +58,19 @@ export const Default: Story = {};
 
 export const Checked: Story = {
   args: {
-    checked: true,
+    children: parts({ defaultChecked: true }),
   },
 };
 
 export const Indeterminate: Story = {
   args: {
-    indeterminate: true,
+    children: parts({ indeterminate: true }),
   },
 };
 
 export const Disabled: Story = {
   args: {
-    disabled: true,
+    children: parts({ disabled: true }),
   },
 };
 

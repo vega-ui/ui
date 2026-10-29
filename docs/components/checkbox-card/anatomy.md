@@ -14,7 +14,7 @@
 
 - `CheckboxCardTitle`
 - `CheckboxCardDescription`
-- `CheckboxCardControlHiddenInput`
+- `CheckboxCardControlInput`
 - `CheckboxCardControlCheckedIcon`
 - `CheckboxCardControlIndeterminateIcon`
 
@@ -24,7 +24,7 @@
 2. `CheckboxCardContent`
 3. `CheckboxCardTitle` and `CheckboxCardDescription`
 4. `CheckboxCardControl`
-5. hidden input and icons inside the control when needed
+5. `CheckboxCardControlInput` and icons inside the control
 
 ## Valid Composition Patterns
 

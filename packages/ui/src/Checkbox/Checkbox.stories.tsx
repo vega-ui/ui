@@ -1,8 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { ComponentProps } from 'react';
 
 import { Text } from '../Text';
 import { Checkbox } from './Checkbox';
-import { CheckboxCheckedIcon, CheckboxHiddenInput, CheckboxIndeterminateIcon, CheckboxIndicator } from './components';
+import { CheckboxCheckedIcon, CheckboxInput, CheckboxIndeterminateIcon, CheckboxIndicator } from './components';
+
+const parts = (input: ComponentProps<typeof CheckboxInput> = {}) => [
+  <CheckboxInput key={0} {...input} />,
+  <CheckboxIndicator key={1}>
+    <CheckboxCheckedIcon />
+    <CheckboxIndeterminateIcon />
+  </CheckboxIndicator>
+]
 
 const meta = {
   title: 'Form/Selectors/Checkbox/Checkbox',
@@ -26,13 +35,7 @@ const meta = {
     },
   },
   args: {
-    children: [
-      <CheckboxHiddenInput key={0} />,
-      <CheckboxIndicator key={1}>
-        <CheckboxCheckedIcon />
-        <CheckboxIndeterminateIcon />
-      </CheckboxIndicator>
-    ]
+    children: parts()
   }
 } satisfies Meta<typeof Checkbox>;
 
@@ -51,33 +54,31 @@ export const Secondary: Story = {
 
 export const Disabled: Story = {
   args: {
-    disabled: true
+    children: parts({ disabled: true })
   },
 };
 
 export const Indeterminate: Story = {
   args: {
-    indeterminate: true
+    children: parts({ indeterminate: true })
   },
 };
 
 export const Checked: Story = {
   args: {
-    checked: true
+    children: parts({ defaultChecked: true })
   },
 };
 
 export const IndeterminateDisabled: Story = {
   args: {
-    indeterminate: true,
-    disabled: true
+    children: parts({ indeterminate: true, disabled: true })
   },
 };
 
 export const CheckedDisabled: Story = {
   args: {
-    checked: true,
-    disabled: true
+    children: parts({ defaultChecked: true, disabled: true })
   },
 };
 

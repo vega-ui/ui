@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { SegmentedControl } from './SegmentedControl';
-import { SegmentedControlIndicator, SegmentedControlItem, SegmentedControlItemHiddenInput } from './components';
+import { SegmentedControlIndicator, SegmentedControlItem, SegmentedControlItemInput } from './components';
 import { Icon } from '../Icon';
 import { SunIcon, MoonIcon } from '@vega-ui/icons';
 import { Separator } from '../Separator';
@@ -38,15 +38,15 @@ export const Default: Story = {
     defaultValue: '1',
     children: [
       <SegmentedControlItem key={0} value='1'>
-        <SegmentedControlItemHiddenInput />
+        <SegmentedControlItemInput />
         Apple
       </SegmentedControlItem>,
       <SegmentedControlItem key={1} value='2'>
-        <SegmentedControlItemHiddenInput />
+        <SegmentedControlItemInput />
         Orange
       </SegmentedControlItem>,
       <SegmentedControlItem key={2} value='3'>
-        <SegmentedControlItemHiddenInput />
+        <SegmentedControlItemInput />
         Blueberry
       </SegmentedControlItem>,
       <SegmentedControlIndicator key={3} />
@@ -64,17 +64,17 @@ export const Separated: Story = {
     },
     children: [
       <SegmentedControlItem key={0} value='1'>
-        <SegmentedControlItemHiddenInput />
+        <SegmentedControlItemInput />
         Apple
       </SegmentedControlItem>,
       <Separator key={1} style={{ height: '80%' }} orientation='vertical' />,
       <SegmentedControlItem key={2} value='2'>
-        <SegmentedControlItemHiddenInput />
+        <SegmentedControlItemInput />
         Orange
       </SegmentedControlItem>,
       <Separator key={3} style={{ height: '80%' }} orientation='vertical' />,
       <SegmentedControlItem key={4} value='3'>
-        <SegmentedControlItemHiddenInput />
+        <SegmentedControlItemInput />
         Blueberry
       </SegmentedControlItem>,
       <SegmentedControlIndicator key={5} />
@@ -92,15 +92,15 @@ export const MinContent: Story = {
     },
     children: [
       <SegmentedControlItem key={0} value='1'>
-        <SegmentedControlItemHiddenInput />
+        <SegmentedControlItemInput />
         Apple
       </SegmentedControlItem>,
       <SegmentedControlItem key={1} value='2'>
-        <SegmentedControlItemHiddenInput />
+        <SegmentedControlItemInput />
         Orange
       </SegmentedControlItem>,
       <SegmentedControlItem key={2} value='3'>
-        <SegmentedControlItemHiddenInput />
+        <SegmentedControlItemInput />
         Blueberry
       </SegmentedControlItem>,
       <SegmentedControlIndicator key={3} />
@@ -134,15 +134,15 @@ export const DifferentLength: Story = {
     },
     children: [
       <SegmentedControlItem key={0} value='1'>
-        <SegmentedControlItemHiddenInput />
+        <SegmentedControlItemInput />
         Short
       </SegmentedControlItem>,
       <SegmentedControlItem key={1} value='2'>
-        <SegmentedControlItemHiddenInput />
+        <SegmentedControlItemInput />
         Loooooong
       </SegmentedControlItem>,
       <SegmentedControlItem key={2} value='3'>
-        <SegmentedControlItemHiddenInput />
+        <SegmentedControlItemInput />
         Short
       </SegmentedControlItem>,
       <SegmentedControlIndicator key={3} />
@@ -175,11 +175,11 @@ export const WithIcon: Story = {
     name: 'icon',
     children: [
       <SegmentedControlItem key={0} value='1'>
-        <SegmentedControlItemHiddenInput />
+        <SegmentedControlItemInput />
         <Icon size='sm'><SunIcon /></Icon>
       </SegmentedControlItem>,
       <SegmentedControlItem key={1} value='2'>
-        <SegmentedControlItemHiddenInput />
+        <SegmentedControlItemInput />
         <Icon size='sm'><MoonIcon /></Icon>
       </SegmentedControlItem>,
       <SegmentedControlIndicator key={2} />

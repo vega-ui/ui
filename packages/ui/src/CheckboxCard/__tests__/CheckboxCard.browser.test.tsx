@@ -1,4 +1,4 @@
-import { ComponentProps, CSSProperties, FC, FormEvent, PropsWithChildren } from 'react';
+import { ChangeEvent, ComponentProps, CSSProperties, FC, FormEvent, PropsWithChildren } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi, type Mock } from 'vitest';
 import { userEvent } from 'vitest/browser';
 import { cleanup, render, type RenderResult, waitFor } from '@testing-library/react';
@@ -8,7 +8,7 @@ import {
   CheckboxCardContent,
   CheckboxCardControl,
   CheckboxCardControlCheckedIcon,
-  CheckboxCardControlHiddenInput,
+  CheckboxCardControlInput,
   CheckboxCardControlIndicator,
   CheckboxCardControlIndeterminateIcon,
   CheckboxCardDescription,
@@ -22,7 +22,7 @@ const TESTID_CONTENT = 'content';
 const TESTID_TITLE = 'title';
 const TESTID_DESCRIPTION = 'description';
 const TESTID_CHECKBOX = 'checkbox';
-const TESTID_INPUT = 'hidden-input';
+const TESTID_INPUT = 'input';
 const TESTID_INDICATOR = 'indicator';
 const TESTID_CHECKED_ICON = 'checked-icon';
 const TESTID_INDETERMINATE_ICON = 'indeterminate-icon';
@@ -30,8 +30,11 @@ const TESTID_INDETERMINATE_ICON = 'indeterminate-icon';
 const CHECKBOX_NAME = 'agree';
 const CHECKBOX_VALUE = 'yes';
 
-const CheckboxCardTest: FC<PropsWithChildren<ComponentProps<typeof CheckboxCard>>> = (props) => {
-  const { children, ...rest } = props;
+type CheckboxCardTestProps = PropsWithChildren<Omit<ComponentProps<typeof CheckboxCard>, 'onChange'>> &
+  Pick<ComponentProps<typeof CheckboxCardControlInput>, 'checked' | 'disabled' | 'onChange'>
+
+const CheckboxCardTest: FC<CheckboxCardTestProps> = (props) => {
+  const { children, checked, disabled, onChange, ...rest } = props;
   
   return (
     <CheckboxCard data-testid={TESTID_CARD} {...rest}>
@@ -48,10 +51,13 @@ const CheckboxCardTest: FC<PropsWithChildren<ComponentProps<typeof CheckboxCard>
             style={{ '--checkbox-size': '16px' } as CSSProperties}
             data-testid={TESTID_CHECKBOX}
           >
-            <CheckboxCardControlHiddenInput
+            <CheckboxCardControlInput
               data-testid={TESTID_INPUT}
               name={CHECKBOX_NAME}
               value={CHECKBOX_VALUE}
+              checked={checked}
+              disabled={disabled}
+              onChange={onChange}
             />
             <CheckboxCardControlIndicator data-testid={TESTID_INDICATOR}>
               <CheckboxCardControlCheckedIcon data-testid={TESTID_CHECKED_ICON} />
@@ -169,22 +175,22 @@ describe('CheckboxCard', () => {
     
     describe('controlled', () => {
       let r: RenderResult;
-      let onChangeChecked: Mock;
+      let onChange: Mock;
       
       beforeEach(() => {
-        onChangeChecked = vi.fn();
-        r = render(<CheckboxCardTest checked={false} onChangeChecked={onChangeChecked} />);
+        onChange = vi.fn((e: ChangeEvent<HTMLInputElement>) => e.currentTarget.checked);
+        r = render(<CheckboxCardTest checked={false} onChange={onChange} />);
       });
       
       it('is not checked when checked=false', async () => {
         await expect.element(getInput(r)).not.toBeChecked();
       });
       
-      it('calls onChangeChecked(true) on click', async () => {
+      it('calls onChange with checked=true on click', async () => {
         await userEvent.click(getCheckbox(r));
         
         await waitFor(() => {
-          expect(onChangeChecked).toHaveBeenLastCalledWith(true);
+          expect(onChange).toHaveLastReturnedWith(true);
         });
       });
       
@@ -216,7 +222,7 @@ describe('CheckboxCard', () => {
       const r = render(
         <CheckboxCard data-testid={TESTID_CARD}>
           <CheckboxCardControl data-testid={TESTID_CHECKBOX}>
-            <CheckboxCardControlHiddenInput data-testid={TESTID_INPUT} />
+            <CheckboxCardControlInput data-testid={TESTID_INPUT} />
           </CheckboxCardControl>
         </CheckboxCard>,
       );
@@ -228,7 +234,7 @@ describe('CheckboxCard', () => {
       const r = render(
         <CheckboxCard data-testid={TESTID_CARD}>
           <CheckboxCardControl data-testid={TESTID_CHECKBOX}>
-            <CheckboxCardControlHiddenInput data-testid={TESTID_INPUT} />
+            <CheckboxCardControlInput data-testid={TESTID_INPUT} />
           </CheckboxCardControl>
         </CheckboxCard>,
       );
@@ -240,7 +246,7 @@ describe('CheckboxCard', () => {
       const r = render(
         <CheckboxCard data-testid={TESTID_CARD}>
           <CheckboxCardControl data-testid={TESTID_CHECKBOX}>
-            <CheckboxCardControlHiddenInput data-testid={TESTID_INPUT} />
+            <CheckboxCardControlInput data-testid={TESTID_INPUT} />
           </CheckboxCardControl>
         </CheckboxCard>,
       );
@@ -289,8 +295,8 @@ describe('CheckboxCard', () => {
             <CheckboxCardTitle data-testid={TESTID_TITLE}>X</CheckboxCardTitle>
           </CheckboxCardContent>
           
-          <CheckboxCardControl data-testid={TESTID_CHECKBOX} indeterminate>
-            <CheckboxCardControlHiddenInput data-testid={TESTID_INPUT} />
+          <CheckboxCardControl data-testid={TESTID_CHECKBOX}>
+            <CheckboxCardControlInput data-testid={TESTID_INPUT} indeterminate />
             <CheckboxCardControlIndicator data-testid={TESTID_INDICATOR}>
               <CheckboxCardControlCheckedIcon data-testid={TESTID_CHECKED_ICON}>
                 <svg data-testid='custom-checked' />
@@ -314,8 +320,8 @@ describe('CheckboxCard', () => {
             <CheckboxCardTitle data-testid={TESTID_TITLE}>X</CheckboxCardTitle>
           </CheckboxCardContent>
           
-          <CheckboxCardControl data-testid={TESTID_CHECKBOX} indeterminate>
-            <CheckboxCardControlHiddenInput data-testid={TESTID_INPUT} />
+          <CheckboxCardControl data-testid={TESTID_CHECKBOX}>
+            <CheckboxCardControlInput data-testid={TESTID_INPUT} indeterminate />
             <CheckboxCardControlIndicator data-testid={TESTID_INDICATOR}>
               <CheckboxCardControlCheckedIcon data-testid={TESTID_CHECKED_ICON}>
                 <svg data-testid='custom-checked' />
@@ -336,7 +342,7 @@ describe('CheckboxCard', () => {
       const r = render(
         <CheckboxCard data-testid={TESTID_CARD}>
           <CheckboxCardControl data-testid={TESTID_CHECKBOX}>
-            <CheckboxCardControlHiddenInput data-testid={TESTID_INPUT} />
+            <CheckboxCardControlInput data-testid={TESTID_INPUT} />
           </CheckboxCardControl>
         </CheckboxCard>,
       );

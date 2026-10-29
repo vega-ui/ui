@@ -27,13 +27,13 @@ When to use:
 The app wants a rich tile UI, but still submits through a native form.
 
 Composition notes:
-Render `CheckboxCardControlHiddenInput` inside the control region.
+Render `CheckboxCardControlInput` inside the control region.
 
 Trade-offs:
 Form integration becomes easier, but layout and semantics still need to keep the full card readable.
 
 ```tsx
 <CheckboxCardControl>
-  <CheckboxCardControlHiddenInput />
+  <CheckboxCardControlInput />
 </CheckboxCardControl>
 ```

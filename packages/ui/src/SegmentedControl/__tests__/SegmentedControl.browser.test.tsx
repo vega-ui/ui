@@ -7,7 +7,7 @@ import { SegmentedControl } from '../SegmentedControl';
 import {
   SegmentedControlIndicator,
   SegmentedControlItem,
-  SegmentedControlItemHiddenInput,
+  SegmentedControlItemInput,
 } from '../components';
 
 afterEach(cleanup);
@@ -52,17 +52,17 @@ const SegmentedControlTest: FC<
           
           <SegmentedControlItem data-testid={TESTID_ITEM_0} value={VALUE_0}>
             {VALUE_0}
-            <SegmentedControlItemHiddenInput data-testid={TESTID_INPUT_0} />
+            <SegmentedControlItemInput data-testid={TESTID_INPUT_0} />
           </SegmentedControlItem>
           
           <SegmentedControlItem data-testid={TESTID_ITEM_1} value={VALUE_1}>
             {VALUE_1}
-            <SegmentedControlItemHiddenInput data-testid={TESTID_INPUT_1} />
+            <SegmentedControlItemInput data-testid={TESTID_INPUT_1} />
           </SegmentedControlItem>
           
           <SegmentedControlItem data-testid={TESTID_ITEM_2} value={VALUE_2}>
             {VALUE_2}
-            <SegmentedControlItemHiddenInput data-testid={TESTID_INPUT_2} />
+            <SegmentedControlItemInput data-testid={TESTID_INPUT_2} />
           </SegmentedControlItem>
         </>
       )}
@@ -297,11 +297,11 @@ describe('SegmentedControl', () => {
             <SegmentedControlIndicator data-testid='other-indicator' />
             <SegmentedControlItem value={VALUE_0}>
               {VALUE_0}
-              <SegmentedControlItemHiddenInput />
+              <SegmentedControlItemInput />
             </SegmentedControlItem>
             <SegmentedControlItem data-testid='other-item' value={VALUE_1}>
               {VALUE_1}
-              <SegmentedControlItemHiddenInput />
+              <SegmentedControlItemInput />
             </SegmentedControlItem>
           </SegmentedControl>
         </>

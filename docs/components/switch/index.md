@@ -6,7 +6,7 @@
 
 ## Summary
 
-`Switch` is a [compound component](../../glossary.md#compound-component) for immediate binary settings, with a hidden input for semantics and an indicator for the visible track and thumb. It is the binary-toggle layer when the UI should read as on or off right now, not as one deferred form choice among others.
+`Switch` is a [compound component](../../glossary.md#compound-component) for immediate binary settings, with a native input for semantics and state and an indicator for the visible track and thumb. It is the binary-toggle layer when the UI should read as on or off right now, not as one deferred form choice among others.
 
 ## Imports
 
@@ -14,7 +14,7 @@
 import {
   Switch,
   SwitchIndicator,
-  SwitchHiddenInput,
+  SwitchInput,
   type SwitchProps,
   type SwitchSize,
   type SwitchVariant,
@@ -24,7 +24,7 @@ import {
 ## Exported Types
 
 - `SwitchProps`
-- `SwitchHiddenInputProps`
+- `SwitchInputProps`
 - `SwitchIndicatorProps`
 - `SwitchSize`
 - `SwitchVariant`
@@ -33,7 +33,7 @@ import {
 
 ```tsx
 <Switch>
-  <SwitchHiddenInput />
+  <SwitchInput />
   <SwitchIndicator />
 </Switch>
 ```
@@ -45,12 +45,12 @@ import {
 
 ## Optional Parts
 
-- `SwitchHiddenInput`: native semantics and form participation
+- `SwitchInput`: native semantics and form participation
 
 ## Composition Order
 
 1. `Switch`
-2. `SwitchHiddenInput`
+2. `SwitchInput`
 3. `SwitchIndicator`
 4. visible label text
 
@@ -74,7 +74,7 @@ import {
 ## Edge Cases
 
 - Switches imply immediate binary state, not a deferred exclusive choice.
-- Use the hidden input when the control belongs to a native form.
+- Give `SwitchInput` a `name` when the control belongs to a native form.
 - Labels should describe the controlled feature, not the toggle action itself.
 - If the binary choice is only one line inside a larger checklist or form submission flow, `Checkbox` may communicate intent better.
 
@@ -82,4 +82,4 @@ import {
 
 - Using a switch for deferred form choices.
 - Writing labels like "Turn on" instead of naming the setting.
-- Omitting hidden input participation in form-driven flows.
+- Leaving out `SwitchInput`, which is the actual control.

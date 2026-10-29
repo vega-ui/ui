@@ -1,7 +1,7 @@
 export { Checkbox, type CheckboxProps } from './Checkbox'
 export type { CheckboxVariant, CheckboxSize } from './types'
 export {
-  CheckboxHiddenInput, type CheckboxHiddenInputProps,
+  CheckboxInput, type CheckboxInputProps,
   CheckboxIndicator, type CheckboxIndicatorProps,
   CheckboxCheckedIcon, type CheckboxCheckedIconProps,
   CheckboxIndeterminateIcon, type CheckboxIndeterminateIconProps,

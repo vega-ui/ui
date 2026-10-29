@@ -3,7 +3,7 @@ import { Diff } from '@vega-ui/icons';
 import { CheckboxCardControlIndeterminateIcon } from './CheckboxCardControlIndeterminateIcon';
 import { CheckboxCardControl } from '../CheckboxCardControl';
 import { CheckboxCardControlIndicator } from '../CheckboxCardControlIndicator';
-import { CheckboxCardControlHiddenInput } from '../CheckboxCardControlHiddenInput';
+import { CheckboxCardControlInput } from '../CheckboxCardControlInput';
 
 const meta = {
   title: 'Form/Selectors/CheckboxCard/CheckboxCardControlIndeterminateIcon',
@@ -15,8 +15,8 @@ const meta = {
   argTypes: {},
   decorators(Story) {
     return (
-      <CheckboxCardControl indeterminate>
-        <CheckboxCardControlHiddenInput />
+      <CheckboxCardControl>
+        <CheckboxCardControlInput indeterminate />
         <CheckboxCardControlIndicator>
           <Story />
         </CheckboxCardControlIndicator>

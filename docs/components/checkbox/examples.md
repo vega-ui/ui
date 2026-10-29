@@ -8,7 +8,7 @@ Use this for one independent selectable option.
 
 ```tsx
 <Checkbox>
-  <CheckboxHiddenInput />
+  <CheckboxInput />
   <CheckboxIndicator>
     <CheckboxCheckedIcon />
     <CheckboxIndeterminateIcon />
@@ -24,8 +24,8 @@ Use this for one independent selectable option.
 Use this when a parent item reflects partial selection in a nested list.
 
 ```tsx
-<Checkbox indeterminate>
-  <CheckboxHiddenInput />
+<Checkbox>
+  <CheckboxInput indeterminate />
   <CheckboxIndicator>
     <CheckboxCheckedIcon />
     <CheckboxIndeterminateIcon />
@@ -38,12 +38,12 @@ Use this when a parent item reflects partial selection in a nested list.
 
 ### Form/Integration: checkbox in a native form row
 
-Use the hidden input when the value should appear in native form submission.
+Give `CheckboxInput` a `name` so the value appears in native form submission.
 
 ```tsx
 <label style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
   <Checkbox>
-    <CheckboxHiddenInput name='marketing' />
+    <CheckboxInput name='marketing' />
     <CheckboxIndicator>
       <CheckboxCheckedIcon />
       <CheckboxIndeterminateIcon />
@@ -68,7 +68,7 @@ Use this when several independent choices live inside an overlay form.
     <DrawerBackdrop>
       <DrawerContent>
         <Checkbox>
-          <CheckboxHiddenInput />
+          <CheckboxInput />
           <CheckboxIndicator>
             <CheckboxCheckedIcon />
             <CheckboxIndeterminateIcon />
@@ -90,7 +90,7 @@ Use this when one independent agreement must be accepted before submit.
 ```tsx
 <FormRow label='Agreement' error='You must accept the policy to continue.'>
   <Checkbox>
-    <CheckboxHiddenInput aria-invalid='true' />
+    <CheckboxInput aria-invalid='true' />
     <CheckboxIndicator>
       <CheckboxCheckedIcon />
       <CheckboxIndeterminateIcon />
@@ -107,8 +107,8 @@ Use this when one independent agreement must be accepted before submit.
 Use this when the value is visible but locked.
 
 ```tsx
-<Checkbox checked disabled>
-  <CheckboxHiddenInput />
+<Checkbox>
+  <CheckboxInput defaultChecked disabled />
   <CheckboxIndicator>
     <CheckboxCheckedIcon />
     <CheckboxIndeterminateIcon />
@@ -125,7 +125,7 @@ Use this when a less prominent checkbox treatment fits better.
 
 ```tsx
 <Checkbox variant='secondary'>
-  <CheckboxHiddenInput />
+  <CheckboxInput />
   <CheckboxIndicator>
     <CheckboxCheckedIcon />
     <CheckboxIndeterminateIcon />

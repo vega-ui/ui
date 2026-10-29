@@ -24,7 +24,7 @@
 
 - `variant` changes the checked and indeterminate color family.
 - Disabled state overrides both background and border semantics.
-- Focus lives on the hidden input but is rendered through the indicator.
+- Focus lives on the visually hidden input but is rendered through the indicator.
 
 ## Examples
 

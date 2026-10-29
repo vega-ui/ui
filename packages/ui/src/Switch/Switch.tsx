@@ -16,8 +16,7 @@ export interface SwitchProps extends LabelHTMLAttributes<HTMLLabelElement> {
   size?: SwitchSize
 
   /**
-   * Ref to the native `<input role="switch" type="checkbox">` element.
-   * Useful for managing focus, setting indeterminate manually, etc.
+   * Ref to the native label element.
    */
   ref?: Ref<HTMLLabelElement>
 }

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CheckboxCardControlIndicator } from './CheckboxCardControlIndicator';
 import { CheckboxCardControl } from '../CheckboxCardControl';
-import { CheckboxCardControlHiddenInput } from '../CheckboxCardControlHiddenInput';
+import { CheckboxCardControlInput } from '../CheckboxCardControlInput';
 import { CheckboxCardControlIndeterminateIcon } from '../CheckboxCardControlIndeterminateIcon';
 import { CheckboxCardControlCheckedIcon } from '../CheckboxCardControlCheckedIcon';
 
@@ -16,7 +16,7 @@ const meta = {
   decorators(Story) {
     return (
       <CheckboxCardControl>
-        <CheckboxCardControlHiddenInput />
+        <CheckboxCardControlInput />
         <Story />
       </CheckboxCardControl>
     )

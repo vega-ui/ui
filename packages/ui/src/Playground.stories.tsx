@@ -9,12 +9,13 @@ import { Heart } from '@vega-ui/icons';
 import { Badge } from './Badge/Badge';
 import { Button } from './Button/Button';
 import { Checkbox } from './Checkbox/Checkbox';
+import { CheckboxCheckedIcon, CheckboxIndeterminateIcon, CheckboxIndicator, CheckboxInput } from './Checkbox/components';
 import { Radio } from './Radio/Radio';
 import { SegmentedControl } from './SegmentedControl/SegmentedControl';
 import {
   SegmentedControlIndicator,
   SegmentedControlItem,
-  SegmentedControlItemHiddenInput,
+  SegmentedControlItemInput,
 } from './SegmentedControl/components';
 import { Slider } from './Slider/Slider';
 import { SliderRange, SliderThumb, SliderThumbIndicator, SliderThumbInput, SliderTrack } from './Slider/components';
@@ -81,10 +82,34 @@ export const Playground: Story = {
         </Col>
 
         <Row>
-          <Checkbox checked={checked} onChangeChecked={setChecked} />
-          <Checkbox checked indeterminate />
-          <Checkbox disabled />
-          <Checkbox checked disabled />
+          <Checkbox>
+            <CheckboxInput checked={checked} onChange={(e) => setChecked(e.currentTarget.checked)} />
+            <CheckboxIndicator>
+              <CheckboxCheckedIcon />
+              <CheckboxIndeterminateIcon />
+            </CheckboxIndicator>
+          </Checkbox>
+          <Checkbox>
+            <CheckboxInput defaultChecked indeterminate />
+            <CheckboxIndicator>
+              <CheckboxCheckedIcon />
+              <CheckboxIndeterminateIcon />
+            </CheckboxIndicator>
+          </Checkbox>
+          <Checkbox>
+            <CheckboxInput disabled />
+            <CheckboxIndicator>
+              <CheckboxCheckedIcon />
+              <CheckboxIndeterminateIcon />
+            </CheckboxIndicator>
+          </Checkbox>
+          <Checkbox>
+            <CheckboxInput defaultChecked disabled />
+            <CheckboxIndicator>
+              <CheckboxCheckedIcon />
+              <CheckboxIndeterminateIcon />
+            </CheckboxIndicator>
+          </Checkbox>
         </Row>
 
         <Row>
@@ -152,19 +177,19 @@ export const Playground: Story = {
           onChange={(e) => setSegmentValue(e.target.value)}
         >
           <SegmentedControlItem value='1'>
-            <SegmentedControlItemHiddenInput />
+            <SegmentedControlItemInput />
             Day
           </SegmentedControlItem>
           <SegmentedControlItem value='2'>
-            <SegmentedControlItemHiddenInput />
+            <SegmentedControlItemInput />
             Week
           </SegmentedControlItem>
           <SegmentedControlItem value='3'>
-            <SegmentedControlItemHiddenInput />
+            <SegmentedControlItemInput />
             Month
           </SegmentedControlItem>
           <SegmentedControlItem value='4'>
-            <SegmentedControlItemHiddenInput />
+            <SegmentedControlItemInput />
             Year
           </SegmentedControlItem>
           <SegmentedControlIndicator />

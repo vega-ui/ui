@@ -12,7 +12,7 @@ Switch labels should describe the controlled feature or state, not the action of
 
 ## Focus Behavior
 
-- Focus should land on the hidden input.
+- Focus should land on the native input.
 - Visible focus styling should remain obvious on the switch track.
 
 ## Screen Reader Semantics
@@ -23,11 +23,11 @@ Switch labels should describe the controlled feature or state, not the action of
 
 ## Form Semantics
 
-- Use `SwitchHiddenInput` when the switch should participate in native forms.
+- Use `SwitchInput` when the switch should participate in native forms.
 - Product copy should make it clear whether the switch applies immediately or on submit.
 
 ## Accessibility Risks
 
 - Labels like "Turn on" that do not describe the controlled setting.
-- Missing hidden input in a native form flow.
+- Missing `SwitchInput`.
 - Using a switch where a radio group or checkbox list better matches the product model.

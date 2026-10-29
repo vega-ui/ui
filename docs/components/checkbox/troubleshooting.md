@@ -8,7 +8,7 @@ The visible checkbox works, but the value never appears in form submission.
 
 ### Likely Cause
 
-`CheckboxHiddenInput` was omitted.
+`CheckboxInput` was omitted.
 
 ### How To Verify
 
@@ -17,7 +17,7 @@ The visible checkbox works, but the value never appears in form submission.
 
 ### Fix
 
-- Render `CheckboxHiddenInput` inside the checkbox root.
+- Render `CheckboxInput` inside the checkbox root.
 
 ## Indeterminate State Behaves Like A Real Third Value
 

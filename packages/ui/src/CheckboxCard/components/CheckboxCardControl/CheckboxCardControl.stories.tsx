@@ -1,9 +1,18 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { CheckboxCardControlHiddenInput } from '../CheckboxCardControlHiddenInput';
+import { ComponentProps } from 'react';
+import { CheckboxCardControlInput } from '../CheckboxCardControlInput';
 import { CheckboxCardControlIndicator } from '../CheckboxCardControlIndicator';
 import { CheckboxCardControlCheckedIcon } from '../CheckboxCardControlCheckedIcon';
 import { CheckboxCardControlIndeterminateIcon } from '../CheckboxCardControlIndeterminateIcon';
 import { CheckboxCardControl } from './CheckboxCardControl';
+
+const parts = (input: ComponentProps<typeof CheckboxCardControlInput> = {}) => [
+  <CheckboxCardControlInput key={0} {...input} />,
+  <CheckboxCardControlIndicator key={1}>
+    <CheckboxCardControlCheckedIcon />
+    <CheckboxCardControlIndeterminateIcon />
+  </CheckboxCardControlIndicator>
+]
 
 const meta = {
   title: 'Form/Selectors/CheckboxCard/CheckboxCardControl',
@@ -27,13 +36,7 @@ const meta = {
     },
   },
   args: {
-    children: [
-      <CheckboxCardControlHiddenInput key={0} />,
-      <CheckboxCardControlIndicator key={1}>
-        <CheckboxCardControlCheckedIcon />
-        <CheckboxCardControlIndeterminateIcon />
-      </CheckboxCardControlIndicator>
-    ]
+    children: parts()
   }
 } satisfies Meta<typeof CheckboxCardControl>;
 
@@ -52,32 +55,30 @@ export const Secondary: Story = {
 
 export const Disabled: Story = {
   args: {
-    disabled: true
+    children: parts({ disabled: true })
   },
 };
 
 export const Indeterminate: Story = {
   args: {
-    indeterminate: true
+    children: parts({ indeterminate: true })
   },
 };
 
 export const Checked: Story = {
   args: {
-    checked: true
+    children: parts({ defaultChecked: true })
   },
 };
 
 export const IndeterminateDisabled: Story = {
   args: {
-    indeterminate: true,
-    disabled: true
+    children: parts({ indeterminate: true, disabled: true })
   },
 };
 
 export const CheckedDisabled: Story = {
   args: {
-    checked: true,
-    disabled: true
+    children: parts({ defaultChecked: true, disabled: true })
   },
 };

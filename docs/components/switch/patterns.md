@@ -9,7 +9,7 @@ When to use:
 Composition notes:
 
 - Keep the visible label state-oriented.
-- Use hidden input participation if the setting also lives in a native form.
+- Give `SwitchInput` a `name` if the setting also lives in a native form.
 
 Trade-offs:
 
@@ -18,7 +18,7 @@ Trade-offs:
 
 ```tsx
 <Switch>
-  <SwitchHiddenInput />
+  <SwitchInput />
   <SwitchIndicator />
 </Switch>
 ```
@@ -43,7 +43,7 @@ Trade-offs:
 <div style={{ display: 'grid', gap: 6 }}>
   <label style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
     <Switch>
-      <SwitchHiddenInput />
+      <SwitchInput />
       <SwitchIndicator />
     </Switch>
     <span>Incident alerts</span>
@@ -81,14 +81,14 @@ Trade-offs:
         <SheetMain style={{ display: 'grid', gap: 12 }}>
           <label style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <Switch>
-              <SwitchHiddenInput name='alerts' />
+              <SwitchInput name='alerts' />
               <SwitchIndicator />
             </Switch>
             <span>Incident alerts</span>
           </label>
           <label style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             <Switch>
-              <SwitchHiddenInput name='weekly_digest' />
+              <SwitchInput name='weekly_digest' />
               <SwitchIndicator />
             </Switch>
             <span>Weekly digest</span>
