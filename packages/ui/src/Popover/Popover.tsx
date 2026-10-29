@@ -58,6 +58,7 @@ export const Popover: FC<PopoverProps> = ({
   onChangeOpen,
   className,
   children,
+  ...props
 }) => {
   const [open, setOpen] = useControlledState(controlledOpen, defaultOpen, onChangeOpen);
 
@@ -90,7 +91,7 @@ export const Popover: FC<PopoverProps> = ({
       triggerProps={getReferenceProps()}
       contentProps={getFloatingProps()}
     >
-      <div className={csx(style.popover, className)}>
+      <div className={csx(style.popover, className)} {...props}>
         {children}
       </div>
     </PopoverProvider>
