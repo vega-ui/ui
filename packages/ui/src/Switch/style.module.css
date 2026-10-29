@@ -1,6 +1,6 @@
 .switch {
     --switch-size: var(--spacing-8);
-    --switch-padding: 2px;
+    --switch-padding: var(--spacing-1);
 
     --switch-indicator-size: calc(var(--switch-size) - var(--switch-padding) * 2);
 

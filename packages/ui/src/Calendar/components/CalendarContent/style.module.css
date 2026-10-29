@@ -1,7 +1,7 @@
 .content {
     position: relative;
     overflow: hidden;
-    padding: 4px;
+    padding: var(--spacing-2);
 }
 
 .content:where([data-size='xs']) {

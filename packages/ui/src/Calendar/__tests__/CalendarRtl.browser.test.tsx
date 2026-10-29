@@ -20,6 +20,7 @@ import {
 } from '../components';
 import { useCalendarContext, useCalendarDayContext } from '../contexts';
 import { formatCalendarDate, gregorianCalendar } from '@vega-ui/i18n';
+import '../../../../tokens/src/index.css';
 
 afterEach(cleanup);
 

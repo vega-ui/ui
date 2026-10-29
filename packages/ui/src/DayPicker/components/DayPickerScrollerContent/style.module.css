@@ -1,5 +1,5 @@
 .content {
-    padding: 2px;
+    padding: var(--spacing-1);
     box-sizing: border-box;
     width: 100%;
 }

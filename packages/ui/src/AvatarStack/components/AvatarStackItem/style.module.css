@@ -16,7 +16,7 @@
 }
 
 .avatar:not(:first-child):hover {
-    margin-inline: 4px;
+    margin-inline: var(--spacing-2);
 }
 
 .avatar:not(:first-child):hover,
