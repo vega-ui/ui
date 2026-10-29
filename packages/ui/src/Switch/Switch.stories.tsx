@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
 
 import { Switch } from './Switch'
-import { SwitchHiddenInput, SwitchIndicator } from './components';
+import { SwitchInput, SwitchIndicator } from './components';
 
 const meta = {
   title: 'Form/Selectors/Switch/Switch',
@@ -17,7 +17,7 @@ const meta = {
   argTypes: {},
   args: {
     children: [
-      <SwitchHiddenInput key={0} />,
+      <SwitchInput key={0} />,
       <SwitchIndicator key={1} />
     ]
   }
@@ -41,7 +41,7 @@ export const Secondary: Story = {
 export const Disabled: Story = {
   args: {
     children: [
-      <SwitchHiddenInput key={0} disabled />,
+      <SwitchInput key={0} disabled />,
       <SwitchIndicator key={1} />
     ]
   },
@@ -50,7 +50,7 @@ export const Disabled: Story = {
 export const Checked: Story = {
   args: {
     children: [
-      <SwitchHiddenInput key={0} checked />,
+      <SwitchInput key={0} checked />,
       <SwitchIndicator key={1} />
     ]
   },
@@ -59,7 +59,7 @@ export const Checked: Story = {
 export const CheckedDisabled: Story = {
   args: {
     children: [
-      <SwitchHiddenInput key={0} checked disabled />,
+      <SwitchInput key={0} checked disabled />,
       <SwitchIndicator key={1} />
     ]
   },

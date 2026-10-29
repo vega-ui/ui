@@ -28,9 +28,9 @@ Supporting text under the title.
 
 Visual control region for the checkbox affordance.
 
-## `CheckboxCardControlHiddenInput`
+## `CheckboxCardControlInput`
 
-Hidden native checkbox input.
+The native checkbox input. Checked state is set here: `checked`, `defaultChecked`, `onChange`, `disabled` and `indeterminate`.
 
 ## `CheckboxCardControlCheckedIcon`
 
@@ -44,13 +44,13 @@ Indeterminate-state icon.
 
 ## `useCheckboxCardContext`
 
-Advanced hook for custom card-control wrappers that need checked, disabled, size, or variant state.
+Advanced hook for custom card-control wrappers that need size or variant.
 
 ## Types
 
 | Type | Definition | Notes |
 | --- | --- | --- |
-| `CheckboxCardProps` | root prop type | Extends `Card` and checkbox behavior. |
+| `CheckboxCardProps` | root prop type | Extends `Card` props. |
 | `CheckboxCardContentProps` | content props | Layout wrapper props. |
 | `CheckboxCardTitleProps` | title props | Text heading props. |
 | `CheckboxCardDescriptionProps` | description props | Secondary text props. |
@@ -58,12 +58,12 @@ Advanced hook for custom card-control wrappers that need checked, disabled, size
 
 ## State Model
 
-- Checked state can be controlled or uncontrolled.
-- `indeterminate` is a visual and semantic mixed state on top of checkbox behavior.
+- Checked state lives on `CheckboxCardControlInput`, like on a native checkbox: uncontrolled through `defaultChecked`, controlled through `checked` and `onChange`.
+- `indeterminate` on `CheckboxCardControlInput` is a visual and semantic mixed state on top of checkbox behavior.
 - Variant and size flow through checkbox-card context.
 
 ## Integration Notes
 
-- Use hidden input when native form submission matters.
+- Give `CheckboxCardControlInput` a `name` when native form submission matters.
 - Prefer `Radio` or `SegmentedControl` for single-choice groups.
 - Keep the whole card as the labeled click target rather than shrinking interaction to the tiny control.

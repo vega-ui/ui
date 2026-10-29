@@ -8,7 +8,7 @@ The toggle changes visually, but the value never appears in native form submissi
 
 ### Likely Cause
 
-`SwitchHiddenInput` was omitted.
+`SwitchInput` was omitted.
 
 ### How To Verify
 
@@ -17,7 +17,7 @@ The toggle changes visually, but the value never appears in native form submissi
 
 ### Fix
 
-- Render `SwitchHiddenInput` inside the switch root.
+- Render `SwitchInput` inside the switch root.
 
 ## Label Reads Like An Action Instead Of A State
 

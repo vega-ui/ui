@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { SegmentedControlItemHiddenInput } from './SegmentedControlItemHiddenInput';
+import { SegmentedControlItemInput } from './SegmentedControlItemInput';
 import { SegmentedControl } from '../../SegmentedControl';
 import { SegmentedControlItem } from '../SegmentedControlItem';
 import { SegmentedControlIndicator } from '../SegmentedControlIndicator';
 
 const meta = {
-  title: 'Form/Selectors/SegmentedControl/SegmentedControlItemHiddenInput',
-  component: SegmentedControlItemHiddenInput,
+  title: 'Form/Selectors/SegmentedControl/SegmentedControlItemInput',
+  component: SegmentedControlItemInput,
   parameters: {
     layout: 'centered',
     design: {
@@ -27,7 +27,7 @@ const meta = {
       </SegmentedControl>
     )
   }
-} satisfies Meta<typeof SegmentedControlItemHiddenInput>;
+} satisfies Meta<typeof SegmentedControlItemInput>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;

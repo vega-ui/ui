@@ -12,7 +12,7 @@ The visible label should describe the independent choice clearly. The full row s
 
 ## Focus Behavior
 
-- Focus should land on the hidden native input.
+- Focus should land on the native input.
 - Visible focus treatment should remain obvious on the indicator surface.
 
 ## Screen Reader Semantics
@@ -23,11 +23,11 @@ The visible label should describe the independent choice clearly. The full row s
 
 ## Form Semantics
 
-- Use `CheckboxHiddenInput` when the control belongs to a native form.
+- Use `CheckboxInput` when the control belongs to a native form.
 - Required agreement checkboxes should expose their error state clearly.
 
 ## Accessibility Risks
 
-- Missing hidden input in real form flows.
+- Missing `CheckboxInput`.
 - Detached label text that is not part of the same clickable unit.
 - Using checkbox semantics for mutually exclusive choices.

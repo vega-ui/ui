@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CheckboxCheckedIcon } from './CheckboxCheckedIcon';
 import { Checkbox } from '../../Checkbox';
 import { CheckboxIndicator } from '../CheckboxIndicator';
-import { CheckboxHiddenInput } from '../CheckboxHiddenInput';
+import { CheckboxInput } from '../CheckboxInput';
 import { Rocket } from '@vega-ui/icons';
 
 const meta = {
@@ -15,8 +15,8 @@ const meta = {
   argTypes: {},
   decorators(Story) {
     return (
-      <Checkbox checked>
-        <CheckboxHiddenInput />
+      <Checkbox>
+        <CheckboxInput defaultChecked />
         <CheckboxIndicator>
           <Story />
         </CheckboxIndicator>

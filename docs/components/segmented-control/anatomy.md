@@ -2,7 +2,7 @@
 
 ## Overview
 
-`SegmentedControl` is a [compound component](../../glossary.md#compound-component) for always-visible mutually exclusive options with a shared indicator, item-level hidden inputs, and a CSS-anchored selected-state indicator.
+`SegmentedControl` is a [compound component](../../glossary.md#compound-component) for always-visible mutually exclusive options with a shared indicator, item-level native radio inputs, and a CSS-anchored selected-state indicator.
 
 ## Required Parts
 
@@ -20,7 +20,7 @@ Required for the animated selected-state surface.
 
 ## Optional Parts
 
-### `SegmentedControlItemHiddenInput`
+### `SegmentedControlItemInput`
 
 Recommended for native radio-group semantics and form participation.
 
@@ -28,7 +28,7 @@ Recommended for native radio-group semantics and form participation.
 
 1. `SegmentedControl`
 2. `SegmentedControlItem`
-3. `SegmentedControlItemHiddenInput`
+3. `SegmentedControlItemInput`
 4. visible item content
 5. `SegmentedControlIndicator`
 
@@ -37,11 +37,11 @@ Recommended for native radio-group semantics and form participation.
 ```tsx
 <SegmentedControl name='view' defaultValue='week'>
   <SegmentedControlItem value='day'>
-    <SegmentedControlItemHiddenInput />
+    <SegmentedControlItemInput />
     Day
   </SegmentedControlItem>
   <SegmentedControlItem value='week'>
-    <SegmentedControlItemHiddenInput />
+    <SegmentedControlItemInput />
     Week
   </SegmentedControlItem>
   <SegmentedControlIndicator />

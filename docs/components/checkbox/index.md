@@ -13,7 +13,7 @@
 ```tsx
 import {
   Checkbox,
-  CheckboxHiddenInput,
+  CheckboxInput,
   CheckboxIndicator,
   CheckboxCheckedIcon,
   CheckboxIndeterminateIcon,
@@ -26,7 +26,7 @@ import {
 ## Exported Types
 
 - `CheckboxProps`
-- `CheckboxHiddenInputProps`
+- `CheckboxInputProps`
 - `CheckboxIndicatorProps`
 - `CheckboxCheckedIconProps`
 - `CheckboxIndeterminateIconProps`
@@ -37,7 +37,7 @@ import {
 
 ```tsx
 <Checkbox>
-  <CheckboxHiddenInput />
+  <CheckboxInput />
   <CheckboxIndicator>
     <CheckboxCheckedIcon />
     <CheckboxIndeterminateIcon />
@@ -53,14 +53,14 @@ import {
 
 ## Optional Parts
 
-- `CheckboxHiddenInput`: native form participation
+- `CheckboxInput`: native form participation
 - `CheckboxCheckedIcon`: checked-state icon
 - `CheckboxIndeterminateIcon`: indeterminate-state icon
 
 ## Composition Order
 
 1. `Checkbox`
-2. `CheckboxHiddenInput`
+2. `CheckboxInput`
 3. `CheckboxIndicator`
 4. `CheckboxCheckedIcon`
 5. `CheckboxIndeterminateIcon`
@@ -85,13 +85,13 @@ import {
 
 ## Edge Cases
 
-- Use hidden input participation for native forms.
+- Give `CheckboxInput` a `name` for native form submission.
 - Indeterminate usually represents partial selection rather than a third final value.
 - Keep indicator and text inside one unified clickable row.
 - If the control represents one immediate system setting, `Switch` is usually clearer than a checkbox row.
 
 ## Common Mistakes
 
-- Forgetting the hidden input in real forms.
+- Leaving out `CheckboxInput`, which is the actual control.
 - Treating indeterminate as a final persisted state by default.
 - Using checkbox UI for mutually exclusive options.

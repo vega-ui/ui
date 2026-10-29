@@ -9,7 +9,7 @@ Use this for one immediate binary setting.
 ```tsx
 <label style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
   <Switch>
-    <SwitchHiddenInput name='notifications' />
+    <SwitchInput name='notifications' />
     <SwitchIndicator />
   </Switch>
   <span>Enable notifications</span>
@@ -27,7 +27,7 @@ const [enabled, setEnabled] = useState(true);
 
 <label style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
   <Switch>
-    <SwitchHiddenInput checked={enabled} onChange={() => setEnabled((v) => !v)} />
+    <SwitchInput checked={enabled} onChange={() => setEnabled((v) => !v)} />
     <SwitchIndicator />
   </Switch>
   <span>Incident alerts</span>
@@ -44,7 +44,7 @@ Use this when the switch belongs to a settings form that still wants native sema
 <div style={{ display: 'grid', gap: 6 }}>
   <label style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
     <Switch>
-      <SwitchHiddenInput name='incident-alerts' />
+      <SwitchInput name='incident-alerts' />
       <SwitchIndicator />
     </Switch>
     <span>Incident alerts</span>
@@ -69,7 +69,7 @@ Use this when one immediate setting lives inside a mobile-first overlay flow.
       <SheetContent>
         <label style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <Switch>
-            <SwitchHiddenInput name='alerts' />
+            <SwitchInput name='alerts' />
             <SwitchIndicator />
           </Switch>
           <span>Incident alerts</span>
@@ -90,7 +90,7 @@ Use this when product logic rejects the current toggle state and copy needs to e
 <FormRow label='Public access' error='Public access must stay disabled for archived workspaces.'>
   <label style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
     <Switch>
-      <SwitchHiddenInput checked aria-invalid='true' />
+      <SwitchInput checked aria-invalid='true' />
       <SwitchIndicator />
     </Switch>
     <span>Public access</span>
@@ -107,7 +107,7 @@ Use this when the binary state is visible but locked.
 ```tsx
 <label style={{ display: 'flex', alignItems: 'center', gap: 12, opacity: 0.7 }}>
   <Switch variant='secondary'>
-    <SwitchHiddenInput checked disabled />
+    <SwitchInput checked disabled />
     <SwitchIndicator />
   </Switch>
   <span>Legacy automation</span>
@@ -123,7 +123,7 @@ Use this when a lower-emphasis binary control fits better visually.
 ```tsx
 <label style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
   <Switch variant='secondary'>
-    <SwitchHiddenInput />
+    <SwitchInput />
     <SwitchIndicator />
   </Switch>
   <span>Beta previews</span>

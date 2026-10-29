@@ -6,7 +6,7 @@
 
 ## Summary
 
-`SegmentedControl` is a [compound component](../../glossary.md#compound-component) for short, always-visible exclusive option sets, with item-level hidden inputs and an animated selected-state indicator. It is the visibility-first exclusive-choice control when options should stay comparable at a glance.
+`SegmentedControl` is a [compound component](../../glossary.md#compound-component) for short, always-visible exclusive option sets, with item-level native radio inputs and an animated selected-state indicator. It is the visibility-first exclusive-choice control when options should stay comparable at a glance.
 
 ## Imports
 
@@ -15,7 +15,7 @@ import {
   SegmentedControl,
   SegmentedControlItem,
   SegmentedControlIndicator,
-  SegmentedControlItemHiddenInput,
+  SegmentedControlItemInput,
   type SegmentedControlProps,
   type SegmentedControlSize,
   type SegmentedControlVariant,
@@ -27,7 +27,7 @@ import {
 - `SegmentedControlProps`
 - `SegmentedControlItemProps`
 - `SegmentedControlIndicatorProps`
-- `SegmentedControlItemHiddenInputProps`
+- `SegmentedControlItemInputProps`
 - `SegmentedControlSize`
 - `SegmentedControlVariant`
 
@@ -36,11 +36,11 @@ import {
 ```tsx
 <SegmentedControl name='view' defaultValue='week'>
   <SegmentedControlItem value='day'>
-    <SegmentedControlItemHiddenInput />
+    <SegmentedControlItemInput />
     Day
   </SegmentedControlItem>
   <SegmentedControlItem value='week'>
-    <SegmentedControlItemHiddenInput />
+    <SegmentedControlItemInput />
     Week
   </SegmentedControlItem>
   <SegmentedControlIndicator />
@@ -55,13 +55,13 @@ import {
 
 ## Optional Parts
 
-- `SegmentedControlItemHiddenInput`: native radio semantics and form participation
+- `SegmentedControlItemInput`: native radio semantics and form participation
 
 ## Composition Order
 
 1. `SegmentedControl`
 2. `SegmentedControlItem`
-3. `SegmentedControlItemHiddenInput`
+3. `SegmentedControlItemInput`
 4. visible item content
 5. `SegmentedControlIndicator`
 
@@ -92,5 +92,5 @@ import {
 ## Common Mistakes
 
 - Using segmented control for large option sets.
-- Omitting hidden inputs in native form flows.
+- Leaving out `SegmentedControlItemInput`, which is the actual radio control.
 - Letting labels vary too much in length and breaking segment balance.

@@ -10,7 +10,13 @@
     <CheckboxCardTitle>Starter</CheckboxCardTitle>
     <CheckboxCardDescription>For small projects.</CheckboxCardDescription>
   </CheckboxCardContent>
-  <CheckboxCardControl />
+  <CheckboxCardControl>
+    <CheckboxCardControlInput />
+    <CheckboxCardControlIndicator>
+      <CheckboxCardControlCheckedIcon />
+      <CheckboxCardControlIndeterminateIcon />
+    </CheckboxCardControlIndicator>
+  </CheckboxCardControl>
 </CheckboxCard>
 ```
 
@@ -19,25 +25,35 @@
 ### Controlled/Stateful: parent-managed checked state
 
 ```tsx
-<CheckboxCard checked={checked} onChangeChecked={setChecked}>
+<CheckboxCard>
   <CheckboxCardContent>
     <CheckboxCardTitle>Email notifications</CheckboxCardTitle>
   </CheckboxCardContent>
-  <CheckboxCardControl />
+  <CheckboxCardControl>
+    <CheckboxCardControlInput checked={checked} onChange={(e) => setChecked(e.currentTarget.checked)} />
+    <CheckboxCardControlIndicator>
+      <CheckboxCardControlCheckedIcon />
+      <CheckboxCardControlIndeterminateIcon />
+    </CheckboxCardControlIndicator>
+  </CheckboxCardControl>
 </CheckboxCard>
 ```
 
 ## Form/Integration
 
-### Form/Integration: hidden input inside the control
+### Form/Integration: named input inside the control
 
 ```tsx
-<CheckboxCard defaultChecked>
+<CheckboxCard>
   <CheckboxCardContent>
     <CheckboxCardTitle>Include archived projects</CheckboxCardTitle>
   </CheckboxCardContent>
   <CheckboxCardControl>
-    <CheckboxCardControlHiddenInput />
+    <CheckboxCardControlInput name='archived' defaultChecked />
+    <CheckboxCardControlIndicator>
+      <CheckboxCardControlCheckedIcon />
+      <CheckboxCardControlIndeterminateIcon />
+    </CheckboxCardControlIndicator>
   </CheckboxCardControl>
 </CheckboxCard>
 ```
@@ -52,7 +68,13 @@
     <CheckboxCardTitle>SMS alerts</CheckboxCardTitle>
     <CheckboxCardDescription>Critical incidents only.</CheckboxCardDescription>
   </CheckboxCardContent>
-  <CheckboxCardControl />
+  <CheckboxCardControl>
+    <CheckboxCardControlInput />
+    <CheckboxCardControlIndicator>
+      <CheckboxCardControlCheckedIcon />
+      <CheckboxCardControlIndeterminateIcon />
+    </CheckboxCardControlIndicator>
+  </CheckboxCardControl>
 </CheckboxCard>
 ```
 
@@ -61,12 +83,18 @@
 ### Disabled: blocked upgrade option
 
 ```tsx
-<CheckboxCard disabled>
+<CheckboxCard>
   <CheckboxCardContent>
     <CheckboxCardTitle>Premium reports</CheckboxCardTitle>
     <CheckboxCardDescription>Available on enterprise only.</CheckboxCardDescription>
   </CheckboxCardContent>
-  <CheckboxCardControl />
+  <CheckboxCardControl>
+    <CheckboxCardControlInput disabled />
+    <CheckboxCardControlIndicator>
+      <CheckboxCardControlCheckedIcon />
+      <CheckboxCardControlIndeterminateIcon />
+    </CheckboxCardControlIndicator>
+  </CheckboxCardControl>
 </CheckboxCard>
 ```
 
@@ -75,13 +103,17 @@
 ### Edge: indeterminate aggregate card
 
 ```tsx
-<CheckboxCard indeterminate>
+<CheckboxCard>
   <CheckboxCardContent>
     <CheckboxCardTitle>Regional offices</CheckboxCardTitle>
     <CheckboxCardDescription>Some offices are enabled.</CheckboxCardDescription>
   </CheckboxCardContent>
   <CheckboxCardControl>
-    <CheckboxCardControlIndeterminateIcon />
+    <CheckboxCardControlInput indeterminate />
+    <CheckboxCardControlIndicator>
+      <CheckboxCardControlCheckedIcon />
+      <CheckboxCardControlIndeterminateIcon />
+    </CheckboxCardControlIndicator>
   </CheckboxCardControl>
 </CheckboxCard>
 ```

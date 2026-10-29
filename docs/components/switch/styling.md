@@ -17,7 +17,7 @@
 
 - `Switch`: root track, spacing, size, and checked-state color model.
 - `SwitchIndicator`: thumb surface and animated position.
-- `SwitchHiddenInput`: semantic state carrier for checked, disabled, and focus behavior.
+- `SwitchInput`: semantic state carrier for checked, disabled, and focus behavior.
 
 ## State And Variant Interaction
 

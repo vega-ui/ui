@@ -2,7 +2,7 @@
 
 ## Overview
 
-`Switch` is a [compound component](../../glossary.md#compound-component) for one immediate binary setting, with a hidden input for semantics and an indicator for the visible thumb and track.
+`Switch` is a [compound component](../../glossary.md#compound-component) for one immediate binary setting, with a native input for semantics and state and an indicator for the visible thumb and track.
 
 ## Required Parts
 
@@ -16,14 +16,14 @@ Required. Renders the visible switch thumb and track surface.
 
 ## Optional Parts
 
-### `SwitchHiddenInput`
+### `SwitchInput`
 
 Recommended when the switch should participate in native forms and preserve native checked semantics.
 
 ## Composition Order
 
 1. `Switch`
-2. `SwitchHiddenInput`
+2. `SwitchInput`
 3. `SwitchIndicator`
 4. visible label text
 
@@ -32,7 +32,7 @@ Recommended when the switch should participate in native forms and preserve nati
 ```tsx
 <label style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
   <Switch>
-    <SwitchHiddenInput name='notifications' />
+    <SwitchInput name='notifications' />
     <SwitchIndicator />
   </Switch>
   Enable notifications
@@ -45,9 +45,9 @@ Recommended when the switch should participate in native forms and preserve nati
 
 Switches imply immediate binary state, not a deferred form selection model.
 
-### Missing hidden input in native forms
+### Missing `SwitchInput`
 
-The control may look correct but fail to participate in native submission.
+The control may look correct but has no focusable input and does not participate in native submission.
 
 ### Label describes the action instead of the state
 

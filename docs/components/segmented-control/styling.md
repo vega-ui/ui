@@ -16,7 +16,7 @@
 - `SegmentedControl`: root track, size model, and focus outline.
 - `SegmentedControlItem`: label sizing, padding, and active or disabled text treatment. The active segment is the one whose radio is checked — target it with `:has(input:checked)`.
 - `SegmentedControlIndicator`: animated selected-state surface.
-- `SegmentedControlItemHiddenInput`: semantic carrier for native radio-group behavior.
+- `SegmentedControlItemInput`: semantic carrier for native radio-group behavior.
 
 ## State And Variant Interaction
 

@@ -8,11 +8,11 @@ import { Text } from '../Text';
 import {
   Checkbox,
   CheckboxCheckedIcon,
-  CheckboxHiddenInput,
+  CheckboxInput,
   CheckboxIndeterminateIcon,
   CheckboxIndicator,
 } from '../Checkbox';
-import { Switch, SwitchHiddenInput, SwitchIndicator } from '../Switch';
+import { Switch, SwitchInput, SwitchIndicator } from '../Switch';
 import { Radio } from '../Radio';
 
 import { FieldsetHeader, FieldsetLegend } from './components';
@@ -221,21 +221,21 @@ export const PreferencesMixedControls: Story = {
           <Row>
             <Switch size='sm'>
               <SwitchIndicator />
-              <SwitchHiddenInput defaultChecked />
+              <SwitchInput defaultChecked />
             </Switch>
             <Label>Email notifications</Label>
           </Row>
           <Row>
             <Switch size='sm'>
               <SwitchIndicator />
-              <SwitchHiddenInput />
+              <SwitchInput />
             </Switch>
             <Label>Marketing updates</Label>
           </Row>
           <Row>
             <Switch size='sm'>
               <SwitchIndicator />
-              <SwitchHiddenInput defaultChecked />
+              <SwitchInput defaultChecked />
             </Switch>
             <Label>In-app notifications</Label>
           </Row>
@@ -349,7 +349,7 @@ export const MultipleGroupsOnPage: Story = {
         <Stack>
           <Row>
             <Checkbox defaultChecked>
-              <CheckboxHiddenInput id='two-factor' />
+              <CheckboxInput id='two-factor' />
               <CheckboxIndicator>
                 <CheckboxIndeterminateIcon />
                 <CheckboxCheckedIcon />
@@ -359,7 +359,7 @@ export const MultipleGroupsOnPage: Story = {
           </Row>
           <Row>
             <Checkbox>
-              <CheckboxHiddenInput id='password-required' />
+              <CheckboxInput id='password-required' />
               <CheckboxIndicator>
                 <CheckboxIndeterminateIcon />
                 <CheckboxCheckedIcon />

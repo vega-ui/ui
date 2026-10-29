@@ -4,7 +4,7 @@ import { cleanup, render, type RenderResult } from '@testing-library/react';
 import { userEvent } from 'vitest/browser';
 
 import { Switch } from '../Switch';
-import { SwitchHiddenInput, SwitchIndicator } from '../components';
+import { SwitchInput, SwitchIndicator } from '../components';
 import '../../../../tokens/src/index.css';
 
 afterEach(cleanup);
@@ -23,12 +23,12 @@ const VALUE = 'yes';
 
 const SwitchTest: FC<
   ComponentProps<typeof Switch> & {
-  inputProps?: ComponentProps<typeof SwitchHiddenInput>;
+  inputProps?: ComponentProps<typeof SwitchInput>;
 }
 > = ({ inputProps, ...props }) => {
   return (
     <Switch data-testid={TESTID_SWITCH} {...props}>
-      <SwitchHiddenInput data-testid={TESTID_INPUT} {...inputProps} />
+      <SwitchInput data-testid={TESTID_INPUT} {...inputProps} />
       <SwitchIndicator data-testid={TESTID_INDICATOR} />
     </Switch>
   );

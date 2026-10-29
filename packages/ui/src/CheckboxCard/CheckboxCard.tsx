@@ -1,15 +1,12 @@
 'use client';
 import { FC } from 'react';
 import { Card, CardProps } from '../Card';
-import { CheckboxProps } from '../Checkbox';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
 import { CheckboxCardProvider } from './contexts';
 import { CheckboxCardOrientation, CheckboxVariant } from './types';
 
-export interface CheckboxCardProps extends
-  Omit<CardProps, 'appearance'>,
-  Pick<CheckboxProps, 'onChangeChecked' | 'checked' | 'defaultChecked' | 'indeterminate' | 'disabled'> {
+export interface CheckboxCardProps extends Omit<CardProps, 'appearance'> {
   /**
    * Defines the layout direction of the card content.
    */
@@ -28,24 +25,11 @@ export const CheckboxCard: FC<CheckboxCardProps> = ({
   size = 'md',
   orientation = 'vertical',
   className,
-  onChangeChecked,
-  checked,
-  defaultChecked,
-  indeterminate,
-  disabled,
   variant = 'primary',
   ...props
 }) => {
   return (
-    <CheckboxCardProvider
-      checked={checked}
-      onChangeChecked={onChangeChecked}
-      defaultChecked={defaultChecked}
-      disabled={disabled}
-      indeterminate={indeterminate}
-      variant={variant}
-      size={size}
-    >
+    <CheckboxCardProvider variant={variant} size={size}>
       <Card
         data-orientation={orientation}
         data-variant={variant}

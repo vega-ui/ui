@@ -9,7 +9,7 @@ When to use:
 Composition notes:
 
 - Keep each checkbox and its text in one label row.
-- Use hidden inputs when the form submits natively.
+- Give each `CheckboxInput` a `name` when the form submits natively.
 
 Trade-offs:
 
@@ -18,7 +18,7 @@ Trade-offs:
 
 ```tsx
 <Checkbox>
-  <CheckboxHiddenInput />
+  <CheckboxInput />
   <CheckboxIndicator>
     <CheckboxCheckedIcon />
     <CheckboxIndeterminateIcon />
@@ -44,8 +44,8 @@ Trade-offs:
 - Easy to misuse if the data model does not really support partial selection.
 
 ```tsx
-<Checkbox indeterminate>
-  <CheckboxHiddenInput />
+<Checkbox>
+  <CheckboxInput indeterminate />
   <CheckboxIndicator>
     <CheckboxCheckedIcon />
     <CheckboxIndeterminateIcon />
@@ -72,7 +72,7 @@ Trade-offs:
 
 ```tsx
 <Checkbox>
-  <CheckboxHiddenInput />
+  <CheckboxInput />
   <CheckboxIndicator>
     <CheckboxCheckedIcon />
     <CheckboxIndeterminateIcon />

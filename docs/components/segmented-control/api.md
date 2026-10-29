@@ -20,14 +20,14 @@
 
 - `SegmentedControlItem`: visible selectable segment.
 - `SegmentedControlIndicator`: animated selected-state surface.
-- `SegmentedControlItemHiddenInput`: native radio input for each item.
+- `SegmentedControlItemInput`: native radio input for each item.
 
 ## Types
 
 - `SegmentedControlProps`
 - `SegmentedControlItemProps`
 - `SegmentedControlIndicatorProps`
-- `SegmentedControlItemHiddenInputProps`
+- `SegmentedControlItemInputProps`
 - `SegmentedControlSize`
 - `SegmentedControlVariant`
 

@@ -1,4 +1,4 @@
-import { ComponentProps, CSSProperties, FC, FormEvent } from 'react';
+import { ChangeEvent, ComponentProps, CSSProperties, FC, FormEvent } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi, type Mock } from 'vitest';
 import { userEvent } from 'vitest/browser';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
@@ -6,7 +6,7 @@ import { cleanup, render, type RenderResult } from '@testing-library/react';
 import { Checkbox } from '../Checkbox';
 import {
   CheckboxCheckedIcon,
-  CheckboxHiddenInput,
+  CheckboxInput,
   CheckboxIndicator,
   CheckboxIndeterminateIcon,
 } from '../components';
@@ -17,7 +17,7 @@ afterEach(cleanup);
 const SIZES = ['sm', 'md', 'lg'] as const;
 
 const TESTID_ROOT = 'checkbox';
-const TESTID_INPUT = 'hidden-input';
+const TESTID_INPUT = 'input';
 const TESTID_INDICATOR = 'indicator';
 const TESTID_CHECKED_ICON = 'checked-icon';
 const TESTID_INDETERMINATE_ICON = 'indeterminate-icon';
@@ -30,17 +30,34 @@ const VARIANT = 'variant';
 const TITLE = 'checkbox-title';
 const ARIA_LABEL = 'Agree';
 
-const CheckboxTest: FC<ComponentProps<typeof Checkbox> & { name?: string; value?: string }> = ({
+type CheckboxTestProps = Omit<ComponentProps<typeof Checkbox>, 'onChange'> &
+  Pick<ComponentProps<typeof CheckboxInput>, 'name' | 'value' | 'checked' | 'defaultChecked' | 'indeterminate' | 'disabled' | 'onChange'>
+
+const CheckboxTest: FC<CheckboxTestProps> = ({
  children,
  name = CHECKBOX_NAME,
  value = CHECKBOX_VALUE,
+ checked,
+ defaultChecked,
+ indeterminate,
+ disabled,
+ onChange,
  ...props
 }) => {
   return (
     <Checkbox data-testid={TESTID_ROOT} style={{ '--checkbox-size': '16px' } as CSSProperties} {...props}>
       {children ?? (
         <>
-          <CheckboxHiddenInput data-testid={TESTID_INPUT} name={name} value={value} />
+          <CheckboxInput
+            data-testid={TESTID_INPUT}
+            name={name}
+            value={value}
+            checked={checked}
+            defaultChecked={defaultChecked}
+            indeterminate={indeterminate}
+            disabled={disabled}
+            onChange={onChange}
+          />
           <CheckboxIndicator data-testid={TESTID_INDICATOR}>
             <CheckboxCheckedIcon data-testid={TESTID_CHECKED_ICON} />
             <CheckboxIndeterminateIcon data-testid={TESTID_INDETERMINATE_ICON} />
@@ -127,20 +144,20 @@ describe('Checkbox', () => {
     
     describe('controlled', () => {
       let r: RenderResult;
-      let onChangeChecked: Mock;
-      
+      let onChange: Mock;
+
       beforeEach(() => {
-        onChangeChecked = vi.fn();
-        r = render(<CheckboxTest checked onChangeChecked={onChangeChecked} />);
+        onChange = vi.fn((e: ChangeEvent<HTMLInputElement>) => e.currentTarget.checked);
+        r = render(<CheckboxTest checked onChange={onChange} />);
       });
-      
+
       it('renders checked from prop', async () => {
         expect(getInput(r)).toBeChecked()
       });
-      
-      it('click calls onChangeChecked with next value', async () => {
+
+      it('click calls onChange with the next checked value', async () => {
         await userEvent.click(getRoot(r));
-        expect(onChangeChecked).toHaveBeenLastCalledWith(false);
+        expect(onChange).toHaveLastReturnedWith(false);
       });
       
       it('does not change UI without prop update', async () => {
@@ -149,7 +166,7 @@ describe('Checkbox', () => {
       });
       
       it('updates UI when prop changes', async () => {
-        r.rerender(<CheckboxTest checked={false} onChangeChecked={onChangeChecked} />);
+        r.rerender(<CheckboxTest checked={false} onChange={onChange} />);
         expect(getInput(r)).not.toBeChecked()
       });
     });
@@ -160,7 +177,7 @@ describe('Checkbox', () => {
         
         const r = render(
           <CheckboxTest>
-            <CheckboxHiddenInput data-testid={TESTID_INPUT} name={CHECKBOX_NAME} value={CHECKBOX_VALUE} />
+            <CheckboxInput data-testid={TESTID_INPUT} name={CHECKBOX_NAME} value={CHECKBOX_VALUE} />
             <CheckboxIndicator data-testid={TESTID_INDICATOR}>
               <CheckboxCheckedIcon data-testid={TESTID_CHECKED_ICON}>
                 <svg data-testid={CUSTOM_CHECKED} />
@@ -178,7 +195,7 @@ describe('Checkbox', () => {
         
         const r = render(
           <CheckboxTest>
-            <CheckboxHiddenInput data-testid={TESTID_INPUT} name={CHECKBOX_NAME} value={CHECKBOX_VALUE} />
+            <CheckboxInput data-testid={TESTID_INPUT} name={CHECKBOX_NAME} value={CHECKBOX_VALUE} />
             <CheckboxIndicator data-testid={TESTID_INDICATOR}>
               <CheckboxCheckedIcon data-testid={TESTID_CHECKED_ICON} />
               <CheckboxIndeterminateIcon data-testid={TESTID_INDETERMINATE_ICON}>

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { SegmentedControlItem } from './SegmentedControlItem';
-import { SegmentedControlItemHiddenInput } from '../SegmentedControlItemHiddenInput';
+import { SegmentedControlItemInput } from '../SegmentedControlItemInput';
 import { SegmentedControl } from '../../SegmentedControl';
 
 const meta = {
@@ -42,7 +42,7 @@ export const Default: Story = {
   args: {
     value: 1,
     children: [
-      <SegmentedControlItemHiddenInput key={0} />,
+      <SegmentedControlItemInput key={0} />,
       'Label'
     ]
   },

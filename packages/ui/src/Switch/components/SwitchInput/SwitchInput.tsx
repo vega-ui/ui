@@ -2,7 +2,7 @@ import { FC, InputHTMLAttributes, Ref } from 'react';
 import { VisuallyHidden } from '../../../VisuallyHidden';
 import { useSwitchContext } from '../../contexts';
 
-export interface SwitchHiddenInputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface SwitchInputProps extends InputHTMLAttributes<HTMLInputElement> {
   /**
    * Ref forwarded to the underlying native `<input>` element
    */
@@ -10,7 +10,7 @@ export interface SwitchHiddenInputProps extends InputHTMLAttributes<HTMLInputEle
 }
 
 /**
- * SwitchHiddenInput
+ * SwitchInput
  *
  * A visually hidden native `<input type="checkbox">` that provides
  * form integration and accessibility for the `Switch` component.
@@ -21,7 +21,7 @@ export interface SwitchHiddenInputProps extends InputHTMLAttributes<HTMLInputEle
  *   screen reader support
  * - Separates visual presentation (custom switch UI) from semantics
  */
-export const SwitchHiddenInput: FC<SwitchHiddenInputProps> = ({ ref, ...props }) => {
+export const SwitchInput: FC<SwitchInputProps> = ({ ref, ...props }) => {
   const { size } = useSwitchContext()
   
   return (

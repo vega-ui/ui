@@ -16,13 +16,13 @@ import {
   CheckboxCardContent,
   CheckboxCardControl,
   CheckboxCardControlCheckedIcon,
-  CheckboxCardControlHiddenInput,
+  CheckboxCardControlInput,
   CheckboxCardControlIndeterminateIcon,
   CheckboxCardDescription,
   CheckboxCardTitle,
   type CheckboxCardContentProps,
   type CheckboxCardControlCheckedIconProps,
-  type CheckboxCardControlHiddenInputProps,
+  type CheckboxCardControlInputProps,
   type CheckboxCardControlIndeterminateIconProps,
   type CheckboxCardControlProps,
   type CheckboxCardDescriptionProps,
@@ -38,7 +38,7 @@ import {
 - `CheckboxCardTitleProps`
 - `CheckboxCardDescriptionProps`
 - `CheckboxCardControlProps`
-- `CheckboxCardControlHiddenInputProps`
+- `CheckboxCardControlInputProps`
 - `CheckboxCardControlCheckedIconProps`
 - `CheckboxCardControlIndeterminateIconProps`
 
@@ -64,7 +64,7 @@ import {
 
 - `CheckboxCardTitle`
 - `CheckboxCardDescription`
-- `CheckboxCardControlHiddenInput`
+- `CheckboxCardControlInput`
 - `CheckboxCardControlCheckedIcon`
 - `CheckboxCardControlIndeterminateIcon`
 
@@ -74,7 +74,7 @@ import {
 2. `CheckboxCardContent`
 3. `CheckboxCardTitle` and `CheckboxCardDescription`
 4. `CheckboxCardControl`
-5. optional hidden input and icons inside the control
+5. `CheckboxCardControlInput` and icons inside the control
 
 ## Variants
 
@@ -96,7 +96,7 @@ import {
 ## Edge Cases
 
 - Ensure the card communicates checked and disabled states clearly across the whole surface.
-- Use the hidden input control if the card belongs to a form.
+- Give `CheckboxCardControlInput` a `name` if the card belongs to a form.
 - Long descriptions should not obscure the main selection affordance.
 - If the group is actually exclusive, a radio-family or segmented control usually communicates intent better than checkbox cards.
 

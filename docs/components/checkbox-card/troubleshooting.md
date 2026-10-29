@@ -27,7 +27,7 @@ The checked state changes visually, but the expected value is missing from `Form
 
 ### Likely Cause
 
-`CheckboxCardControlHiddenInput` is missing.
+`CheckboxCardControlInput` is missing.
 
 ### How To Verify
 
@@ -36,7 +36,7 @@ The checked state changes visually, but the expected value is missing from `Form
 
 ### Fix
 
-Render `CheckboxCardControlHiddenInput` inside the control region.
+Render `CheckboxCardControlInput` inside the control region.
 
 ## Indeterminate State Never Appears
 

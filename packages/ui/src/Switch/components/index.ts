@@ -1,2 +1,2 @@
 export * from './SwitchIndicator'
-export * from './SwitchHiddenInput'
+export * from './SwitchInput'

@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { SegmentedControlIndicator } from './SegmentedControlIndicator';
 import { SegmentedControl } from '../../SegmentedControl';
 import { SegmentedControlItem } from '../SegmentedControlItem';
-import { SegmentedControlItemHiddenInput } from '../SegmentedControlItemHiddenInput';
+import { SegmentedControlItemInput } from '../SegmentedControlItemInput';
 
 const meta = {
   title: 'Form/Selectors/SegmentedControl/SegmentedControlIndicator',
@@ -22,11 +22,11 @@ const meta = {
       <SegmentedControl name='default'>
         <Story />
         <SegmentedControlItem value='1'>
-          <SegmentedControlItemHiddenInput />
+          <SegmentedControlItemInput />
           Label
         </SegmentedControlItem>
         <SegmentedControlItem value='2'>
-          <SegmentedControlItemHiddenInput />
+          <SegmentedControlItemInput />
           Label
         </SegmentedControlItem>
       </SegmentedControl>
