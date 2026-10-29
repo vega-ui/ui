@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
 
 import { Meter } from '../Meter';
+import { MeterTrack } from '../components';
 import '../../../../tokens/src/index.css';
 
 afterEach(cleanup);
@@ -27,6 +28,15 @@ const MeterTest: FC<ComponentProps<typeof Meter>> = (props) => {
 };
 
 const getMeter = (r: RenderResult) => r.getByTestId(TESTID_METER);
+
+const getFill = (props: ComponentProps<typeof Meter>) => {
+  const r = render(
+    <Meter data-testid={TESTID_METER} style={{ width: 200 }} {...props}>
+      <MeterTrack data-testid='track' />
+    </Meter>
+  );
+  return r.getByTestId('track').getBoundingClientRect().width / getMeter(r).getBoundingClientRect().width;
+};
 
 describe('Meter', () => {
   describe('Critical User Paths', () => {
@@ -120,6 +130,18 @@ describe('Meter', () => {
       await expect.element(getMeter(r)).toHaveAttribute('aria-valuenow', '999');
     });
     
+    it('fills relative to min and max', () => {
+      expect(getFill({ value: 15, min: 10, max: 20 })).toBeCloseTo(0.5);
+    });
+
+    it('clamps the fill to max', () => {
+      expect(getFill({ value: 30, min: 10, max: 20 })).toBeCloseTo(1);
+    });
+
+    it('clamps the fill to min', () => {
+      expect(getFill({ value: 0, min: 10, max: 20 })).toBeCloseTo(0);
+    });
+
     it('supports min greater than max', async () => {
       const r = render(<MeterTest value={5} min={10} max={1} />);
       

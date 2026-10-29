@@ -19,7 +19,7 @@ export interface MeterProps extends HTMLAttributes<HTMLDivElement> {
 
   /**
    * Maximum possible value of the meter.
-   * Default is 100.
+   * Default is 1.
    */
   max?: number
 
@@ -82,7 +82,7 @@ export const Meter: FC<MeterProps> = ({
   ...props
 }) => {
   const state = getMeterState({ value, optimum, low, high, min, max })
-  const mergedStyle = { ...style, '--meter-value': value, '--meter-max': max } as CSSProperties
+  const mergedStyle = { ...style, '--meter-value': value, '--meter-min': min, '--meter-max': max } as CSSProperties
 
   return (
     <div

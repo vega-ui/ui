@@ -2,6 +2,7 @@
     --meter-height: var(--spacing-2);
     --meter-br-ratio: 1;
     --meter-value: 0;
+    --meter-min: 0;
     --meter-max: 1;
 
     --meter-track-optimum-color: var(--color-green-500);
