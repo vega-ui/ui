@@ -17,8 +17,8 @@
 ```tsx
 const [value, setValue] = useState('');
 
-<TimeField>
-  <TimeFieldInput value={value} onChange={(e) => setValue(e.currentTarget.value)} />
+<TimeField value={value} onChangeValue={setValue}>
+  <TimeFieldInput />
 </TimeField>
 ```
 
@@ -40,7 +40,7 @@ const [value, setValue] = useState('');
 ### Layout/Overlay: seconds-precision schedule rule
 
 ```tsx
-<TimeField format='HH:MM:SS'>
+<TimeField format='HH:mm:ss'>
   <TimeFieldInput placeholder='HH:MM:SS' />
 </TimeField>
 ```

@@ -38,7 +38,7 @@ The root is a `TextField` wrapper with time-specific context only.
 ### Seconds precision field
 
 ```tsx
-<TimeField format='HH:MM:SS'>
+<TimeField format='HH:mm:ss'>
   <TimeFieldInput placeholder='HH:MM:SS' />
 </TimeField>
 ```
