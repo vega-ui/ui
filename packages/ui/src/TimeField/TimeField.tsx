@@ -1,44 +1,54 @@
-import { FC } from 'react';
+import { FC, useRef, useState } from 'react';
 import { TextField, TextFieldProps } from '../TextField';
 import { TimeFieldProvider } from './contexts';
+import { useControlledState, useFormReset } from '@vega-ui/hooks';
+import { formatTemplateTime, getTimeTemplate, isISOTime, parseTemplateTime } from '@vega-ui/utils';
 
-export interface TimeFieldProps extends TextFieldProps {
+export interface TimeFieldProps extends Omit<TextFieldProps, 'defaultValue'> {
   /**
-   * Time format used for input masking and parsing.
-   * Defines which segments are shown and their order.
+   * Controlled time as a `HH:mm` string (`HH:mm:ss` when the format has
+   * seconds), `''` while the field has no complete value.
+   */
+  value?: string
+
+  /**
+   * Initial time for uncontrolled usage, like `value`.
+   * Defaults to `''`, an empty field.
+   */
+  defaultValue?: string
+
+  /**
+   * Called with the time when it changes, `''` when the text is emptied or
+   * incomplete.
+   */
+  onChangeValue?(value: string): void
+
+  /**
+   * Time format used for input masking and parsing, in the notation of
+   * Unicode date patterns like `DateTimeField.timeFormat`.
    *
    * Examples:
-   * - "HH:MM"
-   * - "HH:MM:SS"
+   * - "HH:mm" — hours and minutes.
+   * - "HH:mm:ss" — hours, minutes, and seconds.
    */
-  format?: 'HH:MM' | 'HH:MM:SS'
-  
+  format?: 'HH:mm' | 'HH:mm:ss'
+
   /**
-   * Minimum allowed time.
-   * Times earlier than this value cannot be selected
-   * or will be clamped/rejected during input parsing.
-   *
-   * Format must match the chosen `format`:
-   * - "HH:MM"
-   * - "HH:MM:SS"
+   * Earliest allowed time as a `HH:mm` or `HH:mm:ss` string. Like a native
+   * `<input type="time">`, a complete time earlier than `min` is clamped to it.
    */
-  min?: `${string}:${string}` | `${string}:${string}:${string}`
-  
+  min?: string
+
   /**
-   * Maximum allowed time.
-   * Times later than this value cannot be selected
-   * or will be clamped/rejected during input parsing.
-   *
-   * Format must match the chosen `format`:
-   * - "HH:MM"
-   * - "HH:MM:SS"
+   * Latest allowed time as a `HH:mm` or `HH:mm:ss` string. Like a native
+   * `<input type="time">`, a complete time later than `max` is clamped to it.
    */
-  max?: `${string}:${string}` | `${string}:${string}:${string}`
-  
+  max?: string
+
   /**
-   * Step increment for adjusting time values in the input.
-   * Defines how many minutes (or seconds if format is "HH:MM:SS") the
-   * input should increase or decrease when using arrow keys or similar controls.
+   * Step of ArrowUp / ArrowDown on the minutes or seconds under the caret,
+   * wrapping around the segment's range. Like a native `<input type="time">`
+   * with `step`, the hours always move by one. `0` turns arrow stepping off.
    *
    * Defaults to `1`.
    */
@@ -46,27 +56,59 @@ export interface TimeFieldProps extends TextFieldProps {
 }
 
 /**
- * TimeField — a high-level time input component that integrates a masked
- * text input with a shared context for time constraints and formatting.
+ * TimeField — a masked time input with its value on the root.
  *
- * Purpose:
- * Provides a user-friendly way to enter times either by typing in a structured
- * format (`HH:MM` or `HH:MM:SS`) while enforcing optional minimum and maximum
- * time boundaries, and optional step increments.
- *
- * Features:
- * - Supports 24-hour time formats: `"HH:MM"` and `"HH:MM:SS"`.
- * - Optional `min` and `max` properties to restrict selectable times.
- *   - Accepts strings in the form `"HH:MM"` or `"HH:MM:SS"`.
- * - Optional `step` property to define minute/second increments.
+ * The time is a `HH:mm` or `HH:mm:ss` string reported by `onChangeValue`;
+ * the input shows it by `format`. A complete time is clamped to `min` and
+ * `max`, and resetting the surrounding form restores `defaultValue`.
  */
-export const TimeField: FC<TimeFieldProps> = ({ min, max, format = 'HH:MM', step = 1, ...props }) => {
+export const TimeField: FC<TimeFieldProps> = ({
+  format = 'HH:mm',
+  min: _min,
+  max: _max,
+  step = 1,
+  value,
+  defaultValue = '',
+  onChangeValue,
+  ...props
+}) => {
+  const min = isISOTime(_min) ? _min : undefined
+  const max = isISOTime(_max) ? _max : undefined
+  const [time, setTime] = useControlledState(value, defaultValue, onChangeValue)
+  const [text, setText] = useState('')
+
+  const inputInnerRef = useRef<HTMLInputElement>(null)
+
+  const template = getTimeTemplate(format)
+
+  const getTime = (text: string) => parseTemplateTime(text, template) ?? ''
+  const getText = (time: string) => time ? formatTemplateTime(time, template) : ''
+
+  const shownText = getTime(text) === time ? text : getText(time)
+
+  const changeText = (text: string) => {
+    setText(text)
+
+    const nextTime = getTime(text)
+    if (nextTime !== time) setTime(nextTime)
+  }
+
+  useFormReset(inputInnerRef, () => {
+    if (value !== undefined) return
+
+    setText(getText(defaultValue))
+    setTime(defaultValue)
+  })
+
   return (
     <TimeFieldProvider
-      max={max}
+      template={template}
       min={min}
-      format={format}
+      max={max}
       step={step}
+      text={shownText}
+      changeText={changeText}
+      inputRef={inputInnerRef}
     >
       <TextField {...props} />
     </TimeFieldProvider>

@@ -30,7 +30,7 @@ When to use:
 
 Composition notes:
 
-- switch `format` to `HH:MM:SS`
+- switch `format` to `HH:mm:ss`
 - keep bounds in the same shape
 
 Trade-offs:
@@ -39,7 +39,7 @@ Trade-offs:
 - more cognitively demanding than minute-level entry
 
 ```tsx
-<TimeField format='HH:MM:SS'>
+<TimeField format='HH:mm:ss'>
   <TimeFieldInput placeholder='HH:MM:SS' />
 </TimeField>
 ```

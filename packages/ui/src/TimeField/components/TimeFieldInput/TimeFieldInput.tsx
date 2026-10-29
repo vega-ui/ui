@@ -1,49 +1,35 @@
-import { FC, useMemo } from 'react';
+import { FC, FormEvent, useMemo } from 'react';
 import { TextFieldInput, TextFieldInputProps } from '../../../TextField';
 import { useMaskito } from '@maskito/react';
-import { maskitoTimeOptionsGenerator } from '@maskito/kit';
+import { mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
 import { useTimeFieldContext } from '../../contexts';
-import { mergeRefs } from '@vega-ui/utils';
+import { getTimeMaskOptions } from '../../helpers';
 
-export type TimeFieldInputProps = TextFieldInputProps
+export type TimeFieldInputProps = Omit<TextFieldInputProps, 'value' | 'defaultValue'>
 
 /**
- * TimeFieldInput — the text input component for TimeField that supports
- * masked time entry.
+ * TimeFieldInput — the masked text input of a TimeField.
  *
- * Purpose:
- * Provides a controlled text input for entering times in `"HH:MM"` or
- * `"HH:MM:SS"` format, with optional minimum, maximum, and step constraints.
+ * The time comes from `TimeField`; `onChange` and `onInput` still report
+ * each edit of the text. When `min` or `max` change, the text is normalized
+ * again like typing does, dispatching `input`.
  */
-export const TimeFieldInput: FC<TimeFieldInputProps> = ({ ref, ...props }) => {
-  const { format, min, max, step } = useTimeFieldContext()
-  
-  const parseTimeString = (time?: string) => {
-    if (!time) return undefined
-    const parts = time.split(':').map(Number)
-    return {
-      hours: parts[0],
-      minutes: parts[1],
-      seconds: parts[2] ?? 0
-    }
-  }
-  
-  const options = useMemo(() => {
-    return maskitoTimeOptionsGenerator({
-      mode: format,
-      timeSegmentMinValues: parseTimeString(min),
-      timeSegmentMaxValues: parseTimeString(max),
-      step,
-    })
-  }, [format, min, max, step]);
-  
-  const innerInputRef = useMaskito({ options });
-  
+export const TimeFieldInput: FC<TimeFieldInputProps> = ({ ref, onInput, ...props }) => {
+  const { template, min, max, step, text, changeText, inputRef } = useTimeFieldContext()
+
+  const options = useMemo(() => getTimeMaskOptions({ template, min, max, step }), [template, min, max, step]);
+
+  const maskitoRef = useMaskito({ options });
+
+  const onTimeInput = (event: FormEvent<HTMLInputElement>) => changeText?.(event.currentTarget.value)
+
   return (
     <TextFieldInput
       type='text'
       inputMode='numeric'
-      ref={mergeRefs([innerInputRef, ref])}
+      value={text}
+      onInput={mergeEventHandlers(onTimeInput, onInput)}
+      ref={mergeRefs([maskitoRef, ref, inputRef])}
       {...props}
     />
   )

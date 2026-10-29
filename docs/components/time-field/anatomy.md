@@ -26,7 +26,7 @@ There are no extra public parts beyond the input.
 ## Valid Composition Patterns
 
 ```tsx
-<TimeField format='HH:MM:SS' min='08:00:00' max='18:00:00'>
+<TimeField format='HH:mm:ss' min='08:00:00' max='18:00:00'>
   <TimeFieldInput placeholder='HH:MM:SS' />
 </TimeField>
 ```
@@ -35,7 +35,7 @@ There are no extra public parts beyond the input.
 
 ### Bounds that do not match the format
 
-Example: `format='HH:MM'` with a seconds-based `max`.
+Example: `format='HH:mm'` with a seconds-based `max`.
 
 ### Wrapper without `TimeFieldInput`
 

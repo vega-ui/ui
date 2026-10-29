@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { useState } from 'react';
 
 import { TimeField } from './TimeField';
 import { TimeFieldInput } from './components';
@@ -23,7 +24,7 @@ export const Default: Story = {
 export const Seconds: Story = {
   args: {
     children: <TimeFieldInput placeholder='HH:MM:SS' />,
-    format: 'HH:MM:SS'
+    format: 'HH:mm:ss'
   },
 };
 
@@ -38,6 +39,22 @@ export const Max: Story = {
   args: {
     children: <TimeFieldInput placeholder='HH:MM (max: 19:00)' />,
     max: '19:00'
+  },
+};
+
+export const Controlled: Story = {
+  name: 'Controlled value',
+  render: (props) => {
+    const [value, setValue] = useState('09:30');
+
+    return (
+      <div style={{ display: 'grid', gap: 8 }}>
+        <TimeField {...props} value={value} onChangeValue={setValue}>
+          <TimeFieldInput placeholder='HH:MM' />
+        </TimeField>
+        <span>Value: {value || '—'}</span>
+      </div>
+    );
   },
 };
 

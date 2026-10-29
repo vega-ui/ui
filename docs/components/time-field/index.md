@@ -48,9 +48,9 @@ import {
 
 ## Variants
 
-- Format: `HH:MM` or `HH:MM:SS`
+- Format: `HH:mm` or `HH:mm:ss`
 - Bounds: optional `min` and `max`
-- State: controlled or uncontrolled text value, disabled through input props
+- State: controlled or uncontrolled `value` on the root, disabled through input props
 
 ## Related Docs
 

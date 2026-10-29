@@ -20,7 +20,7 @@
 
 ## Form Semantics
 
-- Put `name`, `required`, and value props on `TimeFieldInput`.
+- Put `name` and `required` on `TimeFieldInput`, and `value` or `defaultValue` on `TimeField`.
 - Keep bounds and format aligned with the submitted value format.
 
 ## Accessibility Risks
