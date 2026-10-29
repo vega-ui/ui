@@ -297,6 +297,24 @@ describe('Accordion', () => {
         await expect.element(r.getByText('Content One')).not.toBeVisible();
       });
     });
+
+    it('does not duplicate an already opened value (multiple)', async () => {
+      const onChangeOpened = vi.fn();
+      const r = render(
+        <AccordionTest multiple defaultOpened={['One']} onChangeOpened={onChangeOpened}>
+          <AccordionItem value='One' contentId='content-one' open={false}>
+            <AccordionHeader>
+              <AccordionTrigger>Trigger One</AccordionTrigger>
+            </AccordionHeader>
+            <AccordionContent>Content One</AccordionContent>
+          </AccordionItem>
+        </AccordionTest>,
+      );
+
+      await userEvent.click(r.getByText('Trigger One'));
+
+      expect(onChangeOpened).not.toHaveBeenCalledWith(['One', 'One']);
+    });
   });
   
   describe('Accessibility', () => {
