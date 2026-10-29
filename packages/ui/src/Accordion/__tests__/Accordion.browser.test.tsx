@@ -210,6 +210,31 @@ describe('Accordion', () => {
   });
   
   describe('Edge Cases', () => {
+    it('passes html attributes and onClick of the trigger to the button', async () => {
+      const onClick = vi.fn();
+      const r = render(
+        <Accordion>
+          <AccordionItem value='one'>
+            <AccordionHeader>
+              <AccordionTrigger id='trigger' aria-describedby='hint' data-testid='trigger' onClick={onClick}>
+                Trigger
+              </AccordionTrigger>
+            </AccordionHeader>
+            <AccordionContent>Content</AccordionContent>
+          </AccordionItem>
+        </Accordion>
+      );
+
+      const trigger = r.getByTestId('trigger');
+      await expect.element(trigger).toHaveAttribute('id', 'trigger');
+      await expect.element(trigger).toHaveAttribute('aria-describedby', 'hint');
+
+      await userEvent.click(trigger);
+
+      expect(onClick).toHaveBeenCalledTimes(1);
+      await expect.element(trigger).toHaveAttribute('aria-expanded', 'true');
+    });
+
     it('grows with every size', () => {
       const r = render(
         <>
