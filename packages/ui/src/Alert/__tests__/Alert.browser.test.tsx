@@ -199,6 +199,12 @@ describe('Alert', () => {
   
   describe('Accessibility', () => {
     describe('aria', () => {
+      it('is not a live region by default', async () => {
+        const r = render(<AlertTest variant='error' />);
+        await expect.element(getRoot(r)).not.toHaveAttribute('role');
+        await expect.element(getRoot(r)).not.toHaveAttribute('aria-live');
+      });
+
       it('supports aria props passthrough', async () => {
         const r = render(<AlertTest role='status' aria-live='polite' />);
         await expect.element(getRoot(r)).toHaveAttribute('role', 'status');

@@ -36,6 +36,24 @@ visible && (
 )
 ```
 
+### Controlled/Stateful: announce the result of an action
+
+Keep a `role='status'` container mounted and render the alert inside it when an action finishes.
+
+```tsx
+const [message, setMessage] = useState('');
+
+<div role='status'>
+  {message && (
+    <Alert variant='success'>
+      <AlertMain>
+        <AlertContent>{message}</AlertContent>
+      </AlertMain>
+    </Alert>
+  )}
+</div>
+```
+
 ## Form/Integration
 
 ### Form/Integration: warning alert in settings
@@ -66,7 +84,7 @@ Use this when a modal flow still needs compact inline feedback.
   <DialogPortal>
     <DialogBackdrop>
       <DialogContent>
-        <Alert variant='error' appearance='surface'>
+        <Alert variant='error' appearance='surface' role='alert'>
           <AlertIcon />
           <AlertMain>
             <AlertTitle>Payment failed</AlertTitle>
