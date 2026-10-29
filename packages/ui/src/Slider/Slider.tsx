@@ -149,7 +149,7 @@ export const Slider = <V extends number | number[] = number>({
         ref={mergeRefs([rootRef, ref])}
         style={{
           '--slider-range-start': values.length > 1 ? getPosition(values[0], min, max) : 0,
-          '--slider-range-end': getPosition(values.at(-1) ?? min, min, max),
+          '--slider-range-end': getPosition(values[values.length - 1] ?? min, min, max),
           ...cssStyle,
         } as CSSProperties}
         {...props}
