@@ -76,6 +76,11 @@ describe('Button', () => {
       await expect.element(r.getByTestId('link')).not.toHaveAttribute('type');
     });
 
+    it('does not set disabled on the child element with asChild', async () => {
+      const r = render(<Button asChild disabled><a data-testid='link'>Link</a></Button>);
+      await expect.element(r.getByTestId('link')).not.toHaveAttribute('disabled');
+    });
+
     it('renders without children (no crash)', async () => {
       const r = render(<Button />);
       await expect.element(r.getByRole('button')).toBeInTheDocument();

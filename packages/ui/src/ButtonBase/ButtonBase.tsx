@@ -18,6 +18,8 @@ export interface ButtonBaseProps extends ButtonHTMLAttributes<HTMLButtonElement>
   /**
    * Disables the button when true.
    * Prevents user interaction and applies a visually disabled state.
+   * Not applied with `asChild`: the child element owns its disabled state,
+   * for example, `aria-disabled` or a link without `href`.
    */
   disabled?: boolean
 
@@ -60,7 +62,7 @@ export const ButtonBase: FC<ButtonBaseProps> = ({
   return (
     <Element
       {...props}
-      disabled={disabled}
+      disabled={asChild ? undefined : disabled}
       data-variant={variant}
       data-appearance={appearance}
       ref={ref}

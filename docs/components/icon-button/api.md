@@ -23,4 +23,5 @@
 
 - `IconButton` is mostly stateless from the component API perspective.
 - Disabled and icon-state behavior are usually driven by the consumer.
+- `disabled` is not applied with `asChild`, because the child element owns its semantics. A disabled link is an `<a>` without `href`; add `aria-disabled="true"` to get the disabled styling and announcement.
 - Accessible naming is the consumer’s responsibility because visible text is absent.
