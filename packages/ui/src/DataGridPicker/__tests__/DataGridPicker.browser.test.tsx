@@ -241,6 +241,18 @@ describe('DataGridPicker', () => {
     });
   });
   
+  describe('Edge Cases', () => {
+    it('isolates the grid so the range highlight stays above a wrapper background', async () => {
+      const r = render(
+        <div style={{ background: 'white' }}>
+          <PickerTest selection='range' />
+        </div>
+      );
+
+      expect(getComputedStyle(getGrid(r)).isolation).toBe('isolate');
+    });
+  });
+
   describe('Accessibility', () => {
     it('grid has role=grid and items render as grid cells', async () => {
       const r = render(<PickerTest />);
