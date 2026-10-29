@@ -329,6 +329,18 @@ describe('Drawer', () => {
         await waitOpened(r);
         await expect.element(r.getByRole('heading', { level: 3 })).toBeInTheDocument();
       });
+
+      it('keeps role passed to DrawerContent', async () => {
+        const custom = render(
+          <Drawer defaultOpen>
+            <DrawerPortal>
+              <DrawerContent role='alertdialog' aria-label='Confirm'>Content</DrawerContent>
+            </DrawerPortal>
+          </Drawer>
+        );
+
+        await expect.element(custom.getByRole('alertdialog')).toBeInTheDocument();
+      });
     });
     
     describe('focus', () => {

@@ -51,7 +51,7 @@ export const DrawerContent: FC<DrawerContentProps> = ({
       data-shadow={shadowed}
       ref={mergeRefs([ref, context.refs?.setFloating])}
       className={csx(style.drawer, className)}
-      {...mergeProps(props, contentProps)}
+      {...mergeProps(contentProps, props)}
     >
       {children}
     </div>
