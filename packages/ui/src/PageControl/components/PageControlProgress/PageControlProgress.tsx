@@ -58,6 +58,7 @@ export const PageControlProgress: FC<PageControlProgressProps> = ({
     if (!el || active !== index) return
     
     let prevRounded = 0
+    let frame = 0
     
     const readProgress = () => {
       const style = getComputedStyle(el, '::after')
@@ -72,10 +73,12 @@ export const PageControlProgress: FC<PageControlProgressProps> = ({
         setProgressValue(rounded)
       }
       
-      if (percent < 1) requestAnimationFrame(readProgress)
+      if (percent < 1) frame = requestAnimationFrame(readProgress)
     }
     
-    requestAnimationFrame(readProgress)
+    frame = requestAnimationFrame(readProgress)
+
+    return () => cancelAnimationFrame(frame)
   }, [active, index])
   
   return (
