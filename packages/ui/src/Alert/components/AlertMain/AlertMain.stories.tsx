@@ -31,8 +31,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     children: [
-      <AlertTitle>I'm a title</AlertTitle>,
-      <AlertContent>I'm a content!</AlertContent>
+      <AlertTitle key={0}>I'm a title</AlertTitle>,
+      <AlertContent key={1}>I'm a content!</AlertContent>
     ]
   }
 }

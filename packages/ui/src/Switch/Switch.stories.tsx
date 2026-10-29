@@ -17,8 +17,8 @@ const meta = {
   argTypes: {},
   args: {
     children: [
-      <SwitchHiddenInput />,
-      <SwitchIndicator />
+      <SwitchHiddenInput key={0} />,
+      <SwitchIndicator key={1} />
     ]
   }
 } satisfies Meta<typeof Switch>
@@ -41,8 +41,8 @@ export const Secondary: Story = {
 export const Disabled: Story = {
   args: {
     children: [
-      <SwitchHiddenInput disabled />,
-      <SwitchIndicator />
+      <SwitchHiddenInput key={0} disabled />,
+      <SwitchIndicator key={1} />
     ]
   },
 }
@@ -50,8 +50,8 @@ export const Disabled: Story = {
 export const Checked: Story = {
   args: {
     children: [
-      <SwitchHiddenInput checked />,
-      <SwitchIndicator />
+      <SwitchHiddenInput key={0} checked />,
+      <SwitchIndicator key={1} />
     ]
   },
 }
@@ -59,8 +59,8 @@ export const Checked: Story = {
 export const CheckedDisabled: Story = {
   args: {
     children: [
-      <SwitchHiddenInput checked disabled />,
-      <SwitchIndicator />
+      <SwitchHiddenInput key={0} checked disabled />,
+      <SwitchIndicator key={1} />
     ]
   },
 }

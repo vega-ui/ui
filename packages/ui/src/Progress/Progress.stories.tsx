@@ -27,7 +27,7 @@ const meta: Meta<typeof Progress> = {
   args: {
     style: { width: '100%' },
     children: [
-      <ProgressTrack />
+      <ProgressTrack key={0} />
     ]
   },
   tags: ['autodocs'],

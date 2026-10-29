@@ -40,7 +40,7 @@ export const Default: Story = {
 };
 
 export const Sizes: Story = {
-  render(...props) {
+  render(props) {
     return (
       <div style={{ display: 'flex', flexDirection: 'row', gap: '24px', alignItems: 'center' }}>
         {sizes.map((size) => (
@@ -56,7 +56,7 @@ export const Sizes: Story = {
 };
 
 export const Initials: Story = {
-  render(...props) {
+  render(props) {
     return (
       <div style={{ display: 'flex', gap: '24px', flexDirection: 'column' }}>
         {variants.map((variant) => (
@@ -75,7 +75,7 @@ export const Initials: Story = {
 };
 
 export const WithIcon: Story = {
-  render(...props) {
+  render(props) {
     return (
       <div style={{ display: 'flex', gap: '24px', flexDirection: 'column' }}>
         {variants.map((variant) => (

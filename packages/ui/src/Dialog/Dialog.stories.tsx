@@ -148,6 +148,7 @@ export const WithHeaderAndClose: Story = {
 };
 
 export const TextFieldInside: Story = {
+  name: 'Text field inside',
   args: {
     children: (
       <>

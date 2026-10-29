@@ -24,10 +24,10 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     children: [
-      <CollapsibleTrigger asChild>
+      <CollapsibleTrigger key={0} asChild>
         <Button appearance='transparent'>Collapse</Button>
       </CollapsibleTrigger>,
-      <CollapsibleContent>
+      <CollapsibleContent key={1}>
         <Text>Hello</Text>
       </CollapsibleContent>
     ]

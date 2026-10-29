@@ -42,7 +42,7 @@ export const Default: Story = {
   args: {
     value: 1,
     children: [
-      <SegmentedControlItemHiddenInput />,
+      <SegmentedControlItemHiddenInput key={0} />,
       'Label'
     ]
   },

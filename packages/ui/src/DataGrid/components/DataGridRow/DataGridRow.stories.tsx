@@ -17,9 +17,9 @@ export const Default: Story = {
   args: {
     row: 1,
     children: [
-      <DataGridCell col={1}><Text size={2}>1</Text></DataGridCell>,
-      <DataGridCell col={2}><Text size={2}>2</Text></DataGridCell>,
-      <DataGridCell col={3}><Text size={2}>3</Text></DataGridCell>,
+      <DataGridCell key={0} col={1}><Text size={2}>1</Text></DataGridCell>,
+      <DataGridCell key={1} col={2}><Text size={2}>2</Text></DataGridCell>,
+      <DataGridCell key={2} col={3}><Text size={2}>3</Text></DataGridCell>,
     ]
   },
 };

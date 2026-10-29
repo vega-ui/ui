@@ -20,7 +20,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     value: .15,
-    style: { '--meter-item-color': 'var(--color-blue-accent-500)' } as CSSProperties
+    style: { '--meter-stack-segment-color': 'var(--color-blue-accent-500)' } as CSSProperties
   },
   render(props) {
     return (

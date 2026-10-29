@@ -67,7 +67,7 @@ export const Loading: Story = {
 }
 
 export const AsChild: Story = {
-  render(...props) {
+  render(props) {
     return (
       <Button {...props} asChild>
         <a href='#'>Button</a>

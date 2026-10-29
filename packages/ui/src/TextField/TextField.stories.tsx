@@ -65,6 +65,7 @@ export const Sizes: Story = {
 };
 
 export const WithPrefixAndSuffix: Story = {
+  name: 'With prefix and suffix',
   args: {
     children: [
       <IconButton key={0} size='md' variant='secondary' appearance='ghost' aria-label='Decrease'>
@@ -73,7 +74,7 @@ export const WithPrefixAndSuffix: Story = {
         </Icon>
       </IconButton>,
       <TextFieldInput key={1} inputMode='numeric' placeholder='0' />,
-      <IconButton key={0} size='md' variant='secondary' appearance='ghost' aria-label='Increase'>
+      <IconButton key={2} size='md' variant='secondary' appearance='ghost' aria-label='Increase'>
         <Icon>
           <Plus />
         </Icon>
@@ -105,10 +106,11 @@ export const ErrorState: Story = {
 };
 
 export const SearchField: Story = {
+  name: 'Search field',
   args: {
     children: [
-      <TextFieldInput type='search' placeholder='Search...' />,
-      <Button size='md'>Search</Button>
+      <TextFieldInput key={0} type='search' placeholder='Search...' />,
+      <Button key={1} size='md'>Search</Button>
     ]
   }
 };

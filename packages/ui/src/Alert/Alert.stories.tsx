@@ -43,8 +43,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     children: [
-      <AlertIcon />,
-      <AlertMain>
+      <AlertIcon key={0} />,
+      <AlertMain key={1}>
         <AlertTitle>I'm a title</AlertTitle>
         <AlertContent>I'm a content!</AlertContent>
       </AlertMain>
@@ -56,10 +56,10 @@ export const CustomIcon: Story = {
   args: {
     variant: 'success',
     children: [
-      <AlertIcon>
+      <AlertIcon key={0}>
         <Smile />
       </AlertIcon>,
-      <AlertMain>
+      <AlertMain key={1}>
         <AlertTitle>I'm a title</AlertTitle>
         <AlertContent>I'm a content!</AlertContent>
       </AlertMain>
@@ -70,8 +70,8 @@ export const CustomIcon: Story = {
 export const WithoutContent: Story = {
   args: {
     children: [
-      <AlertIcon />,
-      <AlertMain>
+      <AlertIcon key={0} />,
+      <AlertMain key={1}>
         <AlertTitle>I'm a title</AlertTitle>
       </AlertMain>
     ]
@@ -92,12 +92,12 @@ export const WithoutIcon: Story = {
 export const WithAction: Story = {
   args: {
     children: [
-      <AlertIcon />,
-      <AlertMain>
+      <AlertIcon key={0} />,
+      <AlertMain key={1}>
         <AlertTitle>I'm a title</AlertTitle>
         <AlertContent>I'm a content!</AlertContent>
       </AlertMain>,
-      <IconButton variant='secondary' size='xs'>
+      <IconButton key={2} variant='secondary' size='xs'>
         <Icon><X /></Icon>
       </IconButton>
     ]
@@ -107,8 +107,8 @@ export const WithAction: Story = {
 export const WithCustomChildren: Story = {
   args: {
     children: [
-      <AlertIcon />,
-      <AlertMain>
+      <AlertIcon key={0} />,
+      <AlertMain key={1}>
         <AlertTitle>I'm a title</AlertTitle>
         <AlertContent>
           Hello, it's an <Link><Text size={2}>example.com</Text></Link>. Also let's print <Code size={2}>Hello, world!</Code>
@@ -125,7 +125,7 @@ export const All: Story = {
       <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
         {variants.map((variant) => (
           appearances.map((appearance) => (
-            <Alert appearance={appearance} variant={variant}>
+            <Alert key={`${variant}-${appearance}`} appearance={appearance} variant={variant}>
               <AlertIcon />
               <AlertMain>
                 <AlertTitle>{`I'm a ${variant}/${appearance}`}</AlertTitle>

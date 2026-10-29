@@ -187,6 +187,7 @@ export const Default: Story = {
 };
 
 export const WithSeconds: Story = {
+  name: 'With seconds',
   args: {
     timeFormat: 'HH:mm:ss',
   },
@@ -197,6 +198,7 @@ export const WithSeconds: Story = {
  * that segment by `timeStep`.
  */
 export const TimeStep: Story = {
+  name: 'Time step',
   render: (props) => (
     <FormItem id='slot' label='Appointment' hint='Put the caret in the minutes and press ↑ / ↓ to move by 15 minutes'>
       <DateTimeField {...props} timeStep={15}>
@@ -277,6 +279,7 @@ export const Locales: Story = {
  * `calendar` prop; the time part is the same in every calendar.
  */
 export const CalendarSystems: Story = {
+  name: 'Calendar systems',
   render: (props) => (
     <Grid>
       {calendarSystems.map(({ name, locale, calendar }) => (
@@ -297,6 +300,7 @@ export const CalendarSystems: Story = {
  * never taken from `locale`.
  */
 export const RightToLeft: Story = {
+  name: 'Right to left',
   render: (props) => (
     <Grid>
       {['ar-EG', 'he-IL'].map((locale) => (

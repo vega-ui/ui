@@ -259,6 +259,7 @@ export const Locales: Story = {
  * prop, while both values stay ISO days.
  */
 export const CalendarSystems: Story = {
+  name: 'Calendar systems',
   render: (props) => (
     <Grid>
       {calendarSystems.map(({ name, locale, calendar }) => (
@@ -279,6 +280,7 @@ export const CalendarSystems: Story = {
  * never taken from `locale`.
  */
 export const RightToLeft: Story = {
+  name: 'Right to left',
   render: (props) => (
     <Grid>
       {['ar-EG', 'he-IL'].map((locale) => (

@@ -23,9 +23,6 @@ importers:
       '@storybook/addon-docs':
         specifier: ^10.3.1
         version: 10.3.1(@types/react@19.2.8)(esbuild@0.25.12)(rollup@4.55.1)(storybook@10.3.1(@testing-library/dom@10.4.1)(prettier@2.8.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(vite@6.4.1(@types/node@22.19.5))
-      '@storybook/addon-onboarding':
-        specifier: ^10.3.1
-        version: 10.3.1(storybook@10.3.1(@testing-library/dom@10.4.1)(prettier@2.8.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))
       '@storybook/addon-themes':
         specifier: ^10.3.1
         version: 10.3.1(storybook@10.3.1(@testing-library/dom@10.4.1)(prettier@2.8.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))
@@ -35,6 +32,9 @@ importers:
       '@types/node':
         specifier: ^22.10.10
         version: 22.19.5
+      '@types/react':
+        specifier: ^19.0.10
+        version: 19.2.8
       '@typescript-eslint/eslint-plugin':
         specifier: ^8.25.0
         version: 8.53.0(@typescript-eslint/parser@8.53.0(eslint@9.39.2)(typescript@5.7.3))(eslint@9.39.2)(typescript@5.7.3)
@@ -59,6 +59,9 @@ importers:
       playwright:
         specifier: ^1.63.0
         version: 1.63.0
+      react:
+        specifier: ^19.0.0
+        version: 19.2.3
       storybook:
         specifier: ^10.3.1
         version: 10.3.1(@testing-library/dom@10.4.1)(prettier@2.8.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -1019,11 +1022,6 @@ packages:
 
   '@storybook/addon-docs@10.3.1':
     resolution: {integrity: sha512-0FBhfMEg96QUmhdtks3rchktEEWF2hKcEsr3XluybBoBi4xAIw1vm+RJtL9Jm45ppTdg28LF7U+OeMx5LwkMzQ==}
-    peerDependencies:
-      storybook: ^10.3.1
-
-  '@storybook/addon-onboarding@10.3.1':
-    resolution: {integrity: sha512-fXhkG0dPvsuwlOmK2eOmc0CYJXUeWV8hZWlnthkqGKrzUyqXx0YmM3VdnKwk0/OnOCp1zykDoMtnjnDqWW4saQ==}
     peerDependencies:
       storybook: ^10.3.1
 
@@ -3720,10 +3718,6 @@ snapshots:
       - rollup
       - vite
       - webpack
-
-  '@storybook/addon-onboarding@10.3.1(storybook@10.3.1(@testing-library/dom@10.4.1)(prettier@2.8.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))':
-    dependencies:
-      storybook: 10.3.1(@testing-library/dom@10.4.1)(prettier@2.8.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
 
   '@storybook/addon-themes@10.3.1(storybook@10.3.1(@testing-library/dom@10.4.1)(prettier@2.8.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))':
     dependencies:

@@ -42,9 +42,9 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     children: [
-      <SelectOption value={1}>Moscow</SelectOption>,
-      <SelectOption value={2}>New-York</SelectOption>,
-      <SelectOption value={3}>Paris</SelectOption>
+      <SelectOption key={0} value={1}>Moscow</SelectOption>,
+      <SelectOption key={1} value={2}>New-York</SelectOption>,
+      <SelectOption key={2} value={3}>Paris</SelectOption>
     ]
   }
 }
@@ -52,15 +52,15 @@ export const Default: Story = {
 export const NonTextChildren: Story = {
   args: {
     children: [
-      <SelectOption style={{ gap: 12 }} value={1}>
+      <SelectOption key={0} style={{ gap: 12 }} value={1}>
         <Icon size='sm'><Building2 /></Icon>
         Moscow
       </SelectOption>,
-      <SelectOption style={{ gap: 12 }} value={2}>
+      <SelectOption key={1} style={{ gap: 12 }} value={2}>
         <Icon size='sm'><Landmark /></Icon>
         New-York
       </SelectOption>,
-      <SelectOption style={{ gap: 12 }} value={3}>
+      <SelectOption key={2} style={{ gap: 12 }} value={3}>
         <Icon size='sm'><Theater /></Icon>
         Paris
       </SelectOption>

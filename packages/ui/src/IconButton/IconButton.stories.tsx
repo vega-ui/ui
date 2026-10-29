@@ -55,7 +55,7 @@ export const Sizes: Story = {
   render(props) {
     return (
       <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-        {sizes.map((size) => <IconButton size={size} {...props}><Icon><GlobeIcon /></Icon></IconButton>)}
+        {sizes.map((size) => <IconButton key={size} size={size} {...props}><Icon><GlobeIcon /></Icon></IconButton>)}
       </div>
     )
   }
@@ -85,7 +85,7 @@ export const Disabled: Story = {
 };
 
 export const AsChild: Story = {
-  render(...props) {
+  render(props) {
     return (
       <IconButton {...props} asChild>
         <a href='#'>

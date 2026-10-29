@@ -21,6 +21,15 @@ import {
 const meta: Meta<typeof Sheet> = {
   title: 'Overlay/Sheet/Sheet',
   component: Sheet,
+  subcomponents: {
+    SheetTrigger,
+    SheetPortal,
+    SheetBackdrop,
+    SheetContent,
+    SheetHandle,
+    SheetHeader,
+    SheetMain,
+  },
   parameters: {
     layout: 'padded',
     design: {

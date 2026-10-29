@@ -15,7 +15,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     children: [
-      <DayPickerRow row={0}>
+      <DayPickerRow key={0} row={0}>
         <DayPickerItem col={0}>1</DayPickerItem>
         <DayPickerItem col={1}>2</DayPickerItem>
         <DayPickerItem col={2}>3</DayPickerItem>
@@ -24,7 +24,7 @@ export const Default: Story = {
         <DayPickerItem col={5}>6</DayPickerItem>
         <DayPickerItem col={6}>7</DayPickerItem>
       </DayPickerRow>,
-      <DayPickerRow row={1}>
+      <DayPickerRow key={1} row={1}>
         <DayPickerItem col={0}>8</DayPickerItem>
         <DayPickerItem col={1}>9</DayPickerItem>
         <DayPickerItem col={2}>10</DayPickerItem>

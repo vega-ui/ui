@@ -44,8 +44,8 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     children: [
-      <SelectValue placeholder='Select value' />,
-      <SelectIcon />
+      <SelectValue key={0} placeholder='Select value' />,
+      <SelectIcon key={1} />
     ]
   }
 }
@@ -53,8 +53,8 @@ export const Default: Story = {
 export const WithCustomIcon: Story = {
   args: {
     children: [
-      <SelectValue placeholder='Select value' />,
-      <SelectIcon>
+      <SelectValue key={0} placeholder='Select value' />,
+      <SelectIcon key={1}>
         <ChevronsUpDown />
       </SelectIcon>
     ]
@@ -68,11 +68,11 @@ const SelectedValueText = () => {
 export const WithCustomValue: Story = {
   args: {
     children: [
-      <SelectValue placeholder='Select value' style={{ gap: 12 }}>
+      <SelectValue key={0} placeholder='Select value' style={{ gap: 12 }}>
         <Icon size='sm'><Dices /></Icon>
         <SelectedValueText />
       </SelectValue>,
-      <SelectIcon />
+      <SelectIcon key={1} />
     ]
   }
 }
