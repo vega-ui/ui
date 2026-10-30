@@ -1,7 +1,7 @@
 'use client';
 import { CSSProperties, DialogHTMLAttributes, FC, Ref, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { csx, findScrollableAncestor, inRange, mergeEventHandlers, mergeRefs, projectMomentum, rubberBand } from '@vega-ui/utils';
+import { csx, findScrollableAncestor, isBackdropPoint, isTextInteraction, mergeEventHandlers, mergeRefs, projectMomentum, rubberBand } from '@vega-ui/utils';
 import { DragGesture, ModalDialogClosedBy, useDragGesture, useModalDialog } from '@vega-ui/hooks';
 import style from './style.module.css'
 import { useDrawerContext } from '../../contexts';
@@ -59,14 +59,11 @@ export const DrawerContent: FC<DrawerContentProps> = ({
   onCancel: _onCancel,
   onSubmit: _onSubmit,
   onClose: _onClose,
-  onPointerDown: _onPointerDown,
-  onClick: _onClick,
   style: _style,
   ...props
 }) => {
   const { open, changeOpen, position } = useDrawerContext()
-  const { ref: dialogRef, mounted, rendered, escapeClosedBy, onPointerDown, onClick, onCancel, onSubmit, onClose } = useModalDialog({ open, onChangeOpen: changeOpen, closedBy })
-  const [dialog, setDialog] = useState<HTMLDialogElement | null>(null)
+  const { ref: dialogRef, dialog, mounted, rendered, onCancel, onSubmit, onClose } = useModalDialog({ open, onChangeOpen: changeOpen })
   const [drag, setDrag] = useState<number | null>(null)
 
   const edge = position?.split('-')[0]
@@ -89,18 +86,11 @@ export const DrawerContent: FC<DrawerContentProps> = ({
 
   const shouldStart = (event: PointerEvent, dragDirection: 1 | -1) => {
     if (!dialog || closedBy !== 'any' || event.pointerType === 'mouse') return false
-
-    const target = event.target as Element
-    const rect = dialog.getBoundingClientRect()
-    const inside = inRange(event.clientX, [rect.left, rect.right]) && inRange(event.clientY, [rect.top, rect.bottom])
-
-    if (target === dialog && !inside) return false
-    if (target.closest('input, textarea, select, [contenteditable]')) return false
-    if (window.getSelection()?.toString()) return false
+    if (isBackdropPoint(dialog, event) || isTextInteraction(event.target)) return false
     if (axis === 'x') return true
 
     const direction = getDirection()
-    const scroller = findScrollableAncestor(target, dialog)
+    const scroller = findScrollableAncestor(event.target as Element, dialog)
     if (!scroller) return true
     if (dragDirection !== direction) return false
     if (direction === 1) return scroller.scrollTop <= 0
@@ -132,7 +122,7 @@ export const DrawerContent: FC<DrawerContentProps> = ({
 
   return createPortal(
     <dialog
-      closedby={escapeClosedBy}
+      closedby={closedBy}
       data-position={position}
       data-full-width={fullWidth}
       data-full-height={fullHeight}
@@ -141,10 +131,8 @@ export const DrawerContent: FC<DrawerContentProps> = ({
       data-blurred={blurred}
       data-overlay={overlay}
       data-dragging={drag !== null}
-      ref={mergeRefs([dialogRef, setDialog, ref])}
+      ref={mergeRefs([dialogRef, ref])}
       className={csx(style.drawer, className)}
-      onPointerDown={mergeEventHandlers(onPointerDown, _onPointerDown)}
-      onClick={mergeEventHandlers(onClick, _onClick)}
       onCancel={mergeEventHandlers(onCancel, _onCancel)}
       onSubmit={mergeEventHandlers(onSubmit, _onSubmit)}
       onClose={mergeEventHandlers(onClose, _onClose)}

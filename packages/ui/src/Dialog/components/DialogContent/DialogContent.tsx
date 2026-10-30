@@ -53,18 +53,16 @@ export const DialogContent: FC<DialogContentProps> = ({
   onCancel: _onCancel,
   onSubmit: _onSubmit,
   onClose: _onClose,
-  onPointerDown: _onPointerDown,
-  onClick: _onClick,
   ...props
 }) => {
   const { open, changeOpen, fluid } = useDialogContext()
-  const { ref: dialogRef, mounted, rendered, escapeClosedBy, onPointerDown, onClick, onCancel, onSubmit, onClose } = useModalDialog({ open, onChangeOpen: changeOpen, closedBy })
+  const { ref: dialogRef, mounted, rendered, onCancel, onSubmit, onClose } = useModalDialog({ open, onChangeOpen: changeOpen })
 
   if (!mounted) return null
 
   return createPortal(
     <dialog
-      closedby={escapeClosedBy}
+      closedby={closedBy}
       data-fluid={fluid}
       data-shadowed={shadowed}
       data-blurred={blurred}
@@ -72,8 +70,6 @@ export const DialogContent: FC<DialogContentProps> = ({
       data-status={open ? 'open' : 'close'}
       className={csx(styles.dialog, className)}
       ref={mergeRefs([dialogRef, ref])}
-      onPointerDown={mergeEventHandlers(onPointerDown, _onPointerDown)}
-      onClick={mergeEventHandlers(onClick, _onClick)}
       onCancel={mergeEventHandlers(onCancel, _onCancel)}
       onSubmit={mergeEventHandlers(onSubmit, _onSubmit)}
       onClose={mergeEventHandlers(onClose, _onClose)}

@@ -1,8 +1,8 @@
 'use client';
 
-import { CSSProperties, DialogHTMLAttributes, FC, Ref, useState } from 'react';
+import { CSSProperties, DialogHTMLAttributes, FC, Ref, useLayoutEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { clamp, csx, findScrollableAncestor, inRange, mergeEventHandlers, mergeRefs, nearest, projectMomentum, rubberBand } from '@vega-ui/utils';
+import { clamp, csx, findScrollableAncestor, isBackdropPoint, isTextInteraction, mergeEventHandlers, mergeRefs, nearest, projectMomentum, rubberBand } from '@vega-ui/utils';
 import { DragGesture, ModalDialogClosedBy, useDragGesture, useKeyboardInset, useModalDialog } from '@vega-ui/hooks';
 import { useSheetContext } from '../../contexts';
 import styles from './style.module.css'
@@ -50,14 +50,12 @@ export const SheetContent: FC<SheetContentProps> = ({
   onCancel: _onCancel,
   onSubmit: _onSubmit,
   onClose: _onClose,
-  onPointerDown: _onPointerDown,
-  onClick: _onClick,
   ...props
 }) => {
   const {
     open,
     changeOpen,
-    contentRef,
+    changeHeight,
     height,
     viewport,
     offsets,
@@ -65,8 +63,7 @@ export const SheetContent: FC<SheetContentProps> = ({
     changeActiveSnapPoint,
     steppedSnapPoints,
   } = useSheetContext()
-  const { ref: dialogRef, mounted, rendered, escapeClosedBy, onPointerDown, onClick, onCancel, onSubmit, onClose } = useModalDialog({ open, onChangeOpen: changeOpen, closedBy })
-  const [dialog, setDialog] = useState<HTMLDialogElement | null>(null)
+  const { ref: dialogRef, dialog, mounted, rendered, onCancel, onSubmit, onClose } = useModalDialog({ open, onChangeOpen: changeOpen })
   const [dragOffset, setDragOffset] = useState<number | null>(null)
   const keyboardInset = useKeyboardInset()
 
@@ -84,17 +81,10 @@ export const SheetContent: FC<SheetContentProps> = ({
 
   const shouldStart = (event: PointerEvent, direction: 1 | -1) => {
     if (!dialog) return false
-
-    const target = event.target as Element
-    const rect = dialog.getBoundingClientRect()
-    const inside = inRange(event.clientX, [rect.left, rect.right]) && inRange(event.clientY, [rect.top, rect.bottom])
-
-    if (target === dialog && !inside) return false
-    if (target.closest('input, textarea, select, [contenteditable]')) return false
-    if (window.getSelection()?.toString()) return false
+    if (isBackdropPoint(dialog, event) || isTextInteraction(event.target)) return false
     if (restingOffset > topOffset) return true
 
-    const scroller = findScrollableAncestor(target, dialog)
+    const scroller = findScrollableAncestor(event.target as Element, dialog)
     if (!scroller) return true
     if (direction === -1) return false
 
@@ -133,21 +123,29 @@ export const SheetContent: FC<SheetContentProps> = ({
     changeActiveSnapPoint(offsets.indexOf(target))
   }
 
+  useLayoutEffect(() => {
+    if (!dialog) return
+
+    const observer = new ResizeObserver(() => changeHeight(dialog.offsetHeight))
+    changeHeight(dialog.offsetHeight)
+    observer.observe(dialog)
+
+    return () => observer.disconnect()
+  }, [dialog, rendered, changeHeight])
+
   useDragGesture(dialog, { axis: 'y', shouldStart, onMove, onEnd })
 
   if (!mounted) return null
 
   return createPortal(
     <dialog
-      closedby={escapeClosedBy}
+      closedby={closedBy}
       className={csx(styles.content, className)}
-      onPointerDown={mergeEventHandlers(onPointerDown, _onPointerDown)}
-      onClick={mergeEventHandlers(onClick, _onClick)}
       onCancel={mergeEventHandlers(onCancel, _onCancel)}
       onSubmit={mergeEventHandlers(onSubmit, _onSubmit)}
       onClose={mergeEventHandlers(onClose, _onClose)}
       data-status={open ? 'open' : 'close'}
-      ref={mergeRefs([dialogRef, setDialog, contentRef, ref])}
+      ref={mergeRefs([dialogRef, ref])}
       style={{
         '--sheet-offset': `${offset}px`,
         '--sheet-progress': progress,

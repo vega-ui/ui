@@ -1,12 +1,11 @@
 'use client';
 
-import { Ref } from 'react';
 import { createContext } from '@vega-ui/react-context';
 
 export interface SheetContextState {
   open: boolean
   changeOpen: (value: boolean) => void
-  contentRef?: Ref<HTMLDialogElement>
+  changeHeight: (height: number) => void
   height: number
   viewport: number
   offsets: number[]
@@ -18,6 +17,7 @@ export interface SheetContextState {
 export const [SheetProvider, useSheetContext] = createContext<SheetContextState>('SheetContext', {
   open: false,
   changeOpen: () => undefined,
+  changeHeight: () => undefined,
   height: 0,
   viewport: 0,
   offsets: [0],

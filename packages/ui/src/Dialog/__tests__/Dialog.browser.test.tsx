@@ -1,7 +1,7 @@
 import { ComponentProps, FC } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, type RenderResult, waitFor } from '@testing-library/react';
-import { userEvent } from 'vitest/browser';
+import { commands, userEvent } from 'vitest/browser';
 
 import { Dialog } from '../Dialog';
 import { DialogClose, DialogContent, DialogTrigger } from '../components';
@@ -172,6 +172,17 @@ describe('Dialog', () => {
 
         await clickBackdrop(getContent(r));
         await toBeClosed(r);
+      });
+
+      it('stays open when a press starts inside and ends on the backdrop', async () => {
+        r.rerender(<DialogTest closedBy='any' />);
+        await openByTrigger(r);
+        await toBeOpened(r);
+
+        await commands.mouseDrag(`[data-testid="${TESTID_CONTENT}"]`, getContent(r).offsetHeight);
+        await new Promise((resolve) => setTimeout(resolve, 100));
+
+        await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
       });
 
       it('ignores Escape and backdrop click when closedBy=none', async () => {

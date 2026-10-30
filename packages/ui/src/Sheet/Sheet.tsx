@@ -74,19 +74,8 @@ export const Sheet: FC<SheetProps> = ({
   onChangeOpen,
 }) => {
   const [open, changeOpen] = useControlledState(controlledOpen, defaultOpen, onChangeOpen)
-  const [content, setContent] = useState<HTMLDialogElement | null>(null)
   const [height, setHeight] = useState(0)
   const [viewport, setViewport] = useState(0)
-
-  useLayoutEffect(() => {
-    if (!content) return
-
-    const observer = new ResizeObserver(() => setHeight(content.offsetHeight))
-    setHeight(content.offsetHeight)
-    observer.observe(content)
-
-    return () => observer.disconnect()
-  }, [content])
 
   useLayoutEffect(() => {
     const measure = () => setViewport(document.documentElement.clientHeight)
@@ -120,7 +109,7 @@ export const Sheet: FC<SheetProps> = ({
     <SheetProvider
       open={open}
       changeOpen={changeOpen}
-      contentRef={setContent}
+      changeHeight={setHeight}
       height={height}
       viewport={viewport}
       offsets={offsets}

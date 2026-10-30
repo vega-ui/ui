@@ -1,40 +1,35 @@
-import { FormEvent, MouseEvent, SyntheticEvent, useLayoutEffect, useReducer, useRef, useState } from 'react'
-import { inRange } from '@vega-ui/utils'
+import { FormEvent, SyntheticEvent, useLayoutEffect, useReducer, useState } from 'react'
 
 export type ModalDialogClosedBy = 'any' | 'closerequest' | 'none'
 
 export interface UseModalDialogOptions {
   open: boolean
   onChangeOpen: (open: boolean) => void
-  closedBy?: ModalDialogClosedBy
 }
 
 /**
  * Drives a native `<dialog>` as a modal from React state: shows it with
- * `showModal()`, keeps it mounted until its close transition ends, closes it
- * through `onChangeOpen` on a `<form method="dialog">` submit so it animates out,
- * and syncs other closes made by the browser. `rendered` turns true once the dialog is shown, so
- * children rendered after it get the dialog itself focused instead of the first
- * focusable child, and their `autoFocus` works. Like the native `closedby` attribute, `closedBy`
- * sets which user actions request a close: `any` a backdrop click or `Escape`,
- * `closerequest` only `Escape`, and `none` neither.
+ * `showModal()`, keeps it mounted until its close transition ends, and routes
+ * close requests through `onChangeOpen` so a controlled parent decides and the
+ * dialog animates out: `cancel` (`Escape`, or a backdrop click with the native
+ * `closedby="any"`) and a `<form method="dialog">` submit. Closes the browser
+ * makes on its own are synced back. `rendered` turns true once the dialog is
+ * shown, so children rendered after it get the dialog itself focused instead of
+ * the first focusable child, and their `autoFocus` works.
  */
-export const useModalDialog = ({ open, onChangeOpen, closedBy = 'closerequest' }: UseModalDialogOptions) => {
-  const ref = useRef<HTMLDialogElement>(null)
-  const pressedBackdrop = useRef(false)
-  const [mounted, setMounted] = useState(open)
-  const [rendered, setRendered] = useState(false)
+export const useModalDialog = ({ open, onChangeOpen }: UseModalDialogOptions) => {
+  const [dialog, setDialog] = useState<HTMLDialogElement | null>(null)
+  const [stage, setStage] = useState<'closed' | 'mounted' | 'shown'>(open ? 'mounted' : 'closed')
   const [syncKey, resync] = useReducer((key: number) => key + 1, 0)
 
-  if (open && !mounted) setMounted(true)
+  if (open && stage === 'closed') setStage('mounted')
 
   useLayoutEffect(() => {
-    const dialog = ref.current
     if (!dialog) return
 
     if (open) {
       if (!dialog.open) dialog.showModal()
-      setRendered(true)
+      setStage('shown')
       return
     }
 
@@ -43,44 +38,19 @@ export const useModalDialog = ({ open, onChangeOpen, closedBy = 'closerequest' }
     Promise.allSettled(dialog.getAnimations().map((animation) => animation.finished)).then(() => {
       if (cancelled) return
       if (dialog.open) dialog.close()
-      else unmount()
+      else setStage('closed')
     })
 
     return () => {
       cancelled = true
     }
-  }, [open, mounted, syncKey])
-
-  const unmount = () => {
-    setMounted(false)
-    setRendered(false)
-  }
-
-  const isBackdropEvent = (event: MouseEvent<HTMLDialogElement>) => {
-    if (event.target !== event.currentTarget) return false
-
-    const rect = event.currentTarget.getBoundingClientRect()
-    const inside = inRange(event.clientX, [rect.left, rect.right]) && inRange(event.clientY, [rect.top, rect.bottom])
-
-    return !inside
-  }
-
-  const onPointerDown = (event: MouseEvent<HTMLDialogElement>) => {
-    pressedBackdrop.current = isBackdropEvent(event)
-  }
-
-  const onClick = (event: MouseEvent<HTMLDialogElement>) => {
-    const backdropClick = pressedBackdrop.current && isBackdropEvent(event)
-    pressedBackdrop.current = false
-
-    if (backdropClick && closedBy === 'any') onChangeOpen(false)
-  }
+  }, [open, dialog, syncKey])
 
   const onCancel = (event: SyntheticEvent<HTMLDialogElement>) => {
     if (event.target !== event.currentTarget) return
 
     event.preventDefault()
-    if (closedBy !== 'none') onChangeOpen(false)
+    onChangeOpen(false)
   }
 
   const onSubmit = (event: FormEvent<HTMLDialogElement>) => {
@@ -99,7 +69,7 @@ export const useModalDialog = ({ open, onChangeOpen, closedBy = 'closerequest' }
     if (event.target !== event.currentTarget) return
 
     if (!open) {
-      unmount()
+      setStage('closed')
       return
     }
 
@@ -107,7 +77,13 @@ export const useModalDialog = ({ open, onChangeOpen, closedBy = 'closerequest' }
     resync()
   }
 
-  const escapeClosedBy: ModalDialogClosedBy = closedBy === 'none' ? 'none' : 'closerequest'
-
-  return { ref, mounted, rendered, escapeClosedBy, isBackdropEvent, onPointerDown, onClick, onCancel, onSubmit, onClose }
+  return {
+    ref: setDialog,
+    dialog,
+    mounted: stage !== 'closed',
+    rendered: stage === 'shown',
+    onCancel,
+    onSubmit,
+    onClose
+  }
 }
