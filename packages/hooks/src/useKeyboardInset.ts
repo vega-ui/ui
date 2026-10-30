@@ -15,14 +15,13 @@ export const useKeyboardInset = () => {
       setInset(Math.max(0, Math.round(window.innerHeight - viewport.height - viewport.offsetTop)))
     }
 
-    update()
-    viewport.addEventListener('resize', update)
-    viewport.addEventListener('scroll', update)
+    const controller = new AbortController()
 
-    return () => {
-      viewport.removeEventListener('resize', update)
-      viewport.removeEventListener('scroll', update)
-    }
+    update()
+    viewport.addEventListener('resize', update, { signal: controller.signal })
+    viewport.addEventListener('scroll', update, { signal: controller.signal })
+
+    return () => controller.abort()
   }, [])
 
   return inset

@@ -78,7 +78,7 @@ export const DrawerContent: FC<DrawerContentProps> = ({
     if (edge === 'bottom') return 1
     if (edge === 'top') return -1
 
-    const rtl = dialog !== null && getComputedStyle(dialog).direction === 'rtl'
+    const rtl = dialog !== null && dialog.matches(':dir(rtl)')
 
     if (edge === 'end') return rtl ? -1 : 1
     return rtl ? 1 : -1

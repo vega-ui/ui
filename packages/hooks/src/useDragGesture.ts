@@ -126,20 +126,16 @@ export const useDragGesture = (element: HTMLElement | null, { axis, shouldStart,
       event.stopPropagation()
     }
 
-    element.addEventListener('pointerdown', onPointerDown)
-    element.addEventListener('pointermove', onPointerMove)
-    element.addEventListener('pointerup', onPointerEnd)
-    element.addEventListener('pointercancel', onPointerEnd)
-    element.addEventListener('touchmove', onTouchMove, { passive: false })
-    element.addEventListener('click', onClick, true)
+    const controller = new AbortController()
+    const { signal } = controller
 
-    return () => {
-      element.removeEventListener('pointerdown', onPointerDown)
-      element.removeEventListener('pointermove', onPointerMove)
-      element.removeEventListener('pointerup', onPointerEnd)
-      element.removeEventListener('pointercancel', onPointerEnd)
-      element.removeEventListener('touchmove', onTouchMove)
-      element.removeEventListener('click', onClick, true)
-    }
+    element.addEventListener('pointerdown', onPointerDown, { signal })
+    element.addEventListener('pointermove', onPointerMove, { signal })
+    element.addEventListener('pointerup', onPointerEnd, { signal })
+    element.addEventListener('pointercancel', onPointerEnd, { signal })
+    element.addEventListener('touchmove', onTouchMove, { passive: false, signal })
+    element.addEventListener('click', onClick, { capture: true, signal })
+
+    return () => controller.abort()
   }, [element, axis, canStart, start, move, end])
 }

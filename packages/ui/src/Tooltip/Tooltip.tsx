@@ -54,9 +54,10 @@ export const Tooltip: FC<TooltipProps> = ({
   const contentId = useId();
   const [open, setOpen] = useControlledState(controlledOpen, defaultOpen, onChangeOpen);
 
-  const { refs, elements, floatingStyles, placement, middlewareData, update, context } = useFloating({
+  const { refs, floatingStyles, placement, middlewareData, context } = useFloating({
     strategy: 'fixed',
     transform: false,
+    whileElementsMounted: autoUpdate,
     middleware: [
       offset(14),
       flip(),
@@ -88,12 +89,6 @@ export const Tooltip: FC<TooltipProps> = ({
   const hide = (delay = 0) => schedule(false, delay)
 
   useEffect(() => () => clearTimeout(timer.current), []);
-
-  useEffect(() => {
-    if (!open || !elements.reference || !elements.floating) return
-
-    return autoUpdate(elements.reference, elements.floating, update)
-  }, [open, elements.reference, elements.floating, update]);
 
   useEffect(() => {
     if (!open) return

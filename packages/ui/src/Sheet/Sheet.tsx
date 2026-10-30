@@ -78,11 +78,13 @@ export const Sheet: FC<SheetProps> = ({
   const [viewport, setViewport] = useState(0)
 
   useLayoutEffect(() => {
+    const controller = new AbortController()
     const measure = () => setViewport(document.documentElement.clientHeight)
-    measure()
-    window.addEventListener('resize', measure)
 
-    return () => window.removeEventListener('resize', measure)
+    measure()
+    window.addEventListener('resize', measure, { signal: controller.signal })
+
+    return () => controller.abort()
   }, [])
 
   const heights = useMemo(() => snapPoints?.map((point) => resolveLength(point, viewport)), [snapPoints, viewport])
