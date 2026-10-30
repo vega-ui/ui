@@ -76,17 +76,13 @@ Trade-offs:
   <DrawerTrigger asChild>
     <Button>Open details</Button>
   </DrawerTrigger>
-  <DrawerPortal>
-    <DrawerBackdrop>
-      <DrawerContent>
-        <Collapsible>
-          <CollapsibleTrigger>Show technical details</CollapsibleTrigger>
-          <CollapsibleContent>
-            <Text size={2}>The export runs with cached filters and may take up to 30 seconds.</Text>
-          </CollapsibleContent>
-        </Collapsible>
-      </DrawerContent>
-    </DrawerBackdrop>
-  </DrawerPortal>
+  <DrawerContent aria-label='Details'>
+    <Collapsible>
+      <CollapsibleTrigger>Show technical details</CollapsibleTrigger>
+      <CollapsibleContent>
+        <Text size={2}>The export runs with cached filters and may take up to 30 seconds.</Text>
+      </CollapsibleContent>
+    </Collapsible>
+  </DrawerContent>
 </Drawer>
 ```

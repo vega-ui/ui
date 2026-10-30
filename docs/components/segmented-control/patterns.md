@@ -81,30 +81,35 @@ Trade-offs:
 - Breaks down if the content becomes too wide or too numerous.
 
 ```tsx
+import type { CSSProperties } from 'react';
+
 <Dialog>
   <DialogTrigger asChild>
     <Button>Display settings</Button>
   </DialogTrigger>
-  <DialogPortal>
-    <DialogBackdrop>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Display settings</DialogTitle>
-          <DialogCloseButton />
-        </DialogHeader>
-        <SegmentedControl name='density' defaultValue='comfortable'>
-          <SegmentedControlItem value='compact'>
-            <SegmentedControlItemInput />
-            Compact
-          </SegmentedControlItem>
-          <SegmentedControlItem value='comfortable'>
-            <SegmentedControlItemInput />
-            Comfortable
-          </SegmentedControlItem>
-          <SegmentedControlIndicator />
-        </SegmentedControl>
-      </DialogContent>
-    </DialogBackdrop>
-  </DialogPortal>
+  <DialogContent aria-labelledby='display-settings-title'>
+    <Heading id='display-settings-title' as='h2' size={4} fontWeight={600}>Display settings</Heading>
+    <DialogClose asChild>
+      <IconButton
+        aria-label='Close'
+        variant='secondary'
+        appearance='ghost'
+        style={{ position: 'absolute', insetBlockStart: 16, insetInlineEnd: 16, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+      >
+        <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
+      </IconButton>
+    </DialogClose>
+    <SegmentedControl name='density' defaultValue='comfortable'>
+      <SegmentedControlItem value='compact'>
+        <SegmentedControlItemInput />
+        Compact
+      </SegmentedControlItem>
+      <SegmentedControlItem value='comfortable'>
+        <SegmentedControlItemInput />
+        Comfortable
+      </SegmentedControlItem>
+      <SegmentedControlIndicator />
+    </SegmentedControl>
+  </DialogContent>
 </Dialog>
 ```

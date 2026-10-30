@@ -1,9 +1,6 @@
 'use client';
-import { FC, HTMLAttributes, ReactNode } from 'react';
-import {
-  autoUpdate, flip, FloatingContext, offset,
-  Placement, shift, useClick, useDismiss, useFloating, useInteractions, useRole,
-} from '@floating-ui/react';
+import { FC, HTMLAttributes, ReactNode, useEffect, useId } from 'react';
+import { autoUpdate, flip, offset, Placement, shift, useFloating } from '@floating-ui/react';
 import { useControlledState } from '@vega-ui/hooks';
 import { PopoverProvider } from './contexts';
 import { csx } from '@vega-ui/utils';
@@ -52,7 +49,7 @@ export interface PopoverProps extends HTMLAttributes<HTMLDivElement> {
 /** A Popover is a UI component that displays additional content or information in a small overlay, typically triggered by a user action, such as clicking or hovering over an element. It is often used for tooltips, details, or extra options */
 export const Popover: FC<PopoverProps> = ({
   placement = 'bottom',
-  role: ariaRole,
+  role,
   open: controlledOpen,
   defaultOpen = false,
   onChangeOpen,
@@ -61,35 +58,32 @@ export const Popover: FC<PopoverProps> = ({
   ...props
 }) => {
   const [open, setOpen] = useControlledState(controlledOpen, defaultOpen, onChangeOpen);
+  const contentId = useId();
 
-  const { floatingStyles, context } = useFloating({
-    whileElementsMounted: autoUpdate,
+  const { refs, elements, floatingStyles, placement: finalPlacement, update } = useFloating({
+    strategy: 'fixed',
+    transform: false,
     middleware: [offset(10), flip(), shift()],
     placement,
     open,
-    onOpenChange: setOpen,
   });
 
-  const click = useClick(context);
-  const dismiss = useDismiss(context);
-  const role = useRole(context, { role: ariaRole });
+  useEffect(() => {
+    if (!open || !elements.reference || !elements.floating) return
 
-  const { getReferenceProps, getFloatingProps } = useInteractions([
-    click,
-    dismiss,
-    role,
-  ]);
+    return autoUpdate(elements.reference, elements.floating, update)
+  }, [open, elements.reference, elements.floating, update])
 
   return (
     <PopoverProvider
       open={open}
-      role={ariaRole}
-      contentStyles={floatingStyles}
+      role={role}
       changeOpen={setOpen}
-      placement={placement}
-      context={context as FloatingContext<HTMLElement>}
-      triggerProps={getReferenceProps()}
-      contentProps={getFloatingProps()}
+      contentId={contentId}
+      placement={finalPlacement}
+      setReference={refs.setReference}
+      setFloating={refs.setFloating}
+      contentStyles={floatingStyles}
     >
       <div className={csx(style.popover, className)} {...props}>
         {children}

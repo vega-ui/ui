@@ -98,27 +98,23 @@ Trade-offs:
   <DialogTrigger asChild>
     <Button>View summary</Button>
   </DialogTrigger>
-  <DialogPortal>
-    <DialogBackdrop>
-      <DialogContent>
-        <Table>
-          <TableBody>
-            <TableRow>
-              <TableCell>Subtotal</TableCell>
-              <TableCell>$120</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Tax</TableCell>
-              <TableCell>$24</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>Total</TableCell>
-              <TableCell>$144</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </DialogContent>
-    </DialogBackdrop>
-  </DialogPortal>
+  <DialogContent aria-label='Summary'>
+    <Table>
+      <TableBody>
+        <TableRow>
+          <TableCell>Subtotal</TableCell>
+          <TableCell>$120</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>Tax</TableCell>
+          <TableCell>$24</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>Total</TableCell>
+          <TableCell>$144</TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
+  </DialogContent>
 </Dialog>
 ```

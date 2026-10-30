@@ -36,13 +36,9 @@ Current selected country value or custom render content.
 
 Visual affordance for the country trigger.
 
-### `PhoneFieldSelectPortal`
-
-[Portal](../../glossary.md#portal) mount for the country listbox.
-
 ### `PhoneFieldSelectListbox`
 
-Country options container.
+Country options container. Renders in the top layer via `popover="manual"`, so no portal part is needed.
 
 ### `PhoneFieldSelectOption`
 
@@ -55,9 +51,8 @@ Typical composition:
 1. `PhoneField`
 2. `PhoneFieldSelect`
 3. `PhoneFieldSelectCombobox`
-4. `PhoneFieldSelectPortal`
-5. `PhoneFieldSelectListbox`
-6. `PhoneFieldInput`
+4. `PhoneFieldSelectListbox`
+5. `PhoneFieldInput`
 
 ## Valid Composition Patterns
 
@@ -69,13 +64,11 @@ Typical composition:
       <PhoneFieldSelectValue />
       <PhoneFieldSelectIcon />
     </PhoneFieldSelectCombobox>
-    <PhoneFieldSelectPortal>
-      <PhoneFieldSelectListbox>
-        <PhoneFieldSelectOption value='US'>United States</PhoneFieldSelectOption>
-        <PhoneFieldSelectOption value='GB'>United Kingdom</PhoneFieldSelectOption>
-        <PhoneFieldSelectOption value='DE'>Germany</PhoneFieldSelectOption>
-      </PhoneFieldSelectListbox>
-    </PhoneFieldSelectPortal>
+    <PhoneFieldSelectListbox>
+      <PhoneFieldSelectOption value='US'>United States</PhoneFieldSelectOption>
+      <PhoneFieldSelectOption value='GB'>United Kingdom</PhoneFieldSelectOption>
+      <PhoneFieldSelectOption value='DE'>Germany</PhoneFieldSelectOption>
+    </PhoneFieldSelectListbox>
   </PhoneFieldSelect>
   <PhoneFieldInput />
 </PhoneField>

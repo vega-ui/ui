@@ -1,6 +1,6 @@
 'use client';
-import { FC, HTMLAttributes, Ref } from 'react';
-import { csx, mergeProps, mergeRefs } from '@vega-ui/utils';
+import { CSSProperties, FC, HTMLAttributes, Ref, useLayoutEffect, useRef } from 'react';
+import { csx, mergeRefs, togglePopover } from '@vega-ui/utils';
 import styles from './style.module.css';
 import { useTooltipContext } from '../../contexts';
 import { useTransitionStatus } from '@floating-ui/react';
@@ -21,22 +21,34 @@ export const TooltipContent: FC<TooltipContentProps> = ({
   style,
   ...props
 }) => {
-  const { contentProps, context, contentStyle } = useTooltipContext()
+  const { context, contentId, side = 'top', arrowX, arrowY, setFloating, contentStyle } = useTooltipContext()
   const { status, isMounted } = useTransitionStatus(context)
+  const element = useRef<HTMLDivElement>(null)
+
+  useLayoutEffect(() => {
+    if (isMounted) togglePopover(element.current, true)
+  }, [isMounted])
+
+  if (!isMounted) return null
 
   return (
-    <>
-      {isMounted && (
-        <div
-          data-status={status}
-          ref={mergeRefs([context?.refs.setFloating, ref])}
-          className={csx(styles.tooltipContent, className)}
-          style={{ ...contentStyle, ...style }}
-          {...mergeProps(contentProps ?? {}, props)}
-        >
-          {children}
-        </div>
-      )}
-    </>
+    <div
+      id={contentId}
+      role='tooltip'
+      popover='manual'
+      data-status={status}
+      data-side={side}
+      ref={mergeRefs([element, setFloating, ref])}
+      className={csx(styles.tooltipContent, className)}
+      style={{
+        ...contentStyle,
+        '--tooltip-arrow-x': arrowX === undefined ? undefined : `${arrowX}px`,
+        '--tooltip-arrow-y': arrowY === undefined ? undefined : `${arrowY}px`,
+        ...style,
+      } as CSSProperties}
+      {...props}
+    >
+      {children}
+    </div>
   )
 }

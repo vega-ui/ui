@@ -1,7 +1,3 @@
-export { DrawerBackdrop, type DrawerBackdropProps } from './DrawerBackdrop'
 export { DrawerContent, type DrawerContentProps } from './DrawerContent'
-export { DrawerHeader, type DrawerHeaderProps } from './DrawerHeader'
 export { DrawerTrigger, type DrawerTriggerProps } from './DrawerTrigger'
-export { DrawerPortal, type DrawerPortalProps } from './DrawerPortal'
-export { DrawerCloseButton, type DrawerCloseButtonProps } from './DrawerCloseButton'
-export { DrawerTitle, type DrawerTitleProps } from './DrawerTitle'
+export { DrawerClose, type DrawerCloseProps } from './DrawerClose'

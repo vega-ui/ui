@@ -14,7 +14,6 @@ import {
   PhoneFieldSelectIcon,
   PhoneFieldSelectListbox,
   PhoneFieldSelectOption,
-  PhoneFieldSelectPortal,
   PhoneFieldSelectValue,
 } from '../components';
 
@@ -43,22 +42,20 @@ const PhoneFieldTest: FC<ComponentProps<typeof PhoneField> & { inputProps?: Phon
           <PhoneFieldSelectIcon />
         </PhoneFieldSelectCombobox>
         
-        <PhoneFieldSelectPortal>
-          <PhoneFieldSelectListbox data-testid={TESTID_LISTBOX}>
-            <PhoneFieldSelectOption data-testid={TESTID_OPTION('RU')} value='RU'>
-              RU
-            </PhoneFieldSelectOption>
-            <PhoneFieldSelectOption data-testid={TESTID_OPTION('US')} value='US'>
-              US
-            </PhoneFieldSelectOption>
-            <PhoneFieldSelectOption data-testid={TESTID_OPTION('FR')} value='FR'>
-              FR
-            </PhoneFieldSelectOption>
-            <PhoneFieldSelectOption data-testid={TESTID_OPTION('IT')} value='IT'>
-              IT
-            </PhoneFieldSelectOption>
-          </PhoneFieldSelectListbox>
-        </PhoneFieldSelectPortal>
+        <PhoneFieldSelectListbox data-testid={TESTID_LISTBOX}>
+          <PhoneFieldSelectOption data-testid={TESTID_OPTION('RU')} value='RU'>
+            RU
+          </PhoneFieldSelectOption>
+          <PhoneFieldSelectOption data-testid={TESTID_OPTION('US')} value='US'>
+            US
+          </PhoneFieldSelectOption>
+          <PhoneFieldSelectOption data-testid={TESTID_OPTION('FR')} value='FR'>
+            FR
+          </PhoneFieldSelectOption>
+          <PhoneFieldSelectOption data-testid={TESTID_OPTION('IT')} value='IT'>
+            IT
+          </PhoneFieldSelectOption>
+        </PhoneFieldSelectListbox>
       </PhoneFieldSelect>
       
       <PhoneFieldInput

@@ -130,8 +130,6 @@ const getTrigger = (r: RenderResult) =>
 const getContent = (r: RenderResult) =>
   r.getByTestId(TESTID_CONTENT);
 
-const queryContent = (r: RenderResult) =>
-  r.queryByTestId(TESTID_CONTENT);
 
 const getCalendarRoot = (r: RenderResult) =>
   r.getByTestId(TESTID_CALENDAR_ROOT);
@@ -205,7 +203,7 @@ describe('DateRangeField', () => {
     });
     
     it('opens calendar popover', async () => {
-      expect(queryContent(r)).toBeNull();
+      expect(r.queryByTestId(TESTID_CALENDAR_ROOT)).toBeNull();
       
       await userEvent.click(getTrigger(r));
       

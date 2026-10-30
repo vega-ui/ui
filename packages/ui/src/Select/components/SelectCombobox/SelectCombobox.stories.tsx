@@ -9,7 +9,6 @@ import { SelectIcon } from '../SelectIcon';
 import { ChevronsUpDown, Dices } from '@vega-ui/icons';
 import { Icon } from '../../../Icon';
 import { useSelectContext } from '../../contexts';
-import { SelectPortal } from '../SelectPortal';
 
 const meta = {
   title: 'Form/Selectors/Select/SelectCombobox',
@@ -25,13 +24,11 @@ const meta = {
       <Select>
         <SelectHiddenSelect />
         <Story />
-        <SelectPortal>
-          <SelectListbox>
-            <SelectOption value={1}>1</SelectOption>
-            <SelectOption value={2}>2</SelectOption>
-            <SelectOption value={3}>3</SelectOption>
-          </SelectListbox>
-        </SelectPortal>
+        <SelectListbox>
+          <SelectOption value={1}>1</SelectOption>
+          <SelectOption value={2}>2</SelectOption>
+          <SelectOption value={3}>3</SelectOption>
+        </SelectListbox>
       </Select>
     )
   }

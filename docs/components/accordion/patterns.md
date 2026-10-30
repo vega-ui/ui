@@ -86,22 +86,18 @@ Trade-offs:
   <DrawerTrigger asChild>
     <Button>Open help</Button>
   </DrawerTrigger>
-  <DrawerPortal>
-    <DrawerBackdrop>
-      <DrawerContent>
-        <Accordion>
-          <AccordionItem value='shipping'>
-            <AccordionHeader>
-              <AccordionTrigger>
-                Shipping
-                <AccordionIcon />
-              </AccordionTrigger>
-            </AccordionHeader>
-            <AccordionContent>Orders leave the warehouse within 24 hours.</AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      </DrawerContent>
-    </DrawerBackdrop>
-  </DrawerPortal>
+  <DrawerContent aria-label='Help'>
+    <Accordion>
+      <AccordionItem value='shipping'>
+        <AccordionHeader>
+          <AccordionTrigger>
+            Shipping
+            <AccordionIcon />
+          </AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>Orders leave the warehouse within 24 hours.</AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  </DrawerContent>
 </Drawer>
 ```

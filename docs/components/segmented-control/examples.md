@@ -73,23 +73,19 @@ Use this when one short exclusive selector belongs inside an overlay settings fl
   <DialogTrigger asChild>
     <Button>Display settings</Button>
   </DialogTrigger>
-  <DialogPortal>
-    <DialogBackdrop>
-      <DialogContent>
-        <SegmentedControl name='theme' defaultValue='light'>
-          <SegmentedControlItem value='light'>
-            <SegmentedControlItemInput />
-            Light
-          </SegmentedControlItem>
-          <SegmentedControlItem value='dark'>
-            <SegmentedControlItemInput />
-            Dark
-          </SegmentedControlItem>
-          <SegmentedControlIndicator />
-        </SegmentedControl>
-      </DialogContent>
-    </DialogBackdrop>
-  </DialogPortal>
+  <DialogContent aria-label='Display settings'>
+    <SegmentedControl name='theme' defaultValue='light'>
+      <SegmentedControlItem value='light'>
+        <SegmentedControlItemInput />
+        Light
+      </SegmentedControlItem>
+      <SegmentedControlItem value='dark'>
+        <SegmentedControlItemInput />
+        Dark
+      </SegmentedControlItem>
+      <SegmentedControlIndicator />
+    </SegmentedControl>
+  </DialogContent>
 </Dialog>
 ```
 

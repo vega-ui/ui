@@ -1,6 +1,6 @@
 import { ComponentProps, FC } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, render, type RenderResult, waitFor } from '@testing-library/react';
+import { cleanup, fireEvent, render, type RenderResult, waitFor } from '@testing-library/react';
 import { userEvent } from 'vitest/browser';
 
 import { Tooltip } from '../Tooltip';
@@ -28,6 +28,11 @@ const TooltipTest: FC<ComponentProps<typeof Tooltip>> = (props) => {
 
 const getTrigger = (r: RenderResult) => r.getByTestId(TESTID_TRIGGER) as HTMLElement;
 const queryContent = (r: RenderResult) => r.queryByTestId(TESTID_CONTENT) as HTMLElement | null;
+
+const focusByKeyboard = async (element: HTMLElement) => {
+  await userEvent.keyboard('{Shift}');
+  element.focus();
+};
 
 describe('Tooltip', () => {
   describe('Critical User Paths', () => {
@@ -130,10 +135,8 @@ describe('Tooltip', () => {
         });
       });
       
-      it('opens on focus', async () => {
-        const trigger = getTrigger(r);
-        
-        trigger.focus();
+      it('opens on keyboard focus', async () => {
+        await focusByKeyboard(getTrigger(r));
         
         await waitFor(() => {
           expect(queryContent(r)).toBeInTheDocument();
@@ -141,19 +144,41 @@ describe('Tooltip', () => {
       });
       
       it('closes on blur', async () => {
-        const trigger = getTrigger(r);
-        
-        trigger.focus();
+        await focusByKeyboard(getTrigger(r));
         await waitFor(() => {
           expect(queryContent(r)).toBeInTheDocument();
         });
         
-        trigger.blur();
+        getTrigger(r).blur();
         await waitFor(() => {
           expect(queryContent(r)).not.toBeInTheDocument();
         });
       });
       
+      it('does not open on a tap', async () => {
+        const trigger = getTrigger(r);
+
+        fireEvent.pointerEnter(trigger, { pointerType: 'touch' });
+        fireEvent.pointerDown(trigger, { pointerType: 'touch' });
+        await new Promise((resolve) => setTimeout(resolve, 700));
+
+        expect(queryContent(r)).not.toBeInTheDocument();
+      });
+
+      it('closes when the trigger is pressed', async () => {
+        const trigger = getTrigger(r);
+
+        await userEvent.hover(trigger);
+        await waitFor(() => {
+          expect(queryContent(r)).toBeInTheDocument();
+        });
+
+        fireEvent.pointerDown(trigger, { pointerType: 'mouse' });
+        await waitFor(() => {
+          expect(queryContent(r)).not.toBeInTheDocument();
+        });
+      });
+
       it('closes on Escape when open', async () => {
         const trigger = getTrigger(r);
         
@@ -171,6 +196,57 @@ describe('Tooltip', () => {
   });
   
   describe('Edge Cases', () => {
+    it('scales the content in place, wherever the trigger is on the page', async () => {
+      const r = render(<div style={{ padding: 300 }}><TooltipTest open /></div>);
+      await expect.element(r.getByTestId(TESTID_CONTENT)).toBeVisible();
+
+      const content = queryContent(r)!;
+      await expect.poll(() => content.getBoundingClientRect().top).toBeGreaterThan(300);
+      content.style.transition = 'none';
+      const full = content.getBoundingClientRect();
+      content.style.scale = '0.5';
+      const scaled = content.getBoundingClientRect();
+
+      expect(scaled.left).toBeGreaterThanOrEqual(full.left);
+      expect(scaled.top).toBeGreaterThanOrEqual(full.top);
+      expect(scaled.right).toBeLessThanOrEqual(full.right);
+      expect(scaled.bottom).toBeLessThanOrEqual(full.bottom);
+    });
+
+    it('shows the next tooltip at once right after another closes', async () => {
+      const r = render(
+        <>
+          <Tooltip delayOpen={0}>
+            <TooltipTrigger data-testid='first'>First</TooltipTrigger>
+            <TooltipContent data-testid='first-content'>First tip</TooltipContent>
+          </Tooltip>
+          <Tooltip delayOpen={5000}>
+            <TooltipTrigger data-testid='second'>Second</TooltipTrigger>
+            <TooltipContent data-testid='second-content'>Second tip</TooltipContent>
+          </Tooltip>
+        </>
+      );
+
+      await userEvent.hover(r.getByTestId('first'));
+      await expect.element(r.getByTestId('first-content')).toBeInTheDocument();
+      await userEvent.hover(r.getByTestId('second'));
+
+      await expect.element(r.getByTestId('second-content')).toBeInTheDocument();
+    });
+
+    it('grows out of its arrow', async () => {
+      const r = render(<TooltipTest defaultOpen />);
+
+      await expect.poll(() => queryContent(r)?.getAttribute('data-side')).toBe('bottom');
+      await expect.poll(() => queryContent(r)?.style.getPropertyValue('--tooltip-arrow-x')).toMatch(/px$/);
+    });
+
+    it('renders the content in the top layer', async () => {
+      const r = render(<TooltipTest defaultOpen />);
+
+      await expect.poll(() => queryContent(r)?.matches(':popover-open')).toBe(true);
+    });
+
     it('does not submit the surrounding form on trigger click', async () => {
       const onSubmit = vi.fn();
       const r = render(
@@ -193,6 +269,15 @@ describe('Tooltip', () => {
         r = render(<TooltipTest delayOpen={0} delayClose={0} />);
       });
       
+      it('describes the trigger while open', async () => {
+        await userEvent.hover(getTrigger(r));
+
+        await waitFor(() => {
+          expect(getTrigger(r)).toHaveAttribute('aria-describedby', queryContent(r)?.id);
+        });
+        expect(getTrigger(r)).toHaveAccessibleDescription(CONTENT_TEXT);
+      });
+
       it('sets role="tooltip" on content when open', async () => {
         const trigger = getTrigger(r);
         

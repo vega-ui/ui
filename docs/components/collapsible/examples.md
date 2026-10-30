@@ -60,18 +60,14 @@ Use this when one expandable detail block lives inside another layout or overlay
   <DrawerTrigger asChild>
     <Button>Open details</Button>
   </DrawerTrigger>
-  <DrawerPortal>
-    <DrawerBackdrop>
-      <DrawerContent>
-        <Collapsible>
-          <CollapsibleTrigger>Audit log details</CollapsibleTrigger>
-          <CollapsibleContent>
-            Actor, timestamp, IP address, and affected resource.
-          </CollapsibleContent>
-        </Collapsible>
-      </DrawerContent>
-    </DrawerBackdrop>
-  </DrawerPortal>
+  <DrawerContent aria-label='Details'>
+    <Collapsible>
+      <CollapsibleTrigger>Audit log details</CollapsibleTrigger>
+      <CollapsibleContent>
+        Actor, timestamp, IP address, and affected resource.
+      </CollapsibleContent>
+    </Collapsible>
+  </DrawerContent>
 </Drawer>
 ```
 

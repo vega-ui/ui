@@ -33,7 +33,7 @@ If a real text input is rendered inside the listbox, built-in [typeahead](../../
 Focus should remain predictable across the compound parts.
 
 - `SelectCombobox` is the main focus target
-- `SelectPortal` should not break logical focus movement across the [portal](../../glossary.md#portal)
+- `SelectListbox` handles focus management itself, so the top-layer rendering does not break logical focus movement
 - closing the listbox should return users to a sensible trigger state
 
 If `Select` is rendered inside overlays such as `Dialog`, retest focus restoration and tab order in the real composition, not only in isolation.

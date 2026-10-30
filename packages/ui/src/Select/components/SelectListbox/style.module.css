@@ -1,6 +1,10 @@
 .listbox {
     --select-listbox-br-ratio: var(--select-br-ratio);
 
+    inset: auto;
+    margin: 0;
+    border: none;
+    color: inherit;
     display: flex;
     flex-direction: column;
     gap: var(--spacing-3);
@@ -13,7 +17,6 @@
     z-index: var(--z-index-popover);
     overflow: auto;
     max-height: 250px;
-    min-width: 100%;
     transition:
             scale var(--transition-state-delay) ease,
             opacity var(--transition-state-delay) ease;
@@ -30,4 +33,10 @@
 .listbox:where([data-status='close']) {
     scale: 0;
     opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .listbox {
+        scale: 1;
+    }
 }

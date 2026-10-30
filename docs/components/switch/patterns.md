@@ -72,30 +72,24 @@ Trade-offs:
   <SheetTrigger asChild>
     <Button>Notification settings</Button>
   </SheetTrigger>
-  <SheetPortal>
-    <SheetBackdrop>
-      <SheetContent>
-        <SheetHeader>
-          <Text size={4}>Notification settings</Text>
-        </SheetHeader>
-        <SheetMain style={{ display: 'grid', gap: 12 }}>
-          <label style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <Switch>
-              <SwitchInput name='alerts' />
-              <SwitchIndicator />
-            </Switch>
-            <span>Incident alerts</span>
-          </label>
-          <label style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <Switch>
-              <SwitchInput name='weekly_digest' />
-              <SwitchIndicator />
-            </Switch>
-            <span>Weekly digest</span>
-          </label>
-        </SheetMain>
-      </SheetContent>
-    </SheetBackdrop>
-  </SheetPortal>
+  <SheetContent aria-labelledby='notification-settings-title'>
+    <Heading id='notification-settings-title' size={4} fontWeight={600} as='h2'>Notification settings</Heading>
+    <div style={{ display: 'grid', gap: 12 }}>
+      <label style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <Switch>
+          <SwitchInput name='alerts' />
+          <SwitchIndicator />
+        </Switch>
+        <span>Incident alerts</span>
+      </label>
+      <label style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <Switch>
+          <SwitchInput name='weekly_digest' />
+          <SwitchIndicator />
+        </Switch>
+        <span>Weekly digest</span>
+      </label>
+    </div>
+  </SheetContent>
 </Sheet>
 ```

@@ -37,20 +37,14 @@ Optional visual indicator for the trigger.
 - Required: no
 - Usually placed after `SelectValue`
 
-### `SelectPortal`
-
-Optional portal wrapper for overlay rendering.
-
-- Required: no
-- Recommended: yes when listbox should escape clipping or stacking contexts
-
 ### `SelectListbox`
 
 Container for selectable options.
 
 - Required: yes
 - Should contain one or more `SelectOption` children
-- Usually rendered inside `SelectPortal`
+- Renders in the top layer via `popover="manual"`, so no portal part is needed
+- Handles focus itself: arrow keys move focus through the options, and focus returns to `SelectCombobox` when the list closes
 
 ### `SelectOption`
 
@@ -77,13 +71,6 @@ Optional visual indicator for the trigger.
 - Required: no
 - Usually placed after `SelectValue`
 
-### `SelectPortal`
-
-Optional portal wrapper for overlay rendering.
-
-- Required: no
-- Recommended: yes when listbox should escape clipping or stacking contexts
-
 ## Composition Order
 
 Typical composition:
@@ -91,9 +78,8 @@ Typical composition:
 1. `Select`
 2. `SelectHiddenSelect`
 3. `SelectCombobox`
-4. `SelectPortal`
-5. `SelectListbox`
-6. `SelectOption`
+4. `SelectListbox`
+5. `SelectOption`
 
 ## Valid Composition Patterns
 
@@ -104,11 +90,9 @@ Typical composition:
     <SelectValue />
     <SelectIcon />
   </SelectCombobox>
-  <SelectPortal>
-    <SelectListbox>
-      <SelectOption value='react'>React</SelectOption>
-    </SelectListbox>
-  </SelectPortal>
+  <SelectListbox>
+    <SelectOption value='react'>React</SelectOption>
+  </SelectListbox>
 </Select>
 ```
 

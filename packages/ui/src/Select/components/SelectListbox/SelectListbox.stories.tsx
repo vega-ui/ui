@@ -8,7 +8,6 @@ import { SelectHiddenSelect } from '../SelectHiddenSelect';
 import { SelectOption } from '../SelectOption';
 import { Icon } from '../../../Icon';
 import { Building2, Landmark, Theater } from '@vega-ui/icons';
-import { SelectPortal } from '../SelectPortal';
 
 const meta = {
   title: 'Form/Selectors/Select/SelectListbox',
@@ -27,9 +26,7 @@ const meta = {
           <SelectValue style={{ gap: 12 }} placeholder='Select city' />
           <SelectIcon />
         </SelectCombobox>
-        <SelectPortal>
-          <Story />
-        </SelectPortal>
+        <Story />
       </Select>
     )
   }

@@ -131,18 +131,14 @@ The calendar popover opens above the dialog that contains the field.
   <DialogTrigger asChild>
     <Button>Schedule review</Button>
   </DialogTrigger>
-  <DialogPortal>
-    <DialogBackdrop>
-      <DialogContent>
-        <DialogTitle>Schedule review</DialogTitle>
-        <Label htmlFor='review-date'>Review date</Label>
-        <DateField format='dd.MM.yyyy' separator='.'>
-          <DateFieldInput id='review-date' />
-          <CalendarPopover />
-        </DateField>
-      </DialogContent>
-    </DialogBackdrop>
-  </DialogPortal>
+  <DialogContent aria-labelledby='schedule-review-title'>
+    <Heading id='schedule-review-title' as='h2' size={4} fontWeight={600}>Schedule review</Heading>
+    <Label htmlFor='review-date'>Review date</Label>
+    <DateField format='dd.MM.yyyy' separator='.'>
+      <DateFieldInput id='review-date' />
+      <CalendarPopover />
+    </DateField>
+  </DialogContent>
 </Dialog>
 ```
 

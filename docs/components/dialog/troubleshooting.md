@@ -70,7 +70,7 @@ The dialog is visible, but users lack clear orientation.
 
 ### Likely Cause
 
-`DialogTitle` is missing or too vague.
+`DialogContent` has no `aria-labelledby` or `aria-label`, or the heading it points to is too vague.
 
 ### How To Verify
 
@@ -79,5 +79,5 @@ The dialog is visible, but users lack clear orientation.
 
 ### Fix
 
-- add a specific `DialogTitle`
+- add a specific heading with an `id` and pass it to `DialogContent` as `aria-labelledby`
 - keep title wording task-oriented

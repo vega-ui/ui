@@ -1,7 +1,7 @@
 'use client';
 
 import { ButtonHTMLAttributes, FC, Ref } from 'react';
-import { mergeProps, mergeRefs } from '@vega-ui/utils';
+import { mergeEventHandlers } from '@vega-ui/utils';
 import { Slot } from '../../../Slot';
 import { useSheetContext } from '../../contexts';
 
@@ -20,18 +20,21 @@ export interface SheetTriggerProps extends ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 /** The SheetTrigger component is the interactive element—typically a button or a slotted custom element—that opens a Sheet, supporting flexible rendering with the asChild prop for advanced composition */
-export const SheetTrigger: FC<SheetTriggerProps> = ({
-  asChild,
-  children,
-  ref,
-  ...props
-}) => {
+export const SheetTrigger: FC<SheetTriggerProps> = ({ asChild, children, onClick: _onClick, ...props }) => {
   const Element = asChild ? Slot : 'button'
 
-  const { triggerRef, triggerProps = {} } = useSheetContext()
+  const { open, changeOpen } = useSheetContext()
+
+  const onClick = () => changeOpen(true)
 
   return (
-    <Element type={Element === 'button' ? 'button' : undefined} {...mergeProps(props, triggerProps)} ref={mergeRefs([triggerRef, ref])}>
+    <Element
+      type={Element === 'button' ? 'button' : undefined}
+      aria-haspopup='dialog'
+      aria-expanded={open}
+      onClick={mergeEventHandlers(onClick, _onClick)}
+      {...props}
+    >
       {children}
     </Element>
   )

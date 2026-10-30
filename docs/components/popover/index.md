@@ -6,7 +6,7 @@
 
 ## Summary
 
-`Popover` is a [compound component](../../glossary.md#compound-component) for non-modal floating content anchored to a trigger, with optional backdrop support when outside-click separation should be stronger. It sits between tooltip-level hinting and full modal overlays.
+`Popover` is a [compound component](../../glossary.md#compound-component) for non-modal floating content anchored to a trigger. `PopoverContent` is a native `popover="auto"` element opened from the trigger through `popovertarget`, so the browser shows it in the top layer, closes it on an outside click or `Escape`, and it is never clipped by `overflow` or covered by a modal dialog. It sits between tooltip-level hinting and full modal overlays.
 
 ## Imports
 
@@ -15,7 +15,6 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
-  PopoverBackdrop,
   type PopoverProps,
 } from '@vega-ui/react';
 ```
@@ -25,7 +24,6 @@ import {
 - `PopoverProps`
 - `PopoverTriggerProps`
 - `PopoverContentProps`
-- `PopoverBackdropProps`
 
 ## Minimal Composition
 
@@ -46,20 +44,18 @@ import {
 
 ## Optional Parts
 
-- `PopoverBackdrop`: optional backdrop when outside click separation should be stronger
+None. For a dimmed backdrop, use `Dialog` or `Sheet` instead.
 
 ## Composition Order
 
 1. `Popover`
 2. `PopoverTrigger`
-3. `PopoverBackdrop`
-4. `PopoverContent`
+3. `PopoverContent`
 
 ## Variants
 
 - Trigger-driven or [controlled](../../glossary.md#controlled) open state
 - Lightweight informational popover versus richer custom content
-- Optional backdrop when outside-click separation should be stronger
 
 ## Related Docs
 
@@ -74,7 +70,7 @@ import {
 
 ## Edge Cases
 
-- Use `Dialog` instead when interaction should be modal.
+- Use `Dialog` or `Sheet` instead when interaction should be modal or needs a dimmed backdrop.
 - Floating content must be tested inside scroll containers and overlays.
 - Trigger content should clearly indicate whether the popover is open.
 - If the content starts accumulating form sections, confirmations, or large action groups, the correct abstraction is usually no longer a popover.

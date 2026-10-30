@@ -57,46 +57,14 @@ Disable built-in typeahead for this pattern.
     <SelectValue placeholder='Select country' />
     <SelectIcon />
   </SelectCombobox>
-  <SelectPortal>
-    <SelectListbox>
-      <TextField size='sm'>
-        <TextFieldInput placeholder='Search country' />
-      </TextField>
-      <SelectOption value='DE'>Germany</SelectOption>
-      <SelectOption value='GB'>United Kingdom</SelectOption>
-    </SelectListbox>
-  </SelectPortal>
-</Select>
-```
-
-## The Listbox Is Clipped Or Hidden Behind Layout Containers
-
-### Symptom
-
-The listbox opens, but part of it is hidden by parent overflow, clipping, or stacking context issues.
-
-### Likely Cause
-
-The listbox is rendered inside a clipping or stacking context without `SelectPortal`.
-
-### How To Verify
-
-- inspect parent containers for `overflow`, transforms, or stacking issues
-- remove the clipping container temporarily
-- see whether the listbox becomes visible
-
-### Fix
-
-Wrap the listbox in `SelectPortal`.
-
-```tsx
-<SelectPortal>
   <SelectListbox>
-    <SelectOption value='starter'>Starter</SelectOption>
-    <SelectOption value='pro'>Pro</SelectOption>
-    <SelectOption value='enterprise'>Enterprise</SelectOption>
+    <TextField size='sm'>
+      <TextFieldInput placeholder='Search country' />
+    </TextField>
+    <SelectOption value='DE'>Germany</SelectOption>
+    <SelectOption value='GB'>United Kingdom</SelectOption>
   </SelectListbox>
-</SelectPortal>
+</Select>
 ```
 
 ## The Select Works Visually But Keyboard Behavior Feels Broken In A Dialog
@@ -169,12 +137,10 @@ const [value, setValue] = useState<string | number | undefined>();
     <SelectValue placeholder='Select framework' />
     <SelectIcon />
   </SelectCombobox>
-  <SelectPortal>
-    <SelectListbox>
-      <SelectOption value='react'>React</SelectOption>
-      <SelectOption value='vue'>Vue</SelectOption>
-    </SelectListbox>
-  </SelectPortal>
+  <SelectListbox>
+    <SelectOption value='react'>React</SelectOption>
+    <SelectOption value='vue'>Vue</SelectOption>
+  </SelectListbox>
 </Select>
 ```
 

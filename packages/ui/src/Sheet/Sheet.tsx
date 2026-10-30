@@ -1,86 +1,44 @@
 'use client';
 
-import {
-  FC,
-  ReactNode,
-  PointerEvent,
-  UIEvent,
-  useState,
-  useRef,
-  useMemo, Ref,
-} from 'react';
-import {
-  FloatingContext,
-  useClick,
-  useDismiss,
-  useFloating,
-  useInteractions,
-  useRole,
-  useTransitionStatus
-} from '@floating-ui/react';
-import { useSnapPoints } from './hooks';
+import { FC, ReactNode, useLayoutEffect, useMemo, useState } from 'react';
 import { useControlledState } from '@vega-ui/hooks';
+import { resolveLength } from '@vega-ui/utils';
 import { SheetProvider } from './contexts';
-import { safeSetPointerCapture } from '@vega-ui/utils';
 
 export interface SheetProps {
-  /** The value that the Sheet will aim at when the pointer is released */
+  /**
+   * The heights the sheet rests at, like the detents of a native sheet: a fraction of the viewport height
+   * (`0.5`) or a pixel height (`'200px'`). The sheet fits its content unless `SheetContent`
+   * has a CSS height, and a snap point above its height rests at its top.
+   * Without snap points the sheet rests fully open.
+   */
   snapPoints?: Array<`${number}px` | number>
-  /**
-   * The threshold value, as a percentage of the screen, at which the snap point will be set to the edge value
-   *
-   * @default 0.4
-   * */
-  edgeThreshold?: number
-  /**
-   * The threshold value, as a percentage of the screen, at which the snap point will be set to the next/prev value
-   *
-   * @default 0.1
-   * */
-  siblingThreshold?: number
-  /**
-   * The time in milliseconds needed to make a decision on switching to threshold snap points
-   *
-   * @default 500
-   * */
-  swipeTimestamp?: number
-  
-  /**
-   * Determines whether the component can be closed by user interaction.
-   */
-  closable?: boolean
-  /**
-   * Whether the sheet can be dismissed by clicking outside or swiping down.
-   *
-   * @default true
-   */
-  dismissible?: boolean
 
   /**
    * The currently active snap point (controlled), as an index into `snapPoints`.
-   * Defines the vertical height or position of the sheet.
    */
   activeSnapPoint?: number
 
   /**
-   * The initial snap point when uncontrolled, as an index into `snapPoints`.
+   * The snap point the sheet opens at when uncontrolled, as an index into `snapPoints`.
+   * Defaults to the lowest one.
    */
   defaultSnapPoint?: number
 
   /**
-   * Callback fired when the active snap point changes.
+   * Callback fired when the user moves the sheet to another snap point.
    *
-   * @param activeSnapPoint - The index into `snapPoints` of the newly activated snap point.
+   * @param activeSnapPoint - The index into `snapPoints` of the new snap point.
    */
   onChangeActiveSnapPoint?: (activeSnapPoint: number) => void
 
   /**
-   * Enables snapping only to defined steps instead of continuous drag.
+   * Moves at most one snap point per drag, however far or fast the drag is.
    */
   steppedSnapPoints?: boolean
-  
+
   /**
-   * Controls whether the sheet is initially open (umcontrolled).
+   * Controls whether the sheet is initially open (uncontrolled).
    */
   defaultOpen?: boolean
 
@@ -88,12 +46,6 @@ export interface SheetProps {
    * Controls whether the sheet is currently open (controlled).
    */
   open?: boolean
-
-  /**
-   * Enables interaction via outside click.
-   * Useful for closing or toggling the sheet from external elements.
-   */
-  clickEnabled?: boolean
 
   /**
    * Callback fired when the open state changes.
@@ -107,234 +59,65 @@ export interface SheetProps {
    * Can include any layout or form elements.
    */
   children?: ReactNode | ReactNode[]
-
-  /**
-   * Ref to the root container of the sheet.
-   * Useful for focus management, measurement, or animations.
-   */
-  ref?: Ref<HTMLDivElement>
 }
 
 /** A Sheet is a UI component that slides up from the bottom of the screen, typically used for displaying additional content or actions without navigating away from the current page */
 export const Sheet: FC<SheetProps> = ({
   children,
   snapPoints,
-  edgeThreshold = .4,
-  siblingThreshold = .1,
-  closable = true,
-  dismissible = true,
   defaultOpen = false,
-  swipeTimestamp = 500,
   defaultSnapPoint,
   steppedSnapPoints = false,
   activeSnapPoint: controlledActiveSnapPoint,
   onChangeActiveSnapPoint,
   open: controlledOpen,
-  onChangeOpen: controlledOnChangeOpen,
-  clickEnabled = true,
+  onChangeOpen,
 }) => {
-  const [isOpen, setIsOpen] = useControlledState(controlledOpen, defaultOpen, controlledOnChangeOpen)
+  const [open, changeOpen] = useControlledState(controlledOpen, defaultOpen, onChangeOpen)
+  const [height, setHeight] = useState(0)
+  const [viewport, setViewport] = useState(0)
 
-  const { refs, context } = useFloating({
-    open: isOpen,
-    onOpenChange: setIsOpen,
-  });
+  useLayoutEffect(() => {
+    const controller = new AbortController()
+    const measure = () => setViewport(document.documentElement.clientHeight)
 
-  const [transforming, setTransforming] = useState<boolean>(false)
+    measure()
+    window.addEventListener('resize', measure, { signal: controller.signal })
 
-  const { defaultActiveSnapPoint, activeSnapPointValue, findClosestSnapPointIndex, setActiveSnapPoint, setActiveSnapPointPosition, activeSnapPointPosition, hasSnapPoints, sortedSnapPointsInDimensions } = useSnapPoints({
-    snapPoints,
-    defaultSnapPoint,
-    activeSnapPoint: controlledActiveSnapPoint,
-    onChangeActiveSnapPoint,
-    containerRef: refs.floating,
-  })
+    return () => controller.abort()
+  }, [])
 
-  const startCoordinates = useRef(0)
-  const startTimestamp = useRef<number | null>(null)
+  const heights = useMemo(() => snapPoints?.map((point) => resolveLength(point, viewport)), [snapPoints, viewport])
+  const offsets = useMemo(() => heights?.map((snapHeight) => Math.max(0, height - snapHeight)) ?? [0], [heights, height])
 
-  const [y, setY] = useState(0)
+  const [chosenSnapPoint, setChosenSnapPoint] = useControlledState(controlledActiveSnapPoint, defaultSnapPoint)
+  const activeSnapPoint = chosenSnapPoint ?? offsets.indexOf(Math.max(...offsets))
 
-  const click = useClick(context, { enabled: clickEnabled });
-  const dismiss = useDismiss(context, {
-    outsidePressEvent: 'pointerdown',
-    enabled: dismissible && closable
-  });
-  const role = useRole(context);
+  const changeActiveSnapPoint = (index: number) => {
+    if (index === activeSnapPoint) return
 
-  const { getReferenceProps, getFloatingProps } = useInteractions([
-    click,
-    dismiss,
-    role,
-  ])
-
-  const { isMounted, status } = useTransitionStatus(context);
-
-  const offset = useMemo(() => transforming ? y + activeSnapPointValue : activeSnapPointValue, [transforming, y, activeSnapPointValue])
-  const limit = useMemo(() => hasSnapPoints ? sortedSnapPointsInDimensions[0] : 0, [hasSnapPoints, sortedSnapPointsInDimensions])
-
-  const clear = () => {
-    setTransforming(false)
-    setY(0)
-
-    startCoordinates.current = 0
-    startTimestamp.current = null
+    setChosenSnapPoint(index)
+    onChangeActiveSnapPoint?.(index)
   }
 
-  const onClose = () => {
-    setActiveSnapPoint(defaultActiveSnapPoint)
-    setIsOpen(false)
-    clear()
-  }
+  const [wasOpen, setWasOpen] = useState(open)
 
-  const changeSnapPoint = (pos: number, direction?: -1 | 1) => {
-    if (!refs.floating.current || !hasSnapPoints) return
-
-    const snapPointIndex = findClosestSnapPointIndex(pos, direction)
-    if (snapPointIndex === undefined) return
-
-    setActiveSnapPointPosition(snapPointIndex)
-  }
-
-  const couldDrag = (element: HTMLElement) => {
-    const highlightedText = window.getSelection()?.toString()
-
-    let el = element
-
-    if (el.tagName === 'SELECT') return false
-    if (highlightedText && highlightedText.length > 0) return false
-
-    while (el) {
-      if (el.scrollHeight > el.clientHeight) {
-        if (el.scrollTop !== 0) return false;
-      }
-
-      if (el === refs.floating.current) break;
-
-      el = el.parentNode as HTMLElement
-    }
-
-    return true
-  }
-
-  const onPress = (e: PointerEvent) => {
-    if (!couldDrag(e.target as HTMLElement)) return
-
-    if (refs.floating.current && !refs.floating.current.contains(e.target as Node)) return;
-
-    const element = e.target as HTMLElement
-    if (element) safeSetPointerCapture(element, e.pointerId)
-
-    startTimestamp.current = e.timeStamp
-    startCoordinates.current = e.clientY
-
-    setTransforming(true)
-  }
-
-  const onDrag = (e: PointerEvent) => {
-    if (!couldDrag(e.target as HTMLElement)) return
-    if (!transforming || !refs.floating.current) return
-
-    const delta = e.clientY - startCoordinates.current
-    const pos = delta + activeSnapPointValue
-
-    if (pos + 100 < limit) {
-      if (!steppedSnapPoints) {
-        changeSnapPoint(pos)
-        clear()
-      }
-
-      return
-
-    }
-
-    if (delta < 0 && offset === limit) return;
-
-    setY(delta)
-  }
-
-  const onRelease = (e: PointerEvent) => {
-    if (!refs.floating.current) return
-    if (!couldDrag(e.target as HTMLElement)) {
-      if (transforming) setTransforming(false)
-      return
-    }
-
-    // Visible height
-    const currentHeight = refs.floating.current.clientHeight - offset
-
-    const direction: -1 | 1 = (e.clientY - startCoordinates.current) > 0 ? 1 : -1
-    const isActionSwipe = startTimestamp.current != null && e.timeStamp - startTimestamp.current < swipeTimestamp
-
-    const isEdgeSwipe = Math.abs(y) > currentHeight * edgeThreshold
-    const isSiblingSnapPoint = Math.abs(y) > currentHeight * siblingThreshold
-
-    const handleEdgeSwipe = () => {
-      if (direction === 1) {
-        if (closable) onClose()
-        else if (hasSnapPoints) setActiveSnapPointPosition(sortedSnapPointsInDimensions.length - 1)
-      }
-
-      if (direction === -1) {
-        if (hasSnapPoints) setActiveSnapPointPosition(0)
-      }
-    }
-
-    const handleActionSwipe = () => {
-      if (isEdgeSwipe) handleEdgeSwipe()
-      else changeSnapPoint(offset, isSiblingSnapPoint ? direction : undefined)
-    }
-
-    // Handle stepped snap points
-    if (steppedSnapPoints && hasSnapPoints) {
-      if (isEdgeSwipe && direction === 1 && closable) {
-        onClose()
-        return
-      }
-
-      if (direction === 1 && activeSnapPointPosition !== sortedSnapPointsInDimensions.length - 1) setActiveSnapPointPosition(activeSnapPointPosition + 1)
-      if (direction === -1 && activeSnapPointPosition !== 0) setActiveSnapPointPosition(activeSnapPointPosition - 1)
-
-      clear()
-      return
-    }
-
-    if (isActionSwipe) {
-      handleActionSwipe()
-      clear()
-      return
-    }
-
-    changeSnapPoint(offset)
-    clear()
-  }
-
-  const onScrollCapture = (e: UIEvent) => {
-    const element = (e.target as HTMLElement)
-    const scrollTop = element.scrollTop
-
-    if (scrollTop !== 0 && transforming) {
-      setTransforming(false)
-    }
+  if (open !== wasOpen) {
+    setWasOpen(open)
+    if (!open) setChosenSnapPoint(defaultSnapPoint)
   }
 
   return (
     <SheetProvider
-      open={isOpen}
-      changeOpen={setIsOpen}
-      context={context as FloatingContext<HTMLElement>}
-      contentRef={refs.setFloating}
-      triggerRef={refs.setReference}
-      triggerProps={getReferenceProps()}
-      contentProps={getFloatingProps()}
-      transitionStatus={status}
-      isMounted={isMounted}
-      onScrollCapture={onScrollCapture}
-      onDrag={onDrag}
-      onPress={onPress}
-      onRelease={onRelease}
-      offset={offset}
-      transforming={transforming}
+      open={open}
+      changeOpen={changeOpen}
+      changeHeight={setHeight}
+      height={height}
+      viewport={viewport}
+      offsets={offsets}
+      activeSnapPoint={activeSnapPoint}
+      changeActiveSnapPoint={changeActiveSnapPoint}
+      steppedSnapPoints={steppedSnapPoints}
     >
       {children}
     </SheetProvider>

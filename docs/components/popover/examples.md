@@ -39,7 +39,6 @@ const [open, setOpen] = useState(false);
   <PopoverTrigger asChild>
     <Button>Rename</Button>
   </PopoverTrigger>
-  <PopoverBackdrop />
   <PopoverContent style={{ maxWidth: 300 }}>
     <Heading size={4} fontWeight={600} as='h3'>Rename</Heading>
     <TextField style={{ marginBlock: 12 }}>
@@ -52,14 +51,13 @@ const [open, setOpen] = useState(false);
 
 ## Layout/Overlay
 
-### Layout/Overlay: user menu with backdrop
+### Layout/Overlay: user menu
 
 ```tsx
 <Popover>
   <PopoverTrigger asChild>
     <Button variant='secondary' appearance='transparent'>Profile</Button>
   </PopoverTrigger>
-  <PopoverBackdrop />
   <PopoverContent style={{ display: 'grid', gap: 8 }}>
     <Button appearance='transparent' variant='secondary'>View profile</Button>
     <Button appearance='transparent' variant='secondary'>Billing</Button>
@@ -77,7 +75,6 @@ const [open, setOpen] = useState(false);
   <PopoverTrigger asChild>
     <Button>Delete</Button>
   </PopoverTrigger>
-  <PopoverBackdrop />
   <PopoverContent style={{ maxWidth: 300 }}>
     <Heading size={4} fontWeight={600} as='h3'>Delete the file?</Heading>
     <Text size={2}>This action can’t be undone.</Text>
@@ -107,7 +104,6 @@ const [open, setOpen] = useState(false);
   <PopoverTrigger asChild>
     <Button variant='secondary'>Open menu</Button>
   </PopoverTrigger>
-  <PopoverBackdrop />
   <PopoverContent>
     <Popover>
       <PopoverTrigger asChild>

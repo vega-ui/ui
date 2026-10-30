@@ -6,7 +6,9 @@ Tooltip content should supplement a control, not replace its label. The trigger 
 
 ## Keyboard Behavior
 
-- Keyboard users should be able to reach the same information as pointer users.
+- The tooltip shows on keyboard focus (`:focus-visible`) without a delay, so keyboard users reach the same information as mouse users.
+- `Escape` hides the tooltip.
+- A tap never shows the tooltip, so touch users do not see it; keep anything they need visible elsewhere.
 - Tooltip timing should not hide required information.
 
 ## Focus Behavior
@@ -17,6 +19,7 @@ Tooltip content should supplement a control, not replace its label. The trigger 
 ## Screen Reader Semantics
 
 - The trigger should already be meaningful.
+- While the tooltip is open, the trigger points to its `role="tooltip"` content through `aria-describedby`.
 - Tooltip content should remain supplemental.
 
 ## Form Semantics

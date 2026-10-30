@@ -28,20 +28,18 @@ const [search, setSearch] = useState('');
     <SelectValue placeholder='Select country' />
     <SelectIcon />
   </SelectCombobox>
-  <SelectPortal>
-    <SelectListbox>
-      <TextField>
-        <TextFieldInput
-          placeholder='Search country'
-          value={search}
-          onChange={(e) => setSearch(e.currentTarget.value)}
-        />
-      </TextField>
-      <SelectOption value='fr'>France</SelectOption>
-      <SelectOption value='de'>Germany</SelectOption>
-      <SelectOption value='jp'>Japan</SelectOption>
-    </SelectListbox>
-  </SelectPortal>
+  <SelectListbox>
+    <TextField>
+      <TextFieldInput
+        placeholder='Search country'
+        value={search}
+        onChange={(e) => setSearch(e.currentTarget.value)}
+      />
+    </TextField>
+    <SelectOption value='fr'>France</SelectOption>
+    <SelectOption value='de'>Germany</SelectOption>
+    <SelectOption value='jp'>Japan</SelectOption>
+  </SelectListbox>
 </Select>
 ```
 
@@ -82,13 +80,11 @@ const [value, setValue] = useState<string | number | undefined>('medium');
       <SelectValue placeholder='Select incident priority' />
       <SelectIcon />
     </SelectCombobox>
-    <SelectPortal>
-      <SelectListbox>
-        <SelectOption value='low'>Low</SelectOption>
-        <SelectOption value='medium'>Medium</SelectOption>
-        <SelectOption value='high'>High</SelectOption>
-      </SelectListbox>
-    </SelectPortal>
+    <SelectListbox>
+      <SelectOption value='low'>Low</SelectOption>
+      <SelectOption value='medium'>Medium</SelectOption>
+      <SelectOption value='high'>High</SelectOption>
+    </SelectListbox>
   </Select>
 </>
 ```
@@ -103,7 +99,7 @@ When to use:
 Composition notes:
 
 - render `Select` normally inside the overlay content
-- keep `SelectPortal` so the listbox does not get clipped
+- no portal is needed: the listbox renders in the top layer above the overlay
 - retest focus restoration and dismissal in the real overlay
 
 Trade-offs:
@@ -112,35 +108,38 @@ Trade-offs:
 - requires more integration testing than isolated component usage
 
 ```tsx
+import type { CSSProperties } from 'react';
+
 <Dialog>
   <DialogTrigger asChild>
     <Button>Open settings</Button>
   </DialogTrigger>
-  <DialogPortal>
-    <DialogBackdrop>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Template</DialogTitle>
-          <DialogCloseButton />
-        </DialogHeader>
+  <DialogContent aria-labelledby='template-title'>
+    <Heading id='template-title' as='h2' size={4} fontWeight={600}>Template</Heading>
+    <DialogClose asChild>
+      <IconButton
+        aria-label='Close'
+        variant='secondary'
+        appearance='ghost'
+        style={{ position: 'absolute', insetBlockStart: 16, insetInlineEnd: 16, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+      >
+        <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
+      </IconButton>
+    </DialogClose>
 
-        <Select defaultValue='template-a'>
-          <SelectHiddenSelect />
-          <SelectCombobox>
-            <SelectValue placeholder='Select template' />
-            <SelectIcon />
-          </SelectCombobox>
-          <SelectPortal>
-            <SelectListbox>
-              <SelectOption value='template-a'>Template A</SelectOption>
-              <SelectOption value='template-b'>Template B</SelectOption>
-              <SelectOption value='template-c'>Template C</SelectOption>
-            </SelectListbox>
-          </SelectPortal>
-        </Select>
-      </DialogContent>
-    </DialogBackdrop>
-  </DialogPortal>
+    <Select defaultValue='template-a'>
+      <SelectHiddenSelect />
+      <SelectCombobox>
+        <SelectValue placeholder='Select template' />
+        <SelectIcon />
+      </SelectCombobox>
+      <SelectListbox>
+        <SelectOption value='template-a'>Template A</SelectOption>
+        <SelectOption value='template-b'>Template B</SelectOption>
+        <SelectOption value='template-c'>Template C</SelectOption>
+      </SelectListbox>
+    </Select>
+  </DialogContent>
 </Dialog>
 ```
 
@@ -171,13 +170,11 @@ Trade-offs:
       <SelectValue placeholder='frequency' />
       <SelectIcon />
     </SelectCombobox>
-    <SelectPortal>
-      <SelectListbox>
-        <SelectOption value='daily'>Daily</SelectOption>
-        <SelectOption value='weekly'>Weekly</SelectOption>
-        <SelectOption value='monthly'>Monthly</SelectOption>
-      </SelectListbox>
-    </SelectPortal>
+    <SelectListbox>
+      <SelectOption value='daily'>Daily</SelectOption>
+      <SelectOption value='weekly'>Weekly</SelectOption>
+      <SelectOption value='monthly'>Monthly</SelectOption>
+    </SelectListbox>
   </Select>
   <Text size={3}>about updates.</Text>
 </div>
@@ -208,22 +205,20 @@ Trade-offs:
     <SelectValue placeholder='Select a plan' />
     <SelectIcon />
   </SelectCombobox>
-  <SelectPortal>
-    <SelectListbox>
-      <SelectOption value='basic'>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <Text size={2}>Basic</Text>
-          <Text size={1}>For simple use cases</Text>
-        </div>
-      </SelectOption>
-      <SelectOption value='pro'>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <Text size={2}>Pro</Text>
-          <Text size={1}>Most common choice</Text>
-        </div>
-      </SelectOption>
-    </SelectListbox>
-  </SelectPortal>
+  <SelectListbox>
+    <SelectOption value='basic'>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <Text size={2}>Basic</Text>
+        <Text size={1}>For simple use cases</Text>
+      </div>
+    </SelectOption>
+    <SelectOption value='pro'>
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <Text size={2}>Pro</Text>
+        <Text size={1}>Most common choice</Text>
+      </div>
+    </SelectOption>
+  </SelectListbox>
 </Select>
 ```
 
@@ -253,12 +248,10 @@ Trade-offs:
       <SelectValue placeholder='Select framework' />
       <SelectIcon />
     </SelectCombobox>
-    <SelectPortal>
-      <SelectListbox>
-        <SelectOption value='react'>React</SelectOption>
-        <SelectOption value='vue'>Vue</SelectOption>
-      </SelectListbox>
-    </SelectPortal>
+    <SelectListbox>
+      <SelectOption value='react'>React</SelectOption>
+      <SelectOption value='vue'>Vue</SelectOption>
+    </SelectListbox>
   </Select>
   <Button type='submit'>Submit</Button>
 </form>

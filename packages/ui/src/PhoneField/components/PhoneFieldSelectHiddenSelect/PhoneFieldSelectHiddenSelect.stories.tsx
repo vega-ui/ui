@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { PhoneFieldSelectHiddenSelect } from './PhoneFieldSelectHiddenSelect';
 import { PhoneFieldSelect } from '../PhoneFieldSelect';
-import { PhoneFieldSelectPortal } from '../PhoneFieldSelectPortal';
 import { PhoneFieldSelectListbox } from '../PhoneFieldSelectListbox';
 import { PhoneFieldSelectOption } from '../PhoneFieldSelectOption';
 
@@ -18,12 +17,10 @@ const meta = {
     return (
       <PhoneFieldSelect>
         <Story />
-        <PhoneFieldSelectPortal>
-          <PhoneFieldSelectListbox>
-            <PhoneFieldSelectOption value='RU'>RU</PhoneFieldSelectOption>
-            <PhoneFieldSelectOption value='US'>US</PhoneFieldSelectOption>
-          </PhoneFieldSelectListbox>
-        </PhoneFieldSelectPortal>
+        <PhoneFieldSelectListbox>
+          <PhoneFieldSelectOption value='RU'>RU</PhoneFieldSelectOption>
+          <PhoneFieldSelectOption value='US'>US</PhoneFieldSelectOption>
+        </PhoneFieldSelectListbox>
       </PhoneFieldSelect>
     )
   }

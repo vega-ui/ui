@@ -6,7 +6,7 @@
 
 ## Summary
 
-`Select` is a [compound component](../../glossary.md#compound-component) built from a root state container plus exported child parts for trigger, value, options, [portal](../../glossary.md#portal), and native [form participation](../../glossary.md#form-participation). It is the field-oriented single-choice layer, not a generic floating-content primitive.
+`Select` is a [compound component](../../glossary.md#compound-component) built from a root state container plus exported child parts for trigger, value, options, and native [form participation](../../glossary.md#form-participation). `SelectListbox` renders in the browser top layer via `popover="manual"`, so it is never clipped by `overflow` or covered by a modal dialog. It is the field-oriented single-choice layer, not a generic floating-content primitive.
 
 ## Imports
 
@@ -18,7 +18,6 @@ import {
   SelectIcon,
   SelectListbox,
   SelectOption,
-  SelectPortal,
   SelectValue,
   type SelectProps,
   type SelectSize,
@@ -41,12 +40,10 @@ import {
     <SelectValue placeholder='Select framework' />
     <SelectIcon />
   </SelectCombobox>
-  <SelectPortal>
-    <SelectListbox>
-      <SelectOption value='react'>React</SelectOption>
-      <SelectOption value='vue'>Vue</SelectOption>
-    </SelectListbox>
-  </SelectPortal>
+  <SelectListbox>
+    <SelectOption value='react'>React</SelectOption>
+    <SelectOption value='vue'>Vue</SelectOption>
+  </SelectListbox>
 </Select>
 ```
 
@@ -62,7 +59,6 @@ import {
 
 - `SelectHiddenSelect`: native [form participation](../../glossary.md#form-participation)
 - `SelectIcon`: visual affordance for the trigger
-- `SelectPortal`: [portal](../../glossary.md#portal) mounting layer
 
 ## Composition Order
 
@@ -71,9 +67,8 @@ Typical composition:
 1. `Select`
 2. `SelectHiddenSelect`
 3. `SelectCombobox`
-4. `SelectPortal`
-5. `SelectListbox`
-6. `SelectOption`
+4. `SelectListbox`
+5. `SelectOption`
 
 ## Variants
 

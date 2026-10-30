@@ -32,7 +32,6 @@ Nested country-select family built around the same field state.
 - `PhoneFieldSelectCombobox`
 - `PhoneFieldSelectValue`
 - `PhoneFieldSelectIcon`
-- `PhoneFieldSelectPortal`
 - `PhoneFieldSelectListbox`
 - `PhoneFieldSelectOption`
 

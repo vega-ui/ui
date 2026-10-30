@@ -12,7 +12,7 @@ Required. Owns open timing and trigger-to-content coordination.
 
 ### `TooltipTrigger`
 
-Required. Defines the hover or focus target.
+Required. Defines the hover or keyboard focus target. A tap does not show the tooltip, and pressing the trigger hides it.
 
 ### `TooltipContent`
 

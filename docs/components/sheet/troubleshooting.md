@@ -45,7 +45,7 @@ Users do not understand how to finish or leave the flow.
 
 ### Likely Cause
 
-`closable={false}` is being used without a clear completion path or strong explanatory copy.
+`closedBy='none'` on `SheetContent` is being used without a clear completion path or strong explanatory copy.
 
 ### How To Verify
 

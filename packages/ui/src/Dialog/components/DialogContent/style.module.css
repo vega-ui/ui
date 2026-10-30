@@ -1,14 +1,56 @@
+:global(html):has(.dialog:modal) {
+    overflow: hidden;
+}
+
 .dialog {
-    scale: .75;
-    opacity: 0;
+    --dialog-scale-from: .96;
+    box-sizing: border-box;
+    border: none;
+    color: inherit;
     background: var(--surface-primary);
     border-radius: var(--radius-6);
     padding: var(--spacing-14) var(--spacing-12);
     min-width: clamp(220px, 70vw, 500px);
     max-width: 600px;
     transition:
-            scale var(--transition-state-delay) ease,
-            opacity var(--transition-state-delay) ease;
+            scale var(--duration-spring) var(--ease-spring),
+            opacity var(--duration-spring) var(--ease-smooth);
+}
+
+.dialog::backdrop {
+    background: var(--overlay);
+    transition: opacity var(--duration-spring) var(--ease-smooth);
+}
+
+.dialog:where([data-blurred='true'])::backdrop {
+    backdrop-filter: blur(20px);
+}
+
+.dialog:where([data-overlay='false'])::backdrop {
+    background: none;
+    backdrop-filter: none;
+}
+
+.dialog:where([data-status='close']),
+.dialog:where([data-status='close'])::backdrop {
+    opacity: 0;
+    transition-duration: var(--duration-exit);
+    transition-timing-function: var(--ease-exit);
+}
+
+.dialog:where([data-status='close']) {
+    scale: var(--dialog-scale-from);
+}
+
+@starting-style {
+    .dialog:where([open]) {
+        scale: var(--dialog-scale-from);
+        opacity: 0;
+    }
+
+    .dialog:where([open])::backdrop {
+        opacity: 0;
+    }
 }
 
 .dialog:where([data-shadowed='true']) {
@@ -17,14 +59,20 @@
 
 .dialog:where([data-fluid='true']) {
     width: 100%;
-    max-width: initial;
+    max-width: none;
     height: 100%;
+    max-height: none;
+    margin: 0;
     overflow: auto;
     border-radius: 0;
-    box-sizing: border-box;
 }
 
-.dialog:where([data-status='open']) {
-    scale: 1;
-    opacity: 1;
+@media (prefers-reduced-motion: reduce) {
+    .dialog {
+        --dialog-scale-from: 1;
+    }
+}
+
+.dialog:focus-visible {
+    outline: none;
 }

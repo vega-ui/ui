@@ -67,6 +67,7 @@ const preview = {
       codePanel: true,
     },
     actions: { argTypesRegex: '^on[A-Z].*' },
+    jsx: { filterProps: (value: unknown) => value !== undefined && typeof value !== 'function' },
     controls: {
       matchers: {
         color: /(background|color)$/i,

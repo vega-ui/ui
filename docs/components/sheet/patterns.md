@@ -21,16 +21,11 @@ Trade-offs:
   <SheetTrigger asChild>
     <Button>Choose delivery</Button>
   </SheetTrigger>
-  <SheetPortal>
-    <SheetBackdrop>
-      <SheetContent>
-        <SheetHandle />
-        <SheetMain>
-          <Text size={3}>Choose the nearest delivery slot and confirm the address before continuing.</Text>
-        </SheetMain>
-      </SheetContent>
-    </SheetBackdrop>
-  </SheetPortal>
+  <SheetContent aria-labelledby='delivery-title'>
+    <SheetHandle aria-label='Resize sheet' />
+    <Heading id='delivery-title' size={4} fontWeight={600} as='h2'>Delivery</Heading>
+    <Text size={3}>Choose the nearest delivery slot and confirm the address before continuing.</Text>
+  </SheetContent>
 </Sheet>
 ```
 
@@ -42,7 +37,7 @@ When to use:
 
 Composition notes:
 
-- Keep the main body scrollable.
+- Make the body an element with `overflow: auto`; as a flex item of `SheetContent` it shrinks on its own.
 - Keep the header and close affordances stable while the body moves.
 
 Trade-offs:
@@ -55,20 +50,14 @@ Trade-offs:
   <SheetTrigger asChild>
     <Button>Open log</Button>
   </SheetTrigger>
-  <SheetPortal>
-    <SheetBackdrop>
-      <SheetContent style={{ maxHeight: '430px' }}>
-        <SheetHeader>
-          <Text size={4}>Activity</Text>
-        </SheetHeader>
-        <SheetMain>
-          <Text size={2}>10:05 Comment added to task</Text>
-          <Text size={2}>10:11 Stage moved to review</Text>
-          <Text size={2}>10:24 Invoice regenerated</Text>
-        </SheetMain>
-      </SheetContent>
-    </SheetBackdrop>
-  </SheetPortal>
+  <SheetContent aria-labelledby='log-title' style={{ maxHeight: '430px' }}>
+    <Heading id='log-title' size={4} fontWeight={600} as='h2'>Activity</Heading>
+    <div style={{ overflow: 'auto' }}>
+      <Text size={2}>10:05 Comment added to task</Text>
+      <Text size={2}>10:11 Stage moved to review</Text>
+      <Text size={2}>10:24 Invoice regenerated</Text>
+    </div>
+  </SheetContent>
 </Sheet>
 ```
 
@@ -80,7 +69,7 @@ When to use:
 
 Composition notes:
 
-- Use `closable={false}` only when the completion path is obvious.
+- Use `closedBy='none'` on `SheetContent` only when the completion path is obvious; a submit button in a `<form method="dialog">` still closes the sheet.
 - Keep the content short enough to work at every active snap point.
 
 Trade-offs:
@@ -89,16 +78,16 @@ Trade-offs:
 - Higher risk of trapping users in a confusing flow if copy is weak.
 
 ```tsx
-<Sheet closable={false} snapPoints={[0.6, 1]}>
+<Sheet snapPoints={[0.6, 1]}>
   <SheetTrigger asChild>
     <Button>Verify details</Button>
   </SheetTrigger>
-  <SheetPortal>
-    <SheetContent>
-      <SheetMain>
-        <Text size={3}>Review the legal name and billing region before final submission.</Text>
-      </SheetMain>
-    </SheetContent>
-  </SheetPortal>
+  <SheetContent closedBy='none' aria-labelledby='verify-title'>
+    <Heading id='verify-title' size={4} fontWeight={600} as='h2'>Verify details</Heading>
+    <Text size={3}>Review the legal name and billing region before final submission.</Text>
+    <form method='dialog'>
+      <Button type='submit' value='confirm'>Confirm</Button>
+    </form>
+  </SheetContent>
 </Sheet>
 ```

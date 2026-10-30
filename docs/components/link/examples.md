@@ -43,15 +43,11 @@ Use this when a dialog needs a navigational secondary reference.
   <DialogTrigger asChild>
     <Button>Publish</Button>
   </DialogTrigger>
-  <DialogPortal>
-    <DialogBackdrop>
-      <DialogContent>
-        <Text size={2}>
-          Review the <Link href='/docs/publishing-policy'>publishing policy</Link> before continuing.
-        </Text>
-      </DialogContent>
-    </DialogBackdrop>
-  </DialogPortal>
+  <DialogContent aria-label='Publish'>
+    <Text size={2}>
+      Review the <Link href='/docs/publishing-policy'>publishing policy</Link> before continuing.
+    </Text>
+  </DialogContent>
 </Dialog>
 ```
 

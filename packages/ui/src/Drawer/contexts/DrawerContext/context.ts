@@ -1,24 +1,15 @@
 'use client';
 
 import { createContext } from '@vega-ui/react-context';
-import { FloatingContext } from '@floating-ui/react';
 import { DrawerPosition } from '../../types';
 
 export interface DrawerContextState {
   open: boolean
-  onChangeOpen: (value: boolean) => void
-  context: FloatingContext<HTMLElement>
-  triggerProps?: Record<string, unknown>
-  contentProps?: Record<string, unknown>
-  isMounted?: boolean
-  transitionStatus?: 'unmounted' | 'initial' | 'open' | 'close'
+  changeOpen: (value: boolean) => void
   position?: DrawerPosition
 }
 
-export const [DrawerProvider, useDrawerContext] = createContext<DrawerContextState>('PhoneFieldContext', {
+export const [DrawerProvider, useDrawerContext] = createContext<DrawerContextState>('DrawerContext', {
   open: false,
-  onChangeOpen: () => undefined,
-  triggerProps: {},
-  contentProps: {},
-  context: {} as FloatingContext<HTMLElement>
+  changeOpen: () => undefined,
 })

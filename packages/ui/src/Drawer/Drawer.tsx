@@ -1,29 +1,11 @@
 'use client';
 
-import {
-  Ref,
-  FC, ReactNode,
-} from 'react';
-import {
-  FloatingContext,
-  useClick,
-  useDismiss,
-  useFloating,
-  useInteractions,
-  useRole,
-  useTransitionStatus
-} from '@floating-ui/react';
+import { FC, ReactNode } from 'react';
 import { useControlledState } from '@vega-ui/hooks';
 import { DrawerProvider } from './contexts';
 import { DrawerPosition } from './types';
 
 export interface DrawerProps {
-  /**
-   * Allows the drawer to be closed by clicking outside or pressing Escape.
-   * When false, the drawer stays open until explicitly closed.
-   */
-  dismissible?: boolean
-  
   /**
    * Controls whether the drawer is default open.
    */
@@ -42,15 +24,10 @@ export interface DrawerProps {
   onChangeOpen?: (value: boolean) => void
 
   /**
-   * Defines from which side of the screen the drawer appears.
+   * Defines from which side of the screen the drawer appears. `start` and `end` follow the writing direction,
+   * like CSS logical properties: in right-to-left text `end` is the left side.
    */
   position?: DrawerPosition
-
-  /**
-   * Ref forwarded to the drawer's root DOM element.
-   * Useful for focus management or animation hooks.
-   */
-  ref?: Ref<HTMLDivElement>
 
   /**
    * The content to display inside the drawer.
@@ -61,44 +38,18 @@ export interface DrawerProps {
 
 /** A Drawer is a UI component that slides in from the side of the screen to display additional content or navigation options, often used for menus or sidebars */
 export const Drawer: FC<DrawerProps> = ({
-  dismissible = true,
-  position = 'right',
+  position = 'end',
   defaultOpen = false,
   open: controlledOpen,
   onChangeOpen: controlledOnChangeOpen,
   children,
 }) => {
-  const [isOpen, setIsOpen] = useControlledState(controlledOpen, defaultOpen, controlledOnChangeOpen)
-
-  const { context } = useFloating({
-    open: isOpen,
-    onOpenChange: setIsOpen,
-  });
-
-  const click = useClick(context);
-  const dismiss = useDismiss(context, {
-    outsidePressEvent: 'pointerdown',
-    enabled: dismissible
-  });
-  const role = useRole(context);
-
-  const { getReferenceProps, getFloatingProps } = useInteractions([
-    click,
-    dismiss,
-    role,
-  ])
-
-  const { isMounted, status } = useTransitionStatus(context);
+  const [open, setOpen] = useControlledState(controlledOpen, defaultOpen, controlledOnChangeOpen)
 
   return (
     <DrawerProvider
-      context={context as FloatingContext<HTMLElement>}
-      contentProps={getFloatingProps()}
-      triggerProps={getReferenceProps()}
-      open={isOpen}
-      onChangeOpen={setIsOpen}
-      isMounted={isMounted}
-      transitionStatus={status}
+      open={open}
+      changeOpen={setOpen}
       position={position}
     >
       {children}

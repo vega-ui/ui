@@ -2,13 +2,13 @@
 
 import { ButtonHTMLAttributes, FC, Ref } from 'react';
 import { Slot } from '../../../Slot';
-import { mergeProps, mergeRefs } from '@vega-ui/utils';
+import { mergeRefs } from '@vega-ui/utils';
 import { usePopoverContext } from '../../contexts';
 
 export interface PopoverTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
-   * If true, renders the trigger as a child element using a `Slot`.
-   * Allows custom elements like `<a>` or `<div>` to behave as a popover trigger.
+   * If true, renders the trigger as its child element using a `Slot`.
+   * The child must be a button: the browser opens the popover through its `popovertarget`.
    */
   asChild?: boolean
 
@@ -19,7 +19,7 @@ export interface PopoverTriggerProps extends ButtonHTMLAttributes<HTMLButtonElem
   ref?: Ref<HTMLButtonElement>
 }
 
-/** The PopoverTrigger component is the interactive element—typically a button or slotted custom element—that toggles the visibility of a Popover, supporting flexible rendering through the asChild prop */
+/** The PopoverTrigger component is the button that toggles a Popover through the native `popovertarget`, supporting flexible rendering through the asChild prop */
 export const PopoverTrigger: FC<PopoverTriggerProps> = ({
   ref,
   asChild,
@@ -28,10 +28,16 @@ export const PopoverTrigger: FC<PopoverTriggerProps> = ({
 }) => {
   const Element = asChild ? Slot : 'button'
 
-  const { context, triggerProps = {} } = usePopoverContext()
+  const { role, contentId, setReference } = usePopoverContext()
 
   return (
-    <Element type={Element === 'button' ? 'button' : undefined} {...mergeProps(props, triggerProps)} ref={mergeRefs([context?.refs.setReference, ref])}>
+    <Element
+      type={Element === 'button' ? 'button' : undefined}
+      popoverTarget={contentId}
+      aria-haspopup={role}
+      {...props}
+      ref={mergeRefs([setReference, ref])}
+    >
       {children}
     </Element>
   )

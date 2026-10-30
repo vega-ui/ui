@@ -149,7 +149,7 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
     return { key, element }
   }, [axis, points, items, scrollerRef])
   
-  const measure = useCallback(() => {
+  const measurePoints = useCallback(() => {
     points.clear();
     
     const scroller = scrollerRef.current;
@@ -166,6 +166,10 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
 
       points.set(key, point);
     }
+  }, [calculateSnapPoint, items, points, scrollerRef, axis, respectScrollPadding]);
+
+  const measure = useCallback(() => {
+    measurePoints();
 
     const pointed = getPointed();
     if (!pointed) return;
@@ -176,7 +180,7 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
       committedKey.current = pointed.key;
       pendingKey.current = pointed.key;
     }
-  }, [calculateSnapPoint, getPointed, items, points, scrollerRef, axis, respectScrollPadding]);
+  }, [measurePoints, getPointed, items]);
 
   const scheduleMeasure = useCallback(() => {
     if (rafMeasureId.current != null) return;
@@ -194,6 +198,8 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
   useResizeObserver(scrollerRef, scheduleMeasure)
   
   const commit = useCallback(() => {
+    if (!points.size) measurePoints()
+
     const pointed = getPointed()
     if (!pointed) return;
 
@@ -209,7 +215,7 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
 
     if (changing) onSnapChanging(element, key);
     onSnapChange(element, key);
-  }, [onSnapChanging, onSnapChange, getPointed])
+  }, [onSnapChanging, onSnapChange, getPointed, measurePoints, points])
   
   const scheduleCommitFallback = useCallback(() => {
     if (endTimerId.current != null) window.clearTimeout(endTimerId.current);

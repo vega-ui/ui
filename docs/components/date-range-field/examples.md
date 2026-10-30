@@ -142,18 +142,14 @@ The calendar popover opens above the drawer that contains the field.
   <DrawerTrigger asChild>
     <Button>Filters</Button>
   </DrawerTrigger>
-  <DrawerPortal>
-    <DrawerBackdrop>
-      <DrawerContent>
-        <DrawerTitle>Filters</DrawerTitle>
-        <Label htmlFor='created'>Created</Label>
-        <DateRangeField format='dd.MM.yyyy' separator='.' rangeSeparator=' - '>
-          <DateRangeFieldInput id='created' />
-          <CalendarPopover />
-        </DateRangeField>
-      </DrawerContent>
-    </DrawerBackdrop>
-  </DrawerPortal>
+  <DrawerContent aria-labelledby='filters-title'>
+    <Heading id='filters-title' as='h2' size={4} fontWeight={600}>Filters</Heading>
+    <Label htmlFor='created'>Created</Label>
+    <DateRangeField format='dd.MM.yyyy' separator='.' rangeSeparator=' - '>
+      <DateRangeFieldInput id='created' />
+      <CalendarPopover />
+    </DateRangeField>
+  </DrawerContent>
 </Drawer>
 ```
 

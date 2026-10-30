@@ -7,17 +7,25 @@ import { FloatingContext } from '@floating-ui/react';
 export interface TooltipContextState {
   open: boolean
   changeOpen: (value: boolean) => void
-  context: FloatingContext<HTMLElement>
+  show: () => void
+  hide: () => void
+  hideAfterDelay: () => void
+  context: FloatingContext
+  contentId?: string
+  side?: string
+  arrowX?: number
+  arrowY?: number
   arrowRef?: Ref<SVGSVGElement>
-  triggerProps?: Record<string, unknown>
-  contentProps?: Record<string, unknown>
+  setReference?: (element: Element | null) => void
+  setFloating?: (element: HTMLElement | null) => void
   contentStyle?: CSSProperties
 }
 
 export const [TooltipProvider, useTooltipContext] = createContext<TooltipContextState>('TooltipContext', {
   open: false,
   changeOpen: () => undefined,
-  triggerProps: {},
-  contentProps: {},
-  context: {} as FloatingContext<HTMLElement>
+  show: () => undefined,
+  hide: () => undefined,
+  hideAfterDelay: () => undefined,
+  context: {} as FloatingContext
 })

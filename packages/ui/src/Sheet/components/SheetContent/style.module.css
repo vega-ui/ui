@@ -1,20 +1,48 @@
+:global(html):has(.content:modal) {
+    overflow: hidden;
+}
+
 .content {
+    --sheet-gap: calc(var(--sheet-inset, var(--spacing-8)) * (1 - var(--sheet-expansion, 1)));
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-8);
-    padding-top: var(--spacing-12);
+    gap: var(--spacing-6);
+    padding: var(--spacing-10) clamp(var(--spacing-12), 3vw, var(--spacing-16)) calc(var(--spacing-12) + env(safe-area-inset-bottom));
     position: fixed;
     box-sizing: border-box;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    max-height: 100%;
+    inset: auto 0 calc(var(--sheet-keyboard-inset, 0px) + var(--sheet-gap));
+    margin: 0 auto;
+    border: none;
+    color: inherit;
+    overflow: visible;
+    width: calc(100% - var(--sheet-gap) * 2);
+    max-width: none;
+    max-height: calc(100% - var(--sheet-keyboard-inset, 0px));
     background: var(--surface-primary);
-    border-top-left-radius: var(--radius-6);
-    border-top-right-radius: var(--radius-6);
-    transition: all .25s ease;
+    border-radius: var(--radius-6);
+    border-bottom-left-radius: calc(var(--radius-6) * (1 - var(--sheet-expansion, 1)));
+    border-bottom-right-radius: calc(var(--radius-6) * (1 - var(--sheet-expansion, 1)));
+    transform: translateY(var(--sheet-offset, 0));
+    transition-property: transform, width, bottom, border-radius, clip-path;
+    transition-duration: var(--duration-spring);
+    transition-timing-function: var(--ease-spring);
     will-change: transform;
+    touch-action: pan-x pan-y;
+}
+
+.content::backdrop {
+    background: var(--overlay);
+    opacity: var(--sheet-progress, 1);
+    transition: opacity var(--duration-spring) var(--ease-smooth);
+}
+
+.content:where([data-blurred='true'])::backdrop {
+    backdrop-filter: blur(20px);
+}
+
+.content:where([data-overlay='false'])::backdrop {
+    background: none;
+    backdrop-filter: none;
 }
 
 .content:where([data-shadow='true']) {
@@ -31,22 +59,67 @@
     background: var(--surface-primary);
 }
 
-.content:where([data-status='open']) {
-    transform: translateY(0);
+.content:where([data-clipped='true']) {
+    clip-path: inset(0 0 var(--sheet-clip) 0 round var(--radius-6) var(--radius-6) calc(var(--radius-6) * (1 - var(--sheet-expansion, 1))) calc(var(--radius-6) * (1 - var(--sheet-expansion, 1))));
 }
 
-.content:where([data-status='initial']),
-.content:where([data-status='unmounted']),
-.content:where([data-status='close']) {
-    transform: translateY(100%);
+.content:where([data-floating='true']):after {
+    display: none;
 }
 
-.content:where([data-dragging='true']) {
+.content:where([data-dragging='true']),
+.content:where([data-dragging='true'])::backdrop {
     transition: none;
+}
+
+.content:where([data-status='close']) {
+    transform: translateY(calc(100% + var(--sheet-gap)));
+    transition-property: transform;
+    transition-duration: var(--duration-exit);
+    transition-timing-function: var(--ease-exit);
+}
+
+.content:where([data-status='close'])::backdrop {
+    opacity: 0;
+    transition-duration: var(--duration-exit);
+    transition-timing-function: var(--ease-exit);
+}
+
+@starting-style {
+    .content:where([open]) {
+        transform: translateY(calc(100% + var(--sheet-gap)));
+    }
+
+    .content:where([open])::backdrop {
+        opacity: 0;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .content,
+    .content:where([data-status='close']) {
+        transition: opacity var(--duration-exit) ease;
+    }
+
+    .content:where([data-status='close']) {
+        transform: translateY(var(--sheet-offset, 0));
+        opacity: 0;
+    }
+
+    @starting-style {
+        .content:where([open]) {
+            transform: translateY(var(--sheet-offset, 0));
+            opacity: 0;
+        }
+    }
 }
 
 @media (hover: hover) and (pointer: fine) {
     .content {
         user-select: none;
     }
+}
+
+.content:focus-visible {
+    outline: none;
 }

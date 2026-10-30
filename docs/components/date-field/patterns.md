@@ -119,18 +119,14 @@ Trade-offs:
   <DrawerTrigger asChild>
     <Button>Reschedule</Button>
   </DrawerTrigger>
-  <DrawerPortal>
-    <DrawerBackdrop>
-      <DrawerContent>
-        <DrawerTitle>Reschedule</DrawerTitle>
-        <Label htmlFor='new-date'>New date</Label>
-        <DateField format='dd.MM.yyyy' separator='.'>
-          <DateFieldInput id='new-date' />
-          <CalendarPopover />
-        </DateField>
-      </DrawerContent>
-    </DrawerBackdrop>
-  </DrawerPortal>
+  <DrawerContent aria-labelledby='reschedule-title'>
+    <Heading id='reschedule-title' as='h2' size={4} fontWeight={600}>Reschedule</Heading>
+    <Label htmlFor='new-date'>New date</Label>
+    <DateField format='dd.MM.yyyy' separator='.'>
+      <DateFieldInput id='new-date' />
+      <CalendarPopover />
+    </DateField>
+  </DrawerContent>
 </Drawer>
 ```
 

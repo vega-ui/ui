@@ -1,7 +1,7 @@
 'use client';
 
 import { ButtonHTMLAttributes, FC, Ref } from 'react';
-import { mergeProps, mergeRefs } from '@vega-ui/utils';
+import { mergeEventHandlers } from '@vega-ui/utils';
 import { Slot } from '../../../Slot';
 import { useDrawerContext } from '../../contexts';
 
@@ -20,18 +20,23 @@ export interface DrawerTriggerProps extends ButtonHTMLAttributes<HTMLButtonEleme
 }
 
 /** The DrawerTrigger component is an interactive control—usually a button or custom slotted element—that toggles the visibility of a drawer, supporting asChild for flexible rendering and integration with custom trigger elements */
-export const DrawerTrigger: FC<DrawerTriggerProps> = ({
-  asChild,
-  children,
-  ref,
-  ...props
-}) => {
+export const DrawerTrigger: FC<DrawerTriggerProps> = ({ asChild, children, onClick: _onClick, ...props }) => {
   const Element = asChild ? Slot : 'button'
 
-  const { context, triggerProps = {} } = useDrawerContext()
+  const { open, changeOpen } = useDrawerContext()
+
+  const onClick = () => {
+    changeOpen(true)
+  }
 
   return (
-    <Element type={Element === 'button' ? 'button' : undefined} {...mergeProps(props, triggerProps)} ref={mergeRefs([context?.refs?.setReference, ref])}>
+    <Element
+      type={Element === 'button' ? 'button' : undefined}
+      aria-haspopup='dialog'
+      aria-expanded={open}
+      onClick={mergeEventHandlers(onClick, _onClick)}
+      {...props}
+    >
       {children}
     </Element>
   )

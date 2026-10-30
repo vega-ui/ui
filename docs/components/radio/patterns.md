@@ -65,29 +65,34 @@ Trade-offs:
 - Can feel verbose if there are too many options.
 
 ```tsx
+import type { CSSProperties } from 'react';
+
 <Dialog>
   <DialogTrigger asChild>
     <Button>Choose environment</Button>
   </DialogTrigger>
-  <DialogPortal>
-    <DialogBackdrop>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Choose environment</DialogTitle>
-          <DialogCloseButton />
-        </DialogHeader>
-        <div style={{ display: 'grid', gap: 12 }}>
-          <label style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <Radio name='environment' value='staging' />
-            Staging
-          </label>
-          <label style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <Radio name='environment' value='production' />
-            Production
-          </label>
-        </div>
-      </DialogContent>
-    </DialogBackdrop>
-  </DialogPortal>
+  <DialogContent aria-labelledby='choose-environment-title'>
+    <Heading id='choose-environment-title' as='h2' size={4} fontWeight={600}>Choose environment</Heading>
+    <DialogClose asChild>
+      <IconButton
+        aria-label='Close'
+        variant='secondary'
+        appearance='ghost'
+        style={{ position: 'absolute', insetBlockStart: 16, insetInlineEnd: 16, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+      >
+        <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
+      </IconButton>
+    </DialogClose>
+    <div style={{ display: 'grid', gap: 12 }}>
+      <label style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <Radio name='environment' value='staging' />
+        Staging
+      </label>
+      <label style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <Radio name='environment' value='production' />
+        Production
+      </label>
+    </div>
+  </DialogContent>
 </Dialog>
 ```

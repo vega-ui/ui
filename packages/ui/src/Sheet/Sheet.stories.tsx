@@ -1,354 +1,313 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { CSSProperties, useState } from 'react';
+import { XIcon } from '@vega-ui/icons';
 
 import { Sheet } from './Sheet';
-import { Text } from '../Text';
+import { SheetClose, SheetContent, SheetHandle, SheetTrigger } from './components';
 import { Button } from '../Button';
-import { Fieldset } from '../Fieldset';
-import { TextField, TextFieldInput } from '../TextField';
+import { IconButton } from '../IconButton';
+import { Icon } from '../Icon';
+import { Text } from '../Text';
+import { Heading } from '../Heading';
 import { Label } from '../Label';
-import { Separator } from '../Separator';
-import {
-  SheetContent,
-  SheetHandle,
-  SheetHeader,
-  SheetTrigger,
-  SheetMain,
-  SheetPortal,
-  SheetBackdrop
-} from './components';
+import { TextField, TextFieldInput } from '../TextField';
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
-const meta: Meta<typeof Sheet> = {
-  title: 'Overlay/Sheet/Sheet',
+const PLACES = Array.from({ length: 30 }, (_, index) => ({
+  name: `Coffee place ${index + 1}`,
+  details: `${(index + 1) * 120} m · Open until 22:00`,
+}));
+
+const meta = {
+  title: 'Overlay/Sheet',
   component: Sheet,
   subcomponents: {
     SheetTrigger,
-    SheetPortal,
-    SheetBackdrop,
     SheetContent,
     SheetHandle,
-    SheetHeader,
-    SheetMain,
+    SheetClose,
   },
   parameters: {
-    layout: 'padded',
+    layout: 'centered',
     design: {
       type: 'figma',
       url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/vega-ui--Community-?node-id=0-1665&t=2RYEGgF9z3n5SpP5-11',
     },
   },
-  args: {},
   tags: ['autodocs'],
-};
+  argTypes: {
+    children: { control: false },
+  },
+} satisfies Meta<typeof Sheet>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  render(props) {
-    return (
-      <Sheet {...props}>
-        <SheetTrigger asChild>
-          <Button>Open</Button>
-        </SheetTrigger>
-        <SheetPortal>
-          <SheetBackdrop>
-            <SheetContent>
-              <SheetHandle />
-              <SheetMain>
-                <Text asChild size={3} style={{ textAlign: 'center', marginTop: '30px' }}>
-                  <p style={{ margin: 0 }}>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                  </p>
-                </Text>
-              </SheetMain>
-            </SheetContent>
-          </SheetBackdrop>
-        </SheetPortal>
-      </Sheet>
-    )
-  }
-}
-
-export const WithHeader: Story = {
-  render(props) {
-    return (
-      <Sheet {...props}>
-        <SheetTrigger asChild>
-          <Button>Open</Button>
-        </SheetTrigger>
-        <SheetPortal>
-          <SheetBackdrop>
-            <SheetContent>
-              <SheetHandle />
-              <SheetHeader>
-                <Text fontWeight={500} size={4}>Title</Text>
-              </SheetHeader>
-              <SheetMain>
-                <Text asChild size={3} style={{ textAlign: 'center', marginTop: '30px' }}>
-                  <p style={{ margin: 0 }}>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-                  </p>
-                </Text>
-              </SheetMain>
-            </SheetContent>
-          </SheetBackdrop>
-        </SheetPortal>
-      </Sheet>
-    )
-  }
-}
-
-export const Scrollable: Story = {
-  render(props) {
-    return (
-      <Sheet {...props}>
-        <SheetTrigger asChild>
-          <Button>Open</Button>
-        </SheetTrigger>
-        <SheetPortal>
-          <SheetBackdrop>
-            <SheetContent style={{ maxHeight: '430px' }}>
-              <SheetMain>
-                {Array.from({ length: 12 }).map((_, index) => (
-                  <Text key={index} asChild size={3} style={{ marginBottom: index !== 9 ? '32px' : undefined }}>
-                    <p>
-                      Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                      industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
-                      scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap
-                      into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the
-                      release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing
-                      software like Aldus PageMaker including versions of Lorem Ipsum.
-                    </p>
-                  </Text>
-                ))}
-              </SheetMain>
-            </SheetContent>
-          </SheetBackdrop>
-        </SheetPortal>
-      </Sheet>
-    )
-  }
-}
+export const Basic: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'By default the sheet fits its content and, like an iOS sheet, keeps clear of the sides.',
+      },
+    },
+  },
+  args: {
+    children: [
+      <SheetTrigger key='trigger' asChild>
+        <Button>Share place</Button>
+      </SheetTrigger>,
+      <SheetContent key='content' aria-labelledby='share-title'>
+        <SheetHandle aria-label='Resize sheet' />
+        <Heading id='share-title' size={4} fontWeight={600} as='h2'>Share</Heading>
+        <SheetClose asChild>
+          <IconButton
+            aria-label='Close'
+            variant='secondary'
+            appearance='ghost'
+            style={{ position: 'absolute', insetBlockStart: 16, insetInlineEnd: 16, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+          >
+            <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
+          </IconButton>
+        </SheetClose>
+        <form method='dialog' style={{ display: 'grid', gap: 8 }}>
+          <Text size={3}>Send Coffee place 1 to a friend or save it for later.</Text>
+          <Button type='submit'>Copy link</Button>
+          <Button type='submit' variant='secondary'>Save to list</Button>
+        </form>
+      </SheetContent>,
+    ],
+  },
+};
 
 export const SnapPoints: Story = {
-  args: {
-    snapPoints: [.5, 1],
+  name: 'Snap points',
+  parameters: {
+    docs: {
+      description: {
+        story: 'Snap points are fractions of the viewport height. The long list makes the sheet as tall as the viewport, so it rests at half and full height; drag it or press the handle, and a flick can skip a snap point. Like an iOS sheet, it keeps clear of the sides until it reaches the top of the viewport. At the top, the list scrolls.',
+      },
+    },
   },
-  render(props) {
-    return (
-      <Sheet {...props}>
-        <SheetTrigger asChild>
-          <Button>Open</Button>
-        </SheetTrigger>
-        <SheetPortal>
-          <SheetBackdrop>
-            <SheetContent>
-              <SheetMain>
-                <Text asChild size={3} style={{ textAlign: 'center', marginTop: '30px', paddingBottom: '250px' }}>
-                  <p>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
-                    scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into
-                    electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release
-                    of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software
-                    like Aldus PageMaker including versions of Lorem Ipsum.
-                  </p>
-                </Text>
-              </SheetMain>
-            </SheetContent>
-          </SheetBackdrop>
-        </SheetPortal>
-      </Sheet>
-    )
-  }
-}
+  args: {
+    snapPoints: [0.5, 1],
+    children: [
+      <SheetTrigger key='trigger' asChild>
+        <Button>Nearby places</Button>
+      </SheetTrigger>,
+      <SheetContent key='content' aria-label='Nearby'>
+        <SheetHandle aria-label='Resize sheet' />
+        <Heading size={4} fontWeight={600} as='h2'>Nearby</Heading>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, overflow: 'auto' }}>
+          {PLACES.map(({ name, details }) => (
+            <div key={name}>
+              <Text size={3} fontWeight={500}>{name}</Text>
+              <Text asChild size={3}><p style={{ margin: 0 }}>{details}</p></Text>
+            </div>
+          ))}
+        </div>
+      </SheetContent>,
+    ],
+  },
+};
 
 export const SteppedSnapPoints: Story = {
+  name: 'Stepped snap points',
+  parameters: {
+    docs: {
+      description: {
+        story: 'A pixel snap point keeps a fixed peek height. With `steppedSnapPoints` a drag moves one snap point at most.',
+      },
+    },
+  },
   args: {
-    snapPoints: [.25, .5, .75, 1],
+    snapPoints: ['160px', 0.5, 1],
     steppedSnapPoints: true,
+    children: [
+      <SheetTrigger key='trigger' asChild>
+        <Button>Nearby places</Button>
+      </SheetTrigger>,
+      <SheetContent key='content' aria-label='Nearby'>
+        <SheetHandle aria-label='Resize sheet' />
+        <Heading size={4} fontWeight={600} as='h2'>Nearby</Heading>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, overflow: 'auto' }}>
+          {PLACES.map(({ name, details }) => (
+            <div key={name}>
+              <Text size={3} fontWeight={500}>{name}</Text>
+              <Text asChild size={3}><p style={{ margin: 0 }}>{details}</p></Text>
+            </div>
+          ))}
+        </div>
+      </SheetContent>,
+    ],
   },
-  render(props) {
-    return (
-      <Sheet {...props}>
-        <SheetTrigger asChild>
-          <Button>Open</Button>
-        </SheetTrigger>
-        <SheetPortal>
-          <SheetBackdrop>
-            <SheetContent>
-              <SheetMain>
-                <Text asChild size={3} style={{ textAlign: 'center', marginTop: '30px' }}>
-                  <p>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                    industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
-                    scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into
-                    electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release
-                    of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software
-                    like Aldus PageMaker including versions of Lorem Ipsum.
-                  </p>
-                </Text>
-              </SheetMain>
-            </SheetContent>
-          </SheetBackdrop>
-        </SheetPortal>
-      </Sheet>
-    )
-  }
-}
+};
 
-export const NotClosable: Story = {
+export const Height: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'A CSS height on `SheetContent` replaces fitting the content; the sheet is never taller than the viewport.',
+      },
+    },
+  },
   args: {
-    snapPoints: [.5, 1],
-    closable: false,
+    children: [
+      <SheetTrigger key='trigger' asChild>
+        <Button>Open map</Button>
+      </SheetTrigger>,
+      <SheetContent key='content' aria-label='Map' style={{ height: '80dvh' }}>
+        <SheetHandle aria-label='Resize sheet' />
+        <Heading size={4} fontWeight={600} as='h2'>Map</Heading>
+        <Text size={3}>The sheet takes 80% of the viewport height whatever its content.</Text>
+      </SheetContent>,
+    ],
   },
-  render(props) {
-    return (
-      <Sheet {...props}>
-        <SheetTrigger asChild>
-          <Button>Open</Button>
-        </SheetTrigger>
-        <SheetPortal>
-          <SheetContent>
-            <SheetMain>
-              <Text asChild size={3} style={{ textAlign: 'center', marginTop: '30px' }}>
-                <p>
-                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                  industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
-                  scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into
-                  electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release
-                  of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software
-                  like Aldus PageMaker including versions of Lorem Ipsum.
-                </p>
-              </Text>
-            </SheetMain>
-          </SheetContent>
-        </SheetPortal>
-      </Sheet>
-    )
-  }
-}
+};
 
-export const WithoutOverlay: Story = {
-  render(props) {
-    return (
-      <Sheet {...props}>
-        <SheetTrigger asChild>
-          <Button>Open</Button>
-        </SheetTrigger>
-        <SheetPortal>
-          <SheetContent shadowed>
-            <SheetMain>
-              <Text asChild size={3} style={{ textAlign: 'center', marginTop: '30px' }}>
-                <p>
-                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                  industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
-                  scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into
-                  electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release
-                  of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software
-                  like Aldus PageMaker including versions of Lorem Ipsum.
-                </p>
-              </Text>
-            </SheetMain>
-          </SheetContent>
-        </SheetPortal>
-      </Sheet>
-    )
-  }
-}
-
-export const WithFormInside: Story = {
+export const Form: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'The sheet rises above the on-screen keyboard, and a drag never starts inside the text fields.',
+      },
+    },
+  },
   args: {
-    snapPoints: ['100px', .5, 1],
+    children: [
+      <SheetTrigger key='trigger' asChild>
+        <Button>New list</Button>
+      </SheetTrigger>,
+      <SheetContent key='content' aria-label='New list'>
+        <SheetHandle aria-label='Resize sheet' />
+        <Heading size={4} fontWeight={600} as='h2'>New list</Heading>
+        <form method='dialog' style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <Label htmlFor='list-name'>Name</Label>
+          <TextField>
+            <TextFieldInput id='list-name' placeholder='Weekend spots' required />
+          </TextField>
+          <Label htmlFor='list-note'>Note</Label>
+          <TextField>
+            <TextFieldInput id='list-note' placeholder='Optional' />
+          </TextField>
+          <Button type='submit' style={{ marginTop: 8 }}>Create</Button>
+        </form>
+      </SheetContent>,
+    ],
   },
-  render(props) {
-    return (
-      <Sheet {...props}>
+};
+
+export const ClosedBy: Story = {
+  name: 'closedBy',
+  parameters: {
+    docs: {
+      description: {
+        story: '`any` (the default) closes on a backdrop click, a swipe down, or `Escape`; `closerequest` only on `Escape`; `none` only from inside.',
+      },
+    },
+  },
+  render: () => (
+    <div style={{ display: 'flex', gap: 8 }}>
+      {(['any', 'closerequest', 'none'] as const).map((closedBy) => (
+        <Sheet key={closedBy}>
+          <SheetTrigger asChild>
+            <Button>{closedBy}</Button>
+          </SheetTrigger>
+          <SheetContent aria-label={closedBy} closedBy={closedBy}>
+            <SheetHandle aria-label='Resize sheet' />
+            <Heading size={4} fontWeight={600} as='h2'>{`closedBy="${closedBy}"`}</Heading>
+            <form method='dialog' style={{ display: 'grid', gap: 8 }}>
+              <Text size={3}>Try a backdrop click, a swipe down and Escape.</Text>
+              <Button type='submit'>Done</Button>
+            </form>
+          </SheetContent>
+        </Sheet>
+      ))}
+    </div>
+  ),
+};
+
+export const Appearance: Story = {
+  render: () => (
+    <div style={{ display: 'flex', gap: 8 }}>
+      <Sheet>
         <SheetTrigger asChild>
-          <Button>Open</Button>
+          <Button>Not blurred</Button>
         </SheetTrigger>
-        <SheetPortal>
-          <SheetBackdrop>
-            <SheetContent>
-              <SheetHandle />
-              <SheetMain>
-                <form>
-                  <Fieldset>
-                    <Text asChild size={4} fontWeight={500}>
-                      <legend>
-                        Personal
-                      </legend>
-                    </Text>
-                    <Separator style={{ margin: '16px 0' }}/>
-                    <div style={{ marginBottom: '32px' }}>
-                      <Label htmlFor='firstName'>First Name</Label>
-                      <TextField id='firstName'>
-                        <TextFieldInput placeholder='Ivan' />
-                      </TextField>
-                    </div>
-                    <div>
-                      <Label htmlFor='lastName'>Last Name</Label>
-                      <TextField id='lastName'>
-                        <TextFieldInput placeholder='Ivanov' />
-                      </TextField>
-                    </div>
-                  </Fieldset>
-                  <Button style={{ marginTop: '32px' }}>Submit</Button>
-                </form>
-              </SheetMain>
-            </SheetContent>
-          </SheetBackdrop>
-        </SheetPortal>
+        <SheetContent aria-label='Not blurred' blurred={false}>
+          <SheetHandle aria-label='Resize sheet' />
+          <Heading size={4} fontWeight={600} as='h2'>Not blurred</Heading>
+          <Text size={3}>The page behind is dimmed but stays sharp.</Text>
+        </SheetContent>
       </Sheet>
-    )
-  }
-}
+      <Sheet>
+        <SheetTrigger asChild>
+          <Button>Without overlay</Button>
+        </SheetTrigger>
+        <SheetContent aria-label='Without overlay' overlay={false} shadowed>
+          <SheetHandle aria-label='Resize sheet' />
+          <Heading size={4} fontWeight={600} as='h2'>Without overlay</Heading>
+          <Text size={3}>The page behind stays visible, and the sheet is still modal.</Text>
+        </SheetContent>
+      </Sheet>
+    </div>
+  ),
+};
+
+export const Controlled: Story = {
+  render: () => {
+    const [snapPoint, setSnapPoint] = useState(0);
+
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <Sheet snapPoints={[0.5, 1]} activeSnapPoint={snapPoint} onChangeActiveSnapPoint={setSnapPoint}>
+          <SheetTrigger asChild>
+            <Button>Nearby places</Button>
+          </SheetTrigger>
+          <SheetContent aria-label='Nearby'>
+            <SheetHandle aria-label='Resize sheet' />
+            <Heading size={4} fontWeight={600} as='h2'>Nearby</Heading>
+            <div style={{ display: 'flex', gap: 8, marginBottom: 16 }}>
+              <Button onClick={() => setSnapPoint(0)}>Half</Button>
+              <Button onClick={() => setSnapPoint(1)}>Full</Button>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16, overflow: 'auto' }}>
+              {PLACES.map(({ name, details }) => (
+                <div key={name}>
+                  <Text size={3} fontWeight={500}>{name}</Text>
+                  <Text asChild size={3}><p style={{ margin: 0 }}>{details}</p></Text>
+                </div>
+              ))}
+            </div>
+          </SheetContent>
+        </Sheet>
+        <Text size={2}>activeSnapPoint: {snapPoint}</Text>
+      </div>
+    );
+  },
+};
 
 export const Nested: Story = {
-  render(props) {
-    return (
-      <Sheet {...props}>
-        <SheetTrigger asChild>
-          <Button>Open</Button>
-        </SheetTrigger>
-        <SheetPortal>
-          <SheetBackdrop>
-            <SheetContent>
-              <SheetMain>
-                <Text asChild size={3} style={{ textAlign: 'center', marginTop: '30px' }}>
-                  <p>
-                    Nested Sheet
-                  </p>
-                </Text>
-                <Sheet>
-                  <SheetTrigger asChild>
-                    <Button>Open</Button>
-                  </SheetTrigger>
-                  <SheetPortal>
-                    <SheetBackdrop>
-                      <SheetContent>
-                        <SheetMain>
-                          <Text asChild size={3} style={{ textAlign: 'center', marginTop: '30px' }}>
-                            <p>
-                              Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                              industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
-                              scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into
-                              electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release
-                              of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software
-                              like Aldus PageMaker including versions of Lorem Ipsum.
-                            </p>
-                          </Text>
-                        </SheetMain>
-                      </SheetContent>
-                    </SheetBackdrop>
-                  </SheetPortal>
-                </Sheet>
-              </SheetMain>
+  args: {
+    children: [
+      <SheetTrigger key='trigger' asChild>
+        <Button>Open place</Button>
+      </SheetTrigger>,
+      <SheetContent key='content' aria-label='Coffee place 1'>
+        <SheetHandle aria-label='Resize sheet' />
+        <Heading size={4} fontWeight={600} as='h2'>Coffee place 1</Heading>
+        <div style={{ display: 'grid', gap: 8 }}>
+          <Text size={3}>120 m · Open until 22:00</Text>
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant='secondary'>Share</Button>
+            </SheetTrigger>
+            <SheetContent aria-label='Share'>
+              <SheetHandle aria-label='Resize sheet' />
+              <Heading size={4} fontWeight={600} as='h2'>Share</Heading>
+              <Text size={3}>A nested sheet opens over the first one; closing it returns you there.</Text>
             </SheetContent>
-          </SheetBackdrop>
-        </SheetPortal>
-      </Sheet>
-    )
-  }
-}
+          </Sheet>
+        </div>
+      </SheetContent>,
+    ],
+  },
+};

@@ -64,20 +64,16 @@ Use this when several independent choices live inside an overlay form.
   <DrawerTrigger asChild>
     <Button>Notification settings</Button>
   </DrawerTrigger>
-  <DrawerPortal>
-    <DrawerBackdrop>
-      <DrawerContent>
-        <Checkbox>
-          <CheckboxInput />
-          <CheckboxIndicator>
-            <CheckboxCheckedIcon />
-            <CheckboxIndeterminateIcon />
-          </CheckboxIndicator>
-          Incident alerts
-        </Checkbox>
-      </DrawerContent>
-    </DrawerBackdrop>
-  </DrawerPortal>
+  <DrawerContent aria-label='Notification settings'>
+    <Checkbox>
+      <CheckboxInput />
+      <CheckboxIndicator>
+        <CheckboxCheckedIcon />
+        <CheckboxIndeterminateIcon />
+      </CheckboxIndicator>
+      Incident alerts
+    </Checkbox>
+  </DrawerContent>
 </Drawer>
 ```
 

@@ -62,7 +62,7 @@ Trade-offs:
 
 ```tsx
 <Dialog>
-  <DialogContent>
+  <DialogContent aria-label='Upload progress'>
     <Progress fullWidth value={65}>
       <ProgressTrack />
     </Progress>

@@ -11,7 +11,6 @@ import {
   PhoneFieldSelectCombobox,
   PhoneFieldSelectValue,
   PhoneFieldSelectIcon,
-  PhoneFieldSelectPortal,
   PhoneFieldSelectListbox,
   PhoneFieldSelectOption,
   PhoneFieldInput,
@@ -29,7 +28,6 @@ const meta = {
     PhoneFieldSelectCombobox,
     PhoneFieldSelectValue,
     PhoneFieldSelectIcon,
-    PhoneFieldSelectPortal,
     PhoneFieldSelectListbox,
     PhoneFieldSelectOption,
     PhoneFieldInput,
@@ -81,15 +79,13 @@ export const WithSelect: Story = {
             <PhoneFieldSelectValue />
             <PhoneFieldSelectIcon />
           </PhoneFieldSelectCombobox>
-          <PhoneFieldSelectPortal>
-            <PhoneFieldSelectListbox>
-              {options.map((code) => (
-                <PhoneFieldSelectOption key={code} value={code}>
-                  {code}
-                </PhoneFieldSelectOption>
-              ))}
-            </PhoneFieldSelectListbox>
-          </PhoneFieldSelectPortal>
+          <PhoneFieldSelectListbox>
+            {options.map((code) => (
+              <PhoneFieldSelectOption key={code} value={code}>
+                {code}
+              </PhoneFieldSelectOption>
+            ))}
+          </PhoneFieldSelectListbox>
         </PhoneFieldSelect>
         <PhoneFieldInput placeholder='+7' autoComplete='tel' />
       </PhoneField>
@@ -125,19 +121,17 @@ export const WithSelectAndIcons: Story = {
             </PhoneFieldSelectValue>
             <PhoneFieldSelectIcon />
           </PhoneFieldSelectCombobox>
-          <PhoneFieldSelectPortal>
-            <PhoneFieldSelectListbox>
-              {options.map(({ code, icon, label, post }) => (
-                <PhoneFieldSelectOption key={code} value={code}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    {icon}
-                    {label}
-                  </div>
-                  {post}
-                </PhoneFieldSelectOption>
-              ))}
-            </PhoneFieldSelectListbox>
-          </PhoneFieldSelectPortal>
+          <PhoneFieldSelectListbox>
+            {options.map(({ code, icon, label, post }) => (
+              <PhoneFieldSelectOption key={code} value={code}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  {icon}
+                  {label}
+                </div>
+                {post}
+              </PhoneFieldSelectOption>
+            ))}
+          </PhoneFieldSelectListbox>
         </PhoneFieldSelect>
         <PhoneFieldInput placeholder='+7' autoComplete='tel' />
       </PhoneField>

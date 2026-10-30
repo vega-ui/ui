@@ -50,16 +50,12 @@ Use this when actions live inside dialogs, drawers, or sheets.
   <DialogTrigger asChild>
     <Button>Delete file</Button>
   </DialogTrigger>
-  <DialogPortal>
-    <DialogBackdrop>
-      <DialogContent>
-        <div style={{ display: 'flex', gap: 12 }}>
-          <Button variant='secondary' appearance='outline'>Cancel</Button>
-          <Button>Delete</Button>
-        </div>
-      </DialogContent>
-    </DialogBackdrop>
-  </DialogPortal>
+  <DialogContent aria-label='Delete file'>
+    <div style={{ display: 'flex', gap: 12 }}>
+      <Button variant='secondary' appearance='outline'>Cancel</Button>
+      <Button>Delete</Button>
+    </div>
+  </DialogContent>
 </Dialog>
 ```
 

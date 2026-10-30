@@ -9,7 +9,6 @@ import { PhoneFieldSelectOption } from '../PhoneFieldSelectOption';
 import { PhoneField } from '../../PhoneField';
 import { PhoneFieldInput } from '../PhoneFieldInput';
 import { PhoneFieldSelect } from '../PhoneFieldSelect';
-import { PhoneFieldSelectPortal } from '../PhoneFieldSelectPortal';
 
 const meta = {
   title: 'Form/Fields/PhoneField/PhoneFieldSelect/PhoneFieldSelectCombobox',
@@ -25,13 +24,11 @@ const meta = {
         <PhoneFieldSelect>
           <PhoneFieldSelectHiddenSelect />
           <Story />
-          <PhoneFieldSelectPortal>
-            <PhoneFieldSelectListbox>
-              <PhoneFieldSelectOption value='RU'>
-                RU
-              </PhoneFieldSelectOption>
-            </PhoneFieldSelectListbox>
-          </PhoneFieldSelectPortal>
+          <PhoneFieldSelectListbox>
+            <PhoneFieldSelectOption value='RU'>
+              RU
+            </PhoneFieldSelectOption>
+          </PhoneFieldSelectListbox>
         </PhoneFieldSelect>
         <PhoneFieldInput />
       </PhoneField>

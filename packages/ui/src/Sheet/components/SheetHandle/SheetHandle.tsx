@@ -1,26 +1,43 @@
 'use client';
-import {
-  FC,
-  HTMLAttributes, Ref,
-} from 'react';
-import { csx } from '@vega-ui/utils';
+import { FC, HTMLAttributes, Ref } from 'react';
+import { csx, mergeEventHandlers } from '@vega-ui/utils';
+import { useSheetContext } from '../../contexts';
 import style from './style.module.css'
 
-export interface SheetHandleProps extends HTMLAttributes<HTMLDivElement> {
+export interface SheetHandleProps extends HTMLAttributes<HTMLButtonElement> {
   /**
-   * Ref forwarded to the root handle element.
-   * Useful for focus management, gesture tracking, or integration with animation libraries.
+   * Ref forwarded to the handle `<button>`.
    */
-  ref?: Ref<HTMLDivElement>
+  ref?: Ref<HTMLButtonElement>
 }
 
-/** The SheetHandle component provides a visual and interactive grip element at the top of a sheet, enhancing usability by indicating drag affordance and improving discoverability of gesture-based interactions. */
+/** The SheetHandle component is the grip at the top of a sheet, a button that moves the sheet to the next snap point, and back to the lowest one from the top. Without several snap points it is disabled and hidden from assistive technology */
 export const SheetHandle: FC<SheetHandleProps> = ({
   className,
   ref,
+  onClick: _onClick,
   ...props
 }) => {
+  const { offsets, activeSnapPoint, changeActiveSnapPoint } = useSheetContext()
+
+  const resizable = offsets.length > 1
+
+  const onClick = () => {
+    const order = offsets.map((_, index) => index).sort((a, b) => offsets[b] - offsets[a])
+    const next = order[(order.indexOf(activeSnapPoint) + 1) % order.length]
+
+    changeActiveSnapPoint(next)
+  }
+
   return (
-    <div ref={ref} className={csx(style.handle, className)} {...props} />
+    <button
+      ref={ref}
+      type='button'
+      disabled={!resizable}
+      aria-hidden={!resizable}
+      className={csx(style.handle, className)}
+      onClick={mergeEventHandlers(onClick, _onClick)}
+      {...props}
+    />
   )
 }

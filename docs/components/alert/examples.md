@@ -81,19 +81,15 @@ Use this when a modal flow still needs compact inline feedback.
   <DialogTrigger asChild>
     <Button>Review billing</Button>
   </DialogTrigger>
-  <DialogPortal>
-    <DialogBackdrop>
-      <DialogContent>
-        <Alert variant='error' appearance='surface' role='alert'>
-          <AlertIcon />
-          <AlertMain>
-            <AlertTitle>Payment failed</AlertTitle>
-            <AlertContent>Check your card details and try again.</AlertContent>
-          </AlertMain>
-        </Alert>
-      </DialogContent>
-    </DialogBackdrop>
-  </DialogPortal>
+  <DialogContent aria-label='Review billing'>
+    <Alert variant='error' appearance='surface' role='alert'>
+      <AlertIcon />
+      <AlertMain>
+        <AlertTitle>Payment failed</AlertTitle>
+        <AlertContent>Check your card details and try again.</AlertContent>
+      </AlertMain>
+    </Alert>
+  </DialogContent>
 </Dialog>
 ```
 

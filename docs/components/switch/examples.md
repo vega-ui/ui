@@ -64,19 +64,15 @@ Use this when one immediate setting lives inside a mobile-first overlay flow.
   <SheetTrigger asChild>
     <Button>Notification settings</Button>
   </SheetTrigger>
-  <SheetPortal>
-    <SheetBackdrop>
-      <SheetContent>
-        <label style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <Switch>
-            <SwitchInput name='alerts' />
-            <SwitchIndicator />
-          </Switch>
-          <span>Incident alerts</span>
-        </label>
-      </SheetContent>
-    </SheetBackdrop>
-  </SheetPortal>
+  <SheetContent aria-label='Notification settings'>
+    <label style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+      <Switch>
+        <SwitchInput name='alerts' />
+        <SwitchIndicator />
+      </Switch>
+      <span>Incident alerts</span>
+    </label>
+  </SheetContent>
 </Sheet>
 ```
 
