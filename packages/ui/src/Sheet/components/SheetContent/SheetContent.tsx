@@ -2,7 +2,7 @@
 
 import { CSSProperties, DialogHTMLAttributes, FC, Ref, useLayoutEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { clamp, csx, findScrollableAncestor, isBackdropPoint, isTextInteraction, mergeEventHandlers, mergeRefs, nearest, projectMomentum, rubberBand } from '@vega-ui/utils';
+import { clamp, csx, findScrollableAncestor, isBackdropPoint, isTextInteraction, mergeEventHandlers, mergeRefs, projectMomentum, resolveSnapStop, rubberBand } from '@vega-ui/utils';
 import { DragGesture, ModalDialogClosedBy, useDragGesture, useKeyboardInset, useModalDialog } from '@vega-ui/hooks';
 import { useSheetContext } from '../../contexts';
 import styles from './style.module.css'
@@ -110,10 +110,8 @@ export const SheetContent: FC<SheetContentProps> = ({
   const onEnd = ({ delta, velocity }: DragGesture) => {
     setDragOffset(null)
 
-    const candidates = [...offsets, ...(swipeable ? [height] : [])].sort((a, b) => a - b)
-    const current = candidates.indexOf(restingOffset)
-    const reachable = steppedSnapPoints ? candidates.slice(Math.max(0, current - 1), current + 2) : candidates
-    const target = reachable[nearest(reachable, restingOffset + delta + projectMomentum(velocity))]
+    const stops = swipeable ? [...offsets, height] : offsets
+    const target = resolveSnapStop(stops, restingOffset, restingOffset + delta + projectMomentum(velocity), steppedSnapPoints)
 
     if (swipeable && target === height) {
       changeOpen(false)

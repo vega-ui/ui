@@ -11,4 +11,5 @@ Add helpers for native overlays and gestures:
 - `createWarmUp(duration)` creates a shared window that lets the next element skip its delay, and `tooltipWarmUp` is the one tooltips share.
 - `isBackdropPoint(dialog, { target, clientX, clientY })` tells whether a press on a modal `<dialog>` landed on its `::backdrop`.
 - `isTextInteraction(target)` tells whether a press is meant for text: it lands in a form field or editable content, or text is selected.
+- `resolveSnapStop(stops, current, position, stepped)` returns the stop a drag released at `position` settles at, moving one stop at most when `stepped`.
 - `resolveLength(length, total)` resolves a fraction of `total` or a pixel length to pixels, never more than `total`.
