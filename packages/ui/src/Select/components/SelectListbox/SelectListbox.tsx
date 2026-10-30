@@ -1,8 +1,8 @@
-import { FC, HTMLAttributes, Ref } from 'react'
-import { csx, mergeProps, mergeRefs } from '@vega-ui/utils';
+import { FC, HTMLAttributes, Ref, useLayoutEffect, useRef } from 'react'
+import { csx, mergeProps, mergeRefs, togglePopover } from '@vega-ui/utils';
 import styles from './style.module.css';
 import { useSelectContext } from '../../contexts';
-import { FloatingList } from '@floating-ui/react';
+import { FloatingFocusManager, FloatingList } from '@floating-ui/react';
 
 export interface SelectListboxProps extends HTMLAttributes<HTMLDivElement> {
   /**
@@ -29,21 +29,29 @@ export const SelectListbox: FC<SelectListboxProps> = ({
   ...props
 }) => {
   const { context, status, listboxProps, listboxStyles, elementsRef, labelsRef, open } = useSelectContext()
+  const listboxRef = useRef<HTMLDivElement>(null)
+
+  useLayoutEffect(() => {
+    togglePopover(listboxRef.current, status !== 'unmounted')
+  }, [status])
   
   return (
-    <div
-      inert={!open}
-      role='listbox'
-      data-status={status}
-      hidden={status === 'unmounted'}
-      ref={mergeRefs([context.refs.setFloating, ref])}
-      className={csx(styles.listbox, className)}
-      style={{ ...listboxStyles, ...style }}
-      {...mergeProps(props, listboxProps)}
-    >
-      <FloatingList elementsRef={elementsRef} labelsRef={labelsRef}>
-        {children}
-      </FloatingList>
-    </div>
+    <FloatingFocusManager initialFocus={-1} disabled={!open} context={context} modal={false}>
+      <div
+        popover='manual'
+        inert={!open}
+        role='listbox'
+        data-status={status}
+        hidden={status === 'unmounted'}
+        ref={mergeRefs([context.refs.setFloating, listboxRef, ref])}
+        className={csx(styles.listbox, className)}
+        style={{ ...listboxStyles, ...style }}
+        {...mergeProps(props, listboxProps)}
+      >
+        <FloatingList elementsRef={elementsRef} labelsRef={labelsRef}>
+          {children}
+        </FloatingList>
+      </div>
+    </FloatingFocusManager>
   )
 }

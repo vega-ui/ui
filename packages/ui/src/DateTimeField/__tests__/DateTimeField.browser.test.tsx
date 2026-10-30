@@ -122,7 +122,6 @@ const DateTimeFieldTest: FC<Partial<DateTimeFieldProps> & { inputProps?: DateTim
 const getInput = (r: RenderResult) =>
   r.getByTestId(TESTID_INPUT) as HTMLInputElement;
 const getTrigger = (r: RenderResult) => r.getByTestId(TESTID_TRIGGER);
-const queryContent = (r: RenderResult) => r.queryByTestId(TESTID_CONTENT);
 const getContent = (r: RenderResult) => r.getByTestId(TESTID_CONTENT);
 const getCalendar = (r: RenderResult) => r.getByTestId(TESTID_CALENDAR);
 const getCell = (r: RenderResult, date: Date, calendar: CalendarSystem = gregorianCalendar) =>
@@ -193,7 +192,7 @@ describe('DateTimeField', () => {
     });
     
     it('opens calendar popover by clicking trigger', async () => {
-      expect(queryContent(r)).toBeNull();
+      expect(r.queryByTestId(TESTID_CALENDAR)).toBeNull();
       
       await userEvent.click(getTrigger(r));
       
@@ -376,7 +375,7 @@ describe('DateTimeField', () => {
         await expect.element(getCell(r, new Date(2026, 1, 15))).toHaveAttribute('tabindex', '0');
         await userEvent.keyboard('{Escape}');
 
-        await expect.poll(() => r.queryByTestId(TESTID_CONTENT)).toBeNull();
+        await expect.poll(() => r.queryByTestId(TESTID_CALENDAR)).toBeNull();
         await expect.element(getInput(r)).toHaveValue('15.01.2026, 12:30');
       });
 

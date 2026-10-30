@@ -75,7 +75,7 @@ import {
 ## Edge Cases
 
 - Tooltips should not contain critical actions or required instructions.
-- Touch and keyboard users need equivalent access to the same information.
+- The tooltip shows on mouse or pen hover and on keyboard focus, never on a tap, so touch users need the same information elsewhere.
 - Trigger content should remain understandable even without the tooltip.
 
 ## Common Mistakes

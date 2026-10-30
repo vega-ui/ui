@@ -22,7 +22,7 @@ The task belongs in `Dialog` or `Drawer`.
 
 ### Symptom
 
-The floating layer clips or feels detached from the trigger.
+The floating layer feels detached from the trigger.
 
 ### Likely Cause
 
@@ -35,6 +35,7 @@ The real container or overlay stack was not tested.
 ### Fix
 
 - Retest the exact production container structure.
+- `PopoverContent` renders in the top layer, so `overflow` and `z-index` on ancestors do not clip or cover it; look at placement instead.
 
 ## Nested Popovers Feel Confusing
 
@@ -73,3 +74,21 @@ The trigger relies on floating content as its primary label or explanation.
 
 - Give the trigger its own accessible meaning.
 - Keep popover content supplemental and contextual.
+
+## Popover Does Not Open From A Custom Trigger
+
+### Symptom
+
+Clicking a custom `PopoverTrigger asChild` child does nothing.
+
+### Likely Cause
+
+The child does not render a `<button>`, so the native `popovertarget` has no effect.
+
+### How To Verify
+
+- Inspect the trigger element and check that it is a `<button>` with `popovertarget`.
+
+### Fix
+
+- Use `Button` or another component that renders a `<button>` as the `asChild` child.

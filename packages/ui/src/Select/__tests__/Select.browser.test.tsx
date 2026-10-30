@@ -1,7 +1,7 @@
 import { ComponentProps, FC, FormEvent, PropsWithChildren } from 'react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, onTestFinished, vi } from 'vitest';
 import { cleanup, fireEvent, render, type RenderResult, waitFor } from '@testing-library/react';
-import { userEvent } from 'vitest/browser';
+import { commands, userEvent } from 'vitest/browser';
 
 import { Select } from '../Select';
 import {
@@ -10,7 +10,6 @@ import {
   SelectIcon,
   SelectListbox,
   SelectOption,
-  SelectPortal,
   SelectValue,
 } from '../components';
 
@@ -46,13 +45,11 @@ const SelectTest: FC<ComponentProps<typeof Select>> = (props) => {
         <SelectIcon />
       </SelectCombobox>
       
-      <SelectPortal>
-        <SelectListbox data-testid={TESTID_LISTBOX}>
-          <SelectOption value={VALUE_MOSCOW}>{LABEL_MOSCOW}</SelectOption>
-          <SelectOption value={VALUE_SPB}>{LABEL_SPB}</SelectOption>
-          <SelectOption value={VALUE_NSK}>{LABEL_NSK}</SelectOption>
-        </SelectListbox>
-      </SelectPortal>
+      <SelectListbox data-testid={TESTID_LISTBOX}>
+        <SelectOption value={VALUE_MOSCOW}>{LABEL_MOSCOW}</SelectOption>
+        <SelectOption value={VALUE_SPB}>{LABEL_SPB}</SelectOption>
+        <SelectOption value={VALUE_NSK}>{LABEL_NSK}</SelectOption>
+      </SelectListbox>
     </Select>
   );
 };
@@ -397,12 +394,10 @@ describe('Select', () => {
                 <SelectValue placeholder={PLACEHOLDER} />
               </SelectCombobox>
 
-              <SelectPortal>
-                <SelectListbox>
-                  <SelectOption value={0}>Zero</SelectOption>
-                  <SelectOption value={1}>One</SelectOption>
-                </SelectListbox>
-              </SelectPortal>
+              <SelectListbox>
+                <SelectOption value={0}>Zero</SelectOption>
+                <SelectOption value={1}>One</SelectOption>
+              </SelectListbox>
             </Select>,
           );
 
@@ -525,6 +520,61 @@ describe('Select', () => {
   });
   
   describe('Edge Cases', () => {
+    it('does not scale the listbox when the user prefers reduced motion', async () => {
+      await commands.emulateReducedMotion('reduce');
+      onTestFinished(() => commands.emulateReducedMotion('no-preference'));
+      const r = render(<SelectTest />);
+      const scale = getComputedStyle(getListbox(r)).scale;
+
+      expect(['1', 'none']).toContain(scale);
+    });
+
+    it('scales the listbox in place, wherever the select is on the page', async () => {
+      const r = render(<div style={{ padding: '300px 0 0 100px' }}><SelectTest /></div>);
+
+      await openByClick(r);
+      const listbox = getListbox(r);
+      listbox.style.transition = 'none';
+      const full = listbox.getBoundingClientRect();
+      listbox.style.scale = '0.5';
+      const scaled = listbox.getBoundingClientRect();
+
+      expect(scaled.left).toBeGreaterThanOrEqual(full.left);
+      expect(scaled.top).toBeGreaterThanOrEqual(full.top);
+      expect(scaled.right).toBeLessThanOrEqual(full.right);
+      expect(scaled.bottom).toBeLessThanOrEqual(full.bottom);
+    });
+
+    it('renders the listbox in the top layer only while shown', async () => {
+      const r = render(<SelectTest />);
+
+      expect(getListbox(r).matches(':popover-open')).toBe(false);
+
+      await openByClick(r);
+      expect(getListbox(r).matches(':popover-open')).toBe(true);
+
+      await userEvent.keyboard('{Escape}');
+      await toBeUnmounted(r);
+      expect(getListbox(r).matches(':popover-open')).toBe(false);
+    });
+
+    it('makes the listbox at least as wide as the combobox', async () => {
+      const r = render(<SelectTest style={{ width: 600 }} />);
+
+      await openByClick(r);
+
+      expect(getListbox(r).getBoundingClientRect().width).toBeGreaterThanOrEqual(getCombobox(r).getBoundingClientRect().width);
+    });
+
+    it('keeps the listbox as wide as the combobox when the combobox resizes while open', async () => {
+      const r = render(<SelectTest style={{ width: 300 }} />);
+
+      await openByClick(r);
+      r.getByTestId(TESTID_ROOT).style.width = '600px';
+
+      await expect.poll(() => getListbox(r).getBoundingClientRect().width).toBeGreaterThanOrEqual(getCombobox(r).getBoundingClientRect().width);
+    });
+
     describe('option with an empty value', () => {
       const LABEL_ANY = 'Any city';
 
@@ -533,12 +583,10 @@ describe('Select', () => {
           <SelectCombobox data-testid={TESTID_COMBOBOX}>
             <SelectValue data-testid={TESTID_VALUE} placeholder={PLACEHOLDER} />
           </SelectCombobox>
-          <SelectPortal>
-            <SelectListbox data-testid={TESTID_LISTBOX}>
-              <SelectOption value=''>{LABEL_ANY}</SelectOption>
-              <SelectOption value={VALUE_MOSCOW}>{LABEL_MOSCOW}</SelectOption>
-            </SelectListbox>
-          </SelectPortal>
+          <SelectListbox data-testid={TESTID_LISTBOX}>
+            <SelectOption value=''>{LABEL_ANY}</SelectOption>
+            <SelectOption value={VALUE_MOSCOW}>{LABEL_MOSCOW}</SelectOption>
+          </SelectListbox>
         </Select>
       );
 

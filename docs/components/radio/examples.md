@@ -65,16 +65,12 @@ Use this when one option must be picked inside an overlay flow.
   <DialogTrigger asChild>
     <Button>Choose environment</Button>
   </DialogTrigger>
-  <DialogPortal>
-    <DialogBackdrop>
-      <DialogContent>
-        <label style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <Radio name='environment' value='prod' />
-          Production
-        </label>
-      </DialogContent>
-    </DialogBackdrop>
-  </DialogPortal>
+  <DialogContent aria-label='Choose environment'>
+    <label style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+      <Radio name='environment' value='prod' />
+      Production
+    </label>
+  </DialogContent>
 </Dialog>
 ```
 

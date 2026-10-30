@@ -1,17 +1,28 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { useState } from 'react';
+import { Placement } from '@floating-ui/react';
 
 import { Popover } from './Popover';
+import { PopoverContent, PopoverTrigger } from './components';
 import { Button } from '../Button';
 import { Text } from '../Text';
-import { PopoverBackdrop, PopoverContent, PopoverTrigger } from './components';
-import { useState } from 'react';
-import { TextField, TextFieldInput } from '../TextField';
-import { Separator } from '../Separator';
 import { Heading } from '../Heading';
+import { Label } from '../Label';
+import { TextField, TextFieldInput } from '../TextField';
+
+const PLACEMENTS: Placement[] = [
+  'top-start', 'top', 'top-end',
+  'left', 'right',
+  'bottom-start', 'bottom', 'bottom-end',
+];
 
 const meta = {
-  title: 'Overlay/Popover/Popover',
+  title: 'Overlay/Popover',
   component: Popover,
+  subcomponents: {
+    PopoverTrigger,
+    PopoverContent,
+  },
   parameters: {
     layout: 'centered',
     design: {
@@ -20,298 +31,179 @@ const meta = {
     },
   },
   tags: ['autodocs'],
+  argTypes: {
+    children: { control: false },
+    placement: {
+      control: 'select',
+      options: PLACEMENTS,
+    },
+  },
+  args: {
+    placement: 'bottom',
+  },
 } satisfies Meta<typeof Popover>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const contentSx = {
-  maxWidth: 300,
-};
-
-const actionsListSx = {
-  display: 'grid',
-  gap: 6,
-};
-
-export const Default: Story = {
+export const Basic: Story = {
   args: {
-    children: (
-      <>
-        <PopoverTrigger asChild>
-          <Button>Popover</Button>
-        </PopoverTrigger>
-        <PopoverContent style={contentSx}>
-          <Heading size={4} fontWeight={600} as='h3'>
-            Hi! I’m a Popover
-          </Heading>
-          <Text asChild size={2}>
-            <p>Quick actions and small content next to the trigger.</p>
-          </Text>
-          <Button variant='secondary' appearance='transparent' onClick={(e) => console.log(e)}>
-            OK
-          </Button>
-        </PopoverContent>
-      </>
-    ),
+    children: [
+      <PopoverTrigger key='trigger' asChild>
+        <Button>Share</Button>
+      </PopoverTrigger>,
+      <PopoverContent key='content'>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, maxWidth: 260 }}>
+          <Heading size={5} fontWeight={600} as='h3'>Share project</Heading>
+          <Text size={2}>Anyone with the link can view this project.</Text>
+          <Button onClick={() => navigator.clipboard?.writeText(location.href)}>Copy link</Button>
+        </div>
+      </PopoverContent>,
+    ],
   },
 };
 
-export const WithBackdrop: Story = {
-  args: {
-    children: (
-      <>
-        <PopoverTrigger asChild>
-          <Button>Popover</Button>
-        </PopoverTrigger>
-        <PopoverBackdrop />
-        <PopoverContent style={contentSx}>
-          <Heading size={4} fontWeight={600} as='h3'>
-            Popover with Backdrop
-          </Heading>
-          <Text asChild size={2}>
-            <p>Clicking outside the content should close it.</p>
-          </Text>
-          <Button variant='secondary' appearance='transparent' onClick={(e) => console.log(e)}>
-            Got it
-          </Button>
-        </PopoverContent>
-      </>
-    ),
-  },
+export const Placements: Story = {
+  render: () => (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, auto)', gap: 8 }}>
+      {PLACEMENTS.map((placement) => (
+        <Popover key={placement} placement={placement}>
+          <PopoverTrigger asChild>
+            <Button variant='secondary'>{placement}</Button>
+          </PopoverTrigger>
+          <PopoverContent>
+            <Text size={2}>{`Grows out of the side facing ${placement}.`}</Text>
+          </PopoverContent>
+        </Popover>
+      ))}
+    </div>
+  ),
 };
 
-export const HelpTooltip: Story = {
-  args: {
-    children: (
-      <>
-        <PopoverTrigger asChild>
-          <Button variant='secondary' appearance='transparent'>
-            What is this?
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent style={contentSx}>
-          <Text size={2}>Popover works well for small contextual hints near a UI element.</Text>
-        </PopoverContent>
-      </>
-    ),
+export const Menu: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'A controlled popover closes itself when an item is chosen.',
+      },
+    },
   },
-};
-
-export const ConfirmAction: Story = {
-  args: {
-    children: (
-      <>
-        <PopoverTrigger asChild>
-          <Button>Delete</Button>
-        </PopoverTrigger>
-        <PopoverBackdrop />
-        <PopoverContent style={contentSx}>
-          <Heading size={4} fontWeight={600} as='h3'>
-            Delete the file?
-          </Heading>
-          <Text asChild size={2}>
-            <p>This action can’t be undone.</p>
-          </Text>
-          <Separator style={{ marginBlock: 12 }} />
-          <Button onClick={() => console.log('confirm delete')}>Delete</Button>
-        </PopoverContent>
-      </>
-    ),
-  },
-};
-
-export const QuickActions: Story = {
-  args: {
-    children: (
-      <>
-        <PopoverTrigger asChild>
-          <Button variant='secondary'>Actions</Button>
-        </PopoverTrigger>
-        <PopoverContent style={contentSx}>
-          <Text size={3}>Quick actions</Text>
-          <div style={actionsListSx}>
-            <Button appearance='transparent' variant='secondary' onClick={() => console.log('rename')}>
-              Rename
-            </Button>
-            <Button appearance='transparent' variant='secondary' onClick={() => console.log('duplicate')}>
-              Duplicate
-            </Button>
-            <Button appearance='transparent' variant='secondary' onClick={() => console.log('share')}>
-              Share
-            </Button>
-          </div>
-        </PopoverContent>
-      </>
-    ),
-  },
-};
-
-export const UserMenu: Story = {
-  args: {
-    children: (
-      <>
-        <PopoverTrigger asChild>
-          <Button variant='secondary' appearance='transparent'>
-            Profile
-          </Button>
-        </PopoverTrigger>
-        <PopoverBackdrop />
-        <PopoverContent>
-          <div style={{ display: 'grid', gap: 2 }}>
-            <Text size={3}>Name</Text>
-            <Text size={2}>example@example.com</Text>
-          </div>
-          <Separator style={{ marginBlock: 12 }} />
-          <div>
-            <Button fullWidth appearance='transparent' variant='secondary' onClick={() => console.log('settings')}>
-              Settings
-            </Button>
-            <Button fullWidth appearance='transparent' variant='secondary' onClick={() => console.log('billing')}>
-              Billing
-            </Button>
-            <Button fullWidth appearance='transparent' variant='secondary' onClick={() => console.log('logout')}>
-              Log out
-            </Button>
-          </div>
-        </PopoverContent>
-      </>
-    ),
-  },
-};
-
-export const InlineForm: Story = {
-  args: {
-    children: (
-      <>
-        <PopoverTrigger asChild>
-          <Button>Rename</Button>
-        </PopoverTrigger>
-        <PopoverBackdrop />
-        <PopoverContent style={contentSx}>
-          <Heading size={4} fontWeight={600} as='h3'>
-            Rename
-          </Heading>
-          <Text asChild size={2}>
-            <p>Enter a new name and save it.</p>
-          </Text>
-          <TextField style={{ marginBlock: 12 }}>
-            <TextFieldInput placeholder='Document' />
-          </TextField>
-          <Button size='sm' onClick={() => console.log('save rename')}>
-            Save
-          </Button>
-        </PopoverContent>
-      </>
-    ),
-  },
-};
-
-export const LongContent: Story = {
-  args: {
-    children: (
-      <>
-        <PopoverTrigger asChild>
-          <Button variant='secondary'>Rules</Button>
-        </PopoverTrigger>
-        <PopoverBackdrop />
-        <PopoverContent style={contentSx}>
-          <Heading size={4} fontWeight={600} as='h3'>
-            Notes
-          </Heading>
-          <Text asChild size={2}>
-            <p>
-              Popover is best for short content. If you need long text, lists, or complex forms, you probably want a
-              Dialog / Drawer instead.
-            </p>
-          </Text>
-          <Separator style={{ marginBlock: 12 }} />
-          <Text size={2}>
-            • Close on outside click <br />
-            • Escape to close <br />
-            • Logical tab order
-          </Text>
-          <Button variant='secondary' appearance='transparent' onClick={() => console.log('ok')}>
-            OK
-          </Button>
-        </PopoverContent>
-      </>
-    ),
-  },
-};
-
-export const NestedPopover: Story = {
-  args: {
-    children: (
-      <>
-        <PopoverTrigger asChild>
-          <Button variant='secondary'>Open menu</Button>
-        </PopoverTrigger>
-        <PopoverBackdrop />
-        <PopoverContent style={contentSx}>
-          <Heading size={4} fontWeight={600} as='h3'>
-            Menu
-          </Heading>
-          <Text asChild size={2}>
-            <p>There’s another popover inside.</p>
-          </Text>
-          
-          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button appearance='transparent' variant='secondary'>
-                  More…
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent style={contentSx}>
-                <Text size={3}>Nested</Text>
-                <div style={actionsListSx}>
-                  <Button appearance='transparent' variant='secondary' onClick={() => console.log('nested action 1')}>
-                    Action 1
-                  </Button>
-                  <Button appearance='transparent' variant='secondary' onClick={() => console.log('nested action 2')}>
-                    Action 2
-                  </Button>
-                </div>
-              </PopoverContent>
-            </Popover>
-            
-            <Button onClick={() => console.log('primary action')}>Primary</Button>
-          </div>
-        </PopoverContent>
-      </>
-    ),
-  },
-};
-
-export const ControlledExample: Story = {
   render: () => {
     const [open, setOpen] = useState(false);
-    
+
     return (
-      <Popover open={open} onChangeOpen={setOpen}>
+      <Popover placement='bottom-start' open={open} onChangeOpen={setOpen}>
         <PopoverTrigger asChild>
-          <Button variant='secondary'>
-            {open ? 'Close' : 'Open'} Popover
-          </Button>
+          <Button variant='secondary'>Ada Lovelace</Button>
         </PopoverTrigger>
-        <PopoverBackdrop />
-        <PopoverContent style={contentSx}>
-          <Heading size={4} fontWeight={600} as='h3'>
-            Controlled
-          </Heading>
-          <Text asChild size={2}>
-            <p>State is controlled externally via open/onChangeOpen.</p>
-          </Text>
-          <Separator style={{ marginBlock: 12 }} />
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <Button variant='secondary' appearance='transparent' onClick={() => setOpen(false)}>
-              Done
-            </Button>
-            <Button onClick={() => setOpen(false)}>Close</Button>
+        <PopoverContent>
+          <div style={{ display: 'grid', gap: 4, minWidth: 180 }}>
+            {['Profile', 'Settings', 'Sign out'].map((item) => (
+              <Button key={item} appearance='transparent' variant='secondary' onClick={() => setOpen(false)}>
+                {item}
+              </Button>
+            ))}
           </div>
         </PopoverContent>
       </Popover>
+    );
+  },
+};
+
+export const Form: Story = {
+  args: {
+    role: 'dialog',
+    placement: 'bottom-start',
+    children: [
+      <PopoverTrigger key='trigger' asChild>
+        <Button>Add link</Button>
+      </PopoverTrigger>,
+      <PopoverContent key='content'>
+        <form
+          style={{ display: 'flex', flexDirection: 'column', gap: 8, minWidth: 260 }}
+          onSubmit={(event) => event.preventDefault()}
+        >
+          <Label htmlFor='link-url'>URL</Label>
+          <TextField>
+            <TextFieldInput id='link-url' type='url' placeholder='https://' required />
+          </TextField>
+          <Button type='submit'>Insert</Button>
+        </form>
+      </PopoverContent>,
+    ],
+  },
+};
+
+export const Confirm: Story = {
+  render: () => {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <Popover role='dialog' open={open} onChangeOpen={setOpen}>
+        <PopoverTrigger asChild>
+          <Button variant='secondary'>Archive</Button>
+        </PopoverTrigger>
+        <PopoverContent>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, maxWidth: 260 }}>
+            <Text size={2}>Archive this project? You can restore it later.</Text>
+            <div style={{ display: 'flex', gap: 8, justifyContent: 'flex-end' }}>
+              <Button appearance='transparent' variant='secondary' onClick={() => setOpen(false)}>Cancel</Button>
+              <Button onClick={() => setOpen(false)}>Archive</Button>
+            </div>
+          </div>
+        </PopoverContent>
+      </Popover>
+    );
+  },
+};
+
+export const Nested: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Popovers stack: `Escape` or an outside click closes the inner one first.',
+      },
+    },
+  },
+  args: {
+    placement: 'bottom-start',
+    children: [
+      <PopoverTrigger key='trigger' asChild>
+        <Button variant='secondary'>Filters</Button>
+      </PopoverTrigger>,
+      <PopoverContent key='content'>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, maxWidth: 260 }}>
+          <Text size={2}>Status: open, in review</Text>
+          <Popover placement='right-start'>
+            <PopoverTrigger asChild>
+              <Button appearance='transparent' variant='secondary'>More filters…</Button>
+            </PopoverTrigger>
+            <PopoverContent>
+              <Text size={2}>Assignee, labels, milestone</Text>
+            </PopoverContent>
+          </Popover>
+        </div>
+      </PopoverContent>,
+    ],
+  },
+};
+
+export const Controlled: Story = {
+  render: () => {
+    const [open, setOpen] = useState(false);
+
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        <Popover open={open} onChangeOpen={setOpen}>
+          <PopoverTrigger asChild>
+            <Button>Notifications</Button>
+          </PopoverTrigger>
+          <PopoverContent>
+            <Text size={2}>You’re all caught up.</Text>
+          </PopoverContent>
+        </Popover>
+        <Text size={2}>open: {String(open)}</Text>
+      </div>
     );
   },
 };

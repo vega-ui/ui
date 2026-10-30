@@ -37,7 +37,6 @@ When to use:
 
 Composition notes:
 
-- Use backdrop only when outside-click separation helps.
 - Keep validation and submit behavior simple.
 
 Trade-offs:
@@ -50,7 +49,6 @@ Trade-offs:
   <PopoverTrigger asChild>
     <Button>Rename</Button>
   </PopoverTrigger>
-  <PopoverBackdrop />
   <PopoverContent style={{ display: 'grid', gap: 12, maxWidth: 320 }}>
     <Heading size={4} as='h3'>Rename project</Heading>
     <TextField>

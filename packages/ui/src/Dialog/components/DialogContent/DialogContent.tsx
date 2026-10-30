@@ -1,10 +1,12 @@
 'use client';
-import { FC, HTMLAttributes, ReactNode, Ref } from 'react';
-import { csx, mergeProps, mergeRefs } from '@vega-ui/utils';
+import { DialogHTMLAttributes, FC, ReactNode, Ref } from 'react';
+import { createPortal } from 'react-dom';
+import { csx, mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
+import { ModalDialogClosedBy, useModalDialog } from '@vega-ui/hooks';
 import styles from './style.module.css';
 import { useDialogContext } from '../../contexts';
- 
-export interface DialogContentProps extends HTMLAttributes<HTMLDivElement> {
+
+export interface DialogContentProps extends DialogHTMLAttributes<HTMLDialogElement> {
   /**
    * Applies a visual shadow to the dialog panel.
    * Adds depth and separation from the background.
@@ -12,10 +14,26 @@ export interface DialogContentProps extends HTMLAttributes<HTMLDivElement> {
   shadowed?: boolean
 
   /**
-   * Ref forwarded to the dialog’s root element.
+   * Blurs the page behind the dialog.
+   */
+  blurred?: boolean
+
+  /**
+   * Dims the page behind the dialog. When false, the page stays visible and the dialog stays modal.
+   */
+  overlay?: boolean
+
+  /**
+   * Which user actions close the dialog, like the native `closedby` attribute:
+   * `any` a backdrop click or `Escape`, `closerequest` only `Escape`, `none` neither.
+   */
+  closedBy?: ModalDialogClosedBy
+
+  /**
+   * Ref forwarded to the native `<dialog>` element.
    * Useful for managing focus, animations, or measurements.
    */
-  ref?: Ref<HTMLDivElement>
+  ref?: Ref<HTMLDialogElement>
 
   /**
    * The children nodes to render inside the dialog.
@@ -23,27 +41,46 @@ export interface DialogContentProps extends HTMLAttributes<HTMLDivElement> {
   children?: ReactNode
 }
 
-/** The DialogContent component is the main container for a dialog dialog’s content, supporting layout options like blurred overlays, shadows, fluid width, and overlaid positioning to control its appearance and behavior */
+/** The DialogContent component renders the native modal `<dialog>` with the dialog's content, its backdrop, and open and close transitions */
 export const DialogContent: FC<DialogContentProps> = ({
   shadowed = true,
+  blurred = true,
+  overlay = true,
+  closedBy = 'closerequest',
   ref,
   className,
   children,
+  onCancel: _onCancel,
+  onSubmit: _onSubmit,
+  onClose: _onClose,
+  onPointerDown: _onPointerDown,
+  onClick: _onClick,
   ...props
 }) => {
-  const { contentProps, status, context, fluid } = useDialogContext()
+  const { open, changeOpen, fluid } = useDialogContext()
+  const { ref: dialogRef, mounted, rendered, escapeClosedBy, onPointerDown, onClick, onCancel, onSubmit, onClose } = useModalDialog({ open, onChangeOpen: changeOpen, closedBy })
 
-  return (
-    <div
-      aria-modal='true'
+  if (!mounted) return null
+
+  return createPortal(
+    <dialog
+      closedby={escapeClosedBy}
       data-fluid={fluid}
       data-shadowed={shadowed}
-      data-status={status}
+      data-blurred={blurred}
+      data-overlay={overlay}
+      data-status={open ? 'open' : 'close'}
       className={csx(styles.dialog, className)}
-      ref={mergeRefs([context.refs?.setFloating, ref])}
-      {...mergeProps(contentProps ?? {}, props)}
+      ref={mergeRefs([dialogRef, ref])}
+      onPointerDown={mergeEventHandlers(onPointerDown, _onPointerDown)}
+      onClick={mergeEventHandlers(onClick, _onClick)}
+      onCancel={mergeEventHandlers(onCancel, _onCancel)}
+      onSubmit={mergeEventHandlers(onSubmit, _onSubmit)}
+      onClose={mergeEventHandlers(onClose, _onClose)}
+      {...props}
     >
-      {children}
-    </div>
+      {rendered && children}
+    </dialog>,
+    document.body
   )
 }

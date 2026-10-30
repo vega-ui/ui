@@ -28,13 +28,21 @@ The current implementation does not expose a large documented `--dialog-*` varia
 
 ### Backdrop
 
-[DialogBackdrop](../../../packages/ui/src/Dialog/components/DialogBackdrop/style.module.css) relies on spacing and the shared overlay model rather than a large component-local variable set.
+The backdrop is the `::backdrop` of `DialogContent`. It uses `--overlay` when `data-overlay='true'` and a blur when `data-blurred='true'`. Style it through the `DialogContent` class:
+
+```css
+.my-dialog::backdrop {
+  background: rgb(0 0 0 / 0.6);
+}
+```
 
 ## State And Variant Interaction
 
 - `data-shadowed='true'` enables `--surface-shadow`
 - `data-fluid='true'` removes the bounded modal layout and uses full available space
-- `data-status='open'` drives the open-state scale transition
+- `data-status='close'` drives the close transition; the open transition starts from `@starting-style`
+- `data-blurred='true'` blurs the page behind the dialog
+- `data-overlay='true'` dims the page behind the dialog
 
 ## Examples
 
@@ -50,14 +58,15 @@ The current implementation does not expose a large documented `--dialog-*` varia
 ### Product-level fluid dialog
 
 ```tsx
-<DialogContent data-fluid='true'>
-  <DialogHeader>
-    <DialogTitle>Inspector</DialogTitle>
-    <DialogCloseButton />
-  </DialogHeader>
+<DialogContent data-fluid='true' aria-labelledby='inspector-title'>
+  <Heading id='inspector-title' as='h2' size={4} fontWeight={600}>Inspector</Heading>
   <Text size={3}>Fluid dialogs can stretch to fit workspace tools and dense review surfaces.</Text>
 </DialogContent>
 ```
+
+### Apple-like header
+
+The header with a small title and a 24px round close button in the corner is plain composition: a `Heading` with `size={4}` and `fontWeight={600}`, and `DialogClose asChild` around an `IconButton` placed absolutely in the top end corner (`position: absolute`, `insetBlockStart: 16`, `insetInlineEnd: 16`); the open modal `<dialog>` is its containing block. `IconButton` has no size or shape option for this; the round 24px button comes from two CSS variables set on it, `--icon-button-size: 24px` and `--icon-button-br-ratio: 0.5`, with `Icon size='xs'` inside.
 
 ## Do Not Override
 

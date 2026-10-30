@@ -119,16 +119,12 @@ Trade-offs:
   <SheetTrigger asChild>
     <Button>Reschedule</Button>
   </SheetTrigger>
-  <SheetPortal>
-    <SheetBackdrop>
-      <SheetContent>
-        <Label htmlFor='new-time'>New time</Label>
-        <DateTimeField dateFormat='dd.MM.yyyy'>
-          <DateTimeFieldInput id='new-time' />
-          <CalendarPopover />
-        </DateTimeField>
-      </SheetContent>
-    </SheetBackdrop>
-  </SheetPortal>
+  <SheetContent aria-label='Reschedule'>
+    <Label htmlFor='new-time'>New time</Label>
+    <DateTimeField dateFormat='dd.MM.yyyy'>
+      <DateTimeFieldInput id='new-time' />
+      <CalendarPopover />
+    </DateTimeField>
+  </SheetContent>
 </Sheet>
 ```

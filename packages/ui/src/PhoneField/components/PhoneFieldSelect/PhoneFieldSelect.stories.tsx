@@ -6,7 +6,6 @@ import { PhoneFieldSelectCombobox } from '../PhoneFieldSelectCombobox';
 import { PhoneFieldSelectIcon } from '../PhoneFieldSelectIcon';
 import { PhoneFieldSelectListbox } from '../PhoneFieldSelectListbox';
 import { PhoneFieldSelectOption } from '../PhoneFieldSelectOption';
-import { PhoneFieldSelectPortal } from '../PhoneFieldSelectPortal';
 import { PhoneField } from '../../PhoneField';
 import { PhoneFieldInput } from '../PhoneFieldInput';
 
@@ -76,13 +75,11 @@ export const Default: Story = {
         <PhoneFieldSelectValue />
         <PhoneFieldSelectIcon />
       </PhoneFieldSelectCombobox>,
-      <PhoneFieldSelectPortal key={2}>
-        <PhoneFieldSelectListbox>
-          <PhoneFieldSelectOption value='RU'>RU</PhoneFieldSelectOption>
-          <PhoneFieldSelectOption value='US'>US</PhoneFieldSelectOption>
-          <PhoneFieldSelectOption value='FR'>FR</PhoneFieldSelectOption>
-        </PhoneFieldSelectListbox>
-      </PhoneFieldSelectPortal>,
+      <PhoneFieldSelectListbox key={2}>
+        <PhoneFieldSelectOption value='RU'>RU</PhoneFieldSelectOption>
+        <PhoneFieldSelectOption value='US'>US</PhoneFieldSelectOption>
+        <PhoneFieldSelectOption value='FR'>FR</PhoneFieldSelectOption>
+      </PhoneFieldSelectListbox>,
     ],
   },
 };
@@ -95,19 +92,17 @@ export const FlagsInList: Story = {
         <PhoneFieldSelectValue />
         <PhoneFieldSelectIcon />
       </PhoneFieldSelectCombobox>,
-      <PhoneFieldSelectPortal key={2}>
-        <PhoneFieldSelectListbox>
-          {countries.map(({ value, label, code, Flag }) => (
-            <PhoneFieldSelectOption key={value} value={value}>
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}>
-                {Flag}
-                <span>{label}</span>
-              </span>
-              <span style={{ marginLeft: 'auto', opacity: 0.8 }}>{code}</span>
-            </PhoneFieldSelectOption>
-          ))}
-        </PhoneFieldSelectListbox>
-      </PhoneFieldSelectPortal>,
+      <PhoneFieldSelectListbox key={2}>
+        {countries.map(({ value, label, code, Flag }) => (
+          <PhoneFieldSelectOption key={value} value={value}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}>
+              {Flag}
+              <span>{label}</span>
+            </span>
+            <span style={{ marginLeft: 'auto', opacity: 0.8 }}>{code}</span>
+          </PhoneFieldSelectOption>
+        ))}
+      </PhoneFieldSelectListbox>,
     ],
   },
 };
@@ -120,19 +115,17 @@ export const FlagOnlyValueStory: Story = {
         <FlagOnlyValue />
         <PhoneFieldSelectIcon />
       </PhoneFieldSelectCombobox>,
-      <PhoneFieldSelectPortal key={2}>
-        <PhoneFieldSelectListbox>
-          {countries.map(({ value, label, code, Flag }) => (
-            <PhoneFieldSelectOption key={value} value={value}>
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}>
-                {Flag}
-                {label}
-              </span>
-              <span style={{ marginLeft: 'auto', opacity: 0.8 }}>{code}</span>
-            </PhoneFieldSelectOption>
-          ))}
-        </PhoneFieldSelectListbox>
-      </PhoneFieldSelectPortal>,
+      <PhoneFieldSelectListbox key={2}>
+        {countries.map(({ value, label, code, Flag }) => (
+          <PhoneFieldSelectOption key={value} value={value}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}>
+              {Flag}
+              {label}
+            </span>
+            <span style={{ marginLeft: 'auto', opacity: 0.8 }}>{code}</span>
+          </PhoneFieldSelectOption>
+        ))}
+      </PhoneFieldSelectListbox>,
     ],
   },
 };
@@ -147,13 +140,11 @@ export const Emoji: Story = {
         <EmojiValue />
         <PhoneFieldSelectIcon />
       </PhoneFieldSelectCombobox>,
-      <PhoneFieldSelectPortal key={2}>
-        <PhoneFieldSelectListbox>
-          <PhoneFieldSelectOption value='RU'>🇷🇺 Russia <span style={{ marginLeft: 'auto' }}>+7</span></PhoneFieldSelectOption>
-          <PhoneFieldSelectOption value='US'>🇺🇸 United States <span style={{ marginLeft: 'auto' }}>+1</span></PhoneFieldSelectOption>
-          <PhoneFieldSelectOption value='FR'>🇫🇷 France <span style={{ marginLeft: 'auto' }}>+33</span></PhoneFieldSelectOption>
-        </PhoneFieldSelectListbox>
-      </PhoneFieldSelectPortal>,
+      <PhoneFieldSelectListbox key={2}>
+        <PhoneFieldSelectOption value='RU'>🇷🇺 Russia <span style={{ marginLeft: 'auto' }}>+7</span></PhoneFieldSelectOption>
+        <PhoneFieldSelectOption value='US'>🇺🇸 United States <span style={{ marginLeft: 'auto' }}>+1</span></PhoneFieldSelectOption>
+        <PhoneFieldSelectOption value='FR'>🇫🇷 France <span style={{ marginLeft: 'auto' }}>+33</span></PhoneFieldSelectOption>
+      </PhoneFieldSelectListbox>,
     ],
   },
 };
@@ -186,19 +177,17 @@ export const Sizes: Story = {
                 <FlagOnlyValue />
                 <PhoneFieldSelectIcon />
               </PhoneFieldSelectCombobox>
-              <PhoneFieldSelectPortal>
-                <PhoneFieldSelectListbox>
-                  {countries.map(({ value, label, code, Flag }) => (
-                    <PhoneFieldSelectOption key={value} value={value}>
-                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}>
-                        {Flag}
-                        {label}
-                      </span>
-                      <span style={{ marginLeft: 'auto', opacity: 0.8 }}>{code}</span>
-                    </PhoneFieldSelectOption>
-                  ))}
-                </PhoneFieldSelectListbox>
-              </PhoneFieldSelectPortal>
+              <PhoneFieldSelectListbox>
+                {countries.map(({ value, label, code, Flag }) => (
+                  <PhoneFieldSelectOption key={value} value={value}>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10 }}>
+                      {Flag}
+                      {label}
+                    </span>
+                    <span style={{ marginLeft: 'auto', opacity: 0.8 }}>{code}</span>
+                  </PhoneFieldSelectOption>
+                ))}
+              </PhoneFieldSelectListbox>
             </PhoneFieldSelect>
             <PhoneFieldInput />
           </PhoneField>

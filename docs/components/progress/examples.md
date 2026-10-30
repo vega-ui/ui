@@ -52,15 +52,11 @@ Use this when an overlay owns a running async task.
   <DialogTrigger asChild>
     <Button>Deploy</Button>
   </DialogTrigger>
-  <DialogPortal>
-    <DialogBackdrop>
-      <DialogContent>
-        <Progress value={65} style={{ width: '100%' }}>
-          <ProgressTrack />
-        </Progress>
-      </DialogContent>
-    </DialogBackdrop>
-  </DialogPortal>
+  <DialogContent aria-label='Deploy'>
+    <Progress value={65} style={{ width: '100%' }}>
+      <ProgressTrack />
+    </Progress>
+  </DialogContent>
 </Dialog>
 ```
 

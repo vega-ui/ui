@@ -77,23 +77,19 @@ Use this when secondary sections should stay collapsible inside an overlay panel
   <DrawerTrigger asChild>
     <Button>Open help</Button>
   </DrawerTrigger>
-  <DrawerPortal>
-    <DrawerBackdrop>
-      <DrawerContent>
-        <Accordion defaultOpened={['billing']}>
-          <AccordionItem value='billing'>
-            <AccordionHeader>
-              <AccordionTrigger>
-                Billing
-                <AccordionIcon />
-              </AccordionTrigger>
-            </AccordionHeader>
-            <AccordionContent>Invoice and payment guidance.</AccordionContent>
-          </AccordionItem>
-        </Accordion>
-      </DrawerContent>
-    </DrawerBackdrop>
-  </DrawerPortal>
+  <DrawerContent aria-label='Help'>
+    <Accordion defaultOpened={['billing']}>
+      <AccordionItem value='billing'>
+        <AccordionHeader>
+          <AccordionTrigger>
+            Billing
+            <AccordionIcon />
+          </AccordionTrigger>
+        </AccordionHeader>
+        <AccordionContent>Invoice and payment guidance.</AccordionContent>
+      </AccordionItem>
+    </Accordion>
+  </DrawerContent>
 </Drawer>
 ```
 

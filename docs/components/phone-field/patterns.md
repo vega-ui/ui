@@ -24,13 +24,11 @@ Trade-offs:
       <PhoneFieldSelectValue />
       <PhoneFieldSelectIcon />
     </PhoneFieldSelectCombobox>
-    <PhoneFieldSelectPortal>
-      <PhoneFieldSelectListbox>
-        <PhoneFieldSelectOption value='RU'>Russia</PhoneFieldSelectOption>
-        <PhoneFieldSelectOption value='US'>United States</PhoneFieldSelectOption>
-        <PhoneFieldSelectOption value='DE'>Germany</PhoneFieldSelectOption>
-      </PhoneFieldSelectListbox>
-    </PhoneFieldSelectPortal>
+    <PhoneFieldSelectListbox>
+      <PhoneFieldSelectOption value='RU'>Russia</PhoneFieldSelectOption>
+      <PhoneFieldSelectOption value='US'>United States</PhoneFieldSelectOption>
+      <PhoneFieldSelectOption value='DE'>Germany</PhoneFieldSelectOption>
+    </PhoneFieldSelectListbox>
   </PhoneFieldSelect>
   <PhoneFieldInput />
 </PhoneField>

@@ -83,20 +83,16 @@ Use this when a compact semantic table appears inside an overlay review flow.
   <DialogTrigger asChild>
     <Button>View invoice breakdown</Button>
   </DialogTrigger>
-  <DialogPortal>
-    <DialogBackdrop>
-      <DialogContent>
-        <Table fullWidth>
-          <TableBody>
-            <TableRow>
-              <TableData>Base subscription</TableData>
-              <TableData>$499</TableData>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </DialogContent>
-    </DialogBackdrop>
-  </DialogPortal>
+  <DialogContent aria-label='Invoice breakdown'>
+    <Table fullWidth>
+      <TableBody>
+        <TableRow>
+          <TableData>Base subscription</TableData>
+          <TableData>$499</TableData>
+        </TableRow>
+      </TableBody>
+    </Table>
+  </DialogContent>
 </Dialog>
 ```
 

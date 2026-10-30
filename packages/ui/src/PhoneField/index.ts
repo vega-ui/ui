@@ -7,7 +7,6 @@ export {
   PhoneFieldSelectCombobox, type PhoneFieldSelectComboboxProps,
   PhoneFieldSelectValue, type PhoneFieldSelectValueProps,
   PhoneFieldSelectIcon, type PhoneFieldSelectIconProps,
-  PhoneFieldSelectPortal, type PhoneFieldSelectPortalProps,
   PhoneFieldSelectOption, type PhoneFieldSelectOptionProps,
   PhoneFieldSelectListbox, type PhoneFieldSelectListboxProps,
 } from './components'

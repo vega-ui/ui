@@ -2,7 +2,7 @@
 
 ## Overview
 
-`Drawer` owns open state, edge-mounted overlay behavior, focus lifecycle, and dismissal logic across its exported parts.
+`Drawer` owns open state, position, and dismissal rules across its exported parts. `DrawerContent` is the native modal `<dialog>` that carries focus, the backdrop, and transitions.
 
 ## Required Parts
 
@@ -18,57 +18,62 @@ Open action for the drawer.
 
 Main edge-mounted panel.
 
+- Owns: the native modal `<dialog>`, its `::backdrop`, and open and close transitions
+- Renders into `document.body`, so no portal part is needed
+
 ## Optional Parts
 
-### `DrawerPortal`
+### `DrawerClose`
 
-Overlay [portal](../../glossary.md#portal) wrapper.
+Closes the drawer when clicked.
 
-### `DrawerBackdrop`
+- Required: no
+- Renders a `<button type="button">` with no styles, icon, or label; with `asChild` it renders your own button instead
+- Calls `onChangeOpen(false)` before your `onClick`, so the close transition plays and a controlled parent can keep the drawer open
+- Give an icon-only close button an `aria-label`
 
-Backdrop layer behind the drawer.
+## Your Own Markup
 
-### `DrawerHeader`
+The library does not ship header or title parts. They carry no behavior that plain markup cannot express, so you compose them yourself.
 
-Header layout wrapper.
+### Heading
 
-### `DrawerTitle`
+Names the drawer. A name is required: reference a heading's `id` with `aria-labelledby` on `DrawerContent`, or set `aria-label` on `DrawerContent`.
 
-Title for orientation and accessibility.
+### Action buttons
 
-### `DrawerCloseButton`
-
-Explicit close action.
+Buttons that answer the drawer go in a `<form method="dialog">`: submitting it closes the drawer through `onChangeOpen(false)`, and the submit button's `value` becomes the dialog's `returnValue`. Use `DrawerClose` for a standalone close button.
 
 ## Composition Order
 
 1. `Drawer`
 2. `DrawerTrigger`
-3. `DrawerPortal`
-4. `DrawerBackdrop`
-5. `DrawerContent`
-6. `DrawerHeader`
-7. `DrawerTitle`
-8. `DrawerCloseButton`
+3. `DrawerContent`
+4. Your heading, an optional `DrawerClose`, body, and a `<form method="dialog">` with action buttons
 
 ## Valid Composition Patterns
 
 ```tsx
+import type { CSSProperties } from 'react';
+
 <Drawer>
   <DrawerTrigger asChild>
     <Button>Open drawer</Button>
   </DrawerTrigger>
-  <DrawerPortal>
-    <DrawerBackdrop>
-      <DrawerContent>
-        <DrawerHeader>
-          <DrawerTitle>Workspace details</DrawerTitle>
-          <DrawerCloseButton />
-        </DrawerHeader>
-        <Text size={3}>Review members, roles, and recent activity without leaving the current screen.</Text>
-      </DrawerContent>
-    </DrawerBackdrop>
-  </DrawerPortal>
+  <DrawerContent aria-labelledby='workspace-title'>
+    <Heading id='workspace-title' as='h2' size={4} fontWeight={600}>Workspace details</Heading>
+    <DrawerClose asChild>
+      <IconButton
+        aria-label='Close'
+        variant='secondary'
+        appearance='ghost'
+        style={{ position: 'absolute', insetBlockStart: 16, insetInlineEnd: 16, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+      >
+        <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
+      </IconButton>
+    </DrawerClose>
+    <Text size={3}>Review members, roles, and recent activity without leaving the current screen.</Text>
+  </DrawerContent>
 </Drawer>
 ```
 
@@ -77,6 +82,10 @@ Explicit close action.
 ### `DrawerContent` outside `Drawer`
 
 Breaks root context and overlay behavior.
+
+### Content without a name
+
+`DrawerContent` does not name itself. Without `aria-labelledby` or `aria-label`, screen readers announce an unnamed dialog.
 
 ### Long drawer content without a scroll strategy
 

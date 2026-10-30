@@ -1,26 +1,79 @@
 .content {
+    inset: auto;
+    margin: 0;
+    border: none;
+    color: inherit;
+    overflow: visible;
     background: var(--surface-primary);
     border-radius: var(--radius-5);
     width: max-content;
     padding: var(--spacing-8);
-    z-index: var(--z-index-popover);
+    opacity: 0;
+    scale: .9;
+    transform-origin: var(--popover-origin-x, center) var(--popover-origin-y, center);
     transition:
-            scale var(--transition-state-delay) ease,
-            opacity var(--transition-state-delay) ease;
+            scale var(--duration-exit) var(--ease-exit),
+            opacity var(--duration-exit) var(--ease-exit),
+            display var(--duration-exit) allow-discrete,
+            overlay var(--duration-exit) allow-discrete;
 }
 
 .content:where([data-shadowed='true']) {
     box-shadow: var(--surface-shadow);
 }
 
-.content:where([data-status='open']) {
-    scale: 1;
+.content:where(:popover-open) {
     opacity: 1;
+    scale: 1;
+    transition:
+            scale var(--duration-spring) var(--ease-spring),
+            opacity var(--duration-exit) var(--ease-smooth),
+            display var(--duration-spring) allow-discrete,
+            overlay var(--duration-spring) allow-discrete;
 }
 
-.content:where([data-status='initial']),
-.content:where([data-status='unmounted']),
-.content:where([data-status='close']) {
-    scale: 0;
-    opacity: 0;
+@starting-style {
+    .content:where(:popover-open) {
+        opacity: 0;
+        scale: .9;
+    }
+}
+
+.content:where([data-side='bottom']) {
+    --popover-origin-y: top;
+}
+
+.content:where([data-side='top']) {
+    --popover-origin-y: bottom;
+}
+
+.content:where([data-side='left']) {
+    --popover-origin-x: right;
+}
+
+.content:where([data-side='right']) {
+    --popover-origin-x: left;
+}
+
+.content:where([data-side='top'], [data-side='bottom'])[data-align='start'] {
+    --popover-origin-x: left;
+}
+
+.content:where([data-side='top'], [data-side='bottom'])[data-align='end'] {
+    --popover-origin-x: right;
+}
+
+.content:where([data-side='left'], [data-side='right'])[data-align='start'] {
+    --popover-origin-y: top;
+}
+
+.content:where([data-side='left'], [data-side='right'])[data-align='end'] {
+    --popover-origin-y: bottom;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .content,
+    .content:where(:popover-open) {
+        scale: 1;
+    }
 }

@@ -6,13 +6,15 @@ The trigger should still be understandable without the popover content. The floa
 
 ## Keyboard Behavior
 
-- The trigger should open the popover from the keyboard.
-- `Escape` should close it.
+- The trigger opens the popover from the keyboard; it must be a button.
+- `Escape` and an outside click close it, and focus returns to the trigger.
+- Opening does not move focus into the content; `Tab` from the trigger enters it. Safari does not move focus from the trigger into the content on `Tab`, so test keyboard access there.
 - Tab order inside richer popover content should stay logical.
 
 ## Focus Behavior
 
 - Focus should move predictably between trigger and content.
+- Nested popovers stack: opening a nested popover keeps its parent open.
 - Nested popovers should be tested as a real integration case.
 
 ## Screen Reader Semantics

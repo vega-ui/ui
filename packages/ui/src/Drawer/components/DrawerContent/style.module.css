@@ -1,18 +1,73 @@
+:global(html):has(.drawer:modal) {
+    overflow: hidden;
+}
+
 .drawer {
     --outer-space: var(--spacing-6);
+    --drawer-inline-sign: 1;
+    --drawer-open: translate(0);
+    --drawer-closed: none;
+    --drawer-drag-transform: translateX(var(--drawer-drag, 0px));
     display: flex;
     flex-direction: column;
     position: fixed;
+    inset: auto;
     box-sizing: border-box;
     margin: var(--outer-space);
+    border: none;
+    color: inherit;
     background: var(--surface-primary);
     border-radius: var(--radius-6);
     padding: clamp(var(--spacing-10), 5vw, var(--spacing-16));
     max-height: calc(100% - var(--outer-space) * 2 - env(safe-area-inset-bottom) - env(safe-area-inset-top));
     max-width: calc(100% - var(--outer-space) * 2 - env(safe-area-inset-right) - env(safe-area-inset-left));
-    transition: all .25s ease;
-    z-index: var(--z-index-above);
-    will-change: transform;
+    transform: var(--drawer-open) var(--drawer-drag-transform);
+    transition: transform var(--duration-spring) var(--ease-smooth);
+    touch-action: pan-y;
+}
+
+.drawer:where(:dir(rtl)) {
+    --drawer-inline-sign: -1;
+}
+
+.drawer:where([data-dragging='true']) {
+    transition: none;
+}
+
+.drawer::backdrop {
+    background: var(--overlay);
+    transition: opacity var(--transition-state-delay) ease;
+}
+
+.drawer:where([data-blurred='true'])::backdrop {
+    backdrop-filter: blur(20px);
+}
+
+.drawer:where([data-overlay='false'])::backdrop {
+    background: none;
+    backdrop-filter: none;
+}
+
+.drawer:where([data-status='close']) {
+    transform: var(--drawer-closed);
+    transition-duration: var(--duration-exit);
+    transition-timing-function: var(--ease-exit);
+}
+
+.drawer:where([data-status='close'])::backdrop {
+    opacity: 0;
+    transition-duration: var(--duration-exit);
+    transition-timing-function: var(--ease-exit);
+}
+
+@starting-style {
+    .drawer:where([open]) {
+        transform: var(--drawer-closed);
+    }
+
+    .drawer:where([open])::backdrop {
+        opacity: 0;
+    }
 }
 
 .drawer:where([data-full-width='true']) {
@@ -27,156 +82,108 @@
     box-shadow: var(--surface-shadow);
 }
 
-.drawer:where([data-status='open']) {
-    transform: translateY(0);
-}
-
-.drawer:where([data-status='initial']),
-.drawer:where([data-status='unmounted']),
-.drawer:where([data-status='close']) {
-    transform: translateY(100%);
+.drawer:where([data-position^='top'], [data-position^='bottom']) {
+    --drawer-drag-transform: translateY(var(--drawer-drag, 0px));
+    touch-action: pan-x pan-y;
 }
 
 .drawer:where([data-position='top']) {
+    --drawer-open: translateX(calc(-50% * var(--drawer-inline-sign)));
+    --drawer-closed: translate(calc(-50% * var(--drawer-inline-sign)), -100%);
     top: 0;
-    left: calc(50% - var(--outer-space));;
-    transform: translateX(-50%);
+    inset-inline-start: calc(50% - var(--outer-space));
 }
 
-.drawer:where([data-status='open'][data-position='top']) {
-    transform: translate(-50%, 0);
-}
-
-.drawer:where([data-status='open']):where([data-position='top-start'], [data-position='top-end']) {
-    transform: translateY(0);
-}
-
-.drawer:where([data-status='initial'][data-position='top']),
-.drawer:where([data-status='unmounted'][data-position='top']),
-.drawer:where([data-status='close'][data-position='top']) {
-    transform: translate(-50%, -100%);
-}
-
-.drawer:where([data-status='initial']):where([data-position='top-start'], [data-position='top-end']),
-.drawer:where([data-status='unmounted']):where([data-position='top-start'], [data-position='top-end']),
-.drawer:where([data-status='close']):where([data-position='top-start'], [data-position='top-end']) {
-    transform: translateY(-100%);
+.drawer:where([data-position='top-start'], [data-position='top-end']) {
+    --drawer-closed: translateY(-100%);
+    top: 0;
 }
 
 .drawer:where([data-position='top-start']) {
-    top: 0;
-    left: 0;
+    inset-inline-start: 0;
 }
 
 .drawer:where([data-position='top-end']) {
-    top: 0;
-    right: 0;
+    inset-inline-end: 0;
 }
 
-.drawer:where([data-position='right']) {
-    right: 0;
+.drawer:where([data-position='end']) {
+    --drawer-open: translateY(-50%);
+    --drawer-closed: translate(calc(100% * var(--drawer-inline-sign)), -50%);
+    inset-inline-end: 0;
     top: calc(50% - var(--outer-space));
-    transform: translateY(-50%);
 }
 
-.drawer:where([data-status='open'][data-position='right']) {
-    transform: translate(0, -50%);
+.drawer:where([data-position='end-start'], [data-position='end-end']) {
+    --drawer-closed: translateX(calc(100% * var(--drawer-inline-sign)));
+    inset-inline-end: 0;
 }
 
-.drawer:where([data-status='open']):where([data-position='right-start'], [data-position='right-end']) {
-    transform: translateX(0);
-}
-
-.drawer:where([data-status='initial'][data-position='right']),
-.drawer:where([data-status='unmounted'][data-position='right']),
-.drawer:where([data-status='close'][data-position='right']) {
-    transform: translate(100%, -50%);
-}
-
-.drawer:where([data-status='initial']):where([data-position='right-start'], [data-position='right-end']),
-.drawer:where([data-status='unmounted']):where([data-position='right-start'], [data-position='right-end']),
-.drawer:where([data-status='close']):where([data-position='right-start'], [data-position='right-end']) {
-    transform: translateX(100%);
-}
-
-.drawer:where([data-position='right-start']) {
-    right: 0;
+.drawer:where([data-position='end-start']) {
     top: 0;
 }
 
-.drawer:where([data-position='right-end']) {
-    right: 0;
+.drawer:where([data-position='end-end']) {
     bottom: 0;
 }
 
 .drawer:where([data-position='bottom']) {
+    --drawer-open: translateX(calc(-50% * var(--drawer-inline-sign)));
+    --drawer-closed: translate(calc(-50% * var(--drawer-inline-sign)), 100%);
     bottom: 0;
-    left: calc(50% - var(--outer-space));;
-    transform: translateX(-50%);
+    inset-inline-start: calc(50% - var(--outer-space));
 }
 
-.drawer:where([data-status='open'][data-position='bottom']) {
-    transform: translate(-50%, 0);
-}
-
-.drawer:where([data-status='open']):where([data-position='bottom-start'], [data-position='bottom-end']) {
-    transform: translateY(0);
-}
-
-.drawer:where([data-status='initial'][data-position='bottom']),
-.drawer:where([data-status='unmounted'][data-position='bottom']),
-.drawer:where([data-status='close'][data-position='bottom']) {
-    transform: translate(-50%, 100%);
-}
-
-.drawer:where([data-status='initial']):where([data-position='bottom-start'], [data-position='bottom-end']),
-.drawer:where([data-status='unmounted']):where([data-position='bottom-start'], [data-position='bottom-end']),
-.drawer:where([data-status='close']):where([data-position='bottom-start'], [data-position='bottom-end']) {
-    transform: translateY(100%);
+.drawer:where([data-position='bottom-start'], [data-position='bottom-end']) {
+    --drawer-closed: translateY(100%);
+    bottom: 0;
 }
 
 .drawer:where([data-position='bottom-start']) {
-    bottom: 0;
-    left: 0;
+    inset-inline-start: 0;
 }
 
 .drawer:where([data-position='bottom-end']) {
-    bottom: 0;
-    right: 0;
+    inset-inline-end: 0;
 }
 
-.drawer:where([data-position='left']) {
-    left: 0;
-    top: calc(50% - var(--outer-space));;
-    transform: translateY(-50%);
+.drawer:where([data-position='start']) {
+    --drawer-open: translateY(-50%);
+    --drawer-closed: translate(calc(-100% * var(--drawer-inline-sign)), -50%);
+    inset-inline-start: 0;
+    top: calc(50% - var(--outer-space));
 }
 
-.drawer:where([data-status='open'][data-position='left']) {
-    transform: translate(0, -50%);
+.drawer:where([data-position='start-start'], [data-position='start-end']) {
+    --drawer-closed: translateX(calc(-100% * var(--drawer-inline-sign)));
+    inset-inline-start: 0;
 }
 
-.drawer:where([data-status='open']):where([data-position='left-start'], [data-position='left-end']) {
-    transform: translateX(0);
-}
-
-.drawer:where([data-status='initial'][data-position='left']),
-.drawer:where([data-status='unmounted'][data-position='left']),
-.drawer:where([data-status='close'][data-position='left']) {
-    transform: translate(-100%, -50%);
-}
-
-.drawer:where([data-status='initial']):where([data-position='left-start'], [data-position='left-end']),
-.drawer:where([data-status='unmounted']):where([data-position='left-start'], [data-position='left-end']),
-.drawer:where([data-status='close']):where([data-position='left-start'], [data-position='left-end']) {
-    transform: translateX(-100%);
-}
-
-.drawer:where([data-position='left-start']) {
-    left: 0;
+.drawer:where([data-position='start-start']) {
     top: 0;
 }
 
-.drawer:where([data-position='left-end']) {
-    left: 0;
+.drawer:where([data-position='start-end']) {
     bottom: 0;
+}
+
+.drawer:focus-visible {
+    outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .drawer {
+        --drawer-closed: var(--drawer-open);
+        transition: opacity var(--duration-exit) ease;
+    }
+
+    .drawer:where([data-status='close']) {
+        opacity: 0;
+    }
+
+    @starting-style {
+        .drawer:where([open]) {
+            opacity: 0;
+        }
+    }
 }

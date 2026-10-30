@@ -39,13 +39,11 @@ const [value, setValue] = useState('');
       <PhoneFieldSelectValue />
       <PhoneFieldSelectIcon />
     </PhoneFieldSelectCombobox>
-    <PhoneFieldSelectPortal>
-      <PhoneFieldSelectListbox>
-        <PhoneFieldSelectOption value='RU'>Russia +7</PhoneFieldSelectOption>
-        <PhoneFieldSelectOption value='US'>United States +1</PhoneFieldSelectOption>
-        <PhoneFieldSelectOption value='FR'>France +33</PhoneFieldSelectOption>
-      </PhoneFieldSelectListbox>
-    </PhoneFieldSelectPortal>
+    <PhoneFieldSelectListbox>
+      <PhoneFieldSelectOption value='RU'>Russia +7</PhoneFieldSelectOption>
+      <PhoneFieldSelectOption value='US'>United States +1</PhoneFieldSelectOption>
+      <PhoneFieldSelectOption value='FR'>France +33</PhoneFieldSelectOption>
+    </PhoneFieldSelectListbox>
   </PhoneFieldSelect>
   <PhoneFieldInput placeholder='+7' autoComplete='tel' />
 </PhoneField>
@@ -67,23 +65,28 @@ const [value, setValue] = useState('');
 ### Layout/Overlay: full field inside a dialog form
 
 ```tsx
+import type { CSSProperties } from 'react';
+
 <Dialog>
   <DialogTrigger asChild>
     <Button>Add contact</Button>
   </DialogTrigger>
-  <DialogPortal>
-    <DialogBackdrop>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Contact phone</DialogTitle>
-          <DialogCloseButton />
-        </DialogHeader>
-        <PhoneField code='US'>
-          <PhoneFieldInput placeholder='+1 (___) ___-____' />
-        </PhoneField>
-      </DialogContent>
-    </DialogBackdrop>
-  </DialogPortal>
+  <DialogContent aria-labelledby='contact-phone-title'>
+    <Heading id='contact-phone-title' as='h2' size={4} fontWeight={600}>Contact phone</Heading>
+    <DialogClose asChild>
+      <IconButton
+        aria-label='Close'
+        variant='secondary'
+        appearance='ghost'
+        style={{ position: 'absolute', insetBlockStart: 16, insetInlineEnd: 16, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+      >
+        <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
+      </IconButton>
+    </DialogClose>
+    <PhoneField code='US'>
+      <PhoneFieldInput placeholder='+1 (___) ___-____' />
+    </PhoneField>
+  </DialogContent>
 </Dialog>
 ```
 

@@ -11,13 +11,11 @@
     <SelectValue placeholder='Select framework' />
     <SelectIcon />
   </SelectCombobox>
-  <SelectPortal>
-    <SelectListbox>
-      <SelectOption value='react'>React</SelectOption>
-      <SelectOption value='vue'>Vue</SelectOption>
-      <SelectOption value='svelte'>Svelte</SelectOption>
-    </SelectListbox>
-  </SelectPortal>
+  <SelectListbox>
+    <SelectOption value='react'>React</SelectOption>
+    <SelectOption value='vue'>Vue</SelectOption>
+    <SelectOption value='svelte'>Svelte</SelectOption>
+  </SelectListbox>
 </Select>
 ```
 
@@ -44,13 +42,11 @@ const [value, setValue] = useState<string | number | undefined>('medium');
       <SelectValue placeholder='Select incident priority' />
       <SelectIcon />
     </SelectCombobox>
-    <SelectPortal>
-      <SelectListbox>
-        <SelectOption value='low'>Low</SelectOption>
-        <SelectOption value='medium'>Medium</SelectOption>
-        <SelectOption value='high'>High</SelectOption>
-      </SelectListbox>
-    </SelectPortal>
+    <SelectListbox>
+      <SelectOption value='low'>Low</SelectOption>
+      <SelectOption value='medium'>Medium</SelectOption>
+      <SelectOption value='high'>High</SelectOption>
+    </SelectListbox>
   </Select>
 </>
 ```
@@ -71,13 +67,11 @@ const [open, setOpen] = useState(false);
       <SelectValue placeholder='Pick an option' />
       <SelectIcon />
     </SelectCombobox>
-    <SelectPortal>
-      <SelectListbox>
-        <SelectOption value='alpha'>Alpha</SelectOption>
-        <SelectOption value='beta'>Beta</SelectOption>
-        <SelectOption value='gamma'>Gamma</SelectOption>
-      </SelectListbox>
-    </SelectPortal>
+    <SelectListbox>
+      <SelectOption value='alpha'>Alpha</SelectOption>
+      <SelectOption value='beta'>Beta</SelectOption>
+      <SelectOption value='gamma'>Gamma</SelectOption>
+    </SelectListbox>
   </Select>
 </>
 ```
@@ -93,16 +87,14 @@ const [open, setOpen] = useState(false);
     <SelectValue placeholder='Select country' />
     <SelectIcon />
   </SelectCombobox>
-  <SelectPortal>
-    <SelectListbox>
-      <TextField>
-        <TextFieldInput placeholder='Search country' />
-      </TextField>
-      <SelectOption value='fr'>France</SelectOption>
-      <SelectOption value='de'>Germany</SelectOption>
-      <SelectOption value='jp'>Japan</SelectOption>
-    </SelectListbox>
-  </SelectPortal>
+  <SelectListbox>
+    <TextField>
+      <TextFieldInput placeholder='Search country' />
+    </TextField>
+    <SelectOption value='fr'>France</SelectOption>
+    <SelectOption value='de'>Germany</SelectOption>
+    <SelectOption value='jp'>Japan</SelectOption>
+  </SelectListbox>
 </Select>
 ```
 
@@ -117,12 +109,10 @@ const [open, setOpen] = useState(false);
       <SelectValue placeholder='Select framework' />
       <SelectIcon />
     </SelectCombobox>
-    <SelectPortal>
-      <SelectListbox>
-        <SelectOption value='react'>React</SelectOption>
-        <SelectOption value='vue'>Vue</SelectOption>
-      </SelectListbox>
-    </SelectPortal>
+    <SelectListbox>
+      <SelectOption value='react'>React</SelectOption>
+      <SelectOption value='vue'>Vue</SelectOption>
+    </SelectListbox>
   </Select>
   <Button type='submit'>Submit</Button>
 </form>
@@ -141,13 +131,11 @@ const [open, setOpen] = useState(false);
       <SelectValue placeholder='frequency' />
       <SelectIcon />
     </SelectCombobox>
-    <SelectPortal>
-      <SelectListbox>
-        <SelectOption value='daily'>Daily</SelectOption>
-        <SelectOption value='weekly'>Weekly</SelectOption>
-        <SelectOption value='monthly'>Monthly</SelectOption>
-      </SelectListbox>
-    </SelectPortal>
+    <SelectListbox>
+      <SelectOption value='daily'>Daily</SelectOption>
+      <SelectOption value='weekly'>Weekly</SelectOption>
+      <SelectOption value='monthly'>Monthly</SelectOption>
+    </SelectListbox>
   </Select>
   <Text size={3}>about updates.</Text>
 </div>
@@ -156,35 +144,38 @@ const [open, setOpen] = useState(false);
 ### Layout/Overlay: select inside dialog
 
 ```tsx
+import type { CSSProperties } from 'react';
+
 <Dialog>
   <DialogTrigger asChild>
     <Button>Open settings</Button>
   </DialogTrigger>
-  <DialogPortal>
-    <DialogBackdrop>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Template</DialogTitle>
-          <DialogCloseButton />
-        </DialogHeader>
+  <DialogContent aria-labelledby='template-title'>
+    <Heading id='template-title' as='h2' size={4} fontWeight={600}>Template</Heading>
+    <DialogClose asChild>
+      <IconButton
+        aria-label='Close'
+        variant='secondary'
+        appearance='ghost'
+        style={{ position: 'absolute', insetBlockStart: 16, insetInlineEnd: 16, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+      >
+        <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
+      </IconButton>
+    </DialogClose>
 
-        <Select defaultValue='template-a'>
-          <SelectHiddenSelect />
-          <SelectCombobox>
-            <SelectValue placeholder='Select template' />
-            <SelectIcon />
-          </SelectCombobox>
-          <SelectPortal>
-            <SelectListbox>
-              <SelectOption value='template-a'>Template A</SelectOption>
-              <SelectOption value='template-b'>Template B</SelectOption>
-              <SelectOption value='template-c'>Template C</SelectOption>
-            </SelectListbox>
-          </SelectPortal>
-        </Select>
-      </DialogContent>
-    </DialogBackdrop>
-  </DialogPortal>
+    <Select defaultValue='template-a'>
+      <SelectHiddenSelect />
+      <SelectCombobox>
+        <SelectValue placeholder='Select template' />
+        <SelectIcon />
+      </SelectCombobox>
+      <SelectListbox>
+        <SelectOption value='template-a'>Template A</SelectOption>
+        <SelectOption value='template-b'>Template B</SelectOption>
+        <SelectOption value='template-c'>Template C</SelectOption>
+      </SelectListbox>
+    </Select>
+  </DialogContent>
 </Dialog>
 ```
 
@@ -199,12 +190,10 @@ const [open, setOpen] = useState(false);
     <SelectValue placeholder='Select framework' />
     <SelectIcon />
   </SelectCombobox>
-  <SelectPortal>
-    <SelectListbox>
-      <SelectOption value='alpha'>React</SelectOption>
-      <SelectOption value='beta'>Vue</SelectOption>
-    </SelectListbox>
-  </SelectPortal>
+  <SelectListbox>
+    <SelectOption value='alpha'>React</SelectOption>
+    <SelectOption value='beta'>Vue</SelectOption>
+  </SelectListbox>
 </Select>
 ```
 
@@ -219,12 +208,10 @@ const [open, setOpen] = useState(false);
     <SelectValue placeholder='Select framework' />
     <SelectIcon />
   </SelectCombobox>
-  <SelectPortal>
-    <SelectListbox>
-      <SelectOption value='alpha'>React</SelectOption>
-      <SelectOption value='beta'>Vue</SelectOption>
-    </SelectListbox>
-  </SelectPortal>
+  <SelectListbox>
+    <SelectOption value='alpha'>React</SelectOption>
+    <SelectOption value='beta'>Vue</SelectOption>
+  </SelectListbox>
 </Select>
 ```
 
@@ -237,17 +224,15 @@ const [open, setOpen] = useState(false);
     <SelectValue placeholder='Select an item' />
     <SelectIcon />
   </SelectCombobox>
-  <SelectPortal>
-    <SelectListbox style={{ maxHeight: 280, overflow: 'auto' }}>
-      {Array.from({ length: 40 }).map((_, i) => {
-        const value = `item-${i + 1}`;
-        return (
-          <SelectOption key={value} value={value}>
-            Item #{i + 1}
-          </SelectOption>
-        );
-      })}
-    </SelectListbox>
-  </SelectPortal>
+  <SelectListbox style={{ maxHeight: 280, overflow: 'auto' }}>
+    {Array.from({ length: 40 }).map((_, i) => {
+      const value = `item-${i + 1}`;
+      return (
+        <SelectOption key={value} value={value}>
+          Item #{i + 1}
+        </SelectOption>
+      );
+    })}
+  </SelectListbox>
 </Select>
 ```

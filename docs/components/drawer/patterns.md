@@ -9,7 +9,7 @@ When to use:
 Composition notes:
 
 - Keep the content contextual to the current selection.
-- Use `DrawerHeader` and `DrawerTitle` so the inspector purpose stays obvious.
+- Name the drawer with a heading referenced by `aria-labelledby` so the inspector purpose stays obvious.
 
 Trade-offs:
 
@@ -17,21 +17,26 @@ Trade-offs:
 - Weaker for highly modal decisions.
 
 ```tsx
+import type { CSSProperties } from 'react';
+
 <Drawer>
   <DrawerTrigger asChild>
     <Button>Inspect widget</Button>
   </DrawerTrigger>
-  <DrawerPortal>
-    <DrawerBackdrop>
-      <DrawerContent shadowed>
-        <DrawerHeader>
-          <DrawerTitle>Widget details</DrawerTitle>
-          <DrawerCloseButton />
-        </DrawerHeader>
-        <Text size={3}>Review the selected widget status, source, and owner without leaving the dashboard.</Text>
-      </DrawerContent>
-    </DrawerBackdrop>
-  </DrawerPortal>
+  <DrawerContent shadowed aria-labelledby='widget-details-title'>
+    <Heading id='widget-details-title' as='h2' size={4} fontWeight={600}>Widget details</Heading>
+    <DrawerClose asChild>
+      <IconButton
+        aria-label='Close'
+        variant='secondary'
+        appearance='ghost'
+        style={{ position: 'absolute', insetBlockStart: 16, insetInlineEnd: 16, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+      >
+        <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
+      </IconButton>
+    </DrawerClose>
+    <Text size={3}>Review the selected widget status, source, and owner without leaving the dashboard.</Text>
+  </DrawerContent>
 </Drawer>
 ```
 
@@ -52,23 +57,31 @@ Trade-offs:
 - Easier to overload with too much content.
 
 ```tsx
+import type { CSSProperties } from 'react';
+
 <Drawer>
   <DrawerTrigger asChild>
     <Button>Invite members</Button>
   </DrawerTrigger>
-  <DrawerPortal>
-    <DrawerBackdrop>
-      <DrawerContent shadowed>
-        <DrawerHeader>
-          <DrawerTitle>Invite members</DrawerTitle>
-          <DrawerCloseButton />
-        </DrawerHeader>
-        <TextField>
-          <TextFieldInput placeholder='name@company.com' />
-        </TextField>
-      </DrawerContent>
-    </DrawerBackdrop>
-  </DrawerPortal>
+  <DrawerContent shadowed aria-labelledby='invite-members-title'>
+    <Heading id='invite-members-title' as='h2' size={4} fontWeight={600}>Invite members</Heading>
+    <DrawerClose asChild>
+      <IconButton
+        aria-label='Close'
+        variant='secondary'
+        appearance='ghost'
+        style={{ position: 'absolute', insetBlockStart: 16, insetInlineEnd: 16, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+      >
+        <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
+      </IconButton>
+    </DrawerClose>
+    <form method='dialog' style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+      <TextField>
+        <TextFieldInput placeholder='name@company.com' aria-label='Email' />
+      </TextField>
+      <Button type='submit'>Send invite</Button>
+    </form>
+  </DrawerContent>
 </Drawer>
 ```
 
@@ -89,24 +102,29 @@ Trade-offs:
 - Needs careful viewport testing.
 
 ```tsx
+import type { CSSProperties } from 'react';
+
 <Drawer>
   <DrawerTrigger asChild>
     <Button>View activity</Button>
   </DrawerTrigger>
-  <DrawerPortal>
-    <DrawerBackdrop>
-      <DrawerContent shadowed>
-        <DrawerHeader>
-          <DrawerTitle>Activity</DrawerTitle>
-          <DrawerCloseButton />
-        </DrawerHeader>
-        <div style={{ maxHeight: 360, overflow: 'auto' }}>
-          <Text size={2}>09:14 Published release notes</Text>
-          <Text size={2}>09:22 Added billing contact</Text>
-          <Text size={2}>09:40 Downloaded CSV export</Text>
-        </div>
-      </DrawerContent>
-    </DrawerBackdrop>
-  </DrawerPortal>
+  <DrawerContent shadowed fullHeight aria-labelledby='activity-title'>
+    <Heading id='activity-title' as='h2' size={4} fontWeight={600}>Activity</Heading>
+    <DrawerClose asChild>
+      <IconButton
+        aria-label='Close'
+        variant='secondary'
+        appearance='ghost'
+        style={{ position: 'absolute', insetBlockStart: 16, insetInlineEnd: 16, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+      >
+        <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
+      </IconButton>
+    </DrawerClose>
+    <div style={{ overflow: 'auto' }}>
+      <Text size={2}>09:14 Published release notes</Text>
+      <Text size={2}>09:22 Added billing contact</Text>
+      <Text size={2}>09:40 Downloaded CSV export</Text>
+    </div>
+  </DrawerContent>
 </Drawer>
 ```

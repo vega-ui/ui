@@ -7,7 +7,6 @@ import {
   SelectIcon,
   SelectListbox,
   SelectOption,
-  SelectPortal,
   SelectValue,
 } from './components';
 import { Button } from '../Button';
@@ -17,16 +16,9 @@ import { Icon } from '../Icon';
 import { IconButton } from '../IconButton';
 import { ChevronDown, X, Globe, Star, Check } from '@vega-ui/icons';
 import { ChangeEvent, KeyboardEvent, FC, PropsWithChildren, useMemo, useState } from 'react';
-import {
-  Dialog,
-  DialogBackdrop,
-  DialogCloseButton,
-  DialogContent,
-  DialogHeader,
-  DialogPortal, DialogTitle,
-  DialogTrigger
-} from '../Dialog';
+import { Dialog, DialogContent, DialogTrigger } from '../Dialog';
 import { TextField, TextFieldInput } from '../TextField';
+import { Heading } from '../Heading';
 
 const meta = {
   title: 'Form/Selectors/Select/Select',
@@ -51,13 +43,11 @@ const meta = {
         <SelectValue placeholder='Select an option' />
         <SelectIcon />
       </SelectCombobox>,
-      <SelectPortal key={2}>
-        <SelectListbox>
-          <SelectOption value='alpha'>Alpha</SelectOption>
-          <SelectOption value='beta'>Beta</SelectOption>
-          <SelectOption value='gamma'>Gamma</SelectOption>
-        </SelectListbox>
-      </SelectPortal>,
+      <SelectListbox key={2}>
+        <SelectOption value='alpha'>Alpha</SelectOption>
+        <SelectOption value='beta'>Beta</SelectOption>
+        <SelectOption value='gamma'>Gamma</SelectOption>
+      </SelectListbox>,
     ],
   },
 } satisfies Meta<typeof Select>;
@@ -92,13 +82,11 @@ export const MinimalPlaceholder: Story = {
           <SelectValue placeholder='Choose a city' />
           <SelectIcon />
         </SelectCombobox>
-        <SelectPortal>
-          <SelectListbox>
-            <SelectOption value='moscow'>Moscow</SelectOption>
-            <SelectOption value='saint-petersburg'>Saint Petersburg</SelectOption>
-            <SelectOption value='novosibirsk'>Novosibirsk</SelectOption>
-          </SelectListbox>
-        </SelectPortal>
+        <SelectListbox>
+          <SelectOption value='moscow'>Moscow</SelectOption>
+          <SelectOption value='saint-petersburg'>Saint Petersburg</SelectOption>
+          <SelectOption value='novosibirsk'>Novosibirsk</SelectOption>
+        </SelectListbox>
       </>
     ),
   },
@@ -117,13 +105,11 @@ export const CustomIcon: Story = {
             <Globe />
           </SelectIcon>
         </SelectCombobox>
-        <SelectPortal>
-          <SelectListbox>
-            <SelectOption value='moscow'>Moscow</SelectOption>
-            <SelectOption value='saint-petersburg'>Saint Petersburg</SelectOption>
-            <SelectOption value='novosibirsk'>Novosibirsk</SelectOption>
-          </SelectListbox>
-        </SelectPortal>
+        <SelectListbox>
+          <SelectOption value='moscow'>Moscow</SelectOption>
+          <SelectOption value='saint-petersburg'>Saint Petersburg</SelectOption>
+          <SelectOption value='novosibirsk'>Novosibirsk</SelectOption>
+        </SelectListbox>
       </>
     ),
   },
@@ -140,33 +126,31 @@ export const WithRichOptions: Story = {
           <SelectValue style={{ gap: 12 }} placeholder='Select a plan' />
           <SelectIcon />
         </SelectCombobox>
-        <SelectPortal>
-          <SelectListbox>
-            <SelectOption style={{ gap: 12 }} value='basic'>
-              <Icon size='sm'><Star /></Icon>
-              <div style={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-                <Text size={2} style={{ fontWeight: 600, lineHeight: '14px' }}>Basic</Text>
-                <Text size={1} style={{ opacity: 0.7 }}>For simple use cases</Text>
-              </div>
-            </SelectOption>
-            
-            <SelectOption style={{ gap: 12 }} value='pro'>
-              <Icon size='sm'><Check /></Icon>
-              <div style={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-                <Text size={2} style={{ fontWeight: 600, lineHeight: '14px' }}>Pro</Text>
-                <Text size={1} style={{ opacity: 0.7 }}>Most common choice</Text>
-              </div>
-            </SelectOption>
-            
-            <SelectOption style={{ gap: 12 }} value='enterprise'>
-              <Icon size='sm'><Globe /></Icon>
-              <div style={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-                <Text size={2} style={{ fontWeight: 600, lineHeight: '14px' }}>Enterprise</Text>
-                <Text size={1} style={{ opacity: 0.7 }}>Disabled example</Text>
-              </div>
-            </SelectOption>
-          </SelectListbox>
-        </SelectPortal>
+        <SelectListbox>
+          <SelectOption style={{ gap: 12 }} value='basic'>
+            <Icon size='sm'><Star /></Icon>
+            <div style={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
+              <Text size={2} style={{ fontWeight: 600, lineHeight: '14px' }}>Basic</Text>
+              <Text size={1} style={{ opacity: 0.7 }}>For simple use cases</Text>
+            </div>
+          </SelectOption>
+          
+          <SelectOption style={{ gap: 12 }} value='pro'>
+            <Icon size='sm'><Check /></Icon>
+            <div style={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
+              <Text size={2} style={{ fontWeight: 600, lineHeight: '14px' }}>Pro</Text>
+              <Text size={1} style={{ opacity: 0.7 }}>Most common choice</Text>
+            </div>
+          </SelectOption>
+          
+          <SelectOption style={{ gap: 12 }} value='enterprise'>
+            <Icon size='sm'><Globe /></Icon>
+            <div style={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
+              <Text size={2} style={{ fontWeight: 600, lineHeight: '14px' }}>Enterprise</Text>
+              <Text size={1} style={{ opacity: 0.7 }}>Disabled example</Text>
+            </div>
+          </SelectOption>
+        </SelectListbox>
       </>
     ),
   },
@@ -197,13 +181,11 @@ export const InlineVariant: Story = {
           </Text>
         </div>
         
-        <SelectPortal>
-          <SelectListbox>
-            <SelectOption value='daily'>Daily</SelectOption>
-            <SelectOption value='weekly'>Weekly</SelectOption>
-            <SelectOption value='monthly'>Monthly</SelectOption>
-          </SelectListbox>
-        </SelectPortal>
+        <SelectListbox>
+          <SelectOption value='daily'>Daily</SelectOption>
+          <SelectOption value='weekly'>Weekly</SelectOption>
+          <SelectOption value='monthly'>Monthly</SelectOption>
+        </SelectListbox>
       </>
     ),
   },
@@ -232,13 +214,11 @@ export const ControlledOpen: Story = {
             <SelectIcon />
           </SelectCombobox>
           
-          <SelectPortal>
-            <SelectListbox>
-              <SelectOption value='alpha'>Alpha</SelectOption>
-              <SelectOption value='beta'>Beta</SelectOption>
-              <SelectOption value='gamma'>Gamma</SelectOption>
-            </SelectListbox>
-          </SelectPortal>
+          <SelectListbox>
+            <SelectOption value='alpha'>Alpha</SelectOption>
+            <SelectOption value='beta'>Beta</SelectOption>
+            <SelectOption value='gamma'>Gamma</SelectOption>
+          </SelectListbox>
         </Select>
       </Stack>
     );
@@ -293,15 +273,13 @@ export const ControlledValueWithClear: Story = {
             <SelectIcon />
           </SelectCombobox>
           
-          <SelectPortal>
-            <SelectListbox>
-              {options.map((o) => (
-                <SelectOption key={o.value} value={o.value}>
-                  {o.label}
-                </SelectOption>
-              ))}
-            </SelectListbox>
-          </SelectPortal>
+          <SelectListbox>
+            {options.map((o) => (
+              <SelectOption key={o.value} value={o.value}>
+                {o.label}
+              </SelectOption>
+            ))}
+          </SelectListbox>
         </Select>
         
         <Hint>
@@ -328,13 +306,11 @@ export const DisabledAndReadOnlyStates: Story = {
                 <SelectValue placeholder='Select' />
                 <SelectIcon />
               </SelectCombobox>
-              <SelectPortal>
-                <SelectListbox>
-                  <SelectOption value='alpha'>Alpha</SelectOption>
-                  <SelectOption value='beta'>Beta</SelectOption>
-                  <SelectOption value='gamma'>Gamma</SelectOption>
-                </SelectListbox>
-              </SelectPortal>
+              <SelectListbox>
+                <SelectOption value='alpha'>Alpha</SelectOption>
+                <SelectOption value='beta'>Beta</SelectOption>
+                <SelectOption value='gamma'>Gamma</SelectOption>
+              </SelectListbox>
             </Select>
           </div>
           
@@ -348,13 +324,11 @@ export const DisabledAndReadOnlyStates: Story = {
                 <SelectValue placeholder='Select' />
                 <SelectIcon />
               </SelectCombobox>
-              <SelectPortal>
-                <SelectListbox>
-                  <SelectOption value='alpha'>Alpha</SelectOption>
-                  <SelectOption value='beta'>Beta</SelectOption>
-                  <SelectOption value='gamma'>Gamma</SelectOption>
-                </SelectListbox>
-              </SelectPortal>
+              <SelectListbox>
+                <SelectOption value='alpha'>Alpha</SelectOption>
+                <SelectOption value='beta'>Beta</SelectOption>
+                <SelectOption value='gamma'>Gamma</SelectOption>
+              </SelectListbox>
             </Select>
           </div>
         </div>
@@ -375,18 +349,16 @@ export const LongListScroll: Story = {
           <SelectIcon />
         </SelectCombobox>
         
-        <SelectPortal>
-          <SelectListbox style={{ maxHeight: 280, overflow: 'auto' }}>
-            {Array.from({ length: 40 }).map((_, i) => {
-              const value = `item-${i + 1}`;
-              return (
-                <SelectOption key={value} value={value}>
-                  Item #{i + 1}
-                </SelectOption>
-              );
-            })}
-          </SelectListbox>
-        </SelectPortal>
+        <SelectListbox style={{ maxHeight: 280, overflow: 'auto' }}>
+          {Array.from({ length: 40 }).map((_, i) => {
+            const value = `item-${i + 1}`;
+            return (
+              <SelectOption key={value} value={value}>
+                Item #{i + 1}
+              </SelectOption>
+            );
+          })}
+        </SelectListbox>
       </>
     ),
   },
@@ -403,49 +375,40 @@ export const NestedDialogFlow: Story = {
           <DialogTrigger asChild>
             <Button>Open flow</Button>
           </DialogTrigger>
-          <DialogPortal>
-            <DialogBackdrop>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Configure option</DialogTitle>
-                  <DialogCloseButton />
-                </DialogHeader>
+          <DialogContent aria-labelledby='configure-title'>
+            <Heading id='configure-title' as='h2' size={4} fontWeight={600}>Configure option</Heading>
+            
+            <Text size={2} style={{ opacity: 0.7, marginTop: 6 }}>
+              Select remains fully composable and can be embedded into complex layouts.
+            </Text>
+            
+            <div style={{ marginTop: 14, display: 'grid', gap: 12 }}>
+              <Select {...props} value={selected} onChangeValue={setSelected}>
+                <SelectHiddenSelect />
+                <SelectCombobox>
+                  <SelectValue placeholder='Select a template' />
+                  <SelectIcon />
+                </SelectCombobox>
                 
-                <Text size={2} style={{ opacity: 0.7, marginTop: 6 }}>
-                  Select remains fully composable and can be embedded into complex layouts.
-                </Text>
-                
-                <div style={{ marginTop: 14, display: 'grid', gap: 12 }}>
-                  <Select {...props} value={selected} onChangeValue={setSelected}>
-                    <SelectHiddenSelect />
-                    <SelectCombobox>
-                      <SelectValue placeholder='Select a template' />
-                      <SelectIcon />
-                    </SelectCombobox>
-                    
-                    <SelectPortal>
-                      <SelectListbox>
-                        <SelectOption value='template-a'>Template A</SelectOption>
-                        <SelectOption value='template-b'>Template B</SelectOption>
-                        <SelectOption value='template-c'>Template C</SelectOption>
-                      </SelectListbox>
-                    </SelectPortal>
-                  </Select>
-                  
-                  <div style={{ display: 'flex', gap: 10 }}>
-                    <Button fullWidth disabled={!selected}>
-                      Continue
-                    </Button>
-                  </div>
-                  
-                  <Hint>
-                    This story is useful to verify focus restoration, layering/portal root behavior, and keyboard navigation
-                    when the Select is used inside overlays.
-                  </Hint>
-                </div>
-              </DialogContent>
-            </DialogBackdrop>
-          </DialogPortal>
+                <SelectListbox>
+                  <SelectOption value='template-a'>Template A</SelectOption>
+                  <SelectOption value='template-b'>Template B</SelectOption>
+                  <SelectOption value='template-c'>Template C</SelectOption>
+                </SelectListbox>
+              </Select>
+              
+              <form method='dialog' style={{ display: 'flex', gap: 10 }}>
+                <Button type='submit' fullWidth disabled={!selected}>
+                  Continue
+                </Button>
+              </form>
+              
+              <Hint>
+                This story is useful to verify focus restoration, layering/portal root behavior, and keyboard navigation
+                when the Select is used inside overlays.
+              </Hint>
+            </div>
+          </DialogContent>
         </Dialog>
       </Stack>
     );
@@ -490,18 +453,16 @@ export const WithFilterSearch: Story = {
           <SelectIcon />
         </SelectCombobox>
         
-        <SelectPortal>
-          <SelectListbox style={{ maxHeight: 280, overflow: 'auto' }}>
-            <TextField>
-              <TextFieldInput onKeyDown={onKeyDown} placeholder='Search' onChange={onSearch} value={search} />
-            </TextField>
-            {filtered.map(({ label, value }) => (
-              <SelectOption key={value} value={value}>
-                {label}
-              </SelectOption>
-            ))}
-          </SelectListbox>
-        </SelectPortal>
+        <SelectListbox style={{ maxHeight: 280, overflow: 'auto' }}>
+          <TextField>
+            <TextFieldInput onKeyDown={onKeyDown} placeholder='Search' onChange={onSearch} value={search} />
+          </TextField>
+          {filtered.map(({ label, value }) => (
+            <SelectOption key={value} value={value}>
+              {label}
+            </SelectOption>
+          ))}
+        </SelectListbox>
       </Select>
     )
   }

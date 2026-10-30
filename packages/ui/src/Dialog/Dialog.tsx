@@ -3,14 +3,6 @@
 import { FC, ReactNode } from 'react';
 import { DialogProvider } from './contexts';
 import { useControlledState } from '@vega-ui/hooks';
-import {
-  FloatingContext,
-  useClick,
-  useDismiss,
-  useFloating,
-  useInteractions,
-  useRole, useTransitionStatus,
-} from '@floating-ui/react';
 
 export interface DialogProps {
   /**
@@ -53,32 +45,10 @@ export const Dialog: FC<DialogProps> = ({
 }) => {
   const [open, setOpen] = useControlledState(controlledOpen, defaultOpen, onChangeOpen)
 
-  const { context } = useFloating({
-    open,
-    onOpenChange: setOpen,
-  });
-
-  const click = useClick(context);
-  const role = useRole(context);
-  const dismiss = useDismiss(context, { outsidePressEvent: 'pointerdown' });
-
-  const { getReferenceProps, getFloatingProps } = useInteractions([
-    click,
-    dismiss,
-    role,
-  ]);
-  
-  const { status, isMounted } = useTransitionStatus(context);
-
   return (
     <DialogProvider
-      context={context as FloatingContext<HTMLElement>}
-      contentProps={getFloatingProps()}
-      triggerProps={getReferenceProps()}
       open={open}
       changeOpen={setOpen}
-      status={status}
-      isMounted={isMounted}
       fluid={fluid}
     >
       {children}

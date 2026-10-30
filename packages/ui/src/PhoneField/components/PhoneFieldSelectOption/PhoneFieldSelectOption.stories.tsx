@@ -5,7 +5,6 @@ import { PhoneFieldSelectHiddenSelect } from '../PhoneFieldSelectHiddenSelect';
 import { PhoneFieldSelectCombobox } from '../PhoneFieldSelectCombobox';
 import { PhoneFieldSelectValue } from '../PhoneFieldSelectValue';
 import { PhoneFieldSelectIcon } from '../PhoneFieldSelectIcon';
-import { PhoneFieldSelectPortal } from '../PhoneFieldSelectPortal';
 import { PhoneField } from '../../PhoneField';
 import { PhoneFieldInput } from '../PhoneFieldInput';
 import { PhoneFieldSelectListbox } from '../PhoneFieldSelectListbox';
@@ -28,11 +27,9 @@ const meta = {
             <PhoneFieldSelectValue placeholder='XX' />
             <PhoneFieldSelectIcon />
           </PhoneFieldSelectCombobox>
-          <PhoneFieldSelectPortal>
-            <PhoneFieldSelectListbox>
-              <Story />
-            </PhoneFieldSelectListbox>
-          </PhoneFieldSelectPortal>
+          <PhoneFieldSelectListbox>
+            <Story />
+          </PhoneFieldSelectListbox>
         </PhoneFieldSelect>
         <PhoneFieldInput />
       </PhoneField>

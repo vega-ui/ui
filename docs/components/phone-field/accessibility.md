@@ -13,7 +13,7 @@
 ## Focus Behavior
 
 - focus should move predictably between the country trigger and the input
-- the nested country [portal](../../glossary.md#portal) should not break focus flow
+- the country listbox renders in the top layer but should not break focus flow
 
 ## Screen Reader Semantics
 

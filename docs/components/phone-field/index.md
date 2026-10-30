@@ -19,7 +19,6 @@ import {
   PhoneFieldSelectCombobox,
   PhoneFieldSelectValue,
   PhoneFieldSelectIcon,
-  PhoneFieldSelectPortal,
   PhoneFieldSelectListbox,
   PhoneFieldSelectOption,
   type PhoneFieldProps,
@@ -42,9 +41,7 @@ import {
       <PhoneFieldSelectValue />
       <PhoneFieldSelectIcon />
     </PhoneFieldSelectCombobox>
-    <PhoneFieldSelectPortal>
-      <PhoneFieldSelectListbox />
-    </PhoneFieldSelectPortal>
+    <PhoneFieldSelectListbox />
   </PhoneFieldSelect>
   <PhoneFieldInput />
 </PhoneField>
@@ -59,7 +56,6 @@ import {
 
 - `PhoneFieldSelect*`: nested country-code picker family built on the same select subsystem contract
 - `PhoneFieldSelectHiddenSelect`: native [form participation](../../glossary.md#form-participation) for country code
-- `PhoneFieldSelectPortal`: [portal](../../glossary.md#portal) for the country list
 
 ## Composition Order
 
@@ -69,10 +65,9 @@ Typical composition:
 2. `PhoneFieldSelect`
 3. `PhoneFieldSelectHiddenSelect`
 4. `PhoneFieldSelectCombobox`
-5. `PhoneFieldSelectPortal`
-6. `PhoneFieldSelectListbox`
-7. `PhoneFieldSelectOption`
-8. `PhoneFieldInput`
+5. `PhoneFieldSelectListbox`
+6. `PhoneFieldSelectOption`
+7. `PhoneFieldInput`
 
 ## Variants
 

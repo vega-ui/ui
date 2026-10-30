@@ -27,45 +27,37 @@ User action that opens the dialog.
 Primary modal surface.
 
 - Required: yes
-- Owns: visible content container
-- Usually rendered inside `DialogBackdrop`
+- Owns: the native modal `<dialog>`, its `::backdrop`, and open and close transitions
+- Renders into `document.body`, so no portal part is needed
 
 ## Optional Parts
 
-### `DialogPortal`
+### `DialogClose`
 
-Optional [portal](../../glossary.md#portal) wrapper for overlay rendering.
-
-- Required: no
-- Recommended: yes for production overlay flows
-
-### `DialogBackdrop`
-
-Overlay surface behind the dialog.
+Closes the dialog when clicked.
 
 - Required: no
-- Recommended: yes for modal treatment and click-away dismissal
+- Renders a `<button type="button">` with no styles, icon, or label; with `asChild` it renders your own button instead
+- Calls `onChangeOpen(false)` before your `onClick`, so the close transition plays and a controlled parent can keep the dialog open
+- Give an icon-only close button an `aria-label`
 
-### `DialogHeader`
+## Your Own Markup
 
-Layout wrapper for title and close actions.
+The library does not ship header or title parts. They carry no behavior that plain markup cannot express, so you compose them yourself.
 
-- Required: no
-- Recommended: yes when `DialogTitle` and `DialogCloseButton` appear together
+### Heading
 
-### `DialogTitle`
+Names the dialog.
 
-Title text for orientation and accessibility.
+- Required: a name is required, either a heading referenced by `aria-labelledby` on `DialogContent` or `aria-label` on `DialogContent`
+- Typical usage: `Heading` with an `id`
 
-- Required: not structurally required
-- Recommended: yes in almost all product dialogs
+### Action buttons
 
-### `DialogCloseButton`
+Buttons that answer the dialog, such as Cancel and Confirm.
 
-Explicit close affordance.
-
-- Required: no
-- Recommended: yes when dismissal should stay discoverable
+- Put them in a `<form method="dialog">`; submitting it closes the dialog through `onChangeOpen(false)`, and the submit button's `value` becomes the dialog's `returnValue`
+- Use `DialogClose` for a standalone close button, such as the X in a header
 
 ## Composition Order
 
@@ -73,31 +65,32 @@ Typical composition:
 
 1. `Dialog`
 2. `DialogTrigger`
-3. `DialogPortal`
-4. `DialogBackdrop`
-5. `DialogContent`
-6. `DialogHeader`
-7. `DialogTitle`
-8. `DialogCloseButton`
+3. `DialogContent`
+4. Your heading, an optional `DialogClose`, body, and a `<form method="dialog">` with action buttons
 
 ## Valid Composition Patterns
 
 ```tsx
+import type { CSSProperties } from 'react';
+
 <Dialog>
   <DialogTrigger asChild>
     <Button>Open dialog</Button>
   </DialogTrigger>
-  <DialogPortal>
-    <DialogBackdrop>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Billing address</DialogTitle>
-          <DialogCloseButton />
-        </DialogHeader>
-        <Text size={3}>Update the legal address used on future invoices.</Text>
-      </DialogContent>
-    </DialogBackdrop>
-  </DialogPortal>
+  <DialogContent aria-labelledby='billing-title'>
+    <Heading id='billing-title' as='h2' size={4} fontWeight={600}>Billing address</Heading>
+    <DialogClose asChild>
+      <IconButton
+        aria-label='Close'
+        variant='secondary'
+        appearance='ghost'
+        style={{ position: 'absolute', insetBlockStart: 16, insetInlineEnd: 16, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+      >
+        <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
+      </IconButton>
+    </DialogClose>
+    <Text size={3}>Update the legal address used on future invoices.</Text>
+  </DialogContent>
 </Dialog>
 ```
 
@@ -109,9 +102,9 @@ This is the production-safe default composition for modal flows.
 
 The child parts depend on root context. Rendering them outside `Dialog` breaks behavior.
 
-### Content without a title in user-critical flows
+### Content without a name
 
-This weakens orientation and accessibility, especially for confirm and form dialogs.
+`DialogContent` does not name itself. Without `aria-labelledby` pointing to your heading or an `aria-label`, screen readers announce an unnamed dialog.
 
 ### Nested dialogs without retesting focus flow
 

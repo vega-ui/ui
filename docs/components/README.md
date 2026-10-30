@@ -18,7 +18,6 @@ For decision-oriented navigation across related controls, see [Component Familie
 - [Alert](./alert/)
 - [Avatar](./avatar/)
 - [AvatarStack](./avatar-stack/)
-- [Backdrop](./backdrop/)
 - [Badge](./badge/)
 - [Button](./button/)
 - [ButtonBase](./button-base/)

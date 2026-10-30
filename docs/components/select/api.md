@@ -45,18 +45,13 @@ Optional trigger affordance.
 - Usually rendered at the end of `SelectCombobox`
 - Purely visual unless custom interaction is intentionally added
 
-## `SelectPortal`
-
-Optional overlay mount wrapper.
-
-- Use when the listbox should escape clipping or stacking contexts
-
 ## `SelectListbox`
 
 Container for registered options.
 
 - Expected children: `SelectOption`
 - Common place for scroll limits, search fields, and custom list layout
+- Renders in the top layer via `popover="manual"` and handles focus management itself
 
 ## `SelectOption`
 
@@ -99,5 +94,5 @@ Use it only when the exported parts are insufficient for the desired composition
 ## Integration Notes
 
 - Use `SelectHiddenSelect` when the value should participate in native form submission.
-- Use `SelectPortal` when the listbox needs to avoid clipping, overflow, or stacking-context issues.
+- The listbox renders in the top layer, so `overflow`, transforms, and modal dialogs do not clip or cover it.
 - Avoid object values. The public API is built for `string` and `number` values only.

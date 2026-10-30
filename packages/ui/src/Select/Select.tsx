@@ -14,6 +14,7 @@ import {
   useListNavigation,
   useTransitionStatus,
   shift,
+  size as matchSize,
 } from '@floating-ui/react';
 import { csx, mergeRefs } from '@vega-ui/utils';
 import styles from './style.module.css';
@@ -147,8 +148,19 @@ export const Select = <V extends string | number>({
   const { floatingStyles, context } = useFloating({
     open,
     placement,
+    strategy: 'fixed',
+    transform: false,
     whileElementsMounted: autoUpdate,
-    middleware: [offset(10), flip(), shift()],
+    middleware: [
+      offset(10),
+      flip(),
+      shift(),
+      matchSize({
+        apply: ({ rects, elements }) => {
+          elements.floating.style.minWidth = `${rects.reference.width}px`
+        },
+      }),
+    ],
     onOpenChange: setOpen,
   });
 

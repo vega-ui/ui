@@ -1,700 +1,629 @@
-import { ComponentProps, FC, PropsWithChildren } from 'react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { cleanup, fireEvent, render, type RenderResult, waitFor } from '@testing-library/react';
+/// <reference types="@vitest/browser-playwright" />
+import { ComponentProps, CSSProperties, FC } from 'react';
+import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { cleanup, fireEvent, render, type RenderResult } from '@testing-library/react';
+import { cdp, commands, page, server, userEvent } from 'vitest/browser';
 
 import { Sheet } from '../Sheet';
-import {
-  SheetBackdrop,
-  SheetContent,
-  SheetHandle,
-  SheetMain,
-  SheetPortal,
-  SheetTrigger,
-} from '../components';
-import { userEvent } from 'vitest/browser';
+import { SheetClose, SheetContent, SheetHandle, SheetTrigger } from '../components';
+import '../../../../tokens/src/index.css';
 
+beforeEach(() => page.viewport(414, 400));
+afterAll(() => page.viewport(414, 896));
 afterEach(cleanup);
 
 const TESTID_TRIGGER = 'trigger';
-const TESTID_PORTAL = 'portal';
-const TESTID_BACKDROP = 'backdrop';
-const TESTID_CLOSE_BUTTON = 'close-button';
 const TESTID_CONTENT = 'content';
 const TESTID_HANDLE = 'handle';
 const TESTID_MAIN = 'main';
+const TESTID_CLOSE = 'close';
 
 const LOREM = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry';
 
-const SNAP_POINTS: Array<number | `${number}px`> = [0, 200, 400];
+type SheetTestProps = ComponentProps<typeof Sheet> & Pick<ComponentProps<typeof SheetContent>, 'closedBy' | 'overlay' | 'style'>
 
-const SheetTest: FC<PropsWithChildren<ComponentProps<typeof Sheet>>> = (props) => (
+const SheetTest: FC<SheetTestProps> = ({ closedBy, overlay, style, children, ...props }) => (
   <Sheet {...props}>
     <SheetTrigger data-testid={TESTID_TRIGGER}>Open</SheetTrigger>
-    <SheetPortal>
-      <div data-testid={TESTID_PORTAL}>
-        <SheetBackdrop data-testid={TESTID_BACKDROP}>
-          <SheetContent data-testid={TESTID_CONTENT}>
-            <SheetHandle data-testid={TESTID_HANDLE} />
-            <SheetMain data-testid={TESTID_MAIN}>
-              {LOREM}
-              <button data-testid={TESTID_CLOSE_BUTTON}>Close</button>
-            </SheetMain>
-          </SheetContent>
-        </SheetBackdrop>
+    <SheetContent data-testid={TESTID_CONTENT} closedBy={closedBy} overlay={overlay} style={style} aria-label='Details'>
+      <SheetHandle aria-label='Resize sheet' data-testid={TESTID_HANDLE} />
+      <div data-testid={TESTID_MAIN}>
+        {LOREM}
+        <button data-testid={TESTID_CLOSE}>Close</button>
+        {children}
       </div>
-    </SheetPortal>
+    </SheetContent>
   </Sheet>
 );
 
-const TallSheetTest: FC<ComponentProps<typeof Sheet>> = (props) => (
-  <Sheet {...props}>
-    <SheetPortal>
-      <SheetContent data-testid={TESTID_CONTENT} style={{ height: 400 }}>
-        <SheetMain data-testid={TESTID_MAIN}>{LOREM}</SheetMain>
-      </SheetContent>
-    </SheetPortal>
+const ScrollableSheetTest: FC<ComponentProps<typeof Sheet>> = (props) => (
+  <Sheet defaultOpen snapPoints={[0.5, 1]} {...props}>
+    <SheetContent data-testid={TESTID_CONTENT}>
+      <div data-testid={TESTID_MAIN} style={{ overflow: 'auto' }}>
+        <p style={{ height: 2000 }}>{LOREM}</p>
+      </div>
+    </SheetContent>
   </Sheet>
 );
 
-const getTrigger = (r: RenderResult) => r.getByTestId(TESTID_TRIGGER) as HTMLButtonElement;
-
-const queryPortal = (r: RenderResult) => r.queryByTestId(TESTID_PORTAL) as HTMLDivElement | null;
-const queryBackdrop = (r: RenderResult) => r.queryByTestId(TESTID_BACKDROP) as HTMLDivElement | null;
-const queryContent = (r: RenderResult) => r.queryByTestId(TESTID_CONTENT) as HTMLDivElement | null;
-
-const getPortal = (r: RenderResult) => r.getByTestId(TESTID_PORTAL) as HTMLDivElement;
-const getBackdrop = (r: RenderResult) => r.getByTestId(TESTID_BACKDROP) as HTMLDivElement;
-const getContent = (r: RenderResult) => r.getByTestId(TESTID_CONTENT) as HTMLDivElement;
-
-const queryHandle = (r: RenderResult) => r.queryByTestId(TESTID_HANDLE) as HTMLDivElement | null;
-const getHandle = (r: RenderResult) => r.getByTestId(TESTID_HANDLE) as HTMLDivElement;
-
-const queryMain = (r: RenderResult) => r.queryByTestId(TESTID_MAIN) as HTMLDivElement | null;
-const getMain = (r: RenderResult) => r.getByTestId(TESTID_MAIN) as HTMLDivElement;
-
-const getCloseButton = (r: RenderResult) => r.getByTestId(TESTID_CLOSE_BUTTON) as HTMLButtonElement;
+const getTrigger = (r: RenderResult) => r.getByTestId(TESTID_TRIGGER);
+const queryContent = (r: RenderResult) => r.queryByTestId(TESTID_CONTENT) as HTMLDialogElement | null;
+const getContent = (r: RenderResult) => r.getByTestId(TESTID_CONTENT) as HTMLDialogElement;
+const getMain = (r: RenderResult) => r.getByTestId(TESTID_MAIN);
+const getHandle = (r: RenderResult) => r.getByTestId(TESTID_HANDLE);
+const getOffset = (r: RenderResult) => parseFloat(getContent(r).style.getPropertyValue('--sheet-offset'));
 
 const waitOpened = async (r: RenderResult) => {
-  const content = getContent(r);
-  await expect.element(content).toBeInTheDocument();
-  await expect.element(content).toHaveAttribute('data-status', 'open');
+  await expect.element(queryContent(r)).toBeInTheDocument();
+  await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
+  await expect.poll(() => getContent(r).matches(':modal')).toBe(true);
+  await Promise.all(document.getAnimations().map((animation) => animation.finished));
 };
 
 const waitClosed = async (r: RenderResult) => {
-  await expect.element(queryPortal(r)).not.toBeInTheDocument();
-  await expect.element(queryBackdrop(r)).not.toBeInTheDocument();
   await expect.element(queryContent(r)).not.toBeInTheDocument();
 };
 
-const swipe = async (target: HTMLElement, from: number, to: number) => {
-  fireEvent.pointerDown(target, {
-    pointerId: 1,
-    pointerType: 'touch',
-    isPrimary: true,
-    clientY: from,
-    buttons: 1,
-  });
-  
-  fireEvent.pointerMove(target, {
-    pointerId: 1,
-    pointerType: 'touch',
-    isPrimary: true,
-    clientY: to,
-    buttons: 1,
-  });
-  
-  fireEvent.pointerUp(target, {
-    pointerId: 1,
-    pointerType: 'touch',
-    isPrimary: true,
-    clientY: to,
-    buttons: 1,
-  });
+const clickBackdrop = async (r: RenderResult) => {
+  await userEvent.click(getContent(r), { position: { x: 10, y: -10 } });
+};
+
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const pointer = { pointerId: 1, isPrimary: true, button: 0, clientX: 100 };
+
+const drag = async (target: HTMLElement, distance: number, { flick = false } = {}) => {
+  const y = 300;
+  fireEvent.pointerDown(target, { ...pointer, clientY: y });
+
+  for (let step = 1; step <= 6; step++) {
+    await wait(16);
+    fireEvent.pointerMove(target, { ...pointer, clientY: y + (distance * step) / 6 });
+  }
+
+  if (!flick) await wait(150);
+  fireEvent.pointerUp(target, { ...pointer, clientY: y + distance });
+};
+
+const touchDrag = async (target: HTMLElement, distance: number) => {
+  const frame = window.frameElement?.getBoundingClientRect() ?? new DOMRect(0, 0, innerWidth, innerHeight);
+  const scale = frame.width / innerWidth;
+  const rect = target.getBoundingClientRect();
+  const x = frame.left + (rect.left + rect.width / 2) * scale;
+  const y = frame.top + (Math.max(rect.top, 0) + 100) * scale;
+  const session = cdp();
+
+  await session.send('Emulation.setTouchEmulationEnabled', { enabled: true, maxTouchPoints: 1 });
+  await session.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y }] });
+
+  for (let step = 1; step <= 10; step++) {
+    await session.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x, y: y + (distance * scale * step) / 10 }] });
+    await new Promise(requestAnimationFrame);
+  }
+
+  await wait(150);
+  await session.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+  await session.send('Emulation.setTouchEmulationEnabled', { enabled: false });
 };
 
 describe('Sheet', () => {
   describe('Critical User Paths', () => {
-    describe('render', () => {
-      let r: RenderResult;
-      
-      beforeEach(() => {
-        r = render(<SheetTest />);
-      });
-      
-      it('renders trigger', async () => {
-        await expect.element(getTrigger(r)).toBeInTheDocument();
-      });
-      
-      it('does not render portal content while closed', async () => {
-        await expect.element(queryPortal(r)).not.toBeInTheDocument();
-        await expect.element(queryBackdrop(r)).not.toBeInTheDocument();
-        await expect.element(queryContent(r)).not.toBeInTheDocument();
-      });
-      
-      it('renders portal content when controlled open=true', async () => {
-        r.rerender(<SheetTest open />);
-        
-        await expect.element(getPortal(r)).toBeInTheDocument();
-        await expect.element(getBackdrop(r)).toBeInTheDocument();
-        await expect.element(getContent(r)).toBeInTheDocument();
-        await expect.element(getHandle(r)).toBeInTheDocument();
-        await expect.element(getMain(r)).toBeInTheDocument();
-      });
-    })
-    
-    describe('open/close', () => {
-      describe('uncontrolled', () => {
-        describe('defaultOpen=false', () => {
-          let r: RenderResult;
-          
-          beforeEach(() => {
-            r = render(<SheetTest defaultOpen={false} />);
-          });
-          
-          it('is closed initially (portal/backdrop/content are not mounted)', async () => {
-            await expect.element(getTrigger(r)).toBeInTheDocument();
-            
-            await waitClosed(r)
-            
-            await expect.element(queryHandle(r)).not.toBeInTheDocument();
-            await expect.element(queryMain(r)).not.toBeInTheDocument();
-          });
-          
-          it('opens via trigger click (mounts portal subtree)', async () => {
-            await userEvent.click(getTrigger(r));
-            await waitOpened(r);
-            
-            await expect.element(getHandle(r)).toBeInTheDocument();
-            await expect.element(getMain(r)).toBeInTheDocument();
-            await expect.element(getMain(r)).toHaveTextContent(LOREM);
-          });
-          
-          it('closes via outside pointerdown (unmounts portal subtree)', async () => {
-            await userEvent.click(getTrigger(r));
-            await waitOpened(r);
-            
-            fireEvent.pointerDown(document.body);
-            
-            await waitClosed(r);
-          });
-          
-          it('can be reopened after close', async () => {
-            await userEvent.click(getTrigger(r));
-            await waitOpened(r);
-            
-            fireEvent.pointerDown(document.body);
-            await waitClosed(r);
-            
-            await userEvent.click(getTrigger(r));
-            
-            await expect.element(getPortal(r)).toBeInTheDocument();
-            await expect.element(getContent(r)).toBeInTheDocument();
-            await waitOpened(r);
-          });
-        });
-        
-        describe('defaultOpen=true', () => {
-          let r: RenderResult;
-          
-          beforeEach(() => {
-            r = render(<SheetTest defaultOpen />);
-          });
-          
-          it('is opened initially (portal subtree mounted)', async () => {
-            await waitOpened(r);
-            
-            await expect.element(getHandle(r)).toBeInTheDocument();
-            await expect.element(getMain(r)).toBeInTheDocument();
-          });
-          
-          it('closes via outside pointerdown', async () => {
-            await waitOpened(r);
-            
-            fireEvent.pointerDown(document.body);
-            
-            await waitClosed(r);
-          });
-        });
-      });
-      
-      describe('controlled', () => {
-        describe('open=false', () => {
-          let r: RenderResult;
-          const onChangeOpen = vi.fn();
-          
-          beforeEach(() => {
-            r = render(<SheetTest open={false} onChangeOpen={onChangeOpen} />);
-          });
-          
-          it('is closed initially', async () => {
-            await waitClosed(r)
-          });
-          
-          it('requests open on trigger click (calls onChangeOpen(true))', async () => {
-            await userEvent.click(getTrigger(r));
-            
-            expect(onChangeOpen).toHaveBeenCalledTimes(1);
-            expect(onChangeOpen).toHaveBeenCalledWith(true);
-            
-            await expect.element(queryPortal(r)).not.toBeInTheDocument();
-            await expect.element(queryContent(r)).not.toBeInTheDocument();
-          });
-          
-          it('opens only after parent updates open=true', async () => {
-            await userEvent.click(getTrigger(r));
-            
-            expect(onChangeOpen).toHaveBeenCalledWith(true);
-            
-            r.rerender(<SheetTest open onChangeOpen={onChangeOpen} />);
-            
-            await expect.element(getPortal(r)).toBeInTheDocument();
-            await expect.element(getContent(r)).toBeInTheDocument();
-            await waitOpened(r);
-          });
-        });
-        
-        describe('open=true', () => {
-          let r: RenderResult;
-          const onChangeOpen = vi.fn();
-          
-          beforeEach(() => {
-            r = render(<SheetTest open onChangeOpen={onChangeOpen} />);
-          });
-          
-          it('is opened initially', async () => {
-            await expect.element(getPortal(r)).toBeInTheDocument();
-            await expect.element(getBackdrop(r)).toBeInTheDocument();
-            await expect.element(getContent(r)).toBeInTheDocument();
-            await waitOpened(r);
-          });
-          
-          it('requests close on outside pointerdown (calls onChangeOpen(false)) and stays mounted until parent updates', async () => {
-            await waitOpened(r);
-            
-            fireEvent.pointerDown(document.body);
-            
-            expect(onChangeOpen).toHaveBeenCalledTimes(1);
-            expect(onChangeOpen).toHaveBeenCalledWith(false);
-            
-            await expect.element(getPortal(r)).toBeInTheDocument();
-            await expect.element(getContent(r)).toBeInTheDocument();
-            await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
-          });
-          
-          it('closes only after parent updates open=false', async () => {
-            await waitOpened(r);
-            
-            fireEvent.pointerDown(document.body);
-            expect(onChangeOpen).toHaveBeenCalledWith(false);
-            
-            r.rerender(<SheetTest open={false} onChangeOpen={onChangeOpen} />);
-            
-            await waitClosed(r);
-          });
-        });
-      });
-    })
-    
-    describe('snap points', () => {
-      describe('uncontrolled', () => {
-        let r: RenderResult;
-        
-        beforeEach(async () => {
-          r = render(
-            <SheetTest
-              defaultOpen
-              snapPoints={SNAP_POINTS}
-              defaultSnapPoint={0}
-              onChangeActiveSnapPoint={vi.fn()}
-            />
-          );
-          
-          await waitOpened(r);
-        });
-        
-        it('starts at defaultSnapPoint and applies transform on open', async () => {
-          const content = getContent(r);
-          const t = content.style.transform || '';
-          await expect.element(content).toBeInTheDocument();
-          expect(t).toMatch(/translateY\(/);
-        });
-        
-        it('updates transform while dragging (data-dragging=true)', async () => {
-          const content = getContent(r);
-          
-          await swipe(getMain(r), 600, 450);
-          await expect.element(content).toHaveAttribute('data-dragging', 'false');
-        });
-        
-        it('calls onChangeActiveSnapPoint when user drags to closest snap point', async () => {
-          const onChangeActiveSnapPoint = vi.fn();
-          
-          r.rerender(
-            <SheetTest
-              defaultOpen
-              snapPoints={SNAP_POINTS}
-              defaultSnapPoint={0}
-              onChangeActiveSnapPoint={onChangeActiveSnapPoint}
-            />
-          );
-          
-          await waitOpened(r);
-          await swipe(getMain(r), 600, 200);
-          
-          expect(onChangeActiveSnapPoint).toHaveBeenCalled();
-          const last = onChangeActiveSnapPoint.mock.calls.at(-1)?.[0];
-          expect(typeof last).toBe('number');
-        });
-        
-        it('does not crash when snapPoints is empty', async () => {
-          r.rerender(<SheetTest defaultOpen snapPoints={[]} defaultSnapPoint={0} />);
-          await expect.element(queryContent(r) as HTMLElement).toBeInTheDocument();
-        });
-      });
-      
-      describe('controlled', () => {
-        it('requests snap point change via onChangeActiveSnapPoint when activeSnapPoint is controlled', async () => {
-          const onChangeActiveSnapPoint = vi.fn();
-          
-          const r = render(
-            <SheetTest
-              defaultOpen
-              snapPoints={SNAP_POINTS}
-              activeSnapPoint={0}
-              onChangeActiveSnapPoint={onChangeActiveSnapPoint}
-            />
-          );
-          
-          await waitOpened(r);
-          await swipe(getMain(r), 600, 200);
-          
-          expect(onChangeActiveSnapPoint).toHaveBeenCalled();
-          const last = onChangeActiveSnapPoint.mock.calls.at(-1)?.[0];
-          expect(typeof last).toBe('number');
-        });
-        
-        it('applies transform based on controlled activeSnapPoint prop changes', async () => {
-          const onChangeActiveSnapPoint = vi.fn();
-          
-          const r = render(
-            <SheetTest
-              defaultOpen
-              snapPoints={SNAP_POINTS}
-              activeSnapPoint={0}
-              onChangeActiveSnapPoint={onChangeActiveSnapPoint}
-            />
-          );
-          
-          await waitOpened(r);
-          
-          const content0 = getContent(r).style.transform || '';
-          
-          r.rerender(
-            <SheetTest
-              defaultOpen
-              snapPoints={SNAP_POINTS}
-              activeSnapPoint={2}
-              onChangeActiveSnapPoint={onChangeActiveSnapPoint}
-            />
-          );
-          
-          await waitFor(() => {
-            const content2 = getContent(r).style.transform || '';
-            expect(content2).not.toBe(content0);
-          });
-        });
-      });
-      
-      describe('steppedSnapPoints', () => {
-        it('closes on edge swipe down without moving to the next snap point', async () => {
-          const onChangeActiveSnapPoint = vi.fn();
-          
-          const r = render(
-            <TallSheetTest
-              defaultOpen
-              snapPoints={[0.5, 1]}
-              defaultSnapPoint={1}
-              steppedSnapPoints
-              onChangeActiveSnapPoint={onChangeActiveSnapPoint}
-            />
-          );
-          
-          await waitOpened(r);
-          await swipe(getMain(r), 200, 450);
-          
-          await waitClosed(r);
-          expect(onChangeActiveSnapPoint).not.toHaveBeenCalledWith(0);
-        });
-        
-        it('moves to the next snap point on edge swipe down when closable is false', async () => {
-          const onChangeActiveSnapPoint = vi.fn();
-          
-          const r = render(
-            <TallSheetTest
-              defaultOpen
-              closable={false}
-              snapPoints={[0.5, 1]}
-              defaultSnapPoint={1}
-              steppedSnapPoints
-              onChangeActiveSnapPoint={onChangeActiveSnapPoint}
-            />
-          );
-          
-          await waitOpened(r);
-          await swipe(getMain(r), 200, 450);
-          
-          expect(onChangeActiveSnapPoint.mock.calls).toEqual([[0]]);
-          await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
-        });
-        
-        it('moves to next/prev snap point per swipe direction when steppedSnapPoints=true', async () => {
-          const onChangeActiveSnapPoint = vi.fn();
-          
-          const r = render(
-            <SheetTest
-              defaultOpen
-              snapPoints={SNAP_POINTS}
-              defaultSnapPoint={1}
-              steppedSnapPoints
-              onChangeActiveSnapPoint={onChangeActiveSnapPoint}
-            />
-          );
-          
-          await waitOpened(r);
-          
-          // swipe up (direction -1) => move to previous snap point
-          await swipe(getMain(r), 400, 450);
-          expect(onChangeActiveSnapPoint).toHaveBeenCalled();
-          
-          // swipe down (direction 1) => move to next snap point
-          await swipe(getMain(r), 200, 450);
-          expect(onChangeActiveSnapPoint).toHaveBeenCalled();
-        });
+    describe('SheetClose', () => {
+      it('closes the sheet with the close transition', async () => {
+        const r = render(
+          <Sheet defaultOpen>
+            <SheetContent data-testid='close-content' aria-label='Panel'>
+              <SheetClose>Done</SheetClose>
+            </SheetContent>
+          </Sheet>
+        );
+        await expect.poll(() => (r.getByTestId('close-content') as HTMLDialogElement).matches(':modal')).toBe(true);
+
+        await userEvent.click(r.getByRole('button', { name: 'Done' }));
+
+        expect((r.getByTestId('close-content') as HTMLDialogElement).open).toBe(true);
+        expect(r.getByTestId('close-content')).toHaveAttribute('data-status', 'close');
+        await expect.element(r.queryByTestId('close-content')).not.toBeInTheDocument();
       });
 
-      describe('indexes follow snapPoints order', () => {
-        const UNSORTED_SNAP_POINTS = [0.25, 1, 0.5];
-        
-        it('does not call onChangeActiveSnapPoint on mount with defaultSnapPoint', async () => {
-          const onChangeActiveSnapPoint = vi.fn();
-          
-          const r = render(
-            <SheetTest
-              defaultOpen
-              snapPoints={UNSORTED_SNAP_POINTS}
-              defaultSnapPoint={1}
-              onChangeActiveSnapPoint={onChangeActiveSnapPoint}
-            />
-          );
-          
-          await waitOpened(r);
-          
-          expect(onChangeActiveSnapPoint).not.toHaveBeenCalled();
-        });
-        
-        it('opens at defaultSnapPoint', async () => {
-          const r = render(<SheetTest defaultOpen snapPoints={UNSORTED_SNAP_POINTS} defaultSnapPoint={1} />);
-          
-          await waitOpened(r);
-          
-          expect(getContent(r).style.transform).toBe('translateY(0px)');
-        });
-        
-        it('applies controlled activeSnapPoint as an index into snapPoints', async () => {
-          const r = render(<SheetTest defaultOpen snapPoints={UNSORTED_SNAP_POINTS} activeSnapPoint={1} />);
-          
-          await waitOpened(r);
-          
-          expect(getContent(r).style.transform).toBe('translateY(0px)');
-        });
-        
-        it('reports an index into snapPoints via onChangeActiveSnapPoint', async () => {
-          const onChangeActiveSnapPoint = vi.fn();
-          
-          const r = render(
-            <TallSheetTest
-              defaultOpen
-              snapPoints={UNSORTED_SNAP_POINTS}
-              defaultSnapPoint={1}
-              steppedSnapPoints
-              onChangeActiveSnapPoint={onChangeActiveSnapPoint}
-            />
-          );
-          
-          await waitOpened(r);
-          await swipe(getMain(r), 200, 220);
-          
-          expect(onChangeActiveSnapPoint.mock.calls).toEqual([[2]]);
-          await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
-        });
+      it('renders a button that does not submit a form', async () => {
+        const r = render(
+          <Sheet defaultOpen>
+            <SheetContent aria-label='Panel'>
+              <SheetClose>Done</SheetClose>
+            </SheetContent>
+          </Sheet>
+        );
+
+        await expect.element(r.getByRole('button', { name: 'Done' })).toHaveAttribute('type', 'button');
       });
-    })
-    
-    describe('clickEnabled', () => {
-      describe('uncontrolled', () => {
-        let r: RenderResult;
-        
-        beforeEach(() => {
-          r = render(<SheetTest defaultOpen={false} clickEnabled={false} />);
-        });
-        
-        it('does not open via trigger click when clickEnabled=false', async () => {
-          await expect.element(queryContent(r)).not.toBeInTheDocument();
-          
-          await userEvent.click(getTrigger(r));
-          
-          await expect.element(queryPortal(r)).not.toBeInTheDocument();
-          await expect.element(queryBackdrop(r)).not.toBeInTheDocument();
-          await expect.element(queryContent(r)).not.toBeInTheDocument();
-        });
-        
-        it('opens via trigger click when clickEnabled=true', async () => {
-          r.rerender(<SheetTest defaultOpen={false} clickEnabled />);
-          
-          await userEvent.click(getTrigger(r));
-          
-          await waitOpened(r);
-          await expect.element(getContent(r)).toBeInTheDocument();
-        });
+
+      it('closes through its child with asChild and keeps the child onClick', async () => {
+        const onClick = vi.fn();
+        const onChangeOpen = vi.fn();
+        const r = render(
+          <Sheet open onChangeOpen={onChangeOpen}>
+            <SheetContent aria-label='Panel'>
+              <SheetClose asChild>
+                <button aria-label='Close' onClick={onClick}>×</button>
+              </SheetClose>
+            </SheetContent>
+          </Sheet>
+        );
+
+        await userEvent.click(r.getByRole('button', { name: 'Close' }));
+
+        expect(onClick).toHaveBeenCalledOnce();
+        expect(onChangeOpen).toHaveBeenCalledExactlyOnceWith(false);
       });
-      
-      describe('controlled', () => {
-        it('does not request open when clickEnabled=false', async () => {
-          const onChangeOpen = vi.fn();
-          const r = render(<SheetTest open={false} onChangeOpen={onChangeOpen} clickEnabled={false} />);
-          
-          await userEvent.click(getTrigger(r));
-          
-          expect(onChangeOpen).not.toHaveBeenCalled();
-          await expect.element(queryContent(r)).not.toBeInTheDocument();
+    });
+
+    describe('open and close', () => {
+      it('is closed by default', async () => {
+        const r = render(<SheetTest />);
+
+        await expect.element(queryContent(r)).not.toBeInTheDocument();
+      });
+
+      it('opens a modal native dialog on trigger click', async () => {
+        const r = render(<SheetTest />);
+
+        await userEvent.click(getTrigger(r));
+
+        await waitOpened(r);
+        expect(getContent(r).tagName).toBe('DIALOG');
+      });
+
+      it('closes on backdrop click', async () => {
+        const r = render(<SheetTest defaultOpen />);
+        await waitOpened(r);
+
+        await clickBackdrop(r);
+
+        await waitClosed(r);
+      });
+
+      it('closes on Escape', async () => {
+        const r = render(<SheetTest defaultOpen />);
+        await waitOpened(r);
+
+        await userEvent.keyboard('{Escape}');
+
+        await waitClosed(r);
+      });
+
+      it('requests open and close through onChangeOpen when controlled', async () => {
+        const onChangeOpen = vi.fn();
+        const r = render(<SheetTest open={false} onChangeOpen={onChangeOpen} />);
+
+        await userEvent.click(getTrigger(r));
+        expect(onChangeOpen).toHaveBeenLastCalledWith(true);
+        await expect.element(queryContent(r)).not.toBeInTheDocument();
+
+        r.rerender(<SheetTest open onChangeOpen={onChangeOpen} />);
+        await waitOpened(r);
+
+        await clickBackdrop(r);
+        expect(onChangeOpen).toHaveBeenLastCalledWith(false);
+        await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
+
+        r.rerender(<SheetTest open={false} onChangeOpen={onChangeOpen} />);
+        await waitClosed(r);
+      });
+    });
+
+    describe('snap points', () => {
+      it('fits the content without snap points', async () => {
+        const r = render(<SheetTest defaultOpen />);
+        await waitOpened(r);
+
+        expect(getContent(r).offsetHeight).toBeLessThan(400);
+        expect(getOffset(r)).toBe(0);
+      });
+
+      it('does not shrink its main area below its content', async () => {
+        const r = render(<SheetTest defaultOpen />);
+        await waitOpened(r);
+
+        expect(getMain(r).offsetHeight).toBe(getMain(r).scrollHeight);
+      });
+
+      it('fits the content by default, with snap points too', async () => {
+        const r = render(<SheetTest defaultOpen snapPoints={[0.5, 1]} />);
+        await waitOpened(r);
+
+        expect(getContent(r).offsetHeight).toBeLessThan(400);
+        expect(getOffset(r)).toBe(0);
+      });
+
+      it('takes its height from CSS', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '50%' }} />);
+        await waitOpened(r);
+
+        expect(getContent(r).offsetHeight).toBe(200);
+      });
+
+      it('is never taller than the viewport', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: 1000 }} />);
+        await waitOpened(r);
+
+        expect(getContent(r).offsetHeight).toBe(400);
+      });
+
+      it('measures snap points from the viewport', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
+        await waitOpened(r);
+
+        expect(getOffset(r)).toBe(200);
+      });
+
+      it('rests snap points above its height at its top', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: 200 }} snapPoints={[0.25, 1]} defaultSnapPoint={1} />);
+        await waitOpened(r);
+
+        expect(getOffset(r)).toBe(0);
+      });
+
+      it('opens at the lowest snap point by default', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
+        await waitOpened(r);
+
+        expect(getOffset(r)).toBe(200);
+      });
+
+      it('opens at the lowest snap point whatever their order', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[1, 0.5]} />);
+        await waitOpened(r);
+
+        expect(getOffset(r)).toBe(200);
+      });
+
+      it('opens at defaultSnapPoint', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} defaultSnapPoint={1} />);
+        await waitOpened(r);
+
+        expect(getOffset(r)).toBe(0);
+      });
+
+      it('accepts pixel snap points', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={['100px', 1]} />);
+        await waitOpened(r);
+
+        expect(getOffset(r)).toBe(300);
+      });
+
+      it('follows the controlled activeSnapPoint', async () => {
+        const r = render(<SheetTest open style={{ height: '100%' }} snapPoints={[0.5, 1]} activeSnapPoint={0} />);
+        await waitOpened(r);
+        expect(getOffset(r)).toBe(200);
+
+        r.rerender(<SheetTest open style={{ height: '100%' }} snapPoints={[0.5, 1]} activeSnapPoint={1} />);
+
+        await expect.poll(() => getOffset(r)).toBe(0);
+      });
+
+      it('settles at the snap point closest to where a slow drag ends', async () => {
+        const onChangeActiveSnapPoint = vi.fn();
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} onChangeActiveSnapPoint={onChangeActiveSnapPoint} />);
+        await waitOpened(r);
+
+        await drag(getMain(r), -150);
+
+        expect(onChangeActiveSnapPoint).toHaveBeenLastCalledWith(1);
+        await expect.poll(() => getOffset(r)).toBe(0);
+      });
+
+      it('returns to the current snap point after a short slow drag', async () => {
+        const onChangeActiveSnapPoint = vi.fn();
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} onChangeActiveSnapPoint={onChangeActiveSnapPoint} />);
+        await waitOpened(r);
+
+        await drag(getMain(r), -40);
+
+        expect(onChangeActiveSnapPoint).not.toHaveBeenCalled();
+        await expect.poll(() => getOffset(r)).toBe(200);
+      });
+
+      it('carries a flick past the closest snap point', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.25, 0.5, 1]} />);
+        await waitOpened(r);
+
+        await drag(getMain(r), -60, { flick: true });
+
+        await expect.poll(() => getOffset(r)).toBe(0);
+      });
+
+      it('moves one snap point per drag when steppedSnapPoints is set', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.25, 0.5, 1]} steppedSnapPoints />);
+        await waitOpened(r);
+
+        await drag(getMain(r), -60, { flick: true });
+
+        await expect.poll(() => getOffset(r)).toBe(200);
+      });
+
+      it('reopens at the default snap point', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
+        await waitOpened(r);
+        await drag(getMain(r), -150);
+        await expect.poll(() => getOffset(r)).toBe(0);
+
+        await userEvent.keyboard('{Escape}');
+        await waitClosed(r);
+        await userEvent.click(getTrigger(r));
+        await waitOpened(r);
+
+        expect(getOffset(r)).toBe(200);
+      });
+    });
+
+    describe('dragging', () => {
+      it('follows the pointer while dragging', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
+        await waitOpened(r);
+
+        fireEvent.pointerDown(getMain(r), { ...pointer, clientY: 300 });
+        fireEvent.pointerMove(getMain(r), { ...pointer, clientY: 250 });
+
+        await expect.element(getContent(r)).toHaveAttribute('data-dragging', 'true');
+        expect(getOffset(r)).toBe(150);
+
+        fireEvent.pointerUp(getMain(r), { ...pointer, clientY: 250 });
+        await expect.element(getContent(r)).toHaveAttribute('data-dragging', 'false');
+      });
+
+      it('resists a drag above the top snap point', async () => {
+        const r = render(<SheetTest defaultOpen />);
+        await waitOpened(r);
+
+        fireEvent.pointerDown(getMain(r), { ...pointer, clientY: 300 });
+        fireEvent.pointerMove(getMain(r), { ...pointer, clientY: 100 });
+
+        await expect.element(getContent(r)).toHaveAttribute('data-dragging', 'true');
+        expect(getOffset(r)).toBeLessThan(0);
+        expect(getOffset(r)).toBeGreaterThan(-200);
+
+        fireEvent.pointerUp(getMain(r), { ...pointer, clientY: 100 });
+        await expect.poll(() => getOffset(r)).toBe(0);
+      });
+
+      it('closes on a drag down past the middle', async () => {
+        const r = render(<SheetTest defaultOpen />);
+        await waitOpened(r);
+
+        await drag(getMain(r), 250);
+
+        await waitClosed(r);
+      });
+
+      it('closes on a flick down', async () => {
+        const r = render(<SheetTest defaultOpen />);
+        await waitOpened(r);
+
+        await drag(getMain(r), 60, { flick: true });
+
+        await waitClosed(r);
+      });
+
+      it('springs back instead of closing when closedBy is not any', async () => {
+        const r = render(<SheetTest defaultOpen closedBy='closerequest' />);
+        await waitOpened(r);
+
+        await drag(getMain(r), 250);
+
+        await expect.poll(() => getOffset(r)).toBe(0);
+        await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
+      });
+
+      it('does not start a drag from the backdrop', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
+        await waitOpened(r);
+
+        fireEvent.pointerDown(getContent(r), { ...pointer, clientY: 10 });
+        fireEvent.pointerMove(getContent(r), { ...pointer, clientY: 200 });
+
+        await expect.element(getContent(r)).toHaveAttribute('data-dragging', 'false');
+        fireEvent.pointerUp(getContent(r), { ...pointer, clientY: 200 });
+      });
+
+      it('does not start a drag from a text field', async () => {
+        const r = render(<SheetTest defaultOpen><input data-testid='input' /></SheetTest>);
+        await waitOpened(r);
+
+        fireEvent.pointerDown(r.getByTestId('input'), { ...pointer, clientY: 300 });
+        fireEvent.pointerMove(r.getByTestId('input'), { ...pointer, clientY: 400 });
+
+        await expect.element(getContent(r)).toHaveAttribute('data-dragging', 'false');
+        fireEvent.pointerUp(r.getByTestId('input'), { ...pointer, clientY: 400 });
+      });
+
+      describe.runIf(server.browser === 'chromium')('touch', () => {
+        it('drags the sheet up by its scrollable content below the top snap point', async () => {
+          const r = render(<ScrollableSheetTest />);
+          await waitOpened(r);
+
+          await touchDrag(getMain(r), -300);
+
+          await expect.poll(() => getOffset(r)).toBe(0);
+          expect(getMain(r).scrollTop).toBe(0);
         });
-        
-        it('requests open when clickEnabled=true', async () => {
-          const onChangeOpen = vi.fn();
-          const r = render(<SheetTest open={false} onChangeOpen={onChangeOpen} clickEnabled />);
-          
-          await userEvent.click(getTrigger(r));
-          
-          expect(onChangeOpen).toHaveBeenCalledTimes(1);
-          expect(onChangeOpen).toHaveBeenCalledWith(true);
+
+        it('scrolls the content on a drag up at the top snap point', async () => {
+          const r = render(<ScrollableSheetTest defaultSnapPoint={1} />);
+          await waitOpened(r);
+
+          await touchDrag(getMain(r), -300);
+
+          await expect.poll(() => getMain(r).scrollTop).toBeGreaterThan(0);
+          expect(getOffset(r)).toBe(0);
+        });
+
+        it('drags the sheet down by its content scrolled to the top', async () => {
+          const onChangeActiveSnapPoint = vi.fn();
+          const r = render(<ScrollableSheetTest defaultSnapPoint={1} onChangeActiveSnapPoint={onChangeActiveSnapPoint} />);
+          await waitOpened(r);
+
+          await touchDrag(getMain(r), 300);
+
+          await expect.poll(() => onChangeActiveSnapPoint).toHaveBeenCalledWith(0);
         });
       });
     });
-    
-    describe('dismissible', () => {
-      describe('uncontrolled', () => {
-        let r: RenderResult;
-        
-        beforeEach(async () => {
-          r = render(<SheetTest defaultOpen dismissible={false} />);
-          await waitOpened(r);
-        });
-        
-        it('does not close on outside pointerdown when dismissible=false', async () => {
-          fireEvent.pointerDown(document.body);
-          
-          await expect.element(getContent(r)).toBeInTheDocument();
-          await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
-        });
-        
-        it('closes on outside pointerdown when dismissible=true', async () => {
-          r.rerender(<SheetTest defaultOpen dismissible />);
-          
-          await waitOpened(r);
-          
-          fireEvent.pointerDown(document.body);
-          
-          await waitClosed(r);
-        });
+
+    describe('closedBy', () => {
+      it('stays open on backdrop click when closedBy=closerequest', async () => {
+        const r = render(<SheetTest defaultOpen closedBy='closerequest' />);
+        await waitOpened(r);
+
+        await clickBackdrop(r);
+
+        await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
       });
-      
-      describe('controlled', () => {
-        it('does not request close on outside pointerdown when dismissible=false', async () => {
-          const onChangeOpen = vi.fn();
-          const r = render(<SheetTest open dismissible={false} onChangeOpen={onChangeOpen} />);
-          
-          await waitOpened(r);
-          
-          fireEvent.pointerDown(document.body);
-          
-          expect(onChangeOpen).not.toHaveBeenCalled();
-          await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
-        });
-        
-        it('requests close on outside pointerdown when dismissible=true (and closable=true by default)', async () => {
-          const onChangeOpen = vi.fn();
-          const r = render(<SheetTest open dismissible onChangeOpen={onChangeOpen} />);
-          
-          await waitOpened(r);
-          
-          fireEvent.pointerDown(document.body);
-          
-          expect(onChangeOpen).toHaveBeenCalledTimes(1);
-          expect(onChangeOpen).toHaveBeenCalledWith(false);
-          
-          await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
-        });
+
+      it('ignores Escape when closedBy=none', async () => {
+        const r = render(<SheetTest defaultOpen closedBy='none' />);
+        await waitOpened(r);
+
+        await userEvent.keyboard('{Escape}');
+
+        await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
       });
     });
-    
-    describe('closable', () => {
-      describe('uncontrolled', () => {
-        let r: RenderResult;
-        
-        beforeEach(async () => {
-          r = render(<SheetTest defaultOpen closable={false} />);
-          await waitOpened(r);
-        });
-        
-        it('does not close on outside pointerdown when closable=false', async () => {
-          fireEvent.pointerDown(document.body);
-          
-          await expect.element(getContent(r)).toBeInTheDocument();
-          await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
-        });
-        
-        it('closes on outside pointerdown when closable=true (and dismissible=true by default)', async () => {
-          r.rerender(<SheetTest defaultOpen closable />);
-          
-          await waitOpened(r);
-          
-          fireEvent.pointerDown(document.body);
-          
-          await waitClosed(r);
-        });
+
+    describe('overlay', () => {
+      it('dims the page behind the sheet by default', async () => {
+        document.documentElement.style.setProperty('--overlay', 'rgb(0, 0, 0)');
+        const r = render(<SheetTest defaultOpen />);
+        await waitOpened(r);
+
+        expect(getComputedStyle(getContent(r), '::backdrop').backgroundColor).toBe('rgb(0, 0, 0)');
+        document.documentElement.style.removeProperty('--overlay');
       });
-      
-      describe('controlled', () => {
-        it('does not request close on outside pointerdown when closable=false', async () => {
-          const onChangeOpen = vi.fn();
-          const r = render(<SheetTest open closable={false} onChangeOpen={onChangeOpen} />);
-          
-          await waitOpened(r);
-          
-          fireEvent.pointerDown(document.body);
-          
-          expect(onChangeOpen).not.toHaveBeenCalled();
-          await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
-        });
-        
-        it('requests close on outside pointerdown when closable=true (and dismissible=true by default)', async () => {
-          const onChangeOpen = vi.fn();
-          const r = render(<SheetTest open closable onChangeOpen={onChangeOpen} />);
-          
-          await waitOpened(r);
-          
-          fireEvent.pointerDown(document.body);
-          
-          expect(onChangeOpen).toHaveBeenCalledTimes(1);
-          expect(onChangeOpen).toHaveBeenCalledWith(false);
-          
-          await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
-        });
+
+      it('leaves the page behind the sheet visible without an overlay', async () => {
+        document.documentElement.style.setProperty('--overlay', 'rgb(0, 0, 0)');
+        const r = render(<SheetTest defaultOpen overlay={false} />);
+        await waitOpened(r);
+
+        const backdrop = getComputedStyle(getContent(r), '::backdrop');
+
+        expect(backdrop.backgroundColor).toBe('rgba(0, 0, 0, 0)');
+        expect(backdrop.backdropFilter).toBe('none');
+        document.documentElement.style.removeProperty('--overlay');
+      });
+
+      it('reports how far the sheet is raised from its lowest to its top snap point', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
+        await waitOpened(r);
+        const getExpansion = () => parseFloat(getContent(r).style.getPropertyValue('--sheet-expansion'));
+
+        expect(getExpansion()).toBe(0);
+
+        fireEvent.pointerDown(getMain(r), { ...pointer, clientY: 300 });
+        fireEvent.pointerMove(getMain(r), { ...pointer, clientY: 200 });
+
+        await expect.poll(getExpansion).toBe(0.5);
+        fireEvent.pointerUp(getMain(r), { ...pointer, clientY: 200 });
+      });
+
+      it('keeps clear of the sides at its lowest snap point and widens to them at the top', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
+        await waitOpened(r);
+
+        await expect.poll(() => getContent(r).offsetWidth).toBe(innerWidth - 32);
+
+        fireEvent.pointerDown(getMain(r), { ...pointer, clientY: 300 });
+        fireEvent.pointerMove(getMain(r), { ...pointer, clientY: 100 });
+
+        await expect.poll(() => getContent(r).offsetWidth).toBe(innerWidth);
+        fireEvent.pointerUp(getMain(r), { ...pointer, clientY: 100 });
+      });
+
+      it('keeps clear of the sides when it fits short content', async () => {
+        const r = render(<SheetTest defaultOpen />);
+        await waitOpened(r);
+
+        await expect.poll(() => getContent(r).offsetWidth).toBe(innerWidth - 32);
+      });
+
+      it('floats above the bottom edge with rounded corners when it fits short content', async () => {
+        const r = render(<SheetTest defaultOpen />);
+        await waitOpened(r);
+
+        await expect.poll(() => getContent(r).getBoundingClientRect().bottom).toBeCloseTo(innerHeight - 16, 1);
+        expect(parseFloat(getComputedStyle(getContent(r)).borderBottomLeftRadius)).toBeGreaterThan(0);
+      });
+
+      it('floats above the bottom edge at a lower snap point', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
+        await waitOpened(r);
+
+        await expect.poll(() => document.elementFromPoint(innerWidth / 2, innerHeight - 8)).toBe(getContent(r));
+        expect(getContent(r).contains(document.elementFromPoint(innerWidth / 2, innerHeight - 24))).toBe(true);
+      });
+
+      it('sits on the bottom edge when it reaches the top of the viewport', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} />);
+        await waitOpened(r);
+
+        await expect.poll(() => getContent(r).getBoundingClientRect().bottom).toBeCloseTo(innerHeight, 1);
+        expect(parseFloat(getComputedStyle(getContent(r)).borderBottomLeftRadius)).toBe(0);
+      });
+
+      it('takes the full width when it reaches the top of the viewport', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} />);
+        await waitOpened(r);
+
+        await expect.poll(() => getContent(r).offsetWidth).toBe(innerWidth);
+      });
+
+      it('takes the full width with --sheet-inset: 0', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '100%', '--sheet-inset': '0px' } as CSSProperties} snapPoints={[0.5, 1]} />);
+        await waitOpened(r);
+
+        expect(getContent(r).offsetWidth).toBe(innerWidth);
+      });
+
+      it('reports a fully raised sheet at its top snap point', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} defaultSnapPoint={1} />);
+        await waitOpened(r);
+
+        expect(getContent(r).style.getPropertyValue('--sheet-expansion')).toBe('1');
+      });
+
+      it('fades the backdrop as the sheet is dragged down', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[1]} />);
+        await waitOpened(r);
+
+        fireEvent.pointerDown(getMain(r), { ...pointer, clientY: 300 });
+        fireEvent.pointerMove(getMain(r), { ...pointer, clientY: 500 });
+
+        await expect.poll(() => parseFloat(getComputedStyle(getContent(r), '::backdrop').opacity)).toBeCloseTo(0.5);
+        fireEvent.pointerUp(getMain(r), { ...pointer, clientY: 500 });
       });
     });
   });
-  
+
   describe('Edge Cases', () => {
+    it('locks page scroll while open', async () => {
+      const r = render(<SheetTest defaultOpen />);
+      await waitOpened(r);
+
+      expect(getComputedStyle(document.documentElement).overflow).toBe('hidden');
+
+      await clickBackdrop(r);
+      await waitClosed(r);
+
+      expect(getComputedStyle(document.documentElement).overflow).not.toBe('hidden');
+    });
+
+    it('keeps its content close to the top with the handle over it, like an iOS sheet', async () => {
+        const r = render(<SheetTest defaultOpen />);
+        await waitOpened(r);
+
+        expect(getMain(r).getBoundingClientRect().top - getContent(r).getBoundingClientRect().top).toBe(20);
+      });
+
     it('does not submit the surrounding form on trigger click', async () => {
       const onSubmit = vi.fn();
       const r = render(
@@ -708,303 +637,113 @@ describe('Sheet', () => {
       expect(onSubmit).not.toHaveBeenCalled();
     });
 
-    it('does not throw when rendered with no children', async () => {
-      const r = render(<Sheet />);
-      await expect.element(r.container).toBeInTheDocument();
-    });
-    
-    it('does not throw when snapPoints is empty and defaultSnapPoint is provided', async () => {
-      const r = render(
-        <SheetTest
-          defaultOpen
-          snapPoints={[]}
-          defaultSnapPoint={0}
-          onChangeActiveSnapPoint={vi.fn()}
-        />
-      );
-      
-      await expect.element(queryContent(r) as HTMLElement).toBeInTheDocument();
-    });
-    
-    it('does not throw when snapPoints is undefined but snap-point props are provided', async () => {
-      const r = render(
-        <SheetTest
-          defaultOpen
-          defaultSnapPoint={0}
-          onChangeActiveSnapPoint={vi.fn()}
-          activeSnapPoint={0}
-        />
-      );
-      
-      await expect.element(getContent(r)).toBeInTheDocument();
+    it('keeps the offset when a press starts a drag', async () => {
+      const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
       await waitOpened(r);
+      const offset = getOffset(r);
+
+      fireEvent.pointerDown(getMain(r), { ...pointer, clientY: 300 });
+      fireEvent.pointerMove(getMain(r), { ...pointer, clientY: 296 });
+
+      await expect.element(getContent(r)).toHaveAttribute('data-dragging', 'true');
+      expect(getOffset(r)).toBe(offset - 4);
+      fireEvent.pointerUp(getMain(r), { ...pointer, clientY: 296 });
     });
-    
-    it('ignores drag and does not call onChangeActiveSnapPoint when snapPoints is undefined', async () => {
-      const onChangeActiveSnapPoint = vi.fn();
-      
-      const r = render(
-        <SheetTest
-          defaultOpen
-          onChangeActiveSnapPoint={onChangeActiveSnapPoint}
-        />
-      );
-      
+
+    it('swallows the click that ends a drag', async () => {
+      const onClick = vi.fn();
+      const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
       await waitOpened(r);
-      
-      await swipe(getMain(r), 600, 200);
-      
-      expect(onChangeActiveSnapPoint).not.toHaveBeenCalled();
-    });
-    
-    it('does not close on outside press when dismissible=true but closable=false', async () => {
-      const r = render(<SheetTest defaultOpen dismissible closable={false} />);
-      await waitOpened(r);
-      
-      fireEvent.pointerDown(document.body);
-      
-      await expect.element(getContent(r)).toBeInTheDocument();
-      await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
-    });
-    
-    it('does not request close on outside press when controlled and dismissible=true but closable=false', async () => {
-      const onChangeOpen = vi.fn();
-      const r = render(<SheetTest open dismissible closable={false} onChangeOpen={onChangeOpen} />);
-      
-      await waitOpened(r);
-      
-      fireEvent.pointerDown(document.body);
-      
-      expect(onChangeOpen).not.toHaveBeenCalled();
-      await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
-    });
-    
-    it('handles mixed snapPoints formats (number and px string) without crashing', async () => {
-      const r = render(
-        <SheetTest
-          defaultOpen
-          snapPoints={[0, '200px', 400]}
-          defaultSnapPoint={0}
-          onChangeActiveSnapPoint={vi.fn()}
-        />
-      );
-      
-      await waitOpened(r);
-      
-      await expect.element(getMain(r)).toHaveTextContent(LOREM);
-    });
-    
-    it('does not crash when snapPoints contains duplicates', async () => {
-      const r = render(
-        <SheetTest
-          defaultOpen
-          snapPoints={[0, 200, 200, 400]}
-          defaultSnapPoint={1}
-          onChangeActiveSnapPoint={vi.fn()}
-        />
-      );
-      
-      await waitOpened(r);
-      await expect.element(getContent(r)).toBeInTheDocument();
-    });
-    
-    it('does not crash when snapPoints are unsorted', async () => {
-      const r = render(
-        <SheetTest
-          defaultOpen
-          snapPoints={[400, 0, 200]}
-          defaultSnapPoint={0}
-          onChangeActiveSnapPoint={vi.fn()}
-        />
-      );
-      
-      await waitOpened(r);
-      await expect.element(getContent(r)).toBeInTheDocument();
-    });
-    
-    it('does not crash when swipeTimestamp is 0', async () => {
-      const r = render(
-        <SheetTest
-          defaultOpen
-          snapPoints={SNAP_POINTS}
-          defaultSnapPoint={1}
-          swipeTimestamp={0}
-          onChangeActiveSnapPoint={vi.fn()}
-        />
-      );
-      
-      await waitOpened(r);
-      
-      await swipe(getMain(r), 600, 200);
-      
-      await expect.element(getContent(r)).toBeInTheDocument();
-    });
-    
-    it('clamps stepping at boundaries when steppedSnapPoints=true and only one snap point exists', async () => {
-      const onChangeActiveSnapPoint = vi.fn();
-      
-      const r = render(
-        <SheetTest
-          defaultOpen
-          snapPoints={[200]}
-          defaultSnapPoint={0}
-          steppedSnapPoints
-          onChangeActiveSnapPoint={onChangeActiveSnapPoint}
-        />
-      );
-      
-      await waitOpened(r);
-      
-      await swipe(getMain(r), 200, 450);
-      await swipe(getMain(r), 450, 200);
-      
-      const values = onChangeActiveSnapPoint.mock.calls.map((c) => c[0]);
-      expect(values.some((v) => v !== 0)).toBe(false);
-    });
-    
-    it('does not crash when edgeThreshold is > 1 (treats as very hard to reach)', async () => {
-      const r = render(
-        <SheetTest
-          defaultOpen
-          snapPoints={SNAP_POINTS}
-          defaultSnapPoint={1}
-          edgeThreshold={2}
-          onChangeActiveSnapPoint={vi.fn()}
-        />
-      );
-      
-      await waitOpened(r);
-      
-      await swipe(getMain(r), 100, 700);
-      
-      await expect.element(getContent(r)).toBeInTheDocument();
-      await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
-    });
-    
-    it('does not crash when siblingThreshold is > 1', async () => {
-      const r = render(
-        <SheetTest
-          defaultOpen
-          snapPoints={SNAP_POINTS}
-          defaultSnapPoint={1}
-          siblingThreshold={2}
-          onChangeActiveSnapPoint={vi.fn()}
-        />
-      );
-      
-      await waitOpened(r);
-      
-      await swipe(getMain(r), 600, 200);
-      
-      await expect.element(getContent(r)).toBeInTheDocument();
+      r.getByTestId(TESTID_CLOSE).addEventListener('click', onClick);
+
+      await drag(r.getByTestId(TESTID_CLOSE), -150);
+      fireEvent.click(r.getByTestId(TESTID_CLOSE));
+
+      expect(onClick).not.toHaveBeenCalled();
     });
   });
-  
+
   describe('Accessibility', () => {
-    describe('roles', () => {
-      let r: RenderResult;
-      
-      beforeEach(async () => {
-        r = render(<SheetTest defaultOpen />);
-        await waitOpened(r);
-      });
-      
-      it('renders content with role="dialog"', async () => {
-        await expect.element(getContent(r)).toHaveRole('dialog');
-      });
-      
-      it('keeps trigger as a button (implicit role)', async () => {
-        await expect.element(getTrigger(r)).toHaveRole('button');
-      });
+    it('is exposed as a dialog named by aria-label', async () => {
+      const r = render(<SheetTest defaultOpen />);
+      await waitOpened(r);
+
+      await expect.element(r.getByRole('dialog', { name: 'Details' })).toBeInTheDocument();
     });
-    
-    describe('aria', () => {
-      it('does not set aria-disabled on trigger by default', async () => {
-        const r = render(<SheetTest />);
-        await expect.element(getTrigger(r)).not.toHaveAttribute('aria-disabled');
+
+    it('trigger describes the sheet it opens', async () => {
+      const r = render(<SheetTest defaultOpen />);
+      await waitOpened(r);
+
+      await expect.element(getTrigger(r)).toHaveAttribute('aria-haspopup', 'dialog');
+      await expect.element(getTrigger(r)).toHaveAttribute('aria-expanded', 'true');
+      await expect.element(getTrigger(r)).not.toHaveAttribute('aria-controls');
+    });
+
+    it('focuses the sheet itself on open and the trigger on close', async () => {
+      const r = render(<SheetTest />);
+      getTrigger(r).focus();
+
+      await userEvent.keyboard('{Enter}');
+      await waitOpened(r);
+      await expect.element(getContent(r)).toHaveFocus();
+
+      await userEvent.keyboard('{Escape}');
+      await waitClosed(r);
+      await expect.element(getTrigger(r)).toHaveFocus();
+    });
+
+    it('focuses the autoFocus element on open', async () => {
+      const r = render(<SheetTest defaultOpen><input data-testid='input' autoFocus /></SheetTest>);
+      await waitOpened(r);
+
+      await expect.element(r.getByTestId('input')).toHaveFocus();
+    });
+
+    it('keeps Tab out of the page behind the sheet', async () => {
+      const r = render(<SheetTest defaultOpen />);
+      await waitOpened(r);
+      r.getByTestId(TESTID_CLOSE).focus();
+
+      for (let i = 0; i < 4; i++) {
+        await userEvent.tab();
+        await expect.element(getTrigger(r)).not.toHaveFocus();
+      }
+    });
+
+    describe('handle', () => {
+      it('is a button that expands to the next snap point and then collapses', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.25, 0.5, 1]} />);
+        await waitOpened(r);
+
+        await expect.element(getHandle(r)).toHaveRole('button');
+        await expect.element(getHandle(r)).toHaveAccessibleName('Resize sheet');
+
+        await userEvent.click(getHandle(r));
+        await expect.poll(() => getOffset(r)).toBe(200);
+
+        await userEvent.click(getHandle(r));
+        await expect.poll(() => getOffset(r)).toBe(0);
+
+        await userEvent.click(getHandle(r));
+        await expect.poll(() => getOffset(r)).toBe(300);
       });
-      
-      it('does not set aria-hidden on content by default (mounted only when open)', async () => {
+
+      it('starts a drag without snap points', async () => {
         const r = render(<SheetTest defaultOpen />);
         await waitOpened(r);
-        
-        await expect.element(getContent(r)).not.toHaveAttribute('aria-hidden');
-      });
-    });
-    
-    describe('keyboard', () => {
-      it('closes on Escape when dismissible and closable (uncontrolled)', async () => {
-        const r = render(<SheetTest defaultOpen />);
-        await waitOpened(r);
-        
-        await userEvent.keyboard('{Escape}');
-        
+
+        await commands.mouseDrag(`[data-testid="${TESTID_HANDLE}"]`, 300);
+
         await waitClosed(r);
       });
-      
-      it('does not close on Escape when dismissible=false', async () => {
-        const r = render(<SheetTest defaultOpen dismissible={false} />);
-        await waitOpened(r);
-        
-        await userEvent.keyboard('{Escape}');
-        
-        await expect.element(getContent(r)).toBeInTheDocument();
-        await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
-      });
-      
-      it('does not close on Escape when closable=false', async () => {
-        const r = render(<SheetTest defaultOpen closable={false} />);
-        await waitOpened(r);
-        
-        await userEvent.keyboard('{Escape}');
-        
-        await expect.element(getContent(r)).toBeInTheDocument();
-        await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
-      });
-    });
-    
-    describe('focus', () => {
-      it('moves focus into sheet when opened (FloatingFocusManager)', async () => {
-        const r = render(<SheetTest defaultOpen={false} />);
-        
-        getTrigger(r).focus();
-        await expect.element(getTrigger(r)).toHaveFocus();
-        
-        await userEvent.click(getTrigger(r));
-        await waitOpened(r);
-        
-        await waitFor(() => {
-          expect(document.activeElement).not.toBe(getTrigger(r));
-        });
-        
-        await expect.element(getContent(r)).toContainElement(document.activeElement as HTMLElement);
-      });
-      
-      it('returns focus to trigger after close (uncontrolled)', async () => {
-        const r = render(<SheetTest defaultOpen={false} />);
-        
-        await userEvent.click(getTrigger(r));
-        await waitOpened(r);
-        
-        fireEvent.pointerDown(document.body);
-        await waitClosed(r);
-        
-        await expect.element(getTrigger(r)).toHaveFocus();
-      });
-      
-      it('traps focus inside sheet while open (Tab cycles inside)', async () => {
+
+      it('is hidden from assistive technology without snap points', async () => {
         const r = render(<SheetTest defaultOpen />);
-        
         await waitOpened(r);
-        
-        getCloseButton(r).focus();
-        await expect.element(getCloseButton(r)).toHaveFocus();
-        
-        await userEvent.tab();
-        await expect.element(getCloseButton(r)).toHaveFocus();
-        
-        await userEvent.tab();
-        await expect.element(getCloseButton(r)).toHaveFocus();
+
+        await expect.element(getHandle(r)).toBeDisabled();
+        await expect.element(getHandle(r)).toHaveAttribute('aria-hidden', 'true');
       });
     });
   });

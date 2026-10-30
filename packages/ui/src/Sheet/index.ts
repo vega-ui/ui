@@ -3,9 +3,6 @@ export {
   SheetContent, type SheetContentProps,
   SheetTrigger, type SheetTriggerProps,
   SheetHandle, type SheetHandleProps,
-  SheetHeader, type SheetHeaderProps,
-  SheetMain, type SheetMainProps,
-  SheetBackdrop, type SheetBackdropProps,
-  SheetPortal, type SheetPortalProps,
+  SheetClose, type SheetCloseProps,
 } from './components'
 export { useSheetContext } from './contexts'

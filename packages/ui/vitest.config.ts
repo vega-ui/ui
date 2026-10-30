@@ -18,6 +18,19 @@ export default mergeConfig(
         headless: true,
         provider: playwright({ contextOptions: { locale: 'en-US', timezoneId: 'UTC' } }),
         screenshotFailures: false,
+        commands: {
+          emulateReducedMotion: ({ page }, reducedMotion: 'reduce' | 'no-preference') => page.emulateMedia({ reducedMotion }),
+          mouseDrag: async ({ page, iframe }, selector: string, distance: number) => {
+            const box = await iframe.locator(selector).boundingBox()
+            if (!box) return
+            const x = box.x + box.width / 2
+            const y = box.y + box.height / 2
+            await page.mouse.move(x, y)
+            await page.mouse.down()
+            await page.mouse.move(x, y + distance, { steps: 10 })
+            await page.mouse.up()
+          },
+        },
         instances: [
           { browser: 'chromium' },
           { browser: 'firefox' },

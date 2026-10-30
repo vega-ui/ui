@@ -1,20 +1,36 @@
 .handle {
     touch-action: none;
-    position: relative;
-    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    z-index: 1;
+    width: var(--spacing-40);
+    height: var(--spacing-12);
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    color: inherit;
+    font: inherit;
     box-sizing: border-box;
-    padding: 0 var(--spacing-8) var(--spacing-8);
-    cursor: s-resize;
+    translate: -50% 0;
+    cursor: grab;
 }
 
 .handle:after {
     content: '';
     position: absolute;
-    background: var(--separator-opaque);
-    top: 50%;
+    top: calc(var(--spacing) * 2.5);
     left: 50%;
-    transform: translate(-50%, -50%);
-    height: var(--spacing-3);
-    width: clamp(100px, 5vw, 50px);
+    translate: -50% 0;
+    width: var(--spacing-18);
+    height: calc(var(--spacing) * 2.5);
     border-radius: 100px;
+    background: var(--separator-opaque);
+}
+
+.handle:focus-visible {
+    outline: 2px solid var(--focus-color);
+    outline-offset: -2px;
+    border-radius: var(--radius-3);
 }

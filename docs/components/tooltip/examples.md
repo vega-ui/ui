@@ -23,11 +23,22 @@
 ### Controlled/Stateful: stateful copy feedback
 
 ```tsx
+const [open, setOpen] = useState(false);
 const [copied, setCopied] = useState(false);
 
-<Tooltip delayOpen={0}>
+const changeOpen = (value: boolean) => {
+  setOpen(value);
+  if (!value) setCopied(false);
+};
+
+const copy = () => {
+  setCopied(true);
+  setOpen(true);
+};
+
+<Tooltip delayOpen={0} open={open} onChangeOpen={changeOpen}>
   <TooltipTrigger asChild>
-    <Button onClick={() => setCopied((value) => !value)}>
+    <Button onClick={copy}>
       {copied ? 'Copied' : 'Copy invite link'}
     </Button>
   </TooltipTrigger>
@@ -82,26 +93,22 @@ const [open, setOpen] = useState(false);
 ```tsx
 <Dialog>
   <DialogTrigger asChild><Button>Open access form</Button></DialogTrigger>
-  <DialogPortal>
-    <DialogBackdrop>
-      <DialogContent>
-        <TextField>
-          <TextFieldInput />
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <IconButton appearance='transparent' aria-label='Info'>
-                <Icon><InfoIcon /></Icon>
-              </IconButton>
-            </TooltipTrigger>
-            <TooltipContent>
-              <TooltipArrow />
-              <Text size={2}>Info</Text>
-            </TooltipContent>
-          </Tooltip>
-        </TextField>
-      </DialogContent>
-    </DialogBackdrop>
-  </DialogPortal>
+  <DialogContent aria-label='Access form'>
+    <TextField>
+      <TextFieldInput />
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <IconButton appearance='transparent' aria-label='Info'>
+            <Icon><InfoIcon /></Icon>
+          </IconButton>
+        </TooltipTrigger>
+        <TooltipContent>
+          <TooltipArrow />
+          <Text size={2}>Info</Text>
+        </TooltipContent>
+      </Tooltip>
+    </TextField>
+  </DialogContent>
 </Dialog>
 ```
 
@@ -128,7 +135,7 @@ const [open, setOpen] = useState(false);
 ```tsx
 <Tooltip>
   <TooltipTrigger asChild>
-    <span>
+    <span tabIndex={0}>
       <Button disabled>Invite</Button>
     </span>
   </TooltipTrigger>

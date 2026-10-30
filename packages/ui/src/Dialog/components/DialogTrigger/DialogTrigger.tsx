@@ -3,7 +3,7 @@
 import { ButtonHTMLAttributes, FC, Ref } from 'react';
 import { Slot } from '../../../Slot';
 import { useDialogContext } from '../../contexts';
-import { mergeProps, mergeRefs } from '@vega-ui/utils';
+import { mergeEventHandlers } from '@vega-ui/utils';
 
 export interface DialogTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
@@ -20,13 +20,23 @@ export interface DialogTriggerProps extends ButtonHTMLAttributes<HTMLButtonEleme
 }
 
 /** The DialogTrigger component is an interactive element—usually a button or slotted custom element—that opens a modal dialog when activated, supporting flexible composition via the asChild prop */
-export const DialogTrigger: FC<DialogTriggerProps> = ({ asChild, children, ref, ...props }) => {
+export const DialogTrigger: FC<DialogTriggerProps> = ({ asChild, children, onClick: _onClick, ...props }) => {
   const Element = asChild ? Slot : 'button'
 
-  const { context, triggerProps } = useDialogContext()
+  const { open, changeOpen } = useDialogContext()
+
+  const onClick = () => {
+    changeOpen(true)
+  }
 
   return (
-    <Element type={Element === 'button' ? 'button' : undefined} {...mergeProps(props, triggerProps ?? {})} ref={mergeRefs([context.refs?.setReference, ref])}>
+    <Element
+      type={Element === 'button' ? 'button' : undefined}
+      aria-haspopup='dialog'
+      aria-expanded={open}
+      onClick={mergeEventHandlers(onClick, _onClick)}
+      {...props}
+    >
       {children}
     </Element>
   )

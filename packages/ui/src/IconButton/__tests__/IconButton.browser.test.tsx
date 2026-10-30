@@ -1,4 +1,4 @@
-import { ComponentProps, FC } from 'react';
+import { ComponentProps, CSSProperties, FC } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
 import { userEvent } from 'vitest/browser';
@@ -75,6 +75,17 @@ describe('IconButton', () => {
     it('does not set type on the child element with asChild', async () => {
       const r = render(<IconButton asChild aria-label='Link'><a href='#' data-testid='link' /></IconButton>);
       await expect.element(r.getByTestId('link')).not.toHaveAttribute('type');
+    });
+
+    it('gives a small button\'s icon its full size', async () => {
+      const r = render(
+        <IconButton aria-label='Close' style={{ '--icon-button-size': '24px' } as CSSProperties}>
+          <Icon size='sm'><svg data-testid={TESTID_ICON} /></Icon>
+        </IconButton>,
+      );
+      const rect = getIcon(r).getBoundingClientRect();
+      expect(rect.width).toBe(16);
+      expect(rect.height).toBe(16);
     });
   });
 

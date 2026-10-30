@@ -14,11 +14,9 @@
 ## Part-Level Variables
 
 - `PopoverContent` uses floating-surface theme semantics rather than a large `--popover-*` variable set.
-- `PopoverBackdrop`, when present, follows the shared overlay token model rather than popover-local variables.
 
 ## State And Variant Interaction
 
-- Optional backdrop changes presentation more than token usage.
 - Content density often has more impact than token changes, so spacing and width choices matter as much as color.
 
 ## Examples
