@@ -49,6 +49,7 @@
     "generate": "node --experimental-strip-types ./scripts/generate-icons.mts",
     "dev": "pnpm generate && vite build --watch",
     "build": "pnpm generate && vite build",
+    "test": "vitest run",
     "check-types": "tsc --noEmit"
   },
   "peerDependencies": {
