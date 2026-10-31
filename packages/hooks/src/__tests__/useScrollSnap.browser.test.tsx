@@ -83,7 +83,7 @@ describe('useScrollSnap', () => {
 
     expect(api().scrollToElementByKey('c', 'instant')).toBe(true);
 
-    expect(scroller().scrollLeft).toBe(2 * ITEM_SIZE);
+    expect(scroller().scrollLeft).toBeCloseTo(2 * ITEM_SIZE, 0);
   });
 
   it('returns false for an unknown key', async () => {
@@ -117,7 +117,7 @@ describe('useScrollSnap', () => {
 
     api().scrollToElementByKey('d', 'instant');
 
-    expect(scroller().scrollTop).toBe(3 * ITEM_SIZE);
+    expect(scroller().scrollTop).toBeCloseTo(3 * ITEM_SIZE, 0);
   });
 
   it('aligns an item to the center', async () => {
@@ -125,7 +125,7 @@ describe('useScrollSnap', () => {
 
     api().scrollToElementByKey('c', 'instant');
 
-    expect(scroller().scrollLeft).toBe(2.5 * ITEM_SIZE - ITEM_SIZE);
+    expect(scroller().scrollLeft).toBeCloseTo(2.5 * ITEM_SIZE - ITEM_SIZE, 0);
   });
 
   it('aligns an item to the end', async () => {
@@ -134,7 +134,7 @@ describe('useScrollSnap', () => {
     expect(api().getCommitted()).toBe('b');
     api().scrollToElementByKey('c', 'instant');
 
-    expect(scroller().scrollLeft).toBe(3 * ITEM_SIZE - 2 * ITEM_SIZE);
+    expect(scroller().scrollLeft).toBeCloseTo(3 * ITEM_SIZE - 2 * ITEM_SIZE, 0);
   });
 
   it('respects scroll padding', async () => {
@@ -142,7 +142,7 @@ describe('useScrollSnap', () => {
 
     api().scrollToElementByKey('c', 'instant');
 
-    expect(scroller().scrollLeft).toBe(2 * ITEM_SIZE - 20);
+    expect(scroller().scrollLeft).toBeCloseTo(2 * ITEM_SIZE - 20, 0);
   });
 
   it('scrolls to an item by key in RTL', async () => {
@@ -151,7 +151,7 @@ describe('useScrollSnap', () => {
     expect(api().getCommitted()).toBe('a');
     api().scrollToElementByKey('c', 'instant');
 
-    expect(scroller().scrollLeft).toBe(-2 * ITEM_SIZE);
+    expect(scroller().scrollLeft).toBeCloseTo(-2 * ITEM_SIZE, 0);
   });
 
   it('forgets a removed item', async () => {

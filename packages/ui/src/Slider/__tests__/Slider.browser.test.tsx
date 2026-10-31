@@ -5,7 +5,6 @@ import { userEvent } from 'vitest/browser';
 
 import { Slider, SliderProps } from '../Slider';
 import { SliderRange, SliderThumb, SliderThumbIndicator, SliderThumbInput, SliderTrack } from '../components';
-import '../../../../tokens/src/index.css';
 
 afterEach(cleanup);
 

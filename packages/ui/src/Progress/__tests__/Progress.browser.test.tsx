@@ -4,7 +4,6 @@ import { cleanup, render, type RenderResult } from '@testing-library/react';
 
 import { Progress } from '../Progress';
 import { ProgressTrack } from '../components';
-import '../../../../tokens/src/index.css';
 
 afterEach(cleanup);
 

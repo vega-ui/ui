@@ -6,7 +6,6 @@ import { cdp, commands, page, server, userEvent } from 'vitest/browser';
 
 import { Sheet } from '../Sheet';
 import { SheetClose, SheetContent, SheetHandle, SheetTrigger } from '../components';
-import '../../../../tokens/src/index.css';
 
 beforeEach(() => page.viewport(414, 400));
 afterAll(() => page.viewport(414, 896));

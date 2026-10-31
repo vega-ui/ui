@@ -33,7 +33,7 @@ jobs:
         run: pnpm docs:validate
 
       - name: Typecheck
-        run: pnpm --filter @vega-ui/react exec tsc -p tsconfig.app.json --noEmit
+        run: pnpm turbo run check-types
 
       - name: Run Unit Tests
         run: pnpm turbo run test --filter=@vega-ui/utils --filter=@vega-ui/i18n
@@ -107,9 +107,5 @@ jobs:
         shell: bash
         run: pnpm exec playwright install --with-deps ${{ matrix.playwright }}
 
-      - name: Run Hooks Tests
-        if: matrix.browser == 'chromium'
-        run: pnpm turbo run test --filter=@vega-ui/hooks
-
-      - name: Run UI Tests
-        run: pnpm --filter @vega-ui/react exec vitest run --project ${{ matrix.browser }}
+      - name: Run Browser Tests
+        run: pnpm turbo run test --filter=@vega-ui/hooks --filter=@vega-ui/icons --filter=@vega-ui/react-context --filter=@vega-ui/react -- --project ${{ matrix.browser }}

@@ -13,6 +13,7 @@ export default mergeConfig(
     test: {
       maxWorkers: 1,
       css: true,
+      setupFiles: ['../tokens/src/index.css'],
       browser: {
         enabled: true,
         headless: true,

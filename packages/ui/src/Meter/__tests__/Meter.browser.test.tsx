@@ -4,7 +4,6 @@ import { cleanup, render, type RenderResult } from '@testing-library/react';
 
 import { Meter } from '../Meter';
 import { MeterTrack } from '../components';
-import '../../../../tokens/src/index.css';
 
 afterEach(cleanup);
 

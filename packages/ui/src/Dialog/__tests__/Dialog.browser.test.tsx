@@ -6,7 +6,6 @@ import { commands, userEvent } from 'vitest/browser';
 import { Dialog } from '../Dialog';
 import { DialogClose, DialogContent, DialogTrigger } from '../components';
 import { Select, SelectCombobox, SelectListbox, SelectOption, SelectValue } from '../../Select';
-import '../../../../tokens/src/index.css';
 
 afterEach(cleanup);
 
