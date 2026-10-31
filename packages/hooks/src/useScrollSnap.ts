@@ -257,12 +257,15 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
 
     if (target == null || !Number.isFinite(target)) return;
 
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const resolvedBehavior = reducedMotion ? 'instant' : behavior
+
     if (axis === 'y') {
-      scroller.scrollTo({ top: target, behavior });
+      scroller.scrollTo({ top: target, behavior: resolvedBehavior });
       return
     }
     
-    scroller.scrollTo({ left: target, behavior });
+    scroller.scrollTo({ left: target, behavior: resolvedBehavior });
   }, [axis, scheduleMeasure, calculateSnapPoint, items, points, scrollerRef])
   
   const scrollToElementByKey = useCallback((key: K, behavior: ScrollBehavior = 'smooth') => {

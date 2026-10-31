@@ -1,6 +1,6 @@
 import { ComponentProps } from 'react';
-import { afterEach, beforeEach, describe, expect, it, vi, type Mock } from 'vitest';
-import { userEvent } from 'vitest/browser';
+import { afterEach, beforeEach, describe, expect, it, onTestFinished, vi, type Mock } from 'vitest';
+import { commands, userEvent } from 'vitest/browser';
 import { cleanup, render, type RenderResult, waitFor } from '@testing-library/react';
 
 import { Collapsible } from '../Collapsible';
@@ -171,6 +171,17 @@ describe('Collapsible', () => {
   });
   
   describe('Edge Cases', () => {
+    it('still hides the content when the user prefers reduced motion', async () => {
+      await commands.emulateReducedMotion('reduce');
+      onTestFinished(() => commands.emulateReducedMotion('no-preference'));
+      const r = render(<CollapsibleTest defaultOpen />);
+
+      await expect.element(getContent(r)).not.toHaveAttribute('hidden');
+      await userEvent.click(getTrigger(r));
+
+      await expect.element(getContent(r)).toHaveAttribute('hidden');
+    });
+
     it('supports duplicate text in trigger and content (use testids)', async () => {
       const text = 'Same';
       const r = render(

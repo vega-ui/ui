@@ -18,3 +18,9 @@
 .icon:where(:dir(rtl)) {
     transform: scaleX(-1);
 }
+
+@media (prefers-reduced-motion: reduce) {
+    .button {
+        transition-property: background-color, color, border-color;
+    }
+}

@@ -35,3 +35,9 @@
 .indicator:where([data-disabled='true']) {
     background-color: var(--disable-background-color);
 }
+
+@media (prefers-reduced-motion: reduce) {
+    .indicator {
+        transition: none;
+    }
+}

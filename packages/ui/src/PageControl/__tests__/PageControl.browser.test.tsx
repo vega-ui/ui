@@ -1,7 +1,7 @@
 import { ComponentProps, FC } from 'react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, onTestFinished, vi } from 'vitest';
 import { cleanup, fireEvent, render, type RenderResult } from '@testing-library/react';
-import { userEvent } from 'vitest/browser';
+import { commands, userEvent } from 'vitest/browser';
 
 import { PageControl } from '../PageControl';
 import { PageControlItem, PageControlProgress } from '../components';
@@ -221,6 +221,19 @@ describe('PageControl', () => {
   });
   
   describe('Edge Cases', () => {
+    it('still ends the progress when the user prefers reduced motion', async () => {
+      await commands.emulateReducedMotion('reduce');
+      onTestFinished(() => commands.emulateReducedMotion('no-preference'));
+      const onAnimationEnd = vi.fn();
+      render(
+        <PageControlTest defaultActive={0}>
+          <PageControlProgress data-testid={TESTID_PROGRESS(0)} index={0} duration={50} onAnimationEnd={onAnimationEnd} />
+        </PageControlTest>
+      );
+
+      await expect.poll(() => onAnimationEnd.mock.calls.length).toBe(1);
+    });
+
     it('grows with every size', () => {
       const r = render(
         <>

@@ -39,3 +39,23 @@
         transform: translateX(0);
     }
 }
+
+@keyframes progress-fade {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pageControlProgress {
+        transition-property: background-color;
+    }
+
+    .pageControlProgress:where([data-active='true']):after {
+        animation-name: progress-fade;
+    }
+}
