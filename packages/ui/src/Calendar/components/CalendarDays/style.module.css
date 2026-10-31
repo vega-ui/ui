@@ -11,3 +11,9 @@
 .picker:where([data-visible='false']) {
   transform: translateY(100%);
 }
+
+@media (prefers-reduced-motion: reduce) {
+    .picker {
+        transition: none;
+    }
+}

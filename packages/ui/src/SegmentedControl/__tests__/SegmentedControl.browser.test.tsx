@@ -1,7 +1,7 @@
 import { ComponentProps, FC, FormEvent, PropsWithChildren } from 'react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, onTestFinished, vi } from 'vitest';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
-import { userEvent } from 'vitest/browser';
+import { commands, userEvent } from 'vitest/browser';
 
 import { SegmentedControl } from '../SegmentedControl';
 import {
@@ -231,6 +231,14 @@ describe('SegmentedControl', () => {
   });
   
   describe('Edge Cases', () => {
+    it('moves the indicator without a transition when the user prefers reduced motion', async () => {
+      await commands.emulateReducedMotion('reduce');
+      onTestFinished(() => commands.emulateReducedMotion('no-preference'));
+      const r = render(<SegmentedControlTest />);
+
+      expect(Number.parseFloat(getComputedStyle(r.getByTestId(TESTID_INDICATOR)).transitionDuration)).toBe(0);
+    });
+
     it('submits selected value via native form behavior (FormTest)', async () => {
       let submitted: Record<string, string> | null = null;
       

@@ -11,3 +11,9 @@
 .scrollView::-webkit-scrollbar {
     display: none;
 }
+
+@media (prefers-reduced-motion: reduce) {
+    .scrollView {
+        scroll-behavior: auto;
+    }
+}

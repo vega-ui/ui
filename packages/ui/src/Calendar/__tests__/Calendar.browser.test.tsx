@@ -1,6 +1,6 @@
 import { ComponentProps, useState } from 'react';
-import { afterEach, beforeEach, describe, expect, it, vi, type Mock } from 'vitest';
-import { page, userEvent, type Locator } from 'vitest/browser';
+import { afterEach, beforeEach, describe, expect, it, onTestFinished, vi, type Mock } from 'vitest';
+import { commands, page, userEvent, type Locator } from 'vitest/browser';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
 
 import { Calendar } from '../Calendar';
@@ -1216,6 +1216,23 @@ describe('Calendar', () => {
   });
   
   describe('Edge Cases', () => {
+    it('switches views and months without sliding when the user prefers reduced motion', async () => {
+      await commands.emulateReducedMotion('reduce');
+      onTestFinished(() => commands.emulateReducedMotion('no-preference'));
+      const onChangeMonth = vi.fn();
+      const r = render(<CalendarTest defaultMonth='2026-01-15' onChangeMonth={onChangeMonth} />);
+
+      expect(Number.parseFloat(getComputedStyle(getDayPicker(r)).transitionDuration)).toBe(0);
+      expect(Number.parseFloat(getComputedStyle(getMonthPicker(r)).transitionDuration)).toBe(0);
+      expect(Number.parseFloat(getComputedStyle(getYearPicker(r)).transitionDuration)).toBe(0);
+      expect(getComputedStyle(getNext(r)).transitionProperty).not.toContain('transform');
+      expect(getComputedStyle(getPrev(r)).transitionProperty).not.toContain('transform');
+
+      await userEvent.click(getNext(r));
+
+      await expect.poll(() => onChangeMonth.mock.calls.length).toBe(1);
+    });
+
     it('calls the latest onChangeValue after it changes between renders', async () => {
       const initialOnChange = vi.fn();
       const nextOnChange = vi.fn();

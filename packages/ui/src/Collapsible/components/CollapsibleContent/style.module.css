@@ -9,3 +9,9 @@
 .content:where([data-open='false']) {
     height: 0;
 }
+
+@media (prefers-reduced-motion: reduce) {
+    .content {
+        transition-duration: 1ms;
+    }
+}
