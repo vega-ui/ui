@@ -3,7 +3,6 @@ import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
 
 import { Card } from '../Card';
-import '../../../../tokens/src/index.css';
 
 afterEach(cleanup);
 

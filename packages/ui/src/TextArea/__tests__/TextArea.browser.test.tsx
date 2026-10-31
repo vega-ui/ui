@@ -4,7 +4,6 @@ import { cleanup, render, type RenderResult } from '@testing-library/react';
 import { userEvent } from 'vitest/browser';
 
 import { TextArea } from '../TextArea';
-import '../../../../tokens/src/index.css';
 
 afterEach(cleanup);
 

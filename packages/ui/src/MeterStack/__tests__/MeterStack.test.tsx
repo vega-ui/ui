@@ -4,7 +4,6 @@ import { cleanup, render, type RenderResult } from '@testing-library/react';
 
 import { MeterStack } from '../MeterStack';
 import { MeterStackSegment } from '../components';
-import '../../../../tokens/src/index.css';
 
 afterEach(cleanup);
 

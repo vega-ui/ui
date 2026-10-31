@@ -7,7 +7,7 @@ import storybook from 'eslint-plugin-storybook'
 import reactHooks from 'eslint-plugin-react-hooks'
 
 export default tseslint.config([
-  globalIgnores(['packages/**/dist']),
+  globalIgnores(['**/dist', 'storybook-static', 'coverage']),
   storybook.configs['flat/recommended'],
   eslint.configs.recommended,
   tseslint.configs.recommended,

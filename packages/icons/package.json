@@ -50,7 +50,7 @@
     "dev": "pnpm generate && vite build --watch",
     "build": "pnpm generate && vite build",
     "test": "vitest run",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc -p tsconfig.app.json --noEmit"
   },
   "peerDependencies": {
     "react": "^19.0.0",

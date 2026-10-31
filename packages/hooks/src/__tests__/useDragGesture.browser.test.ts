@@ -86,7 +86,7 @@ describe('useDragGesture', () => {
     it('blocks native scrolling only while dragging', async () => {
       const { element } = await setup();
       const touchMove = () => {
-        const event = new TouchEvent('touchmove', { cancelable: true, bubbles: true });
+        const event = new Event('touchmove', { cancelable: true, bubbles: true });
         element.dispatchEvent(event);
         return event.defaultPrevented;
       };

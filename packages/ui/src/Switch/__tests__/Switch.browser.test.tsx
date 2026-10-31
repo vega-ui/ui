@@ -5,7 +5,6 @@ import { userEvent } from 'vitest/browser';
 
 import { Switch } from '../Switch';
 import { SwitchInput, SwitchIndicator } from '../components';
-import '../../../../tokens/src/index.css';
 
 afterEach(cleanup);
 

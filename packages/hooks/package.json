@@ -41,7 +41,7 @@
     "dev": "vite build --watch",
     "build": "vite build",
     "test": "vitest run",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc -p tsconfig.app.json --noEmit"
   },
   "peerDependencies": {
     "react": "^19.0.0",

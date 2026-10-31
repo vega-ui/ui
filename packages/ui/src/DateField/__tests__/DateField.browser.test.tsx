@@ -120,6 +120,7 @@ const getCell = (r: RenderResult, date: Date, calendar: CalendarSystem = gregori
   page.elementLocator(getContent(r)).getByRole('gridcell', { name: formatCalendarDate(calendar, formatISODate(date), 'en-US', { dateStyle: 'full' }), exact: true });
 
 const pickDate = async (r: RenderResult, date: Date, calendar?: CalendarSystem) => {
+  await Promise.allSettled(document.getAnimations().map((animation) => animation.finished));
   const cell = getCell(r, date, calendar)
   await userEvent.click(cell);
 };

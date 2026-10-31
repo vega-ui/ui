@@ -10,7 +10,6 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '../components';
-import '../../../../tokens/src/index.css';
 
 const ITEMS = ['One', 'Two', 'Three'] as const;
 

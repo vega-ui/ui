@@ -10,7 +10,6 @@ import {
   CheckboxIndicator,
   CheckboxIndeterminateIcon,
 } from '../components';
-import '../../../../tokens/src/index.css';
 
 afterEach(cleanup);
 

@@ -54,7 +54,7 @@
     "lint": "eslint",
     "test:watch": "vitest --watch",
     "test:ui": "vitest --ui",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc -p tsconfig.app.json --noEmit"
   },
   "peerDependencies": {
     "react": "^19.0.0",

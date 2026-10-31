@@ -5,7 +5,6 @@ import { commands, userEvent } from 'vitest/browser';
 
 import { Drawer } from '../Drawer';
 import { DrawerClose, DrawerContent, DrawerTrigger } from '../components';
-import '../../../../tokens/src/index.css';
 
 afterEach(cleanup);
 

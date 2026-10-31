@@ -563,7 +563,7 @@ describe('Select', () => {
 
       await openByClick(r);
 
-      expect(getListbox(r).getBoundingClientRect().width).toBeGreaterThanOrEqual(getCombobox(r).getBoundingClientRect().width);
+      await expect.poll(() => getListbox(r).getBoundingClientRect().width).toBeGreaterThanOrEqual(getCombobox(r).getBoundingClientRect().width);
     });
 
     it('keeps the listbox as wide as the combobox when the combobox resizes while open', async () => {

@@ -4,7 +4,6 @@ import { cleanup, render, type RenderResult, waitFor } from '@testing-library/re
 import { userEvent } from 'vitest/browser';
 
 import { Radio } from '../Radio';
-import '../../../../tokens/src/index.css';
 
 afterEach(cleanup);
 

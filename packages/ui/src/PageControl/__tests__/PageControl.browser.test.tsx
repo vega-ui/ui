@@ -5,7 +5,6 @@ import { userEvent } from 'vitest/browser';
 
 import { PageControl } from '../PageControl';
 import { PageControlItem, PageControlProgress } from '../components';
-import '../../../../tokens/src/index.css';
 
 afterEach(cleanup);
 
