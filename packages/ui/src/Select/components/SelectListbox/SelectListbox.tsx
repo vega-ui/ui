@@ -30,10 +30,12 @@ export const SelectListbox: FC<SelectListboxProps> = ({
 }) => {
   const { context, status, listboxProps, listboxStyles, elementsRef, labelsRef, open } = useSelectContext()
   const listboxRef = useRef<HTMLDivElement>(null)
+  const { update } = context
 
   useLayoutEffect(() => {
     togglePopover(listboxRef.current, status !== 'unmounted')
-  }, [status])
+    if (status !== 'unmounted') update()
+  }, [status, update])
   
   return (
     <FloatingFocusManager initialFocus={-1} disabled={!open} context={context} modal={false}>
