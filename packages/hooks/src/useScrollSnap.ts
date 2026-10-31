@@ -246,7 +246,7 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
     });
   }, [onSnapChanging, scheduleMeasure, scheduleCommitFallback, getPointed, points]);
   
-  const scrollToElement = useCallback((el: HTMLElement, behavior: ScrollBehavior = 'smooth') => {
+  const scrollToElement = useCallback((el: HTMLElement, behavior: ScrollBehavior = 'auto') => {
     const scroller = scrollerRef.current;
     if (!scroller) return;
     
@@ -265,7 +265,7 @@ export const useScrollSnap = <K extends string | number, E extends HTMLElement>(
     scroller.scrollTo({ left: target, behavior });
   }, [axis, scheduleMeasure, calculateSnapPoint, items, points, scrollerRef])
   
-  const scrollToElementByKey = useCallback((key: K, behavior: ScrollBehavior = 'smooth') => {
+  const scrollToElementByKey = useCallback((key: K, behavior: ScrollBehavior = 'auto') => {
     const item = items.getByKey(key as K)
     if (!item) return false
     

@@ -222,7 +222,7 @@ export const IndexedSnapScroller: FC<PropsWithChildren<IndexedSnapScrollerProps>
     target.current = next
     
     if (indexes.includes(next)) {
-      api.scrollToElementByKey(next, 'smooth')
+      api.scrollToElementByKey(next)
       return
     }
     
@@ -273,7 +273,7 @@ export const IndexedSnapScroller: FC<PropsWithChildren<IndexedSnapScrollerProps>
     
     scrollTarget.current = null
     innerApiRef.current?.measure()
-    innerApiRef.current?.scrollToElementByKey(key, 'smooth')
+    innerApiRef.current?.scrollToElementByKey(key)
   });
   
   return (

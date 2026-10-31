@@ -1,7 +1,7 @@
 import { ComponentProps, FC, PropsWithChildren, createRef } from 'react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, onTestFinished, vi } from 'vitest';
 import { cleanup, render, type RenderResult, waitFor } from '@testing-library/react';
-import { userEvent } from 'vitest/browser';
+import { commands, userEvent } from 'vitest/browser';
 
 import { SnapScroller } from '../SnapScroller';
 import { SnapScrollerContent } from '../components';
@@ -221,6 +221,20 @@ describe('SnapScroller', () => {
   });
   
   describe('Edge Cases', () => {
+    it('jumps to the next item when the user prefers reduced motion', async () => {
+      await commands.emulateReducedMotion('reduce');
+      onTestFinished(() => commands.emulateReducedMotion('no-preference'));
+      const apiRef = createRef<SnapScrollerApiRef>();
+      const onScrollSnapChange = vi.fn();
+      const r = render(<SnapScrollerTest apiRef={apiRef} onScrollSnapChange={onScrollSnapChange} />);
+      await waitFor(() => expect(apiRef.current).toBeTruthy());
+
+      apiRef.current!.next();
+
+      expect(getScroller(r).scrollLeft).toBeCloseTo(ITEM_SIZE, 0);
+      await waitFor(() => expect(onScrollSnapChange).toHaveBeenCalled());
+    });
+
     it('keeps the same apiRef across renders', () => {
       const apiRef = vi.fn();
       const r = render(<SnapScrollerTest apiRef={apiRef} />);

@@ -114,7 +114,7 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
     if (index == null) return
 
     const next = index + delta
-    if (scrollToElementByKey(next, 'smooth')) target.current = next
+    if (scrollToElementByKey(next)) target.current = next
   });
   
   useImperativeHandle(apiRef, () => ({
