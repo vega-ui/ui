@@ -1,6 +1,6 @@
 {
   "name": "@vega-ui/i18n",
-  "version": "0.0.0",
+  "version": "3.0.0",
   "description": "Locale and calendar system support for @vega-ui/react",
   "license": "MIT",
   "keywords": [

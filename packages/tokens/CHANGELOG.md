@@ -1,5 +1,15 @@
 # @vega-ui/tokens-core
 
+## 3.0.0
+
+### Minor Changes
+
+- 399fd0d: Add motion tokens: `--ease-smooth` (critically damped), `--ease-spring` (a light overshoot), and `--ease-exit` easings, with `--duration-spring` and `--duration-exit`.
+
+### Patch Changes
+
+- 9752981: Remove `@font-face` rules for Montserrat that had no `src` and were ignored by browsers; the app loads the font itself
+
 ## 2.5.0
 
 ## 2.4.0

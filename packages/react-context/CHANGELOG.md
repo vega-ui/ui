@@ -1,5 +1,11 @@
 # @vega-ui/react-context
 
+## 3.0.0
+
+### Patch Changes
+
+- 3580f9f: Mark the packages as free of side effects so bundlers like webpack can drop unused modules
+
 ## 2.5.0
 
 ### Patch Changes
