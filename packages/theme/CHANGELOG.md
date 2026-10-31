@@ -1,5 +1,20 @@
 # @vega-ui/theme-core
 
+## 3.0.0
+
+### Major Changes
+
+- 3e998c5: `--text-color-inverce` is renamed to `--text-color-inverse`.
+
+  Breaking: themes that set `--text-color-inverce` must set `--text-color-inverse` instead.
+
+### Patch Changes
+
+- f04bcd0: Import `@vega-ui/tokens-core` once in the entry instead of in both `light.css` and `dark.css`
+- Updated dependencies [9752981]
+- Updated dependencies [399fd0d]
+  - @vega-ui/tokens-core@3.0.0
+
 ## 2.5.0
 
 ### Patch Changes
