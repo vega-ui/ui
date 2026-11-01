@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { ChangeEvent, FormEvent, KeyboardEvent, useRef, useState } from 'react';
+import { Globe, Lock, Rocket, Users } from '@vega-ui/icons';
 
 import { Select } from './Select';
 import {
@@ -10,15 +12,15 @@ import {
   SelectValue,
 } from './components';
 import { Button } from '../Button';
-import { Text } from '../Text';
-import { Card } from '../Card';
-import { Icon } from '../Icon';
-import { IconButton } from '../IconButton';
-import { ChevronDown, Dices, X, Globe, Star, Check } from '@vega-ui/icons';
-import { ChangeEvent, KeyboardEvent, FC, PropsWithChildren, useMemo, useState } from 'react';
-import { Dialog, DialogContent, DialogTrigger } from '../Dialog';
-import { TextField, TextFieldInput } from '../TextField';
+import { Code } from '../Code';
+import { Dialog, DialogClose, DialogContent, DialogTrigger } from '../Dialog';
 import { Heading } from '../Heading';
+import { Icon } from '../Icon';
+import { Label } from '../Label';
+import { Text } from '../Text';
+import { TextField, TextFieldInput } from '../TextField';
+
+const COUNTRIES = ['Argentina', 'Australia', 'Austria', 'Belgium', 'Brazil', 'Canada', 'Chile', 'China', 'Denmark', 'Egypt', 'Finland', 'France', 'Germany', 'Greece', 'Iceland', 'India', 'Ireland', 'Italy', 'Japan', 'Kenya', 'Mexico', 'Norway', 'Peru', 'Poland', 'Portugal', 'Spain', 'Sweden', 'Turkey', 'Uruguay', 'Vietnam'];
 
 const meta = {
   title: 'Form/Selectors/Select',
@@ -43,18 +45,20 @@ const meta = {
     size: { control: 'radio', options: ['xs', 'sm', 'md', 'lg', 'xl'] },
     variant: { control: 'radio', options: ['field', 'inline'] },
     disabled: { control: 'boolean' },
+    children: { control: false },
   },
   args: {
+    style: { width: 280 },
     children: [
-      <SelectHiddenSelect key={0} />,
-      <SelectCombobox key={1}>
-        <SelectValue placeholder='Select an option' />
+      <SelectCombobox key='combobox' aria-label='Delivery method'>
+        <SelectValue placeholder='Choose delivery' />
         <SelectIcon />
       </SelectCombobox>,
-      <SelectListbox key={2}>
-        <SelectOption value='alpha'>Alpha</SelectOption>
-        <SelectOption value='beta'>Beta</SelectOption>
-        <SelectOption value='gamma'>Gamma</SelectOption>
+      <SelectListbox key='listbox'>
+        <SelectOption value='pickup'>Pickup point</SelectOption>
+        <SelectOption value='courier'>Courier</SelectOption>
+        <SelectOption value='drone' disabled>Drone (not available in your area)</SelectOption>
+        <SelectOption value='post'>Post office</SelectOption>
       </SelectListbox>,
     ],
   },
@@ -63,63 +67,169 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const Stack: FC<PropsWithChildren> = ({ children }) => (
-  <div style={{ display: 'grid', gap: 14, minWidth: 520 }}>{children}</div>
-);
+export const Default: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'A compact choice of one option. The focus stays on the trigger: open with `Enter`, `Space` or the arrows, move with the arrows or by typing, and select with `Enter`, `Space` or `Tab`. An unavailable option is skipped. Name the trigger with a label or `aria-label`.',
+      },
+    },
+  },
+};
 
-const Row: FC<PropsWithChildren> = ({ children }) => (
-  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
-    {children}
-  </div>
-);
+export const Sizes: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: '`size` sets the trigger and its options together, to match the fields next to it.',
+      },
+    },
+  },
+  render: ({ style }) => (
+    <div style={{ display: 'grid', gap: 12, ...style }}>
+      {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
+        <Select key={size} size={size} defaultValue='courier'>
+          <SelectCombobox aria-label={`Delivery method, size ${size}`}>
+            <SelectValue />
+            <SelectIcon />
+          </SelectCombobox>
+          <SelectListbox>
+            <SelectOption value='pickup'>Pickup point</SelectOption>
+            <SelectOption value='courier'>Courier</SelectOption>
+          </SelectListbox>
+        </Select>
+      ))}
+    </div>
+  ),
+};
 
-const Hint = ({ children }: { children: string }) => (
-  <Text asChild size={2} style={{ opacity: 0.7, maxWidth: 520 }}>
-    <p>{children}</p>
-  </Text>
-);
+export const InForm: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: '`SelectHiddenSelect` submits the value under its `name`, and a `Label` names the trigger through `htmlFor`. Submit the form to see what it sends.',
+      },
+    },
+  },
+  render: function InFormStory({ style }) {
+    const [submitted, setSubmitted] = useState<string>();
 
-export const MinimalPlaceholder: Story = {
-  name: 'Minimal: placeholder + default icon',
-  args: {
-    defaultValue: '',
-    children: (
-      <>
-        <SelectHiddenSelect />
-        <SelectCombobox>
-          <SelectValue placeholder='Choose a city' />
-          <SelectIcon />
-        </SelectCombobox>
-        <SelectListbox>
-          <SelectOption value='moscow'>Moscow</SelectOption>
-          <SelectOption value='saint-petersburg'>Saint Petersburg</SelectOption>
-          <SelectOption value='novosibirsk'>Novosibirsk</SelectOption>
-        </SelectListbox>
-      </>
-    ),
+    const onSubmit = (event: FormEvent<HTMLFormElement>) => {
+      event.preventDefault();
+      setSubmitted(JSON.stringify(Object.fromEntries(new FormData(event.currentTarget))));
+    };
+
+    return (
+      <form onSubmit={onSubmit} style={{ display: 'grid', gap: 12, ...style }}>
+        <Label htmlFor='select-form-country'>Country</Label>
+        <Select defaultValue='France'>
+          <SelectHiddenSelect name='country' />
+          <SelectCombobox id='select-form-country'>
+            <SelectValue placeholder='Choose a country' />
+            <SelectIcon />
+          </SelectCombobox>
+          <SelectListbox>
+            <SelectOption value='France'>France</SelectOption>
+            <SelectOption value='Germany'>Germany</SelectOption>
+            <SelectOption value='Japan'>Japan</SelectOption>
+          </SelectListbox>
+        </Select>
+        <Button type='submit'>Save</Button>
+        {submitted && <Code>{submitted}</Code>}
+      </form>
+    );
+  },
+};
+
+export const Clearable: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'The value lives in your state, and `null` clears it and brings the placeholder back. `undefined` would make the select uncontrolled instead.',
+      },
+    },
+  },
+  render: function ClearableStory({ style }) {
+    const [priority, setPriority] = useState<string | number | null | undefined>('medium');
+
+    return (
+      <div style={{ display: 'grid', gap: 12, ...style }}>
+        <Select value={priority} onChangeValue={setPriority}>
+          <SelectCombobox aria-label='Priority'>
+            <SelectValue placeholder='No priority' />
+            <SelectIcon />
+          </SelectCombobox>
+          <SelectListbox>
+            <SelectOption value='low'>Low</SelectOption>
+            <SelectOption value='medium'>Medium</SelectOption>
+            <SelectOption value='high'>High</SelectOption>
+          </SelectListbox>
+        </Select>
+        <Button variant='secondary' disabled={priority === null} onClick={() => setPriority(null)}>Clear priority</Button>
+      </div>
+    );
+  },
+};
+
+export const ControlledOpen: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: '`open` and `onChangeOpen` let something else open the list, here a shortcut button that also moves the focus to the trigger, so the keyboard keeps working. The select still reports its own closing.',
+      },
+    },
+  },
+  render: function ControlledOpenStory({ style }) {
+    const [open, setOpen] = useState(false);
+    const comboboxRef = useRef<HTMLButtonElement>(null);
+
+    const onClick = () => {
+      comboboxRef.current?.focus();
+      setOpen(true);
+    };
+
+    return (
+      <div style={{ display: 'grid', gap: 12, ...style }}>
+        <Button variant='secondary' onClick={onClick}>Change language</Button>
+        <Select open={open} onChangeOpen={setOpen} defaultValue='en'>
+          <SelectCombobox ref={comboboxRef} aria-label='Language'>
+            <SelectValue />
+            <SelectIcon />
+          </SelectCombobox>
+          <SelectListbox>
+            <SelectOption value='en'>English</SelectOption>
+            <SelectOption value='fr'>French</SelectOption>
+            <SelectOption value='ja'>Japanese</SelectOption>
+          </SelectListbox>
+        </Select>
+      </div>
+    );
   },
 };
 
 export const CustomIcon: Story = {
-  name: 'Custom icon',
+  parameters: {
+    docs: {
+      description: {
+        story: 'Children of `SelectIcon` replace the default chevron.',
+      },
+    },
+  },
   args: {
-    defaultValue: 'saint-petersburg',
-    children: (
-      <>
-        <SelectHiddenSelect />
-        <SelectCombobox>
-          <SelectValue placeholder='Choose a city' />
-          <SelectIcon>
-            <Globe />
-          </SelectIcon>
-        </SelectCombobox>
-        <SelectListbox>
-          <SelectOption value='moscow'>Moscow</SelectOption>
-          <SelectOption value='saint-petersburg'>Saint Petersburg</SelectOption>
-          <SelectOption value='novosibirsk'>Novosibirsk</SelectOption>
-        </SelectListbox>
-      </>
-    ),
+    defaultValue: 'en',
+    children: [
+      <SelectCombobox key='combobox' aria-label='Language'>
+        <SelectValue />
+        <SelectIcon>
+          <Globe />
+        </SelectIcon>
+      </SelectCombobox>,
+      <SelectListbox key='listbox'>
+        <SelectOption value='en'>English</SelectOption>
+        <SelectOption value='fr'>French</SelectOption>
+        <SelectOption value='ja'>Japanese</SelectOption>
+      </SelectListbox>,
+    ],
   },
 };
 
@@ -127,408 +237,225 @@ export const CustomValue: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'Children of `SelectValue` replace the copy of the selected option, so the trigger can show its own content, and the placeholder still appears while nothing is selected.',
+        story: 'Without children `SelectValue` copies the selected option on the client. Children replace that copy: here the options are long and the trigger stays short. Use them for server rendering too, and the placeholder still shows while nothing is selected.',
       },
     },
   },
-  render: function CustomValueStory(props) {
-    const [city, setCity] = useState<string | number | null | undefined>('Paris');
+  render: function CustomValueStory({ style }) {
+    const [currency, setCurrency] = useState<string | number | null | undefined>('EUR');
 
     return (
-      <Select {...props} value={city} onChangeValue={setCity}>
-        <SelectHiddenSelect />
-        <SelectCombobox>
-          <SelectValue placeholder='Choose a city' style={{ gap: 12 }}>
-            <Icon size='sm'><Dices /></Icon>
-            {city}
-          </SelectValue>
+      <Select style={style} value={currency} onChangeValue={setCurrency}>
+        <SelectCombobox aria-label='Currency'>
+          <SelectValue placeholder='Choose a currency'>{currency}</SelectValue>
           <SelectIcon />
         </SelectCombobox>
         <SelectListbox>
-          <SelectOption value='Moscow'>Moscow</SelectOption>
-          <SelectOption value='New York'>New York</SelectOption>
-          <SelectOption value='Paris'>Paris</SelectOption>
+          <SelectOption value='USD'>United States dollar (USD)</SelectOption>
+          <SelectOption value='EUR'>Euro (EUR)</SelectOption>
+          <SelectOption value='JPY'>Japanese yen (JPY)</SelectOption>
         </SelectListbox>
       </Select>
     );
   },
 };
 
-export const WithRichOptions: Story = {
-  name: 'Rich content options (icon + text)',
-  args: {
-    defaultValue: 'pro',
-    children: (
-      <>
-        <SelectHiddenSelect />
-        <SelectCombobox>
-          <SelectValue style={{ gap: 12 }} placeholder='Select a plan' />
-          <SelectIcon />
-        </SelectCombobox>
-        <SelectListbox>
-          <SelectOption style={{ gap: 12 }} value='basic'>
-            <Icon size='sm'><Star /></Icon>
-            <div style={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-              <Text size={2} style={{ fontWeight: 600, lineHeight: '14px' }}>Basic</Text>
-              <Text size={1} style={{ opacity: 0.7 }}>For simple use cases</Text>
-            </div>
-          </SelectOption>
-          
-          <SelectOption style={{ gap: 12 }} value='pro'>
-            <Icon size='sm'><Check /></Icon>
-            <div style={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-              <Text size={2} style={{ fontWeight: 600, lineHeight: '14px' }}>Pro</Text>
-              <Text size={1} style={{ opacity: 0.7 }}>Most common choice</Text>
-            </div>
-          </SelectOption>
-          
-          <SelectOption style={{ gap: 12 }} value='enterprise'>
-            <Icon size='sm'><Globe /></Icon>
-            <div style={{ display: 'flex', alignItems: 'flex-start', flexDirection: 'column' }}>
-              <Text size={2} style={{ fontWeight: 600, lineHeight: '14px' }}>Enterprise</Text>
-              <Text size={1} style={{ opacity: 0.7 }}>Disabled example</Text>
-            </div>
-          </SelectOption>
-        </SelectListbox>
-      </>
-    ),
+export const RichOptions: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'An option can hold any markup, and the trigger shows a copy of it. Typeahead reads the text of the content, so `label` gives it the name to match: typing `te` finds Team.',
+      },
+    },
   },
-};
-
-export const WithOptionLabels: Story = {
-  name: 'Options with label for typeahead',
   args: {
-    defaultValue: 'pro',
-    children: (
-      <>
-        <SelectHiddenSelect />
-        <SelectCombobox>
-          <SelectValue placeholder='Select a plan' />
-          <SelectIcon />
-        </SelectCombobox>
-        <SelectListbox>
-          <SelectOption style={{ gap: 12 }} value='basic' label='Basic'>
-            <Icon size='sm'><Star /></Icon>
-            <Text size={2}>Basic, for simple use cases</Text>
-          </SelectOption>
-          <SelectOption style={{ gap: 12 }} value='pro' label='Pro'>
-            <Icon size='sm'><Check /></Icon>
-            <Text size={2}>Pro, the most common choice</Text>
-          </SelectOption>
-        </SelectListbox>
-      </>
-    ),
+    defaultValue: 'team',
+    children: [
+      <SelectCombobox key='combobox' aria-label='Plan'>
+        <SelectValue style={{ gap: 12 }} placeholder='Choose a plan' />
+        <SelectIcon />
+      </SelectCombobox>,
+      <SelectListbox key='listbox'>
+        <SelectOption style={{ gap: 12 }} value='starter' label='Starter'>
+          <Icon size='sm'><Rocket /></Icon>
+          Starter, for one person
+        </SelectOption>
+        <SelectOption style={{ gap: 12 }} value='team' label='Team'>
+          <Icon size='sm'><Users /></Icon>
+          Team, up to 20 people
+        </SelectOption>
+        <SelectOption style={{ gap: 12 }} value='enterprise' label='Enterprise' disabled>
+          <Icon size='sm'><Lock /></Icon>
+          Enterprise, contact sales
+        </SelectOption>
+      </SelectListbox>,
+    ],
   },
 };
 
 export const InlineVariant: Story = {
-  name: 'Inline variant (in a sentence)',
+  parameters: {
+    docs: {
+      description: {
+        story: '`variant="inline"` drops the field look, so the select reads as a part of a sentence.',
+      },
+    },
+  },
   args: {
     variant: 'inline',
     defaultValue: 'weekly',
-    children: (
-      <>
-        <SelectHiddenSelect />
-        <div style={{ display: 'flex', gap: 8, alignItems: 'center', flexWrap: 'wrap' }}>
-          <Text size={3} style={{ opacity: 0.85 }}>
-            Notify me
-          </Text>
-          
-          <SelectCombobox>
-            <SelectValue placeholder='frequency' />
-            <SelectIcon>
-              <ChevronDown />
-            </SelectIcon>
-          </SelectCombobox>
-          
-          <Text size={3} style={{ opacity: 0.85 }}>
-            about updates.
-          </Text>
-        </div>
-        
-        <SelectListbox>
-          <SelectOption value='daily'>Daily</SelectOption>
-          <SelectOption value='weekly'>Weekly</SelectOption>
-          <SelectOption value='monthly'>Monthly</SelectOption>
-        </SelectListbox>
-      </>
-    ),
-  },
-};
-
-export const ControlledOpen: Story = {
-  name: 'Controlled open state (external toggle)',
-  render: (props) => {
-    const [open, setOpen] = useState(false);
-    
-    return (
-      <Stack>
-        <Row>
-          <Text size={3} style={{ fontWeight: 600 }}>
-            Controlled dropdown
-          </Text>
-          <Button size='sm' variant='secondary' onClick={() => setOpen((v) => !v)}>
-            {open ? 'Close' : 'Open'}
-          </Button>
-        </Row>
-        
-        <Select {...props} open={open} onChangeOpen={setOpen} defaultValue='beta'>
-          <SelectHiddenSelect />
-          <SelectCombobox>
-            <SelectValue placeholder='Pick an option' />
-            <SelectIcon />
-          </SelectCombobox>
-          
-          <SelectListbox>
-            <SelectOption value='alpha'>Alpha</SelectOption>
-            <SelectOption value='beta'>Beta</SelectOption>
-            <SelectOption value='gamma'>Gamma</SelectOption>
-          </SelectListbox>
-        </Select>
-      </Stack>
-    );
-  },
-};
-
-export const ControlledValueWithClear: Story = {
-  name: 'Controlled value + clear action',
-  render: (props) => {
-    const options = useMemo(
-      () => [
-        { value: 'low', label: 'Low' },
-        { value: 'medium', label: 'Medium' },
-        { value: 'high', label: 'High' },
-      ],
-      [],
-    );
-    
-    const [value, setValue] = useState<string | number | null | undefined>('medium');
-    
-    return (
-      <Stack>
-        <Card>
-          <Row>
-            <Text size={3} style={{ fontWeight: 600 }}>
-              Priority
-            </Text>
-            
-            <IconButton
-              size='sm'
-              variant='secondary'
-              appearance='ghost'
-              aria-label='clear selection'
-              disabled={value === null}
-              onClick={() => setValue(null)}
-            >
-              <Icon>
-                <X />
-              </Icon>
-            </IconButton>
-          </Row>
-          
-          <Text size={2} style={{ opacity: 0.7, marginTop: 6 }}>
-            Current value: <strong>{value ?? '—'}</strong>
-          </Text>
-        </Card>
-        
-        <Select {...props} value={value} onChangeValue={setValue}>
-          <SelectHiddenSelect />
-          <SelectCombobox>
-            <SelectValue placeholder='Select priority' />
-            <SelectIcon />
-          </SelectCombobox>
-          
-          <SelectListbox>
-            {options.map((o) => (
-              <SelectOption key={o.value} value={o.value}>
-                {o.label}
-              </SelectOption>
-            ))}
-          </SelectListbox>
-        </Select>
-        
-        <Hint>
-          Controlled value is useful when you need: reset/clear, sync with URL/query params, submit logic, or validation.
-        </Hint>
-      </Stack>
-    );
-  },
-};
-
-export const DisabledAndReadOnlyStates: Story = {
-  name: 'Disabled and read-only states',
-  render: (props) => {
-    return (
-      <Stack>
-        <div style={{ display: 'grid', gap: 12 }}>
-          <div style={{ display: 'grid', gap: 6 }}>
-            <Text size={2} style={{ opacity: 0.7 }}>
-              Disabled
-            </Text>
-            <Select {...props} disabled defaultValue='alpha'>
-              <SelectHiddenSelect />
-              <SelectCombobox>
-                <SelectValue placeholder='Select' />
-                <SelectIcon />
-              </SelectCombobox>
-              <SelectListbox>
-                <SelectOption value='alpha'>Alpha</SelectOption>
-                <SelectOption value='beta'>Beta</SelectOption>
-                <SelectOption value='gamma'>Gamma</SelectOption>
-              </SelectListbox>
-            </Select>
-          </div>
-          
-          <div style={{ display: 'grid', gap: 6 }}>
-            <Text size={2} style={{ opacity: 0.7 }}>
-              Read-only
-            </Text>
-            <Select {...props} readOnly defaultValue='beta'>
-              <SelectHiddenSelect />
-              <SelectCombobox>
-                <SelectValue placeholder='Select' />
-                <SelectIcon />
-              </SelectCombobox>
-              <SelectListbox>
-                <SelectOption value='alpha'>Alpha</SelectOption>
-                <SelectOption value='beta'>Beta</SelectOption>
-                <SelectOption value='gamma'>Gamma</SelectOption>
-              </SelectListbox>
-            </Select>
-          </div>
-        </div>
-      </Stack>
-    );
-  },
-};
-
-export const LongListScroll: Story = {
-  name: 'Long list (scroll / navigation)',
-  args: {
-    defaultValue: 'item-12',
-    children: (
-      <>
-        <SelectHiddenSelect />
-        <SelectCombobox>
-          <SelectValue placeholder='Select an item' />
+    style: undefined,
+    children: [
+      <div key='sentence' style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+        <Text size={3}>Email me</Text>
+        <SelectCombobox aria-label='Email frequency' style={{ width: 'auto' }}>
+          <SelectValue />
           <SelectIcon />
         </SelectCombobox>
-        
-        <SelectListbox style={{ maxHeight: 280, overflow: 'auto' }}>
-          {Array.from({ length: 40 }).map((_, i) => {
-            const value = `item-${i + 1}`;
-            return (
-              <SelectOption key={value} value={value}>
-                Item #{i + 1}
-              </SelectOption>
-            );
-          })}
-        </SelectListbox>
-      </>
-    ),
+        <Text size={3}>about updates.</Text>
+      </div>,
+      <SelectListbox key='listbox'>
+        <SelectOption value='daily'>daily</SelectOption>
+        <SelectOption value='weekly'>weekly</SelectOption>
+        <SelectOption value='monthly'>monthly</SelectOption>
+      </SelectListbox>,
+    ],
   },
 };
 
-export const NestedDialogFlow: Story = {
-  name: 'Complex: Select inside a dialog + nested dialog',
-  render: (props) => {
-    const [selected, setSelected] = useState<string | number | undefined>();
-    
+export const DisabledAndReadOnly: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: '`disabled` leaves the tab order and the form submission. `readOnly` stays focusable and still submits its value, but the list does not open.',
+      },
+    },
+  },
+  render: ({ style }) => (
+    <div style={{ display: 'grid', gap: 12, ...style }}>
+      <Select disabled defaultValue='team'>
+        <SelectCombobox aria-label='Plan, disabled'>
+          <SelectValue />
+          <SelectIcon />
+        </SelectCombobox>
+        <SelectListbox>
+          <SelectOption value='team'>Team (managed by your admin)</SelectOption>
+        </SelectListbox>
+      </Select>
+      <Select readOnly defaultValue='team'>
+        <SelectCombobox aria-label='Plan, read-only'>
+          <SelectValue />
+          <SelectIcon />
+        </SelectCombobox>
+        <SelectListbox>
+          <SelectOption value='team'>Team (active until December)</SelectOption>
+        </SelectListbox>
+      </Select>
+    </div>
+  ),
+};
+
+export const LongList: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'The list scrolls and keeps the active option in view. It opens on the selected option, and typing `sw` jumps to Sweden, even while the list is closed.',
+      },
+    },
+  },
+  args: {
+    defaultValue: 'Japan',
+    children: [
+      <SelectCombobox key='combobox' aria-label='Country'>
+        <SelectValue placeholder='Choose a country' />
+        <SelectIcon />
+      </SelectCombobox>,
+      <SelectListbox key='listbox'>
+        {COUNTRIES.map((country) => <SelectOption key={country} value={country}>{country}</SelectOption>)}
+      </SelectListbox>,
+    ],
+  },
+};
+
+export const InDialog: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'The list renders in the top layer, so the dialog does not clip it, and the first `Escape` closes only the list.',
+      },
+    },
+  },
+  render: function InDialogStory() {
+    const [template, setTemplate] = useState<string | number | null | undefined>();
+
     return (
-      <Stack>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button>Open flow</Button>
-          </DialogTrigger>
-          <DialogContent aria-labelledby='configure-title'>
-            <Heading id='configure-title' as='h2' size={4} fontWeight={600}>Configure option</Heading>
-            
-            <Text size={2} style={{ opacity: 0.7, marginTop: 6 }}>
-              Select remains fully composable and can be embedded into complex layouts.
-            </Text>
-            
-            <div style={{ marginTop: 14, display: 'grid', gap: 12 }}>
-              <Select {...props} value={selected} onChangeValue={setSelected}>
-                <SelectHiddenSelect />
-                <SelectCombobox>
-                  <SelectValue placeholder='Select a template' />
-                  <SelectIcon />
-                </SelectCombobox>
-                
-                <SelectListbox>
-                  <SelectOption value='template-a'>Template A</SelectOption>
-                  <SelectOption value='template-b'>Template B</SelectOption>
-                  <SelectOption value='template-c'>Template C</SelectOption>
-                </SelectListbox>
-              </Select>
-              
-              <form method='dialog' style={{ display: 'flex', gap: 10 }}>
-                <Button type='submit' fullWidth disabled={!selected}>
-                  Continue
-                </Button>
-              </form>
-              
-              <Hint>
-                This story is useful to verify focus restoration, layering/portal root behavior, and keyboard navigation
-                when the Select is used inside overlays.
-              </Hint>
-            </div>
-          </DialogContent>
-        </Dialog>
-      </Stack>
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button>New document</Button>
+        </DialogTrigger>
+        <DialogContent aria-labelledby='select-dialog-title'>
+          <div style={{ display: 'grid', gap: 12 }}>
+            <Heading id='select-dialog-title' as='h2' size={4} fontWeight={600}>New document</Heading>
+            <Select value={template} onChangeValue={setTemplate}>
+              <SelectCombobox aria-label='Template'>
+                <SelectValue placeholder='Choose a template' />
+                <SelectIcon />
+              </SelectCombobox>
+              <SelectListbox>
+                <SelectOption value='blank'>Blank</SelectOption>
+                <SelectOption value='report'>Report</SelectOption>
+                <SelectOption value='letter'>Letter</SelectOption>
+              </SelectListbox>
+            </Select>
+            <DialogClose asChild>
+              <Button disabled={!template}>Create</Button>
+            </DialogClose>
+          </div>
+        </DialogContent>
+      </Dialog>
     );
   },
 };
 
 export const WithFilterSearch: Story = {
-  name: 'With filter search',
-  args: {
-    typeahead: false
+  parameters: {
+    docs: {
+      description: {
+        story: 'A form field inside the list can take the focus, so you can filter the options yourself. This is for pointer use: from the field the keyboard cannot reach the options, and a field inside `role="listbox"` breaks ARIA. Turn `typeahead` off here.',
+      },
+    },
   },
-  render(props) {
-    const [selected, setSelected] = useState<string | number | undefined>('')
-    const [search, setSearch] = useState('')
-    
-    const options = Array.from({ length: 40 }, (_, i) => ({
-      value: `item-${i + 1}`,
-      label: `Item ${i + 1}`
-    }))
-    
-    const filtered = useMemo(() => options.filter(v => v.label.includes(search)), [options, search])
-    
-    const onSearch = (e: ChangeEvent<HTMLInputElement>) => {
-      setSearch(e.currentTarget.value)
-    }
-    
+  render: function WithFilterSearchStory({ style }) {
+    const [country, setCountry] = useState<string | number | null | undefined>(null);
+    const [search, setSearch] = useState('');
+
+    const filtered = COUNTRIES.filter((name) => name.toLowerCase().includes(search.toLowerCase()));
+
+    const onSearch = (event: ChangeEvent<HTMLInputElement>) => {
+      setSearch(event.currentTarget.value);
+    };
+
     const onChangeOpen = (open: boolean) => {
-      if (!open) setSearch('')
-    }
-    
-    const onKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-      e.stopPropagation()
-    }
-    
+      if (!open) setSearch('');
+    };
+
+    const onKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+      event.stopPropagation();
+    };
+
     return (
-      <Select {...props} onChangeOpen={onChangeOpen} onChangeValue={setSelected} value={selected}>
-        <SelectHiddenSelect />
-        <SelectCombobox>
-          <SelectValue placeholder='Select an item'>
-            {options.find(v => v.value === selected)?.label}
-          </SelectValue>
+      <Select style={style} typeahead={false} value={country} onChangeValue={setCountry} onChangeOpen={onChangeOpen}>
+        <SelectCombobox aria-label='Country'>
+          <SelectValue placeholder='Choose a country'>{country}</SelectValue>
           <SelectIcon />
         </SelectCombobox>
-        
-        <SelectListbox style={{ maxHeight: 280, overflow: 'auto' }}>
-          <TextField>
-            <TextFieldInput onKeyDown={onKeyDown} placeholder='Search' onChange={onSearch} value={search} />
+        <SelectListbox>
+          <TextField style={{ flexShrink: 0 }}>
+            <TextFieldInput aria-label='Search countries' placeholder='Search' value={search} onChange={onSearch} onKeyDown={onKeyDown} />
           </TextField>
-          {filtered.map(({ label, value }) => (
-            <SelectOption key={value} value={value}>
-              {label}
-            </SelectOption>
-          ))}
+          {filtered.map((name) => <SelectOption key={name} value={name}>{name}</SelectOption>)}
         </SelectListbox>
       </Select>
-    )
-  }
+    );
+  },
 };
