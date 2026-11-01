@@ -509,6 +509,34 @@ describe('Select', () => {
   });
   
   describe('Edge Cases', () => {
+    it('lets a form field in the list take the focus and closes when the focus leaves it', async () => {
+      const r = render(
+        <>
+          <Select>
+            <SelectCombobox data-testid={TESTID_COMBOBOX}><SelectValue /></SelectCombobox>
+            <SelectListbox>
+              <input data-testid='search' />
+              <SelectOption value={VALUE_MOSCOW}>{LABEL_MOSCOW}</SelectOption>
+            </SelectListbox>
+          </Select>
+          <button type='button' data-testid='after' />
+        </>
+      );
+      const combobox = r.getByTestId(TESTID_COMBOBOX);
+      const search = r.getByTestId('search');
+
+      await userEvent.click(combobox);
+      await expect.poll(() => getComputedStyle(search).visibility).toBe('visible');
+      await userEvent.click(search);
+
+      expect(document.activeElement).toBe(search);
+      expect(combobox.getAttribute('aria-expanded')).toBe('true');
+
+      r.getByTestId('after').focus();
+
+      await expect.poll(() => combobox.getAttribute('aria-expanded')).toBe('false');
+    });
+
     it('keeps the value on Tab after an arrow that could not move', async () => {
       const onChangeValue = vi.fn();
       const r = render(<SelectTest onChangeValue={onChangeValue} />);

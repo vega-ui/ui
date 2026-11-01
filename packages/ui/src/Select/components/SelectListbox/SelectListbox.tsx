@@ -1,4 +1,4 @@
-import { FC, HTMLAttributes, MouseEvent, Ref, ToggleEvent, useLayoutEffect, useRef, useState } from 'react'
+import { FC, FocusEvent, HTMLAttributes, MouseEvent, Ref, ToggleEvent, useLayoutEffect, useRef, useState } from 'react'
 import { csx, mergeEventHandlers, mergeRefs, togglePopover } from '@vega-ui/utils';
 import styles from './style.module.css';
 import { useSelectContext } from '../../contexts';
@@ -18,13 +18,14 @@ export interface SelectListboxProps extends Omit<HTMLAttributes<HTMLDivElement>,
  *
  * A native popover, so CSS animates it with `:popover-open`
  * without unmounting.
- * The focus stays on the combobox, including on a press inside the list.
+ * The focus stays on the combobox on a press inside the list, except on a form field such as a search input.
  */
 export const SelectListbox: FC<SelectListboxProps> = ({
   className,
   children,
   style,
   onMouseDown: _onMouseDown,
+  onBlur: _onBlur,
   onToggle: _onToggle,
   ref,
   ...props
@@ -39,7 +40,11 @@ export const SelectListbox: FC<SelectListboxProps> = ({
   }, [open, shown])
 
   const onMouseDown = (event: MouseEvent<HTMLDivElement>) => {
-    event.preventDefault()
+    if (!(event.target as Element).closest('input, textarea, select, [contenteditable]')) event.preventDefault()
+  }
+
+  const onBlur = (event: FocusEvent<HTMLDivElement>) => {
+    if (!event.currentTarget.contains(event.relatedTarget)) changeOpen?.(false)
   }
 
   const onToggle = (event: ToggleEvent<HTMLDivElement>) => {
@@ -56,6 +61,7 @@ export const SelectListbox: FC<SelectListboxProps> = ({
       className={csx(styles.listbox, className)}
       style={{ ...listboxStyles, ...style }}
       onMouseDown={mergeEventHandlers(onMouseDown, _onMouseDown)}
+      onBlur={mergeEventHandlers(onBlur, _onBlur)}
       onToggle={mergeEventHandlers(onToggle, _onToggle)}
       {...props}
     >
