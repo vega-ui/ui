@@ -56,8 +56,18 @@ const YearScroller: FC = () => (
 );
 
 const meta: Meta<typeof YearPicker> = {
-  title: 'Data/YearPicker/YearPicker',
+  title: 'Data/YearPicker',
   component: YearPicker,
+  subcomponents: {
+    YearPickerRow,
+    YearPickerItem,
+    YearPickerLayout,
+    YearPickerRowGroup,
+    YearPickerScroller,
+    YearPickerScrollerLayout,
+    YearPickerScrollerContent,
+    YearPickerCell,
+  },
   parameters: { layout: 'centered' },
   args: {
     children: <YearPickerLayout><YearPickerCell /></YearPickerLayout>,
@@ -261,6 +271,25 @@ export const SwipableControlled: Story = {
       </Stack>
     );
   },
+};
+
+export const ScrollerDefaultYear: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Outside a `YearPicker`, `defaultYear` on the scroller sets the year its pages count from; inside one, the `year` of the root decides.',
+      },
+    },
+  },
+  render: () => (
+    <YearPickerScroller defaultYear='2000-01-01'>
+      <YearPickerScrollerContent>
+        <YearPickerScrollerLayout>
+          <YearPickerCell />
+        </YearPickerScrollerLayout>
+      </YearPickerScrollerContent>
+    </YearPickerScroller>
+  ),
 };
 
 /**

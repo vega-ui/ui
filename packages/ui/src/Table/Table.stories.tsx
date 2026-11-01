@@ -4,8 +4,16 @@ import { Text } from '../Text';
 import { TableBody, TableData, TableFoot, TableHead, TableHeading, TableRow } from './components';
 
 const meta = {
-  title: 'Data/Table/Table',
+  title: 'Data/Table',
   component: Table,
+  subcomponents: {
+    TableHead,
+    TableBody,
+    TableFoot,
+    TableRow,
+    TableHeading,
+    TableData,
+  },
   parameters: {
     layout: 'padded',
     design: {

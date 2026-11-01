@@ -19,7 +19,7 @@ import {
   CalendarYear,
   CalendarYears,
 } from './components';
-import { useCalendarDayContext } from './contexts';
+import { useCalendarDayContext, useCalendarMonthContext, useCalendarWeekdayContext, useCalendarYearContext } from './contexts';
 import { Badge } from '../Badge';
 import { Button } from '../Button';
 import { Card } from '../Card';
@@ -93,8 +93,27 @@ const Caption: FC<{ children: ReactNode }> = ({ children }) => (
 );
 
 const meta: Meta<typeof Calendar> = {
-  title: 'Data/Calendar/Calendar',
+  title: 'Data/Calendar',
   component: Calendar,
+  subcomponents: {
+    CalendarHeader,
+    CalendarPrevButton,
+    CalendarNextButton,
+    CalendarViewButtonGroup,
+    CalendarViewButton,
+    CalendarMonthLabel,
+    CalendarYearLabel,
+    CalendarContent,
+    CalendarDays,
+    CalendarWeekdays,
+    CalendarWeekday,
+    CalendarWeeks,
+    CalendarDay,
+    CalendarMonths,
+    CalendarMonth,
+    CalendarYears,
+    CalendarYear,
+  },
   parameters: { layout: 'centered' },
   args: {
     children: <CalendarParts />,
@@ -480,4 +499,194 @@ export const CustomCell: Story = {
     style: { width: 480 },
     children: <CalendarParts includeOverflowDays day={<PricedDay />} />,
   },
+};
+
+export const OverflowDays: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: '`includeOverflowDays` on `CalendarWeeks` fills the empty cells with the days of the previous and next months; they cannot be selected.',
+      },
+    },
+  },
+  args: {
+    children: <CalendarParts includeOverflowDays />,
+  },
+};
+
+export const DayViewFormats: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Each part of the day view takes its own `format`: `CalendarMonthLabel`, `CalendarYearLabel`, `CalendarWeekdays` and `CalendarWeeks`.',
+      },
+    },
+  },
+  render: () => (
+    <Row>
+      {([
+        { month: 'short', year: 'numeric', weekday: 'short', day: 'numeric' },
+        { month: 'narrow', year: '2-digit', weekday: 'narrow', day: '2-digit' },
+      ] as const).map(({ month, year, weekday, day }) => (
+        <Stack key={month}>
+          <Caption>{`month ${month}, year ${year}, weekday ${weekday}, day ${day}`}</Caption>
+          <Calendar compact>
+            <CalendarHeader>
+              <CalendarPrevButton aria-label='Previous' />
+              <CalendarViewButtonGroup>
+                <CalendarViewButton view='month'>
+                  <CalendarMonthLabel format={month} />
+                </CalendarViewButton>
+                <CalendarViewButton view='year'>
+                  <CalendarYearLabel format={year} />
+                </CalendarViewButton>
+              </CalendarViewButtonGroup>
+              <CalendarNextButton aria-label='Next' />
+            </CalendarHeader>
+            <CalendarContent>
+              <CalendarDays>
+                <CalendarWeekdays format={weekday}>
+                  <CalendarWeekday />
+                </CalendarWeekdays>
+                <CalendarWeeks format={day}>
+                  <CalendarDay />
+                </CalendarWeeks>
+              </CalendarDays>
+              <CalendarMonths>
+                <CalendarMonth />
+              </CalendarMonths>
+              <CalendarYears>
+                <CalendarYear />
+              </CalendarYears>
+            </CalendarContent>
+          </Calendar>
+        </Stack>
+      ))}
+    </Row>
+  ),
+};
+
+export const MonthAndYearViews: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: '`defaultView` opens the calendar on the months or the years; here `CalendarMonths` takes `cols` and `format`, and `CalendarYears` takes `format`.',
+      },
+    },
+  },
+  render: () => (
+    <Row>
+      {(['month', 'year'] as const).map((view) => (
+        <Stack key={view}>
+          <Caption>{view}</Caption>
+          <Calendar compact defaultView={view}>
+            <CalendarHeader>
+              <CalendarPrevButton aria-label='Previous' />
+              <CalendarViewButtonGroup>
+                <CalendarViewButton view='month'>
+                  <CalendarMonthLabel />
+                </CalendarViewButton>
+                <CalendarViewButton view='year'>
+                  <CalendarYearLabel />
+                </CalendarViewButton>
+              </CalendarViewButtonGroup>
+              <CalendarNextButton aria-label='Next' />
+            </CalendarHeader>
+            <CalendarContent>
+              <CalendarDays>
+                <CalendarWeekdays>
+                  <CalendarWeekday />
+                </CalendarWeekdays>
+                <CalendarWeeks>
+                  <CalendarDay />
+                </CalendarWeeks>
+              </CalendarDays>
+              <CalendarMonths cols={4} format='short'>
+                <CalendarMonth />
+              </CalendarMonths>
+              <CalendarYears format='2-digit'>
+                <CalendarYear />
+              </CalendarYears>
+            </CalendarContent>
+          </Calendar>
+        </Stack>
+      ))}
+    </Row>
+  ),
+};
+
+const WeekendWeekday: FC = () => {
+  const { weekday } = useCalendarWeekdayContext();
+
+  if (weekday !== 0 && weekday !== 6) return <CalendarWeekday />;
+
+  return <CalendarWeekday style={{ opacity: 0.5 }} />;
+};
+
+const NumberedMonth: FC = () => {
+  const { label, fields } = useCalendarMonthContext();
+
+  return <CalendarMonth>{fields?.month}. {label}</CalendarMonth>;
+};
+
+const LeapYear: FC = () => {
+  const { label, fields } = useCalendarYearContext();
+
+  if (!fields) return <CalendarYear />;
+
+  const { year } = fields;
+  const isLeap = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+
+  if (!isLeap) return <CalendarYear />;
+
+  return <CalendarYear style={{ fontWeight: 700 }}>{label}*</CalendarYear>;
+};
+
+export const CustomTemplates: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Weekdays, months and years are templates too, read through `useCalendarWeekdayContext()`, `useCalendarMonthContext()` and `useCalendarYearContext()`: here weekends are dimmed, months are numbered and Gregorian leap years are marked.',
+      },
+    },
+  },
+  render: () => (
+    <Row>
+      {(['day', 'month', 'year'] as const).map((view) => (
+        <Stack key={view}>
+          <Caption>{view}</Caption>
+          <Calendar compact defaultView={view}>
+            <CalendarHeader>
+              <CalendarPrevButton aria-label='Previous' />
+              <CalendarViewButtonGroup>
+                <CalendarViewButton view='month'>
+                  <CalendarMonthLabel />
+                </CalendarViewButton>
+                <CalendarViewButton view='year'>
+                  <CalendarYearLabel />
+                </CalendarViewButton>
+              </CalendarViewButtonGroup>
+              <CalendarNextButton aria-label='Next' />
+            </CalendarHeader>
+            <CalendarContent>
+              <CalendarDays>
+                <CalendarWeekdays>
+                  <WeekendWeekday />
+                </CalendarWeekdays>
+                <CalendarWeeks>
+                  <CalendarDay />
+                </CalendarWeeks>
+              </CalendarDays>
+              <CalendarMonths format='short'>
+                <NumberedMonth />
+              </CalendarMonths>
+              <CalendarYears>
+                <LeapYear />
+              </CalendarYears>
+            </CalendarContent>
+          </Calendar>
+        </Stack>
+      ))}
+    </Row>
+  ),
 };

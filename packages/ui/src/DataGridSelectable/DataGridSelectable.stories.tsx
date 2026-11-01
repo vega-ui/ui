@@ -12,8 +12,13 @@ const matrix = Array.from({ length: 5 },
   ))
 
 const meta = {
-  title: 'Data/DataGridSelectable/DataGridSelectable',
+  title: 'Data/DataGridSelectable',
   component: DataGridSelectable,
+  subcomponents: {
+    DataGridSelectableCell,
+    DataGridSelectableRowGroup,
+    DataGridSelectableRow,
+  },
   parameters: {
     layout: 'centered',
   },

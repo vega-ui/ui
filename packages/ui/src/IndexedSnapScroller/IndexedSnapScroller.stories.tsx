@@ -35,8 +35,11 @@ const IndexedSnapScrollerContent: FC<IndexedSnapScrollerContentProps> = ({ style
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof IndexedSnapScroller> = {
-  title: 'Utils/IndexedSnapScroller/IndexedSnapScroller',
+  title: 'Utils/IndexedSnapScroller',
   component: IndexedSnapScroller,
+  subcomponents: {
+    IndexedSnapScrollerContent,
+  },
   args: {},
   parameters: {
     layout: 'centered',

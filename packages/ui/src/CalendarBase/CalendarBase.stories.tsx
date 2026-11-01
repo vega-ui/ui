@@ -12,8 +12,15 @@ import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
 import { getWeekDayNames } from '@vega-ui/i18n';
 
 const meta: Meta<typeof CalendarBase> = {
-  title: 'Data/CalendarBase/CalendarBase',
+  title: 'Data/CalendarBase',
   component: CalendarBase,
+  subcomponents: {
+    CalendarBaseControlIconButton,
+    CalendarBaseWeekLabels,
+    CalendarBaseWeekLabel,
+    CalendarBaseHeader,
+    CalendarBasePickerButton,
+  },
   parameters: { layout: 'centered' },
   args: {
     children: (

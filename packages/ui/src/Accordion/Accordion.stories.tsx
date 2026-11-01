@@ -8,8 +8,15 @@ import { Separator } from '../Separator';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof Accordion> = {
-  title: 'Actions/Accordion/Accordion',
+  title: 'Actions/Accordion',
   component: Accordion,
+  subcomponents: {
+    AccordionItem,
+    AccordionTrigger,
+    AccordionContent,
+    AccordionHeader,
+    AccordionIcon,
+  },
   parameters: {
     layout: 'padded',
     design: {

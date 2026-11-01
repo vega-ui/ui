@@ -12,7 +12,7 @@ import { FC, useMemo, useState } from 'react';
 const sizes: TextFieldProps['size'][] = ['xs', 'sm', 'md', 'lg', 'xl'];
 
 const meta = {
-  title: 'Form/Fields/TextField/TextField',
+  title: 'Form/Fields/TextField',
   component: TextField,
   subcomponents: {
     TextFieldInput,

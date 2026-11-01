@@ -5,8 +5,11 @@ import { TimeField } from './TimeField';
 import { TimeFieldInput } from './components';
 
 const meta = {
-  title: 'Form/Fields/TimeField/TimeField',
+  title: 'Form/Fields/TimeField',
   component: TimeField,
+  subcomponents: {
+    TimeFieldInput,
+  },
   parameters: { layout: 'centered' },
   tags: ['autodocs'],
   args: {

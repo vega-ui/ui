@@ -20,7 +20,7 @@ import { FC, PropsWithChildren } from 'react';
 import { Card } from '../Card';
 
 const meta: Meta<typeof Fieldset> = {
-  title: 'Form/Layout/Fieldset/Fieldset',
+  title: 'Form/Layout/Fieldset',
   component: Fieldset,
   subcomponents: {
     FieldsetLegend,

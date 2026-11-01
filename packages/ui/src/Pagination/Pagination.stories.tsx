@@ -13,8 +13,15 @@ import { DoubleArrowLeftIcon, DoubleArrowRightIcon, MoveLeft, MoveRight } from '
 import { PaginationListItem } from './components/PaginationListItem';
 
 const meta = {
-  title: 'Navigation/Pagination/Pagination',
+  title: 'Navigation/Pagination',
   component: Pagination,
+  subcomponents: {
+    PaginationItem,
+    PaginationTriggerIconButton,
+    PaginationEllipsis,
+    PaginationText,
+    PaginationListItem,
+  },
   parameters: {
     layout: 'centered',
     design: {
@@ -73,6 +80,41 @@ export const Default: Story = {
         </PaginationListItem>
         <PaginationListItem>
           <PaginationTriggerIconButton>
+            <Icon><MoveRight /></Icon>
+          </PaginationTriggerIconButton>
+        </PaginationListItem>
+      </>
+    ),
+  },
+};
+
+export const ItemStates: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: '`current` marks the active page, `disabled` blocks an item or a trigger on its own, and the last item carries a long page number.',
+      },
+    },
+  },
+  args: {
+    children: (
+      <>
+        <PaginationListItem>
+          <PaginationTriggerIconButton aria-label='Previous page' disabled>
+            <Icon><MoveLeft /></Icon>
+          </PaginationTriggerIconButton>
+        </PaginationListItem>
+        <PaginationListItem>
+          <PaginationItem current>1</PaginationItem>
+        </PaginationListItem>
+        <PaginationListItem>
+          <PaginationItem disabled>2</PaginationItem>
+        </PaginationListItem>
+        <PaginationListItem>
+          <PaginationItem>1235</PaginationItem>
+        </PaginationListItem>
+        <PaginationListItem>
+          <PaginationTriggerIconButton aria-label='Next page'>
             <Icon><MoveRight /></Icon>
           </PaginationTriggerIconButton>
         </PaginationListItem>

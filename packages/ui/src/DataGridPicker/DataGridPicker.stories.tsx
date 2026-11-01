@@ -96,8 +96,15 @@ interface EmojiCell {
 const matrix = Array.from({ length: 5 }, (_, row) => Array.from({ length: 5 }, (_, col) => [row, col] ))
 
 const meta = {
-  title: 'Data/DataGridPicker/DataGridPicker',
+  title: 'Data/DataGridPicker',
   component: DataGridPicker,
+  subcomponents: {
+    DataGridPickerItem,
+    DataGridPickerRow,
+    DataGridPickerRowGroup,
+    DataGridPickerScroller,
+    DataGridPickerScrollerContent,
+  },
   parameters: {
     layout: 'centered',
   },
