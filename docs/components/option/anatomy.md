@@ -2,7 +2,7 @@
 
 ## Overview
 
-`Option` is a single-part primitive that renders a button-like `role='option'` row.
+`Option` is a single-part primitive that renders a `div` with `role='option'`.
 
 ## Required Parts
 
@@ -22,7 +22,7 @@ There are no exported child parts.
 ## Valid Composition Patterns
 
 ```tsx
-<Option value='pro'>
+<Option>
   <Icon size='sm'>
     <Star />
   </Icon>

@@ -51,7 +51,7 @@ Built-in typeahead is still enabled while a real text input is rendered inside `
 Disable built-in typeahead for this pattern.
 
 ```tsx
-<Select typeMatchEnabled={false}>
+<Select typeahead={false}>
   <SelectHiddenSelect />
   <SelectCombobox>
     <SelectValue placeholder='Select country' />

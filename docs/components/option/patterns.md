@@ -9,7 +9,6 @@ When to use:
 Composition notes:
 
 - keep the row a single selection surface
-- use a scalar `value`
 
 Trade-offs:
 
@@ -17,7 +16,7 @@ Trade-offs:
 - more complex than plain text rows
 
 ```tsx
-<Option value='pro'>
+<Option>
   <Icon size='sm'>
     <Star />
   </Icon>
@@ -42,7 +41,7 @@ Trade-offs:
 - requires a real parent selection model
 
 ```tsx
-<Option value='review' selected={value === 'review'} onClick={() => setValue('review')}>
+<Option selected={value === 'review'} onClick={() => setValue('review')}>
   In review
 </Option>
 ```
@@ -64,7 +63,7 @@ Trade-offs:
 - unavailable options still need explanatory context
 
 ```tsx
-<Option value='enterprise' disabled>
+<Option disabled>
   Enterprise
 </Option>
 ```

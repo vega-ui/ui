@@ -7,11 +7,10 @@
 | Prop | Type | Default | Required | Notes |
 | --- | --- | --- | --- | --- |
 | `selected` | `boolean` | `—` | No | this option is currently selected. |
-| `value` | `V` | `—` | Yes | unique value associated with this option. |
 | `children` | `ReactNode` | `—` | No | content displayed for this option. |
-| `focusable` | `boolean` | `—` | No | the option can receive keyboard focus. |
+| `active` | `boolean` | `—` | No | this option is the current target of keyboard navigation. |
 | `size` | `OptionSize` | `'md'` | No | Size of the option for visual styling. |
-| `ref` | `Ref<HTMLButtonElement>` | `—` | No | Ref forwarded to the root div of the option. |
+| `ref` | `Ref<HTMLDivElement>` | `—` | No | Ref forwarded to the root div of the option. |
 | `disabled` | `boolean` | `—` | No | Disables the entire Option. |
 <!-- AUTO-GENERATED:ROOT_API:end -->
 
@@ -21,10 +20,10 @@
 
 ## Types
 
-- `OptionProps<V>`
+- `OptionProps`
 - `OptionSize`
 
 ## State Model
 
 - `Option` does not manage selection or focus lists by itself.
-- `selected` and `focusable` are presentational inputs from the parent pattern.
+- `selected` and `active` are presentational inputs from the parent pattern.

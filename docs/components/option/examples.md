@@ -5,7 +5,7 @@
 ### Basic: simple option row
 
 ```tsx
-<Option value='alpha'>Alpha</Option>
+<Option>Alpha</Option>
 ```
 
 ## Controlled/Stateful
@@ -15,7 +15,7 @@
 ```tsx
 const [value, setValue] = useState('pro');
 
-<Option value='pro' selected={value === 'pro'} onClick={() => setValue('pro')}>
+<Option selected={value === 'pro'} onClick={() => setValue('pro')}>
   Pro
 </Option>
 ```
@@ -25,7 +25,7 @@ const [value, setValue] = useState('pro');
 ### Form/Integration: option in custom selector list
 
 ```tsx
-<Option value='enterprise'>Enterprise</Option>
+<Option>Enterprise</Option>
 ```
 
 ## Layout/Overlay
@@ -33,7 +33,7 @@ const [value, setValue] = useState('pro');
 ### Layout/Overlay: rich option content
 
 ```tsx
-<Option value='pro'>
+<Option>
   <Icon size='sm'>
     <Star />
   </Icon>
@@ -47,7 +47,7 @@ const [value, setValue] = useState('pro');
 
 ```tsx
 <>
-  <Option value='legacy' disabled>
+  <Option disabled>
     Legacy
   </Option>
   <HelperText error>This plan is no longer available for new workspaces.</HelperText>
@@ -59,17 +59,17 @@ const [value, setValue] = useState('pro');
 ### Disabled: blocked option row
 
 ```tsx
-<Option value='enterprise' disabled>
+<Option disabled>
   Enterprise
 </Option>
 ```
 
 ## Edge
 
-### Edge: focusable but not selected row
+### Edge: active but not selected row
 
 ```tsx
-<Option value='review' focusable>
+<Option active>
   In review
 </Option>
 ```

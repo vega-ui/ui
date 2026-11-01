@@ -114,4 +114,4 @@ The public parts rely on root context. Rendering them outside `Select` breaks be
 
 ### Search input without disabling typeahead
 
-If a text input is rendered inside `SelectListbox`, built-in typeahead should usually be disabled with `typeMatchEnabled={false}`.
+If a text input is rendered inside `SelectListbox`, built-in typeahead should usually be disabled with `typeahead={false}`.

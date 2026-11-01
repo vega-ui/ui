@@ -11,7 +11,7 @@ When to use:
 Composition notes:
 
 - render a text input inside `SelectListbox`
-- disable built-in typeahead with `typeMatchEnabled={false}`
+- disable built-in typeahead with `typeahead={false}`
 - filter the rendered `SelectOption` list from external state
 
 Trade-offs:
@@ -22,7 +22,7 @@ Trade-offs:
 ```tsx
 const [search, setSearch] = useState('');
 
-<Select typeMatchEnabled={false}>
+<Select typeahead={false}>
   <SelectHiddenSelect />
   <SelectCombobox>
     <SelectValue placeholder='Select country' />

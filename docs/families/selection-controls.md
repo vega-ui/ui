@@ -9,6 +9,7 @@ Use this page when the user must choose, toggle, or combine values and the first
 - Use [Radio](../components/radio/) for one choice from a small visible set.
 - Use [SegmentedControl](../components/segmented-control/) for a short, always-visible exclusive set.
 - Use [Select](../components/select/) for a compact single-choice field with hidden options.
+- Use [Listbox](../components/listbox/) for an always visible list of one or several choices.
 - Use [CheckboxCard](../components/checkbox-card/) for rich multi-select option tiles.
 
 ## By Interaction Model
