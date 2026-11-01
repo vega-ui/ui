@@ -8,18 +8,18 @@
 <!-- AUTO-GENERATED:ROOT_API:start -->
 | Prop | Type | Default | Required | Notes |
 | --- | --- | --- | --- | --- |
-| `disabled` | `boolean` | `false` | No | the select is disabled. |
+| `disabled` | `boolean` | `—` | No | the select is disabled. |
 | `readOnly` | `boolean` | `false` | No | the select cannot be changed but remains focusable. |
 | `variant` | `SelectVariant` | `'field'` | No | Visual style variant for the select control. |
 | `size` | `SelectSize` | `'md'` | No | Visual size of the select control. |
-| `value` | `V \\| undefined` | `—` | No | currently selected value (controlled). |
+| `value` | `V \\| null \\| undefined` | `—` | No | currently selected value (controlled). |
 | `defaultValue` | `V \\| undefined` | `—` | No | default selected value (uncontrolled). |
 | `onChangeValue` | `(value: V \\\| undefined) => void` | `—` | No | Callback fired when an option is selected. |
-| `ref` | `Ref<HTMLDivElement>` | `—` | No | Ref to the trigger button element. |
+| `ref` | `Ref<HTMLDivElement>` | `—` | No | Ref to the root element. |
 | `open` | `boolean` | `—` | No | Controls the open state of the Select dropdown. |
 | `onChangeOpen` | `(open: boolean) => void` | `—` | No | Callback fired when the open state changes. |
 | `defaultOpen` | `boolean` | `false` | No | Sets the initial open state of the Select when used in uncontrolled mode. |
-| `typeMatchEnabled` | `boolean` | `true` | No | Enables type-based matching for typeahead navigation. |
+| `typeahead` | `boolean` | `true` | No | Enables moving to an option by typing the start of its label. |
 <!-- AUTO-GENERATED:ROOT_API:end -->
 
 ## Child Parts API
@@ -88,8 +88,9 @@ Use it only when the exported parts are insufficient for the desired composition
 
 - Selected value can be controlled with `value` or uncontrolled with `defaultValue`.
 - Open state can be controlled with `open` or uncontrolled with `defaultOpen`.
-- Keyboard navigation, active index, and typeahead are managed by the root.
-- `typeMatchEnabled={false}` is recommended when an actual text input is rendered inside the listbox.
+- Keyboard navigation, the active option, and typeahead are managed by the root.
+- `value={null}` clears a controlled value, while `undefined` makes the select uncontrolled.
+- `typeahead={false}` is recommended when an actual text input is rendered inside the listbox.
 
 ## Integration Notes
 

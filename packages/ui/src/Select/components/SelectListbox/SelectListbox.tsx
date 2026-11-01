@@ -1,16 +1,14 @@
-import { FC, HTMLAttributes, Ref, useLayoutEffect, useRef } from 'react'
-import { csx, mergeProps, mergeRefs, togglePopover } from '@vega-ui/utils';
+import { FC, FocusEvent, HTMLAttributes, MouseEvent, Ref, ToggleEvent, useLayoutEffect, useRef, useState } from 'react'
+import { csx, mergeEventHandlers, mergeRefs, togglePopover } from '@vega-ui/utils';
 import styles from './style.module.css';
 import { useSelectContext } from '../../contexts';
-import { FloatingFocusManager, FloatingList } from '@floating-ui/react';
+import { useListboxContext } from '../../../Listbox/contexts';
 
-export interface SelectListboxProps extends HTMLAttributes<HTMLDivElement> {
+export interface SelectListboxProps extends Omit<HTMLAttributes<HTMLDivElement>, 'id'> {
   /**
    * Ref to the listbox container element.
    *
-   * Used internally to connect the listbox to Floating UI
-   * and can also be used externally for imperative access
-   * (e.g. focus management or measurements).
+   * Can be used for imperative access, for example measurements.
    */
   ref?: Ref<HTMLDivElement>
 }
@@ -18,42 +16,56 @@ export interface SelectListboxProps extends HTMLAttributes<HTMLDivElement> {
 /**
  * Container for Select options rendered as a listbox.
  *
- * Visibility is controlled via `data-status` and `hidden`, allowing
- * CSS-driven enter/exit animations without unmounting immediately.
+ * A native popover, so CSS animates it with `:popover-open`
+ * without unmounting.
+ * The focus stays on the combobox on a press inside the list, except on a form field such as a search input.
  */
 export const SelectListbox: FC<SelectListboxProps> = ({
   className,
   children,
   style,
+  onMouseDown: _onMouseDown,
+  onBlur: _onBlur,
+  onToggle: _onToggle,
   ref,
   ...props
 }) => {
-  const { context, status, listboxProps, listboxStyles, elementsRef, labelsRef, open } = useSelectContext()
+  const { listboxStyles, open, changeOpen, setFloating } = useSelectContext()
+  const { id } = useListboxContext()
   const listboxRef = useRef<HTMLDivElement>(null)
-  const { update } = context
+  const [shown, setShown] = useState(false)
 
   useLayoutEffect(() => {
-    togglePopover(listboxRef.current, status !== 'unmounted')
-    if (status !== 'unmounted') update()
-  }, [status, update])
-  
+    togglePopover(listboxRef.current, open ?? false)
+  }, [open, shown])
+
+  const onMouseDown = (event: MouseEvent<HTMLDivElement>) => {
+    if (!(event.target as Element).closest('input, textarea, select, [contenteditable]')) event.preventDefault()
+  }
+
+  const onBlur = (event: FocusEvent<HTMLDivElement>) => {
+    if (!event.currentTarget.contains(event.relatedTarget)) changeOpen?.(false)
+  }
+
+  const onToggle = (event: ToggleEvent<HTMLDivElement>) => {
+    if (event.newState === 'closed' && open) changeOpen?.(false)
+    setShown(event.newState === 'open')
+  }
+
   return (
-    <FloatingFocusManager initialFocus={-1} disabled={!open} context={context} modal={false}>
-      <div
-        popover='manual'
-        inert={!open}
-        role='listbox'
-        data-status={status}
-        hidden={status === 'unmounted'}
-        ref={mergeRefs([context.refs.setFloating, listboxRef, ref])}
-        className={csx(styles.listbox, className)}
-        style={{ ...listboxStyles, ...style }}
-        {...mergeProps(props, listboxProps)}
-      >
-        <FloatingList elementsRef={elementsRef} labelsRef={labelsRef}>
-          {children}
-        </FloatingList>
-      </div>
-    </FloatingFocusManager>
+    <div
+      id={id}
+      popover='auto'
+      role='listbox'
+      ref={mergeRefs([setFloating, listboxRef, ref])}
+      className={csx(styles.listbox, className)}
+      style={{ ...listboxStyles, ...style }}
+      onMouseDown={mergeEventHandlers(onMouseDown, _onMouseDown)}
+      onBlur={mergeEventHandlers(onBlur, _onBlur)}
+      onToggle={mergeEventHandlers(onToggle, _onToggle)}
+      {...props}
+    >
+      {children}
+    </div>
   )
 }

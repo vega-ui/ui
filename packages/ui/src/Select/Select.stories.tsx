@@ -156,6 +156,32 @@ export const WithRichOptions: Story = {
   },
 };
 
+export const WithOptionLabels: Story = {
+  name: 'Options with label for typeahead',
+  args: {
+    defaultValue: 'pro',
+    children: (
+      <>
+        <SelectHiddenSelect />
+        <SelectCombobox>
+          <SelectValue placeholder='Select a plan' />
+          <SelectIcon />
+        </SelectCombobox>
+        <SelectListbox>
+          <SelectOption style={{ gap: 12 }} value='basic' label='Basic'>
+            <Icon size='sm'><Star /></Icon>
+            <Text size={2}>Basic, for simple use cases</Text>
+          </SelectOption>
+          <SelectOption style={{ gap: 12 }} value='pro' label='Pro'>
+            <Icon size='sm'><Check /></Icon>
+            <Text size={2}>Pro, the most common choice</Text>
+          </SelectOption>
+        </SelectListbox>
+      </>
+    ),
+  },
+};
+
 export const InlineVariant: Story = {
   name: 'Inline variant (in a sentence)',
   args: {
@@ -237,7 +263,7 @@ export const ControlledValueWithClear: Story = {
       [],
     );
     
-    const [value, setValue] = useState<string | number | undefined>('medium');
+    const [value, setValue] = useState<string | number | null | undefined>('medium');
     
     return (
       <Stack>
@@ -252,8 +278,8 @@ export const ControlledValueWithClear: Story = {
               variant='secondary'
               appearance='ghost'
               aria-label='clear selection'
-              disabled={value === undefined}
-              onClick={() => setValue(undefined)}
+              disabled={value === null}
+              onClick={() => setValue(null)}
             >
               <Icon>
                 <X />
@@ -418,7 +444,7 @@ export const NestedDialogFlow: Story = {
 export const WithFilterSearch: Story = {
   name: 'With filter search',
   args: {
-    typeMatchEnabled: false
+    typeahead: false
   },
   render(props) {
     const [selected, setSelected] = useState<string | number | undefined>('')

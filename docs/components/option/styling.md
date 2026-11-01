@@ -32,7 +32,7 @@ The root maps size to row height, padding, and text scale. Selected state remaps
 ### Selected option surface
 
 ```tsx
-<Option value='pro' selected>
+<Option selected>
   Pro
 </Option>
 ```

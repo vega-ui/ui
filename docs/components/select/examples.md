@@ -81,7 +81,7 @@ const [open, setOpen] = useState(false);
 ### Form/Integration: searchable listbox
 
 ```tsx
-<Select typeMatchEnabled={false}>
+<Select typeahead={false}>
   <SelectHiddenSelect />
   <SelectCombobox>
     <SelectValue placeholder='Select country' />

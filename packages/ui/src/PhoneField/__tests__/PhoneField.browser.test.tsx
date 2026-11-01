@@ -76,7 +76,7 @@ const getListbox = (r: RenderResult) => r.getByTestId(TESTID_LISTBOX) as HTMLEle
 const getOption = (r: RenderResult, value: string) => r.getByTestId(TESTID_OPTION(value)) as HTMLElement;
 
 const toBeOpened = async (r: RenderResult) => {
-  await expect.element(getListbox(r)).toHaveAttribute('data-status', 'open');
+  await expect.poll(() => getListbox(r).matches(':popover-open')).toBe(true);
 };
 
 const openByClick = async (r: RenderResult) => {

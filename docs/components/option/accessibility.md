@@ -6,17 +6,17 @@
 
 ## Keyboard Behavior
 
-- `Option` itself only participates in keyboard interaction through `tabIndex` and the surrounding parent pattern.
+- `Option` has no keyboard behavior of its own: the owner of the list handles the keys.
 
 ## Focus Behavior
 
-- `focusable` determines whether the option can receive tab focus directly.
-- More complex roving-focus behavior belongs to the parent list control.
+- `Option` does not take focus. The owner of the list keeps it and points to the active option with `aria-activedescendant`.
+- `active` shows which option that is.
 
 ## Screen Reader Semantics
 
 - The component renders `role='option'`.
-- `aria-selected` is exposed when `selected` is provided.
+- `aria-selected` is exposed when `selected` is provided, and `aria-disabled` when `disabled` is.
 
 ## Form Semantics
 

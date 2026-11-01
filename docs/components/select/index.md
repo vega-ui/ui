@@ -90,7 +90,7 @@ Typical composition:
 ## Edge Cases
 
 - `disabled` blocks interaction completely; `readOnly` preserves focusability while preventing changes. See [Disabled](../../glossary.md#disabled) and [Read-Only](../../glossary.md#read-only).
-- Filtering inside the listbox should usually disable built-in [typeahead](../../glossary.md#typeahead) with `typeMatchEnabled={false}` to avoid keyboard conflicts.
+- Filtering inside the listbox should usually disable built-in [typeahead](../../glossary.md#typeahead) with `typeahead={false}` to avoid keyboard conflicts.
 - Values are typed as `string | number`; object values are not supported by the public API.
 - `SelectHiddenSelect` is recommended when the value should participate in native [form participation](../../glossary.md#form-participation).
 - If the product needs richer arbitrary overlay content rather than one scalar value, the correct abstraction is usually `Popover` or `Dialog`, not `Select`.

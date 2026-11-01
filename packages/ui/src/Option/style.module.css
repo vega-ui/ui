@@ -10,8 +10,7 @@
     display: flex;
     align-items: center;
     font-family: var(--default-font-family);
-    outline: none;
-    border: none;
+    user-select: none;
     padding-inline: var(--spacing-10);
     transition: background-color var(--transition-state-delay) ease,
                 color var(--transition-state-delay) ease;
@@ -65,15 +64,21 @@
     --option-background-color-active: var(--color-primary-700);
 }
 
-.option:not(:disabled):hover,
-.option:not(:disabled):focus-visible {
+.option:not([aria-disabled='true']):hover,
+.option:not([aria-disabled='true'])[data-active='true'] {
     background-color: var(--option-background-color-hover);
 }
 
-.option:not(:disabled):active {
+.option:not([aria-disabled='true']):active {
     background-color: var(--option-background-color-active);
 }
 
-.option:disabled {
+.option:where([aria-disabled='true']) {
+    --option-color: var(--disable-label-text-color);
+
     cursor: not-allowed;
+}
+
+.option:where([aria-disabled='true'][aria-selected='true']) {
+    --option-background-color: var(--disable-background-color);
 }

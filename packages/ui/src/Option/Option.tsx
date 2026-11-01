@@ -1,19 +1,13 @@
-import { HTMLAttributes, ReactNode, Ref } from 'react';
+import { FC, HTMLAttributes, ReactNode, Ref } from 'react';
 import styles from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { OptionSize } from './types';
 
-export interface OptionProps<V> extends Omit<HTMLAttributes<HTMLButtonElement>, 'size'> {
+export interface OptionProps extends Omit<HTMLAttributes<HTMLDivElement>, 'size'> {
   /**
    * Whether this option is currently selected.
    */
   selected?: boolean
-
-  /**
-   * The unique value associated with this option.
-   * Used in change callbacks and for identity comparisons.
-   */
-  value: V
 
   /**
    * The content displayed for this option.
@@ -22,9 +16,10 @@ export interface OptionProps<V> extends Omit<HTMLAttributes<HTMLButtonElement>, 
   children?: ReactNode
 
   /**
-   * If true, the option can receive keyboard focus.
+   * Whether this option is the current target of keyboard navigation.
+   * The focus stays on the owner of the list, which points here with `aria-activedescendant`.
    */
-  focusable?: boolean
+  active?: boolean
 
   /**
    * Size of the option for visual styling.
@@ -33,9 +28,8 @@ export interface OptionProps<V> extends Omit<HTMLAttributes<HTMLButtonElement>, 
 
   /**
    * Ref forwarded to the root div of the option.
-   * Useful for scroll management or focus handling in virtualized lists.
    */
-  ref?: Ref<HTMLButtonElement>
+  ref?: Ref<HTMLDivElement>
   
   /**
    * Disables the entire Option.
@@ -44,31 +38,30 @@ export interface OptionProps<V> extends Omit<HTMLAttributes<HTMLButtonElement>, 
 }
 
 /** An Option is a single item within a Dropdown, Select, or similar list-based UI component, representing a choice that can be selected by the user */
-export const Option = <V extends string | number>({
+export const Option: FC<OptionProps> = ({
   selected,
-  focusable,
+  active,
   size = 'md',
   children,
   className,
-  onClick,
   disabled,
+  onClick,
   ref,
   ...props
-}: OptionProps<V>) => {
+}) => {
   return (
-    <button
-      type='button'
+    <div
       role='option'
       ref={ref}
-      onClick={onClick}
-      tabIndex={focusable ? 0 : -1}
       data-size={size}
+      data-active={active}
       aria-selected={selected}
+      aria-disabled={disabled}
+      onClick={disabled ? undefined : onClick}
       className={csx(styles.option, className)}
-      disabled={disabled}
       {...props}
     >
       {children}
-    </button>
+    </div>
   )
 }

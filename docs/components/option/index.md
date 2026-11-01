@@ -6,7 +6,7 @@
 
 ## Summary
 
-`Option` is the presentational selectable-row primitive reused by list-like controls. It is a button-like `role='option'` surface with selected, focusable, size, and disabled states, but it does not manage selection logic by itself.
+`Option` is the presentational selectable-row primitive reused by list-like controls. It is a `div` with `role='option'` and selected, active, size, and disabled states, but it does not manage selection logic by itself. For a working list use [Listbox](../listbox/) or [Select](../select/).
 
 ## Imports
 
@@ -16,19 +16,19 @@ import { Option, type OptionProps, type OptionSize } from '@vega-ui/react';
 
 ## Exported Types
 
-- `OptionProps<V>`
+- `OptionProps`
 - `OptionSize`
 
 ## Basic Usage
 
 ```tsx
-<Option value='alpha'>Alpha</Option>
+<Option>Alpha</Option>
 ```
 
 ## Variants
 
 - Size: `xs`, `sm`, `md`, `lg`, `xl`
-- State: selected, focusable, disabled
+- State: selected, active, disabled
 - Content: plain label or richer icon/text row
 
 ## Related Docs
@@ -45,7 +45,7 @@ import { Option, type OptionProps, type OptionSize } from '@vega-ui/react';
 ## Edge Cases
 
 - `Option` is a UI primitive, not a full select or menu system.
-- `value` should stay scalar and stable.
+- A disabled `Option` does not call `onClick`.
 - Parent controls still need to own active, selected, and keyboard navigation logic coherently.
 
 ## Common Mistakes

@@ -1,1 +1,0 @@
-export { useSelectOptionsContext, SelectOptionsProvider } from './context'

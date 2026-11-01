@@ -45,6 +45,7 @@ For decision-oriented navigation across related controls, see [Component Familie
 - [IndexedSnapScroller](./indexed-snap-scroller/)
 - [Label](./label/)
 - [Link](./link/)
+- [Listbox](./listbox/)
 - [Meter](./meter/)
 - [MeterStack](./meter-stack/)
 - [MonthPicker](./month-picker/)

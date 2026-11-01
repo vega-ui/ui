@@ -18,23 +18,23 @@ Clicking the row changes nothing durable in the UI.
 
 Move selection logic into the parent control and pass the resulting state into each option.
 
-## Keyboard Focus Feels Inconsistent
+## The Keyboard Does Not Reach The Options
 
 ### Symptom
 
-Some options can be focused and others cannot, without a clear rule.
+The arrows do nothing and no option looks active.
 
 ### Likely Cause
 
-`focusable` is not coordinated with the parent navigation pattern.
+`Option` does not take focus or handle keys, and nothing owns the list.
 
 ### How To Verify
 
-- inspect `tabIndex` behavior across all rendered options
+- check that a parent has the focus, sets `aria-activedescendant`, and passes `active` to one option
 
 ### Fix
 
-Use one coherent parent focus strategy and keep `focusable` consistent with it.
+Use [Listbox](../listbox/) or [Select](../select/), which do this for you.
 
 ## Disabled Rows Still Need Explanation
 

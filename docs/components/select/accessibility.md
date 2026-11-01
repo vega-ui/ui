@@ -26,14 +26,15 @@ Expected behavior:
 - `Escape` closes the listbox
 - [typeahead](../../glossary.md#typeahead) is enabled by default
 
-If a real text input is rendered inside the listbox, built-in [typeahead](../../glossary.md#typeahead) should usually be disabled with `typeMatchEnabled={false}` to avoid conflicting keyboard behavior.
+If a real text input is rendered inside the listbox, built-in [typeahead](../../glossary.md#typeahead) should usually be disabled with `typeahead={false}` to avoid conflicting keyboard behavior.
 
 ## Focus Behavior
 
 Focus should remain predictable across the compound parts.
 
 - `SelectCombobox` is the main focus target
-- `SelectListbox` handles focus management itself, so the top-layer rendering does not break logical focus movement
+- the focus stays on `SelectCombobox`, which points to the active option with `aria-activedescendant`
+- a form field inside `SelectListbox`, such as a search input, can take the focus, and the list closes when the focus leaves it
 - closing the listbox should return users to a sensible trigger state
 
 If `Select` is rendered inside overlays such as `Dialog`, retest focus restoration and tab order in the real composition, not only in isolation.
