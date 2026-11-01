@@ -1,1 +1,1 @@
-export { useSelectContext, SelectProvider } from './context'
+export { useSelectContext, SelectProvider, type SelectContextState } from './context'

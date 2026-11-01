@@ -494,6 +494,30 @@ describe('Dialog', () => {
       expect(onChangeOpen).toHaveBeenCalledExactlyOnceWith(false);
     });
 
+    it('closes only an open Select listbox on Escape', async () => {
+      const onChangeOpen = vi.fn();
+      const r = render(
+        <Dialog defaultOpen onChangeOpen={onChangeOpen}>
+          <DialogContent>
+            <Select>
+              <SelectCombobox data-testid='combobox'><SelectValue placeholder='Pick' /></SelectCombobox>
+              <SelectListbox data-testid='listbox'>
+                <SelectOption value='a'>Alpha</SelectOption>
+              </SelectListbox>
+            </Select>
+          </DialogContent>
+        </Dialog>,
+      );
+
+      await userEvent.click(r.getByTestId('combobox'));
+      await expect.poll(() => r.getByTestId('listbox').matches(':popover-open')).toBe(true);
+
+      await userEvent.keyboard('{Escape}');
+
+      await expect.poll(() => r.getByTestId('listbox').matches(':popover-open')).toBe(false);
+      expect(onChangeOpen).not.toHaveBeenCalled();
+    });
+
     it('does not clip a Select listbox that overflows the dialog', async () => {
       const r = render(
         <DialogTest defaultOpen>
@@ -510,7 +534,7 @@ describe('Dialog', () => {
       await toBeOpened(r);
 
       await userEvent.click(r.getByTestId('combobox'));
-      await expect.element(r.getByTestId('listbox')).toHaveAttribute('data-status', 'open');
+      await expect.poll(() => r.getByTestId('listbox').matches(':popover-open')).toBe(true);
       await Promise.all(r.getByTestId('listbox').getAnimations().map((animation) => animation.finished));
 
       const listbox = r.getByTestId('listbox').getBoundingClientRect();

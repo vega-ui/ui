@@ -9,17 +9,15 @@ afterEach(cleanup);
 
 const TESTID_OPTION = 'option';
 
-const VALUE = 'value';
 const LABEL = 'Option label';
 
 const SIZE_MD = 'md';
 const SIZE_SM = 'sm';
 
-const OptionTest: FC<Partial<ComponentProps<typeof Option<string>>>> = ({ children, value = VALUE, ...props }) => {
+const OptionTest: FC<ComponentProps<typeof Option>> = ({ children, ...props }) => {
   return (
     <Option
       data-testid={TESTID_OPTION}
-      value={value}
       {...props}
     >
       {children ?? LABEL}
@@ -64,11 +62,20 @@ describe('Option', () => {
     
     it('can be disabled', async () => {
       r.rerender(<OptionTest disabled />);
-      await expect.element(getOption(r)).toBeDisabled();
+      await expect.element(getOption(r)).toHaveAttribute('aria-disabled', 'true');
     });
   });
   
   describe('Edge Cases', () => {
+    it('does not call onClick when disabled', async () => {
+      const onClick = vi.fn();
+      const disabled = render(<Option disabled onClick={onClick}>{LABEL}</Option>);
+
+      disabled.getByRole('option', { name: LABEL, hidden: true }).click();
+
+      expect(onClick).not.toHaveBeenCalled();
+    });
+
     it('does not submit the surrounding form on click', async () => {
       const onSubmit = vi.fn();
       const r = render(
@@ -84,7 +91,7 @@ describe('Option', () => {
 
     it('renders without children', async () => {
       const r = render(
-        <Option data-testid={TESTID_OPTION} value={VALUE} />
+        <Option data-testid={TESTID_OPTION} />
       );
       
       await expect.element(getOption(r)).toBeInTheDocument();
@@ -112,22 +119,14 @@ describe('Option', () => {
     });
     
     describe('focus', () => {
-      it('is not focusable by default', async () => {
+      it('never takes focus itself', async () => {
         const r = render(<OptionTest />);
-        await expect.element(getOption(r)).toHaveAttribute('tabindex', '-1');
+        expect(getOption(r).hasAttribute('tabindex')).toBe(false);
       });
-      
-      it('can be focusable', async () => {
-        const r = render(<OptionTest focusable />);
-        await expect.element(getOption(r)).toHaveAttribute('tabindex', '0');
-      });
-    });
-    
-    describe('keyboard', () => {
-      it('receives focus via keyboard when focusable', async () => {
-        const r = render(<OptionTest focusable />);
-        await userEvent.tab();
-        await expect.element(getOption(r)).toHaveFocus();
+
+      it('marks the active option', async () => {
+        const r = render(<OptionTest active />);
+        await expect.element(getOption(r)).toHaveAttribute('data-active', 'true');
       });
     });
   });

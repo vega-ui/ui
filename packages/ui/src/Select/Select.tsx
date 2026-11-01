@@ -1,26 +1,21 @@
 'use client';
 
-import { HTMLAttributes, Ref, useCallback, useRef, useState } from 'react';
+import { FocusEvent, HTMLAttributes, KeyboardEvent, MouseEvent, Ref, useLayoutEffect, useRef, useState } from 'react';
 import {
   flip,
   offset,
-  useRole,
-  useClick,
-  useDismiss,
   autoUpdate,
   useFloating,
-  useTypeahead,
-  useInteractions,
-  useListNavigation,
-  useTransitionStatus,
   shift,
   size as matchSize,
 } from '@floating-ui/react';
-import { csx, mergeRefs } from '@vega-ui/utils';
+import { csx, isActivationKey } from '@vega-ui/utils';
 import styles from './style.module.css';
-import { useControlledState, useMap, useSelection } from '@vega-ui/hooks';
-import { SelectOptionsProvider, SelectProvider } from './contexts';
-import { SelectNativeOption, SelectSize, SelectVariant } from './types';
+import { useControlledState, useSelection } from '@vega-ui/hooks';
+import { useListbox } from '../Listbox/hooks';
+import { SelectContextState, SelectProvider } from './contexts';
+import { ListboxContextState, ListboxProvider } from '../Listbox/contexts';
+import { SelectSize, SelectVariant } from './types';
 
 export interface SelectProps<V extends string | number = string> extends HTMLAttributes<HTMLDivElement> {
   /**
@@ -46,8 +41,9 @@ export interface SelectProps<V extends string | number = string> extends HTMLAtt
 
   /**
    * The currently selected value (controlled).
+   * `null` clears the selection, while `undefined` makes the select uncontrolled.
    */
-  value?: V | undefined
+  value?: V | null | undefined
 
   /**
    * The default selected value (uncontrolled).
@@ -62,7 +58,7 @@ export interface SelectProps<V extends string | number = string> extends HTMLAtt
   onChangeValue?(value: V | undefined): void
 
   /**
-   * Ref to the trigger button element.
+   * Ref to the root element.
    */
   ref?: Ref<HTMLDivElement>
   
@@ -94,19 +90,17 @@ export interface SelectProps<V extends string | number = string> extends HTMLAtt
   defaultOpen?: boolean
   
   /**
-   * Enables type-based matching for typeahead navigation.
-   *
-   * When enabled, option matching respects the value type.
+   * Enables moving to an option by typing the start of its label.
    *
    * @default true
    */
-  typeMatchEnabled?: boolean
+  typeahead?: boolean
 }
 
 /** A Select is a UI component that provides a dropdown menu of options from which users can choose one. It is commonly used for forms and filtering, offering a list of predefined values in a compact, accessible manner */
 export const Select = <V extends string | number>({
   className,
-  disabled = false,
+  disabled,
   readOnly = false,
   children,
   variant = 'field',
@@ -116,41 +110,33 @@ export const Select = <V extends string | number>({
   onChangeValue,
   open: _open,
   defaultOpen = false,
-  typeMatchEnabled = true,
+  typeahead = true,
   onChangeOpen,
   ref,
   ...props
 }: SelectProps<V>) => {
-  const innerRef = useRef<HTMLDivElement>(null)
-  
-  const indexValueMap = useMap<number, V>()
-  
+  const [valueElement, setValueElement] = useState<HTMLSpanElement | null>(null)
+  const navigated = useRef(false)
+
   const { selected, select, isSelected } = useSelection<V, 'single'>({
     selection: 'single',
     defaultSelected: defaultValue ?? null,
     selected: value,
     onSelect: onChangeValue,
   })
-  
-  const [hasValueChildren, setHasValueChildren] = useState(false)
-  const [options, setOptions] = useState<Array<SelectNativeOption<V>>>([])
 
   const placement = variant === 'inline' ? 'bottom' : 'bottom-start'
   const enabled = !disabled && !readOnly
-  
-  const valueRef = useRef<HTMLSpanElement>(null)
 
-  const [open, setOpen] = useControlledState(_open, defaultOpen, onChangeOpen);
-  
-  const [selectedIndex, setSelectedIndex] = useState(-1)
-  const [activeIndex, setActiveIndex] = useState<number | null>(0);
-  
-  const { floatingStyles, context } = useFloating({
+  const [openState, setOpen] = useControlledState(_open, defaultOpen, onChangeOpen);
+  const open = enabled && openState
+
+  const { refs, floatingStyles } = useFloating({
     open,
     placement,
     strategy: 'fixed',
     transform: false,
-    whileElementsMounted: autoUpdate,
+    whileElementsMounted: open ? autoUpdate : undefined,
     middleware: [
       offset(10),
       flip(),
@@ -161,123 +147,135 @@ export const Select = <V extends string | number>({
         },
       }),
     ],
-    onOpenChange: setOpen,
   });
 
-  const click = useClick(context, { enabled, event: 'mousedown' });
-  const dismiss = useDismiss(context, { enabled, bubbles: false });
-  const role = useRole(context, { enabled, role: 'listbox' });
-
-  const elementsRef = useRef<HTMLElement[]>([]);
-  const labelsRef = useRef<Array<string | null>>([]);
-  
-  const onMatch = (index: number) => {
-    setActiveIndex(index)
-    if (open) return
-    
-    setSelectedIndex(index)
-    
-    const value = indexValueMap.get(index)
-    if (value === undefined) return
-
-    select(value)
-  }
-  
-  const listNav = useListNavigation(context, {
-    listRef: elementsRef,
-    activeIndex,
-    selectedIndex,
-    onNavigate(nextActive) {
-      if (nextActive === null && !open) return
-      setActiveIndex(nextActive)
-    },
-    loop: true,
-    enabled,
-    focusItemOnHover: false,
-  });
-  
-  const typeahead = useTypeahead(context, {
-    listRef: labelsRef,
-    activeIndex,
-    selectedIndex,
-    onMatch,
-    findMatch(list, search) {
-      const q = search.trim().toLowerCase()
-      return list.find(l => l?.toLowerCase().includes(q))
-    },
-    enabled: enabled && typeMatchEnabled,
-  });
-
-  const {
-    getReferenceProps,
-    getFloatingProps,
-    getItemProps
-  } = useInteractions([
-    click,
-    dismiss,
-    role,
-    listNav,
-    typeahead,
-  ]);
-
-  const onSelectOption = useCallback((index: number, value: V) => {
-    setSelectedIndex(index)
-    select(value)
+  const onSelect = (next: V) => {
+    select(next)
     setOpen(false)
-  }, [select, setOpen])
+  }
 
-  const { status } = useTransitionStatus(context);
-  
-  const addOption = useCallback((option: SelectNativeOption<V>) => {
-    const { index, ...data } = option
-    indexValueMap.set(index, data.value)
-    setOptions(p => [...p, option])
-  }, [indexValueMap])
-  
-  const removeOption = useCallback((option: SelectNativeOption<V>) => {
-    setOptions(p => p.filter(v => v.value !== option.value))
-    indexValueMap.delete(option.index)
-  }, [indexValueMap])
-  
+  const list = useListbox(refs.floating, { typeahead })
+
+  const { activate, setActiveId } = list
+
+  useLayoutEffect(() => {
+    if (!open) {
+      setActiveId(undefined)
+      navigated.current = false
+      return
+    }
+
+    activate()
+  }, [open, activate, setActiveId])
+
+  const onMouseDown = (event: MouseEvent<HTMLButtonElement>) => {
+    if (!enabled || event.button !== 0) return
+
+    event.preventDefault()
+    event.currentTarget.focus()
+    setOpen(!open)
+  }
+
+  const onClick = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault()
+    if (enabled && event.detail === 0) setOpen(!open)
+  }
+
+  const onKeyDownOpen = (event: KeyboardEvent<HTMLButtonElement>) => {
+    if (event.altKey && event.key === 'ArrowUp') {
+      event.preventDefault()
+      setOpen(false)
+      return
+    }
+
+    if (event.key === 'Tab') {
+      if (navigated.current) list.selectActive()
+      setOpen(false)
+      return
+    }
+
+    const target = list.move(event)
+
+    if (target !== null) {
+      if (target !== -1) navigated.current = true
+      return
+    }
+
+    if (!isActivationKey(event)) return
+
+    event.preventDefault()
+    list.selectActive()
+  }
+
+  const onKeyDownClosed = (event: KeyboardEvent<HTMLButtonElement>) => {
+    if (event.ctrlKey || event.metaKey) return
+
+    if (['ArrowDown', 'ArrowUp', 'Enter', ' '].includes(event.key)) {
+      event.preventDefault()
+      setOpen(true)
+      return
+    }
+
+    const target = list.move(event)
+
+    if (target === null || target === -1) return
+
+    navigated.current = true
+    setOpen(true)
+  }
+
+  const onKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
+    if (!enabled) return
+
+    if (open) onKeyDownOpen(event)
+    else onKeyDownClosed(event)
+  }
+
+  const onKeyUp = (event: KeyboardEvent<HTMLButtonElement>) => {
+    if (event.key === ' ') event.preventDefault()
+  }
+
+  const onBlur = (event: FocusEvent<HTMLButtonElement>) => {
+    if (open && !refs.floating.current?.contains(event.relatedTarget)) setOpen(false)
+  }
+
   return (
     <SelectProvider
       size={size}
-      status={status}
       variant={variant}
       open={open}
-      selectRef={innerRef}
+      changeOpen={setOpen}
       disabled={disabled}
       readOnly={readOnly}
-      isSelected={isSelected}
-      itemProps={getItemProps}
-      listboxProps={getFloatingProps()}
-      comboboxProps={getReferenceProps()}
-      onSelect={onSelectOption}
-      activeIndex={activeIndex}
-      selectedIndex={selectedIndex}
-      valueRef={valueRef}
+      isSelected={isSelected as SelectContextState['isSelected']}
+      valueElement={valueElement}
+      setValueElement={setValueElement}
       selected={selected}
-      context={context}
-      labelsRef={labelsRef}
-      elementsRef={elementsRef}
-      hasValueChildren={hasValueChildren}
-      onHasValueChildrenChange={setHasValueChildren}
+      comboboxProps={{ onMouseDown, onClick, onKeyDown, onKeyUp, onBlur }}
+      setReference={refs.setReference}
+      setFloating={refs.setFloating}
       listboxStyles={floatingStyles}
     >
-      <SelectOptionsProvider
-        options={options}
-        addOption={addOption}
-        removeOption={removeOption}
+      <ListboxProvider
+        id={list.id}
+        activeId={list.activeId}
+        getOptionId={list.getOptionId}
+        setActiveId={list.setActiveId}
+        clearActive={list.clearActive}
+        isSelected={isSelected as ListboxContextState['isSelected']}
+        onSelect={onSelect as ListboxContextState['onSelect']}
+        size={size}
+        disabled={disabled}
       >
         <div
           data-size={size}
           className={csx(styles.select, className)}
-          ref={mergeRefs([ref, innerRef])}
+          ref={ref}
           {...props}
         >
           {children}
         </div>
-      </SelectOptionsProvider>
+      </ListboxProvider>
     </SelectProvider>
   )
 }

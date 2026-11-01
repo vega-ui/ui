@@ -27,14 +27,12 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
-    value: 1,
     children: 'Option',
   },
 };
 
 export const Selected: Story = {
   args: {
-    value: 1,
     selected: true,
     children: 'Option',
   },

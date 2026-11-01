@@ -1,0 +1,39 @@
+.listbox {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+    padding: var(--spacing-4);
+    box-sizing: border-box;
+    overflow: auto;
+    border-radius: var(--spacing-8);
+    background: var(--surface-secondary);
+}
+
+.listbox > * {
+    flex-shrink: 0;
+}
+
+.listbox:focus-visible {
+    outline: 2px solid var(--focus-color);
+}
+
+.listbox[aria-multiselectable='true'] [role='option'][aria-selected='true']:has(+ [role='option'][aria-selected='true']) {
+    border-end-start-radius: 0;
+    border-end-end-radius: 0;
+}
+
+.listbox[aria-multiselectable='true'] [role='option'][aria-selected='true'] + [role='option'][aria-selected='true'] {
+    position: relative;
+    border-start-start-radius: 0;
+    border-start-end-radius: 0;
+}
+
+.listbox[aria-multiselectable='true'] [role='option'][aria-selected='true'] + [role='option'][aria-selected='true']::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 100%;
+    height: var(--spacing-3);
+    background: inherit;
+}

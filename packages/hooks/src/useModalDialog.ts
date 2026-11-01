@@ -1,4 +1,4 @@
-import { FormEvent, SyntheticEvent, useLayoutEffect, useReducer, useState } from 'react'
+import { FormEvent, SyntheticEvent, useLayoutEffect, useState } from 'react'
 
 export type ModalDialogClosedBy = 'any' | 'closerequest' | 'none'
 
@@ -19,8 +19,7 @@ export interface UseModalDialogOptions {
  */
 export const useModalDialog = ({ open, onChangeOpen }: UseModalDialogOptions) => {
   const [dialog, setDialog] = useState<HTMLDialogElement | null>(null)
-  const [stage, setStage] = useState<'closed' | 'mounted' | 'shown'>(open ? 'mounted' : 'closed')
-  const [syncKey, resync] = useReducer((key: number) => key + 1, 0)
+  const [stage, setStage] = useState<'closed' | 'mounted' | 'shown' | 'dismissed'>(open ? 'mounted' : 'closed')
 
   if (open && stage === 'closed') setStage('mounted')
 
@@ -33,18 +32,21 @@ export const useModalDialog = ({ open, onChangeOpen }: UseModalDialogOptions) =>
       return
     }
 
+    if (!dialog.open) {
+      setStage('closed')
+      return
+    }
+
     let cancelled = false
 
     Promise.allSettled(dialog.getAnimations().map((animation) => animation.finished)).then(() => {
-      if (cancelled) return
-      if (dialog.open) dialog.close()
-      else setStage('closed')
+      if (!cancelled) dialog.close()
     })
 
     return () => {
       cancelled = true
     }
-  }, [open, dialog, syncKey])
+  }, [open, dialog, stage])
 
   const onCancel = (event: SyntheticEvent<HTMLDialogElement>) => {
     if (event.target !== event.currentTarget) return
@@ -68,20 +70,15 @@ export const useModalDialog = ({ open, onChangeOpen }: UseModalDialogOptions) =>
   const onClose = (event: SyntheticEvent<HTMLDialogElement>) => {
     if (event.target !== event.currentTarget) return
 
-    if (!open) {
-      setStage('closed')
-      return
-    }
-
-    onChangeOpen(false)
-    resync()
+    setStage('dismissed')
+    if (open) onChangeOpen(false)
   }
 
   return {
     ref: setDialog,
     dialog,
     mounted: stage !== 'closed',
-    rendered: stage === 'shown',
+    rendered: stage === 'shown' || stage === 'dismissed',
     onCancel,
     onSubmit,
     onClose

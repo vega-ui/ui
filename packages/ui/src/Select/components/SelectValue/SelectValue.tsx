@@ -1,10 +1,9 @@
-import { FC, useLayoutEffect } from 'react';
+import { FC, HTMLAttributes, Ref } from 'react';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css';
-import { TextProps } from '../../../Text';
 import { useSelectContext } from '../../contexts';
 
-export interface SelectValueProps extends TextProps {
+export interface SelectValueProps extends HTMLAttributes<HTMLSpanElement> {
   /**
    * Placeholder text shown when no option is selected.
    *
@@ -13,6 +12,11 @@ export interface SelectValueProps extends TextProps {
    * by the selected option’s content.
    */
   placeholder?: string;
+
+  /**
+   * Ref forwarded to the root span element.
+   */
+  ref?: Ref<HTMLSpanElement>;
 }
 
 /**
@@ -22,26 +26,28 @@ export interface SelectValueProps extends TextProps {
  * It shows either:
  * - the selected option’s content (passed as `children`), or
  * - a placeholder when no value is selected.
+ *
+ * Without `children` it shows a copy of the content of the selected option,
+ * which exists only on the client and only while that option is rendered.
+ * Pass the label as `children` when rendering on the server, when options are filtered,
+ * or when the content of an option should not be copied.
  */
-export const SelectValue: FC<SelectValueProps> = ({ className, placeholder, children, ...props }) => {
-  const { selected, valueRef, onHasValueChildrenChange } = useSelectContext()
+export const SelectValue: FC<SelectValueProps> = ({ className, placeholder, children, ref, ...props }) => {
+  const { selected, setValueElement } = useSelectContext()
 
   const hasSelected = selected !== '' && selected !== null && selected !== undefined
   const hasPlaceholder = placeholder !== undefined
   const hasChildren = children !== undefined
-  
-  useLayoutEffect(() => {
-    onHasValueChildrenChange(hasChildren)
-  }, [onHasValueChildrenChange, hasChildren])
 
   return (
     <span
-      ref={valueRef}
+      ref={ref}
       data-placeholder={hasPlaceholder && !hasSelected}
       className={csx(style.value, className)}
       {...props}
     >
-      {hasSelected ? children : <>{placeholder}</>}
+      {hasSelected ? children : placeholder}
+      {!hasChildren && <span ref={setValueElement} className={style.content} />}
     </span>
   )
 }

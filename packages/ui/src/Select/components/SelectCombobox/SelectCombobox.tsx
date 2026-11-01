@@ -1,27 +1,10 @@
 import { FC, HTMLAttributes, Ref } from 'react';
 import { csx, mergeProps, mergeRefs } from '@vega-ui/utils';
 import style from './style.module.css';
-import { SelectVariant } from '../../types';
 import { useSelectContext } from '../../contexts';
+import { useListboxContext } from '../../../Listbox/contexts';
 
 export interface SelectComboboxProps extends HTMLAttributes<HTMLButtonElement> {
-  /**
-   * Puts the combobox into read-only mode.
-   *
-   * When `true`, the value can be focused and read,
-   * but user interaction that changes the value is disabled
-   * (the dropdown should not open or change selection).
-   */
-  readOnly?: boolean
-  
-  /**
-   * Visual variant of the combobox.
-   *
-   * Controls appearance (e.g. default, ghost, outlined, etc.)
-   * without affecting behavior.
-   */
-  variant?: SelectVariant
-  
   /**
    * Ref to the underlying `<button>` element.
    *
@@ -46,7 +29,8 @@ export const SelectCombobox: FC<SelectComboboxProps> = ({
   ref,
   ...props
 }) => {
-  const { context, disabled, readOnly, size, variant, open, comboboxProps } = useSelectContext()
+  const { disabled, readOnly, size, variant, open, comboboxProps, setReference } = useSelectContext()
+  const { id, activeId } = useListboxContext()
   
   return (
     <button
@@ -57,7 +41,12 @@ export const SelectCombobox: FC<SelectComboboxProps> = ({
       data-variant={variant}
       data-open={open}
       aria-readonly={readOnly}
-      ref={mergeRefs([ref, context.refs?.setReference])}
+      aria-haspopup='listbox'
+      aria-expanded={Boolean(open)}
+      aria-controls={id}
+      popoverTarget={disabled || readOnly ? undefined : id}
+      aria-activedescendant={open ? activeId : undefined}
+      ref={mergeRefs([ref, setReference])}
       className={csx(style.combobox, className)}
       {...mergeProps(comboboxProps, props)}
     >
