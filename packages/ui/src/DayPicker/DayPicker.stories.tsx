@@ -57,8 +57,18 @@ const MonthScroller: FC = () => (
 );
 
 const meta: Meta<typeof DayPicker> = {
-  title: 'Data/DayPicker/DayPicker',
+  title: 'Data/DayPicker',
   component: DayPicker,
+  subcomponents: {
+    DayPickerRow,
+    DayPickerItem,
+    DayPickerLayout,
+    DayPickerRowGroup,
+    DayPickerScroller,
+    DayPickerScrollerLayout,
+    DayPickerScrollerContent,
+    DayPickerCell,
+  },
   parameters: { layout: 'centered' },
   args: {
     children: <DayPickerLayout><DayPickerCell /></DayPickerLayout>,
@@ -249,6 +259,25 @@ export const SwipableControlled: Story = {
       </Stack>
     );
   },
+};
+
+export const ScrollerDefaultMonth: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Outside a `DayPicker`, `defaultMonth` on the scroller sets the month it starts on; inside one, the `month` of the root decides.',
+      },
+    },
+  },
+  render: () => (
+    <DayPickerScroller defaultMonth='2025-02-01'>
+      <DayPickerScrollerContent>
+        <DayPickerScrollerLayout>
+          <DayPickerCell />
+        </DayPickerScrollerLayout>
+      </DayPickerScrollerContent>
+    </DayPickerScroller>
+  ),
 };
 
 /**

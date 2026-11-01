@@ -4,8 +4,11 @@ import { AvatarFallback, AvatarImage } from '../Avatar';
 import { AvatarStackItem } from './components';
 
 const meta = {
-  title: 'Display/AvatarStack/AvatarStack',
+  title: 'Display/AvatarStack',
   component: AvatarStack,
+  subcomponents: {
+    AvatarStackItem,
+  },
   parameters: {
     layout: 'padded',
     design: {

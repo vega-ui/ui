@@ -14,15 +14,23 @@ import { Text } from '../Text';
 import { Card } from '../Card';
 import { Icon } from '../Icon';
 import { IconButton } from '../IconButton';
-import { ChevronDown, X, Globe, Star, Check } from '@vega-ui/icons';
+import { ChevronDown, Dices, X, Globe, Star, Check } from '@vega-ui/icons';
 import { ChangeEvent, KeyboardEvent, FC, PropsWithChildren, useMemo, useState } from 'react';
 import { Dialog, DialogContent, DialogTrigger } from '../Dialog';
 import { TextField, TextFieldInput } from '../TextField';
 import { Heading } from '../Heading';
 
 const meta = {
-  title: 'Form/Selectors/Select/Select',
+  title: 'Form/Selectors/Select',
   component: Select,
+  subcomponents: {
+    SelectCombobox,
+    SelectListbox,
+    SelectOption,
+    SelectIcon,
+    SelectHiddenSelect,
+    SelectValue,
+  },
   parameters: {
     layout: 'centered',
     design: {
@@ -112,6 +120,37 @@ export const CustomIcon: Story = {
         </SelectListbox>
       </>
     ),
+  },
+};
+
+export const CustomValue: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Children of `SelectValue` replace the copy of the selected option, so the trigger can show its own content, and the placeholder still appears while nothing is selected.',
+      },
+    },
+  },
+  render: function CustomValueStory(props) {
+    const [city, setCity] = useState<string | number | null | undefined>('Paris');
+
+    return (
+      <Select {...props} value={city} onChangeValue={setCity}>
+        <SelectHiddenSelect />
+        <SelectCombobox>
+          <SelectValue placeholder='Choose a city' style={{ gap: 12 }}>
+            <Icon size='sm'><Dices /></Icon>
+            {city}
+          </SelectValue>
+          <SelectIcon />
+        </SelectCombobox>
+        <SelectListbox>
+          <SelectOption value='Moscow'>Moscow</SelectOption>
+          <SelectOption value='New York'>New York</SelectOption>
+          <SelectOption value='Paris'>Paris</SelectOption>
+        </SelectListbox>
+      </Select>
+    );
   },
 };
 

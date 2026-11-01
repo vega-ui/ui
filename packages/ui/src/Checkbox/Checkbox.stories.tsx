@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { ComponentProps } from 'react';
+import { Diff, Rocket } from '@vega-ui/icons';
 
 import { Text } from '../Text';
 import { Checkbox } from './Checkbox';
@@ -14,8 +15,14 @@ const parts = (input: ComponentProps<typeof CheckboxInput> = {}) => [
 ]
 
 const meta = {
-  title: 'Form/Selectors/Checkbox/Checkbox',
+  title: 'Form/Selectors/Checkbox',
   component: Checkbox,
+  subcomponents: {
+    CheckboxInput,
+    CheckboxIndicator,
+    CheckboxCheckedIcon,
+    CheckboxIndeterminateIcon,
+  },
   parameters: {
     layout: 'centered',
     design: {
@@ -94,4 +101,36 @@ export const WithLabel: Story = {
       </Text>
     )
   }
+};
+
+export const CustomIcons: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Children of `CheckboxCheckedIcon` and `CheckboxIndeterminateIcon` replace the default icon of that state.',
+      },
+    },
+  },
+  render: (props) => (
+    <div style={{ display: 'flex', gap: 16 }}>
+      <Checkbox {...props}>
+        <CheckboxInput aria-label='Launch' defaultChecked />
+        <CheckboxIndicator>
+          <CheckboxCheckedIcon>
+            <Rocket />
+          </CheckboxCheckedIcon>
+          <CheckboxIndeterminateIcon />
+        </CheckboxIndicator>
+      </Checkbox>
+      <Checkbox {...props}>
+        <CheckboxInput aria-label='Compare' indeterminate />
+        <CheckboxIndicator>
+          <CheckboxCheckedIcon />
+          <CheckboxIndeterminateIcon>
+            <Diff />
+          </CheckboxIndeterminateIcon>
+        </CheckboxIndicator>
+      </Checkbox>
+    </div>
+  ),
 };

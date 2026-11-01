@@ -5,8 +5,11 @@ import { ProgressTrack } from './components';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof Progress> = {
-  title: 'Feedback/Progress/Progress',
+  title: 'Feedback/Progress',
   component: Progress,
+  subcomponents: {
+    ProgressTrack,
+  },
   parameters: {
     layout: 'centered',
     design: {

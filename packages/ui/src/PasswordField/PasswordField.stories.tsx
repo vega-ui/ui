@@ -15,7 +15,7 @@ import { MeterStack, MeterStackSegment } from '../MeterStack';
 import { CSSProperties, FC, PropsWithChildren, useMemo, useState } from 'react';
 
 const meta = {
-  title: 'Form/Fields/PasswordField/PasswordField',
+  title: 'Form/Fields/PasswordField',
   component: PasswordField,
   subcomponents: {
     PasswordFieldHiddenIcon,

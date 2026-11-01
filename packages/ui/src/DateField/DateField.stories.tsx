@@ -9,6 +9,8 @@ import { Label } from '../Label';
 import { HelperText } from '../HelperText';
 import { Button } from '../Button';
 import { Code } from '../Code';
+import { Icon } from '../Icon';
+import { CalendarDaysIcon } from '@vega-ui/icons';
 import {
   CalendarContent,
   CalendarDays,
@@ -157,8 +159,13 @@ const StayDates: FC = () => {
 };
 
 const meta = {
-  title: 'Form/Fields/DateField/DateField',
+  title: 'Form/Fields/DateField',
   component: DateField,
+  subcomponents: {
+    DateFieldInput,
+    DateFieldCalendar,
+    DateFieldTriggerIconButton,
+  },
   parameters: { layout: 'centered' },
   tags: ['autodocs'],
   argTypes: {
@@ -316,4 +323,61 @@ export const Form: Story = {
 export const Dependent: Story = {
   name: 'Dependent (check-in and check-out)',
   render: () => <StayDates />,
+};
+
+export const CustomTriggerIcon: Story = {
+  name: 'Custom trigger icon',
+  parameters: {
+    docs: {
+      description: {
+        story: 'Children of `DateFieldTriggerIconButton` replace its default calendar icon.',
+      },
+    },
+  },
+  render: (props) => (
+    <FormItem id='invoice' label='Invoice date'>
+      <DateField {...props}>
+        <DateFieldInput id='invoice' placeholder={props.format} />
+        <Popover placement='bottom-end'>
+          <PopoverTrigger asChild>
+            <DateFieldTriggerIconButton aria-label='Open calendar'>
+              <Icon><CalendarDaysIcon /></Icon>
+            </DateFieldTriggerIconButton>
+          </PopoverTrigger>
+          <PopoverContent>
+            <DateFieldCalendar>
+              <CalendarHeader>
+                <CalendarPrevButton aria-label='Previous' />
+                <CalendarViewButtonGroup>
+                  <CalendarViewButton view='month'>
+                    <CalendarMonthLabel />
+                  </CalendarViewButton>
+                  <CalendarViewButton view='year'>
+                    <CalendarYearLabel />
+                  </CalendarViewButton>
+                </CalendarViewButtonGroup>
+                <CalendarNextButton aria-label='Next' />
+              </CalendarHeader>
+              <CalendarContent>
+                <CalendarDays>
+                  <CalendarWeekdays format='narrow'>
+                    <CalendarWeekday />
+                  </CalendarWeekdays>
+                  <CalendarWeeks>
+                    <CalendarDay />
+                  </CalendarWeeks>
+                </CalendarDays>
+                <CalendarMonths>
+                  <CalendarMonth />
+                </CalendarMonths>
+                <CalendarYears>
+                  <CalendarYear />
+                </CalendarYears>
+              </CalendarContent>
+            </DateFieldCalendar>
+          </PopoverContent>
+        </Popover>
+      </DateField>
+    </FormItem>
+  ),
 };

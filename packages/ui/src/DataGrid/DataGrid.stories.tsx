@@ -49,8 +49,13 @@ const getActiveKeyByShift = (
 }
 
 const meta = {
-  title: 'Data/DataGrid/DataGrid',
+  title: 'Data/DataGrid',
   component: DataGrid,
+  subcomponents: {
+    DataGridRow,
+    DataGridCell,
+    DataGridRowGroup,
+  },
   parameters: {
     layout: 'centered',
   },

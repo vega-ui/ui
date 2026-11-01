@@ -15,12 +15,12 @@ import {
   PhoneFieldSelectOption,
   PhoneFieldInput,
 } from './components';
-import { FlagFR, FlagRU, FlagUS } from '@vega-ui/icons';
+import { ChevronsUpDown, FlagFR, FlagRU, FlagUS } from '@vega-ui/icons';
 import { CountryCode } from 'libphonenumber-js';
 import { useSelectContext } from '../Select';
 
 const meta = {
-  title: 'Form/Fields/PhoneField/PhoneField',
+  title: 'Form/Fields/PhoneField',
   component: PhoneField,
   subcomponents: {
     PhoneFieldSelect,
@@ -137,6 +137,144 @@ export const WithSelectAndIcons: Story = {
       </PhoneField>
     )
   }
+};
+
+export const WithEmojiFlags: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Options and the value take any content, so emoji flags work without image assets, and the trigger shows only the flag of the selected country.',
+      },
+    },
+  },
+  args: {
+    defaultCode: 'US',
+  },
+  render(props) {
+    const options: Array<{ code: CountryCode, icon: ReactElement, label: string, post: string }> = [
+      { code: 'RU', icon: <span aria-hidden>🇷🇺</span>, label: 'Russia', post: '+7' },
+      { code: 'US', icon: <span aria-hidden>🇺🇸</span>, label: 'United States', post: '+1' },
+      { code: 'FR', icon: <span aria-hidden>🇫🇷</span>, label: 'France', post: '+33' },
+    ]
+
+    return (
+      <PhoneField {...props}>
+        <PhoneFieldSelect>
+          <PhoneFieldSelectHiddenSelect />
+          <PhoneFieldSelectCombobox aria-label='Country'>
+            <PhoneFieldSelectValue>
+              <SelectedValue options={options} />
+            </PhoneFieldSelectValue>
+            <PhoneFieldSelectIcon />
+          </PhoneFieldSelectCombobox>
+          <PhoneFieldSelectListbox>
+            {options.map(({ code, icon, label, post }) => (
+              <PhoneFieldSelectOption key={code} value={code}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                  {icon}
+                  {label}
+                </div>
+                {post}
+              </PhoneFieldSelectOption>
+            ))}
+          </PhoneFieldSelectListbox>
+        </PhoneFieldSelect>
+        <PhoneFieldInput aria-label='Phone number' placeholder='+1' autoComplete='tel' />
+      </PhoneField>
+    )
+  }
+};
+
+export const SelectPlaceholderAndCustomIcon: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'Without a code the trigger shows the `placeholder` of `PhoneFieldSelectValue`, and children of `PhoneFieldSelectIcon` replace the default chevron.',
+      },
+    },
+  },
+  render: (props) => (
+    <PhoneField {...props}>
+      <PhoneFieldSelect>
+        <PhoneFieldSelectHiddenSelect />
+        <PhoneFieldSelectCombobox aria-label='Country'>
+          <PhoneFieldSelectValue placeholder='XX' />
+          <PhoneFieldSelectIcon>
+            <ChevronsUpDown />
+          </PhoneFieldSelectIcon>
+        </PhoneFieldSelectCombobox>
+        <PhoneFieldSelectListbox>
+          <PhoneFieldSelectOption value='RU'>RU</PhoneFieldSelectOption>
+          <PhoneFieldSelectOption value='US'>US</PhoneFieldSelectOption>
+          <PhoneFieldSelectOption value='FR'>FR</PhoneFieldSelectOption>
+        </PhoneFieldSelectListbox>
+      </PhoneFieldSelect>
+      <PhoneFieldInput aria-label='Phone number' autoComplete='tel' />
+    </PhoneField>
+  ),
+};
+
+export const DisabledSelect: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: '`disabled` on `PhoneFieldSelect` locks the country while the number stays editable.',
+      },
+    },
+  },
+  args: {
+    defaultCode: 'RU',
+  },
+  render: (props) => (
+    <PhoneField {...props}>
+      <PhoneFieldSelect disabled>
+        <PhoneFieldSelectHiddenSelect />
+        <PhoneFieldSelectCombobox aria-label='Country'>
+          <PhoneFieldSelectValue />
+          <PhoneFieldSelectIcon />
+        </PhoneFieldSelectCombobox>
+        <PhoneFieldSelectListbox>
+          <PhoneFieldSelectOption value='RU'>RU</PhoneFieldSelectOption>
+          <PhoneFieldSelectOption value='US'>US</PhoneFieldSelectOption>
+        </PhoneFieldSelectListbox>
+      </PhoneFieldSelect>
+      <PhoneFieldInput aria-label='Phone number' placeholder='+7' autoComplete='tel' />
+    </PhoneField>
+  ),
+};
+
+export const SelectSizes: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: '`PhoneFieldSelect` takes its size from the surrounding `PhoneField`, so the trigger and the input always match.',
+      },
+    },
+  },
+  args: {
+    defaultCode: 'RU',
+  },
+  render: (props) => (
+    <Stack>
+      {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
+        <PhoneField key={size} {...props} size={size}>
+          <PhoneFieldSelect>
+            <PhoneFieldSelectHiddenSelect />
+            <PhoneFieldSelectCombobox aria-label='Country'>
+              <PhoneFieldSelectValue />
+              <PhoneFieldSelectIcon />
+            </PhoneFieldSelectCombobox>
+            <PhoneFieldSelectListbox>
+              <PhoneFieldSelectOption value='RU'>RU</PhoneFieldSelectOption>
+              <PhoneFieldSelectOption value='US'>US</PhoneFieldSelectOption>
+              <PhoneFieldSelectOption value='FR'>FR</PhoneFieldSelectOption>
+            </PhoneFieldSelectListbox>
+          </PhoneFieldSelect>
+          <PhoneFieldInput aria-label='Phone number' placeholder={`Size: ${size}`} autoComplete='tel' />
+        </PhoneField>
+      ))}
+    </Stack>
+  ),
 };
 
 export const Sizes: Story = {

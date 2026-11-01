@@ -11,6 +11,13 @@ type SliderStoryProps = Omit<SliderProps, 'value' | 'defaultValue' | 'onChangeVa
 const meta: Meta<SliderStoryProps> = {
   title: 'Form/Slider',
   component: Slider,
+  subcomponents: {
+    SliderTrack,
+    SliderRange,
+    SliderThumb,
+    SliderThumbInput,
+    SliderThumbIndicator,
+  },
   parameters: {
     layout: 'centered',
     design: {

@@ -10,8 +10,13 @@ import {
 import { Button } from '../Button';
 
 const meta = {
-  title: 'Form/Fields/PinField/PinField',
+  title: 'Form/Fields/PinField',
   component: PinField,
+  subcomponents: {
+    PinFieldSlot,
+    PinFieldInput,
+    PinFieldSeparator,
+  },
   parameters: {
     layout: 'centered',
     design: {

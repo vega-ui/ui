@@ -13,8 +13,14 @@ const variants: AlertVariant[] = ['info', 'error', 'success', 'warning']
 const appearances: AlertAppearance[] = ['fill', 'surface']
 
 const meta = {
-  title: 'Feedback/Alert/Alert',
+  title: 'Feedback/Alert',
   component: Alert,
+  subcomponents: {
+    AlertContent,
+    AlertTitle,
+    AlertIcon,
+    AlertMain,
+  },
   parameters: {
     layout: 'padded',
     design: {

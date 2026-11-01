@@ -4,11 +4,16 @@ import { Collapsible } from './Collapsible';
 import { Text } from '../Text';
 import { CollapsibleTrigger, CollapsibleContent } from './components';
 import { Button } from '../Button';
+import { useState } from 'react';
 
 // More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
 const meta: Meta<typeof Collapsible> = {
-  title: 'Actions/Collapsible/Collapsible',
+  title: 'Actions/Collapsible',
   component: Collapsible,
+  subcomponents: {
+    CollapsibleContent,
+    CollapsibleTrigger,
+  },
   parameters: {
     layout: 'padded'
   },
@@ -33,3 +38,27 @@ export const Default: Story = {
     ]
   }
 }
+
+export const Controlled: Story = {
+  parameters: {
+    docs: {
+      description: {
+        story: 'With `open` and `onChangeOpen` you own the state: here the content starts expanded and the trigger label follows it.',
+      },
+    },
+  },
+  render: (props) => {
+    const [open, setOpen] = useState(true);
+
+    return (
+      <Collapsible {...props} open={open} onChangeOpen={setOpen}>
+        <CollapsibleTrigger asChild>
+          <Button appearance='transparent'>{open ? 'Hide details' : 'Show details'}</Button>
+        </CollapsibleTrigger>
+        <CollapsibleContent>
+          <Text>Delivery takes three to five business days.</Text>
+        </CollapsibleContent>
+      </Collapsible>
+    );
+  },
+};

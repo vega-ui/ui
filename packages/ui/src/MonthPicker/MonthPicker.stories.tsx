@@ -44,8 +44,15 @@ const Caption: FC<{ children: ReactNode }> = ({ children }) => (
 );
 
 const meta: Meta<typeof MonthPicker> = {
-  title: 'Data/MonthPicker/MonthPicker',
+  title: 'Data/MonthPicker',
   component: MonthPicker,
+  subcomponents: {
+    MonthPickerRow,
+    MonthPickerItem,
+    MonthPickerLayout,
+    MonthPickerRowGroup,
+    MonthPickerCell,
+  },
   parameters: { layout: 'centered' },
   args: {
     style: { width: 300 },

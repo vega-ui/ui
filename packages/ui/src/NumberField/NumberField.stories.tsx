@@ -7,9 +7,11 @@ import { Button } from '../Button';
 import { Card } from '../Card';
 import { FC, PropsWithChildren, useRef, useState } from 'react';
 import { Code } from '../Code';
+import { Icon } from '../Icon';
+import { ArrowDown, ArrowUp } from '@vega-ui/icons';
 
 const meta = {
-  title: 'Form/Fields/NumberField/NumberField',
+  title: 'Form/Fields/NumberField',
   component: NumberField,
   subcomponents: {
     NumberFieldInput,
@@ -249,4 +251,26 @@ export const NestedInCardLayout: Story = {
       </Card>
     </div>
   ),
+};
+
+export const CustomButtonIcons: Story = {
+  name: 'Custom button icons',
+  parameters: {
+    docs: {
+      description: {
+        story: 'Children of `NumberFieldDecrementButton` and `NumberFieldIncrementButton` replace their default icons.',
+      },
+    },
+  },
+  args: {
+    children: [
+      <NumberFieldDecrementButton key={0} aria-label='Decrease'>
+        <Icon><ArrowDown /></Icon>
+      </NumberFieldDecrementButton>,
+      <NumberFieldInput key={1} placeholder='0' />,
+      <NumberFieldIncrementButton key={2} aria-label='Increase'>
+        <Icon><ArrowUp /></Icon>
+      </NumberFieldIncrementButton>,
+    ],
+  },
 };

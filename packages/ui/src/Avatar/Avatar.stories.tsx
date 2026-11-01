@@ -4,8 +4,13 @@ import { AvatarFallback, AvatarIcon, AvatarImage } from './components';
 import { HeartPlus } from '@vega-ui/icons'; 
 
 const meta = {
-  title: 'Display/Avatar/Avatar',
+  title: 'Display/Avatar',
   component: Avatar,
+  subcomponents: {
+    AvatarFallback,
+    AvatarImage,
+    AvatarIcon,
+  },
   parameters: {
     layout: 'padded',
     design: {
