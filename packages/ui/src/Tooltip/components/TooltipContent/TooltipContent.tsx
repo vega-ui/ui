@@ -1,6 +1,7 @@
 'use client';
 import { CSSProperties, FC, HTMLAttributes, Ref, useLayoutEffect, useRef } from 'react';
-import { csx, mergeRefs, togglePopover } from '@vega-ui/utils';
+import { csx, togglePopover } from '@vega-ui/utils';
+import { useMergeRefs } from '@vega-ui/hooks';
 import styles from './style.module.css';
 import { useTooltipContext } from '../../contexts';
 import { useTransitionStatus } from '@floating-ui/react';
@@ -24,6 +25,7 @@ export const TooltipContent: FC<TooltipContentProps> = ({
   const { context, contentId, side = 'top', arrowX, arrowY, setFloating, contentStyle } = useTooltipContext()
   const { status, isMounted } = useTransitionStatus(context)
   const element = useRef<HTMLDivElement>(null)
+  const mergedRef = useMergeRefs([element, setFloating, ref])
 
   useLayoutEffect(() => {
     if (isMounted) togglePopover(element.current, true)
@@ -38,7 +40,7 @@ export const TooltipContent: FC<TooltipContentProps> = ({
       popover='manual'
       data-status={status}
       data-side={side}
-      ref={mergeRefs([element, setFloating, ref])}
+      ref={mergedRef}
       className={csx(styles.tooltipContent, className)}
       style={{
         ...contentStyle,

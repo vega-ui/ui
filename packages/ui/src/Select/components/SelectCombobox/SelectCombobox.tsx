@@ -1,5 +1,6 @@
 import { FC, HTMLAttributes, Ref } from 'react';
-import { csx, mergeProps, mergeRefs } from '@vega-ui/utils';
+import { csx, mergeProps } from '@vega-ui/utils';
+import { useMergeRefs } from '@vega-ui/hooks';
 import style from './style.module.css';
 import { useSelectContext } from '../../contexts';
 import { useListboxContext } from '../../../Listbox/contexts';
@@ -31,6 +32,7 @@ export const SelectCombobox: FC<SelectComboboxProps> = ({
 }) => {
   const { disabled, readOnly, size, variant, open, comboboxProps, setReference } = useSelectContext()
   const { id, activeId } = useListboxContext()
+  const mergedRef = useMergeRefs([ref, setReference])
   
   return (
     <button
@@ -46,7 +48,7 @@ export const SelectCombobox: FC<SelectComboboxProps> = ({
       aria-controls={id}
       popoverTarget={disabled || readOnly ? undefined : id}
       aria-activedescendant={open ? activeId : undefined}
-      ref={mergeRefs([ref, setReference])}
+      ref={mergedRef}
       className={csx(style.combobox, className)}
       {...mergeProps(comboboxProps, props)}
     >
