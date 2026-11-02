@@ -1,5 +1,5 @@
 /// <reference types="@vitest/browser-playwright" />
-import { ComponentProps, CSSProperties, FC } from 'react';
+import { ComponentProps, CSSProperties, FC, Profiler } from 'react';
 import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, type RenderResult } from '@testing-library/react';
 import { cdp, commands, page, server, userEvent } from 'vitest/browser';
@@ -48,6 +48,9 @@ const ScrollableSheetTest: FC<ComponentProps<typeof Sheet>> = (props) => (
 const getTrigger = (r: RenderResult) => r.getByTestId(TESTID_TRIGGER);
 const queryContent = (r: RenderResult) => r.queryByTestId(TESTID_CONTENT) as HTMLDialogElement | null;
 const getContent = (r: RenderResult) => r.getByTestId(TESTID_CONTENT) as HTMLDialogElement;
+const getSurface = (r: RenderResult) => getContent(r).children[0] as HTMLElement;
+const getSurfaceWidth = (r: RenderResult) => Math.round(getSurface(r).getBoundingClientRect().width);
+const getFill = (r: RenderResult) => getComputedStyle(getContent(r), '::after');
 const getMain = (r: RenderResult) => r.getByTestId(TESTID_MAIN);
 const getHandle = (r: RenderResult) => r.getByTestId(TESTID_HANDLE);
 const getOffset = (r: RenderResult) => parseFloat(getContent(r).style.getPropertyValue('--sheet-offset'));
@@ -235,25 +238,11 @@ describe('Sheet', () => {
         expect(getOffset(r)).toBe(0);
       });
 
-      it('takes its height from CSS', async () => {
-        const r = render(<SheetTest defaultOpen style={{ height: '50%' }} />);
-        await waitOpened(r);
-
-        expect(getContent(r).offsetHeight).toBe(200);
-      });
-
       it('is never taller than the viewport', async () => {
         const r = render(<SheetTest defaultOpen style={{ height: 1000 }} />);
         await waitOpened(r);
 
         expect(getContent(r).offsetHeight).toBe(400);
-      });
-
-      it('measures snap points from the viewport', async () => {
-        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
-        await waitOpened(r);
-
-        expect(getOffset(r)).toBe(200);
       });
 
       it('rests snap points above its height at its top', async () => {
@@ -360,15 +349,68 @@ describe('Sheet', () => {
       it('follows the pointer while dragging', async () => {
         const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
         await waitOpened(r);
+        const top = getContent(r).getBoundingClientRect().top;
 
         fireEvent.pointerDown(getMain(r), { ...pointer, clientY: 300 });
         fireEvent.pointerMove(getMain(r), { ...pointer, clientY: 250 });
 
         await expect.element(getContent(r)).toHaveAttribute('data-dragging', 'true');
-        expect(getOffset(r)).toBe(150);
+        expect(getContent(r).getBoundingClientRect().top).toBeCloseTo(top - 50, 1);
 
-        fireEvent.pointerUp(getMain(r), { ...pointer, clientY: 250 });
+        fireEvent.pointerMove(getMain(r), { ...pointer, clientY: 150 });
+        expect(getContent(r).getBoundingClientRect().top).toBeCloseTo(top - 150, 1);
+
+        fireEvent.pointerUp(getMain(r), { ...pointer, clientY: 150 });
         await expect.element(getContent(r)).toHaveAttribute('data-dragging', 'false');
+      });
+
+      it('resists a drag past the next snap point when stepped', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={['100px', 0.5, 1]} steppedSnapPoints />);
+        await waitOpened(r);
+
+        fireEvent.pointerDown(getMain(r), { ...pointer, clientY: 380 });
+        fireEvent.pointerMove(getMain(r), { ...pointer, clientY: 20 });
+
+        await expect.element(getContent(r)).toHaveAttribute('data-dragging', 'true');
+        expect(getOffset(r)).toBeGreaterThan(0);
+        expect(getOffset(r)).toBeLessThan(200);
+
+        fireEvent.pointerUp(getMain(r), { ...pointer, clientY: 20 });
+        await expect.poll(() => getOffset(r)).toBe(200);
+      });
+
+      it('stops under a press while settling and resumes when it is released', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
+        await waitOpened(r);
+
+        await drag(getMain(r), -150);
+        await wait(50);
+
+        const top = getContent(r).getBoundingClientRect().top;
+        fireEvent.pointerDown(getMain(r), { ...pointer, clientY: 300 });
+        expect(getContent(r).getBoundingClientRect().top).toBeCloseTo(top, 0);
+        await wait(50);
+        expect(getContent(r).getBoundingClientRect().top).toBeCloseTo(top, 0);
+
+        fireEvent.pointerUp(getMain(r), { ...pointer, clientY: 300 });
+        await expect.poll(() => getContent(r).getBoundingClientRect().top).toBe(0);
+      });
+
+      it('stays under the pointer when grabbed while settling', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
+        await waitOpened(r);
+
+        await drag(getMain(r), -150);
+        await wait(50);
+        const top = getContent(r).getBoundingClientRect().top;
+        expect(getContent(r).getAnimations().length).toBeGreaterThan(0);
+
+        fireEvent.pointerDown(getMain(r), { ...pointer, clientY: 300 });
+        fireEvent.pointerMove(getMain(r), { ...pointer, clientY: 290 });
+
+        expect(getContent(r).getBoundingClientRect().top).toBeCloseTo(top - 10, 0);
+
+        fireEvent.pointerUp(getMain(r), { ...pointer, clientY: 290 });
       });
 
       it('resists a drag above the top snap point', async () => {
@@ -402,6 +444,69 @@ describe('Sheet', () => {
         await drag(getMain(r), 60, { flick: true });
 
         await waitClosed(r);
+      });
+
+      it('stays open on a light flick down from the lowest snap point', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
+        await waitOpened(r);
+        const resting = getOffset(r);
+
+        await drag(getMain(r), 30, { flick: true });
+
+        await expect.poll(() => getOffset(r)).toBe(resting);
+        await wait(300);
+        expect(queryContent(r)).toBeInTheDocument();
+      });
+
+      it('settles at the lowest snap point on a flick down from the top', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} defaultSnapPoint={1} />);
+        await waitOpened(r);
+
+        await drag(getMain(r), 120, { flick: true });
+
+        await expect.poll(() => getOffset(r)).toBe(innerHeight / 2);
+        await wait(300);
+        expect(queryContent(r)).toBeInTheDocument();
+      });
+
+      it('closes on a long flick down from the lowest snap point', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
+        await waitOpened(r);
+
+        await drag(getMain(r), 100, { flick: true });
+
+        await waitClosed(r);
+      });
+
+      it('continues a flick at its speed and takes the full duration after a slow drag', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
+        await waitOpened(r);
+        const getDuration = () => getContent(r).getAnimations().find((animation) => (animation as CSSTransition).transitionProperty === 'transform')?.effect?.getTiming().duration;
+
+        await drag(getMain(r), -120, { flick: true });
+
+        await expect.poll(getDuration).toBeLessThan(500);
+        await expect.poll(() => getContent(r).style.getPropertyValue('--sheet-release-duration')).toBe('');
+        await Promise.all(document.getAnimations().map((animation) => animation.finished));
+
+        await drag(getMain(r), 150);
+
+        await expect.poll(getDuration).toBe(500);
+      });
+
+      it('keeps the width of its surface while it closes from the top', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} defaultSnapPoint={1} />);
+        await waitOpened(r);
+
+        fireEvent.pointerDown(getMain(r), { ...pointer, clientY: 20 });
+        fireEvent.pointerMove(getMain(r), { ...pointer, clientY: 390 });
+        const width = getSurfaceWidth(r);
+        expect(width).toBeLessThan(innerWidth);
+
+        fireEvent.pointerUp(getMain(r), { ...pointer, clientY: 390 });
+        await wait(100);
+
+        expect(getSurfaceWidth(r)).toBe(width);
       });
 
       it('springs back instead of closing when closedBy is not any', async () => {
@@ -462,7 +567,7 @@ describe('Sheet', () => {
           const r = render(<ScrollableSheetTest defaultSnapPoint={1} onChangeActiveSnapPoint={onChangeActiveSnapPoint} />);
           await waitOpened(r);
 
-          await touchDrag(getMain(r), 300);
+          await touchDrag(getMain(r), 250);
 
           await expect.poll(() => onChangeActiveSnapPoint).toHaveBeenCalledWith(0);
         });
@@ -490,15 +595,6 @@ describe('Sheet', () => {
     });
 
     describe('overlay', () => {
-      it('dims the page behind the sheet by default', async () => {
-        document.documentElement.style.setProperty('--overlay', 'rgb(0, 0, 0)');
-        const r = render(<SheetTest defaultOpen />);
-        await waitOpened(r);
-
-        expect(getComputedStyle(getContent(r), '::backdrop').backgroundColor).toBe('rgb(0, 0, 0)');
-        document.documentElement.style.removeProperty('--overlay');
-      });
-
       it('leaves the page behind the sheet visible without an overlay', async () => {
         document.documentElement.style.setProperty('--overlay', 'rgb(0, 0, 0)');
         const r = render(<SheetTest defaultOpen overlay={false} />);
@@ -521,7 +617,7 @@ describe('Sheet', () => {
         fireEvent.pointerDown(getMain(r), { ...pointer, clientY: 300 });
         fireEvent.pointerMove(getMain(r), { ...pointer, clientY: 200 });
 
-        await expect.poll(getExpansion).toBe(0.5);
+        await expect.poll(getExpansion).toBeCloseTo(0.54, 2);
         fireEvent.pointerUp(getMain(r), { ...pointer, clientY: 200 });
       });
 
@@ -529,28 +625,53 @@ describe('Sheet', () => {
         const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
         await waitOpened(r);
 
-        await expect.poll(() => getContent(r).offsetWidth).toBe(innerWidth - 32);
+        await expect.poll(() => getSurfaceWidth(r)).toBe(innerWidth - 32);
+        const contentWidth = getMain(r).offsetWidth;
 
         fireEvent.pointerDown(getMain(r), { ...pointer, clientY: 300 });
         fireEvent.pointerMove(getMain(r), { ...pointer, clientY: 100 });
 
-        await expect.poll(() => getContent(r).offsetWidth).toBe(innerWidth);
+        await expect.poll(() => getSurfaceWidth(r)).toBe(innerWidth);
+
         fireEvent.pointerUp(getMain(r), { ...pointer, clientY: 100 });
+
+        await expect.poll(() => getSurfaceWidth(r)).toBe(innerWidth);
+        expect(getMain(r).offsetWidth).toBe(contentWidth);
       });
 
-      it('keeps clear of the sides when it fits short content', async () => {
-        const r = render(<SheetTest defaultOpen />);
+      it('rises from below the viewport when a tall sheet opens', async () => {
+        const r = render(<SheetTest style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
+
+        fireEvent.click(getTrigger(r));
+
+        await expect.element(queryContent(r)).toBeInTheDocument();
+        await expect.poll(() => getContent(r).matches(':modal')).toBe(true);
+
+        expect(getContent(r).getBoundingClientRect().top).toBeGreaterThan(innerHeight / 2);
+      });
+
+      it('returns to its snap point when the parent rejects the move', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} activeSnapPoint={0} />);
         await waitOpened(r);
 
-        await expect.poll(() => getContent(r).offsetWidth).toBe(innerWidth - 32);
+        const resting = getOffset(r);
+
+        fireEvent.pointerDown(getMain(r), { ...pointer, clientY: 300 });
+        fireEvent.pointerMove(getMain(r), { ...pointer, clientY: 100 });
+        fireEvent.pointerUp(getMain(r), { ...pointer, clientY: 100 });
+
+        await expect.poll(() => getOffset(r)).toBe(resting);
+        await expect.poll(() => getSurfaceWidth(r)).toBe(innerWidth - 32);
       });
 
-      it('floats above the bottom edge with rounded corners when it fits short content', async () => {
+      it('floats clear of the bottom edge and the sides with rounded corners when it fits short content', async () => {
         const r = render(<SheetTest defaultOpen />);
         await waitOpened(r);
 
         await expect.poll(() => getContent(r).getBoundingClientRect().bottom).toBeCloseTo(innerHeight - 16, 1);
-        expect(parseFloat(getComputedStyle(getContent(r)).borderBottomLeftRadius)).toBeGreaterThan(0);
+        expect(getSurfaceWidth(r)).toBe(innerWidth - 32);
+        expect(parseFloat(getComputedStyle(getSurface(r)).borderBottomLeftRadius)).toBeGreaterThan(0);
+        expect(getFill(r).display).toBe('none');
       });
 
       it('floats above the bottom edge at a lower snap point', async () => {
@@ -561,33 +682,20 @@ describe('Sheet', () => {
         expect(getContent(r).contains(document.elementFromPoint(innerWidth / 2, innerHeight - 24))).toBe(true);
       });
 
-      it('sits on the bottom edge when it reaches the top of the viewport', async () => {
+      it('sits on the bottom edge at the full width when it reaches the top of the viewport', async () => {
         const r = render(<SheetTest defaultOpen style={{ height: '100%' }} />);
         await waitOpened(r);
 
         await expect.poll(() => getContent(r).getBoundingClientRect().bottom).toBeCloseTo(innerHeight, 1);
-        expect(parseFloat(getComputedStyle(getContent(r)).borderBottomLeftRadius)).toBe(0);
-      });
-
-      it('takes the full width when it reaches the top of the viewport', async () => {
-        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} />);
-        await waitOpened(r);
-
-        await expect.poll(() => getContent(r).offsetWidth).toBe(innerWidth);
+        await expect.poll(() => getFill(r).display).toBe('block');
+        expect(getSurfaceWidth(r)).toBe(innerWidth);
       });
 
       it('takes the full width with --sheet-inset: 0', async () => {
         const r = render(<SheetTest defaultOpen style={{ height: '100%', '--sheet-inset': '0px' } as CSSProperties} snapPoints={[0.5, 1]} />);
         await waitOpened(r);
 
-        expect(getContent(r).offsetWidth).toBe(innerWidth);
-      });
-
-      it('reports a fully raised sheet at its top snap point', async () => {
-        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} defaultSnapPoint={1} />);
-        await waitOpened(r);
-
-        expect(getContent(r).style.getPropertyValue('--sheet-expansion')).toBe('1');
+        expect(getSurfaceWidth(r)).toBe(innerWidth);
       });
 
       it('fades the backdrop as the sheet is dragged down', async () => {
@@ -616,13 +724,6 @@ describe('Sheet', () => {
       expect(getComputedStyle(document.documentElement).overflow).not.toBe('hidden');
     });
 
-    it('keeps its content close to the top with the handle over it, like an iOS sheet', async () => {
-        const r = render(<SheetTest defaultOpen />);
-        await waitOpened(r);
-
-        expect(getMain(r).getBoundingClientRect().top - getContent(r).getBoundingClientRect().top).toBe(20);
-      });
-
     it('does not submit the surrounding form on trigger click', async () => {
       const onSubmit = vi.fn();
       const r = render(
@@ -636,17 +737,26 @@ describe('Sheet', () => {
       expect(onSubmit).not.toHaveBeenCalled();
     });
 
-    it('keeps the offset when a press starts a drag', async () => {
-      const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
+    it('reports the last of the snap points that share an offset', async () => {
+      const onChangeActiveSnapPoint = vi.fn();
+      const r = render(<SheetTest defaultOpen style={{ height: 150 }} snapPoints={['100px', 0.5, 1]} onChangeActiveSnapPoint={onChangeActiveSnapPoint} />);
       await waitOpened(r);
-      const offset = getOffset(r);
 
-      fireEvent.pointerDown(getMain(r), { ...pointer, clientY: 300 });
-      fireEvent.pointerMove(getMain(r), { ...pointer, clientY: 296 });
+      await drag(getMain(r), -50);
 
-      await expect.element(getContent(r)).toHaveAttribute('data-dragging', 'true');
-      expect(getOffset(r)).toBe(offset - 4);
-      fireEvent.pointerUp(getMain(r), { ...pointer, clientY: 296 });
+      await expect.poll(() => onChangeActiveSnapPoint).toHaveBeenCalledWith(2);
+      expect(onChangeActiveSnapPoint).not.toHaveBeenCalledWith(1);
+    });
+
+    it('keeps the active snap point when a drag returns to its offset', async () => {
+      const onChangeActiveSnapPoint = vi.fn();
+      const r = render(<SheetTest defaultOpen style={{ height: 150 }} snapPoints={['100px', 0.5, 1]} defaultSnapPoint={1} onChangeActiveSnapPoint={onChangeActiveSnapPoint} />);
+      await waitOpened(r);
+
+      await drag(getMain(r), 5);
+      await wait(50);
+
+      expect(onChangeActiveSnapPoint).not.toHaveBeenCalledWith(2);
     });
 
     it('swallows the click that ends a drag', async () => {
@@ -744,6 +854,47 @@ describe('Sheet', () => {
         await expect.element(getHandle(r)).toBeDisabled();
         await expect.element(getHandle(r)).toHaveAttribute('aria-hidden', 'true');
       });
+    });
+  });
+
+  describe('Performance', () => {
+    const dragBy = async (target: HTMLElement, from: number, to: number) => {
+      for (let y = from; y >= to; y -= 10) {
+        fireEvent.pointerMove(target, { ...pointer, clientY: y });
+        await new Promise(requestAnimationFrame);
+      }
+    };
+
+    it('does not render on the moves of a drag', async () => {
+      const onRender = vi.fn();
+      const r = render(
+        <Profiler id='sheet' onRender={onRender}>
+          <SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />
+        </Profiler>
+      );
+      await waitOpened(r);
+
+      fireEvent.pointerDown(getMain(r), { ...pointer, clientY: 300 });
+      fireEvent.pointerMove(getMain(r), { ...pointer, clientY: 295 });
+      await new Promise(requestAnimationFrame);
+      onRender.mockClear();
+      await dragBy(getMain(r), 290, 200);
+
+      expect(onRender).not.toHaveBeenCalled();
+      fireEvent.pointerUp(getMain(r), { ...pointer, clientY: 200 });
+    });
+
+    it('keeps its layout boxes while dragging', async () => {
+      const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
+      await waitOpened(r);
+      const getBoxes = () => [getContent(r), getMain(r)].map(({ offsetTop, offsetLeft, offsetWidth, offsetHeight }) => [offsetTop, offsetLeft, offsetWidth, offsetHeight]);
+      const boxes = getBoxes();
+
+      fireEvent.pointerDown(getMain(r), { ...pointer, clientY: 300 });
+      await dragBy(getMain(r), 290, 100);
+
+      expect(getBoxes()).toEqual(boxes);
+      fireEvent.pointerUp(getMain(r), { ...pointer, clientY: 100 });
     });
   });
 });

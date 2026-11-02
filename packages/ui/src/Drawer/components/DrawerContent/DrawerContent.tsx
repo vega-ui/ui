@@ -1,8 +1,8 @@
 'use client';
 import { CSSProperties, DialogHTMLAttributes, FC, Ref, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { csx, findScrollableAncestor, isBackdropPoint, isTextInteraction, mergeEventHandlers, mergeRefs, projectMomentum, rubberBand } from '@vega-ui/utils';
-import { DragGesture, ModalDialogClosedBy, useDragGesture, useModalDialog } from '@vega-ui/hooks';
+import { csx, findScrollableAncestor, isBackdropPoint, isTextInteraction, mergeEventHandlers, projectMomentum, rubberBand } from '@vega-ui/utils';
+import { DragGesture, ModalDialogClosedBy, useDragGesture, useMergeRefs, useModalDialog } from '@vega-ui/hooks';
 import style from './style.module.css'
 import { useDrawerContext } from '../../contexts';
 
@@ -64,6 +64,7 @@ export const DrawerContent: FC<DrawerContentProps> = ({
 }) => {
   const { open, changeOpen, position } = useDrawerContext()
   const { ref: dialogRef, dialog, mounted, rendered, onCancel, onSubmit, onClose } = useModalDialog({ open, onChangeOpen: changeOpen })
+  const mergedRef = useMergeRefs([dialogRef, ref])
   const [drag, setDrag] = useState<number | null>(null)
 
   const edge = position?.split('-')[0]
@@ -131,7 +132,7 @@ export const DrawerContent: FC<DrawerContentProps> = ({
       data-blurred={blurred}
       data-overlay={overlay}
       data-dragging={drag !== null}
-      ref={mergeRefs([dialogRef, ref])}
+      ref={mergedRef}
       className={csx(style.drawer, className)}
       onCancel={mergeEventHandlers(onCancel, _onCancel)}
       onSubmit={mergeEventHandlers(onSubmit, _onSubmit)}

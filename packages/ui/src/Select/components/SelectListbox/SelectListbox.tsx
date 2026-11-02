@@ -1,5 +1,6 @@
 import { FC, FocusEvent, HTMLAttributes, MouseEvent, Ref, ToggleEvent, useLayoutEffect, useRef, useState } from 'react'
-import { csx, mergeEventHandlers, mergeRefs, togglePopover } from '@vega-ui/utils';
+import { csx, mergeEventHandlers, togglePopover } from '@vega-ui/utils';
+import { useMergeRefs } from '@vega-ui/hooks';
 import styles from './style.module.css';
 import { useSelectContext } from '../../contexts';
 import { useListboxContext } from '../../../Listbox/contexts';
@@ -33,6 +34,7 @@ export const SelectListbox: FC<SelectListboxProps> = ({
   const { listboxStyles, open, changeOpen, setFloating } = useSelectContext()
   const { id } = useListboxContext()
   const listboxRef = useRef<HTMLDivElement>(null)
+  const mergedRef = useMergeRefs([setFloating, listboxRef, ref])
   const [shown, setShown] = useState(false)
 
   useLayoutEffect(() => {
@@ -57,7 +59,7 @@ export const SelectListbox: FC<SelectListboxProps> = ({
       id={id}
       popover='auto'
       role='listbox'
-      ref={mergeRefs([setFloating, listboxRef, ref])}
+      ref={mergedRef}
       className={csx(styles.listbox, className)}
       style={{ ...listboxStyles, ...style }}
       onMouseDown={mergeEventHandlers(onMouseDown, _onMouseDown)}

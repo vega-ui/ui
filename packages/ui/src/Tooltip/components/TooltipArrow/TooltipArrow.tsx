@@ -1,7 +1,8 @@
 import { FC } from 'react';
 import { FloatingArrow, FloatingArrowProps } from '@floating-ui/react';
 import { useTooltipContext } from '../../contexts';
-import { csx, mergeRefs } from '@vega-ui/utils';
+import { csx } from '@vega-ui/utils';
+import { useMergeRefs } from '@vega-ui/hooks';
 import style from './style.module.css';
 
 export type TooltipArrowProps = Omit<FloatingArrowProps, 'context'>
@@ -14,11 +15,12 @@ export type TooltipArrowProps = Omit<FloatingArrowProps, 'context'>
 */
 export const TooltipArrow: FC<TooltipArrowProps> = ({ className, ref, ...props }) => {
   const { context, arrowRef } = useTooltipContext()
+  const mergedRef = useMergeRefs([ref, arrowRef])
   
   return (
     <FloatingArrow
       className={csx(style.arrow, className)}
-      ref={mergeRefs([ref, arrowRef])}
+      ref={mergedRef}
       context={context}
       {...props}
     />

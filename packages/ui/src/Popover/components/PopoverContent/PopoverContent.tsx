@@ -1,7 +1,8 @@
 'use client';
 
 import { FC, HTMLAttributes, Ref, ToggleEvent, useLayoutEffect, useReducer, useRef, useState } from 'react';
-import { csx, mergeEventHandlers, mergeRefs, togglePopover } from '@vega-ui/utils';
+import { csx, mergeEventHandlers, togglePopover } from '@vega-ui/utils';
+import { useMergeRefs } from '@vega-ui/hooks';
 import styles from './style.module.css';
 import { usePopoverContext } from '../../contexts';
 
@@ -31,6 +32,7 @@ export const PopoverContent: FC<PopoverContentProps> = ({
 }) => {
   const { open, changeOpen, role, contentId, placement = 'bottom', setFloating, contentStyles } = usePopoverContext()
   const element = useRef<HTMLDivElement>(null)
+  const mergedRef = useMergeRefs([element, setFloating, ref])
   const [rendered, setRendered] = useState(false)
   const [syncKey, resync] = useReducer((key: number) => key + 1, 0)
   const [side, align = 'center'] = placement.split('-')
@@ -71,7 +73,7 @@ export const PopoverContent: FC<PopoverContentProps> = ({
       id={contentId}
       popover='auto'
       role={role}
-      ref={mergeRefs([element, setFloating, ref])}
+      ref={mergedRef}
       style={{ ...contentStyles, ...style }}
       data-shadowed={shadowed}
       data-status={open ? 'open' : 'close'}

@@ -10,6 +10,8 @@ export interface DragGesture {
 export interface UseDragGestureOptions {
   axis: 'x' | 'y'
   shouldStart?: (event: PointerEvent, direction: 1 | -1) => boolean
+  onPress?: () => void
+  onCancel?: () => void
   onStart?: () => void
   onMove?: (gesture: DragGesture) => void
   onEnd?: (gesture: DragGesture) => void
@@ -27,8 +29,10 @@ interface Sample {
  * scrolling, reports the offset and the velocity in pixels per second, and
  * swallows the click that ends it.
  */
-export const useDragGesture = (element: HTMLElement | null, { axis, shouldStart, onStart, onMove, onEnd }: UseDragGestureOptions) => {
+export const useDragGesture = (element: HTMLElement | null, { axis, shouldStart, onPress, onCancel, onStart, onMove, onEnd }: UseDragGestureOptions) => {
   const canStart = useEventCallback((event: PointerEvent, direction: 1 | -1) => shouldStart?.(event, direction) ?? true)
+  const press = useEventCallback(() => onPress?.())
+  const cancel = useEventCallback(() => onCancel?.())
   const start = useEventCallback(() => onStart?.())
   const move = useEventCallback((gesture: DragGesture) => onMove?.(gesture))
   const end = useEventCallback((gesture: DragGesture) => onEnd?.(gesture))
@@ -75,6 +79,7 @@ export const useDragGesture = (element: HTMLElement | null, { axis, shouldStart,
       originY = event.clientY
       samples = [{ time: event.timeStamp, position: position(event) }]
       dragged = false
+      press()
     }
 
     const onPointerMove = (event: PointerEvent) => {
@@ -90,6 +95,7 @@ export const useDragGesture = (element: HTMLElement | null, { axis, shouldStart,
 
         if (Math.abs(cross) > Math.abs(delta) || !canStart(startEvent, delta > 0 ? 1 : -1)) {
           reset()
+          cancel()
           return
         }
 
@@ -111,7 +117,11 @@ export const useDragGesture = (element: HTMLElement | null, { axis, shouldStart,
         end(gesture())
       }
 
+      const pending = phase === 'pending'
+
       reset()
+
+      if (pending) cancel()
     }
 
     const onTouchMove = (event: TouchEvent) => {
@@ -137,5 +147,5 @@ export const useDragGesture = (element: HTMLElement | null, { axis, shouldStart,
     element.addEventListener('click', onClick, { capture: true, signal })
 
     return () => controller.abort()
-  }, [element, axis, canStart, start, move, end])
+  }, [element, axis, canStart, press, cancel, start, move, end])
 }

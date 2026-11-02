@@ -5,7 +5,7 @@
     left: 50%;
     z-index: 1;
     width: var(--spacing-40);
-    height: var(--spacing-12);
+    height: var(--spacing-14);
     margin: 0;
     padding: 0;
     border: none;
@@ -15,6 +15,7 @@
     box-sizing: border-box;
     translate: -50% 0;
     cursor: grab;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .handle:after {
@@ -27,6 +28,11 @@
     height: calc(var(--spacing) * 2.5);
     border-radius: 100px;
     background: var(--separator-opaque);
+    transition: opacity 100ms var(--ease-exit);
+}
+
+.handle:enabled:active:after {
+    opacity: 0.6;
 }
 
 .handle:focus-visible {

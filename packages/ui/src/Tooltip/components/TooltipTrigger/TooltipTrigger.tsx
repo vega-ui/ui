@@ -3,7 +3,8 @@
 import { ButtonHTMLAttributes, FC, FocusEvent, PointerEvent, Ref } from 'react';
 import { Slot } from '../../../Slot';
 import { useTooltipContext } from '../../contexts';
-import { mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
+import { mergeEventHandlers } from '@vega-ui/utils';
+import { useMergeRefs } from '@vega-ui/hooks';
 
 export interface TooltipTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
@@ -34,6 +35,7 @@ export const TooltipTrigger: FC<TooltipTriggerProps> = ({
   const Element = asChild ? Slot : 'button'
 
   const { open, show, hide, hideAfterDelay, contentId, setReference } = useTooltipContext()
+  const mergedRef = useMergeRefs([setReference, ref])
 
   const onPointerEnter = (event: PointerEvent<HTMLButtonElement>) => {
     if (event.pointerType !== 'touch') show()
@@ -53,7 +55,7 @@ export const TooltipTrigger: FC<TooltipTriggerProps> = ({
       onFocus={mergeEventHandlers(onFocus, _onFocus)}
       onBlur={mergeEventHandlers(hide, _onBlur)}
       {...props}
-      ref={mergeRefs([setReference, ref])}
+      ref={mergedRef}
     >
       {children}
     </Element>

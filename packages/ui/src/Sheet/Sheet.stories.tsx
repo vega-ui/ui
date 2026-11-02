@@ -63,7 +63,7 @@ export const Basic: Story = {
             aria-label='Close'
             variant='secondary'
             appearance='ghost'
-            style={{ position: 'absolute', insetBlockStart: 16, insetInlineEnd: 16, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+            style={{ position: 'absolute', insetBlockStart: 16, insetInlineEnd: 'calc(16px + var(--sheet-inset, var(--spacing-8)))', '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
           >
             <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
           </IconButton>
@@ -96,7 +96,7 @@ export const SnapPoints: Story = {
       <SheetContent key='content' aria-label='Nearby'>
         <SheetHandle aria-label='Resize sheet' />
         <Heading size={4} fontWeight={600} as='h2'>Nearby</Heading>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, overflow: 'auto' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, overflow: 'auto', overscrollBehavior: 'contain' }}>
           {PLACES.map(({ name, details }) => (
             <div key={name}>
               <Text size={3} fontWeight={500}>{name}</Text>
@@ -114,7 +114,7 @@ export const SteppedSnapPoints: Story = {
   parameters: {
     docs: {
       description: {
-        story: 'A pixel snap point keeps a fixed peek height. With `steppedSnapPoints` a drag moves one snap point at most.',
+        story: 'A pixel snap point keeps a fixed peek height. With `steppedSnapPoints` a drag moves one snap point at most and resists past it.',
       },
     },
   },
@@ -128,7 +128,7 @@ export const SteppedSnapPoints: Story = {
       <SheetContent key='content' aria-label='Nearby'>
         <SheetHandle aria-label='Resize sheet' />
         <Heading size={4} fontWeight={600} as='h2'>Nearby</Heading>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, overflow: 'auto' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 16, overflow: 'auto', overscrollBehavior: 'contain' }}>
           {PLACES.map(({ name, details }) => (
             <div key={name}>
               <Text size={3} fontWeight={500}>{name}</Text>
@@ -230,12 +230,12 @@ export const Appearance: Story = {
     <div style={{ display: 'flex', gap: 8 }}>
       <Sheet>
         <SheetTrigger asChild>
-          <Button>Not blurred</Button>
+          <Button>Blurred</Button>
         </SheetTrigger>
-        <SheetContent aria-label='Not blurred' blurred={false}>
+        <SheetContent aria-label='Blurred' blurred>
           <SheetHandle aria-label='Resize sheet' />
-          <Heading size={4} fontWeight={600} as='h2'>Not blurred</Heading>
-          <Text size={3}>The page behind is dimmed but stays sharp.</Text>
+          <Heading size={4} fontWeight={600} as='h2'>Blurred</Heading>
+          <Text size={3}>The page behind is dimmed and blurred.</Text>
         </SheetContent>
       </Sheet>
       <Sheet>
@@ -269,7 +269,7 @@ export const Controlled: Story = {
               <Button onClick={() => setSnapPoint(0)}>Half</Button>
               <Button onClick={() => setSnapPoint(1)}>Full</Button>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 16, overflow: 'auto' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16, overflow: 'auto', overscrollBehavior: 'contain' }}>
               {PLACES.map(({ name, details }) => (
                 <div key={name}>
                   <Text size={3} fontWeight={500}>{name}</Text>

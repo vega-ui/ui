@@ -1,8 +1,8 @@
 'use client';
 import { DialogHTMLAttributes, FC, ReactNode, Ref } from 'react';
 import { createPortal } from 'react-dom';
-import { csx, mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
-import { ModalDialogClosedBy, useModalDialog } from '@vega-ui/hooks';
+import { csx, mergeEventHandlers } from '@vega-ui/utils';
+import { ModalDialogClosedBy, useMergeRefs, useModalDialog } from '@vega-ui/hooks';
 import styles from './style.module.css';
 import { useDialogContext } from '../../contexts';
 
@@ -57,6 +57,7 @@ export const DialogContent: FC<DialogContentProps> = ({
 }) => {
   const { open, changeOpen, fluid } = useDialogContext()
   const { ref: dialogRef, mounted, rendered, onCancel, onSubmit, onClose } = useModalDialog({ open, onChangeOpen: changeOpen })
+  const mergedRef = useMergeRefs([dialogRef, ref])
 
   if (!mounted) return null
 
@@ -69,7 +70,7 @@ export const DialogContent: FC<DialogContentProps> = ({
       data-overlay={overlay}
       data-status={open ? 'open' : 'close'}
       className={csx(styles.dialog, className)}
-      ref={mergeRefs([dialogRef, ref])}
+      ref={mergedRef}
       onCancel={mergeEventHandlers(onCancel, _onCancel)}
       onSubmit={mergeEventHandlers(onSubmit, _onSubmit)}
       onClose={mergeEventHandlers(onClose, _onClose)}
