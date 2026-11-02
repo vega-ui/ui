@@ -17,7 +17,7 @@ import type { CSSProperties } from 'react';
         aria-label='Close'
         variant='secondary'
         appearance='ghost'
-        style={{ position: 'absolute', insetBlockStart: 16, insetInlineEnd: 16, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+        style={{ position: 'absolute', insetBlockStart: 16, insetInlineEnd: 'calc(16px + var(--sheet-inset, var(--spacing-8)))', '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
       >
         <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
       </IconButton>

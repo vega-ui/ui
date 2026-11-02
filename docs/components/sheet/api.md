@@ -28,7 +28,7 @@ Open action for the sheet. Sets `aria-haspopup="dialog"` and `aria-expanded`.
 The native modal `<dialog>`.
 
 - Accepts `<dialog>` attributes. It sets no `id` or `aria-labelledby` itself: name it with `aria-labelledby` pointing to your heading's `id`, or with `aria-label`. `onCancel` and `onClose` run after the internal handlers. `ref` points to the `<dialog>` element.
-- `blurred` (default `true`) blurs the page behind the sheet.
+- `blurred` (default `false`) blurs the page behind the sheet.
 - `overlay` (default `true`) dims the page; `false` makes the `::backdrop` transparent while the sheet stays modal.
 - `shadowed` adds the surface shadow.
 - Has horizontal padding (`clamp(var(--spacing-12), 3vw, var(--spacing-16))`) and bottom padding (`var(--spacing-12)` plus the safe-area inset). A scrollable region inside is an element with `overflow: auto`.
@@ -63,7 +63,7 @@ import type { CSSProperties } from 'react';
     aria-label='Close'
     variant='secondary'
     appearance='ghost'
-    style={{ position: 'absolute', insetBlockStart: 16, insetInlineEnd: 16, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+    style={{ position: 'absolute', insetBlockStart: 16, insetInlineEnd: 'calc(16px + var(--sheet-inset, var(--spacing-8)))', '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
   >
     <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
   </IconButton>
@@ -88,6 +88,7 @@ import type { CSSProperties } from 'react';
 - `defaultSnapPoint`, `activeSnapPoint`, and the `onChangeActiveSnapPoint` value are indexes into `snapPoints` in the order you pass them, whatever the visual order.
 - The sheet opens at the lowest snap point unless `defaultSnapPoint` says otherwise, and an uncontrolled sheet reopens there.
 - `onChangeActiveSnapPoint` fires only when the user moves the sheet to another snap point.
-- `steppedSnapPoints` moves the sheet one snap point at most per drag.
+- `steppedSnapPoints` moves the sheet one snap point at most per drag and resists a drag past it.
+- A flick carries the sheet past snap points further than it carries it to closing: a light flick down from the lowest snap point keeps it open, and a flick from a higher one settles at a snap point.
 - `closedBy='none'` on `SheetContent` should be reserved for flows with a clear completion path.
 - `useSheetContext` is available for advanced wrappers and controls. It returns `{ open, changeOpen, contentRef, height, viewport, offsets, activeSnapPoint, changeActiveSnapPoint, steppedSnapPoints }` and no longer exposes `contentId`, floating-ui `context`, `triggerProps`, `contentProps`, `transitionStatus`, or `isMounted`.
