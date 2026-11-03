@@ -28,30 +28,41 @@
     initial-value: 0px;
 }
 
+@property --sheet-hidden {
+    syntax: '<number>';
+    inherits: false;
+    initial-value: 0;
+}
+
 :global(html):has(.content:modal) {
     overflow: hidden;
 }
 
 .content {
-    --sheet-inset-length: var(--sheet-inset, var(--spacing-8));
+    --sheet-inset: var(--spacing-8);
+    --sheet-background: var(--surface-primary);
+    --sheet-keyboard-inset: 0px;
+    --sheet-progress: 1;
+    --sheet-release-duration: var(--duration-spring);
+    --sheet-inset-length: var(--sheet-inset);
     display: flex;
     flex-direction: column;
     gap: var(--spacing-6);
     padding: var(--spacing-10) calc(clamp(var(--spacing-12), 3vw, var(--spacing-16)) + var(--sheet-inset-length)) calc(var(--spacing-12) + env(safe-area-inset-bottom, 0px));
     position: fixed;
     box-sizing: border-box;
-    inset: auto 0 var(--sheet-keyboard-inset, 0px);
+    inset: auto 0 var(--sheet-keyboard-inset);
     margin: 0 auto;
     border: none;
     color: inherit;
     overflow: visible;
     width: 100%;
     max-width: none;
-    max-height: calc(100% - var(--sheet-keyboard-inset, 0px) - env(safe-area-inset-top, 0px));
+    max-height: calc(100% - var(--sheet-keyboard-inset) - env(safe-area-inset-top, 0px));
     background: none;
-    transform: translateY(calc(var(--sheet-offset) - var(--sheet-gap)));
-    transition-property: transform;
-    transition-duration: var(--sheet-release-duration, var(--duration-spring));
+    transform: translateY(calc((var(--sheet-offset) - var(--sheet-gap)) * (1 - var(--sheet-hidden)) + 100% * var(--sheet-hidden)));
+    transition-property: --sheet-hidden;
+    transition-duration: var(--sheet-release-duration);
     transition-timing-function: var(--ease-exit);
     will-change: transform;
     touch-action: pan-x pan-y;
@@ -59,8 +70,8 @@
 
 .content::backdrop {
     background: var(--overlay);
-    opacity: var(--sheet-progress, 1);
-    transition: opacity var(--sheet-release-duration, var(--duration-spring)) var(--ease-smooth);
+    opacity: var(--sheet-progress);
+    transition: opacity var(--sheet-release-duration) var(--ease-smooth);
 }
 
 .content:where([data-blurred='true'])::backdrop {
@@ -76,15 +87,13 @@
 .content::after {
     position: absolute;
     z-index: -1;
-    background: var(--sheet-background, var(--surface-primary));
+    background: var(--sheet-background);
     pointer-events: none;
 }
 
 .surface {
-    inset: 0;
+    inset: 0 var(--sheet-gap);
     border-radius: var(--radius-6);
-    transition: transform var(--sheet-release-duration, var(--duration-spring)) var(--ease-exit);
-    will-change: transform;
 }
 
 .content::after {
@@ -100,8 +109,15 @@
     box-shadow: var(--surface-shadow);
 }
 
+.content:where([data-painted='true']) {
+    transition-property: --sheet-offset, --sheet-gap, --sheet-expansion, --sheet-clip, --sheet-hidden;
+}
+
+.content:where([data-painted='true']) > .surface {
+    transition: --sheet-gap var(--sheet-release-duration) var(--ease-exit);
+}
+
 .content:where([data-clipped='true']) {
-    transition-property: transform, clip-path;
     clip-path: inset(0 var(--sheet-gap) var(--sheet-clip) var(--sheet-gap) round var(--radius-6) var(--radius-6) calc(var(--radius-6) * (1 - var(--sheet-expansion))) calc(var(--radius-6) * (1 - var(--sheet-expansion))));
 }
 
@@ -112,21 +128,21 @@
 }
 
 .content:where([data-status='close']) {
-    transform: translateY(100%);
-    transition-property: transform;
-    transition-duration: var(--sheet-release-duration, var(--duration-spring));
+    --sheet-hidden: 1;
+    transition-property: --sheet-hidden;
+    transition-duration: var(--sheet-release-duration);
     transition-timing-function: var(--ease-exit);
 }
 
 .content:where([data-status='close'])::backdrop {
     opacity: 0;
-    transition-duration: var(--sheet-release-duration, var(--duration-spring));
+    transition-duration: var(--sheet-release-duration);
     transition-timing-function: var(--ease-exit);
 }
 
 @starting-style {
     .content:where([open]) {
-        transform: translateY(100%);
+        --sheet-hidden: 1;
     }
 
     .content:where([open])::backdrop {
@@ -135,7 +151,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-    .surface {
+    .content:where([data-painted='true']) > .surface {
         transition: none;
     }
 
@@ -145,13 +161,13 @@
     }
 
     .content:where([data-status='close']) {
-        transform: translateY(calc(var(--sheet-offset) - var(--sheet-gap)));
+        --sheet-hidden: 0;
         opacity: 0;
     }
 
     @starting-style {
         .content:where([open]) {
-            transform: translateY(calc(var(--sheet-offset) - var(--sheet-gap)));
+            --sheet-hidden: 0;
             opacity: 0;
         }
     }

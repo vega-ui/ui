@@ -23,7 +23,7 @@ export const useSheetDrag = ({ dialog, rendered, keyboardInset, swipeable }: Use
     steppedSnapPoints,
   } = useSheetContext()
   const backdropAnimation = useRef<Animation | null>(null)
-  const layout = useRef({ inset: 0, width: 0, duration: 0 })
+  const layout = useRef({ inset: 0, duration: 0 })
   const dragOrigin = useRef(0)
   const surfaceRef = useRef<HTMLDivElement>(null)
   
@@ -39,20 +39,19 @@ export const useSheetDrag = ({ dialog, rendered, keyboardInset, swipeable }: Use
   const paintOffset = (offset: number) => {
     if (!dialog) return
 
-    const { inset, width } = layout.current
+    const { inset } = layout.current
     const progress = height > lowestOffset ? clamp(0, (height - offset) / (height - lowestOffset), 1) : 1
     const expansion = getFloatExpansion(base + offset, lowestTop)
-    const clip = clamp(0, offset, lowestOffset)
+    const clip = Math.min(offset, lowestOffset)
     const gap = inset * (1 - expansion)
 
     dialog.style.setProperty('--sheet-offset', `${offset}px`)
     dialog.style.setProperty('--sheet-gap', `${gap}px`)
     dialog.style.setProperty('--sheet-expansion', `${expansion}`)
     dialog.style.setProperty('--sheet-clip', `${clip}px`)
+    surfaceRef.current?.style.setProperty('--sheet-gap', `${gap}px`)
 
-    if (surfaceRef.current) surfaceRef.current.style.transform = `scaleX(${width > 0 ? (width - 2 * gap) / width : 1})`
-
-    dialog.dataset.clipped = String(clip > 0)
+    dialog.dataset.clipped = String(lowestOffset > 0)
     dialog.dataset.floating = String(expansion < 1)
 
     if (backdropAnimation.current) backdropAnimation.current.currentTime = progress * 1000
@@ -132,7 +131,6 @@ export const useSheetDrag = ({ dialog, rendered, keyboardInset, swipeable }: Use
       const computed = getComputedStyle(dialog)
 
       layout.current.inset = parseFloat(computed.getPropertyValue('--sheet-inset-length'))
-      layout.current.width = dialog.offsetWidth
 
       if (dialog.dataset.dragging !== 'true') layout.current.duration = parseFloat(computed.transitionDuration) * 1000
 
@@ -153,6 +151,7 @@ export const useSheetDrag = ({ dialog, rendered, keyboardInset, swipeable }: Use
     dialog.dataset.dragging = 'false'
 
     if (open) paintOffset(restingOffset)
+    if (open && rendered && height === dialog.offsetHeight) dialog.dataset.painted = 'true'
 
     if (!dialog.style.getPropertyValue('--sheet-release-duration')) return
 
