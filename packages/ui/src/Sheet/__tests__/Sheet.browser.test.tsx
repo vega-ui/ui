@@ -481,7 +481,7 @@ describe('Sheet', () => {
       it('continues a flick at its speed and takes the full duration after a slow drag', async () => {
         const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
         await waitOpened(r);
-        const getDuration = () => getContent(r).getAnimations().find((animation) => (animation as CSSTransition).transitionProperty === 'transform')?.effect?.getTiming().duration;
+        const getDuration = () => getContent(r).getAnimations().find((animation) => (animation as CSSTransition).transitionProperty === '--sheet-offset')?.effect?.getTiming().duration;
 
         await drag(getMain(r), -120, { flick: true });
 
