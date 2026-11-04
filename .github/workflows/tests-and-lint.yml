@@ -160,5 +160,13 @@ jobs:
       - name: Build packages
         run: pnpm turbo run build --filter=@vega-ui/docs^...
 
+      - name: Cache Next.js build
+        uses: actions/cache@v6
+        with:
+          path: apps/docs/.next/cache
+          key: ${{ runner.os }}-nextjs-${{ github.job }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ github.job }}-
+
       - name: Build docs site
         run: pnpm --filter @vega-ui/docs site:build
