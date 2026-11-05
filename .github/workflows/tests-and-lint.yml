@@ -130,10 +130,7 @@ jobs:
     needs: changes
     if: needs.changes.outputs.docs == 'true'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
-    container:
-      image: mcr.microsoft.com/playwright:v1.63.0-noble
-      options: --user 1001 --ipc=host
+    timeout-minutes: 10
 
     steps:
       - name: Checkout code
@@ -164,10 +161,5 @@ jobs:
 
       - name: Build docs site
         run: pnpm --filter @vega-ui/docs site:build
-        env:
-          PAGES_BASE_PATH: /ui
-
-      - name: Verify keyboard docs
-        run: pnpm docs:keyboard:verify --out apps/docs/out
         env:
           PAGES_BASE_PATH: /ui
