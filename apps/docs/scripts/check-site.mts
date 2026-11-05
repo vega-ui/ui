@@ -88,7 +88,7 @@ const toLocal = (url: string) => (url.startsWith(siteRoot) ? `${localRoot}${url.
 const failures: Record<string, string[]> = { http: [], console: [], links: [], axe: [], overflow: [] };
 const warnings: Record<string, number> = {};
 
-const pool = async <T>(items: T[], run: (item: T) => Promise<void>) => {
+const pool = async <T,>(items: T[], run: (item: T) => Promise<void>) => {
   let cursor = 0;
   await Promise.all(Array.from({ length: POOL }, async () => {
     while (cursor < items.length) {
@@ -131,7 +131,8 @@ await pool(pages, async (url) => {
   try {
     await page.goto(url, { waitUntil: 'load', timeout: 60000 });
     await page.evaluate(() => new Promise((resolve) => requestIdleCallback(resolve)));
-    while (pending > 0) await page.waitForTimeout(50);
+    const deadline = Date.now() + 5000;
+    while (pending > 0 && Date.now() < deadline) await page.waitForTimeout(50);
     const found = await page.evaluate((areas) => ({
       ids: [...document.querySelectorAll('[id]')].map((element) => element.id),
       hrefs: [...document.querySelectorAll('a[href]')].filter((anchor) => !anchor.closest(areas)).map((anchor) => (anchor as HTMLAnchorElement).href),

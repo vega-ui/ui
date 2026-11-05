@@ -96,9 +96,10 @@ jobs:
     needs: changes
     if: needs.changes.outputs.browser == 'true'
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     container:
       image: mcr.microsoft.com/playwright:v1.63.0-noble
-      options: --user 1001
+      options: --user 1001 --ipc=host
 
     strategy:
       fail-fast: false
@@ -129,9 +130,10 @@ jobs:
     needs: changes
     if: needs.changes.outputs.docs == 'true'
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     container:
       image: mcr.microsoft.com/playwright:v1.63.0-noble
-      options: --user 1001
+      options: --user 1001 --ipc=host
 
     steps:
       - name: Checkout code
@@ -166,6 +168,7 @@ jobs:
           PAGES_BASE_PATH: /ui
 
       - name: Check docs site
+        timeout-minutes: 5
         run: pnpm --filter @vega-ui/docs site:check
         env:
           PAGES_BASE_PATH: /ui
