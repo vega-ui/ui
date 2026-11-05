@@ -33,7 +33,7 @@ jobs:
               - '.github/workflows/**'
             browser:
               - *shared
-              - 'packages/**/!(*.stories.tsx|*.mdx)'
+              - 'packages/**/!(*.stories.@(ts|tsx)|*.md|*.mdx)'
               - 'vitest.shared.ts'
             docs:
               - *shared
