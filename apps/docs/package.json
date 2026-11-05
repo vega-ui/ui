@@ -30,6 +30,7 @@
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.3",
     "axe-core": "4.11.1",
+    "esbuild": "0.25.12",
     "typescript": "5.7.3",
     "web-features": "^3.45.0"
   }
