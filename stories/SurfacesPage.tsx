@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
+import { ReactNode } from 'react';
 
 const fillGroups = [
     {
@@ -44,7 +43,7 @@ const Token = ({ name, label }: { name: string; label?: string }) => (
     </div>
 );
 
-const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
+const Section = ({ title, children }: { title: string; children: ReactNode }) => (
     <div style={{ marginBottom: 48 }}>
         <div style={{
             fontSize: 11,
@@ -61,13 +60,13 @@ const Section = ({ title, children }: { title: string; children: React.ReactNode
     </div>
 );
 
-const Row = ({ children }: { children: React.ReactNode }) => (
+const Row = ({ children }: { children: ReactNode }) => (
     <div style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
         {children}
     </div>
 );
 
-const GroupLabel = ({ children }: { children: React.ReactNode }) => (
+const GroupLabel = ({ children }: { children: ReactNode }) => (
     <div style={{
         fontSize: 12,
         fontWeight: 500,

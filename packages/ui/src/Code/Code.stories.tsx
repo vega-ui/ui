@@ -1,6 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Code } from './Code';
-import { Text } from '../Text';
+import { TextSize } from '../Text';
+
+const sizes: TextSize[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
 const meta = {
   title: 'Typography/Code',
@@ -13,30 +15,36 @@ const meta = {
     },
   },
   tags: ['autodocs'],
-  argTypes: {},
-  args: {},
+  argTypes: {
+    size: {
+      control: 'select',
+      options: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+    },
+  },
+  args: {
+    children: 'sudo apt-get update',
+  },
 } satisfies Meta<typeof Code>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const Default: Story = {
-  args: {
-    children: 'sudo apt-get update',
-  },
+export const Playground: Story = {};
+
+export const Matrix: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 12 }}>
+      {sizes.map((size) => (
+        <Code key={size} size={size}>{`sudo apt-get update / ${size}`}</Code>
+      ))}
+    </div>
+  ),
 };
 
-export const WithText: Story = {
-  args: {
-    size: 3,
-    children: 'sudo apt-get update',
-  },
-  render(props) {
-    return (
-      <Text size={props.size}>
-        Updating the package database requires superuser privileges <Code {...props} />
-      </Text>
-    )
-  }
+export const LongPath: Story = {
+  render: () => (
+    <div style={{ width: 240 }}>
+      <Code>/Users/someone/projects/very-long-repository-name/packages/ui/src/components/DeeplyNestedComponent/index.tsx</Code>
+    </div>
+  ),
 };

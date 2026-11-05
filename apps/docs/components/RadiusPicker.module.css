@@ -1,0 +1,11 @@
+.control {
+    width: 100%;
+}
+
+.glyph {
+    width: 12px;
+    height: 12px;
+    border-block-start: 2px solid currentColor;
+    border-inline-start: 2px solid currentColor;
+    border-start-start-radius: var(--glyph-radius);
+}

@@ -1,0 +1,77 @@
+.stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-16);
+    padding: var(--spacing-16);
+}
+
+.demo {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 240px;
+}
+
+.dialogText {
+    display: block;
+    max-width: 40ch;
+    margin-block-start: var(--spacing-4);
+    color: var(--label-secondary);
+}
+
+.dialogActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-4);
+    margin-block-start: var(--spacing-12);
+}
+
+.popover {
+    display: grid;
+    gap: var(--spacing-2);
+    max-width: 280px;
+}
+
+.popoverText {
+    color: var(--label-secondary);
+}
+
+.form {
+    display: grid;
+    gap: var(--spacing-3);
+    width: min(100%, 340px);
+}
+
+.submit {
+    justify-self: start;
+    margin-block-start: var(--spacing-6);
+}
+
+.tag {
+    color: var(--site-text);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    animation: flash 600ms ease-out;
+}
+
+.note {
+    color: var(--site-muted);
+    font-family: var(--default-font-family);
+    font-size: var(--site-footnote-size);
+    line-height: var(--site-footnote-leading);
+}
+
+@keyframes flash {
+    from {
+        background: color-mix(in oklch, var(--color-primary-500) 18%, transparent);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tag {
+        animation: none;
+    }
+}

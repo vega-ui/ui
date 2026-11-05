@@ -1,0 +1,90 @@
+.selectableGrid {
+  inline-size: fit-content;
+  gap: var(--spacing-2);
+  font-size: var(--font-size-2);
+  color: var(--label-primary);
+}
+
+.selectableGrid [role='row'] {
+  gap: var(--spacing-2);
+  grid-auto-columns: minmax(64px, auto);
+}
+
+.selectableGrid [role='gridcell'],
+.selectableGrid [role='columnheader'],
+.selectableGrid [role='rowheader'] {
+  min-block-size: var(--spacing-20);
+  padding-inline: var(--spacing-4);
+  border-radius: var(--radius-2);
+}
+
+.selectableGrid [role='gridcell'] {
+  cursor: pointer;
+  background: var(--fills-tertiary);
+}
+
+.selectableGrid [role='gridcell']:hover {
+  background: var(--fills-tertiary-hover);
+}
+
+.selectableGrid [role='columnheader'],
+.selectableGrid [role='rowheader'] {
+  color: var(--label-secondary);
+  font-weight: 500;
+}
+
+.selectableGrid [role='gridcell'][aria-selected='true'] {
+  color: var(--color-white);
+  background: var(--color-primary-500);
+}
+
+.selectableGrid [role='gridcell'][aria-disabled='true'] {
+  cursor: not-allowed;
+  color: var(--label-quaternary);
+  background: transparent;
+  text-decoration: line-through;
+  pointer-events: none;
+}
+
+.selectableGrid [role='gridcell']:focus-visible {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 2px;
+}
+
+.selectableGrid [role='rowheader'],
+.selectableGrid [role='columnheader'] {
+  display: flex;
+  align-items: center;
+}
+
+.seatMap [role='row'] {
+  grid-auto-columns: 36px;
+}
+
+.seatMap [role='gridcell'] {
+  block-size: 36px;
+  padding: 0;
+  border-radius: var(--radius-2) var(--radius-2) var(--radius-1) var(--radius-1);
+  border-block-end: 3px solid var(--separator-opaque);
+}
+
+.seatMap [role='gridcell'][aria-selected='true'] {
+  border-block-end-color: var(--color-primary-700);
+}
+
+.selectableGrid:has([role='rowheader']) [role='row'] {
+  grid-template-columns: var(--spacing-40);
+}
+
+.selectableGrid [role='rowheader'],
+.selectableGrid:has([role='rowheader']) [role='columnheader']:first-child {
+  padding-inline-start: 0;
+}
+
+.selectableGrid [role='columnheader'] {
+  justify-content: center;
+}
+
+.selectableGrid:has([role='rowheader']) [role='columnheader']:first-child {
+  justify-content: flex-start;
+}

@@ -1,0 +1,134 @@
+.header {
+    position: fixed;
+    inset: 0 0 auto;
+    z-index: 10;
+    border-block-end: 1px solid transparent;
+    backdrop-filter: blur(16px) saturate(180%);
+    background: color-mix(in srgb, var(--site-bg) 55%, transparent);
+    animation: line linear both;
+    animation-timeline: scroll(root);
+    animation-range: 0 24px;
+}
+
+@keyframes line {
+    to {
+        border-block-end-color: var(--site-line);
+    }
+}
+
+.inner {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-8);
+    height: 64px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-5);
+    color: inherit;
+    text-decoration: none;
+}
+
+.mark {
+    width: 24px;
+    height: 24px;
+    border-radius: 7px;
+    background: conic-gradient(from 210deg, var(--color-blue-500), var(--color-primary-500), var(--color-blue-300), var(--color-blue-500));
+    box-shadow: inset 0 0 0 1px oklch(100% 0 0 / 25%);
+}
+
+.logo > * {
+    white-space: nowrap;
+}
+
+.name {
+    font-size: var(--site-headline-size);
+    line-height: var(--site-headline-leading);
+}
+
+.version {
+    border-radius: 999px;
+    text-decoration: none;
+}
+
+.version > * {
+    --badge-border-radius-ratio: 0.5;
+    font-family: var(--site-mono);
+}
+
+.nav {
+    display: flex;
+    gap: var(--spacing-4);
+    margin-inline-start: var(--spacing-8);
+    font-size: var(--site-subheadline-size);
+    line-height: var(--site-subheadline-leading);
+}
+
+.nav > a {
+    padding: var(--spacing-3) var(--spacing-5);
+    border-radius: 8px;
+    color: var(--site-muted);
+    text-decoration: none;
+    transition: color var(--transition-state-delay) ease;
+}
+
+.nav > a:hover,
+.nav > a[aria-current] {
+    color: var(--site-text);
+}
+
+.menu {
+    display: none;
+}
+
+.tools {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    margin-inline-start: auto;
+}
+
+@media (width < 1000px) {
+    .nav {
+        gap: var(--spacing-2);
+        margin-inline-start: 0;
+    }
+}
+
+@media (860px <= width < 1000px) {
+    .version {
+        display: none;
+    }
+}
+
+@media (width < 860px) {
+    .nav {
+        display: none;
+    }
+
+    .menu {
+        display: inline-flex;
+    }
+}
+
+@media (width < 480px) {
+    .github {
+        display: none;
+    }
+}
+
+@media (width < 440px) {
+    .inner {
+        gap: var(--spacing-5);
+    }
+
+    .name {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip-path: inset(50%);
+    }
+}

@@ -1,0 +1,3 @@
+.directionalIcon:dir(rtl) {
+  transform: scaleX(-1);
+}

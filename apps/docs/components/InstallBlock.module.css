@@ -1,0 +1,27 @@
+.block {
+    margin-block: var(--spacing-6);
+    border: 1px solid var(--site-line);
+    border-radius: calc(14px * var(--site-radius-scale));
+    background: var(--site-surface);
+    overflow: hidden;
+}
+
+.toolbar {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-5);
+    padding: var(--spacing-4) var(--spacing-5) var(--spacing-4) var(--spacing-8);
+    border-bottom: 1px solid var(--site-line);
+}
+
+.terminal {
+    color: var(--site-muted);
+}
+
+.managers {
+    font-family: var(--site-mono);
+}
+
+.copy {
+    margin-inline-start: auto;
+}

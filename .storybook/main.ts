@@ -44,6 +44,7 @@ const config: StorybookConfig = {
     reactDocgenTypescriptOptions: {
       savePropValueAsString: true,
       shouldRemoveUndefinedFromOptional: true,
+      shouldExtractLiteralValuesFromEnum: true,
     },
   },
   async viteFinal(config) {

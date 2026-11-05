@@ -1,16 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Alert } from './Alert';
-import { Smile, X } from '@vega-ui/icons'
 import { AlertContent, AlertIcon, AlertMain, AlertTitle } from './components';
-import { IconButton } from '../IconButton';
-import { Icon } from '../Icon';
-import { Link } from '../Link';
-import { Code } from '../Code';
 import { AlertAppearance, AlertVariant } from './types';
-import { Text } from '../Text';
 
-const variants: AlertVariant[] = ['info', 'error', 'success', 'warning']
-const appearances: AlertAppearance[] = ['fill', 'surface']
+const variants: AlertVariant[] = ['info', 'error', 'success', 'warning'];
+const appearances: AlertAppearance[] = ['fill', 'surface'];
+const rows = variants.flatMap((variant) => appearances.map((appearance) => ({ variant, appearance })));
 
 const meta = {
   title: 'Feedback/Alert',
@@ -32,115 +27,55 @@ const meta = {
   argTypes: {
     variant: {
       control: 'radio',
-      options: ['error', 'success', 'warning', 'info'],
+      options: ['info', 'error', 'success', 'warning'],
     },
     appearance: {
       control: 'radio',
       options: ['fill', 'surface'],
-    }
+    },
   },
-  args: {},
+  args: {
+    children: [
+      <AlertIcon key='icon' />,
+      <AlertMain key='main'>
+        <AlertTitle>I'm a title</AlertTitle>
+        <AlertContent>I'm a content!</AlertContent>
+      </AlertMain>,
+    ],
+  },
 } satisfies Meta<typeof Alert>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const Default: Story = {
-  args: {
-    children: [
-      <AlertIcon key={0} />,
-      <AlertMain key={1}>
-        <AlertTitle>I'm a title</AlertTitle>
-        <AlertContent>I'm a content!</AlertContent>
-      </AlertMain>
-    ]
-  },
-};
+export const Playground: Story = {};
 
-export const CustomIcon: Story = {
-  args: {
-    variant: 'success',
-    children: [
-      <AlertIcon key={0}>
-        <Smile />
-      </AlertIcon>,
-      <AlertMain key={1}>
-        <AlertTitle>I'm a title</AlertTitle>
-        <AlertContent>I'm a content!</AlertContent>
-      </AlertMain>
-    ]
-  },
-};
-
-export const WithoutContent: Story = {
-  args: {
-    children: [
-      <AlertIcon key={0} />,
-      <AlertMain key={1}>
-        <AlertTitle>I'm a title</AlertTitle>
-      </AlertMain>
-    ]
-  },
-};
-
-export const WithoutIcon: Story = {
-  args: {
-    children: (
-      <AlertMain>
-        <AlertTitle>I'm a title</AlertTitle>
-        <AlertContent>I'm a content!</AlertContent>
-      </AlertMain>
-    )
-  },
-};
-
-export const WithAction: Story = {
-  args: {
-    children: [
-      <AlertIcon key={0} />,
-      <AlertMain key={1}>
-        <AlertTitle>I'm a title</AlertTitle>
-        <AlertContent>I'm a content!</AlertContent>
-      </AlertMain>,
-      <IconButton key={2} variant='secondary' size='xs'>
-        <Icon><X /></Icon>
-      </IconButton>
-    ]
-  },
-};
-
-export const WithCustomChildren: Story = {
-  args: {
-    children: [
-      <AlertIcon key={0} />,
-      <AlertMain key={1}>
-        <AlertTitle>I'm a title</AlertTitle>
-        <AlertContent>
-          Hello, it's an <Link><Text size={2}>example.com</Text></Link>. Also let's print <Code size={2}>Hello, world!</Code>
-        </AlertContent>
-      </AlertMain>
-    ]
-  },
-};
-
-export const All: Story = {
-  args: {},
-  render() {
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-        {variants.map((variant) => (
-          appearances.map((appearance) => (
-            <Alert key={`${variant}-${appearance}`} appearance={appearance} variant={variant}>
-              <AlertIcon />
-              <AlertMain>
-                <AlertTitle>{`I'm a ${variant}/${appearance}`}</AlertTitle>
-                <AlertContent>I'm a content!</AlertContent>
-              </AlertMain>
-            </Alert>
-          ))
-        ))}
-      </div>
-    )
-  }
+export const Matrix: Story = {
+  render: () => (
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
+      {rows.flatMap((row) => (
+        [
+          <Alert key={`${row.variant}-${row.appearance}-full`} {...row}>
+            <AlertIcon />
+            <AlertMain>
+              <AlertTitle>{`${row.variant} / ${row.appearance}`}</AlertTitle>
+              <AlertContent>I'm a content!</AlertContent>
+            </AlertMain>
+          </Alert>,
+          <Alert key={`${row.variant}-${row.appearance}-title`} {...row}>
+            <AlertIcon />
+            <AlertMain>
+              <AlertTitle>{`${row.variant} / ${row.appearance} / title only`}</AlertTitle>
+            </AlertMain>
+          </Alert>,
+          <Alert key={`${row.variant}-${row.appearance}-no-icon`} {...row}>
+            <AlertMain>
+              <AlertTitle>{`${row.variant} / ${row.appearance} / no icon`}</AlertTitle>
+              <AlertContent>I'm a content!</AlertContent>
+            </AlertMain>
+          </Alert>,
+        ]
+      ))}
+    </div>
+  ),
 };

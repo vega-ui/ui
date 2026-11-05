@@ -1,0 +1,4 @@
+.analyticsRangeTrigger {
+  --button-color: var(--label-secondary);
+  --button-background-color-hover: var(--fills-secondary-hover);
+}

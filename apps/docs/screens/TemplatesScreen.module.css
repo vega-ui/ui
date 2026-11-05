@@ -1,0 +1,110 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-16);
+    width: 100%;
+    max-width: 1100px;
+    padding-block: var(--spacing-24) var(--spacing-40);
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-6);
+}
+
+.title {
+    margin: 0;
+    font-size: var(--site-large-title-size);
+    line-height: var(--site-large-title-leading);
+    letter-spacing: var(--site-tracking-tight);
+}
+
+.description {
+    --t-color: var(--site-muted);
+    max-width: 60ch;
+    font-size: var(--site-title-3-size);
+    line-height: var(--site-title-3-leading);
+    text-wrap: pretty;
+}
+
+.back {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-2);
+    align-self: flex-start;
+    color: var(--site-muted);
+    font-size: var(--site-subheadline-size);
+    line-height: var(--site-subheadline-leading);
+    text-decoration: none;
+}
+
+.back:hover {
+    color: var(--site-text);
+}
+
+.back:focus-visible {
+    outline: 2px solid var(--focus-color);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-8);
+}
+
+.sectionTitle {
+    margin: 0;
+    font-size: var(--site-title-2-size);
+    line-height: var(--site-title-2-leading);
+}
+
+.file {
+    --t-color: var(--site-faint);
+    font-family: var(--site-mono);
+    font-size: var(--site-footnote-size);
+    line-height: var(--site-footnote-leading);
+}
+
+.code > * {
+    margin-block: 0;
+}
+
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-4);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.chip {
+    display: inline-flex;
+    padding: var(--spacing-3) var(--spacing-7);
+    border: 1px solid var(--site-line);
+    border-radius: 999px;
+    background: var(--site-surface);
+    color: var(--site-text);
+    font-size: var(--site-subheadline-size);
+    line-height: var(--site-subheadline-leading);
+    text-decoration: none;
+    transition: border-color 200ms ease;
+}
+
+.chip:hover {
+    border-color: color-mix(in oklch, var(--site-text) 24%, transparent);
+}
+
+.chip:focus-visible {
+    outline: 2px solid var(--focus-color);
+    outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .chip {
+        transition: none;
+    }
+}

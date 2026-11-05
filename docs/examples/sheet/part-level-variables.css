@@ -1,0 +1,16 @@
+.full-width-sheet {
+  --sheet-inset: 0;
+}
+
+.sheet-with-top-line {
+  --top-line-opacity: var(--sheet-expansion);
+}
+
+.sheet-with-top-line::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: var(--separator-opaque);
+  opacity: var(--top-line-opacity);
+}

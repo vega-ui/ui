@@ -1,0 +1,36 @@
+{
+  "name": "@vega-ui/docs",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "examples": "node --experimental-strip-types scripts/generate-examples.mts",
+    "search": "node --experimental-strip-types scripts/generate-search.mts",
+    "facts": "node --experimental-strip-types scripts/generate-facts.mts",
+    "status": "node --experimental-strip-types scripts/generate-ci.mts",
+    "dev": "pnpm examples && pnpm run search && pnpm run facts && pnpm run status && next dev",
+    "site:build": "pnpm examples && pnpm run search && pnpm run facts && pnpm run status && next build",
+    "site:check": "node --experimental-strip-types scripts/check-site.mts"
+  },
+  "dependencies": {
+    "@vega-ui/i18n": "workspace:*",
+    "@vega-ui/icons": "workspace:*",
+    "@vega-ui/react": "workspace:*",
+    "@vega-ui/theme-core": "workspace:*",
+    "@vega-ui/utils": "workspace:*",
+    "next": "16.4.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-markdown": "^10.1.0",
+    "remark-gfm": "^4.0.1",
+    "shiki": "^4.6.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.10",
+    "@types/react": "^19.0.10",
+    "@types/react-dom": "^19.0.3",
+    "axe-core": "4.11.1",
+    "typescript": "5.7.3",
+    "web-features": "^3.45.0"
+  }
+}

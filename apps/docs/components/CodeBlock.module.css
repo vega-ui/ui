@@ -1,0 +1,49 @@
+.block {
+    position: relative;
+    margin-block: var(--spacing-6);
+    border: 1px solid var(--site-line);
+    border-radius: calc(14px * var(--site-radius-scale));
+    background: var(--site-surface);
+    overflow: hidden;
+}
+
+.copy {
+    position: absolute;
+    top: var(--spacing-5);
+    inset-inline-end: var(--spacing-5);
+    z-index: 1;
+}
+
+.pre,
+.highlighted :global(.shiki) {
+    margin: 0;
+    padding: var(--spacing-10) var(--spacing-24) var(--spacing-10) var(--spacing-12);
+    overflow-x: auto;
+    background: transparent !important;
+    font-family: var(--site-mono);
+    font-size: var(--site-callout-size);
+    line-height: var(--site-callout-leading);
+    tab-size: 2;
+}
+
+.highlighted :global(.shiki) span {
+    color: var(--shiki-light);
+}
+
+:global(html.dark) .highlighted :global(.shiki) span {
+    color: var(--shiki-dark);
+}
+
+.highlighted[data-numbered] code {
+    counter-reset: line;
+}
+
+.highlighted[data-numbered] :global(.line)::before {
+    counter-increment: line;
+    content: counter(line);
+    display: inline-block;
+    width: 2ch;
+    margin-inline-end: var(--spacing-10);
+    color: var(--site-faint);
+    text-align: end;
+}

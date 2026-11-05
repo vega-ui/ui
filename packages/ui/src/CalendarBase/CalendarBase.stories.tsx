@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { CalendarBase } from './CalendarBase';
+import { CalendarBase, CalendarBaseProps } from './CalendarBase';
 import {
   CalendarBaseHeader,
   CalendarBasePickerButton,
@@ -8,10 +8,30 @@ import {
   CalendarBaseWeekLabels,
 } from './components';
 import { Icon } from '../Icon';
+import { Text } from '../Text';
 import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
 import { getWeekDayNames } from '@vega-ui/i18n';
 
-const meta: Meta<typeof CalendarBase> = {
+const shell = (
+  <>
+    <CalendarBaseHeader>
+      <CalendarBaseControlIconButton aria-label='Previous'>
+        <Icon><ChevronLeft /></Icon>
+      </CalendarBaseControlIconButton>
+      <CalendarBasePickerButton>March</CalendarBasePickerButton>
+      <CalendarBaseControlIconButton aria-label='Next'>
+        <Icon><ChevronRight /></Icon>
+      </CalendarBaseControlIconButton>
+    </CalendarBaseHeader>
+    <CalendarBaseWeekLabels>
+      {getWeekDayNames('en-US', 'short').map((label) => (
+        <CalendarBaseWeekLabel key={label}>{label}</CalendarBaseWeekLabel>
+      ))}
+    </CalendarBaseWeekLabels>
+  </>
+);
+
+const meta = {
   title: 'Data/CalendarBase',
   component: CalendarBase,
   subcomponents: {
@@ -22,26 +42,7 @@ const meta: Meta<typeof CalendarBase> = {
     CalendarBasePickerButton,
   },
   parameters: { layout: 'centered' },
-  args: {
-    children: (
-      <>
-        <CalendarBaseHeader>
-          <CalendarBaseControlIconButton aria-label='Previous'>
-            <Icon><ChevronLeft /></Icon>
-          </CalendarBaseControlIconButton>
-          <CalendarBasePickerButton>March</CalendarBasePickerButton>
-          <CalendarBaseControlIconButton aria-label='Next'>
-            <Icon><ChevronRight /></Icon>
-          </CalendarBaseControlIconButton>
-        </CalendarBaseHeader>
-        <CalendarBaseWeekLabels>
-          {getWeekDayNames('en-US', 'short').map((label) => (
-            <CalendarBaseWeekLabel key={label}>{label}</CalendarBaseWeekLabel>
-          ))}
-        </CalendarBaseWeekLabels>
-      </>
-    ),
-  },
+  tags: ['autodocs'],
   argTypes: {
     compact: {
       control: 'boolean',
@@ -55,17 +56,31 @@ const meta: Meta<typeof CalendarBase> = {
       options: ['xs', 'sm', 'md', 'lg', 'xl'],
     },
   },
-  tags: ['autodocs'],
-};
+  args: {
+    children: shell,
+  },
+} satisfies Meta<typeof CalendarBase>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-/**
- * The visual shell without calendar logic: `size` and `variant` reach every
- * primitive inside through `CalendarBaseContext`. `Calendar` is built on it;
- * use the primitives only for a calendar of your own.
- */
-export const Default: Story = {
-  args: {},
+const sizes: CalendarBaseProps['size'][] = ['xs', 'sm', 'md', 'lg', 'xl'];
+const variants: CalendarBaseProps['variant'][] = ['primary', 'secondary'];
+const rows = variants.flatMap((variant) => [false, true].map((compact) => ({ variant, compact })));
+
+export const Playground: Story = {};
+
+export const Matrix: Story = {
+  render: () => (
+    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${sizes.length}, auto)`, gap: 24, alignItems: 'start' }}>
+      {rows.map((row) => sizes.map((size) => (
+        <div key={`${row.variant}-${row.compact}-${size}`} style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          <Text size={2}>{`${row.variant}${row.compact ? ' / compact' : ''} / ${size}`}</Text>
+          <CalendarBase {...row} size={size}>
+            {shell}
+          </CalendarBase>
+        </div>
+      )))}
+    </div>
+  ),
 };

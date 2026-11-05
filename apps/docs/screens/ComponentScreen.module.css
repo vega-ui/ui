@@ -1,0 +1,8 @@
+.untranslated {
+    --t-color: var(--site-muted);
+    margin-block: var(--spacing-8) 0;
+    padding: var(--spacing-5) var(--spacing-8);
+    border: 1px solid var(--site-line);
+    border-radius: calc(12px * var(--site-radius-scale));
+    background: var(--site-surface);
+}

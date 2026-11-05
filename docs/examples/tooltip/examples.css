@@ -1,0 +1,4 @@
+.brand-theme {
+  --surface-secondary: oklch(24% 0.005 285);
+  --text-color: oklch(100% 0 0);
+}

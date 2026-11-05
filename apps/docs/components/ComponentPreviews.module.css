@@ -1,0 +1,198 @@
+.row {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-4);
+}
+
+.list {
+    display: grid;
+    gap: var(--spacing-5);
+}
+
+.field {
+    display: grid;
+    gap: var(--spacing-3);
+    width: 100%;
+}
+
+.stack {
+    display: grid;
+    gap: var(--spacing-4);
+    width: 100%;
+}
+
+.wide {
+    width: 100%;
+}
+
+.start {
+    justify-self: start;
+}
+
+.center {
+    text-align: center;
+}
+
+.secondary {
+    color: var(--label-secondary);
+}
+
+.body {
+    display: block;
+    margin-block-start: var(--spacing-4);
+    color: var(--label-secondary);
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-8);
+}
+
+.drawer {
+    width: 360px;
+}
+
+.popover {
+    display: grid;
+    gap: var(--spacing-2);
+    max-width: 280px;
+}
+
+.setting {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-8);
+    width: 100%;
+}
+
+.caption {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--spacing-8);
+}
+
+.value {
+    color: var(--label-secondary);
+    font-variant-numeric: tabular-nums;
+}
+
+.icons {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-8);
+    color: var(--label-primary);
+}
+
+.base {
+    padding: var(--spacing-4) var(--spacing-8);
+    border-radius: var(--radius-3);
+}
+
+.listbox {
+    width: 100%;
+    max-width: 280px;
+    border: 1px solid var(--separator-opaque);
+}
+
+.options {
+    display: grid;
+    gap: var(--spacing-2);
+    width: 100%;
+    max-width: 260px;
+    padding: var(--spacing-4);
+    box-sizing: border-box;
+    border: 1px solid var(--separator-opaque);
+    border-radius: var(--radius-4);
+    background: var(--surface-secondary);
+}
+
+.card {
+    width: 100%;
+    gap: var(--spacing-3);
+}
+
+.numbers {
+    font-variant-numeric: tabular-nums;
+}
+
+.end {
+    text-align: end;
+}
+
+.scroller {
+    width: 100%;
+    gap: var(--spacing-6);
+}
+
+.slide {
+    display: flex;
+    flex: 0 0 100%;
+    align-items: center;
+    justify-content: center;
+    min-height: 88px;
+    box-sizing: border-box;
+    border-radius: var(--radius-4);
+    background: var(--fills-secondary);
+    color: var(--label-primary);
+    font-size: var(--font-size-3);
+}
+
+.sheet {
+    width: 100%;
+    border: 1px solid var(--separator-opaque);
+    border-radius: var(--radius-3);
+    overflow: hidden;
+    background: var(--surface-primary);
+    color: var(--label-primary);
+    font-size: var(--font-size-2);
+}
+
+.sheet [role='row'] + [role='row'] {
+    border-block-start: 1px solid var(--separator-non-opaque);
+}
+
+.sheet [role='gridcell'] {
+    min-block-size: var(--spacing-20);
+    padding-inline: var(--spacing-4);
+    outline-offset: -2px;
+}
+
+.sheet :focus-visible {
+    outline: 2px solid var(--focus-color);
+}
+
+.selectable {
+    gap: var(--spacing-2);
+    color: var(--label-primary);
+    font-size: var(--font-size-2);
+}
+
+.selectable [role='row'] {
+    gap: var(--spacing-2);
+    grid-auto-columns: 72px;
+}
+
+.selectable [role='gridcell'] {
+    min-block-size: var(--spacing-20);
+    border-radius: var(--radius-2);
+    background: var(--fills-tertiary);
+    cursor: pointer;
+}
+
+.selectable [role='gridcell']:hover {
+    background: var(--fills-tertiary-hover);
+}
+
+.selectable [role='gridcell'][aria-selected='true'] {
+    background: var(--color-primary-500);
+    color: var(--color-white);
+}
+
+.selectable [role='gridcell']:focus-visible {
+    outline: 2px solid var(--focus-color);
+    outline-offset: 2px;
+}

@@ -1,0 +1,36 @@
+.panel {
+    display: grid;
+    gap: var(--spacing-8);
+    width: max-content;
+}
+
+.section {
+    display: grid;
+    gap: var(--spacing-5);
+}
+
+.heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--spacing-6);
+}
+
+.value {
+    --t-color: var(--site-muted);
+}
+
+.editor {
+    justify-content: space-between;
+    margin-inline: calc(var(--spacing-4) * -1);
+    padding-inline: var(--spacing-4);
+    text-decoration: none;
+}
+
+.chevron:dir(rtl) {
+    transform: scaleX(-1);
+}
+
+.theme {
+    width: 100%;
+}

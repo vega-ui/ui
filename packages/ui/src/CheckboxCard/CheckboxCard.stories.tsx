@@ -1,26 +1,15 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { ComponentProps } from 'react';
-import { Diff, Rocket } from '@vega-ui/icons';
-import { CheckboxCard } from './CheckboxCard';
+import { CheckboxCard, CheckboxCardProps } from './CheckboxCard';
 import {
-  CheckboxCardContent, CheckboxCardControl, CheckboxCardControlCheckedIcon,
+  CheckboxCardContent,
+  CheckboxCardControl,
+  CheckboxCardControlCheckedIcon,
   CheckboxCardControlInput,
-  CheckboxCardControlIndeterminateIcon, CheckboxCardControlIndicator, CheckboxCardDescription, CheckboxCardTitle
+  CheckboxCardControlIndeterminateIcon,
+  CheckboxCardDescription,
+  CheckboxCardTitle,
 } from './components';
-
-const parts = (input: ComponentProps<typeof CheckboxCardControlInput> = {}) => [
-  <CheckboxCardContent key={0}>
-    <CheckboxCardTitle>What is Lorem Ipsum?</CheckboxCardTitle>
-    <CheckboxCardDescription>Lorem Ipsum is simply dummy text of the printing and typesetting industry</CheckboxCardDescription>
-  </CheckboxCardContent>,
-  <CheckboxCardControl key={1}>
-    <CheckboxCardControlInput {...input} />
-    <CheckboxCardControlIndicator>
-      <CheckboxCardControlCheckedIcon />
-      <CheckboxCardControlIndeterminateIcon />
-    </CheckboxCardControlIndicator>
-  </CheckboxCardControl>
-]
+import { CheckboxIndicator } from '../Checkbox';
 
 const meta = {
   title: 'Form/Selectors/CheckboxCard',
@@ -31,7 +20,6 @@ const meta = {
     CheckboxCardDescription,
     CheckboxCardControl,
     CheckboxCardControlInput,
-    CheckboxCardControlIndicator,
     CheckboxCardControlIndeterminateIcon,
     CheckboxCardControlCheckedIcon,
   },
@@ -55,112 +43,87 @@ const meta = {
     orientation: {
       control: 'radio',
       options: ['vertical', 'horizontal'],
-    }
+    },
   },
   args: {
-    children: parts(),
+    children: [
+      <CheckboxCardContent key='content'>
+        <CheckboxCardTitle>What is Lorem Ipsum?</CheckboxCardTitle>
+        <CheckboxCardDescription>Lorem Ipsum is simply dummy text of the printing and typesetting industry</CheckboxCardDescription>
+      </CheckboxCardContent>,
+      <CheckboxCardControl key='control'>
+        <CheckboxCardControlInput />
+        <CheckboxIndicator>
+          <CheckboxCardControlCheckedIcon />
+          <CheckboxCardControlIndeterminateIcon />
+        </CheckboxIndicator>
+      </CheckboxCardControl>,
+    ],
   },
 } satisfies Meta<typeof CheckboxCard>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {};
+const variants: CheckboxCardProps['variant'][] = ['primary', 'secondary'];
+const orientations: CheckboxCardProps['orientation'][] = ['vertical', 'horizontal'];
+const checks = ['unchecked', 'checked', 'indeterminate'];
+const columns = checks.flatMap((check) => [false, true].map((disabled) => ({ check, disabled })));
+const rows = variants.flatMap((variant) => orientations.map((orientation) => ({ variant, orientation })));
 
-export const Checked: Story = {
-  args: {
-    children: parts({ defaultChecked: true }),
-  },
-};
+export const Playground: Story = {};
 
-export const Indeterminate: Story = {
-  args: {
-    children: parts({ indeterminate: true }),
-  },
-};
+export const States: Story = {
+  parameters: { layout: 'padded' },
+  render: () => (
+    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${columns.length}, auto)`, gap: 12, alignItems: 'start' }}>
+      {rows.map((row) => columns.map((column) => {
+        const name = `${row.variant} / ${row.orientation} / ${column.check}${column.disabled ? ' / disabled' : ''}`;
 
-export const Disabled: Story = {
-  args: {
-    children: parts({ disabled: true }),
-  },
-};
-
-export const Horizontal: Story = {
-  args: {
-    orientation: 'horizontal',
-  },
-};
-
-export const Secondary: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: '`variant` on the card also styles its control.',
-      },
-    },
-  },
-  args: {
-    variant: 'secondary',
-    children: parts({ defaultChecked: true }),
-  },
-};
-
-export const DisabledStates: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'A disabled control keeps showing its checked or indeterminate state.',
-      },
-    },
-  },
-  render: (props) => (
-    <div style={{ display: 'flex', gap: 16 }}>
-      <CheckboxCard {...props}>{parts({ defaultChecked: true, disabled: true })}</CheckboxCard>
-      <CheckboxCard {...props}>{parts({ indeterminate: true, disabled: true })}</CheckboxCard>
+        return (
+          <CheckboxCard key={name} variant={row.variant} orientation={row.orientation}>
+            <CheckboxCardContent>
+              <CheckboxCardTitle>{name}</CheckboxCardTitle>
+              <CheckboxCardDescription>Description</CheckboxCardDescription>
+            </CheckboxCardContent>
+            <CheckboxCardControl>
+              <CheckboxCardControlInput
+                defaultChecked={column.check === 'checked'}
+                indeterminate={column.check === 'indeterminate'}
+                disabled={column.disabled}
+              />
+              <CheckboxIndicator>
+                <CheckboxCardControlCheckedIcon />
+                <CheckboxCardControlIndeterminateIcon />
+              </CheckboxIndicator>
+            </CheckboxCardControl>
+          </CheckboxCard>
+        );
+      }))}
     </div>
   ),
 };
 
-export const CustomIcons: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Children of `CheckboxCardControlCheckedIcon` and `CheckboxCardControlIndeterminateIcon` replace the default icon of that state.',
-      },
-    },
-  },
-  render: (props) => (
-    <div style={{ display: 'flex', gap: 16 }}>
-      <CheckboxCard {...props}>
-        <CheckboxCardContent>
-          <CheckboxCardTitle>Launch</CheckboxCardTitle>
-          <CheckboxCardDescription>Publish the release right after the build</CheckboxCardDescription>
-        </CheckboxCardContent>
-        <CheckboxCardControl>
-          <CheckboxCardControlInput defaultChecked />
-          <CheckboxCardControlIndicator>
-            <CheckboxCardControlCheckedIcon>
-              <Rocket />
-            </CheckboxCardControlCheckedIcon>
-            <CheckboxCardControlIndeterminateIcon />
-          </CheckboxCardControlIndicator>
-        </CheckboxCardControl>
-      </CheckboxCard>
-      <CheckboxCard {...props}>
-        <CheckboxCardContent>
-          <CheckboxCardTitle>Compare</CheckboxCardTitle>
-          <CheckboxCardDescription>Only some of the files have a diff</CheckboxCardDescription>
-        </CheckboxCardContent>
-        <CheckboxCardControl>
-          <CheckboxCardControlInput indeterminate />
-          <CheckboxCardControlIndicator>
-            <CheckboxCardControlCheckedIcon />
-            <CheckboxCardControlIndeterminateIcon>
-              <Diff />
-            </CheckboxCardControlIndeterminateIcon>
-          </CheckboxCardControlIndicator>
-        </CheckboxCardControl>
-      </CheckboxCard>
+export const LongContent: Story = {
+  render: () => (
+    <div style={{ display: 'grid', gap: 12, width: 320 }}>
+      {orientations.map((orientation) => (
+        <CheckboxCard key={orientation} orientation={orientation}>
+          <CheckboxCardContent>
+            <CheckboxCardTitle>A very long title that does not fit on one line and has to wrap somewhere</CheckboxCardTitle>
+            <CheckboxCardDescription>
+              A long description with an unbreakable word: Supercalifragilisticexpialidociousandevenlongerthanthat. It keeps going to show how the card grows and where the control stays.
+            </CheckboxCardDescription>
+          </CheckboxCardContent>
+          <CheckboxCardControl>
+            <CheckboxCardControlInput />
+            <CheckboxIndicator>
+              <CheckboxCardControlCheckedIcon />
+              <CheckboxCardControlIndeterminateIcon />
+            </CheckboxIndicator>
+          </CheckboxCardControl>
+        </CheckboxCard>
+      ))}
     </div>
   ),
 };

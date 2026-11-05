@@ -1,10 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Link } from './Link';
-import { Text } from '../Text';
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
-const meta: Meta<typeof Link> = {
+const meta = {
   title: 'Typography/Link',
   component: Link,
   parameters: {
@@ -14,17 +12,22 @@ const meta: Meta<typeof Link> = {
       url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/vega-ui--Community-?node-id=0-6085&t=2RYEGgF9z3n5SpP5-4',
     },
   },
-  args: {
-    children: <Text size={3}>Example link</Text>
-  },
   tags: ['autodocs'],
-};
+  argTypes: {
+    children: {
+      control: 'text',
+    },
+    href: {
+      control: 'text',
+    },
+  },
+  args: {
+    children: 'Example link',
+    href: '#',
+  },
+} satisfies Meta<typeof Link>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  args: {
-    href: '#',
-  }
-};
+export const Playground: Story = {};

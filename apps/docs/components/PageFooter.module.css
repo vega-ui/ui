@@ -1,0 +1,14 @@
+.footer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--spacing-4) var(--spacing-12);
+    margin-top: var(--spacing-24);
+    padding-top: var(--spacing-12);
+    border-top: 1px solid var(--site-line);
+}
+
+.updated {
+    --t-color: var(--site-muted);
+}

@@ -1,11 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { HelperText } from './HelperText';
-import { TextField, TextFieldInput } from '../TextField';
-import { Label } from '../Label';
+import { HelperTextSize } from './types';
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
-const meta: Meta<typeof HelperText> = {
+const sizes: HelperTextSize[] = ['sm', 'md', 'lg'];
+
+const meta = {
   title: 'Form/Layout/HelperText',
   component: HelperText,
   parameters: {
@@ -15,52 +15,34 @@ const meta: Meta<typeof HelperText> = {
       url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/vega-ui--Community-?node-id=0-4369&t=2RYEGgF9z3n5SpP5-4',
     },
   },
-  args: {
-    children: 'Имя'
-  },
+  tags: ['autodocs'],
   argTypes: {
     size: {
       control: 'radio',
       options: ['sm', 'md', 'lg'],
     },
+    error: {
+      control: 'boolean',
+    },
   },
-  tags: ['autodocs'],
-};
+  args: {
+    children: 'Required',
+  },
+} satisfies Meta<typeof HelperText>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  args: {
-    children: 'Required'
-  },
-  render(props) {
-    return (
-      <>
-        <Label htmlFor='test'>Имя</Label>
-        <TextField size={props.size}>
-          <TextFieldInput id='test' placeholder='Ivan' />
-        </TextField>
-        <HelperText {...props} />
-      </>
-    )
-  }
-};
+export const Playground: Story = {};
 
-export const WithError: Story = {
-  args: {
-    children: 'Required',
-    error: true,
-  },
-  render(props) {
-    return (
-      <>
-        <Label htmlFor='test'>Имя</Label>
-        <TextField size={props.size} error={props.error}>
-          <TextFieldInput id='test' placeholder='Ivan' />
-        </TextField>
-        <HelperText {...props} />
-      </>
-    )
-  }
+export const Matrix: Story = {
+  render: () => (
+    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${sizes.length}, auto)`, gap: 12, alignItems: 'center' }}>
+      {[false, true].map((error) => sizes.map((size) => (
+        <HelperText key={`${error}-${size}`} size={size} error={error}>
+          {`${size}${error ? ' / error' : ''}`}
+        </HelperText>
+      )))}
+    </div>
+  ),
 };

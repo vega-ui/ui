@@ -1,0 +1,4 @@
+.brand-theme {
+  --fills-tertiary: color-mix(in oklch, var(--color-blue-accent-500) 6%, transparent);
+  --focus-color: var(--color-blue-accent-400);
+}

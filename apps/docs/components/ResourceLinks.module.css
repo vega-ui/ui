@@ -1,0 +1,9 @@
+.links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-3);
+}
+
+.pill {
+    --button-br-ratio: 0.5;
+}

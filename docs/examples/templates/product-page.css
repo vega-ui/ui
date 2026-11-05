@@ -1,0 +1,44 @@
+.productPage {
+  container-type: inline-size;
+}
+
+.productPageSheetTrigger {
+  display: none;
+}
+
+[type='radio'].productPageSwatch {
+  --radio-size: var(--spacing-16);
+  --radio-border-color: var(--surface-primary);
+  --radio-border-color-hover: var(--surface-primary);
+  --radio-border-color-active: var(--surface-primary);
+  border-width: 2px;
+  background: var(--swatch);
+  box-shadow: 0 0 0 1px var(--separator-opaque);
+}
+
+[type='radio'].productPageSwatch:checked {
+  --radio-border-color: var(--surface-primary);
+  --radio-border-color-hover: var(--surface-primary);
+  --radio-border-color-active: var(--surface-primary);
+  border-width: 2px;
+  box-shadow: 0 0 0 2px var(--color-primary-500);
+}
+
+[type='radio'].productPageSwatch:focus-visible {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 3px;
+}
+
+.productPageChevron:dir(rtl) {
+  scale: -1 1;
+}
+
+@container (max-width: 560px) {
+  .productPageOptions {
+    display: none;
+  }
+
+  .productPageSheetTrigger {
+    display: flex;
+  }
+}

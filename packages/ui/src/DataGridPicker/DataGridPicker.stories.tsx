@@ -1,99 +1,29 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-
-import { DataGridPicker } from './DataGridPicker';
+import { DataGridPicker, DataGridPickerProps } from './DataGridPicker';
 import {
   DataGridPickerItem,
   DataGridPickerRowGroup,
   DataGridPickerRow,
-  DataGridPickerScroller, DataGridPickerScrollerContent,
+  DataGridPickerScroller,
+  DataGridPickerScrollerContent,
 } from './components';
-import { FC, useRef } from 'react';
-import { IconButton } from '../IconButton';
-import { Icon } from '../Icon';
-import { ChevronLeft, ChevronRight } from '@vega-ui/icons'
-import { useIndexedSnapScrollerContext, IndexedSnapScrollerApiRef } from '../IndexedSnapScroller';
 
-const EMOJI_POOL = [
-  '😀','😃','😄','😁','😆','😅','😂','🤣','😊','🙂','🙃','😉','😌','😍','🥰','😘','😗','😙','😚','😋',
-  '😛','😜','🤪','😝','🤑','🤗','🤭','🤫','🤔','🤐','🤨','😐','😑','😶','😏','🙄','😬','😮‍💨','🤥','😌',
-  '😔','😪','🤤','😴','😷','🤒','🤕','🤢','🤮','🤧','🥵','🥶','🥴','😵','🤯','🤠','🥳','😎','🤓','🧐',
-  '😕','😟','🙁','☹️','😮','😯','😲','😳','🥺','😦','😧','😨','😰','😥','😢','😭','😱','😖','😣','😞',
-  '😓','😩','😫','😤','😡','😠','🤬','🤯','😇','🥹','🤡','💀','☠️','👻','👽','🤖','💩','😺','😸','😹',
-  '😻','😼','😽','🙀','😿','😾','🙈','🙉','🙊','👋','🤚','🖐️','✋','🖖','👌','🤌','🤏','✌️','🤞',
-  '🤟','🤘','🤙','👈','👉','👆','👇','☝️','👍','👎','✊','👊','🤛','🤜','👏','🙌','🫶','👐','🤲','🙏',
-  '💪','🦾','🦵','🦶','👂','🦻','👃','🧠','🫀','🫁','👀','👁️','👅','👄','🦷','🧑‍💻','🧑‍🍳','🧑‍🎨','🧑‍🚀','🧑‍🔬',
-  '🌞','🌝','🌛','🌜','⭐','🌟','✨','⚡','🔥','💧','🌈','☂️','❄️','☃️','🍀','🍁','🍂','🌸','🌼','🌻',
-  '🌺','🥀','🌷','🌵','🌴','🍎','🍊','🍋','🍌','🍉','🍇','🍓','🫐','🍒','🍑','🍍','🥥','🥝','🥑','🍆',
-  '🌶️','🥕','🌽','🥔','🥦','🧀','🍔','🍟','🍕','🌭','🥪','🌮','🌯','🍜','🍣','🍱','🍩','🍪','🎂','🍰',
-  '🧁','🍫','🍬','🍭','☕','🫖','🍵','🍺','🍻','🍷','🍸','🍹','🥤','🥂','🥃','⚽','🏀','🏈','🎾','🏐',
-  '🎲','🧩','♟️','🎮','🕹️','🎯','🎳','🚗','🚕','🚙','🚌','🚎','🏎️','🚓','🚑','🚒','🚲','🛴','🛵','✈️',
-  '🚀','🛸','⛵','🚁','🛶','🏝️','🗻','⛰️','🏔️','🏜️','🏖️','🏟️','🎡','🎢','🎠','🗽','🗿','🧭','⌛','⏳'
-];
+const rows = [0, 1, 2, 3, 4];
+const cols = [0, 1, 2, 3, 4];
 
-// Mulberry32 PRNG (deterministic by 32-bit seed)
-function mulberry32(seed: number) {
-  let t = seed >>> 0;
-  return function () {
-    t += 0x6D2B79F5;
-    let r = Math.imul(t ^ (t >>> 15), 1 | t);
-    r ^= r + Math.imul(r ^ (r >>> 7), 61 | r);
-    return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
-// Simple 32-bit hash for number offsets (handles negatives too)
-function hash32(n: number): number {
-  let x = n | 0;
-  x = Math.imul(x ^ (x >>> 16), 0x45d9f3b);
-  x = Math.imul(x ^ (x >>> 16), 0x45d9f3b);
-  x = x ^ (x >>> 16);
-  return x >>> 0;
-}
-
-// Deterministic sample without replacement using PRNG
-function sampleUnique<T>(arr: T[], count: number, rnd: () => number): T[] {
-  const a = arr.slice(); // copy
-  // Partial Fisher–Yates for first `count`
-  const n = Math.min(count, a.length);
-  for (let i = 0; i < n; i++) {
-    const j = i + Math.floor(rnd() * (a.length - i));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a.slice(0, n);
-}
-
-function getEmojiGridByOffset(offset: number, size = 5): string[][] {
-  const seed = hash32(offset);
-  const rnd = mulberry32(seed);
-  
-  const need = size * size;
-  const picks =
-    EMOJI_POOL.length >= need
-      ? sampleUnique(EMOJI_POOL, need, rnd)
-      : // If pool is smaller than need, expand deterministically
-      (() => {
-        const out: string[] = [];
-        while (out.length < need) {
-          const batch = sampleUnique(EMOJI_POOL, Math.min(EMOJI_POOL.length, need - out.length), rnd);
-          out.push(...batch);
-        }
-        return out;
-      })();
-  
-  const grid: string[][] = [];
-  for (let r = 0; r < size; r++) {
-    grid.push(picks.slice(r * size, (r + 1) * size));
-  }
-  return grid;
-}
-
-interface EmojiCell {
-  emoji: string;
-  row: number;
-  col: number;
-}
-
-const matrix = Array.from({ length: 5 }, (_, row) => Array.from({ length: 5 }, (_, col) => [row, col] ))
+const grid = (
+  <DataGridPickerRowGroup>
+    {rows.map((row) => (
+      <DataGridPickerRow row={row} key={row}>
+        {cols.map((col) => (
+          <DataGridPickerItem col={col} key={col}>
+            {col + 1}
+          </DataGridPickerItem>
+        ))}
+      </DataGridPickerRow>
+    ))}
+  </DataGridPickerRowGroup>
+);
 
 const meta = {
   title: 'Data/DataGridPicker',
@@ -109,22 +39,6 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
-  args: {
-    size: 'sm',
-    children: (
-      <DataGridPickerRowGroup>
-        {matrix.map((row, index) => (
-          <DataGridPickerRow row={index} key={index}>
-            {row.map(([, col]) => (
-              <DataGridPickerItem col={col} key={col}>
-                {col + 1}
-              </DataGridPickerItem>
-            ))}
-          </DataGridPickerRow>
-        ))}
-      </DataGridPickerRowGroup>
-    )
-  },
   argTypes: {
     selection: {
       control: 'radio',
@@ -141,89 +55,35 @@ const meta = {
     size: {
       control: 'radio',
       options: ['xs', 'sm', 'md', 'lg', 'xl'],
-    }
-  }
+    },
+  },
+  args: {
+    'aria-label': 'Grid',
+    size: 'sm',
+    defaultActive: '0:0',
+    children: grid,
+  },
 } satisfies Meta<typeof DataGridPicker>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  args: {
-    defaultActive: '0:0'
-  }
-};
+const variants: DataGridPickerProps['variant'][] = ['primary', 'secondary'];
+const sizes: DataGridPickerProps['size'][] = ['xs', 'sm', 'md', 'lg', 'xl'];
 
-const SwipableLayout: FC = () => {
-  const { index } = useIndexedSnapScrollerContext()
-  
-  const makeKey = (index: number, row: number, col: number, emoji: string) => `${index}:${row}:${col}:${emoji.codePointAt(0)}`;
-  
-  const grid: EmojiCell[][] = getEmojiGridByOffset(index, 5).map((row, rowIndex) =>
-    row.map((emoji, col) => ({
-      emoji,
-      row: rowIndex + 5 * index,
-      col,
-    }))
-  );
-  
-  return (
-    <DataGridPickerRowGroup scope={index}>
-      {grid.map((row, rowIndex) => (
-        <DataGridPickerRow row={row[rowIndex]?.row} key={rowIndex}>
-          {row.map((cell, columnIndex) => (
-            <DataGridPickerItem
-              col={columnIndex}
-              value={makeKey(index, cell.row, cell.col, cell.emoji)}
-              key={columnIndex}
-            >
-              {cell.emoji}
-            </DataGridPickerItem>
-          ))}
-        </DataGridPickerRow>
-      ))}
-    </DataGridPickerRowGroup>
-  )
-}
+export const Playground: Story = {};
 
-/**
- * This story demonstrates a swipable DataGridPicker with range selection.
- *
- * When using DataGridPicker together with IndexedSnapScroller, it is important
- * to pass the current `index` from `useIndexedSnapScrollerContext` as the `scope`
- * for each `DataGridPickerRowGroup`.
- *
- * The scope allows the DataGrid to correctly associate rendered cells with
- * the active scroller index and restore focus to the first available cell
- * when the index changes.
- *
- * Without providing a scope, focus restoration may behave incorrectly when
- * switching between pages.
- */
-export const SwipableRange: Story = {
-  args: {
-    selection: 'range',
-    defaultActive: '0:0:0:128546'
-  },
-  render(props) {
-    const apiRef = useRef<IndexedSnapScrollerApiRef>(null)
-    
-    return (
-      <DataGridPicker {...props}>
-        <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', marginBottom: '16px' }}>
-          <IconButton onClick={() => apiRef?.current?.prev()} variant='secondary' appearance='transparent' size='sm'>
-            <Icon><ChevronLeft /></Icon>
-          </IconButton>
-          <IconButton onClick={() => apiRef?.current?.next()} variant='secondary' appearance='transparent' size='sm'>
-            <Icon><ChevronRight /></Icon>
-          </IconButton>
+export const Matrix: Story = {
+  render: () => (
+    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${sizes.length}, auto)`, gap: 24, alignItems: 'start' }}>
+      {variants.map((variant) => sizes.map((size) => (
+        <div key={`${variant}-${size}`} style={{ display: 'grid', gap: 8 }}>
+          <span>{`${variant} / ${size}`}</span>
+          <DataGridPicker aria-label='Grid' variant={variant} size={size} defaultSelected='1:1'>
+            {grid}
+          </DataGridPicker>
         </div>
-        <DataGridPickerScroller apiRef={apiRef} style={{ width: 210 }}>
-          <DataGridPickerScrollerContent>
-            <SwipableLayout />
-          </DataGridPickerScrollerContent>
-        </DataGridPickerScroller>
-      </DataGridPicker>
-    )
-  }
+      )))}
+    </div>
+  ),
 };

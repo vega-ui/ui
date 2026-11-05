@@ -1,0 +1,9 @@
+.listbox-accent [role='option'][aria-selected='true'] {
+  --option-background-color: var(--color-green-accent-800);
+  --option-background-color-hover: var(--color-green-accent-900);
+  --option-background-color-active: var(--color-green-accent-1000);
+}
+
+.listbox-accent [role='option'] {
+  --option-br-ratio: 0.5;
+}

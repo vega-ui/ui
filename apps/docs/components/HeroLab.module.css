@@ -1,0 +1,153 @@
+.lab {
+    --star: color-mix(in oklch, var(--color-primary-400) 80%, white);
+    --site-link: oklch(from var(--color-primary-500) min(l, 0.5) c h);
+    --grid-line: color-mix(in oklch, var(--color-primary-500) 9%, transparent);
+    position: relative;
+    isolation: isolate;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-16);
+    width: 100%;
+}
+
+:global(html.dark) .lab {
+    --star: white;
+    --site-link: oklch(from var(--color-primary-500) max(l, 0.78) c h);
+    --grid-line: color-mix(in oklch, var(--color-primary-400) 14%, transparent);
+}
+
+.lab::before {
+    content: '';
+    position: absolute;
+    inset: calc(-1 * var(--spacing-40)) 0 0;
+    z-index: -1;
+    background:
+        linear-gradient(to right, var(--grid-line) 1px, transparent 1px) center top / var(--spacing-16) var(--spacing-16),
+        linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px) center top / var(--spacing-16) var(--spacing-16);
+    mask-image: radial-gradient(50% 45% at 50% 45%, black, transparent);
+    transition: opacity 300ms ease;
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+.lab[data-inspect='true']::before {
+    opacity: 1;
+}
+
+.panel {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-6) var(--spacing-8);
+    max-width: 100%;
+    margin-block-start: var(--spacing-8);
+    padding: var(--spacing-4) var(--spacing-8);
+    border: 1px solid var(--site-line);
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--site-surface) 72%, transparent);
+    box-shadow: 0 8px 24px -12px oklch(0% 0 0 / 16%);
+    backdrop-filter: blur(16px);
+    box-sizing: border-box;
+}
+
+.divider {
+    width: 1px;
+    height: 20px;
+    background: var(--site-line);
+}
+
+.swatches {
+    display: flex;
+    gap: var(--spacing-4);
+}
+
+.swatch {
+    --radio-size: 16px;
+    border: 0;
+    background: var(--swatch);
+    box-shadow: inset 0 0 0 1px oklch(0% 0 0 / 12%);
+}
+
+.swatch:checked {
+    border-width: 0;
+    box-shadow: 0 0 0 2px var(--site-surface), 0 0 0 3.5px var(--swatch);
+}
+
+.radius,
+.inspect {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-5);
+}
+
+.label {
+    color: var(--site-muted);
+    font-size: var(--site-footnote-size);
+    line-height: var(--site-footnote-leading);
+    font-weight: 400;
+    white-space: nowrap;
+}
+
+.slider {
+    width: 96px;
+}
+
+.figure {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-8);
+    width: min(100%, 1120px);
+    margin: var(--spacing-8) 0 0;
+}
+
+.star {
+    position: absolute;
+    top: calc(-1 * var(--spacing-12));
+    left: 50%;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--star);
+    box-shadow:
+        0 0 6px 2px var(--star),
+        0 0 24px 8px color-mix(in oklch, var(--color-primary-300) 70%, transparent),
+        0 0 120px 60px color-mix(in oklch, var(--color-primary-400) 22%, transparent),
+        0 0 320px 200px color-mix(in oklch, var(--color-primary-300) 10%, transparent);
+    translate: -50% -50%;
+    pointer-events: none;
+}
+
+.star::before,
+.star::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background: linear-gradient(to right, transparent, var(--star), transparent);
+    translate: -50% -50%;
+}
+
+.star::before {
+    width: 220px;
+    height: 1px;
+}
+
+.star::after {
+    width: 1px;
+    height: 72px;
+    background: linear-gradient(to bottom, transparent, var(--star), transparent);
+}
+
+@media (width < 860px) {
+    .panel {
+        border-radius: 18px;
+    }
+
+    .divider {
+        display: none;
+    }
+}

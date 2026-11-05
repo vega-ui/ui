@@ -1,15 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-
 import { DataGridSelectable } from './DataGridSelectable';
 import { DataGridSelectableCell, DataGridSelectableRow, DataGridSelectableRowGroup } from './components';
 import { Text } from '../Text';
 
-const matrix = Array.from({ length: 5 },
-  (_, row) => Array.from({ length: 5 },
-    (_, col) => ({
-      index: [row, col] as [number, number],
-    })
-  ))
+const rows = [0, 1, 2, 3, 4];
+const cols = [0, 1, 2, 3, 4];
 
 const meta = {
   title: 'Data/DataGridSelectable',
@@ -23,58 +18,46 @@ const meta = {
     layout: 'centered',
   },
   tags: ['autodocs'],
+  argTypes: {
+    selection: {
+      control: 'radio',
+      options: ['single', 'multiple', 'range'],
+    },
+    wrap: {
+      control: 'radio',
+      options: [undefined, 'horizontal', 'vertical', 'both'],
+    },
+    exclude: {
+      control: 'object',
+    },
+    from: {
+      control: 'text',
+    },
+    to: {
+      control: 'text',
+    },
+  },
   args: {
+    'aria-label': 'Grid',
+    defaultActive: '0:0',
+    exclude: [],
     children: (
       <DataGridSelectableRowGroup>
-        {matrix.map((row, index) => (
-          <DataGridSelectableRow row={index} key={index}>
-            {row.map(({ index: [, col] }) => (
-              <DataGridSelectableCell style={{ width: 42, height: 42 }} col={col} key={index}>
+        {rows.map((row) => (
+          <DataGridSelectableRow row={row} key={row}>
+            {cols.map((col) => (
+              <DataGridSelectableCell style={{ width: 42, height: 42 }} col={col} key={col}>
                 <Text size={2}>{col + 1}</Text>
               </DataGridSelectableCell>
             ))}
           </DataGridSelectableRow>
         ))}
       </DataGridSelectableRowGroup>
-    )
-  },
-  argTypes: {
-    wrap: {
-      control: 'radio',
-      options: ['horizontal', 'vertical', 'both'],
-    },
+    ),
   },
 } satisfies Meta<typeof DataGridSelectable>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  args: {
-    defaultActive: '0:0',
-  }
-};
-
-export const Wrapped: Story = {
-  args: {
-    defaultActive: '0:0',
-    wrap: 'horizontal'
-  }
-};
-
-export const WithExclude: Story = {
-  args: {
-    defaultActive: '1:0',
-    wrap: 'horizontal',
-    exclude: ['0:0', '0:1', '0:2', '0:3', '0:4']
-  }
-};
-
-export const WithFromAndTo: Story = {
-  args: {
-    defaultActive: '1:0',
-    wrap: 'horizontal',
-    from: '1:0',
-    to: '3:0'
-  }
-};
+export const Playground: Story = {};

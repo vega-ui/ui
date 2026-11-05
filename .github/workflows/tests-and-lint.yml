@@ -32,6 +32,15 @@ jobs:
       - name: Validate Docs
         run: pnpm docs:validate
 
+      - name: Check Doc Examples
+        run: pnpm docs:examples:check
+
+      - name: Check API Docs
+        run: pnpm docs:api:check
+
+      - name: Check Keyboard Docs
+        run: pnpm docs:keyboard:check
+
       - name: Typecheck
         run: pnpm turbo run check-types
 
@@ -109,3 +118,74 @@ jobs:
 
       - name: Run Browser Tests
         run: pnpm turbo run test --filter=@vega-ui/hooks --filter=@vega-ui/icons --filter=@vega-ui/react-context --filter=@vega-ui/react -- --project ${{ matrix.browser }}
+
+  docs-site:
+    name: Docs Site
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build packages
+        run: pnpm turbo run build --filter=@vega-ui/docs^...
+
+      - name: Build docs site
+        run: pnpm --filter @vega-ui/docs site:build
+        env:
+          PAGES_BASE_PATH: /ui
+
+      - name: Resolve Playwright version
+        id: resolve-playwright
+        shell: bash
+        run: |
+          node -e "
+            const fs = require('fs');
+            const lock = fs.readFileSync('pnpm-lock.yaml', 'utf8');
+            const match = lock.match(/^\\s*playwright@(\\d+\\.\\d+\\.\\d+):/m);
+            if (!match) {
+              console.error('Playwright not found in pnpm-lock.yaml');
+              process.exit(1);
+            }
+            console.log('PLAYWRIGHT_VERSION=' + match[1]);
+          " >> "$GITHUB_OUTPUT"
+
+      - name: Check resolved package versions
+        shell: bash
+        if: |
+          contains(fromJSON('[null, "", "undefined"]'), steps.resolve-playwright.outputs.PLAYWRIGHT_VERSION)
+        run: echo "Failed to resolve package versions. See log above." && exit 1
+
+      - name: Cache Playwright
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-chromium-${{ steps.resolve-playwright.outputs.PLAYWRIGHT_VERSION }}
+          restore-keys: |
+            ${{ runner.os }}-playwright-chromium-
+
+      - name: Install Playwright Dependencies
+        shell: bash
+        run: pnpm exec playwright install --with-deps chromium-headless-shell
+
+      - name: Check docs site
+        run: pnpm --filter @vega-ui/docs site:check
+        env:
+          PAGES_BASE_PATH: /ui
+
+      - name: Verify keyboard docs
+        run: pnpm docs:keyboard:verify --out apps/docs/out
+        env:
+          PAGES_BASE_PATH: /ui

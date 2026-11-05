@@ -1,0 +1,105 @@
+@property --tabs-fade-start {
+    syntax: '<length>';
+    inherits: false;
+    initial-value: 0px;
+}
+
+@property --tabs-fade-end {
+    syntax: '<length>';
+    inherits: false;
+    initial-value: 0px;
+}
+
+.frame {
+    position: sticky;
+    inset-block-start: 64px;
+    z-index: 2;
+    margin-bottom: var(--spacing-4);
+    background: var(--site-bg);
+}
+
+.frame::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0;
+    height: 1px;
+    background: var(--site-line);
+}
+
+.tabs {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    gap: var(--spacing-8);
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-padding-inline: var(--spacing-16);
+    scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar {
+    display: none;
+}
+
+@supports (animation-timeline: scroll()) {
+    .tabs {
+        --tabs-fade-direction: to right;
+        mask-image: linear-gradient(var(--tabs-fade-direction), transparent, #000 var(--tabs-fade-start), #000 calc(100% - var(--tabs-fade-end)), transparent);
+        animation: tabs-fade linear both;
+        animation-timeline: scroll(self inline);
+    }
+
+    .tabs:dir(rtl) {
+        --tabs-fade-direction: to left;
+    }
+}
+
+@keyframes tabs-fade {
+    0% {
+        --tabs-fade-start: 0px;
+        --tabs-fade-end: var(--spacing-20);
+    }
+
+    8% {
+        --tabs-fade-start: var(--spacing-20);
+    }
+
+    92% {
+        --tabs-fade-end: var(--spacing-20);
+    }
+
+    100% {
+        --tabs-fade-start: var(--spacing-20);
+        --tabs-fade-end: 0px;
+    }
+}
+
+.tab {
+    flex-shrink: 0;
+    padding: var(--spacing-5) var(--spacing-2);
+    border-bottom: 2px solid transparent;
+    color: var(--site-muted);
+    font-size: var(--font-size-3);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color var(--transition-state-delay) ease;
+}
+
+.tab:hover {
+    color: var(--site-text);
+}
+
+.tab:focus-visible {
+    outline-offset: -2px;
+    border-radius: 6px;
+}
+
+.tab[aria-current='page'] {
+    border-bottom-color: var(--site-text);
+    color: var(--site-text);
+    font-weight: 500;
+}
+
+:global(html):has(.frame) {
+    scroll-padding-top: 128px;
+}

@@ -1,0 +1,4 @@
+.customMeterStates {
+  --meter-track-optimum-color: var(--color-green-500);
+  --meter-track-suboptimum-color: var(--color-amber-500);
+}

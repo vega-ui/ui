@@ -1,7 +1,39 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Avatar } from './Avatar';
 import { AvatarFallback, AvatarIcon, AvatarImage } from './components';
-import { HeartPlus } from '@vega-ui/icons'; 
+import { HeartPlus } from '@vega-ui/icons';
+import { AvatarSize, AvatarVariant } from './types';
+
+const image = `data:image/svg+xml,${encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="#7c9cd6"/><circle cx="32" cy="26" r="12" fill="#e9eefa"/><rect x="12" y="42" width="40" height="30" rx="15" fill="#e9eefa"/></svg>')}`;
+const brokenImage = 'data:image/png;base64,';
+
+const sizes: AvatarSize[] = ['2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'];
+const variants: AvatarVariant[] = ['primary', 'secondary'];
+const contents = [
+  {
+    name: 'image',
+    children: [
+      <AvatarFallback key='fallback'>BC</AvatarFallback>,
+      <AvatarImage key='image' src={image} alt='Bob Carter' />,
+    ],
+  },
+  {
+    name: 'broken image',
+    children: [
+      <AvatarFallback key='fallback'>BC</AvatarFallback>,
+      <AvatarImage key='image' src={brokenImage} alt='Bob Carter' />,
+    ],
+  },
+  {
+    name: 'initials',
+    children: <AvatarFallback>BC</AvatarFallback>,
+  },
+  {
+    name: 'icon',
+    children: <AvatarIcon><HeartPlus /></AvatarIcon>,
+  },
+];
+const rows = variants.flatMap((variant) => contents.map((content) => ({ variant, content })));
 
 const meta = {
   title: 'Display/Avatar',
@@ -22,78 +54,31 @@ const meta = {
   argTypes: {
     size: {
       control: 'radio',
-      options: ['2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl']
-    }
+      options: ['2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'],
+    },
+    variant: {
+      control: 'radio',
+      options: ['primary', 'secondary'],
+    },
   },
-  args: {},
+  args: {
+    children: contents[0].children,
+  },
 } satisfies Meta<typeof Avatar>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const sizes = ['2xs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'] as const;
-const variants = ['primary', 'secondary'] as const;
+export const Playground: Story = {};
 
-// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const Default: Story = {
-  args: {
-    children: [
-      <AvatarFallback key={0}>BC</AvatarFallback>,
-      <AvatarImage key={1} src={'https://images.unsplash.com/photo-1578979879663-4ba6a968a50a?q=80&w=3687&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'} />
-    ]
-  },
-};
-
-export const Sizes: Story = {
-  render(props) {
-    return (
-      <div style={{ display: 'flex', flexDirection: 'row', gap: '24px', alignItems: 'center' }}>
-        {sizes.map((size) => (
-          <Avatar {...props} size={size} key={size}>
-            <AvatarFallback key={0}>BC</AvatarFallback>
-            <AvatarImage key={1}
-                         src={'https://images.unsplash.com/photo-1578979879663-4ba6a968a50a?q=80&w=3687&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'}/>
-          </Avatar>
-        ))}
-      </div>
-    )
-  }
-};
-
-export const Initials: Story = {
-  render(props) {
-    return (
-      <div style={{ display: 'flex', gap: '24px', flexDirection: 'column' }}>
-        {variants.map((variant) => (
-          <div key={variant} style={{ display: 'flex', flexDirection: 'row', gap: '24px', alignItems: 'center' }}>
-            {sizes.map((size) => (
-              <Avatar {...props} variant={variant} size={size} key={size}>
-                <AvatarFallback key={0}>BC</AvatarFallback>
-              </Avatar>
-            ))}
-          </div>
-        ))
-        }
-      </div>
-    )
-  }
-};
-
-export const WithIcon: Story = {
-  render(props) {
-    return (
-      <div style={{ display: 'flex', gap: '24px', flexDirection: 'column' }}>
-        {variants.map((variant) => (
-          <div key={variant} style={{ display: 'flex', flexDirection: 'row', gap: '24px', alignItems: 'center' }}>
-            {sizes.map((size) => (
-              <Avatar {...props} variant={variant} size={size} key={size}>
-                <AvatarIcon><HeartPlus /></AvatarIcon>
-              </Avatar>
-            ))}
-          </div>
-        ))
-        }
-      </div>
-    )
-  }
+export const Matrix: Story = {
+  render: () => (
+    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${sizes.length}, auto)`, gap: 12, alignItems: 'center', justifyContent: 'start' }}>
+      {rows.map((row) => sizes.map((size) => (
+        <Avatar key={`${row.variant}-${row.content.name}-${size}`} variant={row.variant} size={size}>
+          {row.content.children}
+        </Avatar>
+      )))}
+    </div>
+  ),
 };

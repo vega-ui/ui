@@ -1,0 +1,133 @@
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    gap: var(--spacing-12);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--site-line);
+    border-radius: 18px;
+    background: var(--site-surface);
+    overflow: hidden;
+    transition: border-color 200ms ease;
+}
+
+.card:hover {
+    border-color: color-mix(in oklch, var(--site-text) 24%, transparent);
+}
+
+.card:has(.link:focus-visible) {
+    outline: 2px solid var(--focus-color);
+    outline-offset: 2px;
+}
+
+.card > :first-child {
+    border-bottom: 1px solid var(--site-line);
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+    padding: var(--spacing-10) var(--spacing-12) var(--spacing-12);
+}
+
+.title {
+    margin: 0;
+    font-size: var(--site-headline-size);
+    line-height: var(--site-headline-leading);
+}
+
+.link {
+    color: var(--site-text);
+    text-decoration: none;
+    outline: none;
+}
+
+.link::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+}
+
+.description {
+    --t-color: var(--site-muted);
+    font-size: var(--site-subheadline-size);
+    line-height: var(--site-subheadline-leading);
+    text-wrap: pretty;
+}
+
+.components {
+    --t-color: var(--site-faint);
+    margin-top: var(--spacing-2);
+    font-size: var(--site-footnote-size);
+    line-height: var(--site-footnote-leading);
+}
+
+.catalog {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-12);
+}
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--spacing-4);
+}
+
+.filter {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-3);
+    padding: var(--spacing-3) var(--spacing-7);
+    border: 1px solid var(--site-line);
+    border-radius: 999px;
+    background: var(--site-surface);
+    color: var(--site-text);
+    font-size: var(--site-subheadline-size);
+    line-height: var(--site-subheadline-leading);
+    cursor: pointer;
+    user-select: none;
+    transition: border-color 200ms ease, background-color 200ms ease;
+}
+
+.filter:hover {
+    border-color: color-mix(in oklch, var(--site-text) 24%, transparent);
+}
+
+.filter:has(:checked) {
+    border-color: var(--site-text);
+    background: var(--site-text);
+    color: var(--site-bg);
+}
+
+.filter:has(:focus-visible) {
+    outline: 2px solid var(--focus-color);
+    outline-offset: 2px;
+}
+
+.filterInput {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.filterCount {
+    font-variant-numeric: tabular-nums;
+    opacity: 0.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .card,
+    .filter {
+        transition: none;
+    }
+}

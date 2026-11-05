@@ -1,9 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Badge, BadgeProps } from './Badge';
 
-const variants: Exclude<BadgeProps['variant'], undefined>[] = ['info', 'error', 'success', 'warning']
-const appearance: BadgeProps['appearance'][] = ['ghost', 'outline', 'fill', 'surface']
-const sizes: BadgeProps['size'][] = ['xs', 'sm', 'md', 'lg', 'xl']
+const variants: BadgeProps['variant'][] = ['info', 'error', 'success', 'warning'];
+const appearances: BadgeProps['appearance'][] = ['ghost', 'outline', 'fill', 'surface'];
+const sizes: BadgeProps['size'][] = ['xs', 'sm', 'md', 'lg', 'xl'];
+const rows = variants.flatMap((variant) => appearances.map((appearance) => ({ variant, appearance })));
 
 const meta = {
   title: 'Feedback/Badge',
@@ -19,7 +20,7 @@ const meta = {
   argTypes: {
     variant: {
       control: 'radio',
-      options: ['error', 'success', 'warning', 'info'],
+      options: ['info', 'error', 'success', 'warning'],
     },
     appearance: {
       control: 'radio',
@@ -27,58 +28,27 @@ const meta = {
     },
     size: {
       control: 'radio',
-      options: ['xs', 'sm', 'md', 'lg', 'xl']
-    }
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
+    },
   },
-  args: {},
+  args: {
+    children: 'Badge',
+  },
 } satisfies Meta<typeof Badge>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const Default: Story = {
-  args: {
-    children: 'Badge',
-  },
-};
+export const Playground: Story = {};
 
-export const All: Story = {
-  render() {
-    return (
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, min-content)', gridAutoFlow: 'row', alignItems: 'center', gap: '24px' }}>
-        {variants.map((variant) => (
-          appearance.map((app) => (
-            sizes.map((size) => (
-              <Badge key={size + variant + app} size={size} appearance={app} variant={variant}>Badge</Badge>
-            ))
-          ))
-        ))}
-      </div>
-    )
-  }
-};
-
-export const Sizes: Story = {
-  render() {
-    return (
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: '24px' }}>
-        {sizes.map((size) => (
-          <Badge size={size} key={size}>Badge</Badge>
-        ))}
-      </div>
-    )
-  }
-};
-
-export const Variants: Story = {
-  render() {
-    return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
-        {variants.map((variant) => (
-          <Badge key={variant} title={`I'm a ${variant} variant`} variant={variant}>Badge</Badge>
-        ))}
-      </div>
-    )
-  }
+export const Matrix: Story = {
+  render: () => (
+    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${sizes.length}, min-content)`, gap: 12, alignItems: 'center' }}>
+      {rows.map((row) => sizes.map((size) => (
+        <Badge key={`${row.variant}-${row.appearance}-${size}`} {...row} size={size}>
+          {`${row.variant} / ${row.appearance} / ${size}`}
+        </Badge>
+      )))}
+    </div>
+  ),
 };

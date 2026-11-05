@@ -1,0 +1,3 @@
+.listRowChevron:dir(rtl) {
+  transform: scaleX(-1);
+}
