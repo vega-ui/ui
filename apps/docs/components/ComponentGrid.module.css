@@ -1,0 +1,20 @@
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: var(--spacing-10) var(--spacing-16);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.link {
+    color: var(--site-text);
+    font-size: var(--site-body-size);
+    line-height: var(--site-body-leading);
+    text-decoration: none;
+    text-underline-offset: 0.25em;
+}
+
+.link:hover {
+    text-decoration: underline;
+}

@@ -1,74 +1,37 @@
 # Vega UI Monorepo
 
 React component library, written by developers for developers 🩵
-## Installation
 
-Install @vega-ui/react with
-
-**npm:**
+## Install
 
 ```bash
-  npm i @vega-ui/react
+pnpm add @vega-ui/react @vega-ui/theme-core @vega-ui/icons
 ```
 
-**yarn:**
+Import the theme and the stylesheet once, at the app entry point, and put the theme class on `<html>`:
 
-```bash
-  yarn add @vega-ui/react
+```tsx
+import '@vega-ui/theme-core';
+import '@vega-ui/react/style.css';
 ```
-
-## Start
-
-Connect the styles first. You can do this using a js file, however, we recommend that you connect using ``@import`` and defining layers so that there are no conflicts with specificity.
-
-```css
-  @import url('@/shared/styles/normalize.css') layer(reset);
-  @import url('@vega-ui/react/style') layer(library);
-
-  @layer reset, library, components, overrides;
-```
-
-Setup fonts
-
-**Next:**
-
-```typescript jsx
-    import { Montserrat } from 'next/font/google';
-
-    const montserratSans = Montserrat({
-      subsets: ['latin', 'cyrillic'],
-      display: 'swap',
-      weight: ['400', '500', '700', '900']
-    });
-```
-
-**Google Fonts:**
 
 ```html
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+<html class="light">
 ```
 
-Start using
+```tsx
+import { Button } from '@vega-ui/react';
 
-```typescript
-  import { Button } from '@vega-ui/react';
-
-  ...
-
-  <Button>Hello, world!</Button>
+<Button>Hello, world!</Button>
 ```
 
+The default font is Montserrat, which the app loads itself. Layers, themes, fonts and common mistakes are covered in [Getting started](./docs/en/getting-started.md).
 
 ## Running Tests
 
-To run tests, run the following command
-
 ```bash
-  npm run test
+pnpm test
 ```
-
 
 ## Contributing
 
@@ -77,4 +40,3 @@ Contributions are always welcome!
 See `contributing.md` for ways to get started.
 
 Please adhere to this project's `code of conduct`.
-

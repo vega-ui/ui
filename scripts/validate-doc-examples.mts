@@ -5,7 +5,7 @@ import path from 'node:path';
 import ts from 'typescript';
 
 const ROOT = process.cwd();
-const DOCS_DIR = path.join(ROOT, 'docs');
+const DOCS_DIR = path.join(ROOT, 'docs', 'en');
 const TMP_DIR = path.join(ROOT, 'packages', 'ui', '.doc-example-check');
 const TS_CONFIG_PATH = path.join(ROOT, 'tsconfig.json');
 const UI_ENTRY = path.join(ROOT, 'packages', 'ui', 'src', 'index.ts');
@@ -38,7 +38,7 @@ const REACT_VALUE_EXPORTS = new Set([
   'useTransition',
 ]);
 const JSX_COMPONENT_NAME_RE = /^[A-Z][A-Za-z0-9_]*$/;
-const TEMPLATE_DIR = path.join(ROOT, 'docs', 'components', '_templates');
+const TEMPLATE_DIR = path.join(ROOT, 'docs', 'en', 'components', '_templates');
 const WARNED_UNKNOWN_COMPONENTS = new Set<string>();
 
 interface Snippet {
@@ -363,8 +363,12 @@ function extractSnippetsFromMarkdown(filePath: string): Snippet[] {
       continue;
     }
 
-    index += 1;
     const before = content.slice(0, match.index);
+    if (before.trimEnd().split('\n').at(-1)?.startsWith('<!-- example:')) {
+      continue;
+    }
+
+    index += 1;
     const startLine = before.split('\n').length + 1;
     const code = match[2].trim();
     const sourceFile = ts.createSourceFile(
@@ -677,7 +681,7 @@ function listMarkdownFiles(dirPath: string): string[] {
       continue;
     }
 
-    if (path.normalize(entryPath) === path.normalize(path.join(ROOT, 'docs', 'component-template.md'))) {
+    if (path.normalize(entryPath) === path.normalize(path.join(ROOT, 'docs', 'en', 'component-template.md'))) {
       continue;
     }
 

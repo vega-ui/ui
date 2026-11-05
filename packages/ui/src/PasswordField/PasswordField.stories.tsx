@@ -1,18 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { PasswordField } from './PasswordField';
+import { PasswordField, PasswordFieldProps } from './PasswordField';
 import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
   PasswordFieldToggleIconButton,
 } from './components';
-import { Text } from '../Text';
-import { Button } from '../Button';
-import { Card } from '../Card';
-import { Lock, LockOpen } from '@vega-ui/icons';
-import { MeterStack, MeterStackSegment } from '../MeterStack';
-import { CSSProperties, FC, PropsWithChildren, useMemo, useState } from 'react';
 
 const meta = {
   title: 'Form/Fields/PasswordField',
@@ -34,193 +28,52 @@ const meta = {
   argTypes: {
     size: { control: 'radio', options: ['xs', 'sm', 'md', 'lg', 'xl'] },
     disabled: { control: 'boolean' },
+    error: { control: 'boolean' },
+    shown: { control: 'boolean' },
   },
-  args: {
-    children: [
-      <PasswordFieldInput key={0} placeholder='Password' autoComplete='current-password' />,
-      <PasswordFieldToggleIconButton key={1} aria-label='Show password'>
+  args: {},
+  render: (args) => (
+    <PasswordField {...args}>
+      <PasswordFieldInput aria-label='Password' placeholder='Password' autoComplete='current-password' />
+      <PasswordFieldToggleIconButton aria-label='Show password'>
         <PasswordFieldShownIcon />
         <PasswordFieldHiddenIcon />
-      </PasswordFieldToggleIconButton>,
-    ],
-  },
+      </PasswordFieldToggleIconButton>
+    </PasswordField>
+  ),
 } satisfies Meta<typeof PasswordField>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const Stack: FC<PropsWithChildren> = ({ children }) => (
-  <div style={{ display: 'grid', gap: 12, minWidth: 420 }}>{children}</div>
-);
+const sizes: PasswordFieldProps['size'][] = ['xs', 'sm', 'md', 'lg', 'xl'];
+const states = [
+  { label: 'default', shown: false, disabled: false, error: false },
+  { label: 'shown', shown: true, disabled: false, error: false },
+  { label: 'disabled', shown: false, disabled: true, error: false },
+  { label: 'error', shown: false, disabled: false, error: true },
+];
 
-export const Default: Story = {
-  args: {},
-};
+export const Playground: Story = {};
 
-export const Controlled: Story = {
-  render: (args) => {
-    const [shown, setShown] = useState(false);
-
-    return (
-      <div style={{ display: 'grid', gap: 12, width: 320 }}>
-        <PasswordField {...args} shown={shown} onChangeShown={setShown}>
-          <PasswordFieldInput placeholder='New password' autoComplete='new-password' />
+export const Matrix: Story = {
+  render: () => (
+    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${states.length}, auto)`, gap: 12, alignItems: 'center' }}>
+      {sizes.map((size) => states.map((state) => (
+        <PasswordField
+          key={`${size}-${state.label}`}
+          size={size}
+          defaultShown={state.shown}
+          disabled={state.disabled}
+          error={state.error}
+        >
+          <PasswordFieldInput aria-label='Password' defaultValue={`${size} / ${state.label}`} />
           <PasswordFieldToggleIconButton aria-label='Show password'>
             <PasswordFieldShownIcon />
             <PasswordFieldHiddenIcon />
           </PasswordFieldToggleIconButton>
         </PasswordField>
-        <PasswordField {...args} shown={shown} onChangeShown={setShown}>
-          <PasswordFieldInput placeholder='Repeat password' autoComplete='new-password' />
-          <PasswordFieldToggleIconButton aria-label='Show repeated password'>
-            <PasswordFieldShownIcon />
-            <PasswordFieldHiddenIcon />
-          </PasswordFieldToggleIconButton>
-        </PasswordField>
-        <Text size={2}>Both fields share one visibility state.</Text>
-      </div>
-    );
-  },
-};
-
-export const Sizes: Story = {
-  render: (props) => (
-    <Stack>
-      {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
-        <PasswordField key={size} size={size} {...props}>
-          <PasswordFieldInput placeholder={`Size: ${size}`} />
-          <PasswordFieldToggleIconButton aria-label='Show password'>
-            <PasswordFieldShownIcon />
-            <PasswordFieldHiddenIcon />
-          </PasswordFieldToggleIconButton>
-        </PasswordField>
-      ))}
-    </Stack>
+      )))}
+    </div>
   ),
-};
-
-export const Disabled: Story = {
-  args: {
-    disabled: true,
-    children: [
-      <PasswordFieldInput key={0} placeholder='Disabled password' />,
-      <PasswordFieldToggleIconButton key={1} aria-label='Show password'>
-        <PasswordFieldShownIcon />
-        <PasswordFieldHiddenIcon />
-      </PasswordFieldToggleIconButton>
-    ]
-  },
-};
-
-export const CustomIcons: Story = {
-  name: 'Custom toggle icons (Lock / LockOpen)',
-  render: (props) => (
-    <Stack>
-      <PasswordField {...props}>
-        <PasswordFieldInput placeholder='Password' autoComplete='current-password' />
-        <PasswordFieldToggleIconButton aria-label='Show password'>
-          <PasswordFieldShownIcon>
-            <Lock />
-          </PasswordFieldShownIcon>
-          <PasswordFieldHiddenIcon>
-            <LockOpen />
-          </PasswordFieldHiddenIcon>
-        </PasswordFieldToggleIconButton>
-      </PasswordField>
-    </Stack>
-  ),
-};
-
-function getPasswordScore(password: string) {
-  if (!password) return 0;
-  
-  let score = 0;
-  if (password.length >= 8) score += 1;
-  if (password.length >= 12) score += 1;
-  if (/[a-z]/.test(password) && /[A-Z]/.test(password)) score += 1;
-  if (/\d/.test(password)) score += 1;
-  if (/[^a-zA-Z0-9]/.test(password)) score += 1;
-  
-  return Math.min(score, 5);
-}
-
-function scoreLabel(score: number) {
-  if (score <= 1) return 'Weak';
-  if (score === 2) return 'Fair';
-  if (score === 3) return 'Good';
-  if (score === 4) return 'Strong';
-  return 'Very strong';
-}
-
-export const WithStrengthMeter: Story = {
-  name: 'With password strength meter',
-  render: (props) => {
-    const [value, setValue] = useState('');
-    
-    const score = useMemo(() => getPasswordScore(value), [value]);
-    
-    const meter = useMemo(() => {
-      const fill = Math.min(score / 5, 1);
-      const a = Math.min(fill / 0.25, 1);
-      const b = Math.min(Math.max((fill - 0.25) / 0.25, 0), 1);
-      const c = Math.min(Math.max((fill - 0.5) / 0.25, 0), 1);
-      const d = Math.min(Math.max((fill - 0.75) / 0.25, 0), 1);
-      
-      return { a, b, c, d };
-    }, [score]);
-    
-    const veryStrongPassword = '#AaBB78_%$_asd'
-    
-    return (
-      <Stack>
-        <PasswordField {...props}>
-          <PasswordFieldInput
-            placeholder='Create a password'
-            autoComplete='new-password'
-            value={value}
-            onChange={(e) => setValue(e.currentTarget.value)}
-          />
-          <PasswordFieldToggleIconButton aria-label='Show password'>
-            <PasswordFieldShownIcon />
-            <PasswordFieldHiddenIcon />
-          </PasswordFieldToggleIconButton>
-        </PasswordField>
-        
-        <div style={{ display: 'grid', gap: 8 }}>
-          <MeterStack value={getPasswordScore(value)}>
-            <MeterStackSegment
-              value={meter.a * 0.25}
-              style={{ '--meter-stack-segment-color': 'var(--color-red-accent-500)' } as CSSProperties}
-            />
-            <MeterStackSegment
-              value={meter.b * 0.25}
-              style={{ '--meter-stack-segment-color': 'var(--color-orange-accent-500)' } as CSSProperties}
-            />
-            <MeterStackSegment
-              value={meter.c * 0.25}
-              style={{ '--meter-stack-segment-color': 'var(--color-yellow-accent-500)' } as CSSProperties}
-            />
-            <MeterStackSegment
-              value={meter.d * 0.25}
-              style={{ '--meter-stack-segment-color': 'var(--color-green-accent-500)' } as CSSProperties}
-            />
-          </MeterStack>
-          
-          <Text asChild size={2} style={{ opacity: 0.7 }}>
-            <p>
-              Strength: <span style={{ fontWeight: 600 }}>{scoreLabel(score)}</span>
-            </p>
-          </Text>
-          
-          <Text asChild size={2} style={{ opacity: 0.6 }}>
-            <p>Tip: use 12+ characters, mixed case, numbers, and symbols.</p>
-          </Text>
-        </div>
-        
-        <Card>
-          <Button fullWidth onClick={() => setValue(veryStrongPassword)}>Generate</Button>
-        </Card>
-      </Stack>
-    );
-  },
 };

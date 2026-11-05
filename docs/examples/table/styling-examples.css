@@ -1,0 +1,4 @@
+.compactTable td,
+.compactTable th {
+  padding: var(--spacing-4);
+}

@@ -1,0 +1,25 @@
+.page {
+    display: grid;
+    gap: var(--spacing-16);
+    padding-block: var(--spacing-24) var(--spacing-40);
+}
+
+.header {
+    display: grid;
+    gap: var(--spacing-6);
+}
+
+.title {
+    margin: 0;
+    font-size: var(--site-large-title-size);
+    line-height: var(--site-large-title-leading);
+    letter-spacing: var(--site-tracking-tight);
+}
+
+.description {
+    --t-color: var(--site-muted);
+    max-width: 60ch;
+    font-size: var(--site-title-3-size);
+    line-height: var(--site-title-3-leading);
+    text-wrap: pretty;
+}

@@ -5,11 +5,10 @@ import path from 'node:path';
 import ts from 'typescript';
 
 const ROOT = process.cwd();
-const COMPONENTS_DIR = path.join(ROOT, 'docs', 'components');
-const DOCS_DIR = path.join(ROOT, 'docs');
+const COMPONENTS_DIR = path.join(ROOT, 'docs', 'en', 'components');
+const DOCS_DIR = path.join(ROOT, 'docs', 'en');
+const TRANSLATION_DIRS = [path.join(ROOT, 'docs', 'ru')];
 const UI_SRC_DIR = path.join(ROOT, 'packages', 'ui', 'src');
-const ROOT_API_START_MARKER = '<!-- AUTO-GENERATED:ROOT_API:start -->';
-const ROOT_API_END_MARKER = '<!-- AUTO-GENERATED:ROOT_API:end -->';
 const EXTRA_MARKDOWN_FILES = [path.join(ROOT, 'packages', 'ui', 'README.md')];
 const ALLOWED_COMPONENT_FILES = new Set<string>([
   'index.md',
@@ -55,18 +54,7 @@ const TAXONOMY = [
 ] as const;
 
 const errors: string[] = [];
-
-interface PropDocRow {
-  prop: string;
-  type: string;
-  defaultValue: string;
-  required: string;
-  notes: string;
-}
-
-interface ComponentApiModel {
-  rows: PropDocRow[];
-}
+const warnings: string[] = [];
 
 function readFile(filePath: string): string {
   return fs.readFileSync(filePath, 'utf8');
@@ -78,6 +66,23 @@ function getH2Headings(content: string): string[] {
 
 function getH3Headings(content: string): string[] {
   return Array.from(content.matchAll(/^### (.+)$/gm), (match) => match[1].trim());
+}
+
+function getHeadingDepths(content: string): number[] {
+  return Array.from(content.replace(/```[\s\S]*?```/g, '').matchAll(/^(#{2,3}) .+$/gm), (match) => match[1].length);
+}
+
+function validateHeadingStructure(translationFile: string, englishFile: string): void {
+  const translated = getHeadingDepths(readFile(translationFile));
+  const english = getHeadingDepths(readFile(englishFile));
+
+  if (translated.join() === english.join()) {
+    return;
+  }
+
+  warnings.push(
+    `${rel(translationFile)}: h2/h3 structure differs from ${rel(englishFile)} (${translated.length} vs ${english.length} headings), so its anchors fall back to translated slugs.`,
+  );
 }
 
 function getDocProfile(content: string): string | null {
@@ -252,210 +257,6 @@ function getExportedTypesFromIndexDoc(content: string): string[] {
   }
 
   return results;
-}
-
-function collectDefaultsForComponent(componentName: string, sourceFile: ts.SourceFile): Map<string, string> {
-  const defaults = new Map<string, string>();
-
-  for (const statement of sourceFile.statements) {
-    if (!ts.isVariableStatement(statement)) {
-      continue;
-    }
-
-    for (const declaration of statement.declarationList.declarations) {
-      if (!ts.isIdentifier(declaration.name) || declaration.name.text !== componentName) {
-        continue;
-      }
-
-      const initializer = declaration.initializer;
-      if (!initializer || (!ts.isArrowFunction(initializer) && !ts.isFunctionExpression(initializer))) {
-        continue;
-      }
-
-      const [firstParam] = initializer.parameters;
-      if (!firstParam || !ts.isObjectBindingPattern(firstParam.name)) {
-        continue;
-      }
-
-      for (const element of firstParam.name.elements) {
-        if (ts.isOmittedExpression(element) || !ts.isIdentifier(element.name) || !element.initializer) {
-          continue;
-        }
-
-        defaults.set(element.name.text, cleanCodeText(element.initializer.getText(sourceFile)));
-      }
-    }
-  }
-
-  return defaults;
-}
-
-function getPropRow(
-  member: ts.TypeElement,
-  sourceFile: ts.SourceFile,
-  defaults: Map<string, string>,
-): PropDocRow | null {
-  if (ts.isPropertySignature(member) && member.name && ts.isIdentifier(member.name)) {
-    const prop = member.name.text;
-    return {
-      prop,
-      type: normalizeTypeText(member.type?.getText(sourceFile) ?? 'unknown'),
-      defaultValue: escapeTableCell(defaults.get(prop) ?? '—'),
-      required: member.questionToken ? 'No' : 'Yes',
-      notes: escapeTableCell(getDocSummary(member)),
-    };
-  }
-
-  if (ts.isMethodSignature(member) && member.name && ts.isIdentifier(member.name)) {
-    const prop = member.name.text;
-    const params = member.parameters
-      .map((parameter) => {
-        const name = parameter.name.getText(sourceFile);
-        const type = parameter.type?.getText(sourceFile) ?? 'unknown';
-        return `${name}: ${normalizeTypeText(type)}`;
-      })
-      .join(', ');
-    const returnType = normalizeTypeText(member.type?.getText(sourceFile) ?? 'void');
-
-    return {
-      prop,
-      type: escapeTableCell(`(${params}) => ${returnType}`),
-      defaultValue: escapeTableCell(defaults.get(prop) ?? '—'),
-      required: member.questionToken ? 'No' : 'Yes',
-      notes: escapeTableCell(getDocSummary(member)),
-    };
-  }
-
-  return null;
-}
-
-function getDocSummary(node: ts.Node): string {
-  const text = ts.getJSDocCommentsAndTags(node)
-    .map((entry) => entry.getText())
-    .join('\n');
-
-  const cleaned = text
-    .replace(/^\/\*\*[\s\r\n]*/, '')
-    .replace(/\*\/$/, '')
-    .split('\n')
-    .map((line) => line.replace(/^\s*\*\s?/, '').trim())
-    .filter((line) => line.length > 0 && !line.startsWith('@'))
-    .join(' ');
-
-  const normalized = cleaned
-    .replace(/^Optional\s+/i, '')
-    .replace(/^The\s+/i, '')
-    .replace(/^If true,\s*/i, '')
-    .replace(/^Whether\s+/i, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-
-  const firstSentence = normalized.match(/.+?[.?!](?=\s|$)/)?.[0] ?? normalized;
-  const concise = firstSentence
-    .replace(/\s*Useful for.*$/i, '')
-    .replace(/\s*Can be used to.*$/i, '')
-    .replace(/\s*Typically.*$/i, '')
-    .replace(/\s*Defaults to.*$/i, '')
-    .replace(/\s*Should be within.*$/i, '')
-    .replace(/\s*When provided.*$/i, '')
-    .trim();
-
-  return concise || '—';
-}
-
-function normalizeTypeText(value: string): string {
-  return escapeTableCell(
-    value
-      .replace(/\s+/g, ' ')
-      .replace(/\s*\|\s*/g, ' \\| ')
-      .trim(),
-  );
-}
-
-function cleanCodeText(value: string): string {
-  return value.replace(/[ \t\r\n]+/g, ' ').trim();
-}
-
-function escapeTableCell(value: string): string {
-  return value.replace(/\|/g, '\\|');
-}
-
-function getComponentApiModel(componentName: string, sourceFilePath: string): ComponentApiModel | null {
-  const sourceText = fs.readFileSync(sourceFilePath, 'utf8');
-  const sourceFile = ts.createSourceFile(sourceFilePath, sourceText, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
-  const propsTypeName = `${componentName}Props`;
-  const propsNode = sourceFile.statements.find(
-    (statement): statement is ts.InterfaceDeclaration =>
-      ts.isInterfaceDeclaration(statement) && statement.name.text === propsTypeName,
-  );
-
-  if (!propsNode) {
-    return null;
-  }
-
-  const defaults = collectDefaultsForComponent(componentName, sourceFile);
-  const rows: PropDocRow[] = [];
-
-  for (const member of propsNode.members) {
-    const row = getPropRow(member, sourceFile, defaults);
-    if (row) {
-      rows.push(row);
-    }
-  }
-
-  return { rows };
-}
-
-function buildRootApiTable(model: ComponentApiModel): string {
-  const lines = [
-    ROOT_API_START_MARKER,
-    '| Prop | Type | Default | Required | Notes |',
-    '| --- | --- | --- | --- | --- |',
-  ];
-
-  for (const row of model.rows) {
-    lines.push(`| \`${row.prop}\` | \`${row.type}\` | \`${row.defaultValue}\` | ${row.required} | ${row.notes} |`);
-  }
-
-  lines.push(ROOT_API_END_MARKER);
-
-  return lines.join('\n');
-}
-
-function validateGeneratedRootApiBlock(filePath: string): void {
-  const componentDirName = path.basename(path.dirname(filePath));
-  const componentName = toSourceComponentName(componentDirName);
-  const sourceFilePath = path.join(UI_SRC_DIR, componentName, `${componentName}.tsx`);
-
-  if (!fs.existsSync(sourceFilePath)) {
-    return;
-  }
-
-  const content = readFile(filePath);
-  if (!content.includes(ROOT_API_START_MARKER) || !content.includes(ROOT_API_END_MARKER)) {
-    return;
-  }
-
-  const model = getComponentApiModel(componentName, sourceFilePath);
-  if (!model || model.rows.length === 0) {
-    return;
-  }
-
-  const actualBlockMatch = content.match(
-    new RegExp(`${escapeRegExp(ROOT_API_START_MARKER)}[\\s\\S]*?${escapeRegExp(ROOT_API_END_MARKER)}`, 'm'),
-  );
-
-  if (!actualBlockMatch) {
-    return;
-  }
-
-  const expectedBlock = buildRootApiTable(model);
-  const actualBlock = actualBlockMatch[0];
-
-  assert(
-    actualBlock === expectedBlock,
-    `${rel(filePath)}: auto-generated Root API block is out of date. Run "pnpm docs:generate:api".`,
-  );
 }
 
 function listMarkdownFiles(dirPath: string): string[] {
@@ -710,8 +511,6 @@ function validateApi(filePath: string): void {
     'State Model',
     'Integration Notes',
   ]);
-
-  validateGeneratedRootApiBlock(filePath);
 }
 
 function validateAnatomy(filePath: string): void {
@@ -785,6 +584,7 @@ function validateAccessibility(filePath: string): void {
   }
 
   assertHeadingsInOrder(filePath, h2, [
+    'Responsibilities',
     'Labeling',
     'Keyboard Behavior',
     'Focus Behavior',
@@ -941,6 +741,30 @@ function main(): void {
 
   for (const markdownFile of [...listMarkdownFiles(DOCS_DIR), ...EXTRA_MARKDOWN_FILES]) {
     validateMarkdownLinks(markdownFile);
+  }
+
+  for (const translationDir of TRANSLATION_DIRS) {
+    for (const markdownFile of listMarkdownFiles(translationDir)) {
+      const englishFile = path.join(DOCS_DIR, path.relative(translationDir, markdownFile));
+
+      assert(
+        fs.existsSync(englishFile),
+        `${rel(markdownFile)}: a translation needs the English page at the same path in docs/en.`,
+      );
+      validateMarkdownLinks(markdownFile);
+
+      if (fs.existsSync(englishFile)) {
+        validateHeadingStructure(markdownFile, englishFile);
+      }
+    }
+  }
+
+  if (warnings.length > 0) {
+    console.warn('Documentation warnings:\n');
+    for (const warning of warnings) {
+      console.warn(`- ${warning}`);
+    }
+    console.warn('');
   }
 
   if (errors.length > 0) {

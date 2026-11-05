@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { TextArea } from './TextArea';
+import { TextArea, TextAreaProps } from './TextArea';
 
 const meta = {
   title: 'Form/Fields/TextArea',
@@ -18,26 +18,40 @@ const meta = {
       control: 'radio',
       options: ['sm', 'md', 'lg'],
     },
+    error: { control: 'boolean' },
+    disabled: { control: 'boolean' },
   },
-  args: {},
+  args: {
+    'aria-label': 'Description',
+    placeholder: 'Describe the issue',
+  },
 } satisfies Meta<typeof TextArea>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// More on writing stories with args: https://storybook.js.org/docs/writing-stories/args
-export const Default: Story = {
-  args: {
-    placeholder: 'Опишите ситуацию',
-  },
-};
+const sizes: TextAreaProps['size'][] = ['sm', 'md', 'lg'];
+const states = [
+  { label: 'default', disabled: false, error: false },
+  { label: 'disabled', disabled: true, error: false },
+  { label: 'error', disabled: false, error: true },
+];
 
-export const WithError: Story = {
-  args: {
-    ...Default.args,
-    error: true,
-  },
-  render(props) {
-    return <TextArea {...props} />
-  }
-}
+export const Playground: Story = {};
+
+export const Matrix: Story = {
+  render: () => (
+    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${states.length}, auto)`, gap: 12, alignItems: 'center' }}>
+      {sizes.map((size) => states.map((state) => (
+        <TextArea
+          key={`${size}-${state.label}`}
+          aria-label='Description'
+          size={size}
+          disabled={state.disabled}
+          error={state.error}
+          placeholder={`${size} / ${state.label}`}
+        />
+      )))}
+    </div>
+  ),
+};

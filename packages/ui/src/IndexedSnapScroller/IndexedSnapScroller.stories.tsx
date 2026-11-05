@@ -2,9 +2,8 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { IndexedSnapScroller } from './IndexedSnapScroller';
 import { IndexedSnapScrollerContent as _IndexedSnapScrollerContent, type IndexedSnapScrollerContentProps } from './components';
-import { FC, useState } from 'react';
+import { FC } from 'react';
 import { useIndexedSnapScrollerContext } from './contexts';
-import { NumberField, NumberFieldDecrementButton, NumberFieldIncrementButton, NumberFieldInput } from '../NumberField';
 
 const IndexedSnapScrollerContent: FC<IndexedSnapScrollerContentProps> = ({ style, ...props }) => {
   const { index } = useIndexedSnapScrollerContext()
@@ -33,62 +32,28 @@ const IndexedSnapScrollerContent: FC<IndexedSnapScrollerContentProps> = ({ style
   )
 }
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
-const meta: Meta<typeof IndexedSnapScroller> = {
+const meta = {
   title: 'Utils/IndexedSnapScroller',
   component: IndexedSnapScroller,
   subcomponents: {
     IndexedSnapScrollerContent,
   },
-  args: {},
   parameters: {
     layout: 'centered',
   },
   tags: ['autodocs'],
-}
+  argTypes: {
+    defaultIndex: {
+      control: 'number',
+    },
+  },
+  args: {
+    style: { width: 300, gap: 12 },
+    children: <IndexedSnapScrollerContent />,
+  },
+} satisfies Meta<typeof IndexedSnapScroller>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  args: {
-    style: {  width: 300, gap: 12 },
-    children: <IndexedSnapScrollerContent />
-  },
-};
-
-
-export const WithDefaultIndex: Story = {
-  args: {
-    ...Default.args,
-    defaultIndex: 10,
-  },
-};
-
-export const Controlled: Story = {
-  args: {
-    style: { marginTop: 24 }
-  },
-  render(props) {
-    const [index, setIndex] = useState(0)
-    
-    
-    const onScrollSnapChanging = (element: HTMLElement, index: number) => {
-      setIndex(index)
-      props?.onScrollSnapChanging?.(element, index)
-    }
-    
-    return (
-      <div>
-        <NumberField value={index} onChangeValue={setIndex}>
-          <NumberFieldDecrementButton />
-          <NumberFieldInput placeholder='Index' />
-          <NumberFieldIncrementButton />
-        </NumberField>
-        <IndexedSnapScroller {...props} onScrollSnapChanging={onScrollSnapChanging} index={index}>
-          <IndexedSnapScrollerContent />
-        </IndexedSnapScroller>
-      </div>
-    )
-  }
-};
+export const Playground: Story = {};

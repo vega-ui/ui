@@ -1,0 +1,24 @@
+.stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-16);
+    min-width: 0;
+    padding: var(--spacing-16);
+}
+
+.locales {
+    max-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.shown {
+    color: var(--site-text);
+    font-family: var(--default-font-family);
+    text-align: end;
+}
+
+.calendar {
+    width: min(100%, 320px);
+}

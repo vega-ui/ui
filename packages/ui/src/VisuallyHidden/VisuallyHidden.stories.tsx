@@ -1,23 +1,27 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { VisuallyHidden } from './VisuallyHidden';
+import { Text } from '../Text';
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
-const meta: Meta<typeof VisuallyHidden> = {
+const meta = {
   title: 'Utils/VisuallyHidden',
   component: VisuallyHidden,
   parameters: {
     layout: 'centered',
   },
-  args: {
-    children: 'I\'m hidden'
-  },
   tags: ['autodocs'],
-};
+  args: {
+    children: 'This text is only announced by screen readers',
+  },
+  render: (args) => (
+    <div>
+      <Text>The text below is visually hidden:</Text>
+      <VisuallyHidden {...args} />
+    </div>
+  ),
+} satisfies Meta<typeof VisuallyHidden>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  args: {},
-};
+export const Playground: Story = {};

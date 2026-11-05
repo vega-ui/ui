@@ -1,0 +1,61 @@
+.stage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 360px;
+    padding: var(--spacing-20) var(--spacing-16);
+}
+
+.form {
+    display: grid;
+    gap: var(--spacing-10);
+    width: min(100%, 320px);
+}
+
+.field {
+    display: grid;
+    gap: var(--spacing-3);
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-8);
+}
+
+.checkbox {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-4);
+}
+
+.submit {
+    justify-self: start;
+}
+
+.speech {
+    color: var(--site-text);
+    font-family: var(--default-font-family);
+    font-size: var(--site-headline-size);
+    line-height: var(--site-headline-leading);
+    font-weight: 600;
+    animation: speech 300ms ease-out;
+}
+
+.hint {
+    color: var(--site-faint);
+    font-family: var(--default-font-family);
+}
+
+@keyframes speech {
+    from {
+        opacity: 0.4;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .speech {
+        animation: none;
+    }
+}

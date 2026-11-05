@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button, ButtonProps } from './Button';
-import { Spinner } from '../Spinner';
-import { CSSProperties } from 'react';
 
 const meta = {
   title: 'Actions/Button',
@@ -21,109 +19,39 @@ const meta = {
     },
     variant: {
       control: 'radio',
-      options: ['primary', 'secondary']
+      options: ['primary', 'secondary'],
     },
     appearance: {
       control: 'radio',
-      options: ['fill', 'outline', 'ghost', 'transparent']
-    }
+      options: ['fill', 'outline', 'ghost', 'transparent'],
+    },
+    disabled: {
+      control: 'boolean',
+    },
+  },
+  args: {
+    children: 'Button',
   },
 } satisfies Meta<typeof Button>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const variants: ButtonProps['variant'][] = ['primary', 'secondary']
-const appearances: ButtonProps['appearance'][] = ['fill', 'outline', 'ghost', 'transparent']
-const sizes: ButtonProps['size'][] = ['xs', 'sm', 'md', 'lg', 'xl']
+const variants: ButtonProps['variant'][] = ['primary', 'secondary'];
+const appearances: ButtonProps['appearance'][] = ['fill', 'outline', 'ghost', 'transparent'];
+const sizes: ButtonProps['size'][] = ['xs', 'sm', 'md', 'lg', 'xl'];
+const rows = variants.flatMap((variant) => appearances.flatMap((appearance) => [false, true].map((disabled) => ({ variant, appearance, disabled }))));
 
-export const Primary: Story = {
-  args: {
-    children: 'Button'
-  }
-}
+export const Playground: Story = {};
 
-export const Secondary: Story = {
-  args: {
-    variant: 'secondary',
-    children: 'Button'
-  }
-}
-
-export const Disabled: Story = {
-  args: {
-    disabled: true,
-    children: 'Button'
-  }
-}
-
-export const Loading: Story = {
-  args: {
-    disabled: true,
-    children: (
-      <Spinner size={3} style={{ '--spinner-color': 'var(--disable-text-color)' } as CSSProperties}/>
-    )
-  }
-}
-
-export const AsChild: Story = {
-  render(props) {
-    return (
-      <Button {...props} asChild>
-        <a href='#'>Button</a>
-      </Button>
-    )
-  }
-}
-
-export const AllVariants: Story = {
+export const Matrix: Story = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
-      {variants.map(variant => (
-        <div key={variant}>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: `repeat(${sizes.length}, 1fr)`,
-              gap: '12px',
-            }}
-          >
-            {appearances.map(appearance =>
-              sizes.map(size => (
-                <Button
-                  key={`${variant}-${appearance}-${size}`}
-                  variant={variant}
-                  appearance={appearance}
-                  size={size}
-                >
-                  {`${appearance} / ${size}`}
-                </Button>
-              ))
-            )}
-          </div>
-        </div>
-      ))}
+    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${sizes.length}, auto)`, gap: 12, alignItems: 'center' }}>
+      {rows.map((row) => sizes.map((size) => (
+        <Button key={`${row.variant}-${row.appearance}-${row.disabled}-${size}`} {...row} size={size}>
+          {`${row.variant} / ${row.appearance}${row.disabled ? ' / disabled' : ''} / ${size}`}
+        </Button>
+      )))}
     </div>
   ),
-}
-
-export const AllSizes: Story = {
-  render: () => (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: `repeat(${sizes.length}, auto)`,
-        gap: '16px',
-        alignItems: 'center',
-      }}
-    >
-      {sizes.map(size => (
-        <div key={size} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <Button variant='primary' appearance='fill' size={size}>
-            button / {size}
-          </Button>
-        </div>
-      ))}
-    </div>
-  ),
-}
+};

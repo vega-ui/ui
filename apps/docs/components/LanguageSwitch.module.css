@@ -1,0 +1,13 @@
+.trigger {
+    justify-content: center;
+    width: var(--select-size);
+    padding-inline: 0;
+    color: var(--site-muted);
+    transition: color var(--transition-state-delay) ease, background-color var(--transition-state-delay) ease;
+}
+
+.trigger:hover,
+.trigger[data-open='true'] {
+    background-color: var(--fills-tertiary-hover);
+    color: var(--site-text);
+}

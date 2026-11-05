@@ -1,0 +1,105 @@
+.keyboard {
+    --card-columns: 320px minmax(0, 1fr);
+}
+
+.stage {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-8);
+    padding: var(--spacing-16);
+    border-inline-end: 1px solid var(--site-line);
+}
+
+.hint {
+    --t-color: var(--site-muted);
+    font-size: var(--site-footnote-size);
+    line-height: var(--site-footnote-leading);
+}
+
+.listbox {
+    max-height: 288px;
+    border: 1px solid var(--separator-opaque);
+    background: var(--background-color);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--site-bg);
+    font-size: var(--site-callout-size);
+    line-height: var(--site-callout-leading);
+}
+
+.table th {
+    padding: var(--spacing-8) var(--spacing-12);
+    border-block-end: 1px solid var(--site-line);
+    color: var(--site-muted);
+    font-size: var(--site-footnote-size);
+    line-height: var(--site-footnote-leading);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-align: start;
+    text-transform: uppercase;
+}
+
+.row td {
+    padding: var(--spacing-6) var(--spacing-12);
+    border-block-end: 1px solid var(--site-line);
+    color: var(--site-muted);
+    vertical-align: top;
+    transition: background-color 200ms ease, color 200ms ease;
+}
+
+.row:last-child td {
+    border-block-end: 0;
+}
+
+.row[data-pressed='true'] td {
+    background: color-mix(in oklch, var(--color-primary-500) 10%, transparent);
+    color: var(--site-text);
+}
+
+.row code {
+    font-family: var(--site-mono);
+    font-size: 0.92em;
+}
+
+.keys {
+    width: 1%;
+    white-space: nowrap;
+}
+
+.kbd {
+    display: inline-block;
+    min-width: 24px;
+    margin-inline-end: var(--spacing-2);
+    padding: 0 var(--spacing-3);
+    border: 1px solid var(--site-line);
+    border-radius: 6px;
+    background: var(--site-surface);
+    color: var(--site-text);
+    font-size: var(--site-footnote-size);
+    line-height: 22px;
+    text-align: center;
+}
+
+.row[data-pressed='true'] .kbd {
+    border-color: var(--color-primary-500);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .row td {
+        transition: none;
+    }
+}
+
+@media (width < 860px) {
+    .stage {
+        border-inline-end: 0;
+        border-block-end: 1px solid var(--site-line);
+    }
+
+    .keys {
+        white-space: normal;
+    }
+}

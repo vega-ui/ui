@@ -1,0 +1,27 @@
+.panel {
+    margin-top: var(--spacing-8);
+}
+
+.shell {
+    display: grid;
+    grid-template-columns: 248px minmax(0, 1fr);
+    gap: var(--spacing-24);
+}
+
+.aside {
+    border-inline-end: 1px solid var(--site-line);
+}
+
+.main {
+    min-width: 0;
+}
+
+@media (width < 900px) {
+    .shell {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .aside {
+        display: none;
+    }
+}

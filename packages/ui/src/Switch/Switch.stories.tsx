@@ -1,12 +1,7 @@
-import type { Meta, StoryObj } from '@storybook/react-vite'
-import { FormEvent, useState } from 'react'
-import { Moon } from '@vega-ui/icons'
+import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Switch } from './Switch'
+import { Switch, SwitchProps } from './Switch';
 import { SwitchInput, SwitchIndicator } from './components';
-import { Button } from '../Button'
-import { Code } from '../Code'
-import { Icon } from '../Icon'
 
 const meta = {
   title: 'Form/Selectors/Switch',
@@ -23,107 +18,46 @@ const meta = {
     },
   },
   tags: ['autodocs'],
-  argTypes: {},
-  args: {
-    children: [
-      <SwitchInput key={0} />,
-      <SwitchIndicator key={1} />
-    ]
-  }
-} satisfies Meta<typeof Switch>
-
-export default meta
-type Story = StoryObj<typeof meta>
-
-export const Primary: Story = {
-  args: {
-    variant: 'primary',
-  },
-}
-
-export const Secondary: Story = {
-  args: {
-    variant: 'secondary',
-  },
-}
-
-export const Disabled: Story = {
-  args: {
-    children: [
-      <SwitchInput key={0} disabled />,
-      <SwitchIndicator key={1} />
-    ]
-  },
-}
-
-export const Checked: Story = {
-  args: {
-    children: [
-      <SwitchInput key={0} checked />,
-      <SwitchIndicator key={1} />
-    ]
-  },
-}
-
-export const CheckedDisabled: Story = {
-  args: {
-    children: [
-      <SwitchInput key={0} checked disabled />,
-      <SwitchIndicator key={1} />
-    ]
-  },
-}
-
-export const CustomIndicator: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: '`SwitchIndicator` takes your own `style` and children, so the thumb can have its own color or hold an icon.',
-      },
+  argTypes: {
+    variant: {
+      control: 'radio',
+      options: ['primary', 'secondary'],
+    },
+    size: {
+      control: 'radio',
+      options: ['sm', 'md', 'lg'],
     },
   },
-  render: (props) => (
-    <div style={{ display: 'flex', gap: 16 }}>
-      <Switch {...props}>
-        <SwitchInput aria-label='Accent thumb' />
-        <SwitchIndicator style={{ background: 'var(--color-blue-accent-800)' }} />
-      </Switch>
-      <Switch {...props}>
-        <SwitchInput aria-label='Dark mode' />
-        <SwitchIndicator style={{ background: 'var(--color-blue-accent-800)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Icon size='sm'><Moon stroke='white' /></Icon>
-        </SwitchIndicator>
-      </Switch>
+  args: {
+    children: [
+      <SwitchInput key='input' aria-label='Switch' />,
+      <SwitchIndicator key='indicator' />,
+    ],
+  },
+} satisfies Meta<typeof Switch>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+const variants: SwitchProps['variant'][] = ['primary', 'secondary'];
+const sizes: SwitchProps['size'][] = ['sm', 'md', 'lg'];
+const rows = variants.flatMap((variant) => [false, true].flatMap((checked) => [false, true].map((disabled) => ({ variant, checked, disabled }))));
+
+export const Playground: Story = {};
+
+export const States: Story = {
+  render: () => (
+    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${sizes.length}, auto)`, gap: 12, alignItems: 'center' }}>
+      {rows.map((row) => sizes.map((size) => {
+        const name = `${row.variant}${row.checked ? ' / checked' : ''}${row.disabled ? ' / disabled' : ''} / ${size}`;
+
+        return (
+          <Switch key={name} variant={row.variant} size={size}>
+            <SwitchInput aria-label={name} defaultChecked={row.checked} disabled={row.disabled} />
+            <SwitchIndicator />
+          </Switch>
+        );
+      }))}
     </div>
   ),
-}
-
-export const InForm: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: '`SwitchInput` is a native checkbox, so with a `name` it submits with the form.',
-      },
-    },
-  },
-  render: (props) => {
-    const [submitted, setSubmitted] = useState('')
-
-    const onSubmit = (event: FormEvent<HTMLFormElement>) => {
-      event.preventDefault()
-      const data = Object.fromEntries(new FormData(event.currentTarget))
-      setSubmitted(JSON.stringify(data))
-    }
-
-    return (
-      <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 12 }}>
-        <Switch {...props}>
-          <SwitchInput name='notifications' aria-label='Notifications' />
-          <SwitchIndicator />
-        </Switch>
-        <Button type='submit'>Submit</Button>
-        {submitted && <Code>{submitted}</Code>}
-      </form>
-    )
-  },
-}
+};

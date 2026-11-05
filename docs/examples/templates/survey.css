@@ -1,0 +1,51 @@
+.survey {
+  container-type: inline-size;
+}
+
+.surveyScore {
+  grid-auto-columns: minmax(0, 1fr);
+  inline-size: 100%;
+  font-variant-numeric: tabular-nums;
+}
+
+.surveyFieldset {
+  margin: 0;
+}
+
+.surveyScale {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--spacing-8);
+}
+
+.surveyFeatures {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--spacing-6);
+}
+
+.surveyReview {
+  display: grid;
+  margin: 0;
+  padding-inline: var(--spacing-8);
+  border-radius: var(--radius-4);
+  background: var(--fills-quaternary);
+}
+
+.surveyReviewRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-8);
+  padding-block: var(--spacing-7);
+}
+
+.surveyReviewRow + .surveyReviewRow {
+  border-block-start: 1px solid var(--separator-opaque);
+}
+
+@container (max-width: 440px) {
+  .surveyFeatures {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

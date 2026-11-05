@@ -44,6 +44,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Cache Turbo
+        uses: actions/cache@v6
+        with:
+          path: .turbo/cache
+          key: ${{ runner.os }}-turbo-${{ github.job }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-${{ github.job }}-
+
       - name: Build
         run: pnpm build
 
@@ -65,15 +73,20 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PAT_GITHUB }}
           NODE_ENV: "production"
 
-      - name: Build storybook
-        run: npm run build-storybook
+      - name: Build docs site
+        run: pnpm --filter @vega-ui/docs site:build
+        env:
+          PAGES_BASE_PATH: /${{ github.event.repository.name }}
 
-      - name: Upload storybook
+      - name: Build storybook
+        run: npm run build-storybook -- --output-dir apps/docs/out/storybook
+
+      - name: Upload site
         uses: actions/upload-pages-artifact@v5
         with:
-          path: storybook-static/
+          path: apps/docs/out/
 
-      - name: Deploy storybook to GitHub Pages
+      - name: Deploy site to GitHub Pages
         uses: actions/deploy-pages@v5
         with:
           token: ${{ github.token }}

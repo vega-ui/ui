@@ -1,0 +1,124 @@
+.pricing {
+  container-type: inline-size;
+}
+
+.pricingPlans {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+  gap: var(--spacing-8);
+}
+
+.pricingPlan {
+  background: var(--surface-primary);
+  --card-border-color: var(--separator-opaque);
+}
+
+.pricingPlan[data-popular='true'] {
+  --card-border-color: var(--color-primary-500);
+  box-shadow: 0 0 0 1px var(--color-primary-500);
+}
+
+.pricingCalculator {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: var(--spacing-12) var(--spacing-16);
+}
+
+.pricingEstimates {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--spacing-8);
+  margin: 0;
+}
+
+.pricingEstimate {
+  display: grid;
+  align-content: start;
+  gap: var(--spacing-2);
+  padding: var(--spacing-8);
+  border-radius: var(--radius-4);
+  background: var(--fills-quaternary);
+}
+
+.pricingTableScroll {
+  position: relative;
+  overflow-x: auto;
+  border: 1px solid var(--separator-opaque);
+  border-radius: var(--radius-4);
+  background: var(--surface-primary);
+}
+
+.pricingTableScroll:focus-visible {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 2px;
+}
+
+.pricingTable {
+  min-inline-size: 600px;
+  border-style: hidden;
+}
+
+.pricingTable thead th {
+  inline-size: 22%;
+}
+
+.pricingTable thead th:first-child {
+  inline-size: 34%;
+}
+
+.pricingTable :is(th, td) {
+  vertical-align: middle;
+}
+
+.pricingTable tr:not(.pricingSection) > :first-child {
+  position: sticky;
+  inset-inline-start: 0;
+  z-index: 1;
+  background: var(--surface-primary);
+}
+
+.pricingSection span {
+  position: sticky;
+  inset-inline-start: var(--spacing-6);
+}
+
+.pricingSection > th {
+  padding-block-start: var(--spacing-12);
+  background: var(--surface-primary);
+  color: var(--label-secondary);
+  font-size: var(--text-font-size-2);
+  font-weight: 600;
+}
+
+.pricingFaq {
+  display: grid;
+  gap: var(--spacing-8);
+  max-inline-size: 720px;
+}
+
+.pricingEnterprise {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-8) var(--spacing-16);
+  background: var(--fills-quaternary);
+}
+
+@container (max-width: 720px) {
+  .pricingPlans {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .pricingCalculator {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@container (max-width: 520px) {
+  .pricingEstimates {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

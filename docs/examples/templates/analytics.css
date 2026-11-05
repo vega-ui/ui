@@ -1,0 +1,41 @@
+.analyticsHeatmap {
+  gap: var(--spacing-2);
+  font-size: var(--font-size-1);
+  font-variant-numeric: tabular-nums;
+  color: var(--label-secondary);
+}
+
+.analyticsHeatmap [role='row'] {
+  gap: var(--spacing-2);
+  grid-template-columns: var(--spacing-18);
+  grid-auto-columns: minmax(0, 1fr);
+}
+
+.analyticsHeatmap [role='rowheader'] {
+  justify-content: flex-start;
+}
+
+.analyticsHeatmap [role='gridcell'] {
+  aspect-ratio: 1.6;
+  min-block-size: var(--spacing-10);
+  border-radius: var(--radius-1);
+  background: color-mix(in oklch, var(--color-primary-500) var(--level), var(--fills-quaternary));
+  cursor: default;
+}
+
+.analyticsHeatmap [role='gridcell']:focus-visible {
+  outline: 2px solid var(--focus-color);
+  outline-offset: 1px;
+}
+
+.analyticsSwatch {
+  inline-size: var(--spacing-6);
+  block-size: var(--spacing-6);
+  border-radius: var(--radius-1);
+  background: color-mix(in oklch, var(--color-primary-500) var(--level), var(--fills-quaternary));
+}
+
+.analyticsHeatmap [role='rowgroup'] {
+  display: grid;
+  gap: var(--spacing-2);
+}

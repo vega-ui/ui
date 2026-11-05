@@ -1,0 +1,120 @@
+.markdown {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-6);
+    min-width: 0;
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+    margin: 0;
+    padding-inline-start: var(--spacing-12);
+}
+
+.h1 {
+    font-size: var(--site-title-1-size);
+    line-height: var(--site-title-1-leading);
+    letter-spacing: var(--site-tracking-tight);
+}
+
+.h2 {
+    margin-top: var(--spacing-20);
+    font-size: var(--site-title-2-size);
+    line-height: var(--site-title-2-leading);
+    letter-spacing: var(--site-tracking-tight);
+    scroll-margin-top: 96px;
+}
+
+.h3 {
+    margin-top: var(--spacing-10);
+    font-size: var(--site-title-3-size);
+    line-height: var(--site-title-3-leading);
+    scroll-margin-top: 96px;
+}
+
+.h4 {
+    font-size: var(--site-headline-size);
+    line-height: var(--site-headline-leading);
+}
+
+.p,
+.li {
+    --t-color: var(--site-muted);
+    white-space: normal;
+    font-size: var(--site-body-size);
+    line-height: var(--site-body-leading);
+}
+
+.p :where(strong),
+.li :where(strong) {
+    color: var(--site-text);
+    font-weight: 600;
+}
+
+.code {
+    font-family: var(--site-mono);
+    font-size: 0.875em;
+}
+
+.kbd {
+    display: inline-grid;
+    place-items: center;
+    min-width: 22px;
+    padding-inline: var(--spacing-3);
+    box-sizing: border-box;
+    border: 1px solid var(--site-line);
+    border-radius: 6px;
+    background: var(--site-surface-raised);
+    color: var(--site-text);
+    font-family: inherit;
+    font-size: var(--site-footnote-size);
+    line-height: var(--site-footnote-leading);
+    white-space: nowrap;
+}
+
+.table td:first-child:has(> .kbd) {
+    white-space: nowrap;
+}
+
+:is(.p, .li) .code {
+    overflow-wrap: anywhere;
+}
+
+.table {
+    overflow-x: auto;
+    border: 1px solid var(--site-line);
+    border-radius: calc(14px * var(--site-radius-scale));
+}
+
+.table :is(th, td)[data-align] {
+    padding: var(--spacing-5) var(--spacing-4);
+    text-align: start;
+    vertical-align: top;
+}
+
+.table :is(th, td) {
+    font-size: var(--site-callout-size);
+    line-height: var(--site-callout-leading);
+}
+
+.table td:nth-child(2) {
+    min-width: 12em;
+}
+
+.table td:last-child {
+    min-width: 12em;
+}
+
+.table td:nth-child(2) .code {
+    overflow-wrap: anywhere;
+}
+
+.table td:first-child .code {
+    white-space: nowrap;
+}
+
+.alias {
+    scroll-margin-top: 96px;
+}

@@ -1,0 +1,10 @@
+.category {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-8);
+    margin-top: var(--spacing-12);
+}
+
+.heading {
+    scroll-margin-top: 96px;
+}

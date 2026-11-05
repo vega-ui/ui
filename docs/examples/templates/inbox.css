@@ -1,0 +1,91 @@
+.inbox {
+  container-type: inline-size;
+}
+
+.inboxPanes {
+  display: grid;
+  grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+  min-block-size: 560px;
+  border: 1px solid var(--separator-opaque);
+  border-radius: var(--radius-5);
+  background: var(--surface-primary);
+  overflow: hidden;
+}
+
+.inboxList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+  min-inline-size: 0;
+  padding: var(--spacing-8);
+  border-inline-end: 1px solid var(--separator-opaque);
+}
+
+.inboxListbox {
+  flex: 1;
+  min-inline-size: 0;
+  margin-inline: calc(var(--spacing-4) * -1);
+  background: transparent;
+}
+
+.inboxOption {
+  --option-color: var(--label-primary);
+  --option-background-color-hover: var(--fills-quaternary);
+  --option-background-color-active: var(--fills-tertiary);
+  --option-br-ratio: 0;
+
+  align-items: flex-start;
+  gap: var(--spacing-6);
+  height: auto;
+  padding-block: var(--spacing-6);
+  padding-inline: var(--spacing-6);
+  border-radius: var(--radius-3);
+}
+
+.inboxOption[aria-selected='true'] {
+  --option-color: var(--label-primary);
+  --option-background-color: color-mix(in oklch, var(--color-primary-500) 14%, transparent);
+  --option-background-color-hover: color-mix(in oklch, var(--color-primary-500) 18%, transparent);
+  --option-background-color-active: color-mix(in oklch, var(--color-primary-500) 24%, transparent);
+}
+
+.inboxDetail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-12);
+  min-inline-size: 0;
+  padding: var(--spacing-8) var(--spacing-12) var(--spacing-12);
+}
+
+.inboxBack {
+  display: none;
+  flex-shrink: 0;
+}
+
+.inboxBack:dir(rtl) svg {
+  scale: -1 1;
+}
+
+@container (width < 640px) {
+  .inboxPanes {
+    grid-template-columns: minmax(0, 1fr);
+    min-block-size: 0;
+  }
+
+  .inboxList {
+    border-inline-end: none;
+  }
+
+  .inboxDetail {
+    padding: var(--spacing-8);
+  }
+
+  .inboxPanes[data-view='list'] .inboxDetail,
+  .inboxPanes[data-view='detail'] .inboxList {
+    display: none;
+  }
+
+  .inboxBack {
+    display: inline-flex;
+  }
+}

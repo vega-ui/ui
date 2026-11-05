@@ -1,0 +1,129 @@
+# PhoneField
+
+## Doc Profile
+
+`advanced interactive`
+
+## Summary
+
+`PhoneField` is a [compound component](../../glossary.md#compound-component) that combines a masked phone input with a nested country-code `Select`. It is the consumer-facing phone-entry layer, not just a loose `Select` plus `TextField` pairing.
+
+## Imports
+
+```tsx
+import {
+  PhoneField,
+  PhoneFieldInput,
+  PhoneFieldSelect,
+  PhoneFieldSelectHiddenSelect,
+  PhoneFieldSelectCombobox,
+  PhoneFieldSelectValue,
+  PhoneFieldSelectIcon,
+  PhoneFieldSelectListbox,
+  PhoneFieldSelectOption,
+  type PhoneFieldProps,
+} from '@vega-ui/react';
+```
+
+## Exported Types
+
+- `PhoneFieldProps`
+- `PhoneFieldInputProps`
+- `PhoneFieldSelectProps`
+
+## Minimal Composition
+
+<!-- example: phone-field/minimal-composition.tsx -->
+```tsx
+import {
+  Label,
+  PhoneField,
+  PhoneFieldInput,
+  PhoneFieldSelect,
+  PhoneFieldSelectCombobox,
+  PhoneFieldSelectHiddenSelect,
+  PhoneFieldSelectIcon,
+  PhoneFieldSelectListbox,
+  PhoneFieldSelectOption,
+  PhoneFieldSelectValue,
+} from '@vega-ui/react';
+import { useId } from 'react';
+
+export default function MinimalComposition() {
+  const id = useId();
+
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', width: '100%', maxWidth: 320 }}>
+      <Label htmlFor={id}>Phone number</Label>
+      <PhoneField defaultCode='US'>
+        <PhoneFieldSelect>
+          <PhoneFieldSelectHiddenSelect name='country' />
+          <PhoneFieldSelectCombobox aria-label='Country'>
+            <PhoneFieldSelectValue />
+            <PhoneFieldSelectIcon />
+          </PhoneFieldSelectCombobox>
+          <PhoneFieldSelectListbox>
+            <PhoneFieldSelectOption value='US'>US</PhoneFieldSelectOption>
+            <PhoneFieldSelectOption value='GB'>GB</PhoneFieldSelectOption>
+            <PhoneFieldSelectOption value='DE'>DE</PhoneFieldSelectOption>
+          </PhoneFieldSelectListbox>
+        </PhoneFieldSelect>
+        <PhoneFieldInput id={id} name='phone' autoComplete='tel' />
+      </PhoneField>
+    </div>
+  );
+}
+```
+<!-- /example -->
+
+## Required Parts
+
+- `PhoneField`: root field state and formatting context
+- `PhoneFieldInput`: actual phone number input
+
+## Optional Parts
+
+- `PhoneFieldSelect*`: nested country-code picker family built on the same select subsystem contract
+- `PhoneFieldSelectHiddenSelect`: native [form participation](../../glossary.md#form-participation) for country code
+
+## Composition Order
+
+Typical composition:
+
+1. `PhoneField`
+2. `PhoneFieldSelect`
+3. `PhoneFieldSelectHiddenSelect`
+4. `PhoneFieldSelectCombobox`
+5. `PhoneFieldSelectListbox`
+6. `PhoneFieldSelectOption`
+7. `PhoneFieldInput`
+
+## Variants
+
+- Input-only usage versus full country-select composition
+- `strictMask` versus lenient input
+- Controlled input value versus uncontrolled form usage
+
+## Related Docs
+
+- [Anatomy](./anatomy.md)
+- [Examples](./examples.md)
+- [Patterns](./patterns.md)
+- [API](./api.md)
+- [Styling](./styling.md)
+- [Accessibility](./accessibility.md)
+- [Comparison](./comparison.md)
+- [Troubleshooting](./troubleshooting.md)
+
+## Edge Cases
+
+- Country changes can require reformatting and revalidation.
+- Strict masking and paste behavior should both be tested.
+- Persist canonical values at the feature boundary, not only the displayed formatted string.
+- Autofill, pasted values, and partially typed international prefixes should be tested together, not as isolated cases.
+
+## Common Mistakes
+
+- Treating only the visible formatted string as the [source of truth](../../glossary.md#source-of-truth).
+- Ignoring country changes in validation logic.
+- Testing typing flow only and skipping paste or autofill.

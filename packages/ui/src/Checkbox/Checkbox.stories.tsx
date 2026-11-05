@@ -1,18 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { ComponentProps } from 'react';
-import { Diff, Rocket } from '@vega-ui/icons';
 
-import { Text } from '../Text';
-import { Checkbox } from './Checkbox';
-import { CheckboxCheckedIcon, CheckboxInput, CheckboxIndeterminateIcon, CheckboxIndicator } from './components';
+import { Checkbox, CheckboxProps } from './Checkbox';
+import { CheckboxCheckedIcon, CheckboxInput, CheckboxInputProps, CheckboxIndeterminateIcon, CheckboxIndicator } from './components';
+import { subcomponentArgs } from '../../../../.storybook/subcomponentArgs';
 
-const parts = (input: ComponentProps<typeof CheckboxInput> = {}) => [
-  <CheckboxInput key={0} {...input} />,
-  <CheckboxIndicator key={1}>
-    <CheckboxCheckedIcon />
-    <CheckboxIndeterminateIcon />
-  </CheckboxIndicator>
-]
+type CheckboxStoryProps = CheckboxProps & Pick<CheckboxInputProps, 'indeterminate' | 'disabled'>;
+
+const input = subcomponentArgs(CheckboxInput, ['indeterminate', 'disabled']);
 
 const meta = {
   title: 'Form/Selectors/Checkbox',
@@ -40,97 +34,60 @@ const meta = {
       control: 'radio',
       options: ['sm', 'md', 'lg'],
     },
+    children: { control: false },
+    ...input.argTypes,
   },
   args: {
-    children: parts()
-  }
-} satisfies Meta<typeof Checkbox>;
+    indeterminate: false,
+    disabled: false,
+  },
+} satisfies Meta<CheckboxStoryProps>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<CheckboxStoryProps>;
 
-export const Primary: Story = {
-  args: {},
-};
+const variants: CheckboxProps['variant'][] = ['primary', 'secondary'];
+const sizes: CheckboxProps['size'][] = ['sm', 'md', 'lg'];
+const checks = ['unchecked', 'checked', 'indeterminate'];
+const rows = variants.flatMap((variant) => checks.flatMap((check) => [false, true].map((disabled) => ({ variant, check, disabled }))));
 
-export const Secondary: Story = {
-  args: {
-    variant: 'secondary'
-  },
-};
+export const Playground: Story = {
+  render: (args) => {
+    const [inputProps, checkboxProps] = input.split(args);
 
-export const Disabled: Story = {
-  args: {
-    children: parts({ disabled: true })
-  },
-};
-
-export const Indeterminate: Story = {
-  args: {
-    children: parts({ indeterminate: true })
-  },
-};
-
-export const Checked: Story = {
-  args: {
-    children: parts({ defaultChecked: true })
-  },
-};
-
-export const IndeterminateDisabled: Story = {
-  args: {
-    children: parts({ indeterminate: true, disabled: true })
-  },
-};
-
-export const CheckedDisabled: Story = {
-  args: {
-    children: parts({ defaultChecked: true, disabled: true })
-  },
-};
-
-export const WithLabel: Story = {
-  args: {},
-  render(props) {
     return (
-      <Text asChild size={2} style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-        <label>
-          <Checkbox {...props} />
-          Just a label
-        </label>
-      </Text>
-    )
-  }
-};
-
-export const CustomIcons: Story = {
-  parameters: {
-    docs: {
-      description: {
-        story: 'Children of `CheckboxCheckedIcon` and `CheckboxIndeterminateIcon` replace the default icon of that state.',
-      },
-    },
-  },
-  render: (props) => (
-    <div style={{ display: 'flex', gap: 16 }}>
-      <Checkbox {...props}>
-        <CheckboxInput aria-label='Launch' defaultChecked />
+      <Checkbox {...checkboxProps}>
+        <CheckboxInput {...inputProps} aria-label='Checkbox' />
         <CheckboxIndicator>
-          <CheckboxCheckedIcon>
-            <Rocket />
-          </CheckboxCheckedIcon>
+          <CheckboxCheckedIcon />
           <CheckboxIndeterminateIcon />
         </CheckboxIndicator>
       </Checkbox>
-      <Checkbox {...props}>
-        <CheckboxInput aria-label='Compare' indeterminate />
-        <CheckboxIndicator>
-          <CheckboxCheckedIcon />
-          <CheckboxIndeterminateIcon>
-            <Diff />
-          </CheckboxIndeterminateIcon>
-        </CheckboxIndicator>
-      </Checkbox>
+    );
+  },
+};
+
+export const States: Story = {
+  render: () => (
+    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${sizes.length}, auto)`, gap: 12, alignItems: 'center' }}>
+      {rows.map((row) => sizes.map((size) => {
+        const name = `${row.variant} / ${row.check}${row.disabled ? ' / disabled' : ''} / ${size}`;
+
+        return (
+          <Checkbox key={name} variant={row.variant} size={size}>
+            <CheckboxInput
+              aria-label={name}
+              defaultChecked={row.check === 'checked'}
+              indeterminate={row.check === 'indeterminate'}
+              disabled={row.disabled}
+            />
+            <CheckboxIndicator>
+              <CheckboxCheckedIcon />
+              <CheckboxIndeterminateIcon />
+            </CheckboxIndicator>
+          </Checkbox>
+        );
+      }))}
     </div>
   ),
 };

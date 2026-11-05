@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { SegmentedControl } from './SegmentedControl';
+import { SegmentedControl, SegmentedControlProps } from './SegmentedControl';
 import { SegmentedControlIndicator, SegmentedControlItem, SegmentedControlItemInput } from './components';
 import { Icon } from '../Icon';
 import { SunIcon, MoonIcon } from '@vega-ui/icons';
-import { Separator } from '../Separator';
 
 const meta = {
   title: 'Form/Selectors/SegmentedControl',
@@ -30,164 +29,120 @@ const meta = {
     variant: {
       control: 'radio',
       options: ['primary', 'secondary'],
-    }
+    },
+    disabled: {
+      control: 'boolean',
+    },
+  },
+  args: {
+    name: 'fruit',
+    defaultValue: '1',
+    role: 'radiogroup',
+    'aria-label': 'Fruit',
+    children: [
+      <SegmentedControlItem key='1' value='1'>
+        <SegmentedControlItemInput />
+        Apple
+      </SegmentedControlItem>,
+      <SegmentedControlItem key='2' value='2'>
+        <SegmentedControlItemInput />
+        Orange
+      </SegmentedControlItem>,
+      <SegmentedControlItem key='3' value='3'>
+        <SegmentedControlItemInput />
+        Blueberry
+      </SegmentedControlItem>,
+      <SegmentedControlIndicator key='indicator' />,
+    ],
   },
 } satisfies Meta<typeof SegmentedControl>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  args: {
-    name: 'default',
-    defaultValue: '1',
-    children: [
-      <SegmentedControlItem key={0} value='1'>
-        <SegmentedControlItemInput />
-        Apple
-      </SegmentedControlItem>,
-      <SegmentedControlItem key={1} value='2'>
-        <SegmentedControlItemInput />
-        Orange
-      </SegmentedControlItem>,
-      <SegmentedControlItem key={2} value='3'>
-        <SegmentedControlItemInput />
-        Blueberry
-      </SegmentedControlItem>,
-      <SegmentedControlIndicator key={3} />
-    ]
-  },
-};
+const variants: SegmentedControlProps['variant'][] = ['primary', 'secondary'];
+const sizes: SegmentedControlProps['size'][] = ['xs', 'sm', 'md', 'lg', 'xl'];
+const states = [
+  { state: 'enabled', disabled: false, defaultValue: '1', icons: false },
+  { state: 'disabled', disabled: true, defaultValue: undefined, icons: false },
+  { state: 'selected disabled', disabled: true, defaultValue: '2', icons: false },
+  { state: 'icon only', disabled: false, defaultValue: '1', icons: true },
+];
+const rows = states.flatMap((state) => sizes.map((size) => ({ ...state, size })));
 
-export const Separated: Story = {
-  args: {
-    name: 'separated',
-    defaultValue: '1',
-    style: {
-      display: 'flex',
-      width: 'min-content',
-    },
-    children: [
-      <SegmentedControlItem key={0} value='1'>
-        <SegmentedControlItemInput />
-        Apple
-      </SegmentedControlItem>,
-      <Separator key={1} style={{ height: '80%' }} orientation='vertical' />,
-      <SegmentedControlItem key={2} value='2'>
-        <SegmentedControlItemInput />
-        Orange
-      </SegmentedControlItem>,
-      <Separator key={3} style={{ height: '80%' }} orientation='vertical' />,
-      <SegmentedControlItem key={4} value='3'>
-        <SegmentedControlItemInput />
-        Blueberry
-      </SegmentedControlItem>,
-      <SegmentedControlIndicator key={5} />
-    ]
-  },
-};
+export const Playground: Story = {};
 
-export const MinContent: Story = {
-  args: {
-    name: 'min-content',
-    defaultValue: '1',
-    style: {
-      display: 'flex',
-      width: 'min-content',
-    },
-    children: [
-      <SegmentedControlItem key={0} value='1'>
-        <SegmentedControlItemInput />
-        Apple
-      </SegmentedControlItem>,
-      <SegmentedControlItem key={1} value='2'>
-        <SegmentedControlItemInput />
-        Orange
-      </SegmentedControlItem>,
-      <SegmentedControlItem key={2} value='3'>
-        <SegmentedControlItemInput />
-        Blueberry
-      </SegmentedControlItem>,
-      <SegmentedControlIndicator key={3} />
-    ]
-  },
-};
+export const Matrix: Story = {
+  render: () => (
+    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${variants.length}, auto)`, gap: 12, alignItems: 'center' }}>
+      {rows.map((row) => variants.map((variant) => {
+        const name = `${variant} / ${row.state} / ${row.size}`;
 
-export const Disabled: Story = {
-  args: {
-    name: 'disabled',
-    disabled: true,
-    children: MinContent.args.children,
-  },
-};
+        if (row.icons) {
+          return (
+            <SegmentedControl key={name} name={name} role='radiogroup' aria-label={name} variant={variant} size={row.size} disabled={row.disabled} defaultValue={row.defaultValue}>
+              <SegmentedControlItem value='1'>
+                <SegmentedControlItemInput aria-label='Light' />
+                <Icon size='sm'><SunIcon /></Icon>
+              </SegmentedControlItem>
+              <SegmentedControlItem value='2'>
+                <SegmentedControlItemInput aria-label='Dark' />
+                <Icon size='sm'><MoonIcon /></Icon>
+              </SegmentedControlItem>
+              <SegmentedControlIndicator />
+            </SegmentedControl>
+          );
+        }
 
-export const SelectedDisabled: Story = {
-  args: {
-    name: 'selected-disabled',
-    disabled: true,
-    value: '2',
-    children: MinContent.args.children,
-  },
+        return (
+          <SegmentedControl key={name} name={name} role='radiogroup' aria-label={name} variant={variant} size={row.size} disabled={row.disabled} defaultValue={row.defaultValue}>
+            <SegmentedControlItem value='1'>
+              <SegmentedControlItemInput />
+              Apple
+            </SegmentedControlItem>
+            <SegmentedControlItem value='2'>
+              <SegmentedControlItemInput />
+              Orange
+            </SegmentedControlItem>
+            <SegmentedControlItem value='3'>
+              <SegmentedControlItemInput />
+              Blueberry
+            </SegmentedControlItem>
+            <SegmentedControlIndicator />
+          </SegmentedControl>
+        );
+      }))}
+    </div>
+  ),
 };
 
 export const DifferentLength: Story = {
-  args: {
-    name: 'different-length',
-    defaultValue: '2',
-    style: {
-      display: 'flex',
-    },
-    children: [
-      <SegmentedControlItem key={0} value='1'>
-        <SegmentedControlItemInput />
-        Short
-      </SegmentedControlItem>,
-      <SegmentedControlItem key={1} value='2'>
-        <SegmentedControlItemInput />
-        Loooooong
-      </SegmentedControlItem>,
-      <SegmentedControlItem key={2} value='3'>
-        <SegmentedControlItemInput />
-        Short
-      </SegmentedControlItem>,
-      <SegmentedControlIndicator key={3} />
-    ]
-  },
-};
-
-export const Primary: Story = {
-  args: {
-    ...Default.args,
-    name: 'primary',
-    variant: 'primary',
-  },
-  render: Default.render
-};
-
-export const Secondary: Story = {
-  args: {
-    ...Default.args,
-    name: 'secondary',
-    variant: 'secondary',
-  },
-  render: Default.render
-};
-
-export const WithIcon: Story = {
-  args: {
-    ...Default.args,
-    variant: 'secondary',
-    name: 'icon',
-    children: [
-      <SegmentedControlItem key={0} value='1'>
-        <SegmentedControlItemInput />
-        <Icon size='sm'><SunIcon /></Icon>
-      </SegmentedControlItem>,
-      <SegmentedControlItem key={1} value='2'>
-        <SegmentedControlItemInput />
-        <Icon size='sm'><MoonIcon /></Icon>
-      </SegmentedControlItem>,
-      <SegmentedControlIndicator key={2} />
-    ]
-  }
+  render: () => (
+    <div style={{ display: 'grid', gap: 12, width: 400 }}>
+      {['stretched', 'min-content'].map((width) => (
+        <SegmentedControl
+          key={width}
+          name={`different-length-${width}`}
+          role='radiogroup'
+          aria-label={`Different length, ${width}`}
+          defaultValue='2'
+          style={{ display: 'flex', width: width === 'min-content' ? 'min-content' : undefined }}
+        >
+          <SegmentedControlItem value='1'>
+            <SegmentedControlItemInput />
+            Short
+          </SegmentedControlItem>
+          <SegmentedControlItem value='2'>
+            <SegmentedControlItemInput />
+            Loooooong
+          </SegmentedControlItem>
+          <SegmentedControlItem value='3'>
+            <SegmentedControlItemInput />
+            Short
+          </SegmentedControlItem>
+          <SegmentedControlIndicator />
+        </SegmentedControl>
+      ))}
+    </div>
+  ),
 };

@@ -1,0 +1,17 @@
+.thumbnail {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+    background: var(--background-color);
+    pointer-events: none;
+    user-select: none;
+}
+
+.canvas {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    padding: var(--spacing-24) var(--spacing-24);
+    transform-origin: top left;
+    color: var(--text-color);
+}

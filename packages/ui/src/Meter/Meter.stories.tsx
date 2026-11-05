@@ -1,10 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { Meter } from './Meter';
+import { Meter, MeterProps } from './Meter';
 import { MeterTrack } from './components';
 
-// More on how to set up stories at: https://storybook.js.org/docs/writing-stories#default-export
-const meta: Meta<typeof Meter> = {
+const meta = {
   title: 'Feedback/Meter',
   component: Meter,
   subcomponents: {
@@ -17,6 +16,7 @@ const meta: Meta<typeof Meter> = {
       url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/VegaUI--Community-?node-id=2273-5914&t=RUt89rPgQMrw8K8U-11',
     },
   },
+  tags: ['autodocs'],
   argTypes: {
     size: {
       control: 'radio',
@@ -25,75 +25,66 @@ const meta: Meta<typeof Meter> = {
     variant: {
       control: 'radio',
       options: ['primary', 'secondary'],
-    }
+    },
+    value: {
+      control: 'number',
+    },
+    min: {
+      control: 'number',
+    },
+    max: {
+      control: 'number',
+    },
+    low: {
+      control: 'number',
+    },
+    high: {
+      control: 'number',
+    },
+    optimum: {
+      control: 'number',
+    },
+    fullWidth: {
+      control: 'boolean',
+    },
   },
   args: {
-    children: <MeterTrack />
+    'aria-label': 'Storage used',
+    value: 25,
+    min: 0,
+    max: 100,
+    style: { width: 250 },
+    children: <MeterTrack />,
   },
-  tags: ['autodocs'],
-};
+} satisfies Meta<typeof Meter>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-  args: {
-    value: .25,
-    style: {
-      width: '250px',
-    }
-  },
-};
+const variants: MeterProps['variant'][] = ['primary', 'secondary'];
+const sizes: MeterProps['size'][] = ['sm', 'md', 'lg'];
+const values = [20, 50, 80];
+const rows = variants.flatMap((variant) => sizes.map((size) => ({ variant, size })));
 
-export const Secondary: Story = {
-  args: {
-    value: .5,
-    style: {
-      width: '250px',
-    },
-    variant: 'secondary',
-  },
-};
+export const Playground: Story = {};
 
-export const WithMax: Story = {
-  args: {
-    value: 100,
-    max: 1000,
-    style: {
-      width: '150px',
-    }
-  },
-};
-
-export const Optimum: Story = {
-  args: {
-    style: { width: '150px' },
-    value: 75,
-    max: 100,
-    high: 66,
-    low: 33,
-    optimum: 100,
-  },
-};
-
-export const Suboptimum: Story = {
-  args: {
-    style: { width: '150px' },
-    value: 60,
-    max: 100,
-    high: 66,
-    low: 33,
-    optimum: 100,
-  },
-};
-
-export const EvenLessGood: Story = {
-  args: {
-    style: { width: '150px' },
-    value: 30,
-    max: 100,
-    high: 66,
-    low: 33,
-    optimum: 100,
-  },
+export const Matrix: Story = {
+  render: () => (
+    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${values.length}, 150px)`, gap: 16, alignItems: 'center' }}>
+      {rows.map((row) => values.map((value) => (
+        <Meter
+          key={`${row.variant}-${row.size}-${value}`}
+          {...row}
+          aria-label={`${row.variant} / ${row.size} / ${value}`}
+          value={value}
+          max={100}
+          low={33}
+          high={66}
+          optimum={100}
+        >
+          <MeterTrack />
+        </Meter>
+      )))}
+    </div>
+  ),
 };

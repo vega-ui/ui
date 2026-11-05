@@ -1,0 +1,4 @@
+.brandAccordion {
+  --focus-color: var(--fills-primary);
+  --transition-state-delay: 180ms;
+}

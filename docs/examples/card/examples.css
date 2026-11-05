@@ -1,0 +1,7 @@
+.brandCard {
+  --card-border-color: var(--border-color);
+}
+
+.linkCard:hover {
+  --card-background-color: var(--fills-tertiary);
+}

@@ -1,0 +1,4 @@
+.brand-theme {
+  --surface-primary: oklch(99.2% 0.006 80);
+  --surface-shadow: 0 24px 64px oklch(20% 0.02 60 / 0.18);
+}

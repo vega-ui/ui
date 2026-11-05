@@ -1,0 +1,4 @@
+.brand-theme {
+  --surface-primary: var(--color-orange-0);
+  --focus-color: var(--color-orange-accent-400);
+}

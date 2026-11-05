@@ -1,14 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
-import { NumberField } from './NumberField';
+import { NumberField, NumberFieldProps } from './NumberField';
 import { NumberFieldDecrementButton, NumberFieldIncrementButton, NumberFieldInput } from './components';
-import { Text } from '../Text';
-import { Button } from '../Button';
-import { Card } from '../Card';
-import { FC, PropsWithChildren, useRef, useState } from 'react';
-import { Code } from '../Code';
-import { Icon } from '../Icon';
-import { ArrowDown, ArrowUp } from '@vega-ui/icons';
 
 const meta = {
   title: 'Form/Fields/NumberField',
@@ -27,250 +20,45 @@ const meta = {
   },
   tags: ['autodocs'],
   argTypes: {
-    min: { type: 'number' },
-    max: { type: 'number' },
-    step: { type: 'number' },
+    min: { control: 'number' },
+    max: { control: 'number' },
+    step: { control: 'number' },
     size: { control: 'radio', options: ['xs', 'sm', 'md', 'lg', 'xl'] },
     disabled: { control: 'boolean' },
+    error: { control: 'boolean' },
   },
   args: {},
+  render: (args) => (
+    <NumberField {...args}>
+      <NumberFieldDecrementButton aria-label='Decrease' />
+      <NumberFieldInput aria-label='Quantity' placeholder='0' />
+      <NumberFieldIncrementButton aria-label='Increase' />
+    </NumberField>
+  ),
 } satisfies Meta<typeof NumberField>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const Stack: FC<PropsWithChildren> = ({ children }) => (
-  <div style={{ display: 'grid', gap: 12, minWidth: 420 }}>{children}</div>
-);
+const sizes: NumberFieldProps['size'][] = ['xs', 'sm', 'md', 'lg', 'xl'];
+const states = [
+  { label: 'default', disabled: false, error: false },
+  { label: 'disabled', disabled: true, error: false },
+  { label: 'error', disabled: false, error: true },
+];
 
-const Row: FC<PropsWithChildren> = ({ children }) => (
-  <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>{children}</div>
-);
+export const Playground: Story = {};
 
-export const Default: Story = {
-  args: {
-    children: [
-      <NumberFieldDecrementButton key={0} />,
-      <NumberFieldInput key={1} placeholder='0' />,
-      <NumberFieldIncrementButton key={2} />,
-    ],
-  },
-};
-
-export const Sizes: Story = {
-  render: (props) => (
-    <Stack>
-      {(['xs', 'sm', 'md', 'lg', 'xl'] as const).map((size) => (
-        <NumberField key={size} size={size} {...props}>
-          <NumberFieldDecrementButton />
-          <NumberFieldInput placeholder={`Size: ${size}`} />
-          <NumberFieldIncrementButton />
+export const Matrix: Story = {
+  render: () => (
+    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${states.length}, auto)`, gap: 12, alignItems: 'center' }}>
+      {sizes.map((size) => states.map((state) => (
+        <NumberField key={`${size}-${state.label}`} size={size} disabled={state.disabled} error={state.error}>
+          <NumberFieldDecrementButton aria-label='Decrease' />
+          <NumberFieldInput aria-label='Quantity' placeholder={`${size} / ${state.label}`} />
+          <NumberFieldIncrementButton aria-label='Increase' />
         </NumberField>
-      ))}
-    </Stack>
-  ),
-};
-
-export const WithMinMax: Story = {
-  name: 'Min/Max bounds (buttons disable at limits)',
-  args: {
-    min: 0,
-    max: 10,
-  },
-  render: (props) => (
-    <Stack>
-      <NumberField {...props} defaultValue={0}>
-        <NumberFieldDecrementButton />
-        <NumberFieldInput inputMode='numeric' />
-        <NumberFieldIncrementButton />
-      </NumberField>
-      
-      <Row>
-        <Text size={2} style={{ opacity: 0.7 }}>
-          Try stepping below 0 or above 10.
-        </Text>
-      </Row>
-    </Stack>
-  ),
-};
-
-export const StepAndDecimals: Story = {
-  name: 'Step and decimals',
-  args: {
-    min: 0,
-    max: 5,
-    step: .25,
-    defaultValue: 1,
-    children: [
-      <NumberFieldDecrementButton key={0} />,
-      <NumberFieldInput key={1} />,
-      <NumberFieldIncrementButton key={2} />
-    ]
-  },
-};
-
-export const Disabled: Story = {
-  args: {
-    disabled: true,
-    children: [
-      <NumberFieldDecrementButton key={0} />,
-      <NumberFieldInput key={1} placeholder='Disabled' />,
-      <NumberFieldIncrementButton key={2} />
-    ]
-  },
-};
-
-export const UncontrolledWithFormSubmit: Story = {
-  name: 'Uncontrolled + native form submit',
-  render: (props) => {
-    const [payload, setPayload] = useState<string>('');
-    
-    return (
-      <Stack>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            const form = e.currentTarget;
-            const data = new FormData(form);
-            setPayload(JSON.stringify(Object.fromEntries(Object.entries(data)), null, 2));
-          }}
-          style={{ display: 'grid', gap: 12 }}
-        >
-          <NumberField {...props} min={0} max={99} defaultValue={2}>
-            <NumberFieldDecrementButton />
-            <NumberFieldInput name='quantity' />
-            <NumberFieldIncrementButton />
-          </NumberField>
-          
-          <Row>
-            <Button type='submit'>Submit</Button>
-            <Button type='reset' variant='secondary'>
-              Reset
-            </Button>
-          </Row>
-        </form>
-        
-        {payload && <Code>{payload}</Code>}
-      </Stack>
-    );
-  },
-};
-
-export const ControlledValue: Story = {
-  name: 'Controlled value',
-  render: (props) => {
-    const [value, setValue] = useState<number>(3);
-    
-    return (
-      <Stack>
-        <NumberField {...props} min={0} max={10} value={value} onChangeValue={setValue}>
-          <NumberFieldDecrementButton />
-          <NumberFieldInput />
-          <NumberFieldIncrementButton />
-        </NumberField>
-        
-        <Row>
-          <Button variant='secondary' onClick={() => setValue(0)}>
-            Reset to 0
-          </Button>
-          <Text size={2} style={{ opacity: 0.7 }}>
-            Current: {value}
-          </Text>
-        </Row>
-      </Stack>
-    );
-  },
-};
-
-export const WithExternalFocusControl: Story = {
-  name: 'External focus control (ref)',
-  render: (props) => {
-    const Example: FC = () => {
-      const inputRef = useRef<HTMLInputElement>(null);
-      
-      return (
-        <Stack>
-          <NumberField {...props} min={0} max={10}>
-            <NumberFieldDecrementButton />
-            <NumberFieldInput ref={inputRef} placeholder='Focus me' />
-            <NumberFieldIncrementButton />
-          </NumberField>
-          
-          <Row>
-            <Button variant='secondary' onClick={() => inputRef.current?.focus()}>
-              Focus input
-            </Button>
-            <Button variant='secondary' onClick={() => inputRef.current?.select()}>
-              Select value
-            </Button>
-          </Row>
-        </Stack>
-      );
-    };
-    
-    return <Example />;
-  },
-};
-
-export const NestedInCardLayout: Story = {
-  name: 'Nested in card layout',
-  render: (props) => (
-    <div style={{ display: 'grid', gap: 16, maxWidth: 520 }}>
-      <Card>
-        <Text asChild size={3} style={{ fontWeight: 600 }}>
-          <p>Item</p>
-        </Text>
-        <Text asChild size={2} style={{ opacity: 0.7 }}>
-          <p>Adjust quantity with buttons or typing; bounds are enforced by the native input.</p>
-        </Text>
-        
-        <div style={{ marginTop: 12 }}>
-          <NumberField {...props} min={1} max={12} defaultValue={1}>
-            <NumberFieldDecrementButton />
-            <NumberFieldInput />
-            <NumberFieldIncrementButton />
-          </NumberField>
-        </div>
-      </Card>
-      
-      <Card>
-        <Text asChild size={3} style={{ fontWeight: 600 }}>
-          <p>Discount</p>
-        </Text>
-        <Text asChild size={2} style={{ opacity: 0.7 }}>
-          <p>Decimal steps for precise control.</p>
-        </Text>
-        
-        <div style={{ marginTop: 12 }}>
-          <NumberField {...props} min={0} max={50} step={0.5} defaultValue={10}>
-            <NumberFieldDecrementButton />
-            <NumberFieldInput />
-            <NumberFieldIncrementButton />
-          </NumberField>
-        </div>
-      </Card>
+      )))}
     </div>
   ),
-};
-
-export const CustomButtonIcons: Story = {
-  name: 'Custom button icons',
-  parameters: {
-    docs: {
-      description: {
-        story: 'Children of `NumberFieldDecrementButton` and `NumberFieldIncrementButton` replace their default icons.',
-      },
-    },
-  },
-  args: {
-    children: [
-      <NumberFieldDecrementButton key={0} aria-label='Decrease'>
-        <Icon><ArrowDown /></Icon>
-      </NumberFieldDecrementButton>,
-      <NumberFieldInput key={1} placeholder='0' />,
-      <NumberFieldIncrementButton key={2} aria-label='Increase'>
-        <Icon><ArrowUp /></Icon>
-      </NumberFieldIncrementButton>,
-    ],
-  },
 };

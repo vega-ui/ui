@@ -1,0 +1,99 @@
+.wrapper {
+    margin-block: var(--spacing-8);
+    border: 1px solid var(--site-line);
+    border-radius: calc(14px * var(--site-radius-scale));
+    overflow-x: auto;
+}
+
+.table :is(th, td) {
+    font-size: var(--site-callout-size);
+    line-height: var(--site-callout-leading);
+    vertical-align: top;
+}
+
+.table tbody:last-child tr:last-child {
+    border-bottom: 0;
+}
+
+.main {
+    border-bottom: 0;
+}
+
+.main td {
+    padding-bottom: var(--spacing-2);
+}
+
+.name {
+    width: 1%;
+    white-space: nowrap;
+}
+
+.required {
+    display: block;
+    margin-block-start: var(--spacing-1);
+    color: var(--site-muted);
+    font-size: var(--site-footnote-size);
+    line-height: var(--site-footnote-leading);
+}
+
+:is(.type, .value) > * {
+    overflow-wrap: anywhere;
+}
+
+.value {
+    width: 25%;
+}
+
+.description {
+    padding-top: 0;
+    color: var(--site-muted);
+}
+
+.description > * {
+    overflow-wrap: anywhere;
+}
+
+@media (width < 640px) {
+    .table thead {
+        display: none;
+    }
+
+    .main {
+        display: grid;
+        gap: var(--spacing-2);
+        padding: var(--spacing-6) var(--spacing-6) var(--spacing-2);
+    }
+
+    .main td {
+        width: auto;
+        padding: 0;
+        min-width: 0;
+    }
+
+    .description {
+        display: block;
+        padding: var(--spacing-2) var(--spacing-6) var(--spacing-6);
+    }
+
+    .type::before,
+    .value::before {
+        content: attr(data-label) ': ';
+        color: var(--site-muted);
+    }
+
+    .value[data-empty='true'] {
+        display: none;
+    }
+
+    .name {
+        display: flex;
+        align-items: baseline;
+        gap: var(--spacing-3);
+        white-space: normal;
+    }
+
+    .required {
+        display: inline;
+        margin: 0;
+    }
+}

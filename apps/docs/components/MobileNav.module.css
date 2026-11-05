@@ -1,0 +1,33 @@
+.bar {
+    display: none;
+    align-items: center;
+    gap: var(--spacing-4);
+    padding-block: var(--spacing-6);
+    border-bottom: 1px solid var(--site-line);
+}
+
+.label {
+    --t-color: var(--site-muted);
+    font-size: var(--site-subheadline-size);
+    line-height: var(--site-subheadline-leading);
+}
+
+.drawer {
+    width: min(300px, 85vw);
+    height: 100%;
+    overflow: hidden;
+}
+
+.drawer > div {
+    position: static;
+    flex: 1;
+    min-height: 0;
+    max-height: none;
+    padding-block-start: 0;
+}
+
+@media (width < 900px) {
+    .bar {
+        display: flex;
+    }
+}

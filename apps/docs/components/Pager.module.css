@@ -1,0 +1,11 @@
+.pager {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--spacing-4);
+    margin-top: var(--spacing-24);
+}
+
+.next {
+    margin-inline-start: auto;
+}
