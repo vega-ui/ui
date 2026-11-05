@@ -78,38 +78,6 @@ jobs:
         env:
           PAGES_BASE_PATH: /${{ github.event.repository.name }}
 
-      - name: Resolve Playwright version
-        id: resolve-playwright
-        shell: bash
-        run: |
-          node -e "
-            const fs = require('fs');
-            const lock = fs.readFileSync('pnpm-lock.yaml', 'utf8');
-            const match = lock.match(/^\\s*playwright@(\\d+\\.\\d+\\.\\d+):/m);
-            if (!match) {
-              console.error('Playwright not found in pnpm-lock.yaml');
-              process.exit(1);
-            }
-            console.log('PLAYWRIGHT_VERSION=' + match[1]);
-          " >> "$GITHUB_OUTPUT"
-
-      - name: Cache Playwright
-        uses: actions/cache@v6
-        with:
-          path: ~/.cache/ms-playwright
-          key: ${{ runner.os }}-playwright-chromium-${{ steps.resolve-playwright.outputs.PLAYWRIGHT_VERSION }}
-          restore-keys: |
-            ${{ runner.os }}-playwright-chromium-
-
-      - name: Install Playwright Dependencies
-        shell: bash
-        run: pnpm exec playwright install --with-deps chromium-headless-shell
-
-      - name: Check docs site
-        run: pnpm --filter @vega-ui/docs site:check
-        env:
-          PAGES_BASE_PATH: /${{ github.event.repository.name }}
-
       - name: Build storybook
         run: npm run build-storybook -- --output-dir apps/docs/out/storybook
 

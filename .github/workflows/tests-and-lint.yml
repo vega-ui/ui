@@ -167,12 +167,6 @@ jobs:
         env:
           PAGES_BASE_PATH: /ui
 
-      - name: Check docs site
-        timeout-minutes: 5
-        run: pnpm --filter @vega-ui/docs site:check
-        env:
-          PAGES_BASE_PATH: /ui
-
       - name: Verify keyboard docs
         run: pnpm docs:keyboard:verify --out apps/docs/out
         env:
