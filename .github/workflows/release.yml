@@ -44,6 +44,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Cache Turbo
+        uses: actions/cache@v6
+        with:
+          path: .turbo/cache
+          key: ${{ runner.os }}-turbo-${{ github.job }}-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-${{ github.job }}-
+
       - name: Build
         run: pnpm build
 
