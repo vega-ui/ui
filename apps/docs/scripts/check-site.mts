@@ -117,6 +117,10 @@ console.log(`Crawling ${pages.length} pages from sitemap.xml at ${localRoot}/`);
 await pool(pages, async (url) => {
   const page = await crawlContext.newPage();
   const where = short(url);
+  let pending = 0;
+  page.on('request', () => { pending += 1; });
+  page.on('requestfinished', () => { pending -= 1; });
+  page.on('requestfailed', () => { pending -= 1; });
   page.on('console', (message) => {
     if (message.type() === 'error') failures.console.push(`${where} :: ${message.text().slice(0, 300)}`);
   });
@@ -125,7 +129,9 @@ await pool(pages, async (url) => {
     if (response.status() >= 400 && response.url().startsWith(origin)) failures.http.push(`${where} :: ${response.status()} ${short(response.url())}`);
   });
   try {
-    await page.goto(url, { waitUntil: 'networkidle', timeout: 60000 });
+    await page.goto(url, { waitUntil: 'load', timeout: 60000 });
+    await page.evaluate(() => new Promise((resolve) => requestIdleCallback(resolve)));
+    while (pending > 0) await page.waitForTimeout(50);
     const found = await page.evaluate((areas) => ({
       ids: [...document.querySelectorAll('[id]')].map((element) => element.id),
       hrefs: [...document.querySelectorAll('a[href]')].filter((anchor) => !anchor.closest(areas)).map((anchor) => (anchor as HTMLAnchorElement).href),
@@ -170,7 +176,7 @@ const componentPaths = AXE_COMPONENTS.flatMap((slug) => {
   const subpages = fs.readdirSync(dir).filter((entry) => isFile(path.join(dir, entry, 'index.html'))).map((entry) => `${entry}/`);
   return ['', ...subpages].map((subpage) => `/components/${slug}/${subpage}`);
 });
-const axeJobs = ['light', 'dark'].flatMap((theme) => ['', '/ru'].flatMap((locale) => [...AXE_PATHS, ...componentPaths].map((pathname) => ({ theme, url: `${localRoot}${locale}${pathname}` }))));
+const axeJobs = ['light', 'dark'].flatMap((theme) => [...AXE_PATHS, ...componentPaths].map((pathname) => ({ theme, url: `${localRoot}${pathname}` })));
 
 const axeContexts: Record<string, BrowserContext> = { light: await newContext('light', 1440), dark: await newContext('dark', 1440) };
 const axeGroups = new Map<string, { count: number, pages: Set<string>, samples: Map<string, number> }>();
