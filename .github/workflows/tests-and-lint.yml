@@ -25,7 +25,6 @@ jobs:
         with:
           filters: |
             shared: &shared
-              - 'packages/**'
               - 'package.json'
               - 'pnpm-lock.yaml'
               - 'pnpm-workspace.yaml'
@@ -34,9 +33,11 @@ jobs:
               - '.github/workflows/**'
             browser:
               - *shared
+              - 'packages/**/!(*.stories.tsx|*.mdx)'
               - 'vitest.shared.ts'
             docs:
               - *shared
+              - 'packages/**'
               - 'apps/docs/**'
               - 'docs/**'
               - 'scripts/**'

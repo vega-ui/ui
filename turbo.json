@@ -9,7 +9,8 @@
       "dependsOn": ["^build"]
     },
     "test": {
-      "cache": false
+      "cache": false,
+      "passThroughEnv": ["PLAYWRIGHT_BROWSERS_PATH"]
     },
     "dev": {
       "cache": false,
