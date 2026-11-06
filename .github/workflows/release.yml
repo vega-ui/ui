@@ -73,10 +73,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PAT_GITHUB }}
           NODE_ENV: "production"
 
+      - name: Configure Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
       - name: Build docs site
         run: pnpm --filter @vega-ui/docs site:build
         env:
-          PAGES_BASE_PATH: /${{ github.event.repository.name }}
+          PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+          NEXT_PUBLIC_SITE_URL: ${{ steps.pages.outputs.base_url }}
 
       - name: Build storybook
         run: npm run build-storybook -- --output-dir apps/docs/out/storybook
