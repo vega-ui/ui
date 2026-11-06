@@ -4,7 +4,8 @@ import { Heading, Text } from '@vega-ui/react';
 import { ChevronLeft } from '@vega-ui/icons';
 import { CodeBlock } from '@/components/CodeBlock';
 import { TemplatePreview } from '@/components/TemplatePreview';
-import { highlight } from '@/lib/highlight';
+import { codeKey } from '@/lib/code';
+import { getHighlightStyles, highlight } from '@/lib/highlight';
 import { getDictionary, localize, type Locale } from '@/lib/i18n';
 import { getPageMetadata, withSiteName } from '@/lib/site';
 import { getTemplateComponents, getTemplateSource, TEMPLATES } from '@/lib/templates';
@@ -34,9 +35,12 @@ export const TemplateScreen = async ({ locale, params }: { locale: Locale, param
 
   const code = getTemplateSource(name);
   const components = getTemplateComponents(name, locale);
+  const html = await highlight(code, 'tsx');
+  const highlightStyles = getHighlightStyles([html]);
 
   return (
     <div className={styles.page}>
+      <style href={`code-highlight-${codeKey(highlightStyles)}`} precedence='default'>{highlightStyles}</style>
       <header className={styles.header}>
         <NextLink href={localize(locale, '/templates/')} className={styles.back}>
           <ChevronLeft size={16} aria-hidden='true' />
@@ -54,7 +58,7 @@ export const TemplateScreen = async ({ locale, params }: { locale: Locale, param
           <Text className={styles.file}>{`docs/examples/templates/${name}.tsx`}</Text>
         </div>
         <div className={styles.code}>
-          <CodeBlock code={code} html={await highlight(code, 'tsx')} />
+          <CodeBlock code={code} html={html} />
         </div>
       </section>
 

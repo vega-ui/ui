@@ -9,7 +9,7 @@
     "facts": "node --experimental-strip-types scripts/generate-facts.mts",
     "status": "node --experimental-strip-types scripts/generate-ci.mts",
     "dev": "pnpm examples && pnpm run search && pnpm run facts && pnpm run status && next dev",
-    "site:build": "pnpm examples && pnpm run search && pnpm run facts && pnpm run status && next build",
+    "site:build": "pnpm examples && pnpm run search && pnpm run facts && pnpm run status && next build && find out -name __next._full.txt -delete",
     "site:check": "node --experimental-strip-types scripts/check-site.mts"
   },
   "dependencies": {
@@ -26,6 +26,7 @@
     "shiki": "^4.6.0"
   },
   "devDependencies": {
+    "@shikijs/transformers": "4.6.0",
     "@types/node": "^22.10.10",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.3",

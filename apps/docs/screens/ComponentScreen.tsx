@@ -9,7 +9,8 @@ import { PageFooter } from '@/components/PageFooter';
 import { ResourceLinks } from '@/components/ResourceLinks';
 import { Workbench } from '@/components/Workbench';
 import { getCategories, getComponentPage, getComponents, getKeyboard, getKeyboardExample, type KeyboardRow, type PropRow } from '@/lib/content';
-import { highlight, highlightMarkdown } from '@/lib/highlight';
+import { codeKey } from '@/lib/code';
+import { getHighlightStyles, highlightMarkdown, highlightPreview } from '@/lib/highlight';
 import { getDictionary, localize, type Locale } from '@/lib/i18n';
 import { getPreviewSource } from '@/lib/previewSource';
 import { getPageMetadata, withSiteName } from '@/lib/site';
@@ -108,7 +109,9 @@ export const ComponentScreen = async ({ locale, params }: { locale: Locale, para
   const previewCode = getPreviewSource(slug) ?? undefined;
   const toc = getToc(source, getComponentPage(slug, current, 'en').source);
   const facts = current === 'index' ? (FACTS as Record<string, ComponentFactsData>)[slug] : undefined;
-
+  const previewHtml = current === 'index' && previewCode ? await highlightPreview(previewCode, 'tsx') : undefined;
+  const highlighted = await highlightMarkdown(source);
+  const highlightStyles = getHighlightStyles([previewHtml ?? '', ...Object.values(highlighted)]);
 
   return (
     <DocPage
@@ -116,8 +119,9 @@ export const ComponentScreen = async ({ locale, params }: { locale: Locale, para
       description={component.summary}
       toc={toc}
     >
+      <style href={`code-highlight-${codeKey(highlightStyles)}`} precedence='default'>{highlightStyles}</style>
       <ResourceLinks component={component} />
-      {current === 'index' && <Workbench slug={slug} code={previewCode} html={previewCode && await highlight(previewCode, 'tsx')} />}
+      {current === 'index' && <Workbench slug={slug} code={previewCode} html={previewHtml} />}
       {facts && <ComponentFacts facts={facts} />}
       <ComponentTabs
         label={`${component.title} ${t.doc.documentation}`}
@@ -129,7 +133,7 @@ export const ComponentScreen = async ({ locale, params }: { locale: Locale, para
       />
       {!translated && <Text size={2} className={styles.untranslated}>{t.doc.untranslated}</Text>}
       <div lang={translated ? undefined : 'en'}>
-        <Markdown source={source} slug={slug} headings={toc} highlighted={await highlightMarkdown(source)} />
+        <Markdown source={source} slug={slug} headings={toc} highlighted={highlighted} />
       </div>
       <PageFooter locale={locale} path={files[0].path} parts={files} />
     </DocPage>
