@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Icon, SegmentedControl, SegmentedControlIndicator, SegmentedControlItem, SegmentedControlItemInput } from '@vega-ui/react';
 import { SquareTerminal } from '@vega-ui/icons';
+import { codeKey } from '@/lib/code';
 import type { Highlighted } from '@/lib/highlight';
 import type { InstallVariant } from '@/lib/install';
 import { CodeBody, CopyButton } from './CodeBlock';
@@ -37,7 +38,7 @@ export const InstallBlock = ({ variants, highlighted }: { variants: InstallVaria
         </SegmentedControl>
         <span className={styles.copy}><CopyButton code={current.code} /></span>
       </div>
-      <CodeBody code={current.code} html={highlighted[current.code]} />
+      <CodeBody code={current.code} html={highlighted[codeKey(current.code)]} />
     </div>
   );
 };

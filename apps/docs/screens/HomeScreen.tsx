@@ -3,7 +3,8 @@ import { countKeyboardTables, getCategories, getKeyboard, getVersion } from '@/l
 import { getDictionary, type Locale } from '@/lib/i18n';
 import { getLlmsFullText, getLlmsText } from '@/lib/llms';
 import { COMPOSABLE_SNIPPETS } from '@/lib/composable';
-import { highlight } from '@/lib/highlight';
+import { codeKey } from '@/lib/code';
+import { getHighlightStyles, highlight } from '@/lib/highlight';
 import { getPageMetadata } from '@/lib/site';
 import FACTS from '@/generated/facts.json';
 
@@ -24,6 +25,12 @@ export const HomeScreen = async () => {
   };
   const snippets = await Promise.all(COMPOSABLE_SNIPPETS.map(async ({ tsx, css }) => ({ tsx: await highlight(tsx, 'tsx'), css: await highlight(css, 'css') })));
   const keyboard = { en: getKeyboard('listbox', 'en'), ru: getKeyboard('listbox', 'ru') };
+  const highlightStyles = getHighlightStyles(snippets.flatMap(({ tsx, css }) => [tsx, css]));
 
-  return <Home version={getVersion()} categories={categories} keyboard={keyboard} keyboardCount={countKeyboardTables()} ai={ai} snippets={snippets} />;
+  return (
+    <>
+      <style href={`code-highlight-${codeKey(highlightStyles)}`} precedence='default'>{highlightStyles}</style>
+      <Home version={getVersion()} categories={categories} keyboard={keyboard} keyboardCount={countKeyboardTables()} ai={ai} snippets={snippets} />
+    </>
+  );
 };

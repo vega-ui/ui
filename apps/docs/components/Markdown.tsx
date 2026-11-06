@@ -5,6 +5,7 @@ import NextLink from 'next/link';
 import ReactMarkdown, { type ExtraProps } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Code, Heading, Link, Table, TableBody, TableData, TableHead, TableHeading, TableRow, Text } from '@vega-ui/react';
+import { codeKey } from '@/lib/code';
 import type { Highlighted } from '@/lib/highlight';
 import { getInstallVariants } from '@/lib/install';
 import { localize } from '@/lib/i18n';
@@ -125,12 +126,12 @@ export const Markdown = ({ source, slug, headings, highlighted }: MarkdownProps)
             if (language === 'props') return <PropsTable rows={code} />;
             if (language === 'cssvars') return <VariablesInspector slug={slug ?? ''} variables={code} />;
 
-            if (example && EXAMPLES[example]) return <Workbench slug={slug ?? ''} example={example} code={code} html={highlighted[code]} />;
+            if (example && EXAMPLES[example]) return <Workbench slug={slug ?? ''} example={example} code={code} html={highlighted[codeKey(code)]} />;
 
             const variants = getInstallVariants(code);
             if (variants) return <InstallBlock variants={variants} highlighted={highlighted} />;
 
-            return <CodeBlock code={code} html={highlighted[code]} />;
+            return <CodeBlock code={code} html={highlighted[codeKey(code)]} />;
           },
           table: ({ children }) => <div className={styles.table}><Table>{children}</Table></div>,
           thead: ({ children }) => <TableHead>{children}</TableHead>,

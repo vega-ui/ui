@@ -101,5 +101,5 @@
 }
 
 :global(html):has(.frame) {
-    scroll-padding-top: 128px;
+    scroll-padding-top: 104px;
 }

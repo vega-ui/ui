@@ -114,7 +114,7 @@ export const HeroShowcase = ({ name, scheme, style, tuned, dir, inspect, watch }
   const scale = Math.min(1, width / canvas);
 
   return (
-    <div className={`${styles.window} ${scheme}`} style={style} data-tuned={tuned} aria-hidden='true'>
+    <div className={`${styles.window} ${scheme}`} style={style} data-tuned={tuned}>
       <div className={styles.bar}>
         <span className={styles.dot} />
         <span className={styles.dot} />
@@ -122,7 +122,7 @@ export const HeroShowcase = ({ name, scheme, style, tuned, dir, inspect, watch }
       </div>
       <div ref={ref} className={styles.viewport}>
         {Template && width > 0 && (
-          <div ref={canvasRef} inert dir={dir} lang='en' data-size={canvas === MOBILE_WIDTH ? 'mobile' : 'desktop'} className={styles.canvas} style={{ width: canvas, transform: `scale(${scale})` }}>
+          <div ref={canvasRef} dir={dir} lang='en' data-size={canvas === MOBILE_WIDTH ? 'mobile' : 'desktop'} className={styles.canvas} style={{ width: canvas, transform: `scale(${scale})` }}>
             <Template />
           </div>
         )}

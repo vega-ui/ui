@@ -1,6 +1,6 @@
 'use client';
 
-import { useId, useState } from 'react';
+import { useId, useRef, useState } from 'react';
 import {
   Icon,
   IconButton,
@@ -18,12 +18,12 @@ import {
 } from '@vega-ui/react';
 import { ChevronDown, RotateCcw, SquareArrowOutUpRight } from '@vega-ui/icons';
 import { CodeBody, CopyButton } from './CodeBlock';
+import { codeUrl, COLLAPSED_LINES, isPartial } from '@/lib/code';
 import { EXAMPLE_META, EXAMPLES, SANDBOX_PACKAGE } from '@/generated/examples';
 import { PREVIEWS } from './ComponentPreviews';
 import { useDictionary, useLocale } from './LocaleProvider';
 import styles from './Workbench.module.css';
 
-const COLLAPSED_LINES = 9;
 const RTL_LANGUAGES = ['ar', 'he'];
 
 const SANDBOX_FILES = {
@@ -121,6 +121,8 @@ export const Workbench = ({ slug, example, code, html }: { slug: string, example
   const [open, setOpen] = useState(false);
   const [dir, setDir] = useState('ltr');
   const [exampleLocale, setExampleLocale] = useState(locales?.[0]);
+  const [fullHtml, setFullHtml] = useState<string>();
+  const requested = useRef(false);
   const preview = Example ? <Example locale={exampleLocale} /> : PREVIEWS[slug]?.node;
 
   const changeLocale = (next: string | undefined) => {
@@ -128,6 +130,23 @@ export const Workbench = ({ slug, example, code, html }: { slug: string, example
 
     setExampleLocale(next);
     setDir(RTL_LANGUAGES.includes(next.split('-')[0]) ? 'rtl' : 'ltr');
+  };
+
+  const loadFullCode = () => {
+    if (!code || requested.current || !isPartial(code)) return;
+
+    requested.current = true;
+    fetch(codeUrl(code))
+      .then((response) => (response.ok ? response.text() : undefined))
+      .then(setFullHtml)
+      .catch(() => {
+        requested.current = false;
+      });
+  };
+
+  const toggleCode = () => {
+    loadFullCode();
+    setOpen(!open);
   };
 
   if (!preview) return null;
@@ -190,10 +209,10 @@ export const Workbench = ({ slug, example, code, html }: { slug: string, example
             </div>
           </div>
           <div id={codeId} className={styles.code}>
-            <CodeBody code={code} html={html} />
+            <CodeBody code={code} html={fullHtml ?? html} />
           </div>
           {foldable && (
-            <button type='button' className={styles.pull} aria-expanded={open} aria-controls={codeId} onClick={() => setOpen(!open)}>
+            <button type='button' className={styles.pull} aria-expanded={open} aria-controls={codeId} onPointerEnter={loadFullCode} onFocus={loadFullCode} onClick={toggleCode}>
               {open ? t.code.hide : t.code.show}
               <Icon size='xs' className={styles.chevron}><ChevronDown /></Icon>
             </button>
