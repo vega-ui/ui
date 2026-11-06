@@ -9,9 +9,10 @@ concurrency:
   group: tests-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
-# Jobs below run on the self-hosted `ubuntu-fast` runner only for trusted code:
-# pushes/dispatches and pull requests from branches of this repository.
-# Pull requests from forks and Dependabot stay on GitHub-hosted `ubuntu-latest`.
+# Trusted runs (push, workflow_dispatch, workflow_call and pull requests from
+# branches of this repository) use the self-hosted `ubuntu-fast` runners;
+# fork pull requests and Dependabot stay on GitHub-hosted `ubuntu-latest`.
+# Jobs that need `changes` reuse its `runner` output instead of repeating the condition.
 # NB: this routing is not a security boundary for forks (a fork PR can edit this
 # file), so review `.github/` changes before approving fork workflow runs.
 jobs:
@@ -21,6 +22,7 @@ jobs:
     outputs:
       browser: ${{ github.event_name != 'pull_request' || steps.filter.outputs.browser == 'true' }}
       docs: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.docs == 'true' }}
+      runner: ${{ (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && github.actor != 'dependabot[bot]' && 'ubuntu-fast' || 'ubuntu-latest' }}
 
     steps:
       - name: Filter paths
@@ -100,12 +102,14 @@ jobs:
     name: Browser Tests (${{ matrix.browser }}, ${{ matrix.shard }}/3)
     needs: changes
     if: needs.changes.outputs.browser == 'true'
-    # Stays on GitHub-hosted: the Playwright container needs Docker, which ubuntu-fast doesn't have.
-    runs-on: ubuntu-latest
+    runs-on: ${{ needs.changes.outputs.runner }}
     timeout-minutes: 15
     container:
       image: mcr.microsoft.com/playwright:v1.63.0-noble
-      options: --user 1001 --ipc=host
+      # GitHub-hosted: run as uid 1001 so the container user owns the workspace and $HOME.
+      # ubuntu-fast uses rootless Docker: container root maps to the unprivileged runner
+      # user, which owns them there, so no --user is needed (and 1001 couldn't write).
+      options: ${{ needs.changes.outputs.runner == 'ubuntu-fast' && '--ipc=host' || '--user 1001 --ipc=host' }}
 
     strategy:
       fail-fast: false
@@ -138,7 +142,7 @@ jobs:
     name: Docs Site
     needs: changes
     if: needs.changes.outputs.docs == 'true'
-    runs-on: ${{ (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && github.actor != 'dependabot[bot]' && 'ubuntu-fast' || 'ubuntu-latest' }}
+    runs-on: ${{ needs.changes.outputs.runner }}
     timeout-minutes: 10
 
     steps:
