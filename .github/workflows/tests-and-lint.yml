@@ -58,13 +58,24 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Install pnpm
+        if: runner.environment == 'github-hosted'
         uses: pnpm/action-setup@v6
 
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '24'
-          cache: 'pnpm'
+          cache: ${{ runner.environment == 'github-hosted' && 'pnpm' || '' }}
+
+      # Self-hosted: pnpm via Corepack and a persistent per-runner pnpm store in _work
+      # (seen by host and container jobs alike), so no Actions cache download is needed.
+      - name: Set up pnpm (self-hosted)
+        if: runner.environment == 'self-hosted'
+        run: |
+          cache_root="$(dirname "$RUNNER_WORKSPACE")"
+          echo "COREPACK_HOME=$cache_root/.corepack" >> "$GITHUB_ENV"
+          echo "npm_config_store_dir=$cache_root/.pnpm-store" >> "$GITHUB_ENV"
+          COREPACK_HOME="$cache_root/.corepack" corepack enable pnpm
 
       - name: Install dependencies
         run: pnpm install
@@ -124,13 +135,24 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Install pnpm
+        if: runner.environment == 'github-hosted'
         uses: pnpm/action-setup@v6
 
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '24'
-          cache: 'pnpm'
+          cache: ${{ runner.environment == 'github-hosted' && 'pnpm' || '' }}
+
+      # Self-hosted: pnpm via Corepack and a persistent per-runner pnpm store in _work
+      # (seen by host and container jobs alike), so no Actions cache download is needed.
+      - name: Set up pnpm (self-hosted)
+        if: runner.environment == 'self-hosted'
+        run: |
+          cache_root="$(dirname "$RUNNER_WORKSPACE")"
+          echo "COREPACK_HOME=$cache_root/.corepack" >> "$GITHUB_ENV"
+          echo "npm_config_store_dir=$cache_root/.pnpm-store" >> "$GITHUB_ENV"
+          COREPACK_HOME="$cache_root/.corepack" corepack enable pnpm
 
       - name: Install dependencies
         run: pnpm install
@@ -150,13 +172,24 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Install pnpm
+        if: runner.environment == 'github-hosted'
         uses: pnpm/action-setup@v6
 
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '24'
-          cache: 'pnpm'
+          cache: ${{ runner.environment == 'github-hosted' && 'pnpm' || '' }}
+
+      # Self-hosted: pnpm via Corepack and a persistent per-runner pnpm store in _work
+      # (seen by host and container jobs alike), so no Actions cache download is needed.
+      - name: Set up pnpm (self-hosted)
+        if: runner.environment == 'self-hosted'
+        run: |
+          cache_root="$(dirname "$RUNNER_WORKSPACE")"
+          echo "COREPACK_HOME=$cache_root/.corepack" >> "$GITHUB_ENV"
+          echo "npm_config_store_dir=$cache_root/.pnpm-store" >> "$GITHUB_ENV"
+          COREPACK_HOME="$cache_root/.corepack" corepack enable pnpm
 
       - name: Install dependencies
         run: pnpm install
