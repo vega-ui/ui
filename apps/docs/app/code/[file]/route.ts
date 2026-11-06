@@ -6,7 +6,7 @@ import { getPreviewSource } from '@/lib/previewSource';
 
 export const dynamic = 'force-static';
 
-const getPartialCode = () => {
+const collectPartialCode = () => {
   const examples = LOCALES.flatMap((locale) => getComponents(locale).flatMap((component) => component.pages.flatMap((page) => readExamples(getComponentPage(component.slug, page, locale).source))));
   const previews = getComponents().flatMap((component) => {
     const code = getPreviewSource(component.slug);
@@ -16,6 +16,13 @@ const getPartialCode = () => {
 
   return new Map([...examples, ...previews].filter((fence) => isPartial(fence.code)).map((fence) => [`${codeKey(fence.code)}.html`, fence]));
 };
+
+// Collecting reads and parses every component page in both locales. `next build` calls this
+// for generateStaticParams and for each of the ~700 files, so build it once per worker there;
+// `next dev` keeps rebuilding it to pick up edited examples.
+let partialCode: ReturnType<typeof collectPartialCode> | undefined;
+
+const getPartialCode = () => (process.env.NODE_ENV === 'production' ? (partialCode ??= collectPartialCode()) : collectPartialCode());
 
 export const generateStaticParams = () => [...getPartialCode().keys()].map((file) => ({ file }));
 
