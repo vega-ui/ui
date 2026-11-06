@@ -9,10 +9,15 @@ concurrency:
   group: tests-${{ github.event_name == 'pull_request' && github.ref || github.run_id }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
+# Jobs below run on the self-hosted `ubuntu-fast` runner only for trusted code:
+# pushes/dispatches and pull requests from branches of this repository.
+# Pull requests from forks and Dependabot stay on GitHub-hosted `ubuntu-latest`.
+# NB: this routing is not a security boundary for forks (a fork PR can edit this
+# file), so review `.github/` changes before approving fork workflow runs.
 jobs:
   changes:
     name: Detect Changes
-    runs-on: ubuntu-latest
+    runs-on: ${{ (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && github.actor != 'dependabot[bot]' && 'ubuntu-fast' || 'ubuntu-latest' }}
     outputs:
       browser: ${{ github.event_name != 'pull_request' || steps.filter.outputs.browser == 'true' }}
       docs: ${{ github.event_name == 'workflow_dispatch' || steps.filter.outputs.docs == 'true' }}
@@ -44,7 +49,7 @@ jobs:
 
   lint-and-test:
     name: Tests and Lint
-    runs-on: ubuntu-latest
+    runs-on: ${{ (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && github.actor != 'dependabot[bot]' && 'ubuntu-fast' || 'ubuntu-latest' }}
 
     steps:
       - name: Checkout code
@@ -95,6 +100,7 @@ jobs:
     name: Browser Tests (${{ matrix.browser }}, ${{ matrix.shard }}/3)
     needs: changes
     if: needs.changes.outputs.browser == 'true'
+    # Stays on GitHub-hosted: the Playwright container needs Docker, which ubuntu-fast doesn't have.
     runs-on: ubuntu-latest
     timeout-minutes: 15
     container:
@@ -132,7 +138,7 @@ jobs:
     name: Docs Site
     needs: changes
     if: needs.changes.outputs.docs == 'true'
-    runs-on: ubuntu-latest
+    runs-on: ${{ (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository) && github.actor != 'dependabot[bot]' && 'ubuntu-fast' || 'ubuntu-latest' }}
     timeout-minutes: 10
 
     steps:
