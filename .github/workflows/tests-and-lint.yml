@@ -161,5 +161,3 @@ jobs:
 
       - name: Build docs site
         run: pnpm --filter @vega-ui/docs site:build
-        env:
-          PAGES_BASE_PATH: /ui

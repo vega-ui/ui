@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { getDictionary, localize, type Locale } from './i18n';
 
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://vega-ui.github.io/ui').replace(/\/$/, '');
+export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://vega-ui.dev').replace(/\/$/, '');
 
 export const SITE_NAME = 'Vega UI';
 
