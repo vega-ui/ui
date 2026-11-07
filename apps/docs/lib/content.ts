@@ -1,7 +1,21 @@
-import { existsSync, readdirSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync as readFileFromDisk } from 'node:fs';
 import { join, relative } from 'node:path';
 import { getDictionary, type Locale } from './i18n.ts';
 import { VIEWS } from './views.ts';
+
+const fileCache = process.env.NODE_ENV === 'production' ? new Map<string, string>() : undefined;
+
+const readFileSync = (file: string, encoding: 'utf8') => {
+  if (!fileCache) return readFileFromDisk(file, encoding);
+
+  let text = fileCache.get(file);
+  if (text === undefined) {
+    text = readFileFromDisk(file, encoding);
+    fileCache.set(file, text);
+  }
+
+  return text;
+};
 
 const root = join(process.cwd(), '../..');
 const docsDir = join(root, 'docs');
