@@ -1,5 +1,201 @@
 # @vega-ui/hooks
 
+## 3.0.0
+
+### Major Changes
+
+- 1af9fda: `Calendar`, the pickers and the date fields work in any calendar system
+
+  New package `@vega-ui/i18n` with no dependencies and no knowledge of the components; every function that needs a calendar takes it as the first argument:
+
+  - the `CalendarSystem` adapter interface, the `GregorianCalendar` class (extendable with `super`, methods bound to the instance) and its shared instance `gregorianCalendar`; `createCalendarSystem(identifier)`, any other calendar built into `Intl` (Persian, Hebrew, Japanese, Buddhist, Islamic, Chinese…) with no dependencies: months numbered from the start of the year (13 in a Hebrew leap year), `Intl` era names, a year that ends with an era keeps only its own months, a year past the end of an era is clamped to its last year, an unknown era throws a `RangeError`; custom calendars plug in through the interface
+  - calendar-aware helpers over `YYYY-MM-DD` strings: `addCalendarMonths`, `addCalendarYears`, `getCalendarMonthStart` / `End`, `getCalendarYearStart` / `End`, `getCalendarMonthsDistance`, `getCalendarYearsDistance`, `getCalendarMonthsOfYear`, `getSameDayInCalendarMonth`, `getSameMonthInCalendarYear`, `isSameCalendarMonth`, and the calendar-neutral `DAYS_IN_WEEK`, `addISODays`, `getISOWeekday`, `isoDateToUTC`, `utcToISODate`, `padDatePart`; like `<input type="date">` they cover the years 0001–9999 and throw a `RangeError` outside them
+  - locale helpers: `getDefaultLocale()`, the runtime locale `Intl` uses by default, and `getFirstDayOfWeek`, `getWeekDayNames`, `getDateFormat`, `getDateSeparator`, moved from `@vega-ui/utils`: they take the locales argument of `Intl` and default to the runtime locale instead of `en-US`; `getDateFormat` / `getDateSeparator` take the calendar system first, describe the numeric fields, leave out eras and bidi marks (`ar-SA` gives `/`, not `\u200F/`), and use the Gregorian order of the locale for calendars that name their months (Hebrew, Chinese); new `toLatinDigits`
+  - `Intl` formatting: `formatCalendarDate`, `formatCalendarDay` (bare day numbers, `15` rather than `15日`), `createCalendarDateFormatter` / `createCalendarDayFormatter` (one `Intl.DateTimeFormat` reused for many days; the day, month and year grids create one per layout instead of one per cell)
+
+  `@vega-ui/utils` (now depends on `@vega-ui/i18n`):
+
+  - typed entry of the date fields over a calendar system, `formatTemplateDate`, `parseTemplateDate`, `parseTemplateRange`, `normalizeTemplateDate`, `stepTimeSegment` (time only, no calendar) and `getDateTemplate` (the field template of a date format: `dd.MM.yyyy` → `dd.mm.yyyy`), `getTimeTemplate` (`HH:mm` → `HH:MM`) and `getDateTimeTemplate` (the template of `DateTimeField`: `dd.mm.yyyy, HH:MM`); new `findISODateInRange(dates, start, end)`, the first `YYYY-MM-DD` date within a range, and `getISODatePart` / `getISOTimePart`, the date and time parts of an ISO date time; `snapToStep(value, { min, max, step })`, the step grid of `<input type="range">`
+
+  `Calendar`, `DateField`, `DateTimeField`, `DateRangeField`, `DayPicker`, `MonthPicker`, `YearPicker`:
+
+  - new `calendar` and `locale` props on the root, applied to every part (labels, weekday names, week start, day, month and year grids); defaults are the Gregorian calendar and the runtime locale, like `Intl`. There is no global provider: for app-wide settings, wrap the component (`<Calendar locale={appLocale} {...props} />`). Values stay ISO strings in every calendar
+  - `Calendar` sets `lang` on its root when `locale` is given
+  - PageUp / PageDown move focus to the same day of the previous / next month, Shift+PageUp / Shift+PageDown to the same day of the previous / next year (WAI-ARIA date picker pattern)
+
+  `Calendar` composition (breaking), one part per view instead of four nesting levels:
+
+  - removed `CalendarDayPicker` and its `Item` / `Row` / `RowGroup` / `Scroller` / `ScrollerContent` / `ScrollerLayout`, `CalendarMonthPicker` and its `Item` / `Row` / `RowGroup` / `Layout`, `CalendarYearPicker` and its `Item` / `Row` / `RowGroup` / `Scroller` / `ScrollerContent` / `ScrollerLayout`, `CalendarMonthPickerButton`, `CalendarYearPickerButton`, `CalendarPickerButtonGroup`, `CalendarPrevYearGroupButton`, `CalendarNextYearGroupButton`, `CalendarWeekLabel`, `CalendarWeekLabels`
+  - new `CalendarDays` (the day view, holding the new `CalendarWeekdays`, weekday names in the calendar's locale with `format`, and `CalendarWeeks`, the swipeable day grid with `format` and `includeOverflowDays`), `CalendarMonths` (`cols`, `format`), `CalendarYears` (`format`)
+  - weekdays and cells are customized with template children, no render functions: the children of `CalendarWeekdays` / `CalendarWeeks` / `CalendarMonths` / `CalendarYears` render once per weekday or cell, read it with `useCalendarWeekdayContext()` (column, `weekday` as in `Date#getDay()`, name) / `useCalendarDayContext()` / `useCalendarMonthContext()` / `useCalendarYearContext()` (ISO date, fields in the calendar system, formatted label) and render `CalendarWeekday` / `CalendarDay` / `CalendarMonth` / `CalendarYear`; the template is required, there is no implicit default cell
+  - `CalendarViewButton view='month' | 'year'` and `CalendarViewButtonGroup` replace the month and year picker buttons
+  - `CalendarPrevButton` / `CalendarNextButton` follow the view: months in the days, pages of years in the years; they show a chevron unless `children` are given
+  - the views (`CalendarDays`, `CalendarMonths`, `CalendarYears`) take only HTML attributes and display options; the month, selection, disabled dates, locale and calendar come from the `Calendar` root
+  - `CalendarMonthLabel` / `CalendarYearLabel` drop `locale`: every part uses the locale of the `Calendar`
+  - `picker` / `defaultPicker` / `onChangePicker` → `view` / `defaultView` / `onChangeView`; type `CalendarPicker` → `CalendarView`; `useCalendarContext` exposes `view`, `toggleView`, `closeView`, `prev`, `next`, `locale`
+
+  Date fields:
+
+  - digits of any numbering system are accepted while typing (`٠٥.٠١.٢٠٢٦`, `۱۴۰۵/۰۱/۰۱`) and written as Latin digits
+  - typing is validated in the calendar system: the day is clamped to the length of the month (`31.02.2026` → `28.02.2026`), a digit that cannot start a segment is zero-padded (`4` → `04`), a complete value is clamped to `min` / `max`
+  - `DateTimeField` (breaking): `timeFormat` uses the notation of `dateFormat` (Unicode date patterns, `mm` = minutes): `'HH:mm' | 'HH:mm:ss'` instead of `'HH:MM' | 'HH:MM:SS'`
+  - `DateRangeField` swaps a range typed in reverse; `DateTimeField` steps the time segment under the caret with ArrowUp / ArrowDown: hours by 1, minutes and seconds by `timeStep` (like `datetime-local`), so `timeStep={15}` no longer adds 15 hours
+  - clearing the text or leaving it incomplete clears the calendar selection, and `form.reset()` re-syncs the calendar
+  - when `min` / `max` change, already typed text is clamped again (firing `input`)
+  - `DateRangeField`'s default `rangeSeparator` (an en dash between non-breaking spaces) is documented accurately
+
+  `DayPicker`, `MonthPicker`, `YearPicker` (breaking):
+
+  - cells are keyed by ISO strings (`YYYY-MM-DD`, the first day of the month / year for the month and year pickers) instead of timestamps and numbers
+  - `DayPicker`: `year` / `month` numbers → `month` (any day of the month as `YYYY-MM-DD`) and `calendar`; `DayPickerScroller` takes `defaultMonth` and reports `onChangePeriod(month)`; `DayPickerLayout` / `createDayPickerGrid` `offset` is only the page index that keeps row indexes unique (the month comes from `month`, no longer shifted by `offset`); `DayPickerLayout` / `createDayPickerGrid` drop `cols` (the week has seven days in every calendar; other values broke the grid); `createDayPickerGrid({ month, calendar, offset, … })` returns `{ col, date, day, inCurrentMonth }`; `getIndexByDate` / `getDateByIndex` removed
+  - `MonthPicker`: `year` is a `YYYY-MM-DD` string, `calendar` added; `createMonthPickerGrid({ year, calendar, cols })` derives the rows, so years with 13 months fit; `MonthPickerLayout` drops `rows` / `start`; new `useMonthPickerContext`
+  - `YearPicker`: `year` is a `YYYY-MM-DD` string, `calendar` added; `createYearPickerGrid` and `YearPickerLayout` take `start` as `YYYY-MM-DD`; `YearPickerScroller` takes `defaultYear` and `period` instead of `getIndexByYear`; `getIndexByYear` / `getYearByIndex` removed
+  - `DayPickerLayout`, `MonthPickerLayout`, `YearPickerLayout` (and the scroller layouts) require the same template children (`<DayPickerCell />`, …); new `DayPickerCell`, `MonthPickerCell`, `YearPickerCell` and `useDayPickerCellContext`, `useMonthPickerCellContext`, `useYearPickerCellContext`
+  - `DataGrid` ignores key presses whose default was already prevented
+  - in range mode the bounds are always reported in order (`[start, end]`, `start` not after `end`), also when the range is picked backwards (`@vega-ui/hooks` `useSelection` orders them); the same holds for `Calendar`'s `onChangeValue`
+  - without `defaultActive` the tab stop is always a cell in view: today when it is in the visible month / year, otherwise the first selected cell there, otherwise the first cell (`YearPicker`: the visible `year`); before, Tab skipped the grid when today was not shown
+  - `YearPickerScroller` reports the page in view with `onChangePeriod(year)`, like `DayPickerScroller`
+
+  Right-to-left:
+
+  - the calendars and pickers follow the inherited text direction (`dir` on the page, an ancestor or the component), like native elements: the grids run right to left, ArrowLeft / ArrowRight are mirrored, the default Prev / Next chevrons point the right way, range ends are rounded on the correct side, and swiping and the scrollers page in the right direction (`@vega-ui/hooks` `useScrollSnap` aligns snap points in RTL)
+
+  Fixes:
+
+  - `Calendar` without `selection` is typed as single selection, so `onChangeValue={setState}` with `useState<string>` type-checks
+  - `getCalendarMonthsOfYear` (`@vega-ui/i18n`) returns only the months of each era in a year where a Japanese era changes (no duplicated months in `MonthPicker`)
+  - `getFirstDayOfWeek` (now in `@vega-ui/i18n`) reads `Intl.Locale` week info correctly (`getWeekInfo()` or `weekInfo`, Sunday = 7) and falls back to the region of the locale (`fa-IR` → Saturday, `pt-BR` → Sunday) when the runtime has no week info
+  - `NumberField`, `PhoneField`, `PinField`: after `form.reset()` the − / + buttons, the detected country and the PIN slots match the restored value. `PhoneField` writes the calling code of a picked country only when a controlled parent accepts it. Breaking for custom parts: `useNumberFieldContext` and `usePhoneFieldContext` no longer expose `onInput`
+  - `IndexedSnapScroller` (and every calendar scroller built on it) no longer moves pages under an ongoing scroll: it appends pages while a scroll reaches the end and re-centers the window once the scroll settles, so swiping to the edge in WebKit and Firefox no longer jumps two pages further (e.g. December → February) and fast swipes keep going; `onOffset(-1)` now fires when the scroll settles on the first page
+  - `IndexedSnapScroller` keeps a scroll made right after a snap settles instead of jumping back a page (seen with fast swipes on a busy page)
+  - `IndexedSnapScroller` re-syncs to a controlled `index` only when that prop changes, so the year picker no longer jumps back to the visible year after scrolling
+  - `Calendar` month and year arrows no longer stop working after a few clicks: each click moves one page from the page the scroll is already heading to (clicks during a smooth scroll were lost in Firefox), the window grows when the target is outside it, and focus keeps the same day across quick month changes
+  - `@vega-ui/hooks` (breaking): `useIndexes` replaces `push()` / `shift()` with `extend(dir)` (grow the window at an edge without moving existing pages) and `center(index)` (re-center the window on a page); `useScrollSnap`'s `scrollToElementByKey` returns whether the item exists
+  - `@vega-ui/hooks` `useSelection` matches `disabled` keys with `equals`, like selection: object keys with a custom `equals` (`{ row, col }`) are blocked, not only the same reference
+  - `Slider` behaves like `<input type="range">`: handlers passed to the root (`onKeyDown`, `onPointerDown`, …) run after the built-in ones instead of replacing them, steps count from `min` (`min={1} step={2}` gives 1, 3, 5…), the arrow keys stop at `min` / `max` when a step overshoots them, End goes to the last step that fits in `max`, fractional steps keep their precision (`0.3`, not `0.30000000000000004`), and a cancelled pointer (`pointercancel`) ends the drag
+  - `RangeSlider` follows the same rules: user handlers no longer replace the built-in ones, steps count from `min`, fractional steps keep their precision, End stops at the last step that fits in `max`, `pointercancel` ends the drag; the right thumb no longer goes past `max` with ArrowRight, the left thumb reaches `min` when a step overshoots it, and a step that would pass the other thumb stops at it instead of being ignored
+
+  Removed unused APIs (breaking):
+
+  - `@vega-ui/react`: `useMonthPickerScrollerContext` (an alias of `useIndexedSnapScrollerContext`; `MonthPicker` has no scroller)
+  - `@vega-ui/utils`: `formatDay`, `formatMonth`, `formatYear` (Gregorian-only; use `formatCalendarDate` / `formatCalendarDay` from `@vega-ui/i18n`), `isEqualDates`, `getClampedDate`, `capitalize`, `uncapitalize`; `getFirstDayOfWeek`, `getWeekDayNames`, `getDateFormat`, `getDateSeparator` moved to `@vega-ui/i18n`
+
+- 1990f69: Rename `getCommited` to `getCommitted` in the `useScrollSnap` result and the `SnapScroller` api ref
+- d27ca41: Overlay and listbox fixes, and the WAI-ARIA keyboard and focus behavior they were missing.
+
+  - `DialogContent`, `DrawerContent`, and `SheetContent` take `container` to portal into another element, `document.body` by default, and enforce `closedBy` in browsers without the native `closedby`: `none` ignores `Escape`, and `any` closes on a press that starts and ends on the backdrop. `ModalDialogClosedBy` is exported.
+  - `DialogTrigger`, `DrawerTrigger`, and `SheetTrigger` take the focus on click, so the focus returns to them on close in Safari too. `DialogClose`, `DrawerClose`, and `SheetClose` set `type="button"` with `asChild` too, pass `type="submit"` to submit a form instead.
+  - `Drawer` and `Sheet` slide in again when a browser extension, such as a password manager, reads their style before they open: a closed `DrawerContent` or `SheetContent` keeps the native `display: none`.
+  - `Dialog`, `Drawer`, and `Sheet` close once their `::backdrop` has faded out too, so the `Sheet` backdrop no longer vanishes halfway with reduced motion.
+  - The `::backdrop` of `Dialog`, `Drawer`, and `Sheet` covers the whole screen while the page overscrolls, `Drawer` slides out past its outer space, and `SheetContent` is at most `600px` wide.
+  - `Select` resets to `defaultValue` with its form, and `PhoneField` resets its country. The hidden select forwards the focus to the combobox, so an invalid required `Select` gets focused on submit, and WebKit re-validates it after a change. `Tab` from the combobox moves into a form field in the open list, and otherwise calls `onChangeOpen(false)` once instead of two or three times. A choice closes the list before it calls `onChangeValue`, as a native `<select>` closes before `change`, so picking a country in `PhoneField` calls `onChangeOpen(false)` once too. `PhoneFieldSelect` calls your `onChangeValue` after it has updated the country. The list keeps its place while it fades out inside a `container-type` ancestor, and the `PhoneField` country list no longer stretches across the screen.
+  - `SelectValue` truncates a long value with an ellipsis, `SelectCombobox` shows the focus ring only on keyboard focus, `SelectIcon` takes `--select-icon-color`, `SelectCombobox` takes `--select-combobox-gap`, and `SelectListbox` takes `--select-listbox-br-ratio` and scales in and out.
+  - `Listbox` with `multiple` supports the optional WAI-ARIA keys: `Shift+Arrow` moves and toggles, `Shift+Space` selects from the last toggled option, `Ctrl+Shift+Home` and `Ctrl+Shift+End` select to the first or last option, and `Ctrl+A` selects or clears all. Arrow keys in a multiple `Listbox` re-render only the two options whose active state changes, not every option. `Listbox` is rounded, and `Option` grows with wrapped text, padded with `--spacing-2` and `--spacing-10`.
+  - BREAKING: `PhoneFieldSelectCombobox`, `PhoneFieldSelectValue`, `PhoneFieldSelectIcon`, `PhoneFieldSelectHiddenSelect`, `PhoneFieldSelectListbox`, and `PhoneFieldSelectOption` are removed. Put `SelectCombobox`, `SelectValue`, `SelectIcon`, `SelectHiddenSelect`, `SelectListbox`, and `SelectOption` inside `PhoneFieldSelect` instead, and set the gap and alignment of an option with several parts yourself. `PhoneField` writes the calling code into the input whenever `code` changes from anything but typing, so any control of your own can drive the country through `code` and `onChangeCode`. Picking a country in `PhoneFieldSelect` fires the input `input` and `change` events, while a `code` changed from outside reports the new value only through `onChangeValue`, as a native input does when its value is set from code.
+  - BREAKING: a close made by the browser is final, as the platform cannot cancel it. `PopoverContent` and the `SelectListbox` list are native `popover="auto"`, so an outside click, `Escape`, a trigger click, or another popover opening hides them for good: a controlled parent that keeps `open` true no longer gets them shown again, they stay hidden until `open` changes, so set `open={false}` in `onChangeOpen`. This also fixes two controlled open lists or popovers showing each other in an endless loop. An open from `PopoverTrigger` is final the same way: a controlled parent that keeps `open` false no longer gets the popover hidden back. `DialogContent`, `DrawerContent`, and `SheetContent` still let a controlled parent turn down `Escape`, a backdrop click, and a `<form method="dialog">` submit, since the native `cancel` allows it, but a close the browser makes without asking, such as `close()` on the element or a forced close after repeated `Escape`, now stays closed until `open` changes.
+  - BREAKING: `useSelectContext` no longer returns `isSelected`, as it repeated the one of the list: read it from the `Listbox` context instead. `Select` closes its list when the focus leaves the whole `Select`, through its own `onBlur`, instead of through `SelectCombobox` and `SelectListbox`.
+  - BREAKING: `onChangeValue` of `Select` and single `Listbox` is typed `(value: V | null) => void` instead of `V | undefined`, as it is called with `null` when the value is cleared. Type your handlers with `null`.
+  - `PopoverTrigger` and `TooltipTrigger` point to the `id` you give `PopoverContent` or `TooltipContent`: before, such an `id` kept `Popover` from opening and dropped the tooltip from the trigger `aria-describedby`.
+  - New `PopoverClose` closes its `Popover`, and `PopoverAnchor` positions the content against another element than the trigger.
+  - `Escape` closes an open `Tooltip` alone, leaving the `Dialog`, `Drawer`, or `Sheet` around it open for the next `Escape`.
+  - `TooltipContent` unmounts when its CSS transition ends instead of after a fixed delay, and keeps the native `display: none` until it opens.
+  - `Tooltip` waits `250` ms by default before it hides after the pointer leaves, so the pointer can cross the gap onto the tooltip, as WCAG asks of content shown on hover. Pass `delayClose={0}` to hide at once. Another `Tooltip` hovered meanwhile still shows at once, without its `delayOpen`.
+  - BREAKING: `Popover` and `Tooltip` render no element of their own, only their children, so they no longer take `className`, `style`, or other `<div>` attributes: put them on `PopoverContent`, `TooltipContent`, or a wrapper of your own.
+  - BREAKING: `DialogTrigger`, `DrawerTrigger`, and `SheetTrigger` no longer set `aria-expanded`, as a modal covers its trigger and the state never reaches the user, matching the WAI-ARIA dialog pattern. They keep `aria-haspopup="dialog"`.
+  - BREAKING: `Dialog` no longer takes `fluid`. Stretch `DialogContent` with `style` or `className` instead, as the full-screen dialog example shows.
+  - `Tooltip` takes `placement`, shows at once on keyboard focus, stays open while hovered, and keeps the user `aria-describedby` on the trigger.
+
+  `@vega-ui/hooks`: BREAKING: `useResize` is removed, use `useResizeObserver` or a `resize` listener of your own, and `useGrid` and `useIndexes` are removed, as they served only `DataGrid` and `IndexedSnapScroller` and now live inside `@vega-ui/react`. The published types keep `| null` and `| undefined`, since the declarations are built in strict mode. `useSelection` adds `selectMany(keys)`, which replaces a multiple selection at once, skipping disabled keys and duplicates, and calls `onSelect` once, and its single `select` of the selected key no longer calls `onSelect`, so `Select` and single `Listbox` no longer call `onChangeValue` when the chosen option is picked again, as a native `<select>` fires no `change`. `@vega-ui/utils` adds `findTabbable`, and `mergeProps` joins `aria-describedby` lists.
+
+- 2d877ef: Respect `prefers-reduced-motion` in SnapScroller, Calendar, SegmentedControl, PageControl and Collapsible: scrolling jumps, sliding and resizing are instant, and PageControlProgress fades in over its duration, so `animationend` still fires.
+
+  `useScrollSnap` no longer forces smooth scrolling: `scrollToElement` and `scrollToElementByKey` default to `behavior: 'auto'`, like native `scrollTo`, so the CSS `scroll-behavior` of the scroller decides. To keep smooth scrolling, set `scroll-behavior: smooth` on the scroller or pass `'smooth'`.
+
+- 6f10f80: - **Breaking:** `useIsomorphicLayoutEffect` is removed; use `useLayoutEffect`, which React 19 runs without a warning on the server.
+
+### Minor Changes
+
+- 0efc57b: Add `onPress` and `onCancel` to `useDragGesture`: `onPress` runs on `pointerdown`, `onCancel` when the press ends without starting a drag. Add `useMergeRefs`, which merges refs into one that keeps its identity until one of them changes
+- ed90a1c: ISO string dates in `Calendar` and date fields, like native date inputs; `Calendar` follows the WAI-ARIA date picker pattern
+
+  `Calendar`:
+
+  - `value` / `defaultValue` are ISO strings: `'YYYY-MM-DD'` (single, `''` is empty), `[start, end]` (range, `''` is an unset bound), `string[]` (multiple)
+  - `onChange` → `onChangeValue`
+  - `from` / `to` → `min` / `max` (`'YYYY-MM-DD'`)
+  - `disabled` is now a boolean that disables the whole calendar; disabled dates moved to `disabledDates` (`string | string[] | (date: string) => boolean`)
+  - `date` / `defaultDate` / `onChangeDate` → `month` / `defaultMonth` / `onChangeMonth`: the visible month is given as a `'YYYY-MM-DD'` string of any day in it; `onChangeMonth` reports its first day and fires only when the month actually changes
+  - the visible month defaults to the month of the selected date
+  - `activeDay` / `defaultActiveDay` / `onChangeActiveDay` removed: keyboard focus starts on the selected day in the visible month, otherwise today, otherwise the first available day
+  - navigating to another month or year moves focus to the same day there, clamped to the month length and skipping unavailable days
+  - `referenceDate` removed from the public API
+  - an empty controlled value (`''`) now clears the selection
+  - new type export: `CalendarValue`
+
+  `DateField`, `DateTimeField`, `DateRangeField`:
+
+  - `min` / `max` are ISO strings instead of `Date` (`'YYYY-MM-DD'`; `'YYYY-MM-DDTHH:mm[:ss]'` for `DateTimeField`)
+  - `disabledDates` takes ISO strings
+  - like the WAI-ARIA date picker pattern, navigating the calendar only moves focus — the field value changes only when a day is picked, and Escape closes the calendar without changing it
+
+  Fixes:
+
+  - `Calendar`: after picking a month in the month picker, WebKit no longer jumps back to the previous month
+  - `Calendar`: fast scrolling no longer skips months in `onChangeMonth`, the header and keyboard focus
+  - `IndexedSnapScroller`: with fractional item widths, scrolling no longer gets stuck on the last item of the window
+  - `DateRangeFieldCalendar`: removed a leftover `console.log`
+
+  - `@vega-ui/hooks`: `useSelection` accepts `null` as an empty single selection; `useScrollSnap` updates the pending snap on instant programmatic scrolls and no longer swallows snap changes when re-measuring or committing on `scrollend`
+  - `@vega-ui/utils`: new `formatISODate`, `parseISODate`, `parseISODateTime`, `sanitizeISODates`
+
+  Breaking: the `Calendar` props above and the `min` / `max` / `disabledDates` types of the date fields change.
+
+- d27ca41: Add hooks for gestures and the on-screen keyboard:
+
+  - `useDragGesture(element, { axis, shouldStart, onStart, onMove, onEnd })` tracks a one-axis pointer drag: it waits for a small movement along the axis, lets `shouldStart` decline it, captures the pointer, blocks native scrolling while dragging, reports the offset and the velocity, ends on `pointercancel`, and swallows the click that ends a drag.
+  - `useKeyboardInset()` returns how many pixels at the bottom of the window an on-screen keyboard covers.
+
+  `useScrollSnap` reports a snap change even when the scroll ends before the snap points are first measured, so a calendar opened and scrolled on a busy page no longer misses the new month.
+
+- a89803a: Enable `react-hooks` lint rules repo-wide; fix all stale-closure findings; add `useEventCallback`
+
+  `eslint-plugin-react-hooks` was installed but none of its rules were enabled — the class of bugs behind the recent Slider and Calendar stale closures was invisible to CI. `rules-of-hooks` and `exhaustive-deps` now run as errors (with `rules-of-hooks` off for Storybook CSF `render` functions, which are false positives).
+
+  - new `@vega-ui/hooks` export: `useEventCallback` — a stable-identity wrapper that always calls the latest handler (the industry "latest ref" pattern à la MUI/Radix/Floating UI), throws in development if called during render
+  - `useScrollSnap`: `onSnapChanging`/`onSnapChange`/`getSnapPoint` go through `useEventCallback`, so inline consumer callbacks no longer resubscribe the `scrollend` listener and observers on every render; the remaining deps are honest
+  - `Calendar`: `onSelectDay` no longer freezes the first `onChange` — it reads the latest callback through `useEventCallback` while keeping a stable identity (regression-tested by swapping `onChange` between renders)
+  - `NumberField`: `decrement` no longer clamps against a stale `max`; the native non-passive `wheel` listener is attached only while `changeOnWheel` is enabled and no longer resubscribes when `min`/`max`/`step` or the value change
+  - `useSelection`: a consumer-provided `resolveRange` no longer cascades identity changes into `select`/`expand`/`toggle`
+  - `Collapsible`: `onChangeHidden` fires only when `hidden` actually changes — an inline callback no longer re-triggers the notification effect on every parent render
+  - all remaining findings were stable-value dependencies added for free, plus three documented intentional suppressions (`useMutationObserver` per-field options deps, `createContext` shallow-by-value memoization, `SnapScrollerContent` unmount-only unregistration)
+
+- d0069e2: New `useFormReset(ref, onReset)`: calls the latest `onReset` when a form that owns the element in `ref` or a control inside it is reset.
+
+### Patch Changes
+
+- 3580f9f: Mark the packages as free of side effects so bundlers like webpack can drop unused modules
+- 1de3d3c: `useResizeObserver` and `useMutationObserver` update the latest callback in a layout effect instead of writing a ref during render
+- 2e5cc1b: Fixed disabled compare
+- Updated dependencies [875e52a]
+- Updated dependencies [5feb6c9]
+- Updated dependencies [1af9fda]
+- Updated dependencies [6f10f80]
+- Updated dependencies [7c5e42b]
+- Updated dependencies [39c05d0]
+- Updated dependencies [ed90a1c]
+- Updated dependencies [80acd5a]
+- Updated dependencies [3580f9f]
+- Updated dependencies [90c22d3]
+- Updated dependencies [af29e8c]
+- Updated dependencies [0d7649f]
+- Updated dependencies [d27ca41]
+- Updated dependencies [0efc57b]
+- Updated dependencies [d0069e2]
+- Updated dependencies [f827279]
+- Updated dependencies [399fd0d]
+- Updated dependencies [6f10f80]
+  - @vega-ui/utils@3.0.0
+
 ## 2.5.0
 
 ### Patch Changes

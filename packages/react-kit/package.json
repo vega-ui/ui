@@ -1,6 +1,6 @@
 {
   "name": "@vega-ui/react-kit",
-  "version": "2.5.0",
+  "version": "3.0.0",
   "description": "React utils for building @vega-ui components",
   "license": "MIT",
   "keywords": [
