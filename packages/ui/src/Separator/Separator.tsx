@@ -16,6 +16,6 @@ export interface SeparatorProps extends HTMLAttributes<HTMLDivElement> {
 /** A Separator is a UI component used to visually divide content into distinct sections, often represented as a line or space to enhance clarity and organization in layouts */
 export const Separator: FC<SeparatorProps> = ({ orientation = 'horizontal', className, ...props }) => {
   return (
-    <div role='separator' {...props} data-orientation={orientation} className={csx(style.separator, className)} />
+    <div role='separator' aria-orientation={orientation} {...props} data-orientation={orientation} className={csx(style.separator, className)} />
   );
 }
