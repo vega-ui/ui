@@ -8,8 +8,9 @@ import {
 } from 'react';
 import style from './style.module.css'
 import { csx, MatrixNode, mergeEventHandlers } from '@vega-ui/utils';
-import { useControlledState, useGrid, useMap } from '@vega-ui/hooks';
+import { useControlledState, useMap } from '@vega-ui/hooks';
 
+import { useGrid } from './hooks';
 import { DataGridProvider } from './contexts';
 import {
   DataGridExclude, DataGridCoordinates, DataGridCellKey,

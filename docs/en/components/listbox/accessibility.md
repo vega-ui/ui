@@ -16,6 +16,10 @@
 | <kbd>Page Down</kbd> / <kbd>Page Up</kbd> | Moves the active option 10 options down or up, stopping at the last or first enabled one. |
 | <kbd>p</kbd> | Typeahead: a printable character makes the next option whose label starts with the typed text active; characters typed quickly add up. Turned off with `typeahead={false}`. |
 | <kbd>Enter</kbd> / <kbd>Space</kbd> | Selects the active option. With `multiple`, toggles it and keeps the other selected options. |
+| <kbd>Shift</kbd> + <kbd>↓</kbd> / <kbd>Shift</kbd> + <kbd>↑</kbd> | With `multiple`: moves the active option and toggles it. |
+| <kbd>Shift</kbd> + <kbd>Space</kbd> | With `multiple`: selects every option from the last toggled one to the active one. |
+| <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Home</kbd> / <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>End</kbd> | With `multiple`: selects every option from the active one to the first or last one and makes it active. |
+| <kbd>Ctrl</kbd> + <kbd>a</kbd> | With `multiple`: selects every enabled option, or clears the selection when all of them are selected. `Meta+A` on macOS. |
 <!-- AUTO-GENERATED:KEYBOARD:end -->
 
 ## Focus Behavior

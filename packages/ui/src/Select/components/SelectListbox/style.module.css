@@ -1,6 +1,4 @@
 .listbox {
-    --select-listbox-br-ratio: var(--select-br-ratio);
-
     inset: auto;
     margin: 0;
     border: none;
@@ -18,19 +16,20 @@
     overflow: auto;
     max-height: 250px;
     transition:
-            scale var(--transition-state-delay) ease,
-            opacity var(--transition-state-delay) ease;
-    border-radius: calc(var(--select-size) * var(--select-listbox-br-ratio));
+            scale var(--duration-spring) var(--ease-spring),
+            opacity var(--duration-exit) var(--ease-smooth);
+    border-radius: calc(var(--select-size) * var(--select-listbox-br-ratio, var(--select-br-ratio)));
 }
 
 .listbox:where(:not(:popover-open)) {
-    scale: 0;
+    scale: .95;
     opacity: 0;
     visibility: hidden;
     transition:
-            scale var(--transition-state-delay) ease,
-            opacity var(--transition-state-delay) ease,
-            visibility var(--transition-state-delay);
+            scale var(--duration-exit) var(--ease-exit),
+            opacity var(--duration-exit) var(--ease-exit),
+            visibility var(--duration-exit),
+            overlay var(--duration-exit) allow-discrete;
 }
 
 .listbox > * {

@@ -128,7 +128,7 @@ On open the dialog itself takes focus, so nothing inside is highlighted and scre
 ## Screen Reader Semantics
 
 - the dialog is exposed as `role=dialog` with `aria-modal` by the browser and is named by your `aria-labelledby` or `aria-label`
-- the trigger exposes `aria-haspopup='dialog'` and `aria-expanded`
+- the trigger exposes `aria-haspopup='dialog'`
 - the body content should make sense as one modal unit
 - close controls should remain explicit when dismissal matters; `DialogClose` has no default label, so an icon-only button inside it needs an `aria-label`; the library ships no built-in strings
 

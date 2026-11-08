@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { renderHook } from 'vitest-browser-react';
 import { useSelection } from '../useSelection';
 
@@ -43,6 +43,22 @@ describe('useSelection', () => {
     await act(() => result.current.select({ row: 0, col: 1 }));
 
     expect(result.current.selected).toEqual([{ row: 0, col: 1 }]);
+  });
+
+  it('replaces the selection at once with selectMany, skipping disabled keys and duplicates', async () => {
+    const onSelect = vi.fn();
+    const { result, act } = await renderHook(() => useSelection<Cell, 'multiple'>({
+      selection: 'multiple',
+      equals,
+      disabled: [{ row: 0, col: 0 }],
+      defaultSelected: [{ row: 5, col: 5 }],
+      onSelect,
+    }));
+
+    await act(() => result.current.selectMany([{ row: 0, col: 0 }, { row: 0, col: 1 }, { row: 0, col: 1 }, { row: 0, col: 2 }]));
+
+    expect(result.current.selected).toEqual([{ row: 0, col: 1 }, { row: 0, col: 2 }]);
+    expect(onSelect).toHaveBeenCalledOnce();
   });
 
   it('compares primitives by value without equals', async () => {

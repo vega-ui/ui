@@ -5,6 +5,8 @@ import { userEvent } from 'vitest/browser';
 
 import { Tooltip } from '../Tooltip';
 import { TooltipArrow, TooltipContent, TooltipTrigger } from '../components';
+import { Dialog } from '../../Dialog';
+import { DialogContent } from '../../Dialog/components';
 
 afterEach(cleanup);
 
@@ -33,6 +35,10 @@ const focusByKeyboard = async (element: HTMLElement) => {
   await userEvent.keyboard('{Shift}');
   element.focus();
 };
+
+const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+const waitForWarmUpToExpire = () => wait(600);
 
 describe('Tooltip', () => {
   describe('Critical User Paths', () => {
@@ -84,6 +90,20 @@ describe('Tooltip', () => {
           expect(onChangeOpen).toHaveBeenLastCalledWith(false);
         });
 
+        expect(queryContent(r)).toBeInTheDocument();
+      });
+
+      it('reports closing on unhover while the parent keeps it open', async () => {
+        const onChangeOpen = vi.fn();
+        const r = render(<TooltipTest open delayOpen={0} onChangeOpen={onChangeOpen} />);
+
+        await userEvent.hover(getTrigger(r));
+        await userEvent.unhover(getTrigger(r));
+        await waitFor(() => {
+          expect(onChangeOpen).toHaveBeenLastCalledWith(false);
+        });
+
+        expect(onChangeOpen).not.toHaveBeenCalledWith(true);
         expect(queryContent(r)).toBeInTheDocument();
       });
 
@@ -192,10 +212,119 @@ describe('Tooltip', () => {
           expect(queryContent(r)).not.toBeInTheDocument();
         });
       });
+
+      it('stays open while the trigger is hovered', async () => {
+        const trigger = getTrigger(r);
+
+        await userEvent.hover(trigger);
+        await waitFor(() => {
+          expect(queryContent(r)).toBeInTheDocument();
+        });
+        await wait(500);
+
+        expect(queryContent(r)).toHaveAttribute('data-status', 'open');
+      });
+    });
+
+    describe('delays', () => {
+      beforeEach(waitForWarmUpToExpire);
+
+      it('waits for delayOpen before showing on hover', async () => {
+        const r = render(<TooltipTest delayOpen={400} />);
+
+        await userEvent.hover(getTrigger(r));
+        await wait(200);
+        expect(queryContent(r)).not.toBeInTheDocument();
+
+        await waitFor(() => {
+          expect(queryContent(r)).toBeInTheDocument();
+        });
+      });
+
+      it('shows at once on keyboard focus, without waiting for delayOpen', async () => {
+        const r = render(<TooltipTest delayOpen={5000} />);
+
+        await focusByKeyboard(getTrigger(r));
+
+        await waitFor(() => {
+          expect(queryContent(r)).toBeInTheDocument();
+        });
+      });
+
+      it('waits for delayClose before hiding on unhover', async () => {
+        const r = render(<TooltipTest delayOpen={0} delayClose={400} />);
+
+        await userEvent.hover(getTrigger(r));
+        await waitFor(() => {
+          expect(queryContent(r)).toBeInTheDocument();
+        });
+
+        await userEvent.unhover(getTrigger(r));
+        await wait(200);
+        expect(queryContent(r)).toHaveAttribute('data-status', 'open');
+
+        await waitFor(() => {
+          expect(queryContent(r)).not.toBeInTheDocument();
+        });
+      });
     });
   });
   
   describe('Edge Cases', () => {
+    it('closes only itself on Escape inside a dialog', async () => {
+      const onChangeOpen = vi.fn();
+      const r = render(
+        <Dialog defaultOpen onChangeOpen={onChangeOpen}>
+          <DialogContent aria-label='Dialog'>
+            <TooltipTest />
+          </DialogContent>
+        </Dialog>
+      );
+
+      await focusByKeyboard(getTrigger(r));
+      await waitFor(() => {
+        expect(queryContent(r)).toBeInTheDocument();
+      });
+      await userEvent.keyboard('{Escape}');
+
+      await waitFor(() => {
+        expect(queryContent(r)).not.toBeInTheDocument();
+      });
+      expect(onChangeOpen).not.toHaveBeenCalled();
+
+      await userEvent.keyboard('{Escape}');
+      await waitFor(() => {
+        expect(onChangeOpen).toHaveBeenCalledWith(false);
+      });
+    });
+
+    it('describes the trigger with its own id on TooltipContent', async () => {
+      const r = render(
+        <Tooltip open>
+          <TooltipTrigger data-testid={TESTID_TRIGGER}>{TRIGGER_TEXT}</TooltipTrigger>
+          <TooltipContent data-testid={TESTID_CONTENT} id='custom'>{CONTENT_TEXT}</TooltipContent>
+        </Tooltip>
+      );
+
+      await expect.element(r.getByTestId(TESTID_CONTENT)).toBeVisible();
+
+      expect(getTrigger(r)).toHaveAttribute('aria-describedby', 'custom');
+    });
+
+    it('shows on the preferred side from placement', async () => {
+      const r = render(
+        <div style={{ paddingTop: 200 }}>
+          <TooltipTest delayOpen={0} placement='top' />
+        </div>
+      );
+
+      await userEvent.hover(getTrigger(r));
+      await waitFor(() => {
+        expect(queryContent(r)).toHaveAttribute('data-side', 'top');
+      });
+      expect(queryContent(r)!.getBoundingClientRect().bottom).toBeLessThanOrEqual(getTrigger(r).getBoundingClientRect().top);
+    });
+
     it('scales the content in place, wherever the trigger is on the page', async () => {
       const r = render(<div style={{ padding: 300 }}><TooltipTest open /></div>);
       await expect.element(r.getByTestId(TESTID_CONTENT)).toBeVisible();
@@ -286,6 +415,81 @@ describe('Tooltip', () => {
         await waitFor(() => {
           expect(queryContent(r)).toHaveRole('tooltip');
         });
+      });
+
+    });
+
+    describe('aria', () => {
+      it('keeps the trigger own aria-describedby next to the tooltip', async () => {
+        const r = render(
+          <>
+            <span id='hint'>Hint</span>
+            <Tooltip delayOpen={0}>
+              <TooltipTrigger data-testid={TESTID_TRIGGER} aria-describedby='hint'>{TRIGGER_TEXT}</TooltipTrigger>
+              <TooltipContent data-testid={TESTID_CONTENT}>{CONTENT_TEXT}</TooltipContent>
+            </Tooltip>
+          </>
+        );
+
+        await userEvent.hover(getTrigger(r));
+        await waitFor(() => {
+          expect(queryContent(r)).toBeInTheDocument();
+        });
+
+        expect(getTrigger(r).getAttribute('aria-describedby')?.split(' ')).toEqual(expect.arrayContaining(['hint', queryContent(r)?.id]));
+      });
+
+      it('keeps the asChild trigger own aria-describedby next to the tooltip', async () => {
+        const r = render(
+          <>
+            <span id='hint'>Hint</span>
+            <Tooltip delayOpen={0}>
+              <TooltipTrigger asChild>
+                <a href='#details' data-testid={TESTID_TRIGGER} aria-describedby='hint'>{TRIGGER_TEXT}</a>
+              </TooltipTrigger>
+              <TooltipContent data-testid={TESTID_CONTENT}>{CONTENT_TEXT}</TooltipContent>
+            </Tooltip>
+          </>
+        );
+
+        await userEvent.hover(getTrigger(r));
+        await waitFor(() => {
+          expect(queryContent(r)).toBeInTheDocument();
+        });
+
+        expect(getTrigger(r).getAttribute('aria-describedby')?.split(' ')).toEqual(expect.arrayContaining(['hint', queryContent(r)?.id]));
+      });
+    });
+
+    describe('content on hover or focus', () => {
+      it('keeps focus on the trigger when Escape dismisses it', async () => {
+        const r = render(<TooltipTest delayOpen={0} />);
+
+        getTrigger(r).focus();
+        await userEvent.hover(getTrigger(r));
+        await waitFor(() => {
+          expect(queryContent(r)).toBeInTheDocument();
+        });
+
+        await userEvent.keyboard('{Escape}');
+        await waitFor(() => {
+          expect(queryContent(r)).not.toBeInTheDocument();
+        });
+        expect(getTrigger(r)).toHaveFocus();
+      });
+
+      it('stays open while the pointer moves from the trigger onto the tooltip', async () => {
+        const r = render(<TooltipTest delayOpen={0} />);
+
+        await userEvent.hover(getTrigger(r));
+        await waitFor(() => {
+          expect(queryContent(r)).toHaveAttribute('data-status', 'open');
+        });
+
+        await userEvent.hover(queryContent(r)!, { force: true });
+        await wait(300);
+
+        expect(queryContent(r)).toHaveAttribute('data-status', 'open');
       });
     });
   });

@@ -4,12 +4,12 @@ import {
   PhoneField,
   PhoneFieldInput,
   PhoneFieldSelect,
-  PhoneFieldSelectCombobox,
-  PhoneFieldSelectHiddenSelect,
-  PhoneFieldSelectIcon,
-  PhoneFieldSelectListbox,
-  PhoneFieldSelectOption,
-  PhoneFieldSelectValue,
+  SelectCombobox,
+  SelectHiddenSelect,
+  SelectIcon,
+  SelectListbox,
+  SelectOption,
+  SelectValue,
   Switch,
   SwitchIndicator,
   SwitchInput,
@@ -41,15 +41,15 @@ export default function DisabledInput() {
         <Label htmlFor={phoneId}>Billing phone</Label>
         <PhoneField defaultValue='+44 7400 123456'>
           <PhoneFieldSelect>
-            <PhoneFieldSelectHiddenSelect name='country' />
-            <PhoneFieldSelectCombobox aria-label='Country'>
-              <PhoneFieldSelectValue />
-              <PhoneFieldSelectIcon />
-            </PhoneFieldSelectCombobox>
-            <PhoneFieldSelectListbox>
-              <PhoneFieldSelectOption value='GB'>GB</PhoneFieldSelectOption>
-              <PhoneFieldSelectOption value='IE'>IE</PhoneFieldSelectOption>
-            </PhoneFieldSelectListbox>
+            <SelectHiddenSelect name='country' />
+            <SelectCombobox aria-label='Country'>
+              <SelectValue />
+              <SelectIcon />
+            </SelectCombobox>
+            <SelectListbox>
+              <SelectOption value='GB'>GB</SelectOption>
+              <SelectOption value='IE'>IE</SelectOption>
+            </SelectListbox>
           </PhoneFieldSelect>
           <PhoneFieldInput id={phoneId} name='billingPhone' autoComplete='tel' />
         </PhoneField>

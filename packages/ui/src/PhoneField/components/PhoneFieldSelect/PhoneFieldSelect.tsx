@@ -1,7 +1,7 @@
 import { FC } from 'react';
+import { csx } from '@vega-ui/utils';
 import { Select, SelectProps } from '../../../Select';
 import style from './style.module.css'
-import { csx } from '@vega-ui/utils';
 import { usePhoneFieldContext } from '../../contexts';
 import { CountryCode } from 'libphonenumber-js';
 import { useTextFieldContext } from '../../../TextField/contexts';
@@ -24,13 +24,13 @@ export type PhoneFieldSelectProps = Omit<SelectProps, 'defaultValue' | 'value'>
  * This component is not intended to be used standalone.
  * It should always be rendered within a PhoneField.
  */
-export const PhoneFieldSelect: FC<PhoneFieldSelectProps> = ({ className, onChangeValue, ...props }) => {
-  const { onSelectValue: _onSelectValue, code } = usePhoneFieldContext()
+export const PhoneFieldSelect: FC<PhoneFieldSelectProps> = ({ className, onChangeValue: _onChangeValue, ...props }) => {
+  const { onSelectValue, code } = usePhoneFieldContext()
   const { size } = useTextFieldContext()
   
   const onSelect = (value: CountryCode) => {
-    onChangeValue?.(value)
-    _onSelectValue?.(value)
+    onSelectValue?.(value)
+    _onChangeValue?.(value)
   }
   return (
     <Select

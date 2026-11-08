@@ -13,7 +13,7 @@ export default mergeConfig(
     test: {
       maxWorkers: 1,
       css: true,
-      setupFiles: ['../tokens/src/index.css'],
+      setupFiles: ['../tokens/src/index.css', './vitest.motion.css'],
       browser: {
         enabled: true,
         headless: true,

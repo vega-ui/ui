@@ -2,25 +2,31 @@
     position: relative;
 
     --select-size: 0;
+    --select-gap: var(--spacing-10);
     --select-br-ratio: 0.333;
 }
 
 .select:where([data-size='xs']) {
+    --select-gap: var(--spacing-6);
     --select-size: var(--spacing-16);
 }
 
 .select:where([data-size='sm']) {
+    --select-gap: var(--spacing-8);
     --select-size: var(--spacing-18);
 }
 
 .select:where([data-size='md']) {
+    --select-gap: var(--spacing-10);
     --select-size: var(--spacing-21);
 }
 
 .select:where([data-size='lg']) {
+    --select-gap: var(--spacing-12);
     --select-size: var(--spacing-24);
 }
 
 .select:where([data-size='xl']) {
+    --select-gap: var(--spacing-14);
     --select-size: var(--spacing-26);
 }

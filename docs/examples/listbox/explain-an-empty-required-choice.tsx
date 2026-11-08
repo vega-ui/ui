@@ -8,8 +8,8 @@ export default function ExplainAnEmptyRequiredChoice() {
   const [invalid, setInvalid] = useState(false);
   const [done, setDone] = useState(false);
 
-  const onChangeValue = (next: string | undefined) => {
-    setPlan(next ?? null);
+  const onChangeValue = (next: string | null) => {
+    setPlan(next);
     setInvalid(false);
   };
 

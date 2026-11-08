@@ -21,8 +21,8 @@ export default function SelectRequiredError() {
   const [invalid, setInvalid] = useState(false);
   const [sent, setSent] = useState(false);
 
-  const onChangeValue = (next: string | undefined) => {
-    setReason(next ?? null);
+  const onChangeValue = (next: string | null) => {
+    setReason(next);
     setInvalid(false);
   };
 

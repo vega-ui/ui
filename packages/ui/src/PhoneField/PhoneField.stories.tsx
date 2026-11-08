@@ -4,14 +4,16 @@ import { CountryCode } from 'libphonenumber-js';
 import { PhoneField, PhoneFieldProps } from './PhoneField';
 import {
   PhoneFieldSelect,
-  PhoneFieldSelectHiddenSelect,
-  PhoneFieldSelectCombobox,
-  PhoneFieldSelectValue,
-  PhoneFieldSelectIcon,
-  PhoneFieldSelectListbox,
-  PhoneFieldSelectOption,
   PhoneFieldInput,
 } from './components';
+import {
+  SelectCombobox,
+  SelectHiddenSelect,
+  SelectIcon,
+  SelectListbox,
+  SelectOption,
+  SelectValue,
+} from '../Select';
 
 const codes: CountryCode[] = ['US', 'RU', 'FR', 'GB', 'DE', 'JP', 'BR', 'IN'];
 
@@ -20,12 +22,12 @@ const meta = {
   component: PhoneField,
   subcomponents: {
     PhoneFieldSelect,
-    PhoneFieldSelectHiddenSelect,
-    PhoneFieldSelectCombobox,
-    PhoneFieldSelectValue,
-    PhoneFieldSelectIcon,
-    PhoneFieldSelectListbox,
-    PhoneFieldSelectOption,
+    SelectHiddenSelect,
+    SelectCombobox,
+    SelectValue,
+    SelectIcon,
+    SelectListbox,
+    SelectOption,
     PhoneFieldInput,
   },
   parameters: { layout: 'centered' },
@@ -65,16 +67,16 @@ export const Matrix: Story = {
       {sizes.map((size) => states.map((state) => (
         <PhoneField key={`${size}-${state.label}`} size={size} defaultCode='RU' error={state.error}>
           <PhoneFieldSelect disabled={state.selectDisabled}>
-            <PhoneFieldSelectHiddenSelect />
-            <PhoneFieldSelectCombobox aria-label='Country'>
-              <PhoneFieldSelectValue />
-              <PhoneFieldSelectIcon />
-            </PhoneFieldSelectCombobox>
-            <PhoneFieldSelectListbox>
-              <PhoneFieldSelectOption value='RU'>RU</PhoneFieldSelectOption>
-              <PhoneFieldSelectOption value='US'>US</PhoneFieldSelectOption>
-              <PhoneFieldSelectOption value='FR'>FR</PhoneFieldSelectOption>
-            </PhoneFieldSelectListbox>
+            <SelectHiddenSelect />
+            <SelectCombobox aria-label='Country'>
+              <SelectValue />
+              <SelectIcon />
+            </SelectCombobox>
+            <SelectListbox>
+              <SelectOption value='RU'>RU</SelectOption>
+              <SelectOption value='US'>US</SelectOption>
+              <SelectOption value='FR'>FR</SelectOption>
+            </SelectListbox>
           </PhoneFieldSelect>
           <PhoneFieldInput
             aria-label='Phone number'

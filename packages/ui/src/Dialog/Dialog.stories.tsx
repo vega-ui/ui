@@ -33,11 +33,9 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     children: { control: false },
-    fluid: { control: 'boolean' },
     ...content.argTypes,
   },
   args: {
-    fluid: false,
     closedBy: 'closerequest',
     blurred: true,
     overlay: true,

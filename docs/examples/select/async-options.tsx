@@ -41,7 +41,7 @@ export default function AsyncOptions() {
     });
   };
 
-  const onChangeValue = (next: string | undefined) => {
+  const onChangeValue = (next: string | null) => {
     const found = projects?.find((item) => item.id === next);
     setProject(found ?? null);
   };

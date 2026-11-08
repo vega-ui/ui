@@ -3,12 +3,12 @@ import {
   PhoneField,
   PhoneFieldInput,
   PhoneFieldSelect,
-  PhoneFieldSelectCombobox,
-  PhoneFieldSelectHiddenSelect,
-  PhoneFieldSelectIcon,
-  PhoneFieldSelectListbox,
-  PhoneFieldSelectOption,
-  PhoneFieldSelectValue,
+  SelectCombobox,
+  SelectHiddenSelect,
+  SelectIcon,
+  SelectListbox,
+  SelectOption,
+  SelectValue,
 } from '@vega-ui/react';
 import { useId } from 'react';
 
@@ -20,16 +20,16 @@ export default function MinimalComposition() {
       <Label htmlFor={id}>Phone number</Label>
       <PhoneField defaultCode='US'>
         <PhoneFieldSelect>
-          <PhoneFieldSelectHiddenSelect name='country' />
-          <PhoneFieldSelectCombobox aria-label='Country'>
-            <PhoneFieldSelectValue />
-            <PhoneFieldSelectIcon />
-          </PhoneFieldSelectCombobox>
-          <PhoneFieldSelectListbox>
-            <PhoneFieldSelectOption value='US'>US</PhoneFieldSelectOption>
-            <PhoneFieldSelectOption value='GB'>GB</PhoneFieldSelectOption>
-            <PhoneFieldSelectOption value='DE'>DE</PhoneFieldSelectOption>
-          </PhoneFieldSelectListbox>
+          <SelectHiddenSelect name='country' />
+          <SelectCombobox aria-label='Country'>
+            <SelectValue />
+            <SelectIcon />
+          </SelectCombobox>
+          <SelectListbox>
+            <SelectOption value='US'>US</SelectOption>
+            <SelectOption value='GB'>GB</SelectOption>
+            <SelectOption value='DE'>DE</SelectOption>
+          </SelectListbox>
         </PhoneFieldSelect>
         <PhoneFieldInput id={id} name='phone' autoComplete='tel' />
       </PhoneField>

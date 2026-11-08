@@ -3,10 +3,4 @@ export { usePhoneFieldContext } from './contexts'
 export {
   PhoneFieldInput, type PhoneFieldInputProps,
   PhoneFieldSelect, type PhoneFieldSelectProps,
-  PhoneFieldSelectHiddenSelect, type PhoneFieldSelectHiddenSelectProps,
-  PhoneFieldSelectCombobox, type PhoneFieldSelectComboboxProps,
-  PhoneFieldSelectValue, type PhoneFieldSelectValueProps,
-  PhoneFieldSelectIcon, type PhoneFieldSelectIconProps,
-  PhoneFieldSelectOption, type PhoneFieldSelectOptionProps,
-  PhoneFieldSelectListbox, type PhoneFieldSelectListboxProps,
 } from './components'

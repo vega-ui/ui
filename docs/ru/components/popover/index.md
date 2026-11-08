@@ -15,6 +15,8 @@ import {
   Popover,
   PopoverTrigger,
   PopoverContent,
+  PopoverAnchor,
+  PopoverClose,
   type PopoverProps,
 } from '@vega-ui/react';
 ```
@@ -24,6 +26,8 @@ import {
 - `PopoverProps`
 - `PopoverTriggerProps`
 - `PopoverContentProps`
+- `PopoverAnchorProps`
+- `PopoverCloseProps`
 
 ## Минимальная композиция
 
@@ -67,13 +71,18 @@ export default function MinimalComposition() {
 
 ## Необязательные части
 
-Нет. Для затемнённой подложки используйте `Dialog` или `Sheet`.
+- `PopoverAnchor`: позиционирует содержимое от другого элемента вместо триггера
+- `PopoverClose`: закрывает поповер кнопкой внутри него
+
+Для затемнённой подложки используйте `Dialog` или `Sheet`.
 
 ## Порядок композиции
 
 1. `Popover`
-2. `PopoverTrigger`
-3. `PopoverContent`
+2. `PopoverAnchor` (необязательна), оборачивает элемент с `PopoverTrigger`
+3. `PopoverTrigger`
+4. `PopoverContent`
+5. `PopoverClose` (необязательна), внутри `PopoverContent`
 
 ## Варианты
 

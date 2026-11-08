@@ -44,6 +44,6 @@ BREAKING: `Dialog`, `Drawer`, and `Sheet` are built on the native `<dialog>` ele
 - It shows on hover with a mouse or pen and on keyboard focus, never on a tap, and hides when the trigger is pressed. Right after one tooltip closes, the next shows without a delay.
 - It describes its trigger through `aria-describedby`, grows out of its arrow, and lets the pointer through to the page. `useTooltipContext` no longer exposes the floating-ui props.
 
-`Select` and `Tooltip` render their floating content in the top layer with `popover="manual"` when the browser supports it, so a modal dialog or an `overflow` container no longer clips or covers them. `SelectPortal` and `PhoneFieldSelectPortal` are removed: render `SelectListbox` directly inside `Select`. `SelectListbox` stays at least as wide as the combobox, also when the combobox resizes while the list is open, and only fades with reduced motion.
+`Select` renders its list in the top layer with `popover="auto"` and `Tooltip` its content with `popover="manual"` when the browser supports it, so a modal dialog or an `overflow` container no longer clips or covers them. `SelectPortal` and `PhoneFieldSelectPortal` are removed: render `SelectListbox` directly inside `Select`. `SelectListbox` stays at least as wide as the combobox, also when the combobox resizes while the list is open, and only fades with reduced motion.
 
 `IconButton` no longer keeps the browser's default button padding, so an icon in a small button, such as a 24px close button, is no longer squeezed.

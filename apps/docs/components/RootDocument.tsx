@@ -5,6 +5,7 @@ import '@/app/globals.css';
 import { getDictionary, type Locale } from '@/lib/i18n';
 import { SITE_NAME, SITE_URL, THEME_COLOR } from '@/lib/site';
 import { DocumentLang } from './DocumentLang';
+import { themeScript } from '@/lib/storedTheme';
 import { LocaleProvider } from './LocaleProvider';
 import { SiteHeader } from './SiteHeader';
 import { SiteFooter } from './SiteFooter';
@@ -24,8 +25,6 @@ export const rootViewport = {
   ],
 };
 
-export const themeScript = 'try { const root = document.documentElement; root.classList.add(localStorage.getItem("theme") ?? (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")); const accent = localStorage.getItem("accent"); if (accent) root.dataset.accent = accent; const radius = localStorage.getItem("radius"); if (radius) root.dataset.radius = radius; matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => { if (localStorage.getItem("theme")) return; root.classList.remove("light", "dark"); root.classList.add(event.matches ? "dark" : "light"); }); const css = localStorage.getItem("theme-css"); if (css) { const style = document.createElement("style"); style.id = "site-theme"; style.textContent = css; document.head.append(style); } } catch { document.documentElement.classList.add("light"); }';
-
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? '';
 
 export const localeScript = `if (/^${basePath.replace(/\//g, '\\/')}\\/ru(\\/|$)/.test(location.pathname)) { document.documentElement.lang = 'ru'; }`;
@@ -36,7 +35,9 @@ export const RootDocument = ({ children }: { children: ReactNode }) => (
       <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       <script dangerouslySetInnerHTML={{ __html: localeScript }} />
     </head>
-    <body>{children}</body>
+    <body>
+      {children}
+    </body>
   </html>
 );
 

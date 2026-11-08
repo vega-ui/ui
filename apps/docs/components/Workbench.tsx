@@ -125,7 +125,7 @@ export const Workbench = ({ slug, example, code, html }: { slug: string, example
   const requested = useRef(false);
   const preview = Example ? <Example locale={exampleLocale} /> : PREVIEWS[slug]?.node;
 
-  const changeLocale = (next: string | undefined) => {
+  const changeLocale = (next: string | null) => {
     if (!next) return;
 
     setExampleLocale(next);

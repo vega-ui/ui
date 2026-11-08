@@ -1,9 +1,12 @@
 'use client';
 
-import { MouseEvent, PointerEvent, useLayoutEffect } from 'react';
-import { mergeEventHandlers } from '@vega-ui/utils';
+import { MouseEvent, PointerEvent, useId } from 'react';
+import { mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
+import { useRegistryItem } from '@vega-ui/react-kit/registry';
+import { useStore } from '@vega-ui/react-kit/store';
 import { Option, OptionProps } from '../../../Option';
 import { useListboxContext } from '../../contexts';
+import { ListboxItemData, ListboxState } from '../../../internals/listbox';
 
 export interface ListboxOptionProps<V> extends Omit<OptionProps, 'id' | 'selected' | 'active'> {
   /**
@@ -17,7 +20,7 @@ export interface ListboxOptionProps<V> extends Omit<OptionProps, 'id' | 'selecte
   label?: string
 }
 
-/** A ListboxOption is a single choice of a Listbox or a Select: the list reads it from the DOM and owns selection and keyboard navigation */
+/** A ListboxOption is a single choice of a Listbox or a Select: it registers in the list, which owns selection and keyboard navigation */
 export const ListboxOption = <V extends string | number>({
   value,
   label,
@@ -25,45 +28,39 @@ export const ListboxOption = <V extends string | number>({
   disabled,
   onClick: _onClick,
   onPointerMove: _onPointerMove,
+  ref,
   ...props
 }: ListboxOptionProps<V>) => {
   const {
     size: listSize,
     disabled: listDisabled,
-    activeId,
-    getOptionId,
+    store,
     isSelected,
     onSelect,
-    setActiveId,
-    clearActive
   } = useListboxContext()
 
-  const id = getOptionId(value)
-  const active = id === activeId
+  const id = useId()
   const optionDisabled = disabled || listDisabled
-
-  useLayoutEffect(() => {
-    if (!active) return undefined
-    return () => clearActive(id)
-  }, [active, id, clearActive])
+  const active = useStore<ListboxState, boolean>(store, (state) => state.activeId === id)
+  const optionRef = useRegistryItem<ListboxItemData, HTMLDivElement>(store, id, { value, disabled: optionDisabled, label })
 
   const onClick = () => {
     onSelect(value)
   }
 
   const onPointerMove = (event: PointerEvent<HTMLDivElement>) => {
-    if (event.pointerType === 'mouse' && !optionDisabled && !active) setActiveId(id)
+    if (event.pointerType === 'mouse' && !optionDisabled && !active) store.setActive(id, 'pointer')
   }
 
   return (
     <Option
-      data-label={label}
       size={size ?? listSize}
       active={active}
       selected={isSelected(value)}
       disabled={optionDisabled}
       onClick={mergeEventHandlers<MouseEvent<HTMLDivElement>>(onClick, _onClick)}
       onPointerMove={mergeEventHandlers(onPointerMove, _onPointerMove)}
+      ref={mergeRefs([optionRef, ref])}
       {...props}
       id={id}
     />

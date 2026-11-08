@@ -97,7 +97,7 @@ On open the drawer itself takes focus, so nothing inside is highlighted and scre
 ## Screen Reader Semantics
 
 - The drawer is exposed as `role=dialog` with `aria-modal` by the browser and is named by your `aria-labelledby` or `aria-label`.
-- The trigger exposes `aria-haspopup='dialog'` and `aria-expanded`.
+- The trigger exposes `aria-haspopup='dialog'`.
 - `DrawerClose` has no default label, so an icon-only button inside it needs an `aria-label`; the library ships no built-in strings.
 - The drawer should expose a clear panel purpose.
 - Long panels should still read as one coherent overlay task rather than a disconnected page fragment.

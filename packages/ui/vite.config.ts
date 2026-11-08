@@ -39,7 +39,7 @@ export default defineConfig({
     },
     chunkSizeWarningLimit: 10000,
     rollupOptions: {
-      external: [...Object.keys(packageJson.dependencies), ...Object.keys(packageJson.peerDependencies), 'react/jsx-runtime', 'libphonenumber-js/min/metadata'],
+      external: [...Object.keys(packageJson.dependencies).map((name) => new RegExp(`^${name}(/|$)`)), ...Object.keys(packageJson.peerDependencies), 'react/jsx-runtime', 'libphonenumber-js/min/metadata'],
       plugins: [
         preserveDirectives()
       ],

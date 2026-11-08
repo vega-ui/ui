@@ -115,8 +115,8 @@ export default function TeamMembers() {
   const stack = members.slice(0, STACK_SIZE);
   const hidden = members.length - stack.length;
 
-  const changeRole = (member: Member, role: Role | undefined) => {
-    if (role === undefined) return;
+  const changeRole = (member: Member, role: Role | null) => {
+    if (role === null) return;
 
     setMembers((current) => current.map((item) => (item.id === member.id ? { ...item, role } : item)));
     setNotice(`${member.name}’s role changed to ${roles[role]}.`);

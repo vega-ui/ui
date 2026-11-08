@@ -3,12 +3,12 @@ import {
   PhoneField,
   PhoneFieldInput,
   PhoneFieldSelect,
-  PhoneFieldSelectCombobox,
-  PhoneFieldSelectHiddenSelect,
-  PhoneFieldSelectIcon,
-  PhoneFieldSelectListbox,
-  PhoneFieldSelectOption,
-  PhoneFieldSelectValue,
+  SelectCombobox,
+  SelectHiddenSelect,
+  SelectIcon,
+  SelectListbox,
+  SelectOption,
+  SelectValue,
   useSelectContext,
 } from '@vega-ui/react';
 import { useId } from 'react';
@@ -41,24 +41,24 @@ export default function EmojiFlags() {
       <Label htmlFor={id}>WhatsApp number</Label>
       <PhoneField defaultCode='BR'>
         <PhoneFieldSelect>
-          <PhoneFieldSelectHiddenSelect name='country' />
-          <PhoneFieldSelectCombobox aria-label='Country'>
-            <PhoneFieldSelectValue>
+          <SelectHiddenSelect name='country' />
+          <SelectCombobox aria-label='Country'>
+            <SelectValue>
               <SelectedFlag />
-            </PhoneFieldSelectValue>
-            <PhoneFieldSelectIcon />
-          </PhoneFieldSelectCombobox>
-          <PhoneFieldSelectListbox>
+            </SelectValue>
+            <SelectIcon />
+          </SelectCombobox>
+          <SelectListbox>
             {countries.map((country) => (
-              <PhoneFieldSelectOption key={country.code} value={country.code} label={country.name}>
+              <SelectOption key={country.code} value={country.code} label={country.name} style={{ justifyContent: 'space-between', gap: 'var(--spacing-6)' }}>
                 <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-6)' }}>
                   <span aria-hidden='true'>{country.flag}</span>
                   {country.name}
                 </span>
                 <span style={{ opacity: 0.7 }}>{country.callingCode}</span>
-              </PhoneFieldSelectOption>
+              </SelectOption>
             ))}
-          </PhoneFieldSelectListbox>
+          </SelectListbox>
         </PhoneFieldSelect>
         <PhoneFieldInput id={id} name='whatsapp' autoComplete='tel' />
       </PhoneField>

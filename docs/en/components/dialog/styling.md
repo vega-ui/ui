@@ -41,7 +41,6 @@ The backdrop is the `::backdrop` of `DialogContent`. It uses `--overlay` when `d
 ## State And Variant Interaction
 
 - `data-shadowed='true'` enables `--surface-shadow`
-- `data-fluid='true'` removes the bounded modal layout and uses full available space
 - `data-status='close'` drives the close transition; the open transition starts from `@starting-style`
 - `data-blurred='true'` blurs the page behind the dialog
 - `data-overlay='true'` dims the page behind the dialog
@@ -59,9 +58,11 @@ The backdrop is the `::backdrop` of `DialogContent`. It uses `--overlay` when `d
 ```
 <!-- /example -->
 
-### Product-level fluid dialog
+### Full-screen dialog
 
-<!-- example: dialog/product-level-fluid-dialog.tsx -->
+Stretch `DialogContent` over the whole screen with `style` or `className`.
+
+<!-- example: dialog/full-screen-dialog.tsx -->
 ```tsx
 import { useId, type CSSProperties } from 'react';
 import {
@@ -80,17 +81,19 @@ import {
 } from '@vega-ui/react';
 import { XIcon } from '@vega-ui/icons';
 
-export default function ProductLevelFluidDialog() {
+const fullScreen = { width: '100%', maxWidth: 'none', height: '100%', maxHeight: 'none', margin: 0, overflow: 'auto', borderRadius: 0 } as CSSProperties;
+
+export default function FullScreenDialog() {
   const titleId = useId();
   const subjectId = useId();
   const bodyId = useId();
 
   return (
-    <Dialog fluid>
+    <Dialog>
       <DialogTrigger asChild>
         <Button>Compose message</Button>
       </DialogTrigger>
-      <DialogContent aria-labelledby={titleId}>
+      <DialogContent aria-labelledby={titleId} style={fullScreen}>
         <div style={{ display: 'grid', maxWidth: 720, marginInline: 'auto' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
             <Heading id={titleId} as='h2' size={4} fontWeight={600}>New message to the design team</Heading>

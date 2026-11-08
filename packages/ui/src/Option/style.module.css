@@ -11,14 +11,14 @@
     align-items: center;
     font-family: var(--default-font-family);
     user-select: none;
-    padding-inline: var(--spacing-10);
+    padding: var(--spacing-2) var(--spacing-10);
     transition: background-color var(--transition-state-delay) ease,
                 color var(--transition-state-delay) ease;
     cursor: pointer;
     box-sizing: border-box;
     color: var(--option-color);
     background-color: var(--option-background-color);
-    height: var(--option-height);
+    min-height: var(--option-height);
     border-radius: calc(var(--option-height) * var(--option-br-ratio));
 }
 

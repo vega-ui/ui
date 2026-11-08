@@ -36,19 +36,9 @@ Visible text input for the phone number.
 Also accepts all `<input>` attributes.
 <!-- AUTO-GENERATED:PART_API:PhoneFieldInput:end -->
 
-## `PhoneFieldSelect*`
-
-Nested country-select family built around the same field state.
-
-- `PhoneFieldSelect`
-- `PhoneFieldSelectHiddenSelect`
-- `PhoneFieldSelectCombobox`
-- `PhoneFieldSelectValue`
-- `PhoneFieldSelectIcon`
-- `PhoneFieldSelectListbox`
-- `PhoneFieldSelectOption`
-
 ## `PhoneFieldSelect`
+
+A `Select` bound to the field country: its value is the PhoneField `code`, picking an option updates the country and moves the focus into the input, and its size comes from the field. Put the ordinary [Select](../select/api.md) parts inside it (`SelectHiddenSelect`, `SelectCombobox`, `SelectValue`, `SelectIcon`, `SelectListbox`, `SelectOption`), or skip it and drive `code` and `onChangeCode` from a control of your own.
 
 <!-- AUTO-GENERATED:PART_API:PhoneFieldSelect:start -->
 | Prop | Type | Default | Required | Description |
@@ -56,7 +46,7 @@ Nested country-select family built around the same field state.
 | `size` | `SelectSize` | — | No | Visual size of the select control. |
 | `variant` | `SelectVariant` | — | No | Visual style variant for the select control. |
 | `disabled` | `boolean` | — | No | Whether the select is disabled. Prevents interaction and applies a disabled style. |
-| `onChangeValue` | `(value: V \| undefined) => void` | — | No | Callback fired when an option is selected. |
+| `onChangeValue` | `(value: V \| null) => void` | — | No | Callback fired when an option is selected. |
 | `ref` | `Ref<HTMLDivElement>` | — | No | Ref to the root element. |
 | `readOnly` | `boolean` | — | No | If true, the select cannot be changed but remains focusable. |
 | `typeahead` | `boolean` | `true` | No | Enables moving to an option by typing the start of its label. |
@@ -66,71 +56,6 @@ Nested country-select family built around the same field state.
 
 Also accepts all `<div>` attributes.
 <!-- AUTO-GENERATED:PART_API:PhoneFieldSelect:end -->
-
-## `PhoneFieldSelectHiddenSelect`
-
-<!-- AUTO-GENERATED:PART_API:PhoneFieldSelectHiddenSelect:start -->
-Also accepts all `<select>` attributes.
-<!-- AUTO-GENERATED:PART_API:PhoneFieldSelectHiddenSelect:end -->
-
-## `PhoneFieldSelectCombobox`
-
-<!-- AUTO-GENERATED:PART_API:PhoneFieldSelectCombobox:start -->
-| Prop | Type | Default | Required | Description |
-| --- | --- | --- | --- | --- |
-| `ref` | `Ref<HTMLButtonElement>` | — | No | Ref to the underlying `<button>` element. Useful for focus management, positioning, and imperative access. |
-
-Also accepts all `<button>` attributes.
-<!-- AUTO-GENERATED:PART_API:PhoneFieldSelectCombobox:end -->
-
-## `PhoneFieldSelectValue`
-
-<!-- AUTO-GENERATED:PART_API:PhoneFieldSelectValue:start -->
-| Prop | Type | Default | Required | Description |
-| --- | --- | --- | --- | --- |
-| `placeholder` | `string` | — | No | Placeholder text shown when no option is selected. Displayed when the select value is empty or undefined. Once a value is selected, the placeholder is replaced by the selected option’s content. |
-| `ref` | `Ref<HTMLSpanElement>` | — | No | Ref forwarded to the root span element. |
-
-Also accepts all `<span>` attributes.
-<!-- AUTO-GENERATED:PART_API:PhoneFieldSelectValue:end -->
-
-## `PhoneFieldSelectIcon`
-
-<!-- AUTO-GENERATED:PART_API:PhoneFieldSelectIcon:start -->
-| Prop | Type | Default | Required | Description |
-| --- | --- | --- | --- | --- |
-| `size` | `IconSize` | — | No | Predefined size token for the icon. Can be overridden by explicit width and height. |
-| `ref` | `Ref<SVGSVGElement>` | — | No | Ref to the SVG element |
-| `strokeWidth` | `number` | — | No | Stroke thickness for SVG lines and shapes (in px or pt). |
-| `children` | `ReactNode` | — | No | Icon content (required). Accepts: icons from `~/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
-
-Also accepts all HTML attributes.
-<!-- AUTO-GENERATED:PART_API:PhoneFieldSelectIcon:end -->
-
-## `PhoneFieldSelectOption`
-
-<!-- AUTO-GENERATED:PART_API:PhoneFieldSelectOption:start -->
-| Prop | Type | Default | Required | Description |
-| --- | --- | --- | --- | --- |
-| `value` | `CountryCode` | — | Yes | The value of this option, passed to the change callback when it is selected. |
-| `label` | `string` | — | No | Plain text of this option for typeahead, used instead of the text of its content. |
-| `children` | `ReactNode` | — | No | The content displayed for this option. Can include text, icons, or complex markup. |
-| `size` | `OptionSize` | — | No | Size of the option for visual styling. |
-| `disabled` | `boolean` | — | No | Disables the entire Option. |
-| `ref` | `Ref<HTMLDivElement>` | — | No | Ref forwarded to the root div of the option. |
-
-Also accepts all `<div>` attributes.
-<!-- AUTO-GENERATED:PART_API:PhoneFieldSelectOption:end -->
-
-## `PhoneFieldSelectListbox`
-
-<!-- AUTO-GENERATED:PART_API:PhoneFieldSelectListbox:start -->
-| Prop | Type | Default | Required | Description |
-| --- | --- | --- | --- | --- |
-| `ref` | `Ref<HTMLDivElement>` | — | No | Ref to the listbox container element. Can be used for imperative access, for example measurements. |
-
-Also accepts all `<div>` attributes.
-<!-- AUTO-GENERATED:PART_API:PhoneFieldSelectListbox:end -->
 
 ## Hooks
 

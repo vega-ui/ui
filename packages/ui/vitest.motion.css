@@ -1,0 +1,4 @@
+:root:not([data-motion]) {
+  --duration-spring: 1ms;
+  --duration-exit: 1ms;
+}

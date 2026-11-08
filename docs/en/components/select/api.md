@@ -14,7 +14,7 @@
 | `size` | `SelectSize` | `'md'` | No | Visual size of the select control. |
 | `value` | `V \| null` | — | No | The currently selected value (controlled). `null` clears the selection, while `undefined` makes the select uncontrolled. |
 | `defaultValue` | `V` | — | No | The default selected value (uncontrolled). |
-| `onChangeValue` | `(value: V \| undefined) => void` | — | No | Callback fired when an option is selected. |
+| `onChangeValue` | `(value: V \| null) => void` | — | No | Callback fired when an option is selected. |
 | `ref` | `Ref<HTMLDivElement>` | — | No | Ref to the root element. |
 | `open` | `boolean` | — | No | Controls the open state of the Select dropdown. When provided, the Select becomes a controlled component and relies on this value to determine whether the listbox is open or closed. |
 | `onChangeOpen` | `(open: boolean) => void` | — | No | Callback fired when the open state changes. Called with the next open state (`true` or `false`) whenever the Select is opened or closed by user interaction. Useful for synchronizing the Select state with external logic. |
@@ -89,7 +89,7 @@ Also accepts all `<div>` attributes.
 
 - Expected children: `SelectOption`
 - Common place for scroll limits, search fields, and custom list layout
-- Renders in the top layer via `popover="manual"` and handles focus management itself
+- Renders in the top layer via `popover="auto"` and handles focus management itself
 
 ## `SelectOption`
 
@@ -143,6 +143,7 @@ Use it only when the exported parts are insufficient for the desired composition
 
 - Selected value can be controlled with `value` or uncontrolled with `defaultValue`.
 - Open state can be controlled with `open` or uncontrolled with `defaultOpen`.
+- The list is a native `popover="auto"`, so a close made by the browser (outside click, `Escape`, another popover opening) is final: a controlled list stays hidden until `open` changes, so set `open={false}` in `onChangeOpen`. A close after a choice is a request a controlled parent can turn down.
 - Keyboard navigation, the active option, and typeahead are managed by the root.
 - `value={null}` clears a controlled value, while `undefined` makes the select uncontrolled.
 - `typeahead={false}` is recommended when an actual text input is rendered inside the listbox.

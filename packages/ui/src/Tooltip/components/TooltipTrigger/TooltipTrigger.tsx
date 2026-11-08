@@ -3,7 +3,7 @@
 import { ButtonHTMLAttributes, FC, FocusEvent, PointerEvent, Ref } from 'react';
 import { Slot } from '../../../Slot';
 import { useTooltipContext } from '../../contexts';
-import { mergeEventHandlers } from '@vega-ui/utils';
+import { csx, mergeEventHandlers } from '@vega-ui/utils';
 import { useMergeRefs } from '@vega-ui/hooks';
 
 export interface TooltipTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -30,27 +30,34 @@ export const TooltipTrigger: FC<TooltipTriggerProps> = ({
   onPointerDown: _onPointerDown,
   onFocus: _onFocus,
   onBlur: _onBlur,
+  'aria-describedby': describedBy,
   ...props
 }) => {
   const Element = asChild ? Slot : 'button'
 
-  const { open, show, hide, hideAfterDelay, contentId, setReference } = useTooltipContext()
+  const { open, show, showNow, hide, hideAfterDelay, contentId, context, setReference } = useTooltipContext()
   const mergedRef = useMergeRefs([setReference, ref])
 
   const onPointerEnter = (event: PointerEvent<HTMLButtonElement>) => {
     if (event.pointerType !== 'touch') show()
   }
 
+  const onPointerLeave = (event: PointerEvent<HTMLButtonElement>) => {
+    if (event.relatedTarget instanceof Node && context.elements.floating?.contains(event.relatedTarget)) return
+
+    hideAfterDelay()
+  }
+
   const onFocus = (event: FocusEvent<HTMLButtonElement>) => {
-    if (event.currentTarget.matches(':focus-visible')) show()
+    if (event.currentTarget.matches(':focus-visible')) showNow()
   }
 
   return (
     <Element
       type={Element === 'button' ? 'button' : undefined}
-      aria-describedby={open ? contentId : undefined}
+      aria-describedby={csx(describedBy, open ? contentId : undefined) || undefined}
       onPointerEnter={mergeEventHandlers(onPointerEnter, _onPointerEnter)}
-      onPointerLeave={mergeEventHandlers(hideAfterDelay, _onPointerLeave)}
+      onPointerLeave={mergeEventHandlers(onPointerLeave, _onPointerLeave)}
       onPointerDown={mergeEventHandlers(hide, _onPointerDown)}
       onFocus={mergeEventHandlers(onFocus, _onFocus)}
       onBlur={mergeEventHandlers(hide, _onBlur)}

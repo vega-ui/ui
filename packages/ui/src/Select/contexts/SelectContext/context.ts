@@ -1,7 +1,7 @@
 'use client';
 
 import { CSSProperties } from 'react';
-import { createContext } from '@vega-ui/react-context';
+import { createContext } from '@vega-ui/react-kit/context';
 import { SelectSize, SelectVariant } from '../../types';
 
 type Value = string | number | null | undefined
@@ -19,15 +19,12 @@ export interface SelectContextState {
   valueElement?: HTMLSpanElement | null
   setValueElement?(element: HTMLSpanElement | null): void
   setReference?(element: HTMLElement | null): void
+  focusCombobox?(): void
   setFloating?(element: HTMLElement | null): void
-  isSelected(v: Value): boolean
 }
 
 export const [SelectProvider, useSelectContext] = createContext<SelectContextState>('SelectContext', {
   selected: undefined,
-  isSelected() {
-    return false
-  },
   comboboxProps: {},
   listboxStyles: {},
   size: 'md',

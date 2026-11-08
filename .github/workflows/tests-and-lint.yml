@@ -124,7 +124,7 @@ jobs:
         run: pnpm install
 
       - name: Run Browser Tests
-        run: pnpm turbo run test --filter=@vega-ui/hooks --filter=@vega-ui/icons --filter=@vega-ui/react-context --filter=@vega-ui/react -- --project ${{ matrix.browser }} --shard=${{ matrix.shard }}/3 --passWithNoTests
+        run: pnpm turbo run test --filter=@vega-ui/hooks --filter=@vega-ui/icons --filter=@vega-ui/react-kit --filter=@vega-ui/react -- --project ${{ matrix.browser }} --shard=${{ matrix.shard }}/3 --passWithNoTests
 
   docs-site:
     name: Docs Site

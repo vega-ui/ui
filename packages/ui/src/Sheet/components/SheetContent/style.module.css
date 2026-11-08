@@ -45,7 +45,6 @@
     --sheet-progress: 1;
     --sheet-release-duration: var(--duration-spring);
     --sheet-inset-length: var(--sheet-inset);
-    display: flex;
     flex-direction: column;
     gap: var(--spacing-6);
     padding: var(--spacing-10) calc(clamp(var(--spacing-12), 3vw, var(--spacing-16)) + var(--sheet-inset-length)) calc(var(--spacing-12) + env(safe-area-inset-bottom, 0px));
@@ -57,7 +56,7 @@
     color: inherit;
     overflow: visible;
     width: 100%;
-    max-width: none;
+    max-width: 600px;
     max-height: calc(100% - var(--sheet-keyboard-inset) - env(safe-area-inset-top, 0px));
     background: none;
     transform: translateY(calc((var(--sheet-offset) - var(--sheet-gap)) * (1 - var(--sheet-hidden)) + 100% * var(--sheet-hidden)));
@@ -68,7 +67,12 @@
     touch-action: pan-x pan-y;
 }
 
+.content:where([open]) {
+    display: flex;
+}
+
 .content::backdrop {
+    inset: -100vh -100vw;
     background: var(--overlay);
     opacity: var(--sheet-progress);
     transition: opacity var(--sheet-release-duration) var(--ease-smooth);

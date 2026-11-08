@@ -15,12 +15,6 @@ import {
   PhoneField,
   PhoneFieldInput,
   PhoneFieldSelect,
-  PhoneFieldSelectCombobox,
-  PhoneFieldSelectHiddenSelect,
-  PhoneFieldSelectIcon,
-  PhoneFieldSelectListbox,
-  PhoneFieldSelectOption,
-  PhoneFieldSelectValue,
   Radio,
   Select,
   SelectCombobox,
@@ -116,8 +110,8 @@ export default function Checkout() {
     if (found) setPhoneCountry(found);
   };
 
-  const changeCountry = (next: string | undefined) => {
-    setCountry(next ?? null);
+  const changeCountry = (next: string | null) => {
+    setCountry(next);
     clearError('country');
   };
 
@@ -194,24 +188,24 @@ export default function Checkout() {
               <Label htmlFor={`${id}-phone`}>Phone</Label>
               <PhoneField code={phoneCountry.code} onChangeCode={changePhoneCountry} error={errors.phone !== undefined}>
                 <PhoneFieldSelect>
-                  <PhoneFieldSelectHiddenSelect name='phoneCountry' />
-                  <PhoneFieldSelectCombobox aria-label={`Country code: ${phoneCountry.name}`}>
-                    <PhoneFieldSelectValue>
+                  <SelectHiddenSelect name='phoneCountry' />
+                  <SelectCombobox aria-label={`Country code: ${phoneCountry.name}`}>
+                    <SelectValue>
                       <phoneCountry.Flag width={20} height={15} aria-hidden='true' />
-                    </PhoneFieldSelectValue>
-                    <PhoneFieldSelectIcon />
-                  </PhoneFieldSelectCombobox>
-                  <PhoneFieldSelectListbox>
+                    </SelectValue>
+                    <SelectIcon />
+                  </SelectCombobox>
+                  <SelectListbox>
                     {countries.map(({ code, name, callingCode, Flag }) => (
-                      <PhoneFieldSelectOption key={code} value={code} label={name}>
+                      <SelectOption key={code} value={code} label={name} style={{ justifyContent: 'space-between', gap: 'var(--spacing-6)' }}>
                         <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-6)' }}>
                           <Flag width={20} height={15} aria-hidden='true' />
                           {name}
                         </span>
                         <span style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>{callingCode}</span>
-                      </PhoneFieldSelectOption>
+                      </SelectOption>
                     ))}
-                  </PhoneFieldSelectListbox>
+                  </SelectListbox>
                 </PhoneFieldSelect>
                 <PhoneFieldInput
                   id={`${id}-phone`}

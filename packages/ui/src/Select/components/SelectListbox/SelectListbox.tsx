@@ -1,4 +1,4 @@
-import { FC, FocusEvent, HTMLAttributes, MouseEvent, Ref, ToggleEvent, useLayoutEffect, useRef, useState } from 'react'
+import { FC, HTMLAttributes, MouseEvent, Ref, ToggleEvent, useLayoutEffect, useRef } from 'react'
 import { csx, mergeEventHandlers, togglePopover } from '@vega-ui/utils';
 import { useMergeRefs } from '@vega-ui/hooks';
 import styles from './style.module.css';
@@ -26,7 +26,6 @@ export const SelectListbox: FC<SelectListboxProps> = ({
   children,
   style,
   onMouseDown: _onMouseDown,
-  onBlur: _onBlur,
   onToggle: _onToggle,
   ref,
   ...props
@@ -35,23 +34,17 @@ export const SelectListbox: FC<SelectListboxProps> = ({
   const { id } = useListboxContext()
   const listboxRef = useRef<HTMLDivElement>(null)
   const mergedRef = useMergeRefs([setFloating, listboxRef, ref])
-  const [shown, setShown] = useState(false)
 
   useLayoutEffect(() => {
     togglePopover(listboxRef.current, open ?? false)
-  }, [open, shown])
+  }, [open])
 
   const onMouseDown = (event: MouseEvent<HTMLDivElement>) => {
     if (!(event.target as Element).closest('input, textarea, select, [contenteditable]')) event.preventDefault()
   }
 
-  const onBlur = (event: FocusEvent<HTMLDivElement>) => {
-    if (!event.currentTarget.contains(event.relatedTarget)) changeOpen?.(false)
-  }
-
   const onToggle = (event: ToggleEvent<HTMLDivElement>) => {
     if (event.newState === 'closed' && open) changeOpen?.(false)
-    setShown(event.newState === 'open')
   }
 
   return (
@@ -63,7 +56,6 @@ export const SelectListbox: FC<SelectListboxProps> = ({
       className={csx(styles.listbox, className)}
       style={{ ...listboxStyles, ...style }}
       onMouseDown={mergeEventHandlers(onMouseDown, _onMouseDown)}
-      onBlur={mergeEventHandlers(onBlur, _onBlur)}
       onToggle={mergeEventHandlers(onToggle, _onToggle)}
       {...props}
     >

@@ -1,7 +1,5 @@
 .icon {
-    --select-icon-color: var(--label-tertiary);
-
-    color: var(--select-icon-color);
+    color: var(--select-icon-color, var(--label-tertiary));
     transition: transform var(--transition-fast-state-delay) ease-in-out;
 }
 

@@ -13,6 +13,7 @@
 | `--select-size` | корень, combobox, listbox | Общая база высоты и радиуса компонента |
 | `--select-br-ratio` | корень, combobox, listbox | Общий коэффициент радиуса скругления |
 | `--select-combobox-br-ratio` | `SelectCombobox` | Переопределение коэффициента радиуса для триггера |
+| `--select-combobox-gap` | `SelectCombobox` | Отступ между значением и иконкой, по умолчанию зависит от размера |
 | `--select-listbox-br-ratio` | `SelectListbox` | Переопределение коэффициента радиуса для панели |
 | `--select-value-color` | `SelectValue` | Цвет текста выбранного значения |
 | `--select-placeholder-color` | `SelectValue` | Цвет текста плейсхолдера |
@@ -46,6 +47,7 @@
 `SelectCombobox` использует:
 
 - `--select-combobox-br-ratio`
+- `--select-combobox-gap`
 - `--select-icon-color`
 - `--select-placeholder-color`
 - `--select-value-color`
@@ -179,7 +181,7 @@ export default function ValueAndPlaceholderColorOverride() {
 
 ### Переопределение иконки и списка
 
-`SelectIcon` и `SelectListbox` сами задают `--select-icon-color` и `--select-listbox-br-ratio`, поэтому значение на корне перекрывается. Задавайте эти переменные на самих частях.
+Задайте `--select-icon-color` и `--select-listbox-br-ratio` на корне, чтобы изменить все части, или на самих `SelectIcon` и `SelectListbox`, чтобы переопределить только их.
 
 <!-- example: select/icon-and-listbox-override.tsx -->
 ```tsx

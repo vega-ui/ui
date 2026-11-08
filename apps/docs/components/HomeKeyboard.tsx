@@ -43,7 +43,7 @@ export const HomeKeyboard = ({ rows, count }: HomeKeyboardProps) => {
   const locale = useLocale();
   const t = useDictionary().home.keyboard;
   const id = useId();
-  const [selected, setSelected] = useState<string | undefined>('bug');
+  const [selected, setSelected] = useState<string | null>('bug');
   const [pressed, setPressed] = useState(-1);
   const table = rows[locale];
 

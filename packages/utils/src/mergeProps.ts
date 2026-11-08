@@ -8,6 +8,7 @@ import type { Ref } from 'react';
  * - ✅ Event handlers (`onClick`, `onChange`, etc.) are chained in order of appearance.
  * - ✅ `className` values are concatenated with space.
  * - ✅ `id` is deduplicated: the first defined value is preserved.
+ * - ✅ `aria-describedby` id lists are joined without duplicates.
  * - ✅ All other props are shallow-merged, with the last one winning.
  *
  * This function is especially useful for composing component props,
@@ -65,6 +66,11 @@ export function mergeProps<T extends Record<string, unknown>>(...args: T[]): T {
 
       if (key === 'className') {
         result[key] = csx(existingValue as string, newValue as string);
+        continue;
+      }
+
+      if (key === 'aria-describedby') {
+        result[key] = csx(existingValue as string, newValue as string) || undefined;
         continue;
       }
 

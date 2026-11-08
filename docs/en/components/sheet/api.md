@@ -21,12 +21,12 @@
 
 ## `SheetTrigger`
 
-Open action for the sheet. Sets `aria-haspopup="dialog"` and `aria-expanded`.
+Open action for the sheet. Sets `aria-haspopup="dialog"`.
 
 <!-- AUTO-GENERATED:PART_API:SheetTrigger:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `asChild` | `boolean` | — | No | If true, renders the trigger as a custom element using a Slot. Allows flexible composition with custom elements like `<a>`, `<div>`, or icon buttons. |
+| `asChild` | `boolean` | `false` | No | If true, renders the trigger as a custom element using a Slot. Allows flexible composition with custom elements like `<a>`, `<div>`, or icon buttons. |
 | `ref` | `Ref<HTMLButtonElement>` | — | No | Ref forwarded to the underlying trigger element. Useful for focus management or external control. |
 
 Also accepts all `<button>` attributes.
@@ -44,6 +44,7 @@ The native modal `<dialog>`.
 | `blurred` | `boolean` | `false` | No | Blurs the page behind the sheet. |
 | `overlay` | `boolean` | `true` | No | Dims the page behind the sheet. When false, the page stays visible and the sheet stays modal. |
 | `closedBy` | `ModalDialogClosedBy` | `'any'` | No | Which user actions close the sheet, like the native `closedby` attribute: `any` a backdrop click, a swipe down or `Escape`, `closerequest` only `Escape`, `none` neither. |
+| `container` | `Element \| DocumentFragment \| null` | `document.body` | No | The element the sheet is rendered into through a portal. |
 
 Also accepts all `<dialog>` attributes.
 <!-- AUTO-GENERATED:PART_API:SheetContent:end -->
@@ -77,14 +78,14 @@ Closes the sheet when clicked. It has no styles, icon, or default `aria-label`: 
 <!-- AUTO-GENERATED:PART_API:SheetClose:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `asChild` | `boolean` | — | No | If true, renders the close action as its child element using `Slot`, so any button of your own closes the sheet. |
+| `asChild` | `boolean` | `false` | No | If true, renders the close action as its child element using `Slot`, so any button of your own closes the sheet. |
 | `ref` | `Ref<HTMLButtonElement>` | — | No | Ref forwarded to the underlying button. |
 
 Also accepts all `<button>` attributes.
 <!-- AUTO-GENERATED:PART_API:SheetClose:end -->
 
 - The close goes through `onChangeOpen(false)`, so the close transition plays and a controlled parent can keep the sheet open.
-- Use it for a standalone close button, such as the X in a header. For buttons that answer the sheet (Cancel, Confirm, a `returnValue`), use a `<form method="dialog">`. Without `asChild` it renders `type="button"`, so it also works inside a form of your own without submitting it; with `asChild` give your own button `type="button"`.
+- Use it for a standalone close button, such as the X in a header. For buttons that answer the sheet (Cancel, Confirm, a `returnValue`), use a `<form method="dialog">`. It sets `type="button"`, with `asChild` too, so it also works inside a form of your own without submitting it; pass `type="submit"` to your own button to submit instead.
 
 <!-- example: sheet/minimal-composition.tsx -->
 ```tsx
@@ -148,7 +149,7 @@ export default function MinimalComposition() {
 ## State Model
 
 - Open state can be controlled with `open` or uncontrolled with `defaultOpen`.
-- Every close request (backdrop click, `Escape`, swipe, `SheetClose` click, `<form method="dialog">` submit) goes through `onChangeOpen(false)`; a controlled sheet stays open until `open` becomes `false`.
+- Every close request (backdrop click, `Escape`, swipe, `SheetClose` click, `<form method="dialog">` submit) goes through `onChangeOpen(false)`; a controlled sheet stays open until `open` becomes `false`. A close the browser makes without asking, such as `close()` called on the element or a forced close after repeated `Escape`, is final: it stays closed until `open` changes.
 - Page scroll is locked with CSS while the sheet is open (`html:has(dialog:modal) { overflow: hidden }`), as for `Dialog` and `Drawer`.
 - Snap points affect the visible interaction model, not just layout.
 - The sheet fits its content up to the viewport height. Set a CSS height on `SheetContent` (`style={{ height: '80dvh' }}` or a class) to make it a fixed height. Snap points are fractions of the viewport height or pixel heights, and one above the sheet's height rests at its top, so with short content the sheet stays content-sized. Without `snapPoints` the sheet rests fully open.

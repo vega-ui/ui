@@ -1,9 +1,10 @@
 'use client';
 
 import { FocusEvent, HTMLAttributes, KeyboardEvent, PointerEvent, Ref, useRef } from 'react';
-import { csx, isActivationKey, mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
-import { useSelection } from '@vega-ui/hooks';
-import { useListbox } from './hooks';
+import { csx, mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
+import { useEventCallback, useSelection } from '@vega-ui/hooks';
+import { useStore } from '@vega-ui/react-kit/store';
+import { ListboxItem, useListbox } from '../internals/listbox';
 import { ListboxProvider, ListboxContextState } from './contexts';
 import { OptionSize } from '../Option';
 import { ListboxValue } from './types';
@@ -75,23 +76,88 @@ export const Listbox = <V extends string | number, M extends boolean = false>({
   ref,
   ...props
 }: ListboxProps<V, M>) => {
-  const { select, toggle, isSelected } = useSelection<V, 'single' | 'multiple'>({
+  const { select, toggle, isSelected, selected, selectMany } = useSelection<V, 'single' | 'multiple'>({
     selection: multiple ? 'multiple' : 'single',
     defaultSelected: defaultValue ?? (multiple ? [] : null),
     selected: value,
     onSelect: onChangeValue as (value: V | V[] | null | undefined) => void,
   })
 
-  const onSelect = multiple ? toggle : select
-
   const listRef = useRef<HTMLDivElement>(null)
-  const list = useListbox(listRef, { typeahead })
+  const anchor = useRef<V>(undefined)
+
+  const toggleAnchored = useEventCallback((next: V) => {
+    anchor.current = next
+    toggle(next)
+  })
+
+  const onSelect = multiple ? toggleAnchored : select
+  const list = useListbox(listRef, {
+    typeahead,
+    isSelected: isSelected as ListboxContextState['isSelected'],
+    onSelect: onSelect as ListboxContextState['onSelect'],
+  })
+  const activeId = useStore(list.store, (state) => state.activeId)
+
+  const selectRange = (from: ListboxItem | undefined, to: ListboxItem) => {
+    const items = list.store.getItems().filter((item) => !item.disabled)
+    const start = from ? items.indexOf(from) : items.indexOf(to)
+    const end = items.indexOf(to)
+    const range = items.slice(Math.min(start, end), Math.max(start, end) + 1).map((item) => item.value as V)
+    const current = selected as V[]
+
+    selectMany([...current, ...range.filter((next) => !current.includes(next))])
+    anchor.current = to.value as V
+  }
+
+  const onKeyDownMultiple = (event: KeyboardEvent<HTMLDivElement>) => {
+    const items = list.store.getItems().filter((item) => !item.disabled)
+    const activeId = list.store.get().activeId
+    const active = items.find((item) => item.id === activeId)
+    const command = event.ctrlKey || event.metaKey
+
+    if (command && !event.shiftKey && event.key.toLowerCase() === 'a') {
+      const values = items.map((item) => item.value as V)
+      const all = values.every((next) => isSelected(next))
+
+      selectMany(all ? [] : values)
+      return true
+    }
+
+    if (command && event.shiftKey && (event.key === 'Home' || event.key === 'End')) {
+      const edge = event.key === 'Home' ? items[0] : items[items.length - 1]
+      if (!edge) return false
+
+      selectRange(active ?? edge, edge)
+      list.moveActive(edge, 'keyboard')
+      return true
+    }
+
+    if (event.shiftKey && event.key === ' ') {
+      if (!active) return false
+
+      const from = items.find((item) => item.value === anchor.current)
+      selectRange(from ?? active, active)
+      return true
+    }
+
+    if (event.shiftKey && (event.key === 'ArrowDown' || event.key === 'ArrowUp')) {
+      if (list.move(event)) list.selectActive()
+      return true
+    }
+
+    return false
+  }
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (disabled || list.move(event) !== null || !isActivationKey(event)) return
+    if (disabled) return
 
-    event.preventDefault()
-    list.selectActive()
+    if (multiple && onKeyDownMultiple(event)) {
+      event.preventDefault()
+      return
+    }
+
+    list.navigate(event)
   }
 
   const onFocus = (event: FocusEvent<HTMLDivElement>) => {
@@ -99,20 +165,17 @@ export const Listbox = <V extends string | number, M extends boolean = false>({
   }
 
   const onBlur = () => {
-    list.setActiveId(undefined)
+    list.store.setActive(undefined)
   }
 
   const onPointerLeave = (event: PointerEvent<HTMLDivElement>) => {
-    if (!event.currentTarget.matches(':focus')) list.setActiveId(undefined)
+    if (!event.currentTarget.matches(':focus')) list.store.setActive(undefined)
   }
 
   return (
     <ListboxProvider
       id={list.id}
-      activeId={list.activeId}
-      getOptionId={list.getOptionId}
-      setActiveId={list.setActiveId}
-      clearActive={list.clearActive}
+      store={list.store}
       isSelected={isSelected as ListboxContextState['isSelected']}
       onSelect={onSelect as ListboxContextState['onSelect']}
       size={size}
@@ -123,7 +186,7 @@ export const Listbox = <V extends string | number, M extends boolean = false>({
         tabIndex={disabled ? undefined : 0}
         aria-disabled={disabled}
         aria-multiselectable={multiple}
-        aria-activedescendant={list.activeId}
+        aria-activedescendant={activeId}
         ref={mergeRefs([listRef, ref])}
         className={csx(styles.listbox, className)}
         onKeyDown={mergeEventHandlers(onKeyDown, _onKeyDown)}

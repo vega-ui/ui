@@ -1,13 +1,15 @@
 'use client';
 
 import { CSSProperties, Ref } from 'react';
-import { createContext } from '@vega-ui/react-context';
+import { createContext } from '@vega-ui/react-kit/context';
 import { FloatingContext } from '@floating-ui/react';
 
 export interface TooltipContextState {
   open: boolean
   changeOpen: (value: boolean) => void
   show: () => void
+  showNow: () => void
+  cancelHide: () => void
   hide: () => void
   hideAfterDelay: () => void
   context: FloatingContext
@@ -25,6 +27,8 @@ export const [TooltipProvider, useTooltipContext] = createContext<TooltipContext
   open: false,
   changeOpen: () => undefined,
   show: () => undefined,
+  showNow: () => undefined,
+  cancelHide: () => undefined,
   hide: () => undefined,
   hideAfterDelay: () => undefined,
   context: {} as FloatingContext

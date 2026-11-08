@@ -24,8 +24,8 @@ const initialMembers = [
 export default function SelectInTableRows() {
   const [members, setMembers] = useState(initialMembers);
 
-  const changeRole = (id: string, role: string | undefined) => {
-    if (role === undefined) return;
+  const changeRole = (id: string, role: string | null) => {
+    if (role === null) return;
     setMembers((current) => current.map((member) => (member.id === id ? { ...member, role } : member)));
   };
 

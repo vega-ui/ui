@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef, useState } from 'react';
-import { clamp, findScrollableAncestor, flushStyles, getFloatExpansion, getReleaseDuration, getSnapLimits, getUnfloatedTop, isBackdropPoint, isTextInteraction, projectMomentum, resolveSnapStop, rubberBand } from '@vega-ui/utils';
+import { clamp, findScrollableAncestor, flushStyles, isBackdropPoint, isTextInteraction, projectMomentum, rubberBand } from '@vega-ui/utils';
+import { getFloatExpansion, getReleaseDuration, getSnapLimits, getUnfloatedTop, resolveSnapStop } from '../helpers';
 import { DragGesture, useDragGesture } from '@vega-ui/hooks';
 import { useSheetContext } from '../contexts';
 
@@ -73,8 +74,8 @@ export const useSheetDrag = ({ dialog, rendered, keyboardInset, swipeable }: Use
   const onDragPress = () => {
     if (!dialog) return
 
-    // translateY
-    dragOrigin.current = new DOMMatrix(getComputedStyle(dialog).transform).m42
+    const { m42: translateY } = new DOMMatrix(getComputedStyle(dialog).transform)
+    dragOrigin.current = translateY
 
     if (!open || dialog.getAnimations().length === 0) return
 

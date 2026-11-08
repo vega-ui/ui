@@ -18,6 +18,7 @@
 }
 
 .dialog::backdrop {
+    inset: -100vh -100vw;
     background: var(--overlay);
     transition: opacity var(--duration-spring) var(--ease-smooth);
 }
@@ -55,16 +56,6 @@
 
 .dialog:where([data-shadowed='true']) {
     box-shadow: var(--surface-shadow);
-}
-
-.dialog:where([data-fluid='true']) {
-    width: 100%;
-    max-width: none;
-    height: 100%;
-    max-height: none;
-    margin: 0;
-    overflow: auto;
-    border-radius: 0;
 }
 
 @media (prefers-reduced-motion: reduce) {

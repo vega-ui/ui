@@ -13,6 +13,7 @@ These variables are directly consumed by the current implementation and are the 
 | `--select-size` | root, combobox, listbox | Shared height and radius base for the component |
 | `--select-br-ratio` | root, combobox, listbox | Shared border-radius ratio |
 | `--select-combobox-br-ratio` | `SelectCombobox` | Trigger-specific radius ratio override |
+| `--select-combobox-gap` | `SelectCombobox` | Gap between the value and the icon, by default from the size |
 | `--select-listbox-br-ratio` | `SelectListbox` | Panel-specific radius ratio override |
 | `--select-value-color` | `SelectValue` | Selected value text color |
 | `--select-placeholder-color` | `SelectValue` | Placeholder text color |
@@ -46,6 +47,7 @@ Default behavior:
 `SelectCombobox` uses:
 
 - `--select-combobox-br-ratio`
+- `--select-combobox-gap`
 - `--select-icon-color`
 - `--select-placeholder-color`
 - `--select-value-color`
@@ -179,7 +181,7 @@ export default function ValueAndPlaceholderColorOverride() {
 
 ### Icon and listbox override
 
-`SelectIcon` and `SelectListbox` define their own `--select-icon-color` and `--select-listbox-br-ratio`, so a value set on the root is overridden. Set these variables on the parts themselves.
+Set `--select-icon-color` and `--select-listbox-br-ratio` on the root to style every part, or on `SelectIcon` and `SelectListbox` themselves to override only them.
 
 <!-- example: select/icon-and-listbox-override.tsx -->
 ```tsx

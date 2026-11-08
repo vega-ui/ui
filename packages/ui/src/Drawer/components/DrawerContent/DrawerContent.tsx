@@ -2,7 +2,8 @@
 import { CSSProperties, DialogHTMLAttributes, FC, Ref, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { csx, findScrollableAncestor, isBackdropPoint, isTextInteraction, mergeEventHandlers, projectMomentum, rubberBand } from '@vega-ui/utils';
-import { DragGesture, ModalDialogClosedBy, useDragGesture, useMergeRefs, useModalDialog } from '@vega-ui/hooks';
+import { DragGesture, useDragGesture, useMergeRefs } from '@vega-ui/hooks';
+import { ModalDialogClosedBy, useModalDialog } from '../../../internals/modalDialog';
 import style from './style.module.css'
 import { useDrawerContext } from '../../contexts';
 
@@ -31,8 +32,17 @@ export interface DrawerContentProps extends DialogHTMLAttributes<HTMLDialogEleme
   /**
    * Which user actions close the drawer, like the native `closedby` attribute:
    * `any` a backdrop click, a touch swipe toward its edge or `Escape`, `closerequest` only `Escape`, `none` neither.
+   *
+   * @default 'any'
    */
   closedBy?: ModalDialogClosedBy
+
+  /**
+   * The element the drawer is rendered into through a portal.
+   *
+   * @default document.body
+   */
+  container?: Element | DocumentFragment | null
 
   /**
    * Makes the drawer stretch to fill the full width of its parent container.
@@ -54,6 +64,7 @@ export const DrawerContent: FC<DrawerContentProps> = ({
   blurred = true,
   overlay = true,
   closedBy = 'any',
+  container,
   children,
   ref,
   onCancel: _onCancel,
@@ -63,7 +74,7 @@ export const DrawerContent: FC<DrawerContentProps> = ({
   ...props
 }) => {
   const { open, changeOpen, position } = useDrawerContext()
-  const { ref: dialogRef, dialog, mounted, rendered, onCancel, onSubmit, onClose } = useModalDialog({ open, onChangeOpen: changeOpen })
+  const { ref: dialogRef, dialog, mounted, rendered, onCancel, onSubmit, onClose } = useModalDialog({ open, onChangeOpen: changeOpen, closedBy })
   const mergedRef = useMergeRefs([dialogRef, ref])
   const [drag, setDrag] = useState<number | null>(null)
 
@@ -142,6 +153,6 @@ export const DrawerContent: FC<DrawerContentProps> = ({
     >
       {rendered && children}
     </dialog>,
-    document.body
+    container ?? document.body
   )
 }

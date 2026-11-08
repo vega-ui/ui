@@ -37,12 +37,12 @@ import {
   PhoneField,
   PhoneFieldInput,
   PhoneFieldSelect,
-  PhoneFieldSelectCombobox,
-  PhoneFieldSelectHiddenSelect,
-  PhoneFieldSelectIcon,
-  PhoneFieldSelectListbox,
-  PhoneFieldSelectOption,
-  PhoneFieldSelectValue,
+  SelectCombobox,
+  SelectHiddenSelect,
+  SelectIcon,
+  SelectListbox,
+  SelectOption,
+  SelectValue,
 } from '@vega-ui/react';
 import { FlagDE, FlagFR, FlagGBUKM, FlagIN, FlagJP, FlagUS } from '@vega-ui/icons';
 import { useId, useState } from 'react';
@@ -70,24 +70,24 @@ export default function SelectWithCountryOptionsAndIcons() {
       <Label htmlFor={id}>Phone number</Label>
       <PhoneField code={country.code} onChangeCode={onChangeCode}>
         <PhoneFieldSelect>
-          <PhoneFieldSelectHiddenSelect name='country' />
-          <PhoneFieldSelectCombobox aria-label={`Country: ${country.name}`}>
-            <PhoneFieldSelectValue>
+          <SelectHiddenSelect name='country' />
+          <SelectCombobox aria-label={`Country: ${country.name}`}>
+            <SelectValue>
               <country.Flag width={20} height={15} aria-hidden='true' />
-            </PhoneFieldSelectValue>
-            <PhoneFieldSelectIcon />
-          </PhoneFieldSelectCombobox>
-          <PhoneFieldSelectListbox>
+            </SelectValue>
+            <SelectIcon />
+          </SelectCombobox>
+          <SelectListbox>
             {countries.map(({ code, name, callingCode, Flag }) => (
-              <PhoneFieldSelectOption key={code} value={code} label={name}>
+              <SelectOption key={code} value={code} label={name} style={{ justifyContent: 'space-between', gap: 'var(--spacing-6)' }}>
                 <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-6)' }}>
                   <Flag width={20} height={15} aria-hidden='true' />
                   {name}
                 </span>
                 <span style={{ opacity: 0.7 }}>{callingCode}</span>
-              </PhoneFieldSelectOption>
+              </SelectOption>
             ))}
-          </PhoneFieldSelectListbox>
+          </SelectListbox>
         </PhoneFieldSelect>
         <PhoneFieldInput id={id} name='phone' autoComplete='tel' />
       </PhoneField>
@@ -137,7 +137,7 @@ export default function ControlledValueWithClearAction() {
 
 ### Форма/интеграция: отправка неконтролируемой нативной формы
 
-Поле отправляет отформатированный номер под `name='phone'`, а `PhoneFieldSelectHiddenSelect` — страну под `name='country'`. `required` — нативная валидация настоящего поля ввода.
+Поле отправляет отформатированный номер под `name='phone'`, а `SelectHiddenSelect` — страну под `name='country'`. `required` — нативная валидация настоящего поля ввода.
 
 <!-- example: phone-field/uncontrolled-native-form-submit.tsx -->
 ```tsx
@@ -147,12 +147,12 @@ import {
   PhoneField,
   PhoneFieldInput,
   PhoneFieldSelect,
-  PhoneFieldSelectCombobox,
-  PhoneFieldSelectHiddenSelect,
-  PhoneFieldSelectIcon,
-  PhoneFieldSelectListbox,
-  PhoneFieldSelectOption,
-  PhoneFieldSelectValue,
+  SelectCombobox,
+  SelectHiddenSelect,
+  SelectIcon,
+  SelectListbox,
+  SelectOption,
+  SelectValue,
   Text,
 } from '@vega-ui/react';
 import { FormEvent, useId, useState } from 'react';
@@ -172,16 +172,16 @@ export default function UncontrolledNativeFormSubmit() {
       <Label htmlFor={id}>Phone number</Label>
       <PhoneField defaultCode='DE'>
         <PhoneFieldSelect>
-          <PhoneFieldSelectHiddenSelect name='country' />
-          <PhoneFieldSelectCombobox aria-label='Country'>
-            <PhoneFieldSelectValue />
-            <PhoneFieldSelectIcon />
-          </PhoneFieldSelectCombobox>
-          <PhoneFieldSelectListbox>
-            <PhoneFieldSelectOption value='DE'>DE</PhoneFieldSelectOption>
-            <PhoneFieldSelectOption value='AT'>AT</PhoneFieldSelectOption>
-            <PhoneFieldSelectOption value='CH'>CH</PhoneFieldSelectOption>
-          </PhoneFieldSelectListbox>
+          <SelectHiddenSelect name='country' />
+          <SelectCombobox aria-label='Country'>
+            <SelectValue />
+            <SelectIcon />
+          </SelectCombobox>
+          <SelectListbox>
+            <SelectOption value='DE'>DE</SelectOption>
+            <SelectOption value='AT'>AT</SelectOption>
+            <SelectOption value='CH'>CH</SelectOption>
+          </SelectListbox>
         </PhoneFieldSelect>
         <PhoneFieldInput id={id} name='phone' autoComplete='tel' required />
       </PhoneField>
@@ -219,12 +219,12 @@ import {
   PhoneField,
   PhoneFieldInput,
   PhoneFieldSelect,
-  PhoneFieldSelectCombobox,
-  PhoneFieldSelectHiddenSelect,
-  PhoneFieldSelectIcon,
-  PhoneFieldSelectListbox,
-  PhoneFieldSelectOption,
-  PhoneFieldSelectValue,
+  SelectCombobox,
+  SelectHiddenSelect,
+  SelectIcon,
+  SelectListbox,
+  SelectOption,
+  SelectValue,
   Text,
 } from '@vega-ui/react';
 import { XIcon } from '@vega-ui/icons';
@@ -269,16 +269,16 @@ export default function FullFieldInsideADialogForm() {
             <Label htmlFor={id}>Phone number</Label>
             <PhoneField defaultCode='FR'>
               <PhoneFieldSelect>
-                <PhoneFieldSelectHiddenSelect name='country' />
-                <PhoneFieldSelectCombobox aria-label='Country'>
-                  <PhoneFieldSelectValue />
-                  <PhoneFieldSelectIcon />
-                </PhoneFieldSelectCombobox>
-                <PhoneFieldSelectListbox>
-                  <PhoneFieldSelectOption value='FR'>FR</PhoneFieldSelectOption>
-                  <PhoneFieldSelectOption value='BE'>BE</PhoneFieldSelectOption>
-                  <PhoneFieldSelectOption value='CH'>CH</PhoneFieldSelectOption>
-                </PhoneFieldSelectListbox>
+                <SelectHiddenSelect name='country' />
+                <SelectCombobox aria-label='Country'>
+                  <SelectValue />
+                  <SelectIcon />
+                </SelectCombobox>
+                <SelectListbox>
+                  <SelectOption value='FR'>FR</SelectOption>
+                  <SelectOption value='BE'>BE</SelectOption>
+                  <SelectOption value='CH'>CH</SelectOption>
+                </SelectListbox>
               </PhoneFieldSelect>
               <PhoneFieldInput id={id} name='phone' autoComplete='tel' required />
             </PhoneField>
@@ -370,12 +370,12 @@ import {
   PhoneField,
   PhoneFieldInput,
   PhoneFieldSelect,
-  PhoneFieldSelectCombobox,
-  PhoneFieldSelectHiddenSelect,
-  PhoneFieldSelectIcon,
-  PhoneFieldSelectListbox,
-  PhoneFieldSelectOption,
-  PhoneFieldSelectValue,
+  SelectCombobox,
+  SelectHiddenSelect,
+  SelectIcon,
+  SelectListbox,
+  SelectOption,
+  SelectValue,
   Switch,
   SwitchIndicator,
   SwitchInput,
@@ -407,15 +407,15 @@ export default function DisabledInput() {
         <Label htmlFor={phoneId}>Billing phone</Label>
         <PhoneField defaultValue='+44 7400 123456'>
           <PhoneFieldSelect>
-            <PhoneFieldSelectHiddenSelect name='country' />
-            <PhoneFieldSelectCombobox aria-label='Country'>
-              <PhoneFieldSelectValue />
-              <PhoneFieldSelectIcon />
-            </PhoneFieldSelectCombobox>
-            <PhoneFieldSelectListbox>
-              <PhoneFieldSelectOption value='GB'>GB</PhoneFieldSelectOption>
-              <PhoneFieldSelectOption value='IE'>IE</PhoneFieldSelectOption>
-            </PhoneFieldSelectListbox>
+            <SelectHiddenSelect name='country' />
+            <SelectCombobox aria-label='Country'>
+              <SelectValue />
+              <SelectIcon />
+            </SelectCombobox>
+            <SelectListbox>
+              <SelectOption value='GB'>GB</SelectOption>
+              <SelectOption value='IE'>IE</SelectOption>
+            </SelectListbox>
           </PhoneFieldSelect>
           <PhoneFieldInput id={phoneId} name='billingPhone' autoComplete='tel' />
         </PhoneField>
@@ -439,11 +439,11 @@ import {
   PhoneField,
   PhoneFieldInput,
   PhoneFieldSelect,
-  PhoneFieldSelectCombobox,
-  PhoneFieldSelectIcon,
-  PhoneFieldSelectListbox,
-  PhoneFieldSelectOption,
-  PhoneFieldSelectValue,
+  SelectCombobox,
+  SelectIcon,
+  SelectListbox,
+  SelectOption,
+  SelectValue,
   Text,
 } from '@vega-ui/react';
 import { useId, useState } from 'react';
@@ -457,17 +457,17 @@ export default function NonStrictMaskForLenientPasteBehavior() {
       <Label htmlFor={id}>Customer phone</Label>
       <PhoneField defaultCode='US' strictMask={false} onChangeCode={setCountry}>
         <PhoneFieldSelect>
-          <PhoneFieldSelectCombobox aria-label='Country'>
-            <PhoneFieldSelectValue />
-            <PhoneFieldSelectIcon />
-          </PhoneFieldSelectCombobox>
-          <PhoneFieldSelectListbox>
-            <PhoneFieldSelectOption value='US'>US</PhoneFieldSelectOption>
-            <PhoneFieldSelectOption value='GB'>GB</PhoneFieldSelectOption>
-            <PhoneFieldSelectOption value='DE'>DE</PhoneFieldSelectOption>
-            <PhoneFieldSelectOption value='FR'>FR</PhoneFieldSelectOption>
-            <PhoneFieldSelectOption value='JP'>JP</PhoneFieldSelectOption>
-          </PhoneFieldSelectListbox>
+          <SelectCombobox aria-label='Country'>
+            <SelectValue />
+            <SelectIcon />
+          </SelectCombobox>
+          <SelectListbox>
+            <SelectOption value='US'>US</SelectOption>
+            <SelectOption value='GB'>GB</SelectOption>
+            <SelectOption value='DE'>DE</SelectOption>
+            <SelectOption value='FR'>FR</SelectOption>
+            <SelectOption value='JP'>JP</SelectOption>
+          </SelectListbox>
         </PhoneFieldSelect>
         <PhoneFieldInput id={id} autoComplete='tel' />
       </PhoneField>
@@ -491,12 +491,12 @@ import {
   PhoneField,
   PhoneFieldInput,
   PhoneFieldSelect,
-  PhoneFieldSelectCombobox,
-  PhoneFieldSelectHiddenSelect,
-  PhoneFieldSelectIcon,
-  PhoneFieldSelectListbox,
-  PhoneFieldSelectOption,
-  PhoneFieldSelectValue,
+  SelectCombobox,
+  SelectHiddenSelect,
+  SelectIcon,
+  SelectListbox,
+  SelectOption,
+  SelectValue,
   useSelectContext,
 } from '@vega-ui/react';
 import { useId } from 'react';
@@ -529,24 +529,24 @@ export default function EmojiFlags() {
       <Label htmlFor={id}>WhatsApp number</Label>
       <PhoneField defaultCode='BR'>
         <PhoneFieldSelect>
-          <PhoneFieldSelectHiddenSelect name='country' />
-          <PhoneFieldSelectCombobox aria-label='Country'>
-            <PhoneFieldSelectValue>
+          <SelectHiddenSelect name='country' />
+          <SelectCombobox aria-label='Country'>
+            <SelectValue>
               <SelectedFlag />
-            </PhoneFieldSelectValue>
-            <PhoneFieldSelectIcon />
-          </PhoneFieldSelectCombobox>
-          <PhoneFieldSelectListbox>
+            </SelectValue>
+            <SelectIcon />
+          </SelectCombobox>
+          <SelectListbox>
             {countries.map((country) => (
-              <PhoneFieldSelectOption key={country.code} value={country.code} label={country.name}>
+              <SelectOption key={country.code} value={country.code} label={country.name} style={{ justifyContent: 'space-between', gap: 'var(--spacing-6)' }}>
                 <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-6)' }}>
                   <span aria-hidden='true'>{country.flag}</span>
                   {country.name}
                 </span>
                 <span style={{ opacity: 0.7 }}>{country.callingCode}</span>
-              </PhoneFieldSelectOption>
+              </SelectOption>
             ))}
-          </PhoneFieldSelectListbox>
+          </SelectListbox>
         </PhoneFieldSelect>
         <PhoneFieldInput id={id} name='whatsapp' autoComplete='tel' />
       </PhoneField>

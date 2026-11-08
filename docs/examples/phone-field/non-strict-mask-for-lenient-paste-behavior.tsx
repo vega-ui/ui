@@ -3,11 +3,11 @@ import {
   PhoneField,
   PhoneFieldInput,
   PhoneFieldSelect,
-  PhoneFieldSelectCombobox,
-  PhoneFieldSelectIcon,
-  PhoneFieldSelectListbox,
-  PhoneFieldSelectOption,
-  PhoneFieldSelectValue,
+  SelectCombobox,
+  SelectIcon,
+  SelectListbox,
+  SelectOption,
+  SelectValue,
   Text,
 } from '@vega-ui/react';
 import { useId, useState } from 'react';
@@ -21,17 +21,17 @@ export default function NonStrictMaskForLenientPasteBehavior() {
       <Label htmlFor={id}>Customer phone</Label>
       <PhoneField defaultCode='US' strictMask={false} onChangeCode={setCountry}>
         <PhoneFieldSelect>
-          <PhoneFieldSelectCombobox aria-label='Country'>
-            <PhoneFieldSelectValue />
-            <PhoneFieldSelectIcon />
-          </PhoneFieldSelectCombobox>
-          <PhoneFieldSelectListbox>
-            <PhoneFieldSelectOption value='US'>US</PhoneFieldSelectOption>
-            <PhoneFieldSelectOption value='GB'>GB</PhoneFieldSelectOption>
-            <PhoneFieldSelectOption value='DE'>DE</PhoneFieldSelectOption>
-            <PhoneFieldSelectOption value='FR'>FR</PhoneFieldSelectOption>
-            <PhoneFieldSelectOption value='JP'>JP</PhoneFieldSelectOption>
-          </PhoneFieldSelectListbox>
+          <SelectCombobox aria-label='Country'>
+            <SelectValue />
+            <SelectIcon />
+          </SelectCombobox>
+          <SelectListbox>
+            <SelectOption value='US'>US</SelectOption>
+            <SelectOption value='GB'>GB</SelectOption>
+            <SelectOption value='DE'>DE</SelectOption>
+            <SelectOption value='FR'>FR</SelectOption>
+            <SelectOption value='JP'>JP</SelectOption>
+          </SelectListbox>
         </PhoneFieldSelect>
         <PhoneFieldInput id={id} autoComplete='tel' />
       </PhoneField>

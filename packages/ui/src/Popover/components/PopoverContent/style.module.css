@@ -3,6 +3,7 @@
     margin: 0;
     border: none;
     color: inherit;
+    text-align: start;
     overflow: visible;
     background: var(--surface-primary);
     border-radius: var(--radius-5);

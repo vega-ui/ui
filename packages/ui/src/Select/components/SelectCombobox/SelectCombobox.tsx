@@ -1,6 +1,7 @@
 import { FC, HTMLAttributes, Ref } from 'react';
 import { csx, mergeProps } from '@vega-ui/utils';
 import { useMergeRefs } from '@vega-ui/hooks';
+import { useStore } from '@vega-ui/react-kit/store';
 import style from './style.module.css';
 import { useSelectContext } from '../../contexts';
 import { useListboxContext } from '../../../Listbox/contexts';
@@ -31,7 +32,8 @@ export const SelectCombobox: FC<SelectComboboxProps> = ({
   ...props
 }) => {
   const { disabled, readOnly, size, variant, open, comboboxProps, setReference } = useSelectContext()
-  const { id, activeId } = useListboxContext()
+  const { id, store } = useListboxContext()
+  const activeId = useStore(store, (state) => state.activeId)
   const mergedRef = useMergeRefs([ref, setReference])
   
   return (

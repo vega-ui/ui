@@ -105,7 +105,7 @@ On open the sheet itself takes focus, so nothing inside is highlighted and scree
 ## Screen Reader Semantics
 
 - The sheet is exposed as `role=dialog` with `aria-modal` by the browser and is named by your `aria-labelledby` or `aria-label`.
-- The trigger exposes `aria-haspopup='dialog'` and `aria-expanded`.
+- The trigger exposes `aria-haspopup='dialog'`.
 - `SheetClose` has no default label, so an icon-only button inside it needs an `aria-label`; the library ships no built-in strings.
 - The sheet should read as one coherent overlay surface.
 - Non-closable sheets need especially clear purpose.

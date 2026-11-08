@@ -24,7 +24,7 @@ export const LanguageSwitch = () => {
   const pathname = usePathname();
   const router = useRouter();
 
-  const choose = (next: Locale | undefined) => {
+  const choose = (next: Locale | null) => {
     if (!next || next === locale) return;
 
     router.push(`${localize(next, delocalize(pathname))}${readHash()}`, { scroll: false });

@@ -1,11 +1,10 @@
 'use client';
 
-import { createContext } from '@vega-ui/react-context';
+import { createContext } from '@vega-ui/react-kit/context';
 
 export interface DialogContextState {
   open: boolean
   changeOpen: (value: boolean) => void
-  fluid?: boolean
 }
 
 export const [DialogProvider, useDialogContext] = createContext<DialogContextState>('DialogContext', {

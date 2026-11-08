@@ -2171,10 +2171,6 @@
     "en": "Whether the modal is default open.",
     "ru": "Открыто ли модальное окно по умолчанию."
   },
-  "Dialog.fluid": {
-    "en": "Makes the dialog fluid, allowing it to stretch responsively within its container. Useful for adapting to different screen sizes or layouts.",
-    "ru": "Делает диалог резиновым, позволяя ему адаптивно растягиваться в контейнере. Полезно для адаптации к разным размерам экрана и раскладкам."
-  },
   "Dialog.onChangeOpen": {
     "en": "Callback fired when the modal's open state changes. Receives the next boolean state.",
     "ru": "Колбэк, вызываемый при изменении состояния открытия модального окна. Получает следующее состояние в виде boolean."
@@ -2202,6 +2198,10 @@
   "DialogContent.closedBy": {
     "en": "Which user actions close the dialog, like the native `closedby` attribute: `any` a backdrop click or `Escape`, `closerequest` only `Escape`, `none` neither.",
     "ru": "Какие действия пользователя закрывают диалог, как нативный атрибут `closedby`: `any` — клик по подложке или `Escape`, `closerequest` — только `Escape`, `none` — ни то, ни другое."
+  },
+  "DialogContent.container": {
+    "en": "The element the dialog is rendered into through a portal.",
+    "ru": "Элемент, в который порталится диалог."
   },
   "DialogContent.overlay": {
     "en": "Dims the page behind the dialog. When false, the page stays visible and the dialog stays modal.",
@@ -2258,6 +2258,10 @@
   "DrawerContent.closedBy": {
     "en": "Which user actions close the drawer, like the native `closedby` attribute: `any` a backdrop click, a touch swipe toward its edge or `Escape`, `closerequest` only `Escape`, `none` neither.",
     "ru": "Какие действия пользователя закрывают выдвижную панель, как нативный атрибут `closedby`: `any` — клик по подложке, свайп к её краю или `Escape`, `closerequest` — только `Escape`, `none` — ничего из этого."
+  },
+  "DrawerContent.container": {
+    "en": "The element the drawer is rendered into through a portal.",
+    "ru": "Элемент, в который порталится drawer."
   },
   "DrawerContent.fullHeight": {
     "en": "Makes the drawer stretch to fill the full height of its parent container.",
@@ -3311,62 +3315,6 @@
     "en": "Visual style variant for the select control.",
     "ru": "Вариант визуального стиля элемента выбора."
   },
-  "PhoneFieldSelectCombobox.ref": {
-    "en": "Ref to the underlying `<button>` element. Useful for focus management, positioning, and imperative access.",
-    "ru": "Ref на нижележащий элемент `<button>`. Полезен для управления фокусом, позиционирования и императивного доступа."
-  },
-  "PhoneFieldSelectIcon.children": {
-    "en": "Icon content (required). Accepts: icons from `~/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler)",
-    "ru": "Содержимое иконки (обязательно). Принимает: иконки из `~/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler)"
-  },
-  "PhoneFieldSelectIcon.ref": {
-    "en": "Ref to the SVG element",
-    "ru": "Ref на SVG-элемент"
-  },
-  "PhoneFieldSelectIcon.size": {
-    "en": "Predefined size token for the icon. Can be overridden by explicit width and height.",
-    "ru": "Предопределённый токен размера иконки. Может быть переопределён явными шириной и высотой."
-  },
-  "PhoneFieldSelectIcon.strokeWidth": {
-    "en": "Stroke thickness for SVG lines and shapes (in px or pt).",
-    "ru": "Толщина обводки линий и фигур SVG (в px или pt)."
-  },
-  "PhoneFieldSelectListbox.ref": {
-    "en": "Ref to the listbox container element. Can be used for imperative access, for example measurements.",
-    "ru": "Ref на элемент-контейнер списка. Можно использовать для императивного доступа, например для измерений."
-  },
-  "PhoneFieldSelectOption.children": {
-    "en": "The content displayed for this option. Can include text, icons, or complex markup.",
-    "ru": "Содержимое, отображаемое для этого варианта. Может включать текст, иконки или сложную разметку."
-  },
-  "PhoneFieldSelectOption.disabled": {
-    "en": "Disables the entire Option.",
-    "ru": "Отключает весь Option."
-  },
-  "PhoneFieldSelectOption.label": {
-    "en": "Plain text of this option for typeahead, used instead of the text of its content.",
-    "ru": "Простой текст варианта для поиска при наборе; используется вместо текста его содержимого."
-  },
-  "PhoneFieldSelectOption.ref": {
-    "en": "Ref forwarded to the root div of the option.",
-    "ru": "Ref, передаваемый на корневой div варианта."
-  },
-  "PhoneFieldSelectOption.size": {
-    "en": "Size of the option for visual styling.",
-    "ru": "Размер варианта для визуальной стилизации."
-  },
-  "PhoneFieldSelectOption.value": {
-    "en": "The value of this option, passed to the change callback when it is selected.",
-    "ru": "Значение этого варианта, которое передаётся в колбэк изменения при его выборе."
-  },
-  "PhoneFieldSelectValue.placeholder": {
-    "en": "Placeholder text shown when no option is selected. Displayed when the select value is empty or undefined. Once a value is selected, the placeholder is replaced by the selected option’s content.",
-    "ru": "Текст-заполнитель, который показывается, когда не выбран ни один вариант. Отображается, когда значение select пустое или undefined. После выбора значения заполнитель заменяется содержимым выбранного варианта."
-  },
-  "PhoneFieldSelectValue.ref": {
-    "en": "Ref forwarded to the root span element.",
-    "ru": "Ref, передаваемый на корневой элемент span."
-  },
   "PinField.defaultValue": {
     "en": "Initial code for uncontrolled usage. Defaults to `''`.",
     "ru": "Начальный код для неконтролируемого использования. По умолчанию `''`."
@@ -3442,6 +3390,22 @@
   "Popover.role": {
     "en": "Defines the ARIA role of the popover content for accessibility. 'listbox': Used for dropdown menus or selects; 'dialog': Used for focus-trapped modal-like content",
     "ru": "Определяет ARIA-роль содержимого поповера для доступности. 'listbox': для выпадающих меню и списков выбора; 'dialog': для модального содержимого с удержанием фокуса"
+  },
+  "PopoverAnchor.asChild": {
+    "en": "If true, renders the anchor as its child element using `Slot`.",
+    "ru": "Если true, рендерит якорь как дочерний элемент через `Slot`."
+  },
+  "PopoverAnchor.ref": {
+    "en": "Ref forwarded to the anchor element.",
+    "ru": "Ref, пробрасываемый на элемент якоря."
+  },
+  "PopoverClose.asChild": {
+    "en": "If true, renders the close action as its child element using `Slot`, so any button of your own closes the popover.",
+    "ru": "Если true, рендерит действие закрытия как дочерний элемент через `Slot`, так что любая ваша кнопка закрывает поповер."
+  },
+  "PopoverClose.ref": {
+    "en": "Ref forwarded to the underlying button.",
+    "ru": "Ref, пробрасываемый на нативную кнопку."
   },
   "PopoverContent.ref": {
     "en": "Ref forwarded to the native `[popover]` element. Useful for focus management, animations, or measuring position.",
@@ -3723,6 +3687,10 @@
     "en": "Which user actions close the sheet, like the native `closedby` attribute: `any` a backdrop click, a swipe down or `Escape`, `closerequest` only `Escape`, `none` neither.",
     "ru": "Какие действия пользователя закрывают шторку, как нативный атрибут `closedby`: `any` — клик по подложке, свайп вниз или `Escape`, `closerequest` — только `Escape`, `none` — ничего из этого."
   },
+  "SheetContent.container": {
+    "en": "The element the sheet is rendered into through a portal.",
+    "ru": "Элемент, в который порталится sheet."
+  },
   "SheetContent.overlay": {
     "en": "Dims the page behind the sheet. When false, the page stays visible and the sheet stays modal.",
     "ru": "Затемняет страницу за шторкой. При false страница остаётся видимой, а шторка — модальной."
@@ -4003,13 +3971,17 @@
     "en": "Ref forwarded to the underlying native `<input>` element.",
     "ru": "Ref, передаваемый на нижележащий нативный элемент `<input>`."
   },
+  "Tooltip.children": {
+    "en": "The trigger and content of the tooltip. Should include `TooltipTrigger` and `TooltipContent` components.",
+    "ru": "Триггер и содержимое подсказки. Должны включать компоненты `TooltipTrigger` и `TooltipContent`."
+  },
   "Tooltip.defaultOpen": {
     "en": "Initial open state for uncontrolled usage.",
     "ru": "Начальное состояние открытия для неконтролируемого использования."
   },
   "Tooltip.delayClose": {
-    "en": "Delay (in milliseconds) before the tooltip disappears after blur/unhover.",
-    "ru": "Задержка (в миллисекундах) перед скрытием подсказки после потери фокуса или ухода указателя."
+    "en": "Delay (in milliseconds) before the tooltip disappears after the pointer leaves the trigger or the tooltip, long enough to move the pointer onto the tooltip. It hides at once on blur.",
+    "ru": "Задержка (в миллисекундах) перед скрытием подсказки после ухода указателя с триггера или с подсказки, достаточная, чтобы перевести указатель на подсказку. При потере фокуса подсказка скрывается сразу."
   },
   "Tooltip.delayOpen": {
     "en": "Delay (in milliseconds) before the tooltip appears on hover. It shows at once on keyboard focus, and right after another tooltip closes.",
@@ -4022,6 +3994,10 @@
   "Tooltip.open": {
     "en": "Controls the open state of the tooltip. When set, the component becomes controlled.",
     "ru": "Управляет состоянием открытия подсказки. Если задан, компонент становится контролируемым."
+  },
+  "Tooltip.placement": {
+    "en": "Preferred placement of the tooltip relative to its trigger. Follows the Floating UI `Placement` type (e.g., 'top', 'bottom-start'). It flips to the opposite side when there is no room.",
+    "ru": "Предпочтительное расположение подсказки относительно триггера. Следует типу Floating UI `Placement` (например, 'top', 'bottom-start'). Переворачивается на противоположную сторону, если не хватает места."
   },
   "TooltipContent.ref": {
     "en": "Ref forwarded to the tooltip content element. Useful for positioning, measuring, or managing focus.",

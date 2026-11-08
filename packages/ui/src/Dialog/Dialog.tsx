@@ -27,19 +27,12 @@ export interface DialogProps {
    * Can include headings, text, actions, and nested components.
    */
   children?: ReactNode | ReactNode[]
-  
-  /**
-   * Makes the dialog fluid, allowing it to stretch responsively within its container.
-   * Useful for adapting to different screen sizes or layouts.
-   */
-  fluid?: boolean
 }
 
 /** A Dialog is a UI component that displays content in a layer above the main page, often used for alerts, forms, or confirmations, requiring user interaction before returning to the main content */
 export const Dialog: FC<DialogProps> = ({
   open: controlledOpen,
   onChangeOpen,
-  fluid,
   defaultOpen = false,
   children,
 }) => {
@@ -49,7 +42,6 @@ export const Dialog: FC<DialogProps> = ({
     <DialogProvider
       open={open}
       changeOpen={setOpen}
-      fluid={fluid}
     >
       {children}
     </DialogProvider>

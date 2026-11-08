@@ -47,7 +47,7 @@ The UI works visually, but the country selection is missing from normal form flo
 
 ### Likely Cause
 
-`PhoneFieldSelectHiddenSelect` is missing.
+`SelectHiddenSelect` is missing inside `PhoneFieldSelect`.
 
 ### How To Verify
 
@@ -55,4 +55,4 @@ The UI works visually, but the country selection is missing from normal form flo
 
 ### Fix
 
-- render `PhoneFieldSelectHiddenSelect` inside the select composition
+- render `SelectHiddenSelect` inside `PhoneFieldSelect`
