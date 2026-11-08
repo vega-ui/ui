@@ -2,6 +2,7 @@ import { useId, useState, type CSSProperties } from 'react';
 import {
   Button,
   Popover,
+  PopoverClose,
   PopoverContent,
   PopoverTrigger,
   Text,
@@ -62,10 +63,9 @@ export default function DestructiveConfirmInAPopover() {
 
 function DeleteComment({ onDelete }: { onDelete: () => void }) {
   const textId = useId();
-  const [open, setOpen] = useState(false);
 
   return (
-    <Popover role='dialog' placement='bottom-end' open={open} onChangeOpen={setOpen}>
+    <Popover role='dialog' placement='bottom-end'>
       <PopoverTrigger asChild>
         <Button size='sm' variant='secondary' appearance='ghost' style={{ flexShrink: 0 }}>Delete</Button>
       </PopoverTrigger>
@@ -73,7 +73,9 @@ function DeleteComment({ onDelete }: { onDelete: () => void }) {
         <div style={{ display: 'grid', gap: 'var(--spacing-8)', maxWidth: 240 }}>
           <Text id={textId} size={3}>Delete this comment? It cannot be restored.</Text>
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--spacing-4)' }}>
-            <Button size='sm' variant='secondary' appearance='ghost' autoFocus onClick={() => setOpen(false)}>Keep</Button>
+            <PopoverClose asChild>
+              <Button size='sm' variant='secondary' appearance='ghost' autoFocus>Keep</Button>
+            </PopoverClose>
             <Button size='sm' style={destructive} onClick={onDelete}>Delete</Button>
           </div>
         </div>

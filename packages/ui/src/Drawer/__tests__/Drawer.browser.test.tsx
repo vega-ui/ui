@@ -60,6 +60,7 @@ const waitOpened = async (r: RenderResult) => {
   await expect.element(queryContent(r)).toBeInTheDocument();
   await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
   await expect.poll(() => getContent(r).matches(':modal')).toBe(true);
+  await expect.poll(() => getContent(r).getAnimations().length).toBe(0);
 };
 
 const waitClosed = async (r: RenderResult) => {
@@ -162,6 +163,25 @@ describe('Drawer', () => {
         expect(onClick).toHaveBeenCalledOnce();
         expect(onChangeOpen).toHaveBeenCalledExactlyOnceWith(false);
       });
+
+      it('requests close once when asChild submits a form with method dialog', async () => {
+        const onChangeOpen = vi.fn();
+        const r = render(
+          <Drawer open onChangeOpen={onChangeOpen}>
+            <DrawerContent aria-label='Panel'>
+              <form method='dialog'>
+                <DrawerClose asChild>
+                  <button>Done</button>
+                </DrawerClose>
+              </form>
+            </DrawerContent>
+          </Drawer>
+        );
+
+        await userEvent.click(r.getByRole('button', { name: 'Done' }));
+
+        expect(onChangeOpen).toHaveBeenCalledExactlyOnceWith(false);
+      });
     });
 
     describe('uncontrolled', () => {
@@ -197,6 +217,26 @@ describe('Drawer', () => {
         await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
       });
 
+      it('closes on Escape when closedBy=closerequest', async () => {
+        r.rerender(<DrawerTest closedBy='closerequest' />);
+        await openByTrigger(r);
+        await waitOpened(r);
+
+        await userEvent.keyboard('{Escape}');
+
+        await waitClosed(r);
+      });
+
+      it('stays open on backdrop click when closedBy=none', async () => {
+        r.rerender(<DrawerTest closedBy='none' />);
+        await openByTrigger(r);
+        await waitOpened(r);
+
+        await clickBackdrop(getContent(r));
+
+        await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
+      });
+
       it('stays open on backdrop click when closedBy=closerequest', async () => {
         r.rerender(<DrawerTest closedBy='closerequest' />);
         await openByTrigger(r);
@@ -227,14 +267,6 @@ describe('Drawer', () => {
         expect(backdrop.backgroundColor).toBe('rgba(0, 0, 0, 0)');
         expect(backdrop.backdropFilter).toBe('none');
         document.documentElement.style.removeProperty('--overlay');
-      });
-      
-      it('closes via close button click', async () => {
-        await openByTrigger(r);
-        await waitOpened(r);
-        
-        await closeByCloseButton(r);
-        await waitClosed(r);
       });
       
       it('reopens after close', async () => {
@@ -471,7 +503,31 @@ describe('Drawer', () => {
   });
   
   describe('Edge cases', () => {
+    it('slides in when something reads its style before it opens, as password managers do', async () => {
+      document.documentElement.dataset.motion = '';
+      onTestFinished(() => {
+        delete document.documentElement.dataset.motion;
+      });
+      const showModal = HTMLDialogElement.prototype.showModal;
+      HTMLDialogElement.prototype.showModal = function (this: HTMLDialogElement) {
+        this.getBoundingClientRect();
+        showModal.call(this);
+      };
+      onTestFinished(() => {
+        HTMLDialogElement.prototype.showModal = showModal;
+      });
+      const r = render(<DrawerTest />);
+
+      await openByTrigger(r);
+
+      await expect.poll(() => getContent(r).getAnimations().length).toBeGreaterThan(0);
+    });
+
     it('fades in and out in place when the user prefers reduced motion', async () => {
+      document.documentElement.dataset.motion = '';
+      onTestFinished(() => {
+        delete document.documentElement.dataset.motion;
+      });
       await commands.emulateReducedMotion('reduce');
       onTestFinished(() => commands.emulateReducedMotion('no-preference'));
       const r = render(<DrawerTest />);
@@ -504,6 +560,22 @@ describe('Drawer', () => {
       await userEvent.click(getTrigger(r));
 
       expect(onSubmit).not.toHaveBeenCalled();
+    });
+
+    it('stays open when the user prevents the submit of a form with method dialog', async () => {
+      const r = render(
+        <DrawerTest defaultOpen>
+          <form method='dialog' onSubmit={(event) => event.preventDefault()}>
+            <button>Submit</button>
+          </form>
+        </DrawerTest>
+      );
+      await waitOpened(r);
+
+      await userEvent.click(r.getByRole('button', { name: 'Submit' }));
+
+      await wait(500);
+      await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
     });
 
     describe('nested drawers', () => {
@@ -568,9 +640,9 @@ describe('Drawer', () => {
       it('trigger describes the drawer it opens', async () => {
         await waitOpened(r);
         await expect.element(getTrigger(r)).toHaveAttribute('aria-haspopup', 'dialog');
-        await expect.element(getTrigger(r)).toHaveAttribute('aria-expanded', 'true');
         await expect.element(getTrigger(r)).not.toHaveAttribute('aria-controls');
       });
+
 
       it('close button has accessible name (WCAG 4.1.2)', async () => {
         await waitOpened(r);
@@ -636,9 +708,48 @@ describe('Drawer', () => {
 
         await expect.element(getTrigger(r)).toHaveFocus();
       });
+
+      it('returns focus to the trigger after closing with DrawerClose', async () => {
+        const r = render(
+          <Drawer>
+            <DrawerTrigger data-testid={TESTID_TRIGGER}>Open</DrawerTrigger>
+            <DrawerContent data-testid={TESTID_CONTENT} aria-label='Panel'>
+              <DrawerClose>Done</DrawerClose>
+            </DrawerContent>
+          </Drawer>
+        );
+        getTrigger(r).focus();
+        await userEvent.keyboard('{Enter}');
+        await waitOpened(r);
+
+        r.getByRole('button', { name: 'Done' }).focus();
+        await userEvent.keyboard('{Enter}');
+        await waitClosed(r);
+
+        await expect.element(getTrigger(r)).toHaveFocus();
+      });
     });
     
     describe('keyboard', () => {
+      const TabTest: FC = () => (
+        <Drawer defaultOpen>
+          <DrawerContent data-testid={TESTID_CONTENT} aria-label='Panel'>
+            <input aria-label='First' />
+            <input aria-label='Last' />
+          </DrawerContent>
+        </Drawer>
+      );
+
+      it('moves Tab from the drawer to its first tabbable element', async () => {
+        const r = render(<TabTest />);
+        await waitOpened(r);
+        await expect.element(getContent(r)).toHaveFocus();
+
+        await userEvent.tab();
+
+        await expect.element(r.getByRole('textbox', { name: 'First' })).toHaveFocus();
+      });
+
       it('closes on Escape in uncontrolled mode', async () => {
         const r = render(<DrawerTest />);
         await openByTrigger(r);

@@ -29,7 +29,7 @@
 
 ## Семантика форм
 
-Используйте `PhoneFieldSelectHiddenSelect`, когда выбор страны должен нативно [участвовать в форме](../../glossary.md#участие-в-форме-form-participation).
+Отрендерите `SelectHiddenSelect` внутри `PhoneFieldSelect`, когда выбор страны должен нативно [участвовать в форме](../../glossary.md#участие-в-форме-form-participation).
 
 ## Риски доступности
 

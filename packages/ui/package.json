@@ -36,6 +36,7 @@
       }
     },
     "./style.css": "./dist/index.css",
+    "./internals/*": null,
     "./*": {
       "source": "./src/*/index.ts",
       "import": {
@@ -69,7 +70,7 @@
     "@vega-ui/hooks": "workspace:*",
     "@vega-ui/i18n": "workspace:*",
     "@vega-ui/icons": "workspace:*",
-    "@vega-ui/react-context": "workspace:*",
+    "@vega-ui/react-kit": "workspace:*",
     "@vega-ui/utils": "workspace:*",
     "libphonenumber-js": "^1.12.9"
   },

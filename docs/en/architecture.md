@@ -27,14 +27,14 @@ Read this stack left to right:
 - `packages/icons`: icon assets and icon exports
 - `packages/hooks`: shared hooks such as controlled state, selection, and resize helpers
 - `packages/utils`: low-level utilities such as prop merging, refs, dates, and small data helpers
-- `packages/react-context`: shared context helpers used by compound components
+- `packages/react-kit`: React primitives for building components, such as compound component context, an external store with slice subscriptions, and a DOM-ordered item registry
 - `packages/i18n`: framework-agnostic calendar system adapters, locale and formatting helpers, and calendar-aware ISO date helpers, published as `@vega-ui/i18n` (see [Dates and calendar systems](./i18n.md))
 
 ## Dependency Model
 
 The important dependency direction is:
 
-- `ui` depends on `hooks`, `i18n`, `icons`, `react-context`, and `utils`
+- `ui` depends on `hooks`, `i18n`, `icons`, `react-kit`, and `utils`
 - `theme` depends on `tokens`
 - components in `ui` are styled against semantic variables from `theme`
 

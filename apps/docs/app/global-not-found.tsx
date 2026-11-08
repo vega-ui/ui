@@ -1,4 +1,5 @@
-import { getRootMetadata, localeScript, rootViewport, themeScript } from '@/components/RootDocument';
+import { getRootMetadata, localeScript, rootViewport } from '@/components/RootDocument';
+import { themeScript } from '@/lib/storedTheme';
 import { LocaleProvider } from '@/components/LocaleProvider';
 import { NotFound } from '@/components/NotFound';
 import { NotFoundChrome, NotFoundTitle } from '@/components/NotFoundChrome';
@@ -32,7 +33,7 @@ export default function GlobalNotFound() {
       </head>
       <body>
         <script dangerouslySetInnerHTML={{ __html: localeScript }} />
-        <NotFoundChrome chrome={{ en: <Header locale='en' />, ru: <Header locale='ru' /> }} />
+          <NotFoundChrome chrome={{ en: <Header locale='en' />, ru: <Header locale='ru' /> }} />
         <NotFound />
         <NotFoundChrome chrome={{ en: <Footer locale='en' />, ru: <Footer locale='ru' /> }} />
       </body>

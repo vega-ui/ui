@@ -256,6 +256,24 @@ The options share the same `value`. The option `id` is built from the value, and
 
 Give every `ListboxOption` a unique `value`, such as a record id, and keep the visible text separate.
 
+## Switching `multiple` Breaks The List
+
+### Symptom
+
+After `multiple` changes on a mounted list, a click throws a `TypeError` or the selection looks wrong.
+
+### Likely Cause
+
+The value keeps the shape of the old mode: a single value where the list now expects an array, or the other way round.
+
+### How To Verify
+
+- log the value right after `multiple` changes and check whether it is an array
+
+### Fix
+
+Remount the list when the mode changes with `key={String(multiple)}`, and convert the value yourself: wrap a single value in an array, or take one item of the array.
+
 ## The List Grows Taller Than The Layout
 
 ### Symptom

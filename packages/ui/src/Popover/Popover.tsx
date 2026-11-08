@@ -1,12 +1,10 @@
 'use client';
-import { FC, HTMLAttributes, ReactNode, useEffect, useId } from 'react';
+import { FC, ReactNode, useEffect, useId, useState } from 'react';
 import { autoUpdate, flip, offset, Placement, shift, useFloating } from '@floating-ui/react';
 import { useControlledState } from '@vega-ui/hooks';
 import { PopoverProvider } from './contexts';
-import { csx } from '@vega-ui/utils';
-import style from './style.module.css'
 
-export interface PopoverProps extends HTMLAttributes<HTMLDivElement> {
+export interface PopoverProps {
   /**
    * The trigger and content elements for the popover.
    * Should include `PopoverTrigger` and `PopoverContent` components.
@@ -53,16 +51,18 @@ export const Popover: FC<PopoverProps> = ({
   open: controlledOpen,
   defaultOpen = false,
   onChangeOpen,
-  className,
   children,
-  ...props
 }) => {
   const [open, setOpen] = useControlledState(controlledOpen, defaultOpen, onChangeOpen);
-  const contentId = useId();
+  const id = useId();
+
+  const [trigger, setTrigger] = useState<Element | null>(null);
+  const [anchor, setAnchor] = useState<Element | null>(null);
 
   const { refs, elements, floatingStyles, placement: finalPlacement, update } = useFloating({
     strategy: 'fixed',
     transform: false,
+    elements: { reference: anchor ?? trigger },
     middleware: [offset(10), flip(), shift()],
     placement,
     open,
@@ -79,15 +79,14 @@ export const Popover: FC<PopoverProps> = ({
       open={open}
       role={role}
       changeOpen={setOpen}
-      contentId={contentId}
+      contentId={elements.floating?.id || id}
       placement={finalPlacement}
-      setReference={refs.setReference}
+      setReference={setTrigger}
+      setAnchor={setAnchor}
       setFloating={refs.setFloating}
       contentStyles={floatingStyles}
     >
-      <div className={csx(style.popover, className)} {...props}>
-        {children}
-      </div>
+      {children}
     </PopoverProvider>
   )
 }

@@ -12,7 +12,6 @@
 | `defaultOpen` | `boolean` | `false` | No | Whether the modal is default open. |
 | `onChangeOpen` | `(state: boolean) => void` | — | No | Callback fired when the modal's open state changes. Receives the next boolean state. |
 | `children` | `ReactNode \| ReactNode[]` | — | No | The content rendered inside the dialog. Can include headings, text, actions, and nested components. |
-| `fluid` | `boolean` | — | No | Makes the dialog fluid, allowing it to stretch responsively within its container. Useful for adapting to different screen sizes or layouts. |
 <!-- AUTO-GENERATED:ROOT_API:end -->
 
 ## Child Parts API
@@ -24,7 +23,7 @@ Open action for the dialog.
 <!-- AUTO-GENERATED:PART_API:DialogTrigger:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `asChild` | `boolean` | — | No | If true, renders the trigger as a child element using `Slot`. Allows for custom wrapper elements (e.g., `<a>`, `<div>`) to behave as modal triggers. |
+| `asChild` | `boolean` | `false` | No | If true, renders the trigger as a child element using `Slot`. Allows for custom wrapper elements (e.g., `<a>`, `<div>`) to behave as modal triggers. |
 | `ref` | `Ref<HTMLButtonElement>` | — | No | Ref forwarded to the underlying trigger element (typically a `<button>`). Useful for focus control or imperative access. |
 
 Also accepts all `<button>` attributes.
@@ -32,7 +31,7 @@ Also accepts all `<button>` attributes.
 
 - Typical usage: `asChild` with `Button`
 - Should remain inside `Dialog`
-- Sets `aria-haspopup='dialog'` and `aria-expanded`
+- Sets `aria-haspopup='dialog'`
 
 ## `DialogContent`
 
@@ -45,6 +44,7 @@ The native modal `<dialog>`.
 | `blurred` | `boolean` | `true` | No | Blurs the page behind the dialog. |
 | `overlay` | `boolean` | `true` | No | Dims the page behind the dialog. When false, the page stays visible and the dialog stays modal. |
 | `closedBy` | `ModalDialogClosedBy` | `'closerequest'` | No | Which user actions close the dialog, like the native `closedby` attribute: `any` a backdrop click or `Escape`, `closerequest` only `Escape`, `none` neither. |
+| `container` | `Element \| DocumentFragment \| null` | `document.body` | No | The element the dialog is rendered into through a portal. |
 | `ref` | `Ref<HTMLDialogElement>` | — | No | Ref forwarded to the native `<dialog>` element. Useful for managing focus, animations, or measurements. |
 | `children` | `ReactNode` | — | No | The children nodes to render inside the dialog. |
 
@@ -64,14 +64,14 @@ Closes the dialog when clicked. It has no styles, icon, or default `aria-label`:
 <!-- AUTO-GENERATED:PART_API:DialogClose:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `asChild` | `boolean` | — | No | If true, renders the close action as its child element using `Slot`, so any button of your own closes the dialog. |
+| `asChild` | `boolean` | `false` | No | If true, renders the close action as its child element using `Slot`, so any button of your own closes the dialog. |
 | `ref` | `Ref<HTMLButtonElement>` | — | No | Ref forwarded to the underlying button. |
 
 Also accepts all `<button>` attributes.
 <!-- AUTO-GENERATED:PART_API:DialogClose:end -->
 
 - The close goes through `onChangeOpen(false)`, so the close transition plays and a controlled parent can keep the dialog open.
-- Use it for a standalone close button, such as the X in a header. For buttons that answer the dialog (Cancel, Confirm, a `returnValue`), use a `<form method="dialog">`. Without `asChild` it renders `type="button"`, so it also works inside a form of your own without submitting it; with `asChild` give your own button `type="button"`.
+- Use it for a standalone close button, such as the X in a header. For buttons that answer the dialog (Cancel, Confirm, a `returnValue`), use a `<form method="dialog">`. It sets `type="button"`, with `asChild` too, so it also works inside a form of your own without submitting it; pass `type="submit"` to your own button to submit instead.
 - Your `onClick` runs after the close request, so it can record which button closed the dialog.
 
 <!-- example: dialog/close-with-handler.tsx -->
@@ -138,7 +138,7 @@ export default function CloseWithHandler() {
 
 ## `useDialogContext`
 
-Advanced hook for custom wrappers and close actions. Returns `{ open, changeOpen, fluid }`.
+Advanced hook for custom wrappers and close actions. Returns `{ open, changeOpen }`.
 
 Use it only when the exported parts are not enough for the desired composition.
 
@@ -155,7 +155,7 @@ Use it only when the exported parts are not enough for the desired composition.
 
 - Open state can be controlled with `open` or uncontrolled with `defaultOpen`.
 - `DialogTrigger` is the normal open path for uncontrolled usage.
-- Every close request allowed by `closedBy` (backdrop click, `Escape`) every `DialogClose` click, and every `<form method="dialog">` submit go through `onChangeOpen(false)`; a controlled dialog stays open until `open` becomes `false`.
+- Every close request allowed by `closedBy` (backdrop click, `Escape`) every `DialogClose` click, and every `<form method="dialog">` submit go through `onChangeOpen(false)`; a controlled dialog stays open until `open` becomes `false`. A close the browser makes without asking, such as `close()` called on the element or a forced close after repeated `Escape`, is final: it stays closed until `open` changes.
 - When the browser closes the dialog on its own while `open` is still `true`, the dialog reopens.
 
 ## Integration Notes

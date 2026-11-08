@@ -2,7 +2,8 @@
 import { DialogHTMLAttributes, FC, ReactNode, Ref } from 'react';
 import { createPortal } from 'react-dom';
 import { csx, mergeEventHandlers } from '@vega-ui/utils';
-import { ModalDialogClosedBy, useMergeRefs, useModalDialog } from '@vega-ui/hooks';
+import { useMergeRefs } from '@vega-ui/hooks';
+import { ModalDialogClosedBy, useModalDialog } from '../../../internals/modalDialog';
 import styles from './style.module.css';
 import { useDialogContext } from '../../contexts';
 
@@ -26,8 +27,17 @@ export interface DialogContentProps extends DialogHTMLAttributes<HTMLDialogEleme
   /**
    * Which user actions close the dialog, like the native `closedby` attribute:
    * `any` a backdrop click or `Escape`, `closerequest` only `Escape`, `none` neither.
+   *
+   * @default 'closerequest'
    */
   closedBy?: ModalDialogClosedBy
+
+  /**
+   * The element the dialog is rendered into through a portal.
+   *
+   * @default document.body
+   */
+  container?: Element | DocumentFragment | null
 
   /**
    * Ref forwarded to the native `<dialog>` element.
@@ -47,6 +57,7 @@ export const DialogContent: FC<DialogContentProps> = ({
   blurred = true,
   overlay = true,
   closedBy = 'closerequest',
+  container,
   ref,
   className,
   children,
@@ -55,8 +66,8 @@ export const DialogContent: FC<DialogContentProps> = ({
   onClose: _onClose,
   ...props
 }) => {
-  const { open, changeOpen, fluid } = useDialogContext()
-  const { ref: dialogRef, mounted, rendered, onCancel, onSubmit, onClose } = useModalDialog({ open, onChangeOpen: changeOpen })
+  const { open, changeOpen } = useDialogContext()
+  const { ref: dialogRef, mounted, rendered, onCancel, onSubmit, onClose } = useModalDialog({ open, onChangeOpen: changeOpen, closedBy })
   const mergedRef = useMergeRefs([dialogRef, ref])
 
   if (!mounted) return null
@@ -64,7 +75,6 @@ export const DialogContent: FC<DialogContentProps> = ({
   return createPortal(
     <dialog
       closedby={closedBy}
-      data-fluid={fluid}
       data-shadowed={shadowed}
       data-blurred={blurred}
       data-overlay={overlay}
@@ -78,6 +88,6 @@ export const DialogContent: FC<DialogContentProps> = ({
     >
       {rendered && children}
     </dialog>,
-    document.body
+    container ?? document.body
   )
 }

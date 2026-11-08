@@ -4,12 +4,12 @@ import {
   PhoneField,
   PhoneFieldInput,
   PhoneFieldSelect,
-  PhoneFieldSelectCombobox,
-  PhoneFieldSelectHiddenSelect,
-  PhoneFieldSelectIcon,
-  PhoneFieldSelectListbox,
-  PhoneFieldSelectOption,
-  PhoneFieldSelectValue,
+  SelectCombobox,
+  SelectHiddenSelect,
+  SelectIcon,
+  SelectListbox,
+  SelectOption,
+  SelectValue,
   Text,
 } from '@vega-ui/react';
 import { FormEvent, useId, useState } from 'react';
@@ -29,16 +29,16 @@ export default function UncontrolledNativeFormSubmit() {
       <Label htmlFor={id}>Phone number</Label>
       <PhoneField defaultCode='DE'>
         <PhoneFieldSelect>
-          <PhoneFieldSelectHiddenSelect name='country' />
-          <PhoneFieldSelectCombobox aria-label='Country'>
-            <PhoneFieldSelectValue />
-            <PhoneFieldSelectIcon />
-          </PhoneFieldSelectCombobox>
-          <PhoneFieldSelectListbox>
-            <PhoneFieldSelectOption value='DE'>DE</PhoneFieldSelectOption>
-            <PhoneFieldSelectOption value='AT'>AT</PhoneFieldSelectOption>
-            <PhoneFieldSelectOption value='CH'>CH</PhoneFieldSelectOption>
-          </PhoneFieldSelectListbox>
+          <SelectHiddenSelect name='country' />
+          <SelectCombobox aria-label='Country'>
+            <SelectValue />
+            <SelectIcon />
+          </SelectCombobox>
+          <SelectListbox>
+            <SelectOption value='DE'>DE</SelectOption>
+            <SelectOption value='AT'>AT</SelectOption>
+            <SelectOption value='CH'>CH</SelectOption>
+          </SelectListbox>
         </PhoneFieldSelect>
         <PhoneFieldInput id={id} name='phone' autoComplete='tel' required />
       </PhoneField>

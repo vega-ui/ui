@@ -135,9 +135,11 @@ export const useSelection = <K, const M extends Selection>({
       setSelected(next as SelectedValue<M, K>)
       return
     }
-    
+
+    if (isSelected(key)) return
+
     setSelected(key as SelectedValue<M, K>)
-  }, [selection, selected, eq, comparator, resolveRangeOrDefault, isDisabled, setSelected])
+  }, [selection, selected, eq, comparator, resolveRangeOrDefault, isDisabled, isSelected, setSelected])
 
   const resolvedRange = useCallback((start: K, end: K): SelectedValue<M, K> => {
     return resolveRangeOrDefault(start, end) as SelectedValue<M, K>
@@ -184,6 +186,13 @@ export const useSelection = <K, const M extends Selection>({
     if (isSelected(key)) unselect(key)
     else select(key)
   }, [isSelected, unselect, select])
+
+  const selectMany = useCallback((keys: K[]) => {
+    if (selection !== 'multiple') return
+
+    const next = keys.filter((key, index) => !isDisabled(key) && keys.findIndex((k) => eq(k, key)) === index)
+    setSelected(next as SelectedValue<M, K>)
+  }, [selection, isDisabled, eq, setSelected])
   
   return {
     toggle,
@@ -194,5 +203,6 @@ export const useSelection = <K, const M extends Selection>({
     isDisabled,
     edges,
     selected,
+    selectMany,
   }
 }

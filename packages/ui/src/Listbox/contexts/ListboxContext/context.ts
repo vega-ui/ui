@@ -1,7 +1,8 @@
 'use client';
 
-import { createContext } from '@vega-ui/react-context';
+import { createContext } from '@vega-ui/react-kit/context';
 import { OptionSize } from '../../../Option';
+import { createListboxStore, ListboxStore } from '../../../internals/listbox';
 
 type Value = string | number
 
@@ -9,22 +10,15 @@ export interface ListboxContextState {
   id?: string
   size?: OptionSize
   disabled?: boolean
-  activeId?: string
-  getOptionId(value: Value): string
+  store: ListboxStore
   isSelected(value: Value): boolean
   onSelect(value: Value): void
-  setActiveId(id: string | undefined): void
-  clearActive(id: string): void
 }
 
 export const [ListboxProvider, useListboxContext] = createContext<ListboxContextState>('ListboxContext', {
-  getOptionId() {
-    return ''
-  },
+  store: createListboxStore(),
   isSelected() {
     return false
   },
   onSelect() {},
-  setActiveId() {},
-  clearActive() {},
 })

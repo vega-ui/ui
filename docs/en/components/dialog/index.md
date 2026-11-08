@@ -114,7 +114,7 @@ Typical composition:
 
 - Controlled open state versus trigger-driven usage
 - Minimal content-only dialog versus a dialog with a header row and close button
-- Fixed content dialog versus scrollable or fluid content dialog
+- Fixed content dialog versus scrollable or full-screen dialog
 
 ## Migrating From 2.x
 

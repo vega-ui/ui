@@ -1,7 +1,7 @@
 .value {
-    display: flex;
-    align-items: center;
+    display: block;
     pointer-events: none;
+    min-width: 0;
     max-width: 100%;
     text-overflow: ellipsis;
     overflow: hidden;

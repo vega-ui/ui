@@ -1,7 +1,8 @@
 .tooltipContent {
     --t-color: var(--text-color);
+    --tooltip-arrow-x: 50%;
+    --tooltip-arrow-y: 50%;
 
-    display: block;
     inset: auto;
     margin: 0;
     border: none;
@@ -11,7 +12,6 @@
     box-shadow: var(--surface-shadow);
     border-radius: var(--radius-3);
     padding: var(--spacing-4) var(--spacing-6);
-    pointer-events: none;
     opacity: 0;
     scale: .9;
     transition:
@@ -24,20 +24,27 @@
     scale: 1;
 }
 
+@starting-style {
+    .tooltipContent:where([data-status='open']) {
+        opacity: 0;
+        scale: .9;
+    }
+}
+
 .tooltipContent:where([data-side='top']) {
-    transform-origin: var(--tooltip-arrow-x, 50%) 100%;
+    transform-origin: var(--tooltip-arrow-x) 100%;
 }
 
 .tooltipContent:where([data-side='bottom']) {
-    transform-origin: var(--tooltip-arrow-x, 50%) 0;
+    transform-origin: var(--tooltip-arrow-x) 0;
 }
 
 .tooltipContent:where([data-side='left']) {
-    transform-origin: 100% var(--tooltip-arrow-y, 50%);
+    transform-origin: 100% var(--tooltip-arrow-y);
 }
 
 .tooltipContent:where([data-side='right']) {
-    transform-origin: 0 var(--tooltip-arrow-y, 50%);
+    transform-origin: 0 var(--tooltip-arrow-y);
 }
 
 @media (prefers-reduced-motion: reduce) {

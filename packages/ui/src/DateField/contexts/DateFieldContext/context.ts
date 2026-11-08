@@ -1,7 +1,7 @@
 'use client';
 
 import { RefObject } from 'react'
-import { createContext } from '@vega-ui/react-context';
+import { createContext } from '@vega-ui/react-kit/context';
 import { CalendarSystem, gregorianCalendar } from '@vega-ui/i18n';
 import { CalendarDatesDisabled } from '../../../Calendar';
 

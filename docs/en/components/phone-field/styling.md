@@ -21,7 +21,7 @@ The input follows the shared field styling model used by other text-entry contro
 
 ### Select Family
 
-`PhoneFieldSelectCombobox`, `PhoneFieldSelectListbox`, and `PhoneFieldSelectOption` expose layout hooks closer to the `Select` family than to a standalone `PhoneField` token surface.
+The country picker is built from the ordinary [Select](../select/styling.md) parts, so `SelectCombobox`, `SelectListbox`, and `SelectOption` are styled as in `Select`. `PhoneFieldSelect` sets `--select-combobox-gap` to `var(--spacing-6)` to keep the code close to the icon on every size. When an option holds a flag or name next to a calling code, set its spacing yourself, for example `style={{ justifyContent: 'space-between', gap: 'var(--spacing-6)' }}` on `SelectOption`.
 
 ## State And Variant Interaction
 
@@ -46,7 +46,7 @@ The field has no `--phone-field-*` variables, so a theme class retunes the share
 
 ### Select placeholder and custom icon
 
-Without a code the trigger shows the `placeholder` of `PhoneFieldSelectValue`, and children of `PhoneFieldSelectIcon` replace the default chevron.
+Without a code the trigger shows the `placeholder` of `SelectValue`, and children of `SelectIcon` replace the default chevron.
 
 <!-- example: phone-field/select-placeholder-and-custom-icon.tsx -->
 ```tsx
@@ -55,12 +55,12 @@ import {
   PhoneField,
   PhoneFieldInput,
   PhoneFieldSelect,
-  PhoneFieldSelectCombobox,
-  PhoneFieldSelectHiddenSelect,
-  PhoneFieldSelectIcon,
-  PhoneFieldSelectListbox,
-  PhoneFieldSelectOption,
-  PhoneFieldSelectValue,
+  SelectCombobox,
+  SelectHiddenSelect,
+  SelectIcon,
+  SelectListbox,
+  SelectOption,
+  SelectValue,
 } from '@vega-ui/react';
 import { ChevronsUpDown } from '@vega-ui/icons';
 import { useId } from 'react';
@@ -73,18 +73,18 @@ export default function SelectPlaceholderAndCustomIcon() {
       <Label htmlFor={id}>Phone number</Label>
       <PhoneField>
         <PhoneFieldSelect>
-          <PhoneFieldSelectHiddenSelect name='country' />
-          <PhoneFieldSelectCombobox aria-label='Country'>
-            <PhoneFieldSelectValue placeholder='Code' />
-            <PhoneFieldSelectIcon>
+          <SelectHiddenSelect name='country' />
+          <SelectCombobox aria-label='Country'>
+            <SelectValue placeholder='Code' />
+            <SelectIcon>
               <ChevronsUpDown />
-            </PhoneFieldSelectIcon>
-          </PhoneFieldSelectCombobox>
-          <PhoneFieldSelectListbox>
-            <PhoneFieldSelectOption value='ES'>ES</PhoneFieldSelectOption>
-            <PhoneFieldSelectOption value='IT'>IT</PhoneFieldSelectOption>
-            <PhoneFieldSelectOption value='PT'>PT</PhoneFieldSelectOption>
-          </PhoneFieldSelectListbox>
+            </SelectIcon>
+          </SelectCombobox>
+          <SelectListbox>
+            <SelectOption value='ES'>ES</SelectOption>
+            <SelectOption value='IT'>IT</SelectOption>
+            <SelectOption value='PT'>PT</SelectOption>
+          </SelectListbox>
         </PhoneFieldSelect>
         <PhoneFieldInput id={id} name='phone' autoComplete='tel' />
       </PhoneField>

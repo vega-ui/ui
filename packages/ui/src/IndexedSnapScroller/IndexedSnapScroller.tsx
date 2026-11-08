@@ -1,6 +1,6 @@
 import { FC, PropsWithChildren, Ref, UIEvent, useCallback, useImperativeHandle, useLayoutEffect, useRef } from 'react';
 import { flushSync } from 'react-dom';
-import { useIndexes } from '@vega-ui/hooks';
+import { useIndexes } from './hooks';
 import { SnapScroller, SnapScrollerApiRef, SnapScrollerProps } from '../SnapScroller';
 import { IndexedSnapScrollerProvider } from './contexts';
 import { IndexedSnapScrollerApiRef } from './types';

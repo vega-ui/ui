@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Icon, SegmentedControl, SegmentedControlIndicator, SegmentedControlItem, SegmentedControlItemInput } from '@vega-ui/react';
 import { Monitor, Moon, Sun } from '@vega-ui/icons';
+import { applyStoredTheme } from '@/lib/storedTheme';
 import { useDictionary } from './LocaleProvider';
 
 const OPTIONS = [
@@ -10,14 +11,6 @@ const OPTIONS = [
   { value: 'dark', icon: <Moon /> },
   { value: 'system', icon: <Monitor /> },
 ] as const;
-
-const systemTheme = () => matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-
-const applyTheme = (theme: string) => {
-  const root = document.documentElement;
-  root.classList.remove('light', 'dark');
-  root.classList.add(theme === 'system' ? systemTheme() : theme);
-};
 
 export const ThemeToggle = ({ className }: { className?: string }) => {
   const t = useDictionary();
@@ -38,14 +31,11 @@ export const ThemeToggle = ({ className }: { className?: string }) => {
 
   const choose = (value: string) => {
     setTheme(value);
-    applyTheme(value);
 
-    if (value === 'system') {
-      localStorage.removeItem('theme');
-      return;
-    }
+    if (value === 'system') localStorage.removeItem('theme');
+    else localStorage.setItem('theme', value);
 
-    localStorage.setItem('theme', value);
+    applyStoredTheme();
   };
 
   return (

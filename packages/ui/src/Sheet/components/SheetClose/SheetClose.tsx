@@ -1,14 +1,16 @@
 'use client';
 
 import { ButtonHTMLAttributes, FC, Ref } from 'react';
+import { mergeEventHandlers } from '@vega-ui/utils';
 import { Slot } from '../../../Slot';
 import { useSheetContext } from '../../contexts';
-import { mergeEventHandlers } from '@vega-ui/utils';
 
 export interface SheetCloseProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
    * If true, renders the close action as its child element using `Slot`,
    * so any button of your own closes the sheet.
+   *
+   * @default false
    */
   asChild?: boolean
 
@@ -29,11 +31,7 @@ export const SheetClose: FC<SheetCloseProps> = ({ asChild, children, onClick: _o
   }
 
   return (
-    <Element
-      type={Element === 'button' ? 'button' : undefined}
-      onClick={mergeEventHandlers(onClick, _onClick)}
-      {...props}
-    >
+    <Element type='button' onClick={mergeEventHandlers(onClick, _onClick)} {...props}>
       {children}
     </Element>
   )

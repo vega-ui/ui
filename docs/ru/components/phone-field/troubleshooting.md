@@ -47,7 +47,7 @@
 
 ### Вероятная причина
 
-Отсутствует `PhoneFieldSelectHiddenSelect`.
+Внутри `PhoneFieldSelect` нет `SelectHiddenSelect`.
 
 ### Как проверить
 
@@ -55,4 +55,4 @@
 
 ### Исправление
 
-- отрендерите `PhoneFieldSelectHiddenSelect` внутри композиции select
+- отрендерите `SelectHiddenSelect` внутри `PhoneFieldSelect`

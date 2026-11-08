@@ -1,13 +1,11 @@
 .combobox {
-    --select-combobox-br-ratio: var(--select-br-ratio);
-
     display: flex;
     width: 100%;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
     background-color: transparent;
-    gap: var(--spacing-10);
+    gap: var(--select-combobox-gap, var(--select-gap));
     user-select: none;
     cursor: pointer;
     border: none;
@@ -15,31 +13,26 @@
     box-sizing: border-box;
     height: var(--select-size);
     padding-inline: var(--spacing-10);
-    border-radius: calc(var(--select-size) * var(--select-combobox-br-ratio));
+    border-radius: calc(var(--select-size) * var(--select-combobox-br-ratio, var(--select-br-ratio)));
 }
 
 .combobox:where([data-size='xs']) {
-    gap: var(--spacing-6);
     font-size: var(--font-size-2);
 }
 
 .combobox:where([data-size='sm']) {
-    gap: var(--spacing-8);
     font-size: var(--font-size-2);
 }
 
 .combobox:where([data-size='md']) {
-    gap: var(--spacing-10);
     font-size: var(--font-size-3);
 }
 
 .combobox:where([data-size='lg']) {
-    gap: var(--spacing-12);
     font-size: var(--font-size-4);
 }
 
 .combobox:where([data-size='xl']) {
-    gap: var(--spacing-14);
     font-size: var(--font-size-4);
 }
 
@@ -60,7 +53,7 @@
 /* combobox/field/focus */
 
 .combobox:where([data-variant='field'][data-open='true']),
-.combobox:where([data-variant='field']):focus {
+.combobox:where([data-variant='field']):focus-visible {
     outline-color: var(--color-primary-500);
 }
 
@@ -82,7 +75,7 @@
 /* combobox/inline/focus */
 
 .combobox:where([data-variant='inline'][data-open='true']),
-.combobox:where([data-variant='inline']):focus {
+.combobox:where([data-variant='inline']):focus-visible {
     outline-color: var(--color-primary-500);
     background-color: transparent;
 }

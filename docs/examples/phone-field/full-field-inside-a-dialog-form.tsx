@@ -12,12 +12,12 @@ import {
   PhoneField,
   PhoneFieldInput,
   PhoneFieldSelect,
-  PhoneFieldSelectCombobox,
-  PhoneFieldSelectHiddenSelect,
-  PhoneFieldSelectIcon,
-  PhoneFieldSelectListbox,
-  PhoneFieldSelectOption,
-  PhoneFieldSelectValue,
+  SelectCombobox,
+  SelectHiddenSelect,
+  SelectIcon,
+  SelectListbox,
+  SelectOption,
+  SelectValue,
   Text,
 } from '@vega-ui/react';
 import { XIcon } from '@vega-ui/icons';
@@ -62,16 +62,16 @@ export default function FullFieldInsideADialogForm() {
             <Label htmlFor={id}>Phone number</Label>
             <PhoneField defaultCode='FR'>
               <PhoneFieldSelect>
-                <PhoneFieldSelectHiddenSelect name='country' />
-                <PhoneFieldSelectCombobox aria-label='Country'>
-                  <PhoneFieldSelectValue />
-                  <PhoneFieldSelectIcon />
-                </PhoneFieldSelectCombobox>
-                <PhoneFieldSelectListbox>
-                  <PhoneFieldSelectOption value='FR'>FR</PhoneFieldSelectOption>
-                  <PhoneFieldSelectOption value='BE'>BE</PhoneFieldSelectOption>
-                  <PhoneFieldSelectOption value='CH'>CH</PhoneFieldSelectOption>
-                </PhoneFieldSelectListbox>
+                <SelectHiddenSelect name='country' />
+                <SelectCombobox aria-label='Country'>
+                  <SelectValue />
+                  <SelectIcon />
+                </SelectCombobox>
+                <SelectListbox>
+                  <SelectOption value='FR'>FR</SelectOption>
+                  <SelectOption value='BE'>BE</SelectOption>
+                  <SelectOption value='CH'>CH</SelectOption>
+                </SelectListbox>
               </PhoneFieldSelect>
               <PhoneFieldInput id={id} name='phone' autoComplete='tel' required />
             </PhoneField>

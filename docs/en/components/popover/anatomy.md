@@ -20,13 +20,23 @@ Required. Renders the floating content surface as a native `popover="auto"` elem
 
 ## Optional Parts
 
-None. For a dimmed backdrop, use `Dialog` or `Sheet` instead.
+### `PopoverAnchor`
+
+Optional. Marks the element the content is positioned against instead of the trigger, such as a whole field around a small button inside it. Opening, `aria-*`, and focus return stay on the trigger. Renders a `div`; with `asChild`, it uses its child.
+
+### `PopoverClose`
+
+Optional. A button inside `PopoverContent` that closes the popover through `onChangeOpen(false)`, so no `open` state is needed. It has no styles of its own: put your own button inside with `asChild`.
+
+For a dimmed backdrop, use `Dialog` or `Sheet` instead.
 
 ## Composition Order
 
 1. `Popover`
-2. `PopoverTrigger`
-3. `PopoverContent`
+2. `PopoverAnchor` (optional), wrapping the element that holds `PopoverTrigger`
+3. `PopoverTrigger`
+4. `PopoverContent`
+5. `PopoverClose` (optional), inside `PopoverContent`
 
 ## Valid Composition Patterns
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { ChangeEvent } from 'react';
-import { createContext } from '@vega-ui/react-context';
+import { createContext } from '@vega-ui/react-kit/context';
 import { SegmentedControlSize, SegmentedControlValue, SegmentedControlVariant } from '../../types';
 
 export interface SegmentedControlContextState {

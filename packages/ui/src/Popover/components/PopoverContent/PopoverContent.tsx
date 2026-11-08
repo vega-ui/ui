@@ -1,6 +1,6 @@
 'use client';
 
-import { FC, HTMLAttributes, Ref, ToggleEvent, useLayoutEffect, useReducer, useRef, useState } from 'react';
+import { FC, HTMLAttributes, Ref, ToggleEvent, useLayoutEffect, useRef, useState } from 'react';
 import { csx, mergeEventHandlers, togglePopover } from '@vega-ui/utils';
 import { useMergeRefs } from '@vega-ui/hooks';
 import styles from './style.module.css';
@@ -34,16 +34,18 @@ export const PopoverContent: FC<PopoverContentProps> = ({
   const element = useRef<HTMLDivElement>(null)
   const mergedRef = useMergeRefs([element, setFloating, ref])
   const [rendered, setRendered] = useState(false)
-  const [syncKey, resync] = useReducer((key: number) => key + 1, 0)
+  const [shown, setShown] = useState(false)
   const [side, align = 'center'] = placement.split('-')
+
+  useLayoutEffect(() => {
+    togglePopover(element.current, open)
+  }, [open])
 
   useLayoutEffect(() => {
     const popover = element.current
     if (!popover) return
 
-    togglePopover(popover, open)
-
-    if (open) {
+    if (open || shown) {
       setRendered(true)
       return
     }
@@ -57,15 +59,14 @@ export const PopoverContent: FC<PopoverContentProps> = ({
     return () => {
       cancelled = true
     }
-  }, [open, syncKey])
+  }, [open, shown])
 
   const onToggle = (event: ToggleEvent<HTMLDivElement>) => {
     if (event.target !== event.currentTarget) return
 
-    const shown = event.newState === 'open'
-
-    if (shown !== open) changeOpen(shown)
-    resync()
+    const next = event.newState === 'open'
+    setShown(next)
+    if (next !== open) changeOpen(next)
   }
 
   return (

@@ -142,4 +142,13 @@ describe('mergeProps', () => {
     expect(clicks).toEqual(['click1', 'click2']);
     expect(submits).toEqual(['submit1', 'submit2']);
   });
+
+  test('joins aria-describedby id lists without duplicates', () => {
+    const result = mergeProps(
+      { 'aria-describedby': 'tooltip hint' },
+      { 'aria-describedby': 'hint' },
+      { 'aria-describedby': undefined }
+    );
+    expect(result['aria-describedby']).toBe('tooltip hint');
+  });
 });

@@ -1,6 +1,6 @@
 /// <reference types="@vitest/browser-playwright" />
 import { ComponentProps, CSSProperties, FC, Profiler } from 'react';
-import { afterAll, afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterAll, afterEach, beforeEach, describe, expect, it, onTestFinished, vi } from 'vitest';
 import { cleanup, fireEvent, render, type RenderResult } from '@testing-library/react';
 import { cdp, commands, page, server, userEvent } from 'vitest/browser';
 
@@ -158,6 +158,25 @@ describe('Sheet', () => {
         expect(onClick).toHaveBeenCalledOnce();
         expect(onChangeOpen).toHaveBeenCalledExactlyOnceWith(false);
       });
+
+      it('requests close once when asChild submits a form with method dialog', async () => {
+        const onChangeOpen = vi.fn();
+        const r = render(
+          <Sheet open onChangeOpen={onChangeOpen}>
+            <SheetContent aria-label='Panel'>
+              <form method='dialog'>
+                <SheetClose asChild>
+                  <button>Done</button>
+                </SheetClose>
+              </form>
+            </SheetContent>
+          </Sheet>
+        );
+
+        await userEvent.click(r.getByRole('button', { name: 'Done' }));
+
+        expect(onChangeOpen).toHaveBeenCalledExactlyOnceWith(false);
+      });
     });
 
     describe('open and close', () => {
@@ -190,6 +209,21 @@ describe('Sheet', () => {
         await waitOpened(r);
 
         await userEvent.keyboard('{Escape}');
+
+        await waitClosed(r);
+      });
+
+      it('closes on submit of a form with method dialog', async () => {
+        const r = render(
+          <SheetTest defaultOpen>
+            <form method='dialog'>
+              <button>Submit</button>
+            </form>
+          </SheetTest>
+        );
+        await waitOpened(r);
+
+        await userEvent.click(r.getByRole('button', { name: 'Submit' }));
 
         await waitClosed(r);
       });
@@ -397,6 +431,10 @@ describe('Sheet', () => {
       });
 
       it('stays under the pointer when grabbed while settling', async () => {
+        document.documentElement.dataset.motion = '';
+        onTestFinished(() => {
+          delete document.documentElement.dataset.motion;
+        });
         const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
         await waitOpened(r);
 
@@ -479,6 +517,10 @@ describe('Sheet', () => {
       });
 
       it('continues a flick at its speed and takes the full duration after a slow drag', async () => {
+        document.documentElement.dataset.motion = '';
+        onTestFinished(() => {
+          delete document.documentElement.dataset.motion;
+        });
         const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
         await waitOpened(r);
         const getDuration = () => getContent(r).getAnimations().find((animation) => (animation as CSSTransition).transitionProperty === '--sheet-offset')?.effect?.getTiming().duration;
@@ -495,6 +537,10 @@ describe('Sheet', () => {
       });
 
       it('keeps the width of its surface while it closes from the top', async () => {
+        document.documentElement.dataset.motion = '';
+        onTestFinished(() => {
+          delete document.documentElement.dataset.motion;
+        });
         const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} defaultSnapPoint={1} />);
         await waitOpened(r);
 
@@ -577,6 +623,24 @@ describe('Sheet', () => {
     describe('closedBy', () => {
       it('stays open on backdrop click when closedBy=closerequest', async () => {
         const r = render(<SheetTest defaultOpen closedBy='closerequest' />);
+        await waitOpened(r);
+
+        await clickBackdrop(r);
+
+        await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
+      });
+
+      it('closes on Escape when closedBy=closerequest', async () => {
+        const r = render(<SheetTest defaultOpen closedBy='closerequest' />);
+        await waitOpened(r);
+
+        await userEvent.keyboard('{Escape}');
+
+        await waitClosed(r);
+      });
+
+      it('stays open on backdrop click when closedBy=none', async () => {
+        const r = render(<SheetTest defaultOpen closedBy='none' />);
         await waitOpened(r);
 
         await clickBackdrop(r);
@@ -712,6 +776,26 @@ describe('Sheet', () => {
   });
 
   describe('Edge Cases', () => {
+    it('slides in when something reads its style before it opens, as password managers do', async () => {
+      document.documentElement.dataset.motion = '';
+      onTestFinished(() => {
+        delete document.documentElement.dataset.motion;
+      });
+      const showModal = HTMLDialogElement.prototype.showModal;
+      HTMLDialogElement.prototype.showModal = function (this: HTMLDialogElement) {
+        this.getBoundingClientRect();
+        showModal.call(this);
+      };
+      onTestFinished(() => {
+        HTMLDialogElement.prototype.showModal = showModal;
+      });
+      const r = render(<SheetTest />);
+
+      await userEvent.click(getTrigger(r));
+
+      await expect.poll(() => getContent(r).getAnimations().length).toBeGreaterThan(0);
+    });
+
     it('locks page scroll while open', async () => {
       const r = render(<SheetTest defaultOpen />);
       await waitOpened(r);
@@ -759,6 +843,22 @@ describe('Sheet', () => {
       expect(onChangeActiveSnapPoint).not.toHaveBeenCalledWith(2);
     });
 
+    it('stays open when the user prevents the submit of a form with method dialog', async () => {
+      const r = render(
+        <SheetTest defaultOpen>
+          <form method='dialog' onSubmit={(event) => event.preventDefault()}>
+            <button>Submit</button>
+          </form>
+        </SheetTest>
+      );
+      await waitOpened(r);
+
+      await userEvent.click(r.getByRole('button', { name: 'Submit' }));
+
+      await wait(500);
+      await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
+    });
+
     it('swallows the click that ends a drag', async () => {
       const onClick = vi.fn();
       const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
@@ -785,9 +885,9 @@ describe('Sheet', () => {
       await waitOpened(r);
 
       await expect.element(getTrigger(r)).toHaveAttribute('aria-haspopup', 'dialog');
-      await expect.element(getTrigger(r)).toHaveAttribute('aria-expanded', 'true');
       await expect.element(getTrigger(r)).not.toHaveAttribute('aria-controls');
     });
+
 
     it('focuses the sheet itself on open and the trigger on close', async () => {
       const r = render(<SheetTest />);
@@ -799,6 +899,26 @@ describe('Sheet', () => {
 
       await userEvent.keyboard('{Escape}');
       await waitClosed(r);
+      await expect.element(getTrigger(r)).toHaveFocus();
+    });
+
+    it('returns focus to the trigger after closing with SheetClose', async () => {
+      const r = render(
+        <Sheet>
+          <SheetTrigger data-testid={TESTID_TRIGGER}>Open</SheetTrigger>
+          <SheetContent data-testid={TESTID_CONTENT} aria-label='Panel'>
+            <SheetClose>Done</SheetClose>
+          </SheetContent>
+        </Sheet>
+      );
+      getTrigger(r).focus();
+      await userEvent.keyboard('{Enter}');
+      await waitOpened(r);
+
+      r.getByRole('button', { name: 'Done' }).focus();
+      await userEvent.keyboard('{Enter}');
+      await waitClosed(r);
+
       await expect.element(getTrigger(r)).toHaveFocus();
     });
 
@@ -818,6 +938,25 @@ describe('Sheet', () => {
         await userEvent.tab();
         await expect.element(getTrigger(r)).not.toHaveFocus();
       }
+    });
+
+    const TabTest: FC = () => (
+      <Sheet defaultOpen>
+        <SheetContent data-testid={TESTID_CONTENT} aria-label='Panel'>
+          <input aria-label='First' />
+          <input aria-label='Last' />
+        </SheetContent>
+      </Sheet>
+    );
+
+    it('moves Tab from the sheet to its first tabbable element', async () => {
+      const r = render(<TabTest />);
+      await waitOpened(r);
+      await expect.element(getContent(r)).toHaveFocus();
+
+      await userEvent.tab();
+
+      await expect.element(r.getByRole('textbox', { name: 'First' })).toHaveFocus();
     });
 
     describe('handle', () => {

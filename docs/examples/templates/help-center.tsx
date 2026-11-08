@@ -133,8 +133,8 @@ export default function HelpCenter() {
     setErrors({ ...errors, [name]: undefined });
   };
 
-  const changeTopic = (next: string | undefined) => {
-    setTopic(next ?? null);
+  const changeTopic = (next: string | null) => {
+    setTopic(next);
     clearError('topic');
   };
 

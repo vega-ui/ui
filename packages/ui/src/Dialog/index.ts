@@ -5,3 +5,4 @@ export {
   DialogClose, type DialogCloseProps,
 } from './components'
 export { useDialogContext } from './contexts'
+export { type ModalDialogClosedBy } from '../internals/modalDialog'

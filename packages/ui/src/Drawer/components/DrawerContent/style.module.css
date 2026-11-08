@@ -8,7 +8,7 @@
     --drawer-open: translate(0);
     --drawer-closed: none;
     --drawer-drag-transform: translateX(var(--drawer-drag, 0px));
-    display: flex;
+    --drawer-travel: calc(100% + var(--outer-space));
     flex-direction: column;
     position: fixed;
     inset: auto;
@@ -26,6 +26,10 @@
     touch-action: pan-y;
 }
 
+.drawer:where([open]) {
+    display: flex;
+}
+
 .drawer:where(:dir(rtl)) {
     --drawer-inline-sign: -1;
 }
@@ -35,6 +39,7 @@
 }
 
 .drawer::backdrop {
+    inset: -100vh -100vw;
     background: var(--overlay);
     transition: opacity var(--transition-state-delay) ease;
 }
@@ -89,13 +94,13 @@
 
 .drawer:where([data-position='top']) {
     --drawer-open: translateX(calc(-50% * var(--drawer-inline-sign)));
-    --drawer-closed: translate(calc(-50% * var(--drawer-inline-sign)), -100%);
+    --drawer-closed: translate(calc(-50% * var(--drawer-inline-sign)), calc(-1 * var(--drawer-travel)));
     top: 0;
     inset-inline-start: calc(50% - var(--outer-space));
 }
 
 .drawer:where([data-position='top-start'], [data-position='top-end']) {
-    --drawer-closed: translateY(-100%);
+    --drawer-closed: translateY(calc(-1 * var(--drawer-travel)));
     top: 0;
 }
 
@@ -109,13 +114,13 @@
 
 .drawer:where([data-position='end']) {
     --drawer-open: translateY(-50%);
-    --drawer-closed: translate(calc(100% * var(--drawer-inline-sign)), -50%);
+    --drawer-closed: translate(calc(var(--drawer-travel) * var(--drawer-inline-sign)), -50%);
     inset-inline-end: 0;
     top: calc(50% - var(--outer-space));
 }
 
 .drawer:where([data-position='end-start'], [data-position='end-end']) {
-    --drawer-closed: translateX(calc(100% * var(--drawer-inline-sign)));
+    --drawer-closed: translateX(calc(var(--drawer-travel) * var(--drawer-inline-sign)));
     inset-inline-end: 0;
 }
 
@@ -129,13 +134,13 @@
 
 .drawer:where([data-position='bottom']) {
     --drawer-open: translateX(calc(-50% * var(--drawer-inline-sign)));
-    --drawer-closed: translate(calc(-50% * var(--drawer-inline-sign)), 100%);
+    --drawer-closed: translate(calc(-50% * var(--drawer-inline-sign)), var(--drawer-travel));
     bottom: 0;
     inset-inline-start: calc(50% - var(--outer-space));
 }
 
 .drawer:where([data-position='bottom-start'], [data-position='bottom-end']) {
-    --drawer-closed: translateY(100%);
+    --drawer-closed: translateY(var(--drawer-travel));
     bottom: 0;
 }
 
@@ -149,13 +154,13 @@
 
 .drawer:where([data-position='start']) {
     --drawer-open: translateY(-50%);
-    --drawer-closed: translate(calc(-100% * var(--drawer-inline-sign)), -50%);
+    --drawer-closed: translate(calc(-1 * var(--drawer-travel) * var(--drawer-inline-sign)), -50%);
     inset-inline-start: 0;
     top: calc(50% - var(--outer-space));
 }
 
 .drawer:where([data-position='start-start'], [data-position='start-end']) {
-    --drawer-closed: translateX(calc(-100% * var(--drawer-inline-sign)));
+    --drawer-closed: translateX(calc(-1 * var(--drawer-travel) * var(--drawer-inline-sign)));
     inset-inline-start: 0;
 }
 

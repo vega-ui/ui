@@ -9,13 +9,15 @@ import {
   PhoneFieldInput,
   type PhoneFieldInputProps,
   PhoneFieldSelect,
-  PhoneFieldSelectCombobox,
-  PhoneFieldSelectHiddenSelect,
-  PhoneFieldSelectIcon,
-  PhoneFieldSelectListbox,
-  PhoneFieldSelectOption,
-  PhoneFieldSelectValue,
 } from '../components';
+import {
+  SelectCombobox,
+  SelectHiddenSelect,
+  SelectIcon,
+  SelectListbox,
+  SelectOption,
+  SelectValue,
+} from '../../Select';
 
 afterEach(cleanup);
 
@@ -36,26 +38,26 @@ const PhoneFieldTest: FC<ComponentProps<typeof PhoneField> & { inputProps?: Phon
   return (
     <PhoneField {...props}>
       <PhoneFieldSelect data-testid={TESTID_SELECT}>
-        <PhoneFieldSelectHiddenSelect data-testid={TESTID_HIDDEN_SELECT} />
-        <PhoneFieldSelectCombobox data-testid={TESTID_COMBOBOX}>
-          <PhoneFieldSelectValue />
-          <PhoneFieldSelectIcon />
-        </PhoneFieldSelectCombobox>
+        <SelectHiddenSelect data-testid={TESTID_HIDDEN_SELECT} />
+        <SelectCombobox data-testid={TESTID_COMBOBOX}>
+          <SelectValue />
+          <SelectIcon />
+        </SelectCombobox>
         
-        <PhoneFieldSelectListbox data-testid={TESTID_LISTBOX}>
-          <PhoneFieldSelectOption data-testid={TESTID_OPTION('RU')} value='RU'>
+        <SelectListbox data-testid={TESTID_LISTBOX}>
+          <SelectOption data-testid={TESTID_OPTION('RU')} value='RU'>
             RU
-          </PhoneFieldSelectOption>
-          <PhoneFieldSelectOption data-testid={TESTID_OPTION('US')} value='US'>
+          </SelectOption>
+          <SelectOption data-testid={TESTID_OPTION('US')} value='US'>
             US
-          </PhoneFieldSelectOption>
-          <PhoneFieldSelectOption data-testid={TESTID_OPTION('FR')} value='FR'>
+          </SelectOption>
+          <SelectOption data-testid={TESTID_OPTION('FR')} value='FR'>
             FR
-          </PhoneFieldSelectOption>
-          <PhoneFieldSelectOption data-testid={TESTID_OPTION('IT')} value='IT'>
+          </SelectOption>
+          <SelectOption data-testid={TESTID_OPTION('IT')} value='IT'>
             IT
-          </PhoneFieldSelectOption>
-        </PhoneFieldSelectListbox>
+          </SelectOption>
+        </SelectListbox>
       </PhoneFieldSelect>
       
       <PhoneFieldInput
@@ -114,6 +116,15 @@ describe('PhoneField', () => {
         await userEvent.type(getInput(r), '+1');
 
         expect(onChange).toHaveBeenCalled();
+      });
+
+      it('calls onChange of the input with the calling code of a selected country', async () => {
+        const onChange = vi.fn();
+        const r = render(<ControlledPhoneFieldTest defaultCode={DEFAULT_CODE} inputProps={{ onChange }} />);
+
+        await selectCountry(r, NEXT_CODE);
+
+        await expect.poll(() => onChange.mock.lastCall?.[0].target.value).toMatch(/^\+1/);
       });
 
       it('writes the calling code of a selected country', async () => {
@@ -339,6 +350,25 @@ describe('PhoneField', () => {
           
           await expect.poll(() => getInput(r).value).toMatch(/^\+33/);
         });
+
+        it('writes the calling code when another control changes `code`', async () => {
+          const OutsideControlTest = () => {
+            const [code, setCode] = useState<CountryCode>('RU');
+            return (
+              <>
+                <button onClick={() => setCode('FR')}>France</button>
+                <PhoneField code={code} onChangeCode={setCode}>
+                  <PhoneFieldInput data-testid={TESTID_INPUT} />
+                </PhoneField>
+              </>
+            );
+          };
+          const r = render(<OutsideControlTest />);
+
+          await userEvent.click(r.getByRole('button', { name: 'France' }));
+
+          await expect.poll(() => getInput(r).value).toMatch(/^\+33/);
+        });
       });
       
       describe('auto-detect country from input (AsYouType)', () => {
@@ -362,15 +392,123 @@ describe('PhoneField', () => {
         it('hidden select stays on current `code` until parent updates it (rerender)', async () => {
           const input = getInput(r);
           const hiddenSelect = getHiddenSelect(r);
-          
+
           await userEvent.type(input, '+1 234 567-8900');
-          
+
           await expect.element(hiddenSelect).toHaveValue('IT');
-          
+
           r.rerender(<PhoneFieldTest code='US' strictMask={false} onChangeCode={onChangeCode} />);
           await expect.element(hiddenSelect).toHaveValue('US');
         });
       });
+    });
+  });
+
+  describe('Edge Cases', () => {
+    it('keeps the country list as wide as its content, not the screen', async () => {
+      const r = render(<PhoneFieldTest defaultCode={DEFAULT_CODE} />);
+
+      await openByClick(r);
+
+      await expect.poll(() => getListbox(r).getBoundingClientRect().width).toBeLessThan(window.innerWidth / 2);
+    });
+
+    it('restores the default country selected in the list on form reset', async () => {
+      const r = render(
+        <form data-testid='form'>
+          <PhoneFieldTest defaultCode={DEFAULT_CODE} />
+        </form>,
+      );
+
+      await selectCountry(r, NEXT_CODE);
+      await expect.element(getHiddenSelect(r)).toHaveValue(NEXT_CODE);
+
+      (r.getByTestId('form') as HTMLFormElement).reset();
+
+      await expect.element(getHiddenSelect(r)).toHaveValue(DEFAULT_CODE);
+    });
+  });
+
+  describe('Accessibility', () => {
+    const toBeActive = async (r: RenderResult, value: string) => {
+      await expect.element(getCombobox(r)).toHaveFocus();
+      await expect.poll(() => getCombobox(r).getAttribute('aria-activedescendant')).toBe(getOption(r, value).id);
+    };
+
+    it('exposes the country combobox with its name, popup and selected country', async () => {
+      const r = render(
+        <PhoneField defaultCode={DEFAULT_CODE}>
+          <PhoneFieldSelect>
+            <SelectCombobox data-testid={TESTID_COMBOBOX} aria-label='Country'>
+              <SelectValue />
+            </SelectCombobox>
+            <SelectListbox data-testid={TESTID_LISTBOX} aria-label='Countries'>
+              <SelectOption data-testid={TESTID_OPTION('RU')} value='RU'>RU</SelectOption>
+              <SelectOption data-testid={TESTID_OPTION('US')} value='US'>US</SelectOption>
+            </SelectListbox>
+          </PhoneFieldSelect>
+          <PhoneFieldInput aria-label='Phone number' />
+        </PhoneField>,
+      );
+      const combobox = r.getByRole('combobox', { name: 'Country' });
+
+      expect(combobox).toBe(getCombobox(r));
+      expect(combobox.getAttribute('aria-haspopup')).toBe('listbox');
+      expect(combobox.getAttribute('aria-controls')).toBe(getListbox(r).id);
+      expect(combobox.getAttribute('aria-expanded')).toBe('false');
+
+      await openByClick(r);
+
+      expect(combobox.getAttribute('aria-expanded')).toBe('true');
+      expect(r.getByRole('listbox', { name: 'Countries' })).toBe(getListbox(r));
+      expect(getOption(r, 'RU').getAttribute('aria-selected')).toBe('true');
+      expect(getOption(r, 'US').getAttribute('aria-selected')).not.toBe('true');
+    });
+
+    it('opens on the current country and selects another one by keyboard', async () => {
+      const onChangeCode = vi.fn();
+      const r = render(<PhoneFieldTest defaultCode={DEFAULT_CODE} onChangeCode={onChangeCode} />);
+
+      getCombobox(r).focus();
+      await userEvent.keyboard('{ArrowDown}');
+      await toBeOpened(r);
+      await toBeActive(r, 'RU');
+
+      await userEvent.keyboard('{ArrowDown}');
+      await toBeActive(r, 'US');
+      await userEvent.keyboard('{Enter}');
+
+      await expect.poll(() => getListbox(r).matches(':popover-open')).toBe(false);
+      expect(onChangeCode).toHaveBeenCalledWith('US');
+      await expect.element(getHiddenSelect(r)).toHaveValue('US');
+    });
+
+    it('opens by typing and moves to the matching country', async () => {
+      const r = render(<PhoneFieldTest defaultCode={DEFAULT_CODE} />);
+
+      getCombobox(r).focus();
+      await userEvent.keyboard('f');
+
+      await toBeOpened(r);
+      await toBeActive(r, 'FR');
+      await expect.element(getHiddenSelect(r)).toHaveValue(DEFAULT_CODE);
+    });
+
+    it('closes on Escape keeping the country and the focus on the combobox', async () => {
+      const onChangeCode = vi.fn();
+      const r = render(<PhoneFieldTest defaultCode={DEFAULT_CODE} onChangeCode={onChangeCode} />);
+
+      getCombobox(r).focus();
+      await userEvent.keyboard('{ArrowDown}');
+      await toBeOpened(r);
+      await userEvent.keyboard('{End}');
+      await toBeActive(r, 'IT');
+      await userEvent.keyboard('{Escape}');
+
+      await expect.poll(() => getListbox(r).matches(':popover-open')).toBe(false);
+      await expect.element(getCombobox(r)).toHaveFocus();
+      expect(onChangeCode).not.toHaveBeenCalled();
+      await expect.element(getHiddenSelect(r)).toHaveValue(DEFAULT_CODE);
     });
   });
 });

@@ -66,4 +66,36 @@ export default [
       { example: several, steps: [{ focus: toppings }], press: 'Space', before: [{ active: option('Extra mozzarella') }], expect: [{ attr: 'aria-selected', of: option('Extra mozzarella'), is: 'false' }] },
     ],
   },
+  {
+    keys: ['Shift+ArrowDown', 'Shift+ArrowUp'],
+    en: 'With `multiple`: moves the active option and toggles it.',
+    ru: 'С `multiple`: переносит активный вариант и переключает его.',
+    checks: [
+      { example: several, steps: [{ focus: toppings }], press: 'Shift+ArrowDown', before: [{ attr: 'aria-selected', of: option('Mushrooms'), is: 'false' }], expect: [{ active: option('Mushrooms') }, { attr: 'aria-selected', of: option('Mushrooms'), is: 'true' }] },
+    ],
+  },
+  {
+    keys: ['Shift+Space'],
+    en: 'With `multiple`: selects every option from the last toggled one to the active one.',
+    ru: 'С `multiple`: выбирает все варианты от последнего переключённого до активного.',
+    checks: [
+      { example: several, steps: [{ focus: toppings }, { press: 'Space' }, { press: 'Space' }, { press: 'ArrowDown' }, { press: 'ArrowDown' }], press: 'Shift+Space', before: [{ attr: 'aria-selected', of: option('Mushrooms'), is: 'false' }], expect: [{ attr: 'aria-selected', of: option('Mushrooms'), is: 'true' }, { attr: 'aria-selected', of: option('Black olives'), is: 'true' }] },
+    ],
+  },
+  {
+    keys: ['Control+Shift+Home', 'Control+Shift+End'],
+    en: 'With `multiple`: selects every option from the active one to the first or last one and makes it active.',
+    ru: 'С `multiple`: выбирает все варианты от активного до первого или последнего и делает его активным.',
+    checks: [
+      { example: several, steps: [{ focus: toppings }], press: 'Control+Shift+End', expect: [{ active: option('Jalapeños') }, { attr: 'aria-selected', of: option('Pepperoni'), is: 'true' }, { attr: 'aria-selected', of: option('Jalapeños'), is: 'true' }] },
+    ],
+  },
+  {
+    keys: ['Control+a'],
+    en: 'With `multiple`: selects every enabled option, or clears the selection when all of them are selected. `Meta+A` on macOS.',
+    ru: 'С `multiple`: выбирает все доступные варианты или снимает выбор, если выбраны все. На macOS `Meta+A`.',
+    checks: [
+      { example: several, steps: [{ focus: toppings }], press: 'Control+a', expect: [{ attr: 'aria-selected', of: option('Mushrooms'), is: 'true' }, { attr: 'aria-selected', of: option('Jalapeños'), is: 'true' }] },
+    ],
+  },
 ] satisfies KeyboardSpec;

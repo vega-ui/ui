@@ -1,7 +1,8 @@
-import { FC, useCallback, useMemo, useRef } from 'react';
+import { FC, useCallback, useEffect, useMemo, useRef } from 'react';
+import { flushSync } from 'react-dom';
 import { TextField, TextFieldProps } from '../TextField';
 import { useMaskito } from '@maskito/react'
-import { MaskitoOptions } from '@maskito/core';
+import { MaskitoOptions, maskitoTransform } from '@maskito/core';
 import { maskitoPhoneOptionsGenerator } from '@maskito/phone';
 import metadata from 'libphonenumber-js/min/metadata';
 import { CountryCode, getCountryCallingCode } from 'libphonenumber-js';
@@ -68,7 +69,7 @@ export const PhoneField: FC<PhoneFieldProps> = ({
   const codeRef = useLatest(code)
   
   const innerRef = useRef<HTMLInputElement>(null)
-  const selectingRef = useRef(false)
+  const shownCode = useRef(code)
 
   const options = useMemo<MaskitoOptions>(() => maskitoPhoneOptionsGenerator({
     metadata,
@@ -78,13 +79,14 @@ export const PhoneField: FC<PhoneFieldProps> = ({
 
   const detectCode = (value: string) => {
     const typedCode = getTypedCountry(value)
-    if (typedCode !== undefined && typedCode !== code) setCode(typedCode)
+    if (typedCode === undefined || typedCode === code) return
+
+    shownCode.current = typedCode
+    setCode(typedCode)
   }
 
   const changePhone = (value: string) => {
     setPhone(value)
-    if (selectingRef.current) return
-
     detectCode(value)
   }
 
@@ -92,29 +94,35 @@ export const PhoneField: FC<PhoneFieldProps> = ({
     if (controlledValue !== undefined) return
 
     setPhone(defaultValue)
-    detectCode(defaultValue)
+    if (_code !== undefined) return
+
+    const resetCode = getTypedCountry(defaultValue) ?? defaultCode
+    shownCode.current = resetCode
+    setCode(resetCode)
   })
 
   const inputRef = useMaskito({ options })
   
-  const writeCallingCode = useCallback((value: CountryCode) => {
-    const input = innerRef.current
-    if (!input || codeRef.current !== value) return
-    
-    writeInputValue(input, `+${getCountryCallingCode(value)}`)
-  }, [codeRef])
-  
+  useEffect(() => {
+    if (shownCode.current === code) return
+
+    shownCode.current = code
+    setPhone(maskitoTransform(`+${getCountryCallingCode(code)}`, options))
+  }, [code, options, setPhone])
+
   const onSelect = useCallback((value: CountryCode) => {
-    selectingRef.current = true
-    setCode(value)
-    
-    requestAnimationFrame(() => {
-      writeCallingCode(value)
-      selectingRef.current = false
-    })
-    
+    shownCode.current = value
+    flushSync(() => setCode(value))
     innerRef.current?.focus()
-  }, [setCode, writeCallingCode])
+
+    if (codeRef.current !== value) {
+      shownCode.current = codeRef.current
+      return
+    }
+
+    const input = innerRef.current
+    if (input) writeInputValue(input, `+${getCountryCallingCode(value)}`)
+  }, [setCode, codeRef])
   
   return (
     <PhoneFieldProvider

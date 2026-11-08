@@ -9,11 +9,11 @@ import {
   shift,
   size as matchSize,
 } from '@floating-ui/react';
-import { csx, isActivationKey } from '@vega-ui/utils';
+import { csx, findTabbable, mergeEventHandlers } from '@vega-ui/utils';
 import styles from './style.module.css';
-import { useControlledState, useSelection } from '@vega-ui/hooks';
-import { useListbox } from '../Listbox/hooks';
-import { SelectContextState, SelectProvider } from './contexts';
+import { useControlledState, useFormReset, useMergeRefs, useSelection } from '@vega-ui/hooks';
+import { useListbox } from '../internals/listbox';
+import { SelectProvider } from './contexts';
 import { ListboxContextState, ListboxProvider } from '../Listbox/contexts';
 import { SelectSize, SelectVariant } from './types';
 
@@ -55,7 +55,7 @@ export interface SelectProps<V extends string | number = string> extends HTMLAtt
    *
    * @param value - The selected option value
    */
-  onChangeValue?(value: V | undefined): void
+  onChangeValue?(value: V | null): void
 
   /**
    * Ref to the root element.
@@ -112,11 +112,13 @@ export const Select = <V extends string | number>({
   defaultOpen = false,
   typeahead = true,
   onChangeOpen,
+  onBlur: _onBlur,
   ref,
   ...props
 }: SelectProps<V>) => {
   const [valueElement, setValueElement] = useState<HTMLSpanElement | null>(null)
-  const navigated = useRef(false)
+  const rootRef = useRef<HTMLDivElement>(null)
+  const mergedRef = useMergeRefs([rootRef, ref])
 
   const { selected, select, isSelected } = useSelection<V, 'single'>({
     selection: 'single',
@@ -125,18 +127,23 @@ export const Select = <V extends string | number>({
     onSelect: onChangeValue,
   })
 
+  useFormReset(rootRef, () => {
+    if (value !== undefined) return
+
+    select((defaultValue ?? null) as V)
+  })
+
   const placement = variant === 'inline' ? 'bottom' : 'bottom-start'
   const enabled = !disabled && !readOnly
 
   const [openState, setOpen] = useControlledState(_open, defaultOpen, onChangeOpen);
   const open = enabled && openState
 
-  const { refs, floatingStyles } = useFloating({
+  const { refs, elements, floatingStyles, update } = useFloating({
     open,
     placement,
     strategy: 'fixed',
     transform: false,
-    whileElementsMounted: open ? autoUpdate : undefined,
     middleware: [
       offset(10),
       flip(),
@@ -149,24 +156,37 @@ export const Select = <V extends string | number>({
     ],
   });
 
-  const onSelect = (next: V) => {
-    select(next)
-    setOpen(false)
+  useLayoutEffect(() => {
+    if (!open || !elements.reference || !elements.floating) return
+
+    return autoUpdate(elements.reference, elements.floating, update)
+  }, [open, elements.reference, elements.floating, update])
+
+  const focusCombobox = () => {
+    if (elements.domReference instanceof HTMLElement) elements.domReference.focus()
   }
 
-  const list = useListbox(refs.floating, { typeahead })
+  const onSelect = (next: V) => {
+    setOpen(false)
+    select(next)
+  }
 
-  const { activate, setActiveId } = list
+  const list = useListbox(refs.floating, {
+    typeahead,
+    isSelected: isSelected as ListboxContextState['isSelected'],
+    onSelect: onSelect as ListboxContextState['onSelect'],
+  })
+
+  const { store, activate } = list
 
   useLayoutEffect(() => {
     if (!open) {
-      setActiveId(undefined)
-      navigated.current = false
+      store.setActive(undefined)
       return
     }
 
     activate()
-  }, [open, activate, setActiveId])
+  }, [open, activate, store])
 
   const onMouseDown = (event: MouseEvent<HTMLButtonElement>) => {
     if (!enabled || event.button !== 0) return
@@ -189,22 +209,17 @@ export const Select = <V extends string | number>({
     }
 
     if (event.key === 'Tab') {
-      if (navigated.current) list.selectActive()
-      setOpen(false)
+      if (!event.shiftKey && refs.floating.current && findTabbable(refs.floating.current)) return
+
+      const { activeId, activeSource } = store.get()
+      if (activeSource !== 'keyboard' || !activeId) return
+
+      const item = store.getItem(activeId)
+      if (item && !item.disabled) select(item.value as V)
       return
     }
 
-    const target = list.move(event)
-
-    if (target !== null) {
-      if (target !== -1) navigated.current = true
-      return
-    }
-
-    if (!isActivationKey(event)) return
-
-    event.preventDefault()
-    list.selectActive()
+    list.navigate(event)
   }
 
   const onKeyDownClosed = (event: KeyboardEvent<HTMLButtonElement>) => {
@@ -216,12 +231,7 @@ export const Select = <V extends string | number>({
       return
     }
 
-    const target = list.move(event)
-
-    if (target === null || target === -1) return
-
-    navigated.current = true
-    setOpen(true)
+    if (list.move(event)) setOpen(true)
   }
 
   const onKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
@@ -235,8 +245,8 @@ export const Select = <V extends string | number>({
     if (event.key === ' ') event.preventDefault()
   }
 
-  const onBlur = (event: FocusEvent<HTMLButtonElement>) => {
-    if (open && !refs.floating.current?.contains(event.relatedTarget)) setOpen(false)
+  const onBlur = (event: FocusEvent<HTMLDivElement>) => {
+    if (open && !event.currentTarget.contains(event.relatedTarget)) setOpen(false)
   }
 
   return (
@@ -247,21 +257,18 @@ export const Select = <V extends string | number>({
       changeOpen={setOpen}
       disabled={disabled}
       readOnly={readOnly}
-      isSelected={isSelected as SelectContextState['isSelected']}
       valueElement={valueElement}
       setValueElement={setValueElement}
       selected={selected}
-      comboboxProps={{ onMouseDown, onClick, onKeyDown, onKeyUp, onBlur }}
+      comboboxProps={{ onMouseDown, onClick, onKeyDown, onKeyUp }}
       setReference={refs.setReference}
+      focusCombobox={focusCombobox}
       setFloating={refs.setFloating}
       listboxStyles={floatingStyles}
     >
       <ListboxProvider
         id={list.id}
-        activeId={list.activeId}
-        getOptionId={list.getOptionId}
-        setActiveId={list.setActiveId}
-        clearActive={list.clearActive}
+        store={store}
         isSelected={isSelected as ListboxContextState['isSelected']}
         onSelect={onSelect as ListboxContextState['onSelect']}
         size={size}
@@ -270,7 +277,8 @@ export const Select = <V extends string | number>({
         <div
           data-size={size}
           className={csx(styles.select, className)}
-          ref={ref}
+          ref={mergedRef}
+          onBlur={mergeEventHandlers(onBlur, _onBlur)}
           {...props}
         >
           {children}

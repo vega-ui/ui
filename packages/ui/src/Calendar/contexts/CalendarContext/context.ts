@@ -5,7 +5,7 @@ import { CalendarSystem, getDefaultLocale, gregorianCalendar } from '@vega-ui/i1
 import { CalendarDatesDisabled, CalendarSelection, CalendarView } from '../../types';
 import { DataGridApiRef } from '../../../DataGrid';
 import { IndexedSnapScrollerApiRef } from '../../../IndexedSnapScroller';
-import { createContext } from '@vega-ui/react-context';
+import { createContext } from '@vega-ui/react-kit/context';
 
 export interface CalendarContextState {
   to?: string

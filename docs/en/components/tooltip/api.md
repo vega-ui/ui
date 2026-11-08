@@ -6,13 +6,13 @@
 <!-- AUTO-GENERATED:ROOT_API:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
+| `placement` | `Placement` | `'bottom'` | No | Preferred placement of the tooltip relative to its trigger. Follows the Floating UI `Placement` type (e.g., 'top', 'bottom-start'). It flips to the opposite side when there is no room. |
 | `delayOpen` | `number` | `500` | No | Delay (in milliseconds) before the tooltip appears on hover. It shows at once on keyboard focus, and right after another tooltip closes. |
-| `delayClose` | `number` | `0` | No | Delay (in milliseconds) before the tooltip disappears after blur/unhover. |
+| `delayClose` | `number` | `250` | No | Delay (in milliseconds) before the tooltip disappears after the pointer leaves the trigger or the tooltip, long enough to move the pointer onto the tooltip. It hides at once on blur. |
 | `open` | `boolean` | — | No | Controls the open state of the tooltip. When set, the component becomes controlled. |
 | `defaultOpen` | `boolean` | `false` | No | Initial open state for uncontrolled usage. |
 | `onChangeOpen` | `(state: boolean) => void` | — | No | Callback fired when the open state changes. |
-
-Also accepts all `<div>` attributes.
+| `children` | `ReactNode` | — | No | The trigger and content of the tooltip. Should include `TooltipTrigger` and `TooltipContent` components. |
 <!-- AUTO-GENERATED:ROOT_API:end -->
 
 ## Child Parts
@@ -32,7 +32,7 @@ Also accepts all `<button>` attributes.
 
 ## `TooltipContent`
 
-The `role="tooltip"` surface. It renders in the top layer with `popover="manual"` when the browser supports it, so a modal dialog or an `overflow` container does not clip or cover it. It lets the pointer through to the page (`pointer-events: none`) and grows out of its arrow.
+The `role="tooltip"` surface. It renders in the top layer with `popover="manual"` when the browser supports it, so a modal dialog or an `overflow` container does not clip or cover it. It stays open while the pointer moves from the trigger onto it, so its text can be selected, and grows out of its arrow.
 
 <!-- AUTO-GENERATED:PART_API:TooltipContent:start -->
 | Prop | Type | Default | Required | Description |

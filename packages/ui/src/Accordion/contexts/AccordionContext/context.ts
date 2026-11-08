@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext } from '@vega-ui/react-context';
+import { createContext } from '@vega-ui/react-kit/context';
 import { AccordionSize } from '../../types';
 
 export interface AccordionContextState {

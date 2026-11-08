@@ -10,7 +10,7 @@
 
 - Держите содержимое компактным.
 - Предпочитайте списки действий или короткие сгруппированные команды содержимому с длинными абзацами.
-- Контролируйте `open` и закрывайте поповер, когда выполняется действие: сам он не закроется.
+- Оборачивайте каждое действие в `PopoverClose` с `asChild`, чтобы оно закрывало поповер: сам он не закроется.
 
 Компромиссы:
 
@@ -23,6 +23,7 @@ import { useState } from 'react';
 import {
   Button,
   Popover,
+  PopoverClose,
   PopoverContent,
   PopoverTrigger,
   Text,
@@ -31,32 +32,27 @@ import {
 const actions = ['Duplicate', 'Move to folder', 'Download as PDF', 'Archive'];
 
 export default function MenuClosesOnSelect() {
-  const [open, setOpen] = useState(false);
   const [last, setLast] = useState('');
-
-  const run = (action: string) => {
-    setLast(action);
-    setOpen(false);
-  };
 
   return (
     <div style={{ display: 'grid', justifyItems: 'center', gap: 'var(--spacing-6)', width: '100%' }}>
-      <Popover placement='bottom-start' open={open} onChangeOpen={setOpen}>
+      <Popover placement='bottom-start'>
         <PopoverTrigger asChild>
           <Button variant='secondary' appearance='ghost'>Brand guidelines.fig</Button>
         </PopoverTrigger>
         <PopoverContent style={{ padding: 'var(--spacing-2)' }}>
           <div role='group' aria-label='File actions' style={{ display: 'grid', minWidth: 200 }}>
             {actions.map((action) => (
-              <Button
-                key={action}
-                variant='secondary'
-                appearance='transparent'
-                style={{ justifyContent: 'flex-start' }}
-                onClick={() => run(action)}
-              >
-                {action}
-              </Button>
+              <PopoverClose key={action} asChild>
+                <Button
+                  variant='secondary'
+                  appearance='transparent'
+                  style={{ justifyContent: 'flex-start' }}
+                  onClick={() => setLast(action)}
+                >
+                  {action}
+                </Button>
+              </PopoverClose>
             ))}
           </div>
         </PopoverContent>

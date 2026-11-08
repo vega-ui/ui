@@ -3,12 +3,12 @@ import {
   PhoneField,
   PhoneFieldInput,
   PhoneFieldSelect,
-  PhoneFieldSelectCombobox,
-  PhoneFieldSelectHiddenSelect,
-  PhoneFieldSelectIcon,
-  PhoneFieldSelectListbox,
-  PhoneFieldSelectOption,
-  PhoneFieldSelectValue,
+  SelectCombobox,
+  SelectHiddenSelect,
+  SelectIcon,
+  SelectListbox,
+  SelectOption,
+  SelectValue,
 } from '@vega-ui/react';
 import { ChevronsUpDown } from '@vega-ui/icons';
 import { useId } from 'react';
@@ -21,18 +21,18 @@ export default function SelectPlaceholderAndCustomIcon() {
       <Label htmlFor={id}>Phone number</Label>
       <PhoneField>
         <PhoneFieldSelect>
-          <PhoneFieldSelectHiddenSelect name='country' />
-          <PhoneFieldSelectCombobox aria-label='Country'>
-            <PhoneFieldSelectValue placeholder='Code' />
-            <PhoneFieldSelectIcon>
+          <SelectHiddenSelect name='country' />
+          <SelectCombobox aria-label='Country'>
+            <SelectValue placeholder='Code' />
+            <SelectIcon>
               <ChevronsUpDown />
-            </PhoneFieldSelectIcon>
-          </PhoneFieldSelectCombobox>
-          <PhoneFieldSelectListbox>
-            <PhoneFieldSelectOption value='ES'>ES</PhoneFieldSelectOption>
-            <PhoneFieldSelectOption value='IT'>IT</PhoneFieldSelectOption>
-            <PhoneFieldSelectOption value='PT'>PT</PhoneFieldSelectOption>
-          </PhoneFieldSelectListbox>
+            </SelectIcon>
+          </SelectCombobox>
+          <SelectListbox>
+            <SelectOption value='ES'>ES</SelectOption>
+            <SelectOption value='IT'>IT</SelectOption>
+            <SelectOption value='PT'>PT</SelectOption>
+          </SelectListbox>
         </PhoneFieldSelect>
         <PhoneFieldInput id={id} name='phone' autoComplete='tel' />
       </PhoneField>

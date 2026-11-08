@@ -196,8 +196,8 @@ export default function Inbox() {
     setView('list');
   };
 
-  const assign = (assignee: string | undefined) => {
-    if (assignee === undefined) return;
+  const assign = (assignee: string | null) => {
+    if (assignee === null) return;
 
     update({ assignee });
     setNotice(assignee === 'none' ? 'Conversation unassigned.' : `Assigned to ${agents.find((agent) => agent.value === assignee)?.label}.`);

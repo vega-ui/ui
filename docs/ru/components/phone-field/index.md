@@ -15,12 +15,12 @@ import {
   PhoneField,
   PhoneFieldInput,
   PhoneFieldSelect,
-  PhoneFieldSelectHiddenSelect,
-  PhoneFieldSelectCombobox,
-  PhoneFieldSelectValue,
-  PhoneFieldSelectIcon,
-  PhoneFieldSelectListbox,
-  PhoneFieldSelectOption,
+  SelectHiddenSelect,
+  SelectCombobox,
+  SelectValue,
+  SelectIcon,
+  SelectListbox,
+  SelectOption,
   type PhoneFieldProps,
 } from '@vega-ui/react';
 ```
@@ -40,12 +40,12 @@ import {
   PhoneField,
   PhoneFieldInput,
   PhoneFieldSelect,
-  PhoneFieldSelectCombobox,
-  PhoneFieldSelectHiddenSelect,
-  PhoneFieldSelectIcon,
-  PhoneFieldSelectListbox,
-  PhoneFieldSelectOption,
-  PhoneFieldSelectValue,
+  SelectCombobox,
+  SelectHiddenSelect,
+  SelectIcon,
+  SelectListbox,
+  SelectOption,
+  SelectValue,
 } from '@vega-ui/react';
 import { useId } from 'react';
 
@@ -57,16 +57,16 @@ export default function MinimalComposition() {
       <Label htmlFor={id}>Phone number</Label>
       <PhoneField defaultCode='US'>
         <PhoneFieldSelect>
-          <PhoneFieldSelectHiddenSelect name='country' />
-          <PhoneFieldSelectCombobox aria-label='Country'>
-            <PhoneFieldSelectValue />
-            <PhoneFieldSelectIcon />
-          </PhoneFieldSelectCombobox>
-          <PhoneFieldSelectListbox>
-            <PhoneFieldSelectOption value='US'>US</PhoneFieldSelectOption>
-            <PhoneFieldSelectOption value='GB'>GB</PhoneFieldSelectOption>
-            <PhoneFieldSelectOption value='DE'>DE</PhoneFieldSelectOption>
-          </PhoneFieldSelectListbox>
+          <SelectHiddenSelect name='country' />
+          <SelectCombobox aria-label='Country'>
+            <SelectValue />
+            <SelectIcon />
+          </SelectCombobox>
+          <SelectListbox>
+            <SelectOption value='US'>US</SelectOption>
+            <SelectOption value='GB'>GB</SelectOption>
+            <SelectOption value='DE'>DE</SelectOption>
+          </SelectListbox>
         </PhoneFieldSelect>
         <PhoneFieldInput id={id} name='phone' autoComplete='tel' />
       </PhoneField>
@@ -83,8 +83,8 @@ export default function MinimalComposition() {
 
 ## Необязательные части
 
-- `PhoneFieldSelect*`: вложенное семейство выбора кода страны на том же контракте подсистемы select
-- `PhoneFieldSelectHiddenSelect`: нативное [участие в форме](../../glossary.md#участие-в-форме-form-participation) для кода страны
+- `PhoneFieldSelect`: `Select`, привязанный к стране поля; внутрь кладутся части [Select](../select/index.md)
+- `SelectHiddenSelect`: нативное [участие в форме](../../glossary.md#участие-в-форме-form-participation) для кода страны
 
 ## Порядок композиции
 
@@ -92,11 +92,13 @@ export default function MinimalComposition() {
 
 1. `PhoneField`
 2. `PhoneFieldSelect`
-3. `PhoneFieldSelectHiddenSelect`
-4. `PhoneFieldSelectCombobox`
-5. `PhoneFieldSelectListbox`
-6. `PhoneFieldSelectOption`
+3. `SelectHiddenSelect`
+4. `SelectCombobox`
+5. `SelectListbox`
+6. `SelectOption`
 7. `PhoneFieldInput`
+
+Вместо `PhoneFieldSelect` рядом с полем можно поставить любой свой контрол (обычный `Select`, `Combobox`, кнопки) и управлять им через контролируемые `code` и `onChangeCode`. Когда `code` меняется снаружи, поле само записывает новый телефонный код в поле ввода и сообщает о нём через `onChangeValue`. Как и нативное поле, которому `value` задали из кода, оно при этом не вызывает события `input` и `change`; они срабатывают, только когда страну выбирают в `PhoneFieldSelect`.
 
 ## Варианты
 

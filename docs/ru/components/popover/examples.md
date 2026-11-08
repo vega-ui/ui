@@ -126,7 +126,7 @@ export default function ControlledOpenState() {
 
 ### Контролируемый/с состоянием: меню, которое закрывается при выборе
 
-Поповер не закрывается сам, когда нажата кнопка внутри. Контролируйте `open` и закрывайте его в обработчике пункта, который заодно запоминает выбранное действие.
+Поповер не закрывается сам, когда нажата кнопка внутри. Оберните каждый пункт в `PopoverClose` с `asChild`: он закрывает поповер, а собственный `onClick` пункта запоминает выбранное действие, так что состояние `open` не нужно.
 
 <!-- example: popover/menu-closes-on-select.tsx -->
 ```tsx
@@ -134,6 +134,7 @@ import { useState } from 'react';
 import {
   Button,
   Popover,
+  PopoverClose,
   PopoverContent,
   PopoverTrigger,
   Text,
@@ -142,32 +143,27 @@ import {
 const actions = ['Duplicate', 'Move to folder', 'Download as PDF', 'Archive'];
 
 export default function MenuClosesOnSelect() {
-  const [open, setOpen] = useState(false);
   const [last, setLast] = useState('');
-
-  const run = (action: string) => {
-    setLast(action);
-    setOpen(false);
-  };
 
   return (
     <div style={{ display: 'grid', justifyItems: 'center', gap: 'var(--spacing-6)', width: '100%' }}>
-      <Popover placement='bottom-start' open={open} onChangeOpen={setOpen}>
+      <Popover placement='bottom-start'>
         <PopoverTrigger asChild>
           <Button variant='secondary' appearance='ghost'>Brand guidelines.fig</Button>
         </PopoverTrigger>
         <PopoverContent style={{ padding: 'var(--spacing-2)' }}>
           <div role='group' aria-label='File actions' style={{ display: 'grid', minWidth: 200 }}>
             {actions.map((action) => (
-              <Button
-                key={action}
-                variant='secondary'
-                appearance='transparent'
-                style={{ justifyContent: 'flex-start' }}
-                onClick={() => run(action)}
-              >
-                {action}
-              </Button>
+              <PopoverClose key={action} asChild>
+                <Button
+                  variant='secondary'
+                  appearance='transparent'
+                  style={{ justifyContent: 'flex-start' }}
+                  onClick={() => setLast(action)}
+                >
+                  {action}
+                </Button>
+              </PopoverClose>
             ))}
           </div>
         </PopoverContent>
@@ -181,7 +177,7 @@ export default function MenuClosesOnSelect() {
 
 ### Контролируемый/с состоянием: лёгкое подтверждение удаления
 
-У каждого комментария свой контролируемый поповер с кнопками «Keep» и «Delete». `autoFocus` при открытии ставит фокус на безопасный ответ, а `aria-labelledby` даёт содержимому имя по его вопросу.
+У каждого комментария свой поповер с кнопками «Keep» и «Delete». «Keep» обёрнута в `PopoverClose`, поэтому закрывает поповер без состояния `open`. `autoFocus` при открытии ставит фокус на безопасный ответ, а `aria-labelledby` даёт содержимому имя по его вопросу.
 
 <!-- example: popover/destructive-confirm-in-a-popover.tsx -->
 ```tsx
@@ -189,6 +185,7 @@ import { useId, useState, type CSSProperties } from 'react';
 import {
   Button,
   Popover,
+  PopoverClose,
   PopoverContent,
   PopoverTrigger,
   Text,
@@ -249,10 +246,9 @@ export default function DestructiveConfirmInAPopover() {
 
 function DeleteComment({ onDelete }: { onDelete: () => void }) {
   const textId = useId();
-  const [open, setOpen] = useState(false);
 
   return (
-    <Popover role='dialog' placement='bottom-end' open={open} onChangeOpen={setOpen}>
+    <Popover role='dialog' placement='bottom-end'>
       <PopoverTrigger asChild>
         <Button size='sm' variant='secondary' appearance='ghost' style={{ flexShrink: 0 }}>Delete</Button>
       </PopoverTrigger>
@@ -260,7 +256,9 @@ function DeleteComment({ onDelete }: { onDelete: () => void }) {
         <div style={{ display: 'grid', gap: 'var(--spacing-8)', maxWidth: 240 }}>
           <Text id={textId} size={3}>Delete this comment? It cannot be restored.</Text>
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--spacing-4)' }}>
-            <Button size='sm' variant='secondary' appearance='ghost' autoFocus onClick={() => setOpen(false)}>Keep</Button>
+            <PopoverClose asChild>
+              <Button size='sm' variant='secondary' appearance='ghost' autoFocus>Keep</Button>
+            </PopoverClose>
             <Button size='sm' style={destructive} onClick={onDelete}>Delete</Button>
           </div>
         </div>
@@ -406,6 +404,105 @@ export default function ScrollContainer() {
         </li>
       ))}
     </ul>
+  );
+}
+```
+<!-- /example -->
+
+### Раскладка/оверлей: фильтры, привязанные к полю поиска
+
+Кнопка фильтров стоит внутри поля поиска, а панель должна выравниваться по всему полю. `PopoverAnchor` оборачивает поле, поэтому содержимое позиционируется от него, а открытие, `aria-*` и возврат фокуса остаются на триггере. «Cancel», «Apply» и кнопка закрытия — это `PopoverClose`: «Apply» вдобавок сохраняет черновик в своём `onClick`.
+
+<!-- example: popover/filters-anchored-to-a-search-field.tsx -->
+```tsx
+import { useId, useState, type CSSProperties } from 'react';
+import {
+  Button,
+  Checkbox,
+  CheckboxCheckedIcon,
+  CheckboxIndicator,
+  CheckboxInput,
+  Icon,
+  IconButton,
+  Popover,
+  PopoverAnchor,
+  PopoverClose,
+  PopoverContent,
+  PopoverTrigger,
+  Text,
+  TextField,
+  TextFieldInput,
+} from '@vega-ui/react';
+import { SlidersHorizontal, XIcon } from '@vega-ui/icons';
+
+const statuses = ['Open', 'In review', 'Merged', 'Closed'];
+
+const closeButton = { flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties;
+
+export default function FiltersAnchoredToASearchField() {
+  const titleId = useId();
+  const [applied, setApplied] = useState<string[]>(['Open']);
+  const [draft, setDraft] = useState(applied);
+
+  const toggle = (status: string) => {
+    setDraft(draft.includes(status) ? draft.filter((item) => item !== status) : [...draft, status]);
+  };
+
+  return (
+    <div style={{ display: 'grid', gap: 'var(--spacing-6)', width: '100%', maxWidth: 420 }}>
+      <Popover role='dialog' placement='bottom-start' onChangeOpen={(open) => open && setDraft(applied)}>
+        <PopoverAnchor>
+          <TextField>
+            <TextFieldInput type='search' aria-label='Search pull requests' placeholder='Search pull requests' />
+            <PopoverTrigger asChild>
+              <IconButton
+                size='xs'
+                variant='secondary'
+                appearance='transparent'
+                aria-label={`Filters, ${applied.length} applied`}
+                style={{ flexShrink: 0, marginInlineEnd: 'var(--spacing-3)' }}
+              >
+                <Icon size='sm'><SlidersHorizontal /></Icon>
+              </IconButton>
+            </PopoverTrigger>
+          </TextField>
+        </PopoverAnchor>
+        <PopoverContent aria-labelledby={titleId}>
+          <div style={{ display: 'grid', gap: 'var(--spacing-8)', minWidth: 240 }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
+              <Text id={titleId} size={3} fontWeight={600}>Status</Text>
+              <PopoverClose asChild>
+                <IconButton aria-label='Close' variant='secondary' appearance='ghost' style={closeButton}>
+                  <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
+                </IconButton>
+              </PopoverClose>
+            </div>
+            <div style={{ display: 'grid', gap: 'var(--spacing-6)' }}>
+              {statuses.map((status) => (
+                <Checkbox key={status} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+                  <CheckboxInput checked={draft.includes(status)} onChange={() => toggle(status)} />
+                  <CheckboxIndicator>
+                    <CheckboxCheckedIcon />
+                  </CheckboxIndicator>
+                  {status}
+                </Checkbox>
+              ))}
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--spacing-4)' }}>
+              <PopoverClose asChild>
+                <Button size='xs' variant='secondary' appearance='ghost'>Cancel</Button>
+              </PopoverClose>
+              <PopoverClose asChild>
+                <Button size='xs' onClick={() => setApplied(draft)}>Apply</Button>
+              </PopoverClose>
+            </div>
+          </div>
+        </PopoverContent>
+      </Popover>
+      <Text size={2} style={{ color: 'var(--label-secondary)' }}>
+        {applied.length > 0 ? `Showing: ${applied.join(', ')}` : 'Showing all pull requests'}
+      </Text>
+    </div>
   );
 }
 ```

@@ -36,19 +36,9 @@
 Также принимает все атрибуты `<input>`.
 <!-- AUTO-GENERATED:PART_API:PhoneFieldInput:end -->
 
-## `PhoneFieldSelect*`
-
-Вложенное семейство выбора страны, построенное вокруг того же состояния поля.
-
-- `PhoneFieldSelect`
-- `PhoneFieldSelectHiddenSelect`
-- `PhoneFieldSelectCombobox`
-- `PhoneFieldSelectValue`
-- `PhoneFieldSelectIcon`
-- `PhoneFieldSelectListbox`
-- `PhoneFieldSelectOption`
-
 ## `PhoneFieldSelect`
+
+`Select`, привязанный к стране поля: его значение — `code` из PhoneField, выбор опции меняет страну и переводит фокус в поле ввода, а размер берётся из поля. Внутрь кладутся обычные части [Select](../select/api.md) (`SelectHiddenSelect`, `SelectCombobox`, `SelectValue`, `SelectIcon`, `SelectListbox`, `SelectOption`); можно обойтись и без него, управляя `code` и `onChangeCode` из своего контрола.
 
 <!-- AUTO-GENERATED:PART_API:PhoneFieldSelect:start -->
 | Проп | Тип | По умолчанию | Обязательный | Описание |
@@ -56,7 +46,7 @@
 | `size` | `SelectSize` | — | Нет | Визуальный размер элемента выбора. |
 | `variant` | `SelectVariant` | — | Нет | Вариант визуального стиля элемента выбора. |
 | `disabled` | `boolean` | — | Нет | Отключён ли select. Запрещает взаимодействие и применяет стиль отключённого состояния. |
-| `onChangeValue` | `(value: V \| undefined) => void` | — | Нет | Колбэк, вызываемый при выборе варианта. |
+| `onChangeValue` | `(value: V \| null) => void` | — | Нет | Колбэк, вызываемый при выборе варианта. |
 | `ref` | `Ref<HTMLDivElement>` | — | Нет | Ref на корневой элемент. |
 | `readOnly` | `boolean` | — | Нет | Если true, значение select нельзя изменить, но он остаётся фокусируемым. |
 | `typeahead` | `boolean` | `true` | Нет | Включает переход к варианту при наборе начала его подписи. |
@@ -66,71 +56,6 @@
 
 Также принимает все атрибуты `<div>`.
 <!-- AUTO-GENERATED:PART_API:PhoneFieldSelect:end -->
-
-## `PhoneFieldSelectHiddenSelect`
-
-<!-- AUTO-GENERATED:PART_API:PhoneFieldSelectHiddenSelect:start -->
-Также принимает все атрибуты `<select>`.
-<!-- AUTO-GENERATED:PART_API:PhoneFieldSelectHiddenSelect:end -->
-
-## `PhoneFieldSelectCombobox`
-
-<!-- AUTO-GENERATED:PART_API:PhoneFieldSelectCombobox:start -->
-| Проп | Тип | По умолчанию | Обязательный | Описание |
-| --- | --- | --- | --- | --- |
-| `ref` | `Ref<HTMLButtonElement>` | — | Нет | Ref на нижележащий элемент `<button>`. Полезен для управления фокусом, позиционирования и императивного доступа. |
-
-Также принимает все атрибуты `<button>`.
-<!-- AUTO-GENERATED:PART_API:PhoneFieldSelectCombobox:end -->
-
-## `PhoneFieldSelectValue`
-
-<!-- AUTO-GENERATED:PART_API:PhoneFieldSelectValue:start -->
-| Проп | Тип | По умолчанию | Обязательный | Описание |
-| --- | --- | --- | --- | --- |
-| `placeholder` | `string` | — | Нет | Текст-заполнитель, который показывается, когда не выбран ни один вариант. Отображается, когда значение select пустое или undefined. После выбора значения заполнитель заменяется содержимым выбранного варианта. |
-| `ref` | `Ref<HTMLSpanElement>` | — | Нет | Ref, передаваемый на корневой элемент span. |
-
-Также принимает все атрибуты `<span>`.
-<!-- AUTO-GENERATED:PART_API:PhoneFieldSelectValue:end -->
-
-## `PhoneFieldSelectIcon`
-
-<!-- AUTO-GENERATED:PART_API:PhoneFieldSelectIcon:start -->
-| Проп | Тип | По умолчанию | Обязательный | Описание |
-| --- | --- | --- | --- | --- |
-| `size` | `IconSize` | — | Нет | Предопределённый токен размера иконки. Может быть переопределён явными шириной и высотой. |
-| `ref` | `Ref<SVGSVGElement>` | — | Нет | Ref на SVG-элемент |
-| `strokeWidth` | `number` | — | Нет | Толщина обводки линий и фигур SVG (в px или pt). |
-| `children` | `ReactNode` | — | Нет | Содержимое иконки (обязательно). Принимает: иконки из `~/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler) |
-
-Также принимает все HTML-атрибуты.
-<!-- AUTO-GENERATED:PART_API:PhoneFieldSelectIcon:end -->
-
-## `PhoneFieldSelectOption`
-
-<!-- AUTO-GENERATED:PART_API:PhoneFieldSelectOption:start -->
-| Проп | Тип | По умолчанию | Обязательный | Описание |
-| --- | --- | --- | --- | --- |
-| `value` | `CountryCode` | — | Да | Значение этого варианта, которое передаётся в колбэк изменения при его выборе. |
-| `label` | `string` | — | Нет | Простой текст варианта для поиска при наборе; используется вместо текста его содержимого. |
-| `children` | `ReactNode` | — | Нет | Содержимое, отображаемое для этого варианта. Может включать текст, иконки или сложную разметку. |
-| `size` | `OptionSize` | — | Нет | Размер варианта для визуальной стилизации. |
-| `disabled` | `boolean` | — | Нет | Отключает весь Option. |
-| `ref` | `Ref<HTMLDivElement>` | — | Нет | Ref, передаваемый на корневой div варианта. |
-
-Также принимает все атрибуты `<div>`.
-<!-- AUTO-GENERATED:PART_API:PhoneFieldSelectOption:end -->
-
-## `PhoneFieldSelectListbox`
-
-<!-- AUTO-GENERATED:PART_API:PhoneFieldSelectListbox:start -->
-| Проп | Тип | По умолчанию | Обязательный | Описание |
-| --- | --- | --- | --- | --- |
-| `ref` | `Ref<HTMLDivElement>` | — | Нет | Ref на элемент-контейнер списка. Можно использовать для императивного доступа, например для измерений. |
-
-Также принимает все атрибуты `<div>`.
-<!-- AUTO-GENERATED:PART_API:PhoneFieldSelectListbox:end -->
 
 ## Хуки
 

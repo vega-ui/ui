@@ -43,7 +43,7 @@ Container for selectable options.
 
 - Required: yes
 - Should contain one or more `SelectOption` children
-- Renders in the top layer via `popover="manual"`, so no portal part is needed
+- Renders in the top layer via `popover="auto"`, so no portal part is needed
 - Handles focus itself: arrow keys move focus through the options, and focus returns to `SelectCombobox` when the list closes
 
 ### `SelectOption`

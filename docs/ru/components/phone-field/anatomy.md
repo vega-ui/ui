@@ -2,7 +2,7 @@
 
 ## Обзор
 
-`PhoneField` согласует маску ввода, состояние страны и поведение вложенного select между корнем поля и семейством `PhoneFieldSelect*`.
+`PhoneField` согласует маску ввода, состояние страны и поведение вложенного select между корнем поля и `PhoneFieldSelect` с его частями Select.
 
 ## Обязательные части
 
@@ -18,31 +18,18 @@
 
 ### `PhoneFieldSelect`
 
-Корень вложенного выбора кода страны.
+Выбор кода страны: `Select`, привязанный к стране поля. Выбор опции меняет страну и переводит фокус в поле ввода.
 
-### `PhoneFieldSelectHiddenSelect`
+### Части Select
 
-Нативное [участие в форме](../../glossary.md#участие-в-форме-form-participation) для значения страны.
+Дочерние элементы `PhoneFieldSelect` — обычные части [Select](../select/anatomy.md):
 
-### `PhoneFieldSelectCombobox`
-
-Видимый триггер выбора страны.
-
-### `PhoneFieldSelectValue`
-
-Текущая выбранная страна или собственное содержимое для её отображения.
-
-### `PhoneFieldSelectIcon`
-
-Визуальная подсказка для триггера страны.
-
-### `PhoneFieldSelectListbox`
-
-Контейнер вариантов стран. Рендерится в верхнем слое через `popover="manual"`, поэтому отдельная часть-портал не нужна.
-
-### `PhoneFieldSelectOption`
-
-Выбираемый вариант страны.
+- `SelectHiddenSelect`: нативное [участие в форме](../../glossary.md#участие-в-форме-form-participation) для значения страны
+- `SelectCombobox`: видимый триггер выбора страны
+- `SelectValue`: текущая выбранная страна или собственное содержимое для её отображения
+- `SelectIcon`: визуальная подсказка для триггера страны
+- `SelectListbox`: контейнер вариантов стран, рендерится в верхнем слое через `popover="auto"`
+- `SelectOption`: выбираемый вариант страны
 
 ## Порядок композиции
 
@@ -50,8 +37,8 @@
 
 1. `PhoneField`
 2. `PhoneFieldSelect`
-3. `PhoneFieldSelectCombobox`
-4. `PhoneFieldSelectListbox`
+3. `SelectCombobox`
+4. `SelectListbox`
 5. `PhoneFieldInput`
 
 ## Корректные варианты композиции
@@ -63,12 +50,12 @@ import {
   PhoneField,
   PhoneFieldInput,
   PhoneFieldSelect,
-  PhoneFieldSelectCombobox,
-  PhoneFieldSelectHiddenSelect,
-  PhoneFieldSelectIcon,
-  PhoneFieldSelectListbox,
-  PhoneFieldSelectOption,
-  PhoneFieldSelectValue,
+  SelectCombobox,
+  SelectHiddenSelect,
+  SelectIcon,
+  SelectListbox,
+  SelectOption,
+  SelectValue,
 } from '@vega-ui/react';
 import { useId } from 'react';
 
@@ -80,16 +67,16 @@ export default function MinimalComposition() {
       <Label htmlFor={id}>Phone number</Label>
       <PhoneField defaultCode='US'>
         <PhoneFieldSelect>
-          <PhoneFieldSelectHiddenSelect name='country' />
-          <PhoneFieldSelectCombobox aria-label='Country'>
-            <PhoneFieldSelectValue />
-            <PhoneFieldSelectIcon />
-          </PhoneFieldSelectCombobox>
-          <PhoneFieldSelectListbox>
-            <PhoneFieldSelectOption value='US'>US</PhoneFieldSelectOption>
-            <PhoneFieldSelectOption value='GB'>GB</PhoneFieldSelectOption>
-            <PhoneFieldSelectOption value='DE'>DE</PhoneFieldSelectOption>
-          </PhoneFieldSelectListbox>
+          <SelectHiddenSelect name='country' />
+          <SelectCombobox aria-label='Country'>
+            <SelectValue />
+            <SelectIcon />
+          </SelectCombobox>
+          <SelectListbox>
+            <SelectOption value='US'>US</SelectOption>
+            <SelectOption value='GB'>GB</SelectOption>
+            <SelectOption value='DE'>DE</SelectOption>
+          </SelectListbox>
         </PhoneFieldSelect>
         <PhoneFieldInput id={id} name='phone' autoComplete='tel' />
       </PhoneField>

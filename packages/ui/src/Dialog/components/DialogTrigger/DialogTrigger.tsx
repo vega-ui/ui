@@ -1,14 +1,16 @@
 'use client';
 
-import { ButtonHTMLAttributes, FC, Ref } from 'react';
+import { ButtonHTMLAttributes, FC, MouseEvent, Ref } from 'react';
+import { mergeEventHandlers } from '@vega-ui/utils';
 import { Slot } from '../../../Slot';
 import { useDialogContext } from '../../contexts';
-import { mergeEventHandlers } from '@vega-ui/utils';
 
 export interface DialogTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
    * If true, renders the trigger as a child element using `Slot`.
    * Allows for custom wrapper elements (e.g., <a>, <div>) to behave as modal triggers.
+   *
+   * @default false
    */
   asChild?: boolean
 
@@ -23,9 +25,10 @@ export interface DialogTriggerProps extends ButtonHTMLAttributes<HTMLButtonEleme
 export const DialogTrigger: FC<DialogTriggerProps> = ({ asChild, children, onClick: _onClick, ...props }) => {
   const Element = asChild ? Slot : 'button'
 
-  const { open, changeOpen } = useDialogContext()
+  const { changeOpen } = useDialogContext()
 
-  const onClick = () => {
+  const onClick = (event: MouseEvent<HTMLButtonElement>) => {
+    event.currentTarget.focus()
     changeOpen(true)
   }
 
@@ -33,7 +36,6 @@ export const DialogTrigger: FC<DialogTriggerProps> = ({ asChild, children, onCli
     <Element
       type={Element === 'button' ? 'button' : undefined}
       aria-haspopup='dialog'
-      aria-expanded={open}
       onClick={mergeEventHandlers(onClick, _onClick)}
       {...props}
     >

@@ -17,12 +17,12 @@
 
 ## `DrawerTrigger`
 
-Open action for the drawer. Sets `aria-haspopup="dialog"` and `aria-expanded`.
+Open action for the drawer. Sets `aria-haspopup="dialog"`.
 
 <!-- AUTO-GENERATED:PART_API:DrawerTrigger:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `asChild` | `boolean` | — | No | If true, renders the trigger as a child element using `Slot`. This enables custom wrappers (e.g., `<a>`, `<div>`) to inherit drawer-opening behavior. |
+| `asChild` | `boolean` | `false` | No | If true, renders the trigger as a child element using `Slot`. This enables custom wrappers (e.g., `<a>`, `<div>`) to inherit drawer-opening behavior. |
 | `ref` | `Ref<HTMLButtonElement>` | — | No | Ref forwarded to the native button or slotted element. Useful for focus management or integrations. |
 
 Also accepts all `<button>` attributes.
@@ -40,6 +40,7 @@ The native modal `<dialog>`, positioned by the root `position`.
 | `blurred` | `boolean` | `true` | No | Blurs the page behind the drawer. |
 | `overlay` | `boolean` | `true` | No | Dims the page behind the drawer. When false, the page stays visible and the drawer stays modal. |
 | `closedBy` | `ModalDialogClosedBy` | `'any'` | No | Which user actions close the drawer, like the native `closedby` attribute: `any` a backdrop click, a touch swipe toward its edge or `Escape`, `closerequest` only `Escape`, `none` neither. |
+| `container` | `Element \| DocumentFragment \| null` | `document.body` | No | The element the drawer is rendered into through a portal. |
 | `fullWidth` | `boolean` | — | No | Makes the drawer stretch to fill the full width of its parent container. |
 | `fullHeight` | `boolean` | — | No | Makes the drawer stretch to fill the full height of its parent container. |
 
@@ -62,14 +63,14 @@ Closes the drawer when clicked. It has no styles, icon, or default `aria-label`:
 <!-- AUTO-GENERATED:PART_API:DrawerClose:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `asChild` | `boolean` | — | No | If true, renders the close action as its child element using `Slot`, so any button of your own closes the drawer. |
+| `asChild` | `boolean` | `false` | No | If true, renders the close action as its child element using `Slot`, so any button of your own closes the drawer. |
 | `ref` | `Ref<HTMLButtonElement>` | — | No | Ref forwarded to the underlying button. |
 
 Also accepts all `<button>` attributes.
 <!-- AUTO-GENERATED:PART_API:DrawerClose:end -->
 
 - The close goes through `onChangeOpen(false)`, so the close transition plays and a controlled parent can keep the drawer open.
-- Use it for a standalone close button, such as the X in a header. For buttons that answer the drawer (Cancel, Confirm, a `returnValue`), use a `<form method="dialog">`. Without `asChild` it renders `type="button"`, so it also works inside a form of your own without submitting it; with `asChild` give your own button `type="button"`.
+- Use it for a standalone close button, such as the X in a header. For buttons that answer the drawer (Cancel, Confirm, a `returnValue`), use a `<form method="dialog">`. It sets `type="button"`, with `asChild` too, so it also works inside a form of your own without submitting it; pass `type="submit"` to your own button to submit instead.
 
 <!-- example: drawer/minimal-composition.tsx -->
 ```tsx
@@ -135,7 +136,7 @@ Returns `{ open, changeOpen, position }` for advanced wrappers and custom contro
 ## State Model
 
 - Open state can be controlled with `open` or uncontrolled with `defaultOpen`.
-- Every close request (backdrop click, swipe, `Escape`, `DrawerClose` click, `<form method="dialog">` submit) goes through `onChangeOpen(false)`; a controlled drawer stays open until `open` becomes `false`.
+- Every close request (backdrop click, swipe, `Escape`, `DrawerClose` click, `<form method="dialog">` submit) goes through `onChangeOpen(false)`; a controlled drawer stays open until `open` becomes `false`. A close the browser makes without asking, such as `close()` called on the element or a forced close after repeated `Escape`, is final: it stays closed until `open` changes.
 - `closedBy='none'` on `DrawerContent` disables backdrop click, swipe, and `Escape`; close it with a button in a `<form method="dialog">` or by changing `open`.
 - `position` uses logical sides that follow the writing direction: `'top-start'`, `'top'`, `'top-end'`, `'end-start'`, `'end'`, `'end-end'`, `'bottom-start'`, `'bottom'`, `'bottom-end'`, `'start-start'`, `'start'`, `'start-end'`. In right-to-left text `end` is the left side.
 - Page scroll is locked while the drawer is open.

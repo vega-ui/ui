@@ -429,8 +429,8 @@ const initialMembers = [
 export default function SelectInTableRows() {
   const [members, setMembers] = useState(initialMembers);
 
-  const changeRole = (id: string, role: string | undefined) => {
-    if (role === undefined) return;
+  const changeRole = (id: string, role: string | null) => {
+    if (role === null) return;
     setMembers((current) => current.map((member) => (member.id === id ? { ...member, role } : member)));
   };
 
@@ -509,8 +509,8 @@ export default function SelectRequiredError() {
   const [invalid, setInvalid] = useState(false);
   const [sent, setSent] = useState(false);
 
-  const onChangeValue = (next: string | undefined) => {
-    setReason(next ?? null);
+  const onChangeValue = (next: string | null) => {
+    setReason(next);
     setInvalid(false);
   };
 
@@ -820,7 +820,7 @@ export default function AsyncOptions() {
     });
   };
 
-  const onChangeValue = (next: string | undefined) => {
+  const onChangeValue = (next: string | null) => {
     const found = projects?.find((item) => item.id === next);
     setProject(found ?? null);
   };

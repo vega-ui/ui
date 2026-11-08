@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext } from '@vega-ui/react-context';
+import { createContext } from '@vega-ui/react-kit/context';
 import { DataGridPickerSize, DataGridPickerVariant } from '../../types';
 
 export interface DataGridPickerContextState {

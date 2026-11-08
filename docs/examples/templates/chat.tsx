@@ -395,8 +395,8 @@ export default function Chat() {
     pendingFocus.current = null;
   }, [view, activeId]);
 
-  const openConversation = (value: string | undefined) => {
-    if (value === undefined) return;
+  const openConversation = (value: string | null) => {
+    if (value === null) return;
 
     setActiveId(value);
     setView('conversation');

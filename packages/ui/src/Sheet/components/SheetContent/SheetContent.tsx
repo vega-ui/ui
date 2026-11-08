@@ -3,7 +3,8 @@
 import { CSSProperties, DialogHTMLAttributes, FC, Ref } from 'react';
 import { createPortal } from 'react-dom';
 import { csx, mergeEventHandlers } from '@vega-ui/utils';
-import { ModalDialogClosedBy, useKeyboardInset, useMergeRefs, useModalDialog } from '@vega-ui/hooks';
+import { useKeyboardInset, useMergeRefs } from '@vega-ui/hooks';
+import { ModalDialogClosedBy, useModalDialog } from '../../../internals/modalDialog';
 import { useSheetContext } from '../../contexts';
 import { useSheetDrag } from '../../hooks';
 import styles from './style.module.css'
@@ -34,8 +35,17 @@ export interface SheetContentProps extends DialogHTMLAttributes<HTMLDialogElemen
   /**
    * Which user actions close the sheet, like the native `closedby` attribute:
    * `any` a backdrop click, a swipe down or `Escape`, `closerequest` only `Escape`, `none` neither.
+   *
+   * @default 'any'
    */
   closedBy?: ModalDialogClosedBy
+
+  /**
+   * The element the sheet is rendered into through a portal.
+   *
+   * @default document.body
+   */
+  container?: Element | DocumentFragment | null
 }
 
 /** The SheetContent component renders the sliding sheet as a native modal `<dialog>`, with its backdrop, drag gestures, and open and close transitions */
@@ -47,6 +57,7 @@ export const SheetContent: FC<SheetContentProps> = ({
   blurred = false,
   overlay = true,
   closedBy = 'any',
+  container,
   style,
   onCancel: _onCancel,
   onSubmit: _onSubmit,
@@ -54,7 +65,7 @@ export const SheetContent: FC<SheetContentProps> = ({
   ...props
 }) => {
   const { open, changeOpen } = useSheetContext()
-  const { ref: dialogRef, dialog, mounted, rendered, onCancel, onSubmit, onClose } = useModalDialog({ open, onChangeOpen: changeOpen })
+  const { ref: dialogRef, dialog, mounted, rendered, onCancel, onSubmit, onClose } = useModalDialog({ open, onChangeOpen: changeOpen, closedBy })
   const mergedRef = useMergeRefs([dialogRef, ref])
   const keyboardInset = useKeyboardInset()
   const surfaceRef = useSheetDrag({ dialog, rendered, keyboardInset, swipeable: closedBy === 'any' })
@@ -82,6 +93,6 @@ export const SheetContent: FC<SheetContentProps> = ({
       <div ref={surfaceRef} className={styles.surface} />
       {rendered && children}
     </dialog>,
-    document.body
+    container ?? document.body
   )
 }

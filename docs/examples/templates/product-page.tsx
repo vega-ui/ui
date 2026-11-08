@@ -75,6 +75,7 @@ const details = [
 const currency = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
 
 const field = { display: 'grid', gap: 'var(--spacing-3)', alignContent: 'start' } as const;
+const fullScreen = { width: '100%', maxWidth: 'none', height: '100%', maxHeight: 'none', margin: 0, overflow: 'auto', borderRadius: 0 } as CSSProperties;
 const closeButton = { flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties;
 
 const photoStyle = (swatch: string, height: string): CSSProperties => ({
@@ -356,8 +357,8 @@ export default function ProductPage() {
         </SheetContent>
       </Sheet>
 
-      <Dialog fluid open={viewerOpen} onChangeOpen={changeViewerOpen}>
-        <DialogContent aria-labelledby={`${id}-viewer-title`}>
+      <Dialog open={viewerOpen} onChangeOpen={changeViewerOpen}>
+        <DialogContent aria-labelledby={`${id}-viewer-title`} style={fullScreen}>
           <div style={{ display: 'grid', gap: 'var(--spacing-8)', maxWidth: 960, marginInline: 'auto' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
               <Heading id={`${id}-viewer-title`} as='h2' size={4} fontWeight={600}>{`Merino crew sweater, ${selectedColor.name}`}</Heading>

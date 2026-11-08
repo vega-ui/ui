@@ -10,7 +10,7 @@ export const CHANGELOG_PACKAGES = [
   { slug: 'icons', dir: 'icons', label: 'Icons', name: '@vega-ui/icons' },
   { slug: 'tokens', dir: 'tokens', label: 'Tokens', name: '@vega-ui/tokens-core' },
   { slug: 'theme', dir: 'theme', label: 'Theme', name: '@vega-ui/theme-core' },
-  { slug: 'context', dir: 'react-context', label: 'Context', name: '@vega-ui/react-context' },
+  { slug: 'kit', dir: 'react-kit', label: 'Kit', name: '@vega-ui/react-kit' },
   { slug: 'i18n', dir: 'i18n', label: 'i18n', name: '@vega-ui/i18n' },
 ];
 

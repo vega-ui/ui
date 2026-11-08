@@ -60,6 +60,7 @@ import {
 import { Check, Download, Link, XIcon } from '@vega-ui/icons';
 import { ACCENTS } from '@/lib/accent';
 import { DEFAULT_THEME, DENSITIES, exportCss, parseTheme, previewVars, RADII, RADIUS_VALUES, radiusStep, siteCss, themeQuery, type Scheme, type ThemeSettings } from '@/lib/theme';
+import { applyStoredTheme } from '@/lib/storedTheme';
 import { CodeBlock } from './CodeBlock';
 import { useDictionary } from './LocaleProvider';
 import styles from './ThemeEditor.module.css';
@@ -67,27 +68,15 @@ import styles from './ThemeEditor.module.css';
 const CLOSE_STYLE = { flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties;
 
 const applyToSite = (settings: ThemeSettings) => {
-  const root = document.documentElement;
-  const step = radiusStep(settings.radius);
   const css = siteCss(settings);
 
-  root.dataset.accent = settings.accent;
   localStorage.setItem('accent', settings.accent);
-  root.dataset.radius = step ?? 'custom';
-  localStorage.setItem('radius', step ?? 'custom');
+  localStorage.setItem('radius', radiusStep(settings.radius) ?? 'custom');
 
-  document.getElementById('site-theme')?.remove();
+  if (css) localStorage.setItem('theme-css', css);
+  else localStorage.removeItem('theme-css');
 
-  if (!css) {
-    localStorage.removeItem('theme-css');
-    return;
-  }
-
-  const style = document.createElement('style');
-  style.id = 'site-theme';
-  style.textContent = css;
-  document.head.append(style);
-  localStorage.setItem('theme-css', css);
+  applyStoredTheme();
 };
 
 export const ThemeEditor = () => {

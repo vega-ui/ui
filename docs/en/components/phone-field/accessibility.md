@@ -29,7 +29,7 @@
 
 ## Form Semantics
 
-Use `PhoneFieldSelectHiddenSelect` when the country selector should participate in native [form participation](../../glossary.md#form-participation).
+Render `SelectHiddenSelect` inside `PhoneFieldSelect` when the country selector should participate in native [form participation](../../glossary.md#form-participation).
 
 ## Accessibility Risks
 

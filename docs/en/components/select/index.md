@@ -6,7 +6,7 @@
 
 ## Summary
 
-`Select` is a [compound component](../../glossary.md#compound-component) built from a root state container plus exported child parts for trigger, value, options, and native [form participation](../../glossary.md#form-participation). `SelectListbox` renders in the browser top layer via `popover="manual"`, so it is never clipped by `overflow` or covered by a modal dialog. It is the field-oriented single-choice layer, not a generic floating-content primitive.
+`Select` is a [compound component](../../glossary.md#compound-component) built from a root state container plus exported child parts for trigger, value, options, and native [form participation](../../glossary.md#form-participation). `SelectListbox` renders in the browser top layer via `popover="auto"`, so it is never clipped by `overflow` or covered by a modal dialog. It is the field-oriented single-choice layer, not a generic floating-content primitive.
 
 ## Imports
 
