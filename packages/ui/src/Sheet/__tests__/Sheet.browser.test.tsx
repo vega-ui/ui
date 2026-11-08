@@ -112,6 +112,10 @@ describe('Sheet', () => {
   describe('Critical User Paths', () => {
     describe('SheetClose', () => {
       it('closes the sheet with the close transition', async () => {
+        document.documentElement.dataset.motion = '';
+        onTestFinished(() => {
+          delete document.documentElement.dataset.motion;
+        });
         const r = render(
           <Sheet defaultOpen>
             <SheetContent data-testid='close-content' aria-label='Panel'>
