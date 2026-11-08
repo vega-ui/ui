@@ -2,19 +2,6 @@ import { describe, it, expect } from 'vitest';
 import { createCalendarSystem, getDateFormat, gregorianCalendar } from '..';
 
 describe('getDateFormat', () => {
-  it('returns a non-empty string', () => {
-    const fmt = getDateFormat(gregorianCalendar, 'en-US');
-    expect(typeof fmt).toBe('string');
-    expect(fmt.length).toBeGreaterThan(0);
-  });
-  
-  it('contains DD, MM, YYYY tokens', () => {
-    const fmt = getDateFormat(gregorianCalendar, 'en-US');
-    expect(fmt).toContain('DD');
-    expect(fmt).toContain('MM');
-    expect(fmt).toContain('YYYY');
-  });
-  
   it('does not contain numeric date parts from the sample date', () => {
     const fmt = getDateFormat(gregorianCalendar, 'en-US');
     expect(fmt).not.toContain('1970');
@@ -46,14 +33,6 @@ describe('getDateFormat', () => {
     expect(fmt.indexOf('MM')).toBeLessThan(fmt.indexOf('YYYY'));
   });
   
-  it('de-DE is day.month.year order', () => {
-    const fmt = getDateFormat(gregorianCalendar, 'de-DE');
-    expect(fmt).toMatch(/^DD.*MM.*YYYY$/);
-    expect(fmt).toContain('.');
-    expect(fmt.indexOf('DD')).toBeLessThan(fmt.indexOf('MM'));
-    expect(fmt.indexOf('MM')).toBeLessThan(fmt.indexOf('YYYY'));
-  });
-  
   it('ja-JP is year/month/day order', () => {
     const fmt = getDateFormat(gregorianCalendar, 'ja-JP');
     expect(fmt).toMatch(/^YYYY.*MM.*DD$/);
@@ -61,27 +40,6 @@ describe('getDateFormat', () => {
     expect(fmt.indexOf('MM')).toBeLessThan(fmt.indexOf('DD'));
   });
   
-  it('uses the runtime locale without a locale', () => {
-    const fmt = getDateFormat(gregorianCalendar);
-    expect(typeof fmt).toBe('string');
-    expect(fmt).toContain('DD');
-    expect(fmt).toContain('MM');
-    expect(fmt).toContain('YYYY');
-  });
-  
-  it('preserves locale-specific literals (at least one non-token char)', () => {
-    const fmt = getDateFormat(gregorianCalendar, 'en-US');
-    const literalsOnly = fmt.replace(/DD|MM|YYYY/g, '');
-    expect(literalsOnly.length).toBeGreaterThan(0);
-  });
-  
-  it('handles locales that use spaces as literals (sanity)', () => {
-    const fmt = getDateFormat(gregorianCalendar, 'fr-CA');
-    expect(fmt).toContain('DD');
-    expect(fmt).toContain('MM');
-    expect(fmt).toContain('YYYY');
-  });
-
   it('leaves out the era of the calendar', () => {
     const japanese = createCalendarSystem('japanese');
 

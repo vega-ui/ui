@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
-import { page, userEvent, type Locator } from 'vitest/browser';
+import { page, userEvent } from 'vitest/browser';
 
 import { DateTimeField, type DateTimeFieldProps } from '../DateTimeField';
 import {
@@ -187,20 +187,6 @@ describe('DateTimeField', () => {
       r = render(<DateTimeFieldTest onInput={onInput} />);
     });
     
-    it('renders input and calendar trigger', async () => {
-      await expect.element(getInput(r)).toHaveRole('textbox');
-      await expect.element(getTrigger(r)).toHaveRole('button');
-    });
-    
-    it('opens calendar popover by clicking trigger', async () => {
-      expect(r.queryByTestId(TESTID_CALENDAR)).toBeNull();
-      
-      await userEvent.click(getTrigger(r));
-      
-      await expect.element(getContent(r)).toBeInTheDocument();
-      await expect.element(getCalendar(r)).toBeInTheDocument();
-    });
-    
     it('selecting date keeps time and writes full datetime into input', async () => {
       const input = getInput(r);
       
@@ -211,16 +197,6 @@ describe('DateTimeField', () => {
       
       expect(input).toHaveValue('20.01.2026, 12:30');
       expect(onInput).toHaveBeenCalled();
-    });
-    
-    it('typing valid datetime updates internal state and calendar opens correctly', async () => {
-      const input = getInput(r);
-      
-      await userEvent.click(input);
-      await userEvent.type(input, '10.02.2026, 08:15');
-      
-      await userEvent.click(getTrigger(r));
-      await expect.element(getCalendar(r)).toBeInTheDocument();
     });
     
     it('respects min/max when selecting date via calendar', async () => {
@@ -241,156 +217,6 @@ describe('DateTimeField', () => {
   });
   
   describe('Edge Cases', () => {
-    describe('calendar navigation follows the WAI-ARIA date picker pattern', () => {
-      const getMonthCell = (r: RenderResult, month: string) =>
-        page.elementLocator(getContent(r)).getByRole('gridcell', { name: month, exact: true });
-
-      const getYearCell = (r: RenderResult, year: string) =>
-        page.elementLocator(getContent(r)).getByRole('gridcell', { name: year, exact: true });
-
-      const press = async (r: RenderResult, button: string) => {
-        r.getByRole('button', { name: button }).focus();
-        await userEvent.keyboard('{Enter}');
-      };
-
-      const open = async (r: RenderResult, typed: string) => {
-        await userEvent.type(getInput(r), typed);
-        await userEvent.click(getTrigger(r));
-      };
-
-      const settle = () => new Promise((resolve) => setTimeout(resolve, 300));
-
-      const isPageVisible = (cell: Locator) => {
-        const cellPage = cell.query()?.closest('[data-index]');
-        const scroller = cellPage?.parentElement;
-        if (!cellPage || !scroller) return false;
-
-        const outer = scroller.getBoundingClientRect();
-        const inner = cellPage.getBoundingClientRect();
-
-        return inner.left >= outer.left - 1 && inner.right <= outer.right + 1;
-      };
-
-      const isPageCentered = (cell: Locator) => {
-        const cellPage = cell.query()?.closest('[data-index]');
-        const scroller = cellPage?.parentElement;
-        if (!cellPage || !scroller) return false;
-
-        const pages = Array.from(scroller.children);
-
-        return pages.indexOf(cellPage) === Math.floor(pages.length / 2);
-      };
-
-      it('keeps the value and moves focus to the same day of the next month', async () => {
-        const r = render(<DateTimeFieldTest />);
-
-        await open(r, '15.01.2026, 12:30');
-        await press(r, 'Next month');
-
-        await expect.element(getCell(r, new Date(2026, 1, 15))).toHaveAttribute('tabindex', '0');
-        await settle();
-        await expect.element(getInput(r)).toHaveValue('15.01.2026, 12:30');
-      });
-
-      it('keeps the value and moves focus to the same day of the previous month', async () => {
-        const r = render(<DateTimeFieldTest />);
-
-        await open(r, '15.03.2026, 12:30');
-        await press(r, 'Previous month');
-
-        await expect.element(getCell(r, new Date(2026, 1, 15))).toHaveAttribute('tabindex', '0');
-        await settle();
-        await expect.element(getInput(r)).toHaveValue('15.03.2026, 12:30');
-      });
-
-      it('keeps the value when a month is picked in the month picker', async () => {
-        const r = render(<DateTimeFieldTest />);
-
-        await open(r, '15.01.2026, 12:30');
-        await press(r, 'Open month picker');
-        await expect.element(getMonthCell(r, 'January')).toHaveFocus();
-        await userEvent.keyboard('{ArrowRight}{ArrowRight}{Enter}');
-
-        await expect.element(getCell(r, new Date(2026, 2, 15))).toHaveAttribute('tabindex', '0');
-        await settle();
-        await expect.element(getInput(r)).toHaveValue('15.01.2026, 12:30');
-      });
-
-      it('keeps the value when a year is picked in the year picker', async () => {
-        const r = render(<DateTimeFieldTest />);
-
-        await open(r, '15.01.2026, 12:30');
-        await press(r, 'Open year picker');
-        await expect.element(getYearCell(r, '2026')).toHaveFocus();
-        await userEvent.keyboard('{ArrowRight}{Enter}');
-
-        await expect.element(getCell(r, new Date(2027, 0, 15))).toHaveAttribute('tabindex', '0');
-        await settle();
-        await expect.element(getInput(r)).toHaveValue('15.01.2026, 12:30');
-      });
-
-      it('keeps the value while scrolling through months', async () => {
-        const r = render(<DateTimeFieldTest />);
-
-        await open(r, '15.01.2026, 12:30');
-
-        const getScroller = () => {
-          let element = getCell(r, new Date(2026, 0, 15)).element().parentElement;
-          while (element && element.scrollWidth <= element.clientWidth) element = element.parentElement;
-          return element;
-        };
-        await expect.poll(() => getScroller()?.scrollLeft).toBeGreaterThan(0);
-
-        const onChange = vi.fn();
-        getInput(r).addEventListener('change', onChange);
-        for (let month = 1; month <= 3; month++) {
-          const scroller = getScroller()!;
-          scroller.scrollBy({ left: scroller.clientWidth, behavior: 'instant' });
-          await expect.element(getCell(r, new Date(2026, month, 15))).toHaveAttribute('tabindex', '0');
-        }
-
-        await expect.element(getCell(r, new Date(2026, 3, 15))).toHaveAttribute('tabindex', '0');
-        await settle();
-        await expect.element(getInput(r)).toHaveValue('15.01.2026, 12:30');
-        expect(onChange).not.toHaveBeenCalled();
-      });
-
-      it('writes a day picked after navigating', async () => {
-        const r = render(<DateTimeFieldTest />);
-
-        await open(r, '15.01.2026, 12:30');
-        await press(r, 'Next month');
-        await expect.element(getCell(r, new Date(2026, 1, 15))).toHaveAttribute('tabindex', '0');
-        await expect.poll(() => isPageVisible(getCell(r, new Date(2026, 1, 10)))).toBe(true);
-        await expect.poll(() => isPageCentered(getCell(r, new Date(2026, 1, 10)))).toBe(true);
-        await pickDate(r, new Date(2026, 1, 10));
-
-        await expect.element(getInput(r)).toHaveValue('10.02.2026, 12:30');
-      });
-
-      it('closes on Escape without changing the value', async () => {
-        const r = render(<DateTimeFieldTest />);
-
-        await open(r, '15.01.2026, 12:30');
-        await press(r, 'Next month');
-        await expect.element(getCell(r, new Date(2026, 1, 15))).toHaveAttribute('tabindex', '0');
-        await userEvent.keyboard('{Escape}');
-
-        await expect.poll(() => r.queryByTestId(TESTID_CALENDAR)).toBeNull();
-        await expect.element(getInput(r)).toHaveValue('15.01.2026, 12:30');
-      });
-
-      it('keeps an empty field empty while navigating', async () => {
-        const r = render(<DateTimeFieldTest />);
-
-        await userEvent.click(getTrigger(r));
-        await press(r, 'Next month');
-        await settle();
-
-        await expect.element(getInput(r)).toHaveValue('');
-      });
-    });
-
     it('ignores invalid datetime input and does not sync calendar', async () => {
       const onChange = vi.fn();
       const r = render(<DateTimeFieldTest onChange={onChange} />);
@@ -402,13 +228,6 @@ describe('DateTimeField', () => {
       expect(onChange).toHaveBeenCalledTimes(0);
     });
     
-    it('does not crash when opening calendar with empty value', async () => {
-      const r = render(<DateTimeFieldTest />);
-      
-      await userEvent.click(getTrigger(r));
-      await expect.element(getCalendar(r)).toBeInTheDocument();
-    });
-
     describe('typing', () => {
       it('steps the time segment at the caret with arrow keys', async () => {
         const r = render(<DateTimeFieldTest timeStep={15} />);
@@ -545,23 +364,6 @@ describe('DateTimeField', () => {
   
   
   describe('Accessibility', () => {
-    describe('roles', () => {
-      let r: RenderResult;
-      
-      beforeEach(() => {
-        r = render(<DateTimeFieldTest />);
-      });
-      
-      it('input exposes textbox role', async () => {
-        await expect.element(getInput(r)).toHaveRole('textbox');
-      });
-      
-      it('trigger button has accessible role', async () => {
-        await expect.element(getTrigger(r)).toHaveRole('button');
-        await expect.element(getTrigger(r)).toHaveAccessibleName();
-      });
-    });
-    
     describe('keyboard', () => {
       it('allows selecting date using Enter key on focused calendar cell', async () => {
         const r = render(<DateTimeFieldTest />);

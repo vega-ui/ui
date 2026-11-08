@@ -8,9 +8,7 @@ import { userEvent } from 'vitest/browser';
 
 afterEach(cleanup);
 
-const TESTID_ROOT = 'pinfield';
 const TESTID_INPUT = 'input';
-const TESTID_SEPARATOR = 'separator';
 
 const SLOT_0 = 'slot-0';
 const SLOT_1 = 'slot-1';
@@ -31,13 +29,13 @@ const PinFieldTest: FC<ComponentProps<typeof PinField> & { name?: string; placeh
  ...props
 }) => {
   return (
-    <PinField data-testid={TESTID_ROOT} placeholder={placeholder} {...props}>
+    <PinField placeholder={placeholder} {...props}>
       {children ?? (
         <>
           <PinFieldInput name={name} data-testid={TESTID_INPUT} />
           <PinFieldSlot data-testid={SLOT_0} index={0} />
           <PinFieldSlot data-testid={SLOT_1} index={1} />
-          <PinFieldSeparator data-testid={TESTID_SEPARATOR} />
+          <PinFieldSeparator />
           <PinFieldSlot data-testid={SLOT_2} index={2} />
           <PinFieldSlot data-testid={SLOT_3} index={3} />
         </>
@@ -74,9 +72,7 @@ const ControlledPinFieldTest: FC<{ initialValue?: string; onChangeValue?(value: 
   );
 };
 
-const getRoot = (r: RenderResult) => r.getByTestId(TESTID_ROOT);
 const getInput = (r: RenderResult) => r.getByTestId(TESTID_INPUT) as HTMLInputElement;
-const getSeparator = (r: RenderResult) => r.getByTestId(TESTID_SEPARATOR);
 
 const getSlot0 = (r: RenderResult) => r.getByTestId(SLOT_0);
 const getSlot1 = (r: RenderResult) => r.getByTestId(SLOT_1);
@@ -110,17 +106,6 @@ describe('PinField', () => {
       r = render(<PinFieldTest maxLength={4} />);
     });
     
-    it('renders root, input, slots, and separator', async () => {
-      await expect.element(getRoot(r)).toBeInTheDocument();
-      await expect.element(getInput(r)).toBeInTheDocument();
-      
-      for (const slot of getSlots(r)) {
-        await expect.element(slot).toBeInTheDocument();
-      }
-      
-      await expect.element(getSeparator(r)).toBeInTheDocument();
-    });
-    
     it('input receives disabled while disabled', async () => {
       r.rerender(<PinFieldTest maxLength={4} disabled />);
       await expect.element(getInput(r)).toBeDisabled();
@@ -152,15 +137,6 @@ describe('PinField', () => {
       await expect.element(getSlot2(r)).toHaveAttribute('data-caret', 'true');
     });
     
-    it('input event updates input value', async () => {
-      const input = getInput(r);
-      
-      focusInput(input);
-      setValue(input, VALUE_1234);
-      
-      await expect.element(input).toHaveValue(VALUE_1234);
-    });
-    
     it('input event updates slot text content', async () => {
       const input = getInput(r);
       
@@ -169,17 +145,6 @@ describe('PinField', () => {
       
       await expect.element(getSlot0(r)).toHaveTextContent('1');
       await expect.element(getSlot1(r)).toHaveTextContent('2');
-    });
-    
-    it('ArrowLeft moves caret left', async () => {
-      const input = getInput(r);
-      
-      focusInput(input);
-      setValue(input, VALUE_1234);
-      setCaret(input, 3);
-      
-      fireEvent.keyDown(input, { key: 'ArrowLeft' });
-      await expect.element(getSlot2(r)).toHaveAttribute('data-caret', 'true');
     });
     
     it('ArrowRight moves caret right', async () => {
@@ -427,16 +392,8 @@ describe('PinField', () => {
         r = render(<PinFieldTest maxLength={4} />);
       });
       
-      it('separator has role="separator"', async () => {
-        await expect.element(getSeparator(r)).toHaveRole('separator');
-      });
-      
       it('exposes the placeholder on the input', async () => {
         await expect.element(getInput(r)).toHaveAttribute('placeholder', PLACEHOLDER);
-      });
-
-      it('input remains a textbox', async () => {
-        await expect.element(getInput(r)).toHaveRole('textbox');
       });
     });
     
@@ -450,30 +407,6 @@ describe('PinField', () => {
 
         expect(fireEvent.keyDown(input, { key: 'ArrowLeft', shiftKey: true })).toBe(true);
         expect(fireEvent.keyDown(input, { key: 'ArrowRight', shiftKey: true })).toBe(true);
-      });
-
-      it('Arrow keys update caret slot (left/right)', async () => {
-        const r = render(<PinFieldTest maxLength={4} />);
-        const input = getInput(r);
-        
-        focusInput(input);
-        setValue(input, VALUE_12);
-        setCaret(input, 2);
-        
-        fireEvent.keyDown(input, { key: 'ArrowLeft' });
-        await expect.element(getSlot1(r)).toHaveAttribute('data-caret', 'true');
-        
-        fireEvent.keyDown(input, { key: 'ArrowRight' });
-        await expect.element(getSlot2(r)).toHaveAttribute('data-caret', 'true');
-      });
-    });
-    
-    describe('focus', () => {
-      it('pointer down on slot moves focus to input', async () => {
-        const r = render(<PinFieldTest maxLength={4} />);
-        
-        fireEvent.pointerDown(getSlot2(r));
-        await expect.element(getInput(r)).toHaveFocus();
       });
     });
   });

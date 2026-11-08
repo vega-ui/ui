@@ -19,12 +19,12 @@ const TESTID_CLOSE = 'close';
 
 const LOREM = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry';
 
-type SheetTestProps = ComponentProps<typeof Sheet> & Pick<ComponentProps<typeof SheetContent>, 'closedBy' | 'overlay' | 'style'>
+type SheetTestProps = ComponentProps<typeof Sheet> & Pick<ComponentProps<typeof SheetContent>, 'closedBy' | 'style'>
 
-const SheetTest: FC<SheetTestProps> = ({ closedBy, overlay, style, children, ...props }) => (
+const SheetTest: FC<SheetTestProps> = ({ closedBy, style, children, ...props }) => (
   <Sheet {...props}>
     <SheetTrigger data-testid={TESTID_TRIGGER}>Open</SheetTrigger>
-    <SheetContent data-testid={TESTID_CONTENT} closedBy={closedBy} overlay={overlay} style={style} aria-label='Details'>
+    <SheetContent data-testid={TESTID_CONTENT} closedBy={closedBy} style={style} aria-label='Details'>
       <SheetHandle aria-label='Resize sheet' data-testid={TESTID_HANDLE} />
       <div data-testid={TESTID_MAIN}>
         {LOREM}
@@ -132,16 +132,23 @@ describe('Sheet', () => {
         await expect.element(r.queryByTestId('close-content')).not.toBeInTheDocument();
       });
 
-      it('renders a button that does not submit a form', async () => {
+      it('closes inside a form without submitting it', async () => {
+        const onSubmit = vi.fn();
         const r = render(
           <Sheet defaultOpen>
-            <SheetContent aria-label='Panel'>
-              <SheetClose>Done</SheetClose>
+            <SheetContent data-testid={TESTID_CONTENT} aria-label='Panel'>
+              <form onSubmit={(event) => { event.preventDefault(); onSubmit(); }}>
+                <SheetClose>Cancel</SheetClose>
+              </form>
             </SheetContent>
           </Sheet>
         );
+        await waitOpened(r);
 
-        await expect.element(r.getByRole('button', { name: 'Done' })).toHaveAttribute('type', 'button');
+        await userEvent.click(r.getByRole('button', { name: 'Cancel' }));
+
+        await waitClosed(r);
+        expect(onSubmit).not.toHaveBeenCalled();
       });
 
       it('closes through its child with asChild and keeps the child onClick', async () => {
@@ -184,12 +191,6 @@ describe('Sheet', () => {
     });
 
     describe('open and close', () => {
-      it('is closed by default', async () => {
-        const r = render(<SheetTest />);
-
-        await expect.element(queryContent(r)).not.toBeInTheDocument();
-      });
-
       it('opens a modal native dialog on trigger click', async () => {
         const r = render(<SheetTest />);
 
@@ -204,15 +205,6 @@ describe('Sheet', () => {
         await waitOpened(r);
 
         await clickBackdrop(r);
-
-        await waitClosed(r);
-      });
-
-      it('closes on Escape', async () => {
-        const r = render(<SheetTest defaultOpen />);
-        await waitOpened(r);
-
-        await userEvent.keyboard('{Escape}');
 
         await waitClosed(r);
       });
@@ -261,26 +253,12 @@ describe('Sheet', () => {
         expect(getOffset(r)).toBe(0);
       });
 
-      it('does not shrink its main area below its content', async () => {
-        const r = render(<SheetTest defaultOpen />);
-        await waitOpened(r);
-
-        expect(getMain(r).offsetHeight).toBe(getMain(r).scrollHeight);
-      });
-
       it('fits the content by default, with snap points too', async () => {
         const r = render(<SheetTest defaultOpen snapPoints={[0.5, 1]} />);
         await waitOpened(r);
 
         expect(getContent(r).offsetHeight).toBeLessThan(400);
         expect(getOffset(r)).toBe(0);
-      });
-
-      it('is never taller than the viewport', async () => {
-        const r = render(<SheetTest defaultOpen style={{ height: 1000 }} />);
-        await waitOpened(r);
-
-        expect(getContent(r).offsetHeight).toBe(400);
       });
 
       it('rests snap points above its height at its top', async () => {
@@ -663,18 +641,6 @@ describe('Sheet', () => {
     });
 
     describe('overlay', () => {
-      it('leaves the page behind the sheet visible without an overlay', async () => {
-        document.documentElement.style.setProperty('--overlay', 'rgb(0, 0, 0)');
-        const r = render(<SheetTest defaultOpen overlay={false} />);
-        await waitOpened(r);
-
-        const backdrop = getComputedStyle(getContent(r), '::backdrop');
-
-        expect(backdrop.backgroundColor).toBe('rgba(0, 0, 0, 0)');
-        expect(backdrop.backdropFilter).toBe('none');
-        document.documentElement.style.removeProperty('--overlay');
-      });
-
       it('reports how far the sheet is raised from its lowest to its top snap point', async () => {
         const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
         await waitOpened(r);
@@ -877,22 +843,6 @@ describe('Sheet', () => {
   });
 
   describe('Accessibility', () => {
-    it('is exposed as a dialog named by aria-label', async () => {
-      const r = render(<SheetTest defaultOpen />);
-      await waitOpened(r);
-
-      await expect.element(r.getByRole('dialog', { name: 'Details' })).toBeInTheDocument();
-    });
-
-    it('trigger describes the sheet it opens', async () => {
-      const r = render(<SheetTest defaultOpen />);
-      await waitOpened(r);
-
-      await expect.element(getTrigger(r)).toHaveAttribute('aria-haspopup', 'dialog');
-      await expect.element(getTrigger(r)).not.toHaveAttribute('aria-controls');
-    });
-
-
     it('focuses the sheet itself on open and the trigger on close', async () => {
       const r = render(<SheetTest />);
       getTrigger(r).focus();

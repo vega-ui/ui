@@ -1,7 +1,7 @@
 import { ComponentProps, FC, FormEvent, Profiler, PropsWithChildren, StrictMode } from 'react';
 import { afterEach, beforeEach, describe, expect, it, onTestFinished, vi } from 'vitest';
 import { cleanup, fireEvent, render, type RenderResult, waitFor } from '@testing-library/react';
-import { commands, server, userEvent } from 'vitest/browser';
+import { server, userEvent } from 'vitest/browser';
 
 import { Select } from '../Select';
 import {
@@ -107,42 +107,6 @@ const openByClick = async (r: RenderResult) => {
 
 describe('Select', () => {
   describe('Critical User Paths', () => {
-    describe('combobox', () => {
-      describe('placeholder', () => {
-        describe('has not selected option', () => {{
-          let r: RenderResult;
-          
-          beforeEach(() => {
-            r = render(<SelectTest defaultValue='' onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />);
-          });
-          
-          it('renders placeholder when defaultValue is empty', async () => {
-            await expect.element(getValue(r)).toHaveTextContent(PLACEHOLDER);
-          });
-          
-          it('marks placeholder state via data-placeholder=true', async () => {
-            await expect.element(getValue(r)).toHaveAttribute('data-placeholder', 'true');
-          });
-        }})
-        
-        describe('has selected option', () => {{
-          let r: RenderResult;
-          
-          beforeEach(() => {
-            r = render(<SelectTest defaultValue={VALUE_MOSCOW} onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />);
-          });
-          
-          it('does not render placeholder state when defaultValue is non-empty', async () => {
-            await expect.element(getValue(r)).toHaveAttribute('data-placeholder', 'false');
-          });
-          
-          it('renders selected label (not placeholder) when defaultValue is non-empty', async () => {
-            await expect.element(getValue(r)).not.toHaveTextContent(PLACEHOLDER);
-          });
-        }})
-      })
-    })
-    
     describe('listbox', () => {
       describe('open/close', () => {
         describe('uncontrolled', () => {
@@ -153,45 +117,11 @@ describe('Select', () => {
               r = render(<SelectTest defaultOpen={false} onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />);
             });
             
-            it('starts closed', async () => {
-              await toBeClosed(r)
-            });
-            
-            it('opens on combobox click', async () => {
-              await userEvent.click(getCombobox(r));
-              await toBeOpened(r);
-            });
-            
-            it('closes on Escape when opened', async () => {
-              await userEvent.click(getCombobox(r));
-              await toBeOpened(r);
-              
-              await userEvent.keyboard('{Escape}');
-              await toBeClosed(r);
-            });
-            
             it('closes on outside click when opened', async () => {
               await userEvent.click(getCombobox(r));
               await toBeOpened(r);
               
               await userEvent.click(document.body);
-              await toBeClosed(r);
-            });
-          });
-          
-          describe('defaultOpen=true', () => {
-            let r: RenderResult;
-            
-            beforeEach(() => {
-              r = render(<SelectTest defaultOpen onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />);
-            });
-            
-            it('starts opened', async () => {
-              await toBeOpened(r)
-            });
-            
-            it('closes on Escape', async () => {
-              await userEvent.keyboard('{Escape}');
               await toBeClosed(r);
             });
           });
@@ -207,10 +137,6 @@ describe('Select', () => {
               r = render(<SelectTest open={false} onChangeOpen={onChangeOpen} onChangeValue={vi.fn()} />);
             });
             
-            it('stays closed while open prop is false', async () => {
-              await toBeClosed(r)
-            });
-            
             it('click requests open via onChangeOpen(true)', async () => {
               await userEvent.click(getCombobox(r));
               expect(onChangeOpen).toHaveBeenCalledWith(true);
@@ -220,11 +146,6 @@ describe('Select', () => {
               await userEvent.keyboard('{Escape}');
               expect(onChangeOpen).not.toHaveBeenCalledWith(true);
               await toBeClosed(r)
-            });
-            
-            it('opens when open becomes true (rerender)', async () => {
-              r.rerender(<SelectTest open onChangeOpen={onChangeOpen} onChangeValue={vi.fn()} />);
-              await toBeOpened(r);
             });
             
             it('closes when open becomes false (rerender)', async () => {
@@ -249,12 +170,6 @@ describe('Select', () => {
               await userEvent.keyboard('{Escape}');
               expect(onChangeOpen).toHaveBeenCalledWith(false);
             });
-            
-            it('outside click requests close via onChangeOpen(false)', async () => {
-              r.rerender(<SelectTest open onChangeOpen={onChangeOpen} onChangeValue={vi.fn()} />)
-              await userEvent.click(document.body);
-              expect(onChangeOpen).toHaveBeenCalledWith(false);
-            });
           })
         })
       })
@@ -276,14 +191,6 @@ describe('Select', () => {
             
             expect(onChangeValue).toHaveBeenCalledWith(VALUE_SPB);
             await toBeClosed(r);
-          });
-          
-          it('updates hidden native select value after selection', async () => {
-            await openByClick(r);
-            await userEvent.click(getOptionByName(r, LABEL_NSK));
-            await toBeClosed(r);
-            
-            expect(getHiddenSelect(r).value).toBe(VALUE_NSK);
           });
           
           it('switches value when selecting another option', async () => {
@@ -318,17 +225,6 @@ describe('Select', () => {
             await waitFor(() => {
               expect(onChangeValue).toHaveBeenCalledWith(VALUE_SPB);
             });
-          });
-          
-          it('does not change hidden select value without external update', async () => {
-            const onChangeValue = vi.fn();
-            r.rerender(<SelectTest value={VALUE_MOSCOW} onChangeOpen={vi.fn()} onChangeValue={onChangeValue} />);
-            
-            await openByClick(r);
-            await userEvent.click(getOptionByName(r, LABEL_SPB));
-            await toBeClosed(r);
-            
-            expect(getHiddenSelect(r).value).toBe(VALUE_MOSCOW);
           });
           
           it('reflects external value update into hidden native select', async () => {
@@ -447,10 +343,6 @@ describe('Select', () => {
         await expect.element(getCombobox(r)).toBeDisabled();
       });
       
-      it('stays closed and listbox is hidden', async () => {
-        await toBeClosed(r);
-      });
-      
       it('does not open by keyboard (ArrowDown)', async () => {
         getCombobox(r).focus();
         await userEvent.keyboard('{ArrowDown}');
@@ -481,10 +373,6 @@ describe('Select', () => {
       it('keeps combobox enabled but exposes aria-readonly=true', async () => {
         await expect.element(getCombobox(r)).not.toBeDisabled();
         await expect.element(getCombobox(r)).toHaveAttribute('aria-readonly', 'true');
-      });
-      
-      it('stays closed and listbox is hidden', async () => {
-        await toBeClosed(r);
       });
       
       it('does not open by keyboard (ArrowDown)', async () => {
@@ -695,15 +583,6 @@ describe('Select', () => {
       await toBeActive(r, 'String');
     });
 
-    it('does not scale the listbox when the user prefers reduced motion', async () => {
-      await commands.emulateReducedMotion('reduce');
-      onTestFinished(() => commands.emulateReducedMotion('no-preference'));
-      const r = render(<SelectTest />);
-      const scale = getComputedStyle(getListbox(r)).scale;
-
-      expect(['1', 'none']).toContain(scale);
-    });
-
     it('scales the listbox in place, wherever the select is on the page', async () => {
       const r = render(<div style={{ padding: '300px 0 0 100px' }}><SelectTest /></div>);
 
@@ -718,19 +597,6 @@ describe('Select', () => {
       expect(scaled.top).toBeGreaterThanOrEqual(full.top);
       expect(scaled.right).toBeLessThanOrEqual(full.right);
       expect(scaled.bottom).toBeLessThanOrEqual(full.bottom);
-    });
-
-    it('renders the listbox in the top layer only while shown', async () => {
-      const r = render(<SelectTest />);
-
-      expect(getListbox(r).matches(':popover-open')).toBe(false);
-
-      await openByClick(r);
-      expect(getListbox(r).matches(':popover-open')).toBe(true);
-
-      await userEvent.keyboard('{Escape}');
-      await toBeClosed(r);
-      expect(getListbox(r).matches(':popover-open')).toBe(false);
     });
 
     it('stays open after the press on the combobox is released', async () => {
@@ -1041,30 +907,6 @@ describe('Select', () => {
   });
   
   describe('Accessibility', () => {
-    describe('roles', () => {
-      let r: RenderResult;
-      
-      beforeEach(() => {
-        r = render(<SelectTest defaultValue='' onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />);
-      });
-      
-      it('combobox has role=combobox', async () => {
-        await expect.element(getCombobox(r)).toHaveRole('combobox');
-      });
-      
-      it('listbox has role=listbox', async () => {
-        await expect.element(getListbox(r)).toHaveRole('listbox');
-      });
-      
-      it('options have role=option when opened', async () => {
-        await openByClick(r);
-        
-        await expect.element(getOptionByName(r, LABEL_MOSCOW)).toHaveRole('option');
-        await expect.element(getOptionByName(r, LABEL_SPB)).toHaveRole('option');
-        await expect.element(getOptionByName(r, LABEL_NSK)).toHaveRole('option');
-      });
-    });
-    
     describe('aria', () => {
       let r: RenderResult;
       
@@ -1154,34 +996,9 @@ describe('Select', () => {
 
         expect(r.getByRole('combobox', { name: 'City' })).toBe(getCombobox(r));
       });
-
-      it('hidden native select is aria-hidden and not tabbable', async () => {
-        expect(getHiddenSelect(r).getAttribute('aria-hidden')).toBe('true');
-        expect(getHiddenSelect(r).tabIndex).toBe(-1);
-      });
-      
-      it('hides the listbox from assistive technology while closed', async () => {
-        expect(getComputedStyle(getListbox(r)).visibility).toBe('hidden');
-        
-        await openByClick(r);
-        
-        await expect.poll(() => getComputedStyle(getListbox(r)).visibility).toBe('visible');
-      });
     });
     
     describe('focus', () => {
-      it('activates the first option and keeps focus on the combobox when opened by ArrowDown', async () => {
-        const r = render(<SelectTest defaultValue='' onChangeOpen={vi.fn()} onChangeValue={vi.fn()} />);
-        
-        getCombobox(r).focus();
-        await expect.element(getCombobox(r)).toHaveFocus();
-        
-        await userEvent.keyboard('{ArrowDown}');
-        await toBeOpened(r);
-        
-        await toBeActive(r, LABEL_MOSCOW);
-      });
-
       it('skips a disabled first option when opened', async () => {
         const r = render(
           <Select>

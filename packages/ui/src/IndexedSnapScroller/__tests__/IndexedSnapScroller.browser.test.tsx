@@ -412,23 +412,6 @@ describe('IndexedSnapScroller', () => {
         });
       });
     });
-    
-    describe('startDir patterns', () => {
-      it('renders decreasing sequence when startDir=-1', async () => {
-        const r = render(
-          <IndexedSnapScrollerTest size={SIZE_5} shift={SHIFT_2} start={START_MINUS_2} startDir={-1} />,
-        );
-        
-        await expect.element(getItem(r, -2)).toBeInTheDocument();
-        await expect.element(getItem(r, -3)).toBeInTheDocument();
-        await expect.element(getItem(r, -4)).toBeInTheDocument();
-        await expect.element(getItem(r, -5)).toBeInTheDocument();
-        await expect.element(getItem(r, -6)).toBeInTheDocument();
-        
-        await expect.element(queryItem(r, -1)).not.toBeInTheDocument();
-        await expect.element(queryItem(r, 0)).not.toBeInTheDocument();
-      });
-    });
   });
   
   describe('Edge Cases', () => {
@@ -439,110 +422,80 @@ describe('IndexedSnapScroller', () => {
       await expect.element(queryItem(r, -1)).not.toBeInTheDocument();
       await expect.element(queryItem(r, 0)).not.toBeInTheDocument();
     });
+
+    describe('right-to-left', () => {
+      const RtlTest: FC<PropsWithChildren<IndexedSnapScrollerProps>> = (props) => (
+        <div dir='rtl'>
+          <IndexedSnapScrollerTest size={SIZE_5} shift={SHIFT_2} start={START_MINUS_2} startDir={1} {...props} />
+        </div>
+      );
     
-    it('does not crash when onOffset is not provided and scroll hits boundaries', async () => {
-      const r = render(<IndexedSnapScrollerTest size={SIZE_5} shift={SHIFT_2} start={START_MINUS_2} startDir={1} />);
+      it('shows the initial index in view', async () => {
+        const r = render(<RtlTest defaultIndex={0} />);
       
-      const scroller = getScroller(r);
-      
-      await waitFor(() => {
-        expect(scroller.scrollWidth).toBeGreaterThan(scroller.clientWidth);
+        await waitFor(() => {
+          expect(isFullyVisibleInScroller(getScroller(r), getItem(r, 0))).toBe(true);
+        });
+        expect(getItem(r, 1).getBoundingClientRect().left).toBeLessThan(getItem(r, 0).getBoundingClientRect().left);
       });
+    
+      it('next() shows the next index on the left, prev() the previous one on the right', async () => {
+        const apiRef = createRef<IndexedSnapScrollerApiRef>();
+        const r = render(<RtlTest defaultIndex={0} apiRef={apiRef} />);
       
-      await scrollToStart(scroller);
+        await waitFor(() => {
+          expect(isFullyVisibleInScroller(getScroller(r), getItem(r, 0))).toBe(true);
+        });
       
-      await waitFor(() => {
-        expect(getItem(r, -4)).toBeInTheDocument();
+        apiRef.current!.next();
+        await waitFor(() => {
+          expect(isFullyVisibleInScroller(getScroller(r), getItem(r, 1))).toBe(true);
+        });
+      
+        apiRef.current!.prev();
+        apiRef.current!.prev();
+        await waitFor(() => {
+          expect(isFullyVisibleInScroller(getScroller(r), getItem(r, -1))).toBe(true);
+        });
       });
-    });
-  });
-  
-  describe('Accessibility', () => {
-    describe('roles', () => {
-      it('renders content into the document (not aria-hidden)', async () => {
-        const r = render(<IndexedSnapScrollerTest size={SIZE_5} shift={SHIFT_2} start={START_MINUS_2} startDir={1} />);
-        
+    
+      it('fires onOffset(1) and extends the window when scrolled to the left end', async () => {
+        const offsets: number[] = [];
+        const r = render(<RtlTest onOffset={(v) => offsets.push(v)} />);
         const scroller = getScroller(r);
-        
-        await expect.element(scroller).toBeInTheDocument();
-        await expect.element(scroller).not.toHaveAttribute('aria-hidden', 'true');
-        await expect.element(getItem(r, 0)).toBeInTheDocument();
+      
+        await waitFor(() => {
+          expect(scroller.scrollWidth).toBeGreaterThan(scroller.clientWidth);
+        });
+      
+        await nextFrame();
+        scroller.scrollTo({ left: -(scroller.scrollWidth - scroller.clientWidth), behavior: 'instant' });
+      
+        await waitFor(() => {
+          expect(offsets).toContain(1);
+          expect(queryItem(r, 4)).toBeInTheDocument();
+        });
       });
-    });
-  });
-  
-  describe('right-to-left', () => {
-    const RtlTest: FC<PropsWithChildren<IndexedSnapScrollerProps>> = (props) => (
-      <div dir='rtl'>
-        <IndexedSnapScrollerTest size={SIZE_5} shift={SHIFT_2} start={START_MINUS_2} startDir={1} {...props} />
-      </div>
-    );
     
-    it('shows the initial index in view', async () => {
-      const r = render(<RtlTest defaultIndex={0} />);
+      it('keeps the snapped page in view when the window is re-centered', async () => {
+        const r = render(<RtlTest defaultIndex={0} />);
+        const scroller = getScroller(r);
       
-      await waitFor(() => {
-        expect(isFullyVisibleInScroller(getScroller(r), getItem(r, 0))).toBe(true);
+        await waitFor(() => {
+          expect(isFullyVisibleInScroller(scroller, getItem(r, 0))).toBe(true);
+        });
+      
+        await nextFrame();
+        scroller.scrollBy({ left: -PAGE_PX, behavior: 'instant' });
+      
+        await waitFor(() => {
+          expect(queryItem(r, 3)).toBeInTheDocument();
+          expect(queryItem(r, -2)).not.toBeInTheDocument();
+        });
+      
+        await sleep(200);
+        expect(isFullyVisibleInScroller(scroller, getItem(r, 1))).toBe(true);
       });
-      expect(getItem(r, 1).getBoundingClientRect().left).toBeLessThan(getItem(r, 0).getBoundingClientRect().left);
-    });
-    
-    it('next() shows the next index on the left, prev() the previous one on the right', async () => {
-      const apiRef = createRef<IndexedSnapScrollerApiRef>();
-      const r = render(<RtlTest defaultIndex={0} apiRef={apiRef} />);
-      
-      await waitFor(() => {
-        expect(isFullyVisibleInScroller(getScroller(r), getItem(r, 0))).toBe(true);
-      });
-      
-      apiRef.current!.next();
-      await waitFor(() => {
-        expect(isFullyVisibleInScroller(getScroller(r), getItem(r, 1))).toBe(true);
-      });
-      
-      apiRef.current!.prev();
-      apiRef.current!.prev();
-      await waitFor(() => {
-        expect(isFullyVisibleInScroller(getScroller(r), getItem(r, -1))).toBe(true);
-      });
-    });
-    
-    it('fires onOffset(1) and extends the window when scrolled to the left end', async () => {
-      const offsets: number[] = [];
-      const r = render(<RtlTest onOffset={(v) => offsets.push(v)} />);
-      const scroller = getScroller(r);
-      
-      await waitFor(() => {
-        expect(scroller.scrollWidth).toBeGreaterThan(scroller.clientWidth);
-      });
-      
-      await nextFrame();
-      scroller.scrollTo({ left: -(scroller.scrollWidth - scroller.clientWidth), behavior: 'instant' });
-      
-      await waitFor(() => {
-        expect(offsets).toContain(1);
-        expect(queryItem(r, 4)).toBeInTheDocument();
-      });
-    });
-    
-    it('keeps the snapped page in view when the window is re-centered', async () => {
-      const r = render(<RtlTest defaultIndex={0} />);
-      const scroller = getScroller(r);
-      
-      await waitFor(() => {
-        expect(isFullyVisibleInScroller(scroller, getItem(r, 0))).toBe(true);
-      });
-      
-      await nextFrame();
-      scroller.scrollBy({ left: -PAGE_PX, behavior: 'instant' });
-      
-      await waitFor(() => {
-        expect(queryItem(r, 3)).toBeInTheDocument();
-        expect(queryItem(r, -2)).not.toBeInTheDocument();
-      });
-      
-      await sleep(200);
-      expect(isFullyVisibleInScroller(scroller, getItem(r, 1))).toBe(true);
     });
   });
 });

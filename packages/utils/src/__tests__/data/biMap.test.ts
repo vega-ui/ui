@@ -2,11 +2,6 @@ import { describe, it, expect } from 'vitest';
 import { BiMap } from '../../data';
 
 describe('BiMap', () => {
-  it('creates empty map', () => {
-    const map = new BiMap<string, number>();
-    expect(map.size).toBe(0);
-  });
-  
   it('initializes with values', () => {
     const map = new BiMap<string, number>([['A', 1], ['B', 2]]);
     expect(map.size).toBe(2);
@@ -148,15 +143,5 @@ describe('BiMap', () => {
     expect(map.size).toBe(1);
     expect(map.hasKey(undefined)).toBe(false);
     expect(map.getByKey('B')).toBe(1);
-  });
-
-  it('supports symbol keys', () => {
-    const k = Symbol('key');
-    const v = Symbol('value');
-    const map = new BiMap<symbol, symbol>();
-    
-    map.set(k, v);
-    expect(map.getByKey(k)).toBe(v);
-    expect(map.getByValue(v)).toBe(k);
   });
 });

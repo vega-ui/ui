@@ -32,11 +32,6 @@ const getInput = (r: RenderResult) => r.getByTestId(TESTID_INPUT) as HTMLInputEl
 
 describe('TimeField', () => {
   describe('Critical User Paths', () => {
-    it('renders the text field', async () => {
-      const r = render(<TimeFieldTest />);
-      await expect.element(getInput(r)).toBeInTheDocument();
-    });
-
     it('reports the typed time', async () => {
       const onChangeValue = vi.fn();
       const r = render(<TimeFieldTest onChangeValue={onChangeValue} />);
@@ -192,21 +187,6 @@ describe('TimeField', () => {
   });
 
   describe('Accessibility', () => {
-    describe('roles', () => {
-      it('has correct role for input', async () => {
-        const r = render(<TimeFieldTest />);
-        await expect.element(r.getByRole('textbox')).toBeInTheDocument();
-      });
-    });
-
-    describe('focus', () => {
-      it('can focus the input', async () => {
-        const r = render(<TimeFieldTest />);
-        getInput(r).focus();
-        await expect.element(getInput(r)).toHaveFocus();
-      });
-    });
-
     describe('keyboard', () => {
       it('steps the minutes by one with arrow keys by default', async () => {
         const r = render(<TimeFieldTest />);

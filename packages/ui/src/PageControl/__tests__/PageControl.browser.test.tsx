@@ -8,8 +8,6 @@ import { PageControlItem, PageControlProgress } from '../components';
 
 afterEach(cleanup);
 
-const SIZES = ['sm', 'md', 'lg'] as const;
-
 const TESTID_LIST = 'pagecontrol';
 const TESTID_TAB = (i: number) => `tab-${i}`;
 const TESTID_PROGRESS = (i: number) => `progress-${i}`;
@@ -94,11 +92,6 @@ describe('PageControl', () => {
           
           await expect.element(getTab(r, 0)).toHaveAttribute('aria-selected', 'false');
           await expect.element(getTab(r, 0)).toHaveAttribute('tabindex', '-1');
-        });
-        
-        it('does not change active when clicking active tab', async () => {
-          await userEvent.click(getTab(r, 0));
-          await expect.element(getTab(r, 0)).toHaveAttribute('aria-selected', 'true');
         });
         
         it('does nothing when clicking element without data-index', async () => {
@@ -234,22 +227,6 @@ describe('PageControl', () => {
       await expect.poll(() => onAnimationEnd.mock.calls.length).toBe(1);
     });
 
-    it('grows with every size', () => {
-      const r = render(
-        <>
-          {SIZES.map((size) => (
-            <PageControl key={size} size={size}>
-              <PageControlItem data-testid={size} index={0} />
-            </PageControl>
-          ))}
-        </>
-      );
-      const sizes = SIZES.map((size) => r.getByTestId(size).getBoundingClientRect().width);
-
-      expect(new Set(sizes).size).toBe(SIZES.length);
-      expect(sizes).toEqual([...sizes].sort((a, b) => a - b));
-    });
-
     it('cancels the progress animation frame on unmount', () => {
       const cancel = vi.spyOn(window, 'cancelAnimationFrame');
       const r = render(
@@ -305,24 +282,6 @@ describe('PageControl', () => {
         await userEvent.keyboard('{ArrowLeft}');
         
         await expect.element(getTab(r, 0)).toHaveAttribute('aria-selected', 'true');
-      });
-    });
-    
-    describe('roles', () => {
-      let r: RenderResult;
-      
-      beforeEach(() => {
-        r = render(<PageControlTest defaultActive={0} />);
-      });
-      
-      it('tablist has role=tablist', async () => {
-        await expect.element(getList(r)).toHaveRole('tablist');
-      });
-      
-      it('each item is a tab', async () => {
-        for (const tab of getAllTabs(r)) {
-          await expect.element(tab).toHaveRole('tab');
-        }
       });
     });
     

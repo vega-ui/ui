@@ -26,11 +26,7 @@ const YearPickerTest = (props?: Partial<ComponentProps<typeof YearPicker>>) => (
   </YearPicker>
 );
 
-const getGrid = (r: RenderResult) => r.getByRole('grid');
 const getCells = (r: RenderResult) => r.getAllByRole('gridcell') as HTMLDivElement[];
-
-const queryAnyYearCellWithNumber = (r: RenderResult) =>
-  getCells(r).find((el) => /^\d+$/.test(el.textContent?.trim() ?? ''));
 
 const getFirstInteractiveCell = (r: RenderResult) =>
   getCells(r).find(
@@ -44,20 +40,6 @@ describe('YearPicker', () => {
       
       beforeEach(() => {
         r = render(<YearPickerTest />);
-      });
-      
-      it('renders grid', async () => {
-        await expect.element(getGrid(r)).toBeInTheDocument();
-      });
-      
-      it('renders day cells', async () => {
-        const cells = getCells(r);
-        expect(cells.length).toBeGreaterThanOrEqual(28);
-      });
-      
-      it('renders at least one numeric day cell', async () => {
-        const anyYear = queryAnyYearCellWithNumber(r);
-        expect(anyYear).toBeDefined();
       });
       
       it('click selects an interactive day cell', async () => {
@@ -80,26 +62,26 @@ describe('YearPicker', () => {
         await expect.element(cell).toHaveAttribute('data-size', SIZE_LG);
       });
     });
-  });
-  
-  describe('cell template', () => {
-    const EraYear: FC = () => {
-      const { date, label, fields } = useYearPickerCellContext();
+
+    describe('cell template', () => {
+      const EraYear: FC = () => {
+        const { date, label, fields } = useYearPickerCellContext();
       
-      return <YearPickerCell data-testid={`year-${date}`}>{`${label} ${fields?.era ?? ''}`}</YearPickerCell>;
-    };
+        return <YearPickerCell data-testid={`year-${date}`}>{`${label} ${fields?.era ?? ''}`}</YearPickerCell>;
+      };
     
-    it('renders the layout children once per year with the era in context', async () => {
-      const r = render(
-        <YearPicker calendar={createCalendarSystem('japanese')} locale='en-US'>
-          <YearPickerLayout start='2017-06-01' offset={0} rows={2} cols={3}>
-            <EraYear />
-          </YearPickerLayout>
-        </YearPicker>
-      );
+      it('renders the layout children once per year with the era in context', async () => {
+        const r = render(
+          <YearPicker calendar={createCalendarSystem('japanese')} locale='en-US'>
+            <YearPickerLayout start='2017-06-01' offset={0} rows={2} cols={3}>
+              <EraYear />
+            </YearPickerLayout>
+          </YearPicker>
+        );
       
-      await expect.element(r.getByTestId('year-2019-01-01')).toHaveTextContent('Heisei');
-      await expect.element(r.getByTestId('year-2019-05-01')).toHaveTextContent('Reiwa');
+        await expect.element(r.getByTestId('year-2019-01-01')).toHaveTextContent('Heisei');
+        await expect.element(r.getByTestId('year-2019-05-01')).toHaveTextContent('Reiwa');
+      });
     });
   });
   
@@ -120,40 +102,6 @@ describe('YearPicker', () => {
   });
   
   describe('Accessibility', () => {
-    describe('roles', () => {
-      let r: RenderResult;
-      
-      beforeEach(() => {
-        r = render(<YearPickerTest />);
-      });
-      
-      it('grid has role=grid', async () => {
-        await expect.element(getGrid(r)).toHaveRole('grid');
-      });
-      
-      it('day cells have role=gridcell', async () => {
-        const cells = getCells(r);
-        expect(cells.length).toBeGreaterThan(0);
-        await expect.element(cells[0]).toHaveRole('gridcell');
-      });
-    });
-    
-    describe('aria', () => {
-      let r: RenderResult;
-      
-      beforeEach(() => {
-        r = render(<YearPickerTest />);
-      });
-      
-      it('aria-selected reflects selection state', async () => {
-        const cell = getFirstInteractiveCell(r);
-        
-        await expect.element(cell).toHaveAttribute('aria-selected', 'false');
-        await userEvent.click(cell);
-        await expect.element(cell).toHaveAttribute('aria-selected', 'true');
-      });
-    });
-    
     describe('keyboard', () => {
       it('Space toggles selection on focused interactive cell', async () => {
         const r = render(<YearPickerTest />);

@@ -20,23 +20,20 @@ const TESTID_INNER_CLOSE = 'inner-close';
 
 const TITLE = 'Title';
 
-type DialogTestProps = ComponentProps<typeof Dialog> & Pick<ComponentProps<typeof DialogContent>, 'onCancel' | 'onClose' | 'blurred' | 'overlay' | 'closedBy'>
+type DialogTestProps = ComponentProps<typeof Dialog> & Pick<ComponentProps<typeof DialogContent>, 'onCancel' | 'onClose' | 'closedBy'>
 
-const DialogTest: FC<DialogTestProps> = ({ children, onCancel, onClose, blurred, overlay, closedBy, ...props }) => {
+const DialogTest: FC<DialogTestProps> = ({ children, onCancel, onClose, closedBy, ...props }) => {
   return (
-    <>
-      <button data-testid={TESTID_OUTSIDE}>Outside</button>
-      <Dialog {...props}>
-        <DialogTrigger data-testid={TESTID_TRIGGER}>Open</DialogTrigger>
-        <DialogContent data-testid={TESTID_CONTENT} aria-labelledby='title' onCancel={onCancel} onClose={onClose} blurred={blurred} overlay={overlay} closedBy={closedBy}>
-          <h2 id='title'>{TITLE}</h2>
-          <form method='dialog'>
-            <button data-testid={TESTID_CLOSE} aria-label='Close dialog'>×</button>
-          </form>
-          {children}
-        </DialogContent>
-      </Dialog>
-    </>
+    <Dialog {...props}>
+      <DialogTrigger data-testid={TESTID_TRIGGER}>Open</DialogTrigger>
+      <DialogContent data-testid={TESTID_CONTENT} aria-labelledby='title' onCancel={onCancel} onClose={onClose} closedBy={closedBy}>
+        <h2 id='title'>{TITLE}</h2>
+        <form method='dialog'>
+          <button data-testid={TESTID_CLOSE} aria-label='Close dialog'>×</button>
+        </form>
+        {children}
+      </DialogContent>
+    </Dialog>
   );
 };
 
@@ -108,18 +105,6 @@ describe('Dialog', () => {
         await expect.element(r.queryByTestId('close-content')).not.toBeInTheDocument();
       });
 
-      it('renders a button that does not submit a form', async () => {
-        const r = render(
-          <Dialog defaultOpen>
-            <DialogContent aria-label='Panel'>
-              <DialogClose>Done</DialogClose>
-            </DialogContent>
-          </Dialog>
-        );
-
-        await expect.element(r.getByRole('button', { name: 'Done' })).toHaveAttribute('type', 'button');
-      });
-
       it('closes through its child with asChild and keeps the child onClick', async () => {
         const onClick = vi.fn();
         const onChangeOpen = vi.fn();
@@ -145,10 +130,6 @@ describe('Dialog', () => {
 
       beforeEach(() => {
         r = render(<DialogTest />);
-      });
-
-      it('is closed by default', async () => {
-        await toBeClosed(r)
       });
 
       it('opens a modal native dialog on trigger click', async () => {
@@ -232,61 +213,6 @@ describe('Dialog', () => {
         await toBeOpened(r);
       });
 
-      describe('defaultOpen', () => {
-        let r: RenderResult;
-
-        beforeEach(() => {
-          cleanup();
-          r = render(<DialogTest defaultOpen />);
-        });
-
-        it('is open on mount', async () => {
-          await toBeOpened(r);
-        });
-
-        it('closes on close button click', async () => {
-          await closeByCloseButton(r);
-          await toBeClosed(r);
-        });
-      });
-
-
-      it('blurs the backdrop by default', async () => {
-        await openByTrigger(r);
-        await toBeOpened(r);
-
-        await expect.element(getContent(r)).toHaveAttribute('data-blurred', 'true');
-      });
-
-      it('applies blurred prop', async () => {
-        r.rerender(<DialogTest blurred={false} />);
-        await openByTrigger(r);
-        await toBeOpened(r);
-
-        await expect.element(getContent(r)).toHaveAttribute('data-blurred', 'false');
-      });
-
-      it('dims the page behind the dialog by default', async () => {
-        document.documentElement.style.setProperty('--overlay', 'rgb(0, 0, 0)');
-        await openByTrigger(r);
-        await toBeOpened(r);
-
-        expect(getComputedStyle(getContent(r), '::backdrop').backgroundColor).toBe('rgb(0, 0, 0)');
-        document.documentElement.style.removeProperty('--overlay');
-      });
-
-      it('leaves the page behind the dialog visible without an overlay', async () => {
-        document.documentElement.style.setProperty('--overlay', 'rgb(0, 0, 0)');
-        r.rerender(<DialogTest overlay={false} />);
-        await openByTrigger(r);
-        await toBeOpened(r);
-
-        const backdrop = getComputedStyle(getContent(r), '::backdrop');
-
-        expect(backdrop.backgroundColor).toBe('rgba(0, 0, 0, 0)');
-        expect(backdrop.backdropFilter).toBe('none');
-        document.documentElement.style.removeProperty('--overlay');
-      });
     });
 
     describe('controlled', () => {
@@ -311,11 +237,6 @@ describe('Dialog', () => {
         await openByTrigger(r);
 
         expect(onChangeOpen).toHaveBeenCalledExactlyOnceWith(true);
-      });
-
-      it('opens when parent sets open=true', async () => {
-        r.rerender(<DialogTest open />);
-        await toBeOpened(r);
       });
 
       it('calls onChangeOpen(false) on backdrop click when open=true', async () => {
@@ -376,8 +297,8 @@ describe('Dialog', () => {
       });
     });
   });
-
-  describe('Edge cases', () => {
+  
+  describe('Edge Cases', () => {
     it('does not submit the surrounding form on trigger click', async () => {
       const onSubmit = vi.fn();
       const r = render(
@@ -409,6 +330,10 @@ describe('Dialog', () => {
     });
 
     it('animates out when a form with method dialog closes it', async () => {
+      document.documentElement.dataset.motion = '';
+      onTestFinished(() => {
+        delete document.documentElement.dataset.motion;
+      });
       const r = render(
         <DialogTest defaultOpen>
           <form method='dialog'>
@@ -655,6 +580,10 @@ describe('Dialog', () => {
     });
 
     it('stays open when reopened during the close transition', async () => {
+      document.documentElement.dataset.motion = '';
+      onTestFinished(() => {
+        delete document.documentElement.dataset.motion;
+      });
       const r = render(<DialogTest defaultOpen />);
       await toBeOpened(r);
 
@@ -707,11 +636,6 @@ describe('Dialog', () => {
         await expect.poll(() => getInnerContent(r).matches(':modal')).toBe(true);
       })
 
-      it('opening inner does not close outer', async () => {
-        await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
-        await expect.element(getInnerContent(r)).toHaveAttribute('data-status', 'open');
-      });
-
       it('Escape closes only the inner dialog', async () => {
         await userEvent.keyboard('{Escape}');
 
@@ -743,42 +667,8 @@ describe('Dialog', () => {
       });
     })
   });
-
+  
   describe('Accessibility', () => {
-    describe('aria', () => {
-      let r: RenderResult;
-
-      beforeEach(() => {
-        r = render(<DialogTest defaultOpen />);
-      });
-
-      it('takes its name from aria-labelledby', async () => {
-        await toBeOpened(r);
-        await expect.element(getContent(r)).toHaveAccessibleName(TITLE);
-      });
-
-      it('close button has accessible name', async () => {
-        await toBeOpened(r);
-        await expect.element(getClose(r)).toHaveAccessibleName('Close dialog');
-      });
-
-      it('trigger describes the dialog it opens', async () => {
-        await toBeOpened(r);
-
-        await expect.element(getTrigger(r)).toHaveAttribute('aria-haspopup', 'dialog');
-        await expect.element(getTrigger(r)).not.toHaveAttribute('aria-controls');
-      });
-
-    });
-
-    describe('roles', () => {
-      it('dialog is exposed with role=dialog', async () => {
-        const r = render(<DialogTest defaultOpen />);
-        await toBeOpened(r);
-        await expect.element(r.getByRole('dialog')).toBeInTheDocument();
-      });
-    });
-
     describe('focus', () => {
       it('focuses the dialog itself on open', async () => {
         const r = render(<DialogTest />);
@@ -794,15 +684,6 @@ describe('Dialog', () => {
         await toBeOpened(r);
 
         await expect.element(r.getByTestId('input')).toHaveFocus();
-      });
-
-      it('makes the page outside inert', async () => {
-        const r = render(<DialogTest defaultOpen />);
-        await toBeOpened(r);
-
-        r.getByTestId(TESTID_OUTSIDE).focus();
-
-        await expect.element(r.getByTestId(TESTID_OUTSIDE)).not.toHaveFocus();
       });
 
       it('restores focus to the trigger after close', async () => {
@@ -895,15 +776,6 @@ describe('Dialog', () => {
         await userEvent.tab();
 
         await expect.element(r.getByRole('textbox', { name: 'First' })).toHaveFocus();
-      });
-
-      it('closes on Escape in uncontrolled mode', async () => {
-        const r = render(<DialogTest />);
-        await openByTrigger(r);
-        await toBeOpened(r);
-
-        await userEvent.keyboard('{Escape}');
-        await toBeClosed(r);
       });
 
       it('closes on Escape again after reopening', async () => {

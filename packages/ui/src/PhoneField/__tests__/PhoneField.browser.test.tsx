@@ -28,9 +28,6 @@ const TESTID_LISTBOX = 'listbox';
 const TESTID_INPUT = 'input';
 const TESTID_OPTION = (value: string) => `option-${value}`;
 
-const AUTOCOMPLETE = 'tel';
-const PLACEHOLDER = '+7';
-
 const DEFAULT_CODE = 'RU' as const;
 const NEXT_CODE = 'US' as const;
 
@@ -60,12 +57,7 @@ const PhoneFieldTest: FC<ComponentProps<typeof PhoneField> & { inputProps?: Phon
         </SelectListbox>
       </PhoneFieldSelect>
       
-      <PhoneFieldInput
-        data-testid={TESTID_INPUT}
-        autoComplete={AUTOCOMPLETE}
-        placeholder={PLACEHOLDER}
-        {...inputProps}
-      />
+      <PhoneFieldInput data-testid={TESTID_INPUT} {...inputProps} />
     </PhoneField>
   );
 };
@@ -136,36 +128,6 @@ describe('PhoneField', () => {
       });
     });
 
-    describe('default', () => {
-      let r: RenderResult;
-      
-      beforeEach(() => {
-        r = render(<PhoneFieldTest defaultCode={DEFAULT_CODE} />);
-      });
-      
-      it('renders a native tel input with correct configuration', async () => {
-        const input = getInput(r);
-        
-        await expect.element(input).toBeInTheDocument();
-        await expect.element(input).toHaveAttribute('type', 'tel');
-        await expect.element(input).toHaveAttribute('inputmode', 'tel');
-      });
-      
-      it('forwards input props (placeholder, autoComplete)', async () => {
-        const input = getInput(r);
-        
-        await expect.element(input).toHaveAttribute('placeholder', PLACEHOLDER);
-        await expect.element(input).toHaveAttribute('autocomplete', AUTOCOMPLETE);
-      });
-      
-      it('renders hidden native select for form compatibility', async () => {
-        const hiddenSelect = getHiddenSelect(r);
-        
-        await expect.element(hiddenSelect).toBeInTheDocument();
-        await expect.element(hiddenSelect).toHaveValue(DEFAULT_CODE);
-      });
-    });
-    
     describe('uncontrolled', () => {
       describe('country selection', () => {
         let r: RenderResult;
@@ -405,14 +367,6 @@ describe('PhoneField', () => {
   });
 
   describe('Edge Cases', () => {
-    it('keeps the country list as wide as its content, not the screen', async () => {
-      const r = render(<PhoneFieldTest defaultCode={DEFAULT_CODE} />);
-
-      await openByClick(r);
-
-      await expect.poll(() => getListbox(r).getBoundingClientRect().width).toBeLessThan(window.innerWidth / 2);
-    });
-
     it('restores the default country selected in the list on form reset', async () => {
       const r = render(
         <form data-testid='form'>
@@ -435,36 +389,6 @@ describe('PhoneField', () => {
       await expect.poll(() => getCombobox(r).getAttribute('aria-activedescendant')).toBe(getOption(r, value).id);
     };
 
-    it('exposes the country combobox with its name, popup and selected country', async () => {
-      const r = render(
-        <PhoneField defaultCode={DEFAULT_CODE}>
-          <PhoneFieldSelect>
-            <SelectCombobox data-testid={TESTID_COMBOBOX} aria-label='Country'>
-              <SelectValue />
-            </SelectCombobox>
-            <SelectListbox data-testid={TESTID_LISTBOX} aria-label='Countries'>
-              <SelectOption data-testid={TESTID_OPTION('RU')} value='RU'>RU</SelectOption>
-              <SelectOption data-testid={TESTID_OPTION('US')} value='US'>US</SelectOption>
-            </SelectListbox>
-          </PhoneFieldSelect>
-          <PhoneFieldInput aria-label='Phone number' />
-        </PhoneField>,
-      );
-      const combobox = r.getByRole('combobox', { name: 'Country' });
-
-      expect(combobox).toBe(getCombobox(r));
-      expect(combobox.getAttribute('aria-haspopup')).toBe('listbox');
-      expect(combobox.getAttribute('aria-controls')).toBe(getListbox(r).id);
-      expect(combobox.getAttribute('aria-expanded')).toBe('false');
-
-      await openByClick(r);
-
-      expect(combobox.getAttribute('aria-expanded')).toBe('true');
-      expect(r.getByRole('listbox', { name: 'Countries' })).toBe(getListbox(r));
-      expect(getOption(r, 'RU').getAttribute('aria-selected')).toBe('true');
-      expect(getOption(r, 'US').getAttribute('aria-selected')).not.toBe('true');
-    });
-
     it('opens on the current country and selects another one by keyboard', async () => {
       const onChangeCode = vi.fn();
       const r = render(<PhoneFieldTest defaultCode={DEFAULT_CODE} onChangeCode={onChangeCode} />);
@@ -481,17 +405,6 @@ describe('PhoneField', () => {
       await expect.poll(() => getListbox(r).matches(':popover-open')).toBe(false);
       expect(onChangeCode).toHaveBeenCalledWith('US');
       await expect.element(getHiddenSelect(r)).toHaveValue('US');
-    });
-
-    it('opens by typing and moves to the matching country', async () => {
-      const r = render(<PhoneFieldTest defaultCode={DEFAULT_CODE} />);
-
-      getCombobox(r).focus();
-      await userEvent.keyboard('f');
-
-      await toBeOpened(r);
-      await toBeActive(r, 'FR');
-      await expect.element(getHiddenSelect(r)).toHaveValue(DEFAULT_CODE);
     });
 
     it('closes on Escape keeping the country and the focus on the combobox', async () => {

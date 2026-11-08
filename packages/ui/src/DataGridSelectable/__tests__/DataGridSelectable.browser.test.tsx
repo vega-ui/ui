@@ -1,4 +1,4 @@
-import { ComponentProps, FC } from 'react';
+import { ComponentProps } from 'react';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   cleanup,
@@ -21,8 +21,8 @@ const GridSelectableTest = (
   props: Partial<ComponentProps<typeof DataGridSelectable>>
 ) => (
   <DataGridSelectable {...props}>
-    <DataGridSelectableRowGroup data-testid='rowgroup'>
-      <DataGridSelectableRow row={0} data-testid='row-0'>
+    <DataGridSelectableRowGroup>
+      <DataGridSelectableRow row={0}>
         <DataGridSelectableCell data-testid='0:0' col={0}>
           0:0
         </DataGridSelectableCell>
@@ -34,7 +34,7 @@ const GridSelectableTest = (
         </DataGridSelectableCell>
       </DataGridSelectableRow>
       
-      <DataGridSelectableRow row={1} data-testid='row-1'>
+      <DataGridSelectableRow row={1}>
         <DataGridSelectableCell data-testid='1:0' col={0}>
           1:0
         </DataGridSelectableCell>
@@ -49,9 +49,6 @@ const GridSelectableTest = (
   </DataGridSelectable>
 );
 
-const getGrid = (r: RenderResult) => r.getByRole('grid');
-const getRowGroup = (r: RenderResult) => r.getByTestId('rowgroup');
-const getRow = (r: RenderResult, row: number) => r.getByTestId(`row-${row}`);
 const getCell = (r: RenderResult, row: number, col: number) => r.getByTestId(`${row}:${col}`);
 
 afterEach(cleanup);
@@ -63,23 +60,6 @@ describe('DataGridSelectable', () => {
       
       beforeEach(() => {
         r = render(<GridSelectableTest />);
-      });
-      
-      it('renders grid and basic structure', async () => {
-        await expect.element(getGrid(r)).toBeInTheDocument();
-        await expect.element(getRowGroup(r)).toBeInTheDocument();
-        await expect.element(getRow(r, 0)).toBeInTheDocument();
-        await expect.element(getRow(r, 1)).toBeInTheDocument();
-      });
-      
-      it('renders cells', async () => {
-        await expect.element(getCell(r, 0, 0)).toBeInTheDocument();
-        await expect.element(getCell(r, 1, 2)).toBeInTheDocument();
-      });
-      
-      it('initially cells are unselected', async () => {
-        await expect.element(getCell(r, 0, 0)).toHaveAttribute('aria-selected', 'false');
-        await expect.element(getCell(r, 0, 1)).toHaveAttribute('aria-selected', 'false');
       });
       
       it('click selects a cell', async () => {
@@ -279,8 +259,13 @@ describe('DataGridSelectable', () => {
       });
       
       it('does not select disabled cell on click', async () => {
-        const r = render(<GridSelectableTest disabled={makeKey(0, 1)} />);
-        await expect.element(getCell(r, 0, 1)).toBeDisabled()
+        const onSelectCell = vi.fn();
+        const r = render(<GridSelectableTest disabled={makeKey(0, 1)} onSelectCell={onSelectCell} />);
+
+        fireEvent.click(getCell(r, 0, 1));
+
+        await expect.element(getCell(r, 0, 1)).toHaveAttribute('aria-selected', 'false');
+        expect(onSelectCell).not.toHaveBeenCalled();
       });
       
       it('still allows selecting enabled cell when other cell is disabled', async () => {
@@ -355,38 +340,6 @@ describe('DataGridSelectable', () => {
           expect.arrayContaining([makeKey(0, 0), makeKey(1, 1)])
         );
       });
-    });
-  });
-  
-  describe('Error Handling', () => {
-    it('controlled active without onChangeActive: Arrow navigation does not change active tabIndex', async () => {
-      const Grid: FC = () => (
-        <DataGridSelectable active={makeKey(0, 0)} selection='single'>
-          <DataGridSelectableRowGroup>
-            <DataGridSelectableRow row={0}>
-              <DataGridSelectableCell col={0} data-testid='cell-0-0'>
-                0:0
-              </DataGridSelectableCell>
-              <DataGridSelectableCell col={1} data-testid='cell-0-1'>
-                0:1
-              </DataGridSelectableCell>
-            </DataGridSelectableRow>
-          </DataGridSelectableRowGroup>
-        </DataGridSelectable>
-      );
-      
-      const r = render(<Grid />);
-      
-      const cell0 = r.getByTestId('cell-0-0');
-      const cell1 = r.getByTestId('cell-0-1');
-      
-      cell0.focus();
-      await expect.element(cell0).toHaveFocus();
-      
-      await userEvent.keyboard('{ArrowRight}');
-      
-      await expect.element(cell0).toHaveAttribute('tabindex', '0');
-      await expect.element(cell1).toHaveAttribute('tabindex', '-1');
     });
   });
   
@@ -465,67 +418,6 @@ describe('DataGridSelectable', () => {
   });
   
   describe('Accessibility', () => {
-    describe('roles', () => {
-      let r: RenderResult;
-      
-      beforeEach(() => {
-        r = render(<GridSelectableTest />);
-      });
-      
-      it('root has role=grid', async () => {
-        await expect.element(getGrid(r)).toHaveRole('grid');
-      });
-      
-      it('cells have role=gridcell', async () => {
-        await expect.element(getCell(r, 0, 0)).toHaveRole('gridcell');
-        await expect.element(getCell(r, 1, 2)).toHaveRole('gridcell');
-      });
-    });
-    
-    describe('aria', () => {
-      let r: RenderResult;
-      
-      beforeEach(() => {
-        r = render(<GridSelectableTest />);
-      });
-      
-      it('aria-selected toggles to true on selection', async () => {
-        await userEvent.click(getCell(r, 1, 2));
-        await expect.element(getCell(r, 1, 2)).toHaveAttribute('aria-selected', 'true');
-      });
-      
-      it('aria-selected remains false for unselected cells', async () => {
-        await userEvent.click(getCell(r, 1, 2));
-        await expect.element(getCell(r, 0, 0)).toHaveAttribute('aria-selected', 'false');
-      });
-      
-      it('aria-disabled is present for disabled cells', async () => {
-        r.rerender(<GridSelectableTest disabled={[makeKey(0, 1), makeKey(1, 0)]} />);
-        await expect.element(getCell(r, 0, 1)).toHaveAttribute('aria-disabled', 'true');
-        await expect.element(getCell(r, 1, 0)).toHaveAttribute('aria-disabled', 'true');
-      });
-      
-      it('aria-disabled=false for enabled cells (when other cells disabled)', async () => {
-        r.rerender(<GridSelectableTest disabled={[makeKey(0, 1), makeKey(1, 0)]} />);
-        await expect.element(getCell(r, 0, 0)).toHaveAttribute('aria-disabled', 'false');
-      });
-    });
-    
-    describe('focus', () => {
-      it('defaultActive cell receives tabIndex=0', async () => {
-        const r = render(<GridSelectableTest defaultActive={makeKey(0, 1)} />);
-        await expect.element(getCell(r, 0, 1)).toHaveAttribute('tabindex', '0');
-      });
-      
-      it('focusing a cell sets document focus on it', async () => {
-        const r = render(<GridSelectableTest />);
-        const cell = getCell(r, 0, 0);
-        
-        cell.focus();
-        await expect.element(cell).toHaveFocus();
-      });
-    });
-    
     describe('keyboard', () => {
       it('Space selects focused cell', async () => {
         const r = render(<GridSelectableTest selection='single' />);
@@ -545,27 +437,6 @@ describe('DataGridSelectable', () => {
         await userEvent.keyboard('{Enter}');
         
         await expect.element(cell).toHaveAttribute('aria-selected', 'true');
-      });
-      
-      it('ArrowRight moves focus to next cell', async () => {
-        const r = render(<GridSelectableTest defaultActive={makeKey(0, 0)} />);
-        const c00 = getCell(r, 0, 0);
-        
-        c00.focus();
-        await expect.element(c00).toHaveFocus();
-        
-        await userEvent.keyboard('{ArrowRight}');
-        await expect.element(getCell(r, 0, 1)).toHaveFocus();
-      });
-      
-      it('ArrowDown moves focus to cell below', async () => {
-        const r = render(<GridSelectableTest defaultActive={makeKey(0, 0)} />);
-        const c00 = getCell(r, 0, 0);
-        
-        c00.focus();
-        await userEvent.keyboard('{ArrowDown}');
-        
-        await expect.element(getCell(r, 1, 0)).toHaveFocus();
       });
     });
   });

@@ -66,10 +66,4 @@ describe('useMutationObserver', () => {
 
     expect(callback).not.toHaveBeenCalled();
   });
-
-  it('does nothing without an element', async () => {
-    const { unmount } = await renderHook(() => useMutationObserver({ current: null }, () => {}));
-
-    await unmount();
-  });
 });

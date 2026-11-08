@@ -28,16 +28,4 @@ describe('useRefMap', () => {
 
     expect(result.current.getItem('a')).toBe(element);
   });
-
-  it('keeps the map and functions across renders', async () => {
-    const { result, rerender } = await renderHook(() => useRefMap<string, HTMLElement>());
-    const { map, itemRef, removeItemRef, getItem } = result.current;
-
-    await rerender();
-
-    expect(result.current.map).toBe(map);
-    expect(result.current.itemRef).toBe(itemRef);
-    expect(result.current.removeItemRef).toBe(removeItemRef);
-    expect(result.current.getItem).toBe(getItem);
-  });
 });

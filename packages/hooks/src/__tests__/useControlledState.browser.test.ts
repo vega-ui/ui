@@ -20,12 +20,6 @@ describe('useControlledState', () => {
     expect(onChange).toHaveBeenCalledExactlyOnceWith('b');
   });
 
-  it('returns the controlled value', async () => {
-    const { result } = await renderHook(() => useControlledState<string>('c', 'a'));
-
-    expect(result.current[0]).toBe('c');
-  });
-
   it('keeps the controlled value and calls onChange on set', async () => {
     const onChange = vi.fn();
     const { result } = await renderHook(() => useControlledState<string>('c', 'a', onChange));

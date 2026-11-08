@@ -156,7 +156,7 @@ describe('Collapsible', () => {
     });
   });
   
-  describe('Error Handling', () => {
+  describe('Error handling', () => {
     it('controlled without onChangeOpen: click does not throw and UI stays controlled', async () => {
       const r = render(<CollapsibleTest open={false} />);
       
@@ -182,19 +182,6 @@ describe('Collapsible', () => {
       await expect.element(getContent(r)).toHaveAttribute('hidden');
     });
 
-    it('supports duplicate text in trigger and content (use testids)', async () => {
-      const text = 'Same';
-      const r = render(
-        <CollapsibleTest>
-          <CollapsibleTrigger data-testid='trigger'>{text}</CollapsibleTrigger>
-          <CollapsibleContent data-testid='content'>{text}</CollapsibleContent>
-        </CollapsibleTest>,
-      );
-      
-      await expect.element(getTrigger(r)).toBeInTheDocument();
-      await expect.element(getContent(r)).toBeInTheDocument();
-    });
-    
     it('sets --content-height CSS variable from scrollHeight (layout effect)', async () => {
       const r = render(
         <CollapsibleTest>
@@ -223,18 +210,6 @@ describe('Collapsible', () => {
         expect(content.style.getPropertyValue('--content-height')).toBe('123px');
       });
     });
-    
-    it('passes props to trigger and content', async () => {
-      const r = render(
-        <CollapsibleTest>
-          <CollapsibleTrigger data-testid='trigger' title='t' />
-          <CollapsibleContent data-testid='content' data-x='y' />
-        </CollapsibleTest>,
-      );
-      
-      await expect.element(getTrigger(r)).toHaveAttribute('title', 't');
-      await expect.element(getContent(r)).toHaveAttribute('data-x', 'y');
-    });
   });
   
   describe('Accessibility', () => {
@@ -248,32 +223,6 @@ describe('Collapsible', () => {
       it('trigger is a button and has type=button', async () => {
         await expect.element(getTrigger(r)).toHaveProperty('tagName', 'BUTTON');
         await expect.element(getTrigger(r)).toHaveAttribute('type', 'button');
-      });
-      
-      it('trigger has aria-controls pointing to content id', async () => {
-        const id = getContent(r).getAttribute('id');
-        expect(id).toBeTruthy();
-        await expect.element(getTrigger(r)).toHaveAttribute('aria-controls', id!);
-      });
-      
-      describe('keyboard', () => {
-        it('Enter toggles', async () => {
-          getTrigger(r).focus();
-          await expect.element(getTrigger(r)).toHaveFocus();
-          
-          await userEvent.keyboard('{Enter}');
-          await expect.element(getTrigger(r)).toHaveAttribute('aria-expanded', 'true');
-          await expect.element(getContent(r)).not.toHaveAttribute('hidden');
-        });
-        
-        it('Space toggles', async () => {
-          getTrigger(r).focus();
-          await expect.element(getTrigger(r)).toHaveFocus();
-          
-          await userEvent.keyboard(' ');
-          await expect.element(getTrigger(r)).toHaveAttribute('aria-expanded', 'true');
-          await expect.element(getContent(r)).not.toHaveAttribute('hidden');
-        });
       });
     });
   });

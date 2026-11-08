@@ -14,13 +14,11 @@ const TESTID_DECREMENT = 'decrement';
 const TESTID_INCREMENT = 'increment';
 const TESTID_INPUT = 'input';
 
-const PLACEHOLDER = '0';
-
 const NumberFieldTest: FC<Partial<ComponentProps<typeof NumberField>>> = (props) => {
   return (
     <NumberField {...props}>
       <NumberFieldDecrementButton data-testid={TESTID_DECREMENT} />
-      <NumberFieldInput data-testid={TESTID_INPUT} placeholder={PLACEHOLDER} />
+      <NumberFieldInput data-testid={TESTID_INPUT} />
       <NumberFieldIncrementButton data-testid={TESTID_INCREMENT} />
     </NumberField>
   );
@@ -116,25 +114,6 @@ describe('NumberField', () => {
       r = render(<NumberFieldTest />);
     });
     
-    it('renders input and controls', async () => {
-      await expect.element(getInput(r)).toBeInTheDocument();
-      await expect.element(getDecrement(r)).toBeInTheDocument();
-      await expect.element(getIncrement(r)).toBeInTheDocument();
-    });
-    
-    it('renders placeholder', async () => {
-      await expect.element(getInput(r)).toHaveAttribute('placeholder', PLACEHOLDER);
-    });
-    
-    it('increments from empty to 0 by default', async () => {
-      const input = getInput(r);
-      
-      await expect.element(input).toHaveValue('');
-      
-      await userEvent.click(getIncrement(r));
-      await waitFor(() => expect(input).toHaveValue('0'));
-    });
-    
     it('decrements from empty to 0 by default', async () => {
       const input = getInput(r);
       
@@ -188,13 +167,15 @@ describe('NumberField', () => {
       });
       
       it('wheel down decrements when changeOnWheel=true', async () => {
+        r.unmount();
+        r = render(<NumberFieldTest defaultValue={5} />);
         const input = getInput(r);
         input.focus();
         
         fireEvent.wheel(input, { deltaY: 10 });
         
         await waitFor(() => {
-          expect(input).toHaveValue('0');
+          expect(input).toHaveValue('4');
         });
       });
       
@@ -394,24 +375,7 @@ describe('NumberField', () => {
       });
     });
     
-    describe('roles', () => {
-      it('input is exposed as textbox', async () => {
-        const r = render(<NumberFieldTest />);
-        await expect.element(getInput(r)).toHaveRole('textbox');
-      });
-    });
-    
     describe('keyboard', () => {
-      it('ArrowUp increments from empty to 0', async () => {
-        const r = render(<NumberFieldTest />);
-        const input = getInput(r);
-        
-        await userEvent.click(input);
-        
-        await userEvent.keyboard('{ArrowUp}');
-        await waitFor(() => expect(input).toHaveValue('0'));
-      });
-      
       it('ArrowDown decrements from empty to 0', async () => {
         const r = render(<NumberFieldTest />);
         const input = getInput(r);

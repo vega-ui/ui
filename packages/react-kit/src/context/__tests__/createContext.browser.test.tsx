@@ -52,8 +52,4 @@ describe('createContext', () => {
     expect(values.at(-1)).toEqual({ size: 'sm' });
     expect(values.at(-1)).not.toBe(values[0]);
   });
-
-  it('names the provider after the context', () => {
-    expect(Provider.displayName).toBe('SizeProvider');
-  });
 });

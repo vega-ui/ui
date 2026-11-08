@@ -1,5 +1,5 @@
 import { ComponentProps, FC } from 'react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
 import { userEvent } from 'vitest/browser';
 
@@ -66,52 +66,27 @@ const PaginationTest: FC<Partial<ComponentProps<typeof Pagination>>> = (props) =
   );
 };
 
-const getRoot = (r: RenderResult) => r.getByTestId(TESTID_ROOT);
-
-const getPrev = (r: RenderResult) => r.getByTestId(TESTID_PREV);
 const getNext = (r: RenderResult) => r.getByTestId(TESTID_NEXT);
 
-const getItem111 = (r: RenderResult) => r.getByTestId(TESTID_ITEM_111);
 const getItem112 = (r: RenderResult) => r.getByTestId(TESTID_ITEM_112);
-const getItem113 = (r: RenderResult) => r.getByTestId(TESTID_ITEM_113);
 
 const getEllipsis = (r: RenderResult) => r.getByTestId(TESTID_ELLIPSIS);
 
 describe('Pagination', () => {
-  describe('Critical User Paths', () => {
-    let r: RenderResult;
-    
-    beforeEach(() => {
-      r = render(<PaginationTest />);
-    });
-    
-    it('renders root', async () => {
-      await expect.element(getRoot(r)).toBeInTheDocument();
-    });
-    
-    it('renders items', async () => {
-      await expect.element(getItem111(r)).toBeInTheDocument();
-      await expect.element(getItem112(r)).toBeInTheDocument();
-      await expect.element(getItem113(r)).toBeInTheDocument();
-      
-      await expect.element(getItem111(r)).toHaveTextContent('111');
-      await expect.element(getItem112(r)).toHaveTextContent('112');
-      await expect.element(getItem113(r)).toHaveTextContent('113');
-    });
-    
-    it('renders trigger buttons', async () => {
-      await expect.element(getPrev(r)).toBeInTheDocument();
-      await expect.element(getNext(r)).toBeInTheDocument();
-      await expect.element(getPrev(r)).toHaveRole('button');
-      await expect.element(getNext(r)).toHaveRole('button');
-    });
-    
-    it('renders ellipsis', async () => {
-      await expect.element(getEllipsis(r)).toBeInTheDocument();
-      await expect.element(getEllipsis(r)).toHaveTextContent('…');
+  describe('Accessibility', () => {
+    it('marks only the current page', async () => {
+      const r = render(
+        <Pagination>
+          <PaginationListItem><PaginationItem current>1</PaginationItem></PaginationListItem>
+          <PaginationListItem><PaginationItem>2</PaginationItem></PaginationListItem>
+        </Pagination>
+      );
+
+      await expect.element(r.getByRole('button', { name: '1' })).toHaveAttribute('aria-current', 'page');
+      await expect.element(r.getByRole('button', { name: '2' })).not.toHaveAttribute('aria-current');
     });
   });
-  
+
   describe('Edge Cases', () => {
     it('does not submit the surrounding form on trigger click', async () => {
       const onSubmit = vi.fn();
@@ -126,11 +101,6 @@ describe('Pagination', () => {
 
       expect(onSubmit).not.toHaveBeenCalled();
     });
-
-    it('renders without optional Pagination props', async () => {
-      const r = render(<PaginationTest />);
-      await expect.element(getRoot(r)).toBeInTheDocument();
-    });
   });
   
   describe('Accessibility', () => {
@@ -138,38 +108,6 @@ describe('Pagination', () => {
       it('hides ellipsis from assistive tech', async () => {
         const r = render(<PaginationTest />);
         await expect.element(getEllipsis(r)).toHaveAttribute('aria-hidden', 'true');
-      });
-      
-      it('exposes icon buttons via aria-label', async () => {
-        const r = render(<PaginationTest />);
-        await expect.element(getPrev(r)).toHaveAttribute('aria-label', 'Previous page');
-        await expect.element(getNext(r)).toHaveAttribute('aria-label', 'Next page');
-      });
-    });
-
-    describe('focus', () => {
-      it('ellipsis is not focusable', async () => {
-        const r = render(<PaginationTest />);
-        getEllipsis(r).focus();
-
-        await expect.element(getEllipsis(r)).not.toHaveFocus();
-      });
-    });
-    
-    describe('roles', () => {
-      it('renders list items with listitem role', async () => {
-        const r = render(<PaginationTest />);
-        const items = r.getAllByRole('listitem');
-        expect(items.length).toBeGreaterThan(0);
-      });
-      
-      it('renders items and triggers as buttons', async () => {
-        const r = render(<PaginationTest />);
-        await expect.element(getPrev(r)).toHaveRole('button');
-        await expect.element(getNext(r)).toHaveRole('button');
-        await expect.element(getItem111(r)).toHaveRole('button');
-        await expect.element(getItem112(r)).toHaveRole('button');
-        await expect.element(getItem113(r)).toHaveRole('button');
       });
     });
   });

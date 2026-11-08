@@ -1,16 +1,22 @@
 /**
  * Creates a shared warm-up window, like the one macOS uses for tooltips:
- * once something calls `warm`, `isWarm` stays true for `duration`
- * milliseconds, so the next element can skip its delay.
+ * `isWarm` is true while anything holds it and for `duration` milliseconds
+ * after the last hold is released, so the next element can skip its delay.
  */
 export const createWarmUp = (duration: number) => {
+  let held = 0
   let warmUntil = 0
 
   return {
-    warm: () => {
-      warmUntil = Date.now() + duration
+    hold: () => {
+      held++
+
+      return () => {
+        held--
+        warmUntil = Date.now() + duration
+      }
     },
-    isWarm: () => Date.now() < warmUntil,
+    isWarm: () => held > 0 || Date.now() < warmUntil,
   }
 }
 

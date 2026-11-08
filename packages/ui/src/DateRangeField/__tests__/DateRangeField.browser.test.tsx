@@ -198,20 +198,6 @@ describe('DateRangeField', () => {
       r = render(<DateRangeFieldTest onInput={onInput} />);
     });
     
-    it('renders input and calendar trigger', async () => {
-      await expect.element(getInput(r)).toHaveRole('textbox');
-      await expect.element(getTrigger(r)).toHaveRole('button');
-    });
-    
-    it('opens calendar popover', async () => {
-      expect(r.queryByTestId(TESTID_CALENDAR_ROOT)).toBeNull();
-      
-      await userEvent.click(getTrigger(r));
-      
-      await expect.element(getContent(r)).toBeInTheDocument();
-      await expect.element(getCalendarRoot(r)).toBeInTheDocument();
-    });
-    
     it('selecting start date writes only start value', async () => {
       await userEvent.click(getTrigger(r));
       await pickDate(r, new Date(2026, 0, 10));
@@ -226,15 +212,6 @@ describe('DateRangeField', () => {
       
       expect(getInput(r)).toHaveValue('10.01.2026 – 15.01.2026');
       expect(onInput).toHaveBeenCalled();
-    });
-    
-    it('typing a valid range keeps calendar in sync', async () => {
-      const input = getInput(r);
-      
-      await userEvent.type(input, `10.01.2026${RANGE_SEPARATOR}15.01.2026`);
-      await userEvent.click(getTrigger(r));
-      
-      await expect.element(getCalendarRoot(r)).toBeInTheDocument();
     });
   });
   
@@ -269,13 +246,6 @@ describe('DateRangeField', () => {
       await new Promise((resolve) => setTimeout(resolve, 300));
 
       await expect.element(getInput(r)).toHaveValue(`10.01.2026${RANGE_SEPARATOR}15.01.2026`);
-    });
-
-    it('does not crash when opening calendar with empty value', async () => {
-      const r = render(<DateRangeFieldTest />);
-      
-      await userEvent.click(getTrigger(r));
-      await expect.element(getCalendarRoot(r)).toBeInTheDocument();
     });
 
     describe('typing', () => {

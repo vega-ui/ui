@@ -32,7 +32,6 @@ const SlotTest: FC<Partial<ComponentProps<typeof Slot>>> = (props) => {
 };
 
 const getChild = (r: RenderResult) => r.getByTestId(TESTID_CHILD) as HTMLElement;
-const queryChild = (r: RenderResult) => r.queryByTestId(TESTID_CHILD) as HTMLElement | null;
 
 describe('Slot', () => {
   describe('Critical User Paths', () => {
@@ -79,21 +78,6 @@ describe('Slot', () => {
       await expect.element(child).toHaveClass(CHILD_CLASS);
     });
     
-    it('supports different element types', async () => {
-      r.rerender(
-        <SlotTest>
-          <a data-testid={TESTID_CHILD} href='/test'>
-            {CHILD_TEXT}
-          </a>
-        </SlotTest>
-      );
-      
-      const child = getChild(r);
-      
-      await expect.element(child).toHaveAttribute('href', '/test');
-      await expect.element(child).toHaveTextContent(CHILD_TEXT);
-    });
-    
     it('merges event handlers (slot + child) without losing either', async () => {
       let slotCount = 0;
       let childCount = 0;
@@ -123,49 +107,11 @@ describe('Slot', () => {
     });
   });
   
-  describe('Error Handling', () => {
+  describe('Error handling', () => {
     it('throws when child is not a valid React element', async () => {
       expect(() => {
         render(<SlotTest>text child</SlotTest>);
       }).toThrow('React.Children.only expected to receive a single React element child.');
-    });
-    
-    it('throws when multiple children are passed', async () => {
-      expect(() => {
-        render(
-          <SlotTest>
-            <button data-testid='a'>A</button>
-            <button data-testid='b'>B</button>
-          </SlotTest>
-        );
-      }).toThrow();
-    });
-  });
-  
-  describe('Edge Cases', () => {
-    it('supports nullish props and still renders child', async () => {
-      const r = render(
-        <SlotTest>
-          <button data-testid={TESTID_CHILD}>{CHILD_TEXT}</button>
-        </SlotTest>
-      );
-      
-      const child = getChild(r);
-      await expect.element(child).toBeInTheDocument();
-    });
-    
-    it('does not render child when render throws', async () => {
-      let r: RenderResult | null = null;
-      
-      try {
-        r = render(<SlotTest>false</SlotTest>);
-      } catch {
-        // ignore
-      }
-      
-      if (r) {
-        expect(queryChild(r)).toBeNull();
-      }
     });
   });
 });

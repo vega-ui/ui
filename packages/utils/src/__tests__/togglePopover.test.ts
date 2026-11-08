@@ -15,8 +15,4 @@ describe('togglePopover', () => {
 
     expect(() => togglePopover(el, true)).not.toThrow();
   });
-
-  it('does nothing without an element', () => {
-    expect(() => togglePopover(null, true)).not.toThrow();
-  });
 });

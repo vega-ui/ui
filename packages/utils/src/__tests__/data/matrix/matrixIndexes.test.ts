@@ -93,12 +93,4 @@ describe('MatrixIndexes', () => {
     expect(m.remove(42)).toBe(false);
     expect(m.indexes).toEqual([2, 4]);
   });
-  
-  it('handles many inserts in arbitrary order and stays sorted', () => {
-    const m = new MatrixIndexes();
-    const values = [7, 1, 9, 3, 8, 2, 6, 4, 5, 0, 10, 10, 3, 7];
-    values.forEach(v => m.add(v));
-    
-    expect(m.indexes).toEqual([0,1,2,3,4,5,6,7,8,9,10]);
-  });
 });

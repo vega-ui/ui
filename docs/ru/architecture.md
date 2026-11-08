@@ -59,10 +59,10 @@ VegaUI — воркспейс `pnpm` под управлением Turborepo. Г
 
 Пример:
 
-- [packages/ui/src/TextField/TextField.tsx](../../packages/ui/src/TextField/TextField.tsx)
-- [packages/ui/src/TextField/components/TextFieldInput/TextFieldInput.tsx](../../packages/ui/src/TextField/components/TextFieldInput/TextFieldInput.tsx)
-- [packages/ui/src/TextField/style.module.css](../../packages/ui/src/TextField/style.module.css)
-- [packages/ui/src/TextField/__tests__/TextField.browser.test.tsx](../../packages/ui/src/TextField/__tests__/TextField.browser.test.tsx)
+- [packages/ui/src/Switch/Switch.tsx](../../packages/ui/src/Switch/Switch.tsx)
+- [packages/ui/src/Switch/components/SwitchInput/SwitchInput.tsx](../../packages/ui/src/Switch/components/SwitchInput/SwitchInput.tsx)
+- [packages/ui/src/Switch/style.module.css](../../packages/ui/src/Switch/style.module.css)
+- [packages/ui/src/Switch/__tests__/Switch.browser.test.tsx](../../packages/ui/src/Switch/__tests__/Switch.browser.test.tsx)
 
 ## Истории, тесты и документация
 

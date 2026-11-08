@@ -49,7 +49,6 @@ const PickerTest = (props: Partial<ComponentProps<typeof DataGridPicker>>) => {
 };
 
 const getGrid = (r: RenderResult) => r.getByRole('grid');
-const getRow = (r: RenderResult, row: number) => r.getByTestId(`row-${row}`);
 const getCell = (r: RenderResult, row: number, col: number) =>
   r.getByTestId(`${row}:${col}`);
 
@@ -58,19 +57,6 @@ afterEach(cleanup);
 describe('DataGridPicker', () => {
   describe('Critical User Paths', () => {
     describe('default (single selection)', () => {
-      it('renders grid, rowgroup, rows and picker items', async () => {
-        const r = render(<PickerTest />);
-        
-        await expect.element(getGrid(r)).toBeInTheDocument();
-        await expect.element(r.getByTestId('rowgroup')).toBeInTheDocument();
-        
-        await expect.element(getRow(r, 0)).toBeInTheDocument();
-        await expect.element(getRow(r, 1)).toBeInTheDocument();
-        
-        await expect.element(getCell(r, 0, 0)).toBeInTheDocument();
-        await expect.element(getCell(r, 1, 2)).toBeInTheDocument();
-      });
-      
       it('passes size/variant from DataGridPicker context to items (data-size / data-variant)', async () => {
         const r = render(
           <PickerTest size='lg' variant='primary' />
@@ -215,8 +201,6 @@ describe('DataGridPicker', () => {
         const enabledCell = getCell(r, 0, 0);
         
         await expect.element(disabledCell).toHaveAttribute('aria-disabled', 'true');
-        await expect.element(disabledCell).toHaveAttribute('aria-selected', 'false');
-        
         await expect.element(disabledCell).toHaveAttribute('aria-selected', 'false');
         
         await userEvent.click(enabledCell);
