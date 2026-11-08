@@ -1,5 +1,5 @@
 import { ComponentProps, FC } from 'react';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, onTestFinished, vi } from 'vitest';
 import { cleanup, fireEvent, render, type RenderResult, waitFor } from '@testing-library/react';
 import { userEvent } from 'vitest/browser';
 
@@ -108,6 +108,10 @@ describe('Tooltip', () => {
       });
 
       it('keeps the content mounted while the close transition runs', async () => {
+        document.documentElement.dataset.motion = '';
+        onTestFinished(() => {
+          delete document.documentElement.dataset.motion;
+        });
         const r = render(<TooltipTest open />);
         await waitFor(() => {
           expect(queryContent(r)).toHaveAttribute('data-status', 'open');
@@ -343,6 +347,7 @@ describe('Tooltip', () => {
     });
 
     it('shows the next tooltip at once right after another closes', async () => {
+      await waitForWarmUpToExpire();
       const r = render(
         <>
           <Tooltip delayOpen={0}>

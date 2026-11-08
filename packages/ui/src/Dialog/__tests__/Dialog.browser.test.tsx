@@ -330,6 +330,10 @@ describe('Dialog', () => {
     });
 
     it('animates out when a form with method dialog closes it', async () => {
+      document.documentElement.dataset.motion = '';
+      onTestFinished(() => {
+        delete document.documentElement.dataset.motion;
+      });
       const r = render(
         <DialogTest defaultOpen>
           <form method='dialog'>
@@ -576,6 +580,10 @@ describe('Dialog', () => {
     });
 
     it('stays open when reopened during the close transition', async () => {
+      document.documentElement.dataset.motion = '';
+      onTestFinished(() => {
+        delete document.documentElement.dataset.motion;
+      });
       const r = render(<DialogTest defaultOpen />);
       await toBeOpened(r);
 

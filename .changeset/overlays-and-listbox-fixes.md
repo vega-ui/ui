@@ -22,7 +22,7 @@ Overlay and listbox fixes, and the WAI-ARIA keyboard and focus behavior they wer
 - New `PopoverClose` closes its `Popover`, and `PopoverAnchor` positions the content against another element than the trigger.
 - `Escape` closes an open `Tooltip` alone, leaving the `Dialog`, `Drawer`, or `Sheet` around it open for the next `Escape`.
 - `TooltipContent` unmounts when its CSS transition ends instead of after a fixed delay, and keeps the native `display: none` until it opens.
-- `Tooltip` waits `250` ms by default before it hides after the pointer leaves, so the pointer can cross the gap onto the tooltip, as WCAG asks of content shown on hover. Pass `delayClose={0}` to hide at once.
+- `Tooltip` waits `250` ms by default before it hides after the pointer leaves, so the pointer can cross the gap onto the tooltip, as WCAG asks of content shown on hover. Pass `delayClose={0}` to hide at once. Another `Tooltip` hovered meanwhile still shows at once, without its `delayOpen`.
 - BREAKING: `Popover` and `Tooltip` render no element of their own, only their children, so they no longer take `className`, `style`, or other `<div>` attributes: put them on `PopoverContent`, `TooltipContent`, or a wrapper of your own.
 - BREAKING: `DialogTrigger`, `DrawerTrigger`, and `SheetTrigger` no longer set `aria-expanded`, as a modal covers its trigger and the state never reaches the user, matching the WAI-ARIA dialog pattern. They keep `aria-haspopup="dialog"`.
 - BREAKING: `Dialog` no longer takes `fluid`. Stretch `DialogContent` with `style` or `className` instead, as the full-screen dialog example shows.

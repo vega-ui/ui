@@ -117,6 +117,10 @@ describe('Drawer', () => {
   describe('Critical User Paths', () => {
     describe('DrawerClose', () => {
       it('closes the drawer with the close transition', async () => {
+        document.documentElement.dataset.motion = '';
+        onTestFinished(() => {
+          delete document.documentElement.dataset.motion;
+        });
         const r = render(
           <Drawer defaultOpen>
             <DrawerContent data-testid='close-content' aria-label='Panel'>

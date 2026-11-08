@@ -86,7 +86,6 @@ export const Tooltip: FC<TooltipProps> = ({
 
   const changeOpen = useEventCallback((value: boolean) => {
     if (value === open) return
-    if (!value) tooltipWarmUp.warm()
 
     setOpen(value)
   });
@@ -108,6 +107,10 @@ export const Tooltip: FC<TooltipProps> = ({
   const hide = (delay = 0) => schedule(false, delay)
 
   useEffect(() => () => clearTimeout(timer.current), []);
+
+  useEffect(() => {
+    if (open) return tooltipWarmUp.hold()
+  }, [open]);
 
   useEffect(() => {
     if (!open) return
