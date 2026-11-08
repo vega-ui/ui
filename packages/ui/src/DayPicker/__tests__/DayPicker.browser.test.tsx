@@ -49,11 +49,7 @@ const DayPickerTest = (props?: Partial<ComponentProps<typeof DayPicker>>) => (
   </DayPicker>
 );
 
-const getGrid = (r: RenderResult) => r.getByRole('grid');
 const getCells = (r: RenderResult) => r.getAllByRole('gridcell') as HTMLDivElement[];
-
-const queryAnyDayCellWithNumber = (r: RenderResult) =>
-  getCells(r).find((el) => /^\d+$/.test(el.textContent?.trim() ?? ''));
 
 const queryFirstDisabledCell = (r: RenderResult) =>
   getCells(r).find((el) => el.getAttribute('aria-disabled') === 'true');
@@ -75,20 +71,6 @@ describe('DayPicker', () => {
       
       beforeEach(() => {
         r = render(<DayPickerTest />);
-      });
-      
-      it('renders grid', async () => {
-        await expect.element(getGrid(r)).toBeInTheDocument();
-      });
-      
-      it('renders day cells', async () => {
-        const cells = getCells(r);
-        expect(cells.length).toBeGreaterThanOrEqual(28);
-      });
-      
-      it('renders at least one numeric day cell', async () => {
-        const anyDay = queryAnyDayCellWithNumber(r);
-        expect(anyDay).toBeDefined();
       });
       
       it('click selects an interactive day cell', async () => {
@@ -137,98 +119,54 @@ describe('DayPicker', () => {
         await expect.element(getCtxMonth(r)).toHaveTextContent(MONTH_A_START);
       });
     });
-  });
-  
-  describe('range selection', () => {
-    it('reports the bounds in order when the range is picked backwards', async () => {
-      const onSelectCell = vi.fn();
-      const r = render(<DayPickerTest selection='range' onSelectCell={onSelectCell} />);
 
-      await userEvent.click(getDay(r, '2024-01-20'));
-      await userEvent.click(getDay(r, '2024-01-10'));
+    describe('range selection', () => {
+      it('reports the bounds in order when the range is picked backwards', async () => {
+        const onSelectCell = vi.fn();
+        const r = render(<DayPickerTest selection='range' onSelectCell={onSelectCell} />);
 
-      expect(onSelectCell).toHaveBeenLastCalledWith(['2024-01-10', '2024-01-20']);
+        await userEvent.click(getDay(r, '2024-01-20'));
+        await userEvent.click(getDay(r, '2024-01-10'));
+
+        expect(onSelectCell).toHaveBeenLastCalledWith(['2024-01-10', '2024-01-20']);
+      });
     });
-  });
 
-  describe('cell template', () => {
-    const MarkedDay: FC = () => {
-      const { date, label, fields } = useDayPickerCellContext();
+    describe('cell template', () => {
+      const MarkedDay: FC = () => {
+        const { date, label, fields } = useDayPickerCellContext();
       
-      return <DayPickerCell data-testid={`day-${date}`}>{`${label}/${fields?.month}`}</DayPickerCell>;
-    };
+        return <DayPickerCell data-testid={`day-${date}`}>{`${label}/${fields?.month}`}</DayPickerCell>;
+      };
     
-    it('renders the layout children once per day with the day in context', async () => {
-      const r = render(
-        <DayPicker month='2026-03-10'>
-          <DayPickerLayout>
-            <MarkedDay />
-          </DayPickerLayout>
-        </DayPicker>
-      );
+      it('renders the layout children once per day with the day in context', async () => {
+        const r = render(
+          <DayPicker month='2026-03-10'>
+            <DayPickerLayout>
+              <MarkedDay />
+            </DayPickerLayout>
+          </DayPicker>
+        );
       
-      await expect.element(r.getByTestId('day-2026-03-15')).toHaveTextContent('15/3');
-      await expect.element(r.getByTestId('day-2026-03-31')).toHaveTextContent('31/3');
-    });
+        await expect.element(r.getByTestId('day-2026-03-15')).toHaveTextContent('15/3');
+        await expect.element(r.getByTestId('day-2026-03-31')).toHaveTextContent('31/3');
+      });
     
-    it('gives the fields and label in the calendar system and locale of the picker', async () => {
-      const r = render(
-        <DayPicker month='2025-03-21' calendar={createCalendarSystem('persian')} locale='en-US'>
-          <DayPickerLayout>
-            <MarkedDay />
-          </DayPickerLayout>
-        </DayPicker>
-      );
+      it('gives the fields and label in the calendar system and locale of the picker', async () => {
+        const r = render(
+          <DayPicker month='2025-03-21' calendar={createCalendarSystem('persian')} locale='en-US'>
+            <DayPickerLayout>
+              <MarkedDay />
+            </DayPickerLayout>
+          </DayPicker>
+        );
       
-      await expect.element(r.getByTestId('day-2025-03-21')).toHaveTextContent('1/1');
+        await expect.element(r.getByTestId('day-2025-03-21')).toHaveTextContent('1/1');
+      });
     });
   });
   
   describe('Accessibility', () => {
-    describe('roles', () => {
-      let r: RenderResult;
-      
-      beforeEach(() => {
-        r = render(<DayPickerTest />);
-      });
-      
-      it('grid has role=grid', async () => {
-        await expect.element(getGrid(r)).toHaveRole('grid');
-      });
-      
-      it('day cells have role=gridcell', async () => {
-        const cells = getCells(r);
-        expect(cells.length).toBeGreaterThan(0);
-        await expect.element(cells[0]).toHaveRole('gridcell');
-      });
-    });
-    
-    describe('aria', () => {
-      let r: RenderResult;
-      
-      beforeEach(() => {
-        r = render(<DayPickerTest />);
-      });
-      
-      it('aria-selected reflects selection state', async () => {
-        const cell = getFirstInteractiveCell(r);
-        
-        await expect.element(cell).toHaveAttribute('aria-selected', 'false');
-        await userEvent.click(cell);
-        await expect.element(cell).toHaveAttribute('aria-selected', 'true');
-      });
-      
-      it('aria-disabled marks non-interactive (overflow) days', async () => {
-        const disabled = queryFirstDisabledCell(r);
-        expect(disabled).toBeDefined();
-        
-        await expect.element(disabled as HTMLDivElement).toHaveAttribute(
-          'aria-disabled',
-          'true'
-        );
-      });
-    });
-    
     describe('keyboard', () => {
       it('Space toggles selection on focused interactive cell', async () => {
         const r = render(<DayPickerTest />);

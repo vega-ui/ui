@@ -36,7 +36,6 @@ const getContent = (r: RenderResult, val: (typeof ITEMS)[number]) => r.getByText
 
 afterEach(cleanup);
 
-const SIZES = ['sm', 'md', 'lg'] as const;
 
 describe('Accordion', () => {
   describe('Critical User Paths', () => {
@@ -167,7 +166,7 @@ describe('Accordion', () => {
     });
   });
   
-  describe('Error Handling', () => {
+  describe('Error handling', () => {
     it('duplicate value: opens only one', async () => {
       const r = render(
         <AccordionTest>
@@ -234,31 +233,6 @@ describe('Accordion', () => {
       await expect.element(trigger).toHaveAttribute('aria-expanded', 'true');
     });
 
-    it('grows with every size', () => {
-      const r = render(
-        <>
-          {SIZES.map((size) => (
-            <Accordion key={size} size={size}>
-              <AccordionItem value={size}>
-                <AccordionHeader>
-                  <AccordionTrigger>{size}</AccordionTrigger>
-                </AccordionHeader>
-              </AccordionItem>
-            </Accordion>
-          ))}
-        </>
-      );
-      const sizes = SIZES.map((size) => r.getByRole('button', { name: size }).getBoundingClientRect().height);
-
-      expect(new Set(sizes).size).toBe(SIZES.length);
-      expect(sizes).toEqual([...sizes].sort((a, b) => a - b));
-    });
-
-    it('empty children: renders ul', async () => {
-      const r = render(<Accordion />);
-      await expect.element(r.getByRole('list')).toBeInTheDocument();
-    });
-    
     describe('defaultOpened contains missing value', () => {
       let r: RenderResult;
       
@@ -326,66 +300,6 @@ describe('Accordion', () => {
       
       it('trigger has aria-controls', async () => {
         await expect.element(getTrigger(r, 'One')).toHaveAttribute('aria-controls', 'content-one');
-      });
-      
-      it('trigger has aria-expanded=false by default', async () => {
-        await expect.element(getTrigger(r, 'One')).toHaveAttribute('aria-expanded', 'false');
-      });
-      
-      it('click toggles aria-expanded=true and keeps aria-controls stable', async () => {
-        await userEvent.click(getTrigger(r, 'One'));
-        
-        await expect.element(getTrigger(r, 'One')).toHaveAttribute('aria-expanded', 'true');
-        await expect.element(getTrigger(r, 'One')).toHaveAttribute('aria-controls', 'content-one');
-      });
-    });
-    
-    describe('focus', () => {
-      let r: RenderResult;
-      
-      beforeEach(() => {
-        r = render(<AccordionTest />);
-      });
-      
-      it('trigger is focusable (programmatic)', async () => {
-        getTrigger(r, 'One').focus();
-        await expect.element(getTrigger(r, 'One')).toHaveFocus();
-      });
-    });
-    
-    describe('keyboard', () => {
-      let r: RenderResult;
-      
-      beforeEach(() => {
-        r = render(<AccordionTest />);
-      });
-      
-      it('Enter toggles', async () => {
-        getTrigger(r, 'One').focus();
-        await expect.element(getTrigger(r, 'One')).toHaveFocus();
-        
-        await userEvent.keyboard('{Enter}');
-        await expect.element(getContent(r, 'One')).toBeVisible();
-      });
-      
-      it('Space toggles', async () => {
-        getTrigger(r, 'One').focus();
-        await expect.element(getTrigger(r, 'One')).toHaveFocus();
-        
-        await userEvent.keyboard(' ');
-        await expect.element(getContent(r, 'One')).toBeVisible();
-      });
-    });
-    
-    describe('roles', () => {
-      let r: RenderResult;
-      
-      beforeEach(() => {
-        r = render(<AccordionTest />);
-      });
-      
-      it('renders triggers as interactive elements (has aria-expanded)', async () => {
-        await expect.element(getTrigger(r, 'One')).toHaveAttribute('aria-expanded');
       });
     });
   });

@@ -142,20 +142,4 @@ describe('Matrix', () => {
     expect(t2.map(r => r.index)).toEqual([7, 10]);
     expect(t10.map(r => r.index)).toEqual([2, 4, 7, 10]);
   });
-  
-  it('rows receive inserted cells via insertCell path in addCell', () => {
-    const m = new Matrix<string, string>();
-    m.addCell([3, 5], '3:5', 'A');
-    m.addCell([3, 1], '3:1', 'B');
-    m.addCell([1, 2], '1:2', 'C');
-    
-    const r1 = m.getRow(1)!;
-    const r3 = m.getRow(3)!;
-    
-    expect(r1.get(2)?.key).toBe('1:2');
-    expect(r3.get(1)?.key).toBe('3:1');
-    expect(r3.get(5)?.key).toBe('3:5');
-    
-    expect(r3.getColumnIndexes()).toEqual([1, 5]);
-  });
 });

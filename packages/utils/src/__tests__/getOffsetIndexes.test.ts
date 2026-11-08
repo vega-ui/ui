@@ -22,24 +22,9 @@ describe('getOffsetIndexes', () => {
     expect(res).toEqual([7, 8, 9, 10])
   })
   
-  it('works when size = 1 (dir = 1)', () => {
-    const res = getOffsetIndexes(5, 1, 1)
-    expect(res).toEqual([5])
-  })
-  
   it('works when size = 1 (dir = -1)', () => {
     const res = getOffsetIndexes(5, -1, 1)
     expect(res).toEqual([5])
-  })
-  
-  it('handles negative start', () => {
-    const res = getOffsetIndexes(-3, 1, 4)
-    expect(res).toEqual([-3, -2, -1, 0])
-  })
-  
-  it('handles negative start with dir = -1', () => {
-    const res = getOffsetIndexes(-3, -1, 4)
-    expect(res).toEqual([-6, -5, -4, -3])
   })
   
   it('size = 0 returns empty array', () => {

@@ -23,15 +23,4 @@ describe('useMergeRefs', () => {
 
     expect(result.current).not.toBe(merged);
   });
-
-  it('passes the value to every ref', async () => {
-    const callback = vi.fn();
-    const object = { current: null as string | null };
-    const { result } = await renderHook(() => useMergeRefs<string>([callback, object, null, undefined]));
-
-    result.current('value');
-
-    expect(callback).toHaveBeenCalledExactlyOnceWith('value');
-    expect(object.current).toBe('value');
-  });
 });

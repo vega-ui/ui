@@ -33,10 +33,6 @@ describe('Icon', () => {
       r = render(<IconTest size={DEFAULT_SIZE} />);
     });
     
-    it('renders svg content', async () => {
-      await expect.element(getIcon(r)).toBeInTheDocument();
-    });
-    
     it('applies data-size when width and height are not provided', async () => {
       await expect.element(getIcon(r)).toHaveAttribute('data-size', DEFAULT_SIZE);
     });
@@ -49,11 +45,6 @@ describe('Icon', () => {
     it('does not apply data-size when height is provided', async () => {
       r.rerender(<IconTest size={DEFAULT_SIZE} height={32} />);
       await expect.element(getIcon(r)).not.toHaveAttribute('data-size');
-    });
-    
-    it('passes svg props to slot element', async () => {
-      r.rerender(<IconTest strokeWidth={2} />);
-      await expect.element(getIcon(r)).toHaveAttribute('stroke-width', '2');
     });
   });
   

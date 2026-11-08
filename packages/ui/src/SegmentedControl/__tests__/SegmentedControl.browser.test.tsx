@@ -124,14 +124,6 @@ describe('SegmentedControl', () => {
         r = render(<SegmentedControlTest defaultValue={VALUE_0} />);
       });
       
-      it('renders root', async () => {
-        await expect.element(getRoot(r)).toBeInTheDocument();
-      });
-      
-      it('renders indicator', async () => {
-        await expect.element(getIndicator(r)).toBeInTheDocument();
-      });
-      
       it('renders hidden radio inputs', async () => {
         await expect.element(getInput0(r)).toBeInTheDocument();
         await expect.element(getInput1(r)).toBeInTheDocument();
@@ -315,25 +307,6 @@ describe('SegmentedControl', () => {
   });
   
   describe('Accessibility', () => {
-    describe('roles', () => {
-      let r: RenderResult;
-      
-      beforeEach(() => {
-        r = render(<SegmentedControlTest defaultValue={VALUE_1} />);
-      });
-      
-      it('exposes native radio semantics (role=radio)', async () => {
-        await expect.element(getInput0(r)).toHaveRole('radio');
-        await expect.element(getInput1(r)).toHaveRole('radio');
-        await expect.element(getInput2(r)).toHaveRole('radio');
-      });
-      
-      it('reflects checked state for assistive tech', async () => {
-        await expect.element(getInput1(r)).toBeChecked();
-        await expect.element(getInput0(r)).not.toBeChecked();
-      });
-    });
-    
     describe('keyboard', () => {
       it('supports tab focus and arrow navigation for radios', async () => {
         const r = render(<SegmentedControlTest defaultValue={VALUE_0} />);

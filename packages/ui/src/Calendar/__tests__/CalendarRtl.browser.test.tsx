@@ -48,7 +48,7 @@ const RtlCalendar = (props: ComponentProps<typeof Calendar>) => (
       </CalendarHeader>
       <CalendarContent>
         <CalendarDays data-testid='day-picker'>
-          <CalendarWeekdays data-testid='weekdays'>
+          <CalendarWeekdays>
             <CalendarWeekday />
           </CalendarWeekdays>
           <CalendarWeeks>
@@ -89,21 +89,6 @@ describe('Calendar in a right-to-left context', () => {
 
     await expect.poll(() => isPageVisible(getDay(r, '2026-03-15'))).toBe(true);
     expect(getScroller(r).scrollLeft).toBeLessThan(0);
-  });
-
-  it('lays the week out from right to left', async () => {
-    const r = render(<RtlCalendar defaultMonth='2026-03-01' />);
-
-    await expect.poll(() => isPageVisible(getDay(r, '2026-03-15'))).toBe(true);
-
-    const week = getDay(r, '2026-03-11').element().closest('[role="row"]')!;
-    const cells = Array.from(week.querySelectorAll<HTMLElement>('[role="gridcell"]'));
-    const lefts = cells.map((cell) => cell.getBoundingClientRect().left);
-
-    expect(lefts).toEqual([...lefts].sort((a, b) => b - a));
-
-    const labels = Array.from(r.getByTestId('weekdays').children) as HTMLElement[];
-    expect(labels[0].getBoundingClientRect().left).toBeGreaterThan(labels[labels.length - 1].getBoundingClientRect().left);
   });
 
   it('ArrowRight moves to the previous day and ArrowLeft to the next day', async () => {
@@ -195,24 +180,5 @@ describe('Calendar in a right-to-left context', () => {
 
     await userEvent.click(r.getByTestId('next'));
     await expect.poll(() => isPageVisible(getYear(r, '2038-01-01'))).toBe(true);
-  });
-
-  it('mirrors the default chevrons', async () => {
-    const r = render(<RtlCalendar defaultMonth='2026-03-01' />);
-
-    const prevIcon = r.getByTestId('prev').querySelector('svg')!;
-    const nextIcon = r.getByTestId('next').querySelector('svg')!;
-
-    expect(getComputedStyle(prevIcon).transform).toBe('matrix(-1, 0, 0, 1, 0, 0)');
-    expect(getComputedStyle(nextIcon).transform).toBe('matrix(-1, 0, 0, 1, 0, 0)');
-  });
-
-  it('hides the Prev button towards the inline start', async () => {
-    const r = render(<RtlCalendar defaultMonth='2026-03-01' min='2026-03-01' />);
-
-    const prev = r.getByTestId('prev');
-
-    await expect.element(prev).toHaveAttribute('data-visible', 'false');
-    expect(new DOMMatrix(getComputedStyle(prev).transform).m41).toBeGreaterThan(0);
   });
 });

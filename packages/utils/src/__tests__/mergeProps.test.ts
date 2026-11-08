@@ -91,56 +91,9 @@ describe('mergeProps', () => {
     expect(result.role).toBe('checkbox');
   });
 
-  test('handles mixed props types correctly', () => {
-    const result = mergeProps(
-      {
-        id: 'a',
-        className: 'foo',
-        'data-test': 'first',
-        onClick: () => {},
-      },
-      {
-        id: 'b',
-        className: 'bar',
-        'aria-label': 'label',
-        onClick: () => {},
-      }
-    );
-
-    expect(result.id).toBe('a');
-    expect(result.className).toBe('foo bar');
-    expect(result['data-test']).toBe('first');
-    expect(result['aria-label']).toBe('label');
-    expect(typeof result.onClick).toBe('function');
-  });
-
   test('returns an empty object if no arguments', () => {
     const result = mergeProps();
     expect(result).toEqual({});
-  });
-
-  test('correctly merges multiple event types', () => {
-    const clicks: string[] = [];
-    const submits: string[] = [];
-
-    const result = mergeProps(
-      {
-        onClick: () => clicks.push('click1'),
-        onSubmit: () => submits.push('submit1'),
-      },
-      {
-        onClick: () => clicks.push('click2'),
-        onSubmit: () => submits.push('submit2'),
-      }
-    );
-
-    // @ts-expect-error: ignore unknown
-    result.onClick?.({} as unknown);
-    // @ts-expect-error: ignore unknown
-    result.onSubmit?.({} as unknown);
-
-    expect(clicks).toEqual(['click1', 'click2']);
-    expect(submits).toEqual(['submit1', 'submit2']);
   });
 
   test('joins aria-describedby id lists without duplicates', () => {

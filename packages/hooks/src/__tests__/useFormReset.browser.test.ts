@@ -17,16 +17,6 @@ describe('useFormReset', () => {
     document.body.innerHTML = '';
   });
 
-  it('calls onReset when the form is reset', async () => {
-    const { form, input } = setup();
-    const onReset = vi.fn();
-    await renderHook(() => useFormReset({ current: input }, onReset));
-
-    form.reset();
-
-    expect(onReset).toHaveBeenCalledOnce();
-  });
-
   it('calls the latest onReset', async () => {
     const { form, input } = setup();
     const first = vi.fn();

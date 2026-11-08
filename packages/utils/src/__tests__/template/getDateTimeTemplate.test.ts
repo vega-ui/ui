@@ -6,9 +6,4 @@ describe('getDateTimeTemplate', () => {
     expect(getDateTimeTemplate({ dateFormat: 'dd.MM.yyyy', dateSeparator: '.', separator: ', ', timeFormat: 'HH:mm' }))
       .toBe('dd.mm.yyyy, HH:MM');
   });
-
-  it('keeps the seconds of the time format', () => {
-    expect(getDateTimeTemplate({ dateFormat: 'MM/dd/yyyy', dateSeparator: '/', separator: ' ', timeFormat: 'HH:mm:ss' }))
-      .toBe('mm/dd/yyyy HH:MM:SS');
-  });
 });

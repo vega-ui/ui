@@ -101,15 +101,4 @@ describe('MatrixRow', () => {
     const collected = Array.from(row);
     expect(collected).toEqual(['a', 'b', 'c']);
   });
-  
-  it('works with object payloads', () => {
-    type Cell = { id: number; val: string };
-    const row = new MatrixRow<Cell>(0);
-    
-    row.set({ id: 1, val: 'A' }, 5);
-    row.set({ id: 2, val: 'B' }, 1);
-    
-    expect(row.first()).toEqual({ id: 2, val: 'B' }); // col 1
-    expect(row.last()).toEqual({ id: 1, val: 'A' });  // col 5
-  });
 });

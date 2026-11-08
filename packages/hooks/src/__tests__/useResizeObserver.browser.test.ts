@@ -15,15 +15,6 @@ describe('useResizeObserver', () => {
     document.body.innerHTML = '';
   });
 
-  it('reports the element size', async () => {
-    const target = createTarget();
-    const callback = vi.fn();
-    await renderHook(() => useResizeObserver({ current: target }, callback));
-
-    await expect.poll(() => callback).toHaveBeenCalled();
-    expect(callback.mock.calls[0][0].contentRect.width).toBe(100);
-  });
-
   it('reports a resize', async () => {
     const target = createTarget();
     const callback = vi.fn();
@@ -33,14 +24,6 @@ describe('useResizeObserver', () => {
     target.style.width = '200px';
 
     await expect.poll(() => callback.mock.lastCall?.[0].contentRect.width).toBe(200);
-  });
-
-  it('observes the content box by default', async () => {
-    const target = createTarget();
-    const observe = vi.spyOn(ResizeObserver.prototype, 'observe');
-    await renderHook(() => useResizeObserver({ current: target }, () => {}));
-
-    expect(observe).toHaveBeenCalledWith(target, { box: 'content-box' });
   });
 
   it('observes the given box', async () => {

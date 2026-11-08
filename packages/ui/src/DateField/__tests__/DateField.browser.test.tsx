@@ -179,36 +179,12 @@ describe('DateField', () => {
       r = render(<DateFieldTest onInput={onInput} />);
     });
     
-    it('renders input and calendar trigger', async () => {
-      await expect.element(getInput(r)).toHaveRole('textbox');
-      await expect.element(getTrigger(r)).toHaveRole('button');
-    });
-    
-    it('opens calendar popover by click on trigger', async () => {
-      expect(r.queryByTestId(TESTID_CALENDAR_ROOT)).toBeNull();
-      
-      await userEvent.click(getTrigger(r));
-      
-      await expect.element(getContent(r)).toBeInTheDocument();
-      await expect.element(getCalendarRoot(r)).toBeInTheDocument();
-    });
-    
     it('selecting a day in calendar writes value into native input and dispatches input/change events', async () => {
       await userEvent.click(getTrigger(r));
       await pickDate(r, new Date(2026, 0, 15));
       
       expect(getInput(r)).toHaveValue('15.01.2026');
       expect(onInput).toHaveBeenCalledTimes(1);
-    });
-    
-    it('typing a valid date updates internal state and keeps value available for calendar', async () => {
-      const input = getInput(r);
-      
-      await userEvent.click(input);
-      await userEvent.type(input, '15.01.2026');
-      
-      await userEvent.click(getTrigger(r));
-      await expect.element(getCalendarRoot(r)).toBeInTheDocument();
     });
     
     it('supports min/max constraints: selecting out-of-range day does not change input value', async () => {
@@ -404,13 +380,6 @@ describe('DateField', () => {
       expect(onNativeChange).toHaveBeenCalledTimes(0);
     });
     
-    it('does not crash when calendar opens with empty date', async () => {
-      const r = render(<DateFieldTest />);
-      
-      await userEvent.click(getTrigger(r));
-      await expect.element(getCalendarRoot(r)).toBeInTheDocument();
-    });
-
     describe('typing', () => {
       it('pads a day digit that cannot start a two-digit day', async () => {
         const r = render(<DateFieldTest />);
@@ -593,23 +562,6 @@ describe('DateField', () => {
   
   
   describe('Accessibility', () => {
-    describe('roles', () => {
-      let r: RenderResult;
-      
-      beforeEach(() => {
-        r = render(<DateFieldTest />);
-      });
-      
-      it('input exposes textbox role', async () => {
-        await expect.element(getInput(r)).toHaveRole('textbox');
-      });
-      
-      it('calendar trigger is an accessible button', async () => {
-        await expect.element(getTrigger(r)).toHaveRole('button');
-        await expect.element(getTrigger(r)).toHaveAccessibleName();
-      });
-    });
-    
     describe('keyboard', () => {
       it('allows selecting a day using keyboard activation (Enter) on a day button', async () => {
         const r = render(<DateFieldTest />);

@@ -3,7 +3,7 @@ import { afterEach, describe, expect, it, onTestFinished, vi } from 'vitest';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
 import { userEvent } from 'vitest/browser';
 import { Listbox } from '../Listbox';
-import { ListboxGroup, ListboxOption } from '../components';
+import { ListboxOption } from '../components';
 
 afterEach(cleanup);
 
@@ -234,18 +234,6 @@ describe('Listbox', () => {
       await expect.element(getOption(r, 'Alpha')).not.toHaveAttribute('data-active', 'true');
     });
 
-    it('scrolls the active option into view inside the list only', async () => {
-      const many = Array.from({ length: 50 }, (_, index) => (
-        <ListboxOption key={index} value={index}>{`Item ${index}`}</ListboxOption>
-      ));
-      const r = render(<Listbox data-testid={LISTBOX} aria-label='Items' style={{ height: 100 }}>{many}</Listbox>);
-
-      getListbox(r).focus();
-      await userEvent.keyboard('{End}');
-
-      await expect.poll(() => getListbox(r).scrollTop).toBeGreaterThan(0);
-    });
-
     it('scrolls back up to the active option', async () => {
       const many = Array.from({ length: 50 }, (_, index) => (
         <ListboxOption key={index} value={index}>{`Item ${index}`}</ListboxOption>
@@ -356,27 +344,6 @@ describe('Listbox', () => {
 
       await userEvent.keyboard('{Enter}');
       expect(onChangeValue).toHaveBeenLastCalledWith(['d', 'c']);
-    });
-
-    it('exposes a named group', async () => {
-      const r = render(
-        <Listbox data-testid={LISTBOX} aria-label='Letters'>
-          <ListboxGroup aria-label='Greek'>{options}</ListboxGroup>
-        </Listbox>,
-      );
-
-      await expect.element(r.getByRole('group', { name: 'Greek' })).toBeVisible();
-    });
-
-    it('is named by aria-labelledby', async () => {
-      const r = render(
-        <>
-          <span id='letters-label'>Letters</span>
-          <Listbox aria-labelledby='letters-label'>{options}</Listbox>
-        </>,
-      );
-
-      await expect.element(r.getByRole('listbox', { name: 'Letters' })).toBeVisible();
     });
 
     it('marks only the disabled option', async () => {

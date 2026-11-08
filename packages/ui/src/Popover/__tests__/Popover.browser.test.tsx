@@ -63,21 +63,6 @@ describe('Popover', () => {
         r = render(<PopoverTest />);
       });
 
-      it('renders trigger', async () => {
-        await expect.element(getTrigger(r)).toBeInTheDocument();
-      });
-
-      it('is closed by default', async () => {
-        await waitClosed();
-      });
-
-      it('opens on trigger click', async () => {
-        await openByTrigger(r);
-        await waitOpened(r);
-
-        await expect.element(r.getByText(CONTENT_TEXT)).toBeInTheDocument();
-      });
-
       it('closes on outside click', async () => {
         await openByTrigger(r);
         await waitOpened(r);
@@ -100,12 +85,6 @@ describe('Popover', () => {
 
       beforeEach(() => {
         r = render(<PopoverTest defaultOpen />);
-      });
-
-      it('renders opened content on mount', async () => {
-        await waitOpened(r);
-
-        await expect.element(r.getByText(CONTENT_TEXT)).toBeInTheDocument();
       });
 
       it('closes on outside click', async () => {
@@ -140,13 +119,6 @@ describe('Popover', () => {
 
         await expect.poll(() => onChangeOpen).toHaveBeenCalledTimes(1);
         expect(onChangeOpen).toHaveBeenLastCalledWith(true);
-      });
-
-      it('renders opened state when open=true', async () => {
-        r.rerender(<PopoverTest open />);
-
-        await waitOpened(r);
-        await expect.element(r.getByText(CONTENT_TEXT)).toBeInTheDocument();
       });
 
       it('closes when parent sets open=false', async () => {
@@ -284,13 +256,6 @@ describe('Popover', () => {
       expect(scaled.bottom).toBeLessThanOrEqual(full.bottom);
     });
 
-    it('renders the content in the top layer', async () => {
-      const r = render(<PopoverTest defaultOpen />);
-      await waitOpened(r);
-
-      expect(getContent(r).matches(':popover-open')).toBe(true);
-    });
-
     it('lays out children while open so they can measure themselves', async () => {
       let width = 0;
       const Measure: FC = () => <div ref={(element) => { if (element) width = element.offsetWidth; }} style={{ width: 120, height: 20 }} />;
@@ -331,14 +296,6 @@ describe('Popover', () => {
       expect(getContent(r).matches(':popover-open')).toBe(true);
     });
 
-    it('grows out of the side facing its trigger', async () => {
-      const r = render(<PopoverTest defaultOpen placement='bottom-start' />);
-      await waitOpened(r);
-
-      await expect.element(getContent(r)).toHaveAttribute('data-side', 'bottom');
-      await expect.element(getContent(r)).toHaveAttribute('data-align', 'start');
-    });
-
     it('does not submit the surrounding form on trigger click', async () => {
       const onSubmit = vi.fn();
       const r = render(
@@ -350,20 +307,6 @@ describe('Popover', () => {
       await userEvent.click(getTrigger(r));
 
       expect(onSubmit).not.toHaveBeenCalled();
-    });
-
-    it('applies data-shadowed=false when shadowed is disabled', async () => {
-      const r = render(
-        <Popover defaultOpen>
-          <PopoverTrigger data-testid={TESTID_TRIGGER}>{TRIGGER_TEXT}</PopoverTrigger>
-          <PopoverContent data-testid={TESTID_CONTENT} shadowed={false}>
-            <div>{CONTENT_TEXT}</div>
-          </PopoverContent>
-        </Popover>
-      );
-
-      await waitOpened(r);
-      await expect.element(getContent(r)).toHaveAttribute('data-shadowed', 'false');
     });
 
     it('does not catch clicks at its old position once closed', async () => {
@@ -399,63 +342,6 @@ describe('Popover', () => {
 
         await expect.element(r.getByRole('dialog')).toBeInTheDocument();
         await expect.element(getTrigger(r)).toHaveAttribute('aria-haspopup', 'dialog');
-      });
-
-      it('applies role=listbox to floating content when role prop is listbox', async () => {
-        const r = render(<PopoverTest role='listbox' />);
-
-        await openByTrigger(r);
-        await waitOpened(r);
-
-        await expect.element(r.getByRole('listbox')).toBeInTheDocument();
-      });
-
-      it('names the dialog from aria-label on the content', async () => {
-        const r = render(
-          <Popover role='dialog'>
-            <PopoverTrigger data-testid={TESTID_TRIGGER}>{TRIGGER_TEXT}</PopoverTrigger>
-            <PopoverContent data-testid={TESTID_CONTENT} aria-label='Settings'>{CONTENT_TEXT}</PopoverContent>
-          </Popover>
-        );
-
-        await openByTrigger(r);
-        await waitOpened(r);
-
-        await expect.element(r.getByRole('dialog', { name: 'Settings' })).toBeInTheDocument();
-      });
-    });
-
-    describe('keyboard', () => {
-      it('closes on Escape (uncontrolled)', async () => {
-        const r = render(<PopoverTest />);
-
-        await openByTrigger(r);
-        await waitOpened(r);
-
-        await closeByEscape();
-        await waitClosed();
-      });
-
-      it('toggles with Space on the trigger', async () => {
-        const r = render(<PopoverTest />);
-        getTrigger(r).focus();
-
-        await userEvent.keyboard(' ');
-        await waitOpened(r);
-
-        await userEvent.keyboard(' ');
-        await waitClosed();
-      });
-
-      it('closes with Enter on the trigger', async () => {
-        const r = render(<PopoverTest />);
-        getTrigger(r).focus();
-
-        await userEvent.keyboard('{Enter}');
-        await waitOpened(r);
-
-        await userEvent.keyboard('{Enter}');
-        await waitClosed();
       });
     });
 

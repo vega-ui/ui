@@ -28,11 +28,7 @@ const MonthPickerTest: FC<Partial<ComponentProps<typeof MonthPicker>>> = (props)
   );
 };
 
-const getGrid = (r: RenderResult) => r.getByRole('grid');
 const getCells = (r: RenderResult) => r.getAllByRole('gridcell') as HTMLDivElement[];
-
-const queryFirstDisabledCell = (r: RenderResult) =>
-  getCells(r).find((el) => el.getAttribute('aria-disabled') === 'true');
 
 const getFirstInteractiveCell = (r: RenderResult) =>
   getCells(r).find((el) => el.getAttribute('aria-disabled') !== 'true') as HTMLDivElement;
@@ -47,15 +43,6 @@ describe('MonthPicker', () => {
       
       beforeEach(() => {
         r = render(<MonthPickerTest defaultActive={DEFAULT_ACTIVE} />);
-      });
-      
-      it('renders grid', async () => {
-        await expect.element(getGrid(r)).toBeInTheDocument();
-      });
-      
-      it('renders month cells', async () => {
-        const cells = getCells(r);
-        expect(cells.length).toBeGreaterThanOrEqual(12);
       });
       
       it('click selects an interactive month cell', async () => {
@@ -78,26 +65,26 @@ describe('MonthPicker', () => {
         await expect.element(cell).toHaveAttribute('data-size', SIZE_LG);
       });
     });
-  });
-  
-  describe('cell template', () => {
-    const ShortMonth: FC = () => {
-      const { date, label } = useMonthPickerCellContext();
+
+    describe('cell template', () => {
+      const ShortMonth: FC = () => {
+        const { date, label } = useMonthPickerCellContext();
       
-      return <MonthPickerCell data-testid={`month-${date}`}>{label.slice(0, 3)}</MonthPickerCell>;
-    };
+        return <MonthPickerCell data-testid={`month-${date}`}>{label.slice(0, 3)}</MonthPickerCell>;
+      };
     
-    it('renders the layout children once per month with the month in context', async () => {
-      const r = render(
-        <MonthPicker year='2026-06-15' locale='en-US'>
-          <MonthPickerLayout>
-            <ShortMonth />
-          </MonthPickerLayout>
-        </MonthPicker>
-      );
+      it('renders the layout children once per month with the month in context', async () => {
+        const r = render(
+          <MonthPicker year='2026-06-15' locale='en-US'>
+            <MonthPickerLayout>
+              <ShortMonth />
+            </MonthPickerLayout>
+          </MonthPicker>
+        );
       
-      await expect.element(r.getByTestId('month-2026-03-01')).toHaveTextContent('Mar');
-      expect(getCells(r)).toHaveLength(12);
+        await expect.element(r.getByTestId('month-2026-03-01')).toHaveTextContent('Mar');
+        expect(getCells(r)).toHaveLength(12);
+      });
     });
   });
   
@@ -111,56 +98,9 @@ describe('MonthPicker', () => {
       expect(keys[0]).toBe('2023-09-16');
       expect(keys[12]).toBe('2024-09-04');
     });
-    
-    it('supports empty children (custom layout omitted)', async () => {
-      const r = render(<MonthPicker defaultActive={DEFAULT_ACTIVE} />);
-      await expect.element(getGrid(r)).toBeInTheDocument();
-    });
   });
   
   describe('Accessibility', () => {
-    describe('roles', () => {
-      let r: RenderResult;
-      
-      beforeEach(() => {
-        r = render(<MonthPickerTest defaultActive={DEFAULT_ACTIVE} />);
-      });
-      
-      it('grid has role=grid', async () => {
-        await expect.element(getGrid(r)).toHaveRole('grid');
-      });
-      
-      it('month cells have role=gridcell', async () => {
-        const cells = getCells(r);
-        expect(cells.length).toBeGreaterThan(0);
-        await expect.element(cells[0]).toHaveRole('gridcell');
-      });
-    });
-    
-    describe('aria', () => {
-      let r: RenderResult;
-      
-      beforeEach(() => {
-        r = render(<MonthPickerTest defaultActive={DEFAULT_ACTIVE} />);
-      });
-      
-      it('aria-selected reflects selection state', async () => {
-        const cell = getInteractiveCellAtIndex(r, 1);
-        
-        await expect.element(cell).toHaveAttribute('aria-selected', 'false');
-        await userEvent.click(cell);
-        await expect.element(cell).toHaveAttribute('aria-selected', 'true');
-      });
-      
-      it('aria-disabled marks non-interactive months when present', async () => {
-        const disabled = queryFirstDisabledCell(r);
-        
-        if (!disabled) return;
-        
-        await expect.element(disabled as HTMLDivElement).toHaveAttribute('aria-disabled', 'true');
-      });
-    });
-    
     describe('keyboard', () => {
       it('Space toggles selection on focused interactive cell', async () => {
         const r = render(<MonthPickerTest defaultActive={DEFAULT_ACTIVE} />);

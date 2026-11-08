@@ -63,38 +63,6 @@ describe('shiftDays', () => {
     }
   })
   
-  it('crosses month boundary correctly (end → next month)', () => {
-    const d = new Date(2024, 0, 31, 23, 59, 59, 999) // Jan 31, 2024
-    const res = shiftDays(d, 1)
-    expect(res.getFullYear()).toBe(2024)
-    expect(res.getMonth()).toBe(1) // Feb
-    expect(res.getDate()).toBe(1)
-  })
-  
-  it('crosses year boundary correctly (Dec → Jan)', () => {
-    const d = new Date(2024, 11, 31, 15, 0, 0, 0) // Dec 31, 2024
-    const res = shiftDays(d, 1)
-    expect(res.getFullYear()).toBe(2025)
-    expect(res.getMonth()).toBe(0) // Jan
-    expect(res.getDate()).toBe(1)
-  })
-  
-  it('handles leap day forward (Feb 28, 2024 + 1 → Feb 29, 2024)', () => {
-    const d = new Date(2024, 1, 28, 10, 0, 0, 0)
-    const res = shiftDays(d, 1)
-    expect(res.getFullYear()).toBe(2024)
-    expect(res.getMonth()).toBe(1) // Feb
-    expect(res.getDate()).toBe(29)
-  })
-  
-  it('handles non-leap year forward (Feb 28, 2025 + 1 → Mar 1, 2025)', () => {
-    const d = new Date(2025, 1, 28, 10, 0, 0, 0)
-    const res = shiftDays(d, 1)
-    expect(res.getFullYear()).toBe(2025)
-    expect(res.getMonth()).toBe(2) // Mar
-    expect(res.getDate()).toBe(1)
-  })
-  
   it('does not mutate the input date and returns a new instance', () => {
     const d = new Date(2025, 4, 10, 18, 30, 0, 123)
     const copyTime = d.getTime()

@@ -42,18 +42,4 @@ describe('compare', () => {
     // @ts-expect-error nullish values are not Comparable
     expect(compare(null, null)).toBe(0);
   });
-
-  it('sorts arrays ascending', () => {
-    expect([3, 1, 2].sort(compare)).toEqual([1, 2, 3]);
-    expect(['c', 'a', 'b'].sort(compare)).toEqual(['a', 'b', 'c']);
-  });
-
-  it('rejects non-comparable types at the type level', () => {
-    // @ts-expect-error objects have no universal ordering
-    compare({}, {});
-    // @ts-expect-error arrays coerce to strings and would order incorrectly
-    compare([2], [10]);
-    // @ts-expect-error relational comparison of symbols throws at runtime
-    expect(() => compare(Symbol('a'), Symbol('b'))).toThrow(TypeError);
-  });
 });

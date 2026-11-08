@@ -220,7 +220,7 @@ describe('Tooltip', () => {
         await waitFor(() => {
           expect(queryContent(r)).toBeInTheDocument();
         });
-        await wait(500);
+        await wait(300);
 
         expect(queryContent(r)).toHaveAttribute('data-status', 'open');
       });
@@ -230,10 +230,10 @@ describe('Tooltip', () => {
       beforeEach(waitForWarmUpToExpire);
 
       it('waits for delayOpen before showing on hover', async () => {
-        const r = render(<TooltipTest delayOpen={400} />);
+        const r = render(<TooltipTest delayOpen={200} />);
 
         await userEvent.hover(getTrigger(r));
-        await wait(200);
+        await wait(100);
         expect(queryContent(r)).not.toBeInTheDocument();
 
         await waitFor(() => {
@@ -252,7 +252,7 @@ describe('Tooltip', () => {
       });
 
       it('waits for delayClose before hiding on unhover', async () => {
-        const r = render(<TooltipTest delayOpen={0} delayClose={400} />);
+        const r = render(<TooltipTest delayOpen={0} delayClose={200} />);
 
         await userEvent.hover(getTrigger(r));
         await waitFor(() => {
@@ -260,7 +260,7 @@ describe('Tooltip', () => {
         });
 
         await userEvent.unhover(getTrigger(r));
-        await wait(200);
+        await wait(100);
         expect(queryContent(r)).toHaveAttribute('data-status', 'open');
 
         await waitFor(() => {

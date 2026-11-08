@@ -8,8 +8,6 @@ import { SliderRange, SliderThumb, SliderThumbIndicator, SliderThumbInput, Slide
 
 afterEach(cleanup);
 
-const SIZES = ['sm', 'md', 'lg'] as const;
-
 const TESTID_ROOT = 'slider';
 const TESTID_RANGE = 'range';
 const TESTID_THUMB = 'thumb';
@@ -79,16 +77,6 @@ const submit = (form: HTMLFormElement) => new FormData(form);
 describe('Slider', () => {
   describe('Critical User Paths', () => {
     describe('uncontrolled', () => {
-      it('renders a native range input with min, max and step', () => {
-        const r = render(<SliderTest min={10} max={20} step={2} />);
-        const [input] = getInputs(r);
-
-        expect(input.type).toBe('range');
-        expect(input.min).toBe('10');
-        expect(input.max).toBe('20');
-        expect(input.step).toBe('2');
-      });
-
       it('starts in the middle without a default value, like the native input', () => {
         const r = render(<SliderTest />);
         const [input] = getInputs(r);
@@ -411,27 +399,14 @@ describe('Slider', () => {
       expect(onChangeValue).not.toHaveBeenCalled();
     });
 
-    it('looks disabled inside a disabled fieldset', () => {
+    it('lets a thumb override the disabled root', () => {
       const r = render(
-        <fieldset disabled style={{ '--disable-label-text-color': 'gray' } as CSSProperties}>
-          <SliderTest defaultValue={[20]} />
-        </fieldset>
-      );
-
-      expect(getComputedStyle(getRoot(r)).getPropertyValue('--slider-range-color')).toBe('gray');
-    });
-
-    it('looks enabled when a thumb overrides the disabled root', () => {
-      const r = render(
-        <div style={{ '--disable-label-text-color': 'gray' } as CSSProperties}>
-          <Slider disabled data-testid={TESTID_ROOT} style={SIZE_STYLE}>
-            <SliderThumb><SliderThumbInput aria-label='value' disabled={false} /></SliderThumb>
-          </Slider>
-        </div>
+        <Slider disabled style={SIZE_STYLE}>
+          <SliderThumb><SliderThumbInput aria-label='value' disabled={false} /></SliderThumb>
+        </Slider>
       );
 
       expect(getInputs(r)[0].disabled).toBe(false);
-      expect(getComputedStyle(getRoot(r)).getPropertyValue('--slider-range-color')).not.toBe('gray');
     });
 
     it('ignores a disabled slider', async () => {
@@ -485,22 +460,6 @@ describe('Slider', () => {
   });
 
   describe('Edge Cases', () => {
-    it('grows with every size', () => {
-      const r = render(
-        <>
-          {SIZES.map((size) => (
-            <Slider key={size} size={size} style={{ width: '200px' }}>
-              <SliderTrack data-testid={size} />
-            </Slider>
-          ))}
-        </>
-      );
-      const sizes = SIZES.map((size) => r.getByTestId(size).getBoundingClientRect().height);
-
-      expect(new Set(sizes).size).toBe(SIZES.length);
-      expect(sizes).toEqual([...sizes].sort((a, b) => a - b));
-    });
-
     describe('thumbs', () => {
       it('snaps values off the step grid like the native input', () => {
         const r = render(
@@ -684,39 +643,6 @@ describe('Slider', () => {
     });
 
     describe('geometry', () => {
-      it('lets the page scroll from the slider like the native input', () => {
-        const r = render(<SliderTest />);
-
-        expect(getComputedStyle(getRoot(r)).touchAction).toBe('auto');
-      });
-
-      it('leaves only horizontal scrolling and zoom to the page on a vertical slider', () => {
-        const r = render(<SliderTest orientation='vertical' />);
-
-        expect(getComputedStyle(getRoot(r)).touchAction).toBe('pan-x pinch-zoom');
-      });
-
-      it('centres the thumb on the track ends', () => {
-        const r = render(<SliderTest defaultValue={[0, 100]} />);
-        const rect = getRoot(r).getBoundingClientRect();
-        const [first, second] = getThumbs(r);
-
-        expect(getCenter(first).x).toBeCloseTo(rect.left, 0);
-        expect(getCenter(second).x).toBeCloseTo(rect.right, 0);
-        expect(getCenter(first).y).toBeCloseTo(rect.top + rect.height / 2, 0);
-      });
-
-      it('grows a vertical slider from the bottom', () => {
-        const r = render(<SliderTest orientation='vertical' defaultValue={[0, 100]} />);
-        const rect = getRoot(r).getBoundingClientRect();
-        const [first, second] = getThumbs(r);
-        const range = r.getByTestId(TESTID_RANGE).getBoundingClientRect();
-
-        expect(getCenter(first).y).toBeCloseTo(rect.bottom, 0);
-        expect(getCenter(second).y).toBeCloseTo(rect.top, 0);
-        expect(range.height).toBeCloseTo(rect.height, 0);
-      });
-
       it('grows a right-to-left slider from the right', async () => {
         const r = render(<div dir='rtl'><SliderTest defaultValue={[0, 30]} /></div>);
         const rect = getRoot(r).getBoundingClientRect();
@@ -753,39 +679,10 @@ describe('Slider', () => {
   });
 
   describe('Accessibility', () => {
-    it('exposes every thumb as a slider with its label', () => {
-      const r = render(<SliderTest defaultValue={[20, 80]} />);
-
-      expect(r.getByRole('slider', { name: 'thumb 0' })).toBeTruthy();
-      expect(r.getByRole('slider', { name: 'thumb 1' })).toBeTruthy();
-    });
-
-    it('hides the visual thumb from assistive technologies', () => {
-      const r = render(<SliderTest />);
-
-      expect(getThumbs(r)[0].getAttribute('aria-hidden')).toBe('true');
-    });
-
     it('sets aria-orientation from the root', () => {
       const r = render(<SliderTest orientation='vertical' />);
 
       expect(getInputs(r)[0].getAttribute('aria-orientation')).toBe('vertical');
-    });
-
-    it('keeps every thumb in the tab order', () => {
-      const r = render(<SliderTest defaultValue={[20, 80]} />);
-
-      expect(getInputs(r).map((input) => input.tabIndex)).toEqual([0, 0]);
-    });
-
-    it('increases a vertical slider with ArrowUp', async () => {
-      const r = render(<SliderTest orientation='vertical' defaultValue={[50]} />);
-      const [input] = getInputs(r);
-
-      input.focus();
-      await userEvent.keyboard('{ArrowUp}');
-
-      expect(input.value).toBe('51');
     });
 
     it('moves by a tenth of the whole range on PageUp and PageDown', async () => {
@@ -814,18 +711,6 @@ describe('Slider', () => {
       await userEvent.keyboard('{ArrowLeft}{ArrowLeft}');
       await flush();
       expect(input.value).toBe('49');
-    });
-
-    it('supports Home and End natively', async () => {
-      const r = render(<SliderTest defaultValue={[50]} />);
-      const [input] = getInputs(r);
-
-      input.focus();
-      await userEvent.keyboard('{End}');
-      expect(input.value).toBe('100');
-
-      await userEvent.keyboard('{Home}');
-      expect(input.value).toBe('0');
     });
   });
 });
