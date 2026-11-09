@@ -19,22 +19,36 @@ export const CollapsibleContent: FC<CollapsibleContentProps> = ({
   children,
   ...props
 }) => {
-  const contentRef = useRef<HTMLDivElement>(null)
+  const { opened, hidden, contentId, hide } = useCollapsibleContext()
 
-  const { opened, onTransitionEnd, hidden, contentId } = useCollapsibleContext()
+  const contentRef = useRef<HTMLDivElement>(null)
+  const animationRef = useRef<Animation>(null)
+  const openedRef = useRef(opened)
 
   useLayoutEffect(() => {
     const contentNode = contentRef.current
-    if (!contentNode) return
-    
-    contentNode.style.setProperty('--content-height', contentNode.scrollHeight + 'px')
-  });
+    if (!contentNode || openedRef.current === opened) return
+    openedRef.current = opened
+
+    const startsHidden = opened && animationRef.current?.playState !== 'running'
+    const from = startsHidden ? 0 : contentNode.getBoundingClientRect().height
+    animationRef.current?.cancel()
+    const to = opened ? contentNode.getBoundingClientRect().height : 0
+
+    const { animationDuration, animationTimingFunction } = getComputedStyle(contentNode)
+    animationRef.current = contentNode.animate({ height: [from + 'px', to + 'px'] }, {
+      duration: parseFloat(animationDuration) * 1000,
+      easing: animationTimingFunction,
+      fill: opened ? 'none' : 'forwards',
+    })
+
+    if (!opened) animationRef.current.onfinish = hide
+  }, [opened, hide]);
 
   return (
     <div
       hidden={hidden}
       data-open={opened}
-      onTransitionEnd={onTransitionEnd}
       ref={mergeRefs([ref, contentRef])}
       className={csx(style.content, className)}
       id={contentId}

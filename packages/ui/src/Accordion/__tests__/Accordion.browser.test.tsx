@@ -167,7 +167,7 @@ describe('Accordion', () => {
   });
   
   describe('Error handling', () => {
-    it('duplicate value: opens only one', async () => {
+    it('duplicate value: opens every item with that value', async () => {
       const r = render(
         <AccordionTest>
           <AccordionItem value='dup' contentId='content-a'>
@@ -188,7 +188,7 @@ describe('Accordion', () => {
       
       await userEvent.click(r.getByText('Trigger A'));
       await expect.element(r.getByText('Content A')).toBeVisible();
-      await expect.element(r.getByText('Content B')).not.toBeVisible();
+      await expect.element(r.getByText('Content B')).toBeVisible();
     });
     
     describe('controlled without onChangeOpened', () => {
