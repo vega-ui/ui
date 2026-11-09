@@ -8,8 +8,7 @@
 
 | Variable | Used By | Purpose |
 | --- | --- | --- |
-| `--transition-state-delay` | `CollapsibleContent` | Height transition timing. |
-| `--content-height` | `CollapsibleContent` | Measured content height used during open transition. |
+| `--transition-state-delay` | `CollapsibleContent` | Height animation duration. |
 
 ## Part-Level Variables
 
@@ -21,7 +20,7 @@
 
 - Open and hidden state are related but not identical during transitions.
 - `asChild` composition means the visible trigger style often comes from another component, such as `Button`.
-- Dynamic content size can change the effective transition behavior if the content grows after first render.
+- Open content has `height: auto`, so content that grows or shrinks after opening, including nested collapsibles, needs no extra work.
 
 ## Examples
 
@@ -43,6 +42,5 @@
 
 ## Do Not Override
 
-- Do not hard-code `--content-height`; it is measured at runtime.
 - Do not hide overflow rules if the section still relies on height animation.
 - Do not assume trigger styling is owned by `Collapsible` when `asChild` is used.

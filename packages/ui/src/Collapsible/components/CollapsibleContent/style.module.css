@@ -1,17 +1,12 @@
 .content {
-    --content-height: 0;
-
-    transition: height var(--transition-state-delay) ease;
+    box-sizing: border-box;
     overflow-y: hidden;
-    height: var(--content-height);
-}
-
-.content:where([data-open='false']) {
-    height: 0;
+    animation-duration: var(--transition-state-delay);
+    animation-timing-function: ease;
 }
 
 @media (prefers-reduced-motion: reduce) {
     .content {
-        transition-duration: 1ms;
+        animation-duration: 1ms;
     }
 }

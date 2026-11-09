@@ -1,9 +1,9 @@
 'use client';
-import { FC, HTMLAttributes, MouseEvent, Ref } from 'react';
+import { ButtonHTMLAttributes, FC, MouseEvent, Ref } from 'react';
 import { useCollapsibleContext } from '../../contexts';
 import { Slot } from '../../../Slot';
 
-export interface CollapsibleTriggerProps extends HTMLAttributes<HTMLElement> {
+export interface CollapsibleTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
    * If true, renders the trigger as a child component using `Slot` (e.g. <a> or <div>).
    * This allows custom semantics or styling while preserving collapsible behavior.
@@ -18,7 +18,6 @@ export interface CollapsibleTriggerProps extends HTMLAttributes<HTMLElement> {
 
 /** The CollapsibleTrigger component is the interactive element—typically a button or custom slot—that toggles the open or closed state of a Collapsible section */
 export const CollapsibleTrigger: FC<CollapsibleTriggerProps> = ({
-  className,
   onClick: _onClick,
   children,
   asChild,
@@ -29,7 +28,7 @@ export const CollapsibleTrigger: FC<CollapsibleTriggerProps> = ({
 
   const { opened, open, close, contentId } = useCollapsibleContext()
 
-  const onClick = (e: MouseEvent<HTMLElement>) => {
+  const onClick = (e: MouseEvent<HTMLButtonElement>) => {
     if (opened) close()
     else open()
 
@@ -43,7 +42,6 @@ export const CollapsibleTrigger: FC<CollapsibleTriggerProps> = ({
       data-open={opened}
       aria-expanded={opened}
       aria-controls={contentId}
-      className={className}
       type={Element === 'button' ? 'button' : undefined}
       {...props}
     >

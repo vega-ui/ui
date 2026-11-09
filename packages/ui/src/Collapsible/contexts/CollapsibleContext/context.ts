@@ -1,6 +1,5 @@
 'use client';
 
-import { TransitionEventHandler } from 'react';
 import { createContext } from '@vega-ui/react-kit/context';
 
 export interface CollapsibleContextState {
@@ -9,7 +8,7 @@ export interface CollapsibleContextState {
   contentId: string
   open: VoidFunction,
   close: VoidFunction
-  onTransitionEnd?: TransitionEventHandler<HTMLDivElement>
+  hide: VoidFunction
 }
 
 export const [CollapsibleProvider, useCollapsibleContext] = createContext<CollapsibleContextState>('CollapsibleContext', {
@@ -18,5 +17,5 @@ export const [CollapsibleProvider, useCollapsibleContext] = createContext<Collap
   contentId: '',
   open: () => undefined,
   close: () => undefined,
-  onTransitionEnd: undefined
+  hide: () => undefined
 })

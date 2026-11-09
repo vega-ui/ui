@@ -31,7 +31,7 @@ export interface CollapsibleProps {
    * The content to render inside the collapsible container.
    * Can be a single node or a list of React nodes.
    */
-  children?: ReactNode | ReactNode[]
+  children?: ReactNode
   
   /**
    * ID of the collapsible content element.
@@ -59,13 +59,15 @@ export const Collapsible: FC<CollapsibleProps> = ({
   
   const [open, onChangeOpen] = useControlledState(controlledOpen, defaultOpen, onControlledChangeOpen)
   const [hidden, setHidden] = useState(!open)
+
+  if (open && hidden) setHidden(false)
   
   const onOpen = useCallback(() => {
-    onChangeOpen?.(true)
+    onChangeOpen(true)
   }, [onChangeOpen])
 
   const onClose = useCallback(() => {
-    onChangeOpen?.(false)
+    onChangeOpen(false)
   }, [onChangeOpen])
 
   const onChangeHidden = useEventCallback(_onChangeHidden)
@@ -74,25 +76,18 @@ export const Collapsible: FC<CollapsibleProps> = ({
     onChangeHidden(hidden)
   }, [hidden, onChangeHidden])
 
-  const onOpenContent = useCallback(() => {
-    setHidden(false)
-    requestAnimationFrame(() => {
-      onOpen()
-    })
-  }, [onOpen])
-
-  const onTransitionEnd = useCallback(() => {
-    if (!open) setHidden(true)
-  }, [open])
+  const hide = useCallback(() => {
+    setHidden(true)
+  }, [])
   
   return (
     <CollapsibleProvider
       contentId={contentId ?? cId}
-      onTransitionEnd={onTransitionEnd}
       hidden={hidden}
       opened={open}
-      open={onOpenContent}
+      open={onOpen}
       close={onClose}
+      hide={hide}
     >
       {children}
     </CollapsibleProvider>
