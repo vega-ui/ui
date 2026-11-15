@@ -70,5 +70,10 @@ describe('Progress', () => {
         await expect.element(getProgress(r)).toHaveAttribute('aria-valuetext', VALUE_TEXT);
       });
     });
+
+    it('leaves out aria-valuenow while indeterminate, even with a value', async () => {
+      const r = render(<ProgressTest value={VALUE} indeterminate />);
+      await expect.element(getProgress(r)).not.toHaveAttribute('aria-valuenow');
+    });
   });
 });

@@ -59,5 +59,30 @@ describe('icons', () => {
       expect(new Set(ids).size).toBe(ids.length);
       expect(foreign).toEqual([]);
     });
+
+    it('points every reference of a flag at an element inside it', () => {
+      const flags = ASSET_NAMES.filter((name) => name.startsWith('Flag'));
+      const host = document.createElement('div');
+      document.body.append(host);
+      const root = createRoot(host);
+      flushSync(() => root.render(flags.map((name) => {
+        const Flag = exports[name]!;
+        return <Flag key={name} data-name={name} />;
+      })));
+
+      const dangling = [...host.querySelectorAll('svg')].flatMap((svg) => [...svg.querySelectorAll('*')].flatMap((element) => [...element.attributes]
+        .flatMap((attribute) => {
+          if (attribute.name.endsWith('href')) return [attribute.value.slice(1)];
+
+          const [, id] = attribute.value.match(/^url\(#(.+)\)$/) ?? [];
+          return id === undefined ? [] : [id];
+        })
+        .filter((id) => svg.querySelector(`[id="${CSS.escape(id)}"]`) === null)
+        .map((id) => `${svg.dataset.name}: ${id}`)));
+      root.unmount();
+      host.remove();
+
+      expect(dangling).toEqual([]);
+    });
   });
 });

@@ -3288,8 +3288,8 @@
     "ru": "Растягивается ли полоса прогресса на всю ширину контейнера."
   },
   "Progress.indeterminate": {
-    "en": "Shows a looping animation instead of the fill, for work whose amount is not known yet. Leave `value` unset while it is on.",
-    "ru": "Показывает зацикленную анимацию вместо заполнения — для работы, объём которой пока неизвестен. Пока он включён, не задавайте `value`."
+    "en": "Shows a looping animation instead of the fill, for work whose amount is not known yet. The value is not announced while it is on.",
+    "ru": "Показывает зацикленную анимацию вместо заполнения — для работы, объём которой пока неизвестен. Пока он включён, значение не озвучивается."
   },
   "Progress.max": {
     "en": "Maximum value of the progress range. Default is 100.",

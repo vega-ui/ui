@@ -41,7 +41,7 @@ export interface ProgressProps extends HTMLAttributes<HTMLDivElement> {
   
   /**
    * Shows a looping animation instead of the fill, for work whose amount is not known yet.
-   * Leave `value` unset while it is on.
+   * The value is not announced while it is on.
    */
   indeterminate?: boolean
 
@@ -79,7 +79,7 @@ export const Progress: FC<ProgressProps> = ({
       aria-valuemax={max}
       aria-valuemin={min}
       aria-valuetext={valueText}
-      aria-valuenow={value}
+      aria-valuenow={indeterminate ? undefined : value}
       data-full-width={fullWidth}
       className={csx(styles.progress, className)}
       data-variant={variant}

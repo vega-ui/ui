@@ -1,4 +1,4 @@
-import { ComponentProps, FC } from 'react';
+import { ComponentProps, FC, SyntheticEvent } from 'react';
 import { afterEach, beforeEach, describe, expect, it, onTestFinished, vi } from 'vitest';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
 import { commands, userEvent } from 'vitest/browser';
@@ -497,6 +497,23 @@ describe('Dialog', () => {
 
       expect(onCancel).toHaveBeenCalledOnce();
       expect(onClose).toHaveBeenCalledOnce();
+    });
+
+    it('runs onCancel before its own handler, so preventing the cancel keeps the dialog open', async () => {
+      const seen: boolean[] = [];
+      const onCancel = vi.fn((event: SyntheticEvent<HTMLDialogElement>) => {
+        seen.push(event.defaultPrevented);
+        event.preventDefault();
+      });
+      const r = render(<DialogTest onCancel={onCancel} />);
+      await openByTrigger(r);
+      await toBeOpened(r);
+
+      await userEvent.keyboard('{Escape}');
+
+      await expect.poll(() => onCancel.mock.calls.length).toBe(1);
+      expect(seen).toEqual([false]);
+      await toBeOpened(r);
     });
 
     describe('nested dialogs', () => {
