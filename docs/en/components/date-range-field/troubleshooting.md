@@ -46,13 +46,48 @@ Users can submit only a start date or only an end date when the feature requires
 
 ### Likely Cause
 
-Validation only checks the field shape superficially and does not enforce complete range semantics.
+The form is submitted with `noValidate`, or the value is checked only from `onChangeValue`. The input itself is invalid while the start or the end is incomplete.
 
 ### How To Verify
 
-- Submit the form with one side missing.
-- Compare client validation with business requirements.
+- Type only the start and check `input.validity.customError` or `form.checkValidity()`.
 
 ### Fix
 
-Treat partial ranges as an explicit editing state and block submit until the range is complete.
+Let the browser block the submit, or check `form.checkValidity()` yourself, and show your message from `onInvalid`. Add `required` to `DateRangeFieldInput` when the range must not be empty.
+
+## Calendar Closes After A Pick
+
+### Symptom
+
+The popup closes as soon as a day is picked, but the product wants it to stay open.
+
+### Likely Cause
+
+Picking closes the popup and returns the focus to the trigger, as the WAI-ARIA date picker dialog pattern describes.
+
+### How To Verify
+
+- Pick a day with a click or <kbd>Enter</kbd> and check whether the popup hides.
+
+### Fix
+
+Picking the end of a range closes the popup; moving an edge of a complete range with <kbd>Shift</kbd> + arrows or a drag keeps it open. Control `open` on the `Popover` and set it back to `true` in `onChangeValue` of `DateRangeFieldCalendar`. It runs after the field closes the popup, in the same update, so the popup never hides.
+
+## Two-Digit Year Reads The Wrong Century
+
+### Symptom
+
+With a format such as `MM/dd/yy`, a typed year lands in an unexpected century.
+
+### Likely Cause
+
+A two-digit year is read within 80 years before and 19 years after the year of `today`, like CLDR and ICU. A wrong device date or `today` moves the window.
+
+### How To Verify
+
+- Check `today` on the root, or the date of the device when it is not set.
+
+### Fix
+
+Pass `today` explicitly, or use a four-digit year (`yyyy`) when dates far in the past or future are expected.

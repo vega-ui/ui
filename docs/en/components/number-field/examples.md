@@ -235,7 +235,7 @@ export default function CartLineItems() {
 
 ### Error: below a business minimum
 
-The mask keeps the value inside `min`/`max`, but rules like "not fewer seats than active members" are yours. The error is derived from the value, set with `error` on the root and `aria-invalid` on the input, and it clears once the value is valid again.
+The mask keeps the value inside `min`/`max`, but rules like "not fewer seats than active members" are yours. The error is derived from the value, set with `aria-invalid` on the input, and it clears once the value is valid again.
 
 <!-- example: number-field/seats-below-active-members.tsx -->
 ```tsx
@@ -267,12 +267,12 @@ export default function SeatsBelowActiveMembers() {
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-3)', width: '100%' }}>
       <Label htmlFor={id}>Seats after renewal</Label>
-      <NumberField min={1} max={200} value={seats} onChangeValue={setSeats} error={invalid}>
+      <NumberField min={1} max={200} value={seats} onChangeValue={setSeats}>
         <NumberFieldDecrementButton aria-label='Remove a seat' />
         <NumberFieldInput id={id} aria-invalid={invalid} aria-describedby={messageId} />
         <NumberFieldIncrementButton aria-label='Add a seat' />
       </NumberField>
-      <HelperText id={messageId} error={invalid}>
+      <HelperText id={messageId} invalid={invalid}>
         {invalid ? error : `Covers all ${ACTIVE_MEMBERS} active members.`}
       </HelperText>
     </div>

@@ -1,7 +1,6 @@
 import {
   Text,
   Tooltip,
-  TooltipArrow,
   TooltipContent,
   TooltipTrigger,
 } from '@vega-ui/react';
@@ -40,7 +39,6 @@ export default function TruncatedText() {
               </a>
             </TooltipTrigger>
             <TooltipContent>
-              <TooltipArrow />
               <Text size={2} style={{ display: 'block', maxWidth: 280, overflowWrap: 'anywhere' }}>{file}</Text>
             </TooltipContent>
           </Tooltip>

@@ -9,7 +9,7 @@
 Заметки о композиции:
 
 - держите выбор страны видимым
-- нормализуйте значения при отправке
+- поле ввода отправляет показанный текст, а `onChangeValue` даёт номер в E.164; проверяйте его по правилам продукта при отправке
 - показывайте в триггере компактное значение (здесь флаг), а полное название страны — в списке
 
 Компромиссы:
@@ -47,15 +47,15 @@ export default function SelectWithCountryOptionsAndIcons() {
   const id = useId();
   const [country, setCountry] = useState<(typeof countries)[number]>(countries[1]);
 
-  const onChangeCode = (code: string) => {
-    const found = countries.find((item) => item.code === code);
+  const onChangeCountry = (next: string) => {
+    const found = countries.find((item) => item.code === next);
     if (found) setCountry(found);
   };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', width: '100%', maxWidth: 340 }}>
       <Label htmlFor={id}>Phone number</Label>
-      <PhoneField code={country.code} onChangeCode={onChangeCode}>
+      <PhoneField country={country.code} onChangeCountry={onChangeCountry}>
         <PhoneFieldSelect>
           <SelectHiddenSelect name='country' />
           <SelectCombobox aria-label={`Country: ${country.name}`}>
@@ -76,7 +76,7 @@ export default function SelectWithCountryOptionsAndIcons() {
             ))}
           </SelectListbox>
         </PhoneFieldSelect>
-        <PhoneFieldInput id={id} name='phone' autoComplete='tel' />
+        <PhoneFieldInput name='phone' id={id} autoComplete='tel' />
       </PhoneField>
     </div>
   );
@@ -92,7 +92,7 @@ export default function SelectWithCountryOptionsAndIcons() {
 
 Заметки о композиции:
 
-- `strictMask` включён по умолчанию: код страны из `code` зафиксирован, и принимаются только его цифры
+- `strictMask` включён по умолчанию: телефонный код, с которого начинается номер, остаётся перед ним (для пустого поля — код из `country`), а после него принимаются только цифры
 - перепроверьте перемещение каретки и вставку
 
 Компромиссы:
@@ -111,8 +111,8 @@ export default function SimpleIsoBasedPhoneMask() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', width: '100%', maxWidth: 280 }}>
       <Label htmlFor={id}>Mobile number</Label>
-      <PhoneField code='US'>
-        <PhoneFieldInput id={id} name='phone' autoComplete='tel' placeholder='+1 201 555-0123' />
+      <PhoneField country='US'>
+        <PhoneFieldInput name='phone' id={id} autoComplete='tel' placeholder='+1 201 555-0123' />
       </PhoneField>
     </div>
   );
@@ -129,8 +129,8 @@ export default function SimpleIsoBasedPhoneMask() {
 Заметки о композиции:
 
 - используйте `strictMask={false}`
-- вставленный номер с другим кодом страны переключает страну, и `onChangeCode` сообщает об этом
-- нормализуйте на границе функции
+- вставленный номер с другим кодом страны переключает страну, и `onChangeCountry` сообщает об этом
+- `value` — номер в E.164, в каком бы формате его ни вставили
 
 Компромиссы:
 
@@ -160,7 +160,7 @@ export default function NonStrictMaskForLenientPasteBehavior() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', width: '100%', maxWidth: 340 }}>
       <Label htmlFor={id}>Customer phone</Label>
-      <PhoneField defaultCode='US' strictMask={false} onChangeCode={setCountry}>
+      <PhoneField defaultCountry='US' strictMask={false} onChangeCountry={setCountry}>
         <PhoneFieldSelect>
           <SelectCombobox aria-label='Country'>
             <SelectValue />

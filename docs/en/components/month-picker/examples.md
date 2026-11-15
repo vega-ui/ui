@@ -4,7 +4,7 @@
 
 ### Basic: months of one year
 
-`MonthPickerLayout` renders all months of the year given by `year`, any ISO day inside it. Each cell is keyed by the first day of its month, so `defaultSelected` is `'2026-03-01'` for March. The grid has no visible title, so it gets an `aria-label`.
+`MonthPickerLayout` renders all months of the year of the focused month; with no `focusedDate`, that is the first selected month. Each cell is keyed by the first day of its month, so `defaultValue` is `'2026-03-01'` for March. The grid has no visible title, so it gets an `aria-label`.
 
 <!-- example: month-picker/months-of-one-year.tsx -->
 ```tsx
@@ -12,7 +12,7 @@ import { MonthPicker, MonthPickerCell, MonthPickerLayout } from '@vega-ui/react'
 
 export default function MonthsOfOneYear() {
   return (
-    <MonthPicker aria-label='Start month, 2026' locale='en-US' year='2026-01-01' defaultSelected='2026-03-01' style={{ width: '100%' }}>
+    <MonthPicker aria-label='Start month, 2026' locale='en-US' defaultValue='2026-03-01' style={{ width: '100%' }}>
       <MonthPickerLayout>
         <MonthPickerCell />
       </MonthPickerLayout>
@@ -26,7 +26,7 @@ export default function MonthsOfOneYear() {
 
 ### Controlled/Stateful: billing month with year navigation
 
-The selected month and the visible year are separate pieces of state: the buttons change the year, a click changes the month, and the line below shows the result. `MonthPicker` keeps its active cell when `year` changes, so the buttons move `active` into the new year as well.
+The selected month and the focused month are separate pieces of state: the buttons move `focusedDate` to the same month of the previous or next year, a click changes the selection, and the line below shows the result. The picker shows the year of the focused month and keeps the tab stop on it; `onChangeFocusedDate` keeps the state in sync when the focus moves inside the grid.
 
 <!-- example: month-picker/billing-month-with-year-navigation.tsx -->
 ```tsx
@@ -44,13 +44,13 @@ import { useState } from 'react';
 const monthFormat = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' });
 
 export default function BillingMonthWithYearNavigation() {
-  const [year, setYear] = useState(2026);
-  const [active, setActive] = useState('2026-10-01');
+  const [focused, setFocused] = useState('2026-10-01');
   const [month, setMonth] = useState<string | null>('2026-10-01');
 
+  const year = Number(focused.slice(0, 4));
+
   const showYear = (next: number) => {
-    setYear(next);
-    setActive(`${next}-01-01`);
+    setFocused(`${next}${focused.slice(4)}`);
   };
 
   return (
@@ -67,11 +67,10 @@ export default function BillingMonthWithYearNavigation() {
       <MonthPicker
         aria-label={`Billing month, ${year}`}
         locale='en-US'
-        year={`${year}-01-01`}
-        active={active}
-        onChangeActive={setActive}
-        selected={month}
-        onSelectCell={setMonth}
+        focusedDate={focused}
+        onChangeFocusedDate={setFocused}
+        value={month}
+        onChangeValue={setMonth}
         style={{ width: '100%' }}
       >
         <MonthPickerLayout cols={4} format='short'>
@@ -152,15 +151,15 @@ export default function ReportPeriod() {
           aria-describedby={hintId}
           locale='en-US'
           selection='range'
-          year='2026-01-01'
-          selected={period}
-          onSelectCell={change}
+          defaultFocusedDate='2026-01-01'
+          value={period}
+          onChangeValue={change}
         >
           <MonthPickerLayout cols={4} format='short'>
             <MonthPickerCell />
           </MonthPickerLayout>
         </MonthPicker>
-        <HelperText id={hintId} error={missing}>
+        <HelperText id={hintId} invalid={missing}>
           {missing ? 'Pick the first and the last month of the period.' : 'Pick the first and the last month.'}
         </HelperText>
       </Fieldset>
@@ -181,7 +180,7 @@ export default function ReportPeriod() {
 
 ### Layout/Overlay: month filter in a popover
 
-A compact month grid behind a trigger, for a statement or dashboard filter. The popover is controlled and closes when a month is picked; months after the latest statement are disabled with `to`.
+A compact month grid behind a trigger, for a statement or dashboard filter. The popover is controlled and closes when a month is picked; months after the latest statement are disabled with `max`.
 
 <!-- example: month-picker/month-filter-in-a-popover.tsx -->
 ```tsx
@@ -221,10 +220,9 @@ export default function MonthFilterInAPopover() {
         <MonthPicker
           aria-label='Statement month, 2026'
           locale='en-US'
-          year='2026-01-01'
-          to='2026-10-01'
-          selected={month}
-          onSelectCell={pick}
+          max='2026-10-01'
+          value={month}
+          onChangeValue={pick}
         >
           <MonthPickerLayout cols={4} format='short'>
             <MonthPickerCell />
@@ -283,16 +281,16 @@ export default function PeriodTooLong() {
         aria-describedby={messageId}
         locale='en-US'
         selection='range'
-        year='2026-01-01'
-        selected={period}
-        onSelectCell={setPeriod}
+        defaultFocusedDate='2026-02-01'
+        value={period}
+        onChangeValue={setPeriod}
         style={{ width: '100%' }}
       >
         <MonthPickerLayout cols={4} format='short'>
           <MonthPickerCell />
         </MonthPickerLayout>
       </MonthPicker>
-      <HelperText id={messageId} error={invalid} aria-live='polite'>{message}</HelperText>
+      <HelperText id={messageId} invalid={invalid} aria-live='polite'>{message}</HelperText>
     </div>
   );
 }
@@ -303,7 +301,7 @@ export default function PeriodTooLong() {
 
 ### Disabled: months without data
 
-`from` and `to` disable months outside the period that has data, here June 2025 to October 2026. The rule is written next to the grid and linked with `aria-describedby`; the disabled state alone does not explain it.
+`min` and `max` disable months outside the period that has data, here June 2025 to October 2026. The rule is written next to the grid and linked with `aria-describedby`; the disabled state alone does not explain it.
 
 <!-- example: month-picker/months-without-data.tsx -->
 ```tsx
@@ -324,9 +322,9 @@ export default function MonthsWithoutData() {
         aria-label='Statement month, 2026'
         aria-describedby={hintId}
         locale='en-US'
-        year='2026-01-01'
-        from='2025-06-01'
-        to='2026-10-01'
+        defaultFocusedDate='2026-01-01'
+        min='2025-06-01'
+        max='2026-10-01'
         style={{ width: '100%' }}
       >
         <MonthPickerLayout cols={4} format='short'>
@@ -365,8 +363,8 @@ export default function SpecificMonths() {
         aria-label='Event month, 2026'
         aria-describedby={hintId}
         locale='en-US'
-        year='2026-01-01'
-        disabled={closedMonths}
+        defaultFocusedDate='2026-01-01'
+        disabledDates={closedMonths}
         style={{ width: '100%' }}
       >
         <MonthPickerLayout cols={4} format='short'>
@@ -384,7 +382,7 @@ export default function SpecificMonths() {
 
 ### Edge: 13-month year
 
-With a calendar system from `createCalendarSystem` (see [Calendar System Adapter](../../i18n.md#calendar-system-adapter)), the grid shows the months of that calendar. The Hebrew year 5784 is a leap year with 13 months, Adar I and Adar II included, so the last row is not full. `year='2024-03-15'` is any day of that year; its first month starts on `2023-09-16`, and every cell key is the ISO day its month starts on, not a Gregorian month start: Adar I is `'2024-02-10'`.
+With a calendar system from `createCalendarSystem` (see [Calendar System Adapter](../../i18n.md#calendar-system-adapter)), the grid shows the months of that calendar. The Hebrew year 5784 is a leap year with 13 months, Adar I and Adar II included, so the last row is not full. The selected Adar I is the focused month, so the picker shows its year; the first month of that year starts on `2023-09-16`, and every cell key is the ISO day its month starts on, not a Gregorian month start: Adar I is `'2024-02-10'`.
 
 <!-- example: month-picker/13-month-year.tsx -->
 ```tsx
@@ -403,9 +401,8 @@ export default function ThirteenMonthYear() {
         aria-label='Month of 5784'
         calendar={hebrewCalendar}
         locale='en-US'
-        year='2024-03-15'
-        selected={month}
-        onSelectCell={setMonth}
+        value={month}
+        onChangeValue={setMonth}
         style={{ width: '100%' }}
       >
         <MonthPickerLayout cols={4}>

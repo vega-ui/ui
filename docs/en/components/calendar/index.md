@@ -36,20 +36,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
 } from '@vega-ui/react';
 
 export const locales = ['en-US', 'ru-RU', 'ar-EG', 'he-IL'];
@@ -59,26 +65,38 @@ export default function MinimalComposition({ locale = 'en-US' }: { locale?: stri
     <Calendar locale={locale}>
       <CalendarHeader>
         <CalendarPrevButton aria-label='Previous' />
-        <CalendarViewButtonGroup>
+        <CalendarHeading>
           <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
           <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-        </CalendarViewButtonGroup>
+        </CalendarHeading>
         <CalendarNextButton aria-label='Next' />
       </CalendarHeader>
       <CalendarContent>
-        <CalendarDays aria-label='Days'>
+        <CalendarDays>
           <CalendarWeekdays>
             <CalendarWeekday />
           </CalendarWeekdays>
-          <CalendarWeeks>
-            <CalendarDay />
-          </CalendarWeeks>
+          <CalendarDaysScroller>
+            <CalendarDaysScrollerContent>
+              <CalendarWeeks>
+                <CalendarDay />
+              </CalendarWeeks>
+            </CalendarDaysScrollerContent>
+          </CalendarDaysScroller>
         </CalendarDays>
         <CalendarMonths>
-          <CalendarMonth />
+          <CalendarMonthsGrid>
+            <CalendarMonth />
+          </CalendarMonthsGrid>
         </CalendarMonths>
         <CalendarYears>
-          <CalendarYear />
+          <CalendarYearsScroller>
+            <CalendarYearsScrollerContent>
+              <CalendarYearsGrid>
+                <CalendarYear />
+              </CalendarYearsGrid>
+            </CalendarYearsScrollerContent>
+          </CalendarYearsScroller>
         </CalendarYears>
       </CalendarContent>
     </Calendar>
@@ -94,8 +112,9 @@ export default function MinimalComposition({ locale = 'en-US' }: { locale?: stri
 ## Optional Parts
 
 - `CalendarHeader`, `CalendarPrevButton`, `CalendarNextButton`: navigation chrome; previous and next follow the current view
-- `CalendarViewButtonGroup`, `CalendarViewButton`: month and year view toggles
-- `CalendarMonthLabel`, `CalendarYearLabel`: labels of the visible month and year
+- `CalendarViewButton`: month and year view toggles
+- `CalendarHeading`: heading of the shown month that names the day grid; usually wraps the view buttons
+- `CalendarMonthLabel`, `CalendarYearLabel`: labels of the month and year of the focused day
 - `CalendarContent`: wrapper for the views
 - `CalendarDays`, `CalendarMonths`, `CalendarYears`: day, month, and year views
 - `CalendarDay`, `CalendarMonth`, `CalendarYear`: cell templates of the views, with `useCalendarDayContext`, `useCalendarMonthContext`, `useCalendarYearContext`
@@ -105,9 +124,9 @@ export default function MinimalComposition({ locale = 'en-US' }: { locale?: stri
 Typical composition:
 
 1. `Calendar`
-2. `CalendarHeader` with `CalendarPrevButton`, `CalendarViewButtonGroup`, `CalendarNextButton`
+2. `CalendarHeader` with `CalendarPrevButton`, `CalendarHeading` around the `CalendarViewButton`s, `CalendarNextButton`
 3. `CalendarContent`
-4. `CalendarDays`, `CalendarMonths`, `CalendarYears`; only the current `view` is visible
+4. `CalendarDays`, `CalendarMonths`, `CalendarYears`; only the current `view` is visible, and the month and year views are mounted only while open or closing
 
 ## Variants
 
@@ -115,7 +134,7 @@ Typical composition:
 - View switching: day, month, year
 - Density: `compact` plus size variants
 - Composition depth: default views versus custom cell templates
-- Locale and calendar system: `locale` and `calendar` root props, defaulting to the runtime locale and the Gregorian calendar; see [Dates And Calendar Systems](../../i18n.md#locale-and-calendar-props)
+- Locale and calendar system: `locale` and `calendar` root props, defaulting to `"en-US"` and the Gregorian calendar; see [Dates And Calendar Systems](../../i18n.md#locale-and-calendar-props)
 
 ## Related Docs
 
@@ -133,7 +152,7 @@ Typical composition:
 - Selection mode changes the value shape.
 - Disabled-date constraints can come from a value list or predicate logic.
 - Custom cell templates should be retested for keyboard flow, overflow days, and visible period changes.
-- `value`, `defaultValue`, `min`, `max`, `month`, and `disabledDates` are ISO `YYYY-MM-DD` strings in every calendar system; only the grid and labels follow `calendar`.
+- `value`, `defaultValue`, `min`, `max`, `focusedDate`, `today`, and `disabledDates` are ISO `YYYY-MM-DD` strings in every calendar system; only the grid and labels follow `calendar`.
 - Non-Gregorian calendars come from `createCalendarSystem`; see [Dates And Calendar Systems](../../i18n.md#calendar-system-adapter).
 
 ## Common Mistakes

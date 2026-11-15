@@ -543,7 +543,7 @@ export default function StalePageHintAfterFilterChange() {
           </Pagination>
         </nav>
         {stale && (
-          <HelperText id={hintId} error role='status' style={{ textAlign: 'center', textWrap: 'balance' }}>
+          <HelperText id={hintId} invalid role='status' style={{ textAlign: 'center', textWrap: 'balance' }}>
             Page {requestedPage} no longer exists for this filter. Showing page {page} of {pageCount}.
           </HelperText>
         )}

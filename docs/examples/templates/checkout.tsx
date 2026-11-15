@@ -105,8 +105,8 @@ export default function Checkout() {
     setErrors({ ...errors, [name]: undefined });
   };
 
-  const changePhoneCountry = (code: string) => {
-    const found = countries.find((item) => item.code === code);
+  const changePhoneCountry = (next: string) => {
+    const found = countries.find((item) => item.code === next);
     if (found) setPhoneCountry(found);
   };
 
@@ -171,7 +171,7 @@ export default function Checkout() {
           <div style={columns}>
             <div style={field}>
               <Label htmlFor={`${id}-email`}>Email</Label>
-              <TextField error={errors.email !== undefined}>
+              <TextField>
                 <TextFieldInput
                   id={`${id}-email`}
                   name='email'
@@ -182,11 +182,11 @@ export default function Checkout() {
                   onChange={() => clearError('email')}
                 />
               </TextField>
-              {errors.email && <HelperText id={`${id}-email-error`} error>{errors.email}</HelperText>}
+              {errors.email && <HelperText id={`${id}-email-error`} invalid>{errors.email}</HelperText>}
             </div>
             <div style={field}>
               <Label htmlFor={`${id}-phone`}>Phone</Label>
-              <PhoneField code={phoneCountry.code} onChangeCode={changePhoneCountry} error={errors.phone !== undefined}>
+              <PhoneField country={phoneCountry.code} onChangeCountry={changePhoneCountry}>
                 <PhoneFieldSelect>
                   <SelectHiddenSelect name='phoneCountry' />
                   <SelectCombobox aria-label={`Country code: ${phoneCountry.name}`}>
@@ -208,15 +208,15 @@ export default function Checkout() {
                   </SelectListbox>
                 </PhoneFieldSelect>
                 <PhoneFieldInput
-                  id={`${id}-phone`}
                   name='phone'
+                  id={`${id}-phone`}
                   autoComplete='tel'
                   aria-invalid={errors.phone !== undefined}
                   aria-describedby={describe('phone')}
                   onChange={() => clearError('phone')}
                 />
               </PhoneField>
-              {errors.phone && <HelperText id={`${id}-phone-error`} error>{errors.phone}</HelperText>}
+              {errors.phone && <HelperText id={`${id}-phone-error`} invalid>{errors.phone}</HelperText>}
             </div>
           </div>
         </Fieldset>
@@ -242,11 +242,11 @@ export default function Checkout() {
                 ))}
               </SelectListbox>
             </Select>
-            {errors.country && <HelperText id={`${id}-country-error`} error>{errors.country}</HelperText>}
+            {errors.country && <HelperText id={`${id}-country-error`} invalid>{errors.country}</HelperText>}
           </div>
           <div style={field}>
             <Label htmlFor={`${id}-name`}>Full name</Label>
-            <TextField error={errors.name !== undefined}>
+            <TextField>
               <TextFieldInput
                 id={`${id}-name`}
                 name='name'
@@ -256,11 +256,11 @@ export default function Checkout() {
                 onChange={() => clearError('name')}
               />
             </TextField>
-            {errors.name && <HelperText id={`${id}-name-error`} error>{errors.name}</HelperText>}
+            {errors.name && <HelperText id={`${id}-name-error`} invalid>{errors.name}</HelperText>}
           </div>
           <div style={field}>
             <Label htmlFor={`${id}-address`}>Address</Label>
-            <TextField error={errors.address !== undefined}>
+            <TextField>
               <TextFieldInput
                 id={`${id}-address`}
                 name='address'
@@ -270,7 +270,7 @@ export default function Checkout() {
                 onChange={() => clearError('address')}
               />
             </TextField>
-            {errors.address && <HelperText id={`${id}-address-error`} error>{errors.address}</HelperText>}
+            {errors.address && <HelperText id={`${id}-address-error`} invalid>{errors.address}</HelperText>}
           </div>
           <div style={field}>
             <Label htmlFor={`${id}-apartment`}>Apartment, suite (optional)</Label>
@@ -281,7 +281,7 @@ export default function Checkout() {
           <div style={columns}>
             <div style={field}>
               <Label htmlFor={`${id}-city`}>City</Label>
-              <TextField error={errors.city !== undefined}>
+              <TextField>
                 <TextFieldInput
                   id={`${id}-city`}
                   name='city'
@@ -291,11 +291,11 @@ export default function Checkout() {
                   onChange={() => clearError('city')}
                 />
               </TextField>
-              {errors.city && <HelperText id={`${id}-city-error`} error>{errors.city}</HelperText>}
+              {errors.city && <HelperText id={`${id}-city-error`} invalid>{errors.city}</HelperText>}
             </div>
             <div style={field}>
               <Label htmlFor={`${id}-postal`}>Postal code</Label>
-              <TextField error={errors.postal !== undefined}>
+              <TextField>
                 <TextFieldInput
                   id={`${id}-postal`}
                   name='postal'
@@ -305,7 +305,7 @@ export default function Checkout() {
                   onChange={() => clearError('postal')}
                 />
               </TextField>
-              {errors.postal && <HelperText id={`${id}-postal-error`} error>{errors.postal}</HelperText>}
+              {errors.postal && <HelperText id={`${id}-postal-error`} invalid>{errors.postal}</HelperText>}
             </div>
           </div>
         </Fieldset>

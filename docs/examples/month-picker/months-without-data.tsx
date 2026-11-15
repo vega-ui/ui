@@ -15,9 +15,9 @@ export default function MonthsWithoutData() {
         aria-label='Statement month, 2026'
         aria-describedby={hintId}
         locale='en-US'
-        year='2026-01-01'
-        from='2025-06-01'
-        to='2026-10-01'
+        defaultFocusedDate='2026-01-01'
+        min='2025-06-01'
+        max='2026-10-01'
         style={{ width: '100%' }}
       >
         <MonthPickerLayout cols={4} format='short'>

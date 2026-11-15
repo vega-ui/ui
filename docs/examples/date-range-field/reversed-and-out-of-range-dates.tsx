@@ -3,20 +3,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   DateRangeField,
   DateRangeFieldCalendar,
   DateRangeFieldInput,
@@ -29,8 +35,12 @@ import {
   Text,
 } from '@vega-ui/react';
 
+const FIRST_DAY = '2026-01-01';
+const LAST_DAY = '2026-12-31';
+
 export default function ReversedAndOutOfRangeDates() {
   const [campaign, setCampaign] = useState<[string, string]>(['', '']);
+  const outOfRange = campaign.some((date) => date !== '' && (date < FIRST_DAY || date > LAST_DAY));
 
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-8)', width: '100%', maxWidth: 320 }}>
@@ -40,24 +50,25 @@ export default function ReversedAndOutOfRangeDates() {
           format='dd.MM.yyyy'
           separator='.'
           rangeSeparator=' - '
-          min='2026-01-01'
-          max='2026-12-31'
+          min={FIRST_DAY}
+          max={LAST_DAY}
+         
           value={campaign}
           onChangeValue={setCampaign}
         >
-          <DateRangeFieldInput id='campaign-dates' placeholder='dd.mm.yyyy - dd.mm.yyyy' aria-describedby='campaign-dates-hint' />
+          <DateRangeFieldInput id='campaign-dates' placeholder='dd.mm.yyyy - dd.mm.yyyy' aria-invalid={outOfRange} aria-describedby='campaign-dates-hint' />
           <Popover placement='bottom-end'>
             <PopoverTrigger asChild>
               <DateRangeFieldTriggerIconButton aria-label='Choose campaign dates' />
             </PopoverTrigger>
             <PopoverContent>
-              <DateRangeFieldCalendar>
+              <DateRangeFieldCalendar aria-label='Choose campaign dates'>
                 <CalendarHeader>
                   <CalendarPrevButton aria-label='Previous month' />
-                  <CalendarViewButtonGroup>
+                  <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-                  </CalendarViewButtonGroup>
+                  </CalendarHeading>
                   <CalendarNextButton aria-label='Next month' />
                 </CalendarHeader>
                 <CalendarContent>
@@ -65,22 +76,36 @@ export default function ReversedAndOutOfRangeDates() {
                     <CalendarWeekdays>
                       <CalendarWeekday />
                     </CalendarWeekdays>
-                    <CalendarWeeks>
-                      <CalendarDay />
-                    </CalendarWeeks>
+                    <CalendarDaysScroller>
+                      <CalendarDaysScrollerContent>
+                        <CalendarWeeks>
+                          <CalendarDay />
+                        </CalendarWeeks>
+                      </CalendarDaysScrollerContent>
+                    </CalendarDaysScroller>
                   </CalendarDays>
                   <CalendarMonths>
-                    <CalendarMonth />
+                    <CalendarMonthsGrid>
+                      <CalendarMonth />
+                    </CalendarMonthsGrid>
                   </CalendarMonths>
                   <CalendarYears>
-                    <CalendarYear />
+                    <CalendarYearsScroller>
+                      <CalendarYearsScrollerContent>
+                        <CalendarYearsGrid>
+                          <CalendarYear />
+                        </CalendarYearsGrid>
+                      </CalendarYearsScrollerContent>
+                    </CalendarYearsScroller>
                   </CalendarYears>
                 </CalendarContent>
               </DateRangeFieldCalendar>
             </PopoverContent>
           </Popover>
         </DateRangeField>
-        <HelperText id='campaign-dates-hint'>Within 2026. Try 15.01.2026 - 10.01.2026 or 20.12.2025 - 31.02.2026.</HelperText>
+        <HelperText id='campaign-dates-hint' invalid={outOfRange}>
+          {outOfRange ? 'The campaign runs within 2026.' : 'Within 2026. Try 15.01.2026 - 10.01.2026 or 20.12.2025 - 31.02.2026.'}
+        </HelperText>
       </div>
       <Text size={2} style={{ color: 'var(--label-secondary)' }}>
         Value: <code>{JSON.stringify(campaign)}</code>

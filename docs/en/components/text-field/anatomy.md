@@ -8,7 +8,7 @@
 
 ### `TextField`
 
-Required. Owns shared size, error state, and the visual container.
+Required. Owns shared size and the visual container, and shows the error look of the input.
 
 ### `TextFieldInput`
 

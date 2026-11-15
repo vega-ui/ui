@@ -29,7 +29,7 @@
 
 ## Form Semantics
 
-Render `SelectHiddenSelect` inside `PhoneFieldSelect` when the country selector should participate in native [form participation](../../glossary.md#form-participation).
+Set `name` on `PhoneFieldInput` to submit the shown text, and render `SelectHiddenSelect` inside `PhoneFieldSelect` when the country selector should participate in native [form participation](../../glossary.md#form-participation). A number too short or too long for its country makes the input invalid with the message of the browser.
 
 ## Accessibility Risks
 

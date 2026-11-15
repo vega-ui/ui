@@ -279,7 +279,7 @@ export default function CompactInternalNote() {
 
 ### Error: soft character limit
 
-Unlike `maxLength`, a soft limit lets people paste a long text and then trim it. Past the limit the field gets `error` and `aria-invalid`, the hint switches to an error, and submit is blocked.
+Unlike `maxLength`, a soft limit lets people paste a long text and then trim it. Past the limit the field gets `aria-invalid`, the hint switches to an error, and submit is blocked.
 
 <!-- example: text-area/soft-limit-error.tsx -->
 ```tsx
@@ -310,12 +310,11 @@ export default function SoftLimitError() {
           rows={6}
           fullWidth
           value={bio}
-          error={invalid}
           aria-invalid={invalid}
           aria-describedby={messageId}
           onChange={(event) => setBio(event.currentTarget.value)}
         />
-        <HelperText id={messageId} error={invalid}>
+        <HelperText id={messageId} invalid={invalid}>
           {invalid ? `${over} characters over the ${LIMIT}-character limit.` : `${LIMIT - bio.length} characters left.`}
         </HelperText>
       </div>

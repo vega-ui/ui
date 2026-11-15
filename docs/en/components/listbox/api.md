@@ -10,7 +10,7 @@
 | `value` | `M extends true ? V[] : V \| null` | — | No | The currently selected value (controlled). Without `multiple`, `null` clears the selection, while `undefined` makes the list uncontrolled. |
 | `defaultValue` | `ListboxValue<V, M>` | — | No | The default selected value (uncontrolled). |
 | `onChangeValue` | `(value: ListboxValue<V, M>) => void` | — | No | Callback fired when the selection changes. |
-| `disabled` | `boolean` | — | No | Prevents interaction and removes the list from the tab order. |
+| `disabled` | `boolean` | `false` | No | Prevents interaction and removes the list from the tab order. |
 | `size` | `OptionSize` | `'md'` | No | Visual size of the options. |
 | `typeahead` | `boolean` | `true` | No | Enables moving to an option by typing the start of its label. |
 | `ref` | `Ref<HTMLDivElement>` | — | No | Ref forwarded to the listbox element. |

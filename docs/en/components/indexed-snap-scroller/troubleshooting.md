@@ -55,3 +55,40 @@ The content template assumed fixed identity instead of per-index identity.
 ### Fix
 
 Make per-index state explicit and avoid assuming one physical DOM page equals one logical page forever.
+
+## The Scroller Is Not Reachable With Tab
+
+### Symptom
+
+Tab skips the scroller, and the arrow keys do not scroll it.
+
+### Likely Cause
+
+The root renders with `tabIndex={-1}` by default, so the scroll container is not a Tab stop, Firefox included.
+
+### How To Verify
+
+- check whether the pages contain focusable elements
+- inspect the `tabindex` attribute of the root
+
+### Fix
+
+When the pages have nothing to focus, pass `tabIndex={0}` and an `aria-label` that names what the pages show.
+
+## `onScrollSnapChanging` Skips Pages During A Jump
+
+### Symptom
+
+After setting `index` or calling `setIndexTo`, `onScrollSnapChanging` fires once, for the target page, not for the pages in between.
+
+### Likely Cause
+
+This is intended: during a programmatic scroll only the target page is reported, so state synced from the callback does not flicker through intermediate pages.
+
+### How To Verify
+
+- log the indexes passed to `onScrollSnapChanging` during a swipe and after setting `index`
+
+### Fix
+
+Treat `onScrollSnapChanging` during user scrolls as a preview and the controlled `index` as the source of truth for programmatic jumps.

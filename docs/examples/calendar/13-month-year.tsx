@@ -4,20 +4,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   Text,
 } from '@vega-ui/react';
 import { useState } from 'react';
@@ -33,26 +39,38 @@ export default function ThirteenMonthYear() {
       <Calendar calendar={hebrewCalendar} locale='en-US' value={date} onChangeValue={setDate} defaultView='month'>
         <CalendarHeader>
           <CalendarPrevButton aria-label='Previous' />
-          <CalendarViewButtonGroup>
+          <CalendarHeading>
             <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
             <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-          </CalendarViewButtonGroup>
+          </CalendarHeading>
           <CalendarNextButton aria-label='Next' />
         </CalendarHeader>
         <CalendarContent>
-          <CalendarDays aria-label='Days'>
+          <CalendarDays>
             <CalendarWeekdays>
               <CalendarWeekday />
             </CalendarWeekdays>
-            <CalendarWeeks>
-              <CalendarDay />
-            </CalendarWeeks>
+            <CalendarDaysScroller>
+              <CalendarDaysScrollerContent>
+                <CalendarWeeks>
+                  <CalendarDay />
+                </CalendarWeeks>
+              </CalendarDaysScrollerContent>
+            </CalendarDaysScroller>
           </CalendarDays>
-          <CalendarMonths aria-label='Months' cols={4}>
-            <CalendarMonth />
+          <CalendarMonths aria-label='Months'>
+            <CalendarMonthsGrid cols={4}>
+              <CalendarMonth />
+            </CalendarMonthsGrid>
           </CalendarMonths>
           <CalendarYears>
-            <CalendarYear />
+            <CalendarYearsScroller>
+              <CalendarYearsScrollerContent>
+                <CalendarYearsGrid>
+                  <CalendarYear />
+                </CalendarYearsGrid>
+              </CalendarYearsScrollerContent>
+            </CalendarYearsScroller>
           </CalendarYears>
         </CalendarContent>
       </Calendar>

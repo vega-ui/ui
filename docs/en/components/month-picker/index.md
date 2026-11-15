@@ -6,7 +6,7 @@
 
 ## Summary
 
-`MonthPicker` is the grid-based month-selection subsystem used directly or as part of the calendar family. It builds on `DataGridPicker` and exposes month-layout parts and helper-driven custom rendering.
+`MonthPicker` is the grid-based month-selection subsystem used directly or as part of the calendar family. It builds on `Grid` and exposes month-layout parts and helper-driven custom rendering.
 
 ## Imports
 
@@ -51,7 +51,7 @@ export const locales = ['en-US', 'ru-RU', 'ar-EG', 'he-IL'];
 
 export default function MinimalComposition({ locale = 'en-US' }: { locale?: string }) {
   return (
-    <MonthPicker aria-label='Month, 2026' locale={locale} year='2026-01-01' style={{ width: '100%' }}>
+    <MonthPicker aria-label='Month, 2026' locale={locale} defaultFocusedDate='2026-01-01' style={{ width: '100%' }}>
       <MonthPickerLayout>
         <MonthPickerCell />
       </MonthPickerLayout>
@@ -82,8 +82,8 @@ export default function MinimalComposition({ locale = 'en-US' }: { locale?: stri
 
 - Selection: `single`, `multiple`, `range`
 - Layout density: `cols`; rows follow the number of months in the year
-- Period: explicit `year` (a `YYYY-MM-DD` string of any day in it) or the current year
-- Locale and calendar system: `locale` and `calendar` props, defaulting to the runtime locale and the Gregorian calendar
+- Period: the year of the focused month — `focusedDate` or `defaultFocusedDate` (a `YYYY-MM-DD` string of any day in it), otherwise the selected month, otherwise `today`
+- Locale and calendar system: `locale` and `calendar` props, defaulting to `en-US` and the Gregorian calendar
 - Label formatting: locale-driven month names
 
 ## Related Docs

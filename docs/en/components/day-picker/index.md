@@ -6,7 +6,7 @@
 
 ## Summary
 
-`DayPicker` is the lower-level day-grid subsystem used by the calendar stack. It builds on `DataGridPicker` and supports single, multiple, and range date selection while exposing layout, row, item, and scroller parts.
+`DayPicker` is the lower-level day-grid subsystem used by the calendar stack. It builds on `Grid` and supports single, multiple, and range date selection while exposing layout, row, item, and scroller parts.
 
 ## Imports
 
@@ -65,7 +65,7 @@ export const locales = ['en-US', 'ru-RU', 'ar-EG', 'he-IL'];
 
 export default function MinimalComposition({ locale = 'en-US' }: { locale?: string }) {
   return (
-    <DayPicker aria-label='November 2026' locale={locale} month='2026-11-01'>
+    <DayPicker aria-label='Days' locale={locale} defaultFocusedDate='2026-11-01'>
       <DayPickerLayout>
         <DayPickerCell />
       </DayPickerLayout>
@@ -100,8 +100,8 @@ export default function MinimalComposition({ locale = 'en-US' }: { locale?: stri
 
 - Selection: `single`, `multiple`, `range`
 - Layout: static grid or scroller-based month paging
-- Period: explicit `month` (a `YYYY-MM-DD` string of any day in it) or the current month
-- Locale and calendar system: `locale` and `calendar` props, defaulting to the runtime locale and the Gregorian calendar
+- Period: the month of the focused day — `focusedDate` / `defaultFocusedDate`, otherwise the first selected day, otherwise `today`
+- Locale and calendar system: `locale` and `calendar` props, defaulting to `"en-US"` and the Gregorian calendar
 
 ## Related Docs
 
@@ -118,8 +118,9 @@ export default function MinimalComposition({ locale = 'en-US' }: { locale?: stri
 
 - Overflow-day inclusion changes both visual density and selection behavior.
 - Disabled, selected, excluded, and focused dates must remain distinguishable.
-- Scrollable month paging adds another synchronization layer for visible period state.
-- Cell keys (`selected`, `from`, `to`, `disabled`, `active`) are `YYYY-MM-DD` days in every calendar system; only the grid shape and labels follow `calendar`.
+- Keyboard navigation crosses months, so a static layout also changes month unless `min` and `max` keep the focus inside.
+- Without `today`, today is read after hydration, so the server renders no days unless `today`, `defaultFocusedDate`, or a selection is passed.
+- Cell keys (`value`, `min`, `max`, `disabled`, `focusedDate`, `today`) are `YYYY-MM-DD` days in every calendar system; only the grid shape and labels follow `calendar`.
 
 ## Common Mistakes
 

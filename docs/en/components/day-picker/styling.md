@@ -2,7 +2,7 @@
 
 ## Overview
 
-`DayPicker` does not define a large component-local CSS surface. Most visual behavior is inherited from `DataGridPicker`, `CalendarBase`, and the exported item and layout primitives it composes.
+`DayPicker` does not define a large component-local CSS surface. Most visual behavior is inherited from `Grid` and the exported item and layout primitives it composes.
 
 ## Public CSS Variables
 
@@ -20,7 +20,7 @@ The root is primarily behavioral, not visual. It coordinates date math, selectio
 
 Visual layout comes from composed grid and scroller parts rather than a dedicated root style module.
 
-Day-cell appearance comes from the underlying picker item primitives and calendar shared parts.
+Day-cell appearance comes from `GridItem` and calendar shared parts.
 
 ## State And Variant Interaction
 
@@ -41,12 +41,12 @@ import { DayPicker, DayPickerCell, DayPickerLayout } from '@vega-ui/react';
 export default function SizeAndVariant() {
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--spacing-16)', alignItems: 'start' }}>
-      <DayPicker aria-label='Secondary, extra small' locale='en-US' month='2026-11-01' defaultSelected='2026-11-18'>
+      <DayPicker aria-label='Secondary, extra small' locale='en-US' defaultValue='2026-11-18'>
         <DayPickerLayout>
           <DayPickerCell />
         </DayPickerLayout>
       </DayPicker>
-      <DayPicker aria-label='Primary, medium' locale='en-US' month='2026-11-01' size='md' variant='primary' defaultSelected='2026-11-18'>
+      <DayPicker aria-label='Primary, medium' locale='en-US' size='md' variant='primary' defaultValue='2026-11-18'>
         <DayPickerLayout>
           <DayPickerCell />
         </DayPickerLayout>

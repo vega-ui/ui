@@ -4,20 +4,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   Text,
 } from '@vega-ui/react';
 import { useState } from 'react';
@@ -32,26 +38,38 @@ export default function NonGregorianCalendar() {
       <Calendar dir='rtl' locale='fa-IR' calendar={persianCalendar} value={date} onChangeValue={setDate}>
         <CalendarHeader>
           <CalendarPrevButton aria-label='ماه قبل' />
-          <CalendarViewButtonGroup>
+          <CalendarHeading>
             <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
             <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-          </CalendarViewButtonGroup>
+          </CalendarHeading>
           <CalendarNextButton aria-label='ماه بعد' />
         </CalendarHeader>
         <CalendarContent>
-          <CalendarDays aria-label='روزها'>
+          <CalendarDays>
             <CalendarWeekdays format='narrow'>
               <CalendarWeekday />
             </CalendarWeekdays>
-            <CalendarWeeks>
-              <CalendarDay />
-            </CalendarWeeks>
+            <CalendarDaysScroller>
+              <CalendarDaysScrollerContent>
+                <CalendarWeeks>
+                  <CalendarDay />
+                </CalendarWeeks>
+              </CalendarDaysScrollerContent>
+            </CalendarDaysScroller>
           </CalendarDays>
           <CalendarMonths aria-label='ماه‌ها'>
-            <CalendarMonth />
+            <CalendarMonthsGrid>
+              <CalendarMonth />
+            </CalendarMonthsGrid>
           </CalendarMonths>
           <CalendarYears aria-label='سال‌ها'>
-            <CalendarYear />
+            <CalendarYearsScroller>
+              <CalendarYearsScrollerContent>
+                <CalendarYearsGrid>
+                  <CalendarYear />
+                </CalendarYearsGrid>
+              </CalendarYearsScrollerContent>
+            </CalendarYearsScroller>
           </CalendarYears>
         </CalendarContent>
       </Calendar>

@@ -22,15 +22,11 @@
 - [Button](./button/)
 - [ButtonBase](./button-base/)
 - [Calendar](./calendar/)
-- [CalendarBase](./calendar-base/)
 - [Card](./card/)
 - [Checkbox](./checkbox/)
 - [CheckboxCard](./checkbox-card/)
 - [Code](./code/)
 - [Collapsible](./collapsible/)
-- [DataGrid](./data-grid/)
-- [DataGridPicker](./data-grid-picker/)
-- [DataGridSelectable](./data-grid-selectable/)
 - [DateField](./date-field/)
 - [DateRangeField](./date-range-field/)
 - [DateTimeField](./date-time-field/)
@@ -38,6 +34,7 @@
 - [Dialog](./dialog/)
 - [Drawer](./drawer/)
 - [Fieldset](./fieldset/)
+- [Grid](./grid/)
 - [Heading](./heading/)
 - [HelperText](./helper-text/)
 - [Icon](./icon/)
@@ -91,7 +88,7 @@
 - `troubleshooting.md`: необязательные типичные сбои и их исправления
 - `anatomy.md`: необязательная структура составного компонента и контракт композиции
 
-Пока что у каждого компонента есть `index.md`. Дополнительные файлы используйте для более сложных компонентов, таких как `Select`, `Dialog`, `Calendar`, `PhoneField` и `DataGrid`.
+Пока что у каждого компонента есть `index.md`. Дополнительные файлы используйте для более сложных компонентов, таких как `Select`, `Dialog`, `Calendar`, `PhoneField` и `Grid`.
 
 ## Профили документации
 

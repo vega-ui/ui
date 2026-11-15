@@ -1,4 +1,4 @@
-import { Icon, IconButton, Tooltip, TooltipArrow, TooltipContent, TooltipTrigger } from '@vega-ui/react';
+import { Icon, IconButton, Tooltip, TooltipContent, TooltipTrigger } from '@vega-ui/react';
 import { AlignCenterIcon, AlignLeftIcon, AlignRightIcon } from '@vega-ui/icons';
 import { type ReactNode, useState } from 'react';
 
@@ -40,7 +40,6 @@ export default function TooltipLabel() {
             </IconButton>
           </TooltipTrigger>
           <TooltipContent>
-            <TooltipArrow />
             {item.label} · {item.shortcut}
           </TooltipContent>
         </Tooltip>

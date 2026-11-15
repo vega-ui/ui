@@ -592,7 +592,7 @@ export default function LinkError() {
         <PopoverContent aria-label='Insert link'>
           <form noValidate onSubmit={onSubmit} style={{ display: 'grid', gap: 'var(--spacing-3)', width: 280 }}>
             <Label htmlFor={fieldId}>Link address</Label>
-            <TextField size='sm' error={error !== ''}>
+            <TextField size='sm'>
               <TextFieldInput
                 id={fieldId}
                 name='url'
@@ -604,7 +604,7 @@ export default function LinkError() {
                 onChange={() => setError('')}
               />
             </TextField>
-            {error && <HelperText id={errorId} error size='sm'>{error}</HelperText>}
+            {error && <HelperText id={errorId} invalid size='sm'>{error}</HelperText>}
             <Button type='submit' size='sm' style={{ justifySelf: 'end', marginBlockStart: 'var(--spacing-5)' }}>Insert</Button>
           </form>
         </PopoverContent>

@@ -2,20 +2,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   DateTimeField,
   DateTimeFieldCalendar,
   DateTimeFieldInput,
@@ -47,13 +53,13 @@ export default function DateAndTimeWithACalendarPopover({ locale = 'en-US' }: { 
             <DateTimeFieldTriggerIconButton aria-label='Choose webinar date' />
           </PopoverTrigger>
           <PopoverContent>
-            <DateTimeFieldCalendar>
+            <DateTimeFieldCalendar aria-label='Choose webinar date'>
               <CalendarHeader>
                 <CalendarPrevButton aria-label='Previous month' />
-                <CalendarViewButtonGroup>
+                <CalendarHeading>
                   <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                   <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-                </CalendarViewButtonGroup>
+                </CalendarHeading>
                 <CalendarNextButton aria-label='Next month' />
               </CalendarHeader>
               <CalendarContent>
@@ -61,15 +67,27 @@ export default function DateAndTimeWithACalendarPopover({ locale = 'en-US' }: { 
                   <CalendarWeekdays>
                     <CalendarWeekday />
                   </CalendarWeekdays>
-                  <CalendarWeeks>
-                    <CalendarDay />
-                  </CalendarWeeks>
+                  <CalendarDaysScroller>
+                    <CalendarDaysScrollerContent>
+                      <CalendarWeeks>
+                        <CalendarDay />
+                      </CalendarWeeks>
+                    </CalendarDaysScrollerContent>
+                  </CalendarDaysScroller>
                 </CalendarDays>
                 <CalendarMonths>
-                  <CalendarMonth />
+                  <CalendarMonthsGrid>
+                    <CalendarMonth />
+                  </CalendarMonthsGrid>
                 </CalendarMonths>
                 <CalendarYears>
-                  <CalendarYear />
+                  <CalendarYearsScroller>
+                    <CalendarYearsScrollerContent>
+                      <CalendarYearsGrid>
+                        <CalendarYear />
+                      </CalendarYearsGrid>
+                    </CalendarYearsScrollerContent>
+                  </CalendarYearsScroller>
                 </CalendarYears>
               </CalendarContent>
             </DateTimeFieldCalendar>

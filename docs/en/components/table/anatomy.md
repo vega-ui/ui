@@ -120,4 +120,4 @@ Column labels should stay in `TableHeading` rather than becoming styled data cel
 
 ### Treating `Table` like an interactive data grid
 
-If the feature needs cell navigation, selection models, or richer grid behavior, choose `DataGrid` instead.
+If the feature needs cell navigation, selection models, or richer grid behavior, choose `Grid` instead.

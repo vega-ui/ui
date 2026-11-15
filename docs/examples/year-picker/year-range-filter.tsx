@@ -54,16 +54,16 @@ export default function YearRangeFilter() {
           aria-describedby={hintId}
           locale='en-US'
           selection='range'
-          year='2015-01-01'
-          to='2026-01-01'
-          selected={years}
-          onSelectCell={change}
+          defaultFocusedDate='2026-01-01'
+          max='2026-01-01'
+          value={years}
+          onChangeValue={change}
         >
-          <YearPickerLayout>
+          <YearPickerLayout start='2015-01-01'>
             <YearPickerCell />
           </YearPickerLayout>
         </YearPicker>
-        <HelperText id={hintId} error={missing}>
+        <HelperText id={hintId} invalid={missing}>
           {missing ? 'Pick the first and the last year.' : 'Pick the first and the last year of the search.'}
         </HelperText>
       </Fieldset>

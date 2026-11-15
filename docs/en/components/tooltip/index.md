@@ -15,7 +15,6 @@ import {
   Tooltip,
   TooltipTrigger,
   TooltipContent,
-  TooltipArrow,
   type TooltipProps,
 } from '@vega-ui/react';
 ```
@@ -25,7 +24,6 @@ import {
 - `TooltipProps`
 - `TooltipTriggerProps`
 - `TooltipContentProps`
-- `TooltipArrowProps`
 
 ## Minimal Composition
 
@@ -35,7 +33,6 @@ import {
   Button,
   Text,
   Tooltip,
-  TooltipArrow,
   TooltipContent,
   TooltipTrigger,
 } from '@vega-ui/react';
@@ -47,7 +44,6 @@ export default function MinimalComposition() {
         <Button>Publish</Button>
       </TooltipTrigger>
       <TooltipContent>
-        <TooltipArrow />
         <Text size={2}>Anyone with the link can view the page</Text>
       </TooltipContent>
     </Tooltip>
@@ -64,14 +60,13 @@ export default function MinimalComposition() {
 
 ## Optional Parts
 
-- `TooltipArrow`: visual arrow for the floating content
+There are no optional parts.
 
 ## Composition Order
 
 1. `Tooltip`
 2. `TooltipTrigger`
 3. `TooltipContent`
-4. `TooltipArrow`
 
 ## Variants
 

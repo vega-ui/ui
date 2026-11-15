@@ -21,7 +21,7 @@ export default function RemainingCharacters() {
           onChange={(event) => setSubject(event.currentTarget.value)}
         />
       </TextField>
-      <HelperText id={`${id}-count`} error={remaining === 0} style={{ fontVariantNumeric: 'tabular-nums' }}>{message}</HelperText>
+      <HelperText id={`${id}-count`} invalid={remaining === 0} style={{ fontVariantNumeric: 'tabular-nums' }}>{message}</HelperText>
       <VisuallyHidden>
         <div role='status'>{remaining <= 10 ? message : ''}</div>
       </VisuallyHidden>

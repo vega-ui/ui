@@ -279,7 +279,7 @@ export default function CompactCloseAction() {
 
 <!-- example: icon-button/tooltip-label.tsx -->
 ```tsx
-import { Icon, IconButton, Tooltip, TooltipArrow, TooltipContent, TooltipTrigger } from '@vega-ui/react';
+import { Icon, IconButton, Tooltip, TooltipContent, TooltipTrigger } from '@vega-ui/react';
 import { AlignCenterIcon, AlignLeftIcon, AlignRightIcon } from '@vega-ui/icons';
 import { type ReactNode, useState } from 'react';
 
@@ -321,7 +321,6 @@ export default function TooltipLabel() {
             </IconButton>
           </TooltipTrigger>
           <TooltipContent>
-            <TooltipArrow />
             {item.label} · {item.shortcut}
           </TooltipContent>
         </Tooltip>
@@ -410,7 +409,7 @@ export default function FailedRemoveAction() {
               </IconButton>
             </div>
             {failed && (
-              <HelperText id={errorId} error role='alert' style={{ paddingInlineStart: 'calc(var(--spacing-8) + var(--spacing-4))', paddingBlockEnd: 'var(--spacing-2)' }}>
+              <HelperText id={errorId} invalid role='alert' style={{ paddingInlineStart: 'calc(var(--spacing-8) + var(--spacing-4))', paddingBlockEnd: 'var(--spacing-2)' }}>
                 Signed contracts cannot be removed. Ask an admin to archive it instead.
               </HelperText>
             )}

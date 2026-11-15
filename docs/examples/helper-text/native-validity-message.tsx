@@ -26,7 +26,7 @@ export default function NativeValidityMessage() {
     <form onSubmit={(event) => event.preventDefault()} style={{ display: 'grid', gap: 'var(--spacing-12)', width: '100%' }}>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor={id}>Postal code</Label>
-        <TextField error={invalid}>
+        <TextField>
           <TextFieldInput
             id={id}
             name='postalCode'
@@ -40,7 +40,7 @@ export default function NativeValidityMessage() {
             onInput={onInput}
           />
         </TextField>
-        {invalid && <HelperText id={`${id}-error`} error>{error}</HelperText>}
+        {invalid && <HelperText id={`${id}-error`} invalid>{error}</HelperText>}
         <HelperText id={`${id}-hint`}>We deliver within Germany only.</HelperText>
       </div>
       <Button type='submit' style={{ justifySelf: 'start' }}>Check delivery</Button>

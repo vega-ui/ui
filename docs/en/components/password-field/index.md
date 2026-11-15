@@ -87,7 +87,7 @@ export default function SignInPassword() {
 ## Variants
 
 - Size: inherited from `TextField`
-- State: hidden or shown password, disabled, error through root field props
+- State: hidden or shown password, disabled through root field props, invalid through `aria-invalid` or `:user-invalid` on `PasswordFieldInput`
 - Composition: default icons or custom icon content
 
 ## Related Docs

@@ -327,7 +327,7 @@ export default function PromoCode() {
           <form onSubmit={apply} style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
             <Label htmlFor='promo-code'>Promo code</Label>
             <div style={{ display: 'flex', gap: 'var(--spacing-4)' }}>
-              <TextField error={error !== ''} style={{ flex: 1 }}>
+              <TextField style={{ flex: 1 }}>
                 <TextFieldInput
                   id='promo-code'
                   placeholder='WELCOME10'
@@ -342,7 +342,7 @@ export default function PromoCode() {
               </TextField>
               <Button type='submit' variant='secondary' appearance='ghost'>Apply</Button>
             </div>
-            {error && <HelperText id='promo-code-error' error>{error}</HelperText>}
+            {error && <HelperText id='promo-code-error' invalid>{error}</HelperText>}
           </form>
         </CollapsibleContent>
       </Collapsible>

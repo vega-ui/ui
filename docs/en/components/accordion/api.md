@@ -47,7 +47,7 @@ Also accepts all `<li>` attributes.
 | `asChild` | `boolean` | — | No | If true, renders the trigger as a child component using `Slot` (e.g. `<a>` or `<div>`). This allows custom semantics or styling while preserving collapsible behavior. |
 | `ref` | `Ref<HTMLButtonElement>` | — | No | Ref forwarded to the native trigger element (typically a button). |
 
-Also accepts all HTML attributes.
+Also accepts all `<button>` attributes.
 <!-- AUTO-GENERATED:PART_API:AccordionTrigger:end -->
 
 ### `AccordionContent`
@@ -100,4 +100,5 @@ Also accepts all HTML attributes.
 - `Accordion` can be uncontrolled through `defaultOpened` or [controlled](../../glossary.md#controlled) through `opened` and `onChangeOpened`.
 - `multiple={false}` behaves like a classic accordion where opening one item closes the others.
 - `multiple={true}` allows the root to behave like a grouped disclosure surface.
-- `useAccordionContext` and `useAccordionItemContext` are available for advanced wrappers and custom compositions.
+- The trigger runs your `onClick` first: `event.preventDefault()` in it keeps the item as it is.
+- `useAccordionContext` returns `{ handle, size }`, with the widget handle of the accordion, and `useAccordionItemContext` returns `{ size }`, for advanced wrappers and custom compositions.

@@ -91,7 +91,7 @@ export default function MinimalComposition() {
 
 - Controlled logical `index`
 - Uncontrolled windowed paging with `defaultIndex`
-- Adjustable `size`, `shift`, `start`, and `startDir`
+- Adjustable `size`, `shift`, and `start`
 
 ## Related Docs
 

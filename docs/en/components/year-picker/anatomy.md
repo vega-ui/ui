@@ -2,13 +2,13 @@
 
 ## Overview
 
-`YearPicker` wraps `DataGridPicker` for year values and can render either static year grids or scroller-driven paged year ranges.
+`YearPicker` wraps `Grid` for year values and can render either static year grids or scroller-driven paged year ranges.
 
 ## Required Parts
 
 ### `YearPicker`
 
-Required. Owns year selection behavior and visible year context.
+Required. Owns year selection behavior and the focused year, which decides the page in view.
 
 ## Optional Parts
 
@@ -36,7 +36,7 @@ Optional paged year-range scroller infrastructure.
 
 ## Valid Composition Patterns
 
-The scroller composition: `YearPickerScroller` › `YearPickerScrollerContent` › `YearPickerScrollerLayout` › cell template, inside `YearPicker`. Keep `year` in state and update it from `onChangePeriod`, so the root always knows the page in view.
+The scroller composition: `YearPickerScroller` › `YearPickerScrollerContent` › `YearPickerScrollerLayout` › cell template, inside `YearPicker`. Pages start at the first focused year, and scrolling to another page moves the focus there, so the root always knows the page in view. Use `onChangePeriod` only to label the page.
 
 <!-- example: year-picker/valid-composition-patterns.tsx -->
 ```tsx
@@ -53,8 +53,8 @@ export default function ValidCompositionPatterns() {
   const [year, setYear] = useState('2026-01-01');
 
   return (
-    <YearPicker aria-label='Year' locale='en-US' year={year}>
-      <YearPickerScroller onChangePeriod={setYear}>
+    <YearPicker aria-label='Year' locale='en-US' focusedDate={year} onChangeFocusedDate={setYear}>
+      <YearPickerScroller>
         <YearPickerScrollerContent>
           <YearPickerScrollerLayout>
             <YearPickerCell />
@@ -69,7 +69,7 @@ export default function ValidCompositionPatterns() {
 
 ## Invalid Composition Patterns
 
-### Scroller `period` that differs from the layout page size
+### `period` that differs from the layout page size
 
 The user sees one period while the paging logic thinks it is on another.
 

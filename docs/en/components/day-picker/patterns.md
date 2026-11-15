@@ -8,13 +8,13 @@ When to use:
 
 Composition notes:
 
-- use `DayPickerLayout` and pass `month` explicitly, so the grid does not depend on today
-- constrain the period with `from` and `to` instead of hiding days
+- use `DayPickerLayout` and pass `defaultFocusedDate`, so the grid does not depend on today
+- constrain the period with `min` and `max` instead of hiding days; they also keep keyboard navigation inside the month
 
 Trade-offs:
 
 - simple and stable
-- no navigation; use a scroller or `Calendar` when users move between months
+- no visible navigation; use a scroller or `Calendar` when users move between months
 
 <!-- example: day-picker/static-month-grid.tsx -->
 ```tsx
@@ -29,13 +29,13 @@ export default function StaticMonthGrid() {
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-6)', justifyItems: 'start', width: '100%' }}>
       <DayPicker
-        aria-label='Payment day, November 2026'
+        aria-label='Payment day'
         locale='en-US'
-        month='2026-11-01'
-        from='2026-11-10'
-        to='2026-11-25'
-        selected={day}
-        onSelectCell={setDay}
+        defaultFocusedDate='2026-11-01'
+        min='2026-11-10'
+        max='2026-11-25'
+        value={day}
+        onChangeValue={setDay}
       >
         <DayPickerLayout>
           <DayPickerCell />
@@ -59,8 +59,8 @@ When to use:
 Composition notes:
 
 - use `DayPickerScroller` with `DayPickerScrollerContent` and `DayPickerScrollerLayout`
-- `onChangePeriod` reports the first day of the month scrolled into view; store it and pass it back as `month`, so the header and the grid agree
-- keep `active` in state as well and move it into the new month, otherwise the grid can lose its tab stop
+- the scroller follows the focused day, and a swipe moves the focused day to the same day of the new month
+- control `focusedDate` with `onChangeFocusedDate` when a custom header shows the month or has its own buttons
 - reach for `Calendar` when the standard header, month view, and year view are enough
 
 Trade-offs:
@@ -81,52 +81,40 @@ import {
   Text,
 } from '@vega-ui/react';
 import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
+import { addCalendarMonths, getSameDayInCalendarMonth, gregorianCalendar } from '@vega-ui/i18n';
 import { useState } from 'react';
 
 const monthFormat = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' });
 
-function addMonths(month: string, amount: number) {
-  const date = new Date(month);
-  date.setUTCMonth(date.getUTCMonth() + amount);
-
-  return date.toISOString().slice(0, 10);
-}
-
 export default function VisibleMonthWithOwnNavigation() {
-  const [month, setMonth] = useState('2026-11-01');
-  const [active, setActive] = useState('2026-11-01');
+  const [focused, setFocused] = useState('2026-11-01');
   const [selected, setSelected] = useState<string | null>(null);
 
-  const showMonth = (next: string) => {
-    setMonth(next);
-    setActive((current) => {
-      if (current.slice(0, 7) === next.slice(0, 7)) return current;
-
-      return next;
-    });
+  const showMonth = (amount: number) => {
+    const month = addCalendarMonths(gregorianCalendar, focused, amount);
+    setFocused(getSameDayInCalendarMonth(gregorianCalendar, focused, month));
   };
 
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-4)', inlineSize: 'fit-content' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <IconButton aria-label='Previous month' size='sm' variant='secondary' appearance='ghost' onClick={() => showMonth(addMonths(month, -1))}>
+        <IconButton aria-label='Previous month' size='sm' variant='secondary' appearance='ghost' onClick={() => showMonth(-1)}>
           <Icon><ChevronLeft /></Icon>
         </IconButton>
-        <Text fontWeight={600} aria-live='polite'>{monthFormat.format(new Date(month))}</Text>
-        <IconButton aria-label='Next month' size='sm' variant='secondary' appearance='ghost' onClick={() => showMonth(addMonths(month, 1))}>
+        <Text fontWeight={600} aria-live='polite'>{monthFormat.format(new Date(focused))}</Text>
+        <IconButton aria-label='Next month' size='sm' variant='secondary' appearance='ghost' onClick={() => showMonth(1)}>
           <Icon><ChevronRight /></Icon>
         </IconButton>
       </div>
       <DayPicker
         aria-label='Pickup day'
         locale='en-US'
-        month={month}
-        active={active}
-        onChangeActive={setActive}
-        selected={selected}
-        onSelectCell={setSelected}
+        focusedDate={focused}
+        onChangeFocusedDate={setFocused}
+        value={selected}
+        onChangeValue={setSelected}
       >
-        <DayPickerScroller onChangePeriod={showMonth}>
+        <DayPickerScroller>
           <DayPickerScrollerContent>
             <DayPickerScrollerLayout>
               <DayPickerCell />
@@ -161,12 +149,12 @@ Trade-offs:
 <!-- example: day-picker/custom-grid-rendering.tsx -->
 ```tsx
 import {
-  CalendarBaseWeekLabel,
-  CalendarBaseWeekLabels,
   DayPicker,
   DayPickerItem,
   DayPickerRow,
   DayPickerRowGroup,
+  GridColumnHeader,
+  Text,
   createDayPickerGrid,
 } from '@vega-ui/react';
 
@@ -178,12 +166,16 @@ const weeks = createDayPickerGrid({ month: MONTH, weekStartsOn: 1 }).filter(({ d
 
 export default function CustomGridRendering() {
   return (
-    <DayPicker aria-label='Workdays, November 2026' locale='en-US' month={MONTH} style={{ inlineSize: 'fit-content' }}>
-      <CalendarBaseWeekLabels style={{ gridTemplateColumns: 'repeat(5, 1fr)' }}>
-        {WORK_DAYS.map((weekday) => (
-          <CalendarBaseWeekLabel key={weekday}>{weekday}</CalendarBaseWeekLabel>
+    <DayPicker aria-label='Workdays' locale='en-US' defaultFocusedDate={MONTH} style={{ inlineSize: 'fit-content' }}>
+      <DayPickerRow row={-1}>
+        {WORK_DAYS.map((weekday, col) => (
+          <GridColumnHeader key={weekday} col={col} excluded asChild>
+            <Text size={2} style={{ color: 'var(--label-tertiary)', minBlockSize: 'var(--spacing-18)' }}>
+              {weekday}
+            </Text>
+          </GridColumnHeader>
         ))}
-      </CalendarBaseWeekLabels>
+      </DayPickerRow>
       <DayPickerRowGroup>
         {weeks.map(({ row, data }) => (
           <DayPickerRow key={row} row={row}>
@@ -254,7 +246,7 @@ function EventDay() {
 
 export default function CellTemplate() {
   return (
-    <DayPicker aria-label='Team events, November 2026' locale='en-US' month='2026-11-01' size='sm'>
+    <DayPicker aria-label='Team events' locale='en-US' defaultFocusedDate='2026-11-01' size='sm'>
       <DayPickerLayout>
         <EventDay />
       </DayPickerLayout>

@@ -32,6 +32,15 @@
 - формат меняет поведение ввода, а не внешний вид
 - границы и шаг влияют на логику маски, а не на поверхность
 - внешний вид ошибки и отключённого состояния берётся из унаследованного контракта поля/поля ввода
+- вид ошибки следует за `aria-invalid='true'`, `:user-invalid` или `[data-user-edited]:invalid` на `TimeFieldInput`
+
+`TimeField` сам записывает текст `TimeFieldInput`, а Chromium и WebKit не считают такой текст правкой пользователя, поэтому после такой правки input не подходит под `:user-invalid`. В своём CSS используйте `:user-invalid` вместе с `[data-user-edited]:invalid`:
+
+```css
+.pickup-time:has(input:is(:user-invalid, [data-user-edited]:invalid)) label {
+  color: var(--color-error);
+}
+```
 
 ## Примеры
 

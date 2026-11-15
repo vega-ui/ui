@@ -20,13 +20,13 @@ export default function BookingWindowAndClosedWeekdays() {
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-3)', justifyItems: 'start', width: '100%' }}>
       <DayPicker
-        aria-label='Pickup day, November 2026'
+        aria-label='Pickup day'
         aria-describedby={hintId}
         locale='en-US'
-        month='2026-11-01'
-        from='2026-11-03'
-        to='2026-11-28'
-        disabled={isClosed}
+        defaultFocusedDate='2026-11-01'
+        min='2026-11-03'
+        max='2026-11-28'
+        disabledDates={isClosed}
       >
         <DayPickerLayout>
           <DayPickerCell />

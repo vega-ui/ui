@@ -290,7 +290,7 @@ export default function DividerBeforeDestructiveSection() {
         </div>
         <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
           <Label htmlFor='delete-confirmation'>Type {workspaceName} to confirm</Label>
-          <TextField error={error !== ''}>
+          <TextField>
             <TextFieldInput
               id='delete-confirmation'
               name='confirmation'
@@ -300,7 +300,7 @@ export default function DividerBeforeDestructiveSection() {
               onChange={() => setError('')}
             />
           </TextField>
-          {error && <HelperText id='delete-confirmation-error' error>{error}</HelperText>}
+          {error && <HelperText id='delete-confirmation-error' invalid>{error}</HelperText>}
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-6)', flexWrap: 'wrap' }}>
           <Button type='submit' style={destructive}>Delete workspace</Button>

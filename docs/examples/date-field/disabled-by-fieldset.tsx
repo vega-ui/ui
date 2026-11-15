@@ -3,20 +3,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   Checkbox,
   CheckboxCheckedIcon,
   CheckboxIndeterminateIcon,
@@ -52,19 +58,19 @@ export default function DisabledByFieldset() {
         <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
           <Label htmlFor='ship-on'>Ship on</Label>
           <DateField format='dd.MM.yyyy' separator='.'>
-            <DateFieldInput id='ship-on' name='shipOn' placeholder='dd.mm.yyyy' />
+            <DateFieldInput name='shipOn' id='ship-on' placeholder='dd.mm.yyyy' />
             <Popover placement='bottom-end'>
               <PopoverTrigger asChild>
                 <DateFieldTriggerIconButton aria-label='Choose shipping date' />
               </PopoverTrigger>
               <PopoverContent>
-                <DateFieldCalendar>
+                <DateFieldCalendar aria-label='Choose shipping date'>
                   <CalendarHeader>
                     <CalendarPrevButton aria-label='Previous month' />
-                    <CalendarViewButtonGroup>
+                    <CalendarHeading>
                       <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                       <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-                    </CalendarViewButtonGroup>
+                    </CalendarHeading>
                     <CalendarNextButton aria-label='Next month' />
                   </CalendarHeader>
                   <CalendarContent>
@@ -72,15 +78,27 @@ export default function DisabledByFieldset() {
                       <CalendarWeekdays>
                         <CalendarWeekday />
                       </CalendarWeekdays>
-                      <CalendarWeeks>
-                        <CalendarDay />
-                      </CalendarWeeks>
+                      <CalendarDaysScroller>
+                        <CalendarDaysScrollerContent>
+                          <CalendarWeeks>
+                            <CalendarDay />
+                          </CalendarWeeks>
+                        </CalendarDaysScrollerContent>
+                      </CalendarDaysScroller>
                     </CalendarDays>
                     <CalendarMonths>
-                      <CalendarMonth />
+                      <CalendarMonthsGrid>
+                        <CalendarMonth />
+                      </CalendarMonthsGrid>
                     </CalendarMonths>
                     <CalendarYears>
-                      <CalendarYear />
+                      <CalendarYearsScroller>
+                        <CalendarYearsScrollerContent>
+                          <CalendarYearsGrid>
+                            <CalendarYear />
+                          </CalendarYearsGrid>
+                        </CalendarYearsScrollerContent>
+                      </CalendarYearsScroller>
                     </CalendarYears>
                   </CalendarContent>
                 </DateFieldCalendar>

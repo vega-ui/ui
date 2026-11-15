@@ -184,7 +184,7 @@ export default function Onboarding() {
           <div style={stepStyle}>
             <div style={field}>
               <Label htmlFor={`${id}-workspace`}>Workspace name</Label>
-              <TextField error={errors.workspace !== undefined}>
+              <TextField>
                 <TextFieldInput
                   id={`${id}-workspace`}
                   name='workspace'
@@ -196,11 +196,11 @@ export default function Onboarding() {
                   onChange={(event) => changeWorkspace(event.currentTarget.value)}
                 />
               </TextField>
-              {errors.workspace && <HelperText id={`${id}-workspace-error`} error>{errors.workspace}</HelperText>}
+              {errors.workspace && <HelperText id={`${id}-workspace-error`} invalid>{errors.workspace}</HelperText>}
             </div>
             <div style={field}>
               <Label htmlFor={`${id}-slug`}>Workspace URL</Label>
-              <TextField error={errors.slug !== undefined}>
+              <TextField>
                 <Text size={3} aria-hidden='true' style={{ flexShrink: 0, paddingInlineStart: 'var(--spacing-12)', color: 'var(--label-secondary)' }}>vega.app/</Text>
                 <TextFieldInput
                   id={`${id}-slug`}
@@ -213,7 +213,7 @@ export default function Onboarding() {
                   style={{ minWidth: 0, paddingInlineStart: 'var(--spacing-1)' }}
                 />
               </TextField>
-              <HelperText id={`${id}-slug-hint`} error={errors.slug !== undefined}>
+              <HelperText id={`${id}-slug-hint`} invalid={errors.slug !== undefined}>
                 {errors.slug ?? 'Lowercase letters, digits and hyphens.'}
               </HelperText>
             </div>
@@ -245,7 +245,7 @@ export default function Onboarding() {
                   </div>
                 ))}
               </div>
-              {errors.size && <HelperText id={`${id}-size-error`} error>{errors.size}</HelperText>}
+              {errors.size && <HelperText id={`${id}-size-error`} invalid>{errors.size}</HelperText>}
             </Fieldset>
             <div style={field}>
               <Label htmlFor={`${id}-invites`}>Invite teammates (optional)</Label>
@@ -264,7 +264,7 @@ export default function Onboarding() {
                   setErrors({ ...errors, invites: undefined });
                 }}
               />
-              <HelperText id={`${id}-invites-hint`} error={errors.invites !== undefined}>
+              <HelperText id={`${id}-invites-hint`} invalid={errors.invites !== undefined}>
                 {errors.invites ?? 'Separate addresses with commas or spaces.'}
               </HelperText>
             </div>

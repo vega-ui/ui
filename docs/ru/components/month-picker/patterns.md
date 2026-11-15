@@ -23,7 +23,7 @@ import { MonthPicker, MonthPickerCell, MonthPickerLayout } from '@vega-ui/react'
 
 export default function MonthsOfOneYear() {
   return (
-    <MonthPicker aria-label='Start month, 2026' locale='en-US' year='2026-01-01' defaultSelected='2026-03-01' style={{ width: '100%' }}>
+    <MonthPicker aria-label='Start month, 2026' locale='en-US' defaultValue='2026-03-01' style={{ width: '100%' }}>
       <MonthPickerLayout>
         <MonthPickerCell />
       </MonthPickerLayout>
@@ -88,10 +88,9 @@ export default function MonthFilterInAPopover() {
         <MonthPicker
           aria-label='Statement month, 2026'
           locale='en-US'
-          year='2026-01-01'
-          to='2026-10-01'
-          selected={month}
-          onSelectCell={pick}
+          max='2026-10-01'
+          value={month}
+          onChangeValue={pick}
         >
           <MonthPickerLayout cols={4} format='short'>
             <MonthPickerCell />
@@ -138,7 +137,7 @@ const rows = createMonthPickerGrid({ year: YEAR, cols: 6 });
 
 export default function CustomGridRendering() {
   return (
-    <MonthPicker aria-label='Month, 2026' locale='en-US' year={YEAR} style={{ width: '100%' }}>
+    <MonthPicker aria-label='Month, 2026' locale='en-US' defaultFocusedDate={YEAR} style={{ width: '100%' }}>
       <MonthPickerRowGroup>
         {rows.map(({ row, data }) => (
           <MonthPickerRow key={row} row={row}>
@@ -218,7 +217,7 @@ function SpendingMonth({ locale }: { locale: string }) {
 
 export default function CellTemplate({ locale = 'en-US' }: { locale?: string }) {
   return (
-    <MonthPicker aria-label='Spending by month, 2026' locale={locale} year='2026-01-01' size='lg' to='2026-10-01' style={{ width: '100%' }}>
+    <MonthPicker aria-label='Spending by month, 2026' locale={locale} defaultFocusedDate='2026-01-01' size='lg' max='2026-10-01' style={{ width: '100%' }}>
       <MonthPickerLayout format='short' cols={4}>
         <SpendingMonth locale={locale} />
       </MonthPickerLayout>

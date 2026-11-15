@@ -292,13 +292,13 @@ export default function ErrorSummaryHeading() {
       )}
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor='contact-name'>Name</Label>
-        <TextField error={hasError('contact-name')}>
+        <TextField>
           <TextFieldInput id='contact-name' name='name' autoComplete='name' aria-invalid={hasError('contact-name')} />
         </TextField>
       </div>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor='contact-email'>Email</Label>
-        <TextField error={hasError('contact-email')}>
+        <TextField>
           <TextFieldInput
             id='contact-email'
             name='email'

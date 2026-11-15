@@ -5,20 +5,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   DateField,
   DateFieldCalendar,
   DateFieldInput,
@@ -60,19 +66,19 @@ export default function DateFieldInsideADialog() {
           <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
             <Label htmlFor='review-date'>Review date</Label>
             <DateField format='dd.MM.yyyy' separator='.' min='2026-01-01'>
-              <DateFieldInput id='review-date' name='reviewDate' required placeholder='dd.mm.yyyy' />
+              <DateFieldInput name='reviewDate' id='review-date' required placeholder='dd.mm.yyyy' />
               <Popover placement='bottom-end'>
                 <PopoverTrigger asChild>
                   <DateFieldTriggerIconButton aria-label='Choose review date' />
                 </PopoverTrigger>
                 <PopoverContent>
-                  <DateFieldCalendar>
+                  <DateFieldCalendar aria-label='Choose review date'>
                     <CalendarHeader>
                       <CalendarPrevButton aria-label='Previous month' />
-                      <CalendarViewButtonGroup>
+                      <CalendarHeading>
                         <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                         <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-                      </CalendarViewButtonGroup>
+                      </CalendarHeading>
                       <CalendarNextButton aria-label='Next month' />
                     </CalendarHeader>
                     <CalendarContent>
@@ -80,15 +86,27 @@ export default function DateFieldInsideADialog() {
                         <CalendarWeekdays>
                           <CalendarWeekday />
                         </CalendarWeekdays>
-                        <CalendarWeeks>
-                          <CalendarDay />
-                        </CalendarWeeks>
+                        <CalendarDaysScroller>
+                          <CalendarDaysScrollerContent>
+                            <CalendarWeeks>
+                              <CalendarDay />
+                            </CalendarWeeks>
+                          </CalendarDaysScrollerContent>
+                        </CalendarDaysScroller>
                       </CalendarDays>
                       <CalendarMonths>
-                        <CalendarMonth />
+                        <CalendarMonthsGrid>
+                          <CalendarMonth />
+                        </CalendarMonthsGrid>
                       </CalendarMonths>
                       <CalendarYears>
-                        <CalendarYear />
+                        <CalendarYearsScroller>
+                          <CalendarYearsScrollerContent>
+                            <CalendarYearsGrid>
+                              <CalendarYear />
+                            </CalendarYearsGrid>
+                          </CalendarYearsScrollerContent>
+                        </CalendarYearsScroller>
                       </CalendarYears>
                     </CalendarContent>
                   </DateFieldCalendar>

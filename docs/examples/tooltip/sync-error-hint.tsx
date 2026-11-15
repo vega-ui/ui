@@ -6,7 +6,6 @@ import {
   IconButton,
   Text,
   Tooltip,
-  TooltipArrow,
   TooltipContent,
   TooltipTrigger,
 } from '@vega-ui/react';
@@ -63,7 +62,6 @@ export default function SyncErrorHint() {
                     </IconButton>
                   </TooltipTrigger>
                   <TooltipContent>
-                    <TooltipArrow />
                     <Text size={2}>{integration.error}</Text>
                   </TooltipContent>
                 </Tooltip>

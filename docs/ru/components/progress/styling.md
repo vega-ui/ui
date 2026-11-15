@@ -10,6 +10,7 @@
 | --- | --- | --- |
 | `--progress-height` | `Progress`, `ProgressTrack` | Толщина полосы. |
 | `--progress-value` | `ProgressTrack` | Текущее значение. |
+| `--progress-min` | `ProgressTrack` | Минимум диапазона. |
 | `--progress-max` | `ProgressTrack` | Максимум диапазона. |
 | `--progress-track-color` | `ProgressTrack` | Цвет заполнения. |
 | `--progress-br-ratio` | `Progress` | Коэффициент радиуса полосы. |

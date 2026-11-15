@@ -293,7 +293,7 @@ export default function HiddenValidationCue() {
   return (
     <form noValidate onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', width: '100%' }}>
       <Label htmlFor='custom-domain'>Custom domain</Label>
-      <TextField error={error !== ''}>
+      <TextField>
         <TextFieldInput
           id='custom-domain'
           name='domain'
@@ -303,7 +303,7 @@ export default function HiddenValidationCue() {
         />
       </TextField>
       {error !== '' && (
-        <HelperText id='custom-domain-error' error style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3)' }}>
+        <HelperText id='custom-domain-error' invalid style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3)' }}>
           <Icon size='xs' style={{ flexShrink: 0 }}><CircleAlertIcon /></Icon>
           <VisuallyHidden asChild>
             <span>Error:</span>

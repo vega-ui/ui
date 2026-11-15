@@ -3,7 +3,6 @@ import {
   IconButton,
   Text,
   Tooltip,
-  TooltipArrow,
   TooltipContent,
   TooltipTrigger,
 } from '@vega-ui/react';
@@ -26,7 +25,6 @@ export default function IconHint() {
             </IconButton>
           </TooltipTrigger>
           <TooltipContent>
-            <TooltipArrow />
             <Text size={2}>{action.hint}</Text>
           </TooltipContent>
         </Tooltip>

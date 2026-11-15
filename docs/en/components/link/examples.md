@@ -248,7 +248,7 @@ export default function RecoveryLinkAfterAFailedFlow() {
         Pay $49.00
       </Button>
       {declined && (
-        <HelperText id='payment-error' error role='alert'>
+        <HelperText id='payment-error' invalid role='alert'>
           Your card ending in 4242 was declined.{' '}
           <Link href='/billing/payment-methods'>Update your payment method</Link>{' '}
           and try again.

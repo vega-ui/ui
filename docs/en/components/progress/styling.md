@@ -10,6 +10,7 @@
 | --- | --- | --- |
 | `--progress-height` | `Progress`, `ProgressTrack` | Bar thickness. |
 | `--progress-value` | `ProgressTrack` | Current value. |
+| `--progress-min` | `ProgressTrack` | Minimum range. |
 | `--progress-max` | `ProgressTrack` | Maximum range. |
 | `--progress-track-color` | `ProgressTrack` | Fill color. |
 | `--progress-br-ratio` | `Progress` | Radius ratio of the bar. |

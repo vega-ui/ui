@@ -44,19 +44,19 @@ export default function SeveralDaysInAForm() {
       <Fieldset>
         <FieldsetLegend>Extra shifts in November</FieldsetLegend>
         <DayPicker
-          aria-label='Shift days, November 2026'
+          aria-label='Shift days'
           aria-describedby={hintId}
           locale='en-US'
           selection='multiple'
-          month='2026-11-01'
-          selected={days}
-          onSelectCell={change}
+          defaultFocusedDate='2026-11-01'
+          value={days}
+          onChangeValue={change}
         >
           <DayPickerLayout>
             <DayPickerCell />
           </DayPickerLayout>
         </DayPicker>
-        <HelperText id={hintId} error={missing}>
+        <HelperText id={hintId} invalid={missing}>
           {missing ? 'Pick at least one day.' : 'Pick every day you can work.'}
         </HelperText>
       </Fieldset>

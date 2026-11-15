@@ -262,7 +262,7 @@ export default function Survey() {
                 <Text size={1} style={secondary}>0 – Not at all likely</Text>
                 <Text size={1} style={secondary}>10 – Extremely likely</Text>
               </div>
-              {errors.score && <HelperText id={`${id}-score-error`} error>{errors.score}</HelperText>}
+              {errors.score && <HelperText id={`${id}-score-error`} invalid>{errors.score}</HelperText>}
             </div>
 
             <div style={{ ...field, gap: 'var(--spacing-5)' }}>
@@ -314,7 +314,7 @@ export default function Survey() {
                   </CheckboxCard>
                 ))}
               </div>
-              {errors.features && <HelperText id={`${id}-features-error`} error>{errors.features}</HelperText>}
+              {errors.features && <HelperText id={`${id}-features-error`} invalid>{errors.features}</HelperText>}
             </Fieldset>
 
             <Fieldset aria-describedby={describe('role')} className='surveyFieldset' style={{ gap: 'var(--spacing-5)' }}>
@@ -338,7 +338,7 @@ export default function Survey() {
               {answers.role === 'other' && (
                 <div style={{ ...field, paddingInlineStart: 'var(--spacing-14)' }}>
                   <Label htmlFor={`${id}-role-custom`}>Your role</Label>
-                  <TextField error={errors.roleOther !== undefined}>
+                  <TextField>
                     <TextFieldInput
                       id={`${id}-role-custom`}
                       name='roleOther'
@@ -351,10 +351,10 @@ export default function Survey() {
                       onChange={(event) => change('roleOther', event.currentTarget.value)}
                     />
                   </TextField>
-                  {errors.roleOther && <HelperText id={`${id}-roleOther-error`} error>{errors.roleOther}</HelperText>}
+                  {errors.roleOther && <HelperText id={`${id}-roleOther-error`} invalid>{errors.roleOther}</HelperText>}
                 </div>
               )}
-              {errors.role && <HelperText id={`${id}-role-error`} error>{errors.role}</HelperText>}
+              {errors.role && <HelperText id={`${id}-role-error`} invalid>{errors.role}</HelperText>}
             </Fieldset>
           </div>
         )}
@@ -381,7 +381,7 @@ export default function Survey() {
             <div style={{ display: 'grid', gap: 'var(--spacing-6)' }}>
               <div style={field}>
                 <Label htmlFor={`${id}-email`}>Email for follow-up questions</Label>
-                <TextField error={errors.email !== undefined}>
+                <TextField>
                   <TextFieldInput
                     id={`${id}-email`}
                     name='email'
@@ -394,7 +394,7 @@ export default function Survey() {
                     onChange={(event) => change('email', event.currentTarget.value)}
                   />
                 </TextField>
-                <HelperText id={errors.email ? `${id}-email-error` : `${id}-email-hint`} error={errors.email !== undefined}>
+                <HelperText id={errors.email ? `${id}-email-error` : `${id}-email-hint`} invalid={errors.email !== undefined}>
                   {errors.email ?? 'Optional. We only use it for this survey.'}
                 </HelperText>
               </div>
@@ -413,7 +413,7 @@ export default function Survey() {
                   </CheckboxIndicator>
                   The research team may contact me about my answers
                 </Checkbox>
-                {errors.consent && <HelperText id={`${id}-consent-error`} error>{errors.consent}</HelperText>}
+                {errors.consent && <HelperText id={`${id}-consent-error`} invalid>{errors.consent}</HelperText>}
               </div>
             </div>
           </div>

@@ -10,7 +10,7 @@ export default function ReservedMessageSpace() {
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 'var(--spacing-8)', width: '100%' }}>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)', alignContent: 'start' }}>
         <Label htmlFor={`${id}-code`}>Booking code</Label>
-        <TextField error={invalid}>
+        <TextField>
           <TextFieldInput
             id={`${id}-code`}
             value={code}
@@ -20,7 +20,7 @@ export default function ReservedMessageSpace() {
             onChange={(event) => setCode(event.currentTarget.value.toUpperCase())}
           />
         </TextField>
-        <HelperText id={`${id}-message`} error={invalid} style={{ minHeight: '2lh' }}>
+        <HelperText id={`${id}-message`} invalid={invalid} style={{ minHeight: '2lh' }}>
           {invalid ? 'Three letters, a hyphen and four digits.' : ''}
         </HelperText>
       </div>

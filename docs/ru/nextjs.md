@@ -61,25 +61,31 @@ export function PricingLink() {
 
 Сервер и клиент рендерят одно и то же дерево, и React сообщает о расхождении гидратации, когда их результат отличается. В Vega UI следить нужно за значениями по умолчанию в компонентах дат:
 
-- **Локаль.** Без `locale` `Calendar`, пикеры и поля дат используют `getDefaultLocale()` — локаль среды выполнения. Сервер на Node.js и браузер часто расходятся, поэтому названия месяцев и первый день недели меняются после гидратации. Передавайте `locale` явно — из маршрута или настроек пользователя.
-- **Сегодня.** Без `value`, `defaultValue` или `defaultMonth` `Calendar` и пикеры открываются на текущем месяце и берут сегодняшний день как начальную точку табуляции. Сервер рендерит месяц по своим часам, а статически экспортированная страница — месяц сборки. Передавайте `defaultMonth` (или значение), когда страница пререндерится, или рендерите календарь только после монтирования.
+- **Локаль.** Без `locale` `Calendar`, пикеры и поля дат используют `"en-US"` — одинаково на сервере и в браузере, поэтому разметка совпадает, но язык может оказаться не тем. Передавайте `locale` явно — из маршрута или настроек пользователя.
+- **Сегодня.** `Calendar` и пикеры ничего не читают из окружения во время рендера. Без `today` они узнают дату с устройства после гидратации, поэтому сервер и первый рендер на клиенте совпадают; до этого сегодняшний день не отмечен, а без `value`, `defaultValue` или `defaultFocusedDate` не показан и месяц. Передавайте `today` (из запроса, в часовом поясе пользователя), чтобы сервер отрисовал текущий месяц, или `defaultFocusedDate` (или значение), чтобы пререндеренная страница открывалась на известном месяце.
 
 ```tsx
 'use client';
 
-import { Calendar, CalendarDay, CalendarDays, CalendarMonthLabel, CalendarWeekday, CalendarWeekdays, CalendarWeeks } from '@vega-ui/react';
+import { Calendar, CalendarDay, CalendarDays, CalendarHeader, CalendarHeading, CalendarWeekday, CalendarWeekdays, CalendarWeeks, CalendarDaysScroller, CalendarDaysScrollerContent } from '@vega-ui/react';
 
-export function BookingCalendar({ locale, month }: { locale: string, month: string }) {
+export function BookingCalendar({ locale, today }: { locale: string, today: string }) {
   return (
-    <Calendar locale={locale} defaultMonth={month}>
-      <CalendarMonthLabel />
+    <Calendar locale={locale} today={today}>
+      <CalendarHeader>
+        <CalendarHeading />
+      </CalendarHeader>
       <CalendarDays>
         <CalendarWeekdays>
           <CalendarWeekday />
         </CalendarWeekdays>
-        <CalendarWeeks>
-          <CalendarDay />
-        </CalendarWeeks>
+        <CalendarDaysScroller>
+          <CalendarDaysScrollerContent>
+            <CalendarWeeks>
+              <CalendarDay />
+            </CalendarWeeks>
+          </CalendarDaysScrollerContent>
+        </CalendarDaysScroller>
       </CalendarDays>
     </Calendar>
   );
@@ -97,4 +103,4 @@ export function BookingCalendar({ locale, month }: { locale: string, month: stri
 - Импортируйте `@vega-ui/theme-core`, затем `@vega-ui/react/style.css`, затем CSS приложения — один раз в корневом layout.
 - Выставляйте класс темы до отрисовки и добавьте `suppressHydrationWarning` на `<html>`.
 - Держите обработчики, состояние и композиции с `asChild` в клиентских компонентах.
-- Передавайте `locale` каждому компоненту дат, а календарям на пререндеренных страницах — `defaultMonth` или значение.
+- Передавайте `locale` каждому компоненту дат, а календарям, которые должны показать месяц в серверном HTML, — `today`, `defaultFocusedDate` или значение.

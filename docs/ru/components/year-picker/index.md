@@ -6,7 +6,7 @@
 
 ## Кратко
 
-`YearPicker` — подсистема выбора года в семействе календарей. Он построен на `DataGridPicker`, поддерживает статичные сетки лет и сетки на основе скроллера и перелистывает годы группами фиксированного размера (`period`, по умолчанию `12`) для навигации, похожей на переход по десятилетиям.
+`YearPicker` — подсистема выбора года в семействе календарей. Он построен на `Grid`, поддерживает статичные сетки лет и сетки на основе скроллера и перелистывает годы группами фиксированного размера (`period`, по умолчанию `12`) для навигации, похожей на переход по десятилетиям.
 
 ## Импорт
 
@@ -24,7 +24,6 @@ import {
   createYearPickerGrid,
   useYearPickerCellContext,
   useYearPickerContext,
-  useYearPickerScrollerContext,
   type YearPickerCellContextData,
   type YearPickerCellProps,
   type YearPickerItemProps,
@@ -61,7 +60,7 @@ export const locales = ['en-US', 'ru-RU', 'ar-EG', 'he-IL'];
 
 export default function MinimalComposition({ locale = 'en-US' }: { locale?: string }) {
   return (
-    <YearPicker aria-label='Year' locale={locale} year='2026-01-01' style={{ width: '100%' }}>
+    <YearPicker aria-label='Year' locale={locale} defaultFocusedDate='2026-01-01' style={{ width: '100%' }}>
       <YearPickerLayout>
         <YearPickerCell />
       </YearPickerLayout>
@@ -96,8 +95,8 @@ export default function MinimalComposition({ locale = 'en-US' }: { locale?: stri
 
 - Выбор: `single`, `multiple`, `range`
 - Раскладка: статичная сетка или перелистывание лет на основе скроллера
-- Период: явно заданный видимый `year` (строка `YYYY-MM-DD` любого дня этого года) или текущий год
-- Локаль и календарная система: пропсы `locale` и `calendar`, по умолчанию — локаль среды выполнения и григорианский календарь; эры обрабатывает адаптер
+- Период: страница года в фокусе — `focusedDate` или `defaultFocusedDate` (строка `YYYY-MM-DD` любого дня в нём), иначе выбранный год, иначе `today`
+- Локаль и календарная система: пропсы `locale` и `calendar`, по умолчанию — `en-US` и григорианский календарь; эры обрабатывает адаптер
 
 ## Связанные документы
 
@@ -113,7 +112,7 @@ export default function MinimalComposition({ locale = 'en-US' }: { locale?: stri
 ## Пограничные случаи
 
 - Большие диапазоны лет требуют дополнительной проверки фокуса, перелистывания и видимого контекста.
-- `year` управляет видимым периодом, а не только выбором.
+- Год в фокусе определяет видимую страницу, а не только точку Tab.
 - В режиме скроллера перелистывание идёт по `period` лет; `period`, отличающийся от `rows × cols` раскладки, показывает неправильный диапазон.
 
 ## Типичные ошибки

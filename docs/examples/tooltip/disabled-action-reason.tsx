@@ -8,7 +8,6 @@ import {
   CheckboxInput,
   Text,
   Tooltip,
-  TooltipArrow,
   TooltipContent,
   TooltipTrigger,
 } from '@vega-ui/react';
@@ -37,7 +36,6 @@ export default function DisabledActionReason() {
             <Button aria-disabled={!verified} onClick={invite}>Invite members</Button>
           </TooltipTrigger>
           <TooltipContent>
-            <TooltipArrow />
             <Text size={2}>{verified ? 'Send invites to your team' : 'Verify billing to invite more than 5 members'}</Text>
           </TooltipContent>
         </Tooltip>

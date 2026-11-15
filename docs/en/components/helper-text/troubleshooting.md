@@ -27,16 +27,16 @@ The text communicates an error, but the control itself remains visually normal.
 
 ### Likely Cause
 
-Only `HelperText error` was set.
+Only `HelperText invalid` was set.
 
 ### How To Verify
 
 - inspect the field props
-- confirm whether the field wrapper or input has its invalid state applied
+- confirm whether the control has `aria-invalid='true'` or matches `:user-invalid`
 
 ### Fix
 
-Apply the error state to the field and keep `HelperText` as supporting copy.
+Set `aria-invalid` on the control, or rely on a native constraint, and keep `HelperText` as supporting copy.
 
 ## Helper Text Is Too Long To Scan
 

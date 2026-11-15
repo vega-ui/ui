@@ -3,7 +3,6 @@ import {
   IconButton,
   Text,
   Tooltip,
-  TooltipArrow,
   TooltipContent,
   TooltipTrigger,
 } from '@vega-ui/react';
@@ -37,7 +36,6 @@ export default function ToolbarSharedDelay() {
             </IconButton>
           </TooltipTrigger>
           <TooltipContent>
-            <TooltipArrow />
             <Text size={2}>{`${label} ${shortcut}`}</Text>
           </TooltipContent>
         </Tooltip>

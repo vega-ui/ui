@@ -39,7 +39,7 @@ export default function EmojiFlags() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', width: '100%', maxWidth: 340 }}>
       <Label htmlFor={id}>WhatsApp number</Label>
-      <PhoneField defaultCode='BR'>
+      <PhoneField defaultCountry='BR'>
         <PhoneFieldSelect>
           <SelectHiddenSelect name='country' />
           <SelectCombobox aria-label='Country'>
@@ -60,7 +60,7 @@ export default function EmojiFlags() {
             ))}
           </SelectListbox>
         </PhoneFieldSelect>
-        <PhoneFieldInput id={id} name='whatsapp' autoComplete='tel' />
+        <PhoneFieldInput name='whatsapp' id={id} autoComplete='tel' />
       </PhoneField>
     </div>
   );

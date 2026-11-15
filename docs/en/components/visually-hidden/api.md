@@ -10,6 +10,8 @@
 | `asChild` | `boolean` | — | No | Renders the content using a child component instead of a native `<div>`. Useful for integrating into custom elements without extra wrappers. |
 | `children` | `ReactNode` | — | No | The content to be hidden visually but accessible via screen readers. Often used for labels, instructions, or announcements. |
 | `ref` | `Ref<HTMLDivElement>` | — | No | Ref to the visually hidden DOM element. Useful for focus management or measurement in accessible workflows. |
+
+Also accepts all `<div>` attributes.
 <!-- AUTO-GENERATED:ROOT_API:end -->
 
 ## Child Parts

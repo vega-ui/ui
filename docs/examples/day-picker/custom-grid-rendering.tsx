@@ -1,10 +1,10 @@
 import {
-  CalendarBaseWeekLabel,
-  CalendarBaseWeekLabels,
   DayPicker,
   DayPickerItem,
   DayPickerRow,
   DayPickerRowGroup,
+  GridColumnHeader,
+  Text,
   createDayPickerGrid,
 } from '@vega-ui/react';
 
@@ -16,12 +16,16 @@ const weeks = createDayPickerGrid({ month: MONTH, weekStartsOn: 1 }).filter(({ d
 
 export default function CustomGridRendering() {
   return (
-    <DayPicker aria-label='Workdays, November 2026' locale='en-US' month={MONTH} style={{ inlineSize: 'fit-content' }}>
-      <CalendarBaseWeekLabels style={{ gridTemplateColumns: 'repeat(5, 1fr)' }}>
-        {WORK_DAYS.map((weekday) => (
-          <CalendarBaseWeekLabel key={weekday}>{weekday}</CalendarBaseWeekLabel>
+    <DayPicker aria-label='Workdays' locale='en-US' defaultFocusedDate={MONTH} style={{ inlineSize: 'fit-content' }}>
+      <DayPickerRow row={-1}>
+        {WORK_DAYS.map((weekday, col) => (
+          <GridColumnHeader key={weekday} col={col} excluded asChild>
+            <Text size={2} style={{ color: 'var(--label-tertiary)', minBlockSize: 'var(--spacing-18)' }}>
+              {weekday}
+            </Text>
+          </GridColumnHeader>
         ))}
-      </CalendarBaseWeekLabels>
+      </DayPickerRow>
       <DayPickerRowGroup>
         {weeks.map(({ row, data }) => (
           <DayPickerRow key={row} row={row}>

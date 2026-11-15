@@ -8,7 +8,6 @@ import {
   TextField,
   TextFieldInput,
   Tooltip,
-  TooltipArrow,
   TooltipContent,
   TooltipTrigger,
 } from '@vega-ui/react';
@@ -34,7 +33,6 @@ export default function FieldHelper() {
             </IconButton>
           </TooltipTrigger>
           <TooltipContent>
-            <TooltipArrow />
             <Text size={2}>Printed on invoices for EU business customers</Text>
           </TooltipContent>
         </Tooltip>

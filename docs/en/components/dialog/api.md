@@ -138,7 +138,9 @@ export default function CloseWithHandler() {
 
 ## `useDialogContext`
 
-Advanced hook for custom wrappers and close actions. Returns `{ open, changeOpen }`.
+Advanced hook for custom wrappers. Returns `{ handle }`, the widget handle of the dialog: read `open` with `useSnapshot(handle, (state) => state.open)`. For a close action use `DialogClose` with `asChild`.
+
+The handlers you pass run first: `event.preventDefault()` in `onClick` of `DialogTrigger` or `DialogClose`, or in `onCancel` or `onSubmit` of `DialogContent`, keeps the dialog as it is.
 
 Use it only when the exported parts are not enough for the desired composition.
 
@@ -156,7 +158,6 @@ Use it only when the exported parts are not enough for the desired composition.
 - Open state can be controlled with `open` or uncontrolled with `defaultOpen`.
 - `DialogTrigger` is the normal open path for uncontrolled usage.
 - Every close request allowed by `closedBy` (backdrop click, `Escape`) every `DialogClose` click, and every `<form method="dialog">` submit go through `onChangeOpen(false)`; a controlled dialog stays open until `open` becomes `false`. A close the browser makes without asking, such as `close()` called on the element or a forced close after repeated `Escape`, is final: it stays closed until `open` changes.
-- When the browser closes the dialog on its own while `open` is still `true`, the dialog reopens.
 
 ## Integration Notes
 

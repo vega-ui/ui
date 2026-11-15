@@ -22,20 +22,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   HelperText,
 } from '@vega-ui/react';
 import { useId, useState } from 'react';
@@ -77,17 +83,17 @@ export default function BookingCalendar() {
           selection='range'
           min='2026-11-01'
           max='2027-04-30'
-          defaultMonth='2026-11-01'
+          defaultFocusedDate='2026-11-01'
           disabledDates={isBooked}
           value={[start, end]}
           onChangeValue={setRange}
         >
           <CalendarHeader>
             <CalendarPrevButton aria-label='Previous' />
-            <CalendarViewButtonGroup>
+            <CalendarHeading>
               <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
               <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-            </CalendarViewButtonGroup>
+            </CalendarHeading>
             <CalendarNextButton aria-label='Next' />
           </CalendarHeader>
           <CalendarContent>
@@ -95,19 +101,31 @@ export default function BookingCalendar() {
               <CalendarWeekdays>
                 <CalendarWeekday />
               </CalendarWeekdays>
-              <CalendarWeeks>
-                <CalendarDay />
-              </CalendarWeeks>
+              <CalendarDaysScroller>
+                <CalendarDaysScrollerContent>
+                  <CalendarWeeks>
+                    <CalendarDay />
+                  </CalendarWeeks>
+                </CalendarDaysScrollerContent>
+              </CalendarDaysScroller>
             </CalendarDays>
             <CalendarMonths>
-              <CalendarMonth />
+              <CalendarMonthsGrid>
+                <CalendarMonth />
+              </CalendarMonthsGrid>
             </CalendarMonths>
             <CalendarYears>
-              <CalendarYear />
+              <CalendarYearsScroller>
+                <CalendarYearsScrollerContent>
+                  <CalendarYearsGrid>
+                    <CalendarYear />
+                  </CalendarYearsGrid>
+                </CalendarYearsScrollerContent>
+              </CalendarYearsScroller>
             </CalendarYears>
           </CalendarContent>
         </Calendar>
-        <HelperText id={messageId} error={invalid} aria-live='polite'>{message}</HelperText>
+        <HelperText id={messageId} invalid={invalid} aria-live='polite'>{message}</HelperText>
       </div>
       <Button disabled={!complete || invalid}>Reserve</Button>
     </div>
@@ -126,7 +144,7 @@ Composition notes:
 
 Children of `CalendarWeeks` are the template of a day cell: they are rendered once per day inside a cell context. Read the day with `useCalendarDayContext()` and put the content inside `CalendarDay`, so the cell keeps selection, focus, disabled, and overflow behavior. The same works for `CalendarMonths` with `CalendarMonth` and `useCalendarMonthContext()`, and for `CalendarYears` with `CalendarYear` and `useCalendarYearContext()`.
 
-The day context is `{ col, date, fields, label, inMonth }`; `date` is `undefined` for an empty overflow cell. Take the day number from `label` or `fields.day`, never from the ISO `date` string: in non-Gregorian calendars they differ. Look up data by `date`, which is the same in every calendar.
+The day context is `{ col, date, fields, label, inMonth, isToday }`; `date` is `undefined` for an empty overflow cell. Take the day number from `label` or `fields.day`, never from the ISO `date` string: in non-Gregorian calendars they differ. Look up data by `date`, which is the same in every calendar.
 
 Trade-offs:
 
@@ -139,20 +157,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   useCalendarDayContext,
 } from '@vega-ui/react';
 
@@ -191,13 +215,13 @@ function FareDay() {
 
 export default function DayCellCustomRendering() {
   return (
-    <Calendar size='md' locale='en-US' defaultMonth='2026-11-01' disabledDates={hasNoFare}>
+    <Calendar size='md' locale='en-US' defaultFocusedDate='2026-11-01' disabledDates={hasNoFare}>
       <CalendarHeader>
         <CalendarPrevButton aria-label='Previous' />
-        <CalendarViewButtonGroup>
+        <CalendarHeading>
           <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
           <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-        </CalendarViewButtonGroup>
+        </CalendarHeading>
         <CalendarNextButton aria-label='Next' />
       </CalendarHeader>
       <CalendarContent>
@@ -205,15 +229,27 @@ export default function DayCellCustomRendering() {
           <CalendarWeekdays>
             <CalendarWeekday />
           </CalendarWeekdays>
-          <CalendarWeeks>
-            <FareDay />
-          </CalendarWeeks>
+          <CalendarDaysScroller>
+            <CalendarDaysScrollerContent>
+              <CalendarWeeks>
+                <FareDay />
+              </CalendarWeeks>
+            </CalendarDaysScrollerContent>
+          </CalendarDaysScroller>
         </CalendarDays>
         <CalendarMonths>
-          <CalendarMonth />
+          <CalendarMonthsGrid>
+            <CalendarMonth />
+          </CalendarMonthsGrid>
         </CalendarMonths>
         <CalendarYears>
-          <CalendarYear />
+          <CalendarYearsScroller>
+            <CalendarYearsScrollerContent>
+              <CalendarYearsGrid>
+                <CalendarYear />
+              </CalendarYearsGrid>
+            </CalendarYearsScrollerContent>
+          </CalendarYearsScroller>
         </CalendarYears>
       </CalendarContent>
     </Calendar>
@@ -230,7 +266,7 @@ weekday headers, months, or years need their own look, such as dimmed weekends, 
 
 Composition notes:
 
-Children of `CalendarWeekdays`, `CalendarMonths`, and `CalendarYears` are templates, like the day cell. Read the item with `useCalendarWeekdayContext()`, `useCalendarMonthContext()`, or `useCalendarYearContext()` and render `CalendarWeekday`, `CalendarMonth`, or `CalendarYear`, so the item keeps its default behavior.
+Children of `CalendarWeekdays`, `CalendarMonthsGrid`, and `CalendarYearsGrid` are templates, like the day cell. Read the item with `useCalendarWeekdayContext()`, `useCalendarMonthContext()`, or `useCalendarYearContext()` and render `CalendarWeekday`, `CalendarMonth`, or `CalendarYear`, so the item keeps its default behavior.
 
 Trade-offs:
 
@@ -243,20 +279,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   useCalendarMonthContext,
   useCalendarWeekdayContext,
   useCalendarYearContext,
@@ -298,29 +340,41 @@ function LeapYear() {
 
 export default function WeekdayMonthYearTemplates() {
   return (
-    <Calendar locale='en-US' defaultMonth='2026-11-01' defaultView='month'>
+    <Calendar locale='en-US' defaultFocusedDate='2026-11-01' defaultView='month'>
       <CalendarHeader>
         <CalendarPrevButton aria-label='Previous' />
-        <CalendarViewButtonGroup>
+        <CalendarHeading>
           <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
           <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-        </CalendarViewButtonGroup>
+        </CalendarHeading>
         <CalendarNextButton aria-label='Next' />
       </CalendarHeader>
       <CalendarContent>
-        <CalendarDays aria-label='Days'>
+        <CalendarDays>
           <CalendarWeekdays>
             <Weekday />
           </CalendarWeekdays>
-          <CalendarWeeks>
-            <CalendarDay />
-          </CalendarWeeks>
+          <CalendarDaysScroller>
+            <CalendarDaysScrollerContent>
+              <CalendarWeeks>
+                <CalendarDay />
+              </CalendarWeeks>
+            </CalendarDaysScrollerContent>
+          </CalendarDaysScroller>
         </CalendarDays>
-        <CalendarMonths aria-label='Months' format='short'>
-          <QuarterMonth />
+        <CalendarMonths aria-label='Months'>
+          <CalendarMonthsGrid format='short'>
+            <QuarterMonth />
+          </CalendarMonthsGrid>
         </CalendarMonths>
         <CalendarYears aria-label='Years'>
-          <LeapYear />
+          <CalendarYearsScroller>
+            <CalendarYearsScrollerContent>
+              <CalendarYearsGrid>
+                <LeapYear />
+              </CalendarYearsGrid>
+            </CalendarYearsScrollerContent>
+          </CalendarYearsScroller>
         </CalendarYears>
       </CalendarContent>
     </Calendar>
@@ -351,20 +405,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   Text,
 } from '@vega-ui/react';
 import { useState } from 'react';
@@ -379,26 +439,38 @@ export default function NonGregorianCalendar() {
       <Calendar dir='rtl' locale='fa-IR' calendar={persianCalendar} value={date} onChangeValue={setDate}>
         <CalendarHeader>
           <CalendarPrevButton aria-label='ماه قبل' />
-          <CalendarViewButtonGroup>
+          <CalendarHeading>
             <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
             <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-          </CalendarViewButtonGroup>
+          </CalendarHeading>
           <CalendarNextButton aria-label='ماه بعد' />
         </CalendarHeader>
         <CalendarContent>
-          <CalendarDays aria-label='روزها'>
+          <CalendarDays>
             <CalendarWeekdays format='narrow'>
               <CalendarWeekday />
             </CalendarWeekdays>
-            <CalendarWeeks>
-              <CalendarDay />
-            </CalendarWeeks>
+            <CalendarDaysScroller>
+              <CalendarDaysScrollerContent>
+                <CalendarWeeks>
+                  <CalendarDay />
+                </CalendarWeeks>
+              </CalendarDaysScrollerContent>
+            </CalendarDaysScroller>
           </CalendarDays>
           <CalendarMonths aria-label='ماه‌ها'>
-            <CalendarMonth />
+            <CalendarMonthsGrid>
+              <CalendarMonth />
+            </CalendarMonthsGrid>
           </CalendarMonths>
           <CalendarYears aria-label='سال‌ها'>
-            <CalendarYear />
+            <CalendarYearsScroller>
+              <CalendarYearsScrollerContent>
+                <CalendarYearsGrid>
+                  <CalendarYear />
+                </CalendarYearsGrid>
+              </CalendarYearsScrollerContent>
+            </CalendarYearsScroller>
           </CalendarYears>
         </CalendarContent>
       </Calendar>
@@ -431,7 +503,10 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonthLabel,
   CalendarNextButton,
   CalendarPrevButton,
@@ -454,7 +529,9 @@ export default function OneDateInTwoCalendars() {
         <Calendar compact locale='en-GB' value={date} onChangeValue={setDate}>
           <CalendarHeader>
             <CalendarPrevButton aria-label='Previous month' />
-            <Text fontWeight={600}><CalendarMonthLabel /> <CalendarYearLabel /></Text>
+            <CalendarHeading>
+              <Text fontWeight={600}><CalendarMonthLabel /> <CalendarYearLabel /></Text>
+            </CalendarHeading>
             <CalendarNextButton aria-label='Next month' />
           </CalendarHeader>
           <CalendarContent>
@@ -462,16 +539,22 @@ export default function OneDateInTwoCalendars() {
               <CalendarWeekdays>
                 <CalendarWeekday />
               </CalendarWeekdays>
-              <CalendarWeeks>
-                <CalendarDay />
-              </CalendarWeeks>
+              <CalendarDaysScroller>
+                <CalendarDaysScrollerContent>
+                  <CalendarWeeks>
+                    <CalendarDay />
+                  </CalendarWeeks>
+                </CalendarDaysScrollerContent>
+              </CalendarDaysScroller>
             </CalendarDays>
           </CalendarContent>
         </Calendar>
         <Calendar compact dir='rtl' locale='ar-SA' calendar={islamicCalendar} value={date} onChangeValue={setDate}>
           <CalendarHeader>
             <CalendarPrevButton aria-label='الشهر السابق' />
-            <Text fontWeight={600}><CalendarMonthLabel /> <CalendarYearLabel /></Text>
+            <CalendarHeading>
+              <Text fontWeight={600}><CalendarMonthLabel /> <CalendarYearLabel /></Text>
+            </CalendarHeading>
             <CalendarNextButton aria-label='الشهر التالي' />
           </CalendarHeader>
           <CalendarContent>
@@ -479,9 +562,13 @@ export default function OneDateInTwoCalendars() {
               <CalendarWeekdays format='narrow'>
                 <CalendarWeekday />
               </CalendarWeekdays>
-              <CalendarWeeks>
-                <CalendarDay />
-              </CalendarWeeks>
+              <CalendarDaysScroller>
+                <CalendarDaysScrollerContent>
+                  <CalendarWeeks>
+                    <CalendarDay />
+                  </CalendarWeeks>
+                </CalendarDaysScrollerContent>
+              </CalendarDaysScroller>
             </CalendarDays>
           </CalendarContent>
         </Calendar>
@@ -515,19 +602,25 @@ import {
   CalendarDay,
   CalendarDays,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
+  CalendarYearsGrid,
   type CalendarProps,
   type CalendarSelection,
 } from '@vega-ui/react';
@@ -539,10 +632,10 @@ function AppCalendar<S extends CalendarSelection = 'single'>(props: Omit<Calenda
     <Calendar<S> locale={appSettings.locale} min={appSettings.min} max={appSettings.max} {...props}>
       <CalendarHeader>
         <CalendarPrevButton aria-label='Previous' />
-        <CalendarViewButtonGroup>
+        <CalendarHeading>
           <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
           <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-        </CalendarViewButtonGroup>
+        </CalendarHeading>
         <CalendarNextButton aria-label='Next' />
       </CalendarHeader>
       <CalendarContent>
@@ -550,15 +643,27 @@ function AppCalendar<S extends CalendarSelection = 'single'>(props: Omit<Calenda
           <CalendarWeekdays>
             <CalendarWeekday />
           </CalendarWeekdays>
-          <CalendarWeeks>
-            <CalendarDay />
-          </CalendarWeeks>
+          <CalendarDaysScroller>
+            <CalendarDaysScrollerContent>
+              <CalendarWeeks>
+                <CalendarDay />
+              </CalendarWeeks>
+            </CalendarDaysScrollerContent>
+          </CalendarDaysScroller>
         </CalendarDays>
         <CalendarMonths>
-          <CalendarMonth />
+          <CalendarMonthsGrid>
+            <CalendarMonth />
+          </CalendarMonthsGrid>
         </CalendarMonths>
         <CalendarYears>
-          <CalendarYear />
+          <CalendarYearsScroller>
+            <CalendarYearsScrollerContent>
+              <CalendarYearsGrid>
+                <CalendarYear />
+              </CalendarYearsGrid>
+            </CalendarYearsScrollerContent>
+          </CalendarYearsScroller>
         </CalendarYears>
       </CalendarContent>
     </Calendar>

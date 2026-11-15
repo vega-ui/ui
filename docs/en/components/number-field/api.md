@@ -13,13 +13,11 @@
 | `min` | `number` | `Number.MIN_SAFE_INTEGER` | No | Minimum allowed value for the input. Enforced both via HTML attributes and internal logic. |
 | `max` | `number` | `Number.MAX_SAFE_INTEGER` | No | Maximum allowed value for the input. |
 | `ref` | `Ref<HTMLDivElement>` | — | No | Ref forwarded to the element. |
-| `precision` | `number` | `0` | No | Number of decimal places to round the input value to. Useful for financial or scientific precision. |
 | `changeOnWheel` | `boolean` | `true` | No | Enables changing the value with the mouse wheel when focused. |
 | `allowEmpty` | `boolean` | `true` | No | Allows the field to be empty (null/undefined) instead of defaulting to 0. Useful for optional numeric inputs. |
 | `maximumFractionDigits` | `number` | `2` | No | Maximum number of digits allowed after the decimal point. This property controls numeric precision when the value is entered or adjusted via increment/decrement actions. It is commonly used for currency values, measurements, or ratings where fractional precision must be constrained. Example: `maximumFractionDigits={0}` → integers only; `maximumFractionDigits={2}` → up to two decimal places |
 | `disabled` | `boolean` | — | No | Disables the entire NumberField. |
 | `size` | `TextFieldSize` | `'md'` | No | Visual size of the text field. Affects padding, font size, and overall height. 'sm': Compact input; 'md': Default; 'lg': Spacious layout |
-| `error` | `boolean` | — | No | Shows the input in an error state. |
 
 Also accepts all `<div>` attributes.
 <!-- AUTO-GENERATED:ROOT_API:end -->
@@ -86,6 +84,9 @@ Also accepts all `<input>` attributes.
 
 - The root tracks whether the current value is at min or max.
 - Arrow keys and optional wheel events step the value through root logic. Like `<input type="number">`, the wheel steps only the focused field; without focus it scrolls the page.
+- A `readOnly` `NumberFieldInput` does not step from the arrow keys or the wheel, and the stepper buttons are disabled, like the spin buttons of a native `readonly` number input.
 - A step keeps the decimals of the value and of `step` (`0.7` + `0.1` gives `0.8`).
 - A root `onKeyDown` runs after the built-in arrow handling and does not replace it.
 - The root takes `value`, `defaultValue` and `onChangeValue` as a number, `NaN` for an empty field; `NumberFieldInput` shows the formatted text and still fires its own `onChange` and `onInput`. A form reset restores `defaultValue` unless the field is controlled.
+- The browser does not count a text written by the field as an edit of the user, so the field reports the edit itself: when the user leaves `NumberFieldInput` after changing its text, the input fires a native `change` event and gets `data-user-edited`. A step from the arrow keys, the wheel or the stepper buttons fires `change` at once and is not reported again on leaving. A value set through `value` does not mark the field, and a form reset removes the attribute.
+- The stepper buttons run your `onClick` first: `event.preventDefault()` in it keeps the value as it is.

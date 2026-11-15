@@ -31,6 +31,7 @@
 - размер задаёт `--input-height` и типографику инпута
 - наведение на обёртку управляется через `:has(input:hover)`
 - фокус управляется через `:has(input:focus-visible)`
+- ошибка управляется через `:has(input:is([aria-invalid='true'], :user-invalid, [data-user-edited]:invalid))`
 - отключённое состояние управляется через `:has(input:disabled)`
 
 ## Примеры

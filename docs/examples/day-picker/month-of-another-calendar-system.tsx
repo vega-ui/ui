@@ -7,17 +7,20 @@ const persianMonth = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { month: 'lon
 
 export default function MonthOfAnotherCalendarSystem() {
   const [day, setDay] = useState<string | null>('2026-03-21');
+  const [focusedDate, setFocusedDate] = useState('2026-04-01');
+  const month = persianMonth.format(new Date(focusedDate));
 
   return (
     <div dir='rtl' lang='fa-IR' style={{ display: 'grid', gap: 'var(--spacing-6)', justifyItems: 'start', width: '100%' }}>
-      <Text fontWeight={600}>{persianMonth.format(new Date('2026-04-01'))}</Text>
+      <Text fontWeight={600}>{month}</Text>
       <DayPicker
-        aria-label={persianMonth.format(new Date('2026-04-01'))}
+        aria-label={month}
         calendar={persianCalendar}
         locale='fa-IR'
-        month='2026-04-01'
-        selected={day}
-        onSelectCell={setDay}
+        focusedDate={focusedDate}
+        onChangeFocusedDate={setFocusedDate}
+        value={day}
+        onChangeValue={setDay}
       >
         <DayPickerLayout>
           <DayPickerCell />

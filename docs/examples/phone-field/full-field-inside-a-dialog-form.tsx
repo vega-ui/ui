@@ -60,7 +60,7 @@ export default function FullFieldInsideADialogForm() {
             style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', marginBlockStart: 'var(--spacing-12)' }}
           >
             <Label htmlFor={id}>Phone number</Label>
-            <PhoneField defaultCode='FR'>
+            <PhoneField defaultCountry='FR'>
               <PhoneFieldSelect>
                 <SelectHiddenSelect name='country' />
                 <SelectCombobox aria-label='Country'>
@@ -73,7 +73,7 @@ export default function FullFieldInsideADialogForm() {
                   <SelectOption value='CH'>CH</SelectOption>
                 </SelectListbox>
               </PhoneFieldSelect>
-              <PhoneFieldInput id={id} name='phone' autoComplete='tel' required />
+              <PhoneFieldInput name='phone' id={id} autoComplete='tel' required />
             </PhoneField>
             <Button type='submit' style={{ alignSelf: 'flex-end', marginBlockStart: 'var(--spacing-9)' }}>Save contact</Button>
           </form>

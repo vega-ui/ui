@@ -443,7 +443,7 @@ export default function RequiredAgreementCheckbox() {
           </CheckboxIndicator>
           I agree to the Terms of Service
         </Checkbox>
-        {invalid && <HelperText id='terms-error' error style={{ paddingInlineStart: 'var(--spacing-12)' }}>{error}</HelperText>}
+        {invalid && <HelperText id='terms-error' invalid style={{ paddingInlineStart: 'var(--spacing-12)' }}>{error}</HelperText>}
       </div>
       <div style={{ display: 'grid', gap: 'var(--spacing-6)', justifyItems: 'start' }}>
         <Button type='submit'>Create workspace</Button>

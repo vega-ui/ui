@@ -13,7 +13,7 @@ export default function SelectedYear() {
 
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-6)', justifyItems: 'start', width: '100%' }}>
-      <YearPicker aria-label='Model year' locale='en-US' year={year ?? '2026-01-01'} selected={year} onSelectCell={setYear}>
+      <YearPicker aria-label='Model year' locale='en-US' value={year} onChangeValue={setYear}>
         <YearPickerScroller>
           <YearPickerScrollerContent>
             <YearPickerScrollerLayout>

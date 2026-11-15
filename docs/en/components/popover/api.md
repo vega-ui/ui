@@ -7,7 +7,7 @@
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
 | `children` | `ReactNode` | — | No | The trigger and content elements for the popover. Should include `PopoverTrigger` and `PopoverContent` components. |
-| `placement` | `Placement` | `'bottom'` | No | Preferred placement of the popover relative to its trigger. Follows the Floating UI `Placement` type (e.g., 'top', 'bottom-start'). |
+| `placement` | `Placement` | `'bottom'` | No | Preferred placement of the popover relative to its trigger (e.g., 'top', 'bottom-start'). The popover moves to the opposite side when there is no room. |
 | `open` | `boolean` | — | No | Controls the open state of the popover. When set, the component becomes controlled. |
 | `defaultOpen` | `boolean` | `false` | No | Initial open state for uncontrolled usage. |
 | `onChangeOpen` | `(state: boolean) => void` | — | No | Callback fired when the open state changes. |
@@ -63,7 +63,7 @@ Also accepts all `<div>` attributes.
 
 ## `PopoverClose`
 
-Closes the popover when clicked. It has no styles or default `aria-label`: render your own button inside it with `asChild` and label it.
+Closes the popover when clicked, as a native `popovertarget` button with `popovertargetaction="hide"`, so the child given with `asChild` must be a button. It has no styles or default `aria-label`: render your own button inside it with `asChild` and label it. `event.preventDefault()` in its `onClick` keeps the popover open.
 
 <!-- AUTO-GENERATED:PART_API:PopoverClose:start -->
 | Prop | Type | Default | Required | Description |
@@ -85,8 +85,10 @@ Also accepts all `<button>` attributes.
 ## State Model
 
 - Open state can be controlled or uncontrolled.
-- Content positioning lives in the root model; outside click and `Escape` are handled by the browser and go through `onChangeOpen(false)`.
+- The content is placed by CSS anchor positioning against the trigger or `PopoverAnchor`, with no script measuring it; outside click and `Escape` are handled by the browser and go through `onChangeOpen(false)`.
 - A close made by the browser (outside click, `Escape`, a trigger click, another popover opening) is final, as a native popover cannot be kept open: a controlled popover stays hidden until `open` changes, so set `open={false}` in `onChangeOpen`. An open from the trigger is final the same way: a controlled popover stays shown until `open` changes, so set `open={true}` in `onChangeOpen`.
-- `usePopoverContext` is available for advanced wrappers and open-state helpers. It no longer exposes the floating-ui context and props.
+- `PopoverClose` closes through the browser, so its close is final like a light dismiss.
+- The children of `PopoverContent` render once the browser shows the popover and stay until its closing animations end, so `autoFocus` inside works.
+- `usePopoverContext` is available for advanced wrappers: it returns the widget `handle` and `close()`, which closes the popover unless a controlled parent keeps `open`. It no longer exposes the floating-ui context and props.
 - `PopoverContent` renders in the top layer via `popover="auto"`; no portal is needed.
 - A popover with a dimmed backdrop is a modal pattern: use `Dialog` or `Sheet` instead.

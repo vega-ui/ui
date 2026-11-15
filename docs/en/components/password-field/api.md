@@ -11,7 +11,6 @@
 | `defaultShown` | `boolean` | `false` | No | Initial visibility for uncontrolled usage. |
 | `onChangeShown` | `(shown: boolean) => void` | — | No | Called when the visibility is toggled. |
 | `size` | `TextFieldSize` | — | No | Visual size of the text field. Affects padding, font size, and overall height. 'sm': Compact input; 'md': Default; 'lg': Spacious layout |
-| `error` | `boolean` | — | No | Shows the input in an error state. |
 | `ref` | `Ref<HTMLDivElement>` | — | No | Ref forwarded to wrapper element Useful for programmatic control, focus, or integration. |
 
 Also accepts all `<div>` attributes.
@@ -91,3 +90,4 @@ Also accepts all `<button>` attributes.
 - `PasswordFieldInput` switches its `type` based on context.
 - The toggle button flips the visibility and keeps the focus where the browser put it, like a native button; it exposes the visibility with `aria-pressed`.
 - A custom `onClick` on the toggle runs after the toggle, it does not replace it.
+- `PasswordFieldToggleIconButton` runs your `onClick` first: `event.preventDefault()` in it keeps the password shown or hidden as it is.

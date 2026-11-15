@@ -11,7 +11,7 @@
 | `--switch-size` | `Switch`, `SwitchIndicator` | Overall control size. |
 | `--switch-background-color` | `Switch` | Current track color. |
 | `--switch-indicator-size` | `SwitchIndicator` | Thumb size. |
-| `--switch-indicator-transform` | `SwitchIndicator` | Thumb position. |
+| `--switch-indicator-offset` | `SwitchIndicator` | Thumb position: its distance from the inline start of the track, so it follows the writing direction. |
 | `--switch-padding` | `Switch` | Gap between the track and the thumb. |
 | `--switch-background-color-hover` | `Switch` | Track color on hover. |
 | `--switch-background-color-active` | `Switch` | Track color while pressed. |
@@ -28,6 +28,7 @@
 - `variant` changes the checked-state color family.
 - Active state slightly stretches and shifts the indicator.
 - Disabled state overrides track and thumb styling together.
+- `aria-invalid='true'` on `SwitchInput` or its `:user-invalid`, for example a `required` switch left off after a submit attempt, draws a 1px `--color-error` outline inside the edge of the track, like the border of `Checkbox` and `Radio`, so the switch keeps its size; while the switch is focused the focus ring replaces it. The component never sets `aria-invalid` itself.
 
 ## Examples
 

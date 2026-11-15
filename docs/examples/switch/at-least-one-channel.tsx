@@ -39,7 +39,7 @@ export default function AtLeastOneChannel() {
           </Switch>
         </div>
       </div>
-      {invalid && <HelperText id='channels-error' error>Keep at least one channel on, or nobody will be paged during an incident.</HelperText>}
+      {invalid && <HelperText id='channels-error' invalid>Keep at least one channel on, or nobody will be paged during an incident.</HelperText>}
     </Fieldset>
   );
 }

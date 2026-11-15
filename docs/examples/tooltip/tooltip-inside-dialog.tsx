@@ -13,7 +13,6 @@ import {
   TextField,
   TextFieldInput,
   Tooltip,
-  TooltipArrow,
   TooltipContent,
   TooltipTrigger,
 } from '@vega-ui/react';
@@ -63,7 +62,6 @@ export default function TooltipInsideDialog() {
                 </IconButton>
               </TooltipTrigger>
               <TooltipContent>
-                <TooltipArrow />
                 <Text size={2}>{copied ? 'Copied to clipboard' : 'Copy to clipboard'}</Text>
               </TooltipContent>
             </Tooltip>

@@ -38,6 +38,15 @@ Increment and decrement buttons map `--icon-button-size` to `--input-height`.
 - size comes from inherited text-field sizing
 - disabled behavior is derived from root context
 - min/max state typically affects button disabled behavior rather than changing the root surface
+- the error look follows `aria-invalid='true'`, `:user-invalid` or `[data-user-edited]:invalid` on `NumberFieldInput`
+
+`NumberField` writes the text of `NumberFieldInput` itself, and Chromium and WebKit do not count that text as an edit of the user, so the input does not match `:user-invalid` after it. In your own CSS, pair `:user-invalid` with `[data-user-edited]:invalid`:
+
+```css
+.seat-count:has(input:is(:user-invalid, [data-user-edited]:invalid)) label {
+  color: var(--color-error);
+}
+```
 
 ## Examples
 

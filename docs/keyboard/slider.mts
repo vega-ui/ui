@@ -11,8 +11,8 @@ const volume = { role: 'slider', name: 'Master volume' };
 export default [
   {
     keys: ['ArrowRight', 'ArrowUp'],
-    en: 'Increases the value of the focused thumb by one `step`. In a horizontal RTL slider, Chromium and Firefox increase it on ← instead; Safari does not mirror the arrows.',
-    ru: 'Увеличивает значение бегунка в фокусе на один `step`. В горизонтальном слайдере в RTL Chromium и Firefox увеличивают значение по ←; Safari стрелки не отражает.',
+    en: 'Increases the value of the focused thumb by one `step`, or by a hundredth of the range with `step=\'any\'`. In a horizontal RTL slider, ← increases it instead of →.',
+    ru: 'Увеличивает значение бегунка в фокусе на один `step`, а при `step=\'any\'` на сотую часть диапазона. В горизонтальном слайдере в RTL значение увеличивает ←, а не →.',
     checks: [
       { example, steps: [{ focus: zoom }], press: 'ArrowRight', before: [{ value: '50', of: zoom }], expect: [{ value: '51', of: zoom }] },
       { example, steps: [{ focus: zoom }], press: 'ArrowUp', before: [{ value: '50', of: zoom }], expect: [{ value: '51', of: zoom }] },
@@ -22,8 +22,8 @@ export default [
   },
   {
     keys: ['ArrowLeft', 'ArrowDown'],
-    en: 'Decreases the value of the focused thumb by one `step`. In a horizontal RTL slider, Chromium and Firefox decrease it on → instead; Safari does not mirror the arrows.',
-    ru: 'Уменьшает значение бегунка в фокусе на один `step`. В горизонтальном слайдере в RTL Chromium и Firefox уменьшают значение по →; Safari стрелки не отражает.',
+    en: 'Decreases the value of the focused thumb by one `step`, or by a hundredth of the range with `step=\'any\'`. In a horizontal RTL slider, → decreases it instead of ←.',
+    ru: 'Уменьшает значение бегунка в фокусе на один `step`, а при `step=\'any\'` на сотую часть диапазона. В горизонтальном слайдере в RTL значение уменьшает →, а не ←.',
     checks: [
       { example, steps: [{ focus: zoom }], press: 'ArrowLeft', before: [{ value: '50', of: zoom }], expect: [{ value: '49', of: zoom }] },
       { example, steps: [{ focus: zoom }], press: 'ArrowDown', before: [{ value: '50', of: zoom }], expect: [{ value: '49', of: zoom }] },

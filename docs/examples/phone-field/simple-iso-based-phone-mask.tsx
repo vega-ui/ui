@@ -7,8 +7,8 @@ export default function SimpleIsoBasedPhoneMask() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', width: '100%', maxWidth: 280 }}>
       <Label htmlFor={id}>Mobile number</Label>
-      <PhoneField code='US'>
-        <PhoneFieldInput id={id} name='phone' autoComplete='tel' placeholder='+1 201 555-0123' />
+      <PhoneField country='US'>
+        <PhoneFieldInput name='phone' id={id} autoComplete='tel' placeholder='+1 201 555-0123' />
       </PhoneField>
     </div>
   );

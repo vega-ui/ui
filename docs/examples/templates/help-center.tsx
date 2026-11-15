@@ -311,7 +311,7 @@ export default function HelpCenter() {
               <form noValidate aria-labelledby={`${id}-contact`} onSubmit={submit} style={{ display: 'grid', gap: 'var(--spacing-8)' }}>
                 <div style={field}>
                   <Label htmlFor={`${id}-email`}>Email</Label>
-                  <TextField error={errors.email !== undefined}>
+                  <TextField>
                     <TextFieldInput
                       id={`${id}-email`}
                       name='email'
@@ -322,7 +322,7 @@ export default function HelpCenter() {
                       onChange={() => clearError('email')}
                     />
                   </TextField>
-                  {errors.email && <HelperText id={`${id}-email-error`} error>{errors.email}</HelperText>}
+                  {errors.email && <HelperText id={`${id}-email-error`} invalid>{errors.email}</HelperText>}
                 </div>
                 <div style={field}>
                   <Label htmlFor={`${id}-topic`}>Topic</Label>
@@ -343,7 +343,7 @@ export default function HelpCenter() {
                       ))}
                     </SelectListbox>
                   </Select>
-                  {errors.topic && <HelperText id={`${id}-topic-error`} error>{errors.topic}</HelperText>}
+                  {errors.topic && <HelperText id={`${id}-topic-error`} invalid>{errors.topic}</HelperText>}
                 </div>
                 <div style={field}>
                   <Label htmlFor={`${id}-message`}>Message</Label>
@@ -353,7 +353,6 @@ export default function HelpCenter() {
                     rows={5}
                     maxLength={MESSAGE_LIMIT}
                     fullWidth
-                    error={errors.message !== undefined}
                     value={message}
                     placeholder='What were you trying to do, and what happened instead?'
                     aria-invalid={errors.message !== undefined}
@@ -363,7 +362,7 @@ export default function HelpCenter() {
                       clearError('message');
                     }}
                   />
-                  {errors.message && <HelperText id={`${id}-message-error`} error>{errors.message}</HelperText>}
+                  {errors.message && <HelperText id={`${id}-message-error`} invalid>{errors.message}</HelperText>}
                   <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
                     <HelperText id={`${id}-message-hint`}>Screenshots help. Reply to our email to attach them.</HelperText>
                     <HelperText id={`${id}-message-count`} style={{ flexShrink: 0, fontVariantNumeric: 'tabular-nums' }}>{`${message.length} / ${MESSAGE_LIMIT}`}</HelperText>

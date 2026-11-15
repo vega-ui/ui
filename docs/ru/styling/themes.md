@@ -30,10 +30,10 @@ VegaUI поставляет отдельный слой темы в `@vega-ui/th
 | `--text-color` | цвет содержимого по умолчанию | `Text`, `Heading`, значения полей, иконки-триггеры, строки опций |
 | `--focus-color` | цвет обводки фокуса | кнопки, ссылки, слайдеры, радиокнопки, чекбоксы, сегментированный контрол |
 | `--surface-primary` | основная поверхность контейнера | `DialogContent`, `DrawerContent`, `SheetContent`, `PopoverContent` |
-| `--surface-secondary` | плавающая или временная поверхность | `SelectListbox`, `TooltipContent`, `TooltipArrow` |
+| `--surface-secondary` | плавающая или временная поверхность | `SelectListbox`, `TooltipContent` |
 | `--border-color` | структурная рамка по умолчанию | `Card`, `Fieldset`, `TableRow`, `CheckboxCard` |
 | `--border-color-hover` | акцент рамки при взаимодействии | изменение рамки при наведении у поверхностей, оформленных рамкой |
-| `--color-error` | обратная связь о валидации и ошибках | `TextField`, `TextArea`, `PinField`, `HelperText` |
+| `--color-error` | обратная связь о валидации и ошибках | `TextField`, `TextArea`, `PinField`, `Checkbox`, `CheckboxCard`, `Radio`, `Switch`, `Select`, `Slider`, `HelperText` |
 | `--fills-primary` | акцентная заливка выбранного | отмеченный `Checkbox`, отмеченный `Radio`, прогресс в page control |
 | `--fills-secondary` | нейтральная дорожка или приглушённая заливка | `Progress`, `Meter`, `MeterStack`, `Slider`, `Code`, выключенный `Switch` |
 | `--label-primary` | выразительная подпись индикатора | активные индикаторы page control и производные акцентные заливки |

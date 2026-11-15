@@ -4,7 +4,7 @@ export const locales = ['en-US', 'ru-RU', 'ar-EG', 'he-IL'];
 
 export default function MinimalComposition({ locale = 'en-US' }: { locale?: string }) {
   return (
-    <DayPicker aria-label='November 2026' locale={locale} month='2026-11-01'>
+    <DayPicker aria-label='Days' locale={locale} defaultFocusedDate='2026-11-01'>
       <DayPickerLayout>
         <DayPickerCell />
       </DayPickerLayout>

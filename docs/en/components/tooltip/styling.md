@@ -2,20 +2,19 @@
 
 ## Overview
 
-`Tooltip` styling is driven by floating-surface semantics plus a small arrow visual. The component should stay visually lighter than `Popover` and significantly lighter than modal overlays.
+`Tooltip` styling is driven by floating-surface semantics. The component should stay visually lighter than `Popover` and significantly lighter than modal overlays.
 
 ## Public CSS Variables
 
 | Variable | Used By | Purpose |
 | --- | --- | --- |
-| `--surface-secondary` | `TooltipContent`, `TooltipArrow` | Tooltip surface. |
+| `--surface-secondary` | `TooltipContent` | Tooltip surface. |
 | `--surface-shadow` | `TooltipContent` | Floating elevation. |
 | `--text-color` | `TooltipContent` | Readable tooltip text. |
 
 ## Part-Level Variables
 
 - `TooltipContent` uses floating surface semantics.
-- `TooltipArrow` uses the same surface color as the content.
 
 ## State And Variant Interaction
 

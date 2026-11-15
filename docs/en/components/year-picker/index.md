@@ -6,7 +6,7 @@
 
 ## Summary
 
-`YearPicker` is the year-selection subsystem of the calendar family. It builds on `DataGridPicker`, supports static or scroller-based year grids, and pages years in fixed-size groups (`period`, `12` by default) for decade-like navigation.
+`YearPicker` is the year-selection subsystem of the calendar family. It builds on `Grid`, supports static or scroller-based year grids, and pages years in fixed-size groups (`period`, `12` by default) for decade-like navigation.
 
 ## Imports
 
@@ -24,7 +24,6 @@ import {
   createYearPickerGrid,
   useYearPickerCellContext,
   useYearPickerContext,
-  useYearPickerScrollerContext,
   type YearPickerCellContextData,
   type YearPickerCellProps,
   type YearPickerItemProps,
@@ -61,7 +60,7 @@ export const locales = ['en-US', 'ru-RU', 'ar-EG', 'he-IL'];
 
 export default function MinimalComposition({ locale = 'en-US' }: { locale?: string }) {
   return (
-    <YearPicker aria-label='Year' locale={locale} year='2026-01-01' style={{ width: '100%' }}>
+    <YearPicker aria-label='Year' locale={locale} defaultFocusedDate='2026-01-01' style={{ width: '100%' }}>
       <YearPickerLayout>
         <YearPickerCell />
       </YearPickerLayout>
@@ -96,8 +95,8 @@ export default function MinimalComposition({ locale = 'en-US' }: { locale?: stri
 
 - Selection: `single`, `multiple`, `range`
 - Layout: static grid or scroller-based year paging
-- Period: explicit visible `year` (a `YYYY-MM-DD` string of any day in it) or the current year
-- Locale and calendar system: `locale` and `calendar` props, defaulting to the runtime locale and the Gregorian calendar; eras are handled by the adapter
+- Period: the page of the focused year — `focusedDate` or `defaultFocusedDate` (a `YYYY-MM-DD` string of any day in it), otherwise the selected year, otherwise `today`
+- Locale and calendar system: `locale` and `calendar` props, defaulting to `en-US` and the Gregorian calendar; eras are handled by the adapter
 
 ## Related Docs
 
@@ -113,7 +112,7 @@ export default function MinimalComposition({ locale = 'en-US' }: { locale?: stri
 ## Edge Cases
 
 - Large year ranges require extra testing for focus, paging, and visible context.
-- `year` controls the visible period, not just selection.
+- The focused year controls the page in view, not just the tab stop.
 - Scroller mode pages by `period` years; a `period` that differs from the layout's `rows × cols` shows the wrong range.
 
 ## Common Mistakes

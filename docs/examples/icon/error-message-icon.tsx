@@ -17,7 +17,7 @@ export default function ErrorMessageIcon() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', width: '100%' }}>
       <Label htmlFor='billing-email'>Billing email</Label>
-      <TextField error={error !== ''}>
+      <TextField>
         <TextFieldInput
           id='billing-email'
           type='email'
@@ -29,7 +29,7 @@ export default function ErrorMessageIcon() {
         />
       </TextField>
       {error !== '' && (
-        <HelperText id='billing-email-error' error style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3)' }}>
+        <HelperText id='billing-email-error' invalid style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3)' }}>
           <Icon size='xs' style={{ flexShrink: 0 }}><CircleAlertIcon /></Icon>
           {error}
         </HelperText>

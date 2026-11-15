@@ -30,7 +30,7 @@ function ReportYear() {
 
 export default function CellTemplate() {
   return (
-    <YearPicker aria-label='Report year' locale='en-US' year='2019-01-01' size='lg' to='2024-01-01' style={{ width: '100%' }}>
+    <YearPicker aria-label='Report year' locale='en-US' defaultFocusedDate='2019-01-01' size='lg' max='2024-01-01' style={{ width: '100%' }}>
       <YearPickerLayout rows={2} cols={4}>
         <ReportYear />
       </YearPickerLayout>

@@ -58,7 +58,7 @@ export default function FailedToLoadRows() {
             <TableRow>
               <TableData colSpan={columns.length} dataAlign='center' style={{ height: 'var(--spacing-52)' }}>
                 <div style={{ display: 'grid', gap: 'var(--spacing-6)', justifyItems: 'center' }}>
-                  <HelperText error role='alert'>Could not load deploys: the request timed out.</HelperText>
+                  <HelperText invalid role='alert'>Could not load deploys: the request timed out.</HelperText>
                   <Button size='sm' variant='secondary' appearance='ghost' onClick={retry}>Retry</Button>
                 </div>
               </TableData>

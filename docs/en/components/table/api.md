@@ -80,6 +80,6 @@ Also accepts all HTML attributes.
 
 ## State Model
 
-- `Table` does not own interactive row state the way `DataGrid` does.
+- `Table` does not own interactive row state the way `Grid` does.
 - The root provides alignment and edge-padding context to cell parts.
 - `useTableContext` is available for advanced wrappers and custom compositions.

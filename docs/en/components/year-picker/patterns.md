@@ -8,8 +8,8 @@ When to use:
 
 Composition notes:
 
-- use `YearPickerLayout`; the page starts with the year given by `year`
-- set `rows` and `cols` so the page holds exactly the useful years, and bound them with `from` and `to`
+- use `YearPickerLayout`; the page starts with the focused year, or with `start` when you pass it
+- set `rows` and `cols` so the page holds exactly the useful years, and bound them with `min` and `max`
 
 Trade-offs:
 
@@ -29,14 +29,13 @@ export default function StaticYearGrid() {
       <YearPicker
         aria-label='Budget year'
         locale='en-US'
-        year='2025-01-01'
-        from='2025-01-01'
-        to='2030-01-01'
-        selected={year}
-        onSelectCell={setYear}
+        min='2025-01-01'
+        max='2030-01-01'
+        value={year}
+        onChangeValue={setYear}
         style={{ width: '100%' }}
       >
-        <YearPickerLayout rows={2} cols={3}>
+        <YearPickerLayout rows={2} cols={3} start='2025-01-01'>
           <YearPickerCell />
         </YearPickerLayout>
       </YearPicker>
@@ -56,8 +55,8 @@ When to use:
 Composition notes:
 
 - use `YearPickerScroller`, `YearPickerScrollerContent`, and `YearPickerScrollerLayout`
-- keep `period` on `YearPickerScroller` equal to the layout's `rows × cols`; both default to 12
-- start near the likely answer with `year`, and bound the range with `from` and `to`
+- keep `period` on `YearPicker` equal to the layout's `rows × cols`; both default to 12
+- start near the likely answer with `defaultFocusedDate`, and bound the range with `min` and `max`
 - explain the bounds next to the grid and link the text with `aria-describedby`
 
 Trade-offs:
@@ -87,13 +86,14 @@ export default function PagedYearRange() {
         aria-label='Birth year'
         aria-describedby={hintId}
         locale='en-US'
-        year='1990-01-01'
-        from='1926-01-01'
-        to='2008-01-01'
-        selected={birthYear}
-        onSelectCell={setBirthYear}
+        defaultFocusedDate='1990-01-01'
+        min='1926-01-01'
+        max='2008-01-01'
+        value={birthYear}
+        onChangeValue={setBirthYear}
+        period={20}
       >
-        <YearPickerScroller period={20}>
+        <YearPickerScroller>
           <YearPickerScrollerContent>
             <YearPickerScrollerLayout rows={5} cols={4}>
               <YearPickerCell />
@@ -143,7 +143,7 @@ const rows = createYearPickerGrid({ start: START, rows: 2, cols: 5 });
 
 export default function CustomGridRendering() {
   return (
-    <YearPicker aria-label='Season, 2020s' locale='en-US' year={START} style={{ width: '100%' }}>
+    <YearPicker aria-label='Season, 2020s' locale='en-US' defaultFocusedDate={START} style={{ width: '100%' }}>
       <YearPickerRowGroup>
         {rows.map(({ row, data }) => (
           <YearPickerRow key={row} row={row}>
@@ -214,7 +214,7 @@ function ReportYear() {
 
 export default function CellTemplate() {
   return (
-    <YearPicker aria-label='Report year' locale='en-US' year='2019-01-01' size='lg' to='2024-01-01' style={{ width: '100%' }}>
+    <YearPicker aria-label='Report year' locale='en-US' defaultFocusedDate='2019-01-01' size='lg' max='2024-01-01' style={{ width: '100%' }}>
       <YearPickerLayout rows={2} cols={4}>
         <ReportYear />
       </YearPickerLayout>

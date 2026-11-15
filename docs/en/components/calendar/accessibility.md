@@ -2,31 +2,35 @@
 
 ## Labeling
 
-The calendar should have a clear visible context such as a field label, heading, or surrounding form copy.
+Put a `CalendarHeading` in the header: it is an `<h2>` with the shown month, and `CalendarDays` gets `aria-labelledby` pointing to it, so the day grid is announced with its month. It is `aria-live="polite"`, so screen readers announce the new month after Previous, Next or a month jump. To name the grid by its purpose instead ("Pickup date"), pass `aria-label` or `aria-labelledby` to `CalendarDays`; your value wins.
 
 ## Keyboard Behavior
 
 <!-- AUTO-GENERATED:KEYBOARD:start -->
 | Key | Action |
 | --- | --- |
-| <kbd>Tab</kbd> | Moves the focus into the day grid: onto the selected day when it is in the visible month, otherwise onto today or the first available day. Only one day is in the tab order. |
-| <kbd>←</kbd> / <kbd>→</kbd> | Moves the focus to the previous or next day, across weeks and months; the visible month follows. In RTL the arrows are mirrored: ← moves to the next day. |
-| <kbd>↑</kbd> / <kbd>↓</kbd> | Moves the focus to the same weekday of the previous or next week. |
+| <kbd>Tab</kbd> | Moves the focus into the day grid, onto the focused day when it is available; otherwise onto the selected day or today in the shown month, otherwise onto the first available day. Only one day is in the tab order. |
+| <kbd>←</kbd> / <kbd>→</kbd> | Moves the focus to the previous or next day, across weeks and months; the shown month follows. In RTL the arrows are mirrored: ← moves to the next day. |
+| <kbd>↑</kbd> / <kbd>↓</kbd> | Moves the focus to the same weekday of the previous or next week, skipping unavailable days. |
 | <kbd>Home</kbd> / <kbd>End</kbd> | Moves the focus to the first or last day of the week. |
-| <kbd>Page Up</kbd> / <kbd>Page Down</kbd> | Shows the previous or next month and moves the focus to the same day in it. |
-| <kbd>Enter</kbd> / <kbd>Space</kbd> | Selects the focused day. On a header button: Previous and Next change the month, the month and year buttons open their views. |
+| <kbd>Ctrl</kbd> + <kbd>Home</kbd> / <kbd>Ctrl</kbd> + <kbd>End</kbd> | Moves the focus to the first or last day of the month. |
+| <kbd>Page Up</kbd> / <kbd>Page Down</kbd> | Moves the focus to the same day of the previous or next month, clamped to the length of that month; the shown month follows. |
+| <kbd>Shift</kbd> + <kbd>Page Up</kbd> / <kbd>Shift</kbd> + <kbd>Page Down</kbd> | Moves the focus to the same day and month of the previous or next year; February 29 becomes February 28. |
+| <kbd>Enter</kbd> / <kbd>Space</kbd> | Selects the focused day. On a header button: Previous and Next move the focused day to the previous or next month and keep the focus on the button; the month and year buttons open their views and focus their tab stop. |
 | <kbd>Enter</kbd> | In the month or year view: picks the focused month or year and returns to the days, keeping the day of the month. The arrows, Home and End move between months or years. |
-| <kbd>Escape</kbd> | In the month or year view: returns to the days without changing the month and focuses the active day. |
+| <kbd>Escape</kbd> | In the month or year view: returns to the days without changing the month and focuses the day tab stop. |
 <!-- AUTO-GENERATED:KEYBOARD:end -->
 
-- Month jumps clamp the day to the length of the target month, skip unavailable days, and stay within `min` / `max`.
+- Month and year jumps clamp the day to the length of the target month (February 29 becomes February 28), move to the nearest available day, and stay within `min` / `max`.
 - Navigation only moves focus; the value changes when a day is picked.
 - Excluded or disabled dates are skipped by the arrows and cannot be picked.
 
 ## Focus Behavior
 
-- each grid has one tab stop, the active cell, and it follows the visible month, year or page, so Tab always lands on a cell in view
-- focus should remain predictable when switching between day, month, and year views
+- each grid has one tab stop: the focused day when it is available; otherwise the selected day or today in the shown month, otherwise the first available day. Tab always lands on a cell in view
+- Previous and Next keep the focus on the button while the focused day moves to the same day of the other month
+- opening the month or year view focuses its tab stop; picking a month or a year, or Escape, returns to the days and focuses the day tab stop
+- the month and year views are not mounted while closed and are inert while they close, and the day view is inert while they are open, so hidden cells are never reachable
 - custom day templates should render `CalendarDay` to preserve visible focus states
 
 ## Right-To-Left
@@ -39,7 +43,9 @@ The calendar follows the inherited text direction, like native elements, and nev
 
 ## Screen Reader Semantics
 
-- visible month and year context should remain understandable
+- `CalendarHeading` names the day grid and announces month changes politely
+- today is marked with `aria-current="date"`
+- the day grid sets `aria-multiselectable="true"` in `multiple` and `range` selection
 - `CalendarViewButton` exposes its state with `aria-pressed` while its view is shown
 - `CalendarPrevButton` and `CalendarNextButton` render a chevron only, so give them an `aria-label`
 - `Calendar` sets `lang` on its root when `locale` is passed, so screen readers pronounce month and day names in that language

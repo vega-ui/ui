@@ -524,7 +524,7 @@ export default function FormError() {
           </div>
           <form noValidate onSubmit={onSubmit} style={{ display: 'grid', gap: 'var(--spacing-3)', marginBlockStart: 'var(--spacing-8)' }}>
             <Label htmlFor={ibanId}>IBAN</Label>
-            <TextField error={error !== ''}>
+            <TextField>
               <TextFieldInput
                 id={ibanId}
                 name='iban'
@@ -535,7 +535,7 @@ export default function FormError() {
                 onChange={() => setError('')}
               />
             </TextField>
-            {error && <HelperText id={errorId} error>{error}</HelperText>}
+            {error && <HelperText id={errorId} invalid>{error}</HelperText>}
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--spacing-4)', marginBlockStart: 'var(--spacing-9)' }}>
               <DrawerClose asChild>
                 <Button type='button' variant='secondary' appearance='ghost'>Cancel</Button>

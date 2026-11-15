@@ -230,7 +230,6 @@ export default function TeamMembers() {
                     name='emails'
                     rows={3}
                     fullWidth
-                    error={inviteError !== ''}
                     placeholder='priya@northwind.io, sam@northwind.io'
                     spellCheck={false}
                     aria-invalid={inviteError !== ''}
@@ -239,7 +238,7 @@ export default function TeamMembers() {
                   />
                   {inviteError === ''
                     ? <HelperText id={`${id}-emails-hint`} style={{ fontVariantNumeric: 'tabular-nums' }}>{`Separate addresses with commas. ${available} of ${SEATS} seats available.`}</HelperText>
-                    : <HelperText id={`${id}-emails-error`} error>{inviteError}</HelperText>}
+                    : <HelperText id={`${id}-emails-error`} invalid>{inviteError}</HelperText>}
                 </div>
                 <div style={field}>
                   <Label htmlFor={`${id}-invite-role`}>Role</Label>

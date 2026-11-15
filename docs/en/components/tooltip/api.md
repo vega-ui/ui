@@ -6,9 +6,10 @@
 <!-- AUTO-GENERATED:ROOT_API:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `placement` | `Placement` | `'bottom'` | No | Preferred placement of the tooltip relative to its trigger. Follows the Floating UI `Placement` type (e.g., 'top', 'bottom-start'). It flips to the opposite side when there is no room. |
+| `placement` | `Placement` | `'bottom'` | No | Preferred placement of the tooltip relative to its trigger (e.g., 'top', 'bottom-start'). It flips to the opposite side when there is no room. |
 | `delayOpen` | `number` | `500` | No | Delay (in milliseconds) before the tooltip appears on hover. It shows at once on keyboard focus, and right after another tooltip closes. |
 | `delayClose` | `number` | `250` | No | Delay (in milliseconds) before the tooltip disappears after the pointer leaves the trigger or the tooltip, long enough to move the pointer onto the tooltip. It hides at once on blur. |
+| `group` | `TooltipGroup` | `the group of all tooltips on the page` | No | The tooltips that warm each other up: right after one of them closes, the next one opens without `delayOpen`. Create a separate group with `createTooltipGroup()`. |
 | `open` | `boolean` | — | No | Controls the open state of the tooltip. When set, the component becomes controlled. |
 | `defaultOpen` | `boolean` | `false` | No | Initial open state for uncontrolled usage. |
 | `onChangeOpen` | `(state: boolean) => void` | — | No | Callback fired when the open state changes. |
@@ -32,7 +33,7 @@ Also accepts all `<button>` attributes.
 
 ## `TooltipContent`
 
-The `role="tooltip"` surface. It renders in the top layer with `popover="manual"` when the browser supports it, so a modal dialog or an `overflow` container does not clip or cover it. It stays open while the pointer moves from the trigger onto it, so its text can be selected, and grows out of its arrow.
+The `role="tooltip"` surface. It renders in the top layer with `popover="manual"` when the browser supports it, so a modal dialog or an `overflow` container does not clip or cover it. It stays open while the pointer moves from the trigger onto it, so its text can be selected.
 
 <!-- AUTO-GENERATED:PART_API:TooltipContent:start -->
 | Prop | Type | Default | Required | Description |
@@ -42,25 +43,19 @@ The `role="tooltip"` surface. It renders in the top layer with `popover="manual"
 Also accepts all `<div>` attributes.
 <!-- AUTO-GENERATED:PART_API:TooltipContent:end -->
 
-## `TooltipArrow`
-
-Optional arrow pointing back to the trigger.
-
-<!-- AUTO-GENERATED:PART_API:TooltipArrow:start -->
-Also accepts `ref` and all `<svg>` attributes.
-<!-- AUTO-GENERATED:PART_API:TooltipArrow:end -->
-
 ## Types
 
 - `TooltipProps`
 - `TooltipTriggerProps`
 - `TooltipContentProps`
-- `TooltipArrowProps`
+- `TooltipGroup`, created by `createTooltipGroup()`
 
 ## State Model
 
 - Open state can be controlled with `open` and `onChangeOpen`, or uncontrolled with `defaultOpen`.
 - Trigger and content are coordinated by the root.
-- `delayOpen` applies to hover only. On keyboard focus, and right after another tooltip closes, the tooltip shows without a delay.
-- `useTooltipContext` is available for advanced wrappers and timing helpers. It no longer exposes the floating-ui props.
+- `delayOpen` applies to hover only. On keyboard focus, and right after another tooltip of its `group` closes, the tooltip shows without a delay. All tooltips share one group unless they get their own from `createTooltipGroup()`, such as the tooltips of one toolbar.
+- A group shows one tooltip at a time: when the next one shows, the previous one hides at once instead of waiting for `delayClose`.
+- The user's handlers on `TooltipTrigger` and `TooltipContent` run first: `event.preventDefault()` in `onKeyDown` keeps the tooltip open on `Escape`.
+- `useTooltipContext()` returns the widget `handle` for advanced wrappers: `useSnapshot(handle, (state) => state.open)` reads the open state. It no longer exposes `show`, `hide` and the other timing functions.
 - Tooltip timing should stay in service of supplemental information, not product-critical instructions.

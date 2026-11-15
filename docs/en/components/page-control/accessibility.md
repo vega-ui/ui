@@ -9,7 +9,8 @@
 <!-- AUTO-GENERATED:KEYBOARD:start -->
 | Key | Action |
 | --- | --- |
-| <kbd>→</kbd> / <kbd>←</kbd> | Activates and focuses the next or previous item. Stops at the first and last item. The keys do not follow the text direction: → always moves to the next index, also in right-to-left. |
+| <kbd>→</kbd> / <kbd>←</kbd> | Activates and focuses the next or previous enabled item, skipping disabled ones. From the last item it moves to the first, and from the first to the last. The keys follow the text direction, so they are mirrored in right-to-left. |
+| <kbd>Home</kbd> / <kbd>End</kbd> | Activates and focuses the first or last enabled item. |
 | <kbd>Tab</kbd> | Moves the focus to the active item and then out of the control: the items are one tab stop. |
 <!-- AUTO-GENERATED:KEYBOARD:end -->
 

@@ -40,6 +40,7 @@ Sets `--slider-range-start` and `--slider-range-end`, from `0` at `min` to `1` a
 - `primary` and `secondary` variants remap range and thumb border colors
 - `disabled` remaps range and thumb colors to disabled tokens; a disabled thumb alone does the same for its thumb
 - hover, active, focus and disabled states of a thumb follow its native input
+- `aria-invalid='true'` on a `SliderThumbInput` or its `:user-invalid` turns the range and the thumb borders to `--color-error`; the component never sets `aria-invalid` itself
 
 ## Examples
 

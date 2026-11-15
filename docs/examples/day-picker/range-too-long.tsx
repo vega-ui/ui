@@ -30,19 +30,19 @@ export default function RangeTooLong() {
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-3)', justifyItems: 'start', width: '100%' }}>
       <DayPicker
-        aria-label='Rental period, November 2026'
+        aria-label='Rental period'
         aria-describedby={messageId}
         locale='en-US'
         selection='range'
-        month='2026-11-01'
-        selected={range}
-        onSelectCell={setRange}
+        defaultFocusedDate='2026-11-01'
+        value={range}
+        onChangeValue={setRange}
       >
         <DayPickerLayout>
           <DayPickerCell />
         </DayPickerLayout>
       </DayPicker>
-      <HelperText id={messageId} error={invalid} aria-live='polite'>{message}</HelperText>
+      <HelperText id={messageId} invalid={invalid} aria-live='polite'>{message}</HelperText>
     </div>
   );
 }

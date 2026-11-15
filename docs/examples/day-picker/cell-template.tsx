@@ -29,7 +29,7 @@ function EventDay() {
 
 export default function CellTemplate() {
   return (
-    <DayPicker aria-label='Team events, November 2026' locale='en-US' month='2026-11-01' size='sm'>
+    <DayPicker aria-label='Team events' locale='en-US' defaultFocusedDate='2026-11-01' size='sm'>
       <DayPickerLayout>
         <EventDay />
       </DayPickerLayout>

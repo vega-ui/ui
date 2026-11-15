@@ -279,7 +279,7 @@ export default function CompactInternalNote() {
 
 ### Ошибка: мягкий лимит символов
 
-В отличие от `maxLength`, мягкий лимит позволяет вставить длинный текст и потом сократить его. За пределом лимита поле получает `error` и `aria-invalid`, подсказка становится ошибкой, а отправка блокируется.
+В отличие от `maxLength`, мягкий лимит позволяет вставить длинный текст и потом сократить его. За пределом лимита поле получает `aria-invalid`, подсказка становится ошибкой, а отправка блокируется.
 
 <!-- example: text-area/soft-limit-error.tsx -->
 ```tsx
@@ -310,12 +310,11 @@ export default function SoftLimitError() {
           rows={6}
           fullWidth
           value={bio}
-          error={invalid}
           aria-invalid={invalid}
           aria-describedby={messageId}
           onChange={(event) => setBio(event.currentTarget.value)}
         />
-        <HelperText id={messageId} error={invalid}>
+        <HelperText id={messageId} invalid={invalid}>
           {invalid ? `${over} characters over the ${LIMIT}-character limit.` : `${LIMIT - bio.length} characters left.`}
         </HelperText>
       </div>

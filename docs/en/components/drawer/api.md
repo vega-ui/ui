@@ -124,7 +124,7 @@ export default function MinimalComposition() {
 
 ## `useDrawerContext`
 
-Returns `{ open, changeOpen, position }` for advanced wrappers and custom controls.
+Returns `{ handle, position }` for advanced wrappers and custom controls: `useSnapshot(handle, (state) => state.open)` reads the open state. The user's `onClick` of `DrawerTrigger` and `DrawerClose`, and `onCancel` and `onSubmit` of `DrawerContent`, run first, so `event.preventDefault()` in them keeps the drawer as it is.
 
 ## Types
 

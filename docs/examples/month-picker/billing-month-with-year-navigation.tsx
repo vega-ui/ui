@@ -12,13 +12,13 @@ import { useState } from 'react';
 const monthFormat = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' });
 
 export default function BillingMonthWithYearNavigation() {
-  const [year, setYear] = useState(2026);
-  const [active, setActive] = useState('2026-10-01');
+  const [focused, setFocused] = useState('2026-10-01');
   const [month, setMonth] = useState<string | null>('2026-10-01');
 
+  const year = Number(focused.slice(0, 4));
+
   const showYear = (next: number) => {
-    setYear(next);
-    setActive(`${next}-01-01`);
+    setFocused(`${next}${focused.slice(4)}`);
   };
 
   return (
@@ -35,11 +35,10 @@ export default function BillingMonthWithYearNavigation() {
       <MonthPicker
         aria-label={`Billing month, ${year}`}
         locale='en-US'
-        year={`${year}-01-01`}
-        active={active}
-        onChangeActive={setActive}
-        selected={month}
-        onSelectCell={setMonth}
+        focusedDate={focused}
+        onChangeFocusedDate={setFocused}
+        value={month}
+        onChangeValue={setMonth}
         style={{ width: '100%' }}
       >
         <MonthPickerLayout cols={4} format='short'>

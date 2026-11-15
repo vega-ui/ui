@@ -10,8 +10,8 @@
 <!-- AUTO-GENERATED:KEYBOARD:start -->
 | Key | Action |
 | --- | --- |
-| <kbd>→</kbd> / <kbd>↑</kbd> | Increases the value of the focused thumb by one `step`. In a horizontal RTL slider, Chromium and Firefox increase it on ← instead; Safari does not mirror the arrows. |
-| <kbd>←</kbd> / <kbd>↓</kbd> | Decreases the value of the focused thumb by one `step`. In a horizontal RTL slider, Chromium and Firefox decrease it on → instead; Safari does not mirror the arrows. |
+| <kbd>→</kbd> / <kbd>↑</kbd> | Increases the value of the focused thumb by one `step`, or by a hundredth of the range with `step='any'`. In a horizontal RTL slider, ← increases it instead of →. |
+| <kbd>←</kbd> / <kbd>↓</kbd> | Decreases the value of the focused thumb by one `step`, or by a hundredth of the range with `step='any'`. In a horizontal RTL slider, → decreases it instead of ←. |
 | <kbd>Page Up</kbd> / <kbd>Page Down</kbd> | Increases or decreases the value by a tenth of the range, or by one `step` if it is larger. |
 | <kbd>Home</kbd> / <kbd>End</kbd> | Moves the thumb to its minimum or maximum. In a range, a thumb stops at the neighbouring thumb, keeping `minStepsBetweenThumbs`. |
 | <kbd>Tab</kbd> / <kbd>Shift</kbd> + <kbd>Tab</kbd> | Moves the focus between thumbs. Each thumb is its own tab stop. |

@@ -26,8 +26,16 @@
 ## Взаимодействие состояний и вариантов
 
 - `strictMask` меняет скорее поведение, чем стили
-- состояния `error` и `disabled` должны соответствовать общей семантике полей
+- вид ошибки (`aria-invalid='true'`, `:user-invalid` или `[data-user-edited]:invalid` на `PhoneFieldInput`) и `disabled` должны соответствовать общей семантике полей
 - собственный рендер выбранной страны влияет на плотность и выравнивание
+
+`PhoneField` сам записывает текст `PhoneFieldInput`, а Chromium и WebKit не считают такой текст правкой пользователя, поэтому после такой правки input не подходит под `:user-invalid`. Номер, слишком короткий или слишком длинный для своей страны, сам подходит под `:invalid`. В своём CSS используйте `:user-invalid` вместе с `[data-user-edited]:invalid`:
+
+```css
+.contact-phone:has(input:is(:user-invalid, [data-user-edited]:invalid)) label {
+  color: var(--color-error);
+}
+```
 
 ## Примеры
 
@@ -46,7 +54,7 @@
 
 ### Заглушка выбора страны и своя иконка
 
-Пока код не выбран, триггер показывает `placeholder` из `SelectValue`, а дочерние элементы `SelectIcon` заменяют стандартный шеврон.
+Пока страна не выбрана, триггер показывает `placeholder` из `SelectValue`, а дочерние элементы `SelectIcon` заменяют стандартный шеврон.
 
 <!-- example: phone-field/select-placeholder-and-custom-icon.tsx -->
 ```tsx
@@ -86,7 +94,7 @@ export default function SelectPlaceholderAndCustomIcon() {
             <SelectOption value='PT'>PT</SelectOption>
           </SelectListbox>
         </PhoneFieldSelect>
-        <PhoneFieldInput id={id} name='phone' autoComplete='tel' />
+        <PhoneFieldInput name='phone' id={id} autoComplete='tel' />
       </PhoneField>
     </div>
   );

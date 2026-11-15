@@ -61,16 +61,19 @@ export default function ProfileFormSubmit() {
 
 Нативное поле отправляет текст, который показывает. Для большинства полей это и есть значение; несколько компонентов держат на корне другое значение:
 
-| Компонент | Отправляется при `name` на поле | Значение на корне |
+| Компонент | Отправляется под `name` | Значение на корне |
 | --- | --- | --- |
 | `TextField`, `TextArea`, `PasswordField` | введённый текст | — |
 | `NumberField` | отформатированный текст, например `2 500` | `value` / `defaultValue` числом, `NaN` для пустого поля |
-| `DateField`, `DateRangeField`, `DateTimeField`, `TimeField` | введённый текст в `format`, например `15.01.2026` | ISO `value` / `defaultValue`, см. [Даты и календарные системы](./i18n.md#значения-дат) |
+| `PhoneField` | отформатированный текст, например `+1 415 555-0132` | `value` / `defaultValue` в E.164 |
+| `DateField`, `DateTimeField` | введённый текст, например `15.01.2026` | ISO `value` / `defaultValue`, см. [Даты и календарные системы](./i18n.md#значения-дат) |
+| `DateRangeField` | введённый текст, например `10.01.2026 – 15.01.2026` | `value` / `defaultValue` парой ISO-дней |
+| `TimeField` | введённый текст, например `09:30` | `value` / `defaultValue` в формате `HH:mm[:ss]` |
 | `Checkbox`, `Radio`, `Switch`, `SegmentedControl` | `value` каждого отмеченного поля | — |
 | `Slider` | значение каждого бегунка; `name` на корне применяется ко всем бегункам | `value` / `defaultValue` массивом |
 | `Select` | выбранное значение через `SelectHiddenSelect` с `name` | `value` / `defaultValue` |
 
-Если сервер ждёт значение корня, а не показанный текст, повторите его в скрытом поле из `onChangeValue`. Так [пример DateField](./components/date-field/examples.md) отправляет ISO-день. У `Listbox` нет части для формы: рендерите по скрытому полю на каждое выбранное значение, как в [Listbox в форме](./components/listbox/examples.md).
+Если сервер ждёт значение корня `NumberField`, `PhoneField` или поля даты, а не показанный текст, повторите его в скрытом поле из `onChangeValue`. У `Listbox` нет части для формы: рендерите по скрытому полю на каждое выбранное значение, как в [Listbox в форме](./components/listbox/examples.md).
 
 <!-- example: select/native-form-participation.tsx -->
 ```tsx
@@ -147,12 +150,12 @@ export default function NativeFormParticipation() {
 
 ## Валидация ограничений
 
-`required`, `pattern`, `type='email'`, `min` и `max` на частях-полях блокируют отправку и заполняют `input.validity`, как у нативных полей. Браузер показывает своё всплывающее сообщение, если вы не возьмёте это на себя:
+`required`, `pattern`, `type='email'`, `min` и `max` на частях-полях блокируют отправку и заполняют `input.validity`, как у нативных полей. `PhoneFieldInput` также не проходит проверку, если номер слишком короткий или слишком длинный для своей страны, через `setCustomValidity`. Браузер показывает своё всплывающее сообщение, если вы не возьмёте это на себя:
 
 - слушайте `onInvalid` на поле и вызывайте `event.preventDefault()`, чтобы скрыть подсказку браузера, а затем читайте `event.currentTarget.validity`, чтобы выбрать своё сообщение
 - или поставьте `noValidate` на форму и проверяйте значения сами в `onSubmit`
 
-Вид ошибки включается явно и никогда не выводится из валидности. Передайте `error` корню поля (`TextField`, `TextArea`, `NumberField`, `PinField`) и `HelperText`, чтобы переключить их на цвета ошибки. Библиотека не ставит ARIA за вас: задайте `aria-invalid` на поле и укажите в `aria-describedby` тот `HelperText`, который несёт сообщение.
+Вид ошибки следует за нативным элементом управления, а не за пропсом. Текстовые поля и поля дат, `TextArea`, `PinField`, `Checkbox`, `CheckboxCard`, `Radio`, `Switch`, `Select` и `Slider` краснеют, когда их элемент управления подходит под `:user-invalid` — нарушенное ограничение после того, как пользователь изменил поле или попытался отправить форму, — или имеет `aria-invalid='true'`. Ставьте `aria-invalid` сами для ошибок, о которых знает только приложение, например адрес уже занят или нарушено правило между двумя полями; библиотека его никогда не ставит. Передайте `invalid` в `HelperText`, чтобы переключить сообщение на цвет ошибки, и укажите его в `aria-describedby`.
 
 <!-- example: helper-text/native-validity-message.tsx -->
 ```tsx
@@ -184,7 +187,7 @@ export default function NativeValidityMessage() {
     <form onSubmit={(event) => event.preventDefault()} style={{ display: 'grid', gap: 'var(--spacing-12)', width: '100%' }}>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor={id}>Postal code</Label>
-        <TextField error={invalid}>
+        <TextField>
           <TextFieldInput
             id={id}
             name='postalCode'
@@ -198,7 +201,7 @@ export default function NativeValidityMessage() {
             onInput={onInput}
           />
         </TextField>
-        {invalid && <HelperText id={`${id}-error`} error>{error}</HelperText>}
+        {invalid && <HelperText id={`${id}-error`} invalid>{error}</HelperText>}
         <HelperText id={`${id}-hint`}>We deliver within Germany only.</HelperText>
       </div>
       <Button type='submit' style={{ justifySelf: 'start' }}>Check delivery</Button>
@@ -209,6 +212,8 @@ export default function NativeValidityMessage() {
 <!-- /example -->
 
 Элементы без нативного ограничения, например `Select` без выбора, проверяются в `onSubmit`: храните ошибку в состоянии, ставьте `aria-invalid` на `SelectCombobox` и переводите на него фокус. См. [обязательный выбор в Select](./components/select/examples.md).
+
+`NumberField`, `PhoneField`, `PinField`, `DateField`, `DateRangeField`, `DateTimeField` и `TimeField` сами записывают текст своего input, а Chromium и WebKit не считают такой текст правкой пользователя, поэтому после такой правки input не подходит под `:user-invalid`. Эти поля помечают правку сами: когда пользователь уходит из input, изменив его текст, input вызывает `change` и получает `data-user-edited`, а вид ошибки следует и за `[data-user-edited]:invalid`. Значение, заданное через пропсы, не помечает поле, а сброс формы снимает атрибут. В своём CSS для этих полей пишите `:is(:user-invalid, [data-user-edited]:invalid)`.
 
 ## Отключение группы
 
@@ -293,6 +298,6 @@ export default function DisabledByFieldset() {
 
 - Дайте `name` каждому отправляемому полю; поле без него не попадает в `FormData`.
 - Держите правила валидации на частях-полях, чтобы браузер, автозаполнение и сервер видели одни и те же ограничения.
-- Связывайте `aria-invalid` и `aria-describedby` сами, а `error` передавайте только как визуальное состояние.
+- Связывайте `aria-invalid` и `aria-describedby` сами для ошибок, которых не знает браузер; нативные ограничения показывают вид ошибки через `:user-invalid`, а у полей, которые сами записывают свой текст, — через `[data-user-edited]:invalid`.
 - Отключайте группу через `Fieldset` с `disabled`, а не через `disabled` на каждом элементе.
 - Проверяйте те же правила на сервере: валидация на клиенте — удобство, а не гарантия.

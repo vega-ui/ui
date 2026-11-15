@@ -16,7 +16,7 @@ export default function SelectedDay({ locale = 'en-US' }: { locale?: string }) {
 
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-6)', justifyItems: 'start', width: '100%' }}>
-      <DayPicker aria-label='Invoice due date, November 2026' locale={locale} month='2026-11-01' selected={due} onSelectCell={setDue}>
+      <DayPicker aria-label='Invoice due date' locale={locale} defaultFocusedDate='2026-11-01' value={due} onChangeValue={setDue}>
         <DayPickerLayout>
           <DayPickerCell />
         </DayPickerLayout>

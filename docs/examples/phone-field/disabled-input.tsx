@@ -39,7 +39,7 @@ export default function DisabledInput() {
         style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)' }}
       >
         <Label htmlFor={phoneId}>Billing phone</Label>
-        <PhoneField defaultValue='+44 7400 123456'>
+        <PhoneField defaultValue='+447400123456'>
           <PhoneFieldSelect>
             <SelectHiddenSelect name='country' />
             <SelectCombobox aria-label='Country'>
@@ -51,7 +51,7 @@ export default function DisabledInput() {
               <SelectOption value='IE'>IE</SelectOption>
             </SelectListbox>
           </PhoneFieldSelect>
-          <PhoneFieldInput id={phoneId} name='billingPhone' autoComplete='tel' />
+          <PhoneFieldInput name='billingPhone' id={phoneId} autoComplete='tel' />
         </PhoneField>
       </Fieldset>
     </div>

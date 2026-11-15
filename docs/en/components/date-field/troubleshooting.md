@@ -25,20 +25,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   DateField,
   DateFieldCalendar,
   DateFieldInput,
@@ -57,13 +63,13 @@ export default function MinimalComposition() {
           <DateFieldTriggerIconButton aria-label='Choose due date' />
         </PopoverTrigger>
         <PopoverContent>
-          <DateFieldCalendar>
+          <DateFieldCalendar aria-label='Choose due date'>
             <CalendarHeader>
               <CalendarPrevButton aria-label='Previous month' />
-              <CalendarViewButtonGroup>
+              <CalendarHeading>
                 <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                 <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-              </CalendarViewButtonGroup>
+              </CalendarHeading>
               <CalendarNextButton aria-label='Next month' />
             </CalendarHeader>
             <CalendarContent>
@@ -71,15 +77,27 @@ export default function MinimalComposition() {
                 <CalendarWeekdays>
                   <CalendarWeekday />
                 </CalendarWeekdays>
-                <CalendarWeeks>
-                  <CalendarDay />
-                </CalendarWeeks>
+                <CalendarDaysScroller>
+                  <CalendarDaysScrollerContent>
+                    <CalendarWeeks>
+                      <CalendarDay />
+                    </CalendarWeeks>
+                  </CalendarDaysScrollerContent>
+                </CalendarDaysScroller>
               </CalendarDays>
               <CalendarMonths>
-                <CalendarMonth />
+                <CalendarMonthsGrid>
+                  <CalendarMonth />
+                </CalendarMonthsGrid>
               </CalendarMonths>
               <CalendarYears>
-                <CalendarYear />
+                <CalendarYearsScroller>
+                  <CalendarYearsScrollerContent>
+                    <CalendarYearsGrid>
+                      <CalendarYear />
+                    </CalendarYearsGrid>
+                  </CalendarYearsScrollerContent>
+                </CalendarYearsScroller>
               </CalendarYears>
             </CalendarContent>
           </DateFieldCalendar>
@@ -118,7 +136,7 @@ The form submits `15.01.2026` instead of `2026-01-15`.
 
 ### Likely Cause
 
-`DateFieldInput` is a native input, and `name` submits its typed text.
+`DateFieldInput` submits the text it shows under its `name`, like any native input.
 
 ### How To Verify
 
@@ -126,7 +144,7 @@ The form submits `15.01.2026` instead of `2026-01-15`.
 
 ### Fix
 
-Take the ISO day from `onChangeValue` on the root instead of the text. To submit it with the form, drop `name` from the input and put it on a hidden input that holds the day, as in [Form/Integration](./examples.md#formintegration).
+Keep the `YYYY-MM-DD` day from `onChangeValue` in state and submit it through a hidden input of your own. See [Form/Integration](./examples.md#formintegration).
 
 ## Disabled Dates Can Still Be Typed
 
@@ -136,12 +154,48 @@ The calendar blocks some days, but typing one of them is accepted and submitted.
 
 ### Likely Cause
 
-`min` and `max` clamp typed dates, but `disabledDates` applies only to the calendar.
+Like a date outside `min` and `max`, a typed day from `disabledDates` stays in the input and only makes it invalid.
 
 ### How To Verify
 
-- Type a disabled day and submit the form.
+- Type a disabled day and check `input.validity.customError` or `:invalid`.
 
 ### Fix
 
-Check the same `disabledDates` rule in submit validation and on the server.
+Let the browser block the submit (do not use `noValidate`), or check `form.checkValidity()` yourself, and show your message from `onInvalid`. Check the same rule on the server.
+
+## Calendar Closes After A Pick
+
+### Symptom
+
+The popup closes as soon as a day is picked, but the product wants it to stay open.
+
+### Likely Cause
+
+Picking closes the popup and returns the focus to the trigger, as the WAI-ARIA date picker dialog pattern describes.
+
+### How To Verify
+
+- Pick a day with a click or <kbd>Enter</kbd> and check whether the popup hides.
+
+### Fix
+
+Control `open` on the `Popover` and set it back to `true` in `onChangeValue` of `DateFieldCalendar`. It runs after the field closes the popup, in the same update, so the popup never hides.
+
+## Two-Digit Year Reads The Wrong Century
+
+### Symptom
+
+With a format such as `MM/dd/yy`, a typed year lands in an unexpected century.
+
+### Likely Cause
+
+A two-digit year is read within 80 years before and 19 years after the year of `today`, like CLDR and ICU. A wrong device date or `today` moves the window.
+
+### How To Verify
+
+- Check `today` on the root, or the date of the device when it is not set.
+
+### Fix
+
+Pass `today` explicitly, or use a four-digit year (`yyyy`) when dates far in the past or future are expected.

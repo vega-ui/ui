@@ -164,7 +164,7 @@ const PasswordInput = ({ id, name, label, autoComplete, error, describedBy, valu
 }) => (
   <div style={field}>
     <Label htmlFor={id}>{label}</Label>
-    <PasswordField error={error !== undefined}>
+    <PasswordField>
       <PasswordFieldInput
         id={id}
         name={name}
@@ -179,7 +179,7 @@ const PasswordInput = ({ id, name, label, autoComplete, error, describedBy, valu
         <PasswordFieldHiddenIcon />
       </PasswordFieldToggleIconButton>
     </PasswordField>
-    {error && <HelperText id={`${id}-error`} error>{error}</HelperText>}
+    {error && <HelperText id={`${id}-error`} invalid>{error}</HelperText>}
   </div>
 );
 
@@ -721,7 +721,7 @@ export default function Security() {
             <form noValidate onSubmit={submitPhone} style={{ display: 'grid', gap: 'var(--spacing-12)', marginBlockStart: 'var(--spacing-8)' }}>
               <div style={field}>
                 <Label htmlFor={`${id}-phone`}>Phone number</Label>
-                <TextField error={phoneError !== ''}>
+                <TextField>
                   <TextFieldInput
                     id={`${id}-phone`}
                     type='tel'
@@ -738,7 +738,7 @@ export default function Security() {
                 </TextField>
                 {phoneError === ''
                   ? <HelperText id={`${id}-phone-hint`}>We’ll text a 6-digit code to this number.</HelperText>
-                  : <HelperText id={`${id}-phone-error`} error>{phoneError}</HelperText>}
+                  : <HelperText id={`${id}-phone-error`} invalid>{phoneError}</HelperText>}
               </div>
               <div style={actions}>
                 <Button size='xs' type='button' {...ghost} onClick={() => goTo('method')}>Back</Button>
@@ -754,7 +754,6 @@ export default function Security() {
                 <PinField
                   maxLength={6}
                   value={code}
-                  error={codeError !== ''}
                   onChangeValue={(value) => {
                     setCode(value);
                     setCodeError('');
@@ -768,7 +767,7 @@ export default function Security() {
                   />
                   {Array.from({ length: 6 }, (_, index) => <PinFieldSlot key={index} index={index} />)}
                 </PinField>
-                {codeError !== '' && <HelperText id={`${id}-code-error`} error>{codeError}</HelperText>}
+                {codeError !== '' && <HelperText id={`${id}-code-error`} invalid>{codeError}</HelperText>}
                 <Text size={2} style={{ color: 'var(--label-tertiary)' }}>{`Demo code: ${DEMO_CODE}`}</Text>
               </div>
               <div style={actions}>
@@ -814,7 +813,7 @@ export default function Security() {
                   </CheckboxIndicator>
                   I’ve saved my recovery codes
                 </Checkbox>
-                {codesError !== '' && <HelperText id={`${id}-codes-error`} error>{codesError}</HelperText>}
+                {codesError !== '' && <HelperText id={`${id}-codes-error`} invalid>{codesError}</HelperText>}
               </div>
               <div style={actions}>
                 <Button size='xs' type='submit'>Done</Button>

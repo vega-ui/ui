@@ -30,10 +30,10 @@ These are the main variables application code and component styles should rely o
 | `--text-color` | default content color | `Text`, `Heading`, field values, icon triggers, option rows |
 | `--focus-color` | focus outline color | buttons, links, sliders, radios, checkboxes, segmented control |
 | `--surface-primary` | primary container surface | `DialogContent`, `DrawerContent`, `SheetContent`, `PopoverContent` |
-| `--surface-secondary` | floating or transient surface | `SelectListbox`, `TooltipContent`, `TooltipArrow` |
+| `--surface-secondary` | floating or transient surface | `SelectListbox`, `TooltipContent` |
 | `--border-color` | default structural border | `Card`, `Fieldset`, `TableRow`, `CheckboxCard` |
 | `--border-color-hover` | interactive border emphasis | hover-state border progression for border-driven surfaces |
-| `--color-error` | validation and error feedback | `TextField`, `TextArea`, `PinField`, `HelperText` |
+| `--color-error` | validation and error feedback | `TextField`, `TextArea`, `PinField`, `Checkbox`, `CheckboxCard`, `Radio`, `Switch`, `Select`, `Slider`, `HelperText` |
 | `--fills-primary` | accent-selected fill | checked `Checkbox`, checked `Radio`, page control progress |
 | `--fills-secondary` | neutral track or subdued fill | `Progress`, `Meter`, `MeterStack`, `Slider`, `Code`, off `Switch` |
 | `--label-primary` | strong indicator label | page control active indicators and derived emphasis fills |

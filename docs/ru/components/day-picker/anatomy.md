@@ -2,7 +2,7 @@
 
 ## Обзор
 
-`DayPicker` оборачивает `DataGridPicker` и добавляет контекст, специфичный для сетки дней: видимый `month` (первый день в виде строки `YYYY-MM-DD`) и календарную систему `calendar`. Раскладка может быть статичной или на основе скроллера.
+`DayPicker` оборачивает `Grid` и добавляет контекст, специфичный для сетки дней: показанный `month` (первый день месяца дня в фокусе в виде строки `YYYY-MM-DD`), `today`, `locale` и календарную систему `calendar`. Раскладка может быть статичной или на основе скроллера.
 
 ## Обязательные части
 
@@ -36,7 +36,7 @@
 
 ## Допустимые варианты композиции
 
-Композиция со скроллером: `DayPickerScroller` › `DayPickerScrollerContent` › `DayPickerScrollerLayout` › шаблон ячейки внутри `DayPicker`. Скроллер начинается с `month` корня и прокручивается к нему при изменении, поэтому храните `month` в состоянии и обновляйте его из `onChangePeriod` — тогда корень всегда знает видимый месяц.
+Композиция со скроллером: `DayPickerScroller` › `DayPickerScrollerContent` › `DayPickerScrollerLayout` › шаблон ячейки внутри `DayPicker`. Скроллер следует за месяцем дня в фокусе: если навигация с клавиатуры уходит из месяца, он прокручивается к новому, а свайп в другой месяц переносит фокус на тот же день в нём. Дополнительное состояние не нужно; если шапка должна показывать месяц, используйте `onChangeFocusedDate` на корне или `onChangePeriod` на скроллере.
 
 <!-- example: day-picker/valid-composition-patterns.tsx -->
 ```tsx
@@ -47,14 +47,11 @@ import {
   DayPickerScrollerContent,
   DayPickerScrollerLayout,
 } from '@vega-ui/react';
-import { useState } from 'react';
 
 export default function ValidCompositionPatterns() {
-  const [month, setMonth] = useState('2026-11-01');
-
   return (
-    <DayPicker aria-label='Days' locale='en-US' month={month}>
-      <DayPickerScroller onChangePeriod={setMonth}>
+    <DayPicker aria-label='Days' locale='en-US' defaultFocusedDate='2026-11-01'>
+      <DayPickerScroller>
         <DayPickerScrollerContent>
           <DayPickerScrollerLayout includeOverflowDays>
             <DayPickerCell />

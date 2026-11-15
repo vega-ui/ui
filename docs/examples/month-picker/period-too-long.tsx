@@ -36,16 +36,16 @@ export default function PeriodTooLong() {
         aria-describedby={messageId}
         locale='en-US'
         selection='range'
-        year='2026-01-01'
-        selected={period}
-        onSelectCell={setPeriod}
+        defaultFocusedDate='2026-02-01'
+        value={period}
+        onChangeValue={setPeriod}
         style={{ width: '100%' }}
       >
         <MonthPickerLayout cols={4} format='short'>
           <MonthPickerCell />
         </MonthPickerLayout>
       </MonthPicker>
-      <HelperText id={messageId} error={invalid} aria-live='polite'>{message}</HelperText>
+      <HelperText id={messageId} invalid={invalid} aria-live='polite'>{message}</HelperText>
     </div>
   );
 }

@@ -34,7 +34,6 @@ export default function ClearTheCodeAfterAFailedCheck() {
         maxLength={4}
         value={code}
         onChangeValue={onChangeValue}
-        error={failed}
         disabled={unlocked || attemptsLeft === 0}
       >
         <PinFieldInput
@@ -48,7 +47,7 @@ export default function ClearTheCodeAfterAFailedCheck() {
         <PinFieldSlot index={2} />
         <PinFieldSlot index={3} />
       </PinField>
-      <HelperText id={`${id}-status`} error={failed} role='status'>
+      <HelperText id={`${id}-status`} invalid={failed} role='status'>
         {unlocked && 'Unlocked.'}
         {!unlocked && attemptsLeft === 3 && 'Checked as soon as all four digits are in.'}
         {!unlocked && attemptsLeft < 3 && attemptsLeft > 0 && `Wrong passcode. ${attemptsLeft} attempts left.`}

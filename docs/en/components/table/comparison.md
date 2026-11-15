@@ -4,7 +4,7 @@
 
 Use `Table` when native semantic table structure is enough and grid-like interaction is unnecessary.
 
-## `Table` vs `DataGrid`
+## `Table` vs `Grid`
 
 Use `Table` when:
 
@@ -12,23 +12,23 @@ Use `Table` when:
 - native table semantics are the main requirement
 - cell-level keyboard navigation is unnecessary
 
-Use `DataGrid` when:
+Use `Grid` when:
 
 - the feature needs richer keyboard interaction, selection, or grid behavior
 
-Main trade-off: `Table` stays simpler and more semantic, while `DataGrid` handles heavier interaction models.
+Main trade-off: `Table` stays simpler and more semantic, while `Grid` handles heavier interaction models.
 
-## `Table` vs `DataGridSelectable`
+## `Table` vs `Grid` with `selection`
 
 Use `Table` when:
 
 - row selection is not part of the main interaction model
 
-Use `DataGridSelectable` when:
+Use `Grid` with `selection` when:
 
 - users need explicit row selection behavior
 
-Main trade-off: `Table` avoids grid complexity, while `DataGridSelectable` adds selection semantics and controls.
+Main trade-off: `Table` avoids grid complexity, while `Grid` with `selection` adds selection semantics and controls.
 
 ## Choose This Component When
 

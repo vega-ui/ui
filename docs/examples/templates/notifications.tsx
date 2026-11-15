@@ -380,7 +380,7 @@ export default function Notifications() {
               </TableBody>
             </Table>
           </div>
-          {errors.requests && <HelperText id={`${id}-requests-error`} error>{errors.requests}</HelperText>}
+          {errors.requests && <HelperText id={`${id}-requests-error`} invalid>{errors.requests}</HelperText>}
         </section>
 
         <Card style={{ alignItems: 'stretch', gap: 'var(--spacing-12)' }}>
@@ -436,7 +436,6 @@ export default function Notifications() {
                     <Label htmlFor={`${id}-from`}>From</Label>
                     <TimeField
                       value={quietFrom}
-                      error={errors.from !== undefined}
                       onChangeValue={(value) => {
                         setQuietFrom(value);
                         setErrors({ ...errors, from: undefined, to: undefined });
@@ -445,13 +444,12 @@ export default function Notifications() {
                     >
                       <TimeFieldInput id={`${id}-from`} data-field='from' placeholder='hh:mm' aria-invalid={errors.from !== undefined} aria-describedby={describe('from')} />
                     </TimeField>
-                    {errors.from && <HelperText id={`${id}-from-error`} error>{errors.from}</HelperText>}
+                    {errors.from && <HelperText id={`${id}-from-error`} invalid>{errors.from}</HelperText>}
                   </div>
                   <div style={{ ...field, flex: '0 1 160px' }}>
                     <Label htmlFor={`${id}-to`}>To</Label>
                     <TimeField
                       value={quietTo}
-                      error={errors.to !== undefined}
                       onChangeValue={(value) => {
                         setQuietTo(value);
                         setErrors({ ...errors, to: undefined });
@@ -460,7 +458,7 @@ export default function Notifications() {
                     >
                       <TimeFieldInput id={`${id}-to`} data-field='to' placeholder='hh:mm' aria-invalid={errors.to !== undefined} aria-describedby={describe('to')} />
                     </TimeField>
-                    {errors.to && <HelperText id={`${id}-to-error`} error>{errors.to}</HelperText>}
+                    {errors.to && <HelperText id={`${id}-to-error`} invalid>{errors.to}</HelperText>}
                   </div>
                 </div>
                 <HelperText id={`${id}-quiet-hint`}>Times are in Berlin (CET). A range past midnight ends the next morning.</HelperText>

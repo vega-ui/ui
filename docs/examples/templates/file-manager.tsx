@@ -706,7 +706,7 @@ export default function FileManager() {
             <form noValidate onSubmit={submitName} style={{ display: 'grid', gap: 'var(--spacing-12)', marginBlockStart: 'var(--spacing-10)' }}>
               <div style={field}>
                 <Label htmlFor={`${id}-name`}>Name</Label>
-                <TextField error={nameError !== ''}>
+                <TextField>
                   <TextFieldInput
                     id={`${id}-name`}
                     name='name'
@@ -722,7 +722,7 @@ export default function FileManager() {
                     onChange={() => setNameError('')}
                   />
                 </TextField>
-                {nameError !== '' && <HelperText id={`${id}-name-error`} error>{nameError}</HelperText>}
+                {nameError !== '' && <HelperText id={`${id}-name-error`} invalid>{nameError}</HelperText>}
               </div>
               <div style={actions}>
                 <DialogClose asChild>

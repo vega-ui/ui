@@ -4,7 +4,6 @@ import {
   IconButton,
   Text,
   Tooltip,
-  TooltipArrow,
   TooltipContent,
   TooltipTrigger,
 } from '@vega-ui/react';
@@ -51,7 +50,6 @@ export default function StatefulCopyFeedback() {
           </IconButton>
         </TooltipTrigger>
         <TooltipContent>
-          <TooltipArrow />
           <Text size={2}>{copied ? 'Copied' : 'Copy invite link'}</Text>
         </TooltipContent>
       </Tooltip>

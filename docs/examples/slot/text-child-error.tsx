@@ -18,7 +18,7 @@ class SlotErrorBoundary extends Component<BoundaryProps, BoundaryState> {
 
   render() {
     if (this.state.message !== '') {
-      return <HelperText error role='alert'>{this.state.message}</HelperText>;
+      return <HelperText invalid role='alert'>{this.state.message}</HelperText>;
     }
 
     return this.props.children;

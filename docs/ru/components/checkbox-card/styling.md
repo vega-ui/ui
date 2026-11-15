@@ -31,6 +31,7 @@
 - `data-variant='primary' | 'secondary'` меняет цвет границы в отмеченном и неопределённом состояниях.
 - `:has(input[type='checkbox']:checked)` и `:has(...:indeterminate)` управляют состоянием границы выбранной карточки.
 - В отключённом состоянии цвет границы переключается на токены темы для отключённых элементов.
+- `aria-invalid='true'` на `CheckboxCardControlInput` или его `:user-invalid`, например у `required` карточки, оставшейся неотмеченной после попытки отправки, задаёт `--card-border-color` значение `--color-error`. Сам компонент `aria-invalid` не ставит.
 
 ## Примеры
 

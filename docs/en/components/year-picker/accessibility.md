@@ -13,19 +13,23 @@
 | <kbd>↑</kbd> / <kbd>↓</kbd> | Moves the focus to the year above or below in the same column. |
 | <kbd>Home</kbd> / <kbd>End</kbd> | Moves the focus to the first or last year of the row. |
 | <kbd>Page Up</kbd> / <kbd>Page Down</kbd> / <kbd>Ctrl</kbd> + <kbd>Home</kbd> / <kbd>Ctrl</kbd> + <kbd>End</kbd> | In a `YearPickerLayout` page: Page Up and Page Down move the focus to the first or last row in the same column; Ctrl + Home and Ctrl + End to the first or last year. |
+| <kbd>Page Up</kbd> / <kbd>Page Down</kbd> | Inside `YearPickerScroller`: move the focus to the same place on the previous or next page of years (`period` years, 12 by default), beyond the rendered pages too; the scroller follows the focus. |
+| <kbd>Ctrl</kbd> + <kbd>Home</kbd> / <kbd>Ctrl</kbd> + <kbd>End</kbd> | Inside `YearPickerScroller`: move the focus to the first or last year of the page in view, not of the rendered pages. |
 | <kbd>Enter</kbd> / <kbd>Space</kbd> | Selects the focused year. |
 <!-- AUTO-GENERATED:KEYBOARD:end -->
 
-- Keyboard behavior is inherited from `DataGridPicker` and the year-grid items.
+- Keyboard behavior is inherited from `Grid` and the year-grid items.
 
 ## Focus Behavior
 
-- Without `defaultActive`, the tab stop is the visible `year`, which is always on the page in view
+- The picker shows the page of the focused year (`focusedDate`). The tab stop is the focused year when it can be focused; otherwise the selected year or the current year; otherwise the first available year, so it is always on the page in view
+- Inside `YearPickerScroller`, Page Up and Page Down move the focus by one page of years, and scrolling to another page moves the focus to the same place on it
 - Focus should remain visible as the year grid pages across larger ranges.
 
 ## Screen Reader Semantics
 
 - Large year ranges are easier to understand when the visible decade/range is announced clearly in nearby text or picker labels.
+- In `multiple` and `range` selection the grid has `aria-multiselectable="true"`.
 
 ## Form Semantics
 

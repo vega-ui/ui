@@ -25,12 +25,11 @@ export default function SoftLimitError() {
           rows={6}
           fullWidth
           value={bio}
-          error={invalid}
           aria-invalid={invalid}
           aria-describedby={messageId}
           onChange={(event) => setBio(event.currentTarget.value)}
         />
-        <HelperText id={messageId} error={invalid}>
+        <HelperText id={messageId} invalid={invalid}>
           {invalid ? `${over} characters over the ${LIMIT}-character limit.` : `${LIMIT - bio.length} characters left.`}
         </HelperText>
       </div>

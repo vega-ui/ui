@@ -20,9 +20,11 @@ export default function TwoMonthsSideBySide() {
         aria-label='Travel dates'
         locale='en-US'
         selection='range'
-        month={months[0]}
-        selected={range}
-        onSelectCell={setRange}
+        defaultFocusedDate={months[0]}
+        min='2026-11-01'
+        max='2026-12-31'
+        value={range}
+        onChangeValue={setRange}
         style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 'var(--spacing-16)', width: '100%' }}
       >
         {months.map((month, index) => (

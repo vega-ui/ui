@@ -34,7 +34,7 @@ export default function QuotaExceeded({ locale = 'en-US' }: { locale?: string })
           <MeterTrack />
         </Meter>
         {exceeded && (
-          <HelperText id={errorId} error style={{ fontVariantNumeric: 'tabular-nums' }}>
+          <HelperText id={errorId} invalid style={{ fontVariantNumeric: 'tabular-nums' }}>
             Limit exceeded by {format.format(requests - limit)} requests. New requests are rejected until 1 December.
           </HelperText>
         )}

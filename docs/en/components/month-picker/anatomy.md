@@ -2,13 +2,13 @@
 
 ## Overview
 
-`MonthPicker` wraps `DataGridPicker` for month values and exposes row, item, and layout parts for static month grids.
+`MonthPicker` wraps `Grid` for month values and exposes row, item, and layout parts for static month grids.
 
 ## Required Parts
 
 ### `MonthPicker`
 
-Required. Owns the month selection state model through `DataGridPicker`.
+Required. Owns the month selection state model through `Grid`.
 
 ## Optional Parts
 
@@ -50,7 +50,7 @@ const rows = createMonthPickerGrid({ year: YEAR, cols: 6 });
 
 export default function CustomGridRendering() {
   return (
-    <MonthPicker aria-label='Month, 2026' locale='en-US' year={YEAR} style={{ width: '100%' }}>
+    <MonthPicker aria-label='Month, 2026' locale='en-US' defaultFocusedDate={YEAR} style={{ width: '100%' }}>
       <MonthPickerRowGroup>
         {rows.map(({ row, data }) => (
           <MonthPickerRow key={row} row={row}>

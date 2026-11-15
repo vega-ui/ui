@@ -18,6 +18,7 @@ These variables are directly consumed by the current implementation and are the 
 | `--select-value-color` | `SelectValue` | Selected value text color |
 | `--select-placeholder-color` | `SelectValue` | Placeholder text color |
 | `--select-icon-color` | `SelectIcon` | Trigger icon color |
+| `--select-outline-color` | `SelectCombobox` | Trigger outline color, `--color-error` while the select is invalid |
 
 ## Part-Level Variables
 
@@ -99,6 +100,8 @@ That means:
 
 - size and text-color customization are straightforward
 - variant-level restyling still depends partly on global theme tokens rather than component-local variables
+
+The invalid state sets `--select-outline-color` to `--color-error` on the root while `SelectCombobox` has `aria-invalid='true'` or `SelectHiddenSelect` matches `:user-invalid`, for example a `required` select left empty after a submit attempt. The component never sets `aria-invalid` itself.
 
 ## Examples
 

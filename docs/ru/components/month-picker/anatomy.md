@@ -2,13 +2,13 @@
 
 ## Обзор
 
-`MonthPicker` оборачивает `DataGridPicker` для значений-месяцев и предоставляет части строк, элементов и раскладки для статичных сеток месяцев.
+`MonthPicker` оборачивает `Grid` для значений-месяцев и предоставляет части строк, элементов и раскладки для статичных сеток месяцев.
 
 ## Обязательные части
 
 ### `MonthPicker`
 
-Обязательная. Владеет моделью состояния выбора месяца через `DataGridPicker`.
+Обязательная. Владеет моделью состояния выбора месяца через `Grid`.
 
 ## Необязательные части
 
@@ -50,7 +50,7 @@ const rows = createMonthPickerGrid({ year: YEAR, cols: 6 });
 
 export default function CustomGridRendering() {
   return (
-    <MonthPicker aria-label='Month, 2026' locale='en-US' year={YEAR} style={{ width: '100%' }}>
+    <MonthPicker aria-label='Month, 2026' locale='en-US' defaultFocusedDate={YEAR} style={{ width: '100%' }}>
       <MonthPickerRowGroup>
         {rows.map(({ row, data }) => (
           <MonthPickerRow key={row} row={row}>

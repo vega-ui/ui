@@ -329,7 +329,7 @@ export default function AtLeastOneRequired() {
             </CheckboxCard>
           ))}
         </div>
-        {invalid && <HelperText id='platforms-error' error>Choose at least one platform.</HelperText>}
+        {invalid && <HelperText id='platforms-error' invalid>Choose at least one platform.</HelperText>}
       </Fieldset>
       <div style={{ display: 'grid', gap: 'var(--spacing-6)', justifyItems: 'start' }}>
         <Button type='submit'>Start build</Button>

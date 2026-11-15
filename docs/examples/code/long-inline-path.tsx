@@ -5,7 +5,7 @@ export default function LongInlinePath() {
     <div style={{ display: 'grid', gap: 'var(--spacing-6)', width: '100%' }}>
       <Text asChild size={2}>
         <p>
-          Edit <Code size={2} style={{ overflowWrap: 'anywhere' }}>packages/ui/src/DataGrid/components/DataGridColumnHeader/DataGridColumnHeader.tsx</Code>{' '}
+          Edit <Code size={2} style={{ overflowWrap: 'anywhere' }}>packages/ui/src/Grid/components/GridColumnHeader/GridColumnHeader.tsx</Code>{' '}
           to change the sort icon.
         </p>
       </Text>

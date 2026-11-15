@@ -157,7 +157,7 @@ export default function SignIn() {
             </div>
             <div style={field}>
               <Label htmlFor={`${id}-code`}>Verification code</Label>
-              <PinField maxLength={6} value={code} onChangeValue={changeCode} error={codeError !== ''}>
+              <PinField maxLength={6} value={code} onChangeValue={changeCode}>
                 <PinFieldInput
                   id={`${id}-code`}
                   autoComplete='one-time-code'
@@ -166,7 +166,7 @@ export default function SignIn() {
                 />
                 {Array.from({ length: 6 }, (_, index) => <PinFieldSlot key={index} index={index} />)}
               </PinField>
-              {codeError !== '' && <HelperText id={`${id}-code-error`} error>{codeError}</HelperText>}
+              {codeError !== '' && <HelperText id={`${id}-code-error`} invalid>{codeError}</HelperText>}
             </div>
             <Checkbox style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
               <CheckboxInput name='trust' />
@@ -213,7 +213,7 @@ export default function SignIn() {
           <div style={{ display: 'grid', gap: 'var(--spacing-8)' }}>
             <div style={field}>
               <Label htmlFor={`${id}-email`}>Email</Label>
-              <TextField error={errors.email !== undefined}>
+              <TextField>
                 <TextFieldInput
                   id={`${id}-email`}
                   name='email'
@@ -225,11 +225,11 @@ export default function SignIn() {
                   onChange={(event) => setEmail(event.currentTarget.value)}
                 />
               </TextField>
-              {errors.email && <HelperText id={`${id}-email-error`} error>{errors.email}</HelperText>}
+              {errors.email && <HelperText id={`${id}-email-error`} invalid>{errors.email}</HelperText>}
             </div>
             <div style={field}>
               <Label htmlFor={`${id}-password`}>Password</Label>
-              <PasswordField shown={shown} onChangeShown={setShown} error={errors.password !== undefined}>
+              <PasswordField shown={shown} onChangeShown={setShown}>
                 <PasswordFieldInput
                   id={`${id}-password`}
                   name='password'
@@ -242,7 +242,7 @@ export default function SignIn() {
                   <PasswordFieldHiddenIcon />
                 </PasswordFieldToggleIconButton>
               </PasswordField>
-              {errors.password && <HelperText id={`${id}-password-error`} error>{errors.password}</HelperText>}
+              {errors.password && <HelperText id={`${id}-password-error`} invalid>{errors.password}</HelperText>}
             </div>
           </div>
 

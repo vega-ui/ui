@@ -6,7 +6,7 @@
 
 ## Кратко
 
-`MonthPicker` — подсистема выбора месяца в виде сетки, которую используют напрямую или как часть семейства календарей. Он построен на `DataGridPicker` и предоставляет части раскладки месяцев и кастомный рендер на основе хелперов.
+`MonthPicker` — подсистема выбора месяца в виде сетки, которую используют напрямую или как часть семейства календарей. Он построен на `Grid` и предоставляет части раскладки месяцев и кастомный рендер на основе хелперов.
 
 ## Импорт
 
@@ -51,7 +51,7 @@ export const locales = ['en-US', 'ru-RU', 'ar-EG', 'he-IL'];
 
 export default function MinimalComposition({ locale = 'en-US' }: { locale?: string }) {
   return (
-    <MonthPicker aria-label='Month, 2026' locale={locale} year='2026-01-01' style={{ width: '100%' }}>
+    <MonthPicker aria-label='Month, 2026' locale={locale} defaultFocusedDate='2026-01-01' style={{ width: '100%' }}>
       <MonthPickerLayout>
         <MonthPickerCell />
       </MonthPickerLayout>
@@ -82,8 +82,8 @@ export default function MinimalComposition({ locale = 'en-US' }: { locale?: stri
 
 - Выбор: `single`, `multiple`, `range`
 - Плотность раскладки: `cols`; число строк зависит от количества месяцев в году
-- Период: явный `year` (строка `YYYY-MM-DD` любого дня этого года) или текущий год
-- Локаль и календарная система: пропсы `locale` и `calendar`, по умолчанию — локаль среды выполнения и григорианский календарь
+- Период: год месяца в фокусе — `focusedDate` или `defaultFocusedDate` (строка `YYYY-MM-DD` любого дня в нём), иначе выбранный месяц, иначе `today`
+- Локаль и календарная система: пропсы `locale` и `calendar`, по умолчанию — `en-US` и григорианский календарь
 - Формат меток: названия месяцев по локали
 
 ## Связанные документы

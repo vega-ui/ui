@@ -45,7 +45,7 @@ export default function FieldHint() {
 ## Variants
 
 - Size: `sm`, `md`, `lg`
-- State: default helper copy or `error`
+- State: default helper copy or `invalid`
 - Placement: below fields, selectors, or grouped controls
 
 ## Related Docs
@@ -61,7 +61,7 @@ export default function FieldHint() {
 
 ## Edge Cases
 
-- `error` changes tone, but the field itself still needs its own invalid state.
+- `invalid` changes tone, but the field itself still needs its own invalid state: `aria-invalid='true'` on the control or a native constraint that matches `:user-invalid`.
 - Helper copy should stay short enough to scan with the associated control.
 - Long explanatory text usually belongs in body copy, not helper text.
 - The component supports one control or one grouped field concept; it should not become a dumping ground for unrelated form instructions.

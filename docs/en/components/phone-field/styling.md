@@ -26,8 +26,16 @@ The country picker is built from the ordinary [Select](../select/styling.md) par
 ## State And Variant Interaction
 
 - `strictMask` changes behavior more than styling
-- `error` and `disabled` states should stay aligned with shared field semantics
+- the error look (`aria-invalid='true'`, `:user-invalid` or `[data-user-edited]:invalid` on `PhoneFieldInput`) and `disabled` should stay aligned with shared field semantics
 - custom selected-country rendering affects density and alignment
+
+`PhoneField` writes the text of `PhoneFieldInput` itself, and Chromium and WebKit do not count that text as an edit of the user, so the input does not match `:user-invalid` after it. A number too short or too long for its country matches `:invalid` by itself. In your own CSS, pair `:user-invalid` with `[data-user-edited]:invalid`:
+
+```css
+.contact-phone:has(input:is(:user-invalid, [data-user-edited]:invalid)) label {
+  color: var(--color-error);
+}
+```
 
 ## Examples
 
@@ -46,7 +54,7 @@ The field has no `--phone-field-*` variables, so a theme class retunes the share
 
 ### Select placeholder and custom icon
 
-Without a code the trigger shows the `placeholder` of `SelectValue`, and children of `SelectIcon` replace the default chevron.
+Without a country the trigger shows the `placeholder` of `SelectValue`, and children of `SelectIcon` replace the default chevron.
 
 <!-- example: phone-field/select-placeholder-and-custom-icon.tsx -->
 ```tsx
@@ -86,7 +94,7 @@ export default function SelectPlaceholderAndCustomIcon() {
             <SelectOption value='PT'>PT</SelectOption>
           </SelectListbox>
         </PhoneFieldSelect>
-        <PhoneFieldInput id={id} name='phone' autoComplete='tel' />
+        <PhoneFieldInput name='phone' id={id} autoComplete='tel' />
       </PhoneField>
     </div>
   );

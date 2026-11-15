@@ -99,7 +99,7 @@ Typical composition:
 
 - Size: `sm`, `md`, `lg`
 - Variant: `field`, `inline`
-- State variants: [controlled](../../glossary.md#controlled) value, [controlled](../../glossary.md#controlled) open state, [disabled](../../glossary.md#disabled), [read-only](../../glossary.md#read-only), searchable composition
+- State variants: [controlled](../../glossary.md#controlled) value, [controlled](../../glossary.md#controlled) open state, [disabled](../../glossary.md#disabled), [read-only](../../glossary.md#read-only)
 
 ## Related Docs
 
@@ -115,7 +115,7 @@ Typical composition:
 ## Edge Cases
 
 - `disabled` blocks interaction completely; `readOnly` preserves focusability while preventing changes. See [Disabled](../../glossary.md#disabled) and [Read-Only](../../glossary.md#read-only).
-- Filtering inside the listbox should usually disable built-in [typeahead](../../glossary.md#typeahead) with `typeahead={false}` to avoid keyboard conflicts.
+- A search field inside `SelectListbox` is not supported: a listbox holds only options and groups.
 - Values are typed as `string | number`; object values are not supported by the public API.
 - `SelectHiddenSelect` is recommended when the value should participate in native [form participation](../../glossary.md#form-participation).
 - If the product needs richer arbitrary overlay content rather than one scalar value, the correct abstraction is usually `Popover` or `Dialog`, not `Select`.
@@ -124,5 +124,4 @@ Typical composition:
 
 - Passing object values instead of `string` or `number`.
 - Forgetting `SelectHiddenSelect` in native form flows.
-- Leaving built-in [typeahead](../../glossary.md#typeahead) enabled when embedding a searchable input into the listbox.
 - Using `readOnly` when the intended behavior is a fully [disabled](../../glossary.md#disabled) control.

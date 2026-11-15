@@ -34,10 +34,9 @@ export default function MonthFilterInAPopover() {
         <MonthPicker
           aria-label='Statement month, 2026'
           locale='en-US'
-          year='2026-01-01'
-          to='2026-10-01'
-          selected={month}
-          onSelectCell={pick}
+          max='2026-10-01'
+          value={month}
+          onChangeValue={pick}
         >
           <MonthPickerLayout cols={4} format='short'>
             <MonthPickerCell />

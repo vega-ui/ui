@@ -27,6 +27,7 @@
 ## Form Semantics
 
 - Put `name` and `required` on `TimeFieldInput`, and `value` or `defaultValue` on `TimeField`.
+- The input reports native validity through `setCustomValidity` with the message of the browser: an incomplete time and a time before `min` or after `max` are invalid, so `:invalid`, `reportValidity()`, and the browser's submit check work.
 - Keep bounds and format aligned with the submitted value format.
 
 ## Accessibility Risks
