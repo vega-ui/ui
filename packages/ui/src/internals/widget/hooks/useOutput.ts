@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useReducer, useRef } from 'react'
-import { AnyShape, Attrs, KeyOf, Part, SnapshotOf } from '@vega-ui/core'
+import { AnyShape, KeyOf, Part, SnapshotOf } from '@vega-ui/core'
 import { WidgetHandle } from './useWidget'
 
 export interface Subscribable {
   subscribe(listener: () => void): () => void
 }
 
-export const useSubscribed = <T>(source: Subscribable, read: () => T): T => {
-  const [, rerender] = useReducer((n: number) => n + 1, 0)
+export const useSubscribed = <Value>(source: Subscribable, read: () => Value): Value => {
+  const [, rerender] = useReducer((count: number) => count + 1, 0)
   const value = read()
   const shown = useRef(value)
   shown.current = value
@@ -24,13 +24,13 @@ export const useSubscribed = <T>(source: Subscribable, read: () => T): T => {
   return value
 }
 
-export const useOutput = <Sh extends AnyShape>(handle: WidgetHandle<Sh, unknown>, part: Part<SnapshotOf<Sh>, KeyOf<Sh>>, key?: KeyOf<Sh>): Attrs => {
-  const read = useCallback(() => handle.instance.render(part, key), [handle, part, key])
+export const useOutput = <WidgetShape extends AnyShape, RenderedPart extends Part<SnapshotOf<WidgetShape>, KeyOf<WidgetShape>>>(handle: WidgetHandle<WidgetShape, unknown>, part: RenderedPart, key?: KeyOf<WidgetShape>): ReturnType<RenderedPart['render']> => {
+  const read = useCallback(() => handle.instance.render(part, key) as ReturnType<RenderedPart['render']>, [handle, part, key])
 
   return useSubscribed(handle, read)
 }
 
-export const useSnapshot = <Sh extends AnyShape, T>(handle: WidgetHandle<Sh, unknown>, select: (s: SnapshotOf<Sh>) => T): T => {
+export const useSnapshot = <WidgetShape extends AnyShape, Selected>(handle: WidgetHandle<WidgetShape, unknown>, select: (state: SnapshotOf<WidgetShape>) => Selected): Selected => {
   const read = useCallback(() => select(handle.instance.state), [handle, select])
 
   return useSubscribed(handle, read)

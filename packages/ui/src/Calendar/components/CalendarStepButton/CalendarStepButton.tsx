@@ -33,7 +33,7 @@ export const CalendarStepButton: FC<CalendarStepButtonProps> = ({ step, children
       size={size satisfies IconButtonProps['size']}
       disabled={disabled || attrs.disabled === true}
       className={csx(style.button, backward ? style.prev : style.next, className)}
-      data-visible={attrs['data-visible'] as boolean}
+      data-visible={attrs['data-visible']}
       onClick={onClick}
       {...props}
     >

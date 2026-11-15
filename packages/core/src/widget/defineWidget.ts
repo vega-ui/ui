@@ -3,30 +3,32 @@ import { Part } from '../output'
 import { AnyShape, KeyOf, SnapshotOf } from '../state'
 import { Step } from '../step'
 
-export interface Invariant<S> {
-  check(state: S): boolean
-  repair(state: S): S
+export interface Invariant<State> {
+  check(state: State): boolean
+  repair(state: State): State
 }
 
-export interface WidgetDefinition<Sh extends AnyShape> {
-  readonly state: Sh
-  readonly step?: readonly Step<SnapshotOf<Sh>, KeyOf<Sh>>[]
-  readonly output?: Readonly<Record<string, Part<SnapshotOf<Sh>, KeyOf<Sh>>>>
-  readonly invariants?: Readonly<Record<string, Invariant<SnapshotOf<Sh>>>>
+export type OutputOf<WidgetShape extends AnyShape> = Readonly<Record<string, Part<SnapshotOf<WidgetShape>, KeyOf<WidgetShape>>>>
+
+export interface WidgetDefinition<WidgetShape extends AnyShape, Output extends OutputOf<WidgetShape> = OutputOf<WidgetShape>> {
+  readonly state: WidgetShape
+  readonly step?: readonly Step<SnapshotOf<WidgetShape>, KeyOf<WidgetShape>>[]
+  readonly output?: Output
+  readonly invariants?: Readonly<Record<string, Invariant<SnapshotOf<WidgetShape>>>>
 }
 
-export interface Widget<Sh extends AnyShape> {
-  readonly shape: Sh
-  readonly steps: readonly Step<SnapshotOf<Sh>, KeyOf<Sh>>[]
+export interface Widget<WidgetShape extends AnyShape, Output extends OutputOf<WidgetShape> = OutputOf<WidgetShape>> {
+  readonly shape: WidgetShape
+  readonly steps: readonly Step<SnapshotOf<WidgetShape>, KeyOf<WidgetShape>>[]
   readonly listens: readonly InputSpec[]
-  readonly output: Readonly<Record<string, Part<SnapshotOf<Sh>, KeyOf<Sh>>>>
-  readonly invariants: Readonly<Record<string, Invariant<SnapshotOf<Sh>>>>
+  readonly output: Output
+  readonly invariants: Readonly<Record<string, Invariant<SnapshotOf<WidgetShape>>>>
 }
 
-export const defineWidget = <Sh extends AnyShape>(definition: WidgetDefinition<Sh>): Widget<Sh> => ({
+export const defineWidget = <WidgetShape extends AnyShape, Output extends OutputOf<WidgetShape> = Record<never, never>>(definition: WidgetDefinition<WidgetShape, Output>): Widget<WidgetShape, Output> => ({
   shape: definition.state,
   steps: definition.step ?? [],
   listens: (definition.step ?? []).flatMap((step) => step.listens ?? []),
-  output: definition.output ?? {},
+  output: definition.output ?? ({} as Output),
   invariants: definition.invariants ?? {},
 })
