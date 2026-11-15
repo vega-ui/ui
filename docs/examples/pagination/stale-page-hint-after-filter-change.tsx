@@ -5,8 +5,8 @@ import {
   Label,
   Pagination,
   PaginationItem,
-  PaginationListItem,
-  PaginationTriggerIconButton,
+  PaginationLink,
+  PaginationList,
   Text,
   TextField,
   TextFieldInput,
@@ -45,27 +45,33 @@ export default function StalePageHintAfterFilterChange() {
         {visible.length > 0 ? visible.join(', ') : 'No customers match this filter.'}
       </Text>
       <div style={{ display: 'grid', justifyItems: 'center', gap: 'var(--spacing-4)' }}>
-        <nav aria-label='Customer pages' aria-describedby={stale ? hintId : undefined}>
-          <Pagination size='sm'>
-            <PaginationListItem>
-              <PaginationTriggerIconButton aria-label='Previous page' disabled={page === 1} onClick={() => setRequestedPage(page - 1)}>
-                <Icon><ChevronLeft /></Icon>
-              </PaginationTriggerIconButton>
-            </PaginationListItem>
+        <Pagination aria-label='Customer pages' aria-describedby={stale ? hintId : undefined} size='sm'>
+          <PaginationList>
+            <PaginationItem>
+              <PaginationLink asChild>
+                <button type='button' aria-label='Previous page' disabled={page === 1} onClick={() => setRequestedPage(page - 1)}>
+                  <Icon><ChevronLeft /></Icon>
+                </button>
+              </PaginationLink>
+            </PaginationItem>
             {pages.map((item) => (
-              <PaginationListItem key={item}>
-                <PaginationItem current={item === page} aria-label={`Page ${item}`} onClick={() => setRequestedPage(item)}>
-                  {item}
-                </PaginationItem>
-              </PaginationListItem>
+              <PaginationItem key={item}>
+                <PaginationLink asChild current={item === page}>
+                  <button type='button' aria-label={`Page ${item}`} onClick={() => setRequestedPage(item)}>
+                    {item}
+                  </button>
+                </PaginationLink>
+              </PaginationItem>
             ))}
-            <PaginationListItem>
-              <PaginationTriggerIconButton aria-label='Next page' disabled={page === pageCount} onClick={() => setRequestedPage(page + 1)}>
-                <Icon><ChevronRight /></Icon>
-              </PaginationTriggerIconButton>
-            </PaginationListItem>
-          </Pagination>
-        </nav>
+            <PaginationItem>
+              <PaginationLink asChild>
+                <button type='button' aria-label='Next page' disabled={page === pageCount} onClick={() => setRequestedPage(page + 1)}>
+                  <Icon><ChevronRight /></Icon>
+                </button>
+              </PaginationLink>
+            </PaginationItem>
+          </PaginationList>
+        </Pagination>
         {stale && (
           <HelperText id={hintId} invalid role='status' style={{ textAlign: 'center', textWrap: 'balance' }}>
             Page {requestedPage} no longer exists for this filter. Showing page {page} of {pageCount}.

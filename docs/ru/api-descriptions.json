@@ -2860,144 +2860,60 @@
     "ru": "Определяет размер элементов индикатора страниц."
   },
   "Pagination.ref": {
-    "en": "Ref forwarded to the underlying list element.",
-    "ru": "Ref, передаваемый на нижележащий элемент списка."
+    "en": "Ref forwarded to the underlying `<nav>` element.",
+    "ru": "Ref, передаваемый на нижележащий элемент `<nav>`."
   },
   "Pagination.size": {
-    "en": "Visual size of the pagination items, inherited from IconButtonProps. Controls padding, font size, or spacing according to the design system scale.",
-    "ru": "Визуальный размер элементов пагинации, унаследованный от IconButtonProps. Управляет отступами, размером шрифта или интервалами по шкале дизайн-системы."
+    "en": "Size of the links and ellipses inside, unless one sets its own.",
+    "ru": "Размер ссылок и многоточий внутри, если они не задают свой."
   },
   "Pagination.variant": {
-    "en": "Visual variant of the component. Inherits available values from `IconButtonProps['variant']`, such as 'primary' or 'secondary'. Controls the visual style (color, background, border) according to the design system.",
-    "ru": "Визуальный вариант компонента. Наследует доступные значения из `IconButtonProps['variant']`, например 'primary' или 'secondary'. Управляет визуальным стилем (цветом, фоном, рамкой) по дизайн-системе."
-  },
-  "PaginationEllipsis.appearance": {
-    "en": "Adjusts the button's structural appearance (background, border, etc.).",
-    "ru": "Настраивает структурный внешний вид кнопки (фон, рамка и т. д.)."
-  },
-  "PaginationEllipsis.asChild": {
-    "en": "When true, renders the button as a child component using `Slot` (e.g., from Radix UI). Enables polymorphic rendering — useful for making the button act as a link or custom tag.",
-    "ru": "Если true, рендерит кнопку как дочерний компонент через `Slot` (например, из Radix UI). Включает полиморфный рендер — полезно, чтобы кнопка работала как ссылка или собственный тег."
-  },
-  "PaginationEllipsis.children": {
-    "en": "Content of the button — text, icon, or any React node.",
-    "ru": "Содержимое кнопки — текст, иконка или любой React-узел."
-  },
-  "PaginationEllipsis.className": {
-    "en": "Optional custom CSS class for the button element. Useful for design system overrides or scoped styles.",
-    "ru": "Необязательный собственный CSS-класс для элемента кнопки. Полезен для переопределений дизайн-системы или локальных стилей."
-  },
-  "PaginationEllipsis.disabled": {
-    "en": "Disables the button when true. Prevents user interaction and applies a visually disabled state. Not applied with `asChild`: the child element owns its disabled state, for example, `aria-disabled` or a link without `href`.",
-    "ru": "Отключает кнопку при true. Запрещает взаимодействие и применяет визуальное отключённое состояние. Не применяется с `asChild`: отключённым состоянием владеет дочерний элемент, например через `aria-disabled` или ссылку без `href`."
-  },
-  "PaginationEllipsis.fullWidth": {
-    "en": "When true, the button expands to fill the width with its container.",
-    "ru": "Если true, кнопка растягивается на всю ширину контейнера."
+    "en": "Visual variant of the links and ellipses inside, unless one sets its own.",
+    "ru": "Визуальный вариант ссылок и многоточий внутри, если они не задают свой."
   },
   "PaginationEllipsis.ref": {
-    "en": "Ref forwarded to the native `<button>` element. Allows direct DOM access for focus management or measuring.",
-    "ru": "Ref, передаваемый на нативный элемент `<button>`. Даёт прямой доступ к DOM для управления фокусом или измерений."
+    "en": "Ref forwarded to the underlying `<li>` element.",
+    "ru": "Ref, передаваемый на нижележащий элемент `<li>`."
   },
   "PaginationEllipsis.size": {
-    "en": "Defines the size of the button. Affects padding, font size, and overall dimensions.",
-    "ru": "Определяет размер кнопки. Влияет на отступы, размер шрифта и общие габариты."
+    "en": "Size of the ellipsis. Defaults to the size of `Pagination`.",
+    "ru": "Размер многоточия. По умолчанию — размер `Pagination`."
   },
   "PaginationEllipsis.variant": {
-    "en": "Defines the visual style of the button, affecting color schemes and emphasis.",
-    "ru": "Определяет визуальный стиль кнопки: цветовую схему и акцент."
-  },
-  "PaginationItem.appearance": {
-    "en": "Adjusts the button's structural appearance (background, border, etc.).",
-    "ru": "Настраивает структурный внешний вид кнопки (фон, рамка и т. д.)."
-  },
-  "PaginationItem.asChild": {
-    "en": "When true, renders the button as a child component using `Slot` (e.g., from Radix UI). Enables polymorphic rendering — useful for making the button act as a link or custom tag.",
-    "ru": "Если true, рендерит кнопку как дочерний компонент через `Slot` (например, из Radix UI). Включает полиморфный рендер — полезно, чтобы кнопка работала как ссылка или собственный тег."
-  },
-  "PaginationItem.children": {
-    "en": "Content of the button — text, icon, or any React node.",
-    "ru": "Содержимое кнопки — текст, иконка или любой React-узел."
-  },
-  "PaginationItem.className": {
-    "en": "Optional custom CSS class for the button element. Useful for design system overrides or scoped styles.",
-    "ru": "Необязательный собственный CSS-класс для элемента кнопки. Полезен для переопределений дизайн-системы или локальных стилей."
-  },
-  "PaginationItem.current": {
-    "en": "Marks this item as the currently active page. Applies visual emphasis.",
-    "ru": "Помечает этот элемент как текущую активную страницу. Применяет визуальный акцент."
-  },
-  "PaginationItem.disabled": {
-    "en": "Disables the button when true. Prevents user interaction and applies a visually disabled state. Not applied with `asChild`: the child element owns its disabled state, for example, `aria-disabled` or a link without `href`.",
-    "ru": "Отключает кнопку при true. Запрещает взаимодействие и применяет визуальное отключённое состояние. Не применяется с `asChild`: отключённым состоянием владеет дочерний элемент, например через `aria-disabled` или ссылку без `href`."
-  },
-  "PaginationItem.fullWidth": {
-    "en": "When true, the button expands to fill the width with its container.",
-    "ru": "Если true, кнопка растягивается на всю ширину контейнера."
+    "en": "Visual variant of the ellipsis. Defaults to the variant of `Pagination`.",
+    "ru": "Визуальный вариант многоточия. По умолчанию — вариант `Pagination`."
   },
   "PaginationItem.ref": {
-    "en": "Ref forwarded to the native `<button>` element. Allows direct DOM access for focus management or measuring.",
-    "ru": "Ref, передаваемый на нативный элемент `<button>`. Даёт прямой доступ к DOM для управления фокусом или измерений."
+    "en": "Ref forwarded to the underlying `<li>` element.",
+    "ru": "Ref, передаваемый на нижележащий элемент `<li>`."
   },
-  "PaginationItem.size": {
-    "en": "Defines the size of the button. Affects padding, font size, and overall dimensions.",
-    "ru": "Определяет размер кнопки. Влияет на отступы, размер шрифта и общие габариты."
+  "PaginationLink.appearance": {
+    "en": "Structural appearance of the link, like on `Button`. Defaults to `fill` for the current page and `transparent` for the others.",
+    "ru": "Структурный внешний вид ссылки, как у `Button`. По умолчанию `fill` для текущей страницы и `transparent` для остальных."
   },
-  "PaginationItem.variant": {
-    "en": "Defines the visual style of the button, affecting color schemes and emphasis.",
-    "ru": "Определяет визуальный стиль кнопки: цветовую схему и акцент."
+  "PaginationLink.asChild": {
+    "en": "Renders the child element instead of `<a>`, for example a router link or a `<button>`. The address goes on the child.",
+    "ru": "Рендерит дочерний элемент вместо `<a>`, например ссылку роутера или `<button>`. Адрес указывается на дочернем элементе."
   },
-  "PaginationText.asChild": {
-    "en": "If true, renders the text as a child component using `Slot`. Useful for compatibility with native elements or other components.",
-    "ru": "Если true, рендерит текст как дочерний компонент через `Slot`. Полезно для совместимости с нативными элементами или другими компонентами."
+  "PaginationLink.current": {
+    "en": "Marks the link as the current page with `aria-current='page'` and applies visual emphasis.",
+    "ru": "Отмечает ссылку как текущую страницу через `aria-current='page'` и выделяет её визуально."
   },
-  "PaginationText.fontWeight": {
-    "en": "Font weight applied to the text. Common values: 400: Regular; 500: Medium; 600: Semi-bold; 700: Bold; 900: Extra bold",
-    "ru": "Насыщенность шрифта текста. Распространённые значения: 400: обычный; 500: средний; 600: полужирный; 700: жирный; 900: сверхжирный"
+  "PaginationLink.ref": {
+    "en": "Ref forwarded to the rendered `<a>` element.",
+    "ru": "Ref, передаваемый на отрисованный элемент `<a>`."
   },
-  "PaginationText.ref": {
-    "en": "Ref to the underlying `<span>` or slotted element. Useful for measuring, focusing, or DOM manipulation.",
-    "ru": "Ref на нижележащий `<span>` или элемент в слоте. Полезен для измерений, фокуса или работы с DOM."
+  "PaginationLink.size": {
+    "en": "Size of the link. Defaults to the size of `Pagination`.",
+    "ru": "Размер ссылки. По умолчанию — размер `Pagination`."
   },
-  "PaginationText.size": {
-    "en": "Visual size of the text, typically mapped to the design system’s type scale.",
-    "ru": "Визуальный размер текста, обычно соответствует типографической шкале дизайн-системы."
+  "PaginationLink.variant": {
+    "en": "Visual variant of the link. Defaults to the variant of `Pagination`.",
+    "ru": "Визуальный вариант ссылки. По умолчанию — вариант `Pagination`."
   },
-  "PaginationText.variant": {
-    "en": "Visual style variant of the text.",
-    "ru": "Вариант визуального стиля текста."
-  },
-  "PaginationTriggerIconButton.appearance": {
-    "en": "Adjusts the button's structural appearance (background, border, etc.).",
-    "ru": "Настраивает структурный внешний вид кнопки (фон, рамка и т. д.)."
-  },
-  "PaginationTriggerIconButton.asChild": {
-    "en": "When true, renders the button as a child component using `Slot` (e.g., from Radix UI). Enables polymorphic rendering — useful for making the button act as a link or custom tag.",
-    "ru": "Если true, рендерит кнопку как дочерний компонент через `Slot` (например, из Radix UI). Включает полиморфный рендер — полезно, чтобы кнопка работала как ссылка или собственный тег."
-  },
-  "PaginationTriggerIconButton.children": {
-    "en": "Content of the button — text, icon, or any React node.",
-    "ru": "Содержимое кнопки — текст, иконка или любой React-узел."
-  },
-  "PaginationTriggerIconButton.className": {
-    "en": "Optional custom CSS class for the button element. Useful for design system overrides or scoped styles.",
-    "ru": "Необязательный собственный CSS-класс для элемента кнопки. Полезен для переопределений дизайн-системы или локальных стилей."
-  },
-  "PaginationTriggerIconButton.disabled": {
-    "en": "Disables the button when true. Prevents user interaction and applies a visually disabled state. Not applied with `asChild`: the child element owns its disabled state, for example, `aria-disabled` or a link without `href`.",
-    "ru": "Отключает кнопку при true. Запрещает взаимодействие и применяет визуальное отключённое состояние. Не применяется с `asChild`: отключённым состоянием владеет дочерний элемент, например через `aria-disabled` или ссылку без `href`."
-  },
-  "PaginationTriggerIconButton.ref": {
-    "en": "Ref forwarded to the native `<button>` element. Allows direct DOM access for focus management or measuring.",
-    "ru": "Ref, передаваемый на нативный элемент `<button>`. Даёт прямой доступ к DOM для управления фокусом или измерений."
-  },
-  "PaginationTriggerIconButton.size": {
-    "en": "Size of the button container. Controls padding and overall clickable area.",
-    "ru": "Размер контейнера кнопки. Управляет отступами и общей кликабельной областью."
-  },
-  "PaginationTriggerIconButton.variant": {
-    "en": "Defines the visual style of the button, affecting color schemes and emphasis.",
-    "ru": "Определяет визуальный стиль кнопки: цветовую схему и акцент."
+  "PaginationList.ref": {
+    "en": "Ref forwarded to the underlying `<ul>` element.",
+    "ru": "Ref, передаваемый на нижележащий элемент `<ul>`."
   },
   "PasswordField.defaultShown": {
     "en": "Initial visibility for uncontrolled usage.",

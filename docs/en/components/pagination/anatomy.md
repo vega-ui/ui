@@ -2,39 +2,46 @@
 
 ## Overview
 
-`Pagination` is a compositional navigation system. The root shares size and variant context, while each list item wraps one visible pagination affordance.
+`Pagination` is a `<nav>` landmark with a list of links to pages. The root shares `size` and `variant` with the parts inside, `PaginationList` lays out the row, each `PaginationItem` holds one link or status text, and `PaginationEllipsis` marks skipped pages.
 
 ## Required Parts
 
 ### `Pagination`
 
-Required. Owns shared size and variant context and renders the outer list.
+Required. Renders the `<nav>` and shares `size` and `variant` with the links and ellipses. Name it with `aria-label`; the library does not set one.
 
-### `PaginationListItem`
+### `PaginationList`
 
-Required in normal composition. Preserves list semantics for each visible pagination element.
+Required. Renders the `<ul>` and lays the items out in a row, without the browser list margin and padding.
 
-### `PaginationItem` or `PaginationTriggerIconButton`
+### `PaginationItem`
 
-Normally required. These are the main interactive page affordances.
+Required around every link or status text. Renders the `<li>`; put `className` or `style` on it to hide an item or move it in the row.
+
+### `PaginationLink`
+
+Required for every page and arrow. Renders an `<a>` styled as a square `Button`. `current` marks the current page with `aria-current='page'`. With `asChild` it renders the child instead: a router link, or a `<button type='button'>` when pages have no address.
 
 ## Optional Parts
 
 ### `PaginationEllipsis`
 
-Optional. Indicates truncated ranges.
+Optional. Renders an `<li aria-hidden>` with `…`, as wide as a link of the same size. It goes directly in `PaginationList`, not inside a `PaginationItem`, and is not interactive.
 
-### `PaginationText`
+### `Text`
 
-Optional. Shows compact textual pagination status.
+Optional. `Text` from `@vega-ui/react` shows a status such as `Page 3 of 20`, inside a `PaginationItem` or outside the list.
 
 ## Composition Order
 
 1. `Pagination`
-2. repeated `PaginationListItem`
-3. one child part per list item
+2. `PaginationList`
+3. repeated `PaginationItem`, each with one `PaginationLink` or `Text` inside
+4. `PaginationEllipsis` directly in `PaginationList`, between the items where pages are skipped
 
 ## Valid Composition Patterns
+
+The items come from a local `getPageItems`: every number becomes a `PaginationItem` with a `PaginationLink`, every ellipsis marker becomes a `PaginationEllipsis`. The pages and arrows are buttons rendered through `asChild`.
 
 <!-- example: pagination/button-based-pagination.tsx -->
 ```tsx
@@ -44,15 +51,15 @@ import {
   Pagination,
   PaginationEllipsis,
   PaginationItem,
-  PaginationListItem,
-  PaginationTriggerIconButton,
+  PaginationLink,
+  PaginationList,
 } from '@vega-ui/react';
 import { useState } from 'react';
 
 type PageItem = number | 'start-ellipsis' | 'end-ellipsis';
 
 function range(from: number, to: number) {
-  return Array.from({ length: to - from + 1 }, (_, index) => from + index);
+  return [...Array(to - from + 1).keys()].map((offset) => from + offset);
 }
 
 function getPageItems(page: number, total: number, siblings: number): PageItem[] {
@@ -77,33 +84,39 @@ export default function ButtonBasedPagination() {
   const [page, setPage] = useState(1);
 
   return (
-    <nav aria-label='Search results pages'>
-      <Pagination>
-        <PaginationListItem>
-          <PaginationTriggerIconButton aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
-            <Icon><ChevronLeft /></Icon>
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
+    <Pagination aria-label='Search results pages'>
+      <PaginationList>
+        <PaginationItem>
+          <PaginationLink asChild>
+            <button type='button' aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
+              <Icon><ChevronLeft /></Icon>
+            </button>
+          </PaginationLink>
+        </PaginationItem>
         {getPageItems(page, total, 1).map((item) => {
           if (typeof item === 'string') {
-            return <PaginationListItem key={item}><PaginationEllipsis /></PaginationListItem>;
+            return <PaginationEllipsis key={item} />;
           }
 
           return (
-            <PaginationListItem key={item}>
-              <PaginationItem current={item === page} aria-label={`Page ${item}`} onClick={() => setPage(item)}>
-                {item}
-              </PaginationItem>
-            </PaginationListItem>
+            <PaginationItem key={item}>
+              <PaginationLink asChild current={item === page}>
+                <button type='button' aria-label={`Page ${item}`} onClick={() => setPage(item)}>
+                  {item}
+                </button>
+              </PaginationLink>
+            </PaginationItem>
           );
         })}
-        <PaginationListItem>
-          <PaginationTriggerIconButton aria-label='Next page' disabled={page === total} onClick={() => setPage(page + 1)}>
-            <Icon><ChevronRight /></Icon>
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
-      </Pagination>
-    </nav>
+        <PaginationItem>
+          <PaginationLink asChild>
+            <button type='button' aria-label='Next page' disabled={page === total} onClick={() => setPage(page + 1)}>
+              <Icon><ChevronRight /></Icon>
+            </button>
+          </PaginationLink>
+        </PaginationItem>
+      </PaginationList>
+    </Pagination>
   );
 }
 ```
@@ -111,14 +124,18 @@ export default function ButtonBasedPagination() {
 
 ## Invalid Composition Patterns
 
-### Interactive pagination parts rendered without `PaginationListItem`
+### A link placed directly in `PaginationList`
 
-The visuals may still work, but list semantics are weakened.
+A `<ul>` may hold only `<li>`. Wrap every link and status text in `PaginationItem`.
+
+### `PaginationEllipsis` wrapped in `PaginationItem`
+
+`PaginationEllipsis` already renders an `<li>`, so the wrapper nests one list item inside another.
 
 ### Pagination component storing the authoritative page state by itself
 
-Canonical page state belongs to the parent feature or router.
+`Pagination` keeps no page state. The current page belongs to the parent feature or the router.
 
-### Ellipsis used as an interactive substitute for real pages
+### An ellipsis rendered as a link or a button
 
-The shipped ellipsis is a visual gap indicator, not page navigation.
+The ellipsis is a gap indicator, not page navigation. Use `PaginationEllipsis`; to let users reach a hidden page, add a page jump form or first and last links.

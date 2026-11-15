@@ -1,35 +1,48 @@
 'use client';
 
-import { FC } from 'react';
-import { Button, ButtonProps } from '../../../Button';
+import { FC, HTMLAttributes, Ref } from 'react';
+import { Button } from '../../../Button';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { usePaginationContext } from '../../contexts';
+import { PaginationSize, PaginationVariant } from '../../types';
 
-export type PaginationEllipsisProps = ButtonProps
+export interface PaginationEllipsisProps extends HTMLAttributes<HTMLLIElement> {
+  /**
+   * Ref forwarded to the underlying `<li>` element.
+   */
+  ref?: Ref<HTMLLIElement>
 
-/** The PaginationEllipsis component visually indicates a gap in the pagination range (e.g., "…") and is typically used to show skipped pages between the current and boundary items in large paginated lists. */
+  /**
+   * Size of the ellipsis. Defaults to the size of `Pagination`.
+   */
+  size?: PaginationSize
+
+  /**
+   * Visual variant of the ellipsis. Defaults to the variant of `Pagination`.
+   */
+  variant?: PaginationVariant
+}
+
+/** The PaginationEllipsis component renders an `<li>` hidden from assistive technologies that marks skipped pages, as wide as a link of the same size. The links around it name their pages, so it needs no text of its own */
 export const PaginationEllipsis: FC<PaginationEllipsisProps> = ({
   className,
   size,
   variant,
+  children = '…',
   ...props
 }) => {
-  const { size: _size, variant: _variant } = usePaginationContext()
+  const context = usePaginationContext()
 
   return (
     <Button
-      className={csx(style.paginationEllipsis, className)}
-      variant={variant ?? _variant}
-      aria-hidden='true'
-      appearance='transparent'
       asChild
-      size={size ?? _size}
-      {...props}
+      className={csx(style.paginationEllipsis, className)}
+      variant={variant ?? context.variant}
+      appearance='transparent'
+      size={size ?? context.size}
     >
-      <div>
-        …
-      </div>
+      <li aria-hidden {...props}>{children}</li>
     </Button>
   )
 }

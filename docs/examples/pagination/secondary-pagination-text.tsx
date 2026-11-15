@@ -2,9 +2,10 @@ import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
 import {
   Icon,
   Pagination,
-  PaginationListItem,
-  PaginationText,
-  PaginationTriggerIconButton,
+  PaginationItem,
+  PaginationLink,
+  PaginationList,
+  Text,
 } from '@vega-ui/react';
 import { useState } from 'react';
 
@@ -13,20 +14,28 @@ export default function SecondaryPaginationText() {
   const [page, setPage] = useState(3);
 
   return (
-    <nav aria-label='Gallery pages'>
-      <Pagination variant='secondary' style={{ alignItems: 'center' }}>
-        <PaginationListItem>
-          <PaginationTriggerIconButton aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
-            <Icon><ChevronLeft /></Icon>
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
-        <PaginationText aria-live='polite'>Page {page} of {total}</PaginationText>
-        <PaginationListItem>
-          <PaginationTriggerIconButton aria-label='Next page' disabled={page === total} onClick={() => setPage(page + 1)}>
-            <Icon><ChevronRight /></Icon>
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
-      </Pagination>
-    </nav>
+    <Pagination aria-label='Gallery pages' variant='secondary'>
+      <PaginationList>
+        <PaginationItem>
+          <PaginationLink asChild>
+            <button type='button' aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
+              <Icon><ChevronLeft /></Icon>
+            </button>
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <Text size={3} fontWeight={500} aria-live='polite' style={{ paddingInline: 'var(--spacing-8)', color: 'var(--color-secondary-500)', whiteSpace: 'nowrap' }}>
+            Page {page} of {total}
+          </Text>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink asChild>
+            <button type='button' aria-label='Next page' disabled={page === total} onClick={() => setPage(page + 1)}>
+              <Icon><ChevronRight /></Icon>
+            </button>
+          </PaginationLink>
+        </PaginationItem>
+      </PaginationList>
+    </Pagination>
   );
 }

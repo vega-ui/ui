@@ -3,8 +3,8 @@ import {
   Icon,
   Pagination,
   PaginationItem,
-  PaginationListItem,
-  PaginationTriggerIconButton,
+  PaginationLink,
+  PaginationList,
   Spinner,
   Text,
 } from '@vega-ui/react';
@@ -35,27 +35,33 @@ export default function DisabledWhileLoading() {
   return (
     <div style={{ display: 'grid', justifyItems: 'center', gap: 'var(--spacing-6)', width: '100%' }}>
       <fieldset disabled={loading} style={{ margin: 0, padding: 0, border: 'none', minInlineSize: 0 }}>
-        <nav aria-label='Invoice pages'>
-          <Pagination>
-            <PaginationListItem>
-              <PaginationTriggerIconButton aria-label='Previous page' disabled={page === 1} onClick={() => setLoadingPage(page - 1)}>
-                <Icon><ChevronLeft /></Icon>
-              </PaginationTriggerIconButton>
-            </PaginationListItem>
+        <Pagination aria-label='Invoice pages'>
+          <PaginationList>
+            <PaginationItem>
+              <PaginationLink asChild>
+                <button type='button' aria-label='Previous page' disabled={page === 1} onClick={() => setLoadingPage(page - 1)}>
+                  <Icon><ChevronLeft /></Icon>
+                </button>
+              </PaginationLink>
+            </PaginationItem>
             {pages.map((item) => (
-              <PaginationListItem key={item}>
-                <PaginationItem current={item === page} aria-label={`Page ${item}`} onClick={() => setLoadingPage(item)}>
-                  {item}
-                </PaginationItem>
-              </PaginationListItem>
+              <PaginationItem key={item}>
+                <PaginationLink asChild current={item === page}>
+                  <button type='button' aria-label={`Page ${item}`} onClick={() => setLoadingPage(item)}>
+                    {item}
+                  </button>
+                </PaginationLink>
+              </PaginationItem>
             ))}
-            <PaginationListItem>
-              <PaginationTriggerIconButton aria-label='Next page' disabled={page === total} onClick={() => setLoadingPage(page + 1)}>
-                <Icon><ChevronRight /></Icon>
-              </PaginationTriggerIconButton>
-            </PaginationListItem>
-          </Pagination>
-        </nav>
+            <PaginationItem>
+              <PaginationLink asChild>
+                <button type='button' aria-label='Next page' disabled={page === total} onClick={() => setLoadingPage(page + 1)}>
+                  <Icon><ChevronRight /></Icon>
+                </button>
+              </PaginationLink>
+            </PaginationItem>
+          </PaginationList>
+        </Pagination>
       </fieldset>
       <div role='status' style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)', minHeight: 'var(--spacing-12)' }}>
         {loading && <Spinner size={2} aria-hidden='true' />}

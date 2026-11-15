@@ -6,108 +6,86 @@
 <!-- AUTO-GENERATED:ROOT_API:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `ref` | `Ref<HTMLUListElement>` | — | No | Ref forwarded to the underlying list element. |
-| `size` | `PaginationSize` | `'md'` | No | Visual size of the pagination items, inherited from IconButtonProps. Controls padding, font size, or spacing according to the design system scale. |
-| `variant` | `PaginationVariant` | `'primary'` | No | Visual variant of the component. Inherits available values from `IconButtonProps['variant']`, such as 'primary' or 'secondary'. Controls the visual style (color, background, border) according to the design system. |
+| `ref` | `Ref<HTMLElement>` | — | No | Ref forwarded to the underlying `<nav>` element. |
+| `size` | `PaginationSize` | `'md'` | No | Size of the links and ellipses inside, unless one sets its own. |
+| `variant` | `PaginationVariant` | `'primary'` | No | Visual variant of the links and ellipses inside, unless one sets its own. |
 
-Also accepts all `<ul>` attributes.
+Also accepts all HTML attributes.
 <!-- AUTO-GENERATED:ROOT_API:end -->
+
+`Pagination` renders a `<nav>` and takes its attributes. Pass `aria-label` to name the landmark.
 
 ## Child Parts
 
-- `PaginationItem`: page number item.
-- `PaginationTriggerIconButton`: previous/next or jump controls.
-- `PaginationEllipsis`: visual gap item.
-- `PaginationListItem`: list wrapper.
-- `PaginationText`: compact textual status.
+- `PaginationList`: the `<ul>` of the row.
+- `PaginationItem`: one `<li>` around a link or a status text.
+- `PaginationLink`: a link to a page, `<a>` by default, or with `asChild` a router link or a `<button>`.
+- `PaginationEllipsis`: an `<li aria-hidden>` that marks skipped pages, placed directly in `PaginationList`.
+
+### `PaginationList`
+
+<!-- AUTO-GENERATED:PART_API:PaginationList:start -->
+| Prop | Type | Default | Required | Description |
+| --- | --- | --- | --- | --- |
+| `ref` | `Ref<HTMLUListElement>` | — | No | Ref forwarded to the underlying `<ul>` element. |
+
+Also accepts all `<ul>` attributes.
+<!-- AUTO-GENERATED:PART_API:PaginationList:end -->
 
 ### `PaginationItem`
 
 <!-- AUTO-GENERATED:PART_API:PaginationItem:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `current` | `boolean` | — | No | Marks this item as the currently active page. Applies visual emphasis. |
-| `asChild` | `boolean` | — | No | When true, renders the button as a child component using `Slot` (e.g., from Radix UI). Enables polymorphic rendering — useful for making the button act as a link or custom tag. |
-| `size` | `ButtonSize` | — | No | Defines the size of the button. Affects padding, font size, and overall dimensions. |
-| `fullWidth` | `boolean` | — | No | When true, the button expands to fill the width with its container. |
-| `variant` | `ButtonBaseVariant` | — | No | Defines the visual style of the button, affecting color schemes and emphasis. |
-| `appearance` | `ButtonBaseAppearance` | — | No | Adjusts the button's structural appearance (background, border, etc.). |
-| `disabled` | `boolean` | — | No | Disables the button when true. Prevents user interaction and applies a visually disabled state. Not applied with `asChild`: the child element owns its disabled state, for example, `aria-disabled` or a link without `href`. |
-| `className` | `string` | — | No | Optional custom CSS class for the button element. Useful for design system overrides or scoped styles. |
-| `children` | `ReactNode` | — | No | Content of the button — text, icon, or any React node. |
-| `ref` | `Ref<HTMLButtonElement>` | — | No | Ref forwarded to the native `<button>` element. Allows direct DOM access for focus management or measuring. |
+| `ref` | `Ref<HTMLLIElement>` | — | No | Ref forwarded to the underlying `<li>` element. |
 
-Also accepts all `<button>` attributes.
+Also accepts all `<li>` attributes.
 <!-- AUTO-GENERATED:PART_API:PaginationItem:end -->
 
-### `PaginationTriggerIconButton`
+### `PaginationLink`
 
-<!-- AUTO-GENERATED:PART_API:PaginationTriggerIconButton:start -->
+<!-- AUTO-GENERATED:PART_API:PaginationLink:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `size` | `IconButtonSize` | — | No | Size of the button container. Controls padding and overall clickable area. |
-| `asChild` | `boolean` | — | No | When true, renders the button as a child component using `Slot` (e.g., from Radix UI). Enables polymorphic rendering — useful for making the button act as a link or custom tag. |
-| `variant` | `ButtonBaseVariant` | — | No | Defines the visual style of the button, affecting color schemes and emphasis. |
-| `appearance` | `ButtonBaseAppearance` | — | No | Adjusts the button's structural appearance (background, border, etc.). |
-| `disabled` | `boolean` | — | No | Disables the button when true. Prevents user interaction and applies a visually disabled state. Not applied with `asChild`: the child element owns its disabled state, for example, `aria-disabled` or a link without `href`. |
-| `className` | `string` | — | No | Optional custom CSS class for the button element. Useful for design system overrides or scoped styles. |
-| `children` | `ReactNode` | — | No | Content of the button — text, icon, or any React node. |
-| `ref` | `Ref<HTMLButtonElement>` | — | No | Ref forwarded to the native `<button>` element. Allows direct DOM access for focus management or measuring. |
+| `ref` | `Ref<HTMLAnchorElement>` | — | No | Ref forwarded to the rendered `<a>` element. |
+| `asChild` | `boolean` | — | No | Renders the child element instead of `<a>`, for example a router link or a `<button>`. The address goes on the child. |
+| `current` | `boolean` | — | No | Marks the link as the current page with `aria-current='page'` and applies visual emphasis. |
+| `size` | `PaginationSize` | — | No | Size of the link. Defaults to the size of `Pagination`. |
+| `variant` | `PaginationVariant` | — | No | Visual variant of the link. Defaults to the variant of `Pagination`. |
+| `appearance` | `ButtonProps['appearance']` | — | No | Structural appearance of the link, like on `Button`. Defaults to `fill` for the current page and `transparent` for the others. |
 
-Also accepts all `<button>` attributes.
-<!-- AUTO-GENERATED:PART_API:PaginationTriggerIconButton:end -->
+Also accepts all `<a>` attributes.
+<!-- AUTO-GENERATED:PART_API:PaginationLink:end -->
+
+With `asChild`, the props of `PaginationLink` go to the child, and the child keeps its own behavior: a router link takes the address (`to`), a `<button type='button'>` takes `onClick` and `disabled`. A disabled link has no `href` and has `aria-disabled='true'`; both get the disabled look of `Button`.
 
 ### `PaginationEllipsis`
 
 <!-- AUTO-GENERATED:PART_API:PaginationEllipsis:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `asChild` | `boolean` | — | No | When true, renders the button as a child component using `Slot` (e.g., from Radix UI). Enables polymorphic rendering — useful for making the button act as a link or custom tag. |
-| `size` | `ButtonSize` | — | No | Defines the size of the button. Affects padding, font size, and overall dimensions. |
-| `fullWidth` | `boolean` | — | No | When true, the button expands to fill the width with its container. |
-| `variant` | `ButtonBaseVariant` | — | No | Defines the visual style of the button, affecting color schemes and emphasis. |
-| `appearance` | `ButtonBaseAppearance` | — | No | Adjusts the button's structural appearance (background, border, etc.). |
-| `disabled` | `boolean` | — | No | Disables the button when true. Prevents user interaction and applies a visually disabled state. Not applied with `asChild`: the child element owns its disabled state, for example, `aria-disabled` or a link without `href`. |
-| `className` | `string` | — | No | Optional custom CSS class for the button element. Useful for design system overrides or scoped styles. |
-| `children` | `ReactNode` | — | No | Content of the button — text, icon, or any React node. |
-| `ref` | `Ref<HTMLButtonElement>` | — | No | Ref forwarded to the native `<button>` element. Allows direct DOM access for focus management or measuring. |
+| `ref` | `Ref<HTMLLIElement>` | — | No | Ref forwarded to the underlying `<li>` element. |
+| `size` | `PaginationSize` | — | No | Size of the ellipsis. Defaults to the size of `Pagination`. |
+| `variant` | `PaginationVariant` | — | No | Visual variant of the ellipsis. Defaults to the variant of `Pagination`. |
 
-Also accepts all `<button>` attributes.
+Also accepts all `<li>` attributes.
 <!-- AUTO-GENERATED:PART_API:PaginationEllipsis:end -->
 
-### `PaginationListItem`
-
-<!-- AUTO-GENERATED:PART_API:PaginationListItem:start -->
-Also accepts all `<li>` attributes.
-<!-- AUTO-GENERATED:PART_API:PaginationListItem:end -->
-
-### `PaginationText`
-
-<!-- AUTO-GENERATED:PART_API:PaginationText:start -->
-| Prop | Type | Default | Required | Description |
-| --- | --- | --- | --- | --- |
-| `variant` | `PaginationVariant` | — | No | Visual style variant of the text. |
-| `size` | `TextSize` | — | No | Visual size of the text, typically mapped to the design system’s type scale. |
-| `asChild` | `boolean` | — | No | If true, renders the text as a child component using `Slot`. Useful for compatibility with native elements or other components. |
-| `fontWeight` | `400 \| 500 \| 600 \| 700 \| 900` | `500` | No | Font weight applied to the text. Common values: 400: Regular; 500: Medium; 600: Semi-bold; 700: Bold; 900: Extra bold |
-| `ref` | `Ref<HTMLSpanElement>` | — | No | Ref to the underlying `<span>` or slotted element. Useful for measuring, focusing, or DOM manipulation. |
-
-Also accepts all `<span>` attributes.
-<!-- AUTO-GENERATED:PART_API:PaginationText:end -->
+The content is `…` unless you pass `children`.
 
 ## Types
 
 - `PaginationProps`
+- `PaginationListProps`
 - `PaginationItemProps`
-- `PaginationTriggerIconButtonProps`
+- `PaginationLinkProps`
 - `PaginationEllipsisProps`
-- `PaginationListItemProps`
-- `PaginationTextProps`
-- `PaginationSize`
-- `PaginationVariant`
+- `PaginationSize`: `'xs' | 'sm' | 'md' | 'lg' | 'xl'`, the `IconButton` size scale
+- `PaginationVariant`: `'primary' | 'secondary'`
 
 ## State Model
 
-- The root only provides shared style context.
-- Current page, disabled boundaries, and routing behavior are owned by the parent feature.
-- `PaginationItem current` sets `aria-current='page'`.
+- `Pagination` owns no state. It only shares `size` and `variant` with the links and ellipses.
+- The current page, the boundaries and routing are owned by the parent feature: in the URL or in React state.
+- `PaginationLink current` sets `aria-current='page'` and the `fill` appearance.
+- At the boundaries the parent disables the arrow: a link without `href` and with `aria-disabled='true'`, or `disabled` on a `<button>` rendered through `asChild`.

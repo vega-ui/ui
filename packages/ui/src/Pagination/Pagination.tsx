@@ -1,45 +1,38 @@
 'use client';
 
 import { FC, HTMLAttributes, Ref } from 'react';
-import style from './style.module.css'
-import { csx } from '@vega-ui/utils';
 import { PaginationProvider } from './contexts';
 import { PaginationSize, PaginationVariant } from './types';
 
-export interface PaginationProps extends HTMLAttributes<HTMLUListElement> {
+export interface PaginationProps extends HTMLAttributes<HTMLElement> {
   /**
-   * Ref forwarded to the underlying list element.
+   * Ref forwarded to the underlying `<nav>` element.
    */
-  ref?: Ref<HTMLUListElement>
+  ref?: Ref<HTMLElement>
 
   /**
-   * Visual size of the pagination items, inherited from IconButtonProps.
-   * Controls padding, font size, or spacing according to the design system scale.
+   * Size of the links and ellipses inside, unless one sets its own.
    */
   size?: PaginationSize
 
   /**
-   * Visual variant of the component.
-   * Inherits available values from `IconButtonProps['variant']`, such as 'primary' or 'secondary'.
-   * Controls the visual style (color, background, border) according to the design system.
+   * Visual variant of the links and ellipses inside, unless one sets its own.
    */
   variant?: PaginationVariant
 }
 
-/** Pagination is a UI component that divides content into discrete pages and provides navigation controls, allowing users to move between different sections of content, commonly used in lists, tables, or search results */
+/** Pagination is a `<nav>` landmark with links between the pages of content, commonly used in lists, tables, or search results. Name it with `aria-label` */
 export const Pagination: FC<PaginationProps> = ({
   children,
-  className,
   size = 'md',
   variant = 'primary',
-  ref,
   ...props
 }) => {
   return (
     <PaginationProvider variant={variant} size={size}>
-      <ul ref={ref} className={csx(style.pagination, className)} {...props}>
+      <nav {...props}>
         {children}
-      </ul>
+      </nav>
     </PaginationProvider>
   )
 }

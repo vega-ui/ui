@@ -2,9 +2,9 @@ import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
 import {
   Icon,
   Pagination,
-  PaginationListItem,
-  PaginationText,
-  PaginationTriggerIconButton,
+  PaginationItem,
+  PaginationLink,
+  PaginationList,
   Table,
   TableBody,
   TableData,
@@ -12,6 +12,7 @@ import {
   TableHead,
   TableHeading,
   TableRow,
+  Text,
 } from '@vega-ui/react';
 import { useState } from 'react';
 
@@ -49,23 +50,32 @@ export default function DenseFooterControls() {
         <TableFoot>
           <TableRow>
             <TableData colSpan={2} style={{ paddingBlock: 'var(--spacing-3)' }}>
-              <nav aria-label='Members pages' style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Pagination size='sm' variant='secondary' style={{ alignItems: 'center' }}>
-                  <PaginationText size={2} aria-live='polite' style={{ fontVariantNumeric: 'tabular-nums' }}>
-                    {start + 1}–{start + visible.length} of {members.length}
-                  </PaginationText>
-                  <PaginationListItem>
-                    <PaginationTriggerIconButton aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
-                      <Icon><ChevronLeft /></Icon>
-                    </PaginationTriggerIconButton>
-                  </PaginationListItem>
-                  <PaginationListItem>
-                    <PaginationTriggerIconButton aria-label='Next page' disabled={page === pageCount} onClick={() => setPage(page + 1)}>
-                      <Icon><ChevronRight /></Icon>
-                    </PaginationTriggerIconButton>
-                  </PaginationListItem>
-                </Pagination>
-              </nav>
+              <Pagination
+                aria-label='Members pages'
+                size='sm'
+                variant='secondary'
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 'var(--spacing-8)' }}
+              >
+                <Text size={2} fontWeight={500} aria-live='polite' style={{ color: 'var(--color-secondary-500)', fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap' }}>
+                  {start + 1}–{start + visible.length} of {members.length}
+                </Text>
+                <PaginationList>
+                  <PaginationItem>
+                    <PaginationLink asChild>
+                      <button type='button' aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
+                        <Icon><ChevronLeft /></Icon>
+                      </button>
+                    </PaginationLink>
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationLink asChild>
+                      <button type='button' aria-label='Next page' disabled={page === pageCount} onClick={() => setPage(page + 1)}>
+                        <Icon><ChevronRight /></Icon>
+                      </button>
+                    </PaginationLink>
+                  </PaginationItem>
+                </PaginationList>
+              </Pagination>
             </TableData>
           </TableRow>
         </TableFoot>

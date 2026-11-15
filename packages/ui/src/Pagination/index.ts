@@ -1,10 +1,9 @@
 export { Pagination, type PaginationProps } from './Pagination'
 export {
+  PaginationList, type PaginationListProps,
   PaginationItem, type PaginationItemProps,
-  PaginationTriggerIconButton, type PaginationTriggerIconButtonProps,
+  PaginationLink, type PaginationLinkProps,
   PaginationEllipsis, type PaginationEllipsisProps,
-  PaginationListItem, type PaginationListItemProps,
-  PaginationText, type PaginationTextProps
 } from './components'
 export { usePaginationContext } from './contexts'
 export type { PaginationVariant, PaginationSize } from './types'

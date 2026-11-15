@@ -4,7 +4,7 @@
 
 ### Базовый: окно страниц с многоточиями
 
-Родитель хранит текущую страницу в состоянии и вычисляет, какие страницы показать, через `getPageItems(page, total, siblings)`: всегда первая и последняя страницы, текущая с одним соседом с каждой стороны и многоточие там, где скрыто хотя бы две страницы. На границах кнопки «назад» и «вперёд» отключены.
+Родитель хранит текущую страницу в состоянии и строит элементы локальной функцией `getPageItems`: первая и последняя страницы, текущая с одним соседом с каждой стороны и `PaginationEllipsis` на месте каждого пропуска. Страницы и стрелки — `<button type='button'>`, отрендеренные через `PaginationLink asChild`; на границах стрелки получают `disabled`.
 
 <!-- example: pagination/button-based-pagination.tsx -->
 ```tsx
@@ -14,15 +14,15 @@ import {
   Pagination,
   PaginationEllipsis,
   PaginationItem,
-  PaginationListItem,
-  PaginationTriggerIconButton,
+  PaginationLink,
+  PaginationList,
 } from '@vega-ui/react';
 import { useState } from 'react';
 
 type PageItem = number | 'start-ellipsis' | 'end-ellipsis';
 
 function range(from: number, to: number) {
-  return Array.from({ length: to - from + 1 }, (_, index) => from + index);
+  return [...Array(to - from + 1).keys()].map((offset) => from + offset);
 }
 
 function getPageItems(page: number, total: number, siblings: number): PageItem[] {
@@ -47,33 +47,39 @@ export default function ButtonBasedPagination() {
   const [page, setPage] = useState(1);
 
   return (
-    <nav aria-label='Search results pages'>
-      <Pagination>
-        <PaginationListItem>
-          <PaginationTriggerIconButton aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
-            <Icon><ChevronLeft /></Icon>
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
+    <Pagination aria-label='Search results pages'>
+      <PaginationList>
+        <PaginationItem>
+          <PaginationLink asChild>
+            <button type='button' aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
+              <Icon><ChevronLeft /></Icon>
+            </button>
+          </PaginationLink>
+        </PaginationItem>
         {getPageItems(page, total, 1).map((item) => {
           if (typeof item === 'string') {
-            return <PaginationListItem key={item}><PaginationEllipsis /></PaginationListItem>;
+            return <PaginationEllipsis key={item} />;
           }
 
           return (
-            <PaginationListItem key={item}>
-              <PaginationItem current={item === page} aria-label={`Page ${item}`} onClick={() => setPage(item)}>
-                {item}
-              </PaginationItem>
-            </PaginationListItem>
+            <PaginationItem key={item}>
+              <PaginationLink asChild current={item === page}>
+                <button type='button' aria-label={`Page ${item}`} onClick={() => setPage(item)}>
+                  {item}
+                </button>
+              </PaginationLink>
+            </PaginationItem>
           );
         })}
-        <PaginationListItem>
-          <PaginationTriggerIconButton aria-label='Next page' disabled={page === total} onClick={() => setPage(page + 1)}>
-            <Icon><ChevronRight /></Icon>
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
-      </Pagination>
-    </nav>
+        <PaginationItem>
+          <PaginationLink asChild>
+            <button type='button' aria-label='Next page' disabled={page === total} onClick={() => setPage(page + 1)}>
+              <Icon><ChevronRight /></Icon>
+            </button>
+          </PaginationLink>
+        </PaginationItem>
+      </PaginationList>
+    </Pagination>
   );
 }
 ```
@@ -81,7 +87,7 @@ export default function ButtonBasedPagination() {
 
 ### Базовый: ссылки с настоящими href
 
-Каждая страница — настоящая ссылка `<a href='?page=N'>`, отрендеренная через `asChild`, поэтому её можно открыть в новой вкладке, отправить коллеге и проиндексировать. Текущая страница читается из URL после монтирования и помечается `aria-current='page'`; на границах ссылка «назад» или «вперёд» теряет `href` и получает `aria-disabled`.
+`PaginationLink` рендерит настоящую ссылку `<a href='?page=N'>`, поэтому страницу можно открыть в новой вкладке, отправить коллеге и проиндексировать. Текущая страница читается из URL после монтирования и отмечается через `current`; стрелки получают `rel='prev'` и `rel='next'`. На границах у ссылки «назад» или «вперёд» нет `href`, и она получает `aria-disabled='true'`.
 
 <!-- example: pagination/link-based-pagination.tsx -->
 ```tsx
@@ -91,15 +97,15 @@ import {
   Pagination,
   PaginationEllipsis,
   PaginationItem,
-  PaginationListItem,
-  PaginationTriggerIconButton,
+  PaginationLink,
+  PaginationList,
 } from '@vega-ui/react';
 import { useEffect, useState } from 'react';
 
 type PageItem = number | 'start-ellipsis' | 'end-ellipsis';
 
 function range(from: number, to: number) {
-  return Array.from({ length: to - from + 1 }, (_, index) => from + index);
+  return [...Array(to - from + 1).keys()].map((offset) => from + offset);
 }
 
 function getPageItems(page: number, total: number, siblings: number): PageItem[] {
@@ -139,41 +145,35 @@ export default function LinkBasedPagination() {
   const isLast = page === total;
 
   return (
-    <nav aria-label='Blog archive pages'>
-      <Pagination>
-        <PaginationListItem>
-          <PaginationTriggerIconButton asChild aria-label='Previous page'>
-            {isFirst ? (
-              <a aria-disabled='true'><Icon><ChevronLeft /></Icon></a>
-            ) : (
-              <a href={getHref(page - 1)} rel='prev'><Icon><ChevronLeft /></Icon></a>
-            )}
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
+    <Pagination aria-label='Blog archive pages'>
+      <PaginationList>
+        <PaginationItem>
+          {isFirst ? (
+            <PaginationLink aria-label='Previous page' aria-disabled='true'><Icon><ChevronLeft /></Icon></PaginationLink>
+          ) : (
+            <PaginationLink href={getHref(page - 1)} rel='prev' aria-label='Previous page'><Icon><ChevronLeft /></Icon></PaginationLink>
+          )}
+        </PaginationItem>
         {getPageItems(page, total, 1).map((item) => {
           if (typeof item === 'string') {
-            return <PaginationListItem key={item}><PaginationEllipsis /></PaginationListItem>;
+            return <PaginationEllipsis key={item} />;
           }
 
           return (
-            <PaginationListItem key={item}>
-              <PaginationItem asChild current={item === page}>
-                <a href={getHref(item)} aria-label={`Page ${item}`}>{item}</a>
-              </PaginationItem>
-            </PaginationListItem>
+            <PaginationItem key={item}>
+              <PaginationLink href={getHref(item)} current={item === page} aria-label={`Page ${item}`}>{item}</PaginationLink>
+            </PaginationItem>
           );
         })}
-        <PaginationListItem>
-          <PaginationTriggerIconButton asChild aria-label='Next page'>
-            {isLast ? (
-              <a aria-disabled='true'><Icon><ChevronRight /></Icon></a>
-            ) : (
-              <a href={getHref(page + 1)} rel='next'><Icon><ChevronRight /></Icon></a>
-            )}
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
-      </Pagination>
-    </nav>
+        <PaginationItem>
+          {isLast ? (
+            <PaginationLink aria-label='Next page' aria-disabled='true'><Icon><ChevronRight /></Icon></PaginationLink>
+          ) : (
+            <PaginationLink href={getHref(page + 1)} rel='next' aria-label='Next page'><Icon><ChevronRight /></Icon></PaginationLink>
+          )}
+        </PaginationItem>
+      </PaginationList>
+    </Pagination>
   );
 }
 ```
@@ -183,7 +183,7 @@ export default function LinkBasedPagination() {
 
 ### Контролируемый/с состоянием: листание таблицы
 
-Номер страницы режет список из 47 заказов на страницы по 10. Сводка рядом с элементами управления («Showing 11–20 of 47 orders») выводится из того же состояния и вежливо зачитывается при смене страницы.
+Номер страницы режет список из 47 заказов на страницы по 10. Сводка под элементами управления («Showing 11–20 of 47 orders») — `Text` с `role='status'`: она выводится из того же состояния и вежливо зачитывается при смене страницы.
 
 <!-- example: pagination/paginated-order-list.tsx -->
 ```tsx
@@ -192,8 +192,8 @@ import {
   Icon,
   Pagination,
   PaginationItem,
-  PaginationListItem,
-  PaginationTriggerIconButton,
+  PaginationLink,
+  PaginationList,
   Table,
   TableBody,
   TableData,
@@ -247,27 +247,33 @@ export default function PaginatedOrderList() {
         </Table>
       </div>
       <div style={{ display: 'grid', justifyItems: 'center', gap: 'var(--spacing-4)' }}>
-        <nav aria-label='Orders pages'>
-          <Pagination size='sm'>
-            <PaginationListItem>
-              <PaginationTriggerIconButton aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
-                <Icon><ChevronLeft /></Icon>
-              </PaginationTriggerIconButton>
-            </PaginationListItem>
+        <Pagination aria-label='Orders pages' size='sm'>
+          <PaginationList>
+            <PaginationItem>
+              <PaginationLink asChild>
+                <button type='button' aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
+                  <Icon><ChevronLeft /></Icon>
+                </button>
+              </PaginationLink>
+            </PaginationItem>
             {pages.map((item) => (
-              <PaginationListItem key={item}>
-                <PaginationItem current={item === page} aria-label={`Page ${item}`} onClick={() => setPage(item)}>
-                  {item}
-                </PaginationItem>
-              </PaginationListItem>
+              <PaginationItem key={item}>
+                <PaginationLink asChild current={item === page}>
+                  <button type='button' aria-label={`Page ${item}`} onClick={() => setPage(item)}>
+                    {item}
+                  </button>
+                </PaginationLink>
+              </PaginationItem>
             ))}
-            <PaginationListItem>
-              <PaginationTriggerIconButton aria-label='Next page' disabled={page === pageCount} onClick={() => setPage(page + 1)}>
-                <Icon><ChevronRight /></Icon>
-              </PaginationTriggerIconButton>
-            </PaginationListItem>
-          </Pagination>
-        </nav>
+            <PaginationItem>
+              <PaginationLink asChild>
+                <button type='button' aria-label='Next page' disabled={page === pageCount} onClick={() => setPage(page + 1)}>
+                  <Icon><ChevronRight /></Icon>
+                </button>
+              </PaginationLink>
+            </PaginationItem>
+          </PaginationList>
+        </Pagination>
         <Text size={2} role='status' style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>
           Showing {start + 1}–{start + visible.length} of {orders.length} orders
         </Text>
@@ -294,8 +300,8 @@ import {
   Pagination,
   PaginationEllipsis,
   PaginationItem,
-  PaginationListItem,
-  PaginationTriggerIconButton,
+  PaginationLink,
+  PaginationList,
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
@@ -304,7 +310,7 @@ import { FormEvent, useId, useState } from 'react';
 type PageItem = number | 'start-ellipsis' | 'end-ellipsis';
 
 function range(from: number, to: number) {
-  return Array.from({ length: to - from + 1 }, (_, index) => from + index);
+  return [...Array(to - from + 1).keys()].map((offset) => from + offset);
 }
 
 function getPageItems(page: number, total: number, siblings: number): PageItem[] {
@@ -338,33 +344,39 @@ export default function PageJumpForm() {
 
   return (
     <div style={{ display: 'grid', justifyItems: 'center', gap: 'var(--spacing-8)' }}>
-      <nav aria-label='Catalog pages'>
-        <Pagination>
-          <PaginationListItem>
-            <PaginationTriggerIconButton aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
-              <Icon><ChevronLeft /></Icon>
-            </PaginationTriggerIconButton>
-          </PaginationListItem>
+      <Pagination aria-label='Catalog pages'>
+        <PaginationList>
+          <PaginationItem>
+            <PaginationLink asChild>
+              <button type='button' aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
+                <Icon><ChevronLeft /></Icon>
+              </button>
+            </PaginationLink>
+          </PaginationItem>
           {getPageItems(page, total, 1).map((item) => {
             if (typeof item === 'string') {
-              return <PaginationListItem key={item}><PaginationEllipsis /></PaginationListItem>;
+              return <PaginationEllipsis key={item} />;
             }
 
             return (
-              <PaginationListItem key={item}>
-                <PaginationItem current={item === page} aria-label={`Page ${item}`} onClick={() => setPage(item)}>
-                  {item}
-                </PaginationItem>
-              </PaginationListItem>
+              <PaginationItem key={item}>
+                <PaginationLink asChild current={item === page}>
+                  <button type='button' aria-label={`Page ${item}`} onClick={() => setPage(item)}>
+                    {item}
+                  </button>
+                </PaginationLink>
+              </PaginationItem>
             );
           })}
-          <PaginationListItem>
-            <PaginationTriggerIconButton aria-label='Next page' disabled={page === total} onClick={() => setPage(page + 1)}>
-              <Icon><ChevronRight /></Icon>
-            </PaginationTriggerIconButton>
-          </PaginationListItem>
-        </Pagination>
-      </nav>
+          <PaginationItem>
+            <PaginationLink asChild>
+              <button type='button' aria-label='Next page' disabled={page === total} onClick={() => setPage(page + 1)}>
+                <Icon><ChevronRight /></Icon>
+              </button>
+            </PaginationLink>
+          </PaginationItem>
+        </PaginationList>
+      </Pagination>
       <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
         <Label htmlFor={fieldId} size='sm'>Go to page (1–{total})</Label>
         <div style={{ display: 'flex', gap: 'var(--spacing-4)' }}>
@@ -384,7 +396,7 @@ export default function PageJumpForm() {
 
 ### Раскладка/оверлей: компактные элементы в подвале таблицы
 
-В плотном подвале таблицы номера страниц уступают место диапазону в `PaginationText` («6–10 of 23») и двум триггерам-иконкам. `PaginationText` сам рендерит элемент списка, поэтому стоит прямо внутри `Pagination`.
+В плотном подвале таблицы номера страниц уступают место диапазону («6–10 of 23») и двум кнопкам-стрелкам. Диапазон — `Text` внутри `Pagination`, но вне `PaginationList`, поэтому в списке только стрелки; `size='sm'` и `variant='secondary'` на корне применяются к обеим.
 
 <!-- example: pagination/dense-footer-controls.tsx -->
 ```tsx
@@ -392,9 +404,9 @@ import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
 import {
   Icon,
   Pagination,
-  PaginationListItem,
-  PaginationText,
-  PaginationTriggerIconButton,
+  PaginationItem,
+  PaginationLink,
+  PaginationList,
   Table,
   TableBody,
   TableData,
@@ -402,6 +414,7 @@ import {
   TableHead,
   TableHeading,
   TableRow,
+  Text,
 } from '@vega-ui/react';
 import { useState } from 'react';
 
@@ -439,23 +452,32 @@ export default function DenseFooterControls() {
         <TableFoot>
           <TableRow>
             <TableData colSpan={2} style={{ paddingBlock: 'var(--spacing-3)' }}>
-              <nav aria-label='Members pages' style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Pagination size='sm' variant='secondary' style={{ alignItems: 'center' }}>
-                  <PaginationText size={2} aria-live='polite' style={{ fontVariantNumeric: 'tabular-nums' }}>
-                    {start + 1}–{start + visible.length} of {members.length}
-                  </PaginationText>
-                  <PaginationListItem>
-                    <PaginationTriggerIconButton aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
-                      <Icon><ChevronLeft /></Icon>
-                    </PaginationTriggerIconButton>
-                  </PaginationListItem>
-                  <PaginationListItem>
-                    <PaginationTriggerIconButton aria-label='Next page' disabled={page === pageCount} onClick={() => setPage(page + 1)}>
-                      <Icon><ChevronRight /></Icon>
-                    </PaginationTriggerIconButton>
-                  </PaginationListItem>
-                </Pagination>
-              </nav>
+              <Pagination
+                aria-label='Members pages'
+                size='sm'
+                variant='secondary'
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 'var(--spacing-8)' }}
+              >
+                <Text size={2} fontWeight={500} aria-live='polite' style={{ color: 'var(--color-secondary-500)', fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap' }}>
+                  {start + 1}–{start + visible.length} of {members.length}
+                </Text>
+                <PaginationList>
+                  <PaginationItem>
+                    <PaginationLink asChild>
+                      <button type='button' aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
+                        <Icon><ChevronLeft /></Icon>
+                      </button>
+                    </PaginationLink>
+                  </PaginationItem>
+                  <PaginationItem>
+                    <PaginationLink asChild>
+                      <button type='button' aria-label='Next page' disabled={page === pageCount} onClick={() => setPage(page + 1)}>
+                        <Icon><ChevronRight /></Icon>
+                      </button>
+                    </PaginationLink>
+                  </PaginationItem>
+                </PaginationList>
+              </Pagination>
             </TableData>
           </TableRow>
         </TableFoot>
@@ -470,7 +492,7 @@ export default function DenseFooterControls() {
 
 ### Ошибка: текущая страница исчезла после фильтрации
 
-Запрошенная страница хранится в состоянии отдельно от фактически показанной. Если после фильтрации страниц стало меньше, пример показывает последнюю существующую страницу и `HelperText` с ошибкой, связанный с навигацией; после сброса фильтра запрошенная страница возвращается, а сообщение исчезает.
+Запрошенная страница хранится в состоянии отдельно от фактически показанной. Если после фильтрации страниц стало меньше, пример показывает последнюю существующую страницу и `HelperText` с `invalid`, связанный с навигацией через `aria-describedby`; после сброса фильтра запрошенная страница возвращается, а сообщение исчезает.
 
 <!-- example: pagination/stale-page-hint-after-filter-change.tsx -->
 ```tsx
@@ -481,8 +503,8 @@ import {
   Label,
   Pagination,
   PaginationItem,
-  PaginationListItem,
-  PaginationTriggerIconButton,
+  PaginationLink,
+  PaginationList,
   Text,
   TextField,
   TextFieldInput,
@@ -521,27 +543,33 @@ export default function StalePageHintAfterFilterChange() {
         {visible.length > 0 ? visible.join(', ') : 'No customers match this filter.'}
       </Text>
       <div style={{ display: 'grid', justifyItems: 'center', gap: 'var(--spacing-4)' }}>
-        <nav aria-label='Customer pages' aria-describedby={stale ? hintId : undefined}>
-          <Pagination size='sm'>
-            <PaginationListItem>
-              <PaginationTriggerIconButton aria-label='Previous page' disabled={page === 1} onClick={() => setRequestedPage(page - 1)}>
-                <Icon><ChevronLeft /></Icon>
-              </PaginationTriggerIconButton>
-            </PaginationListItem>
+        <Pagination aria-label='Customer pages' aria-describedby={stale ? hintId : undefined} size='sm'>
+          <PaginationList>
+            <PaginationItem>
+              <PaginationLink asChild>
+                <button type='button' aria-label='Previous page' disabled={page === 1} onClick={() => setRequestedPage(page - 1)}>
+                  <Icon><ChevronLeft /></Icon>
+                </button>
+              </PaginationLink>
+            </PaginationItem>
             {pages.map((item) => (
-              <PaginationListItem key={item}>
-                <PaginationItem current={item === page} aria-label={`Page ${item}`} onClick={() => setRequestedPage(item)}>
-                  {item}
-                </PaginationItem>
-              </PaginationListItem>
+              <PaginationItem key={item}>
+                <PaginationLink asChild current={item === page}>
+                  <button type='button' aria-label={`Page ${item}`} onClick={() => setRequestedPage(item)}>
+                    {item}
+                  </button>
+                </PaginationLink>
+              </PaginationItem>
             ))}
-            <PaginationListItem>
-              <PaginationTriggerIconButton aria-label='Next page' disabled={page === pageCount} onClick={() => setRequestedPage(page + 1)}>
-                <Icon><ChevronRight /></Icon>
-              </PaginationTriggerIconButton>
-            </PaginationListItem>
-          </Pagination>
-        </nav>
+            <PaginationItem>
+              <PaginationLink asChild>
+                <button type='button' aria-label='Next page' disabled={page === pageCount} onClick={() => setRequestedPage(page + 1)}>
+                  <Icon><ChevronRight /></Icon>
+                </button>
+              </PaginationLink>
+            </PaginationItem>
+          </PaginationList>
+        </Pagination>
         {stale && (
           <HelperText id={hintId} invalid role='status' style={{ textAlign: 'center', textWrap: 'balance' }}>
             Page {requestedPage} no longer exists for this filter. Showing page {page} of {pageCount}.
@@ -558,7 +586,7 @@ export default function StalePageHintAfterFilterChange() {
 
 ### Отключённый: блокировка на время загрузки страницы
 
-Пока грузится следующая страница, нативный `<fieldset disabled>` разом отключает все кнопки страниц и триггеры, и пользователь не может поставить в очередь несколько запросов. Строка статуса ниже сообщает, какая страница загружается.
+Пока грузится следующая страница, нативный `<fieldset disabled>` разом отключает все кнопки страниц и стрелки, и пользователь не может поставить в очередь несколько запросов. Строка статуса ниже сообщает, какая страница загружается.
 
 <!-- example: pagination/disabled-while-loading.tsx -->
 ```tsx
@@ -567,8 +595,8 @@ import {
   Icon,
   Pagination,
   PaginationItem,
-  PaginationListItem,
-  PaginationTriggerIconButton,
+  PaginationLink,
+  PaginationList,
   Spinner,
   Text,
 } from '@vega-ui/react';
@@ -599,27 +627,33 @@ export default function DisabledWhileLoading() {
   return (
     <div style={{ display: 'grid', justifyItems: 'center', gap: 'var(--spacing-6)', width: '100%' }}>
       <fieldset disabled={loading} style={{ margin: 0, padding: 0, border: 'none', minInlineSize: 0 }}>
-        <nav aria-label='Invoice pages'>
-          <Pagination>
-            <PaginationListItem>
-              <PaginationTriggerIconButton aria-label='Previous page' disabled={page === 1} onClick={() => setLoadingPage(page - 1)}>
-                <Icon><ChevronLeft /></Icon>
-              </PaginationTriggerIconButton>
-            </PaginationListItem>
+        <Pagination aria-label='Invoice pages'>
+          <PaginationList>
+            <PaginationItem>
+              <PaginationLink asChild>
+                <button type='button' aria-label='Previous page' disabled={page === 1} onClick={() => setLoadingPage(page - 1)}>
+                  <Icon><ChevronLeft /></Icon>
+                </button>
+              </PaginationLink>
+            </PaginationItem>
             {pages.map((item) => (
-              <PaginationListItem key={item}>
-                <PaginationItem current={item === page} aria-label={`Page ${item}`} onClick={() => setLoadingPage(item)}>
-                  {item}
-                </PaginationItem>
-              </PaginationListItem>
+              <PaginationItem key={item}>
+                <PaginationLink asChild current={item === page}>
+                  <button type='button' aria-label={`Page ${item}`} onClick={() => setLoadingPage(item)}>
+                    {item}
+                  </button>
+                </PaginationLink>
+              </PaginationItem>
             ))}
-            <PaginationListItem>
-              <PaginationTriggerIconButton aria-label='Next page' disabled={page === total} onClick={() => setLoadingPage(page + 1)}>
-                <Icon><ChevronRight /></Icon>
-              </PaginationTriggerIconButton>
-            </PaginationListItem>
-          </Pagination>
-        </nav>
+            <PaginationItem>
+              <PaginationLink asChild>
+                <button type='button' aria-label='Next page' disabled={page === total} onClick={() => setLoadingPage(page + 1)}>
+                  <Icon><ChevronRight /></Icon>
+                </button>
+              </PaginationLink>
+            </PaginationItem>
+          </PaginationList>
+        </Pagination>
       </fieldset>
       <div role='status' style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)', minHeight: 'var(--spacing-12)' }}>
         {loading && <Spinner size={2} aria-hidden='true' />}
@@ -635,7 +669,7 @@ export default function DisabledWhileLoading() {
 
 ### Пограничный случай: очень большие диапазоны
 
-Тот же алгоритм окна с триггерами первой и последней страницы на 7, 20 и 1000 страницах и с 0–2 соседями. Число элементов при перемещении не меняется, поэтому элементы управления не прыгают; при малом числе страниц показываются все страницы без многоточий.
+Усечённый диапазон со стрелками на первую и последнюю страницу на 7, 20 и 1000 страницах и с 0–2 соседями. Число элементов при перемещении не меняется, поэтому элементы управления не сдвигаются; при малом числе страниц показываются все страницы без многоточий.
 
 <!-- example: pagination/truncated-large-range.tsx -->
 ```tsx
@@ -646,8 +680,8 @@ import {
   Pagination,
   PaginationEllipsis,
   PaginationItem,
-  PaginationListItem,
-  PaginationTriggerIconButton,
+  PaginationLink,
+  PaginationList,
   Text,
 } from '@vega-ui/react';
 import { useState } from 'react';
@@ -655,7 +689,7 @@ import { useState } from 'react';
 type PageItem = number | 'start-ellipsis' | 'end-ellipsis';
 
 function range(from: number, to: number) {
-  return Array.from({ length: to - from + 1 }, (_, index) => from + index);
+  return [...Array(to - from + 1).keys()].map((offset) => from + offset);
 }
 
 function getPageItems(page: number, total: number, siblings: number): PageItem[] {
@@ -708,43 +742,53 @@ export default function TruncatedLargeRange() {
           ))}
         </div>
       </div>
-      <nav aria-label='Log pages'>
-        <Pagination size='xs'>
-          <PaginationListItem>
-            <PaginationTriggerIconButton aria-label='First page' disabled={page === 1} onClick={() => setPage(1)}>
-              <Icon><ChevronsLeft /></Icon>
-            </PaginationTriggerIconButton>
-          </PaginationListItem>
-          <PaginationListItem>
-            <PaginationTriggerIconButton aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
-              <Icon><ChevronLeft /></Icon>
-            </PaginationTriggerIconButton>
-          </PaginationListItem>
+      <Pagination aria-label='Log pages' size='xs'>
+        <PaginationList>
+          <PaginationItem>
+            <PaginationLink asChild>
+              <button type='button' aria-label='First page' disabled={page === 1} onClick={() => setPage(1)}>
+                <Icon><ChevronsLeft /></Icon>
+              </button>
+            </PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink asChild>
+              <button type='button' aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
+                <Icon><ChevronLeft /></Icon>
+              </button>
+            </PaginationLink>
+          </PaginationItem>
           {getPageItems(page, total, siblings).map((item) => {
             if (typeof item === 'string') {
-              return <PaginationListItem key={item}><PaginationEllipsis /></PaginationListItem>;
+              return <PaginationEllipsis key={item} />;
             }
 
             return (
-              <PaginationListItem key={item}>
-                <PaginationItem current={item === page} aria-label={`Page ${item}`} onClick={() => setPage(item)}>
-                  {item}
-                </PaginationItem>
-              </PaginationListItem>
+              <PaginationItem key={item}>
+                <PaginationLink asChild current={item === page}>
+                  <button type='button' aria-label={`Page ${item}`} onClick={() => setPage(item)}>
+                    {item}
+                  </button>
+                </PaginationLink>
+              </PaginationItem>
             );
           })}
-          <PaginationListItem>
-            <PaginationTriggerIconButton aria-label='Next page' disabled={page === total} onClick={() => setPage(page + 1)}>
-              <Icon><ChevronRight /></Icon>
-            </PaginationTriggerIconButton>
-          </PaginationListItem>
-          <PaginationListItem>
-            <PaginationTriggerIconButton aria-label='Last page' disabled={page === total} onClick={() => setPage(total)}>
-              <Icon><ChevronsRight /></Icon>
-            </PaginationTriggerIconButton>
-          </PaginationListItem>
-        </Pagination>
-      </nav>
+          <PaginationItem>
+            <PaginationLink asChild>
+              <button type='button' aria-label='Next page' disabled={page === total} onClick={() => setPage(page + 1)}>
+                <Icon><ChevronRight /></Icon>
+              </button>
+            </PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink asChild>
+              <button type='button' aria-label='Last page' disabled={page === total} onClick={() => setPage(total)}>
+                <Icon><ChevronsRight /></Icon>
+              </button>
+            </PaginationLink>
+          </PaginationItem>
+        </PaginationList>
+      </Pagination>
     </div>
   );
 }
@@ -763,15 +807,15 @@ import {
   Pagination,
   PaginationEllipsis,
   PaginationItem,
-  PaginationListItem,
-  PaginationTriggerIconButton,
+  PaginationLink,
+  PaginationList,
 } from '@vega-ui/react';
 import { useState } from 'react';
 
 type PageItem = number | 'start-ellipsis' | 'end-ellipsis';
 
 function range(from: number, to: number) {
-  return Array.from({ length: to - from + 1 }, (_, index) => from + index);
+  return [...Array(to - from + 1).keys()].map((offset) => from + offset);
 }
 
 function getPageItems(page: number, total: number, siblings: number): PageItem[] {
@@ -798,33 +842,39 @@ export default function RtlPagination() {
   const [page, setPage] = useState(6);
 
   return (
-    <nav dir='rtl' lang='ar' aria-label='الصفحات'>
-      <Pagination>
-        <PaginationListItem>
-          <PaginationTriggerIconButton aria-label='الصفحة السابقة' disabled={page === 1} onClick={() => setPage(page - 1)}>
-            <Icon><ChevronRight /></Icon>
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
+    <Pagination dir='rtl' lang='ar' aria-label='الصفحات'>
+      <PaginationList>
+        <PaginationItem>
+          <PaginationLink asChild>
+            <button type='button' aria-label='الصفحة السابقة' disabled={page === 1} onClick={() => setPage(page - 1)}>
+              <Icon><ChevronRight /></Icon>
+            </button>
+          </PaginationLink>
+        </PaginationItem>
         {getPageItems(page, total, 1).map((item) => {
           if (typeof item === 'string') {
-            return <PaginationListItem key={item}><PaginationEllipsis /></PaginationListItem>;
+            return <PaginationEllipsis key={item} />;
           }
 
           return (
-            <PaginationListItem key={item}>
-              <PaginationItem current={item === page} aria-label={`الصفحة ${numbers.format(item)}`} onClick={() => setPage(item)}>
-                {numbers.format(item)}
-              </PaginationItem>
-            </PaginationListItem>
+            <PaginationItem key={item}>
+              <PaginationLink asChild current={item === page}>
+                <button type='button' aria-label={`الصفحة ${numbers.format(item)}`} onClick={() => setPage(item)}>
+                  {numbers.format(item)}
+                </button>
+              </PaginationLink>
+            </PaginationItem>
           );
         })}
-        <PaginationListItem>
-          <PaginationTriggerIconButton aria-label='الصفحة التالية' disabled={page === total} onClick={() => setPage(page + 1)}>
-            <Icon><ChevronLeft /></Icon>
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
-      </Pagination>
-    </nav>
+        <PaginationItem>
+          <PaginationLink asChild>
+            <button type='button' aria-label='الصفحة التالية' disabled={page === total} onClick={() => setPage(page + 1)}>
+              <Icon><ChevronLeft /></Icon>
+            </button>
+          </PaginationLink>
+        </PaginationItem>
+      </PaginationList>
+    </Pagination>
   );
 }
 ```

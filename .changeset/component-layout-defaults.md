@@ -11,7 +11,7 @@ BREAKING: components get their own layout defaults, so the common workarounds ar
 - **`FieldsetLegend` size.** The legend uses the `Label` text size instead of a larger one.
 - **`Checkbox` layout.** The root is an `inline-flex` row with centered items and a `var(--spacing-4)` gap, so the box no longer sits on its own line above the text. `CheckboxIndicator` does not shrink.
 - **`SegmentedControl`.** Segments share the width equally and can shrink in a narrow container instead of overflowing it. A disabled segment uses `--disable-label-text-color`, like a disabled `Option`.
-- **`Pagination`.** The list has no browser margin or padding, the gap between items is `var(--spacing-2)` instead of `var(--spacing-6)`, and `PaginationTriggerIconButton` is `transparent` like the page items, so an enabled and a disabled arrow look like an enabled and a disabled page.
+- **`Pagination`.** The list has no browser margin or padding, and the gap between items is `var(--spacing-2)` instead of `var(--spacing-6)`.
 - **`TextArea` size.** The sizes match `TextField`: one row is 36, 42 and 48px tall for `sm`, `md` and `lg`, like a `Button` or `IconButton` of the same size.
 - **`Calendar` width.** `CalendarContent` no longer reports the width of all its scrolled pages, so a calendar in a flex row or a shrink-to-fit container is as wide as one month instead of several.
 - **Picker items.** `GridItem` has `var(--spacing-3)` inline padding inside its minimum width, so month and year labels no longer touch.

@@ -3,8 +3,8 @@ import {
   Icon,
   Pagination,
   PaginationItem,
-  PaginationListItem,
-  PaginationTriggerIconButton,
+  PaginationLink,
+  PaginationList,
   Table,
   TableBody,
   TableData,
@@ -58,27 +58,33 @@ export default function PaginatedOrderList() {
         </Table>
       </div>
       <div style={{ display: 'grid', justifyItems: 'center', gap: 'var(--spacing-4)' }}>
-        <nav aria-label='Orders pages'>
-          <Pagination size='sm'>
-            <PaginationListItem>
-              <PaginationTriggerIconButton aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
-                <Icon><ChevronLeft /></Icon>
-              </PaginationTriggerIconButton>
-            </PaginationListItem>
+        <Pagination aria-label='Orders pages' size='sm'>
+          <PaginationList>
+            <PaginationItem>
+              <PaginationLink asChild>
+                <button type='button' aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
+                  <Icon><ChevronLeft /></Icon>
+                </button>
+              </PaginationLink>
+            </PaginationItem>
             {pages.map((item) => (
-              <PaginationListItem key={item}>
-                <PaginationItem current={item === page} aria-label={`Page ${item}`} onClick={() => setPage(item)}>
-                  {item}
-                </PaginationItem>
-              </PaginationListItem>
+              <PaginationItem key={item}>
+                <PaginationLink asChild current={item === page}>
+                  <button type='button' aria-label={`Page ${item}`} onClick={() => setPage(item)}>
+                    {item}
+                  </button>
+                </PaginationLink>
+              </PaginationItem>
             ))}
-            <PaginationListItem>
-              <PaginationTriggerIconButton aria-label='Next page' disabled={page === pageCount} onClick={() => setPage(page + 1)}>
-                <Icon><ChevronRight /></Icon>
-              </PaginationTriggerIconButton>
-            </PaginationListItem>
-          </Pagination>
-        </nav>
+            <PaginationItem>
+              <PaginationLink asChild>
+                <button type='button' aria-label='Next page' disabled={page === pageCount} onClick={() => setPage(page + 1)}>
+                  <Icon><ChevronRight /></Icon>
+                </button>
+              </PaginationLink>
+            </PaginationItem>
+          </PaginationList>
+        </Pagination>
         <Text size={2} role='status' style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>
           Showing {start + 1}–{start + visible.length} of {orders.length} orders
         </Text>

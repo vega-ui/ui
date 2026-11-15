@@ -4,16 +4,18 @@
 
 Когда использовать:
 
-- страницы — настоящие места назначения для навигации
+- страницы — настоящие места назначения для навигации со своим адресом
 
 Заметки по композиции:
 
-- используйте `PaginationItem asChild`
+- `PaginationLink` рендерит `<a>`, поэтому передавайте `href`
+- для роутера поместите его `Link` внутрь `PaginationLink asChild`, а адрес укажите на дочернем элементе; текущую страницу отмечайте через `current`
+- на границах рендерите стрелку без `href` и с `aria-disabled='true'`
 - генерируйте href в родительской функции
 
 Компромиссы:
 
-- сильная семантика навигации
+- сильная семантика навигации: страницы открываются в новой вкладке, ими можно поделиться, их видят поисковики
 - сложность маршрутизации остаётся вне компонента
 
 <!-- example: pagination/link-based-pagination.tsx -->
@@ -24,15 +26,15 @@ import {
   Pagination,
   PaginationEllipsis,
   PaginationItem,
-  PaginationListItem,
-  PaginationTriggerIconButton,
+  PaginationLink,
+  PaginationList,
 } from '@vega-ui/react';
 import { useEffect, useState } from 'react';
 
 type PageItem = number | 'start-ellipsis' | 'end-ellipsis';
 
 function range(from: number, to: number) {
-  return Array.from({ length: to - from + 1 }, (_, index) => from + index);
+  return [...Array(to - from + 1).keys()].map((offset) => from + offset);
 }
 
 function getPageItems(page: number, total: number, siblings: number): PageItem[] {
@@ -72,41 +74,35 @@ export default function LinkBasedPagination() {
   const isLast = page === total;
 
   return (
-    <nav aria-label='Blog archive pages'>
-      <Pagination>
-        <PaginationListItem>
-          <PaginationTriggerIconButton asChild aria-label='Previous page'>
-            {isFirst ? (
-              <a aria-disabled='true'><Icon><ChevronLeft /></Icon></a>
-            ) : (
-              <a href={getHref(page - 1)} rel='prev'><Icon><ChevronLeft /></Icon></a>
-            )}
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
+    <Pagination aria-label='Blog archive pages'>
+      <PaginationList>
+        <PaginationItem>
+          {isFirst ? (
+            <PaginationLink aria-label='Previous page' aria-disabled='true'><Icon><ChevronLeft /></Icon></PaginationLink>
+          ) : (
+            <PaginationLink href={getHref(page - 1)} rel='prev' aria-label='Previous page'><Icon><ChevronLeft /></Icon></PaginationLink>
+          )}
+        </PaginationItem>
         {getPageItems(page, total, 1).map((item) => {
           if (typeof item === 'string') {
-            return <PaginationListItem key={item}><PaginationEllipsis /></PaginationListItem>;
+            return <PaginationEllipsis key={item} />;
           }
 
           return (
-            <PaginationListItem key={item}>
-              <PaginationItem asChild current={item === page}>
-                <a href={getHref(item)} aria-label={`Page ${item}`}>{item}</a>
-              </PaginationItem>
-            </PaginationListItem>
+            <PaginationItem key={item}>
+              <PaginationLink href={getHref(item)} current={item === page} aria-label={`Page ${item}`}>{item}</PaginationLink>
+            </PaginationItem>
           );
         })}
-        <PaginationListItem>
-          <PaginationTriggerIconButton asChild aria-label='Next page'>
-            {isLast ? (
-              <a aria-disabled='true'><Icon><ChevronRight /></Icon></a>
-            ) : (
-              <a href={getHref(page + 1)} rel='next'><Icon><ChevronRight /></Icon></a>
-            )}
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
-      </Pagination>
-    </nav>
+        <PaginationItem>
+          {isLast ? (
+            <PaginationLink aria-label='Next page' aria-disabled='true'><Icon><ChevronRight /></Icon></PaginationLink>
+          ) : (
+            <PaginationLink href={getHref(page + 1)} rel='next' aria-label='Next page'><Icon><ChevronRight /></Icon></PaginationLink>
+          )}
+        </PaginationItem>
+      </PaginationList>
+    </Pagination>
   );
 }
 ```
@@ -116,16 +112,18 @@ export default function LinkBasedPagination() {
 
 Когда использовать:
 
-- состояние страницы полностью локальное или управляется на клиенте
+- состояние страницы полностью локальное или управляется на клиенте, и у страниц нет адреса
 
 Заметки по композиции:
 
+- рендерите `<button type='button'>` через `PaginationLink asChild`
 - храните текущую страницу в состоянии родителя
-- отключайте триггеры на границах
+- отключайте стрелки на границах через `disabled` на `<button>`
 
 Компромиссы:
 
 - простое локальное управление
+- страницу нельзя открыть в новой вкладке или отправить ссылкой
 - каноническим состоянием страницы всё равно должна владеть родительская функция
 
 <!-- example: pagination/button-based-pagination.tsx -->
@@ -136,15 +134,15 @@ import {
   Pagination,
   PaginationEllipsis,
   PaginationItem,
-  PaginationListItem,
-  PaginationTriggerIconButton,
+  PaginationLink,
+  PaginationList,
 } from '@vega-ui/react';
 import { useState } from 'react';
 
 type PageItem = number | 'start-ellipsis' | 'end-ellipsis';
 
 function range(from: number, to: number) {
-  return Array.from({ length: to - from + 1 }, (_, index) => from + index);
+  return [...Array(to - from + 1).keys()].map((offset) => from + offset);
 }
 
 function getPageItems(page: number, total: number, siblings: number): PageItem[] {
@@ -169,33 +167,39 @@ export default function ButtonBasedPagination() {
   const [page, setPage] = useState(1);
 
   return (
-    <nav aria-label='Search results pages'>
-      <Pagination>
-        <PaginationListItem>
-          <PaginationTriggerIconButton aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
-            <Icon><ChevronLeft /></Icon>
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
+    <Pagination aria-label='Search results pages'>
+      <PaginationList>
+        <PaginationItem>
+          <PaginationLink asChild>
+            <button type='button' aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
+              <Icon><ChevronLeft /></Icon>
+            </button>
+          </PaginationLink>
+        </PaginationItem>
         {getPageItems(page, total, 1).map((item) => {
           if (typeof item === 'string') {
-            return <PaginationListItem key={item}><PaginationEllipsis /></PaginationListItem>;
+            return <PaginationEllipsis key={item} />;
           }
 
           return (
-            <PaginationListItem key={item}>
-              <PaginationItem current={item === page} aria-label={`Page ${item}`} onClick={() => setPage(item)}>
-                {item}
-              </PaginationItem>
-            </PaginationListItem>
+            <PaginationItem key={item}>
+              <PaginationLink asChild current={item === page}>
+                <button type='button' aria-label={`Page ${item}`} onClick={() => setPage(item)}>
+                  {item}
+                </button>
+              </PaginationLink>
+            </PaginationItem>
           );
         })}
-        <PaginationListItem>
-          <PaginationTriggerIconButton aria-label='Next page' disabled={page === total} onClick={() => setPage(page + 1)}>
-            <Icon><ChevronRight /></Icon>
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
-      </Pagination>
-    </nav>
+        <PaginationItem>
+          <PaginationLink asChild>
+            <button type='button' aria-label='Next page' disabled={page === total} onClick={() => setPage(page + 1)}>
+              <Icon><ChevronRight /></Icon>
+            </button>
+          </PaginationLink>
+        </PaginationItem>
+      </PaginationList>
+    </Pagination>
   );
 }
 ```
@@ -209,13 +213,14 @@ export default function ButtonBasedPagination() {
 
 Заметки по композиции:
 
-- оставляйте видимыми первую страницу, контекст текущей и последнюю
-- используйте многоточие только как индикатор пропуска
+- вычисляйте элементы сами: первая и последняя страницы, текущая с соседями и маркер многоточия на месте каждого пропуска; `getPageItems` из примера — отправная точка
+- рендерите каждое число как `PaginationItem` с `PaginationLink`, а каждый маркер многоточия — как `PaginationEllipsis` прямо в `PaginationList`
+- добавьте стрелки на первую и последнюю страницу или форму перехода, если пользователю нужно попадать на далёкие страницы
 
 Компромиссы:
 
-- компактно и масштабируемо
-- пользователь теряет прямой доступ к кнопке каждой страницы
+- компактно и масштабируемо; число элементов в ряду не меняется при смене страницы
+- пользователь теряет прямой доступ к каждой странице
 
 <!-- example: pagination/truncated-large-range.tsx -->
 ```tsx
@@ -226,8 +231,8 @@ import {
   Pagination,
   PaginationEllipsis,
   PaginationItem,
-  PaginationListItem,
-  PaginationTriggerIconButton,
+  PaginationLink,
+  PaginationList,
   Text,
 } from '@vega-ui/react';
 import { useState } from 'react';
@@ -235,7 +240,7 @@ import { useState } from 'react';
 type PageItem = number | 'start-ellipsis' | 'end-ellipsis';
 
 function range(from: number, to: number) {
-  return Array.from({ length: to - from + 1 }, (_, index) => from + index);
+  return [...Array(to - from + 1).keys()].map((offset) => from + offset);
 }
 
 function getPageItems(page: number, total: number, siblings: number): PageItem[] {
@@ -288,43 +293,53 @@ export default function TruncatedLargeRange() {
           ))}
         </div>
       </div>
-      <nav aria-label='Log pages'>
-        <Pagination size='xs'>
-          <PaginationListItem>
-            <PaginationTriggerIconButton aria-label='First page' disabled={page === 1} onClick={() => setPage(1)}>
-              <Icon><ChevronsLeft /></Icon>
-            </PaginationTriggerIconButton>
-          </PaginationListItem>
-          <PaginationListItem>
-            <PaginationTriggerIconButton aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
-              <Icon><ChevronLeft /></Icon>
-            </PaginationTriggerIconButton>
-          </PaginationListItem>
+      <Pagination aria-label='Log pages' size='xs'>
+        <PaginationList>
+          <PaginationItem>
+            <PaginationLink asChild>
+              <button type='button' aria-label='First page' disabled={page === 1} onClick={() => setPage(1)}>
+                <Icon><ChevronsLeft /></Icon>
+              </button>
+            </PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink asChild>
+              <button type='button' aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
+                <Icon><ChevronLeft /></Icon>
+              </button>
+            </PaginationLink>
+          </PaginationItem>
           {getPageItems(page, total, siblings).map((item) => {
             if (typeof item === 'string') {
-              return <PaginationListItem key={item}><PaginationEllipsis /></PaginationListItem>;
+              return <PaginationEllipsis key={item} />;
             }
 
             return (
-              <PaginationListItem key={item}>
-                <PaginationItem current={item === page} aria-label={`Page ${item}`} onClick={() => setPage(item)}>
-                  {item}
-                </PaginationItem>
-              </PaginationListItem>
+              <PaginationItem key={item}>
+                <PaginationLink asChild current={item === page}>
+                  <button type='button' aria-label={`Page ${item}`} onClick={() => setPage(item)}>
+                    {item}
+                  </button>
+                </PaginationLink>
+              </PaginationItem>
             );
           })}
-          <PaginationListItem>
-            <PaginationTriggerIconButton aria-label='Next page' disabled={page === total} onClick={() => setPage(page + 1)}>
-              <Icon><ChevronRight /></Icon>
-            </PaginationTriggerIconButton>
-          </PaginationListItem>
-          <PaginationListItem>
-            <PaginationTriggerIconButton aria-label='Last page' disabled={page === total} onClick={() => setPage(total)}>
-              <Icon><ChevronsRight /></Icon>
-            </PaginationTriggerIconButton>
-          </PaginationListItem>
-        </Pagination>
-      </nav>
+          <PaginationItem>
+            <PaginationLink asChild>
+              <button type='button' aria-label='Next page' disabled={page === total} onClick={() => setPage(page + 1)}>
+                <Icon><ChevronRight /></Icon>
+              </button>
+            </PaginationLink>
+          </PaginationItem>
+          <PaginationItem>
+            <PaginationLink asChild>
+              <button type='button' aria-label='Last page' disabled={page === total} onClick={() => setPage(total)}>
+                <Icon><ChevronsRight /></Icon>
+              </button>
+            </PaginationLink>
+          </PaginationItem>
+        </PaginationList>
+      </Pagination>
     </div>
   );
 }

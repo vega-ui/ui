@@ -1,11 +1,6 @@
 .paginationEllipsis:where([data-size]) {
     aspect-ratio: 1 / 1;
-    cursor: text;
+    list-style-type: none;
+    pointer-events: none;
     --padding-inline: 0;
-}
-
-.paginationEllipsis:where([data-variant][data-appearance]):focus,
-.paginationEllipsis:where([data-variant][data-appearance]):hover,
-.paginationEllipsis:where([data-variant][data-appearance]):active {
-    background-color: transparent;
 }

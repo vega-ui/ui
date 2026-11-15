@@ -6,7 +6,7 @@
 
 ## Summary
 
-`Pagination` is a [compound component](../../glossary.md#compound-component) for paged navigation. It coordinates page items, trigger buttons, ellipsis placeholders, and optional supporting text while leaving the canonical page state in the parent feature.
+`Pagination` is a [compound component](../../glossary.md#compound-component) for paged navigation: a `<nav>` landmark with a list of links to the pages of content. It shares `size` and `variant` with the links and ellipses inside and keeps no page state: the app owns the current page, in the URL or in React state. Which pages to show when there are too many to list is up to the app.
 
 ## Imports
 
@@ -15,16 +15,14 @@ import {
   Pagination,
   PaginationEllipsis,
   PaginationItem,
-  PaginationListItem,
-  PaginationText,
-  PaginationTriggerIconButton,
+  PaginationLink,
+  PaginationList,
   type PaginationEllipsisProps,
   type PaginationItemProps,
-  type PaginationListItemProps,
+  type PaginationLinkProps,
+  type PaginationListProps,
   type PaginationProps,
   type PaginationSize,
-  type PaginationTextProps,
-  type PaginationTriggerIconButtonProps,
   type PaginationVariant,
 } from '@vega-ui/react';
 ```
@@ -32,17 +30,16 @@ import {
 ## Exported Types
 
 - `PaginationProps`
+- `PaginationListProps`
 - `PaginationItemProps`
-- `PaginationTriggerIconButtonProps`
+- `PaginationLinkProps`
 - `PaginationEllipsisProps`
-- `PaginationListItemProps`
-- `PaginationTextProps`
 - `PaginationSize`
 - `PaginationVariant`
 
 ## Minimal Composition
 
-`Pagination` renders a plain `<ul>` and keeps no page state: the parent owns the current page, and a `<nav>` with its own `aria-label` gives the list a landmark. Wrap every item and trigger in `PaginationListItem`, but not `PaginationText`, which already renders its own `<li>`. Icon-only triggers need an icon child and an `aria-label`.
+`Pagination` renders the `<nav>`, named with `aria-label`; `PaginationList` renders the `<ul>`, and each `PaginationItem` is one `<li>` around a `PaginationLink`. Here the pages have no address, so the parent keeps the page in React state and each `PaginationLink asChild` renders a `<button type='button'>`; `current` marks the current page. The arrow buttons need their own `aria-label` and take `disabled` themselves at the boundaries. When pages have an address, pass `href` to `PaginationLink` instead and it renders an `<a>`.
 
 <!-- example: pagination/minimal-composition.tsx -->
 ```tsx
@@ -51,8 +48,8 @@ import {
   Icon,
   Pagination,
   PaginationItem,
-  PaginationListItem,
-  PaginationTriggerIconButton,
+  PaginationLink,
+  PaginationList,
 } from '@vega-ui/react';
 import { useState } from 'react';
 
@@ -61,25 +58,31 @@ export default function MinimalComposition() {
   const pages = [1, 2, 3];
 
   return (
-    <nav aria-label='Pagination'>
-      <Pagination>
-        <PaginationListItem>
-          <PaginationTriggerIconButton aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
-            <Icon><ChevronLeft /></Icon>
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
+    <Pagination aria-label='Pagination'>
+      <PaginationList>
+        <PaginationItem>
+          <PaginationLink asChild>
+            <button type='button' aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
+              <Icon><ChevronLeft /></Icon>
+            </button>
+          </PaginationLink>
+        </PaginationItem>
         {pages.map((item) => (
-          <PaginationListItem key={item}>
-            <PaginationItem current={item === page} onClick={() => setPage(item)}>{item}</PaginationItem>
-          </PaginationListItem>
+          <PaginationItem key={item}>
+            <PaginationLink asChild current={item === page}>
+              <button type='button' onClick={() => setPage(item)}>{item}</button>
+            </PaginationLink>
+          </PaginationItem>
         ))}
-        <PaginationListItem>
-          <PaginationTriggerIconButton aria-label='Next page' disabled={page === pages.length} onClick={() => setPage(page + 1)}>
-            <Icon><ChevronRight /></Icon>
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
-      </Pagination>
-    </nav>
+        <PaginationItem>
+          <PaginationLink asChild>
+            <button type='button' aria-label='Next page' disabled={page === pages.length} onClick={() => setPage(page + 1)}>
+              <Icon><ChevronRight /></Icon>
+            </button>
+          </PaginationLink>
+        </PaginationItem>
+      </PaginationList>
+    </Pagination>
   );
 }
 ```
@@ -87,26 +90,30 @@ export default function MinimalComposition() {
 
 ## Required Parts
 
-- `Pagination`: root context and list container
-- `PaginationListItem`: list wrapper for each visible item
-- one of `PaginationItem`, `PaginationTriggerIconButton`, `PaginationEllipsis`, or `PaginationText`
+- `Pagination`: the `<nav>` landmark, named with `aria-label`, and the shared `size` and `variant`
+- `PaginationList`: the `<ul>` that lays the items out in a row
+- `PaginationItem`: the `<li>` around each link or status text
+- `PaginationLink`: a link to a page, or with `asChild` a router link or a `<button>`
 
 ## Optional Parts
 
-- `PaginationText`: compact textual summary such as `Page 3 of 20`
-- `PaginationEllipsis`: gap indicator for truncated page ranges
+- `PaginationEllipsis`: an `<li aria-hidden>` that marks skipped pages in a truncated range; it goes directly in `PaginationList`
+- `Text` from `@vega-ui/react` for a status such as `Page 3 of 20`, inside a `PaginationItem` or outside the list
 
 ## Composition Order
 
 1. `Pagination`
-2. repeated `PaginationListItem`
-3. inside each item, one pagination child part
+2. `PaginationList`
+3. repeated `PaginationItem`, each with one `PaginationLink` or `Text` inside
+4. `PaginationEllipsis` directly in `PaginationList`, between the items where pages are skipped
 
 ## Variants
 
-- Size: inherited from button/icon-button sizing
-- Variant: `primary` or `secondary`
-- Interaction model: link-based or button-based pagination
+- Size: `xs`, `sm`, `md`, `lg` or `xl` on the `IconButton` scale, `md` by default
+- Variant: `primary` or `secondary`, `primary` by default
+- `size` and `variant` are set on `Pagination` and can be overridden on each `PaginationLink` and `PaginationEllipsis`
+- Appearance: `fill` for the current page and `transparent` for the others; `appearance` on `PaginationLink` overrides it
+- Interaction model: `<a href>` by default, a router link or a `<button type='button'>` through `asChild`
 
 ## Related Docs
 
@@ -121,12 +128,18 @@ export default function MinimalComposition() {
 
 ## Edge Cases
 
-- First and last page behavior should be explicit.
-- The pagination UI should not become the source of truth for data state.
-- Ellipsis should preserve current-page context rather than hiding it entirely.
+- First and last page behavior should be explicit: a boundary link loses its `href` and gets `aria-disabled='true'`, a boundary button gets `disabled`.
+- The pagination UI should not become the source of truth for data state: render it from the page in the URL or in state.
+- A page read from the URL or left over after filtering can fall outside the range. Clamp it once and use the same value for `current` and for the data slice.
+- A truncated range that keeps the same number of items as the page moves keeps the controls from shifting. An ellipsis that hides a single page saves no space: show that page instead.
+- With no pages, decide whether to render pagination at all.
 
 ## Common Mistakes
 
+- Leaving `Pagination` or icon-only links without `aria-label`.
+- Putting a `PaginationLink` directly in `PaginationList` without `PaginationItem`.
+- Wrapping `PaginationEllipsis` in `PaginationItem`: it already renders its own `<li>`.
+- Giving the address to `PaginationLink` when it renders a router link through `asChild`: the address goes on the child.
+- Rendering a `<button>` through `asChild` without `type='button'` inside a form.
 - Forgetting disabled behavior at page boundaries.
-- Treating pagination visuals as the only state model.
 - Using pagination when infinite scroll or filtering is a better fit for the data.

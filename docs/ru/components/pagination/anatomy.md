@@ -2,39 +2,46 @@
 
 ## Обзор
 
-`Pagination` — композиционная система навигации. Корень предоставляет общий контекст размера и варианта, а каждый элемент списка оборачивает один видимый элемент пагинации.
+`Pagination` — ориентир `<nav>` со списком ссылок на страницы. Корень передаёт `size` и `variant` частям внутри, `PaginationList` выстраивает ряд, каждый `PaginationItem` содержит одну ссылку или текст статуса, а `PaginationEllipsis` отмечает пропущенные страницы.
 
 ## Обязательные части
 
 ### `Pagination`
 
-Обязательна. Владеет общим контекстом размера и варианта и рендерит внешний список.
+Обязательна. Рендерит `<nav>` и передаёт `size` и `variant` ссылкам и многоточиям. Дайте ему имя через `aria-label`; библиотека его не задаёт.
 
-### `PaginationListItem`
+### `PaginationList`
 
-Обязательна при обычной композиции. Сохраняет семантику списка для каждого видимого элемента пагинации.
+Обязательна. Рендерит `<ul>` и выстраивает элементы в ряд, без браузерных отступов списка.
 
-### `PaginationItem` или `PaginationTriggerIconButton`
+### `PaginationItem`
 
-Обычно обязательны. Это основные интерактивные элементы перехода по страницам.
+Обязательна вокруг каждой ссылки или текста статуса. Рендерит `<li>`; задайте ему `className` или `style`, чтобы скрыть элемент или сдвинуть его в ряду.
+
+### `PaginationLink`
+
+Обязательна для каждой страницы и стрелки. Рендерит `<a>`, оформленный как квадратная `Button`. `current` отмечает текущую страницу через `aria-current='page'`. С `asChild` рендерит вместо себя дочерний элемент: ссылку роутера или `<button type='button'>`, когда у страниц нет адреса.
 
 ## Необязательные части
 
 ### `PaginationEllipsis`
 
-Необязательна. Обозначает пропущенные диапазоны.
+Необязательна. Рендерит `<li aria-hidden>` с `…` шириной со ссылку того же размера. Ставится прямо в `PaginationList`, а не внутрь `PaginationItem`, и не интерактивна.
 
-### `PaginationText`
+### `Text`
 
-Необязательна. Показывает компактный текстовый статус пагинации.
+Необязательна. `Text` из `@vega-ui/react` показывает статус вроде `Page 3 of 20`, внутри `PaginationItem` или вне списка.
 
 ## Порядок композиции
 
 1. `Pagination`
-2. повторяющиеся `PaginationListItem`
-3. по одной дочерней части в каждом элементе списка
+2. `PaginationList`
+3. повторяющиеся `PaginationItem`, в каждом один `PaginationLink` или `Text`
+4. `PaginationEllipsis` прямо в `PaginationList`, между элементами там, где страницы пропущены
 
 ## Допустимые варианты композиции
+
+Элементы строятся локальной функцией `getPageItems`: каждое число становится `PaginationItem` с `PaginationLink`, каждый маркер многоточия — `PaginationEllipsis`. Страницы и стрелки — кнопки, отрендеренные через `asChild`.
 
 <!-- example: pagination/button-based-pagination.tsx -->
 ```tsx
@@ -44,15 +51,15 @@ import {
   Pagination,
   PaginationEllipsis,
   PaginationItem,
-  PaginationListItem,
-  PaginationTriggerIconButton,
+  PaginationLink,
+  PaginationList,
 } from '@vega-ui/react';
 import { useState } from 'react';
 
 type PageItem = number | 'start-ellipsis' | 'end-ellipsis';
 
 function range(from: number, to: number) {
-  return Array.from({ length: to - from + 1 }, (_, index) => from + index);
+  return [...Array(to - from + 1).keys()].map((offset) => from + offset);
 }
 
 function getPageItems(page: number, total: number, siblings: number): PageItem[] {
@@ -77,33 +84,39 @@ export default function ButtonBasedPagination() {
   const [page, setPage] = useState(1);
 
   return (
-    <nav aria-label='Search results pages'>
-      <Pagination>
-        <PaginationListItem>
-          <PaginationTriggerIconButton aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
-            <Icon><ChevronLeft /></Icon>
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
+    <Pagination aria-label='Search results pages'>
+      <PaginationList>
+        <PaginationItem>
+          <PaginationLink asChild>
+            <button type='button' aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
+              <Icon><ChevronLeft /></Icon>
+            </button>
+          </PaginationLink>
+        </PaginationItem>
         {getPageItems(page, total, 1).map((item) => {
           if (typeof item === 'string') {
-            return <PaginationListItem key={item}><PaginationEllipsis /></PaginationListItem>;
+            return <PaginationEllipsis key={item} />;
           }
 
           return (
-            <PaginationListItem key={item}>
-              <PaginationItem current={item === page} aria-label={`Page ${item}`} onClick={() => setPage(item)}>
-                {item}
-              </PaginationItem>
-            </PaginationListItem>
+            <PaginationItem key={item}>
+              <PaginationLink asChild current={item === page}>
+                <button type='button' aria-label={`Page ${item}`} onClick={() => setPage(item)}>
+                  {item}
+                </button>
+              </PaginationLink>
+            </PaginationItem>
           );
         })}
-        <PaginationListItem>
-          <PaginationTriggerIconButton aria-label='Next page' disabled={page === total} onClick={() => setPage(page + 1)}>
-            <Icon><ChevronRight /></Icon>
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
-      </Pagination>
-    </nav>
+        <PaginationItem>
+          <PaginationLink asChild>
+            <button type='button' aria-label='Next page' disabled={page === total} onClick={() => setPage(page + 1)}>
+              <Icon><ChevronRight /></Icon>
+            </button>
+          </PaginationLink>
+        </PaginationItem>
+      </PaginationList>
+    </Pagination>
   );
 }
 ```
@@ -111,14 +124,18 @@ export default function ButtonBasedPagination() {
 
 ## Недопустимые варианты композиции
 
-### Интерактивные части пагинации без `PaginationListItem`
+### Ссылка прямо в `PaginationList`
 
-Визуально всё может работать, но семантика списка ослабевает.
+В `<ul>` могут быть только `<li>`. Оборачивайте каждую ссылку и текст статуса в `PaginationItem`.
+
+### `PaginationEllipsis` внутри `PaginationItem`
+
+`PaginationEllipsis` сам рендерит `<li>`, поэтому обёртка вкладывает один элемент списка в другой.
 
 ### Компонент пагинации сам хранит главное состояние страницы
 
-Каноническое состояние страницы принадлежит родительской функции или роутеру.
+`Pagination` не хранит состояние страницы. Текущая страница принадлежит родительской функции или роутеру.
 
-### Многоточие как интерактивная замена настоящих страниц
+### Многоточие в виде ссылки или кнопки
 
-Поставляемое многоточие — визуальный индикатор пропуска, а не навигация по страницам.
+Многоточие — индикатор пропуска, а не навигация по страницам. Используйте `PaginationEllipsis`; чтобы пользователь мог попасть на скрытую страницу, добавьте форму перехода к странице или ссылки на первую и последнюю.

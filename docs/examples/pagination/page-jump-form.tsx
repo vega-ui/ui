@@ -6,8 +6,8 @@ import {
   Pagination,
   PaginationEllipsis,
   PaginationItem,
-  PaginationListItem,
-  PaginationTriggerIconButton,
+  PaginationLink,
+  PaginationList,
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
@@ -16,7 +16,7 @@ import { FormEvent, useId, useState } from 'react';
 type PageItem = number | 'start-ellipsis' | 'end-ellipsis';
 
 function range(from: number, to: number) {
-  return Array.from({ length: to - from + 1 }, (_, index) => from + index);
+  return [...Array(to - from + 1).keys()].map((offset) => from + offset);
 }
 
 function getPageItems(page: number, total: number, siblings: number): PageItem[] {
@@ -50,33 +50,39 @@ export default function PageJumpForm() {
 
   return (
     <div style={{ display: 'grid', justifyItems: 'center', gap: 'var(--spacing-8)' }}>
-      <nav aria-label='Catalog pages'>
-        <Pagination>
-          <PaginationListItem>
-            <PaginationTriggerIconButton aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
-              <Icon><ChevronLeft /></Icon>
-            </PaginationTriggerIconButton>
-          </PaginationListItem>
+      <Pagination aria-label='Catalog pages'>
+        <PaginationList>
+          <PaginationItem>
+            <PaginationLink asChild>
+              <button type='button' aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
+                <Icon><ChevronLeft /></Icon>
+              </button>
+            </PaginationLink>
+          </PaginationItem>
           {getPageItems(page, total, 1).map((item) => {
             if (typeof item === 'string') {
-              return <PaginationListItem key={item}><PaginationEllipsis /></PaginationListItem>;
+              return <PaginationEllipsis key={item} />;
             }
 
             return (
-              <PaginationListItem key={item}>
-                <PaginationItem current={item === page} aria-label={`Page ${item}`} onClick={() => setPage(item)}>
-                  {item}
-                </PaginationItem>
-              </PaginationListItem>
+              <PaginationItem key={item}>
+                <PaginationLink asChild current={item === page}>
+                  <button type='button' aria-label={`Page ${item}`} onClick={() => setPage(item)}>
+                    {item}
+                  </button>
+                </PaginationLink>
+              </PaginationItem>
             );
           })}
-          <PaginationListItem>
-            <PaginationTriggerIconButton aria-label='Next page' disabled={page === total} onClick={() => setPage(page + 1)}>
-              <Icon><ChevronRight /></Icon>
-            </PaginationTriggerIconButton>
-          </PaginationListItem>
-        </Pagination>
-      </nav>
+          <PaginationItem>
+            <PaginationLink asChild>
+              <button type='button' aria-label='Next page' disabled={page === total} onClick={() => setPage(page + 1)}>
+                <Icon><ChevronRight /></Icon>
+              </button>
+            </PaginationLink>
+          </PaginationItem>
+        </PaginationList>
+      </Pagination>
       <form onSubmit={handleSubmit} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
         <Label htmlFor={fieldId} size='sm'>Go to page (1–{total})</Label>
         <div style={{ display: 'flex', gap: 'var(--spacing-4)' }}>

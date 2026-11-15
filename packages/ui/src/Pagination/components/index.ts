@@ -1,5 +1,4 @@
+export { PaginationList, type PaginationListProps } from './PaginationList'
 export { PaginationItem, type PaginationItemProps } from './PaginationItem'
-export { PaginationTriggerIconButton, type PaginationTriggerIconButtonProps } from './PaginationTriggerIconButton'
+export { PaginationLink, type PaginationLinkProps } from './PaginationLink'
 export { PaginationEllipsis, type PaginationEllipsisProps } from './PaginationEllipsis'
-export { PaginationText, type PaginationTextProps } from './PaginationText'
-export { PaginationListItem, type PaginationListItemProps } from './PaginationListItem'
