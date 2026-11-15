@@ -479,7 +479,7 @@ export default function FiltersAnchoredToASearchField() {
             </div>
             <div style={{ display: 'grid', gap: 'var(--spacing-6)' }}>
               {statuses.map((status) => (
-                <Checkbox key={status} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+                <Checkbox key={status}>
                   <CheckboxInput checked={draft.includes(status)} onChange={() => toggle(status)} />
                   <CheckboxIndicator>
                     <CheckboxCheckedIcon />
@@ -677,7 +677,7 @@ export default function DisabledTrigger() {
         }}
       >
         {files.map((file) => (
-          <Checkbox key={file} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)', minWidth: 0 }}>
+          <Checkbox key={file} style={{ minWidth: 0 }}>
             <CheckboxInput checked={selected.includes(file)} onChange={(event) => toggle(file, event.currentTarget.checked)} />
             <CheckboxIndicator>
               <CheckboxCheckedIcon />

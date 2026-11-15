@@ -266,7 +266,7 @@ export default function Inbox() {
             <Listbox ref={listboxRef} aria-labelledby={`${id}-list`} value={selected} onChangeValue={open} className='inboxListbox'>
               {visible.map((item) => (
                 <ListboxOption key={item.id} value={item.id} label={item.name} className='inboxOption'>
-                  <Avatar size='md' variant={item.unread ? 'primary' : 'secondary'} aria-hidden='true' style={{ flexShrink: 0 }}>
+                  <Avatar size='md' variant={item.unread ? 'primary' : 'secondary'} aria-hidden='true'>
                     <AvatarFallback>{getInitials(item.name)}</AvatarFallback>
                   </Avatar>
                   <span style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: 'var(--spacing-1)', flex: 1, minWidth: 0 }}>
@@ -331,7 +331,7 @@ export default function Inbox() {
           <ol aria-label='Messages' style={{ display: 'grid', alignContent: 'start', gap: 'var(--spacing-10)', flex: 1, margin: 0, padding: 0, listStyle: 'none' }}>
             {conversation.messages.map((message, index) => (
               <li key={index} style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--spacing-6)' }}>
-                <Avatar size='sm' variant={message.agent ? 'primary' : 'secondary'} aria-hidden='true' style={{ flexShrink: 0 }}>
+                <Avatar size='sm' variant={message.agent ? 'primary' : 'secondary'} aria-hidden='true'>
                   <AvatarFallback>{getInitials(message.author)}</AvatarFallback>
                 </Avatar>
                 <div style={{ display: 'grid', gap: 'var(--spacing-2)', minWidth: 0 }}>

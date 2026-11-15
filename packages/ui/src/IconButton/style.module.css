@@ -1,6 +1,6 @@
 .iconButton {
     --icon-button-size: 0;
-    --icon-button-br-ratio: 0.333;
+    --icon-button-br-ratio: var(--br-ratio);
     --icon-size: calc(var(--icon-button-size) / 3);
 
     display: flex;

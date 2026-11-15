@@ -33,7 +33,7 @@ export default function RequiredAgreementCheckbox() {
   return (
     <form onSubmit={handleSubmit} style={{ display: 'grid', gap: 'var(--spacing-12)', justifyItems: 'start', width: '100%' }}>
       <div style={{ display: 'grid', gap: 'var(--spacing-2)' }}>
-        <Checkbox style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+        <Checkbox>
           <CheckboxInput
             name='terms'
             required

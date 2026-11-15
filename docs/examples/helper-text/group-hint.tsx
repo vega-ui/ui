@@ -29,7 +29,7 @@ export default function GroupHint() {
         <FieldsetLegend>Incident alerts</FieldsetLegend>
         <HelperText id={`${id}-hint`}>We send each alert to every channel you pick.</HelperText>
         {CHANNELS.map((channel) => (
-          <Checkbox key={channel} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+          <Checkbox key={channel}>
             <CheckboxInput name='channels' value={channel} defaultChecked={channel === 'Email'} />
             <CheckboxIndicator>
               <CheckboxCheckedIcon />

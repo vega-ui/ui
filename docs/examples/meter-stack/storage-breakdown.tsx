@@ -20,7 +20,7 @@ export default function StorageBreakdown() {
           <Text id={titleId} size={2} fontWeight={500}>iPhone storage</Text>
           <Text size={2} style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>{used} GB of {capacity} GB used</Text>
         </div>
-        <MeterStack value={used} max={capacity} role='group' aria-labelledby={titleId} fullWidth>
+        <MeterStack value={used} max={capacity} aria-labelledby={titleId} fullWidth>
           {categories.map((category) => (
             <MeterStackSegment
               key={category.id}

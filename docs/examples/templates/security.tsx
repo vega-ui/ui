@@ -700,7 +700,7 @@ export default function Security() {
                 <QrCode />
                 <div style={{ display: 'grid', gap: 'var(--spacing-4)', alignContent: 'center', minWidth: 0 }}>
                   <Text size={2} style={muted}>Open your authenticator app and scan this code. Can’t scan it? Enter this key instead:</Text>
-                  <Code size={2} style={{ justifySelf: 'start', overflowWrap: 'anywhere', fontVariantNumeric: 'tabular-nums' }}>{SECRET}</Code>
+                  <Code size={2} style={{ justifySelf: 'start', fontVariantNumeric: 'tabular-nums' }}>{SECRET}</Code>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
                     <Button size='xs' type='button' {...ghost} style={{ gap: 'var(--spacing-2)' }} onClick={() => copy('secret', SECRET.replaceAll(' ', ''))}>
                       <Icon size='xs' aria-hidden='true'>{copied === 'secret' ? <Check /> : <Copy />}</Icon>
@@ -798,7 +798,7 @@ export default function Security() {
               </div>
               <Separator />
               <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
-                <Checkbox style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+                <Checkbox>
                   <CheckboxInput
                     checked={savedCodes}
                     aria-invalid={codesError !== ''}

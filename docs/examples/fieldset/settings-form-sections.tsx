@@ -13,8 +13,6 @@ import {
 } from '@vega-ui/react';
 import { FormEvent, useId, useState } from 'react';
 
-const checkboxStyle = { display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' };
-
 export default function SettingsFormSections() {
   const id = useId();
   const [payload, setPayload] = useState('');
@@ -44,14 +42,14 @@ export default function SettingsFormSections() {
       </Fieldset>
       <Fieldset appearance='outlined'>
         <FieldsetLegend>Security</FieldsetLegend>
-        <Checkbox style={checkboxStyle}>
+        <Checkbox>
           <CheckboxInput name='twoFactor' defaultChecked />
           <CheckboxIndicator>
             <CheckboxCheckedIcon />
           </CheckboxIndicator>
           Two-factor authentication
         </Checkbox>
-        <Checkbox style={checkboxStyle}>
+        <Checkbox>
           <CheckboxInput name='newDeviceAlerts' />
           <CheckboxIndicator>
             <CheckboxCheckedIcon />

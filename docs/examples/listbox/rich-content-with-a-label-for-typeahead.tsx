@@ -17,7 +17,7 @@ export default function RichContentWithALabelForTypeahead() {
           label={person.name}
           style={{ height: 'auto', paddingBlock: 'var(--spacing-5)', gap: 'var(--spacing-6)' }}
         >
-          <Avatar size='md' aria-hidden='true' style={{ flexShrink: 0 }}>
+          <Avatar size='md' aria-hidden='true'>
             <AvatarFallback>{person.initials}</AvatarFallback>
           </Avatar>
           <span style={{ display: 'flex', flexDirection: 'column', flex: 1, minWidth: 0 }}>

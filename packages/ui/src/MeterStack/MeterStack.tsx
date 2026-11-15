@@ -53,6 +53,7 @@ export const MeterStack: FC<MeterStackProps> = ({
   return (
     <MeterStackProvider min={min} max={max}>
       <div
+        role='group'
         data-full-width={fullWidth}
         className={csx(style.meter, className)}
         style={meterStyle}

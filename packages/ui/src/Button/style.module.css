@@ -1,6 +1,6 @@
 .button {
     --button-height: 0;
-    --button-br-ratio: 0.333;
+    --button-br-ratio: var(--br-ratio);
 
     display: flex;
     align-items: center;

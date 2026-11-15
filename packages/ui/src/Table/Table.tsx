@@ -11,7 +11,7 @@ export interface TableProps extends TableHTMLAttributes<HTMLTableElement> {
    * - 'start': Aligns content to the left
    * - 'center': Centers content
    * - 'end': Aligns content to the right
-   * - 'between': Distributes space evenly between cells
+   * - 'between': Aligns the last column to the end and the others to the start
    */
   dataAlign?: 'start' | 'center' | 'end' | 'between'
 

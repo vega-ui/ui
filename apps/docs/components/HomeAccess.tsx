@@ -109,7 +109,7 @@ export const HomeAccess = () => {
                 <SwitchIndicator />
               </Switch>
             </div>
-            <Checkbox className={styles.checkbox}>
+            <Checkbox>
               <CheckboxInput />
               <CheckboxIndicator>
                 <CheckboxCheckedIcon />

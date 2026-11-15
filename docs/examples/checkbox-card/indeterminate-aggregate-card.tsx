@@ -55,7 +55,7 @@ export default function IndeterminateAggregateCard() {
       </CheckboxCard>
       <div role='group' aria-label='European offices' style={{ display: 'grid', gap: 'var(--spacing-5)', paddingInlineStart: 'var(--spacing-8)' }}>
         {offices.map((office) => (
-          <Checkbox key={office} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+          <Checkbox key={office}>
             <CheckboxInput checked={enabled.includes(office)} onChange={() => toggle(office)} />
             <CheckboxIndicator>
               <CheckboxCheckedIcon />

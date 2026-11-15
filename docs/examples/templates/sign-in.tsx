@@ -168,7 +168,7 @@ export default function SignIn() {
               </PinField>
               {codeError !== '' && <HelperText id={`${id}-code-error`} invalid>{codeError}</HelperText>}
             </div>
-            <Checkbox style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+            <Checkbox>
               <CheckboxInput name='trust' />
               <CheckboxIndicator>
                 <CheckboxCheckedIcon />

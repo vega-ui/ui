@@ -23,7 +23,7 @@ export default function DisabledActionReason() {
 
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-8)', justifyItems: 'center', width: '100%' }}>
-      <Checkbox style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+      <Checkbox>
         <CheckboxInput checked={verified} onChange={(event) => setVerified(event.currentTarget.checked)} />
         <CheckboxIndicator>
           <CheckboxCheckedIcon />

@@ -32,7 +32,7 @@ The root sets size-specific padding, type scale, min height, and state colors.
 
 ### Sizes
 
-Each `size` sets padding, type scale and the minimum height; `rows` can still make the field taller. `fullWidth` stretches it to the container.
+Each `size` sets padding, type scale and the minimum height; `rows` can still make the field taller. A one-row field is as tall as a `TextField`, `Button` or `IconButton` of the same size. `fullWidth` stretches it to the container.
 
 <!-- example: text-area/textarea-sizes.tsx -->
 ```tsx

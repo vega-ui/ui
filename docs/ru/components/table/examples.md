@@ -220,7 +220,7 @@ export default function SortableColumns() {
 
               return (
                 <TableHeading key={column.key} scope='col' aria-sort={active ? direction : undefined}>
-                  <Button size='sm' variant='secondary' appearance='transparent' onClick={() => sortBy(column.key)}>
+                  <Button size='sm' variant='secondary' appearance='transparent' style={{ font: 'inherit' }} onClick={() => sortBy(column.key)}>
                     {column.label}
                     <Icon size='xs' aria-hidden='true'>{icon}</Icon>
                   </Button>
@@ -360,7 +360,7 @@ export default function RowSelectionForm() {
 
 ### Раскладка/оверлей: прокручиваемая таблица в диалоге
 
-Длинный список начислений внутри диалога прокручивается в собственной фокусируемой области и не растягивает диалог. Ячейки заголовка липкие и окрашены в цвет поверхности диалога, поэтому строки под ними не просвечивают.
+Длинный список начислений внутри диалога прокручивается в собственной фокусируемой области и не растягивает диалог. Ячейки заголовка липкие и окрашены в цвет поверхности диалога, поэтому строки под ними не просвечивают. Линию под строкой `TableHead` рисуют её ячейки `TableHeading`, поэтому она остаётся с ними, пока они прилипают.
 
 <!-- example: table/billing-table-inside-a-dialog.tsx -->
 ```tsx

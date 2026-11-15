@@ -57,7 +57,7 @@ export default function CheckboxListInsideADrawer() {
             <FieldsetLegend style={{ marginBlockEnd: 'var(--spacing-5)' }}>Status</FieldsetLegend>
             <div style={{ display: 'grid', gap: 'var(--spacing-6)' }}>
               {statuses.map((status) => (
-                <Checkbox key={status.value} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+                <Checkbox key={status.value}>
                   <CheckboxInput name='status' value={status.value} defaultChecked={applied.includes(status.value)} />
                   <CheckboxIndicator>
                     <CheckboxCheckedIcon />

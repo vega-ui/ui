@@ -307,7 +307,7 @@ export default function TeamMembers() {
                 <TableRow key={member.id}>
                   <TableData dataAlign='start'>
                     <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-6)' }}>
-                      <Avatar size='md' aria-hidden='true' style={{ flexShrink: 0 }}>
+                      <Avatar size='md' aria-hidden='true'>
                         <AvatarFallback>{getInitials(member.name)}</AvatarFallback>
                       </Avatar>
                       <span style={{ display: 'grid' }}>
@@ -367,7 +367,7 @@ export default function TeamMembers() {
                     borderBlockStart: index > 0 ? '1px solid var(--separator-opaque)' : undefined,
                   }}
                 >
-                  <Avatar size='md' variant='secondary' aria-hidden='true' style={{ flexShrink: 0 }}>
+                  <Avatar size='md' variant='secondary' aria-hidden='true'>
                     <AvatarFallback>{invite.email[0].toUpperCase()}</AvatarFallback>
                   </Avatar>
                   <span style={{ display: 'grid', gap: 'var(--spacing-1)', flex: '1 1 200px', minWidth: 0 }}>

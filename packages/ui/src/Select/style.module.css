@@ -3,7 +3,7 @@
 
     --select-size: 0;
     --select-gap: var(--spacing-10);
-    --select-br-ratio: 0.333;
+    --select-br-ratio: var(--br-ratio);
 }
 
 .select:where([data-size='xs']) {

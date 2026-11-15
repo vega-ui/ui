@@ -14,6 +14,7 @@
 
 ## Screen Reader Semantics
 
+- The root is a `role='group'`; name it with `aria-label` or `aria-labelledby`.
 - Each segment exposes `role='meter'` with the shared min/max context.
 - Because segmented meters can be hard to interpret from visuals alone, nearby text labels are often necessary.
 

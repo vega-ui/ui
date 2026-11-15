@@ -10,17 +10,8 @@
     overflow: hidden;
 }
 
-.window[data-tuned='true'] [class] {
-    --button-br-ratio: var(--theme-ratio);
-    --icon-button-br-ratio: var(--theme-ratio);
-    --input-br-ratio: var(--theme-ratio);
-    --textarea-br-ratio: var(--theme-ratio);
-    --checkbox-br-ratio: var(--theme-ratio);
-    --option-br-ratio: var(--theme-ratio);
-    --select-br-ratio: var(--theme-ratio);
-    --segmented-control-br-ratio: var(--theme-ratio);
-    --grid-item-br-ratio: var(--theme-ratio);
-    --badge-border-radius-ratio: var(--theme-ratio);
+.window[data-tuned='true'] {
+    --br-ratio: var(--theme-ratio);
 }
 
 .bar {

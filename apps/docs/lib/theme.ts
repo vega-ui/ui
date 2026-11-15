@@ -12,19 +12,6 @@ export type Density = typeof DENSITIES[number];
 
 export const DENSITY_VALUES: Record<Density, number> = { compact: 1.75, default: 2, comfortable: 2.25 };
 
-export const RATIO_VARS = [
-  '--button-br-ratio',
-  '--icon-button-br-ratio',
-  '--input-br-ratio',
-  '--textarea-br-ratio',
-  '--checkbox-br-ratio',
-  '--option-br-ratio',
-  '--select-br-ratio',
-  '--segmented-control-br-ratio',
-  '--grid-item-br-ratio',
-  '--badge-border-radius-ratio',
-];
-
 const STEPS = [0, 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
 
 const LIGHTNESS = [0.97, 0.94, 0.86, 0.74, 0.68, 0.61, 0.55, 0.51, 0.41, 0.29, 0.24];
@@ -96,9 +83,9 @@ const block = (selector: string, entries: [string, string | number][]) => `${sel
 
 export const exportCss = (settings: ThemeSettings) => {
   const blocks = ['/* Vega UI theme */'];
-  const root: [string, string][] = [];
+  const root: [string, string | number][] = [];
 
-  if (settings.radius !== RADIUS_VALUES.default) root.push(['--radius', `${settings.radius}px`]);
+  if (settings.radius !== RADIUS_VALUES.default) root.push(['--radius', `${settings.radius}px`], ['--br-ratio', radiusRatio(settings.radius)]);
   if (settings.density !== 'default') root.push(['--spacing', `${DENSITY_VALUES[settings.density]}px`]);
   if (root.length) blocks.push(block(':root', root));
 
@@ -108,10 +95,6 @@ export const exportCss = (settings: ThemeSettings) => {
 
   if (settings.accent !== 'custom' && settings.accent !== 'blue') {
     blocks.push(block('.light,\n.dark', primaryVars(settings, 'light')));
-  }
-
-  if (settings.radius !== RADIUS_VALUES.default) {
-    blocks.push(block('[class]', RATIO_VARS.map((name) => [name, radiusRatio(settings.radius)])));
   }
 
   return blocks.join('\n\n');

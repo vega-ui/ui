@@ -4,9 +4,9 @@
     display: inline-block;
     background-color: var(--fills-secondary);
     padding: 0 .5em;
-    border-radius: .35em;
+    border-radius: calc(1lh * var(--br-ratio));
     break-inside: avoid;
-    word-wrap: break-word;
+    overflow-wrap: anywhere;
 
     --t-color: var(--label-secondary);
 }

@@ -50,7 +50,7 @@ export default function NotificationChannels() {
         </Text>
       </FieldsetHeader>
       {CHANNELS.map((channel) => (
-        <Checkbox key={channel.value} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+        <Checkbox key={channel.value}>
           <CheckboxInput name='alertChannels' value={channel.value} defaultChecked={channel.checked} />
           <CheckboxIndicator>
             <CheckboxCheckedIcon />
@@ -220,7 +220,7 @@ export default function AtLeastOneChannel() {
           {invalid ? 'Choose at least one way to receive codes.' : 'Pick one or more channels.'}
         </HelperText>
         {CHANNELS.map((channel) => (
-          <Checkbox key={channel} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+          <Checkbox key={channel}>
             <CheckboxInput
               name='codeChannels'
               value={channel}

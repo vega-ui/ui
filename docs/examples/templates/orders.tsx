@@ -231,7 +231,7 @@ export default function Orders() {
           {matches.length === 0 ? 'No results' : `Showing ${start + 1}–${start + visible.length} of ${matches.length} orders`}
         </Text>
         <nav aria-label='Orders pages'>
-          <Pagination size='xs' style={{ flexWrap: 'wrap', margin: 0, paddingInlineStart: 0 }}>
+          <Pagination size='xs' style={{ flexWrap: 'wrap' }}>
             <PaginationListItem>
               <Button size='xs' variant='secondary' appearance='ghost' disabled={current === 1} onClick={() => setPage(current - 1)}>Previous</Button>
             </PaginationListItem>

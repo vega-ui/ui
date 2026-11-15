@@ -10,7 +10,7 @@ import { Diff, Rocket } from '@vega-ui/icons';
 export default function CustomStateIcons() {
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--spacing-12)' }}>
-      <Checkbox style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+      <Checkbox>
         <CheckboxInput defaultChecked />
         <CheckboxIndicator>
           <CheckboxCheckedIcon>
@@ -20,7 +20,7 @@ export default function CustomStateIcons() {
         </CheckboxIndicator>
         Deploy after merge
       </Checkbox>
-      <Checkbox style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+      <Checkbox>
         <CheckboxInput indeterminate />
         <CheckboxIndicator>
           <CheckboxCheckedIcon />

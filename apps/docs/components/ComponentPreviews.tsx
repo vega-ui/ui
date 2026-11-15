@@ -112,7 +112,7 @@ export const PREVIEWS: Record<string, Preview> = {
   checkbox: {
     node: (
       <div className={styles.list}>
-        <Checkbox className={styles.row}>
+        <Checkbox>
           <CheckboxInput defaultChecked />
           <CheckboxIndicator>
             <CheckboxCheckedIcon />
@@ -120,7 +120,7 @@ export const PREVIEWS: Record<string, Preview> = {
           </CheckboxIndicator>
           <Text size={3}>Product updates</Text>
         </Checkbox>
-        <Checkbox className={styles.row}>
+        <Checkbox>
           <CheckboxInput />
           <CheckboxIndicator>
             <CheckboxCheckedIcon />
@@ -318,7 +318,7 @@ export const PREVIEWS: Record<string, Preview> = {
       <Fieldset appearance='outlined' className={styles.wide}>
         <FieldsetLegend>Notify me by</FieldsetLegend>
         <div className={styles.list}>
-          <Checkbox className={styles.row}>
+          <Checkbox>
             <CheckboxInput defaultChecked />
             <CheckboxIndicator>
               <CheckboxCheckedIcon />
@@ -326,7 +326,7 @@ export const PREVIEWS: Record<string, Preview> = {
             </CheckboxIndicator>
             <Text size={3}>Email</Text>
           </Checkbox>
-          <Checkbox className={styles.row}>
+          <Checkbox>
             <CheckboxInput />
             <CheckboxIndicator>
               <CheckboxCheckedIcon />
@@ -726,7 +726,7 @@ export const PREVIEWS: Record<string, Preview> = {
           <Text id='preview-meter-stack-label' size={2} fontWeight={500}>Storage</Text>
           <Text size={2} className={styles.value}>46 of 64 GB</Text>
         </div>
-        <MeterStack value={46} max={64} role='group' aria-labelledby='preview-meter-stack-label' fullWidth>
+        <MeterStack value={46} max={64} aria-labelledby='preview-meter-stack-label' fullWidth>
           {STORAGE.map((item) => (
             <MeterStackSegment
               key={item.label}

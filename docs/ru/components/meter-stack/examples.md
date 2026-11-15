@@ -30,7 +30,7 @@ export default function StorageBreakdown() {
           <Text id={titleId} size={2} fontWeight={500}>iPhone storage</Text>
           <Text size={2} style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>{used} GB of {capacity} GB used</Text>
         </div>
-        <MeterStack value={used} max={capacity} role='group' aria-labelledby={titleId} fullWidth>
+        <MeterStack value={used} max={capacity} aria-labelledby={titleId} fullWidth>
           {categories.map((category) => (
             <MeterStackSegment
               key={category.id}
@@ -107,7 +107,7 @@ export default function ServiceHealthByPeriod() {
           <Text id={titleId} size={2} fontWeight={500}>Checkout API</Text>
           <Text size={2} style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>{uptime}% healthy</Text>
         </div>
-        <MeterStack value={total} max={total} role='group' aria-labelledby={titleId} fullWidth>
+        <MeterStack value={total} max={total} aria-labelledby={titleId} fullWidth>
           <MeterStackSegment
             value={healthy}
             aria-label='Healthy'
@@ -247,7 +247,7 @@ export default function RevenueSplitSummary() {
         <Heading id={titleId} as='h3' size={4} fontWeight={600}>Q3 revenue by channel</Heading>
         <Text size={2} style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>{currency.format(total)} total</Text>
       </div>
-      <MeterStack value={total} max={total} role='group' aria-labelledby={titleId} size='lg' fullWidth>
+      <MeterStack value={total} max={total} aria-labelledby={titleId} size='lg' fullWidth>
         {channels.map((channel) => (
           <MeterStackSegment
             key={channel.id}
@@ -313,7 +313,7 @@ export default function OverloadedQuotaBreakdown() {
         <MeterStack
           value={used}
           max={seats}
-          role='group'
+         
           aria-labelledby={titleId}
           aria-describedby={overloaded ? errorId : undefined}
           fullWidth
@@ -393,7 +393,7 @@ export default function ManySmallSegments() {
     <div style={{ display: 'grid', gap: 'var(--spacing-8)', width: '100%' }}>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Text id={titleId} size={2} fontWeight={500}>Languages</Text>
-        <MeterStack value={total} max={total} role='group' aria-labelledby={titleId} fullWidth>
+        <MeterStack value={total} max={total} aria-labelledby={titleId} fullWidth>
           {segments.map((segment) => (
             <MeterStackSegment
               key={segment.label}

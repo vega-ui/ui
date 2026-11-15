@@ -18,8 +18,8 @@
 
 ## Part-Level Variables
 
-- `Checkbox`: root state owner for checked, indeterminate, disabled, and variant styles.
-- `CheckboxIndicator`: visible control surface.
+- `Checkbox`: root state owner for checked, indeterminate, disabled, and variant styles. An `inline-flex` row with centered items and `var(--spacing-4)` gap; override `align-items` for multi-line labels.
+- `CheckboxIndicator`: visible control surface; does not shrink in the row.
 - `CheckboxCheckedIcon` and `CheckboxIndeterminateIcon`: icon rendering inside the indicator.
 
 ## State And Variant Interaction
@@ -65,7 +65,7 @@ import { Diff, Rocket } from '@vega-ui/icons';
 export default function CustomStateIcons() {
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--spacing-12)' }}>
-      <Checkbox style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+      <Checkbox>
         <CheckboxInput defaultChecked />
         <CheckboxIndicator>
           <CheckboxCheckedIcon>
@@ -75,7 +75,7 @@ export default function CustomStateIcons() {
         </CheckboxIndicator>
         Deploy after merge
       </Checkbox>
-      <Checkbox style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+      <Checkbox>
         <CheckboxInput indeterminate />
         <CheckboxIndicator>
           <CheckboxCheckedIcon />

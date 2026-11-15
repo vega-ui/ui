@@ -1,6 +1,6 @@
 .item {
     --grid-item-size: var(--spacing-18);
-    --grid-item-br-ratio: 0.333;
+    --grid-item-br-ratio: var(--br-ratio);
 
     --grid-item-color: var(--text-color);
     --grid-item-background-color: transparent;
@@ -21,8 +21,10 @@
     font-family: var(--default-font-family);
     color: var(--grid-item-color);
     background-color: var(--grid-item-background-color);
+    box-sizing: border-box;
     height: var(--grid-item-size);
     min-width: var(--grid-item-size);
+    padding-inline: var(--spacing-3);
     cursor: pointer;
     border-radius: calc(var(--grid-item-size) * var(--grid-item-br-ratio));
 }

@@ -15,7 +15,7 @@
 }
 
 .data:where([data-align='between']) {
-    text-align: center;
+    text-align: start;
 }
 
 .data:where([data-align='between']):first-child {

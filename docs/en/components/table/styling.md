@@ -14,12 +14,12 @@
 
 - `Table`: handles full-width and full-height layout flags.
 - `TableRow`: applies row borders through `--border-color`.
-- `TableHeading`: owns heading padding and alignment behavior.
+- `TableHeading`: owns heading padding and alignment behavior. Inside `TableHead` it draws the line under the row itself, so the line stays with sticky headings.
 - `TableData`: owns cell padding and alignment behavior.
 
 ## State And Variant Interaction
 
-- `dataAlign` changes both heading and data cell alignment.
+- `dataAlign` changes both heading and data cell alignment. The default `between` aligns the last column to the end and the others to the start.
 - `edgePadded={false}` removes first and last cell edge padding to align with surrounding layout.
 - `fullWidth` and `fullHeight` affect layout but do not change the semantic structure.
 

@@ -97,17 +97,8 @@
     border-top: 1px solid var(--site-line);
 }
 
-.scope [class] {
-    --button-br-ratio: var(--theme-ratio);
-    --icon-button-br-ratio: var(--theme-ratio);
-    --input-br-ratio: var(--theme-ratio);
-    --textarea-br-ratio: var(--theme-ratio);
-    --checkbox-br-ratio: var(--theme-ratio);
-    --option-br-ratio: var(--theme-ratio);
-    --select-br-ratio: var(--theme-ratio);
-    --segmented-control-br-ratio: var(--theme-ratio);
-    --grid-item-br-ratio: var(--theme-ratio);
-    --badge-border-radius-ratio: var(--theme-ratio);
+.scope {
+    --br-ratio: var(--theme-ratio);
 }
 
 .canvas {
@@ -163,9 +154,6 @@
 }
 
 .checkbox {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-4);
     font-size: var(--font-size-3);
 }
 

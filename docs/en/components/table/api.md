@@ -6,7 +6,7 @@
 <!-- AUTO-GENERATED:ROOT_API:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `dataAlign` | `'start' \| 'center' \| 'end' \| 'between'` | `'between'` | No | Defines the alignment strategy for table data cells. 'start': Aligns content to the left; 'center': Centers content; 'end': Aligns content to the right; 'between': Distributes space evenly between cells |
+| `dataAlign` | `'start' \| 'center' \| 'end' \| 'between'` | `'between'` | No | Defines the alignment strategy for table data cells. 'start': Aligns content to the left; 'center': Centers content; 'end': Aligns content to the right; 'between': Aligns the last column to the end and the others to the start |
 | `edgePadded` | `boolean` | `false` | No | Adds horizontal padding to the edges of the table container. Useful when the table should not stretch to the viewport edge. |
 | `fullWidth` | `boolean` | — | No | Makes the table stretch to fill the full width of its container. |
 | `fullHeight` | `boolean` | — | No | Makes the table stretch to fill the full height of its container. Useful for layouts with scrollable or pinned regions. |

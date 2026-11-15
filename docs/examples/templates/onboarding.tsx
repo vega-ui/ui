@@ -286,7 +286,7 @@ export default function Onboarding() {
                 </div>
               ))}
             </dl>
-            <Checkbox style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+            <Checkbox>
               <CheckboxInput name='tips' defaultChecked />
               <CheckboxIndicator>
                 <CheckboxCheckedIcon />

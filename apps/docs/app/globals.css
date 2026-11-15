@@ -284,15 +284,6 @@ html[data-radius='full'] {
     --site-radius-scale: 1.5;
 }
 
-:where(html[data-radius]:not([data-radius='default'])) [class] {
-    --button-br-ratio: var(--site-br-ratio);
-    --icon-button-br-ratio: var(--site-br-ratio);
-    --input-br-ratio: var(--site-br-ratio);
-    --textarea-br-ratio: var(--site-br-ratio);
-    --checkbox-br-ratio: var(--site-br-ratio);
-    --option-br-ratio: var(--site-br-ratio);
-    --select-br-ratio: var(--site-br-ratio);
-    --segmented-control-br-ratio: var(--site-br-ratio);
-    --grid-item-br-ratio: var(--site-br-ratio);
-    --badge-border-radius-ratio: var(--site-br-ratio);
+html[data-radius]:not([data-radius='default']) {
+    --br-ratio: var(--site-br-ratio);
 }

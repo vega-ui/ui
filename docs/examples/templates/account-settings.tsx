@@ -125,7 +125,7 @@ export default function AccountSettings() {
         <Card asChild style={card}>
           <form noValidate aria-labelledby={`${id}-profile`} onSubmit={saveProfile} onReset={discardProfile}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-6)', minWidth: 0 }}>
-              <Avatar size='lg' aria-hidden='true' style={{ flexShrink: 0 }}>
+              <Avatar size='lg' aria-hidden='true'>
                 <AvatarFallback>EM</AvatarFallback>
               </Avatar>
               <div style={{ display: 'grid', minWidth: 0 }}>

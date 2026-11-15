@@ -3720,8 +3720,8 @@
     "ru": "Ref, передаваемый на нижележащий нативный элемент `<input>`"
   },
   "Table.dataAlign": {
-    "en": "Defines the alignment strategy for table data cells. 'start': Aligns content to the left; 'center': Centers content; 'end': Aligns content to the right; 'between': Distributes space evenly between cells",
-    "ru": "Определяет стратегию выравнивания ячеек данных таблицы. 'start': выравнивает содержимое по левому краю; 'center': центрирует содержимое; 'end': выравнивает содержимое по правому краю; 'between': равномерно распределяет пространство между ячейками"
+    "en": "Defines the alignment strategy for table data cells. 'start': Aligns content to the left; 'center': Centers content; 'end': Aligns content to the right; 'between': Aligns the last column to the end and the others to the start",
+    "ru": "Определяет стратегию выравнивания ячеек данных таблицы. 'start': выравнивает содержимое по левому краю; 'center': центрирует содержимое; 'end': выравнивает содержимое по правому краю; 'between': выравнивает последнюю колонку по концу, остальные — по началу"
   },
   "Table.edgePadded": {
     "en": "Adds horizontal padding to the edges of the table container. Useful when the table should not stretch to the viewport edge.",

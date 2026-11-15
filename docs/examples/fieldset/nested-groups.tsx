@@ -27,7 +27,7 @@ export default function NestedGroups() {
         </TextField>
       </div>
       <Fieldset>
-        <FieldsetLegend size={3}>Delivery window</FieldsetLegend>
+        <FieldsetLegend>Delivery window</FieldsetLegend>
         {WINDOWS.map((window) => (
           <Label key={window.value} fontWeight={400} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
             <Radio name='window' value={window.value} defaultChecked={window.value === 'morning'} />

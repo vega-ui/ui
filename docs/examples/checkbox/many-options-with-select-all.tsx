@@ -40,7 +40,7 @@ export default function ManyOptionsWithSelectAll() {
 
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-6)', width: '100%' }}>
-      <Checkbox style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)', fontWeight: 600 }}>
+      <Checkbox style={{ fontWeight: 600 }}>
         <CheckboxInput checked={allSelected} indeterminate={someSelected} onChange={toggleAll} />
         <CheckboxIndicator>
           <CheckboxCheckedIcon />
@@ -62,7 +62,7 @@ export default function ManyOptionsWithSelectAll() {
         }}
       >
         {deployments.map((deployment) => (
-          <Checkbox key={deployment} size='sm' style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+          <Checkbox key={deployment} size='sm'>
             <CheckboxInput checked={selected.has(deployment)} onChange={() => toggle(deployment)} />
             <CheckboxIndicator>
               <CheckboxCheckedIcon />

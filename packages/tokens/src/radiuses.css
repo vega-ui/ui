@@ -1,5 +1,6 @@
 :root {
     --radius: 4px;
+    --br-ratio: 0.333;
 
     --radius-1: calc(var(--radius) * 1);
     --radius-2: calc(var(--radius) * 2);

@@ -28,14 +28,14 @@ export default function FieldsetSectionTitle() {
     >
       <Heading as='h2' size={6} id='billing-form-title'>Billing details</Heading>
       <Fieldset style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
-        <FieldsetLegend style={{ marginBlockEnd: 'var(--spacing-6)' }}>Company</FieldsetLegend>
+        <FieldsetLegend>Company</FieldsetLegend>
         <Label htmlFor='billing-company-name'>Legal name</Label>
         <TextField>
           <TextFieldInput id='billing-company-name' name='company' autoComplete='organization' required />
         </TextField>
       </Fieldset>
       <Fieldset style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
-        <FieldsetLegend style={{ marginBlockEnd: 'var(--spacing-6)' }}>Invoices</FieldsetLegend>
+        <FieldsetLegend>Invoices</FieldsetLegend>
         <Label htmlFor='billing-invoice-email'>Send invoices to</Label>
         <TextField>
           <TextFieldInput id='billing-invoice-email' name='billingEmail' type='email' autoComplete='email' required />

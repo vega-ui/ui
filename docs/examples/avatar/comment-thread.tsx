@@ -26,7 +26,7 @@ export default function CommentThread() {
     <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gap: 'var(--spacing-10)', width: '100%', maxWidth: 420 }}>
       {comments.map((comment) => (
         <li key={comment.id} style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--spacing-6)' }}>
-          <Avatar size='sm' aria-hidden='true' style={{ flexShrink: 0 }}>
+          <Avatar size='sm' aria-hidden='true'>
             {comment.photo && <AvatarImage src={comment.photo} alt='' />}
             <AvatarFallback>{comment.initials}</AvatarFallback>
           </Avatar>

@@ -168,7 +168,7 @@ export default function ParticipantsDialog() {
         <ul aria-label='Attendees' style={{ listStyle: 'none', margin: 0, marginBlockStart: 'var(--spacing-10)', padding: 0, display: 'grid', gap: 'var(--spacing-6)', maxHeight: 220, overflowY: 'auto' }}>
           {attendees.map((person) => (
             <li key={person.name} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-6)' }}>
-              <Avatar size='xs' aria-hidden='true' style={{ flexShrink: 0 }}>
+              <Avatar size='xs' aria-hidden='true'>
                 <AvatarFallback>{person.initials}</AvatarFallback>
               </Avatar>
               <Text size={2} fontWeight={500} style={{ flex: 1 }}>{person.name}</Text>
@@ -223,7 +223,7 @@ export default function MixedSources() {
 
 ### Пограничный случай: от одного участника до миллионов
 
-Всегда рендерится не больше четырёх аватаров; остаток форматируется через компактную нотацию `Intl.NumberFormat` («+1.2K more», «+2.4M more»). Точное число передаётся в доступном имени группы, поэтому сокращённый визуальный текст скрыт от скринридера.
+Всегда рендерится не больше четырёх аватаров; остаток форматируется через компактную нотацию `Intl.NumberFormat` («+1.2K more», «+2.4M more»). Точное число передаётся в доступном имени группы, поэтому сокращённый визуальный текст скрыт от скринридера. Чтобы показать число последним элементом стопки, дайте этому элементу вырасти в пилюлю: `width: 'auto'`, `minWidth: 'var(--avatar-size)'` и `paddingInline: 'var(--spacing-2)'`; фиксированный круг обрезает «+1.2K» на малых размерах.
 
 <!-- example: avatar-stack/large-team.tsx -->
 ```tsx

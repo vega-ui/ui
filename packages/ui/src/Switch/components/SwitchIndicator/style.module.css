@@ -5,8 +5,8 @@
     height: var(--switch-indicator-size);
     position: relative;
     inset-inline-start: var(--switch-indicator-offset, 0%);
-    transition-delay: var(--switch-indicator-transition-delay, 0s);
     transition:
             inset-inline-start var(--transition-fast-state-delay) ease-in,
             width var(--transition-fast-state-delay) ease-in;
+    transition-delay: var(--switch-indicator-transition-delay, 0s);
 }

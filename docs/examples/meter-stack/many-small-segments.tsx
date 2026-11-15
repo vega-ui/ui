@@ -34,7 +34,7 @@ export default function ManySmallSegments() {
     <div style={{ display: 'grid', gap: 'var(--spacing-8)', width: '100%' }}>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Text id={titleId} size={2} fontWeight={500}>Languages</Text>
-        <MeterStack value={total} max={total} role='group' aria-labelledby={titleId} fullWidth>
+        <MeterStack value={total} max={total} aria-labelledby={titleId} fullWidth>
           {segments.map((segment) => (
             <MeterStackSegment
               key={segment.label}

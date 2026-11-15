@@ -23,7 +23,7 @@ export default function DisabledByFieldset() {
         <Label htmlFor='all-day'>All-day event</Label>
       </div>
       <Fieldset disabled={allDay} style={{ display: 'grid', gap: 'var(--spacing-8)' }}>
-        <FieldsetLegend style={{ marginBlockEnd: 'var(--spacing-6)' }}>Time</FieldsetLegend>
+        <FieldsetLegend>Time</FieldsetLegend>
         <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
           <Label htmlFor='event-start'>Starts</Label>
           <TimeField defaultValue='10:00'>

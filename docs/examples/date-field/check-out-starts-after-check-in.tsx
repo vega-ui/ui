@@ -72,7 +72,7 @@ export default function StayDates() {
 
   return (
     <Fieldset style={{ display: 'grid', gap: 'var(--spacing-8)', width: '100%', maxWidth: 280 }}>
-      <FieldsetLegend style={{ marginBlockEnd: 'var(--spacing-6)' }}>Stay</FieldsetLegend>
+      <FieldsetLegend>Stay</FieldsetLegend>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor='check-in'>Check-in</Label>
         <DateField format='dd.MM.yyyy' separator='.' value={checkIn} onChangeValue={changeCheckIn}>

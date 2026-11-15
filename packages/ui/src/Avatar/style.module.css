@@ -4,6 +4,7 @@
     --size: var(--avatar-size);
 
     display: flex;
+    flex-shrink: 0;
     justify-content: center;
     align-items: center;
     overflow: hidden;

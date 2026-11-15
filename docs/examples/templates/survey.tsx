@@ -290,7 +290,7 @@ export default function Survey() {
         {step === 1 && (
           <div style={stepStyle}>
             <Fieldset aria-describedby={describe('features')} className='surveyFieldset' style={{ gap: 'var(--spacing-5)' }}>
-              <FieldsetLegend style={{ marginBlockEnd: 'var(--spacing-3)' }}><Text size={3} fontWeight={500}>What do you use most?</Text></FieldsetLegend>
+              <FieldsetLegend style={{ marginBlockEnd: 'var(--spacing-3)' }}>What do you use most?</FieldsetLegend>
               <div className='surveyFeatures'>
                 {features.map((item, index) => (
                   <CheckboxCard key={item.value} size='sm' style={{ minWidth: 0 }}>
@@ -318,7 +318,7 @@ export default function Survey() {
             </Fieldset>
 
             <Fieldset aria-describedby={describe('role')} className='surveyFieldset' style={{ gap: 'var(--spacing-5)' }}>
-              <FieldsetLegend style={{ marginBlockEnd: 'var(--spacing-3)' }}><Text size={3} fontWeight={500}>What’s your role?</Text></FieldsetLegend>
+              <FieldsetLegend style={{ marginBlockEnd: 'var(--spacing-3)' }}>What’s your role?</FieldsetLegend>
               <div style={{ display: 'grid', gap: 'var(--spacing-5)' }}>
                 {roles.map((option, index) => (
                   <div key={option.value} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
@@ -399,7 +399,7 @@ export default function Survey() {
                 </HelperText>
               </div>
               <div style={{ display: 'grid', gap: 'var(--spacing-2)' }}>
-                <Checkbox style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+                <Checkbox>
                   <CheckboxInput
                     name='consent'
                     data-field='consent'

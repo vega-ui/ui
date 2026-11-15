@@ -61,7 +61,7 @@ export default function NotificationChannels() {
         </Text>
       </FieldsetHeader>
       {CHANNELS.map((channel) => (
-        <Checkbox key={channel.value} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+        <Checkbox key={channel.value}>
           <CheckboxInput name='alertChannels' value={channel.value} defaultChecked={channel.checked} />
           <CheckboxIndicator>
             <CheckboxCheckedIcon />

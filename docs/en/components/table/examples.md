@@ -220,7 +220,7 @@ export default function SortableColumns() {
 
               return (
                 <TableHeading key={column.key} scope='col' aria-sort={active ? direction : undefined}>
-                  <Button size='sm' variant='secondary' appearance='transparent' onClick={() => sortBy(column.key)}>
+                  <Button size='sm' variant='secondary' appearance='transparent' style={{ font: 'inherit' }} onClick={() => sortBy(column.key)}>
                     {column.label}
                     <Icon size='xs' aria-hidden='true'>{icon}</Icon>
                   </Button>
@@ -360,7 +360,7 @@ export default function RowSelectionForm() {
 
 ### Layout/Overlay: scrollable table inside a dialog
 
-A long list of charges inside a dialog scrolls in its own focusable region instead of stretching the dialog. The header cells are sticky and get the dialog surface color, so rows do not show through them.
+A long list of charges inside a dialog scrolls in its own focusable region instead of stretching the dialog. The header cells are sticky and get the dialog surface color, so rows do not show through them. The line under a `TableHead` row is drawn by its `TableHeading` cells, so it stays with them while they stick.
 
 <!-- example: table/billing-table-inside-a-dialog.tsx -->
 ```tsx

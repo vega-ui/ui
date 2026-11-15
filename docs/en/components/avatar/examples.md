@@ -147,7 +147,7 @@ export default function PhotoUpload() {
 
 ### Layout/Overlay: comment thread with long text
 
-The avatar is top-aligned with multi-line comments. In a flex row it can be squeezed by long text, so it gets `flex-shrink: 0`, and the text column gets `min-width: 0` with `overflow-wrap: anywhere` for the long URL.
+The avatar is top-aligned with multi-line comments. The avatar does not shrink in a flex row, so long text cannot squeeze it; the text column gets `min-width: 0` with `overflow-wrap: anywhere` for the long URL.
 
 <!-- example: avatar/comment-thread.tsx -->
 ```tsx
@@ -179,7 +179,7 @@ export default function CommentThread() {
     <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gap: 'var(--spacing-10)', width: '100%', maxWidth: 420 }}>
       {comments.map((comment) => (
         <li key={comment.id} style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--spacing-6)' }}>
-          <Avatar size='sm' aria-hidden='true' style={{ flexShrink: 0 }}>
+          <Avatar size='sm' aria-hidden='true'>
             {comment.photo && <AvatarImage src={comment.photo} alt='' />}
             <AvatarFallback>{comment.initials}</AvatarFallback>
           </Avatar>
@@ -277,7 +277,7 @@ export default function Initials() {
         const label = name === '' ? 'Unnamed user' : name;
         return (
           <li key={label} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-6)' }}>
-            <Avatar size='sm' aria-hidden='true' style={{ flexShrink: 0 }}>
+            <Avatar size='sm' aria-hidden='true'>
               {initials === '' && <AvatarIcon><User /></AvatarIcon>}
               {initials !== '' && <AvatarFallback>{initials}</AvatarFallback>}
             </Avatar>

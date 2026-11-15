@@ -36,7 +36,7 @@ export default function FormDataSubmission() {
           <FieldsetLegend style={{ marginBlockEnd: 'var(--spacing-5)' }}>Subscriptions</FieldsetLegend>
           <div style={{ display: 'grid', gap: 'var(--spacing-6)' }}>
             {topics.map((topic) => (
-              <Checkbox key={topic.value} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+              <Checkbox key={topic.value}>
                 <CheckboxInput name='topics' value={topic.value} defaultChecked={topic.value === 'security'} />
                 <CheckboxIndicator>
                   <CheckboxCheckedIcon />
@@ -47,7 +47,7 @@ export default function FormDataSubmission() {
             ))}
           </div>
         </Fieldset>
-        <Checkbox style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+        <Checkbox>
           <CheckboxInput name='summary' value='weekly' />
           <CheckboxIndicator>
             <CheckboxCheckedIcon />

@@ -1,5 +1,5 @@
 .slot {
-    --input-br-ratio: 0.333;
+    --input-br-ratio: var(--br-ratio);
 
     display: flex;
     justify-content: center;

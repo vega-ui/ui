@@ -38,7 +38,7 @@ export default function NotificationChannels() {
         </Text>
       </FieldsetHeader>
       {CHANNELS.map((channel) => (
-        <Checkbox key={channel.value} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+        <Checkbox key={channel.value}>
           <CheckboxInput name='alertChannels' value={channel.value} defaultChecked={channel.checked} />
           <CheckboxIndicator>
             <CheckboxCheckedIcon />
@@ -148,8 +148,6 @@ import {
 } from '@vega-ui/react';
 import { FormEvent, useId, useState } from 'react';
 
-const checkboxStyle = { display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' };
-
 export default function SettingsFormSections() {
   const id = useId();
   const [payload, setPayload] = useState('');
@@ -179,14 +177,14 @@ export default function SettingsFormSections() {
       </Fieldset>
       <Fieldset appearance='outlined'>
         <FieldsetLegend>Security</FieldsetLegend>
-        <Checkbox style={checkboxStyle}>
+        <Checkbox>
           <CheckboxInput name='twoFactor' defaultChecked />
           <CheckboxIndicator>
             <CheckboxCheckedIcon />
           </CheckboxIndicator>
           Two-factor authentication
         </Checkbox>
-        <Checkbox style={checkboxStyle}>
+        <Checkbox>
           <CheckboxInput name='newDeviceAlerts' />
           <CheckboxIndicator>
             <CheckboxCheckedIcon />
@@ -338,7 +336,7 @@ export default function AtLeastOneChannel() {
           {invalid ? 'Choose at least one way to receive codes.' : 'Pick one or more channels.'}
         </HelperText>
         {CHANNELS.map((channel) => (
-          <Checkbox key={channel} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+          <Checkbox key={channel}>
             <CheckboxInput
               name='codeChannels'
               value={channel}
@@ -475,7 +473,7 @@ export default function NestedGroups() {
         </TextField>
       </div>
       <Fieldset>
-        <FieldsetLegend size={3}>Delivery window</FieldsetLegend>
+        <FieldsetLegend>Delivery window</FieldsetLegend>
         {WINDOWS.map((window) => (
           <Label key={window.value} fontWeight={400} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
             <Radio name='window' value={window.value} defaultChecked={window.value === 'morning'} />

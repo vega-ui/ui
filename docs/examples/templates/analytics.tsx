@@ -157,7 +157,7 @@ export default function Analytics() {
             <Heading id={`${id}-sources`} as='h2' size={4} fontWeight={600}>Traffic sources</Heading>
             <Text size={2} style={{ color: 'var(--label-secondary)', ...tabular }}>{`${number.format(trafficTotal)} visitors`}</Text>
           </div>
-          <MeterStack value={trafficTotal} max={trafficTotal} role='group' aria-labelledby={`${id}-sources`} size='lg' fullWidth>
+          <MeterStack value={trafficTotal} max={trafficTotal} aria-labelledby={`${id}-sources`} size='lg' fullWidth>
             {traffic.map((source) => (
               <MeterStackSegment
                 key={source.id}

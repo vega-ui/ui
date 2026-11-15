@@ -18,7 +18,7 @@ export default function LockedUntilOverride() {
 
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-8)', width: '100%', maxWidth: 280 }}>
-      <Checkbox style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+      <Checkbox>
         <CheckboxInput checked={override} onChange={(event) => setOverride(event.currentTarget.checked)} />
         <CheckboxIndicator>
           <CheckboxCheckedIcon />

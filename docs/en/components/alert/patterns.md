@@ -66,7 +66,7 @@ export default function SaveFeedback() {
             <TextFieldInput id='workspace-name' name='workspace' defaultValue='Northwind Studio' required />
           </TextField>
         </div>
-        <Checkbox style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+        <Checkbox>
           <CheckboxInput name='offline' />
           <CheckboxIndicator>
             <CheckboxCheckedIcon />

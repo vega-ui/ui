@@ -25,7 +25,7 @@ export const PaginationTriggerIconButton: FC<PaginationTriggerIconButtonProps> =
       type={type}
       asChild={asChild}
       variant={variant ?? _variant}
-      appearance='ghost'
+      appearance='transparent'
       size={size ?? _size}
       {...props}
     >

@@ -18,7 +18,7 @@ export default function ControlledOpenState() {
 
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-8)', justifyItems: 'center', width: '100%' }}>
-      <Checkbox style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+      <Checkbox>
         <CheckboxInput checked={pinned} onChange={(event) => setPinned(event.currentTarget.checked)} />
         <CheckboxIndicator>
           <CheckboxCheckedIcon />
