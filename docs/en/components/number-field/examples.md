@@ -93,7 +93,7 @@ export default function OrderTotal({ locale = 'en-US' }: { locale?: string }) {
 
 ### Form/Integration: submit and reset in a form
 
-Put `name` on `NumberFieldInput`. `FormData` returns the field text, which contains thousands separators, so strip whitespace before converting it to a number. Reset restores `defaultValue`.
+The field shows the number with thousands separators, so the form submits the number from a hidden input that mirrors `value`. Reset puts the default back into the state.
 
 <!-- example: number-field/form-submit-and-reset.tsx -->
 ```tsx
@@ -108,30 +108,37 @@ import {
 } from '@vega-ui/react';
 import { FormEvent, useId, useState } from 'react';
 
+const DEFAULT_BUDGET = 2500;
+
 export default function FormSubmitAndReset() {
   const id = useId();
+  const [budget, setBudget] = useState(DEFAULT_BUDGET);
   const [submitted, setSubmitted] = useState('');
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const raw = String(new FormData(event.currentTarget).get('monthlyBudget'));
-    const budget = Number(raw.replace(/\s/g, ''));
-    setSubmitted(`Field text “${raw}” → number ${budget}`);
+    setSubmitted(`monthlyBudget=${new FormData(event.currentTarget).get('monthlyBudget')}`);
+  };
+
+  const onReset = () => {
+    setBudget(DEFAULT_BUDGET);
+    setSubmitted('');
   };
 
   return (
     <form
       onSubmit={onSubmit}
-      onReset={() => setSubmitted('')}
+      onReset={onReset}
       style={{ display: 'grid', gap: 'var(--spacing-12)', width: '100%', maxWidth: 280 }}
     >
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor={id}>Monthly budget, USD</Label>
-        <NumberField min={0} max={1000000} step={500} defaultValue={2500} maximumFractionDigits={0}>
+        <NumberField min={0} max={1000000} step={500} value={budget} onChangeValue={setBudget} maximumFractionDigits={0}>
           <NumberFieldDecrementButton aria-label='Decrease budget by 500' />
-          <NumberFieldInput id={id} name='monthlyBudget' required />
+          <NumberFieldInput id={id} required />
           <NumberFieldIncrementButton aria-label='Increase budget by 500' />
         </NumberField>
+        <input type='hidden' name='monthlyBudget' value={Number.isNaN(budget) ? '' : budget} />
       </div>
       <div style={{ display: 'flex', gap: 'var(--spacing-4)' }}>
         <Button type='submit'>Save</Button>

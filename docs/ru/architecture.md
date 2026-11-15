@@ -61,10 +61,10 @@ VegaUI — воркспейс `pnpm` под управлением Turborepo. Г
 
 Пример:
 
-- [packages/ui/src/Switch/Switch.tsx](../../packages/ui/src/Switch/Switch.tsx)
-- [packages/ui/src/Switch/components/SwitchInput/SwitchInput.tsx](../../packages/ui/src/Switch/components/SwitchInput/SwitchInput.tsx)
-- [packages/ui/src/Switch/style.module.css](../../packages/ui/src/Switch/style.module.css)
-- [packages/ui/src/Switch/__tests__/Switch.browser.test.tsx](../../packages/ui/src/Switch/__tests__/Switch.browser.test.tsx)
+- [packages/ui/src/Avatar/Avatar.tsx](../../packages/ui/src/Avatar/Avatar.tsx)
+- [packages/ui/src/Avatar/components/AvatarImage/AvatarImage.tsx](../../packages/ui/src/Avatar/components/AvatarImage/AvatarImage.tsx)
+- [packages/ui/src/Avatar/style.module.css](../../packages/ui/src/Avatar/style.module.css)
+- [packages/ui/src/Avatar/__tests__/Avatar.browser.test.tsx](../../packages/ui/src/Avatar/__tests__/Avatar.browser.test.tsx)
 
 ## Виджеты
 

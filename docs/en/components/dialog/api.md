@@ -51,7 +51,7 @@ The native modal `<dialog>`.
 Also accepts all `<dialog>` attributes.
 <!-- AUTO-GENERATED:PART_API:DialogContent:end -->
 
-- It sets no `id` or `aria-labelledby` itself: name it with `aria-labelledby` pointing to your heading's `id`, or with `aria-label`. `onCancel` and `onClose` run after the internal handlers.
+- It sets no `id` or `aria-labelledby` itself: name it with `aria-labelledby` pointing to your heading's `id`, or with `aria-label`. `onCancel` and `onClose` run before the internal handlers.
 - `blurred` (default `true`) blurs the page behind the dialog; `overlay` (default `true`) dims it, and with `overlay={false}` the dialog stays modal over a transparent backdrop; `shadowed` (default `true`) adds the surface shadow.
 - `closedBy` sets which user actions close the dialog, like the native `closedby` attribute: `'any'` (a backdrop click or `Escape`), `'closerequest'` (`Escape` only, the default), or `'none'`. A backdrop click does not close the dialog unless `closedBy='any'`.
 - Closes on submit of a `<form method="dialog">` inside it, also with `closedBy='none'`. The close goes through `onChangeOpen(false)`, so the close transition plays and a controlled parent can keep it open; the submit button's `value` becomes the dialog's `returnValue`.
