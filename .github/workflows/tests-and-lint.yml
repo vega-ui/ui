@@ -91,6 +91,9 @@ jobs:
       - name: Run Unit Tests
         run: pnpm turbo run test --filter=@vega-ui/utils --filter=@vega-ui/i18n --filter=@vega-ui/widgets
 
+      - name: Run Core Unit Tests
+        run: pnpm turbo run test --filter=@vega-ui/core -- --project node
+
   browser-tests:
     name: Browser Tests (${{ matrix.browser }}, ${{ matrix.shard }}/3)
     needs: changes
@@ -124,7 +127,7 @@ jobs:
         run: pnpm install
 
       - name: Run Browser Tests
-        run: pnpm turbo run test --filter=@vega-ui/hooks --filter=@vega-ui/icons --filter=@vega-ui/react -- --project ${{ matrix.browser }} --shard=${{ matrix.shard }}/3 --passWithNoTests
+        run: pnpm turbo run test --filter=@vega-ui/core --filter=@vega-ui/hooks --filter=@vega-ui/icons --filter=@vega-ui/react -- --project ${{ matrix.browser }} --shard=${{ matrix.shard }}/3 --passWithNoTests
 
   docs-site:
     name: Docs Site

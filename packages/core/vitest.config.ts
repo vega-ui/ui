@@ -28,7 +28,7 @@ export default mergeConfig(
               headless: true,
               provider: playwright(),
               screenshotFailures: false,
-              instances: [{ browser: 'chromium' }, { browser: 'firefox' }, { browser: 'webkit' }],
+              instances: [{ browser: 'chromium', name: 'chromium' }, { browser: 'firefox', name: 'firefox' }, { browser: 'webkit', name: 'webkit' }],
             },
           },
         },
