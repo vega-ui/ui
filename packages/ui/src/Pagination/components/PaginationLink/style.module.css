@@ -1,0 +1,5 @@
+.paginationLink:where([data-size]) {
+    aspect-ratio: 1 / 1;
+    --padding-inline: 0;
+    --icon-size: calc(var(--button-height) / 3);
+}

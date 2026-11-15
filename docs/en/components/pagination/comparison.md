@@ -2,16 +2,16 @@
 
 ## Quick Decision Rule
 
-Use `Pagination` for explicit page navigation across discrete result sets. Use `PageControl` for short carousel/step indicators and consider other patterns when the data is better served by infinite scroll or filters.
+Use `Pagination` for explicit page navigation across discrete result sets. Use `PageControl` for short carousel or step indicators, and consider other patterns when the data is better served by infinite scroll or filters.
 
 ## `Pagination` vs `PageControl`
 
-- Use `Pagination` for result pages.
+- Use `Pagination` for result pages, where each page is a link or a button with a page number.
 - Use `PageControl` for short step or carousel indicators.
 
 ## `Pagination` vs infinite scroll
 
-- Use `Pagination` when users need stable page positions and direct navigation.
+- Use `Pagination` when users need stable page positions, direct navigation and pages they can link to.
 - Use infinite scroll when seamless browsing matters more than discrete page boundaries.
 
 ## Choose This Component When

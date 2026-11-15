@@ -8,7 +8,8 @@ import {
   Pagination,
   PaginationEllipsis,
   PaginationItem,
-  PaginationListItem,
+  PaginationLink,
+  PaginationList,
   SegmentedControl,
   SegmentedControlIndicator,
   SegmentedControlItem,
@@ -76,7 +77,7 @@ const currency = new Intl.NumberFormat('en-US', { style: 'currency', currency: '
 const date = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
 
 const getPageItems = (page: number, total: number): PageItem[] => {
-  if (total <= 5) return Array.from({ length: total }, (_, index) => index + 1);
+  if (total <= 5) return [...Array(total).keys()].map((index) => index + 1);
   if (page <= 3) return [1, 2, 3, 'end', total];
   if (page >= total - 2) return [1, 'start', total - 2, total - 1, total];
 
@@ -230,29 +231,31 @@ export default function Orders() {
         <Text size={2} role='status' style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>
           {matches.length === 0 ? 'No results' : `Showing ${start + 1}–${start + visible.length} of ${matches.length} orders`}
         </Text>
-        <nav aria-label='Orders pages'>
-          <Pagination size='xs' style={{ flexWrap: 'wrap' }}>
-            <PaginationListItem>
+        <Pagination aria-label='Orders pages' size='xs'>
+          <PaginationList style={{ flexWrap: 'wrap' }}>
+            <PaginationItem>
               <Button size='xs' variant='secondary' appearance='ghost' disabled={current === 1} onClick={() => setPage(current - 1)}>Previous</Button>
-            </PaginationListItem>
+            </PaginationItem>
             {pages.map((item) => {
               if (typeof item === 'string') {
-                return <PaginationListItem key={item}><PaginationEllipsis /></PaginationListItem>;
+                return <PaginationEllipsis key={item} />;
               }
 
               return (
-                <PaginationListItem key={item}>
-                  <PaginationItem current={item === current} aria-label={`Page ${item}`} onClick={() => setPage(item)}>
-                    {item}
-                  </PaginationItem>
-                </PaginationListItem>
+                <PaginationItem key={item}>
+                  <PaginationLink asChild current={item === current}>
+                    <button type='button' aria-label={`Page ${item}`} onClick={() => setPage(item)}>
+                      {item}
+                    </button>
+                  </PaginationLink>
+                </PaginationItem>
               );
             })}
-            <PaginationListItem>
+            <PaginationItem>
               <Button size='xs' variant='secondary' appearance='ghost' disabled={current === pageCount} onClick={() => setPage(current + 1)}>Next</Button>
-            </PaginationListItem>
-          </Pagination>
-        </nav>
+            </PaginationItem>
+          </PaginationList>
+        </Pagination>
       </div>
     </div>
   );

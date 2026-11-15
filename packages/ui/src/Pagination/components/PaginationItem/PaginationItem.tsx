@@ -1,48 +1,15 @@
-'use client';
-
-import { FC } from 'react';
-import { Button, ButtonProps } from '../../../Button';
+import { FC, HTMLAttributes, Ref } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
-import { usePaginationContext } from '../../contexts';
 
-export interface PaginationItemProps extends ButtonProps {
+export interface PaginationItemProps extends HTMLAttributes<HTMLLIElement> {
   /**
-   * Marks this item as the currently active page.
-   * Applies visual emphasis.
+   * Ref forwarded to the underlying `<li>` element.
    */
-  current?: boolean
+  ref?: Ref<HTMLLIElement>
 }
 
-/**
- * The PaginationText component represents a single page  within a pagination interface.
- * It extends ButtonProps and supports dynamic behavior and styling.
- *
- * This makes the component fully composable and accessible, with both link-based and button-based pagination supported.
- */
-export const PaginationItem: FC<PaginationItemProps> = ({
-  className,
-  disabled,
-  current,
-  variant,
-  size,
-  asChild,
-  type = asChild ? undefined : 'button',
-  ...props
-}) => {
-  const { size: _size, variant: _variant } = usePaginationContext()
-
-  return (
-    <Button
-      type={type}
-      asChild={asChild}
-      aria-current={current ? 'page' : undefined}
-      className={csx(style.paginationItem, className)}
-      variant={variant ?? _variant}
-      appearance={current ? 'fill' : 'transparent'}
-      disabled={disabled}
-      size={size ?? _size}
-      {...props}
-    />
-  )
+/** The PaginationItem component renders one `<li>` of the pagination list, around a link, an ellipsis or a status text */
+export const PaginationItem: FC<PaginationItemProps> = ({ className, ...props }) => {
+  return <li className={csx(style.paginationItem, className)} {...props} />
 }

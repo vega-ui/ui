@@ -3,8 +3,8 @@ import {
   Icon,
   Pagination,
   PaginationItem,
-  PaginationListItem,
-  PaginationTriggerIconButton,
+  PaginationLink,
+  PaginationList,
 } from '@vega-ui/react';
 import { useState } from 'react';
 
@@ -13,24 +13,30 @@ export default function MinimalComposition() {
   const pages = [1, 2, 3];
 
   return (
-    <nav aria-label='Pagination'>
-      <Pagination>
-        <PaginationListItem>
-          <PaginationTriggerIconButton aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
-            <Icon><ChevronLeft /></Icon>
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
+    <Pagination aria-label='Pagination'>
+      <PaginationList>
+        <PaginationItem>
+          <PaginationLink asChild>
+            <button type='button' aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
+              <Icon><ChevronLeft /></Icon>
+            </button>
+          </PaginationLink>
+        </PaginationItem>
         {pages.map((item) => (
-          <PaginationListItem key={item}>
-            <PaginationItem current={item === page} onClick={() => setPage(item)}>{item}</PaginationItem>
-          </PaginationListItem>
+          <PaginationItem key={item}>
+            <PaginationLink asChild current={item === page}>
+              <button type='button' onClick={() => setPage(item)}>{item}</button>
+            </PaginationLink>
+          </PaginationItem>
         ))}
-        <PaginationListItem>
-          <PaginationTriggerIconButton aria-label='Next page' disabled={page === pages.length} onClick={() => setPage(page + 1)}>
-            <Icon><ChevronRight /></Icon>
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
-      </Pagination>
-    </nav>
+        <PaginationItem>
+          <PaginationLink asChild>
+            <button type='button' aria-label='Next page' disabled={page === pages.length} onClick={() => setPage(page + 1)}>
+              <Icon><ChevronRight /></Icon>
+            </button>
+          </PaginationLink>
+        </PaginationItem>
+      </PaginationList>
+    </Pagination>
   );
 }

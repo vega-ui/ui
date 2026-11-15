@@ -4,15 +4,15 @@ import {
   Pagination,
   PaginationEllipsis,
   PaginationItem,
-  PaginationListItem,
-  PaginationTriggerIconButton,
+  PaginationLink,
+  PaginationList,
 } from '@vega-ui/react';
 import { useEffect, useState } from 'react';
 
 type PageItem = number | 'start-ellipsis' | 'end-ellipsis';
 
 function range(from: number, to: number) {
-  return Array.from({ length: to - from + 1 }, (_, index) => from + index);
+  return [...Array(to - from + 1).keys()].map((offset) => from + offset);
 }
 
 function getPageItems(page: number, total: number, siblings: number): PageItem[] {
@@ -52,40 +52,34 @@ export default function LinkBasedPagination() {
   const isLast = page === total;
 
   return (
-    <nav aria-label='Blog archive pages'>
-      <Pagination>
-        <PaginationListItem>
-          <PaginationTriggerIconButton asChild aria-label='Previous page'>
-            {isFirst ? (
-              <a aria-disabled='true'><Icon><ChevronLeft /></Icon></a>
-            ) : (
-              <a href={getHref(page - 1)} rel='prev'><Icon><ChevronLeft /></Icon></a>
-            )}
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
+    <Pagination aria-label='Blog archive pages'>
+      <PaginationList>
+        <PaginationItem>
+          {isFirst ? (
+            <PaginationLink aria-label='Previous page' aria-disabled='true'><Icon><ChevronLeft /></Icon></PaginationLink>
+          ) : (
+            <PaginationLink href={getHref(page - 1)} rel='prev' aria-label='Previous page'><Icon><ChevronLeft /></Icon></PaginationLink>
+          )}
+        </PaginationItem>
         {getPageItems(page, total, 1).map((item) => {
           if (typeof item === 'string') {
-            return <PaginationListItem key={item}><PaginationEllipsis /></PaginationListItem>;
+            return <PaginationEllipsis key={item} />;
           }
 
           return (
-            <PaginationListItem key={item}>
-              <PaginationItem asChild current={item === page}>
-                <a href={getHref(item)} aria-label={`Page ${item}`}>{item}</a>
-              </PaginationItem>
-            </PaginationListItem>
+            <PaginationItem key={item}>
+              <PaginationLink href={getHref(item)} current={item === page} aria-label={`Page ${item}`}>{item}</PaginationLink>
+            </PaginationItem>
           );
         })}
-        <PaginationListItem>
-          <PaginationTriggerIconButton asChild aria-label='Next page'>
-            {isLast ? (
-              <a aria-disabled='true'><Icon><ChevronRight /></Icon></a>
-            ) : (
-              <a href={getHref(page + 1)} rel='next'><Icon><ChevronRight /></Icon></a>
-            )}
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
-      </Pagination>
-    </nav>
+        <PaginationItem>
+          {isLast ? (
+            <PaginationLink aria-label='Next page' aria-disabled='true'><Icon><ChevronRight /></Icon></PaginationLink>
+          ) : (
+            <PaginationLink href={getHref(page + 1)} rel='next' aria-label='Next page'><Icon><ChevronRight /></Icon></PaginationLink>
+          )}
+        </PaginationItem>
+      </PaginationList>
+    </Pagination>
   );
 }

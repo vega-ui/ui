@@ -1,104 +1,86 @@
-import { ComponentProps, FC } from 'react';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { AnchorHTMLAttributes, FC } from 'react';
+import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
-import { userEvent } from 'vitest/browser';
 
 import { Pagination } from '../Pagination';
-import {
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationText,
-  PaginationTriggerIconButton,
-  PaginationListItem,
-} from '../components';
-import { Icon } from '../../Icon';
-import { MoveLeft, MoveRight } from '@vega-ui/icons';
+import { PaginationEllipsis, PaginationItem, PaginationLink, PaginationList } from '../components';
 
 afterEach(cleanup);
 
-const TESTID_ROOT = 'pagination';
-const TESTID_PREV = 'prev';
-const TESTID_NEXT = 'next';
+const RouterLink: FC<AnchorHTMLAttributes<HTMLAnchorElement> & { to: string }> = ({ to, ...props }) => <a href={to} {...props} />
 
-const TESTID_ITEM_111 = 'item-111';
-const TESTID_ITEM_112 = 'item-112';
-const TESTID_ITEM_113 = 'item-113';
-
-const TESTID_ELLIPSIS = 'ellipsis';
-
-const PaginationTest: FC<Partial<ComponentProps<typeof Pagination>>> = (props) => {
-  return (
-    <Pagination data-testid={TESTID_ROOT} {...props}>
-      <PaginationListItem>
-        <PaginationTriggerIconButton data-testid={TESTID_PREV} aria-label='Previous page'>
-          <Icon>
-            <MoveLeft />
-          </Icon>
-        </PaginationTriggerIconButton>
-      </PaginationListItem>
-      
-      <PaginationListItem>
-        <PaginationItem data-testid={TESTID_ITEM_111}>111</PaginationItem>
-      </PaginationListItem>
-      
-      <PaginationListItem>
-        <PaginationItem data-testid={TESTID_ITEM_112}>112</PaginationItem>
-      </PaginationListItem>
-      
-      <PaginationListItem>
-        <PaginationEllipsis data-testid={TESTID_ELLIPSIS} />
-      </PaginationListItem>
-      
-      <PaginationListItem>
-        <PaginationItem data-testid={TESTID_ITEM_113}>113</PaginationItem>
-      </PaginationListItem>
-      
-      <PaginationListItem>
-        <PaginationTriggerIconButton data-testid={TESTID_NEXT} aria-label='Next page'>
-          <Icon>
-            <MoveRight />
-          </Icon>
-        </PaginationTriggerIconButton>
-      </PaginationListItem>
-      
-      <PaginationText data-testid='text'>Page 1 of 20</PaginationText>
-    </Pagination>
-  );
-};
-
-const getNext = (r: RenderResult) => r.getByTestId(TESTID_NEXT);
-
-const getItem112 = (r: RenderResult) => r.getByTestId(TESTID_ITEM_112);
+const getLink = (r: RenderResult, name: string) => r.getByRole('link', { name });
 
 describe('Pagination', () => {
-  describe('Accessibility', () => {
+  describe('Critical User Paths', () => {
     it('marks only the current page', async () => {
       const r = render(
-        <Pagination>
-          <PaginationListItem><PaginationItem current>1</PaginationItem></PaginationListItem>
-          <PaginationListItem><PaginationItem>2</PaginationItem></PaginationListItem>
+        <Pagination aria-label='Pages'>
+          <PaginationList>
+            <PaginationItem><PaginationLink href='?page=1'>1</PaginationLink></PaginationItem>
+            <PaginationItem><PaginationLink href='?page=2' current>2</PaginationLink></PaginationItem>
+          </PaginationList>
         </Pagination>
       );
 
-      await expect.element(r.getByRole('button', { name: '1' })).toHaveAttribute('aria-current', 'page');
-      await expect.element(r.getByRole('button', { name: '2' })).not.toHaveAttribute('aria-current');
+      await expect.element(getLink(r, '2')).toHaveAttribute('aria-current', 'page');
+      await expect.element(getLink(r, '1')).not.toHaveAttribute('aria-current');
+    });
+
+    it('renders a router link with asChild, keeping its address and the current page', async () => {
+      const r = render(
+        <Pagination aria-label='Pages'>
+          <PaginationList>
+            <PaginationItem>
+              <PaginationLink asChild current className='custom'>
+                <RouterLink to='/page/5'>5</RouterLink>
+              </PaginationLink>
+            </PaginationItem>
+          </PaginationList>
+        </Pagination>
+      );
+
+      const link = getLink(r, '5');
+      await expect.element(link).toHaveAttribute('href', '/page/5');
+      await expect.element(link).toHaveAttribute('aria-current', 'page');
+      await expect.element(link).toHaveClass('custom');
     });
   });
 
   describe('Edge Cases', () => {
-    it('does not submit the surrounding form on trigger click', async () => {
-      const onSubmit = vi.fn();
+    it('takes size and variant from the root, and a link overrides them and its appearance', async () => {
       const r = render(
-        <form onSubmit={(e) => { e.preventDefault(); onSubmit(); }}>
-          <PaginationTest />
-        </form>
+        <Pagination aria-label='Pages' size='sm' variant='secondary'>
+          <PaginationList>
+            <PaginationItem><PaginationLink href='?page=1' current>1</PaginationLink></PaginationItem>
+            <PaginationItem><PaginationLink href='?page=2' size='lg' variant='primary' appearance='ghost'>2</PaginationLink></PaginationItem>
+          </PaginationList>
+        </Pagination>
       );
 
-      await userEvent.click(getNext(r));
-      await userEvent.click(getItem112(r));
-
-      expect(onSubmit).not.toHaveBeenCalled();
+      await expect.element(getLink(r, '1')).toHaveAttribute('data-size', 'sm');
+      await expect.element(getLink(r, '1')).toHaveAttribute('data-variant', 'secondary');
+      await expect.element(getLink(r, '1')).toHaveAttribute('data-appearance', 'fill');
+      await expect.element(getLink(r, '2')).toHaveAttribute('data-size', 'lg');
+      await expect.element(getLink(r, '2')).toHaveAttribute('data-variant', 'primary');
+      await expect.element(getLink(r, '2')).toHaveAttribute('data-appearance', 'ghost');
     });
   });
-  
+
+  describe('Accessibility', () => {
+    it('hides the ellipsis from assistive technologies', async () => {
+      const r = render(
+        <Pagination aria-label='Pages'>
+          <PaginationList>
+            <PaginationItem><PaginationLink href='?page=1'>1</PaginationLink></PaginationItem>
+            <PaginationEllipsis data-testid='ellipsis' />
+            <PaginationItem><PaginationLink href='?page=20'>20</PaginationLink></PaginationItem>
+          </PaginationList>
+        </Pagination>
+      );
+
+      await expect.element(r.getByTestId('ellipsis')).toHaveAttribute('aria-hidden', 'true');
+      expect(r.getAllByRole('listitem')).toHaveLength(2);
+    });
+  });
 });

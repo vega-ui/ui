@@ -1,25 +1,22 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Pagination } from './Pagination';
+import { Pagination, PaginationProps } from './Pagination';
 import {
   PaginationEllipsis,
   PaginationItem,
-  PaginationListItem,
-  PaginationText,
-  PaginationTriggerIconButton,
+  PaginationLink,
+  PaginationList,
 } from './components';
-import { IconButtonProps } from '../IconButton';
 import { Icon } from '../Icon';
-import { DoubleArrowLeftIcon, DoubleArrowRightIcon, MoveLeft, MoveRight } from '@vega-ui/icons';
+import { MoveLeft, MoveRight } from '@vega-ui/icons';
 
 const meta = {
   title: 'Navigation/Pagination',
   component: Pagination,
   subcomponents: {
+    PaginationList,
     PaginationItem,
-    PaginationTriggerIconButton,
+    PaginationLink,
     PaginationEllipsis,
-    PaginationText,
-    PaginationListItem,
   },
   parameters: {
     layout: 'centered',
@@ -32,49 +29,41 @@ const meta = {
   argTypes: {
     size: {
       control: 'radio',
-      options: ['xs', 'sm', 'md', 'lg', 'xl'] as IconButtonProps['size'][],
+      options: ['xs', 'sm', 'md', 'lg', 'xl'] as PaginationProps['size'][],
     },
     variant: {
       control: 'radio',
-      options: ['primary', 'secondary'] as IconButtonProps['variant'][],
+      options: ['primary', 'secondary'] as PaginationProps['variant'][],
     },
   },
   args: {
+    'aria-label': 'Pages',
     children: (
-      <>
-        <PaginationListItem>
-          <PaginationTriggerIconButton aria-label='First page'>
-            <Icon><DoubleArrowLeftIcon /></Icon>
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
-        <PaginationListItem>
-          <PaginationTriggerIconButton aria-label='Previous page'>
+      <PaginationList>
+        <PaginationItem>
+          <PaginationLink href='?page=1' aria-label='Previous page'>
             <Icon><MoveLeft /></Icon>
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
-        <PaginationListItem>
-          <PaginationItem current>1</PaginationItem>
-        </PaginationListItem>
-        <PaginationListItem>
-          <PaginationItem>2</PaginationItem>
-        </PaginationListItem>
-        <PaginationListItem>
-          <PaginationEllipsis />
-        </PaginationListItem>
-        <PaginationListItem>
-          <PaginationItem>10</PaginationItem>
-        </PaginationListItem>
-        <PaginationListItem>
-          <PaginationTriggerIconButton aria-label='Next page'>
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href='?page=1'>1</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href='?page=2' current>2</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href='?page=3'>3</PaginationLink>
+        </PaginationItem>
+        <PaginationEllipsis />
+        <PaginationItem>
+          <PaginationLink href='?page=10'>10</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href='?page=3' aria-label='Next page'>
             <Icon><MoveRight /></Icon>
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
-        <PaginationListItem>
-          <PaginationTriggerIconButton aria-label='Last page'>
-            <Icon><DoubleArrowRightIcon /></Icon>
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
-      </>
+          </PaginationLink>
+        </PaginationItem>
+      </PaginationList>
     ),
   },
 } satisfies Meta<typeof Pagination>;
@@ -82,39 +71,65 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
+const sizes: PaginationProps['size'][] = ['xs', 'sm', 'md', 'lg', 'xl'];
+const variants: PaginationProps['variant'][] = ['primary', 'secondary'];
+
 export const Playground: Story = {};
 
-export const ItemStates: Story = {
+export const LinkStates: Story = {
   parameters: {
     docs: {
       description: {
-        story: '`current` marks the active page, `disabled` blocks an item or a trigger on its own, and the last item carries a long page number.',
+        story: '`current` marks the page, a link without `href` and with `aria-disabled` is disabled, `appearance` replaces the default look, and the last link carries a long page number.',
       },
     },
   },
   args: {
     children: (
-      <>
-        <PaginationListItem>
-          <PaginationTriggerIconButton aria-label='Previous page' disabled>
+      <PaginationList>
+        <PaginationItem>
+          <PaginationLink aria-label='Previous page' aria-disabled='true'>
             <Icon><MoveLeft /></Icon>
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
-        <PaginationListItem>
-          <PaginationItem current>1</PaginationItem>
-        </PaginationListItem>
-        <PaginationListItem>
-          <PaginationItem disabled>2</PaginationItem>
-        </PaginationListItem>
-        <PaginationListItem>
-          <PaginationItem>1235</PaginationItem>
-        </PaginationListItem>
-        <PaginationListItem>
-          <PaginationTriggerIconButton aria-label='Next page'>
+          </PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href='?page=1' current>1</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href='?page=2' appearance='ghost'>2</PaginationLink>
+        </PaginationItem>
+        <PaginationEllipsis />
+        <PaginationItem>
+          <PaginationLink href='?page=1235'>1235</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href='?page=2' aria-label='Next page'>
             <Icon><MoveRight /></Icon>
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
-      </>
+          </PaginationLink>
+        </PaginationItem>
+      </PaginationList>
     ),
   },
+};
+
+export const Matrix: Story = {
+  render: () => (
+    <div style={{ display: 'grid', gap: 12 }}>
+      {variants.map((variant) => sizes.map((size) => (
+        <Pagination key={`${variant}-${size}`} aria-label={`${variant} / ${size}`} variant={variant} size={size}>
+          <PaginationList>
+            <PaginationItem><PaginationLink href='?page=1' current>1</PaginationLink></PaginationItem>
+            <PaginationItem><PaginationLink href='?page=2'>2</PaginationLink></PaginationItem>
+            <PaginationEllipsis />
+            <PaginationItem><PaginationLink href='?page=9'>9</PaginationLink></PaginationItem>
+            <PaginationItem>
+              <PaginationLink href='?page=2' aria-label='Next page'>
+                <Icon><MoveRight /></Icon>
+              </PaginationLink>
+            </PaginationItem>
+          </PaginationList>
+        </Pagination>
+      )))}
+    </div>
+  ),
 };

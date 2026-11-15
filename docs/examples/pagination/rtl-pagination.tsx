@@ -4,15 +4,15 @@ import {
   Pagination,
   PaginationEllipsis,
   PaginationItem,
-  PaginationListItem,
-  PaginationTriggerIconButton,
+  PaginationLink,
+  PaginationList,
 } from '@vega-ui/react';
 import { useState } from 'react';
 
 type PageItem = number | 'start-ellipsis' | 'end-ellipsis';
 
 function range(from: number, to: number) {
-  return Array.from({ length: to - from + 1 }, (_, index) => from + index);
+  return [...Array(to - from + 1).keys()].map((offset) => from + offset);
 }
 
 function getPageItems(page: number, total: number, siblings: number): PageItem[] {
@@ -39,32 +39,38 @@ export default function RtlPagination() {
   const [page, setPage] = useState(6);
 
   return (
-    <nav dir='rtl' lang='ar' aria-label='الصفحات'>
-      <Pagination>
-        <PaginationListItem>
-          <PaginationTriggerIconButton aria-label='الصفحة السابقة' disabled={page === 1} onClick={() => setPage(page - 1)}>
-            <Icon><ChevronRight /></Icon>
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
+    <Pagination dir='rtl' lang='ar' aria-label='الصفحات'>
+      <PaginationList>
+        <PaginationItem>
+          <PaginationLink asChild>
+            <button type='button' aria-label='الصفحة السابقة' disabled={page === 1} onClick={() => setPage(page - 1)}>
+              <Icon><ChevronRight /></Icon>
+            </button>
+          </PaginationLink>
+        </PaginationItem>
         {getPageItems(page, total, 1).map((item) => {
           if (typeof item === 'string') {
-            return <PaginationListItem key={item}><PaginationEllipsis /></PaginationListItem>;
+            return <PaginationEllipsis key={item} />;
           }
 
           return (
-            <PaginationListItem key={item}>
-              <PaginationItem current={item === page} aria-label={`الصفحة ${numbers.format(item)}`} onClick={() => setPage(item)}>
-                {numbers.format(item)}
-              </PaginationItem>
-            </PaginationListItem>
+            <PaginationItem key={item}>
+              <PaginationLink asChild current={item === page}>
+                <button type='button' aria-label={`الصفحة ${numbers.format(item)}`} onClick={() => setPage(item)}>
+                  {numbers.format(item)}
+                </button>
+              </PaginationLink>
+            </PaginationItem>
           );
         })}
-        <PaginationListItem>
-          <PaginationTriggerIconButton aria-label='الصفحة التالية' disabled={page === total} onClick={() => setPage(page + 1)}>
-            <Icon><ChevronLeft /></Icon>
-          </PaginationTriggerIconButton>
-        </PaginationListItem>
-      </Pagination>
-    </nav>
+        <PaginationItem>
+          <PaginationLink asChild>
+            <button type='button' aria-label='الصفحة التالية' disabled={page === total} onClick={() => setPage(page + 1)}>
+              <Icon><ChevronLeft /></Icon>
+            </button>
+          </PaginationLink>
+        </PaginationItem>
+      </PaginationList>
+    </Pagination>
   );
 }

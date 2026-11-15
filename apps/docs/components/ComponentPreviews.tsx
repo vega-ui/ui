@@ -18,7 +18,7 @@ import {
   IconButton, IndexedSnapScroller, IndexedSnapScrollerContent, Label, Link, Listbox, ListboxOption, Meter, MeterStack,
   MeterStackSegment, MeterTrack, MonthPicker, MonthPickerCell, MonthPickerLayout, NumberField,
   NumberFieldDecrementButton, NumberFieldIncrementButton, NumberFieldInput, Option, PageControl, PageControlItem,
-  Pagination, PaginationItem, PaginationListItem, PasswordField, PasswordFieldHiddenIcon, PasswordFieldInput,
+  Pagination, PaginationItem, PaginationLink, PaginationList, PasswordField, PasswordFieldHiddenIcon, PasswordFieldInput,
   PasswordFieldShownIcon, PasswordFieldToggleIconButton, PhoneField, PhoneFieldInput, PinField, PinFieldInput,
   PinFieldSlot, Popover, PopoverContent, PopoverTrigger, Progress, ProgressTrack, Radio, SegmentedControl,
   SegmentedControlIndicator, SegmentedControlItem, SegmentedControlItemInput, Select, SelectCombobox, SelectIcon,
@@ -597,15 +597,17 @@ export const PREVIEWS: Record<string, Preview> = {
   },
   pagination: {
     node: (
-      <nav aria-label='Pagination'>
-        <Pagination>
+      <Pagination aria-label='Pagination'>
+        <PaginationList>
           {[1, 2, 3, 4].map((page) => (
-            <PaginationListItem key={page}>
-              <PaginationItem current={page === 2}>{page}</PaginationItem>
-            </PaginationListItem>
+            <PaginationItem key={page}>
+              <PaginationLink asChild current={page === 2}>
+                <button type='button'>{page}</button>
+              </PaginationLink>
+            </PaginationItem>
           ))}
-        </Pagination>
-      </nav>
+        </PaginationList>
+      </Pagination>
     ),
   },
   'snap-scroller': {
