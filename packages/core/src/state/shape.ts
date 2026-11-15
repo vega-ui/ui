@@ -1,5 +1,5 @@
 import { Collection, emptyCollection } from '../collection'
-import { Attrs, Part } from '../output'
+import { Attrs, Channel, Part } from '../output'
 import { Field, field, optionReader, OwnedField, ownedField, Reader } from './field'
 import { Identified } from './ids'
 import { Controlled, Internal, Observed, ValueOf, Values } from './values'
@@ -44,7 +44,7 @@ export interface ShapeMethods<O, W, I, K, B> {
   readonly owned: readonly string[]
   readonly followed: readonly string[]
   readonly observed: Readonly<Record<string, Observed<unknown>>>
-  part<const T extends readonly unknown[]>(select: (state: Snapshot<O, W, I, K, B>, key: K) => T, render: (selected: T) => Attrs): Part<Snapshot<O, W, I, K, B>, K>
+  part<const T extends readonly unknown[], A extends Attrs>(select: (state: Snapshot<O, W, I, K, B>, key: K) => T, render: (selected: T) => A): Channel<Snapshot<O, W, I, K, B>, K, A>
   create(options: Options<O, W>, id: string): Snapshot<O, W, I, K, B>
   sync(state: Snapshot<O, W, I, K, B>, options: Options<O, W>): Snapshot<O, W, I, K, B>
   observe(state: Snapshot<O, W, I, K, B>, values: ObservedValues): Snapshot<O, W, I, K, B>
@@ -141,7 +141,7 @@ export const state = <
     followed: definition.follows ?? [],
     observed: observes,
 
-    part: (select, render) => ({ select, render: render as (selected: readonly unknown[]) => Attrs }),
+    part: (select, render) => ({ select, render: render as (selected: readonly unknown[]) => ReturnType<typeof render> }),
 
     create(initial, id) {
       const created = { options: initial, collection: collectionOf(initial), id, timers: new Map<string, number>(), focused: false } as Mutable

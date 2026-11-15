@@ -98,10 +98,10 @@ export const phoneFieldWidget = defineWidget({
   output: {
     root: {
       ...phoneFieldShape.part((state) => [state.touched] as const, ([touched]) => ({ 'data-user-edited': touched || undefined })),
-      props: {
-        select: (state: PhoneFieldSnapshot) => [getPhoneInvalidity(state.options.numbering, state.value, state.required)],
-        render: ([invalidAs]) => ({ invalidAs }),
-      },
+      props: phoneFieldShape.part(
+        (state) => [getPhoneInvalidity(state.options.numbering, state.value, state.required)] as const,
+        ([invalidAs]) => ({ invalidAs }),
+      ),
     },
   },
 })

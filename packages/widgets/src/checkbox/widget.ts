@@ -7,8 +7,6 @@ export const checkboxShape = state({
   owns: {},
 })
 
-type CheckboxSnapshot = typeof checkboxShape.__snapshot
-
 export const checkboxWidget = defineWidget({
   state: checkboxShape,
 
@@ -20,10 +18,10 @@ export const checkboxWidget = defineWidget({
         () => [] as const,
         () => ({}),
       ),
-      props: {
-        select: (state: CheckboxSnapshot) => [state.options.indeterminate],
-        render: ([indeterminate]) => (indeterminate === undefined ? {} : { indeterminate }),
-      },
+      props: checkboxShape.part(
+        (state) => [state.options.indeterminate] as const,
+        ([indeterminate]) => (indeterminate === undefined ? {} : { indeterminate }),
+      ),
     },
   },
 })

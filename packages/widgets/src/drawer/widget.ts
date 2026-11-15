@@ -133,14 +133,14 @@ export const drawerWidget = defineWidget({
   output: {
     dialog: {
       ...drawerShape.part(() => [] as const, () => ({})),
-      live: {
-        select: (state: DrawerSnapshot) => [state.open, state.drag],
-        render: ([open, drag]) => ({
-          ...modalDialogStatus(open === true),
-          '--drawer-drag': `${typeof drag === 'number' ? drag : 0}px`,
-          'data-dragging': typeof drag === 'number' ? 'true' : 'false',
+      live: drawerShape.part(
+        (state) => [state.open, state.drag] as const,
+        ([open, drag]) => ({
+          ...modalDialogStatus(open),
+          '--drawer-drag': `${drag ?? 0}px`,
+          'data-dragging': drag === null ? 'false' : 'true',
         }),
-      },
+      ),
     },
   },
 })

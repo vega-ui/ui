@@ -138,10 +138,10 @@ export const modalDialogWidget = defineWidget({
   output: {
     dialog: {
       ...modalDialogShape.part(() => [] as const, () => ({})),
-      live: {
-        select: (state: ModalDialogSnapshot) => [state.open],
-        render: ([open]) => modalDialogStatus(open === true),
-      },
+      live: modalDialogShape.part(
+        (state) => [state.open] as const,
+        ([open]) => modalDialogStatus(open),
+      ),
     },
   },
 })

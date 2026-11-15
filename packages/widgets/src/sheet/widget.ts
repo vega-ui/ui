@@ -343,8 +343,6 @@ const settling: Step<SheetSnapshot> = (state, input) => {
   return keep(sheetShape.activeSnapPoint.set(ended, layout.offsets.lastIndexOf(target)), after)
 }
 
-type DialogSelection = readonly [boolean, Paint | null, number, boolean, number, number | null, boolean]
-
 const paintStyles = (paint: Paint | null) => {
   if (!paint) return {}
 
@@ -358,7 +356,7 @@ const paintStyles = (paint: Paint | null) => {
   }
 }
 
-const renderDialog = ([open, paint, progress, dragging, keyboardInset, releaseDuration, painted]: DialogSelection) => ({
+const renderDialog = ([open, paint, progress, dragging, keyboardInset, releaseDuration, painted]: readonly [boolean, Paint | null, number, boolean, number, number | null, boolean]) => ({
   ...modalDialogStatus(open),
   ...paintStyles(paint),
   '--sheet-progress': `${progress}`,
@@ -376,17 +374,17 @@ export const sheetWidget = defineWidget({
   output: {
     dialog: {
       ...sheetShape.part(() => [] as const, () => ({})),
-      live: {
-        select: (state: SheetSnapshot) => [state.open, state.paint, state.progress, isDragging(state), state.keyboardInset, state.releaseDuration, state.painted],
-        render: (selected) => renderDialog(selected as DialogSelection),
-      },
+      live: sheetShape.part(
+        (state) => [state.open, state.paint, state.progress, isDragging(state), state.keyboardInset, state.releaseDuration, state.painted] as const,
+        renderDialog,
+      ),
     },
     surface: {
       ...sheetShape.part(() => [] as const, () => ({})),
-      live: {
-        select: (state: SheetSnapshot) => [state.paint?.gap],
-        render: ([gap]) => ({ '--sheet-gap': typeof gap === 'number' ? `${gap}px` : undefined }),
-      },
+      live: sheetShape.part(
+        (state) => [state.paint?.gap] as const,
+        ([gap]) => ({ '--sheet-gap': gap === undefined ? undefined : `${gap}px` }),
+      ),
     },
   },
 })

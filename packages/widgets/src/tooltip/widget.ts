@@ -132,10 +132,10 @@ export const tooltipWidget = defineWidget({
         () => [] as const,
         () => ({ role: 'tooltip', popover: 'manual' }),
       ),
-      live: {
-        select: (state: TooltipSnapshot) => [state.open],
-        render: ([open]) => ({ 'data-status': open ? 'open' : 'close' }),
-      },
+      live: tooltipShape.part(
+        (state) => [state.open] as const,
+        ([open]) => ({ 'data-status': open ? 'open' : 'close' }),
+      ),
     },
   },
 })

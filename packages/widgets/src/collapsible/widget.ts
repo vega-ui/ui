@@ -84,10 +84,10 @@ export const collapsibleWidget = defineWidget({
         (state) => [isHidden(state), isExpanded(state), contentIdOf(state)] as const,
         ([hidden, expanded, contentId]) => ({ id: contentId, hidden, 'data-open': expanded }),
       ),
-      live: {
-        select: (state: CollapsibleSnapshot) => [isHidden(state), isExpanded(state)],
-        render: ([hidden, expanded]) => ({ hidden: hidden === true, 'data-open': expanded ? 'true' : 'false' }),
-      },
+      live: collapsibleShape.part(
+        (state) => [isHidden(state), isExpanded(state)] as const,
+        ([hidden, expanded]) => ({ hidden, 'data-open': expanded ? 'true' : 'false' }),
+      ),
     },
   },
 })
