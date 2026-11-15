@@ -1327,7 +1327,7 @@ export default function TeamAccess() {
 
 ### Layout/Overlay: scrollable grid with a sticky header
 
-168 cells in a scroll container with a sticky header row. Focus scrolls the active cell into view, and `scroll-padding-block-start` keeps it from hiding under the header. `getNextKey` makes `PageUp`/`PageDown` jump six hours instead of to the first or last row.
+168 cells in a scroll container with a sticky header row. `position: sticky` goes on the header's `GridRowGroup`, not on its `GridRow`: a sticky element stays inside its parent, so a row in a one-row group never sticks. Focus scrolls the active cell into view, and `scroll-padding-block-start` keeps it from hiding under the header. `getNextKey` makes `PageUp`/`PageDown` jump six hours instead of to the first or last row.
 
 <!-- example: grid/scrollable-grid-with-sticky-header.tsx -->
 ```tsx

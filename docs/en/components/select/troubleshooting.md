@@ -135,6 +135,25 @@ An initial value is already selected, or custom `SelectValue` children always re
 - use `placeholder` only when no selected value is present
 - ensure custom value rendering respects the empty state
 
+## The Value Is Empty In The Server HTML
+
+### Symptom
+
+The trigger shows nothing, or the placeholder, until the page hydrates, although a value is selected.
+
+### Likely Cause
+
+Without `children`, `SelectValue` copies the content of the selected option on the client. The options render in the list after the trigger, so the server has no option to copy.
+
+### How To Verify
+
+- disable JavaScript and reload the page
+- check whether the trigger shows the selected label
+
+### Fix
+
+Pass the label of the selected option as `SelectValue` children; they render on the server too.
+
 ## Clearing The Value Does Not Update The UI
 
 ### Symptom

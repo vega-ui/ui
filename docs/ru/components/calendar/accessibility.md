@@ -4,6 +4,22 @@
 
 Поставьте в шапку `CalendarHeading`: это `<h2>` с показанным месяцем, и `CalendarDays` получает `aria-labelledby` на него, поэтому сетка дней объявляется вместе с месяцем. У заголовка `aria-live="polite"`, так что скринридеры объявляют новый месяц после «Назад», «Вперёд» или перехода по клавиатуре. Чтобы назвать сетку по назначению («Дата получения»), передайте `CalendarDays` свой `aria-label` или `aria-labelledby` — ваше значение важнее.
 
+Ячейка дня называется своим числом; месяц и день недели добавляют имя сетки и столбец дня недели. Чтобы каждая ячейка объявляла полную дату, отрисуйте вместо `CalendarDay` внутри `CalendarWeeks` шаблон дня со своим `aria-label`, объявленный вне рендера:
+
+```tsx
+import { CalendarDay, useCalendarContext, useCalendarDayContext } from '@vega-ui/react';
+import { formatCalendarDate } from '@vega-ui/i18n';
+
+function NamedDay() {
+  const { date } = useCalendarDayContext();
+  const { calendar, locale } = useCalendarContext();
+
+  if (date === undefined) return <CalendarDay />;
+
+  return <CalendarDay aria-label={formatCalendarDate(calendar, date, locale, { dateStyle: 'full' })} />;
+}
+```
+
 ## Поведение клавиатуры
 
 <!-- AUTO-GENERATED:KEYBOARD:start -->

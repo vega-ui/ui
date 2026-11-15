@@ -4,6 +4,22 @@
 
 Put a `CalendarHeading` in the header: it is an `<h2>` with the shown month, and `CalendarDays` gets `aria-labelledby` pointing to it, so the day grid is announced with its month. It is `aria-live="polite"`, so screen readers announce the new month after Previous, Next or a month jump. To name the grid by its purpose instead ("Pickup date"), pass `aria-label` or `aria-labelledby` to `CalendarDays`; your value wins.
 
+A day cell is named by its number; the grid name and the weekday column add the month and the day of the week. To announce the full date on every cell, render a day template with its own `aria-label` in place of `CalendarDay` inside `CalendarWeeks`, defined outside of render:
+
+```tsx
+import { CalendarDay, useCalendarContext, useCalendarDayContext } from '@vega-ui/react';
+import { formatCalendarDate } from '@vega-ui/i18n';
+
+function NamedDay() {
+  const { date } = useCalendarDayContext();
+  const { calendar, locale } = useCalendarContext();
+
+  if (date === undefined) return <CalendarDay />;
+
+  return <CalendarDay aria-label={formatCalendarDate(calendar, date, locale, { dateStyle: 'full' })} />;
+}
+```
+
 ## Keyboard Behavior
 
 <!-- AUTO-GENERATED:KEYBOARD:start -->
