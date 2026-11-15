@@ -4,9 +4,6 @@ import { phoneNumbering } from '..'
 const { parse, getLength } = phoneNumbering
 
 describe('phoneNumbering', () => {
-  describe('format', () => {
-  })
-
   describe('parse', () => {
     it('reads the calling code, the national number and the country of an international number', () => {
       expect(parse('+7 912 345-67-89')).toEqual({ callingCode: '7', nationalNumber: '9123456789', country: 'RU' })
@@ -41,8 +38,5 @@ describe('phoneNumbering', () => {
       expect(getLength('8 912 345-67', 'RU')).toBe('short')
       expect(getLength('9123456789')).toBe('invalid')
     })
-  })
-
-  describe('getCallingCode', () => {
   })
 })
