@@ -19,7 +19,6 @@ export default function QuietHoursForm() {
             id='quiet-from'
             name='quietFrom'
             required
-            pattern='\d{2}:\d{2}'
             placeholder='hh:mm'
             aria-describedby='quiet-from-hint'
           />

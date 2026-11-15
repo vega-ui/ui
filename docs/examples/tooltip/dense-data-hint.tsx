@@ -3,7 +3,6 @@ import {
   IconButton,
   Text,
   Tooltip,
-  TooltipArrow,
   TooltipContent,
   TooltipTrigger,
 } from '@vega-ui/react';
@@ -42,7 +41,6 @@ export default function DenseDataHint() {
                 </IconButton>
               </TooltipTrigger>
               <TooltipContent>
-                <TooltipArrow />
                 <Text size={2} style={{ display: 'block', maxWidth: 240 }}>{metric.hint}</Text>
               </TooltipContent>
             </Tooltip>

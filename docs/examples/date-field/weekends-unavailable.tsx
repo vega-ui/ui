@@ -1,23 +1,28 @@
-import { FormEvent, useState } from 'react';
 import {
   Button,
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   DateField,
   DateFieldCalendar,
   DateFieldInput,
@@ -36,40 +41,19 @@ const isWeekend = (iso: string) => {
 };
 
 export default function WeekendsUnavailable() {
-  const [deliveryDate, setDeliveryDate] = useState('');
-  const [error, setError] = useState('');
-  const invalid = error !== '';
-
-  const onChangeValue = (date: string) => {
-    setDeliveryDate(date);
-    setError('');
-  };
-
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    if (deliveryDate && isWeekend(deliveryDate)) {
-      setError('We do not deliver on weekends. Choose a weekday.');
-    }
-  };
-
   return (
-    <form onSubmit={onSubmit} style={{ display: 'grid', gap: 'var(--spacing-12)', width: '100%', maxWidth: 300 }}>
+    <form onSubmit={(event) => event.preventDefault()} style={{ display: 'grid', gap: 'var(--spacing-12)', width: '100%', maxWidth: 300 }}>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor='delivery-date'>Delivery date</Label>
         <DateField
           format='dd.MM.yyyy'
           separator='.'
           disabledDates={isWeekend}
-          error={invalid}
-          value={deliveryDate}
-          onChangeValue={onChangeValue}
         >
           <DateFieldInput
             id='delivery-date'
             required
             placeholder='dd.mm.yyyy'
-            aria-invalid={invalid}
             aria-describedby='delivery-date-hint'
           />
           <Popover placement='bottom-end'>
@@ -77,13 +61,13 @@ export default function WeekendsUnavailable() {
               <DateFieldTriggerIconButton aria-label='Choose delivery date' />
             </PopoverTrigger>
             <PopoverContent>
-              <DateFieldCalendar>
+              <DateFieldCalendar aria-label='Choose delivery date'>
                 <CalendarHeader>
                   <CalendarPrevButton aria-label='Previous month' />
-                  <CalendarViewButtonGroup>
+                  <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-                  </CalendarViewButtonGroup>
+                  </CalendarHeading>
                   <CalendarNextButton aria-label='Next month' />
                 </CalendarHeader>
                 <CalendarContent>
@@ -91,22 +75,34 @@ export default function WeekendsUnavailable() {
                     <CalendarWeekdays>
                       <CalendarWeekday />
                     </CalendarWeekdays>
-                    <CalendarWeeks>
-                      <CalendarDay />
-                    </CalendarWeeks>
+                    <CalendarDaysScroller>
+                      <CalendarDaysScrollerContent>
+                        <CalendarWeeks>
+                          <CalendarDay />
+                        </CalendarWeeks>
+                      </CalendarDaysScrollerContent>
+                    </CalendarDaysScroller>
                   </CalendarDays>
                   <CalendarMonths>
-                    <CalendarMonth />
+                    <CalendarMonthsGrid>
+                      <CalendarMonth />
+                    </CalendarMonthsGrid>
                   </CalendarMonths>
                   <CalendarYears>
-                    <CalendarYear />
+                    <CalendarYearsScroller>
+                      <CalendarYearsScrollerContent>
+                        <CalendarYearsGrid>
+                          <CalendarYear />
+                        </CalendarYearsGrid>
+                      </CalendarYearsScrollerContent>
+                    </CalendarYearsScroller>
                   </CalendarYears>
                 </CalendarContent>
               </DateFieldCalendar>
             </PopoverContent>
           </Popover>
         </DateField>
-        <HelperText id='delivery-date-hint' error={invalid}>{invalid ? error : 'Monday to Friday only.'}</HelperText>
+        <HelperText id='delivery-date-hint'>Monday to Friday only.</HelperText>
       </div>
       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--spacing-4)' }}>
         <Button type='submit'>Book delivery</Button>

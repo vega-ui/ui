@@ -91,7 +91,7 @@ export default function MinimalComposition() {
 
 - Контролируемый логический `index`
 - Неконтролируемое пролистывание по окну с `defaultIndex`
-- Настраиваемые `size`, `shift`, `start` и `startDir`
+- Настраиваемые `size`, `shift` и `start`
 
 ## Связанные документы
 

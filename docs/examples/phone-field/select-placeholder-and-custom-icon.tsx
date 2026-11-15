@@ -34,7 +34,7 @@ export default function SelectPlaceholderAndCustomIcon() {
             <SelectOption value='PT'>PT</SelectOption>
           </SelectListbox>
         </PhoneFieldSelect>
-        <PhoneFieldInput id={id} name='phone' autoComplete='tel' />
+        <PhoneFieldInput name='phone' id={id} autoComplete='tel' />
       </PhoneField>
     </div>
   );

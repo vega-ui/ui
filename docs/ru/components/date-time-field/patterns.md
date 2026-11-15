@@ -23,20 +23,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   DateTimeField,
   DateTimeFieldCalendar,
   DateTimeFieldInput,
@@ -68,13 +74,13 @@ export default function DateAndTimeWithACalendarPopover({ locale = 'en-US' }: { 
             <DateTimeFieldTriggerIconButton aria-label='Choose webinar date' />
           </PopoverTrigger>
           <PopoverContent>
-            <DateTimeFieldCalendar>
+            <DateTimeFieldCalendar aria-label='Choose webinar date'>
               <CalendarHeader>
                 <CalendarPrevButton aria-label='Previous month' />
-                <CalendarViewButtonGroup>
+                <CalendarHeading>
                   <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                   <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-                </CalendarViewButtonGroup>
+                </CalendarHeading>
                 <CalendarNextButton aria-label='Next month' />
               </CalendarHeader>
               <CalendarContent>
@@ -82,15 +88,27 @@ export default function DateAndTimeWithACalendarPopover({ locale = 'en-US' }: { 
                   <CalendarWeekdays>
                     <CalendarWeekday />
                   </CalendarWeekdays>
-                  <CalendarWeeks>
-                    <CalendarDay />
-                  </CalendarWeeks>
+                  <CalendarDaysScroller>
+                    <CalendarDaysScrollerContent>
+                      <CalendarWeeks>
+                        <CalendarDay />
+                      </CalendarWeeks>
+                    </CalendarDaysScrollerContent>
+                  </CalendarDaysScroller>
                 </CalendarDays>
                 <CalendarMonths>
-                  <CalendarMonth />
+                  <CalendarMonthsGrid>
+                    <CalendarMonth />
+                  </CalendarMonthsGrid>
                 </CalendarMonths>
                 <CalendarYears>
-                  <CalendarYear />
+                  <CalendarYearsScroller>
+                    <CalendarYearsScrollerContent>
+                      <CalendarYearsGrid>
+                        <CalendarYear />
+                      </CalendarYearsGrid>
+                    </CalendarYearsScrollerContent>
+                  </CalendarYearsScroller>
                 </CalendarYears>
               </CalendarContent>
             </DateTimeFieldCalendar>
@@ -114,8 +132,8 @@ export default function DateAndTimeWithACalendarPopover({ locale = 'en-US' }: { 
 Заметки о композиции:
 
 - Текст подсказки должен явно указывать часовой пояс и ожидаемый формат.
-- Согласуйте `min`, `max` и `timeStep` с бизнес-правилами планирования; `min` и `max` ограничивают введённые значения, а `timeStep` управляет только шагом клавиш-стрелок.
-- `name` на input отправляет введённый текст; чтобы отправить значение `YYYY-MM-DDTHH:mm`, копируйте `onChangeValue` в скрытый input, как в разделе [Форма/интеграция](./examples.md#формаинтеграция).
+- Согласуйте `min`, `max` и `timeStep` с бизнес-правилами планирования; `min` и `max` делают невалидным введённое значение вне их, а `timeStep` управляет только шагом клавиш-стрелок.
+- Поле ввода отправляет показанный текст; значение `YYYY-MM-DDTHH:mm` отправляйте через свой скрытый input, как в разделе [Форма/интеграция](./examples.md#формаинтеграция).
 
 Компромиссы:
 
@@ -130,20 +148,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   DateTimeField,
   DateTimeFieldCalendar,
   DateTimeFieldInput,
@@ -167,15 +191,19 @@ export default function SchedulePostForm() {
     setSubmitted(JSON.stringify(Object.fromEntries(data)));
   };
 
+  const onReset = () => {
+    setPublishAt('');
+    setSubmitted('');
+  };
+
   return (
-    <form onSubmit={onSubmit} onReset={() => setSubmitted('')} style={{ display: 'grid', gap: 'var(--spacing-12)', width: '100%', maxWidth: 320 }}>
+    <form onSubmit={onSubmit} onReset={onReset} style={{ display: 'grid', gap: 'var(--spacing-12)', width: '100%', maxWidth: 320 }}>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor='publish-at'>Publish at</Label>
-        <DateTimeField dateFormat='dd.MM.yyyy' timeStep={15} min='2026-07-01T00:00' onChangeValue={setPublishAt}>
+        <DateTimeField dateFormat='dd.MM.yyyy' timeStep={15} min='2026-07-01T00:00' value={publishAt} onChangeValue={setPublishAt}>
           <DateTimeFieldInput
             id='publish-at'
             required
-            pattern='\d{2}\.\d{2}\.\d{4}, \d{2}:\d{2}'
             placeholder='dd.mm.yyyy, hh:mm'
             aria-describedby='publish-at-hint'
           />
@@ -184,13 +212,13 @@ export default function SchedulePostForm() {
               <DateTimeFieldTriggerIconButton aria-label='Choose publish date' />
             </PopoverTrigger>
             <PopoverContent>
-              <DateTimeFieldCalendar>
+              <DateTimeFieldCalendar aria-label='Choose publish date'>
                 <CalendarHeader>
                   <CalendarPrevButton aria-label='Previous month' />
-                  <CalendarViewButtonGroup>
+                  <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-                  </CalendarViewButtonGroup>
+                  </CalendarHeading>
                   <CalendarNextButton aria-label='Next month' />
                 </CalendarHeader>
                 <CalendarContent>
@@ -198,15 +226,27 @@ export default function SchedulePostForm() {
                     <CalendarWeekdays>
                       <CalendarWeekday />
                     </CalendarWeekdays>
-                    <CalendarWeeks>
-                      <CalendarDay />
-                    </CalendarWeeks>
+                    <CalendarDaysScroller>
+                      <CalendarDaysScrollerContent>
+                        <CalendarWeeks>
+                          <CalendarDay />
+                        </CalendarWeeks>
+                      </CalendarDaysScrollerContent>
+                    </CalendarDaysScroller>
                   </CalendarDays>
                   <CalendarMonths>
-                    <CalendarMonth />
+                    <CalendarMonthsGrid>
+                      <CalendarMonth />
+                    </CalendarMonthsGrid>
                   </CalendarMonths>
                   <CalendarYears>
-                    <CalendarYear />
+                    <CalendarYearsScroller>
+                      <CalendarYearsScrollerContent>
+                        <CalendarYearsGrid>
+                          <CalendarYear />
+                        </CalendarYearsGrid>
+                      </CalendarYearsScrollerContent>
+                    </CalendarYearsScroller>
                   </CalendarYears>
                 </CalendarContent>
               </DateTimeFieldCalendar>
@@ -253,20 +293,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   DateTimeField,
   DateTimeFieldCalendar,
   DateTimeFieldInput,
@@ -322,19 +368,19 @@ export default function ReschedulingInsideASheet() {
             <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
               <Label htmlFor='new-time'>New time</Label>
               <DateTimeField dateFormat='dd.MM.yyyy' timeStep={15} value={draft} onChangeValue={setDraft}>
-                <DateTimeFieldInput id='new-time' required pattern='\d{2}\.\d{2}\.\d{4}, \d{2}:\d{2}' />
+                <DateTimeFieldInput id='new-time' required />
                 <Popover placement='bottom-end'>
                   <PopoverTrigger asChild>
                     <DateTimeFieldTriggerIconButton aria-label='Choose new date' />
                   </PopoverTrigger>
                   <PopoverContent>
-                    <DateTimeFieldCalendar>
+                    <DateTimeFieldCalendar aria-label='Choose new date'>
                       <CalendarHeader>
                         <CalendarPrevButton aria-label='Previous month' />
-                        <CalendarViewButtonGroup>
+                        <CalendarHeading>
                           <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                           <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-                        </CalendarViewButtonGroup>
+                        </CalendarHeading>
                         <CalendarNextButton aria-label='Next month' />
                       </CalendarHeader>
                       <CalendarContent>
@@ -342,15 +388,27 @@ export default function ReschedulingInsideASheet() {
                           <CalendarWeekdays>
                             <CalendarWeekday />
                           </CalendarWeekdays>
-                          <CalendarWeeks>
-                            <CalendarDay />
-                          </CalendarWeeks>
+                          <CalendarDaysScroller>
+                            <CalendarDaysScrollerContent>
+                              <CalendarWeeks>
+                                <CalendarDay />
+                              </CalendarWeeks>
+                            </CalendarDaysScrollerContent>
+                          </CalendarDaysScroller>
                         </CalendarDays>
                         <CalendarMonths>
-                          <CalendarMonth />
+                          <CalendarMonthsGrid>
+                            <CalendarMonth />
+                          </CalendarMonthsGrid>
                         </CalendarMonths>
                         <CalendarYears>
-                          <CalendarYear />
+                          <CalendarYearsScroller>
+                            <CalendarYearsScrollerContent>
+                              <CalendarYearsGrid>
+                                <CalendarYear />
+                              </CalendarYearsGrid>
+                            </CalendarYearsScrollerContent>
+                          </CalendarYearsScroller>
                         </CalendarYears>
                       </CalendarContent>
                     </DateTimeFieldCalendar>

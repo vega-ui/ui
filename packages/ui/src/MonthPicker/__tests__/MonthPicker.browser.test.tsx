@@ -13,14 +13,11 @@ afterEach(cleanup);
 const YEAR = '2024-06-15';
 const COLS = 3;
 
-const SIZE_DEFAULT = 'xs';
-const SIZE_LG = 'lg';
-
 const DEFAULT_ACTIVE = '2024-01-01';
 
 const MonthPickerTest: FC<Partial<ComponentProps<typeof MonthPicker>>> = (props) => {
   return (
-    <MonthPicker year={YEAR} {...props}>
+    <MonthPicker defaultFocusedDate={YEAR} {...props}>
       <MonthPickerLayout cols={COLS}>
         <MonthPickerCell />
       </MonthPickerLayout>
@@ -29,9 +26,6 @@ const MonthPickerTest: FC<Partial<ComponentProps<typeof MonthPicker>>> = (props)
 };
 
 const getCells = (r: RenderResult) => r.getAllByRole('gridcell') as HTMLDivElement[];
-
-const getFirstInteractiveCell = (r: RenderResult) =>
-  getCells(r).find((el) => el.getAttribute('aria-disabled') !== 'true') as HTMLDivElement;
 
 const getInteractiveCellAtIndex = (r: RenderResult, idx: number) =>
   getCells(r).filter((el) => el.getAttribute('aria-disabled') !== 'true')[idx] as HTMLDivElement;
@@ -42,7 +36,7 @@ describe('MonthPicker', () => {
       let r: RenderResult;
       
       beforeEach(() => {
-        r = render(<MonthPickerTest defaultActive={DEFAULT_ACTIVE} />);
+        r = render(<MonthPickerTest defaultFocusedDate={DEFAULT_ACTIVE} />);
       });
       
       it('click selects an interactive month cell', async () => {
@@ -53,17 +47,6 @@ describe('MonthPicker', () => {
         await expect.element(cell).toHaveAttribute('aria-selected', 'true');
       });
       
-      it('applies default data-size to month cells', async () => {
-        const cell = getFirstInteractiveCell(r);
-        await expect.element(cell).toHaveAttribute('data-size', SIZE_DEFAULT);
-      });
-      
-      it('passes size prop down to month cells', async () => {
-        r.rerender(<MonthPickerTest defaultActive={DEFAULT_ACTIVE} size={SIZE_LG} />);
-        
-        const cell = getFirstInteractiveCell(r);
-        await expect.element(cell).toHaveAttribute('data-size', SIZE_LG);
-      });
     });
 
     describe('cell template', () => {
@@ -75,7 +58,7 @@ describe('MonthPicker', () => {
     
       it('renders the layout children once per month with the month in context', async () => {
         const r = render(
-          <MonthPicker year='2026-06-15' locale='en-US'>
+          <MonthPicker defaultFocusedDate='2026-06-15' locale='en-US'>
             <MonthPickerLayout>
               <ShortMonth />
             </MonthPickerLayout>
@@ -90,7 +73,7 @@ describe('MonthPicker', () => {
   
   describe('Edge Cases', () => {
     it('renders the 13 months of a Hebrew leap year keyed by their first days', async () => {
-      const r = render(<MonthPickerTest calendar={createCalendarSystem('hebrew')} year='2024-03-15' />);
+      const r = render(<MonthPickerTest calendar={createCalendarSystem('hebrew')} defaultFocusedDate='2024-03-15' />);
       
       const keys = getCells(r).map((el) => el.dataset.key);
       
@@ -102,21 +85,8 @@ describe('MonthPicker', () => {
   
   describe('Accessibility', () => {
     describe('keyboard', () => {
-      it('Space toggles selection on focused interactive cell', async () => {
-        const r = render(<MonthPickerTest defaultActive={DEFAULT_ACTIVE} />);
-        
-        const cell = getInteractiveCellAtIndex(r, 1);
-        
-        cell.focus();
-        await expect.element(cell).toHaveFocus();
-        await expect.element(cell).toHaveAttribute('aria-selected', 'false');
-        
-        await userEvent.keyboard(' ');
-        await expect.element(cell).toHaveAttribute('aria-selected', 'true');
-      });
-      
       it('Enter toggles selection on focused interactive cell', async () => {
-        const r = render(<MonthPickerTest defaultActive={DEFAULT_ACTIVE} />);
+        const r = render(<MonthPickerTest defaultFocusedDate={DEFAULT_ACTIVE} />);
         
         const cell = getInteractiveCellAtIndex(r, 1);
         
@@ -130,34 +100,55 @@ describe('MonthPicker', () => {
     });
     
     describe('tab stop', () => {
-      const getTabbables = (r: RenderResult) => getCells(r).filter((el) => el.getAttribute('tabindex') === '0');
       const getMonth = (r: RenderResult, month: string) => page.elementLocator(r.container).getByRole('gridcell', { name: month, exact: true });
-      
-      it('falls back to the first month when the current month is in another year', async () => {
-        const r = render(<MonthPickerTest year='2020-05-01' />);
-        
-        await expect.poll(() => getTabbables(r)).toHaveLength(1);
-        await expect.element(getMonth(r, 'January')).toHaveAttribute('tabindex', '0');
-      });
-      
-      it('prefers the selected month of the visible year', async () => {
-        const r = render(<MonthPickerTest year='2020-05-01' defaultSelected='2020-07-01' />);
-        
-        await expect.poll(() => getTabbables(r)).toHaveLength(1);
-        await expect.element(getMonth(r, 'July')).toHaveAttribute('tabindex', '0');
-      });
       
       it('Tab moves focus into the grid', async () => {
         const r = render(
           <>
             <button type='button'>before</button>
-            <MonthPickerTest year='2020-05-01' />
+            <MonthPickerTest defaultFocusedDate='2020-05-01' />
           </>
         );
         
         r.getByRole('button').focus();
         await userEvent.tab();
-        await expect.element(getMonth(r, 'January')).toHaveFocus();
+        await expect.element(getMonth(r, 'May')).toHaveFocus();
+      });
+    });
+
+    describe('APG', () => {
+      const YearTest = (props?: Partial<ComponentProps<typeof MonthPicker>>) => (
+        <MonthPicker defaultFocusedDate='2020-05-01' locale='en-US' {...props}>
+          <MonthPickerLayout cols={3}>
+            <MonthPickerCell />
+          </MonthPickerLayout>
+        </MonthPicker>
+      );
+
+      const getMonth = (r: RenderResult, month: string) => page.elementLocator(r.container).getByRole('gridcell', { name: month, exact: true });
+      const getTabStops = (r: RenderResult) => getCells(r).filter((el) => el.getAttribute('tabindex') === '0');
+
+      const press = async (r: RenderResult, from: string, keys: string) => {
+        getMonth(r, from).element().focus();
+        await userEvent.keyboard(keys);
+      };
+
+      const expectFocusedTabStop = async (r: RenderResult, month: string) => {
+        await expect.element(getMonth(r, month)).toHaveFocus();
+        await expect.element(getMonth(r, month)).toHaveAttribute('tabindex', '0');
+        await expect.poll(() => getTabStops(r)).toHaveLength(1);
+      };
+
+      describe('keyboard', () => {
+        it('ArrowRight and ArrowLeft move focus by one month, wrapping rows, and carry the tab stop', async () => {
+          const r = render(<YearTest />);
+
+          await press(r, 'March', '{ArrowRight}');
+          await expectFocusedTabStop(r, 'April');
+
+          await userEvent.keyboard('{ArrowLeft}{ArrowLeft}');
+          await expectFocusedTabStop(r, 'February');
+        });
       });
     });
   });

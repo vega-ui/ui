@@ -23,7 +23,6 @@ import {
   IconButton,
   Text,
   Tooltip,
-  TooltipArrow,
   TooltipContent,
   TooltipTrigger,
 } from '@vega-ui/react';
@@ -46,7 +45,6 @@ export default function IconHint() {
             </IconButton>
           </TooltipTrigger>
           <TooltipContent>
-            <TooltipArrow />
             <Text size={2}>{action.hint}</Text>
           </TooltipContent>
         </Tooltip>
@@ -85,7 +83,6 @@ import {
   TextField,
   TextFieldInput,
   Tooltip,
-  TooltipArrow,
   TooltipContent,
   TooltipTrigger,
 } from '@vega-ui/react';
@@ -111,7 +108,6 @@ export default function FieldHelper() {
             </IconButton>
           </TooltipTrigger>
           <TooltipContent>
-            <TooltipArrow />
             <Text size={2}>Printed on invoices for EU business customers</Text>
           </TooltipContent>
         </Tooltip>
@@ -152,7 +148,6 @@ import {
   IconButton,
   Text,
   Tooltip,
-  TooltipArrow,
   TooltipContent,
   TooltipTrigger,
 } from '@vega-ui/react';
@@ -191,7 +186,6 @@ export default function DenseDataHint() {
                 </IconButton>
               </TooltipTrigger>
               <TooltipContent>
-                <TooltipArrow />
                 <Text size={2} style={{ display: 'block', maxWidth: 240 }}>{metric.hint}</Text>
               </TooltipContent>
             </Tooltip>

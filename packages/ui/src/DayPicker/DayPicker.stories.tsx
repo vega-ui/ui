@@ -83,7 +83,7 @@ export const Matrix: Story = {
       {variants.map((variant) => sizes.map((size) => (
         <div key={`${variant}-${size}`} style={cell}>
           <Text size={2}>{`${variant} / ${size}`}</Text>
-          <DayPicker aria-label='Days' variant={variant} size={size} defaultSelected={today}>
+          <DayPicker aria-label='Days' variant={variant} size={size} defaultValue={today}>
             <DayPickerLayout>
               <DayPickerCell />
             </DayPickerLayout>
@@ -99,7 +99,7 @@ export const SelectionModes: Story = {
     <div style={grid}>
       <div style={cell}>
         <Text size={2}>single</Text>
-        <DayPicker aria-label='Days' selection='single' defaultSelected={today}>
+        <DayPicker aria-label='Days' selection='single' defaultValue={today}>
           <DayPickerLayout>
             <DayPickerCell />
           </DayPickerLayout>
@@ -107,7 +107,7 @@ export const SelectionModes: Story = {
       </div>
       <div style={cell}>
         <Text size={2}>multiple</Text>
-        <DayPicker aria-label='Days' selection='multiple' defaultSelected={[shift(-3), today, shift(3)]}>
+        <DayPicker aria-label='Days' selection='multiple' defaultValue={[shift(-3), today, shift(3)]}>
           <DayPickerLayout>
             <DayPickerCell />
           </DayPickerLayout>
@@ -115,7 +115,7 @@ export const SelectionModes: Story = {
       </div>
       <div style={cell}>
         <Text size={2}>range</Text>
-        <DayPicker aria-label='Days' selection='range' defaultSelected={[shift(-2), shift(4)]}>
+        <DayPicker aria-label='Days' selection='range' defaultValue={[shift(-2), shift(4)]}>
           <DayPickerLayout>
             <DayPickerCell />
           </DayPickerLayout>
@@ -130,7 +130,7 @@ export const States: Story = {
     <div style={grid}>
       <div style={cell}>
         <Text size={2}>from / to</Text>
-        <DayPicker aria-label='Days' selection='range' from={today} to={shift(14)}>
+        <DayPicker aria-label='Days' selection='range' min={today} max={shift(14)}>
           <DayPickerLayout>
             <DayPickerCell />
           </DayPickerLayout>
@@ -138,7 +138,7 @@ export const States: Story = {
       </div>
       <div style={cell}>
         <Text size={2}>disabled</Text>
-        <DayPicker aria-label='Days' selection='multiple' disabled={isWeekend}>
+        <DayPicker aria-label='Days' selection='multiple' disabledDates={isWeekend}>
           <DayPickerLayout>
             <DayPickerCell />
           </DayPickerLayout>
@@ -169,7 +169,7 @@ export const Locales: Story = {
       {locales.map((locale) => (
         <div key={locale} style={cell}>
           <Text size={2}>{locale}</Text>
-          <DayPicker aria-label='Days' locale={locale} defaultSelected={today}>
+          <DayPicker aria-label='Days' locale={locale} defaultValue={today}>
             <DayPickerLayout>
               <DayPickerCell />
             </DayPickerLayout>
@@ -186,7 +186,7 @@ export const CalendarSystems: Story = {
       {calendarSystems.map(({ name, locale, calendar }) => (
         <div key={name} style={cell}>
           <Text size={2}>{`${name} / ${locale}`}</Text>
-          <DayPicker aria-label='Days' calendar={calendar} locale={locale} defaultSelected={today}>
+          <DayPicker aria-label='Days' calendar={calendar} locale={locale} defaultValue={today}>
             <DayPickerLayout>
               <DayPickerCell />
             </DayPickerLayout>

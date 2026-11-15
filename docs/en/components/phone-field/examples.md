@@ -4,7 +4,7 @@
 
 ### Basic: simple ISO-based phone mask
 
-`code` alone sets the format: the mask keeps the US calling code and groups the digits as `+1 201 555-0123`. A visible `Label` names the input and `autoComplete='tel'` lets the browser fill it in.
+`country` alone sets the format: the mask keeps the US calling code and groups the digits as `+1 201 555-0123`. A visible `Label` names the input and `autoComplete='tel'` lets the browser fill it in.
 
 <!-- example: phone-field/simple-iso-based-phone-mask.tsx -->
 ```tsx
@@ -17,8 +17,8 @@ export default function SimpleIsoBasedPhoneMask() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', width: '100%', maxWidth: 280 }}>
       <Label htmlFor={id}>Mobile number</Label>
-      <PhoneField code='US'>
-        <PhoneFieldInput id={id} name='phone' autoComplete='tel' placeholder='+1 201 555-0123' />
+      <PhoneField country='US'>
+        <PhoneFieldInput name='phone' id={id} autoComplete='tel' placeholder='+1 201 555-0123' />
       </PhoneField>
     </div>
   );
@@ -60,15 +60,15 @@ export default function SelectWithCountryOptionsAndIcons() {
   const id = useId();
   const [country, setCountry] = useState<(typeof countries)[number]>(countries[1]);
 
-  const onChangeCode = (code: string) => {
-    const found = countries.find((item) => item.code === code);
+  const onChangeCountry = (next: string) => {
+    const found = countries.find((item) => item.code === next);
     if (found) setCountry(found);
   };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', width: '100%', maxWidth: 340 }}>
       <Label htmlFor={id}>Phone number</Label>
-      <PhoneField code={country.code} onChangeCode={onChangeCode}>
+      <PhoneField country={country.code} onChangeCountry={onChangeCountry}>
         <PhoneFieldSelect>
           <SelectHiddenSelect name='country' />
           <SelectCombobox aria-label={`Country: ${country.name}`}>
@@ -89,7 +89,7 @@ export default function SelectWithCountryOptionsAndIcons() {
             ))}
           </SelectListbox>
         </PhoneFieldSelect>
-        <PhoneFieldInput id={id} name='phone' autoComplete='tel' />
+        <PhoneFieldInput name='phone' id={id} autoComplete='tel' />
       </PhoneField>
     </div>
   );
@@ -101,7 +101,7 @@ export default function SelectWithCountryOptionsAndIcons() {
 
 ### Controlled/Stateful: controlled value with clear action
 
-The parent owns the formatted text, derives the stored digits from it and clears it with an empty string. The readout tells the user when the number is still incomplete.
+The parent owns the number in E.164, like `+14155550132`, and clears it with an empty string; the input shows it formatted. The readout tells the user when the number is still incomplete.
 
 <!-- example: phone-field/controlled-value-with-clear-action.tsx -->
 ```tsx
@@ -110,14 +110,14 @@ import { useId, useState } from 'react';
 
 export default function ControlledValueWithClearAction() {
   const id = useId();
-  const [phone, setPhone] = useState('+1 415 555-0132');
+  const [phone, setPhone] = useState('+14155550132');
   const digits = phone.replace(/\D/g, '');
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', width: '100%', maxWidth: 320 }}>
       <Label htmlFor={id}>Phone for delivery updates</Label>
       <div style={{ display: 'flex', gap: 'var(--spacing-4)' }}>
-        <PhoneField code='US' value={phone} onChangeValue={setPhone} style={{ flex: 1 }}>
+        <PhoneField country='US' value={phone} onChangeValue={setPhone} style={{ flex: 1 }}>
           <PhoneFieldInput id={id} autoComplete='tel' />
         </PhoneField>
         <Button variant='secondary' appearance='ghost' disabled={phone === ''} onClick={() => setPhone('')}>
@@ -125,7 +125,7 @@ export default function ControlledValueWithClearAction() {
         </Button>
       </div>
       <Text size={2} style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums', marginBlockStart: 'var(--spacing-2)' }}>
-        {digits.length === 11 ? `Stored as +${digits}` : 'Enter all 10 digits of the number.'}
+        {digits.length === 11 ? `Stored as ${phone}` : 'Enter all 10 digits of the number.'}
       </Text>
     </div>
   );
@@ -137,7 +137,7 @@ export default function ControlledValueWithClearAction() {
 
 ### Form/Integration: uncontrolled native form submit
 
-The input submits the formatted number under `name='phone'`, and `SelectHiddenSelect` submits the country under `name='country'`. `required` is native validation on the real input.
+`PhoneFieldInput` submits the shown text under `name='phone'`, like a native input, and `SelectHiddenSelect` submits the country under `name='country'`. `required` is native validation on the real input, and a field that shows only the calling code counts as empty for it. A number too short or too long for its country blocks the submit with the message of the browser.
 
 <!-- example: phone-field/uncontrolled-native-form-submit.tsx -->
 ```tsx
@@ -170,7 +170,7 @@ export default function UncontrolledNativeFormSubmit() {
   return (
     <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', width: '100%', maxWidth: 340 }}>
       <Label htmlFor={id}>Phone number</Label>
-      <PhoneField defaultCode='DE'>
+      <PhoneField defaultCountry='DE'>
         <PhoneFieldSelect>
           <SelectHiddenSelect name='country' />
           <SelectCombobox aria-label='Country'>
@@ -183,7 +183,7 @@ export default function UncontrolledNativeFormSubmit() {
             <SelectOption value='CH'>CH</SelectOption>
           </SelectListbox>
         </PhoneFieldSelect>
-        <PhoneFieldInput id={id} name='phone' autoComplete='tel' required />
+        <PhoneFieldInput name='phone' id={id} autoComplete='tel' required />
       </PhoneField>
       <Button type='submit' style={{ alignSelf: 'flex-end', marginBlockStart: 'var(--spacing-9)' }}>Request a callback</Button>
       {submitted && (
@@ -267,7 +267,7 @@ export default function FullFieldInsideADialogForm() {
             style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', marginBlockStart: 'var(--spacing-12)' }}
           >
             <Label htmlFor={id}>Phone number</Label>
-            <PhoneField defaultCode='FR'>
+            <PhoneField defaultCountry='FR'>
               <PhoneFieldSelect>
                 <SelectHiddenSelect name='country' />
                 <SelectCombobox aria-label='Country'>
@@ -280,7 +280,7 @@ export default function FullFieldInsideADialogForm() {
                   <SelectOption value='CH'>CH</SelectOption>
                 </SelectListbox>
               </PhoneFieldSelect>
-              <PhoneFieldInput id={id} name='phone' autoComplete='tel' required />
+              <PhoneFieldInput name='phone' id={id} autoComplete='tel' required />
             </PhoneField>
             <Button type='submit' style={{ alignSelf: 'flex-end', marginBlockStart: 'var(--spacing-9)' }}>Save contact</Button>
           </form>
@@ -297,14 +297,12 @@ export default function FullFieldInsideADialogForm() {
 
 ### Error: invalid number state
 
-The number is checked on blur and on submit. An incomplete number sets `error` on the field and `aria-invalid` on the input and links the message with `aria-describedby`; typing the last digit clears it.
+The field makes a number too short for its country invalid through `setCustomValidity`, and `required` an empty one, so the example only reads `validity`: on blur and on submit an invalid number sets `aria-invalid` on the input and links the message with `aria-describedby`, and typing clears it. `noValidate` on the form replaces the message bubble of the browser with this message, and `checkValidity()` still blocks the submit.
 
 <!-- example: phone-field/invalid-number-state.tsx -->
 ```tsx
 import { Button, HelperText, Label, PhoneField, PhoneFieldInput, Text } from '@vega-ui/react';
 import { FormEvent, useId, useState } from 'react';
-
-const countDigits = (phone: string) => phone.replace(/\D/g, '').length;
 
 export default function InvalidNumberState() {
   const id = useId();
@@ -313,37 +311,29 @@ export default function InvalidNumberState() {
   const [invalid, setInvalid] = useState(false);
   const [saved, setSaved] = useState(false);
 
-  const onChangeValue = (next: string) => {
-    setPhone(next);
-    if (invalid && countDigits(next) === 11) setInvalid(false);
-  };
-
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    if (countDigits(phone) !== 11) {
-      setInvalid(true);
-      setSaved(false);
-      return;
-    }
-
-    setSaved(true);
+    const valid = event.currentTarget.checkValidity();
+    setInvalid(!valid);
+    setSaved(valid);
   };
 
   return (
-    <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', width: '100%', maxWidth: 320 }}>
+    <form noValidate onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', width: '100%', maxWidth: 320 }}>
       <Label htmlFor={id}>Phone for two-factor codes</Label>
-      <PhoneField code='US' value={phone} onChangeValue={onChangeValue} error={invalid}>
+      <PhoneField country='US' value={phone} onChangeValue={setPhone}>
         <PhoneFieldInput
           id={id}
           autoComplete='tel'
           placeholder='+1 201 555-0123'
+          required
           aria-invalid={invalid}
           aria-describedby={invalid ? errorId : undefined}
-          onBlur={() => setInvalid(countDigits(phone) > 1 && countDigits(phone) !== 11)}
+          onInput={() => setInvalid(false)}
+          onBlur={(event) => setInvalid(phone !== '' && !event.currentTarget.validity.valid)}
         />
       </PhoneField>
-      {invalid && <HelperText id={errorId} error>Enter all 10 digits of the US number.</HelperText>}
+      {invalid && <HelperText id={errorId} invalid>Enter all 10 digits of the US number.</HelperText>}
       <Button type='submit' style={{ alignSelf: 'flex-end', marginBlockStart: 'var(--spacing-9)' }}>Send a code</Button>
       {saved && (
         <Text size={2} role='status' style={{ color: 'var(--label-secondary)', marginBlockStart: 'var(--spacing-4)' }}>
@@ -360,7 +350,7 @@ export default function InvalidNumberState() {
 
 ### Disabled: inherited from a fieldset
 
-The input and the country trigger are native controls, so a disabled `Fieldset` disables both and leaves them out of the form. The switch toggles that state.
+The input and the country trigger are native controls, so a disabled `Fieldset` disables both and leaves the number and the country out of the form, like `disabled` on `PhoneField`. The switch toggles that state.
 
 <!-- example: phone-field/disabled-input.tsx -->
 ```tsx
@@ -405,7 +395,7 @@ export default function DisabledInput() {
         style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)' }}
       >
         <Label htmlFor={phoneId}>Billing phone</Label>
-        <PhoneField defaultValue='+44 7400 123456'>
+        <PhoneField defaultValue='+447400123456'>
           <PhoneFieldSelect>
             <SelectHiddenSelect name='country' />
             <SelectCombobox aria-label='Country'>
@@ -417,7 +407,7 @@ export default function DisabledInput() {
               <SelectOption value='IE'>IE</SelectOption>
             </SelectListbox>
           </PhoneFieldSelect>
-          <PhoneFieldInput id={phoneId} name='billingPhone' autoComplete='tel' />
+          <PhoneFieldInput name='billingPhone' id={phoneId} autoComplete='tel' />
         </PhoneField>
       </Fieldset>
     </div>
@@ -430,7 +420,7 @@ export default function DisabledInput() {
 
 ### Edge: non-strict mask for lenient paste behavior
 
-With `strictMask={false}` a pasted number keeps its own calling code, and the field switches the country to match it; `onChangeCode` reports the detected country. With the default strict mask the same paste would be forced into the current country's code.
+With `strictMask={false}` a pasted number keeps its own calling code, and the field switches the country to match it; `onChangeCountry` reports the detected country. With the default strict mask the calling code the text starts with stays in front, so the same paste after it would be read as a number of that calling code.
 
 <!-- example: phone-field/non-strict-mask-for-lenient-paste-behavior.tsx -->
 ```tsx
@@ -455,7 +445,7 @@ export default function NonStrictMaskForLenientPasteBehavior() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', width: '100%', maxWidth: 340 }}>
       <Label htmlFor={id}>Customer phone</Label>
-      <PhoneField defaultCode='US' strictMask={false} onChangeCode={setCountry}>
+      <PhoneField defaultCountry='US' strictMask={false} onChangeCountry={setCountry}>
         <PhoneFieldSelect>
           <SelectCombobox aria-label='Country'>
             <SelectValue />
@@ -527,7 +517,7 @@ export default function EmojiFlags() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', width: '100%', maxWidth: 340 }}>
       <Label htmlFor={id}>WhatsApp number</Label>
-      <PhoneField defaultCode='BR'>
+      <PhoneField defaultCountry='BR'>
         <PhoneFieldSelect>
           <SelectHiddenSelect name='country' />
           <SelectCombobox aria-label='Country'>
@@ -548,7 +538,7 @@ export default function EmojiFlags() {
             ))}
           </SelectListbox>
         </PhoneFieldSelect>
-        <PhoneFieldInput id={id} name='whatsapp' autoComplete='tel' />
+        <PhoneFieldInput name='whatsapp' id={id} autoComplete='tel' />
       </PhoneField>
     </div>
   );

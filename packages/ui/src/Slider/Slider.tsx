@@ -1,32 +1,32 @@
 'use client';
 
-import { CSSProperties, HTMLAttributes, Ref, useRef } from 'react';
-import { clamp, csx, mergeRefs, snapToStep } from '@vega-ui/utils';
-import { useControlledState, useFormReset } from '@vega-ui/hooks';
+import { HTMLAttributes, Ref } from 'react';
+import { csx, snapToStep } from '@vega-ui/utils';
+import { useOutput, useSnapshot, useWidget, widgetEnvironment } from '../internals/widget';
 import { SliderProvider } from './contexts';
-import { orderValues, getPosition, getThumbBounds } from './helpers';
+import { sliderWidget, valuesOf } from '@vega-ui/widgets/slider';
 import { SliderOrientation, SliderSize, SliderVariant } from './types';
 import style from './style.module.css'
 
-export interface SliderProps<V extends number | number[] = number> extends Omit<HTMLAttributes<HTMLDivElement>, 'defaultValue'> {
+export interface SliderProps<Value extends number | number[] = number> extends Omit<HTMLAttributes<HTMLDivElement>, 'defaultValue'> {
   /**
    * Controlled value: a number for one thumb, or an array with one entry
    * per `SliderThumb` by its `index`.
    */
-  value?: V
+  value?: Value
 
   /**
    * Initial value for uncontrolled usage: a number for one thumb, or an array
    * with one entry per `SliderThumb` by its `index`. Defaults to the middle of
    * the range, like `<input type="range">`.
    */
-  defaultValue?: V
+  defaultValue?: Value
 
   /**
    * Called when a thumb changes, with a number or an array, in the shape of
    * `value` or `defaultValue`.
    */
-  onChangeValue?(value: NoInfer<V>): void
+  onChangeValue?(value: NoInfer<Value>): void
 
   /**
    * The minimum allowed value. Defaults to `0`.
@@ -84,7 +84,7 @@ export interface SliderProps<V extends number | number[] = number> extends Omit<
 /** Slider lets users pick one or several numbers from a range by dragging thumbs along a track.
  *  Each `SliderThumb` is a native `<input type="range">` limited by its neighbors, so keyboard,
  *  form submission, and assistive technologies work as with the native element. */
-export const Slider = <V extends number | number[] = number>({
+export const Slider = <Value extends number | number[] = number>({
   className,
   value,
   defaultValue,
@@ -102,31 +102,23 @@ export const Slider = <V extends number | number[] = number>({
   ref,
   children,
   ...props
-}: SliderProps<V>) => {
-  const rootRef = useRef<HTMLDivElement>(null)
-
-  const initialValue = defaultValue ?? (max < min ? min : snapToStep(min + (max - min) / 2, { min, max, step })) as V
-  const [current, setCurrent] = useControlledState(value, initialValue, onChangeValue)
-
+}: SliderProps<Value>) => {
+  const initialValue = defaultValue ?? (max < min ? min : snapToStep(min + (max - min) / 2, { min, max, step })) as Value
   const gap = step === 'any' ? 0 : minStepsBetweenThumbs * step
 
-  const currentValues: number[] = Array.isArray(current) ? current : [current as number]
-  const snappedValues = currentValues.map((value) => snapToStep(value, { min, max, step }))
-  const values = orderValues(snappedValues, { min, max, gap })
-  const setValues = (next: number[]) => setCurrent((Array.isArray(current) ? next : next[0]) as V)
-
-  const changeThumb = (index: number, next: number) => {
-    const [low, high] = getThumbBounds(values, index, { min, max, gap })
-    const clamped = clamp(low, next, high)
-    if (clamped === values[index]) return
-
-    setValues(values.map((current, i) => (i === index ? clamped : current)))
-  }
-
-  useFormReset(rootRef, () => {
-    if (value !== undefined) return
-    setCurrent(initialValue)
-  })
+  const handle = useWidget(sliderWidget, {
+    min,
+    max,
+    step,
+    gap,
+    orientation,
+    value,
+    defaultValue: initialValue,
+    onChangeValue: onChangeValue as (value: number | number[]) => void,
+  }, widgetEnvironment)
+  const current = useSnapshot(handle, (state) => state.value)
+  const values = valuesOf(current, { min, max, step, gap })
+  const attrs = useOutput(handle, sliderWidget.output.root)
 
   return (
     <SliderProvider
@@ -138,7 +130,7 @@ export const Slider = <V extends number | number[] = number>({
       disabled={disabled}
       name={name}
       values={values}
-      changeThumb={changeThumb}
+      handle={handle}
     >
       <div
         className={csx(style.slider, className)}
@@ -146,13 +138,8 @@ export const Slider = <V extends number | number[] = number>({
         data-variant={variant}
         data-orientation={orientation}
         data-disabled={Boolean(disabled)}
-        ref={mergeRefs([rootRef, ref])}
-        style={{
-          '--slider-range-start': values.length > 1 ? getPosition(values[0], min, max) : 0,
-          '--slider-range-end': getPosition(values[values.length - 1] ?? min, min, max),
-          ...cssStyle,
-        } as CSSProperties}
-        {...props}
+        ref={ref}
+        {...handle.merge(attrs, { style: cssStyle, ...props })}
       >
         {children}
       </div>

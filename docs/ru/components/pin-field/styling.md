@@ -16,6 +16,7 @@
 | `--color-error` | слот с ошибкой | контур ошибки |
 | `--separator-opaque` | разделитель | цвет разделителя групп |
 | `--cursor-height` | `PinFieldSlot` | Высота каретки в активном слоте. |
+| `--pin-field-slot-outline-color` | `PinFieldSlot` | Контур слотов. Корень задаёт ему `--color-error`, пока у `PinFieldInput` есть `aria-invalid='true'` или он подходит под `:user-invalid` или `[data-user-edited]:invalid`. |
 
 ## Переменные частей
 
@@ -36,7 +37,15 @@
 - размер меняет габариты слота и шкалу шрифта
 - активное состояние меняет цвет контура
 - состояние плейсхолдера меняет цвет текста в слоте
-- отключённое состояние и состояние ошибки переназначают цвета слотов, не меняя раскладку
+- отключённое состояние и состояние ошибки переназначают цвета слотов, не меняя раскладку; состояние ошибки следует за `aria-invalid='true'`, `:user-invalid` или `[data-user-edited]:invalid` на `PinFieldInput`
+
+`PinField` сам записывает текст `PinFieldInput`, а Chromium и WebKit не считают такой текст правкой пользователя, поэтому после такой правки input не подходит под `:user-invalid`. В своём CSS используйте `:user-invalid` вместе с `[data-user-edited]:invalid`:
+
+```css
+.sign-in-code:has(input:is(:user-invalid, [data-user-edited]:invalid)) label {
+  color: var(--color-error);
+}
+```
 
 ## Примеры
 

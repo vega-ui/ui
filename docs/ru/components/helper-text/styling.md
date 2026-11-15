@@ -15,19 +15,19 @@
 
 ### Корень
 
-Корень задаёт `display: inline-block` и меняет цвет в зависимости от `data-error`.
+Корень задаёт `display: inline-block` и меняет цвет в зависимости от `data-invalid`.
 
 ## Взаимодействие состояний и вариантов
 
 - обычное состояние использует `--label-tertiary`
-- `error` использует `--color-error`
+- `invalid` использует `--color-error`
 - размер шрифта по-прежнему берётся из соответствия размеров `Text`, выбранного маппером размеров вспомогательного текста
 
 ## Примеры
 
 ### Размеры и тон ошибки
 
-`size` сопоставляется со шкалой текста (`sm`, `md`, `lg`); `error` меняет цвет с `--label-tertiary` на `--color-error` при любом размере.
+`size` сопоставляется со шкалой текста (`sm`, `md`, `lg`); `invalid` меняет цвет с `--label-tertiary` на `--color-error` при любом размере.
 
 <!-- example: helper-text/helper-text-sizes.tsx -->
 ```tsx
@@ -41,7 +41,7 @@ export default function HelperTextSizes() {
       {SIZES.map((size) => (
         <div key={size} style={{ display: 'grid', gap: 'var(--spacing-1)' }}>
           <HelperText size={size}>Hint, {size}: shown to all members of the workspace.</HelperText>
-          <HelperText size={size} error>Error, {size}: this name is already in use.</HelperText>
+          <HelperText size={size} invalid>Error, {size}: this name is already in use.</HelperText>
         </div>
       ))}
     </div>

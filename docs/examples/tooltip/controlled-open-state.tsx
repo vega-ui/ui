@@ -8,7 +8,6 @@ import {
   CheckboxInput,
   Text,
   Tooltip,
-  TooltipArrow,
   TooltipContent,
   TooltipTrigger,
 } from '@vega-ui/react';
@@ -32,7 +31,6 @@ export default function ControlledOpenState() {
           <Button variant='secondary' appearance='ghost'>Save draft</Button>
         </TooltipTrigger>
         <TooltipContent>
-          <TooltipArrow />
           <Text size={2}>Drafts are saved automatically every minute</Text>
         </TooltipContent>
       </Tooltip>

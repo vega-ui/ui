@@ -1,24 +1,24 @@
 # PhoneField Troubleshooting
 
-## Country Change Does Not Reformat The Number Correctly
+## Country Change Does Not Change The Number
 
 ### Symptom
 
-Changing the selected country leaves the visible number in an invalid or stale format.
+Changing `country` from the parent leaves the number and the text of the input as they were.
 
 ### Likely Cause
 
-Country state and validation logic are not synchronized in the parent flow.
+`country` is a hint: it is the country shown in `PhoneFieldSelect` and the calling code a strict mask starts an empty field with. A change of it from outside never changes the number and calls no `onChangeValue`.
 
 ### How To Verify
 
-- switch countries with an existing input value
-- compare displayed and stored value behavior
+- switch countries with an existing number, from the parent and in `PhoneFieldSelect`
+- compare the `onChangeValue` calls
 
 ### Fix
 
-- treat country and value as one integration flow
-- normalize after country changes
+- let the user pick the country in `PhoneFieldSelect`: a pick writes its calling code into the input and reports `onChangeCountry` and `onChangeValue`
+- set `value` yourself when a change from outside should change the number
 
 ## Paste Behavior Feels Too Strict
 
@@ -37,7 +37,7 @@ Users paste a number, but the field rejects or mangles the input unexpectedly.
 ### Fix
 
 - consider `strictMask={false}` for lenient flows
-- normalize the canonical value after input
+- read `value`: it is the number in E.164 in both modes
 
 ## Country Select Looks Correct But Form Semantics Are Weak
 

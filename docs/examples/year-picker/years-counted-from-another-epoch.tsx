@@ -5,7 +5,7 @@ const buddhistCalendar = createCalendarSystem('buddhist');
 
 export default function YearsCountedFromAnotherEpoch() {
   return (
-    <YearPicker aria-label='Year' calendar={buddhistCalendar} locale='th-TH' year='2026-01-01' to='2026-01-01' style={{ width: '100%' }}>
+    <YearPicker aria-label='Year' calendar={buddhistCalendar} locale='th-TH' defaultFocusedDate='2026-01-01' max='2026-01-01' style={{ width: '100%' }}>
       <YearPickerLayout>
         <YearPickerCell />
       </YearPickerLayout>

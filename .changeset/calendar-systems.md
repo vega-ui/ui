@@ -1,7 +1,6 @@
 ---
 "@vega-ui/i18n": major
 "@vega-ui/react": major
-"@vega-ui/hooks": major
 "@vega-ui/utils": major
 ---
 
@@ -14,7 +13,7 @@ New package `@vega-ui/i18n` with no dependencies and no knowledge of the compone
 - `Intl` formatting: `formatCalendarDate`, `formatCalendarDay` (bare day numbers, `15` rather than `15日`), `createCalendarDateFormatter` / `createCalendarDayFormatter` (one `Intl.DateTimeFormat` reused for many days; the day, month and year grids create one per layout instead of one per cell)
 
 `@vega-ui/utils` (now depends on `@vega-ui/i18n`):
-- typed entry of the date fields over a calendar system, `formatTemplateDate`, `parseTemplateDate`, `parseTemplateRange`, `normalizeTemplateDate`, `stepTimeSegment` (time only, no calendar) and `getDateTemplate` (the field template of a date format: `dd.MM.yyyy` → `dd.mm.yyyy`), `getTimeTemplate` (`HH:mm` → `HH:MM`) and `getDateTimeTemplate` (the template of `DateTimeField`: `dd.mm.yyyy, HH:MM`); new `findISODateInRange(dates, start, end)`, the first `YYYY-MM-DD` date within a range, and `getISODatePart` / `getISOTimePart`, the date and time parts of an ISO date time; `snapToStep(value, { min, max, step })`, the step grid of `<input type="range">`
+- typed entry of the date fields over a calendar system, `formatTemplateDate`, `parseTemplateDate`, `parseTemplateRange`, `normalizeTemplateDate`, `stepTimeSegment` (time only, no calendar) and `getDateTemplate` (the field template of a date format: `dd.MM.yyyy` → `dd.mm.yyyy`), `getTimeTemplate` (`HH:mm` → `HH:MM`) and `getDateTimeTemplate` (the template of `DateTimeField`: `dd.mm.yyyy, HH:MM`); new `getISODatePart` / `getISOTimePart`, the date and time parts of an ISO date time; `snapToStep(value, { min, max, step })`, the step grid of `<input type="range">`
 
 `Calendar`, `DateField`, `DateTimeField`, `DateRangeField`, `DayPicker`, `MonthPicker`, `YearPicker`:
 - new `calendar` and `locale` props on the root, applied to every part (labels, weekday names, week start, day, month and year grids); defaults are the Gregorian calendar and the runtime locale, like `Intl`. There is no global provider: for app-wide settings, wrap the component (`<Calendar locale={appLocale} {...props} />`). Values stay ISO strings in every calendar
@@ -25,7 +24,7 @@ New package `@vega-ui/i18n` with no dependencies and no knowledge of the compone
 - removed `CalendarDayPicker` and its `Item` / `Row` / `RowGroup` / `Scroller` / `ScrollerContent` / `ScrollerLayout`, `CalendarMonthPicker` and its `Item` / `Row` / `RowGroup` / `Layout`, `CalendarYearPicker` and its `Item` / `Row` / `RowGroup` / `Scroller` / `ScrollerContent` / `ScrollerLayout`, `CalendarMonthPickerButton`, `CalendarYearPickerButton`, `CalendarPickerButtonGroup`, `CalendarPrevYearGroupButton`, `CalendarNextYearGroupButton`, `CalendarWeekLabel`, `CalendarWeekLabels`
 - new `CalendarDays` (the day view, holding the new `CalendarWeekdays`, weekday names in the calendar's locale with `format`, and `CalendarWeeks`, the swipeable day grid with `format` and `includeOverflowDays`), `CalendarMonths` (`cols`, `format`), `CalendarYears` (`format`)
 - weekdays and cells are customized with template children, no render functions: the children of `CalendarWeekdays` / `CalendarWeeks` / `CalendarMonths` / `CalendarYears` render once per weekday or cell, read it with `useCalendarWeekdayContext()` (column, `weekday` as in `Date#getDay()`, name) / `useCalendarDayContext()` / `useCalendarMonthContext()` / `useCalendarYearContext()` (ISO date, fields in the calendar system, formatted label) and render `CalendarWeekday` / `CalendarDay` / `CalendarMonth` / `CalendarYear`; the template is required, there is no implicit default cell
-- `CalendarViewButton view='month' | 'year'` and `CalendarViewButtonGroup` replace the month and year picker buttons
+- `CalendarViewButton view='month' | 'year'` replaces the month and year picker buttons and their group; put the buttons in `CalendarHeading`
 - `CalendarPrevButton` / `CalendarNextButton` follow the view: months in the days, pages of years in the years; they show a chevron unless `children` are given
 - the views (`CalendarDays`, `CalendarMonths`, `CalendarYears`) take only HTML attributes and display options; the month, selection, disabled dates, locale and calendar come from the `Calendar` root
 - `CalendarMonthLabel` / `CalendarYearLabel` drop `locale`: every part uses the locale of the `Calendar`
@@ -46,25 +45,23 @@ Date fields:
 - `MonthPicker`: `year` is a `YYYY-MM-DD` string, `calendar` added; `createMonthPickerGrid({ year, calendar, cols })` derives the rows, so years with 13 months fit; `MonthPickerLayout` drops `rows` / `start`; new `useMonthPickerContext`
 - `YearPicker`: `year` is a `YYYY-MM-DD` string, `calendar` added; `createYearPickerGrid` and `YearPickerLayout` take `start` as `YYYY-MM-DD`; `YearPickerScroller` takes `defaultYear` and `period` instead of `getIndexByYear`; `getIndexByYear` / `getYearByIndex` removed
 - `DayPickerLayout`, `MonthPickerLayout`, `YearPickerLayout` (and the scroller layouts) require the same template children (`<DayPickerCell />`, …); new `DayPickerCell`, `MonthPickerCell`, `YearPickerCell` and `useDayPickerCellContext`, `useMonthPickerCellContext`, `useYearPickerCellContext`
-- `DataGrid` ignores key presses whose default was already prevented
-- in range mode the bounds are always reported in order (`[start, end]`, `start` not after `end`), also when the range is picked backwards (`@vega-ui/hooks` `useSelection` orders them); the same holds for `Calendar`'s `onChangeValue`
+- `Grid` ignores key presses whose default was already prevented
+- in range mode the bounds are always reported in order (`[start, end]`, `start` not after `end`), also when the range is picked backwards; the same holds for `Calendar`'s `onChangeValue`
 - without `defaultActive` the tab stop is always a cell in view: today when it is in the visible month / year, otherwise the first selected cell there, otherwise the first cell (`YearPicker`: the visible `year`); before, Tab skipped the grid when today was not shown
 - `YearPickerScroller` reports the page in view with `onChangePeriod(year)`, like `DayPickerScroller`
 
 Right-to-left:
-- the calendars and pickers follow the inherited text direction (`dir` on the page, an ancestor or the component), like native elements: the grids run right to left, ArrowLeft / ArrowRight are mirrored, the default Prev / Next chevrons point the right way, range ends are rounded on the correct side, and swiping and the scrollers page in the right direction (`@vega-ui/hooks` `useScrollSnap` aligns snap points in RTL)
+- the calendars and pickers follow the inherited text direction (`dir` on the page, an ancestor or the component), like native elements: the grids run right to left, ArrowLeft / ArrowRight are mirrored, the default Prev / Next chevrons point the right way, range ends are rounded on the correct side, and swiping and the scrollers page in the right direction
 
 Fixes:
 - `Calendar` without `selection` is typed as single selection, so `onChangeValue={setState}` with `useState<string>` type-checks
 - `getCalendarMonthsOfYear` (`@vega-ui/i18n`) returns only the months of each era in a year where a Japanese era changes (no duplicated months in `MonthPicker`)
 - `getFirstDayOfWeek` (now in `@vega-ui/i18n`) reads `Intl.Locale` week info correctly (`getWeekInfo()` or `weekInfo`, Sunday = 7) and falls back to the region of the locale (`fa-IR` → Saturday, `pt-BR` → Sunday) when the runtime has no week info
-- `NumberField`, `PhoneField`, `PinField`: after `form.reset()` the − / + buttons, the detected country and the PIN slots match the restored value. `PhoneField` writes the calling code of a picked country only when a controlled parent accepts it. Breaking for custom parts: `useNumberFieldContext` and `usePhoneFieldContext` no longer expose `onInput`
+- `NumberField`, `PhoneField`, `PinField`: after `form.reset()` the − / + buttons, the detected country and the PIN slots match the restored value. Breaking for custom parts: `useNumberFieldContext` and `usePhoneFieldContext` no longer expose `onInput`
 - `IndexedSnapScroller` (and every calendar scroller built on it) no longer moves pages under an ongoing scroll: it appends pages while a scroll reaches the end and re-centers the window once the scroll settles, so swiping to the edge in WebKit and Firefox no longer jumps two pages further (e.g. December → February) and fast swipes keep going; `onOffset(-1)` now fires when the scroll settles on the first page
 - `IndexedSnapScroller` keeps a scroll made right after a snap settles instead of jumping back a page (seen with fast swipes on a busy page)
 - `IndexedSnapScroller` re-syncs to a controlled `index` only when that prop changes, so the year picker no longer jumps back to the visible year after scrolling
 - `Calendar` month and year arrows no longer stop working after a few clicks: each click moves one page from the page the scroll is already heading to (clicks during a smooth scroll were lost in Firefox), the window grows when the target is outside it, and focus keeps the same day across quick month changes
-- `@vega-ui/hooks` (breaking): `useIndexes` replaces `push()` / `shift()` with `extend(dir)` (grow the window at an edge without moving existing pages) and `center(index)` (re-center the window on a page); `useScrollSnap`'s `scrollToElementByKey` returns whether the item exists
-- `@vega-ui/hooks` `useSelection` matches `disabled` keys with `equals`, like selection: object keys with a custom `equals` (`{ row, col }`) are blocked, not only the same reference
 - `Slider` behaves like `<input type="range">`: handlers passed to the root (`onKeyDown`, `onPointerDown`, …) run after the built-in ones instead of replacing them, steps count from `min` (`min={1} step={2}` gives 1, 3, 5…), the arrow keys stop at `min` / `max` when a step overshoots them, End goes to the last step that fits in `max`, fractional steps keep their precision (`0.3`, not `0.30000000000000004`), and a cancelled pointer (`pointercancel`) ends the drag
 - `RangeSlider` follows the same rules: user handlers no longer replace the built-in ones, steps count from `min`, fractional steps keep their precision, End stops at the last step that fits in `max`, `pointercancel` ends the drag; the right thumb no longer goes past `max` with ArrowRight, the left thumb reaches `min` when a step overshoots it, and a step that would pass the other thumb stops at it instead of being ignored
 

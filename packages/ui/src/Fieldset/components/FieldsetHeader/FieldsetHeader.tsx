@@ -4,8 +4,8 @@ export type FieldsetHeaderProps = HTMLAttributes<HTMLElement>
 
 /**
  * `FieldsetHeader` is a structural subcomponent of `Fieldset` used to
- * group and layout header-related content, such as the fieldset legend,
- * descriptions, and header actions.
+ * group and layout header-related content, such as descriptions and
+ * header actions. Keep `FieldsetLegend` outside of it, as the first child of `Fieldset`.
  *
  * It renders a semantic `<header>` element and accepts standard HTML
  * attributes for flexible composition and styling.

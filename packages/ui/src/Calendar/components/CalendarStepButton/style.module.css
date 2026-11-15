@@ -1,0 +1,37 @@
+.button {
+    position: relative;
+    transition: transform var(--transition-fast-state-delay) ease-in-out,
+                background-color var(--transition-fast-state-delay) ease-in-out,
+                color var(--transition-fast-state-delay) ease-in-out,
+                border-color var(--transition-fast-state-delay) ease-in-out;
+}
+
+.prev {
+    transform: translateX(calc(-100% - var(--spacing-2)));
+}
+
+.next {
+    transform: translateX(calc(100% + var(--spacing-2)));
+}
+
+.prev:where(:dir(rtl)) {
+    transform: translateX(calc(100% + var(--spacing-2)));
+}
+
+.next:where(:dir(rtl)) {
+    transform: translateX(calc(-100% - var(--spacing-2)));
+}
+
+.button:where([data-visible='true']) {
+    transform: translateX(0);
+}
+
+.icon:where(:dir(rtl)) {
+    transform: scaleX(-1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .button {
+        transition-property: background-color, color, border-color;
+    }
+}

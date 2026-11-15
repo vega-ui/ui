@@ -272,7 +272,7 @@ export default function Pricing() {
               aria-labelledby={`${id}-${plan.id}`}
               className='pricingPlan'
               data-popular={popular}
-              style={{ alignItems: 'stretch', gap: 'var(--spacing-12)', minWidth: 0 }}
+              style={{ gap: 'var(--spacing-12)', minWidth: 0 }}
             >
               <div style={{ display: 'grid', gap: 'var(--spacing-2)' }}>
                 <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-4)' }}>
@@ -313,7 +313,7 @@ export default function Pricing() {
         })}
       </section>
 
-      <Card aria-labelledby={`${id}-calc`} style={{ alignItems: 'stretch', gap: 'var(--spacing-12)', minWidth: 0 }}>
+      <Card aria-labelledby={`${id}-calc`} style={{ gap: 'var(--spacing-12)', minWidth: 0 }}>
         <div style={{ display: 'grid', gap: 'var(--spacing-2)' }}>
           <Heading id={`${id}-calc`} as='h2' size={5} fontWeight={600}>Estimate your cost</Heading>
           <Text size={2} style={secondary}>{`Prices ${cycle === 'yearly' ? 'billed yearly' : 'billed monthly'}, before tax.`}</Text>
@@ -420,24 +420,24 @@ export default function Pricing() {
             <form noValidate onSubmit={submit} style={{ display: 'grid', gap: 'var(--spacing-8)', marginBlockStart: 'var(--spacing-10)' }}>
               <div style={field}>
                 <Label htmlFor={`${id}-name`}>Name</Label>
-                <TextField error={errors.name !== undefined}>
+                <TextField>
                   <TextFieldInput id={`${id}-name`} name='name' autoComplete='name' aria-invalid={errors.name !== undefined} aria-describedby={describe('name')} onChange={() => clearError('name')} />
                 </TextField>
-                {errors.name && <HelperText id={`${id}-name-error`} error>{errors.name}</HelperText>}
+                {errors.name && <HelperText id={`${id}-name-error`} invalid>{errors.name}</HelperText>}
               </div>
               <div style={field}>
                 <Label htmlFor={`${id}-email`}>Work email</Label>
-                <TextField error={errors.email !== undefined}>
+                <TextField>
                   <TextFieldInput id={`${id}-email`} name='email' type='email' autoComplete='email' aria-invalid={errors.email !== undefined} aria-describedby={describe('email')} onChange={() => clearError('email')} />
                 </TextField>
-                {errors.email && <HelperText id={`${id}-email-error`} error>{errors.email}</HelperText>}
+                {errors.email && <HelperText id={`${id}-email-error`} invalid>{errors.email}</HelperText>}
               </div>
               <div style={field}>
                 <Label htmlFor={`${id}-company`}>Company</Label>
-                <TextField error={errors.company !== undefined}>
+                <TextField>
                   <TextFieldInput id={`${id}-company`} name='company' autoComplete='organization' aria-invalid={errors.company !== undefined} aria-describedby={describe('company')} onChange={() => clearError('company')} />
                 </TextField>
-                {errors.company && <HelperText id={`${id}-company-error`} error>{errors.company}</HelperText>}
+                {errors.company && <HelperText id={`${id}-company-error`} invalid>{errors.company}</HelperText>}
               </div>
               <div style={field}>
                 <Label htmlFor={`${id}-message`}>How can we help?</Label>
@@ -447,12 +447,11 @@ export default function Pricing() {
                   rows={4}
                   fullWidth
                   placeholder='Team size, timeline and anything you need from us'
-                  error={errors.message !== undefined}
                   aria-invalid={errors.message !== undefined}
                   aria-describedby={describe('message')}
                   onChange={() => clearError('message')}
                 />
-                {errors.message && <HelperText id={`${id}-message-error`} error>{errors.message}</HelperText>}
+                {errors.message && <HelperText id={`${id}-message-error`} invalid>{errors.message}</HelperText>}
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end', gap: 'var(--spacing-4)', marginBlockStart: 'var(--spacing-4)' }}>
                 <DialogClose asChild>

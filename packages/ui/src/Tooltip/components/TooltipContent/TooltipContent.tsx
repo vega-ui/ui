@@ -1,9 +1,11 @@
 'use client';
-import { CSSProperties, FC, HTMLAttributes, PointerEvent, Ref, useLayoutEffect, useRef, useState } from 'react';
-import { csx, mergeEventHandlers, togglePopover } from '@vega-ui/utils';
+import { FC, HTMLAttributes, Ref } from 'react';
+import { csx } from '@vega-ui/utils';
 import { useMergeRefs } from '@vega-ui/hooks';
+import { useOutput, useSnapshot } from '../../../internals/widget';
 import styles from './style.module.css';
 import { useTooltipContext } from '../../contexts';
+import { CONTENT, isRendered, tooltipWidget } from '@vega-ui/widgets/tooltip';
 
 export interface TooltipContentProps extends HTMLAttributes<HTMLDivElement> {
   /**
@@ -19,63 +21,25 @@ export const TooltipContent: FC<TooltipContentProps> = ({
   ref,
   children,
   style,
-  onPointerEnter: _onPointerEnter,
-  onPointerLeave: _onPointerLeave,
   ...props
 }) => {
-  const { open, cancelHide, hideAfterDelay, context, contentId, side = 'top', arrowX, arrowY, setFloating, contentStyle } = useTooltipContext()
-  const [mounted, setMounted] = useState(open)
-  const element = useRef<HTMLDivElement>(null)
-  const mergedRef = useMergeRefs([element, setFloating, ref])
+  const { handle, contentId, placement = 'bottom', anchorName, setContent } = useTooltipContext()
+  const attrs = useOutput(handle, tooltipWidget.output.content)
+  const rendered = useSnapshot(handle, isRendered)
+  const mergedRef = useMergeRefs([handle.rootAt(CONTENT, tooltipWidget.output.content), setContent, ref])
+  const [side, align = 'center'] = placement.split('-')
 
-  if (open && !mounted) setMounted(true)
-
-  useLayoutEffect(() => {
-    const popover = element.current
-    if (!popover) return
-
-    if (open) {
-      togglePopover(popover, true)
-      return
-    }
-
-    let cancelled = false
-
-    Promise.allSettled(popover.getAnimations().map((animation) => animation.finished)).then(() => {
-      if (!cancelled) setMounted(false)
-    })
-
-    return () => {
-      cancelled = true
-    }
-  }, [open, mounted])
-
-  const onPointerLeave = (event: PointerEvent<HTMLDivElement>) => {
-    if (event.relatedTarget instanceof Node && context.elements.domReference?.contains(event.relatedTarget)) return
-
-    hideAfterDelay()
-  }
-
-  if (!mounted) return null
+  if (!rendered) return null
 
   return (
     <div
       id={contentId}
-      role='tooltip'
-      popover='manual'
-      data-status={open ? 'open' : 'close'}
       data-side={side}
+      data-align={align}
       ref={mergedRef}
       className={csx(styles.tooltipContent, className)}
-      style={{
-        ...contentStyle,
-        '--tooltip-arrow-x': arrowX === undefined ? undefined : `${arrowX}px`,
-        '--tooltip-arrow-y': arrowY === undefined ? undefined : `${arrowY}px`,
-        ...style,
-      } as CSSProperties}
-      onPointerEnter={mergeEventHandlers(cancelHide, _onPointerEnter)}
-      onPointerLeave={mergeEventHandlers(onPointerLeave, _onPointerLeave)}
-      {...props}
+      style={{ positionAnchor: anchorName, ...style }}
+      {...handle.listen(attrs, props)}
     >
       {children}
     </div>

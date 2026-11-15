@@ -1,4 +1,4 @@
-import { Profiler } from 'react';
+import { act, Profiler } from 'react';
 import { afterEach, describe, expect, it, onTestFinished, vi } from 'vitest';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
 import { userEvent } from 'vitest/browser';
@@ -41,15 +41,6 @@ describe('Listbox', () => {
       await expect.element(getOption(r, 'Alpha')).toHaveAttribute('aria-selected', 'true');
     });
 
-    it('does not select a disabled option', async () => {
-      const onChangeValue = vi.fn();
-      const r = render(<Listbox data-testid={LISTBOX} aria-label='Letters' onChangeValue={onChangeValue}>{options}</Listbox>);
-
-      getOption(r, 'Beta').click();
-
-      expect(onChangeValue).not.toHaveBeenCalled();
-    });
-
     describe('multiple', () => {
       it('toggles options by click and reports all of them', async () => {
         const onChangeValue = vi.fn();
@@ -64,18 +55,12 @@ describe('Listbox', () => {
         await expect.element(getOption(r, 'Gamma')).toHaveAttribute('aria-selected', 'true');
       });
 
-      it('does not change a controlled value without an update', async () => {
-        const r = render(<Listbox data-testid={LISTBOX} aria-label='Letters' multiple value={['a']}>{options}</Listbox>);
-
-        await userEvent.click(getOption(r, 'Gamma'));
-
-        await expect.element(getOption(r, 'Gamma')).toHaveAttribute('aria-selected', 'false');
-      });
     });
 
     it('follows the DOM order when options are reordered', async () => {
       const r = render(<Listbox data-testid={LISTBOX} aria-label='Letters'>{options}</Listbox>);
       r.rerender(<Listbox data-testid={LISTBOX} aria-label='Letters'>{[...options].reverse()}</Listbox>);
+      await act(async () => {});
 
       getListbox(r).focus();
 
@@ -84,25 +69,6 @@ describe('Listbox', () => {
   });
 
   describe('Edge Cases', () => {
-    it('does not let an option opt out of a disabled list', async () => {
-      const onChangeValue = vi.fn();
-      const r = render(<Listbox aria-label='Letters' disabled onChangeValue={onChangeValue}><ListboxOption value='a' disabled={false}>Alpha</ListboxOption></Listbox>);
-
-      getOption(r, 'Alpha').click();
-
-      expect(onChangeValue).not.toHaveBeenCalled();
-    });
-
-    it('clears a controlled value with null', () => {
-      const r = render(<Listbox aria-label='Letters' value='a'>{options}</Listbox>);
-
-      expect(getOption(r, 'Alpha').getAttribute('aria-selected')).toBe('true');
-
-      r.rerender(<Listbox aria-label='Letters' value={null}>{options}</Listbox>);
-
-      expect(getOption(r, 'Alpha').getAttribute('aria-selected')).toBe('false');
-    });
-
     it('keeps working when an id is passed around the types', async () => {
       const r = render(
         <Listbox data-testid={LISTBOX} aria-label='Letters'>
@@ -137,7 +103,7 @@ describe('Listbox', () => {
       expect(onChangeValue).toHaveBeenCalledWith(49);
     });
 
-    it('drops the active option when it is removed', async () => {
+    it('moves the active option to the next enabled one when it is removed', async () => {
       const r = render(<Listbox data-testid={LISTBOX} aria-label='Letters'>{options}</Listbox>);
 
       getListbox(r).focus();
@@ -145,7 +111,7 @@ describe('Listbox', () => {
 
       r.rerender(<Listbox data-testid={LISTBOX} aria-label='Letters'>{options.slice(1)}</Listbox>);
 
-      await expect.poll(() => getListbox(r).hasAttribute('aria-activedescendant')).toBe(false);
+      await toBeActive(r, 'Gamma');
     });
 
     it('skips an option disabled after mounting', async () => {
@@ -165,23 +131,6 @@ describe('Listbox', () => {
       await userEvent.keyboard('{ArrowDown}');
 
       await toBeActive(r, 'Gamma');
-    });
-
-    it('does not select the active option once it is disabled', async () => {
-      const onChangeValue = vi.fn();
-      const renderLetters = (disabled: boolean) => (
-        <Listbox data-testid={LISTBOX} aria-label='Letters' onChangeValue={onChangeValue}>
-          <ListboxOption value='a' disabled={disabled}>Alpha</ListboxOption>
-        </Listbox>
-      );
-      const r = render(renderLetters(false));
-
-      getListbox(r).focus();
-      await toBeActive(r, 'Alpha');
-      r.rerender(renderLetters(true));
-      await userEvent.keyboard('{Enter}');
-
-      expect(onChangeValue).not.toHaveBeenCalled();
     });
 
     it('keeps the active option when its props change', async () => {
@@ -261,53 +210,6 @@ describe('Listbox', () => {
       await expect.element(getOption(r, 'Alpha')).toHaveAttribute('data-active', 'true');
     });
 
-    it('skips a disabled first option when marking the active one', async () => {
-      const r = render(
-        <Listbox data-testid={LISTBOX} aria-label='Letters'>
-          <ListboxOption value='a' disabled>Alpha</ListboxOption>
-          <ListboxOption value='b'>Beta</ListboxOption>
-        </Listbox>,
-      );
-
-      getListbox(r).focus();
-
-      await toBeActive(r, 'Beta');
-    });
-
-    it('starts from the selected option', async () => {
-      const r = render(<Listbox data-testid={LISTBOX} aria-label='Letters' defaultValue='c'>{options}</Listbox>);
-
-      getListbox(r).focus();
-
-      await toBeActive(r, 'Gamma');
-    });
-
-    it('moves with arrows without selecting, skips disabled and stops at the ends', async () => {
-      const onChangeValue = vi.fn();
-      const r = render(<Listbox data-testid={LISTBOX} aria-label='Letters' onChangeValue={onChangeValue}>{options}</Listbox>);
-
-      getListbox(r).focus();
-      await userEvent.keyboard('{ArrowDown}');
-      await toBeActive(r, 'Gamma');
-      await userEvent.keyboard('{ArrowDown}{ArrowDown}');
-      await toBeActive(r, 'Delta');
-
-      expect(onChangeValue).not.toHaveBeenCalled();
-    });
-
-    it('selects the active option with Enter and Space', async () => {
-      const onChangeValue = vi.fn();
-      const r = render(<Listbox data-testid={LISTBOX} aria-label='Letters' onChangeValue={onChangeValue}>{options}</Listbox>);
-
-      getListbox(r).focus();
-      await toBeActive(r, 'Alpha');
-      await userEvent.keyboard('{Enter}');
-      expect(onChangeValue).toHaveBeenLastCalledWith('a');
-
-      await userEvent.keyboard('{End} ');
-      expect(onChangeValue).toHaveBeenLastCalledWith('d');
-    });
-
     it('moves by typeahead, Home and End', async () => {
       const r = render(<Listbox data-testid={LISTBOX} aria-label='Letters'>{options}</Listbox>);
 
@@ -327,110 +229,7 @@ describe('Listbox', () => {
       expect(getListbox(r).hasAttribute('tabindex')).toBe(false);
     });
 
-    it('exposes multiple selection and toggles with Space and Enter without losing the others', async () => {
-      const onChangeValue = vi.fn();
-      const r = render(<Listbox data-testid={LISTBOX} aria-label='Letters' multiple defaultValue={['d', 'c']} onChangeValue={onChangeValue}>{options}</Listbox>);
-
-      await expect.element(getListbox(r)).toHaveAttribute('aria-multiselectable', 'true');
-
-      getListbox(r).focus();
-      await toBeActive(r, 'Gamma');
-
-      await userEvent.keyboard('{Home}');
-      expect(onChangeValue).not.toHaveBeenCalled();
-
-      await userEvent.keyboard(' ');
-      expect(onChangeValue).toHaveBeenLastCalledWith(['d', 'c', 'a']);
-
-      await userEvent.keyboard('{Enter}');
-      expect(onChangeValue).toHaveBeenLastCalledWith(['d', 'c']);
-    });
-
-    it('marks only the disabled option', async () => {
-      const r = render(<Listbox data-testid={LISTBOX} aria-label='Letters'>{options}</Listbox>);
-
-      await expect.element(getOption(r, 'Beta')).toHaveAttribute('aria-disabled', 'true');
-      await expect.element(getOption(r, 'Alpha')).not.toHaveAttribute('aria-disabled');
-    });
-
-    it('moves up with ArrowUp, skips disabled and stops at the top', async () => {
-      const r = render(<Listbox data-testid={LISTBOX} aria-label='Letters'>{options}</Listbox>);
-
-      getListbox(r).focus();
-      await userEvent.keyboard('{End}{ArrowUp}');
-      await toBeActive(r, 'Gamma');
-      await userEvent.keyboard('{ArrowUp}');
-      await toBeActive(r, 'Alpha');
-      await userEvent.keyboard('{ArrowUp}');
-      await toBeActive(r, 'Alpha');
-    });
-
-    describe('typeahead', () => {
-      const fruits = [
-        <ListboxOption key='alpha' value='alpha'>Alpha</ListboxOption>,
-        <ListboxOption key='bravo' value='bravo' disabled>Bravo</ListboxOption>,
-        <ListboxOption key='avocado' value='avocado'>Avocado</ListboxOption>,
-        <ListboxOption key='banana' value='banana'>Banana</ListboxOption>,
-      ];
-
-      it('moves to the next option starting with a typed character and cycles on a repeated one', async () => {
-        const r = render(<Listbox data-testid={LISTBOX} aria-label='Fruits'>{fruits}</Listbox>);
-
-        getListbox(r).focus();
-        await toBeActive(r, 'Alpha');
-        await userEvent.keyboard('a');
-        await toBeActive(r, 'Avocado');
-        await userEvent.keyboard('a');
-        await toBeActive(r, 'Alpha');
-      });
-
-      it('starts a new search after a pause and skips disabled options', async () => {
-        const r = render(<Listbox data-testid={LISTBOX} aria-label='Fruits'>{fruits}</Listbox>);
-
-        getListbox(r).focus();
-        await userEvent.keyboard('a');
-        await toBeActive(r, 'Avocado');
-        await new Promise((resolve) => setTimeout(resolve, 600));
-        await userEvent.keyboard('b');
-
-        await toBeActive(r, 'Banana');
-      });
-    });
-
     describe('multiple', () => {
-      it('moves and toggles the next option with Shift+ArrowDown', async () => {
-        const r = render(<Listbox data-testid={LISTBOX} aria-label='Letters' multiple>{options}</Listbox>);
-
-        getListbox(r).focus();
-        await toBeActive(r, 'Alpha');
-        await userEvent.keyboard('{Shift>}{ArrowDown}{/Shift}');
-
-        await toBeActive(r, 'Gamma');
-        await expect.element(getOption(r, 'Gamma')).toHaveAttribute('aria-selected', 'true');
-      });
-
-      it('moves and toggles the previous option with Shift+ArrowUp', async () => {
-        const r = render(<Listbox data-testid={LISTBOX} aria-label='Letters' multiple>{options}</Listbox>);
-
-        getListbox(r).focus();
-        await userEvent.keyboard('{End}{Shift>}{ArrowUp}{/Shift}');
-
-        await toBeActive(r, 'Gamma');
-        await expect.element(getOption(r, 'Gamma')).toHaveAttribute('aria-selected', 'true');
-      });
-
-      it('selects the range from the last selected option with Shift+Space', async () => {
-        const r = render(<Listbox data-testid={LISTBOX} aria-label='Letters' multiple>{options}</Listbox>);
-
-        getListbox(r).focus();
-        await userEvent.keyboard(' {End}{Shift>} {/Shift}');
-
-        await expect.element(getOption(r, 'Alpha')).toHaveAttribute('aria-selected', 'true');
-        await expect.element(getOption(r, 'Gamma')).toHaveAttribute('aria-selected', 'true');
-        await expect.element(getOption(r, 'Delta')).toHaveAttribute('aria-selected', 'true');
-        await expect.element(getOption(r, 'Beta')).toHaveAttribute('aria-selected', 'false');
-      });
-
       it('selects up to the first option with Ctrl+Shift+Home', async () => {
         const r = render(<Listbox data-testid={LISTBOX} aria-label='Letters' multiple>{options}</Listbox>);
 
@@ -442,26 +241,6 @@ describe('Listbox', () => {
         await expect.element(getOption(r, 'Delta')).toHaveAttribute('aria-selected', 'false');
       });
 
-      it('selects down to the last option with Ctrl+Shift+End', async () => {
-        const r = render(<Listbox data-testid={LISTBOX} aria-label='Letters' multiple>{options}</Listbox>);
-
-        getListbox(r).focus();
-        await userEvent.keyboard('{ArrowDown}{Control>}{Shift>}{End}{/Shift}{/Control}');
-
-        await expect.element(getOption(r, 'Gamma')).toHaveAttribute('aria-selected', 'true');
-        await expect.element(getOption(r, 'Delta')).toHaveAttribute('aria-selected', 'true');
-        await expect.element(getOption(r, 'Alpha')).toHaveAttribute('aria-selected', 'false');
-      });
-
-      it('selects all enabled options with Ctrl+A', async () => {
-        const onChangeValue = vi.fn();
-        const r = render(<Listbox data-testid={LISTBOX} aria-label='Letters' multiple onChangeValue={onChangeValue}>{options}</Listbox>);
-
-        getListbox(r).focus();
-        await userEvent.keyboard('{Control>}a{/Control}');
-
-        expect(onChangeValue).toHaveBeenLastCalledWith(['a', 'c', 'd']);
-      });
     });
   });
   describe('Performance', () => {

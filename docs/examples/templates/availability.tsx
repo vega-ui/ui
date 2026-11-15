@@ -9,29 +9,37 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   Card,
-  DataGridSelectable,
-  DataGridSelectableCell,
-  DataGridSelectableRow,
-  DataGridSelectableRowGroup,
   DateField,
   DateFieldCalendar,
   DateFieldInput,
   DateFieldTriggerIconButton,
+  Grid,
+  GridCell,
+  GridColumnHeader,
+  GridRow,
+  GridRowGroup,
+  GridRowHeader,
   Heading,
   HelperText,
   Icon,
@@ -163,7 +171,6 @@ export default function Availability() {
 
   const save = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const form = event.currentTarget;
     const errors = validateExceptions(exceptions);
     const invalid = exceptions.find((item) => errors[item.key]);
 
@@ -176,8 +183,7 @@ export default function Availability() {
     }
 
     if (invalid) {
-      const input = form.elements.namedItem(`exception-${invalid.key}`);
-      if (input instanceof HTMLElement) input.focus();
+      document.getElementById(`${id}-exception-${invalid.key}`)?.focus();
       return;
     }
 
@@ -194,7 +200,7 @@ export default function Availability() {
       </header>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', gap: 'var(--spacing-16)' }}>
-        <Card style={{ alignItems: 'stretch', gap: 'var(--spacing-10)', flex: '999 1 480px', minWidth: 0 }} aria-labelledby={`${id}-weekly`}>
+        <Card style={{ gap: 'var(--spacing-10)', flex: '999 1 480px', minWidth: 0 }} aria-labelledby={`${id}-weekly`}>
           <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-4) var(--spacing-8)' }}>
             <div style={{ display: 'grid', gap: 'var(--spacing-1)' }}>
               <Heading id={`${id}-weekly`} as='h2' size={4} fontWeight={600}>Weekly hours</Heading>
@@ -212,39 +218,38 @@ export default function Availability() {
           </div>
 
           <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
-            <DataGridSelectable
+            <Grid
               ref={gridRef}
               aria-labelledby={`${id}-weekly`}
               aria-describedby={slotsError ? `${id}-slots-error ${id}-hint` : `${id}-hint`}
-              aria-multiselectable='true'
               selection='multiple'
-              selected={slots}
-              onSelectCell={changeSlots}
+              value={slots}
+              onChangeValue={changeSlots}
               disabled={busy}
               defaultActive='mon-9'
               className='availabilityGrid'
             >
-              <DataGridSelectableRowGroup>
-                <DataGridSelectableRow row={0}>
-                  <div role='columnheader' aria-label='Time' />
-                  {days.map((day) => <div key={day.value} role='columnheader' aria-label={day.name}>{day.short}</div>)}
-                </DataGridSelectableRow>
-              </DataGridSelectableRowGroup>
-              <DataGridSelectableRowGroup>
+              <GridRowGroup>
+                <GridRow row={0}>
+                  <GridColumnHeader col={0} excluded aria-label='Time' />
+                  {days.map((day, col) => <GridColumnHeader key={day.value} col={col + 1} excluded aria-label={day.name}>{day.short}</GridColumnHeader>)}
+                </GridRow>
+              </GridRowGroup>
+              <GridRowGroup>
                 {hours.map((hour, row) => (
-                  <DataGridSelectableRow key={hour} row={row + 1}>
-                    <div role='rowheader'>{formatHour(hour)}</div>
+                  <GridRow key={hour} row={row + 1}>
+                    <GridRowHeader col={0} excluded>{formatHour(hour)}</GridRowHeader>
                     {days.map((day, col) => {
                       const key = `${day.value}-${hour}`;
                       const label = `${day.name}, ${formatHour(hour)} to ${formatHour(hour + 1)}`;
 
-                      return <DataGridSelectableCell key={key} col={col} cellKey={key} aria-label={busy.includes(key) ? `${label}, busy` : label} />;
+                      return <GridCell key={key} col={col + 1} value={key} aria-label={busy.includes(key) ? `${label}, busy` : label} />;
                     })}
-                  </DataGridSelectableRow>
+                  </GridRow>
                 ))}
-              </DataGridSelectableRowGroup>
-            </DataGridSelectable>
-            {slotsError && <HelperText id={`${id}-slots-error`} error>Pick at least one hour, or use a preset.</HelperText>}
+              </GridRowGroup>
+            </Grid>
+            {slotsError && <HelperText id={`${id}-slots-error`} invalid>Pick at least one hour, or use a preset.</HelperText>}
           </div>
 
           <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 'var(--spacing-4) var(--spacing-10)' }}>
@@ -261,7 +266,7 @@ export default function Availability() {
         </Card>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: 'var(--spacing-12)', flex: '1 1 300px', minWidth: 0 }}>
-          <Card style={{ alignItems: 'stretch', gap: 'var(--spacing-8)' }}>
+          <Card style={{ gap: 'var(--spacing-8)' }}>
             <div style={field}>
               <Label htmlFor={`${id}-timezone`}>Time zone</Label>
               <Select value={timezone} onChangeValue={(next) => setTimezone(next ?? null)}>
@@ -280,7 +285,7 @@ export default function Availability() {
             </div>
           </Card>
 
-          <Card style={{ alignItems: 'stretch', gap: 'var(--spacing-8)' }} aria-labelledby={`${id}-exceptions`}>
+          <Card style={{ gap: 'var(--spacing-8)' }} aria-labelledby={`${id}-exceptions`}>
             <div style={{ display: 'grid', gap: 'var(--spacing-1)' }}>
               <Heading id={`${id}-exceptions`} as='h2' size={4} fontWeight={600}>Date exceptions</Heading>
               <Text size={2} style={{ color: 'var(--label-secondary)' }}>Days that differ from your weekly hours.</Text>
@@ -301,13 +306,12 @@ export default function Availability() {
                           format='MM/dd/yyyy'
                           separator='/'
                           min='2026-11-01'
-                          error={Boolean(error)}
                           value={item.date}
                           onChangeValue={(date) => changeException(item.key, { date })}
                           style={{ flex: 1, minWidth: 0 }}
                         >
                           <DateFieldInput
-                            name={`exception-${item.key}`}
+                            id={`${id}-exception-${item.key}`}
                             placeholder='mm/dd/yyyy'
                             aria-label={`Exception ${index + 1} date`}
                             aria-invalid={Boolean(error)}
@@ -318,13 +322,13 @@ export default function Availability() {
                               <DateFieldTriggerIconButton aria-label={`Choose exception ${index + 1} date`} />
                             </PopoverTrigger>
                             <PopoverContent>
-                              <DateFieldCalendar>
+                              <DateFieldCalendar aria-label={`Choose exception ${index + 1} date`}>
                                 <CalendarHeader>
                                   <CalendarPrevButton aria-label='Previous month' />
-                                  <CalendarViewButtonGroup>
+                                  <CalendarHeading>
                                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-                                  </CalendarViewButtonGroup>
+                                  </CalendarHeading>
                                   <CalendarNextButton aria-label='Next month' />
                                 </CalendarHeader>
                                 <CalendarContent>
@@ -332,15 +336,27 @@ export default function Availability() {
                                     <CalendarWeekdays>
                                       <CalendarWeekday />
                                     </CalendarWeekdays>
-                                    <CalendarWeeks>
-                                      <CalendarDay />
-                                    </CalendarWeeks>
+                                    <CalendarDaysScroller>
+                                      <CalendarDaysScrollerContent>
+                                        <CalendarWeeks>
+                                          <CalendarDay />
+                                        </CalendarWeeks>
+                                      </CalendarDaysScrollerContent>
+                                    </CalendarDaysScroller>
                                   </CalendarDays>
                                   <CalendarMonths>
-                                    <CalendarMonth />
+                                    <CalendarMonthsGrid>
+                                      <CalendarMonth />
+                                    </CalendarMonthsGrid>
                                   </CalendarMonths>
                                   <CalendarYears>
-                                    <CalendarYear />
+                                    <CalendarYearsScroller>
+                                      <CalendarYearsScrollerContent>
+                                        <CalendarYearsGrid>
+                                          <CalendarYear />
+                                        </CalendarYearsGrid>
+                                      </CalendarYearsScrollerContent>
+                                    </CalendarYearsScroller>
                                   </CalendarYears>
                                 </CalendarContent>
                               </DateFieldCalendar>
@@ -351,7 +367,7 @@ export default function Availability() {
                           <Icon size='xs'><Trash2 /></Icon>
                         </IconButton>
                       </div>
-                      {error && <HelperText id={`${id}-exception-${item.key}-error`} error>{error}</HelperText>}
+                      {error && <HelperText id={`${id}-exception-${item.key}-error`} invalid>{error}</HelperText>}
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
                         <div style={{ display: 'grid', gap: 'var(--spacing-1)', minWidth: 0 }}>
                           <Label htmlFor={`${id}-unavailable-${item.key}`}>Unavailable all day</Label>

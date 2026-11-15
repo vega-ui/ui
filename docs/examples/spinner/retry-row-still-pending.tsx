@@ -38,7 +38,7 @@ export default function RetryRowStillPending() {
       )}
       {status === 'failed' && (
         <>
-          <HelperText error role='alert'>Calendar sync failed: the server did not respond in time.</HelperText>
+          <HelperText invalid role='alert'>Calendar sync failed: the server did not respond in time.</HelperText>
           <Button size='sm' variant='secondary' appearance='ghost' onClick={retry} style={{ justifySelf: 'start' }}>
             Retry
           </Button>

@@ -8,17 +8,17 @@
 <!-- AUTO-GENERATED:ROOT_API:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `disabled` | `boolean` | — | No | Whether the select is disabled. Prevents interaction and applies a disabled style. |
+| `disabled` | `boolean` | `false` | No | Whether the select is disabled. Prevents interaction and applies a disabled style. |
 | `readOnly` | `boolean` | `false` | No | If true, the select cannot be changed but remains focusable. |
 | `variant` | `SelectVariant` | `'field'` | No | Visual style variant for the select control. |
 | `size` | `SelectSize` | `'md'` | No | Visual size of the select control. |
-| `value` | `V \| null` | — | No | The currently selected value (controlled). `null` clears the selection, while `undefined` makes the select uncontrolled. |
-| `defaultValue` | `V` | — | No | The default selected value (uncontrolled). |
-| `onChangeValue` | `(value: V \| null) => void` | — | No | Callback fired when an option is selected. |
+| `value` | `Value \| null` | — | No | The currently selected value (controlled). `null` clears the selection, while `undefined` makes the select uncontrolled. |
+| `defaultValue` | `Value` | — | No | The default selected value (uncontrolled). |
+| `onChangeValue` | `(value: Value \| null) => void` | — | No | Callback fired when an option is selected. |
 | `ref` | `Ref<HTMLDivElement>` | — | No | Ref to the root element. |
 | `open` | `boolean` | — | No | Controls the open state of the Select dropdown. When provided, the Select becomes a controlled component and relies on this value to determine whether the listbox is open or closed. |
 | `onChangeOpen` | `(open: boolean) => void` | — | No | Callback fired when the open state changes. Called with the next open state (`true` or `false`) whenever the Select is opened or closed by user interaction. Useful for synchronizing the Select state with external logic. |
-| `defaultOpen` | `boolean` | `false` | No | Sets the initial open state of the Select when used in uncontrolled mode. Applied only on the first render and ignored afterward. |
+| `defaultOpen` | `boolean` | — | No | Sets the initial open state of the Select when used in uncontrolled mode. Applied only on the first render and ignored afterward. |
 | `typeahead` | `boolean` | `true` | No | Enables moving to an option by typing the start of its label. |
 
 Also accepts all `<div>` attributes.
@@ -67,7 +67,7 @@ Optional trigger affordance.
 | `size` | `IconSize` | — | No | Predefined size token for the icon. Can be overridden by explicit width and height. |
 | `ref` | `Ref<SVGSVGElement>` | — | No | Ref to the SVG element |
 | `strokeWidth` | `number` | — | No | Stroke thickness for SVG lines and shapes (in px or pt). |
-| `children` | `ReactNode` | — | No | Icon content (required). Accepts: icons from `~/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
+| `children` | `ReactNode` | — | No | Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
 
 Also accepts all HTML attributes.
 <!-- AUTO-GENERATED:PART_API:SelectIcon:end -->
@@ -98,7 +98,7 @@ Selectable list item.
 <!-- AUTO-GENERATED:PART_API:SelectOption:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `value` | `V` | — | Yes | The value of this option, passed to the change callback when it is selected. |
+| `value` | `Value` | — | Yes | The value of this option, passed to the change callback when it is selected. |
 | `label` | `string` | — | No | Plain text of this option for typeahead, used instead of the text of its content. |
 | `children` | `ReactNode` | — | No | The content displayed for this option. Can include text, icons, or complex markup. |
 | `size` | `OptionSize` | — | No | Size of the option for visual styling. |
@@ -144,6 +144,7 @@ Use it only when the exported parts are insufficient for the desired composition
 - Selected value can be controlled with `value` or uncontrolled with `defaultValue`.
 - Open state can be controlled with `open` or uncontrolled with `defaultOpen`.
 - The list is a native `popover="auto"`, so a close made by the browser (outside click, `Escape`, another popover opening) is final: a controlled list stays hidden until `open` changes, so set `open={false}` in `onChangeOpen`. A close after a choice is a request a controlled parent can turn down.
+- A `disabled` or `readOnly` select never shows its list, like a native `<select>`: `defaultOpen` and `open` wait until it is enabled, and an open list hides when the select becomes disabled or read-only.
 - Keyboard navigation, the active option, and typeahead are managed by the root.
 - `value={null}` clears a controlled value, while `undefined` makes the select uncontrolled.
 - `typeahead={false}` is recommended when an actual text input is rendered inside the listbox.

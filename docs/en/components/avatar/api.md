@@ -6,11 +6,11 @@
 <!-- AUTO-GENERATED:ROOT_API:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `ref` | `Ref<HTMLDivElement>` | — | No | Ref forwarded to the root `div` element of the avatar. Enables access to the DOM node, e.g., for focus or measurements. |
+| `ref` | `Ref<HTMLSpanElement>` | — | No | Ref forwarded to the root `span` element of the avatar. Enables access to the DOM node, e.g., for focus or measurements. |
 | `size` | `AvatarSize` | `'md'` | No | Defines the size of the avatar. Affects both the container and any nested content (image, initials, etc.). |
 | `variant` | `AvatarVariant` | `'primary'` | No | Visual variant of the avatar. Can be used to differentiate between roles, types, or contexts. 'primary': Default visual style; 'secondary': Alternate or less prominent style |
 
-Also accepts all `<div>` attributes.
+Also accepts all `<span>` attributes.
 <!-- AUTO-GENERATED:ROOT_API:end -->
 
 ## Child Parts
@@ -27,7 +27,7 @@ Also accepts all `<div>` attributes.
 | `size` | `IconSize` | — | No | Predefined size token for the icon. Can be overridden by explicit width and height. |
 | `ref` | `Ref<SVGSVGElement>` | — | No | Ref to the SVG element |
 | `strokeWidth` | `number` | — | No | Stroke thickness for SVG lines and shapes (in px or pt). |
-| `children` | `ReactNode` | — | No | Icon content (required). Accepts: icons from `~/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
+| `children` | `ReactNode` | — | No | Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
 
 Also accepts all HTML attributes.
 <!-- AUTO-GENERATED:PART_API:AvatarIcon:end -->

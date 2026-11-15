@@ -258,7 +258,7 @@ export default function HelpCenter() {
         </section>
 
         <aside style={{ display: 'grid', gap: 'var(--spacing-12)', flex: '1 1 320px', minWidth: 0 }}>
-          <Card style={{ alignItems: 'stretch', gap: 'var(--spacing-8)' }} aria-labelledby={`${id}-status-title`}>
+          <Card style={{ gap: 'var(--spacing-8)' }} aria-labelledby={`${id}-status-title`}>
             <Collapsible>
               <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-4) var(--spacing-8)' }}>
                 <div style={{ display: 'grid', gap: 'var(--spacing-2)', minWidth: 0 }}>
@@ -288,7 +288,7 @@ export default function HelpCenter() {
             </Collapsible>
           </Card>
 
-          <Card style={{ alignItems: 'stretch', gap: 'var(--spacing-10)' }} aria-labelledby={`${id}-contact`}>
+          <Card style={{ gap: 'var(--spacing-10)' }} aria-labelledby={`${id}-contact`}>
             <div style={{ display: 'grid', gap: 'var(--spacing-2)' }}>
               <Heading id={`${id}-contact`} as='h2' size={4} fontWeight={600}>Still need help?</Heading>
               <Text size={2} style={{ color: 'var(--label-secondary)' }}>Our team replies within one business day.</Text>
@@ -311,7 +311,7 @@ export default function HelpCenter() {
               <form noValidate aria-labelledby={`${id}-contact`} onSubmit={submit} style={{ display: 'grid', gap: 'var(--spacing-8)' }}>
                 <div style={field}>
                   <Label htmlFor={`${id}-email`}>Email</Label>
-                  <TextField error={errors.email !== undefined}>
+                  <TextField>
                     <TextFieldInput
                       id={`${id}-email`}
                       name='email'
@@ -322,7 +322,7 @@ export default function HelpCenter() {
                       onChange={() => clearError('email')}
                     />
                   </TextField>
-                  {errors.email && <HelperText id={`${id}-email-error`} error>{errors.email}</HelperText>}
+                  {errors.email && <HelperText id={`${id}-email-error`} invalid>{errors.email}</HelperText>}
                 </div>
                 <div style={field}>
                   <Label htmlFor={`${id}-topic`}>Topic</Label>
@@ -343,7 +343,7 @@ export default function HelpCenter() {
                       ))}
                     </SelectListbox>
                   </Select>
-                  {errors.topic && <HelperText id={`${id}-topic-error`} error>{errors.topic}</HelperText>}
+                  {errors.topic && <HelperText id={`${id}-topic-error`} invalid>{errors.topic}</HelperText>}
                 </div>
                 <div style={field}>
                   <Label htmlFor={`${id}-message`}>Message</Label>
@@ -353,7 +353,6 @@ export default function HelpCenter() {
                     rows={5}
                     maxLength={MESSAGE_LIMIT}
                     fullWidth
-                    error={errors.message !== undefined}
                     value={message}
                     placeholder='What were you trying to do, and what happened instead?'
                     aria-invalid={errors.message !== undefined}
@@ -363,7 +362,7 @@ export default function HelpCenter() {
                       clearError('message');
                     }}
                   />
-                  {errors.message && <HelperText id={`${id}-message-error`} error>{errors.message}</HelperText>}
+                  {errors.message && <HelperText id={`${id}-message-error`} invalid>{errors.message}</HelperText>}
                   <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
                     <HelperText id={`${id}-message-hint`}>Screenshots help. Reply to our email to attach them.</HelperText>
                     <HelperText id={`${id}-message-count`} style={{ flexShrink: 0, fontVariantNumeric: 'tabular-nums' }}>{`${message.length} / ${MESSAGE_LIMIT}`}</HelperText>

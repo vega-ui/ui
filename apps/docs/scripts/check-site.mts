@@ -12,7 +12,7 @@ const axePath = createRequire(import.meta.url).resolve('axe-core/axe.min.js');
 const POOL = 6;
 const LIBRARY_AREAS = '[class*="_specimen"], [class*="_stage"], pre';
 
-const AXE_COMPONENTS = ['button', 'dialog', 'select', 'data-grid', 'date-field'];
+const AXE_COMPONENTS = ['button', 'dialog', 'select', 'grid', 'date-field'];
 const AXE_PATHS = ['/', '/components/', '/docs/getting-started/', '/changelog/', '/this-page-does-not-exist/'];
 const OVERFLOW_PATHS = [
   '/',
@@ -21,8 +21,8 @@ const OVERFLOW_PATHS = [
   '/changelog/',
   '/components/button/',
   '/components/button/api/',
-  '/components/data-grid/',
-  '/components/data-grid/examples/',
+  '/components/grid/',
+  '/components/grid/examples/',
   '/components/date-field/api/',
   '/ru/components/dialog/',
 ];

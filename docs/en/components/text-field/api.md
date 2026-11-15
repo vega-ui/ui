@@ -7,7 +7,6 @@
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
 | `size` | `TextFieldSize` | `'md'` | No | Visual size of the text field. Affects padding, font size, and overall height. 'sm': Compact input; 'md': Default; 'lg': Spacious layout |
-| `error` | `boolean` | — | No | Shows the input in an error state. |
 | `ref` | `Ref<HTMLDivElement>` | — | No | Ref forwarded to wrapper element Useful for programmatic control, focus, or integration. |
 
 Also accepts all `<div>` attributes.
@@ -35,6 +34,7 @@ Also accepts all `<input>` attributes.
 
 ## State Model
 
-- `TextField` exposes size and error state through context.
+- `TextField` exposes size through context.
+- The error look follows `aria-invalid='true'` or `:user-invalid` on `TextFieldInput`.
 - Real input state is managed on `TextFieldInput`.
 - Controlled and uncontrolled behavior follow native input rules on the child input.

@@ -25,11 +25,6 @@ export interface TextAreaProps extends Omit<TextareaHTMLAttributes<HTMLTextAreaE
   size?: TextAreaSize
 
   /**
-   * Displays the textarea in an error state.
-   */
-  error?: boolean
-
-  /**
    * Makes the textarea expand to fill the full width of its container.
    */
   fullWidth?: boolean
@@ -45,7 +40,6 @@ export interface TextAreaProps extends Omit<TextareaHTMLAttributes<HTMLTextAreaE
 export const TextArea: FC<TextAreaProps> = ({
   className,
   placeholder,
-  error,
   size = 'md',
   fullWidth,
   ref,
@@ -55,7 +49,6 @@ export const TextArea: FC<TextAreaProps> = ({
     <textarea
       data-size={size}
       data-full-width={fullWidth}
-      data-error={error}
       ref={ref}
       placeholder={placeholder}
       className={csx(style.textarea, className)}

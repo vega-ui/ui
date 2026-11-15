@@ -103,7 +103,7 @@ export default function MetricsCard() {
         {loading && <Spinner size={3} aria-label='Refreshing revenue' />}
       </div>
       <Text size={2} style={{ color: 'var(--label-tertiary)', fontVariantNumeric: 'tabular-nums' }}>Updated at {updatedAt}</Text>
-      <Button size='sm' variant='secondary' appearance='ghost' disabled={loading} onClick={refresh} style={{ marginBlockStart: 'var(--spacing-6)' }}>Refresh</Button>
+      <Button size='sm' variant='secondary' appearance='ghost' disabled={loading} onClick={refresh} style={{ marginBlockStart: 'var(--spacing-6)', alignSelf: 'flex-start' }}>Refresh</Button>
     </Card>
   );
 }
@@ -137,7 +137,7 @@ export default function SettingsFormCard() {
           <Heading id='workspace-card-title' as='h3' size={4} fontWeight={600}>Workspace</Heading>
           <Text size={2} style={{ color: 'var(--label-secondary)' }}>Shown in invitations and in the browser tab.</Text>
         </div>
-        <div style={{ display: 'grid', gap: 'var(--spacing-8)', alignSelf: 'stretch' }}>
+        <div style={{ display: 'grid', gap: 'var(--spacing-8)' }}>
           <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
             <Label htmlFor='workspace-card-name'>Name</Label>
             <TextField>
@@ -151,7 +151,7 @@ export default function SettingsFormCard() {
             </TextField>
           </div>
         </div>
-        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 'var(--spacing-4)', alignSelf: 'stretch' }}>
+        <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 'var(--spacing-4)' }}>
           <Button type='submit' size='sm'>Save</Button>
           <Button type='reset' size='sm' variant='secondary' appearance='ghost'>Reset</Button>
           <Text size={2} role='status' style={{ color: 'var(--label-secondary)', overflowWrap: 'anywhere' }}>{saved}</Text>
@@ -186,7 +186,7 @@ export default function ResponsiveGrid() {
         <Card key={integration.id} size='sm' aria-labelledby={`integration-${integration.id}`} style={{ gap: 'var(--spacing-4)' }}>
           <Heading id={`integration-${integration.id}`} as='h3' size={3} fontWeight={600}>{integration.name}</Heading>
           <Text size={2} style={{ color: 'var(--label-secondary)' }}>{integration.description}</Text>
-          <Button size='sm' variant='secondary' appearance='ghost' aria-describedby={`integration-${integration.id}`} style={{ marginBlockStart: 'auto' }}>
+          <Button size='sm' variant='secondary' appearance='ghost' aria-describedby={`integration-${integration.id}`} style={{ marginBlockStart: 'auto', alignSelf: 'flex-start' }}>
             Connect
           </Button>
         </Card>
@@ -256,7 +256,7 @@ export default function ReadOnlyBilling() {
           Only workspace owners can change billing details. Ask Maria Chen to update them.
         </Text>
       </div>
-      <fieldset disabled aria-describedby='billing-contact-note' style={{ border: 0, margin: 0, padding: 0, display: 'grid', gap: 'var(--spacing-8)', alignSelf: 'stretch' }}>
+      <fieldset disabled aria-describedby='billing-contact-note' style={{ border: 0, margin: 0, padding: 0, display: 'grid', gap: 'var(--spacing-8)' }}>
         <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
           <Label htmlFor='billing-contact-name'>Name</Label>
           <TextField>
@@ -302,7 +302,7 @@ export default function EmptyAndMany() {
 
   return (
     <Card aria-labelledby='api-keys-title' style={{ width: '100%', maxWidth: 360, gap: 'var(--spacing-6)' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-4)', alignSelf: 'stretch' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-4)' }}>
         <Heading id='api-keys-title' as='h3' size={3} fontWeight={600} style={{ fontVariantNumeric: 'tabular-nums' }}>API keys ({keys.length})</Heading>
         <Button size='sm' variant='secondary' appearance='ghost' onClick={toggle}>
           {keys.length === 0 ? 'Load 240 keys' : 'Clear'}
@@ -315,7 +315,7 @@ export default function EmptyAndMany() {
         <ul
           tabIndex={0}
           aria-label='API keys'
-          style={{ margin: 0, padding: 0, listStyle: 'none', maxHeight: 200, overflowY: 'auto', alignSelf: 'stretch' }}
+          style={{ margin: 0, padding: 0, listStyle: 'none', maxHeight: 200, overflowY: 'auto' }}
         >
           {keys.map((key) => (
             <li key={key} style={{ paddingBlock: 'var(--spacing-2)' }}>

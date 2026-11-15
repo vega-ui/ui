@@ -55,6 +55,14 @@
     --slider-thumb-border-color-active: var(--color-secondary-700);
 }
 
+.slider:where(:has([data-slider-thumb] > input:is([aria-invalid='true'], :user-invalid))) {
+    --slider-range-color: var(--color-error);
+
+    --slider-thumb-border-color: var(--color-error);
+    --slider-thumb-border-color-hover: var(--color-error);
+    --slider-thumb-border-color-active: var(--color-error);
+}
+
 .slider:where(:not(:has([data-slider-thumb] > input:enabled))) {
     --slider-range-color: var(--disable-label-text-color);
     --slider-thumb-border-color: var(--disable-label-text-color);

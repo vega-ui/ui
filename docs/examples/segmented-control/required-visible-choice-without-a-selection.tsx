@@ -52,7 +52,7 @@ export default function RequiredVisibleChoiceWithoutASelection() {
           ))}
           <SegmentedControlIndicator />
         </SegmentedControl>
-        {invalid && <HelperText id='size-error' error>Choose a size to add the jacket to the cart.</HelperText>}
+        {invalid && <HelperText id='size-error' invalid>Choose a size to add the jacket to the cart.</HelperText>}
       </div>
       <div style={{ display: 'grid', gap: 'var(--spacing-6)', justifyItems: 'start' }}>
         <Button type='submit'>Add to cart</Button>

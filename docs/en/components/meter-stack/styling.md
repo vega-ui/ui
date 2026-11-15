@@ -12,6 +12,7 @@
 | `--meter-stack-br-ratio` | root | track radius ratio |
 | `--meter-stack-gap-ratio` | root | gap between segments |
 | `--meter-stack-value` | root | current aggregate value |
+| `--meter-stack-min` | root and segments | proportional width calculations |
 | `--meter-stack-max` | root and segments | proportional width calculations |
 | `--meter-stack-segment-value` | segment | segment width share |
 | `--meter-stack-segment-color` | segment | segment fill color |

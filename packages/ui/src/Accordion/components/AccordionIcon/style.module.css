@@ -1,4 +1,5 @@
 .icon {
+    flex-shrink: 0;
     transform: rotate(0deg);
     transition: transform var(--transition-state-delay) ease;
 }

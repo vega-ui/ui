@@ -1,22 +1,13 @@
 'use client';
 
-import { TransitionEventHandler } from 'react';
-import { createContext } from '@vega-ui/react-kit/context';
+import { createContext } from '../../../internals/context';
+import { createHandle, WidgetHandle } from '../../../internals/widget';
+import { collapsibleShape, collapsibleWidget } from '@vega-ui/widgets/collapsible';
 
 export interface CollapsibleContextState {
-  opened: boolean
-  hidden: boolean
-  contentId: string
-  open: VoidFunction,
-  close: VoidFunction
-  onTransitionEnd?: TransitionEventHandler<HTMLDivElement>
+  handle: WidgetHandle<typeof collapsibleShape>
 }
 
 export const [CollapsibleProvider, useCollapsibleContext] = createContext<CollapsibleContextState>('CollapsibleContext', {
-  opened: false,
-  hidden: true,
-  contentId: '',
-  open: () => undefined,
-  close: () => undefined,
-  onTransitionEnd: undefined
+  handle: createHandle(collapsibleWidget, { contentId: undefined, onChangeHidden: undefined }, { id: 'collapsible' }),
 })

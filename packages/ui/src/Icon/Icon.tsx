@@ -18,9 +18,9 @@ export interface IconProps extends SVGProps<SVGElement> {
   strokeWidth?: number
 
   /**
-   * Icon content (required).
+   * Icon content.
    * Accepts:
-   * – icons from `~/icons`
+   * – icons from `@vega-ui/icons`
    * – custom inline SVG
    * – third-party icon components (e.g. Lucide, Tabler)
    */
@@ -34,6 +34,7 @@ export const Icon: FC<IconProps> = ({
   width,
   height,
   className,
+  style: inlineStyle,
   children,
   ...props
 }) => {
@@ -42,6 +43,7 @@ export const Icon: FC<IconProps> = ({
       ref={ref}
       aria-hidden='true'
       className={csx(style.icon, className)}
+      style={{ width, height, ...inlineStyle }}
       data-size={width || height ? undefined : size}
       stroke='currentColor'
       {...props}

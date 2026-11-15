@@ -11,6 +11,7 @@ const describeShift = (start: string, end: string) => {
   if (!start || !end) return 'Enter both times';
 
   const length = toMinutes(end) - toMinutes(start);
+  if (length < 0) return 'Ends before it starts';
 
   return `${Math.floor(length / 60)} h ${length % 60} min`;
 };
@@ -18,6 +19,7 @@ const describeShift = (start: string, end: string) => {
 export default function ShiftHours() {
   const [start, setStart] = useState('09:00');
   const [end, setEnd] = useState('17:30');
+  const endsBeforeStart = start !== '' && end !== '' && end < start;
 
   return (
     <Fieldset style={{ display: 'grid', gap: 'var(--spacing-8)', width: '100%', maxWidth: 260 }}>
@@ -31,7 +33,7 @@ export default function ShiftHours() {
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor='shift-end'>Ends</Label>
         <TimeField min={start} value={end} onChangeValue={setEnd}>
-          <TimeFieldInput id='shift-end' placeholder='hh:mm' />
+          <TimeFieldInput id='shift-end' placeholder='hh:mm' aria-invalid={endsBeforeStart} />
         </TimeField>
       </div>
       <Text size={2} aria-live='polite' style={{ color: 'var(--label-secondary)' }}>

@@ -85,7 +85,7 @@ export default function FormError() {
           </div>
           <form onSubmit={onSubmit} style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
             <Label htmlFor={codeId}>Code</Label>
-            <TextField error={error !== ''}>
+            <TextField>
               <TextFieldInput
                 id={codeId}
                 name='code'
@@ -97,7 +97,7 @@ export default function FormError() {
                 onChange={() => setError('')}
               />
             </TextField>
-            {error && <HelperText id={errorId} error>{error}</HelperText>}
+            {error && <HelperText id={errorId} invalid>{error}</HelperText>}
             <Button type='submit' style={{ marginBlockStart: 'var(--spacing-9)' }}>Apply</Button>
           </form>
         </SheetContent>

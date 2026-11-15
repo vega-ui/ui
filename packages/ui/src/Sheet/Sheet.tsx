@@ -1,9 +1,9 @@
 'use client';
 
-import { FC, ReactNode, useLayoutEffect, useMemo, useState } from 'react';
-import { useControlledState } from '@vega-ui/hooks';
-import { resolveLength } from '@vega-ui/utils';
+import { FC, ReactNode } from 'react';
+import { useWidget, widgetEnvironment } from '../internals/widget';
 import { SheetProvider } from './contexts';
+import { sheetWidget } from '@vega-ui/widgets/sheet';
 
 export interface SheetProps {
   /**
@@ -26,7 +26,7 @@ export interface SheetProps {
   defaultSnapPoint?: number
 
   /**
-   * Callback fired when the user moves the sheet to another snap point.
+   * Callback fired when the active snap point changes: the user moves the sheet to another snap point, or an uncontrolled sheet returns to its default snap point once it closes.
    *
    * @param activeSnapPoint - The index into `snapPoints` of the new snap point.
    */
@@ -73,52 +73,19 @@ export const Sheet: FC<SheetProps> = ({
   open: controlledOpen,
   onChangeOpen,
 }) => {
-  const [open, changeOpen] = useControlledState(controlledOpen, defaultOpen, onChangeOpen)
-  const [height, setHeight] = useState(0)
-  const [viewport, setViewport] = useState(0)
-
-  useLayoutEffect(() => {
-    const controller = new AbortController()
-    const measure = () => setViewport(document.documentElement.clientHeight)
-
-    measure()
-    window.addEventListener('resize', measure, { signal: controller.signal })
-
-    return () => controller.abort()
-  }, [])
-
-  const heights = useMemo(() => snapPoints?.map((point) => resolveLength(point, viewport)), [snapPoints, viewport])
-  const offsets = useMemo(() => heights?.map((snapHeight) => Math.max(0, height - snapHeight)) ?? [0], [heights, height])
-
-  const [chosenSnapPoint, setChosenSnapPoint] = useControlledState(controlledActiveSnapPoint, defaultSnapPoint)
-  const activeSnapPoint = chosenSnapPoint ?? offsets.indexOf(Math.max(...offsets))
-
-  const changeActiveSnapPoint = (index: number) => {
-    if (index === activeSnapPoint) return
-
-    setChosenSnapPoint(index)
-    onChangeActiveSnapPoint?.(index)
-  }
-
-  const [wasOpen, setWasOpen] = useState(open)
-
-  if (open !== wasOpen) {
-    setWasOpen(open)
-    if (!open) setChosenSnapPoint(defaultSnapPoint)
-  }
+  const handle = useWidget(sheetWidget, {
+    snapPoints,
+    steppedSnapPoints,
+    open: controlledOpen,
+    defaultOpen,
+    onChangeOpen,
+    activeSnapPoint: controlledActiveSnapPoint,
+    defaultActiveSnapPoint: defaultSnapPoint,
+    onChangeActiveSnapPoint: onChangeActiveSnapPoint as ((index: number | undefined) => void) | undefined,
+  }, widgetEnvironment)
 
   return (
-    <SheetProvider
-      open={open}
-      changeOpen={changeOpen}
-      changeHeight={setHeight}
-      height={height}
-      viewport={viewport}
-      offsets={offsets}
-      activeSnapPoint={activeSnapPoint}
-      changeActiveSnapPoint={changeActiveSnapPoint}
-      steppedSnapPoints={steppedSnapPoints}
-    >
+    <SheetProvider handle={handle}>
       {children}
     </SheetProvider>
   )

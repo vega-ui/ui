@@ -31,6 +31,7 @@ The wrapper defines `--input-height` by size and applies surface, focus, error, 
 - size sets `--input-height` and input typography
 - wrapper hover is driven by `:has(input:hover)`
 - focus is driven by `:has(input:focus-visible)`
+- error is driven by `:has(input:is([aria-invalid='true'], :user-invalid, [data-user-edited]:invalid))`
 - disabled state is driven by `:has(input:disabled)`
 
 ## Examples

@@ -7,9 +7,11 @@
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
 | `className` | `string` | — | No | Optional class name for the hidden element. Can be used to override or extend default visually hidden styles. |
-| `asChild` | `boolean` | — | No | Renders the content using a child component instead of a native `<div>`. Useful for integrating into custom elements without extra wrappers. |
+| `asChild` | `boolean` | — | No | Renders the content using a child component instead of a native `<span>`. Useful for integrating into custom elements without extra wrappers. |
 | `children` | `ReactNode` | — | No | The content to be hidden visually but accessible via screen readers. Often used for labels, instructions, or announcements. |
-| `ref` | `Ref<HTMLDivElement>` | — | No | Ref to the visually hidden DOM element. Useful for focus management or measurement in accessible workflows. |
+| `ref` | `Ref<HTMLSpanElement>` | — | No | Ref to the visually hidden DOM element. Useful for focus management or measurement in accessible workflows. |
+
+Also accepts all `<span>` attributes.
 <!-- AUTO-GENERATED:ROOT_API:end -->
 
 ## Child Parts

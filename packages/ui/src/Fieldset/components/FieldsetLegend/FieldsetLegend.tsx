@@ -14,8 +14,8 @@ export type FieldsetLegendProps = TextProps
  * The component provides consistent typography and styling for fieldset
  * titles while allowing all standard `Text` props for customization.
  *
- * `FieldsetLegend` should be used within `FieldsetHeader` and directly
- * inside a `Fieldset` to ensure correct layout and a11y behavior.
+ * Place `FieldsetLegend` as the first child of `Fieldset`, not inside
+ * `FieldsetHeader`: only a first-child `<legend>` names the group.
  */
 export const FieldsetLegend: FC<FieldsetLegendProps> = ({ children, ...props }) => {
   return (

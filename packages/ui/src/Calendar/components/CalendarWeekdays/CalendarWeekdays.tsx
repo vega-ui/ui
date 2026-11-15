@@ -1,9 +1,11 @@
-import { FC, ReactNode } from 'react';
-import { CalendarBaseWeekLabels, CalendarBaseWeekLabelsProps } from '../../../CalendarBase';
-import { CalendarWeekdayProvider, useCalendarContext } from '../../contexts';
+import { FC, HTMLAttributes, ReactNode } from 'react';
+import { csx } from '@vega-ui/utils';
+import style from './style.module.css';
+import { CalendarWeekdayProvider, useCalendarInternalContext } from '../../contexts';
 import { DAYS_IN_WEEK, getFirstDayOfWeek, getWeekDayNames } from '@vega-ui/i18n';
+import { GridRow } from '../../../Grid';
 
-export interface CalendarWeekdaysProps extends Omit<CalendarBaseWeekLabelsProps, 'children'> {
+export interface CalendarWeekdaysProps extends Omit<HTMLAttributes<HTMLDivElement>, 'children'> {
   /**
    * Format of the weekday names (`Intl.DateTimeFormat` `weekday`).
    * @default "short"
@@ -22,17 +24,17 @@ export interface CalendarWeekdaysProps extends Omit<CalendarBaseWeekLabelsProps,
  * locale of the `Calendar` and starting on the first day of its week. Place it
  * inside `CalendarDays` with a `CalendarWeekday` template.
  */
-export const CalendarWeekdays: FC<CalendarWeekdaysProps> = ({ format = 'short', children, ...props }) => {
-  const { locale } = useCalendarContext()
+export const CalendarWeekdays: FC<CalendarWeekdaysProps> = ({ format = 'short', className, children, ...props }) => {
+  const { locale } = useCalendarInternalContext()
   const firstDay = getFirstDayOfWeek(locale)
 
   return (
-    <CalendarBaseWeekLabels {...props}>
+    <GridRow row={-1} className={csx(style.row, className)} {...props}>
       {getWeekDayNames(locale, format, firstDay).map((label, col) => (
         <CalendarWeekdayProvider key={col} col={col} weekday={(firstDay + col) % DAYS_IN_WEEK} label={label}>
           {children}
         </CalendarWeekdayProvider>
       ))}
-    </CalendarBaseWeekLabels>
+    </GridRow>
   )
 }

@@ -124,7 +124,7 @@ export default function MinimalComposition() {
 
 ## `useDrawerContext`
 
-Возвращает `{ open, changeOpen, position }` для продвинутых обёрток и собственных элементов управления.
+Возвращает `{ handle, position }` для продвинутых обёрток и собственных элементов управления: `useSnapshot(handle, (state) => state.open)` читает состояние открытия. `onClick` пользователя у `DrawerTrigger` и `DrawerClose`, `onCancel` и `onSubmit` у `DrawerContent` выполняются первыми, поэтому `event.preventDefault()` в них оставляет панель как есть.
 
 ## Типы
 

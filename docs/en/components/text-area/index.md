@@ -51,7 +51,7 @@ export default function IssueDescription() {
 ## Variants
 
 - Size: `sm`, `md`, `lg`
-- State: default, `error`, disabled
+- State: default, invalid (`aria-invalid` or `:user-invalid`), disabled
 - Layout: regular width or `fullWidth`
 - Value model: controlled or uncontrolled
 
@@ -77,4 +77,4 @@ export default function IssueDescription() {
 
 - Using `TextArea` for short single-line values.
 - Forgetting helper text or labels around long-form input.
-- Treating `error` as a replacement for real validation messaging.
+- Treating the red outline as a replacement for real validation messaging.

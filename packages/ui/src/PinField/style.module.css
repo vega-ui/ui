@@ -7,3 +7,7 @@
     position: relative;
     box-sizing: border-box;
 }
+
+.field:where(:has(input:is([aria-invalid='true'], :user-invalid, [data-user-edited]:invalid))) {
+    --pin-field-slot-outline-color: var(--color-error);
+}

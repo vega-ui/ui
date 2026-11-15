@@ -1,7 +1,6 @@
 import { FC } from 'react';
 import { YearPickerLayout, YearPickerLayoutProps } from '../YearPickerLayout';
 import { useIndexedSnapScrollerContext } from '../../../IndexedSnapScroller';
-import { useYearPickerScrollerContext } from '../../contexts';
 
 export type YearPickerScrollerLayoutProps = Omit<YearPickerLayoutProps, 'offset'>
 
@@ -14,7 +13,6 @@ export type YearPickerScrollerLayoutProps = Omit<YearPickerLayoutProps, 'offset'
  */
 export const YearPickerScrollerLayout: FC<YearPickerScrollerLayoutProps> = (props) => {
   const { index } = useIndexedSnapScrollerContext()
-  const { referenceYear } = useYearPickerScrollerContext()
 
-  return <YearPickerLayout scope={index} start={referenceYear} offset={index} {...props} />
+  return <YearPickerLayout offset={index} {...props} />
 }

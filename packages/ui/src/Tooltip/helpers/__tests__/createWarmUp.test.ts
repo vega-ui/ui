@@ -37,6 +37,18 @@ describe('createWarmUp', () => {
     expect(warmUp.isWarm()).toBe(true)
   })
 
+  it('hides the previous holder when a new one holds', () => {
+    const warmUp = createWarmUp(500)
+    const hideFirst = vi.fn()
+    const hideSecond = vi.fn()
+
+    warmUp.hold(hideFirst)
+    warmUp.hold(hideSecond)
+
+    expect(hideFirst).toHaveBeenCalledTimes(1)
+    expect(hideSecond).not.toHaveBeenCalled()
+  })
+
   it('cools down once the duration passes', () => {
     const warmUp = createWarmUp(500)
 

@@ -2,10 +2,12 @@ import { useId, useState, type CSSProperties } from 'react';
 import {
   Badge,
   Card,
-  DataGrid,
-  DataGridCell,
-  DataGridRow,
-  DataGridRowGroup,
+  Grid,
+  GridCell,
+  GridColumnHeader,
+  GridRow,
+  GridRowGroup,
+  GridRowHeader,
   Heading,
   Icon,
   MeterStack,
@@ -213,23 +215,23 @@ export default function Analytics() {
             <Text size={1} style={{ color: 'var(--label-secondary)', marginInlineStart: 'var(--spacing-2)' }}>More</Text>
           </span>
         </div>
-        <DataGrid aria-labelledby={`${id}-activity`} defaultActive='1:1' className='analyticsHeatmap'>
-          <DataGridRowGroup>
-            <DataGridRow row={0}>
-              <DataGridCell col={0} role='columnheader' excluded aria-label='Weekday' />
+        <Grid aria-labelledby={`${id}-activity`} defaultActive='1:1' className='analyticsHeatmap'>
+          <GridRowGroup>
+            <GridRow row={0}>
+              <GridColumnHeader col={0} excluded aria-label='Weekday' />
               {hours.map((hour, slot) => (
-                <DataGridCell key={hour} col={slot + 1} role='columnheader' excluded aria-label={formatHour(hour)}>
+                <GridColumnHeader key={hour} col={slot + 1} excluded aria-label={formatHour(hour)}>
                   {slot % 2 === 0 ? String(hour).padStart(2, '0') : ''}
-                </DataGridCell>
+                </GridColumnHeader>
               ))}
-            </DataGridRow>
-          </DataGridRowGroup>
-          <DataGridRowGroup>
+            </GridRow>
+          </GridRowGroup>
+          <GridRowGroup>
             {activity.map((row, day) => (
-              <DataGridRow key={weekdays[day]} row={day + 1}>
-                <DataGridCell col={0} role='rowheader' excluded aria-label={weekdayNames[day]}>{weekdays[day]}</DataGridCell>
+              <GridRow key={weekdays[day]} row={day + 1}>
+                <GridRowHeader col={0} excluded aria-label={weekdayNames[day]}>{weekdays[day]}</GridRowHeader>
                 {row.map((value, slot) => (
-                  <DataGridCell
+                  <GridCell
                     key={hours[slot]}
                     col={slot + 1}
                     aria-label={`${weekdayNames[day]}, ${formatHour(hours[slot])} to ${formatHour(hours[slot] + 2)}: ${number.format(value)} visitors`}
@@ -237,10 +239,10 @@ export default function Analytics() {
                     style={{ '--level': `${levels[getLevel(value, peak)]}%` } as CSSProperties}
                   />
                 ))}
-              </DataGridRow>
+              </GridRow>
             ))}
-          </DataGridRowGroup>
-        </DataGrid>
+          </GridRowGroup>
+        </Grid>
       </Card>
 
       <section aria-labelledby={`${id}-pages`} style={{ display: 'grid', gap: 'var(--spacing-8)' }}>

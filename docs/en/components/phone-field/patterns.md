@@ -9,7 +9,7 @@ When to use:
 Composition notes:
 
 - keep the country select visible
-- normalize values at submit time
+- the input submits the shown text and `onChangeValue` gives the number in E.164; check it by your product rules at submit time
 - show a compact value in the trigger (here the flag) and the full country name in the list
 
 Trade-offs:
@@ -47,15 +47,15 @@ export default function SelectWithCountryOptionsAndIcons() {
   const id = useId();
   const [country, setCountry] = useState<(typeof countries)[number]>(countries[1]);
 
-  const onChangeCode = (code: string) => {
-    const found = countries.find((item) => item.code === code);
+  const onChangeCountry = (next: string) => {
+    const found = countries.find((item) => item.code === next);
     if (found) setCountry(found);
   };
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', width: '100%', maxWidth: 340 }}>
       <Label htmlFor={id}>Phone number</Label>
-      <PhoneField code={country.code} onChangeCode={onChangeCode}>
+      <PhoneField country={country.code} onChangeCountry={onChangeCountry}>
         <PhoneFieldSelect>
           <SelectHiddenSelect name='country' />
           <SelectCombobox aria-label={`Country: ${country.name}`}>
@@ -76,7 +76,7 @@ export default function SelectWithCountryOptionsAndIcons() {
             ))}
           </SelectListbox>
         </PhoneFieldSelect>
-        <PhoneFieldInput id={id} name='phone' autoComplete='tel' />
+        <PhoneFieldInput name='phone' id={id} autoComplete='tel' />
       </PhoneField>
     </div>
   );
@@ -92,7 +92,7 @@ When to use:
 
 Composition notes:
 
-- `strictMask` is on by default: the calling code of `code` is fixed and only its digits are accepted
+- `strictMask` is on by default: the calling code the number starts with stays in front of it (the one of `country` for an empty field), and only digits are accepted after it
 - retest caret movement and paste behavior
 
 Trade-offs:
@@ -111,8 +111,8 @@ export default function SimpleIsoBasedPhoneMask() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', width: '100%', maxWidth: 280 }}>
       <Label htmlFor={id}>Mobile number</Label>
-      <PhoneField code='US'>
-        <PhoneFieldInput id={id} name='phone' autoComplete='tel' placeholder='+1 201 555-0123' />
+      <PhoneField country='US'>
+        <PhoneFieldInput name='phone' id={id} autoComplete='tel' placeholder='+1 201 555-0123' />
       </PhoneField>
     </div>
   );
@@ -129,8 +129,8 @@ When to use:
 Composition notes:
 
 - use `strictMask={false}`
-- a pasted number with another calling code switches the country, and `onChangeCode` reports it
-- normalize at the feature boundary
+- a pasted number with another calling code switches the country, and `onChangeCountry` reports it
+- `value` is the number in E.164 whatever format was pasted
 
 Trade-offs:
 
@@ -160,7 +160,7 @@ export default function NonStrictMaskForLenientPasteBehavior() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', width: '100%', maxWidth: 340 }}>
       <Label htmlFor={id}>Customer phone</Label>
-      <PhoneField defaultCode='US' strictMask={false} onChangeCode={setCountry}>
+      <PhoneField defaultCountry='US' strictMask={false} onChangeCountry={setCountry}>
         <PhoneFieldSelect>
           <SelectCombobox aria-label='Country'>
             <SelectValue />

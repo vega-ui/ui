@@ -55,7 +55,7 @@ export default function MinimalComposition() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', width: '100%', maxWidth: 320 }}>
       <Label htmlFor={id}>Phone number</Label>
-      <PhoneField defaultCode='US'>
+      <PhoneField defaultCountry='US'>
         <PhoneFieldSelect>
           <SelectHiddenSelect name='country' />
           <SelectCombobox aria-label='Country'>
@@ -68,7 +68,7 @@ export default function MinimalComposition() {
             <SelectOption value='DE'>DE</SelectOption>
           </SelectListbox>
         </PhoneFieldSelect>
-        <PhoneFieldInput id={id} name='phone' autoComplete='tel' />
+        <PhoneFieldInput name='phone' id={id} autoComplete='tel' />
       </PhoneField>
     </div>
   );
@@ -98,7 +98,7 @@ export default function MinimalComposition() {
 6. `SelectOption`
 7. `PhoneFieldInput`
 
-Вместо `PhoneFieldSelect` рядом с полем можно поставить любой свой контрол (обычный `Select`, `Combobox`, кнопки) и управлять им через контролируемые `code` и `onChangeCode`. Когда `code` меняется снаружи, поле само записывает новый телефонный код в поле ввода и сообщает о нём через `onChangeValue`. Как и нативное поле, которому `value` задали из кода, оно при этом не вызывает события `input` и `change`; они срабатывают, только когда страну выбирают в `PhoneFieldSelect`.
+Вместо `PhoneFieldSelect` рядом с полем можно поставить любой свой контрол (обычный `Select`, `Combobox`, кнопки) и управлять им через контролируемые `country` и `onChangeCountry`. `country` — подсказка: это страна, показанная в `PhoneFieldSelect`, и телефонный код, с которого строгая маска начинает пустое поле. Когда `country` меняется снаружи, поле оставляет номер и текст как есть и не вызывает `onChangeValue`; если номер тоже должен измениться, задайте `value` сами. Выбор в `PhoneFieldSelect` — правка пользователя: поле записывает телефонный код выбранной страны в поле ввода, вызывает `input` и `change` и сообщает `onChangeCountry` и `onChangeValue` (с `''`, потому что один телефонный код — пустой номер) в одном действии, даже когда `country` контролируемый.
 
 ## Варианты
 
@@ -119,13 +119,13 @@ export default function MinimalComposition() {
 
 ## Пограничные случаи
 
-- Смена страны может потребовать переформатирования и повторной валидации.
+- Смена страны снаружи никогда не переписывает номер; это делает только выбор в `PhoneFieldSelect`.
 - Тестируйте и строгую маску, и поведение при вставке.
-- Сохраняйте каноническое значение на границе функции, а не только отображаемую отформатированную строку.
+- Сохраняйте `value`, номер в E.164, а не отформатированный текст поля ввода.
 - Автозаполнение, вставленные значения и частично введённые международные префиксы тестируйте вместе, а не по отдельности.
 
 ## Частые ошибки
 
-- Видимую отформатированную строку считают единственным [источником истины](../../glossary.md#источник-истины-source-of-truth).
+- Номер читают из видимого отформатированного текста, а не из `value` — [источника истины](../../glossary.md#источник-истины-source-of-truth) в E.164.
 - Смену страны не учитывают в логике валидации.
 - Тестируют только набор с клавиатуры и пропускают вставку и автозаполнение.

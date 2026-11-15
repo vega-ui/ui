@@ -49,7 +49,7 @@ type Story = StoryObj<CheckboxStoryProps>;
 const variants: CheckboxProps['variant'][] = ['primary', 'secondary'];
 const sizes: CheckboxProps['size'][] = ['sm', 'md', 'lg'];
 const checks = ['unchecked', 'checked', 'indeterminate'];
-const rows = variants.flatMap((variant) => checks.flatMap((check) => [false, true].map((disabled) => ({ variant, check, disabled }))));
+const rows = variants.flatMap((variant) => checks.flatMap((check) => [false, true].flatMap((disabled) => [false, true].map((invalid) => ({ variant, check, disabled, invalid })))));
 
 export const Playground: Story = {
   render: (args) => {
@@ -71,7 +71,7 @@ export const States: Story = {
   render: () => (
     <div style={{ display: 'grid', gridTemplateColumns: `repeat(${sizes.length}, auto)`, gap: 12, alignItems: 'center' }}>
       {rows.map((row) => sizes.map((size) => {
-        const name = `${row.variant} / ${row.check}${row.disabled ? ' / disabled' : ''} / ${size}`;
+        const name = `${row.variant} / ${row.check}${row.disabled ? ' / disabled' : ''}${row.invalid ? ' / invalid' : ''} / ${size}`;
 
         return (
           <Checkbox key={name} variant={row.variant} size={size}>
@@ -80,6 +80,7 @@ export const States: Story = {
               defaultChecked={row.check === 'checked'}
               indeterminate={row.check === 'indeterminate'}
               disabled={row.disabled}
+              aria-invalid={row.invalid}
             />
             <CheckboxIndicator>
               <CheckboxCheckedIcon />

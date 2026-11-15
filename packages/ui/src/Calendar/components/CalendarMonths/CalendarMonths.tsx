@@ -1,82 +1,49 @@
-import { FC, HTMLAttributes, KeyboardEvent, ReactNode } from 'react';
-import { MonthPicker, MonthPickerLayout } from '../../../MonthPicker';
-import { useCalendarBaseContext } from '../../../CalendarBase';
-import { useCalendarContext } from '../../contexts';
+import { FC, HTMLAttributes, ReactNode, Ref } from 'react';
+import { useMergeRefs } from '@vega-ui/hooks';
+import { csx } from '@vega-ui/utils';
+import { MonthPicker } from '../../../MonthPicker';
+import { useSnapshot } from '../../../internals/widget';
+import { useCalendarInternalContext, useCalendarPartsContext } from '../../contexts';
+import { MONTHS } from '@vega-ui/widgets/calendar';
 import style from './style.module.css'
-import { csx, mergeEventHandlers } from '@vega-ui/utils';
-import { getCalendarMonthStart } from '@vega-ui/i18n';
 
-export interface CalendarMonthsProps extends HTMLAttributes<HTMLDivElement> {
+export interface CalendarMonthsProps extends Omit<HTMLAttributes<HTMLDivElement>, 'defaultValue'> {
   /**
-   * Template of a month cell, rendered once for every month of the visible year.
-   * Read the month with `useCalendarMonthContext()`; usually `<CalendarMonth />`.
+   * Ref to the month grid element.
+   */
+  ref?: Ref<HTMLDivElement>
+
+  /**
+   * Content of the month grid, usually `CalendarMonthsGrid`.
    */
   children: ReactNode
-
-  /**
-   * Number of columns of the month grid.
-   * @default 3
-   */
-  cols?: number
-
-  /**
-   * Format of the month names (`Intl.DateTimeFormat` `month`).
-   * @default "long"
-   */
-  format?: Intl.DateTimeFormatOptions['month']
 }
 
 /**
- * `CalendarMonths` is the month view of `Calendar`: the months of the visible
- * year, 12 or 13 depending on the calendar system. Picking a month shows its
- * days; Escape goes back to the days without changing the month.
+ * `CalendarMonths` is the month view of `Calendar`: the months of the year of
+ * the focused day, 12 or 13 depending on the calendar system. It is mounted
+ * while the month view is open and until its exit transition ends. Picking a
+ * month shows its days; Escape goes back to the days without changing the month.
  */
-export const CalendarMonths: FC<CalendarMonthsProps> = ({ children, cols, format, onKeyDown: _onKeyDown, className, ...props }) => {
-  const {
-    from,
-    to,
-    view,
-    month,
-    calendar,
-    locale,
-    monthPickerApiRef,
-    closeView,
-    changeMonth,
-    disabled,
-  } = useCalendarContext()
-  const { size, variant } = useCalendarBaseContext()
+export const CalendarMonths: FC<CalendarMonthsProps> = ({ children, ref, className, ...props }) => {
+  const { months } = useCalendarPartsContext()
+  const { handle, widget, view } = useCalendarInternalContext()
+  const open = view === 'month'
+  const mounted = useSnapshot(handle, (state) => widget.mountedOf(state, 'month'))
+  const rootRef = useMergeRefs([handle.part(MONTHS), ref])
 
-  const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (event.key !== 'Escape') return
-
-    event.stopPropagation()
-    closeView?.()
-  }
+  if (!mounted) return null
 
   return (
     <MonthPicker
-      year={month}
-      calendar={calendar}
-      locale={locale}
-      from={from && getCalendarMonthStart(calendar, from)}
-      to={to && getCalendarMonthStart(calendar, to)}
-      apiRef={monthPickerApiRef}
-      inert={view !== 'month'}
-      variant={variant}
-      size={size}
-      data-visible={view === 'month'}
+      {...months}
+      ref={rootRef}
+      data-visible={open}
+      inert={!open}
       className={csx(style.picker, className)}
-      defaultActive={month}
-      selected={month}
-      selection='single'
-      disabled={disabled ? () => true : undefined}
-      onSelectCell={changeMonth}
-      onKeyDown={mergeEventHandlers(onKeyDown, _onKeyDown)}
       {...props}
     >
-      <MonthPickerLayout cols={cols} format={format}>
-        {children}
-      </MonthPickerLayout>
+      {children}
     </MonthPicker>
   )
 }

@@ -30,3 +30,7 @@
     --select-gap: var(--spacing-14);
     --select-size: var(--spacing-26);
 }
+
+.select:where(:has(:is([role='combobox'][aria-invalid='true'], select:user-invalid))) {
+    --select-outline-color: var(--color-error);
+}

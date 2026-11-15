@@ -1,9 +1,0 @@
-.header {
-    display: flex;
-    flex-direction: row;
-    position: relative;
-    justify-content: space-between;
-    padding: var(--spacing-2);
-    overflow: hidden;
-    box-sizing: border-box;
-}

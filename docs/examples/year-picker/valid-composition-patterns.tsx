@@ -11,8 +11,8 @@ export default function ValidCompositionPatterns() {
   const [year, setYear] = useState('2026-01-01');
 
   return (
-    <YearPicker aria-label='Year' locale='en-US' year={year}>
-      <YearPickerScroller onChangePeriod={setYear}>
+    <YearPicker aria-label='Year' locale='en-US' focusedDate={year} onChangeFocusedDate={setYear}>
+      <YearPickerScroller>
         <YearPickerScrollerContent>
           <YearPickerScrollerLayout>
             <YearPickerCell />

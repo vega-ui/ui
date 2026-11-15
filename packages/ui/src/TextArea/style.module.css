@@ -62,7 +62,7 @@
 
 /* textArea/error */
 
-.textarea:where([data-error='true']) {
+.textarea:where([aria-invalid='true'], :user-invalid) {
     outline-color: var(--color-error);
 }
 

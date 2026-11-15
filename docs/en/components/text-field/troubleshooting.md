@@ -27,16 +27,16 @@ The input is invalid, but the field outline still looks neutral.
 
 ### Likely Cause
 
-The wrapper did not receive `error`.
+The app knows the error, but `TextFieldInput` has no `aria-invalid='true'`; or the native constraint failed, but the user has not edited the field or tried to submit yet, so `:user-invalid` does not match.
 
 ### How To Verify
 
-- inspect the `TextField` props
-- confirm `data-error='true'` appears on the wrapper
+- confirm `aria-invalid='true'` appears on the input
+- check `input.validity` and whether the input matches `:user-invalid`
 
 ### Fix
 
-Set `error` on `TextField` and keep invalid semantics on the input if needed.
+Set `aria-invalid` on `TextFieldInput` while your error is shown, or rely on a native constraint such as `required` or `pattern`.
 
 ## Prefix Or Suffix Content Makes The Field Hard To Use
 

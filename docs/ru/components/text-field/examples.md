@@ -280,7 +280,7 @@ export default function RenameInDialog() {
 
 ### Ошибка: проверка email при потере фокуса и отправке
 
-Ошибка появляется при потере фокуса или отправке и, пока видна, перепроверяется на каждое нажатие — поэтому исчезает, как только адрес становится корректным. `error` только красит обёртку; состояние до скринридера доносят `aria-invalid` и `aria-describedby` на инпуте.
+Ошибка появляется при потере фокуса или отправке и, пока видна, перепроверяется на каждое нажатие — поэтому исчезает, как только адрес становится корректным. `aria-invalid` на инпуте красит обёртку и вместе с `aria-describedby` доносит состояние до скринридера.
 
 <!-- example: text-field/email-validation-error.tsx -->
 ```tsx
@@ -315,7 +315,7 @@ export default function EmailValidationError() {
     <form noValidate onSubmit={onSubmit} style={{ display: 'grid', gap: 'var(--spacing-12)', width: '100%' }}>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor={id}>Invite a teammate</Label>
-        <TextField error={invalid}>
+        <TextField>
           <TextFieldInput
             id={id}
             type='email'
@@ -326,7 +326,7 @@ export default function EmailValidationError() {
             onBlur={() => setError(getEmailError(email))}
           />
         </TextField>
-        <HelperText id={messageId} error={invalid}>
+        <HelperText id={messageId} invalid={invalid}>
           {invalid ? error : 'We will email them a link to join the workspace.'}
         </HelperText>
       </div>
@@ -443,7 +443,7 @@ export default function AsyncUsernameCheck() {
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-3)', width: '100%' }}>
       <Label htmlFor={id}>Username</Label>
-      <TextField error={taken}>
+      <TextField>
         <TextFieldInput
           id={id}
           value={username}
@@ -458,7 +458,7 @@ export default function AsyncUsernameCheck() {
           {available && <Icon size='sm' aria-hidden><CheckIcon /></Icon>}
         </span>
       </TextField>
-      <HelperText id={statusId} error={taken} aria-live='polite'>{message}</HelperText>
+      <HelperText id={statusId} invalid={taken} aria-live='polite'>{message}</HelperText>
     </div>
   );
 }

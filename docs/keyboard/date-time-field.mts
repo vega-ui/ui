@@ -20,27 +20,26 @@ export default [
   },
   {
     keys: ['Enter', 'Space'],
-    en: 'On the trigger button: opens or closes the calendar popup. The focus stays on the button.',
-    ru: 'На кнопке-триггере: открывает или закрывает всплывающий календарь. Фокус остаётся на кнопке.',
+    en: 'On the trigger button: opens the calendar popup and moves the focus into the day grid: to the selected day, otherwise today, otherwise the first available day.',
+    ru: 'На кнопке-триггере: открывает всплывающий календарь и переносит фокус в сетку дней: на выбранный день, иначе на сегодня, иначе на первый доступный день.',
     checks: [
-      { example, steps: [{ focus: trigger }], press: 'Enter', before: [{ hidden: previous }], expect: [{ visible: previous }, { focused: trigger }] },
-      { example, steps: [{ focus: trigger }, { press: 'Enter' }], press: 'Space', before: [{ visible: previous }], expect: [{ hidden: previous }] },
+      { example, steps: [{ focus: trigger }], press: 'Enter', before: [{ hidden: previous }], expect: [{ visible: previous }, { focused: { role: 'gridcell', name: '15', nth: 2 } }] },
     ],
   },
   {
-    keys: ['Tab'],
-    en: 'From the open trigger: moves the focus into the popup, to its first header button.',
-    ru: 'С открытого триггера: переносит фокус во всплывающий календарь, на первую кнопку шапки.',
+    keys: ['Tab', 'Shift+Tab'],
+    en: 'In the popup: moves the focus between the header buttons and the day grid. The popup is not modal: Tab from its last element leaves it, and it stays open until Escape, an outside click or a pick.',
+    ru: 'Во всплывающем календаре: переносит фокус между кнопками шапки и сеткой дней. Календарь не модальный: Tab с его последнего элемента выводит фокус наружу, а календарь остаётся открытым до Escape, клика снаружи или выбора дня.',
     checks: [
-      { example, steps: [{ focus: trigger }, { press: 'Enter' }], press: 'Tab', before: [{ visible: previous }], expect: [{ focused: previous }] },
+      { example, steps: [{ focus: trigger }, { press: 'Enter' }], press: 'Shift+Tab', expect: [{ focused: { role: 'button', name: 'Next month' } }] },
     ],
   },
   {
-    keys: ['Enter'],
-    en: 'On a day in the popup: writes the day into the input and keeps the time. The other calendar keys work as in Calendar.',
-    ru: 'На дне во всплывающем календаре: записывает день в поле, сохраняя время. Остальные клавиши календаря работают как в Calendar.',
+    keys: ['Enter', 'Space'],
+    en: 'On a day in the popup: writes the day into the input and keeps the time, closes the popup and returns the focus to the trigger button, so the time is edited in the input. The other calendar keys work as in Calendar.',
+    ru: 'На дне во всплывающем календаре: записывает день в поле, сохраняя время, закрывает календарь и возвращает фокус на кнопку-триггер, а время правится в поле. Остальные клавиши календаря работают как в Calendar.',
     checks: [
-      { example, steps: [{ focus: trigger }, { press: 'Enter' }, { focus: { role: 'gridcell', name: '16', nth: 2 } }], press: 'Enter', expect: [{ value: '16.07.2026, 12:45', of: input }] },
+      { example, steps: [{ focus: trigger }, { press: 'Enter' }, { focus: { role: 'gridcell', name: '16', nth: 2 } }], press: 'Enter', expect: [{ value: '16.07.2026, 12:45', of: input }, { hidden: previous }, { focused: trigger }] },
     ],
   },
   {

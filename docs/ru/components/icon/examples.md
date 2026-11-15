@@ -193,7 +193,7 @@ export default function ErrorMessageIcon() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', width: '100%' }}>
       <Label htmlFor='billing-email'>Billing email</Label>
-      <TextField error={error !== ''}>
+      <TextField>
         <TextFieldInput
           id='billing-email'
           type='email'
@@ -205,7 +205,7 @@ export default function ErrorMessageIcon() {
         />
       </TextField>
       {error !== '' && (
-        <HelperText id='billing-email-error' error style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3)' }}>
+        <HelperText id='billing-email-error' invalid style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3)' }}>
           <Icon size='xs' style={{ flexShrink: 0 }}><CircleAlertIcon /></Icon>
           {error}
         </HelperText>
@@ -286,8 +286,8 @@ export default function StandaloneMeaningfulIcon() {
               >
                 {check.passed ? <CircleCheckIcon /> : <CircleXIcon />}
               </Icon>
-              <VisuallyHidden asChild>
-                <span>{check.passed ? 'Passed' : 'Failed'}</span>
+              <VisuallyHidden>
+                {check.passed ? 'Passed' : 'Failed'}
               </VisuallyHidden>
             </td>
           </tr>
@@ -331,7 +331,7 @@ export default function RtlDirectionalIcon() {
 
 ### Пограничный случай: размер вне шкалы
 
-Для иконки размером с иллюстрацию задайте `--icon-size` напрямую. Пропы `width` и `height` сейчас не передаются в SVG, поэтому не полагайтесь на них.
+Для иконки размером с иллюстрацию задайте `--icon-size` напрямую или передайте `width` и `height`.
 
 <!-- example: icon/custom-icon-size.tsx -->
 ```tsx

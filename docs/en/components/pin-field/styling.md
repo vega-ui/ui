@@ -16,6 +16,7 @@
 | `--color-error` | slot error | error outline |
 | `--separator-opaque` | separator | group divider color |
 | `--cursor-height` | `PinFieldSlot` | Height of the caret in the active slot. |
+| `--pin-field-slot-outline-color` | `PinFieldSlot` | Outline of the slots. The root sets it to `--color-error` while `PinFieldInput` has `aria-invalid='true'` or matches `:user-invalid` or `[data-user-edited]:invalid`. |
 
 ## Part-Level Variables
 
@@ -36,7 +37,15 @@ The separator uses size-specific width tokens and a 1px line.
 - size changes slot dimensions and type scale
 - active state changes outline color
 - placeholder state changes slot text color
-- disabled and error states remap slot colors without changing layout
+- disabled and error states remap slot colors without changing layout; the error state follows `aria-invalid='true'`, `:user-invalid` or `[data-user-edited]:invalid` on `PinFieldInput`
+
+`PinField` writes the text of `PinFieldInput` itself, and Chromium and WebKit do not count that text as an edit of the user, so the input does not match `:user-invalid` after it. In your own CSS, pair `:user-invalid` with `[data-user-edited]:invalid`:
+
+```css
+.sign-in-code:has(input:is(:user-invalid, [data-user-edited]:invalid)) label {
+  color: var(--color-error);
+}
+```
 
 ## Examples
 

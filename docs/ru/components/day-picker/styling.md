@@ -2,7 +2,7 @@
 
 ## Обзор
 
-`DayPicker` не определяет большой локальной CSS-поверхности. Большая часть внешнего вида наследуется от `DataGridPicker`, `CalendarBase` и экспортируемых примитивов элементов и раскладки, из которых он составлен.
+`DayPicker` не определяет большой локальной CSS-поверхности. Большая часть внешнего вида наследуется от `Grid` и экспортируемых примитивов элементов и раскладки, из которых он составлен.
 
 ## Публичные CSS-переменные
 
@@ -20,7 +20,7 @@
 
 Визуальная раскладка определяется составными частями сетки и скроллера, а не отдельным модулем стилей корня.
 
-Внешний вид ячейки дня определяется нижележащими примитивами элементов выбора и общими частями календаря.
+Внешний вид ячейки дня определяется `GridItem` и общими частями календаря.
 
 ## Взаимодействие состояний и вариантов
 
@@ -41,12 +41,12 @@ import { DayPicker, DayPickerCell, DayPickerLayout } from '@vega-ui/react';
 export default function SizeAndVariant() {
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--spacing-16)', alignItems: 'start' }}>
-      <DayPicker aria-label='Secondary, extra small' locale='en-US' month='2026-11-01' defaultSelected='2026-11-18'>
+      <DayPicker aria-label='Secondary, extra small' locale='en-US' defaultValue='2026-11-18'>
         <DayPickerLayout>
           <DayPickerCell />
         </DayPickerLayout>
       </DayPicker>
-      <DayPicker aria-label='Primary, medium' locale='en-US' month='2026-11-01' size='md' variant='primary' defaultSelected='2026-11-18'>
+      <DayPicker aria-label='Primary, medium' locale='en-US' size='md' variant='primary' defaultValue='2026-11-18'>
         <DayPickerLayout>
           <DayPickerCell />
         </DayPickerLayout>

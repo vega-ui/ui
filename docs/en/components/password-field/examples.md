@@ -304,7 +304,7 @@ export default function ConfirmInDialog() {
           <form onSubmit={onSubmit} style={{ display: 'grid', gap: 'var(--spacing-12)', marginBlockStart: 'var(--spacing-8)' }}>
             <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
               <Label htmlFor={`${id}-password`}>Password</Label>
-              <PasswordField error={error !== ''}>
+              <PasswordField>
                 <PasswordFieldInput
                   id={`${id}-password`}
                   name='password'
@@ -319,7 +319,7 @@ export default function ConfirmInDialog() {
                   <PasswordFieldHiddenIcon />
                 </PasswordFieldToggleIconButton>
               </PasswordField>
-              <HelperText id={`${id}-error`} error>{error}</HelperText>
+              <HelperText id={`${id}-error`} invalid>{error}</HelperText>
             </div>
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--spacing-4)' }}>
               <DialogClose asChild>
@@ -341,7 +341,7 @@ export default function ConfirmInDialog() {
 
 ### Error: confirmation does not match
 
-The mismatch is derived from both values, but it appears only after the confirmation field loses focus or the form is submitted. `error` paints the field, and `aria-invalid` with `aria-describedby` tells screen readers what is wrong.
+The mismatch is derived from both values, but it appears only after the confirmation field loses focus or the form is submitted. `aria-invalid` paints the field and, with `aria-describedby`, tells screen readers what is wrong.
 
 <!-- example: password-field/confirm-password-mismatch.tsx -->
 ```tsx
@@ -389,7 +389,7 @@ export default function ConfirmPasswordMismatch() {
       </div>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor={`${id}-confirm`}>Repeat new password</Label>
-        <PasswordField error={invalid}>
+        <PasswordField>
           <PasswordFieldInput
             id={`${id}-confirm`}
             autoComplete='new-password'
@@ -404,7 +404,7 @@ export default function ConfirmPasswordMismatch() {
             <PasswordFieldHiddenIcon />
           </PasswordFieldToggleIconButton>
         </PasswordField>
-        <HelperText id={messageId} error={invalid}>
+        <HelperText id={messageId} invalid={invalid}>
           {invalid ? 'Passwords do not match. Check the last characters.' : 'Type the same password again.'}
         </HelperText>
       </div>

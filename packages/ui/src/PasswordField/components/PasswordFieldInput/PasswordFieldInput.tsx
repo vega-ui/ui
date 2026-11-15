@@ -1,7 +1,8 @@
 import { FC } from 'react';
 import { TextFieldInput, TextFieldInputProps } from '../../../TextField';
+import { useOutput } from '../../../internals/widget';
 import { usePasswordFieldContext } from '../../contexts';
-import { mergeRefs } from '@vega-ui/utils';
+import { passwordFieldWidget } from '@vega-ui/widgets/password-field';
 
 export type PasswordFieldInputProps = TextFieldInputProps
 
@@ -15,14 +16,14 @@ export type PasswordFieldInputProps = TextFieldInputProps
  * The component remains fully composable and does not manage state itself,
  * relying on context for visibility and disabled state.
  */
-export const PasswordFieldInput: FC<PasswordFieldInputProps> = ({ ref, disabled, ...props }) => {
-  const { shown, inputRef, disabled: _disabled } = usePasswordFieldContext()
+export const PasswordFieldInput: FC<PasswordFieldInputProps> = ({ disabled, ...props }) => {
+  const { handle, disabled: _disabled } = usePasswordFieldContext()
+  const attrs = useOutput(handle, passwordFieldWidget.output.input)
   
   return (
     <TextFieldInput
       disabled={disabled ?? _disabled}
-      type={shown ? 'text' : 'password'}
-      ref={mergeRefs([ref, inputRef])}
+      {...attrs}
       {...props}
     />
   )

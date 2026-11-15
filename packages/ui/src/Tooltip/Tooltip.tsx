@@ -1,15 +1,16 @@
 'use client';
 
-import { FC, ReactNode, useEffect, useId, useRef } from 'react';
-import { arrow, autoUpdate, flip, offset, Placement, shift, useFloating } from '@floating-ui/react';
-import { useControlledState, useEventCallback } from '@vega-ui/hooks';
+import { FC, ReactNode, useEffect, useId, useState } from 'react';
+import { createInput } from '@vega-ui/core';
+import { useSnapshot, useWidget, widgetEnvironment } from '../internals/widget';
 import { TooltipProvider } from './contexts';
 import { tooltipWarmUp } from './helpers';
+import { isRendered, REPLACE_TOOLTIP, TooltipGroup, tooltipWidget } from '@vega-ui/widgets/tooltip';
+import { anchorNameOf, Placement } from '../internals/anchor';
 
 export interface TooltipProps {
   /**
-   * Preferred placement of the tooltip relative to its trigger.
-   * Follows the Floating UI `Placement` type (e.g., 'top', 'bottom-start').
+   * Preferred placement of the tooltip relative to its trigger (e.g., 'top', 'bottom-start').
    * It flips to the opposite side when there is no room.
    *
    * @default 'bottom'
@@ -29,6 +30,14 @@ export interface TooltipProps {
    * @default 250
    */
   delayClose?: number
+
+  /**
+   * The tooltips that warm each other up: right after one of them closes, the next one opens without `delayOpen`.
+   * Create a separate group with `createTooltipGroup()`.
+   *
+   * @default the group of all tooltips on the page
+   */
+  group?: TooltipGroup
 
   /**
    * Controls the open state of the tooltip.
@@ -57,93 +66,32 @@ export interface TooltipProps {
 
 /** A Tooltip is a UI component that provides brief, context-sensitive information when a user hovers over or focuses on an element, often displayed as a small popup near the element */
 export const Tooltip: FC<TooltipProps> = ({
-  placement: preferredPlacement = 'bottom',
+  placement = 'bottom',
   delayOpen = 500,
   delayClose = 250,
+  group: givenGroup,
   open: controlledOpen,
   defaultOpen = false,
   onChangeOpen,
   children,
 }) => {
-  const arrowRef = useRef<SVGSVGElement>(null);
-  const timer = useRef<ReturnType<typeof setTimeout>>(undefined);
   const id = useId();
-  const [open, setOpen] = useControlledState(controlledOpen, defaultOpen, onChangeOpen);
-
-  const { refs, elements, floatingStyles, placement, middlewareData, context } = useFloating({
-    strategy: 'fixed',
-    transform: false,
-    whileElementsMounted: autoUpdate,
-    placement: preferredPlacement,
-    middleware: [
-      offset(14),
-      flip(),
-      shift(),
-      arrow({ element: arrowRef }),
-    ],
-    open,
-  });
-
-  const changeOpen = useEventCallback((value: boolean) => {
-    if (value === open) return
-
-    setOpen(value)
-  });
-
-  const schedule = (value: boolean, delay: number) => {
-    clearTimeout(timer.current)
-
-    if (delay <= 0) {
-      changeOpen(value)
-      return
-    }
-
-    timer.current = setTimeout(() => changeOpen(value), delay)
-  };
-
-  const show = () => schedule(true, tooltipWarmUp.isWarm() ? 0 : delayOpen)
-  const showNow = () => schedule(true, 0)
-  const cancelHide = () => clearTimeout(timer.current)
-  const hide = (delay = 0) => schedule(false, delay)
-
-  useEffect(() => () => clearTimeout(timer.current), []);
+  const [content, setContent] = useState<HTMLElement | null>(null);
+  const group = givenGroup ?? tooltipWarmUp;
+  const handle = useWidget(tooltipWidget, { delayOpen, delayClose, group, open: controlledOpen, defaultOpen, onChangeOpen }, widgetEnvironment);
+  const rendered = useSnapshot(handle, isRendered);
 
   useEffect(() => {
-    if (open) return tooltipWarmUp.hold()
-  }, [open]);
-
-  useEffect(() => {
-    if (!open) return
-
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== 'Escape' || event.defaultPrevented) return
-
-      event.preventDefault()
-      changeOpen(false)
-    }
-
-    document.addEventListener('keydown', onKeyDown)
-    return () => document.removeEventListener('keydown', onKeyDown)
-  }, [open, changeOpen]);
+    if (rendered) return group.hold(() => void handle.send(createInput(REPLACE_TOOLTIP)))
+  }, [group, rendered, handle]);
 
   return (
     <TooltipProvider
-      arrowRef={arrowRef}
-      open={open}
-      changeOpen={changeOpen}
-      show={show}
-      showNow={showNow}
-      cancelHide={cancelHide}
-      hide={() => hide()}
-      hideAfterDelay={() => hide(delayClose)}
-      contentId={elements.floating?.id || id}
-      side={placement.split('-')[0]}
-      arrowX={middlewareData.arrow?.x}
-      arrowY={middlewareData.arrow?.y}
-      setReference={refs.setReference}
-      setFloating={refs.setFloating}
-      context={context}
-      contentStyle={floatingStyles}
+      handle={handle}
+      contentId={content?.id || id}
+      placement={placement}
+      anchorName={anchorNameOf(id)}
+      setContent={setContent}
     >
       {children}
     </TooltipProvider>

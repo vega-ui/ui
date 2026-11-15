@@ -2,6 +2,7 @@
     --progress-height: var(--spacing-2);
     --progress-br-ratio: 1;
     --progress-value: 0;
+    --progress-min: 0;
     --progress-max: 0;
 
     height: var(--progress-height);

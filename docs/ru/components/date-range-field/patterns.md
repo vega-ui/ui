@@ -23,20 +23,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   DateRangeField,
   DateRangeFieldCalendar,
   DateRangeFieldInput,
@@ -61,13 +67,13 @@ export default function BookingRangeWithACalendarPopover({ locale = 'en-US' }: {
             <DateRangeFieldTriggerIconButton aria-label='Choose stay dates' />
           </PopoverTrigger>
           <PopoverContent>
-            <DateRangeFieldCalendar>
+            <DateRangeFieldCalendar aria-label='Choose stay dates'>
               <CalendarHeader>
                 <CalendarPrevButton aria-label='Previous month' />
-                <CalendarViewButtonGroup>
+                <CalendarHeading>
                   <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                   <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-                </CalendarViewButtonGroup>
+                </CalendarHeading>
                 <CalendarNextButton aria-label='Next month' />
               </CalendarHeader>
               <CalendarContent>
@@ -75,15 +81,27 @@ export default function BookingRangeWithACalendarPopover({ locale = 'en-US' }: {
                   <CalendarWeekdays>
                     <CalendarWeekday />
                   </CalendarWeekdays>
-                  <CalendarWeeks>
-                    <CalendarDay />
-                  </CalendarWeeks>
+                  <CalendarDaysScroller>
+                    <CalendarDaysScrollerContent>
+                      <CalendarWeeks>
+                        <CalendarDay />
+                      </CalendarWeeks>
+                    </CalendarDaysScrollerContent>
+                  </CalendarDaysScroller>
                 </CalendarDays>
                 <CalendarMonths>
-                  <CalendarMonth />
+                  <CalendarMonthsGrid>
+                    <CalendarMonth />
+                  </CalendarMonthsGrid>
                 </CalendarMonths>
                 <CalendarYears>
-                  <CalendarYear />
+                  <CalendarYearsScroller>
+                    <CalendarYearsScrollerContent>
+                      <CalendarYearsGrid>
+                        <CalendarYear />
+                      </CalendarYearsGrid>
+                    </CalendarYearsScrollerContent>
+                  </CalendarYearsScroller>
                 </CalendarYears>
               </CalendarContent>
             </DateRangeFieldCalendar>
@@ -123,20 +141,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   DateRangeField,
   DateRangeFieldCalendar,
   DateRangeFieldInput,
@@ -200,13 +224,13 @@ export default function RangeInAFilterDrawer() {
                     <DateRangeFieldTriggerIconButton aria-label='Choose creation dates' />
                   </PopoverTrigger>
                   <PopoverContent>
-                    <DateRangeFieldCalendar>
+                    <DateRangeFieldCalendar aria-label='Choose creation dates'>
                       <CalendarHeader>
                         <CalendarPrevButton aria-label='Previous month' />
-                        <CalendarViewButtonGroup>
+                        <CalendarHeading>
                           <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                           <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-                        </CalendarViewButtonGroup>
+                        </CalendarHeading>
                         <CalendarNextButton aria-label='Next month' />
                       </CalendarHeader>
                       <CalendarContent>
@@ -214,15 +238,27 @@ export default function RangeInAFilterDrawer() {
                           <CalendarWeekdays>
                             <CalendarWeekday />
                           </CalendarWeekdays>
-                          <CalendarWeeks>
-                            <CalendarDay />
-                          </CalendarWeeks>
+                          <CalendarDaysScroller>
+                            <CalendarDaysScrollerContent>
+                              <CalendarWeeks>
+                                <CalendarDay />
+                              </CalendarWeeks>
+                            </CalendarDaysScrollerContent>
+                          </CalendarDaysScroller>
                         </CalendarDays>
                         <CalendarMonths>
-                          <CalendarMonth />
+                          <CalendarMonthsGrid>
+                            <CalendarMonth />
+                          </CalendarMonthsGrid>
                         </CalendarMonths>
                         <CalendarYears>
-                          <CalendarYear />
+                          <CalendarYearsScroller>
+                            <CalendarYearsScrollerContent>
+                              <CalendarYearsGrid>
+                                <CalendarYear />
+                              </CalendarYearsGrid>
+                            </CalendarYearsScrollerContent>
+                          </CalendarYearsScroller>
                         </CalendarYears>
                       </CalendarContent>
                     </DateRangeFieldCalendar>
@@ -254,13 +290,13 @@ export default function RangeInAFilterDrawer() {
 
 Заметки по композиции:
 
-- Используйте нативный `required` и `pattern` для полного диапазона; `min` и `max` уже применяются при вводе, а перевёрнутый диапазон переставляется.
+- Используйте нативный `required` для проверки наличия; односторонний, выходящий за границы или недоступный диапазон поле само делает невалидным, а перевёрнутый диапазон переставляется.
 - `disabledDates` действует только в календаре, поэтому согласуйте его с правилами отчётности на бэкенде и повторите проверку при отправке.
 
 Компромиссы:
 
 - Более понятная валидация.
-- `name` на input отправляет введённый текст; чтобы отправить `from` и `to` как ISO-дни, копируйте `onChangeValue` в скрытые input, как в разделе [Форма/интеграция](./examples.md#формаинтеграция).
+- Поле ввода отправляет показанный текст; ISO-начало и конец отправляйте через свои скрытые input, как в разделе [Форма/интеграция](./examples.md#формаинтеграция).
 
 <!-- example: date-range-field/both-dates-required.tsx -->
 ```tsx
@@ -270,20 +306,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   DateRangeField,
   DateRangeFieldCalendar,
   DateRangeFieldInput,
@@ -314,12 +356,11 @@ export default function CoverageForm() {
     <form onSubmit={(event) => event.preventDefault()} style={{ display: 'grid', gap: 'var(--spacing-12)', width: '100%', maxWidth: 320 }}>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor='coverage'>Coverage period</Label>
-        <DateRangeField format='dd.MM.yyyy' separator='.' rangeSeparator=' - ' error={invalid}>
+        <DateRangeField format='dd.MM.yyyy' separator='.' rangeSeparator=' - '>
           <DateRangeFieldInput
-            id='coverage'
             name='coverage'
+            id='coverage'
             required
-            pattern='\d{2}\.\d{2}\.\d{4} - \d{2}\.\d{2}\.\d{4}'
             placeholder='dd.mm.yyyy - dd.mm.yyyy'
             aria-invalid={invalid}
             aria-describedby='coverage-hint'
@@ -331,13 +372,13 @@ export default function CoverageForm() {
               <DateRangeFieldTriggerIconButton aria-label='Choose coverage period' />
             </PopoverTrigger>
             <PopoverContent>
-              <DateRangeFieldCalendar>
+              <DateRangeFieldCalendar aria-label='Choose coverage period'>
                 <CalendarHeader>
                   <CalendarPrevButton aria-label='Previous month' />
-                  <CalendarViewButtonGroup>
+                  <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-                  </CalendarViewButtonGroup>
+                  </CalendarHeading>
                   <CalendarNextButton aria-label='Next month' />
                 </CalendarHeader>
                 <CalendarContent>
@@ -345,22 +386,34 @@ export default function CoverageForm() {
                     <CalendarWeekdays>
                       <CalendarWeekday />
                     </CalendarWeekdays>
-                    <CalendarWeeks>
-                      <CalendarDay />
-                    </CalendarWeeks>
+                    <CalendarDaysScroller>
+                      <CalendarDaysScrollerContent>
+                        <CalendarWeeks>
+                          <CalendarDay />
+                        </CalendarWeeks>
+                      </CalendarDaysScrollerContent>
+                    </CalendarDaysScroller>
                   </CalendarDays>
                   <CalendarMonths>
-                    <CalendarMonth />
+                    <CalendarMonthsGrid>
+                      <CalendarMonth />
+                    </CalendarMonthsGrid>
                   </CalendarMonths>
                   <CalendarYears>
-                    <CalendarYear />
+                    <CalendarYearsScroller>
+                      <CalendarYearsScrollerContent>
+                        <CalendarYearsGrid>
+                          <CalendarYear />
+                        </CalendarYearsGrid>
+                      </CalendarYearsScrollerContent>
+                    </CalendarYearsScroller>
                   </CalendarYears>
                 </CalendarContent>
               </DateRangeFieldCalendar>
             </PopoverContent>
           </Popover>
         </DateRangeField>
-        <HelperText id='coverage-hint' error={invalid}>{invalid ? error : HINT}</HelperText>
+        <HelperText id='coverage-hint' invalid={invalid}>{invalid ? error : HINT}</HelperText>
       </div>
       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--spacing-4)' }}>
         <Button type='submit'>Save</Button>

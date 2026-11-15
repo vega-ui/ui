@@ -5,20 +5,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   DateTimeField,
   DateTimeFieldCalendar,
   DateTimeFieldInput,
@@ -74,19 +80,19 @@ export default function ReschedulingInsideASheet() {
             <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
               <Label htmlFor='new-time'>New time</Label>
               <DateTimeField dateFormat='dd.MM.yyyy' timeStep={15} value={draft} onChangeValue={setDraft}>
-                <DateTimeFieldInput id='new-time' required pattern='\d{2}\.\d{2}\.\d{4}, \d{2}:\d{2}' />
+                <DateTimeFieldInput id='new-time' required />
                 <Popover placement='bottom-end'>
                   <PopoverTrigger asChild>
                     <DateTimeFieldTriggerIconButton aria-label='Choose new date' />
                   </PopoverTrigger>
                   <PopoverContent>
-                    <DateTimeFieldCalendar>
+                    <DateTimeFieldCalendar aria-label='Choose new date'>
                       <CalendarHeader>
                         <CalendarPrevButton aria-label='Previous month' />
-                        <CalendarViewButtonGroup>
+                        <CalendarHeading>
                           <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                           <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-                        </CalendarViewButtonGroup>
+                        </CalendarHeading>
                         <CalendarNextButton aria-label='Next month' />
                       </CalendarHeader>
                       <CalendarContent>
@@ -94,15 +100,27 @@ export default function ReschedulingInsideASheet() {
                           <CalendarWeekdays>
                             <CalendarWeekday />
                           </CalendarWeekdays>
-                          <CalendarWeeks>
-                            <CalendarDay />
-                          </CalendarWeeks>
+                          <CalendarDaysScroller>
+                            <CalendarDaysScrollerContent>
+                              <CalendarWeeks>
+                                <CalendarDay />
+                              </CalendarWeeks>
+                            </CalendarDaysScrollerContent>
+                          </CalendarDaysScroller>
                         </CalendarDays>
                         <CalendarMonths>
-                          <CalendarMonth />
+                          <CalendarMonthsGrid>
+                            <CalendarMonth />
+                          </CalendarMonthsGrid>
                         </CalendarMonths>
                         <CalendarYears>
-                          <CalendarYear />
+                          <CalendarYearsScroller>
+                            <CalendarYearsScrollerContent>
+                              <CalendarYearsGrid>
+                                <CalendarYear />
+                              </CalendarYearsGrid>
+                            </CalendarYearsScrollerContent>
+                          </CalendarYearsScroller>
                         </CalendarYears>
                       </CalendarContent>
                     </DateTimeFieldCalendar>

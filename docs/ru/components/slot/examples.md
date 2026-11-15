@@ -269,7 +269,7 @@ class SlotErrorBoundary extends Component<BoundaryProps, BoundaryState> {
 
   render() {
     if (this.state.message !== '') {
-      return <HelperText error role='alert'>{this.state.message}</HelperText>;
+      return <HelperText invalid role='alert'>{this.state.message}</HelperText>;
     }
 
     return this.props.children;
@@ -314,7 +314,7 @@ export default function TextChildError() {
 
 <!-- example: slot/slotted-disabled-button.tsx -->
 ```tsx
-import { Button, Tooltip, TooltipArrow, TooltipContent, TooltipTrigger } from '@vega-ui/react';
+import { Button, Tooltip, TooltipContent, TooltipTrigger } from '@vega-ui/react';
 import { useState } from 'react';
 
 const limit = 3;
@@ -338,7 +338,6 @@ export default function SlottedDisabledButton() {
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <TooltipArrow />
             {blocked ? `Your plan includes ${limit} projects` : 'Create an empty project'}
           </TooltipContent>
         </Tooltip>

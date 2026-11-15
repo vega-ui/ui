@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { gregorianCalendar, createCalendarSystem } from '@vega-ui/i18n';
-import { parseTemplateDate } from '../../template';
+import { formatTemplateDate, parseTemplateDate } from '../../template';
 
 describe('parseTemplateDate', () => {
   it('reads a Gregorian date by the template', () => {
@@ -37,5 +37,16 @@ describe('parseTemplateDate', () => {
   it('reads the digits of other numbering systems', () => {
     expect(parseTemplateDate(gregorianCalendar, '٠٥.٠١.٢٠٢٦', 'dd.mm.yyyy')).toBe('2026-01-05');
     expect(parseTemplateDate(createCalendarSystem('persian'), '۱۴۰۵/۰۱/۰۱', 'yyyy/mm/dd')).toBe('2026-03-21');
+  });
+
+  it('reads a two-digit year around the reference date and writes it back the same', () => {
+    expect(parseTemplateDate(gregorianCalendar, '01/15/26', 'mm/dd/yy', '2026-06-15')).toBe('2026-01-15');
+    expect(parseTemplateDate(gregorianCalendar, '03/04/99', 'mm/dd/yy', '2026-06-15')).toBe('1999-03-04');
+    expect(parseTemplateDate(gregorianCalendar, '29.02.00', 'dd.mm.yy', '2026-06-15')).toBe('2000-02-29');
+    expect(formatTemplateDate(gregorianCalendar, '1999-03-04', 'mm/dd/yy')).toBe('03/04/99');
+  });
+
+  it('returns undefined for a two-digit year without a reference date', () => {
+    expect(parseTemplateDate(gregorianCalendar, '01/15/26', 'mm/dd/yy')).toBeUndefined();
   });
 });

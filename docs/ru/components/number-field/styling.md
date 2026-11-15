@@ -38,6 +38,15 @@
 - размер берётся из унаследованных размеров текстового поля
 - отключённое поведение выводится из контекста корня
 - состояние min/max обычно влияет на отключение кнопок, а не меняет поверхность корня
+- вид ошибки следует за `aria-invalid='true'`, `:user-invalid` или `[data-user-edited]:invalid` на `NumberFieldInput`
+
+`NumberField` сам записывает текст `NumberFieldInput`, а Chromium и WebKit не считают такой текст правкой пользователя, поэтому после такой правки input не подходит под `:user-invalid`. В своём CSS используйте `:user-invalid` вместе с `[data-user-edited]:invalid`:
+
+```css
+.seat-count:has(input:is(:user-invalid, [data-user-edited]:invalid)) label {
+  color: var(--color-error);
+}
+```
 
 ## Примеры
 

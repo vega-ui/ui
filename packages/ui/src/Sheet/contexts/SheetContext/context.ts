@@ -1,26 +1,13 @@
 'use client';
 
-import { createContext } from '@vega-ui/react-kit/context';
+import { createContext } from '../../../internals/context';
+import { createHandle, WidgetHandle } from '../../../internals/widget';
+import { sheetShape, sheetWidget } from '@vega-ui/widgets/sheet';
 
 export interface SheetContextState {
-  open: boolean
-  changeOpen: (value: boolean) => void
-  changeHeight: (height: number) => void
-  height: number
-  viewport: number
-  offsets: number[]
-  activeSnapPoint: number
-  changeActiveSnapPoint: (index: number) => void
-  steppedSnapPoints?: boolean
+  handle: WidgetHandle<typeof sheetShape>
 }
 
 export const [SheetProvider, useSheetContext] = createContext<SheetContextState>('SheetContext', {
-  open: false,
-  changeOpen: () => undefined,
-  changeHeight: () => undefined,
-  height: 0,
-  viewport: 0,
-  offsets: [0],
-  activeSnapPoint: 0,
-  changeActiveSnapPoint: () => undefined,
+  handle: createHandle(sheetWidget, { snapPoints: undefined, steppedSnapPoints: false }, { id: 'sheet' }),
 })

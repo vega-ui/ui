@@ -1,9 +1,7 @@
-import type { EventHandler, SyntheticEvent } from 'react';
-
-export const mergeEventHandlers = <E extends SyntheticEvent>(
-  ...handlers: (EventHandler<E> | undefined)[]
-): EventHandler<E> => {
-  return (event: E) => {
+export const mergeEventHandlers = <EventType>(
+  ...handlers: (((event: EventType) => void) | undefined)[]
+): (event: EventType) => void => {
+  return (event: EventType) => {
     for (const handler of handlers) {
       if (typeof handler === 'function') {
         handler(event)

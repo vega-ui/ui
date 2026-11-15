@@ -57,7 +57,7 @@ export default meta;
 type Story = StoryObj<SelectStoryProps>;
 
 const variants: SelectVariant[] = ['field', 'inline'];
-const states = ['default', 'disabled', 'readOnly'] as const;
+const states = ['default', 'disabled', 'readOnly', 'invalid'] as const;
 const sizes: SelectSize[] = ['xs', 'sm', 'md', 'lg', 'xl'];
 const rows = variants.flatMap((variant) => states.map((state) => ({ variant, state })));
 
@@ -101,7 +101,7 @@ export const Matrix: Story = {
           readOnly={row.state === 'readOnly'}
           defaultValue='courier'
         >
-          <SelectCombobox aria-label={`${row.variant} / ${row.state} / ${size}`}>
+          <SelectCombobox aria-label={`${row.variant} / ${row.state} / ${size}`} aria-invalid={row.state === 'invalid'}>
             <SelectValue />
             <SelectIcon />
           </SelectCombobox>

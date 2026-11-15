@@ -35,20 +35,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   DateRangeField,
   DateRangeFieldCalendar,
   DateRangeFieldInput,
@@ -67,13 +73,13 @@ export default function MinimalComposition() {
           <DateRangeFieldTriggerIconButton aria-label='Choose trip dates' />
         </PopoverTrigger>
         <PopoverContent>
-          <DateRangeFieldCalendar>
+          <DateRangeFieldCalendar aria-label='Choose trip dates'>
             <CalendarHeader>
               <CalendarPrevButton aria-label='Previous month' />
-              <CalendarViewButtonGroup>
+              <CalendarHeading>
                 <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                 <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-              </CalendarViewButtonGroup>
+              </CalendarHeading>
               <CalendarNextButton aria-label='Next month' />
             </CalendarHeader>
             <CalendarContent>
@@ -81,15 +87,27 @@ export default function MinimalComposition() {
                 <CalendarWeekdays>
                   <CalendarWeekday />
                 </CalendarWeekdays>
-                <CalendarWeeks>
-                  <CalendarDay />
-                </CalendarWeeks>
+                <CalendarDaysScroller>
+                  <CalendarDaysScrollerContent>
+                    <CalendarWeeks>
+                      <CalendarDay />
+                    </CalendarWeeks>
+                  </CalendarDaysScrollerContent>
+                </CalendarDaysScroller>
               </CalendarDays>
               <CalendarMonths>
-                <CalendarMonth />
+                <CalendarMonthsGrid>
+                  <CalendarMonth />
+                </CalendarMonthsGrid>
               </CalendarMonths>
               <CalendarYears>
-                <CalendarYear />
+                <CalendarYearsScroller>
+                  <CalendarYearsScrollerContent>
+                    <CalendarYearsGrid>
+                      <CalendarYear />
+                    </CalendarYearsGrid>
+                  </CalendarYearsScrollerContent>
+                </CalendarYearsScroller>
               </CalendarYears>
             </CalendarContent>
           </DateRangeFieldCalendar>
@@ -135,7 +153,7 @@ export default function MinimalComposition() {
 - [Доступность](./accessibility.md)
 - [Сравнение](./comparison.md)
 - [Решение проблем](./troubleshooting.md)
-- Локаль и календарная система: пропсы корня `locale` и `calendar`, по умолчанию — локаль окружения и григорианский календарь; см. [Даты и календарные системы](../../i18n.md#пропсы-локали-и-календаря)
+- Локаль и календарная система: пропсы корня `locale` и `calendar`, по умолчанию — `"en-US"` и григорианский календарь; см. [Даты и календарные системы](../../i18n.md#пропсы-локали-и-календаря)
 
 ## Пограничные случаи
 

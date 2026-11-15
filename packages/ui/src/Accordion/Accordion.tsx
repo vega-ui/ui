@@ -3,8 +3,9 @@ import { FC, HTMLAttributes, ReactElement } from 'react';
 import { AccordionItemProps } from './components';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
+import { useWidget, widgetEnvironment } from '../internals/widget';
 import { AccordionProvider } from './contexts';
-import { useControlledState } from '@vega-ui/hooks';
+import { accordionWidget } from '@vega-ui/widgets/accordion';
 import { AccordionSize } from './types';
 
 export interface AccordionProps extends HTMLAttributes<HTMLUListElement> {
@@ -36,7 +37,7 @@ export interface AccordionProps extends HTMLAttributes<HTMLUListElement> {
   onChangeOpened?: (opened?: string[]) => void
 
   /**
-   * An array of item `id's that should be open by default when the accordion mounts.
+   * An array of item `id`s that should be open by default when the accordion mounts.
    */
   defaultOpened?: string[]
 
@@ -60,24 +61,15 @@ export const Accordion: FC<AccordionProps> = ({
   className,
   ...props
 }) => {
-  const [openedValues, setOpenedValues] = useControlledState<string[]>(opened, defaultOpened, onChangeOpened)
-
-  const open = (value: string) => {
-    if (openedValues.includes(value)) return
-    setOpenedValues(multiple ? [...openedValues, value] : [value])
-  }
-
-  const close = (value: string) => {
-    setOpenedValues(openedValues.filter(v => v !== value))
-  }
-
-  const onChangeOpen = (value: string, state: boolean) => {
-    if (!state) close(value)
-    else open(value)
-  }
+  const handle = useWidget(accordionWidget, {
+    multiple,
+    opened,
+    defaultOpened,
+    onChangeOpened: (value: readonly string[]) => onChangeOpened?.([...value]),
+  }, widgetEnvironment)
 
   return (
-    <AccordionProvider opened={openedValues} onChangeOpened={onChangeOpen} size={size}>
+    <AccordionProvider handle={handle} size={size}>
       <ul {...props} className={csx(className, style.accordion)}>
         {children}
       </ul>

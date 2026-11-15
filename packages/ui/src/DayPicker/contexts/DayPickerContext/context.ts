@@ -1,16 +1,32 @@
 'use client';
 
-import { createContext } from '@vega-ui/react-kit/context';
-import { CalendarSystem, getDefaultLocale, gregorianCalendar } from '@vega-ui/i18n';
+import { createContext } from '../../../internals/context';
+import { CalendarSystem, gregorianCalendar } from '@vega-ui/i18n';
+import { GridItemSize, GridItemVariant } from '../../../Grid';
 
 export interface DayPickerContextData {
-  month: string
+  /**
+   * First day of the month of the focused day, `undefined` until the focused
+   * day is known (on the server without `today`).
+   */
+  month?: string
+  /**
+   * First day of the month the scroller pages are counted from: the month of
+   * the first focused day.
+   */
+  anchor?: string
   calendar: CalendarSystem
+  size: GridItemSize
+  variant: GridItemVariant
   locale: string
+  today?: string
+  show(date: string, page: HTMLElement): void
 }
 
 export const [DayPickerProvider, useDayPickerContext] = createContext<DayPickerContextData>('DayPickerContext', {
-  month: '',
   calendar: gregorianCalendar,
-  locale: getDefaultLocale(),
+  size: 'xs',
+  variant: 'secondary',
+  locale: 'en-US',
+  show() {},
 })

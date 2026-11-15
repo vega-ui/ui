@@ -1,17 +1,18 @@
 'use client';
 
-import { createContext } from '@vega-ui/react-kit/context';
-import { RefObject } from 'react';
+import { createContext } from '../../../internals/context';
+import { createHandle, WidgetHandle } from '../../../internals/widget';
+import { passwordFieldShape, passwordFieldWidget } from '@vega-ui/widgets/password-field';
 
 export interface PasswordFieldContextState {
+  handle: WidgetHandle<typeof passwordFieldShape>
   shown: boolean
   disabled?: boolean
-  inputRef: RefObject<HTMLInputElement | null>
   toggleShow(): void
 }
 
 export const [PasswordFieldProvider, usePasswordFieldContext] = createContext<PasswordFieldContextState>('PasswordFieldContext', {
+  handle: createHandle(passwordFieldWidget, {}, { id: 'password-field' }),
   shown: false,
-  inputRef: { current: null },
   toggleShow() {},
 })

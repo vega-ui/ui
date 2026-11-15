@@ -8,17 +8,17 @@
 
 ### `PhoneField`
 
-Корневой провайдер форматирования телефона и состояния страны.
+Корневой провайдер форматирования телефона и состояния страны. Хранит номер в E.164; `PhoneFieldInput` отправляет показанный текст под своим `name`.
 
 ### `PhoneFieldInput`
 
-Видимое текстовое поле для номера.
+Видимое текстовое поле, которое показывает номер отформатированным.
 
 ## Необязательные части
 
 ### `PhoneFieldSelect`
 
-Выбор кода страны: `Select`, привязанный к стране поля. Выбор опции меняет страну и переводит фокус в поле ввода.
+Выбор кода страны: `Select`, привязанный к стране поля. Выбор опции меняет страну, записывает её телефонный код в поле ввода и переводит фокус в поле ввода.
 
 ### Части Select
 
@@ -65,7 +65,7 @@ export default function MinimalComposition() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', width: '100%', maxWidth: 320 }}>
       <Label htmlFor={id}>Phone number</Label>
-      <PhoneField defaultCode='US'>
+      <PhoneField defaultCountry='US'>
         <PhoneFieldSelect>
           <SelectHiddenSelect name='country' />
           <SelectCombobox aria-label='Country'>
@@ -78,7 +78,7 @@ export default function MinimalComposition() {
             <SelectOption value='DE'>DE</SelectOption>
           </SelectListbox>
         </PhoneFieldSelect>
-        <PhoneFieldInput id={id} name='phone' autoComplete='tel' />
+        <PhoneFieldInput name='phone' id={id} autoComplete='tel' />
       </PhoneField>
     </div>
   );
@@ -86,7 +86,7 @@ export default function MinimalComposition() {
 ```
 <!-- /example -->
 
-`Label` называет поле ввода, у триггера страны свой `aria-label`, а скрытый select отправляет страну вместе с номером. Без `PhoneFieldSelect` поле всё равно форматирует номер по одному `code`.
+`Label` называет поле ввода, у триггера страны свой `aria-label`, а скрытый select отправляет страну вместе с номером. Без `PhoneFieldSelect` поле всё равно форматирует номер по одному `country`.
 
 ## Некорректные варианты композиции
 

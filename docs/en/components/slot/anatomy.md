@@ -71,8 +71,8 @@ export default function BasicUsage() {
 
 ### More than one child
 
-`Children.only` will reject the composition.
+`Slot` throws ``[Slot] `asChild` must be a valid React-element.``
 
 ### Non-element child
 
-Plain text or invalid nodes cannot be cloned.
+Plain text or invalid nodes cannot be cloned, and `Slot` throws the same error.

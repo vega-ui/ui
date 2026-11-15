@@ -1,8 +1,11 @@
 'use client';
-import { FC, HTMLAttributes, Ref, useLayoutEffect, useRef } from 'react';
+import { FC, HTMLAttributes, Ref } from 'react';
+import { useMergeRefs } from '@vega-ui/hooks';
+import { useOutput } from '../../../internals/widget';
+import { csx } from '@vega-ui/utils';
 import style from './style.module.css';
-import { csx, mergeRefs } from '@vega-ui/utils';
 import { useCollapsibleContext } from '../../contexts';
+import { collapsibleWidget, CONTENT } from '@vega-ui/widgets/collapsible';
 
 export interface CollapsibleContentProps extends Omit<HTMLAttributes<HTMLDivElement>, 'id'> {
   /**
@@ -19,26 +22,15 @@ export const CollapsibleContent: FC<CollapsibleContentProps> = ({
   children,
   ...props
 }) => {
-  const contentRef = useRef<HTMLDivElement>(null)
-
-  const { opened, onTransitionEnd, hidden, contentId } = useCollapsibleContext()
-
-  useLayoutEffect(() => {
-    const contentNode = contentRef.current
-    if (!contentNode) return
-    
-    contentNode.style.setProperty('--content-height', contentNode.scrollHeight + 'px')
-  });
+  const { handle } = useCollapsibleContext()
+  const attrs = useOutput(handle, collapsibleWidget.output.content)
+  const contentRef = useMergeRefs([handle.part(CONTENT, collapsibleWidget.output.content), ref])
 
   return (
     <div
-      hidden={hidden}
-      data-open={opened}
-      onTransitionEnd={onTransitionEnd}
-      ref={mergeRefs([ref, contentRef])}
+      ref={contentRef}
       className={csx(style.content, className)}
-      id={contentId}
-      {...props}
+      {...handle.merge(attrs, props)}
     >
       {children}
     </div>

@@ -37,7 +37,7 @@
 }
 
 .combobox:where([data-variant='field']) {
-    outline: 1px solid transparent;
+    outline: 1px solid var(--select-outline-color, transparent);
     background-color: var(--fills-tertiary);
 
     transition: outline var(--transition-state-delay) ease-in-out,
@@ -66,7 +66,7 @@
 /* combobox/inline */
 
 .combobox:where([data-variant='inline']) {
-    outline: 1px solid transparent;
+    outline: 1px solid var(--select-outline-color, transparent);
     transition:
             outline-color var(--transition-state-delay) ease-in-out,
             background-color var(--transition-state-delay) ease-in-out;

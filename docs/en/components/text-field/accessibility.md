@@ -22,7 +22,7 @@
 ## Form Semantics
 
 - Use `name`, `value`, `defaultValue`, `required`, and similar form props on `TextFieldInput`.
-- Use wrapper `error` only for visual presentation; keep invalid semantics on the input when needed.
+- The wrapper shows the error look when the input has `aria-invalid='true'` or matches `:user-invalid`. Set `aria-invalid` on `TextFieldInput` for errors only your app knows; native constraints such as `required`, `pattern` and `type='email'` mark the field on their own once the user edits it or tries to submit.
 
 ## Accessibility Risks
 

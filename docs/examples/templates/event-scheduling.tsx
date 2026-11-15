@@ -7,20 +7,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   Card,
   Heading,
   HelperText,
@@ -237,7 +243,7 @@ export default function EventScheduling() {
   };
 
   const host = (
-    <Card style={{ alignItems: 'stretch', gap: 'var(--spacing-10)', flex: '1 1 260px', minWidth: 0 }} aria-labelledby={`${id}-event`}>
+    <Card style={{ gap: 'var(--spacing-10)', flex: '1 1 260px', minWidth: 0 }} aria-labelledby={`${id}-event`}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-6)', minWidth: 0 }}>
         <Avatar size='lg' aria-hidden='true' style={{ flexShrink: 0 }}>
           <AvatarFallback>MK</AvatarFallback>
@@ -322,7 +328,7 @@ export default function EventScheduling() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 200px), 1fr))', gap: 'var(--spacing-8)' }}>
               <div style={field}>
                 <Label htmlFor={`${id}-name`}>Name</Label>
-                <TextField error={errors.name !== undefined}>
+                <TextField>
                   <TextFieldInput
                     id={`${id}-name`}
                     name='name'
@@ -332,11 +338,11 @@ export default function EventScheduling() {
                     onChange={() => clearError('name')}
                   />
                 </TextField>
-                {errors.name && <HelperText id={`${id}-name-error`} error>{errors.name}</HelperText>}
+                {errors.name && <HelperText id={`${id}-name-error`} invalid>{errors.name}</HelperText>}
               </div>
               <div style={field}>
                 <Label htmlFor={`${id}-email`}>Email</Label>
-                <TextField error={errors.email !== undefined}>
+                <TextField>
                   <TextFieldInput
                     id={`${id}-email`}
                     name='email'
@@ -347,12 +353,12 @@ export default function EventScheduling() {
                     onChange={() => clearError('email')}
                   />
                 </TextField>
-                {errors.email && <HelperText id={`${id}-email-error`} error>{errors.email}</HelperText>}
+                {errors.email && <HelperText id={`${id}-email-error`} invalid>{errors.email}</HelperText>}
               </div>
             </div>
             <div style={field}>
               <Label htmlFor={`${id}-guests`}>Guests (optional)</Label>
-              <TextField error={errors.guests !== undefined}>
+              <TextField>
                 <TextFieldInput
                   id={`${id}-guests`}
                   name='guests'
@@ -364,7 +370,7 @@ export default function EventScheduling() {
                 />
               </TextField>
               {errors.guests
-                ? <HelperText id={`${id}-guests-error`} error>{errors.guests}</HelperText>
+                ? <HelperText id={`${id}-guests-error`} invalid>{errors.guests}</HelperText>
                 : <HelperText id={`${id}-guests-hint`}>Up to 5 emails, separated by commas.</HelperText>}
             </div>
             <div style={field}>
@@ -398,33 +404,45 @@ export default function EventScheduling() {
             locale='en-US'
             min={FIRST_DAY}
             max={LAST_DAY}
-            defaultMonth={FIRST_DAY}
+            defaultFocusedDate={FIRST_DAY}
             disabledDates={isUnavailable}
             value={date}
             onChangeValue={changeDate}
           >
             <CalendarHeader>
               <CalendarPrevButton aria-label='Previous month' />
-              <CalendarViewButtonGroup>
+              <CalendarHeading>
                 <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                 <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-              </CalendarViewButtonGroup>
+              </CalendarHeading>
               <CalendarNextButton aria-label='Next month' />
             </CalendarHeader>
             <CalendarContent>
-              <CalendarDays aria-label='Day' aria-describedby={`${id}-days-hint`}>
+              <CalendarDays aria-describedby={`${id}-days-hint`}>
                 <CalendarWeekdays>
                   <CalendarWeekday />
                 </CalendarWeekdays>
-                <CalendarWeeks>
-                  <CalendarDay />
-                </CalendarWeeks>
+                <CalendarDaysScroller>
+                  <CalendarDaysScrollerContent>
+                    <CalendarWeeks>
+                      <CalendarDay />
+                    </CalendarWeeks>
+                  </CalendarDaysScrollerContent>
+                </CalendarDaysScroller>
               </CalendarDays>
               <CalendarMonths>
-                <CalendarMonth />
+                <CalendarMonthsGrid>
+                  <CalendarMonth />
+                </CalendarMonthsGrid>
               </CalendarMonths>
               <CalendarYears>
-                <CalendarYear />
+                <CalendarYearsScroller>
+                  <CalendarYearsScrollerContent>
+                    <CalendarYearsGrid>
+                      <CalendarYear />
+                    </CalendarYearsGrid>
+                  </CalendarYearsScrollerContent>
+                </CalendarYearsScroller>
               </CalendarYears>
             </CalendarContent>
           </Calendar>
@@ -482,7 +500,7 @@ export default function EventScheduling() {
               ))}
             </div>
           )}
-          {timeError && <HelperText id={`${id}-time-error`} error>{timeError}</HelperText>}
+          {timeError && <HelperText id={`${id}-time-error`} invalid>{timeError}</HelperText>}
           <div style={field}>
             <Label htmlFor={`${id}-timezone`}>Time zone</Label>
             <Select value={timezone} onChangeValue={(next) => setTimezone(next ?? 'Europe/Berlin')}>

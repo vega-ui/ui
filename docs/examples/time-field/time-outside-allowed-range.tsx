@@ -25,7 +25,7 @@ export default function NightDeliveryForm() {
     <form onSubmit={onSubmit} style={{ display: 'grid', gap: 'var(--spacing-12)', width: '100%', maxWidth: 260 }}>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor='night-delivery'>Night delivery at</Label>
-        <TimeField error={invalid} value={time} onChangeValue={onChangeValue}>
+        <TimeField value={time} onChangeValue={onChangeValue}>
           <TimeFieldInput
             id='night-delivery'
             required
@@ -34,7 +34,7 @@ export default function NightDeliveryForm() {
             aria-describedby='night-delivery-hint'
           />
         </TimeField>
-        <HelperText id='night-delivery-hint' error={invalid}>{invalid ? error : 'Between 22:00 and 06:00.'}</HelperText>
+        <HelperText id='night-delivery-hint' invalid={invalid}>{invalid ? error : 'Between 22:00 and 06:00.'}</HelperText>
       </div>
       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--spacing-4)' }}>
         <Button type='submit'>Book</Button>

@@ -506,7 +506,7 @@ export default function FailedToLoadRows() {
             <TableRow>
               <TableData colSpan={columns.length} dataAlign='center' style={{ height: 'var(--spacing-52)' }}>
                 <div style={{ display: 'grid', gap: 'var(--spacing-6)', justifyItems: 'center' }}>
-                  <HelperText error role='alert'>Could not load deploys: the request timed out.</HelperText>
+                  <HelperText invalid role='alert'>Could not load deploys: the request timed out.</HelperText>
                   <Button size='sm' variant='secondary' appearance='ghost' onClick={retry}>Retry</Button>
                 </div>
               </TableData>
@@ -825,7 +825,7 @@ export default function FlushEdgesWithoutExtraPadding() {
       <Button size='sm' variant='secondary' appearance='ghost' aria-pressed={edgePadded} onClick={() => setEdgePadded(!edgePadded)}>
         edgePadded: {String(edgePadded)}
       </Button>
-      <Card appearance='outline' size='sm' style={{ alignItems: 'stretch', width: '100%', maxWidth: 360 }}>
+      <Card appearance='outline' size='sm' style={{ width: '100%', maxWidth: 360 }}>
         <Heading as='h3' size={4} fontWeight={600}>Subscription</Heading>
         <Table fullWidth edgePadded={edgePadded}>
           <TableBody>

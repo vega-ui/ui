@@ -1,9 +1,10 @@
-import { FC } from 'react';
+import { FC, MouseEvent } from 'react';
 import { Icon } from '../../../Icon';
 import { IconButton, IconButtonProps } from '../../../IconButton';
 import { MinusIcon } from '@vega-ui/icons';
+import { useSnapshot } from '../../../internals/widget';
 import { useNumberFieldContext } from '../../contexts';
-import { csx, mergeEventHandlers } from '@vega-ui/utils';
+import { csx } from '@vega-ui/utils';
 import style from './style.module.css';
 
 export type NumberFieldDecrementProps = IconButtonProps
@@ -27,19 +28,21 @@ export const NumberFieldDecrementButton: FC<NumberFieldDecrementProps> = ({
   type = 'button',
   ...props
 }) => {
-  const { decrement, disabled: _disabled, isMin, size } = useNumberFieldContext()
+  const { handle, decrement, disabled: _disabled, isMin, size } = useNumberFieldContext()
+  const readOnly = useSnapshot(handle, (state) => state.readOnly)
 
-  const onClick = () => {
-    decrement()
+  const onClick = (event: MouseEvent<HTMLButtonElement>) => {
+    _onClick?.(event)
+    if (!event.defaultPrevented) decrement()
   }
 
   return (
     <IconButton
       type={type}
-      disabled={(disabled ?? _disabled) || isMin}
+      disabled={(disabled ?? _disabled) || isMin || readOnly}
       variant='secondary'
       appearance='transparent'
-      onClick={mergeEventHandlers(onClick, _onClick)}
+      onClick={onClick}
       size={size}
       className={csx(style.button, className)}
       {...props}

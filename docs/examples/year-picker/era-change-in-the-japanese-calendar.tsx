@@ -5,7 +5,7 @@ const japaneseCalendar = createCalendarSystem('japanese');
 
 export default function EraChangeInTheJapaneseCalendar() {
   return (
-    <YearPicker aria-label='Year' calendar={japaneseCalendar} locale='ja-JP' year='2018-01-01' style={{ width: '100%' }}>
+    <YearPicker aria-label='Year' calendar={japaneseCalendar} locale='ja-JP' defaultFocusedDate='2018-01-01' style={{ width: '100%' }}>
       <YearPickerLayout>
         <YearPickerCell />
       </YearPickerLayout>

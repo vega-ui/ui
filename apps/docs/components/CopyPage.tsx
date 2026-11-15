@@ -44,8 +44,8 @@ export const CopyPage = () => {
           <Icon size='xs'><FileText /></Icon>
         </a>
       </IconButton>
-      <VisuallyHidden asChild>
-        <span role='status'>{copied ? t.doc.copied : ''}</span>
+      <VisuallyHidden role='status'>
+        {copied ? t.doc.copied : ''}
       </VisuallyHidden>
     </div>
   );

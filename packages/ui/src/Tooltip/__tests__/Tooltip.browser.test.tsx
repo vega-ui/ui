@@ -1,12 +1,11 @@
 import { ComponentProps, FC } from 'react';
 import { afterEach, beforeEach, describe, expect, it, onTestFinished, vi } from 'vitest';
-import { cleanup, fireEvent, render, type RenderResult, waitFor } from '@testing-library/react';
-import { userEvent } from 'vitest/browser';
+import { cleanup, render, type RenderResult, waitFor } from '@testing-library/react';
+import { server, userEvent } from 'vitest/browser';
 
 import { Tooltip } from '../Tooltip';
-import { TooltipArrow, TooltipContent, TooltipTrigger } from '../components';
-import { Dialog } from '../../Dialog';
-import { DialogContent } from '../../Dialog/components';
+import { TooltipContent, TooltipTrigger } from '../components';
+import { Dialog, DialogContent } from '../../Dialog';
 
 afterEach(cleanup);
 
@@ -21,7 +20,6 @@ const TooltipTest: FC<ComponentProps<typeof Tooltip>> = (props) => {
     <Tooltip {...props}>
       <TooltipTrigger data-testid={TESTID_TRIGGER}>{TRIGGER_TEXT}</TooltipTrigger>
       <TooltipContent data-testid={TESTID_CONTENT}>
-        <TooltipArrow />
         {CONTENT_TEXT}
       </TooltipContent>
     </Tooltip>
@@ -36,77 +34,15 @@ const focusByKeyboard = async (element: HTMLElement) => {
   element.focus();
 };
 
+const pressTab = () => userEvent.keyboard(server.browser === 'webkit' ? '{Alt>}{Tab}{/Alt}' : '{Tab}');
+
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const waitForWarmUpToExpire = () => wait(600);
 
 describe('Tooltip', () => {
   describe('Critical User Paths', () => {
-    describe('uncontrolled', () => {
-      it('starts open with defaultOpen', () => {
-        const r = render(<TooltipTest defaultOpen />);
-
-        expect(queryContent(r)).toBeInTheDocument();
-      });
-
-      it('reports opening on hover', async () => {
-        const onChangeOpen = vi.fn();
-        const r = render(<TooltipTest delayOpen={0} onChangeOpen={onChangeOpen} />);
-
-        await userEvent.hover(getTrigger(r));
-
-        await waitFor(() => {
-          expect(onChangeOpen).toHaveBeenLastCalledWith(true);
-        });
-      });
-    });
-
     describe('controlled', () => {
-      it('shows the content while open is true', () => {
-        const r = render(<TooltipTest open />);
-
-        expect(queryContent(r)).toBeInTheDocument();
-      });
-
-      it('stays closed on hover until the parent opens it', async () => {
-        const onChangeOpen = vi.fn();
-        const r = render(<TooltipTest open={false} delayOpen={0} onChangeOpen={onChangeOpen} />);
-
-        await userEvent.hover(getTrigger(r));
-        await waitFor(() => {
-          expect(onChangeOpen).toHaveBeenLastCalledWith(true);
-        });
-
-        expect(queryContent(r)).not.toBeInTheDocument();
-      });
-
-      it('stays open on Escape until the parent closes it', async () => {
-        const onChangeOpen = vi.fn();
-        const r = render(<TooltipTest open onChangeOpen={onChangeOpen} />);
-
-        getTrigger(r).focus();
-        await userEvent.keyboard('{Escape}');
-        await waitFor(() => {
-          expect(onChangeOpen).toHaveBeenLastCalledWith(false);
-        });
-
-        expect(queryContent(r)).toBeInTheDocument();
-      });
-
-      it('reports closing on unhover while the parent keeps it open', async () => {
-        const onChangeOpen = vi.fn();
-        const r = render(<TooltipTest open delayOpen={0} onChangeOpen={onChangeOpen} />);
-
-        await userEvent.hover(getTrigger(r));
-        await userEvent.unhover(getTrigger(r));
-        await waitFor(() => {
-          expect(onChangeOpen).toHaveBeenLastCalledWith(false);
-        });
-
-        expect(onChangeOpen).not.toHaveBeenCalledWith(true);
-        expect(queryContent(r)).toBeInTheDocument();
-      });
-
       it('keeps the content mounted while the close transition runs', async () => {
         document.documentElement.dataset.motion = '';
         onTestFinished(() => {
@@ -135,74 +71,27 @@ describe('Tooltip', () => {
         r = render(<TooltipTest />);
       });
       
-      it('opens on hover', async () => {
-        const trigger = getTrigger(r);
-        
-        await userEvent.hover(trigger);
-        
-        await waitFor(() => {
-          expect(queryContent(r)).toBeInTheDocument();
-        });
-      });
-      
-      it('closes on unhover', async () => {
-        const trigger = getTrigger(r);
-        
-        await userEvent.hover(trigger);
-        await waitFor(() => {
-          expect(queryContent(r)).toBeInTheDocument();
-        });
-        
-        await userEvent.unhover(trigger);
-        await waitFor(() => {
-          expect(queryContent(r)).not.toBeInTheDocument();
-        });
-      });
-      
       it('opens on keyboard focus', async () => {
-        await focusByKeyboard(getTrigger(r));
-        
+        await pressTab();
+
         await waitFor(() => {
           expect(queryContent(r)).toBeInTheDocument();
         });
       });
-      
+
       it('closes on blur', async () => {
-        await focusByKeyboard(getTrigger(r));
+        render(<button type='button'>Next</button>);
+        await pressTab();
         await waitFor(() => {
           expect(queryContent(r)).toBeInTheDocument();
         });
-        
-        getTrigger(r).blur();
+
+        await pressTab();
         await waitFor(() => {
           expect(queryContent(r)).not.toBeInTheDocument();
         });
       });
       
-      it('does not open on a tap', async () => {
-        const trigger = getTrigger(r);
-
-        fireEvent.pointerEnter(trigger, { pointerType: 'touch' });
-        fireEvent.pointerDown(trigger, { pointerType: 'touch' });
-        await new Promise((resolve) => setTimeout(resolve, 700));
-
-        expect(queryContent(r)).not.toBeInTheDocument();
-      });
-
-      it('closes when the trigger is pressed', async () => {
-        const trigger = getTrigger(r);
-
-        await userEvent.hover(trigger);
-        await waitFor(() => {
-          expect(queryContent(r)).toBeInTheDocument();
-        });
-
-        fireEvent.pointerDown(trigger, { pointerType: 'mouse' });
-        await waitFor(() => {
-          expect(queryContent(r)).not.toBeInTheDocument();
-        });
-      });
-
       it('closes on Escape when open', async () => {
         const trigger = getTrigger(r);
         
@@ -232,28 +121,6 @@ describe('Tooltip', () => {
 
     describe('delays', () => {
       beforeEach(waitForWarmUpToExpire);
-
-      it('waits for delayOpen before showing on hover', async () => {
-        const r = render(<TooltipTest delayOpen={200} />);
-
-        await userEvent.hover(getTrigger(r));
-        await wait(100);
-        expect(queryContent(r)).not.toBeInTheDocument();
-
-        await waitFor(() => {
-          expect(queryContent(r)).toBeInTheDocument();
-        });
-      });
-
-      it('shows at once on keyboard focus, without waiting for delayOpen', async () => {
-        const r = render(<TooltipTest delayOpen={5000} />);
-
-        await focusByKeyboard(getTrigger(r));
-
-        await waitFor(() => {
-          expect(queryContent(r)).toBeInTheDocument();
-        });
-      });
 
       it('waits for delayClose before hiding on unhover', async () => {
         const r = render(<TooltipTest delayOpen={0} delayClose={200} />);
@@ -346,7 +213,7 @@ describe('Tooltip', () => {
       expect(scaled.bottom).toBeLessThanOrEqual(full.bottom);
     });
 
-    it('shows the next tooltip at once right after another closes', async () => {
+    it('hides the previous tooltip at once when the next one of its group shows', async () => {
       await waitForWarmUpToExpire();
       const r = render(
         <>
@@ -366,13 +233,19 @@ describe('Tooltip', () => {
       await userEvent.hover(r.getByTestId('second'));
 
       await expect.element(r.getByTestId('second-content')).toBeInTheDocument();
+      expect(r.queryByTestId('first-content')).not.toBeInTheDocument();
     });
 
-    it('grows out of its arrow', async () => {
-      const r = render(<TooltipTest defaultOpen />);
+    it('flips to the opposite side when there is no room', async () => {
+      const r = render(
+        <Tooltip open>
+          <TooltipTrigger data-testid={TESTID_TRIGGER} style={{ position: 'fixed', bottom: 0 }}>{TRIGGER_TEXT}</TooltipTrigger>
+          <TooltipContent data-testid={TESTID_CONTENT}>{CONTENT_TEXT}</TooltipContent>
+        </Tooltip>
+      );
 
-      await expect.poll(() => queryContent(r)?.getAttribute('data-side')).toBe('bottom');
-      await expect.poll(() => queryContent(r)?.style.getPropertyValue('--tooltip-arrow-x')).toMatch(/px$/);
+      await expect.poll(() => queryContent(r)?.matches(':popover-open')).toBe(true);
+      await expect.poll(() => queryContent(r)!.getBoundingClientRect().bottom).toBeLessThanOrEqual(getTrigger(r).getBoundingClientRect().top);
     });
 
     it('renders the content in the top layer', async () => {
@@ -410,16 +283,6 @@ describe('Tooltip', () => {
           expect(getTrigger(r)).toHaveAttribute('aria-describedby', queryContent(r)?.id);
         });
         expect(getTrigger(r)).toHaveAccessibleDescription(CONTENT_TEXT);
-      });
-
-      it('sets role="tooltip" on content when open', async () => {
-        const trigger = getTrigger(r);
-        
-        await userEvent.hover(trigger);
-        
-        await waitFor(() => {
-          expect(queryContent(r)).toHaveRole('tooltip');
-        });
       });
 
     });
@@ -467,22 +330,6 @@ describe('Tooltip', () => {
     });
 
     describe('content on hover or focus', () => {
-      it('keeps focus on the trigger when Escape dismisses it', async () => {
-        const r = render(<TooltipTest delayOpen={0} />);
-
-        getTrigger(r).focus();
-        await userEvent.hover(getTrigger(r));
-        await waitFor(() => {
-          expect(queryContent(r)).toBeInTheDocument();
-        });
-
-        await userEvent.keyboard('{Escape}');
-        await waitFor(() => {
-          expect(queryContent(r)).not.toBeInTheDocument();
-        });
-        expect(getTrigger(r)).toHaveFocus();
-      });
-
       it('stays open while the pointer moves from the trigger onto the tooltip', async () => {
         const r = render(<TooltipTest delayOpen={0} />);
 

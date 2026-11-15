@@ -27,11 +27,9 @@ export default function DisabledSection() {
         </AccordionItem>
         <AccordionItem value='sso'>
           <AccordionHeader>
-            <AccordionTrigger asChild>
-              <button type='button' disabled aria-describedby='sso-reason' style={{ cursor: 'not-allowed', color: 'var(--label-tertiary)' }}>
-                SAML single sign-on
-                <AccordionIcon />
-              </button>
+            <AccordionTrigger disabled aria-describedby='sso-reason' style={{ cursor: 'not-allowed', color: 'var(--label-tertiary)' }}>
+              SAML single sign-on
+              <AccordionIcon />
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>

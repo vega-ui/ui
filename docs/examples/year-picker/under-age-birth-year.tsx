@@ -28,9 +28,8 @@ export default function UnderAgeBirthYear() {
         aria-label='Birth year'
         aria-describedby={messageId}
         locale='en-US'
-        year={birthYear ?? '2000-01-01'}
-        selected={birthYear}
-        onSelectCell={setBirthYear}
+        value={birthYear}
+        onChangeValue={setBirthYear}
       >
         <YearPickerScroller>
           <YearPickerScrollerContent>
@@ -40,7 +39,7 @@ export default function UnderAgeBirthYear() {
           </YearPickerScrollerContent>
         </YearPickerScroller>
       </YearPicker>
-      <HelperText id={messageId} error={invalid} aria-live='polite'>{message}</HelperText>
+      <HelperText id={messageId} invalid={invalid} aria-live='polite'>{message}</HelperText>
     </div>
   );
 }

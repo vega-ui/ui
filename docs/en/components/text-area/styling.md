@@ -25,7 +25,7 @@ The root sets size-specific padding, type scale, min height, and state colors.
 
 - `data-size` maps to spacing and typography
 - `data-full-width='true'` sets `width: 100%`
-- `data-error='true'` switches the outline to error color
+- `[aria-invalid='true']` and `:user-invalid` switch the outline to error color
 - disabled state changes both foreground and surface tokens
 
 ## Examples

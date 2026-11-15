@@ -1,7 +1,9 @@
 import { FC } from 'react';
 import { Icon, IconProps } from '../../../Icon';
 import { EyeIcon } from '@vega-ui/icons';
+import { useOutput } from '../../../internals/widget';
 import { usePasswordFieldContext } from '../../contexts';
+import { passwordFieldWidget } from '@vega-ui/widgets/password-field';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 
@@ -18,10 +20,11 @@ export type PasswordFieldShownIconProps = IconProps
  * replaced with a custom icon via `children`.
  */
 export const PasswordFieldShownIcon: FC<PasswordFieldShownIconProps> = ({ children, className, ...props }) => {
-  const { shown } = usePasswordFieldContext()
+  const { handle } = usePasswordFieldContext()
+  const attrs = useOutput(handle, passwordFieldWidget.output.shownIcon)
   
   return (
-    <Icon className={csx(style.icon, className)} data-hidden={shown} {...props}>
+    <Icon className={csx(style.icon, className)} {...attrs} {...props}>
       {children ?? <EyeIcon />}
     </Icon>
   )

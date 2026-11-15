@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext } from '@vega-ui/react-kit/context';
+import { createContext } from '../../../internals/context';
 
 export interface MeterStackContextState {
   min: number
@@ -9,5 +9,5 @@ export interface MeterStackContextState {
 
 export const [MeterStackProvider, useMeterStackContext] = createContext<MeterStackContextState>('ProgressContext', {
   min: 0,
-  max: 100,
+  max: 1,
 })

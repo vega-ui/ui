@@ -4,20 +4,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   Icon,
   Popover,
   PopoverContent,
@@ -49,10 +55,10 @@ export default function CalendarInAPopover() {
         <Calendar compact locale='en-US' value={date} onChangeValue={pick}>
           <CalendarHeader>
             <CalendarPrevButton aria-label='Previous' />
-            <CalendarViewButtonGroup>
+            <CalendarHeading>
               <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
               <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-            </CalendarViewButtonGroup>
+            </CalendarHeading>
             <CalendarNextButton aria-label='Next' />
           </CalendarHeader>
           <CalendarContent>
@@ -60,15 +66,27 @@ export default function CalendarInAPopover() {
               <CalendarWeekdays>
                 <CalendarWeekday />
               </CalendarWeekdays>
-              <CalendarWeeks>
-                <CalendarDay />
-              </CalendarWeeks>
+              <CalendarDaysScroller>
+                <CalendarDaysScrollerContent>
+                  <CalendarWeeks>
+                    <CalendarDay />
+                  </CalendarWeeks>
+                </CalendarDaysScrollerContent>
+              </CalendarDaysScroller>
             </CalendarDays>
             <CalendarMonths>
-              <CalendarMonth />
+              <CalendarMonthsGrid>
+                <CalendarMonth />
+              </CalendarMonthsGrid>
             </CalendarMonths>
             <CalendarYears>
-              <CalendarYear />
+              <CalendarYearsScroller>
+                <CalendarYearsScrollerContent>
+                  <CalendarYearsGrid>
+                    <CalendarYear />
+                  </CalendarYearsGrid>
+                </CalendarYearsScrollerContent>
+              </CalendarYearsScroller>
             </CalendarYears>
           </CalendarContent>
         </Calendar>

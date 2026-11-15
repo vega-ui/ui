@@ -18,7 +18,7 @@ const meta = {
       control: 'radio',
       options: ['sm', 'md', 'lg'],
     },
-    error: { control: 'boolean' },
+    'aria-invalid': { control: 'boolean' },
     disabled: { control: 'boolean' },
   },
   args: {
@@ -32,9 +32,9 @@ type Story = StoryObj<typeof meta>;
 
 const sizes: TextAreaProps['size'][] = ['sm', 'md', 'lg'];
 const states = [
-  { label: 'default', disabled: false, error: false },
-  { label: 'disabled', disabled: true, error: false },
-  { label: 'error', disabled: false, error: true },
+  { label: 'default', disabled: false, invalid: false },
+  { label: 'disabled', disabled: true, invalid: false },
+  { label: 'invalid', disabled: false, invalid: true },
 ];
 
 export const Playground: Story = {};
@@ -48,7 +48,7 @@ export const Matrix: Story = {
           aria-label='Description'
           size={size}
           disabled={state.disabled}
-          error={state.error}
+          aria-invalid={state.invalid}
           placeholder={`${size} / ${state.label}`}
         />
       )))}

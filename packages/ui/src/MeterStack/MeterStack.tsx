@@ -14,7 +14,7 @@ export interface MeterStackProps extends HTMLAttributes<HTMLDivElement> {
 
   /**
    * Maximum possible value of the meter.
-   * Default is 100.
+   * Default is 1.
    */
   max?: number
 
@@ -48,7 +48,7 @@ export const MeterStack: FC<MeterStackProps> = ({
   style: cssStyles,
   ...props
 }) => {
-  const meterStyle = { ...cssStyles, '--meter-stack-value': value, '--meter-stack-max': max };
+  const meterStyle = { ...cssStyles, '--meter-stack-value': value, '--meter-stack-min': min, '--meter-stack-max': max };
 
   return (
     <MeterStackProvider min={min} max={max}>

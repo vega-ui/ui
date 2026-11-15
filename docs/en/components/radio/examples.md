@@ -272,7 +272,7 @@ export default function MissingRequiredRadioSelection() {
             </label>
           ))}
         </div>
-        {invalid && <HelperText id='cancel-reason-error' error>Choose a reason to continue.</HelperText>}
+        {invalid && <HelperText id='cancel-reason-error' invalid>Choose a reason to continue.</HelperText>}
       </Fieldset>
       <div style={{ display: 'grid', gap: 'var(--spacing-6)', justifyItems: 'start' }}>
         <Button type='submit'>Cancel subscription</Button>

@@ -4,7 +4,7 @@
 
 ### Basic: a page of years
 
-`YearPickerLayout` renders a page of `rows × cols` years (12 by default) that starts with the year given by `year`. Cells are keyed by the first day of each year, so `defaultSelected` is `'2026-01-01'`. The grid has no visible title, so it gets an `aria-label`.
+`YearPickerLayout` renders a page of `rows × cols` years (12 by default) that starts with the focused year — here the selected one. Cells are keyed by the first day of each year, so `defaultValue` is `'2026-01-01'`. The grid has no visible title, so it gets an `aria-label`.
 
 <!-- example: year-picker/a-page-of-years.tsx -->
 ```tsx
@@ -12,7 +12,7 @@ import { YearPicker, YearPickerCell, YearPickerLayout } from '@vega-ui/react';
 
 export default function APageOfYears() {
   return (
-    <YearPicker aria-label='Model year' locale='en-US' year='2026-01-01' defaultSelected='2026-01-01' style={{ width: '100%' }}>
+    <YearPicker aria-label='Model year' locale='en-US' defaultValue='2026-01-01' style={{ width: '100%' }}>
       <YearPickerLayout>
         <YearPickerCell />
       </YearPickerLayout>
@@ -26,7 +26,7 @@ export default function APageOfYears() {
 
 ### Controlled/Stateful: selected year
 
-`selected` and `onSelectCell` make the selection controlled. The scroller pages through years, and `year` keeps the page of the selected year in view; `null` means nothing is selected.
+`value` and `onChangeValue` make the selection controlled. The scroller pages through years and starts on the page of the selected year, the first focused one; `null` means nothing is selected.
 
 <!-- example: year-picker/selected-year.tsx -->
 ```tsx
@@ -45,7 +45,7 @@ export default function SelectedYear() {
 
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-6)', justifyItems: 'start', width: '100%' }}>
-      <YearPicker aria-label='Model year' locale='en-US' year={year ?? '2026-01-01'} selected={year} onSelectCell={setYear}>
+      <YearPicker aria-label='Model year' locale='en-US' value={year} onChangeValue={setYear}>
         <YearPickerScroller>
           <YearPickerScrollerContent>
             <YearPickerScrollerLayout>
@@ -125,16 +125,16 @@ export default function YearRangeFilter() {
           aria-describedby={hintId}
           locale='en-US'
           selection='range'
-          year='2015-01-01'
-          to='2026-01-01'
-          selected={years}
-          onSelectCell={change}
+          defaultFocusedDate='2026-01-01'
+          max='2026-01-01'
+          value={years}
+          onChangeValue={change}
         >
-          <YearPickerLayout>
+          <YearPickerLayout start='2015-01-01'>
             <YearPickerCell />
           </YearPickerLayout>
         </YearPicker>
-        <HelperText id={hintId} error={missing}>
+        <HelperText id={hintId} invalid={missing}>
           {missing ? 'Pick the first and the last year.' : 'Pick the first and the last year of the search.'}
         </HelperText>
       </Fieldset>
@@ -155,7 +155,7 @@ export default function YearRangeFilter() {
 
 ### Layout/Overlay: paged years with own buttons
 
-The scroller exposes `prev()` and `next()` through `apiRef`, so the page can be changed from buttons outside the grid, and reports the page in view with `onChangePeriod` for the range label. Keep `period` on the scroller equal to the layout's `rows × cols`, and move `active` into the new page when the old active year scrolls away.
+The scroller exposes `prev()` and `next()` through `apiRef`, so the page can be changed from buttons outside the grid, and reports the page in view with `onChangePeriod` for the range label. Keep `period` on the scroller equal to the layout's `rows × cols`. Pages start at `defaultFocusedDate`, and scrolling moves the focus to the same place on the new page, so the tab stop never scrolls out of view.
 
 <!-- example: year-picker/paged-years-with-own-buttons.tsx -->
 ```tsx
@@ -174,6 +174,7 @@ import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
 import { useRef, useState } from 'react';
 
 const PERIOD = 20;
+const FIRST_YEAR = '2007-01-01';
 
 function getYear(key: string) {
   return Number(key.slice(0, 4));
@@ -181,22 +182,11 @@ function getYear(key: string) {
 
 export default function PagedYearsWithOwnButtons() {
   const scrollerRef = useRef<IndexedSnapScrollerApiRef>(null);
-  const [page, setPage] = useState('2016-01-01');
-  const [active, setActive] = useState('2026-01-01');
+  const [page, setPage] = useState(FIRST_YEAR);
   const [selected, setSelected] = useState<string | null>(null);
 
   const firstYear = getYear(page);
   const lastYear = firstYear + PERIOD - 1;
-
-  const changePage = (next: string) => {
-    setPage(next);
-    setActive((current) => {
-      const year = getYear(current);
-      if (year >= getYear(next) && year < getYear(next) + PERIOD) return current;
-
-      return next;
-    });
-  };
 
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-4)', inlineSize: 'fit-content' }}>
@@ -212,13 +202,12 @@ export default function PagedYearsWithOwnButtons() {
       <YearPicker
         aria-label='Founding year'
         locale='en-US'
-        year='2016-01-01'
-        active={active}
-        onChangeActive={setActive}
-        selected={selected}
-        onSelectCell={setSelected}
+        defaultFocusedDate={FIRST_YEAR}
+        value={selected}
+        onChangeValue={setSelected}
+        period={PERIOD}
       >
-        <YearPickerScroller apiRef={scrollerRef} period={PERIOD} onChangePeriod={changePage}>
+        <YearPickerScroller apiRef={scrollerRef} onChangePeriod={setPage}>
           <YearPickerScrollerContent>
             <YearPickerScrollerLayout rows={5} cols={4}>
               <YearPickerCell />
@@ -236,7 +225,7 @@ export default function PagedYearsWithOwnButtons() {
 
 ### Error: under-age birth year
 
-Here the birth year is not bounded with `from` / `to`; the app checks the age after the pick and turns the hint linked to the grid into an error. Prefer bounds when a year can never be valid (see [Paged Year Range](./patterns.md#paged-year-range)); validate when the user needs to see why.
+Here the birth year is not bounded with `min` / `max`; the app checks the age after the pick and turns the hint linked to the grid into an error. Prefer bounds when a year can never be valid (see [Paged Year Range](./patterns.md#paged-year-range)); validate when the user needs to see why.
 
 <!-- example: year-picker/under-age-birth-year.tsx -->
 ```tsx
@@ -270,9 +259,8 @@ export default function UnderAgeBirthYear() {
         aria-label='Birth year'
         aria-describedby={messageId}
         locale='en-US'
-        year={birthYear ?? '2000-01-01'}
-        selected={birthYear}
-        onSelectCell={setBirthYear}
+        value={birthYear}
+        onChangeValue={setBirthYear}
       >
         <YearPickerScroller>
           <YearPickerScrollerContent>
@@ -282,7 +270,7 @@ export default function UnderAgeBirthYear() {
           </YearPickerScrollerContent>
         </YearPickerScroller>
       </YearPicker>
-      <HelperText id={messageId} error={invalid} aria-live='polite'>{message}</HelperText>
+      <HelperText id={messageId} invalid={invalid} aria-live='polite'>{message}</HelperText>
     </div>
   );
 }
@@ -293,7 +281,7 @@ export default function UnderAgeBirthYear() {
 
 ### Disabled: specific years
 
-An array of year starts disables exactly those years, here fiscal years that are already closed; `to` disables the future ones. The reason is written next to the grid and linked with `aria-describedby`.
+An array of year starts disables exactly those years, here fiscal years that are already closed; `max` disables the future ones. The reason is written next to the grid and linked with `aria-describedby`.
 
 <!-- example: year-picker/specific-years.tsx -->
 ```tsx
@@ -316,9 +304,9 @@ export default function SpecificYears() {
         aria-label='Fiscal year to adjust'
         aria-describedby={hintId}
         locale='en-US'
-        year='2018-01-01'
-        to='2026-01-01'
-        disabled={closedYears}
+        defaultFocusedDate='2018-01-01'
+        max='2026-01-01'
+        disabledDates={closedYears}
         style={{ width: '100%' }}
       >
         <YearPickerLayout rows={3} cols={3}>
@@ -336,7 +324,7 @@ export default function SpecificYears() {
 
 ### Edge: era change in the Japanese calendar
 
-With a calendar system from `createCalendarSystem` (see [Calendar System Adapter](../../i18n.md#calendar-system-adapter)), years follow that calendar. In the Japanese calendar 2019 is split: Heisei 31 runs from January 1 to April 30 and Reiwa 1 starts on May 1, so the page shows two cells for it, keyed `'2019-01-01'` and `'2019-05-01'` and labeled 平成31年 and 令和元年. Year arithmetic, paging, and `from` / `to` treat them as two years.
+With a calendar system from `createCalendarSystem` (see [Calendar System Adapter](../../i18n.md#calendar-system-adapter)), years follow that calendar. In the Japanese calendar 2019 is split: Heisei 31 runs from January 1 to April 30 and Reiwa 1 starts on May 1, so the page shows two cells for it, keyed `'2019-01-01'` and `'2019-05-01'` and labeled 平成31年 and 令和元年. Year arithmetic, paging, and `min` / `max` treat them as two years.
 
 <!-- example: year-picker/era-change-in-the-japanese-calendar.tsx -->
 ```tsx
@@ -347,7 +335,7 @@ const japaneseCalendar = createCalendarSystem('japanese');
 
 export default function EraChangeInTheJapaneseCalendar() {
   return (
-    <YearPicker aria-label='Year' calendar={japaneseCalendar} locale='ja-JP' year='2018-01-01' style={{ width: '100%' }}>
+    <YearPicker aria-label='Year' calendar={japaneseCalendar} locale='ja-JP' defaultFocusedDate='2018-01-01' style={{ width: '100%' }}>
       <YearPickerLayout>
         <YearPickerCell />
       </YearPickerLayout>
@@ -359,7 +347,7 @@ export default function EraChangeInTheJapaneseCalendar() {
 
 ### Edge: years counted from another epoch
 
-A calendar that only renumbers Gregorian years can extend `GregorianCalendar` (see [Extending GregorianCalendar](../../i18n.md#extending-gregoriancalendar)). With the Thai Buddhist calendar the cell keyed `'2026-01-01'` is labeled พ.ศ. 2569 in `th-TH`; keys, `from`, and `to` stay Gregorian ISO days.
+A calendar that only renumbers Gregorian years can extend `GregorianCalendar` (see [Extending GregorianCalendar](../../i18n.md#extending-gregoriancalendar)). With the Thai Buddhist calendar the cell keyed `'2026-01-01'` is labeled พ.ศ. 2569 in `th-TH`; keys, `min`, and `max` stay Gregorian ISO days.
 
 <!-- example: year-picker/years-counted-from-another-epoch.tsx -->
 ```tsx
@@ -370,7 +358,7 @@ const buddhistCalendar = createCalendarSystem('buddhist');
 
 export default function YearsCountedFromAnotherEpoch() {
   return (
-    <YearPicker aria-label='Year' calendar={buddhistCalendar} locale='th-TH' year='2026-01-01' to='2026-01-01' style={{ width: '100%' }}>
+    <YearPicker aria-label='Year' calendar={buddhistCalendar} locale='th-TH' defaultFocusedDate='2026-01-01' max='2026-01-01' style={{ width: '100%' }}>
       <YearPickerLayout>
         <YearPickerCell />
       </YearPickerLayout>

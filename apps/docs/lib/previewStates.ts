@@ -11,7 +11,7 @@ const PSEUDOS: [Pseudo, RegExp][] = [
   ['hover', /:hover(?![\w-])/g],
   ['active', /:active(?![\w-])/g],
   ['focus', /:focus-visible|:focus(?![\w-])/g],
-  ['invalid', /\[data-error=(['"])true\1\]/g],
+  ['invalid', /\[(?:aria-invalid|data-invalid)=(['"])true\1\]|:user-invalid(?![\w-])/g],
 ];
 
 const FORCED: Record<PreviewState, Pseudo[]> = {

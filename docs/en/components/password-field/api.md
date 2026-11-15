@@ -11,7 +11,6 @@
 | `defaultShown` | `boolean` | `false` | No | Initial visibility for uncontrolled usage. |
 | `onChangeShown` | `(shown: boolean) => void` | — | No | Called when the visibility is toggled. |
 | `size` | `TextFieldSize` | — | No | Visual size of the text field. Affects padding, font size, and overall height. 'sm': Compact input; 'md': Default; 'lg': Spacious layout |
-| `error` | `boolean` | — | No | Shows the input in an error state. |
 | `ref` | `Ref<HTMLDivElement>` | — | No | Ref forwarded to wrapper element Useful for programmatic control, focus, or integration. |
 
 Also accepts all `<div>` attributes.
@@ -42,7 +41,7 @@ Also accepts all `<input>` attributes.
 | `size` | `IconSize` | — | No | Predefined size token for the icon. Can be overridden by explicit width and height. |
 | `ref` | `Ref<SVGSVGElement>` | — | No | Ref to the SVG element |
 | `strokeWidth` | `number` | — | No | Stroke thickness for SVG lines and shapes (in px or pt). |
-| `children` | `ReactNode` | — | No | Icon content (required). Accepts: icons from `~/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
+| `children` | `ReactNode` | — | No | Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
 
 Also accepts all HTML attributes.
 <!-- AUTO-GENERATED:PART_API:PasswordFieldHiddenIcon:end -->
@@ -55,7 +54,7 @@ Also accepts all HTML attributes.
 | `size` | `IconSize` | — | No | Predefined size token for the icon. Can be overridden by explicit width and height. |
 | `ref` | `Ref<SVGSVGElement>` | — | No | Ref to the SVG element |
 | `strokeWidth` | `number` | — | No | Stroke thickness for SVG lines and shapes (in px or pt). |
-| `children` | `ReactNode` | — | No | Icon content (required). Accepts: icons from `~/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
+| `children` | `ReactNode` | — | No | Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
 
 Also accepts all HTML attributes.
 <!-- AUTO-GENERATED:PART_API:PasswordFieldShownIcon:end -->
@@ -91,3 +90,4 @@ Also accepts all `<button>` attributes.
 - `PasswordFieldInput` switches its `type` based on context.
 - The toggle button flips the visibility and keeps the focus where the browser put it, like a native button; it exposes the visibility with `aria-pressed`.
 - A custom `onClick` on the toggle runs after the toggle, it does not replace it.
+- `PasswordFieldToggleIconButton` runs your `onClick` first: `event.preventDefault()` in it keeps the password shown or hidden as it is.

@@ -1,7 +1,8 @@
 'use client';
-import { FC, ReactNode, useCallback, useEffect, useId, useState } from 'react';
+import { FC, ReactNode } from 'react';
+import { useWidget, widgetEnvironment } from '../internals/widget';
 import { CollapsibleProvider } from './contexts';
-import { useControlledState, useEventCallback } from '@vega-ui/hooks';
+import { collapsibleWidget } from '@vega-ui/widgets/collapsible';
 
 export interface CollapsibleProps {
   /**
@@ -48,52 +49,17 @@ export interface CollapsibleProps {
 
 /** The Collapsible component toggles visibility of its content, supporting controlled state and optional lifecycle callbacks for open and hidden changes */
 export const Collapsible: FC<CollapsibleProps> = ({
-  open: controlledOpen,
+  open,
   defaultOpen = false,
-  onChangeOpen: onControlledChangeOpen,
-  onChangeHidden: _onChangeHidden,
+  onChangeOpen,
+  onChangeHidden,
   contentId,
   children
 }) => {
-  const cId = useId()
-  
-  const [open, onChangeOpen] = useControlledState(controlledOpen, defaultOpen, onControlledChangeOpen)
-  const [hidden, setHidden] = useState(!open)
-  
-  const onOpen = useCallback(() => {
-    onChangeOpen?.(true)
-  }, [onChangeOpen])
+  const handle = useWidget(collapsibleWidget, { open, defaultOpen, onChangeOpen, onChangeHidden, contentId }, widgetEnvironment)
 
-  const onClose = useCallback(() => {
-    onChangeOpen?.(false)
-  }, [onChangeOpen])
-
-  const onChangeHidden = useEventCallback(_onChangeHidden)
-
-  useEffect(() => {
-    onChangeHidden(hidden)
-  }, [hidden, onChangeHidden])
-
-  const onOpenContent = useCallback(() => {
-    setHidden(false)
-    requestAnimationFrame(() => {
-      onOpen()
-    })
-  }, [onOpen])
-
-  const onTransitionEnd = useCallback(() => {
-    if (!open) setHidden(true)
-  }, [open])
-  
   return (
-    <CollapsibleProvider
-      contentId={contentId ?? cId}
-      onTransitionEnd={onTransitionEnd}
-      hidden={hidden}
-      opened={open}
-      open={onOpenContent}
-      close={onClose}
-    >
+    <CollapsibleProvider handle={handle}>
       {children}
     </CollapsibleProvider>
   )

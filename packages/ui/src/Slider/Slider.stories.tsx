@@ -69,7 +69,7 @@ type Story = StoryObj<typeof meta>;
 const sizes: SliderProps['size'][] = ['sm', 'md', 'lg'];
 const variants: SliderProps['variant'][] = ['primary', 'secondary'];
 const orientations: SliderProps['orientation'][] = ['horizontal', 'vertical'];
-const rows = orientations.flatMap((orientation) => variants.flatMap((variant) => [false, true].map((disabled) => ({ orientation, variant, disabled }))));
+const rows = orientations.flatMap((orientation) => variants.flatMap((variant) => [false, true].flatMap((disabled) => [false, true].map((invalid) => ({ orientation, variant, disabled, invalid })))));
 
 export const Playground: Story = {};
 
@@ -77,20 +77,20 @@ export const Matrix: Story = {
   render: () => (
     <div style={{ display: 'grid', gridTemplateColumns: `repeat(${sizes.length}, auto)`, gap: 32, alignItems: 'center', justifyItems: 'center' }}>
       {rows.map((row) => sizes.map((size) => {
-        const name = `${row.orientation} / ${row.variant}${row.disabled ? ' / disabled' : ''} / ${size}`;
+        const name = `${row.orientation} / ${row.variant}${row.disabled ? ' / disabled' : ''}${row.invalid ? ' / invalid' : ''} / ${size}`;
         const style = row.orientation === 'vertical' ? { height: 160 } : { width: 200 };
 
         return (
-          <Slider key={name} {...row} size={size} defaultValue={[30, 70]} style={style}>
+          <Slider key={name} orientation={row.orientation} variant={row.variant} disabled={row.disabled} size={size} defaultValue={[30, 70]} style={style}>
             <SliderTrack>
               <SliderRange />
             </SliderTrack>
             <SliderThumb index={0}>
-              <SliderThumbInput aria-label={`${name} from`} />
+              <SliderThumbInput aria-label={`${name} from`} aria-invalid={row.invalid} />
               <SliderThumbIndicator />
             </SliderThumb>
             <SliderThumb index={1}>
-              <SliderThumbInput aria-label={`${name} to`} />
+              <SliderThumbInput aria-label={`${name} to`} aria-invalid={row.invalid} />
               <SliderThumbIndicator />
             </SliderThumb>
           </Slider>

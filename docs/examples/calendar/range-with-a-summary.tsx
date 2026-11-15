@@ -4,20 +4,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   Text,
 } from '@vega-ui/react';
 import { useState } from 'react';
@@ -47,10 +53,10 @@ export default function RangeWithASummary({ locale = 'en-US' }: { locale?: strin
       <Calendar locale={locale} selection='range' value={[start, end]} onChangeValue={setRange}>
         <CalendarHeader>
           <CalendarPrevButton aria-label='Previous' />
-          <CalendarViewButtonGroup>
+          <CalendarHeading>
             <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
             <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-          </CalendarViewButtonGroup>
+          </CalendarHeading>
           <CalendarNextButton aria-label='Next' />
         </CalendarHeader>
         <CalendarContent>
@@ -58,15 +64,27 @@ export default function RangeWithASummary({ locale = 'en-US' }: { locale?: strin
             <CalendarWeekdays>
               <CalendarWeekday />
             </CalendarWeekdays>
-            <CalendarWeeks>
-              <CalendarDay />
-            </CalendarWeeks>
+            <CalendarDaysScroller>
+              <CalendarDaysScrollerContent>
+                <CalendarWeeks>
+                  <CalendarDay />
+                </CalendarWeeks>
+              </CalendarDaysScrollerContent>
+            </CalendarDaysScroller>
           </CalendarDays>
           <CalendarMonths>
-            <CalendarMonth />
+            <CalendarMonthsGrid>
+              <CalendarMonth />
+            </CalendarMonthsGrid>
           </CalendarMonths>
           <CalendarYears>
-            <CalendarYear />
+            <CalendarYearsScroller>
+              <CalendarYearsScrollerContent>
+                <CalendarYearsGrid>
+                  <CalendarYear />
+                </CalendarYearsGrid>
+              </CalendarYearsScrollerContent>
+            </CalendarYearsScroller>
           </CalendarYears>
         </CalendarContent>
       </Calendar>

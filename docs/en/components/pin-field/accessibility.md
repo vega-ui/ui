@@ -31,6 +31,7 @@
 
 - Put `name`, `required`, and other form props on `PinFieldInput`.
 - Keep slot count aligned with `maxLength`.
+- The field never sets `aria-invalid`. Set it on `PinFieldInput` together with your error message, for example a wrong code; a native constraint such as `required` or `minLength` marks the slots through `:user-invalid` or `[data-user-edited]:invalid`.
 
 ## Accessibility Risks
 

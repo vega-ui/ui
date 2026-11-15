@@ -12,7 +12,7 @@
 | `min` | `number` | `0` | No | Minimum value of the progress range. Default is 0. |
 | `value` | `number` | — | No | Current value representing the progress completion. |
 | `valueText` | `string` | — | No | Visually hidden accessible label for screen readers, describing the current value (e.g., "60% complete"). |
-| `indeterminate` | `boolean` | — | No | — |
+| `indeterminate` | `boolean` | — | No | Shows a looping animation instead of the fill, for work whose amount is not known yet. The value is not announced while it is on. |
 | `fullWidth` | `boolean` | — | No | Whether the progress bar should stretch to fill the container width. |
 
 Also accepts all `<div>` attributes.

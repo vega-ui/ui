@@ -330,7 +330,7 @@ export default function OverloadedQuotaBreakdown() {
           Admins {admins} · Members {members} · Guests {guests}
         </Text>
         {overloaded && (
-          <HelperText id={errorId} error>
+          <HelperText id={errorId} invalid>
             {overBy} {overBy === 1 ? 'seat is' : 'seats are'} over the plan. Remove guests or upgrade before the next invoice.
           </HelperText>
         )}

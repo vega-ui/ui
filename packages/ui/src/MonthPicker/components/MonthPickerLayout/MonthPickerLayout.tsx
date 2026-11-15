@@ -32,7 +32,7 @@ export interface MonthPickerLayoutProps extends MonthPickerRowGroupProps {
 }
 
 /**
- * MonthPickerLayout renders all months of the MonthPicker's year in its
+ * MonthPickerLayout renders all months of the year of the focused month in its
  * calendar system, with locale-aware month names.
  */
 export const MonthPickerLayout: FC<MonthPickerLayoutProps> = ({
@@ -44,20 +44,24 @@ export const MonthPickerLayout: FC<MonthPickerLayoutProps> = ({
 }) => {
   const { year, calendar, locale: contextLocale } = useMonthPickerContext()
   const locale = _locale ?? contextLocale
-  const formatMonth = useMemo(() => createCalendarDateFormatter(calendar, locale, { month: format }), [locale, format, calendar])
-  
+
+  const grid = useMemo(() => {
+    if (year === undefined) return []
+
+    const formatMonth = createCalendarDateFormatter(calendar, locale, { month: format })
+
+    return createMonthPickerGrid({ year, calendar, cols }).map(({ row, data }) => ({
+      row,
+      data: data.map(({ col, month }) => ({ col, date: month, fields: calendar.toFields(month), label: formatMonth(month) })),
+    }))
+  }, [year, calendar, locale, format, cols])
+
   return (
     <MonthPickerRowGroup {...props}>
-      {createMonthPickerGrid({ year, calendar, cols }).map(({ row, data }) => (
+      {grid.map(({ row, data }) => (
         <MonthPickerRow row={row} key={row}>
-          {data.map(({ col, month }) => (
-            <MonthPickerCellProvider
-              key={month}
-              col={col}
-              date={month}
-              fields={calendar.toFields(month)}
-              label={formatMonth(month)}
-            >
+          {data.map((cell) => (
+            <MonthPickerCellProvider key={cell.date} {...cell}>
               {children}
             </MonthPickerCellProvider>
           ))}

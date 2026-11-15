@@ -36,7 +36,7 @@ export interface ComponentFactsData {
   year: string | null
   browsers: Record<string, string | null>
   features: Feature[]
-  size: { gzip: number, brotli: number, js: Size, css: Size }
+  size: { gzip: number, brotli: number, js: Size, css: Size, runtime: number | null }
   tests: number
   added: Release | null
   changed: Release | null
@@ -121,6 +121,7 @@ export const ComponentFacts = ({ facts }: { facts: ComponentFactsData }) => {
                     css: format.format(facts.size.css.gzip),
                     brotli: format.format(facts.size.brotli),
                   })}
+                  {facts.size.runtime !== null && ` ${fill(t.facts.runtimeHint, { runtime: format.format(facts.size.runtime) })}`}
                 </Text>
               </PopoverContent>
             </Popover>

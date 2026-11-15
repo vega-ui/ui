@@ -24,6 +24,7 @@
 - `size` maps to different spacing tokens.
 - `variant` changes the checked-state color family.
 - Disabled state changes background and checked treatment together.
+- `aria-invalid='true'` on the `Radio` input or its `:user-invalid`, for example a `required` group with nothing checked after a submit attempt, switches the border to `--color-error`. The component never sets `aria-invalid` itself.
 
 ## Examples
 

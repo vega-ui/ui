@@ -57,15 +57,15 @@ export default function ReportPeriod() {
           aria-describedby={hintId}
           locale='en-US'
           selection='range'
-          year='2026-01-01'
-          selected={period}
-          onSelectCell={change}
+          defaultFocusedDate='2026-01-01'
+          value={period}
+          onChangeValue={change}
         >
           <MonthPickerLayout cols={4} format='short'>
             <MonthPickerCell />
           </MonthPickerLayout>
         </MonthPicker>
-        <HelperText id={hintId} error={missing}>
+        <HelperText id={hintId} invalid={missing}>
           {missing ? 'Pick the first and the last month of the period.' : 'Pick the first and the last month.'}
         </HelperText>
       </Fieldset>

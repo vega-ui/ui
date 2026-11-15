@@ -4,8 +4,8 @@ export type TimeSegmentType = 'H' | 'M' | 'S'
 
 export type TemplateSegmentType = DateSegmentType | TimeSegmentType
 
-export interface TemplateSegment<T extends TemplateSegmentType = TemplateSegmentType> {
-  type: T
+export interface TemplateSegment<SegmentType extends TemplateSegmentType = TemplateSegmentType> {
+  type: SegmentType
   start: number
   end: number
 }

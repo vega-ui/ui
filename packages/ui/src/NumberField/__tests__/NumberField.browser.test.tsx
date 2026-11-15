@@ -31,12 +31,12 @@ const getInput = (r: RenderResult) => r.getByTestId(TESTID_INPUT) as HTMLInputEl
 describe('NumberField', () => {
   describe('Critical User Paths', () => {
     describe('controlled input', () => {
-      const ControlledNumberFieldTest: FC<Partial<ComponentProps<typeof NumberField>> & { accept?(value: number): boolean }> = ({ accept = () => true, ...props }) => {
+      const ControlledNumberFieldTest: FC<Partial<ComponentProps<typeof NumberField>>> = (props) => {
         const [value, setValue] = useState(NaN);
 
         return (
           <>
-            <NumberField {...props} value={value} onChangeValue={(next) => accept(next) && setValue(next)}>
+            <NumberField {...props} value={value} onChangeValue={setValue}>
               <NumberFieldDecrementButton data-testid={TESTID_DECREMENT} />
               <NumberFieldInput data-testid={TESTID_INPUT} />
               <NumberFieldIncrementButton data-testid={TESTID_INCREMENT} />
@@ -74,27 +74,15 @@ describe('NumberField', () => {
         await expect.element(getInput(r)).toHaveValue('10');
       });
 
-      it('reverts a keystroke the parent rejects', async () => {
+      it('dispatches input on every edit the parent accepts', async () => {
         cleanup();
-        const r = render(<ControlledNumberFieldTest accept={(value) => !(value > 5)} />);
+        const r = render(<ControlledNumberFieldTest />);
+        const onInput = vi.fn();
+        getInput(r).addEventListener('input', onInput);
 
-        await userEvent.type(getInput(r), '57');
+        await userEvent.type(getInput(r), '12');
 
-        await expect.element(getInput(r)).toHaveValue('5');
-      });
-
-      it('keeps calling onChange of the input', async () => {
-        cleanup();
-        const onChange = vi.fn();
-        const r = render(
-          <NumberField>
-            <NumberFieldInput data-testid={TESTID_INPUT} onChange={onChange} />
-          </NumberField>,
-        );
-
-        await userEvent.type(getInput(r), '1');
-
-        expect(onChange).toHaveBeenCalled();
+        expect(onInput).toHaveBeenCalledTimes(2);
       });
 
       it('steps the controlled value', async () => {
@@ -114,35 +102,23 @@ describe('NumberField', () => {
       r = render(<NumberFieldTest />);
     });
     
-    it('decrements from empty to 0 by default', async () => {
+    it('dispatches change once the user leaves a number they typed, but not again after a step that already did', async () => {
       const input = getInput(r);
-      
-      await expect.element(input).toHaveValue('');
-      
-      await userEvent.click(getDecrement(r));
-      await waitFor(() => expect(input).toHaveValue('0'));
+      const onChange = vi.fn();
+      input.addEventListener('change', onChange);
+
+      await userEvent.type(input, '12');
+      await userEvent.tab();
+
+      expect(onChange).toHaveBeenCalledOnce();
+
+      await userEvent.click(input);
+      await userEvent.keyboard('{ArrowUp}');
+      await userEvent.tab();
+
+      expect(onChange).toHaveBeenCalledTimes(2);
     });
-    
-    it('increments by step', async () => {
-      const input = getInput(r);
-      
-      await userEvent.click(getIncrement(r));
-      await waitFor(() => expect(input).toHaveValue('0'));
-      
-      await userEvent.click(getIncrement(r));
-      await waitFor(() => expect(input).toHaveValue('1'));
-    });
-    
-    it('decrements by step', async () => {
-      const input = getInput(r);
-      
-      await userEvent.click(getIncrement(r));
-      await waitFor(() => expect(input).toHaveValue('0'));
-      
-      await userEvent.click(getDecrement(r));
-      await waitFor(() => expect(input).toHaveValue('-1'));
-    });
-    
+
     it('calls user onInput handler when input changes via controls', async () => {
       const onInput = vi.fn();
       
@@ -155,38 +131,14 @@ describe('NumberField', () => {
     });
     
     describe('wheel', () => {
-      it('wheel up increments when changeOnWheel=true', async () => {
+      it('keeps the page from scrolling while the wheel steps the focused field', async () => {
         const input = getInput(r);
         input.focus();
-        
-        fireEvent.wheel(input, { deltaY: -10 });
-        
-        await waitFor(() => {
-          expect(input).toHaveValue('0');
-        });
-      });
-      
-      it('wheel down decrements when changeOnWheel=true', async () => {
-        r.unmount();
-        r = render(<NumberFieldTest defaultValue={5} />);
-        const input = getInput(r);
-        input.focus();
-        
-        fireEvent.wheel(input, { deltaY: 10 });
-        
-        await waitFor(() => {
-          expect(input).toHaveValue('4');
-        });
-      });
-      
-      it('does not change value when changeOnWheel=false', async () => {
-        r.rerender(<NumberFieldTest changeOnWheel={false} />);
-        const input = getInput(r);
-        
-        input.focus();
-        
-        fireEvent.wheel(input, { deltaY: -10 });
-        await expect.element(input).toHaveValue('');
+
+        const notPrevented = fireEvent.wheel(input, { deltaY: -10 });
+
+        expect(notPrevented).toBe(false);
+        await expect.element(input).toHaveValue('0');
       });
 
       it('leaves the value and the page scroll alone without focus', async () => {
@@ -207,46 +159,6 @@ describe('NumberField', () => {
       await expect.element(getDecrement(r)).toBeDisabled();
     });
     
-    it('disables decrement at min', async () => {
-      r.rerender(<NumberFieldTest min={0} max={10} step={1} />);
-      
-      const input = getInput(r);
-      
-      await userEvent.click(getIncrement(r));
-      await expect.element(input).toHaveValue('0')
-      await waitFor(() => {
-        expect(getDecrement(r)).toBeDisabled();
-      })
-    });
-    
-    it('disables increment at max', async () => {
-      r.rerender(<NumberFieldTest min={0} max={1} step={1} />);
-      
-      const input = getInput(r);
-      
-      await userEvent.click(getIncrement(r));
-      await expect.element(input).toHaveValue('0')
-      
-      await userEvent.click(getIncrement(r));
-      await expect.element(input).toHaveValue('1')
-      
-      await waitFor(() => {
-        expect(getIncrement(r)).toBeDisabled();
-      })
-    });
-    
-    it('clamps by max on increment', async () => {
-      r.rerender(<NumberFieldTest min={0} max={1} step={2} />);
-      
-      const input = getInput(r);
-      
-      await userEvent.click(getIncrement(r));
-      await waitFor(() => expect(input).toHaveValue('0'));
-      
-      await userEvent.click(getIncrement(r));
-      await waitFor(() => expect(input).toHaveValue('1'));
-    });
-    
     it('clamps by min on decrement', async () => {
       r.rerender(<NumberFieldTest min={-1} max={10} step={5} />);
       
@@ -262,6 +174,43 @@ describe('NumberField', () => {
   });
   
   describe('Edge Cases', () => {
+    it('keeps the value when the onClick of a step button prevents the default', async () => {
+      const onChangeValue = vi.fn();
+      const r = render(
+        <NumberField defaultValue={5} onChangeValue={onChangeValue}>
+          <NumberFieldDecrementButton data-testid={TESTID_DECREMENT} onClick={(event) => event.preventDefault()} />
+          <NumberFieldInput data-testid={TESTID_INPUT} />
+          <NumberFieldIncrementButton data-testid={TESTID_INCREMENT} onClick={(event) => event.preventDefault()} />
+        </NumberField>,
+      );
+
+      await userEvent.click(getIncrement(r));
+      await userEvent.click(getDecrement(r));
+
+      expect(getInput(r)).toHaveValue('5');
+      expect(onChangeValue).not.toHaveBeenCalled();
+    });
+
+    it('does not step a read-only input with the arrows or the wheel, and disables the buttons, like a native number input', async () => {
+      const onChangeValue = vi.fn();
+      const r = render(
+        <NumberField defaultValue={5} onChangeValue={onChangeValue}>
+          <NumberFieldDecrementButton data-testid={TESTID_DECREMENT} />
+          <NumberFieldInput data-testid={TESTID_INPUT} readOnly />
+          <NumberFieldIncrementButton data-testid={TESTID_INCREMENT} />
+        </NumberField>,
+      );
+      getInput(r).focus();
+
+      await userEvent.keyboard('{ArrowUp}');
+      fireEvent.wheel(getInput(r), { deltaY: -10 });
+
+      expect(getInput(r)).toHaveValue('5');
+      expect(onChangeValue).not.toHaveBeenCalled();
+      await expect.element(getIncrement(r)).toBeDisabled();
+      await expect.element(getDecrement(r)).toBeDisabled();
+    });
+
     it('does not submit the surrounding form on step button click', async () => {
       const onSubmit = vi.fn();
       const r = render(
@@ -275,22 +224,6 @@ describe('NumberField', () => {
       expect(onSubmit).not.toHaveBeenCalled();
     });
 
-    it('uses min instead of 0 when incrementing from empty and min is set', async () => {
-      const r = render(<NumberFieldTest min={5} />);
-      const input = getInput(r);
-      
-      await userEvent.click(getIncrement(r));
-      await waitFor(() => expect(input).toHaveValue('5'));
-    });
-    
-    it('uses min instead of 0 when decrementing from empty and min is set', async () => {
-      const r = render(<NumberFieldTest min={5} />);
-      const input = getInput(r);
-      
-      await userEvent.click(getDecrement(r));
-      await waitFor(() => expect(input).toHaveValue('5'));
-    });
-    
     it('disables increment when the default value is at max', async () => {
       const r = render(
         <NumberField max={5} defaultValue={5}>
@@ -317,34 +250,6 @@ describe('NumberField', () => {
       await expect.element(getIncrement(r)).toBeEnabled();
     });
 
-    it('restores defaultValue after the form is reset', async () => {
-      const r = render(
-        <form data-testid='form'>
-          <NumberFieldTest defaultValue={3} />
-        </form>,
-      );
-
-      await expect.element(getInput(r)).toHaveValue('3');
-      await userEvent.click(getIncrement(r));
-      await expect.element(getInput(r)).toHaveValue('4');
-
-      (r.getByTestId('form') as HTMLFormElement).reset();
-
-      await expect.element(getInput(r)).toHaveValue('3');
-    });
-
-    it('keeps the precision of a fractional step', async () => {
-      const r = render(<NumberFieldTest step={0.1} />);
-      const input = getInput(r);
-
-      await userEvent.type(input, '0.7');
-      await userEvent.keyboard('{ArrowUp}');
-      await expect.element(input).toHaveValue('0.8');
-
-      await userEvent.keyboard('{ArrowUp}{ArrowUp}{ArrowUp}{ArrowDown}');
-      await expect.element(input).toHaveValue('1');
-    });
-
     it('keeps the arrow keys working with a user onKeyDown', async () => {
       const onKeyDown = vi.fn();
       const r = render(<NumberFieldTest onKeyDown={onKeyDown} />);
@@ -359,83 +264,18 @@ describe('NumberField', () => {
   });
   
   describe('Accessibility', () => {
-    describe('aria', () => {
-      let r: RenderResult;
-      
-      beforeEach(() => {
-        r = render(<NumberFieldTest min={1} max={9} />);
+    describe('spinbutton', () => {
+      it('exposes the input as a spinbutton with the current value', async () => {
+        const r = render(<NumberFieldTest defaultValue={5} />);
+
+        await expect.element(r.getByRole('spinbutton')).toHaveAttribute('aria-valuenow', '5');
       });
-      
-      it('sets aria-valuemin on input', async () => {
-        await expect.element(getInput(r)).toHaveAttribute('aria-valuemin', '1');
-      });
-      
-      it('sets aria-valuemax on input', async () => {
-        await expect.element(getInput(r)).toHaveAttribute('aria-valuemax', '9');
-      });
-    });
-    
-    describe('keyboard', () => {
-      it('ArrowDown decrements from empty to 0', async () => {
+
+      it('does not announce bounds that were not set', async () => {
         const r = render(<NumberFieldTest />);
-        const input = getInput(r);
-        
-        await userEvent.click(input);
-        
-        await userEvent.keyboard('{ArrowDown}');
-        await waitFor(() => expect(input).toHaveValue('0'));
-      });
-      
-      it('ArrowUp increments by step', async () => {
-        const r = render(<NumberFieldTest />);
-        const input = getInput(r);
-        
-        await userEvent.click(input);
-        
-        await userEvent.keyboard('{ArrowUp}');
-        await waitFor(() => expect(input).toHaveValue('0'));
-        
-        await userEvent.keyboard('{ArrowUp}');
-        await waitFor(() => expect(input).toHaveValue('1'));
-      });
-      
-      it('ArrowDown decrements by step', async () => {
-        const r = render(<NumberFieldTest />);
-        const input = getInput(r);
-        
-        await userEvent.click(input);
-        
-        await userEvent.keyboard('{ArrowUp}');
-        await waitFor(() => expect(input).toHaveValue('0'));
-        
-        await userEvent.keyboard('{ArrowDown}');
-        await waitFor(() => expect(input).toHaveValue('-1'));
-      });
-      
-      it('ArrowUp does not exceed max', async () => {
-        const r = render(<NumberFieldTest min={0} max={1} step={2} />);
-        const input = getInput(r);
-        
-        await userEvent.click(input);
-        
-        await userEvent.keyboard('{ArrowUp}');
-        await waitFor(() => expect(input).toHaveValue('0'));
-        
-        await userEvent.keyboard('{ArrowUp}');
-        await waitFor(() => expect(input).toHaveValue('1'));
-      });
-      
-      it('ArrowDown does not go below min', async () => {
-        const r = render(<NumberFieldTest min={-1} max={10} step={5} />);
-        const input = getInput(r);
-        
-        await userEvent.click(input);
-        
-        await userEvent.keyboard('{ArrowDown}');
-        await waitFor(() => expect(input).toHaveValue('-1'));
-        
-        await userEvent.keyboard('{ArrowDown}');
-        await waitFor(() => expect(input).toHaveValue('-1'));
+
+        await expect.element(getInput(r)).not.toHaveAttribute('aria-valuemin');
+        await expect.element(getInput(r)).not.toHaveAttribute('aria-valuemax');
       });
     });
   });

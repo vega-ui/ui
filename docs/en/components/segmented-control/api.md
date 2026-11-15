@@ -62,6 +62,7 @@ Also accepts all `<input>` attributes.
 ## State Model
 
 - `SegmentedControl` can be uncontrolled through `defaultValue` or controlled through `value` and `onChange`.
+- `onChange` of `SegmentedControlItemInput` runs before `onChange` of the root, like a native `change` event bubbling from the radio to the group; `event.stopPropagation()` in it keeps the root's `onChange` from running.
 - In uncontrolled mode the native radio group owns the selection: clicks, keyboard, form reset and programmatic `checked` changes all apply without React state.
 - `SegmentedControlIndicator` is anchored to the checked segment in CSS, so it follows any of those changes.
 - `useSegmentedControlContext` is available for advanced wrappers and custom compositions.

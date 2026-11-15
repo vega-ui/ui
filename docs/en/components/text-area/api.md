@@ -9,7 +9,6 @@
 | `placeholder` | `string` | — | No | Placeholder text shown when the textarea is empty. |
 | `value` | `string \| number` | — | No | The current value of the textarea. Can be a string or number. |
 | `size` | `TextAreaSize` | `'md'` | No | Visual size of the textarea. Controls padding, font size, and height presets. |
-| `error` | `boolean` | — | No | Displays the textarea in an error state. |
 | `fullWidth` | `boolean` | — | No | Makes the textarea expand to fill the full width of its container. |
 | `ref` | `Ref<HTMLTextAreaElement>` | — | No | Ref forwarded to the native `<textarea>` element. Useful for focus control, measurement, or integrations. |
 
@@ -28,4 +27,4 @@ Also accepts all `<textarea>` attributes.
 ## State Model
 
 - Controlled and uncontrolled behavior follow native `<textarea>` rules.
-- Error state is visual and does not replace validation semantics.
+- The error look follows `aria-invalid='true'` or `:user-invalid` and does not replace an error message.

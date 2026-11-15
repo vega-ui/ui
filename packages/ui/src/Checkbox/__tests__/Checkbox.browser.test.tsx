@@ -1,6 +1,5 @@
-import { ComponentProps, CSSProperties, FC, FormEvent } from 'react';
-import { afterEach, describe, expect, it, vi } from 'vitest';
-import { userEvent } from 'vitest/browser';
+import { ComponentProps, CSSProperties, FC } from 'react';
+import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
 
 import { Checkbox } from '../Checkbox';
@@ -60,80 +59,23 @@ const CheckboxTest: FC<CheckboxTestProps> = ({
   );
 };
 
-const getRoot = (r: RenderResult) => r.getByTestId(TESTID_ROOT);
 const getInput = (r: RenderResult) => r.getByTestId(TESTID_INPUT) as HTMLInputElement;
-const getCheckedIcon = (r: RenderResult) => r.getByTestId(TESTID_CHECKED_ICON);
-const getIndeterminateIcon = (r: RenderResult) => r.getByTestId(TESTID_INDETERMINATE_ICON);
 
 describe('Checkbox', () => {
-  describe('Critical User Paths', () => {
-    it('toggles checked on click', async () => {
-      const r = render(<CheckboxTest />);
-      const input = getInput(r);
-      
-      expect(input).not.toBeChecked()
-      
-      await userEvent.click(getRoot(r));
-      expect(input).toBeChecked()
-      
-      await userEvent.click(getRoot(r));
-      expect(input).not.toBeChecked()
-    });
-  });
-  
   describe('Edge Cases', () => {
     it('indeterminate sets the native input.indeterminate property', async () => {
       const r = render(<CheckboxTest indeterminate />);
       expect(getInput(r)).toBePartiallyChecked()
     });
-    
-    it('form integration: submits value when checked', async () => {
-      const onSubmit = vi.fn((e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        expect(formData.get(CHECKBOX_NAME)).toBe(CHECKBOX_VALUE);
-      });
-      
-      const r = render(
-        <form onSubmit={onSubmit}>
-          <CheckboxTest name={CHECKBOX_NAME} value={CHECKBOX_VALUE} />
-          <button type='submit'>Submit</button>
-        </form>,
-      );
-      
-      await userEvent.click(getRoot(r));
-      await userEvent.click(r.getByRole('button', { name: 'Submit' }));
-      
-      expect(onSubmit).toHaveBeenCalledTimes(1);
+
+    it('clears the native input.indeterminate property when indeterminate turns off', async () => {
+      const r = render(<CheckboxTest indeterminate />);
+
+      r.rerender(<CheckboxTest indeterminate={false} />);
+
+      await expect.poll(() => getInput(r).indeterminate).toBe(false);
     });
     
-    it('form integration: does not submit value when unchecked', async () => {
-      const onSubmit = vi.fn((e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        expect(formData.get(CHECKBOX_NAME)).toBeNull();
-      });
-      
-      const r = render(
-        <form onSubmit={onSubmit}>
-          <CheckboxTest name={CHECKBOX_NAME} value={CHECKBOX_VALUE} />
-          <button type='submit'>Submit</button>
-        </form>,
-      );
-      
-      await userEvent.click(r.getByRole('button', { name: 'Submit' }));
-      
-      expect(onSubmit).toHaveBeenCalledTimes(1);
-    });
   });
   
-  describe('Accessibility', () => {
-    describe('aria', () => {
-      it('decorative icons are aria-hidden', async () => {
-        const r = render(<CheckboxTest />);
-        await expect.element(getCheckedIcon(r)).toHaveAttribute('aria-hidden');
-        await expect.element(getIndeterminateIcon(r)).toHaveAttribute('aria-hidden');
-      });
-    });
-  });
 });

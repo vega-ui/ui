@@ -2,13 +2,13 @@
 
 ## Обзор
 
-`YearPicker` оборачивает `DataGridPicker` для значений-лет и может рендерить либо статичные сетки лет, либо постраничные диапазоны лет на основе скроллера.
+`YearPicker` оборачивает `Grid` для значений-лет и может рендерить либо статичные сетки лет, либо постраничные диапазоны лет на основе скроллера.
 
 ## Обязательные части
 
 ### `YearPicker`
 
-Обязательная. Отвечает за поведение выбора года и контекст видимого года.
+Обязательная. Отвечает за поведение выбора года и год в фокусе, который определяет видимую страницу.
 
 ## Необязательные части
 
@@ -36,7 +36,7 @@
 
 ## Корректные паттерны композиции
 
-Композиция со скроллером: `YearPickerScroller` › `YearPickerScrollerContent` › `YearPickerScrollerLayout` › шаблон ячейки внутри `YearPicker`. Храните `year` в состоянии и обновляйте его из `onChangePeriod`, чтобы корень всегда знал видимую страницу.
+Композиция со скроллером: `YearPickerScroller` › `YearPickerScrollerContent` › `YearPickerScrollerLayout` › шаблон ячейки внутри `YearPicker`. Страницы начинаются с первого года в фокусе, а прокрутка на другую страницу переносит туда фокус, поэтому корень всегда знает видимую страницу. `onChangePeriod` нужен только для подписи страницы.
 
 <!-- example: year-picker/valid-composition-patterns.tsx -->
 ```tsx
@@ -53,8 +53,8 @@ export default function ValidCompositionPatterns() {
   const [year, setYear] = useState('2026-01-01');
 
   return (
-    <YearPicker aria-label='Year' locale='en-US' year={year}>
-      <YearPickerScroller onChangePeriod={setYear}>
+    <YearPicker aria-label='Year' locale='en-US' focusedDate={year} onChangeFocusedDate={setYear}>
+      <YearPickerScroller>
         <YearPickerScrollerContent>
           <YearPickerScrollerLayout>
             <YearPickerCell />
@@ -69,7 +69,7 @@ export default function ValidCompositionPatterns() {
 
 ## Некорректные паттерны композиции
 
-### `period` скроллера отличается от размера страницы раскладки
+### `period` отличается от размера страницы раскладки
 
 Пользователь видит один период, а логика перелистывания считает, что находится на другом.
 

@@ -1,8 +1,10 @@
 'use client';
-import { FC, ReactNode, useEffect, useId, useState } from 'react';
-import { autoUpdate, flip, offset, Placement, shift, useFloating } from '@floating-ui/react';
-import { useControlledState } from '@vega-ui/hooks';
+import { FC, ReactNode, useId, useState } from 'react';
+import { createInput } from '@vega-ui/core';
+import { useWidget, widgetEnvironment } from '../internals/widget';
 import { PopoverProvider } from './contexts';
+import { CLOSE_POPOVER, popoverWidget } from '@vega-ui/widgets/popover';
+import { anchorNameOf, Placement } from '../internals/anchor';
 
 export interface PopoverProps {
   /**
@@ -12,8 +14,8 @@ export interface PopoverProps {
   children?: ReactNode
 
   /**
-   * Preferred placement of the popover relative to its trigger.
-   * Follows the Floating UI `Placement` type (e.g., 'top', 'bottom-start').
+   * Preferred placement of the popover relative to its trigger (e.g., 'top', 'bottom-start').
+   * The popover moves to the opposite side when there is no room.
    */
   placement?: Placement
 
@@ -53,38 +55,22 @@ export const Popover: FC<PopoverProps> = ({
   onChangeOpen,
   children,
 }) => {
-  const [open, setOpen] = useControlledState(controlledOpen, defaultOpen, onChangeOpen);
+  const handle = useWidget(popoverWidget, { role, open: controlledOpen, defaultOpen, onChangeOpen }, widgetEnvironment)
   const id = useId();
-
-  const [trigger, setTrigger] = useState<Element | null>(null);
   const [anchor, setAnchor] = useState<Element | null>(null);
-
-  const { refs, elements, floatingStyles, placement: finalPlacement, update } = useFloating({
-    strategy: 'fixed',
-    transform: false,
-    elements: { reference: anchor ?? trigger },
-    middleware: [offset(10), flip(), shift()],
-    placement,
-    open,
-  });
-
-  useEffect(() => {
-    if (!open || !elements.reference || !elements.floating) return
-
-    return autoUpdate(elements.reference, elements.floating, update)
-  }, [open, elements.reference, elements.floating, update])
+  const [content, setContent] = useState<HTMLElement | null>(null);
 
   return (
     <PopoverProvider
-      open={open}
+      handle={handle}
       role={role}
-      changeOpen={setOpen}
-      contentId={elements.floating?.id || id}
-      placement={finalPlacement}
-      setReference={setTrigger}
+      close={() => void handle.send(createInput(CLOSE_POPOVER))}
+      contentId={content?.id || id}
+      placement={placement}
+      anchorName={anchorNameOf(id)}
+      anchored={anchor !== null}
       setAnchor={setAnchor}
-      setFloating={refs.setFloating}
-      contentStyles={floatingStyles}
+      setContent={setContent}
     >
       {children}
     </PopoverProvider>

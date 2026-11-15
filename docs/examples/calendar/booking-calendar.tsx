@@ -4,20 +4,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   HelperText,
 } from '@vega-ui/react';
 import { useId, useState } from 'react';
@@ -59,17 +65,17 @@ export default function BookingCalendar() {
           selection='range'
           min='2026-11-01'
           max='2027-04-30'
-          defaultMonth='2026-11-01'
+          defaultFocusedDate='2026-11-01'
           disabledDates={isBooked}
           value={[start, end]}
           onChangeValue={setRange}
         >
           <CalendarHeader>
             <CalendarPrevButton aria-label='Previous' />
-            <CalendarViewButtonGroup>
+            <CalendarHeading>
               <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
               <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-            </CalendarViewButtonGroup>
+            </CalendarHeading>
             <CalendarNextButton aria-label='Next' />
           </CalendarHeader>
           <CalendarContent>
@@ -77,19 +83,31 @@ export default function BookingCalendar() {
               <CalendarWeekdays>
                 <CalendarWeekday />
               </CalendarWeekdays>
-              <CalendarWeeks>
-                <CalendarDay />
-              </CalendarWeeks>
+              <CalendarDaysScroller>
+                <CalendarDaysScrollerContent>
+                  <CalendarWeeks>
+                    <CalendarDay />
+                  </CalendarWeeks>
+                </CalendarDaysScrollerContent>
+              </CalendarDaysScroller>
             </CalendarDays>
             <CalendarMonths>
-              <CalendarMonth />
+              <CalendarMonthsGrid>
+                <CalendarMonth />
+              </CalendarMonthsGrid>
             </CalendarMonths>
             <CalendarYears>
-              <CalendarYear />
+              <CalendarYearsScroller>
+                <CalendarYearsScrollerContent>
+                  <CalendarYearsGrid>
+                    <CalendarYear />
+                  </CalendarYearsGrid>
+                </CalendarYearsScrollerContent>
+              </CalendarYearsScroller>
             </CalendarYears>
           </CalendarContent>
         </Calendar>
-        <HelperText id={messageId} error={invalid} aria-live='polite'>{message}</HelperText>
+        <HelperText id={messageId} invalid={invalid} aria-live='polite'>{message}</HelperText>
       </div>
       <Button disabled={!complete || invalid}>Reserve</Button>
     </div>

@@ -113,7 +113,6 @@ export default function ClearTheCodeAfterAFailedCheck() {
         maxLength={4}
         value={code}
         onChangeValue={onChangeValue}
-        error={failed}
         disabled={unlocked || attemptsLeft === 0}
       >
         <PinFieldInput
@@ -127,7 +126,7 @@ export default function ClearTheCodeAfterAFailedCheck() {
         <PinFieldSlot index={2} />
         <PinFieldSlot index={3} />
       </PinField>
-      <HelperText id={`${id}-status`} error={failed} role='status'>
+      <HelperText id={`${id}-status`} invalid={failed} role='status'>
         {unlocked && 'Unlocked.'}
         {!unlocked && attemptsLeft === 3 && 'Checked as soon as all four digits are in.'}
         {!unlocked && attemptsLeft < 3 && attemptsLeft > 0 && `Wrong passcode. ${attemptsLeft} attempts left.`}
@@ -227,7 +226,7 @@ export default function GroupedCodeWithSeparator() {
 
 ### Error: wrong verification code
 
-The form checks the code on submit: a short or wrong code sets `error` on the field and links the message to the input with `aria-describedby`. Any edit clears the message.
+The form checks the code on submit: a short or wrong code sets `aria-invalid` on the input and links the message to it with `aria-describedby`. Any edit clears the message.
 
 <!-- example: pin-field/wrong-verification-code.tsx -->
 ```tsx
@@ -265,10 +264,11 @@ export default function WrongVerificationCode() {
   return (
     <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', width: '100%', maxWidth: 320 }}>
       <Label htmlFor={id}>Code from the email (135790 passes)</Label>
-      <PinField maxLength={6} value={code} onChangeValue={onChangeValue} error={error !== ''}>
+      <PinField maxLength={6} value={code} onChangeValue={onChangeValue}>
         <PinFieldInput
           id={id}
           autoComplete='one-time-code'
+          aria-invalid={error !== ''}
           aria-describedby={error === '' ? undefined : errorId}
         />
         <PinFieldSlot index={0} />
@@ -278,7 +278,7 @@ export default function WrongVerificationCode() {
         <PinFieldSlot index={4} />
         <PinFieldSlot index={5} />
       </PinField>
-      {error !== '' && <HelperText id={errorId} error>{error}</HelperText>}
+      {error !== '' && <HelperText id={errorId} invalid>{error}</HelperText>}
       <Button type='submit' style={{ alignSelf: 'flex-end', marginBlockStart: 'var(--spacing-9)' }}>Confirm email</Button>
       {verified && (
         <Text size={2} role='status' style={{ color: 'var(--label-secondary)', marginBlockStart: 'var(--spacing-4)' }}>

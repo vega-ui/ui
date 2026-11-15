@@ -1,24 +1,19 @@
 'use client';
 
-import { createContext } from '@vega-ui/react-kit/context';
+import { createContext } from '../../../internals/context';
+import { createHandle, WidgetHandle } from '../../../internals/widget';
 import { OptionSize } from '../../../Option';
-import { createListboxStore, ListboxStore } from '../../../internals/listbox';
+import { ListboxItemData, ListboxShape } from '@vega-ui/widgets/listbox';
+import { listboxWidget } from '@vega-ui/widgets/listbox';
 
-type Value = string | number
+export type ListboxHandle = WidgetHandle<ListboxShape, ListboxItemData>
 
 export interface ListboxContextState {
-  id?: string
+  handle: ListboxHandle
   size?: OptionSize
   disabled?: boolean
-  store: ListboxStore
-  isSelected(value: Value): boolean
-  onSelect(value: Value): void
 }
 
 export const [ListboxProvider, useListboxContext] = createContext<ListboxContextState>('ListboxContext', {
-  store: createListboxStore(),
-  isSelected() {
-    return false
-  },
-  onSelect() {},
+  handle: createHandle(listboxWidget, { items: [], mode: 'single', disabled: false, typeahead: true }, { id: 'listbox' }),
 })

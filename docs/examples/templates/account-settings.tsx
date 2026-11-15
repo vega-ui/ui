@@ -138,7 +138,7 @@ export default function AccountSettings() {
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 220px), 1fr))', gap: 'var(--spacing-8)' }}>
                 <div style={field}>
                   <Label htmlFor={`${id}-name`}>Full name</Label>
-                  <TextField error={errors.name !== undefined}>
+                  <TextField>
                     <TextFieldInput
                       id={`${id}-name`}
                       name='name'
@@ -148,11 +148,11 @@ export default function AccountSettings() {
                       aria-describedby={errors.name ? `${id}-name-error` : undefined}
                     />
                   </TextField>
-                  {errors.name && <HelperText id={`${id}-name-error`} error>{errors.name}</HelperText>}
+                  {errors.name && <HelperText id={`${id}-name-error`} invalid>{errors.name}</HelperText>}
                 </div>
                 <div style={field}>
                   <Label htmlFor={`${id}-email`}>Email</Label>
-                  <TextField error={errors.email !== undefined}>
+                  <TextField>
                     <TextFieldInput
                       id={`${id}-email`}
                       name='email'
@@ -163,7 +163,7 @@ export default function AccountSettings() {
                       aria-describedby={errors.email ? `${id}-email-error` : undefined}
                     />
                   </TextField>
-                  {errors.email && <HelperText id={`${id}-email-error`} error>{errors.email}</HelperText>}
+                  {errors.email && <HelperText id={`${id}-email-error`} invalid>{errors.email}</HelperText>}
                 </div>
               </div>
               <div style={field}>

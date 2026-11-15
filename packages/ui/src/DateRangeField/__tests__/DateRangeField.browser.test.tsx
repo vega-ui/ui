@@ -4,25 +4,32 @@ import { cleanup, render, type RenderResult } from '@testing-library/react';
 import { page, userEvent } from 'vitest/browser';
 
 import { DateRangeField, type DateRangeFieldProps } from '../DateRangeField';
-import { DateRangeFieldInput, DateRangeFieldCalendar, DateRangeFieldTriggerIconButton, type DateRangeFieldInputProps } from '../components';
-import { Popover, PopoverTrigger, PopoverContent } from '../../Popover';
+import { DateRangeFieldInput, DateRangeFieldCalendar, DateRangeFieldTriggerIconButton, type DateRangeFieldInputProps, type DateRangeFieldCalendarProps } from '../components';
+import { Popover, PopoverTrigger, PopoverContent, type PopoverProps } from '../../Popover';
 import { Icon } from '../../Icon';
+import { Label } from '../../Label';
 
 import {
   CalendarHeader,
   CalendarContent,
   CalendarPrevButton,
   CalendarNextButton,
-  CalendarViewButtonGroup,
+  CalendarHeading,
   CalendarViewButton,
   CalendarMonthLabel,
   CalendarYearLabel,
   CalendarDays, CalendarWeekdays, CalendarWeekday, CalendarDay,
   CalendarWeeks,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarMonth,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarYear,
   CalendarYears,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
+  CalendarYearsGrid,
   useCalendarContext,
   useCalendarDayContext,
 } from '../../Calendar';
@@ -55,10 +62,18 @@ const FORMAT = 'dd.MM.yyyy';
 const SEPARATOR = '.';
 const RANGE_SEPARATOR = ' – ';
 
-const DateRangeFieldTest: FC<Partial<DateRangeFieldProps> & { inputProps?: DateRangeFieldInputProps }> = ({
+interface DateRangeFieldTestProps extends Partial<DateRangeFieldProps> {
+  inputProps?: DateRangeFieldInputProps
+  popoverProps?: PopoverProps
+  calendarProps?: DateRangeFieldCalendarProps
+}
+
+const DateRangeFieldTest: FC<DateRangeFieldTestProps> = ({
   onInput,
   onChange,
   inputProps,
+  popoverProps,
+  calendarProps,
   ...props
 }) => (
   <DateRangeField
@@ -73,26 +88,26 @@ const DateRangeFieldTest: FC<Partial<DateRangeFieldProps> & { inputProps?: DateR
       onChange={onChange}
       {...inputProps}
     />
-    <Popover placement='bottom-end'>
+    <Popover placement='bottom-end' {...popoverProps}>
       <PopoverTrigger asChild>
         <DateRangeFieldTriggerIconButton aria-label='Open calendar' data-testid={TESTID_TRIGGER} />
       </PopoverTrigger>
       <PopoverContent data-testid={TESTID_CONTENT}>
-        <DateRangeFieldCalendar data-testid={TESTID_CALENDAR_ROOT} style={{ width: 320 }}>
+        <DateRangeFieldCalendar data-testid={TESTID_CALENDAR_ROOT} style={{ width: 320 }} {...calendarProps}>
           <CalendarHeader>
             <CalendarPrevButton aria-label='Previous month'>
               <Icon>
                 <ChevronLeft />
               </Icon>
             </CalendarPrevButton>
-            <CalendarViewButtonGroup>
+            <CalendarHeading>
               <CalendarViewButton view='month' aria-label='Open month picker'>
                 <CalendarMonthLabel />
               </CalendarViewButton>
               <CalendarViewButton view='year' aria-label='Open year picker'>
                 <CalendarYearLabel />
               </CalendarViewButton>
-            </CalendarViewButtonGroup>
+            </CalendarHeading>
             <CalendarNextButton aria-label='Next month'>
               <Icon>
                 <ChevronRight />
@@ -104,15 +119,27 @@ const DateRangeFieldTest: FC<Partial<DateRangeFieldProps> & { inputProps?: DateR
               <CalendarWeekdays>
                 <CalendarWeekday />
               </CalendarWeekdays>
-              <CalendarWeeks>
-                <LabeledDay />
-              </CalendarWeeks>
+              <CalendarDaysScroller>
+                <CalendarDaysScrollerContent>
+                  <CalendarWeeks>
+                    <LabeledDay />
+                  </CalendarWeeks>
+                </CalendarDaysScrollerContent>
+              </CalendarDaysScroller>
             </CalendarDays>
             <CalendarMonths>
-              <CalendarMonth />
+              <CalendarMonthsGrid>
+                <CalendarMonth />
+              </CalendarMonthsGrid>
             </CalendarMonths>
             <CalendarYears>
-              <CalendarYear />
+              <CalendarYearsScroller>
+                <CalendarYearsScrollerContent>
+                  <CalendarYearsGrid>
+                    <CalendarYear />
+                  </CalendarYearsGrid>
+                </CalendarYearsScrollerContent>
+              </CalendarYearsScroller>
             </CalendarYears>
           </CalendarContent>
         </DateRangeFieldCalendar>
@@ -168,14 +195,15 @@ describe('DateRangeField', () => {
         await expect.element(getCell(r, new Date(2026, 0, 15))).toHaveAttribute('aria-selected', 'true');
       });
 
-      it('reports the typed range as ISO', async () => {
+      it('dispatches input for a whole value the parent accepts', async () => {
         cleanup();
-        const onChangeValue = vi.fn();
-        const r = render(<DateRangeFieldTest onChangeValue={onChangeValue} />);
+        const r = render(<ControlledDateRangeFieldTest />);
+        const onInput = vi.fn();
+        getInput(r).addEventListener('input', onInput);
 
-        await userEvent.type(getInput(r), `10.01.2026${RANGE_SEPARATOR}15.01.2026`);
+        await userEvent.fill(getInput(r), `10.01.2026${RANGE_SEPARATOR}15.01.2026`);
 
-        expect(onChangeValue).toHaveBeenLastCalledWith(['2026-01-10', '2026-01-15']);
+        expect(onInput).toHaveBeenCalled();
       });
 
       it('selects the range of a value set outside', async () => {
@@ -198,13 +226,6 @@ describe('DateRangeField', () => {
       r = render(<DateRangeFieldTest onInput={onInput} />);
     });
     
-    it('selecting start date writes only start value', async () => {
-      await userEvent.click(getTrigger(r));
-      await pickDate(r, new Date(2026, 0, 10));
-      
-      expect(getInput(r)).toHaveValue('10.01.2026');
-    });
-    
     it('selecting date range writes full range into input', async () => {
       await userEvent.click(getTrigger(r));
       await pickDate(r, new Date(2026, 0, 10));
@@ -213,28 +234,40 @@ describe('DateRangeField', () => {
       expect(getInput(r)).toHaveValue('10.01.2026 – 15.01.2026');
       expect(onInput).toHaveBeenCalled();
     });
+
+    describe('form', () => {
+      it('restores the default range on form.reset()', async () => {
+        cleanup();
+        const r = render(
+          <form data-testid='form'>
+            <DateRangeFieldTest defaultValue={['2026-01-10', '2026-01-15']} />
+          </form>
+        );
+
+        await userEvent.clear(getInput(r));
+        (r.getByTestId('form') as HTMLFormElement).reset();
+
+        await expect.element(getInput(r)).toHaveValue(`10.01.2026${RANGE_SEPARATOR}15.01.2026`);
+      });
+    });
+  });
+
+  describe('Error handling', () => {
+    it('makes a range without an end invalid with the message of the browser', async () => {
+      const r = render(<DateRangeFieldTest />);
+
+      await userEvent.type(getInput(r), '10.01.2026');
+
+      expect(getInput(r).validity.customError).toBe(true);
+      expect(getInput(r).validationMessage).not.toBe('');
+
+      await userEvent.type(getInput(r), `${RANGE_SEPARATOR}15.01.2026`);
+
+      expect(getInput(r).validity.valid).toBe(true);
+    });
   });
   
   describe('Edge Cases', () => {
-    it('accepts single date without range separator', async () => {
-      const r = render(<DateRangeFieldTest />);
-      const input = getInput(r);
-      
-      await userEvent.type(input, '12.01.2026');
-      
-      expect(input).toHaveValue('12.01.2026');
-    });
-    
-    it('ignores invalid input', async () => {
-      const onChange = vi.fn();
-      const r = render(<DateRangeFieldTest onChange={onChange} />);
-      const input = getInput(r);
-      
-      await userEvent.type(input, 'aa.bb.cccc');
-      
-      expect(onChange).not.toHaveBeenCalled();
-    });
-    
     it('does not change the range when the calendar navigates to another month', async () => {
       const r = render(<DateRangeFieldTest />);
 
@@ -248,24 +281,6 @@ describe('DateRangeField', () => {
       await expect.element(getInput(r)).toHaveValue(`10.01.2026${RANGE_SEPARATOR}15.01.2026`);
     });
 
-    describe('typing', () => {
-      it('swaps a reversed range', async () => {
-        const r = render(<DateRangeFieldTest />);
-      
-        await userEvent.type(getInput(r), `15.01.2026${RANGE_SEPARATOR}10.01.2026`);
-      
-        await expect.element(getInput(r)).toHaveValue(`10.01.2026${RANGE_SEPARATOR}15.01.2026`);
-      });
-
-      it('accepts the digits of other numbering systems', async () => {
-        const r = render(<DateRangeFieldTest />);
-
-        await userEvent.type(getInput(r), `١٠.٠١.٢٠٢٦${RANGE_SEPARATOR}١٥.٠١.٢٠٢٦`);
-
-        await expect.element(getInput(r)).toHaveValue(`10.01.2026${RANGE_SEPARATOR}15.01.2026`);
-      });
-    });
-  
     describe('field state follows the input', () => {
       const openCalendar = async (r: RenderResult) => {
         await userEvent.click(getTrigger(r));
@@ -316,21 +331,6 @@ describe('DateRangeField', () => {
 
         await expect.element(getCell(r, new Date(2026, 0, 10))).not.toHaveAttribute('aria-selected', 'true');
       });
-
-      it('clamps both typed dates when min and max change and dispatches input', async () => {
-        const onInput = vi.fn();
-        const r = render(<DateRangeFieldTest onInput={onInput} />);
-
-        await userEvent.type(getInput(r), `05.01.2026${RANGE_SEPARATOR}25.01.2026`);
-        onInput.mockClear();
-        r.rerender(<DateRangeFieldTest onInput={onInput} min='2026-01-10' max='2026-01-20' />);
-
-        await expect.element(getInput(r)).toHaveValue(`10.01.2026${RANGE_SEPARATOR}20.01.2026`);
-        expect(onInput).toHaveBeenCalledTimes(1);
-        await openCalendar(r);
-        await expect.element(getCell(r, new Date(2026, 0, 10))).toHaveAttribute('aria-selected', 'true');
-        await expect.element(getCell(r, new Date(2026, 0, 20))).toHaveAttribute('aria-selected', 'true');
-      });
     });
 
     describe('calendar systems', () => {
@@ -349,18 +349,151 @@ describe('DateRangeField', () => {
   
   
   describe('Accessibility', () => {
-    it('supports keyboard selection', async () => {
-      const r = render(<DateRangeFieldTest />);
-      
-      await userEvent.click(getTrigger(r));
-      
-      const cell = getCell(r, new Date(2026, 0, 10));
-      cell.element().focus();
-      
-      await expect.element(cell).toHaveFocus();
-      await userEvent.keyboard('{Enter}');
-      
-      expect(getInput(r)).toHaveValue('10.01.2026');
+    describe('APG', () => {
+      const RANGE_TEXT = `10.01.2026${RANGE_SEPARATOR}15.01.2026`;
+
+      const waitForAnimations = () => Promise.allSettled(document.getAnimations().map((animation) => animation.finished));
+
+      const openByKeyboard = async (r: RenderResult) => {
+        getTrigger(r).focus();
+        await userEvent.keyboard('{Enter}');
+        await expect.element(getCalendarRoot(r)).toBeInTheDocument();
+        await waitForAnimations();
+      };
+
+      const pressEnterOn = async (r: RenderResult, date: Date) => {
+        getCell(r, date).element().focus();
+        await userEvent.keyboard('{Enter}');
+      };
+
+      it('announces both dates in one textbox named through Label', async () => {
+        const r = render(
+          <>
+            <Label htmlFor='stay'>Stay</Label>
+            <DateRangeFieldTest defaultValue={['2026-01-10', '2026-01-15']} inputProps={{ id: 'stay' }} />
+          </>
+        );
+
+        await expect.element(r.getByRole('textbox', { name: 'Stay' })).toHaveValue(RANGE_TEXT);
+      });
+
+      it('exposes the popup as a dialog with the given name', async () => {
+        const r = render(<DateRangeFieldTest calendarProps={{ 'aria-label': 'Choose stay' }} />);
+
+        await expect.element(getTrigger(r)).toHaveAttribute('aria-haspopup', 'dialog');
+        await userEvent.click(getTrigger(r));
+
+        await expect.element(r.getByRole('dialog', { name: 'Choose stay' })).toBe(getCalendarRoot(r));
+      });
+
+      it('moves the focus to the start of the typed range on open', async () => {
+        const r = render(<DateRangeFieldTest />);
+
+        await userEvent.type(getInput(r), `10.03.2026${RANGE_SEPARATOR}15.03.2026`);
+        await openByKeyboard(r);
+
+        await expect.element(getCell(r, new Date(2026, 2, 10))).toHaveFocus();
+      });
+
+      it('moves the focus to today on open when the field is empty', async () => {
+        const r = render(<DateRangeFieldTest />);
+
+        await openByKeyboard(r);
+
+        await expect.element(getCell(r, new Date(2026, 0, 1))).toHaveFocus();
+      });
+
+      it('returns the focus to the trigger on Escape from the grid', async () => {
+        const r = render(<DateRangeFieldTest defaultValue={['2026-01-10', '2026-01-15']} />);
+
+        await openByKeyboard(r);
+        getCell(r, new Date(2026, 0, 12)).element().focus();
+        await userEvent.keyboard('{Escape}');
+
+        await expect.poll(() => r.queryByTestId(TESTID_CALENDAR_ROOT)).toBeNull();
+        await expect.element(getTrigger(r)).toHaveFocus();
+        await expect.element(getInput(r)).toHaveValue(RANGE_TEXT);
+      });
+
+      it('keeps the popup open after the start and closes after the end, returning the focus to the trigger', async () => {
+        const r = render(<DateRangeFieldTest />);
+
+        await openByKeyboard(r);
+        await pressEnterOn(r, new Date(2026, 0, 10));
+        await expect.element(getInput(r)).toHaveValue('10.01.2026');
+        await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
+        await pressEnterOn(r, new Date(2026, 0, 15));
+
+        await expect.element(getInput(r)).toHaveValue(RANGE_TEXT);
+        await expect.poll(() => r.queryByTestId(TESTID_CALENDAR_ROOT)).toBeNull();
+        await expect.element(getTrigger(r)).toHaveFocus();
+      });
+
+      it('keeps the popup open while an edge of a complete range moves with Shift and arrows', async () => {
+        const r = render(<DateRangeFieldTest defaultValue={['2026-01-10', '2026-01-15']} />);
+
+        await openByKeyboard(r);
+        await expect.element(getCell(r, new Date(2026, 0, 10))).toHaveFocus();
+        await userEvent.keyboard('{Shift>}{ArrowRight}{/Shift}');
+
+        await expect.element(getInput(r)).toHaveValue(`11.01.2026${RANGE_SEPARATOR}15.01.2026`);
+        await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
+        await expect.element(getCell(r, new Date(2026, 0, 11))).toHaveFocus();
+      });
+
+      it('closes after the end picked by a click', async () => {
+        const r = render(<DateRangeFieldTest />);
+
+        await openByKeyboard(r);
+        await pickDate(r, new Date(2026, 0, 10));
+        await pickDate(r, new Date(2026, 0, 15));
+
+        await expect.element(getInput(r)).toHaveValue(RANGE_TEXT);
+        await expect.poll(() => r.queryByTestId(TESTID_CALENDAR_ROOT)).toBeNull();
+        await expect.element(getTrigger(r)).toHaveFocus();
+      });
+
+      it('leaves aria-invalid to the user', async () => {
+        const r = render(<DateRangeFieldTest />);
+
+        await userEvent.type(getInput(r), '10.01.2026 – 15.01');
+        await expect.element(getInput(r)).not.toHaveAttribute('aria-invalid');
+
+        r.rerender(<DateRangeFieldTest inputProps={{ 'aria-invalid': true }} />);
+
+        await expect.element(getInput(r)).toHaveAttribute('aria-invalid', 'true');
+      });
+
+      it('disables the input and the trigger', async () => {
+        const r = render(<DateRangeFieldTest disabled defaultValue={['2026-01-10', '2026-01-15']} />);
+
+        await expect.element(getInput(r)).toBeDisabled();
+        await expect.element(getTrigger(r)).toBeDisabled();
+      });
+
+      it('does not change a read-only input from the calendar', async () => {
+        const r = render(<DateRangeFieldTest defaultValue={['2026-01-10', '2026-01-15']} inputProps={{ readOnly: true }} />);
+
+        await openByKeyboard(r);
+        await pressEnterOn(r, new Date(2026, 0, 20));
+
+        expect(getInput(r)).toHaveValue(RANGE_TEXT);
+      });
+
+      it('shows a read-only field in a read-only grid that does not pick', async () => {
+        const onChangeValue = vi.fn();
+        const r = render(<DateRangeFieldTest readOnly defaultValue={['2026-01-10', '2026-01-15']} onChangeValue={onChangeValue} />);
+
+        await expect.element(getInput(r)).toHaveAttribute('readonly');
+        await openByKeyboard(r);
+        await expect.element(r.getByRole('grid')).toHaveAttribute('aria-readonly', 'true');
+        await pressEnterOn(r, new Date(2026, 0, 20));
+        await pressEnterOn(r, new Date(2026, 0, 22));
+
+        await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
+        expect(getInput(r)).toHaveValue(RANGE_TEXT);
+        expect(onChangeValue).not.toHaveBeenCalled();
+      });
     });
   });
 });

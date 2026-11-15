@@ -14,9 +14,9 @@ import type { Ref } from 'react';
  * This function is especially useful for composing component props,
  * e.g., merging parent and child props in polymorphic or slot-based components.
  *
- * @template T - Type of the props object.
- * @param {...T[]} args - One or more props objects to merge together.
- * @returns {T} - A new object containing the merged props.
+ * @template Props - Type of the props object.
+ * @param {...Props[]} args - One or more props objects to merge together.
+ * @returns {Props} - A new object containing the merged props.
  *
  * @example
  * const props = mergeProps(
@@ -27,7 +27,7 @@ import type { Ref } from 'react';
  * // props.className === 'btn primary'
  * // props.onClick calls both handlers
  */
-export function mergeProps<T extends Record<string, unknown>>(...args: T[]): T {
+export function mergeProps<Props extends Record<string, unknown>>(...args: Props[]): Props {
   const result: Record<string, unknown> = {};
 
   for (const props of args) {
@@ -52,7 +52,8 @@ export function mergeProps<T extends Record<string, unknown>>(...args: T[]): T {
       }
 
       if (key === 'ref') {
-        result[key] = mergeRefs([existingValue as Ref<unknown>, newValue as Ref<unknown>])
+        if (existingValue === undefined || newValue === undefined) result[key] = existingValue ?? newValue
+        else result[key] = mergeRefs([existingValue as Ref<unknown>, newValue as Ref<unknown>])
         continue
       }
 
@@ -83,5 +84,5 @@ export function mergeProps<T extends Record<string, unknown>>(...args: T[]): T {
     }
   }
 
-  return result as T;
+  return result as Props;
 }

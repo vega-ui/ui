@@ -1,10 +1,10 @@
 import { FC, ReactNode } from 'react';
-import { DayPickerScroller, DayPickerScrollerContent, DayPickerScrollerLayout, DayPickerScrollerProps } from '../../../DayPicker';
-import { useCalendarContext } from '../../contexts';
+import { DayPickerLayout, DayPickerScrollerLayout, DayPickerScrollerLayoutProps } from '../../../DayPicker';
+import { useCalendarScrollerContext } from '../../contexts';
 
-export interface CalendarWeeksProps extends Omit<DayPickerScrollerProps, 'apiRef' | 'onChangePeriod' | 'defaultMonth'> {
+export interface CalendarWeeksProps extends Omit<DayPickerScrollerLayoutProps, 'rows' | 'locale' | 'weekStartsOn'> {
   /**
-   * Template of a day cell, rendered once for every day of the visible months.
+   * Template of a day cell, rendered once for every day of the month.
    * Read the day with `useCalendarDayContext()`; usually `<CalendarDay />`.
    */
   children: ReactNode
@@ -23,21 +23,15 @@ export interface CalendarWeeksProps extends Omit<DayPickerScrollerProps, 'apiRef
 }
 
 /**
- * `CalendarWeeks` is the grid of days of `CalendarDays`, week by week,
- * swipeable between months. Its children are the template of a day cell,
- * usually `<CalendarDay />`, so days can render any content while the
- * grid stays managed by the calendar.
+ * `CalendarWeeks` is the grid of days of a month, week by week. Inside
+ * `CalendarDaysScrollerContent` it shows the month of the page; placed right in
+ * `CalendarDays` it shows the month of the focused day. Its children are
+ * the template of a day cell, usually `<CalendarDay />`.
  */
-export const CalendarWeeks: FC<CalendarWeeksProps> = ({ children, format, includeOverflowDays, ...props }) => {
-  const { scrollerApiRef, changePeriod, disabled } = useCalendarContext()
+export const CalendarWeeks: FC<CalendarWeeksProps> = (props) => {
+  const { inScroller } = useCalendarScrollerContext()
 
-  return (
-    <DayPickerScroller apiRef={scrollerApiRef} onChangePeriod={changePeriod} inert={disabled} {...props}>
-      <DayPickerScrollerContent>
-        <DayPickerScrollerLayout format={format} includeOverflowDays={includeOverflowDays}>
-          {children}
-        </DayPickerScrollerLayout>
-      </DayPickerScrollerContent>
-    </DayPickerScroller>
-  )
+  if (inScroller) return <DayPickerScrollerLayout {...props} />
+
+  return <DayPickerLayout {...props} />
 }

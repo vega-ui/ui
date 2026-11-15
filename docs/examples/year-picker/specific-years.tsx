@@ -17,9 +17,9 @@ export default function SpecificYears() {
         aria-label='Fiscal year to adjust'
         aria-describedby={hintId}
         locale='en-US'
-        year='2018-01-01'
-        to='2026-01-01'
-        disabled={closedYears}
+        defaultFocusedDate='2018-01-01'
+        max='2026-01-01'
+        disabledDates={closedYears}
         style={{ width: '100%' }}
       >
         <YearPickerLayout rows={3} cols={3}>

@@ -1,7 +1,10 @@
 'use client';
-import { FC, HTMLAttributes, Ref } from 'react';
-import { csx, mergeEventHandlers } from '@vega-ui/utils';
+import { FC, HTMLAttributes, MouseEvent, Ref } from 'react';
+import { createInput } from '@vega-ui/core';
+import { useSnapshot } from '../../../internals/widget';
+import { csx } from '@vega-ui/utils';
 import { useSheetContext } from '../../contexts';
+import { hasSnapPoints, NEXT_SNAP_POINT } from '@vega-ui/widgets/sheet';
 import style from './style.module.css'
 
 export interface SheetHandleProps extends HTMLAttributes<HTMLButtonElement> {
@@ -18,15 +21,14 @@ export const SheetHandle: FC<SheetHandleProps> = ({
   onClick: _onClick,
   ...props
 }) => {
-  const { offsets, activeSnapPoint, changeActiveSnapPoint } = useSheetContext()
+  const { handle } = useSheetContext()
+  const resizable = useSnapshot(handle, hasSnapPoints)
 
-  const resizable = offsets.length > 1
+  const onClick = (event: MouseEvent<HTMLButtonElement>) => {
+    _onClick?.(event)
+    if (event.defaultPrevented) return
 
-  const onClick = () => {
-    const order = offsets.map((_, index) => index).sort((a, b) => offsets[b] - offsets[a])
-    const next = order[(order.indexOf(activeSnapPoint) + 1) % order.length]
-
-    changeActiveSnapPoint(next)
+    handle.send(createInput(NEXT_SNAP_POINT))
   }
 
   return (
@@ -36,7 +38,7 @@ export const SheetHandle: FC<SheetHandleProps> = ({
       disabled={!resizable}
       aria-hidden={!resizable}
       className={csx(style.handle, className)}
-      onClick={mergeEventHandlers(onClick, _onClick)}
+      onClick={onClick}
       {...props}
     />
   )

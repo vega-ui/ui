@@ -40,7 +40,7 @@
 /* checked indicator position */
 
 .switch:has(input:checked) {
-    --switch-indicator-transform: translateX(100%);
+    --switch-indicator-offset: calc(100% - var(--switch-indicator-width, var(--switch-indicator-size)));
 }
 
 /* primary/checked */
@@ -69,10 +69,18 @@
     --switch-indicator-color: var(--disable-border-color);
 }
 
+/* invalid */
+
+.switch:has(input:is([aria-invalid='true'], :user-invalid)) {
+    outline: 1px solid var(--color-error);
+    outline-offset: -1px;
+}
+
 /* focus */
 
 .switch:has(input:focus-visible) {
-    outline-color: var(--focus-color);
+    outline: 2px solid var(--focus-color);
+    outline-offset: 0;
 }
 
 /* interactive states */
@@ -87,10 +95,4 @@
     --switch-indicator-width: calc(var(--switch-indicator-size) * (1 + var(--switch-indicator-size-ratio)));
 
     background-color: var(--switch-background-color-active);
-}
-
-/* checked/active indicator position adjustment */
-
-.switch:not(:has(input:disabled)):has(input:checked:active) {
-    --switch-indicator-transform: translateX(calc(100% - var(--switch-indicator-size) * var(--switch-indicator-size-ratio) * 2));
 }

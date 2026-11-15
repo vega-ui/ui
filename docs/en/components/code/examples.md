@@ -243,7 +243,7 @@ export default function InvalidTokenName() {
   return (
     <form onSubmit={onSubmit} style={{ display: 'grid', gap: 'var(--spacing-3)', width: '100%' }}>
       <Label htmlFor='env-variable-name'>Variable name</Label>
-      <TextField error={invalid}>
+      <TextField>
         <TextFieldInput
           id='env-variable-name'
           name='variable'
@@ -255,7 +255,7 @@ export default function InvalidTokenName() {
           onChange={() => setInvalid(false)}
         />
       </TextField>
-      <HelperText id='env-variable-hint' error={invalid}>
+      <HelperText id='env-variable-hint' invalid={invalid}>
         Use uppercase letters, digits and underscores, for example <Code size={2}>STRIPE_API_KEY</Code>.
       </HelperText>
       <Button type='submit' style={{ justifySelf: 'end', marginBlockStart: 'var(--spacing-9)' }}>Add variable</Button>
@@ -313,7 +313,7 @@ export default function LongInlinePath() {
     <div style={{ display: 'grid', gap: 'var(--spacing-6)', width: '100%' }}>
       <Text asChild size={2}>
         <p>
-          Edit <Code size={2} style={{ overflowWrap: 'anywhere' }}>packages/ui/src/DataGrid/components/DataGridColumnHeader/DataGridColumnHeader.tsx</Code>{' '}
+          Edit <Code size={2} style={{ overflowWrap: 'anywhere' }}>packages/ui/src/Grid/components/GridColumnHeader/GridColumnHeader.tsx</Code>{' '}
           to change the sort icon.
         </p>
       </Text>
@@ -330,7 +330,7 @@ export default function LongInlinePath() {
 
 ### Edge: multi-line snippet
 
-`Code` inherits `white-space: pre-line` from `Text`, which collapses indentation. For a snippet, wrap it in `<pre>`, set `whiteSpace: 'pre'` and `display: 'block'` on `Code`, and let the `<pre>` scroll horizontally.
+`Code` collapses whitespace like inline text, which drops indentation and line breaks. For a snippet, wrap it in `<pre>`, set `whiteSpace: 'pre'` and `display: 'block'` on `Code`, and let the `<pre>` scroll horizontally.
 
 <!-- example: code/multiline-snippet.tsx -->
 ```tsx

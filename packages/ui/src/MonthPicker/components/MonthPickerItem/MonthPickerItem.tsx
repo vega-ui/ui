@@ -1,19 +1,37 @@
 import { FC } from 'react';
-import { DataGridPickerItem, DataGridPickerItemProps } from '../../../DataGridPicker';
+import { GridCell, GridCellProps, GridItem, GridItemSize, GridItemVariant } from '../../../Grid';
+import { useMonthPickerContext } from '../../contexts';
 
-export type MonthPickerItemProps = DataGridPickerItemProps
+export interface MonthPickerItemProps extends Omit<GridCellProps, 'value' | 'asChild'> {
+  /**
+   * Date of the cell as a `YYYY-MM-DD` string, used as its key in the grid.
+   */
+  value?: string
+
+  /**
+   * Controls the item’s visual size. Defaults to the size of the MonthPicker.
+   */
+  size?: GridItemSize
+
+  /**
+   * Color of the selected item. Defaults to the variant of the MonthPicker.
+   */
+  variant?: GridItemVariant
+}
 
 /**
- * MonthPickerItem is a thin wrapper around DataGridPickerItem,
- * representing a single month cell within a MonthPicker layout.
- *
- * It inherits all interactive and visual behavior from the underlying
- * DataGridPickerItem — including selection states, range highlighting,
- * disabled handling, and size/variant styling.
- *
- * The component does not add any custom logic; it simply provides
- * semantic clarity and consistency when composing MonthPicker layouts.
+ * MonthPickerItem is a month cell of the MonthPicker: a GridCell keyed by the
+ * first day of its month with the look of GridItem. The size and variant
+ * come from the MonthPicker unless set on the item.
  */
-export const MonthPickerItem: FC<MonthPickerItemProps> = (props) => {
-  return <DataGridPickerItem {...props} />
+export const MonthPickerItem: FC<MonthPickerItemProps> = ({ value, size, variant, children, ...props }) => {
+  const { size: _size, variant: _variant } = useMonthPickerContext()
+
+  return (
+    <GridCell value={value} {...props} asChild>
+      <GridItem size={size ?? _size} variant={variant ?? _variant}>
+        {children}
+      </GridItem>
+    </GridCell>
+  )
 }

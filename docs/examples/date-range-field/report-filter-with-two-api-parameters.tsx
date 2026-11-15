@@ -4,20 +4,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   DateRangeField,
   DateRangeFieldCalendar,
   DateRangeFieldInput,
@@ -43,21 +49,25 @@ export default function ReportFilter() {
     setQuery(params.toString());
   };
 
+  const onReset = () => {
+    setPeriod(DEFAULT_PERIOD);
+    setQuery('');
+  };
+
   return (
-    <form onSubmit={onSubmit} onReset={() => setQuery('')} style={{ display: 'grid', gap: 'var(--spacing-12)', width: '100%', maxWidth: 320 }}>
+    <form onSubmit={onSubmit} onReset={onReset} style={{ display: 'grid', gap: 'var(--spacing-12)', width: '100%', maxWidth: 320 }}>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor='period'>Reporting period</Label>
         <DateRangeField
           format='dd.MM.yyyy'
           separator='.'
           rangeSeparator=' - '
-          defaultValue={DEFAULT_PERIOD}
+          value={period}
           onChangeValue={setPeriod}
         >
           <DateRangeFieldInput
             id='period'
             required
-            pattern='\d{2}\.\d{2}\.\d{4} - \d{2}\.\d{2}\.\d{4}'
             aria-describedby='period-hint'
           />
           <Popover placement='bottom-end'>
@@ -65,13 +75,13 @@ export default function ReportFilter() {
               <DateRangeFieldTriggerIconButton aria-label='Choose reporting period' />
             </PopoverTrigger>
             <PopoverContent>
-              <DateRangeFieldCalendar>
+              <DateRangeFieldCalendar aria-label='Choose reporting period'>
                 <CalendarHeader>
                   <CalendarPrevButton aria-label='Previous month' />
-                  <CalendarViewButtonGroup>
+                  <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-                  </CalendarViewButtonGroup>
+                  </CalendarHeading>
                   <CalendarNextButton aria-label='Next month' />
                 </CalendarHeader>
                 <CalendarContent>
@@ -79,15 +89,27 @@ export default function ReportFilter() {
                     <CalendarWeekdays>
                       <CalendarWeekday />
                     </CalendarWeekdays>
-                    <CalendarWeeks>
-                      <CalendarDay />
-                    </CalendarWeeks>
+                    <CalendarDaysScroller>
+                      <CalendarDaysScrollerContent>
+                        <CalendarWeeks>
+                          <CalendarDay />
+                        </CalendarWeeks>
+                      </CalendarDaysScrollerContent>
+                    </CalendarDaysScroller>
                   </CalendarDays>
                   <CalendarMonths>
-                    <CalendarMonth />
+                    <CalendarMonthsGrid>
+                      <CalendarMonth />
+                    </CalendarMonthsGrid>
                   </CalendarMonths>
                   <CalendarYears>
-                    <CalendarYear />
+                    <CalendarYearsScroller>
+                      <CalendarYearsScrollerContent>
+                        <CalendarYearsGrid>
+                          <CalendarYear />
+                        </CalendarYearsGrid>
+                      </CalendarYearsScrollerContent>
+                    </CalendarYearsScroller>
                   </CalendarYears>
                 </CalendarContent>
               </DateRangeFieldCalendar>

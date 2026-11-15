@@ -42,7 +42,7 @@ export default function ConfirmPasswordMismatch() {
       </div>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor={`${id}-confirm`}>Repeat new password</Label>
-        <PasswordField error={invalid}>
+        <PasswordField>
           <PasswordFieldInput
             id={`${id}-confirm`}
             autoComplete='new-password'
@@ -57,7 +57,7 @@ export default function ConfirmPasswordMismatch() {
             <PasswordFieldHiddenIcon />
           </PasswordFieldToggleIconButton>
         </PasswordField>
-        <HelperText id={messageId} error={invalid}>
+        <HelperText id={messageId} invalid={invalid}>
           {invalid ? 'Passwords do not match. Check the last characters.' : 'Type the same password again.'}
         </HelperText>
       </div>

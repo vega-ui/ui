@@ -56,7 +56,7 @@ export default function SectionErrors() {
           <AccordionContent>
             <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
               <Label htmlFor='payout-iban'>IBAN</Label>
-              <TextField error={error !== ''}>
+              <TextField>
                 <TextFieldInput
                   id='payout-iban'
                   value={iban}
@@ -65,7 +65,7 @@ export default function SectionErrors() {
                   aria-describedby={error ? 'payout-iban-error' : undefined}
                 />
               </TextField>
-              {error && <HelperText id='payout-iban-error' error>{error}</HelperText>}
+              {error && <HelperText id='payout-iban-error' invalid>{error}</HelperText>}
             </div>
           </AccordionContent>
         </AccordionItem>

@@ -32,10 +32,11 @@ export default function WrongVerificationCode() {
   return (
     <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', width: '100%', maxWidth: 320 }}>
       <Label htmlFor={id}>Code from the email (135790 passes)</Label>
-      <PinField maxLength={6} value={code} onChangeValue={onChangeValue} error={error !== ''}>
+      <PinField maxLength={6} value={code} onChangeValue={onChangeValue}>
         <PinFieldInput
           id={id}
           autoComplete='one-time-code'
+          aria-invalid={error !== ''}
           aria-describedby={error === '' ? undefined : errorId}
         />
         <PinFieldSlot index={0} />
@@ -45,7 +46,7 @@ export default function WrongVerificationCode() {
         <PinFieldSlot index={4} />
         <PinFieldSlot index={5} />
       </PinField>
-      {error !== '' && <HelperText id={errorId} error>{error}</HelperText>}
+      {error !== '' && <HelperText id={errorId} invalid>{error}</HelperText>}
       <Button type='submit' style={{ alignSelf: 'flex-end', marginBlockStart: 'var(--spacing-9)' }}>Confirm email</Button>
       {verified && (
         <Text size={2} role='status' style={{ color: 'var(--label-secondary)', marginBlockStart: 'var(--spacing-4)' }}>

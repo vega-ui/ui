@@ -39,7 +39,7 @@ export default function AsyncUsernameCheck() {
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-3)', width: '100%' }}>
       <Label htmlFor={id}>Username</Label>
-      <TextField error={taken}>
+      <TextField>
         <TextFieldInput
           id={id}
           value={username}
@@ -54,7 +54,7 @@ export default function AsyncUsernameCheck() {
           {available && <Icon size='sm' aria-hidden><CheckIcon /></Icon>}
         </span>
       </TextField>
-      <HelperText id={statusId} error={taken} aria-live='polite'>{message}</HelperText>
+      <HelperText id={statusId} invalid={taken} aria-live='polite'>{message}</HelperText>
     </div>
   );
 }

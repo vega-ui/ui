@@ -12,7 +12,6 @@
 | `disabled` | `boolean` | — | No | Disables the input field, making it non-interactive. Also applies a visual disabled style. |
 | `placeholder` | `string` | — | No | Placeholder character shown when the field is empty. |
 | `size` | `PinFieldSize` | `'md'` | No | Visual size of the pin input. Affects dimensions and font size. |
-| `error` | `boolean` | — | No | Shows the field in an error state. |
 | `ref` | `Ref<HTMLDivElement>` | — | No | Ref to the root element. |
 | `mask` | `Array<RegExp \| string> \| RegExp` | — | No | Characters the field accepts: a RegExp for the whole value, or an array with a RegExp or a fixed character per position. Defaults to digits. |
 | `maxLength` | `number` | `4` | No | Number of characters in the code. Defaults to `4`. |
@@ -68,7 +67,11 @@ Also accepts all `<input>` attributes.
 
 - The root tracks `value`, active slot index, and selection-all state.
 - `PinFieldInput` is the real editable control.
-- Slots derive content, active state, placeholder state, and disabled/error styling from context.
+- Slots derive content, active state, placeholder state, and disabled styling from context.
+- While `PinFieldInput` has `type='password'`, the slots show `•` for each entered character. Switch the type back to `text` to reveal the code.
+- The error look follows `aria-invalid='true'`, `:user-invalid` or `[data-user-edited]:invalid` on `PinFieldInput`; the field never sets `aria-invalid` itself.
 - The root takes `value`, `defaultValue` and `onChangeValue`; `PinFieldInput` reads the value from the root and still fires its own `onChange` and `onInput`. A form reset restores `defaultValue` unless the field is controlled.
+- The browser does not count a text written by the field as an edit of the user, so the field reports the edit itself: when the user leaves `PinFieldInput` after changing its text, the input fires a native `change` event and gets `data-user-edited`. A value set through `value` does not mark the field, and a form reset removes the attribute.
 - `disabled` and `maxLength` are set only on `PinField`, so the input and the slots always agree.
 - The root `placeholder` is also the placeholder of the input.
+- `PinFieldSlot` runs your `onPointerDown` first: `event.preventDefault()` in it keeps the caret where it is.

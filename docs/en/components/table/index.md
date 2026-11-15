@@ -118,6 +118,6 @@ export default function MinimalComposition() {
 
 ## Common Mistakes
 
-- Reaching for `DataGrid` when semantic table markup is enough.
+- Reaching for `Grid` when semantic table markup is enough.
 - Dropping semantic sections like `TableHead` just to simplify styling.
 - Ignoring overflow behavior on smaller screens.

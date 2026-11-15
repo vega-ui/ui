@@ -89,7 +89,10 @@ jobs:
         run: pnpm turbo run check-types
 
       - name: Run Unit Tests
-        run: pnpm turbo run test --filter=@vega-ui/utils --filter=@vega-ui/i18n
+        run: pnpm turbo run test --filter=@vega-ui/utils --filter=@vega-ui/i18n --filter=@vega-ui/widgets
+
+      - name: Run Core Unit Tests
+        run: pnpm turbo run test --filter=@vega-ui/core -- --project node
 
   browser-tests:
     name: Browser Tests (${{ matrix.browser }}, ${{ matrix.shard }}/3)
@@ -98,7 +101,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     container:
-      image: mcr.microsoft.com/playwright:v1.63.0-noble
+      image: mcr.microsoft.com/playwright:v1.65.1-noble
       options: --user 1001 --ipc=host
 
     strategy:
@@ -124,7 +127,7 @@ jobs:
         run: pnpm install
 
       - name: Run Browser Tests
-        run: pnpm turbo run test --filter=@vega-ui/hooks --filter=@vega-ui/icons --filter=@vega-ui/react-kit --filter=@vega-ui/react -- --project ${{ matrix.browser }} --shard=${{ matrix.shard }}/3 --passWithNoTests
+        run: pnpm turbo run test --filter=@vega-ui/core --filter=@vega-ui/hooks --filter=@vega-ui/icons --filter=@vega-ui/react -- --project ${{ matrix.browser }} --shard=${{ matrix.shard }}/3 --passWithNoTests
 
   docs-site:
     name: Docs Site

@@ -364,7 +364,6 @@ export default function Inbox() {
               rows={3}
               fullWidth
               value={reply}
-              error={replyError !== ''}
               placeholder='Write a reply…'
               aria-invalid={replyError !== ''}
               aria-describedby={replyError === '' ? undefined : `${id}-reply-error`}
@@ -373,7 +372,7 @@ export default function Inbox() {
                 setReplyError('');
               }}
             />
-            {replyError && <HelperText id={`${id}-reply-error`} error>{replyError}</HelperText>}
+            {replyError && <HelperText id={`${id}-reply-error`} invalid>{replyError}</HelperText>}
             <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'flex-end', gap: 'var(--spacing-4)', marginBlockStart: 'var(--spacing-3)' }}>
               <Text size={2} role='status' style={{ marginInlineEnd: 'auto', color: 'var(--label-secondary)' }}>{notice}</Text>
               <Button size='xs' type='submit'>Send reply</Button>

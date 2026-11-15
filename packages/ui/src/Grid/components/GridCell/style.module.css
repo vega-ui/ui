@@ -1,0 +1,9 @@
+.cell:where(:not(td, th)) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.cell:where([aria-selected]) {
+    -webkit-user-select: none;
+    user-select: none;
+}

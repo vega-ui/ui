@@ -11,16 +11,16 @@ const renderGuard = () => {
  * must never be called during render (throws in development if it is).
  * Functions used while rendering should use `useCallback` with honest deps instead.
  */
-export function useEventCallback<Args extends unknown[], R>(
-  fn: (...args: Args) => R,
-): (...args: Args) => R;
-export function useEventCallback<Args extends unknown[], R>(
-  fn?: (...args: Args) => R,
-): (...args: Args) => R | undefined;
-export function useEventCallback<Args extends unknown[], R>(
-  fn?: (...args: Args) => R,
-): (...args: Args) => R | undefined {
-  const ref = useRef<((...args: Args) => R) | undefined>(
+export function useEventCallback<Args extends unknown[], Result>(
+  fn: (...args: Args) => Result,
+): (...args: Args) => Result;
+export function useEventCallback<Args extends unknown[], Result>(
+  fn?: (...args: Args) => Result,
+): (...args: Args) => Result | undefined;
+export function useEventCallback<Args extends unknown[], Result>(
+  fn?: (...args: Args) => Result,
+): (...args: Args) => Result | undefined {
+  const ref = useRef<((...args: Args) => Result) | undefined>(
     process.env.NODE_ENV === 'production' ? fn : (renderGuard as never),
   );
 

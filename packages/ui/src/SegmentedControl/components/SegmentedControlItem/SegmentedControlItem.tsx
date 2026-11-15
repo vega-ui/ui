@@ -44,11 +44,12 @@ export const SegmentedControlItem: FC<SegmentedControlItemProps> = ({
   ...props
 }) => {
   const { size: _size, variant: _variant, disabled: _disabled } = useSegmentedControlContext()
+  const itemDisabled = disabled ?? _disabled
 
   return (
-    <SegmentedControlItemProvider value={value}>
+    <SegmentedControlItemProvider value={value} disabled={itemDisabled}>
       <label
-        data-disabled={disabled ?? _disabled}
+        data-disabled={itemDisabled}
         data-size={size ?? _size}
         data-variant={variant ?? _variant}
         className={csx(style.item, className)}

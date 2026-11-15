@@ -11,6 +11,7 @@
 ## Focus Behavior
 
 - Focus behavior depends on the current page content and any explicit navigation UI.
+- The root has `tabIndex={-1}` by default, so the scroll container is not a Tab stop in any browser. When the pages have no focusable content and keyboard users should scroll with the arrow keys, pass `tabIndex={0}` together with an `aria-label`.
 
 ## Screen Reader Semantics
 

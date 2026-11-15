@@ -53,3 +53,39 @@ The layout was customized beyond the point where month semantics stay obvious.
 ### Fix
 
 Keep month labels and ordering explicit, and lean on the provided layout/helper APIs where possible.
+
+## The Picker Renders No Months On The Server
+
+### Symptom
+
+The server HTML has an empty grid, and the months appear only after hydration.
+
+### Likely Cause
+
+Nothing tells the picker which year to show: no `focusedDate`, `defaultFocusedDate`, selection, or `today`. The date of the device is read only after hydration, so the server and the client render the same markup.
+
+### How To Verify
+
+- load the page with JavaScript disabled, or inspect the server HTML
+
+### Fix
+
+Pass `today` (for example, computed on the server in the user's time zone) or `defaultFocusedDate`.
+
+## The Picker Stays Enabled Inside A Disabled Fieldset
+
+### Symptom
+
+Inside `<fieldset disabled>`, the months can still be focused and selected.
+
+### Likely Cause
+
+The picker is a grid, not a native form control, so it does not follow the `disabled` state of a fieldset.
+
+### How To Verify
+
+- disable the fieldset and press Tab into the grid
+
+### Fix
+
+Disable the months yourself while the fieldset is disabled, for example with `disabledDates={() => true}`.

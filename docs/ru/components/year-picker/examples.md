@@ -4,7 +4,7 @@
 
 ### Базовый: страница лет
 
-`YearPickerLayout` рендерит страницу из `rows × cols` лет (по умолчанию 12), которая начинается с года, заданного через `year`. Ключ ячейки — первый день года, поэтому `defaultSelected` — `'2026-01-01'`. У сетки нет видимого заголовка, поэтому ей передан `aria-label`.
+`YearPickerLayout` рендерит страницу из `rows × cols` лет (по умолчанию 12), которая начинается с года в фокусе — здесь с выбранного. Ключ ячейки — первый день года, поэтому `defaultValue` — `'2026-01-01'`. У сетки нет видимого заголовка, поэтому ей передан `aria-label`.
 
 <!-- example: year-picker/a-page-of-years.tsx -->
 ```tsx
@@ -12,7 +12,7 @@ import { YearPicker, YearPickerCell, YearPickerLayout } from '@vega-ui/react';
 
 export default function APageOfYears() {
   return (
-    <YearPicker aria-label='Model year' locale='en-US' year='2026-01-01' defaultSelected='2026-01-01' style={{ width: '100%' }}>
+    <YearPicker aria-label='Model year' locale='en-US' defaultValue='2026-01-01' style={{ width: '100%' }}>
       <YearPickerLayout>
         <YearPickerCell />
       </YearPickerLayout>
@@ -26,7 +26,7 @@ export default function APageOfYears() {
 
 ### Контролируемый/с состоянием: выбранный год
 
-`selected` и `onSelectCell` делают выбор контролируемым. Скроллер листает годы, а `year` держит в виду страницу выбранного года; `null` означает, что ничего не выбрано.
+`value` и `onChangeValue` делают выбор контролируемым. Скроллер листает годы и открывается на странице выбранного года — первого года в фокусе; `null` означает, что ничего не выбрано.
 
 <!-- example: year-picker/selected-year.tsx -->
 ```tsx
@@ -45,7 +45,7 @@ export default function SelectedYear() {
 
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-6)', justifyItems: 'start', width: '100%' }}>
-      <YearPicker aria-label='Model year' locale='en-US' year={year ?? '2026-01-01'} selected={year} onSelectCell={setYear}>
+      <YearPicker aria-label='Model year' locale='en-US' value={year} onChangeValue={setYear}>
         <YearPickerScroller>
           <YearPickerScrollerContent>
             <YearPickerScrollerLayout>
@@ -125,16 +125,16 @@ export default function YearRangeFilter() {
           aria-describedby={hintId}
           locale='en-US'
           selection='range'
-          year='2015-01-01'
-          to='2026-01-01'
-          selected={years}
-          onSelectCell={change}
+          defaultFocusedDate='2026-01-01'
+          max='2026-01-01'
+          value={years}
+          onChangeValue={change}
         >
-          <YearPickerLayout>
+          <YearPickerLayout start='2015-01-01'>
             <YearPickerCell />
           </YearPickerLayout>
         </YearPicker>
-        <HelperText id={hintId} error={missing}>
+        <HelperText id={hintId} invalid={missing}>
           {missing ? 'Pick the first and the last year.' : 'Pick the first and the last year of the search.'}
         </HelperText>
       </Fieldset>
@@ -155,7 +155,7 @@ export default function YearRangeFilter() {
 
 ### Раскладка/оверлей: постраничные годы со своими кнопками
 
-Скроллер отдаёт `prev()` и `next()` через `apiRef`, поэтому страницу можно менять кнопками вне сетки, и сообщает видимую страницу через `onChangePeriod` для подписи диапазона. Держите `period` скроллера равным `rows × cols` раскладки и переносите `active` на новую страницу, когда прежний активный год уходит из вида.
+Скроллер отдаёт `prev()` и `next()` через `apiRef`, поэтому страницу можно менять кнопками вне сетки, и сообщает видимую страницу через `onChangePeriod` для подписи диапазона. Держите `period` скроллера равным `rows × cols` раскладки. Страницы начинаются с `defaultFocusedDate`, а прокрутка переносит фокус на то же место новой страницы, поэтому точка Tab не уходит из вида.
 
 <!-- example: year-picker/paged-years-with-own-buttons.tsx -->
 ```tsx
@@ -174,6 +174,7 @@ import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
 import { useRef, useState } from 'react';
 
 const PERIOD = 20;
+const FIRST_YEAR = '2007-01-01';
 
 function getYear(key: string) {
   return Number(key.slice(0, 4));
@@ -181,22 +182,11 @@ function getYear(key: string) {
 
 export default function PagedYearsWithOwnButtons() {
   const scrollerRef = useRef<IndexedSnapScrollerApiRef>(null);
-  const [page, setPage] = useState('2016-01-01');
-  const [active, setActive] = useState('2026-01-01');
+  const [page, setPage] = useState(FIRST_YEAR);
   const [selected, setSelected] = useState<string | null>(null);
 
   const firstYear = getYear(page);
   const lastYear = firstYear + PERIOD - 1;
-
-  const changePage = (next: string) => {
-    setPage(next);
-    setActive((current) => {
-      const year = getYear(current);
-      if (year >= getYear(next) && year < getYear(next) + PERIOD) return current;
-
-      return next;
-    });
-  };
 
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-4)', inlineSize: 'fit-content' }}>
@@ -212,13 +202,12 @@ export default function PagedYearsWithOwnButtons() {
       <YearPicker
         aria-label='Founding year'
         locale='en-US'
-        year='2016-01-01'
-        active={active}
-        onChangeActive={setActive}
-        selected={selected}
-        onSelectCell={setSelected}
+        defaultFocusedDate={FIRST_YEAR}
+        value={selected}
+        onChangeValue={setSelected}
+        period={PERIOD}
       >
-        <YearPickerScroller apiRef={scrollerRef} period={PERIOD} onChangePeriod={changePage}>
+        <YearPickerScroller apiRef={scrollerRef} onChangePeriod={setPage}>
           <YearPickerScrollerContent>
             <YearPickerScrollerLayout rows={5} cols={4}>
               <YearPickerCell />
@@ -236,7 +225,7 @@ export default function PagedYearsWithOwnButtons() {
 
 ### Ошибка: год рождения младше допустимого возраста
 
-Здесь год рождения не ограничен через `from` / `to`: приложение проверяет возраст после выбора и превращает подсказку, связанную с сеткой, в ошибку. Если год никогда не может быть допустимым, предпочитайте границы (см. [Постраничный диапазон лет](./patterns.md#постраничный-диапазон-лет)); проверяйте, когда пользователю нужно увидеть причину.
+Здесь год рождения не ограничен через `min` / `max`: приложение проверяет возраст после выбора и превращает подсказку, связанную с сеткой, в ошибку. Если год никогда не может быть допустимым, предпочитайте границы (см. [Постраничный диапазон лет](./patterns.md#постраничный-диапазон-лет)); проверяйте, когда пользователю нужно увидеть причину.
 
 <!-- example: year-picker/under-age-birth-year.tsx -->
 ```tsx
@@ -270,9 +259,8 @@ export default function UnderAgeBirthYear() {
         aria-label='Birth year'
         aria-describedby={messageId}
         locale='en-US'
-        year={birthYear ?? '2000-01-01'}
-        selected={birthYear}
-        onSelectCell={setBirthYear}
+        value={birthYear}
+        onChangeValue={setBirthYear}
       >
         <YearPickerScroller>
           <YearPickerScrollerContent>
@@ -282,7 +270,7 @@ export default function UnderAgeBirthYear() {
           </YearPickerScrollerContent>
         </YearPickerScroller>
       </YearPicker>
-      <HelperText id={messageId} error={invalid} aria-live='polite'>{message}</HelperText>
+      <HelperText id={messageId} invalid={invalid} aria-live='polite'>{message}</HelperText>
     </div>
   );
 }
@@ -293,7 +281,7 @@ export default function UnderAgeBirthYear() {
 
 ### Отключённый: отдельные годы
 
-Массив начал лет отключает ровно эти годы — здесь уже закрытые финансовые годы; `to` отключает будущие. Причина написана рядом с сеткой и связана через `aria-describedby`.
+Массив начал лет отключает ровно эти годы — здесь уже закрытые финансовые годы; `max` отключает будущие. Причина написана рядом с сеткой и связана через `aria-describedby`.
 
 <!-- example: year-picker/specific-years.tsx -->
 ```tsx
@@ -316,9 +304,9 @@ export default function SpecificYears() {
         aria-label='Fiscal year to adjust'
         aria-describedby={hintId}
         locale='en-US'
-        year='2018-01-01'
-        to='2026-01-01'
-        disabled={closedYears}
+        defaultFocusedDate='2018-01-01'
+        max='2026-01-01'
+        disabledDates={closedYears}
         style={{ width: '100%' }}
       >
         <YearPickerLayout rows={3} cols={3}>
@@ -336,7 +324,7 @@ export default function SpecificYears() {
 
 ### Пограничный случай: смена эры в японском календаре
 
-С календарной системой из `createCalendarSystem` (см. [Адаптер календарной системы](../../i18n.md#адаптер-календарной-системы)) годы следуют этому календарю. В японском календаре 2019 год разделён: Хэйсэй 31 длится с 1 января по 30 апреля, а Рэйва 1 начинается 1 мая, поэтому страница показывает для него две ячейки с ключами `'2019-01-01'` и `'2019-05-01'` и подписями 平成31年 и 令和元年. Арифметика лет, перелистывание и `from` / `to` считают их двумя годами.
+С календарной системой из `createCalendarSystem` (см. [Адаптер календарной системы](../../i18n.md#адаптер-календарной-системы)) годы следуют этому календарю. В японском календаре 2019 год разделён: Хэйсэй 31 длится с 1 января по 30 апреля, а Рэйва 1 начинается 1 мая, поэтому страница показывает для него две ячейки с ключами `'2019-01-01'` и `'2019-05-01'` и подписями 平成31年 и 令和元年. Арифметика лет, перелистывание и `min` / `max` считают их двумя годами.
 
 <!-- example: year-picker/era-change-in-the-japanese-calendar.tsx -->
 ```tsx
@@ -347,7 +335,7 @@ const japaneseCalendar = createCalendarSystem('japanese');
 
 export default function EraChangeInTheJapaneseCalendar() {
   return (
-    <YearPicker aria-label='Year' calendar={japaneseCalendar} locale='ja-JP' year='2018-01-01' style={{ width: '100%' }}>
+    <YearPicker aria-label='Year' calendar={japaneseCalendar} locale='ja-JP' defaultFocusedDate='2018-01-01' style={{ width: '100%' }}>
       <YearPickerLayout>
         <YearPickerCell />
       </YearPickerLayout>
@@ -359,7 +347,7 @@ export default function EraChangeInTheJapaneseCalendar() {
 
 ### Пограничный случай: годы, отсчитываемые от другой эпохи
 
-Календарь, который только перенумеровывает григорианские годы, может расширять `GregorianCalendar` (см. [Расширение GregorianCalendar](../../i18n.md#расширение-gregoriancalendar)). В тайском буддийском календаре ячейка с ключом `'2026-01-01'` подписана พ.ศ. 2569 в локали `th-TH`; ключи, `from` и `to` остаются григорианскими ISO-датами.
+Календарь, который только перенумеровывает григорианские годы, может расширять `GregorianCalendar` (см. [Расширение GregorianCalendar](../../i18n.md#расширение-gregoriancalendar)). В тайском буддийском календаре ячейка с ключом `'2026-01-01'` подписана พ.ศ. 2569 в локали `th-TH`; ключи, `min` и `max` остаются григорианскими ISO-датами.
 
 <!-- example: year-picker/years-counted-from-another-epoch.tsx -->
 ```tsx
@@ -370,7 +358,7 @@ const buddhistCalendar = createCalendarSystem('buddhist');
 
 export default function YearsCountedFromAnotherEpoch() {
   return (
-    <YearPicker aria-label='Year' calendar={buddhistCalendar} locale='th-TH' year='2026-01-01' to='2026-01-01' style={{ width: '100%' }}>
+    <YearPicker aria-label='Year' calendar={buddhistCalendar} locale='th-TH' defaultFocusedDate='2026-01-01' max='2026-01-01' style={{ width: '100%' }}>
       <YearPickerLayout>
         <YearPickerCell />
       </YearPickerLayout>

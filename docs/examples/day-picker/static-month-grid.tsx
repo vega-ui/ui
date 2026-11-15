@@ -9,13 +9,13 @@ export default function StaticMonthGrid() {
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-6)', justifyItems: 'start', width: '100%' }}>
       <DayPicker
-        aria-label='Payment day, November 2026'
+        aria-label='Payment day'
         locale='en-US'
-        month='2026-11-01'
-        from='2026-11-10'
-        to='2026-11-25'
-        selected={day}
-        onSelectCell={setDay}
+        defaultFocusedDate='2026-11-01'
+        min='2026-11-10'
+        max='2026-11-25'
+        value={day}
+        onChangeValue={setDay}
       >
         <DayPickerLayout>
           <DayPickerCell />

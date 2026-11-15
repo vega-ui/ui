@@ -1,17 +1,12 @@
-import { FC, useRef, useState } from 'react';
+import { FC } from 'react';
+import { useWidget, widgetEnvironment } from '../internals/widget';
 import { TextField, TextFieldProps } from '../TextField';
 import { DateTimeFieldProvider } from './contexts';
 import { CalendarDatesDisabled } from '../Calendar';
-import { useControlledState, useFormReset } from '@vega-ui/hooks';
-import {
-  formatTemplateDate,
-  getDateTimeTemplate,
-  getISODatePart,
-  getISOTimePart,
-  parseISODateTime,
-  parseTemplateDate,
-} from '@vega-ui/utils';
+import { parseISODateTime } from '@vega-ui/utils';
 import { CalendarSystem, gregorianCalendar } from '@vega-ui/i18n';
+import { useToday } from '../internals/calendar';
+import { dateTimeFieldWidget } from '@vega-ui/widgets/date-time-field';
 
 export interface DateTimeFieldProps extends Omit<TextFieldProps, 'defaultValue'> {
   /**
@@ -57,8 +52,9 @@ export interface DateTimeFieldProps extends Omit<TextFieldProps, 'defaultValue'>
   /**
    * Step of ArrowUp / ArrowDown on the minutes or seconds under the caret,
    * wrapping around the segment's range. Like a native `datetime-local`
-   * input with `step`, the hours always move by one. `0` turns arrow
-   * stepping off. Typed values are not snapped to the step.
+   * input with `step`, the hours always move by one. A step past `min` or
+   * `max` stops at the bound. `0` turns arrow stepping off. Typed values are
+   * not snapped to the step.
    */
   timeStep?: number
   
@@ -83,14 +79,14 @@ export interface DateTimeFieldProps extends Omit<TextFieldProps, 'defaultValue'>
   /**
    * Minimum allowed date–time as a `YYYY-MM-DDTHH:mm[:ss]` string.
    * Dates earlier than this value cannot be selected
-   * and will be clamped or rejected during input parsing.
+   * in the calendar and make a typed value invalid, like a native input.
    */
   min?: string
   
   /**
    * Maximum allowed date–time as a `YYYY-MM-DDTHH:mm[:ss]` string.
    * Dates later than this value cannot be selected
-   * and will be clamped or rejected during input parsing.
+   * in the calendar and make a typed value invalid, like a native input.
    */
   max?: string
   
@@ -101,10 +97,26 @@ export interface DateTimeFieldProps extends Omit<TextFieldProps, 'defaultValue'>
   disabledDates?: CalendarDatesDisabled
   
   /**
-   * Disables the field.
-   * Prevents user input and interaction and applies the disabled visual state.
+   * Disables the field like a native `disabled` input: the input and the
+   * trigger are disabled, and the value is not submitted.
    */
   disabled?: boolean
+
+  /**
+   * Makes the field read-only like a native `readonly` input: the input is
+   * `readonly`, the calendar still opens to show the date, and picking a day
+   * does not change it. The value is still submitted.
+   */
+  readOnly?: boolean
+
+  /**
+   * Today as a `YYYY-MM-DD` string, passed to `DateTimeFieldCalendar` and
+   * used to read a two-digit year (`yy`) of `dateFormat`: within 80 years
+   * before and 19 years after the year of today. Defaults to the date of the
+   * device, read after hydration and followed when the day or the time zone
+   * changes.
+   */
+  today?: string
   
   /**
    * Calendar system the date is typed and picked in. The value stays a
@@ -115,8 +127,8 @@ export interface DateTimeFieldProps extends Omit<TextFieldProps, 'defaultValue'>
   
   /**
    * BCP 47 locale of the calendar popup (month and day names, first day of
-   * the week), e.g. `de-DE`. The typed format still comes from `format`.
-   * Defaults to the locale of the runtime, like `Intl`.
+   * the week), e.g. `de-DE`. The typed format still comes from `dateFormat`.
+   * @default "en-US"
    */
   locale?: string
 }
@@ -147,58 +159,50 @@ export const DateTimeField: FC<DateTimeFieldProps> = ({
   disabledDates,
   dateSeparator = '.',
   disabled,
+  readOnly,
   calendar = gregorianCalendar,
   locale,
+  today: _today,
   value,
   defaultValue = '',
   onChangeValue,
+  children,
   ...props
 }) => {
+  const today = useToday(_today)
   const min = parseISODateTime(_min) ? _min : undefined
   const max = parseISODateTime(_max) ? _max : undefined
-  const [dateTime, setDateTime] = useControlledState(value, defaultValue, onChangeValue)
-  const [text, setText] = useState('')
-  
-  const inputInnerRef = useRef<HTMLInputElement>(null)
-  
-  const template = getDateTimeTemplate({ dateFormat, dateSeparator, separator, timeFormat })
+  const handle = useWidget(dateTimeFieldWidget, {
+    dateFormat,
+    dateSeparator,
+    separator,
+    timeFormat,
+    timeStep,
+    calendar,
+    today,
+    min,
+    max,
+    disabledDates,
+    value,
+    defaultValue,
+    onChangeValue,
+  }, widgetEnvironment)
 
-  const getDateTime = (text: string) => parseTemplateDate(calendar, text, template) ?? ''
-  const getText = (dateTime: string) => dateTime ? formatTemplateDate(calendar, dateTime, template) : ''
-
-  const shownText = getDateTime(text) === dateTime ? text : getText(dateTime)
-
-  const changeText = (text: string) => {
-    setText(text)
-
-    const nextDateTime = getDateTime(text)
-    if (nextDateTime !== dateTime) setDateTime(nextDateTime)
-  }
-
-  useFormReset(inputInnerRef, () => {
-    if (value !== undefined) return
-
-    setText(getText(defaultValue))
-    setDateTime(defaultValue)
-  })
-  
   return (
     <DateTimeFieldProvider
+      handle={handle}
       max={max}
       min={min}
-      date={getISODatePart(dateTime)}
-      time={getISOTimePart(dateTime) ?? '00:00:00'}
-      text={shownText}
-      changeText={changeText}
-      timeStep={timeStep}
       disabled={disabled}
+      readOnly={readOnly}
       disabledDates={disabledDates}
-      inputRef={inputInnerRef}
-      template={template}
       calendar={calendar}
       locale={locale}
+      today={today}
     >
-      <TextField {...props} />
+      <TextField {...props}>
+        {children}
+      </TextField>
     </DateTimeFieldProvider>
   )
 }

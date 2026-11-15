@@ -243,7 +243,7 @@ export default function InvalidTokenName() {
   return (
     <form onSubmit={onSubmit} style={{ display: 'grid', gap: 'var(--spacing-3)', width: '100%' }}>
       <Label htmlFor='env-variable-name'>Variable name</Label>
-      <TextField error={invalid}>
+      <TextField>
         <TextFieldInput
           id='env-variable-name'
           name='variable'
@@ -255,7 +255,7 @@ export default function InvalidTokenName() {
           onChange={() => setInvalid(false)}
         />
       </TextField>
-      <HelperText id='env-variable-hint' error={invalid}>
+      <HelperText id='env-variable-hint' invalid={invalid}>
         Use uppercase letters, digits and underscores, for example <Code size={2}>STRIPE_API_KEY</Code>.
       </HelperText>
       <Button type='submit' style={{ justifySelf: 'end', marginBlockStart: 'var(--spacing-9)' }}>Add variable</Button>
@@ -313,7 +313,7 @@ export default function LongInlinePath() {
     <div style={{ display: 'grid', gap: 'var(--spacing-6)', width: '100%' }}>
       <Text asChild size={2}>
         <p>
-          Edit <Code size={2} style={{ overflowWrap: 'anywhere' }}>packages/ui/src/DataGrid/components/DataGridColumnHeader/DataGridColumnHeader.tsx</Code>{' '}
+          Edit <Code size={2} style={{ overflowWrap: 'anywhere' }}>packages/ui/src/Grid/components/GridColumnHeader/GridColumnHeader.tsx</Code>{' '}
           to change the sort icon.
         </p>
       </Text>
@@ -330,7 +330,7 @@ export default function LongInlinePath() {
 
 ### Пограничный случай: многострочный фрагмент
 
-`Code` наследует от `Text` `white-space: pre-line`, который схлопывает отступы. Для фрагмента кода оберните его в `<pre>`, задайте `Code` `whiteSpace: 'pre'` и `display: 'block'`, а горизонтальную прокрутку оставьте `<pre>`.
+`Code` схлопывает пробелы, как строчный текст, и теряет отступы и переносы строк. Для фрагмента кода оберните его в `<pre>`, задайте `Code` `whiteSpace: 'pre'` и `display: 'block'`, а горизонтальную прокрутку оставьте `<pre>`.
 
 <!-- example: code/multiline-snippet.tsx -->
 ```tsx

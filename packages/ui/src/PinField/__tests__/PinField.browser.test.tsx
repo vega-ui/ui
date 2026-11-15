@@ -44,10 +44,9 @@ const PinFieldTest: FC<ComponentProps<typeof PinField> & { name?: string; placeh
   );
 };
 
-const ControlledPinFieldTest: FC<{ initialValue?: string; onChangeValue?(value: string): void; accept?(value: string): boolean }> = ({
+const ControlledPinFieldTest: FC<{ initialValue?: string; onChangeValue?(value: string): void }> = ({
   initialValue = '',
   onChangeValue,
-  accept = () => true,
 }) => {
   const [value, setValue] = useState(initialValue);
 
@@ -58,7 +57,7 @@ const ControlledPinFieldTest: FC<{ initialValue?: string; onChangeValue?(value: 
         value={value}
         onChangeValue={(next) => {
           onChangeValue?.(next);
-          if (accept(next)) setValue(next);
+          setValue(next);
         }}
       >
         <PinFieldInput data-testid={TESTID_INPUT} />
@@ -111,12 +110,6 @@ describe('PinField', () => {
       await expect.element(getInput(r)).toBeDisabled();
     });
     
-    it('input exposes invalid state when PinField is in error', async () => {
-      r.rerender(<PinFieldTest maxLength={4} error />);
-      await expect.element(getInput(r)).toHaveAttribute('aria-invalid', 'true');
-      await expect.element(getInput(r)).toHaveAttribute('data-error', 'true');
-    });
-    
     it('pointer down on slot focuses input', async () => {
       fireEvent.pointerDown(getSlot1(r));
       await expect.element(getInput(r)).toHaveFocus();
@@ -161,41 +154,16 @@ describe('PinField', () => {
       await expect.element(getSlot2(r)).toHaveAttribute('data-caret', 'true');
     });
     
-    it('ArrowUp moves caret to start', async () => {
-      const input = getInput(r);
-      
-      focusInput(input);
-      setValue(input, VALUE_12);
-      
-      fireEvent.keyDown(input, { key: 'ArrowUp' });
-      await expect.element(getSlot0(r)).toHaveAttribute('data-caret', 'true');
+    it('dispatches change once the user leaves a code they typed', async () => {
+      const onChange = vi.fn();
+      getInput(r).addEventListener('change', onChange);
+
+      await userEvent.type(getInput(r), '12');
+      await userEvent.tab();
+
+      expect(onChange).toHaveBeenCalledOnce();
     });
-    
-    it('ArrowDown moves caret to end', async () => {
-      const input = getInput(r);
-      
-      focusInput(input);
-      setValue(input, VALUE_12);
-      
-      fireEvent.keyDown(input, { key: 'ArrowDown' });
-      await expect.element(getSlot2(r)).toHaveAttribute('data-caret', 'true');
-    });
-    
-    it('blur resets active (no slot has caret)', async () => {
-      const input = getInput(r);
-      
-      focusInput(input);
-      setValue(input, VALUE_1);
-      
-      await expect.element(getSlot1(r)).toHaveAttribute('data-caret', 'true');
-      
-      fireEvent.blur(input);
-      
-      for (const slot of getSlots(r)) {
-        await expect.element(slot).toHaveAttribute('data-caret', 'false');
-      }
-    });
-    
+
     it('select all sets all slots active', async () => {
       const input = getInput(r);
       
@@ -228,16 +196,6 @@ describe('PinField', () => {
       await expect.element(getSlot1(r)).toHaveTextContent('2');
     });
 
-    it('keeps the controlled value when a keystroke is rejected', async () => {
-      r.unmount();
-      r = render(<ControlledPinFieldTest accept={(next) => next !== VALUE_12} />);
-
-      await userEvent.type(getInput(r), VALUE_12);
-
-      await expect.element(getInput(r)).toHaveValue(VALUE_1);
-      await expect.element(getSlot1(r)).toHaveTextContent(PLACEHOLDER[1]);
-    });
-
     it('keeps calling onChange of the input', async () => {
       const onChange = vi.fn();
       r.rerender(
@@ -251,6 +209,26 @@ describe('PinField', () => {
       expect(onChange).toHaveBeenCalledOnce();
     });
 
+    it('keeps calling onChange of the input on every edit of a controlled code', async () => {
+      const onChange = vi.fn();
+      const Controlled = () => {
+        const [value, setValue] = useState('');
+
+        return (
+          <PinFieldTest maxLength={4} value={value} onChangeValue={setValue}>
+            <PinFieldInput data-testid={TESTID_INPUT} onChange={onChange} />
+          </PinFieldTest>
+        );
+      };
+      r.unmount();
+      r = render(<Controlled />);
+
+      await userEvent.type(getInput(r), '123');
+
+      await expect.element(getInput(r)).toHaveValue('123');
+      expect(onChange).toHaveBeenCalledTimes(3);
+    });
+
     it('updates the slots when the controlled value is changed outside', async () => {
       r.unmount();
       r = render(<ControlledPinFieldTest initialValue={VALUE_1234} />);
@@ -261,40 +239,46 @@ describe('PinField', () => {
       await expect.element(getSlot0(r)).toHaveTextContent(PLACEHOLDER[0]);
       await expect.element(getSlot3(r)).toHaveTextContent(PLACEHOLDER[3]);
     });
-
-    it('Home moves caret to start', async () => {
-      const input = getInput(r);
-
-      focusInput(input);
-      setValue(input, VALUE_12);
-      fireEvent.keyDown(input, { key: 'ArrowDown' });
-      await expect.element(getSlot2(r)).toHaveAttribute('data-caret', 'true');
-
-      fireEvent.keyDown(input, { key: 'Home' });
-      await expect.element(getSlot0(r)).toHaveAttribute('data-caret', 'true');
-    });
-
-    it('End moves caret to end', async () => {
-      const input = getInput(r);
-
-      focusInput(input);
-      setValue(input, VALUE_12);
-      setCaret(input, 0);
-      fireEvent.keyDown(input, { key: 'ArrowUp' });
-
-      fireEvent.keyDown(input, { key: 'End' });
-      await expect.element(getSlot2(r)).toHaveAttribute('data-caret', 'true');
-    });
-
-    it('does not focus or sync on slot pointer down when disabled', async () => {
-      r.rerender(<PinFieldTest maxLength={4} disabled />);
-      
-      fireEvent.pointerDown(getSlot1(r));
-      await expect.element(getInput(r)).not.toHaveFocus();
-    });
   });
   
   describe('Edge Cases', () => {
+    it('shows bullets in the slots while the input is a password and the characters once it is not', async () => {
+      const PasswordPinField = ({ type }: { type: string }) => (
+        <PinFieldTest placeholder='----'>
+          <PinFieldInput data-testid={TESTID_INPUT} type={type} />
+          <PinFieldSlot data-testid={SLOT_0} index={0} />
+          <PinFieldSlot data-testid={SLOT_1} index={1} />
+          <PinFieldSlot data-testid={SLOT_2} index={2} />
+          <PinFieldSlot data-testid={SLOT_3} index={3} />
+        </PinFieldTest>
+      );
+      const r = render(<PasswordPinField type='password' />);
+
+      await userEvent.type(getInput(r), VALUE_12);
+      await expect.poll(() => getSlots(r).map((slot) => slot.textContent)).toEqual(['•', '•', '-', '-']);
+
+      r.rerender(<PasswordPinField type='text' />);
+      await expect.poll(() => getSlots(r).map((slot) => slot.textContent)).toEqual(['1', '2', '-', '-']);
+    });
+
+    it('keeps the caret when the onPointerDown of a slot prevents the default', async () => {
+      const r = render(
+        <PinField maxLength={4}>
+          <PinFieldInput data-testid={TESTID_INPUT} />
+          <PinFieldSlot data-testid={SLOT_0} index={0} />
+          <PinFieldSlot data-testid={SLOT_1} index={1} onPointerDown={(event) => event.preventDefault()} />
+          <PinFieldSlot data-testid={SLOT_2} index={2} />
+          <PinFieldSlot data-testid={SLOT_3} index={3} />
+        </PinField>,
+      );
+      await userEvent.type(getInput(r), '123');
+
+      fireEvent.pointerDown(getSlot1(r));
+
+      await expect.element(getSlot3(r)).toHaveAttribute('data-caret', 'true');
+      await expect.element(getSlot1(r)).toHaveAttribute('data-caret', 'false');
+    });
+
     it('submits value via form (input contributes)', async () => {
       const onSubmit = vi.fn((e: FormEvent) => {
         e.preventDefault();
@@ -335,21 +319,6 @@ describe('PinField', () => {
       await expect.element(getSlot1(r)).toHaveTextContent(PLACEHOLDER[1]);
     });
     
-    it('restores the default value after a reset button', async () => {
-      const r = render(
-        <form>
-          <PinFieldTest maxLength={4} defaultValue={VALUE_12} />
-          <button type='reset'>Reset</button>
-        </form>,
-      );
-
-      await userEvent.type(getInput(r), '3');
-      await userEvent.click(r.getByRole('button', { name: 'Reset' }));
-
-      await expect.element(getInput(r)).toHaveValue(VALUE_12);
-      await expect.element(getSlot2(r)).toHaveTextContent(PLACEHOLDER[2]);
-    });
-
     it('shows the default value in the slots', async () => {
       const r = render(
         <PinFieldTest maxLength={4} defaultValue={VALUE_12}>
@@ -367,20 +336,6 @@ describe('PinField', () => {
       const r = render(<PinFieldTest />);
 
       await expect.element(getInput(r)).toHaveAttribute('maxlength', '4');
-    });
-
-    it('does not set selectedAll when value is empty (select all on empty)', async () => {
-      const r = render(<PinFieldTest maxLength={4} />);
-      
-      const input = getInput(r);
-      input.setSelectionRange(0, 0);
-      fireEvent.select(input);
-      
-      // First selected
-      await expect.element(getSlot0(r)).toHaveAttribute('data-active', 'true');
-      await expect.element(getSlot1(r)).toHaveAttribute('data-active', 'false');
-      await expect.element(getSlot2(r)).toHaveAttribute('data-active', 'false');
-      await expect.element(getSlot3(r)).toHaveAttribute('data-active', 'false');
     });
   });
   

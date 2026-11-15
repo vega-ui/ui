@@ -8,7 +8,7 @@ export default function HelperTextSizes() {
       {SIZES.map((size) => (
         <div key={size} style={{ display: 'grid', gap: 'var(--spacing-1)' }}>
           <HelperText size={size}>Hint, {size}: shown to all members of the workspace.</HelperText>
-          <HelperText size={size} error>Error, {size}: this name is already in use.</HelperText>
+          <HelperText size={size} invalid>Error, {size}: this name is already in use.</HelperText>
         </div>
       ))}
     </div>

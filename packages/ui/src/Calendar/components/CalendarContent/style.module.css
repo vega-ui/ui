@@ -1,6 +1,6 @@
 .content {
     position: relative;
-    overflow: hidden;
+    overflow: clip;
     padding: var(--spacing-2);
 }
 

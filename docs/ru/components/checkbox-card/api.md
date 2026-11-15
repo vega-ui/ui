@@ -62,11 +62,11 @@
 <!-- AUTO-GENERATED:PART_API:CheckboxCardControl:start -->
 | Проп | Тип | По умолчанию | Обязательный | Описание |
 | --- | --- | --- | --- | --- |
-| `variant` | `CheckboxVariant` | — | Нет | Визуальный вариант чекбокса для переключения темы или контекста. |
+| `ref` | `Ref<HTMLSpanElement>` | — | Нет | Ref на `<span>`, который держит чекбокс внутри метки карточки. |
 | `size` | `CheckboxSize` | — | Нет | Размер чекбокса и его визуального маркера. |
-| `ref` | `Ref<HTMLLabelElement>` | — | Нет | Ref на нативный элемент label. |
+| `variant` | `CheckboxVariant` | — | Нет | Визуальный вариант чекбокса для переключения темы или контекста. |
 
-Также принимает все атрибуты `<label>`.
+Также принимает все атрибуты `<span>`.
 <!-- AUTO-GENERATED:PART_API:CheckboxCardControl:end -->
 
 ## `CheckboxCardControlInput`
@@ -92,7 +92,7 @@
 | `size` | `IconSize` | — | Нет | Предопределённый токен размера иконки. Может быть переопределён явными шириной и высотой. |
 | `ref` | `Ref<SVGSVGElement>` | — | Нет | Ref на SVG-элемент |
 | `strokeWidth` | `number` | — | Нет | Толщина обводки линий и фигур SVG (в px или pt). |
-| `children` | `ReactNode` | — | Нет | Содержимое иконки (обязательно). Принимает: иконки из `~/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler) |
+| `children` | `ReactNode` | — | Нет | Содержимое иконки. Принимает: иконки из `@vega-ui/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler) |
 
 Также принимает все HTML-атрибуты.
 <!-- AUTO-GENERATED:PART_API:CheckboxCardControlCheckedIcon:end -->
@@ -107,7 +107,7 @@
 | `size` | `IconSize` | — | Нет | Предопределённый токен размера иконки. Может быть переопределён явными шириной и высотой. |
 | `ref` | `Ref<SVGSVGElement>` | — | Нет | Ref на SVG-элемент |
 | `strokeWidth` | `number` | — | Нет | Толщина обводки линий и фигур SVG (в px или pt). |
-| `children` | `ReactNode` | — | Нет | Содержимое иконки (обязательно). Принимает: иконки из `~/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler) |
+| `children` | `ReactNode` | — | Нет | Содержимое иконки. Принимает: иконки из `@vega-ui/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler) |
 
 Также принимает все HTML-атрибуты.
 <!-- AUTO-GENERATED:PART_API:CheckboxCardControlIndeterminateIcon:end -->

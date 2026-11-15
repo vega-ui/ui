@@ -61,16 +61,19 @@ export default function ProfileFormSubmit() {
 
 A native input submits the text it shows. For most fields that is the value itself; a few components keep a different value on the root:
 
-| Component | Submitted with `name` on the input | Value on the root |
+| Component | Submitted under `name` | Value on the root |
 | --- | --- | --- |
 | `TextField`, `TextArea`, `PasswordField` | the typed text | — |
 | `NumberField` | the formatted text, for example `2 500` | `value` / `defaultValue` as a number, `NaN` when empty |
-| `DateField`, `DateRangeField`, `DateTimeField`, `TimeField` | the typed text in `format`, for example `15.01.2026` | ISO `value` / `defaultValue`, see [Dates and calendar systems](./i18n.md#date-values) |
+| `PhoneField` | the formatted text, for example `+1 415 555-0132` | `value` / `defaultValue` in E.164 |
+| `DateField`, `DateTimeField` | the typed text, for example `15.01.2026` | ISO `value` / `defaultValue`, see [Dates and calendar systems](./i18n.md#date-values) |
+| `DateRangeField` | the typed text, for example `10.01.2026 – 15.01.2026` | `value` / `defaultValue` as a pair of ISO days |
+| `TimeField` | the typed text, for example `09:30` | `value` / `defaultValue` as `HH:mm[:ss]` |
 | `Checkbox`, `Radio`, `Switch`, `SegmentedControl` | `value` of each checked input | — |
 | `Slider` | each thumb value; `name` on the root applies to every thumb | `value` / `defaultValue` as an array |
 | `Select` | the selected value, through `SelectHiddenSelect` with a `name` | `value` / `defaultValue` |
 
-When the server expects the root value rather than the shown text, mirror it into a hidden input from `onChangeValue`. The [DateField example](./components/date-field/examples.md) submits the ISO day this way. `Listbox` has no form part at all: render one hidden input per selected value, as in [Listbox in a form](./components/listbox/examples.md).
+When the server expects the root value of `NumberField`, `PhoneField` or a date field rather than the shown text, mirror it into a hidden input from `onChangeValue`. `Listbox` has no form part at all: render one hidden input per selected value, as in [Listbox in a form](./components/listbox/examples.md).
 
 <!-- example: select/native-form-participation.tsx -->
 ```tsx
@@ -147,12 +150,12 @@ export default function NativeFormParticipation() {
 
 ## Constraint Validation
 
-`required`, `pattern`, `type='email'`, `min` and `max` on the input parts block the submit and fill `input.validity`, the same as on native inputs. The browser shows its own message bubble unless you take over:
+`required`, `pattern`, `type='email'`, `min` and `max` on the input parts block the submit and fill `input.validity`, the same as on native inputs. `PhoneFieldInput` also fails a number too short or too long for its country, through `setCustomValidity`. The browser shows its own message bubble unless you take over:
 
 - listen to `onInvalid` on the input and call `event.preventDefault()` to hide the bubble, then read `event.currentTarget.validity` to pick your message
 - or put `noValidate` on the form and check the values yourself in `onSubmit`
 
-The error look is opt-in and never derived from validity. Pass `error` to the field root (`TextField`, `TextArea`, `NumberField`, `PinField`) and to `HelperText` to switch them to the error colors. The library does not set ARIA for you: set `aria-invalid` on the input and point `aria-describedby` at the `HelperText` that carries the message.
+The error look follows the native control, not a prop. The text and date fields, `TextArea`, `PinField`, `Checkbox`, `CheckboxCard`, `Radio`, `Switch`, `Select` and `Slider` turn red when their control matches `:user-invalid`, a failed constraint once the user has edited it or tried to submit, or has `aria-invalid='true'`. Set `aria-invalid` yourself for errors only your app knows, such as an address that is already taken or a rule across two fields; the library never sets it. Pass `invalid` to `HelperText` to switch the message to the error color, and point `aria-describedby` at it.
 
 <!-- example: helper-text/native-validity-message.tsx -->
 ```tsx
@@ -184,7 +187,7 @@ export default function NativeValidityMessage() {
     <form onSubmit={(event) => event.preventDefault()} style={{ display: 'grid', gap: 'var(--spacing-12)', width: '100%' }}>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor={id}>Postal code</Label>
-        <TextField error={invalid}>
+        <TextField>
           <TextFieldInput
             id={id}
             name='postalCode'
@@ -198,7 +201,7 @@ export default function NativeValidityMessage() {
             onInput={onInput}
           />
         </TextField>
-        {invalid && <HelperText id={`${id}-error`} error>{error}</HelperText>}
+        {invalid && <HelperText id={`${id}-error`} invalid>{error}</HelperText>}
         <HelperText id={`${id}-hint`}>We deliver within Germany only.</HelperText>
       </div>
       <Button type='submit' style={{ justifySelf: 'start' }}>Check delivery</Button>
@@ -209,6 +212,8 @@ export default function NativeValidityMessage() {
 <!-- /example -->
 
 Controls without a native constraint, such as a `Select` without a choice, are validated in `onSubmit`: keep the error in state, set `aria-invalid` on `SelectCombobox`, and move focus to it. See [Select required error](./components/select/examples.md).
+
+`NumberField`, `PhoneField`, `PinField`, `DateField`, `DateRangeField`, `DateTimeField` and `TimeField` write the text of their input themselves, and Chromium and WebKit do not count such a text as an edit of the user, so the input does not match `:user-invalid` after it. These fields mark the edit themselves: when the user leaves the input after changing its text, the input fires `change` and gets `data-user-edited`, and the error look also follows `[data-user-edited]:invalid`. A value set through props does not mark the field, and a form reset removes the attribute. In your own CSS for these inputs, write `:is(:user-invalid, [data-user-edited]:invalid)`.
 
 ## Disabling A Group
 
@@ -293,6 +298,6 @@ A `<button type='reset'>` restores every uncontrolled field to its default:
 
 - Give every submitted input a `name`; a field without one is not in `FormData`.
 - Keep validation rules on the input parts, so the browser, autofill and the server see the same constraints.
-- Wire `aria-invalid` and `aria-describedby` yourself, and pass `error` only as the visual state.
+- Wire `aria-invalid` and `aria-describedby` yourself for errors the browser does not know; native constraints show the error look through `:user-invalid`, or `[data-user-edited]:invalid` on the fields that write their own text.
 - Use `Fieldset` with `disabled` for a group, not `disabled` on each control.
 - Check the same rules on the server: client validation is a convenience, not a guarantee.

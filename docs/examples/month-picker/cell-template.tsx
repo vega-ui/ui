@@ -39,7 +39,7 @@ function SpendingMonth({ locale }: { locale: string }) {
 
 export default function CellTemplate({ locale = 'en-US' }: { locale?: string }) {
   return (
-    <MonthPicker aria-label='Spending by month, 2026' locale={locale} year='2026-01-01' size='lg' to='2026-10-01' style={{ width: '100%' }}>
+    <MonthPicker aria-label='Spending by month, 2026' locale={locale} defaultFocusedDate='2026-01-01' size='lg' max='2026-10-01' style={{ width: '100%' }}>
       <MonthPickerLayout format='short' cols={4}>
         <SpendingMonth locale={locale} />
       </MonthPickerLayout>

@@ -61,25 +61,31 @@ Keep the boundary small: a file with `'use client'` for the interactive piece, i
 
 Server and client render the same tree, and React reports a hydration mismatch when their output differs. In Vega UI the defaults to watch are in the date components:
 
-- **Locale.** Without `locale`, `Calendar`, the pickers and the date fields use `getDefaultLocale()`, the locale of the runtime. The Node.js server and the browser often disagree, so month names and the first day of the week change after hydration. Pass `locale` explicitly, from the route or the user settings.
-- **Today.** Without `value`, `defaultValue` or `defaultMonth`, `Calendar` and the pickers open on the current month and use today as the initial tab stop. The server renders the month of its own clock, and a statically exported page renders the month it was built in. Pass `defaultMonth` (or a value) when the page is prerendered, or render the calendar only after mount.
+- **Locale.** Without `locale`, `Calendar`, the pickers and the date fields use `"en-US"` on the server and in the browser alike, so the markup matches but may be in the wrong language. Pass `locale` explicitly, from the route or the user settings.
+- **Today.** `Calendar` and the pickers read nothing from the environment during render. Without `today` they learn the date from the device after hydration, so the server and the first client render match; until then there is no today mark, and without `value`, `defaultValue` or `defaultFocusedDate` no month is shown either. Pass `today` (from the request, in the user's time zone) to render the current month on the server, or `defaultFocusedDate` (or a value) to open a known month on a prerendered page.
 
 ```tsx
 'use client';
 
-import { Calendar, CalendarDay, CalendarDays, CalendarMonthLabel, CalendarWeekday, CalendarWeekdays, CalendarWeeks } from '@vega-ui/react';
+import { Calendar, CalendarDay, CalendarDays, CalendarHeader, CalendarHeading, CalendarWeekday, CalendarWeekdays, CalendarWeeks, CalendarDaysScroller, CalendarDaysScrollerContent } from '@vega-ui/react';
 
-export function BookingCalendar({ locale, month }: { locale: string, month: string }) {
+export function BookingCalendar({ locale, today }: { locale: string, today: string }) {
   return (
-    <Calendar locale={locale} defaultMonth={month}>
-      <CalendarMonthLabel />
+    <Calendar locale={locale} today={today}>
+      <CalendarHeader>
+        <CalendarHeading />
+      </CalendarHeader>
       <CalendarDays>
         <CalendarWeekdays>
           <CalendarWeekday />
         </CalendarWeekdays>
-        <CalendarWeeks>
-          <CalendarDay />
-        </CalendarWeeks>
+        <CalendarDaysScroller>
+          <CalendarDaysScrollerContent>
+            <CalendarWeeks>
+              <CalendarDay />
+            </CalendarWeeks>
+          </CalendarDaysScrollerContent>
+        </CalendarDaysScroller>
       </CalendarDays>
     </Calendar>
   );
@@ -97,4 +103,4 @@ With `output: 'export'` every page is rendered to HTML at build time and hydrate
 - Import `@vega-ui/theme-core`, then `@vega-ui/react/style.css`, then app CSS, once in the root layout.
 - Set the theme class before paint and add `suppressHydrationWarning` to `<html>`.
 - Keep handlers, state and `asChild` compositions in Client Components.
-- Pass `locale` to every date component, and `defaultMonth` or a value to calendars on prerendered pages.
+- Pass `locale` to every date component, and `today`, `defaultFocusedDate` or a value to calendars that must show a month in the server HTML.

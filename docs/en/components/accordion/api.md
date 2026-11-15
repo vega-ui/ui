@@ -11,7 +11,7 @@
 | `children` | `ReactElement<AccordionItemProps> \| ReactElement<AccordionItemProps>[]` | — | No | Accordion items to render. Should be one or more `<AccordionItem>` components. Accepts a single element or an array of elements. |
 | `opened` | `string[]` | — | No | IDs of currently open items. Enables controlled mode when set. |
 | `onChangeOpened` | `(opened?: string[]) => void` | — | No | Called when open item IDs change. |
-| `defaultOpened` | `string[]` | `[]` | No | An array of item `id's that should be open by default when the accordion mounts. |
+| `defaultOpened` | `string[]` | `[]` | No | An array of item `id`s that should be open by default when the accordion mounts. |
 | `multiple` | `boolean` | `false` | No | Allows multiple accordion items to be open at the same time. If `false`, only one item can be open at once (classic accordion behavior). |
 
 Also accepts all `<ul>` attributes.
@@ -47,7 +47,7 @@ Also accepts all `<li>` attributes.
 | `asChild` | `boolean` | — | No | If true, renders the trigger as a child component using `Slot` (e.g. `<a>` or `<div>`). This allows custom semantics or styling while preserving collapsible behavior. |
 | `ref` | `Ref<HTMLButtonElement>` | — | No | Ref forwarded to the native trigger element (typically a button). |
 
-Also accepts all HTML attributes.
+Also accepts all `<button>` attributes.
 <!-- AUTO-GENERATED:PART_API:AccordionTrigger:end -->
 
 ### `AccordionContent`
@@ -81,7 +81,7 @@ Also accepts all `<h1>–<h6>` attributes.
 | `size` | `IconSize` | — | No | Predefined size token for the icon. Can be overridden by explicit width and height. |
 | `ref` | `Ref<SVGSVGElement>` | — | No | Ref to the SVG element |
 | `strokeWidth` | `number` | — | No | Stroke thickness for SVG lines and shapes (in px or pt). |
-| `children` | `ReactNode` | — | No | Icon content (required). Accepts: icons from `~/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
+| `children` | `ReactNode` | — | No | Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
 
 Also accepts all HTML attributes.
 <!-- AUTO-GENERATED:PART_API:AccordionIcon:end -->
@@ -100,4 +100,5 @@ Also accepts all HTML attributes.
 - `Accordion` can be uncontrolled through `defaultOpened` or [controlled](../../glossary.md#controlled) through `opened` and `onChangeOpened`.
 - `multiple={false}` behaves like a classic accordion where opening one item closes the others.
 - `multiple={true}` allows the root to behave like a grouped disclosure surface.
-- `useAccordionContext` and `useAccordionItemContext` are available for advanced wrappers and custom compositions.
+- The trigger runs your `onClick` first: `event.preventDefault()` in it keeps the item as it is.
+- `useAccordionContext` returns `{ handle, size }`, with the widget handle of the accordion, and `useAccordionItemContext` returns `{ size }`, for advanced wrappers and custom compositions.

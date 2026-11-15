@@ -55,7 +55,7 @@ export default function MinimalComposition() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', width: '100%', maxWidth: 320 }}>
       <Label htmlFor={id}>Phone number</Label>
-      <PhoneField defaultCode='US'>
+      <PhoneField defaultCountry='US'>
         <PhoneFieldSelect>
           <SelectHiddenSelect name='country' />
           <SelectCombobox aria-label='Country'>
@@ -68,7 +68,7 @@ export default function MinimalComposition() {
             <SelectOption value='DE'>DE</SelectOption>
           </SelectListbox>
         </PhoneFieldSelect>
-        <PhoneFieldInput id={id} name='phone' autoComplete='tel' />
+        <PhoneFieldInput name='phone' id={id} autoComplete='tel' />
       </PhoneField>
     </div>
   );
@@ -98,7 +98,7 @@ Typical composition:
 6. `SelectOption`
 7. `PhoneFieldInput`
 
-Instead of `PhoneFieldSelect` you can put any control of your own next to the field (a plain `Select`, a `Combobox`, buttons) and drive it with controlled `code` and `onChangeCode`. When `code` changes from outside, the field writes the new calling code into the input itself and reports it through `onChangeValue`. Like a native input whose `value` is set from code, it does not fire `input` and `change` events then; those fire only when the country is picked in `PhoneFieldSelect`.
+Instead of `PhoneFieldSelect` you can put any control of your own next to the field (a plain `Select`, a `Combobox`, buttons) and drive it with controlled `country` and `onChangeCountry`. `country` is a hint: it is the country shown in `PhoneFieldSelect` and the calling code a strict mask starts an empty field with. When `country` changes from outside, the field keeps the number and the text as they are and calls no `onChangeValue`; set `value` yourself when the number should change too. A pick in `PhoneFieldSelect` is an edit of the user: the field writes the calling code of the picked country into the input, fires `input` and `change`, and reports `onChangeCountry` and `onChangeValue` (with `''`, since a calling code alone is an empty number) in the same action, even when `country` is controlled.
 
 ## Variants
 
@@ -119,13 +119,13 @@ Instead of `PhoneFieldSelect` you can put any control of your own next to the fi
 
 ## Edge Cases
 
-- Country changes can require reformatting and revalidation.
+- A country change from outside never rewrites the number; only a pick in `PhoneFieldSelect` does.
 - Strict masking and paste behavior should both be tested.
-- Persist canonical values at the feature boundary, not only the displayed formatted string.
+- Persist `value`, the number in E.164, not the formatted text of the input.
 - Autofill, pasted values, and partially typed international prefixes should be tested together, not as isolated cases.
 
 ## Common Mistakes
 
-- Treating only the visible formatted string as the [source of truth](../../glossary.md#source-of-truth).
+- Reading the number from the visible formatted text instead of `value`, the [source of truth](../../glossary.md#source-of-truth) in E.164.
 - Ignoring country changes in validation logic.
 - Testing typing flow only and skipping paste or autofill.

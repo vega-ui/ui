@@ -37,7 +37,7 @@ Also accepts all `<div>` attributes.
 | `asChild` | `boolean` | — | No | If true, renders the trigger as a child component using `Slot` (e.g. `<a>` or `<div>`). This allows custom semantics or styling while preserving collapsible behavior. |
 | `ref` | `Ref<HTMLButtonElement>` | — | No | Ref forwarded to the native trigger element (typically a button). |
 
-Also accepts all HTML attributes.
+Also accepts all `<button>` attributes.
 <!-- AUTO-GENERATED:PART_API:CollapsibleTrigger:end -->
 
 ## Types
@@ -50,4 +50,6 @@ Also accepts all HTML attributes.
 
 - `Collapsible` can be uncontrolled through `defaultOpen` or [controlled](../../glossary.md#controlled) through `open` and `onChangeOpen`.
 - `onChangeHidden` tracks whether content is actually hidden, which can lag behind `open` because content height transitions first.
-- `useCollapsibleContext` is available for advanced wrappers and custom compositions.
+- The parent can open and close the content at any time through `open`; the content animates either way.
+- The trigger runs your `onClick` first: `event.preventDefault()` in it keeps the section as it is.
+- `useCollapsibleContext` returns `{ handle }`, the widget handle of the section, for advanced wrappers and custom compositions.

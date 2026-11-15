@@ -31,6 +31,7 @@ The control visuals are driven by the composed checkbox-card control parts.
 - `data-variant='primary' | 'secondary'` changes checked and indeterminate border color.
 - `:has(input[type='checkbox']:checked)` and `:has(...:indeterminate)` drive selected border state.
 - Disabled state remaps the border color to disabled theme tokens.
+- `aria-invalid='true'` on `CheckboxCardControlInput` or its `:user-invalid`, for example a `required` card left unchecked after a submit attempt, sets `--card-border-color` to `--color-error`. The component never sets `aria-invalid` itself.
 
 ## Examples
 

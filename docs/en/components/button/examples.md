@@ -410,7 +410,7 @@ export default function FailedActionWithRetry() {
         {failed ? 'Retry sync' : 'Sync calendar'}
       </Button>
       {failed && (
-        <HelperText id='sync-error' error role='alert'>
+        <HelperText id='sync-error' invalid role='alert'>
           Google Calendar did not respond. Check your connection and try again.
         </HelperText>
       )}

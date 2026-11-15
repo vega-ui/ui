@@ -11,6 +11,10 @@
 | --- | --- |
 | <kbd>↑</kbd> | Increases the value by one `step`, up to `max`. An empty field gets `min`, or 0 without it. |
 | <kbd>↓</kbd> | Decreases the value by one `step`, down to `min`. |
+| <kbd>Page Up</kbd> | Increases the value by ten steps, up to `max`. |
+| <kbd>Page Down</kbd> | Decreases the value by ten steps, down to `min`. |
+| <kbd>Home</kbd> | Sets the value to `min`. Without `min` the caret moves as in a plain input. |
+| <kbd>End</kbd> | Sets the value to `max`. Without `max` the caret moves as in a plain input. |
 <!-- AUTO-GENERATED:KEYBOARD:end -->
 
 - Standard text editing still happens through the native input.
@@ -22,8 +26,8 @@
 
 ## Screen Reader Semantics
 
-- The meaningful input is still a native input.
-- `aria-valuemin` and `aria-valuemax` are exposed on the input from context.
+- The input has `role="spinbutton"` and `aria-valuenow` with the current number.
+- `aria-valuemin` and `aria-valuemax` appear only when `min` and `max` are set.
 
 ## Form Semantics
 

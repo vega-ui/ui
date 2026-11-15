@@ -537,7 +537,7 @@ export default function ServerValidationError() {
           </div>
           <form onSubmit={onSubmit} style={{ display: 'grid', gap: 'var(--spacing-3)', marginBlockStart: 'var(--spacing-8)' }}>
             <Label htmlFor={emailId}>New email</Label>
-            <TextField error={error !== ''}>
+            <TextField>
               <TextFieldInput
                 id={emailId}
                 name='email'
@@ -549,7 +549,7 @@ export default function ServerValidationError() {
                 onChange={() => setError('')}
               />
             </TextField>
-            {error && <HelperText id={errorId} error>{error}</HelperText>}
+            {error && <HelperText id={errorId} invalid>{error}</HelperText>}
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--spacing-4)', marginBlockStart: 'var(--spacing-9)' }}>
               <DialogClose asChild>
                 <Button type='button' variant='secondary' appearance='ghost'>Cancel</Button>

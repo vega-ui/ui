@@ -293,6 +293,6 @@ html[data-radius='full'] {
     --option-br-ratio: var(--site-br-ratio);
     --select-br-ratio: var(--site-br-ratio);
     --segmented-control-br-ratio: var(--site-br-ratio);
-    --data-grid-picker-item-br-ratio: var(--site-br-ratio);
+    --grid-item-br-ratio: var(--site-br-ratio);
     --badge-border-radius-ratio: var(--site-br-ratio);
 }

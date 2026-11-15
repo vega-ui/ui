@@ -3,20 +3,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   HelperText,
 } from '@vega-ui/react';
 import { useId } from 'react';
@@ -35,13 +41,13 @@ export default function BookingWindowAndBlockedDays() {
 
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-3)', justifyItems: 'start', width: '100%' }}>
-      <Calendar locale='en-US' min='2026-12-01' max='2027-01-31' defaultMonth='2026-12-01' disabledDates={isClosed}>
+      <Calendar locale='en-US' min='2026-12-01' max='2027-01-31' defaultFocusedDate='2026-12-01' disabledDates={isClosed}>
         <CalendarHeader>
           <CalendarPrevButton aria-label='Previous' />
-          <CalendarViewButtonGroup>
+          <CalendarHeading>
             <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
             <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-          </CalendarViewButtonGroup>
+          </CalendarHeading>
           <CalendarNextButton aria-label='Next' />
         </CalendarHeader>
         <CalendarContent>
@@ -49,15 +55,27 @@ export default function BookingWindowAndBlockedDays() {
             <CalendarWeekdays>
               <CalendarWeekday />
             </CalendarWeekdays>
-            <CalendarWeeks>
-              <CalendarDay />
-            </CalendarWeeks>
+            <CalendarDaysScroller>
+              <CalendarDaysScrollerContent>
+                <CalendarWeeks>
+                  <CalendarDay />
+                </CalendarWeeks>
+              </CalendarDaysScrollerContent>
+            </CalendarDaysScroller>
           </CalendarDays>
           <CalendarMonths>
-            <CalendarMonth />
+            <CalendarMonthsGrid>
+              <CalendarMonth />
+            </CalendarMonthsGrid>
           </CalendarMonths>
           <CalendarYears>
-            <CalendarYear />
+            <CalendarYearsScroller>
+              <CalendarYearsScrollerContent>
+                <CalendarYearsGrid>
+                  <CalendarYear />
+                </CalendarYearsGrid>
+              </CalendarYearsScrollerContent>
+            </CalendarYearsScroller>
           </CalendarYears>
         </CalendarContent>
       </Calendar>

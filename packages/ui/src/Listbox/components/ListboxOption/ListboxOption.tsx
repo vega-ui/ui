@@ -1,18 +1,17 @@
 'use client';
 
-import { MouseEvent, PointerEvent, useId } from 'react';
-import { mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
-import { useRegistryItem } from '@vega-ui/react-kit/registry';
-import { useStore } from '@vega-ui/react-kit/store';
+import { useCallback, useId } from 'react';
+import { useMergeRefs } from '@vega-ui/hooks';
+import { useOutput } from '../../../internals/widget';
 import { Option, OptionProps } from '../../../Option';
-import { useListboxContext } from '../../contexts';
-import { ListboxItemData, ListboxState } from '../../../internals/listbox';
+import { useListboxContext } from '../../contexts'
+import { optionPart } from '@vega-ui/widgets/listbox';
 
-export interface ListboxOptionProps<V> extends Omit<OptionProps, 'id' | 'selected' | 'active'> {
+export interface ListboxOptionProps<Value> extends Omit<OptionProps, 'id' | 'selected' | 'active'> {
   /**
    * The value of this option, passed to the change callback when it is selected.
    */
-  value: V
+  value: Value
 
   /**
    * Plain text of this option for typeahead, used instead of the text of its content.
@@ -21,48 +20,23 @@ export interface ListboxOptionProps<V> extends Omit<OptionProps, 'id' | 'selecte
 }
 
 /** A ListboxOption is a single choice of a Listbox or a Select: it registers in the list, which owns selection and keyboard navigation */
-export const ListboxOption = <V extends string | number>({
+export const ListboxOption = <Value extends string | number>({
   value,
   label,
   size,
   disabled,
-  onClick: _onClick,
-  onPointerMove: _onPointerMove,
   ref,
   ...props
-}: ListboxOptionProps<V>) => {
-  const {
-    size: listSize,
-    disabled: listDisabled,
-    store,
-    isSelected,
-    onSelect,
-  } = useListboxContext()
-
-  const id = useId()
+}: ListboxOptionProps<Value>) => {
+  const { handle, size: listSize, disabled: listDisabled } = useListboxContext()
+  const key = useId()
   const optionDisabled = disabled || listDisabled
-  const active = useStore<ListboxState, boolean>(store, (state) => state.activeId === id)
-  const optionRef = useRegistryItem<ListboxItemData, HTMLDivElement>(store, id, { value, disabled: optionDisabled, label })
-
-  const onClick = () => {
-    onSelect(value)
-  }
-
-  const onPointerMove = (event: PointerEvent<HTMLDivElement>) => {
-    if (event.pointerType === 'mouse' && !optionDisabled && !active) store.setActive(id, 'pointer')
-  }
-
-  return (
-    <Option
-      size={size ?? listSize}
-      active={active}
-      selected={isSelected(value)}
-      disabled={optionDisabled}
-      onClick={mergeEventHandlers<MouseEvent<HTMLDivElement>>(onClick, _onClick)}
-      onPointerMove={mergeEventHandlers(onPointerMove, _onPointerMove)}
-      ref={mergeRefs([optionRef, ref])}
-      {...props}
-      id={id}
-    />
+  const register = useCallback(
+    (element: HTMLElement | null) => handle.elements.setItem(key, element, element ? { value, disabled: optionDisabled, label: label ?? element.textContent ?? '' } : undefined),
+    [handle, key, value, optionDisabled, label],
   )
+  const attrs = useOutput(handle, optionPart, key)
+  const optionRef = useMergeRefs([register, ref])
+
+  return <Option size={size ?? listSize} disabled={optionDisabled} ref={optionRef} {...handle.merge(attrs, props)} />
 }

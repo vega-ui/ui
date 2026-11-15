@@ -11,13 +11,13 @@ export type AlertContentProps = TextProps
  * inside the alert container.
  *
  * The component uses the Text primitive for consistent typography
- * and renders its content as a paragraph element. A predefined text
- * size is applied to ensure visual hierarchy within the Alert.
+ * and renders its content in a `<div>`, so it can hold paragraphs and lists.
+ * A predefined text size is applied to ensure visual hierarchy within the Alert.
  */
 export const AlertContent: FC<AlertContentProps> = ({ children, className, ...props }) => {
   return (
     <Text asChild size={2} className={csx(style.text, className)} {...props}>
-      <p>{children}</p>
+      <div>{children}</div>
     </Text>
   )
 }

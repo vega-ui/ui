@@ -37,6 +37,42 @@ The real container or overlay stack was not tested.
 - Retest the exact production container structure.
 - `PopoverContent` renders in the top layer, so `overflow` and `z-index` on ancestors do not clip or cover it; look at placement instead.
 
+## Popover Opens In The Middle Of The Screen
+
+### Symptom
+
+The content opens centered in the viewport instead of next to its trigger.
+
+### Likely Cause
+
+The browser does not support CSS anchor positioning: Chrome and Edge before 129, Safari before 26, Firefox before 147. The popover still opens, closes and moves the focus, but it has nothing to position against.
+
+### How To Verify
+
+- Check `CSS.supports('anchor-name', '--a')` in the browser.
+
+### Fix
+
+- Ask the users to update the browser; the library has no script fallback for positioning.
+
+## Popover Is Misplaced In Firefox Inside Another Text Direction
+
+### Symptom
+
+In Firefox, the content opens away from its trigger or off screen.
+
+### Likely Cause
+
+A Firefox bug: it positions an anchored element wrongly when its text direction differs from the page, such as a `dir="rtl"` block on a left-to-right page. Chrome and Safari place it correctly.
+
+### How To Verify
+
+- Set the same `dir` on `<html>` as on the block around the popover and check that the popover moves next to its trigger.
+
+### Fix
+
+- Set `dir` on `<html>` instead of a block when the whole page uses one direction.
+
 ## Nested Popovers Feel Confusing
 
 ### Symptom

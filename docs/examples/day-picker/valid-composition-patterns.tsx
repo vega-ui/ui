@@ -5,14 +5,11 @@ import {
   DayPickerScrollerContent,
   DayPickerScrollerLayout,
 } from '@vega-ui/react';
-import { useState } from 'react';
 
 export default function ValidCompositionPatterns() {
-  const [month, setMonth] = useState('2026-11-01');
-
   return (
-    <DayPicker aria-label='Days' locale='en-US' month={month}>
-      <DayPickerScroller onChangePeriod={setMonth}>
+    <DayPicker aria-label='Days' locale='en-US' defaultFocusedDate='2026-11-01'>
+      <DayPickerScroller>
         <DayPickerScrollerContent>
           <DayPickerScrollerLayout includeOverflowDays>
             <DayPickerCell />

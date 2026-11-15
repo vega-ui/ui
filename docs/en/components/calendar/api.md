@@ -8,25 +8,28 @@
 <!-- AUTO-GENERATED:ROOT_API:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
+| `variant` | `CalendarVariant` | `'secondary'` | No | Visual variant of the buttons and cells of the calendar. |
+| `size` | `CalendarSize` | `'xs'` | No | Size of the buttons, cells and weekday names of the calendar. |
+| `compact` | `boolean` | — | No | Shrinks the calendar to the width of its content: the root gets `data-compact="true"`. |
 | `max` | `string` | — | No | Latest selectable date as a `YYYY-MM-DD` string. Months and years beyond this date become unavailable. Day, Month, and Year pickers use this to disable or clamp navigation. |
 | `min` | `string` | — | No | Earliest selectable date as a `YYYY-MM-DD` string. Months and years before this date become unavailable. All pickers respect this constraint when computing active ranges. |
-| `selection` | `S` | `'single'` | No | Selection mode. Determines the structure of `value`, all dates are `YYYY-MM-DD` strings: 'single' — a string, `''` when nothing is selected; 'multiple' — an array of strings; 'range' — a `[start, end]` tuple with `start` not after `end`, `''` marks an unset bound. Default: `'single'` |
+| `selection` | `SelectionMode` | `'single'` | No | Selection mode. Determines the structure of `value`, all dates are `YYYY-MM-DD` strings: 'single' — a string, `''` when nothing is selected; 'multiple' — an array of strings; 'range' — a `[start, end]` tuple with `start` not after `end`, `''` marks an unset bound |
 | `view` | `CalendarView` | — | No | Controlled visible view: 'day' — the days of the visible month (`CalendarDays`); 'month' — the months of the visible year (`CalendarMonths`); 'year' — pages of years (`CalendarYears`) |
-| `value` | `CalendarValue<S>` | — | No | Controlled selection value, shaped by the `selection` mode. Malformed or non-existent dates are treated as unselected. |
-| `defaultValue` | `CalendarValue<S>` | — | No | Uncontrolled initial selection value, shaped by the `selection` mode. |
-| `defaultView` | `CalendarView` | `'day'` | No | Initial view for uncontrolled usage. Default: `'day'` |
+| `value` | `CalendarValue<SelectionMode>` | — | No | Controlled selection value, shaped by the `selection` mode. Malformed or non-existent dates are treated as unselected. |
+| `defaultValue` | `CalendarValue<SelectionMode>` | — | No | Uncontrolled initial selection value, shaped by the `selection` mode. |
+| `defaultView` | `CalendarView` | `'day'` | No | Initial view for uncontrolled usage. |
 | `disabled` | `boolean` | — | No | Disables the whole calendar: no date can be selected and navigation is off. |
+| `readOnly` | `boolean` | — | No | Makes the selection read-only like a native `readonly` input: the day grid gets `aria-readonly="true"`, navigation still works, and picking a day neither changes the selection nor calls `onChangeValue`. |
+| `autoFocus` | `boolean` | — | No | Moves the focus into the calendar when it mounts, onto the tab stop of the shown view: the focused day, otherwise the selected day or today, otherwise the first available day. |
 | `disabledDates` | `CalendarDatesDisabled` | — | No | Dates that cannot be selected, as `YYYY-MM-DD` strings: a single date; an array of dates; a predicate `(date: string) => boolean` |
-| `onChangeValue` | `(value: CalendarValue<S>) => void` | — | No | Fires when the user changes the selection. The value is shaped by the `selection` mode. |
+| `onChangeValue` | `(value: CalendarValue<SelectionMode>) => void` | — | No | Fires when the user changes the selection. The value is shaped by the `selection` mode. |
 | `onChangeView` | `(view: CalendarView) => void` | — | No | Fires when the visible view changes. |
-| `month` | `string` | — | No | Controlled visible month, given as a `YYYY-MM-DD` string of any day in that month. |
-| `defaultMonth` | `string` | — | No | Initial visible month for uncontrolled usage, given as a `YYYY-MM-DD` string of any day in that month. Default: the month of the selected date, otherwise the current month |
-| `onChangeMonth` | `(month: string) => void` | — | No | Fires with the first day of the visible month as a `YYYY-MM-DD` string when the visible month changes (e.g., via scrolling or the month and year pickers). This event represents view navigation, not selection. |
+| `focusedDate` | `string` | — | No | Controlled focused day as a `YYYY-MM-DD` string. The calendar shows its month, and the day is the tab stop of the day grid when it can be focused. |
+| `defaultFocusedDate` | `string` | — | No | Initial focused day for uncontrolled usage. Default: the selected day, otherwise `today` clamped to `min` and `max` |
+| `onChangeFocusedDate` | `(date: string) => void` | — | No | Fires with the newly focused day as a `YYYY-MM-DD` string when the focus moves, also to another month (with the keyboard, the previous and next buttons, swiping, or the month and year views). This event represents navigation, not selection. |
+| `today` | `string` | — | No | Today as a `YYYY-MM-DD` string: the day marked with `aria-current="date"`. Defaults to the date of the device, read after hydration, so the server and the client render the same markup. Pass it when the server must render the month of today, or to use the time zone of the user. Without it, today follows the device when the day or the time zone changes. |
 | `calendar` | `CalendarSystem` | `gregorianCalendar` | No | Calendar system the calendar is shown in. Values stay `YYYY-MM-DD` days. Defaults to the Gregorian calendar. |
-| `locale` | `string` | — | No | BCP 47 locale of month and day names and of the first day of the week, e.g. `de-DE`. Applies to all parts of the calendar and sets `lang` on the root. Defaults to the locale of the runtime, like `Intl`. |
-| `size` | `CalendarBaseSize` | `'xs'` | No | Global size scale for the calendar. Affects nested controls such as navigation buttons, picker triggers, and week labels via `CalendarBaseContext`. |
-| `variant` | `CalendarBaseVariant` | `'secondary'` | No | Visual variant for the calendar. Propagated through `CalendarBaseContext` and used by nested controls (buttons, labels, etc.) to keep styling consistent. |
-| `compact` | `boolean` | — | No | Density flag for more compact layouts. When `true`, the root element receives `data-compact="true"`, allowing styles to reduce paddings, gaps, and control heights for a denser calendar presentation. When `false` or `undefined`, the calendar uses the default spacing. |
+| `locale` | `string` | `"en-US"` | No | BCP 47 locale of month and day names and of the first day of the week, e.g. `de-DE`. Applies to all parts of the calendar and sets `lang` on the root. |
 
 Also accepts all `<div>` attributes.
 <!-- AUTO-GENERATED:ROOT_API:end -->
@@ -43,21 +46,25 @@ The public child parts are grouped into four families:
 | Part | Notes |
 | --- | --- |
 | `CalendarHeader`, `CalendarContent` | Layout wrappers. |
-| `CalendarPrevButton`, `CalendarNextButton` | Previous / next month in the days, previous / next page of years in the years; hidden in the months view. Show a chevron unless `children` are given. |
-| `CalendarViewButtonGroup` | Groups the view buttons. |
+| `CalendarPrevButton`, `CalendarNextButton` | In the days they move the focused day to the same day of the previous / next month and keep focus on the button; in the years they show the previous / next page of years; hidden in the months view. Show a chevron unless `children` are given. |
+| `CalendarHeading` | `<h2 aria-live="polite">` (another level with `as`) that names the day grid (`CalendarDays` gets `aria-labelledby` pointing to it). Usually wraps the `CalendarViewButton`s; without children it shows the month and year. |
 | `CalendarViewButton` | Toggles that view, `aria-pressed` while it is shown. |
-| `CalendarMonthLabel`, `CalendarYearLabel` | Visible month and year in the locale of the root. |
-| `CalendarDays` | Day view; holds `CalendarWeekdays` and `CalendarWeeks`. |
+| `CalendarMonthLabel`, `CalendarYearLabel` | Month and year of the focused day in the locale of the root. |
+| `CalendarDays` | Day view; holds `CalendarWeekdays` and `CalendarWeeks`, or `CalendarDaysScroller` with pages of `CalendarWeeks`. Always mounted (inert while another view is open) to keep the size. |
 | `CalendarWeekdays` | Weekday names in the locale of the root. |
-| `CalendarWeeks` | Swipeable day grid. |
-| `CalendarMonths` | Months of the visible year. |
-| `CalendarYears` | Swipeable pages of years. |
+| `CalendarDaysScroller`, `CalendarDaysScrollerContent` | Optional swiping between months, a page per month; swiping to a month moves the focused day to the same day there. `onChangePeriod(month)` reports the month scrolled into view. |
+| `CalendarWeeks` | Day grid of the month of its page, or of the focused day outside a scroller. |
+| `CalendarMonths` | Months of the year of the focused day; mounted while the months view is open and until its exit transition ends. |
+| `CalendarMonthsGrid` | Grid of the months, `cols` per row. |
+| `CalendarYears` | Pages of 12 years; mounted while the years view is open and until its exit transition ends. |
+| `CalendarYearsScroller`, `CalendarYearsScrollerContent` | Optional swiping between pages of years. |
+| `CalendarYearsGrid` | Grid of the years of its page, or of the page of the focused year outside a scroller. |
 | `CalendarWeekday` | Weekday template; without children it shows the weekday name. |
 | `CalendarDay`, `CalendarMonth`, `CalendarYear` | Cell templates; without children they show the formatted label. |
 
-The views take only HTML attributes and display options. The month, selection, disabled dates, locale, calendar system, size and variant come from the `Calendar` root.
+The views take only HTML attributes and display options. The focused day, selection, disabled dates, locale, calendar system, size and variant come from the `Calendar` root.
 
-Children of `CalendarWeekdays`, `CalendarWeeks`, `CalendarMonths`, and `CalendarYears` are a template rendered once per weekday or cell. They are required, usually `<CalendarWeekday />`, `<CalendarDay />`, `<CalendarMonth />`, or `<CalendarYear />`.
+Children of `CalendarWeekdays`, `CalendarWeeks`, `CalendarMonthsGrid`, and `CalendarYearsGrid` are a template rendered once per weekday or cell. They are required, usually `<CalendarWeekday />`, `<CalendarDay />`, `<CalendarMonth />`, or `<CalendarYear />`.
 
 The child parts should be treated as one coordinated system, not as isolated widgets.
 
@@ -101,12 +108,6 @@ Also accepts all `<button>` attributes.
 Also accepts all `<button>` attributes.
 <!-- AUTO-GENERATED:PART_API:CalendarNextButton:end -->
 
-### `CalendarViewButtonGroup`
-
-<!-- AUTO-GENERATED:PART_API:CalendarViewButtonGroup:start -->
-Also accepts all `<div>` attributes.
-<!-- AUTO-GENERATED:PART_API:CalendarViewButtonGroup:end -->
-
 ### `CalendarViewButton`
 
 <!-- AUTO-GENERATED:PART_API:CalendarViewButton:start -->
@@ -139,7 +140,7 @@ Also accepts all `<button>` attributes.
 <!-- AUTO-GENERATED:PART_API:CalendarYearLabel:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `format` | `Intl.DateTimeFormatOptions['year']` | `'numeric'` | No | Format of the displayed year (from `Intl.DateTimeFormatOptions`). Possible values: "numeric" → 2026; "2-digit" → 26. Default is typically `"numeric"`. |
+| `format` | `Intl.DateTimeFormatOptions['year']` | `'numeric'` | No | Format of the displayed year (from `Intl.DateTimeFormatOptions`). Possible values: "numeric" → 2026; "2-digit" → 26 |
 <!-- AUTO-GENERATED:PART_API:CalendarYearLabel:end -->
 
 ### `CalendarContent`
@@ -178,25 +179,46 @@ Also accepts all `<div>` attributes.
 Also accepts all `<span>` attributes.
 <!-- AUTO-GENERATED:PART_API:CalendarWeekday:end -->
 
-### `CalendarWeeks`
+### `CalendarDaysScroller`
 
-<!-- AUTO-GENERATED:PART_API:CalendarWeeks:start -->
+<!-- AUTO-GENERATED:PART_API:CalendarDaysScroller:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `children` | `ReactNode` | — | Yes | Template of a day cell, rendered once for every day of the visible months. Read the day with `useCalendarDayContext()`; usually `<CalendarDay />`. |
-| `format` | `Intl.DateTimeFormatOptions['day']` | `"numeric"` | No | Format of the day numbers (`Intl.DateTimeFormat` `day`). |
-| `includeOverflowDays` | `boolean` | `false` | No | Whether days of the previous and next months fill the empty cells. |
 | `start` | `number` | `-2` | No | Starting index used to generate the initial sequence of pages. Acts as the logical origin for the sliding index window. |
 | `size` | `number` | `5` | No | Number of index segments rendered at once. Defines the size of the virtual “window” that the scroller slides over when navigating left or right. |
-| `startDir` | `-1 \| 1` | `1` | No | Direction in which the initial index sequence expands. `1` — indexes increase to the right (0, 1, 2…); `-1` — indexes decrease to the right (0, -1, -2…). Controls the growth pattern of the initial index array. |
+| `onChangePeriod` | `(month: string) => void` | — | No | Called when a month page is scrolled into view, with the first day of that month as a `YYYY-MM-DD` string in the DayPicker's calendar system. |
 | `shift` | `number` | `2` | No | Number of pages appended when a scroll reaches the end of the window, so a fast swipe keeps going. Once the scroll settles, the window is re-centered on the snapped page. |
 | `index` | `number` | — | No | Controls the currently active logical index. When provided, the scroller keeps the given index in view, scrolling to it if possible or rebuilding the window if needed. |
-| `preserveScroll` | `boolean` | `true` | No | Preserve the currently snapped item after content changes (e.g., when pages are prepended/appended). If `true`, the scroller will restore the same snapped index using an immediate `scrollIntoView`. |
+| `preserveScroll` | `boolean` | `true` | No | Preserve the currently snapped item after content changes (e.g., when pages are prepended/appended). If `true`, the scroller will restore the same snapped index using an immediate `scrollTo`. |
 | `onOffset` | `(value: number) => void` | — | No | Fires when the window grows at an edge. `-1` — the scroll settled on the first page (left/top edge); `+1` — the scroll reached the end (right/bottom edge). Useful for infinite loading: append/prepend pages based on the direction. |
 | `ref` | `Ref<HTMLDivElement>` | — | No | Ref to the scroller’s element. |
 | `defaultIndex` | `number` | — | No | Initial index of the item to snap to on mount. |
 | `onScrollSnapChange` | `(element: HTMLElement, index: number) => void` | — | No | Fired when a scroll snap operation has fully completed and the scroller has settled on a new snap index. This callback is invoked after all scrolling and snapping animations have finished and the active snap position is considered stable. |
 | `onScrollSnapChanging` | `(element: HTMLElement, index: number) => void` | — | No | Fired while a scroll snap operation is in progress and the active snap index is still changing. This callback may be invoked multiple times during a single scroll or swipe interaction as the scroller approaches its final snap position. Useful for optimistic UI updates, previews, or synchronizing transient state during scrolling. |
+
+Also accepts all `<div>` attributes.
+<!-- AUTO-GENERATED:PART_API:CalendarDaysScroller:end -->
+
+### `CalendarDaysScrollerContent`
+
+<!-- AUTO-GENERATED:PART_API:CalendarDaysScrollerContent:start -->
+| Prop | Type | Default | Required | Description |
+| --- | --- | --- | --- | --- |
+| `ref` | `Ref<HTMLDivElement>` | — | No | External ref to the item's root element. Merged with the ref that registers the item with the scroller under its `index`. |
+| `asChild` | `boolean` | — | No | Render the content as a child (via `Slot`) instead of a native `<div>`. Keeps attributes/refs bound to the passed child element. |
+
+Also accepts all `<div>` attributes.
+<!-- AUTO-GENERATED:PART_API:CalendarDaysScrollerContent:end -->
+
+### `CalendarWeeks`
+
+<!-- AUTO-GENERATED:PART_API:CalendarWeeks:start -->
+| Prop | Type | Default | Required | Description |
+| --- | --- | --- | --- | --- |
+| `children` | `ReactNode` | — | Yes | Template of a day cell, rendered once for every day of the month. Read the day with `useCalendarDayContext()`; usually `<CalendarDay />`. |
+| `format` | `Intl.DateTimeFormatOptions['day']` | `"numeric"` | No | Format of the day numbers (`Intl.DateTimeFormat` `day`). |
+| `includeOverflowDays` | `boolean` | `false` | No | Whether days of the previous and next months fill the empty cells. |
+| `asChild` | `boolean` | `false` | No | When `true`, renders the child element instead of a `<div>`, merging the props, for example a `<tbody>`. |
 
 Also accepts all `<div>` attributes.
 <!-- AUTO-GENERATED:PART_API:CalendarWeeks:end -->
@@ -206,13 +228,11 @@ Also accepts all `<div>` attributes.
 <!-- AUTO-GENERATED:PART_API:CalendarDay:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `size` | `DataGridPickerSize` | — | No | Controls the item’s visual size. Useful for adapting the picker to compact or large layouts. |
-| `range` | `DataGridPickerItemRangePosition` | — | No | Optional visual indicator of the cell’s position within a range. One of: `"start" \| "between" \| "end"`. If not provided, the component automatically derives it based on selection context. |
-| `variant` | `DataGridPickerVariant` | — | No | Visual appearance preset for the picker. |
-| `disabled` | `boolean` | — | No | Disables click and keyboard selection. Overrides value from root DataGrid |
-| `ref` | `Ref<HTMLDivElement>` | — | No | External ref to the cell root element. Will be merged with the internal `itemRef([row, col], key)` registration when the cell is not excluded. |
-| `asChild` | `boolean` | `false` | No | When `true`, renders children via `Slot` and forwards props/refs to the child element instead of using a native `<div>`. |
-| `excluded` | `boolean` | — | No | Exclude cells from focus traversal. Overrides value from root DataGrid |
+| `size` | `GridItemSize` | — | No | Controls the item’s visual size. Defaults to the size of the DayPicker. |
+| `disabled` | `boolean` | — | No | Marks the cell as disabled with `aria-disabled`: it cannot be selected. Adds to the `disabled` of the root Grid. A disabled cell stays focusable. |
+| `variant` | `GridItemVariant` | — | No | Color of the selected item. Defaults to the variant of the DayPicker. |
+| `ref` | `Ref<HTMLDivElement>` | — | No | External ref to the cell root element, merged with the internal registration ref. |
+| `excluded` | `boolean` | — | No | Excludes the cell from focus traversal: it is not focusable and never becomes active. Adds to the `exclude` of the root Grid. |
 
 Also accepts all `<div>` attributes.
 <!-- AUTO-GENERATED:PART_API:CalendarDay:end -->
@@ -222,25 +242,35 @@ Also accepts all `<div>` attributes.
 <!-- AUTO-GENERATED:PART_API:CalendarMonths:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `children` | `ReactNode` | — | Yes | Template of a month cell, rendered once for every month of the visible year. Read the month with `useCalendarMonthContext()`; usually `<CalendarMonth />`. |
-| `cols` | `number` | `3` | No | Number of columns of the month grid. |
-| `format` | `Intl.DateTimeFormatOptions['month']` | `"long"` | No | Format of the month names (`Intl.DateTimeFormat` `month`). |
+| `ref` | `Ref<HTMLDivElement>` | — | No | Ref to the month grid element. |
+| `children` | `ReactNode` | — | Yes | Content of the month grid, usually `CalendarMonthsGrid`. |
 
 Also accepts all `<div>` attributes.
 <!-- AUTO-GENERATED:PART_API:CalendarMonths:end -->
+
+### `CalendarMonthsGrid`
+
+<!-- AUTO-GENERATED:PART_API:CalendarMonthsGrid:start -->
+| Prop | Type | Default | Required | Description |
+| --- | --- | --- | --- | --- |
+| `children` | `ReactNode` | — | Yes | Template of a month cell, rendered once for every month of the year. Read the month with `useMonthPickerCellContext()`; usually `<MonthPickerCell />`. |
+| `asChild` | `boolean` | `false` | No | When `true`, renders the child element instead of a `<div>`, merging the props, for example a `<tbody>`. |
+| `format` | `Intl.DateTimeFormatOptions['month']` | `"long"` | No | Month display format (from `Intl.DateTimeFormatOptions`). |
+| `cols` | `number` | `3` | No | Number of columns; rows are added as needed for all months of the year. |
+
+Also accepts all `<div>` attributes.
+<!-- AUTO-GENERATED:PART_API:CalendarMonthsGrid:end -->
 
 ### `CalendarMonth`
 
 <!-- AUTO-GENERATED:PART_API:CalendarMonth:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `size` | `DataGridPickerSize` | — | No | Controls the item’s visual size. Useful for adapting the picker to compact or large layouts. |
-| `range` | `DataGridPickerItemRangePosition` | — | No | Optional visual indicator of the cell’s position within a range. One of: `"start" \| "between" \| "end"`. If not provided, the component automatically derives it based on selection context. |
-| `variant` | `DataGridPickerVariant` | — | No | Visual appearance preset for the picker. |
-| `disabled` | `boolean` | — | No | Disables click and keyboard selection. Overrides value from root DataGrid |
-| `ref` | `Ref<HTMLDivElement>` | — | No | External ref to the cell root element. Will be merged with the internal `itemRef([row, col], key)` registration when the cell is not excluded. |
-| `asChild` | `boolean` | `false` | No | When `true`, renders children via `Slot` and forwards props/refs to the child element instead of using a native `<div>`. |
-| `excluded` | `boolean` | — | No | Exclude cells from focus traversal. Overrides value from root DataGrid |
+| `size` | `GridItemSize` | — | No | Controls the item’s visual size. Defaults to the size of the MonthPicker. |
+| `disabled` | `boolean` | — | No | Marks the cell as disabled with `aria-disabled`: it cannot be selected. Adds to the `disabled` of the root Grid. A disabled cell stays focusable. |
+| `variant` | `GridItemVariant` | — | No | Color of the selected item. Defaults to the variant of the MonthPicker. |
+| `ref` | `Ref<HTMLDivElement>` | — | No | External ref to the cell root element, merged with the internal registration ref. |
+| `excluded` | `boolean` | — | No | Excludes the cell from focus traversal: it is not focusable and never becomes active. Adds to the `exclude` of the root Grid. |
 
 Also accepts all `<div>` attributes.
 <!-- AUTO-GENERATED:PART_API:CalendarMonth:end -->
@@ -250,33 +280,95 @@ Also accepts all `<div>` attributes.
 <!-- AUTO-GENERATED:PART_API:CalendarYears:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `children` | `ReactNode` | — | Yes | Template of a year cell, rendered once for every year of the visible pages. Read the year with `useCalendarYearContext()`; usually `<CalendarYear />`. |
-| `format` | `Intl.DateTimeFormatOptions['year']` | `"numeric"` | No | Format of the years (`Intl.DateTimeFormat` `year`). |
+| `ref` | `Ref<HTMLDivElement>` | — | No | Ref to the year grid element. |
+| `children` | `ReactNode` | — | Yes | Content of the year grid: `CalendarYearsGrid`, or `CalendarYearsScroller` with pages of it. |
 
 Also accepts all `<div>` attributes.
 <!-- AUTO-GENERATED:PART_API:CalendarYears:end -->
+
+### `CalendarYearsScroller`
+
+<!-- AUTO-GENERATED:PART_API:CalendarYearsScroller:start -->
+| Prop | Type | Default | Required | Description |
+| --- | --- | --- | --- | --- |
+| `start` | `number` | `-2` | No | Starting index used to generate the initial sequence of pages. Acts as the logical origin for the sliding index window. |
+| `size` | `number` | `5` | No | Number of index segments rendered at once. Defines the size of the virtual “window” that the scroller slides over when navigating left or right. |
+| `onChangePeriod` | `(year: string) => void` | — | No | Called when a page of years is scrolled into view, with the first day of the first year of that page as a `YYYY-MM-DD` string in the YearPicker's calendar system. |
+| `shift` | `number` | `2` | No | Number of pages appended when a scroll reaches the end of the window, so a fast swipe keeps going. Once the scroll settles, the window is re-centered on the snapped page. |
+| `index` | `number` | — | No | Controls the currently active logical index. When provided, the scroller keeps the given index in view, scrolling to it if possible or rebuilding the window if needed. |
+| `preserveScroll` | `boolean` | `true` | No | Preserve the currently snapped item after content changes (e.g., when pages are prepended/appended). If `true`, the scroller will restore the same snapped index using an immediate `scrollTo`. |
+| `onOffset` | `(value: number) => void` | — | No | Fires when the window grows at an edge. `-1` — the scroll settled on the first page (left/top edge); `+1` — the scroll reached the end (right/bottom edge). Useful for infinite loading: append/prepend pages based on the direction. |
+| `ref` | `Ref<HTMLDivElement>` | — | No | Ref to the scroller’s element. |
+| `defaultIndex` | `number` | — | No | Initial index of the item to snap to on mount. |
+| `onScrollSnapChange` | `(element: HTMLElement, index: number) => void` | — | No | Fired when a scroll snap operation has fully completed and the scroller has settled on a new snap index. This callback is invoked after all scrolling and snapping animations have finished and the active snap position is considered stable. |
+| `onScrollSnapChanging` | `(element: HTMLElement, index: number) => void` | — | No | Fired while a scroll snap operation is in progress and the active snap index is still changing. This callback may be invoked multiple times during a single scroll or swipe interaction as the scroller approaches its final snap position. Useful for optimistic UI updates, previews, or synchronizing transient state during scrolling. |
+
+Also accepts all `<div>` attributes.
+<!-- AUTO-GENERATED:PART_API:CalendarYearsScroller:end -->
+
+### `CalendarYearsScrollerContent`
+
+<!-- AUTO-GENERATED:PART_API:CalendarYearsScrollerContent:start -->
+| Prop | Type | Default | Required | Description |
+| --- | --- | --- | --- | --- |
+| `ref` | `Ref<HTMLDivElement>` | — | No | External ref to the item's root element. Merged with the ref that registers the item with the scroller under its `index`. |
+| `asChild` | `boolean` | — | No | Render the content as a child (via `Slot`) instead of a native `<div>`. Keeps attributes/refs bound to the passed child element. |
+
+Also accepts all `<div>` attributes.
+<!-- AUTO-GENERATED:PART_API:CalendarYearsScrollerContent:end -->
+
+### `CalendarYearsGrid`
+
+<!-- AUTO-GENERATED:PART_API:CalendarYearsGrid:start -->
+| Prop | Type | Default | Required | Description |
+| --- | --- | --- | --- | --- |
+| `children` | `ReactNode` | — | Yes | Template of a year cell, rendered once for every year of the page. Read the year with `useYearPickerCellContext()`; usually `<YearPickerCell />`. |
+| `asChild` | `boolean` | `false` | No | When `true`, renders the child element instead of a `<div>`, merging the props, for example a `<tbody>`. |
+| `format` | `Intl.DateTimeFormatOptions['year']` | `"numeric"` | No | Year display format (from `Intl.DateTimeFormatOptions`). |
+
+Also accepts all `<div>` attributes.
+<!-- AUTO-GENERATED:PART_API:CalendarYearsGrid:end -->
 
 ### `CalendarYear`
 
 <!-- AUTO-GENERATED:PART_API:CalendarYear:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `size` | `DataGridPickerSize` | — | No | Controls the item’s visual size. Useful for adapting the picker to compact or large layouts. |
-| `range` | `DataGridPickerItemRangePosition` | — | No | Optional visual indicator of the cell’s position within a range. One of: `"start" \| "between" \| "end"`. If not provided, the component automatically derives it based on selection context. |
-| `variant` | `DataGridPickerVariant` | — | No | Visual appearance preset for the picker. |
-| `disabled` | `boolean` | — | No | Disables click and keyboard selection. Overrides value from root DataGrid |
-| `ref` | `Ref<HTMLDivElement>` | — | No | External ref to the cell root element. Will be merged with the internal `itemRef([row, col], key)` registration when the cell is not excluded. |
-| `asChild` | `boolean` | `false` | No | When `true`, renders children via `Slot` and forwards props/refs to the child element instead of using a native `<div>`. |
-| `excluded` | `boolean` | — | No | Exclude cells from focus traversal. Overrides value from root DataGrid |
+| `size` | `GridItemSize` | — | No | Controls the item’s visual size. Defaults to the size of the YearPicker. |
+| `disabled` | `boolean` | — | No | Marks the cell as disabled with `aria-disabled`: it cannot be selected. Adds to the `disabled` of the root Grid. A disabled cell stays focusable. |
+| `variant` | `GridItemVariant` | — | No | Color of the selected item. Defaults to the variant of the YearPicker. |
+| `ref` | `Ref<HTMLDivElement>` | — | No | External ref to the cell root element, merged with the internal registration ref. |
+| `excluded` | `boolean` | — | No | Excludes the cell from focus traversal: it is not focusable and never becomes active. Adds to the `exclude` of the root Grid. |
 
 Also accepts all `<div>` attributes.
 <!-- AUTO-GENERATED:PART_API:CalendarYear:end -->
+
+### `CalendarHeading`
+
+<!-- AUTO-GENERATED:PART_API:CalendarHeading:start -->
+| Prop | Type | Default | Required | Description |
+| --- | --- | --- | --- | --- |
+| `as` | `HeadingAs` | `'h2'` | No | The heading tag to render, so the calendar fits the outline of the page, like `as` of `Heading`. |
+
+Also accepts all `<h1>–<h6>` attributes.
+<!-- AUTO-GENERATED:PART_API:CalendarHeading:end -->
 
 ## Hooks
 
 ### `useCalendarContext`
 
-Advanced hook for custom parts. Exposes the root state, including `view`, `month`, `locale`, `calendar`, `toggleView(view)`, `closeView()`, `prev()`, and `next()`.
+Advanced hook for custom parts. Exposes the root state:
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `today` | `string \| undefined` | `today` prop, or the device date after hydration. |
+| `view` | `CalendarView` | Open view. |
+| `locale`, `calendar` | `string`, `CalendarSystem` | Locale and calendar system of the root. |
+| `headingId` | `string \| undefined` | `id` of `CalendarHeading`. |
+| `changeFocusedDate(date)` | `(date: string) => void` | Moves the focused day and fires `onChangeFocusedDate`. |
+| `toggleView(view)`, `closeView()`, `prev()`, `next()` | functions | Same actions as the view and navigation buttons. |
+
+It holds only what rarely changes, so a cell template that reads `locale` or `calendar` from it does not re-render when the focus moves. The focused day, the shown month, the tab stop, `min`/`max` and the disabled days are not part of it; the parts get them internally. `changeActiveDay`, `changePeriod` and the picker `apiRef`s of 2.x are gone: navigation of any kind is `changeFocusedDate`.
 
 ### `useCalendarWeekdayContext`
 
@@ -302,7 +394,7 @@ Day of the surrounding `CalendarWeeks` template:
 
 ### `useCalendarMonthContext` / `useCalendarYearContext`
 
-Month or year of the surrounding `CalendarMonths` / `CalendarYears` template: `col`, `date` (first day of the month or year, ISO), `fields`, and `label`.
+Month or year of the surrounding `CalendarMonthsGrid` / `CalendarYearsGrid` template: `col`, `date` (first day of the month or year, ISO), `fields`, and `label`.
 
 Take the day, month, or year number from `label` or `fields`, never from the ISO `date` string: in non-Gregorian calendars they differ.
 
@@ -318,11 +410,18 @@ Take the day, month, or year number from `label` or `fields`, never from the ISO
 
 ## State Model
 
-- Visible date and selection state live in the root.
+- The focused day and the selection live in the root. The calendar shows the month of the focused day, so changing the month or the year is a change of the focused day.
+- Without `focusedDate` / `defaultFocusedDate`, the focused day is the first selected day, otherwise `today` clamped to `min` and `max`, so a calendar whose range starts after today opens on `min`.
+- `readOnly` keeps the selection as it is, like a native `readonly` input: navigation works, the day grid gets `aria-readonly="true"`, and a pick neither changes the selection nor calls `onChangeValue`.
+- `autoFocus` focuses the tab stop of the shown view on mount, as the date fields do when their popup opens.
 - Selection mode changes the expected value shape.
 - Views coordinate around the same root state.
 - `view` determines which of days, months, or years is visible and drives the previous and next buttons.
-- `locale` and `calendar` are root props read by every part; the default is the runtime locale and the Gregorian calendar.
+- `onChangeFocusedDate` reports the focused day, not the month start: **Next** from `2026-01-15` reports `2026-02-15`.
+- Only the open view is mounted: `CalendarMonths` and `CalendarYears` render while their view is open and, inert, until their exit transition ends, and opening a view focuses its tab stop. Picking a month or a year, or Escape, returns to the days and focuses the day tab stop.
+- `locale` and `calendar` are root props read by every part; the defaults are `"en-US"` and the Gregorian calendar. `lang` is set on the root only when `locale` is passed.
+- `today` defaults to the device date read after hydration, so the server and the client render the same markup. Pass `today` (or `defaultFocusedDate`) to render the right month on the server.
+- `CalendarPrevButton`, `CalendarNextButton` and `CalendarViewButton` run your `onClick` first: `event.preventDefault()` in it keeps the month and the view as they are.
 
 ## Integration Notes
 
@@ -330,4 +429,4 @@ Take the day, month, or year number from `label` or `fields`, never from the ISO
 - `calendar` changes how days are grouped and labeled, not the value. See [Dates And Calendar Systems](../../i18n.md).
 - Retest custom cell templates and overflow cells carefully.
 - Use the lower-level `DayPicker`, `MonthPicker`, and `YearPicker` only when the full `Calendar` composition is not needed.
-- Reach for `DayPicker`, `MonthPicker`, `YearPicker`, or `CalendarBase` only when building custom calendar-family behavior, not as a first choice for normal date picking flows.
+- Reach for `DayPicker`, `MonthPicker`, or `YearPicker` only when building custom calendar-family behavior, not as a first choice for normal date picking flows.

@@ -1,9 +1,10 @@
-import { FC, FormEvent, useMemo } from 'react';
+import { FC, useState } from 'react';
+import { useMergeRefs } from '@vega-ui/hooks';
+import { ROOT } from '@vega-ui/core';
+import { useOutput } from '../../../internals/widget';
 import { TextFieldInput, TextFieldInputProps } from '../../../TextField';
-import { useMaskito } from '@maskito/react';
 import { useDateTimeFieldContext } from '../../contexts';
-import { mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
-import { getDateTimeMaskOptions } from '../../helpers';
+import { defaultTextOf, dateTimeFieldWidget } from '@vega-ui/widgets/date-time-field';
 
 export type DateTimeFieldInputProps = Omit<TextFieldInputProps, 'value' | 'defaultValue'>
 
@@ -18,43 +19,29 @@ export type DateTimeFieldInputProps = Omit<TextFieldInputProps, 'value' | 'defau
  * tandem with the calendar component to maintain a consistent date–time state.
  *
  * The date and time come from `DateTimeField`; `onChange` and `onInput` still
- * report each edit of the text. When `min` or `max` change, the text is
- * normalized again like typing does, dispatching `input`.
+ * report each edit of the text.
+ *
+ * Like a native input, it submits the shown text under `name`. An incomplete
+ * value, a value outside `min` and `max` and a day that is unavailable make
+ * the input invalid through `setCustomValidity` with the message of the
+ * browser, so `:invalid`, `reportValidity()` and the form submit check work
+ * natively.
  */
-export const DateTimeFieldInput: FC<DateTimeFieldInputProps> = ({ ref, onInput, ...props }) => {
-  const {
-    template,
-    calendar,
-    timeStep,
-    inputRef,
-    min,
-    max,
-    text,
-    changeText,
-    disabled
-  } = useDateTimeFieldContext()
-  
-  const options = useMemo(() => getDateTimeMaskOptions({
-    template,
-    calendar,
-    min,
-    max,
-    step: timeStep,
-  }), [template, calendar, min, max, timeStep]);
-  
-  const maskitoRef = useMaskito({ options });
-
-  const onDateTimeInput = (event: FormEvent<HTMLInputElement>) => changeText?.(event.currentTarget.value)
+export const DateTimeFieldInput: FC<DateTimeFieldInputProps> = ({ ref, ...props }) => {
+  const { handle, disabled, readOnly } = useDateTimeFieldContext()
+  const [defaultValue] = useState(() => defaultTextOf(handle.instance.state))
+  const attrs = useOutput(handle, dateTimeFieldWidget.output.root)
+  const mergedRef = useMergeRefs([handle.rootAt(ROOT, dateTimeFieldWidget.output.root), ref])
 
   return (
     <TextFieldInput
       type='text'
       inputMode='numeric'
       disabled={disabled}
-      value={text}
-      onInput={mergeEventHandlers(onDateTimeInput, onInput)}
-      ref={mergeRefs([maskitoRef, ref, inputRef])}
-      {...props}
+      readOnly={readOnly}
+      defaultValue={defaultValue}
+      ref={mergedRef}
+      {...handle.listen(attrs, props)}
     />
   )
 }

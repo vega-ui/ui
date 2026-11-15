@@ -69,7 +69,7 @@ const variants: CheckboxCardProps['variant'][] = ['primary', 'secondary'];
 const orientations: CheckboxCardProps['orientation'][] = ['vertical', 'horizontal'];
 const checks = ['unchecked', 'checked', 'indeterminate'];
 const columns = checks.flatMap((check) => [false, true].map((disabled) => ({ check, disabled })));
-const rows = variants.flatMap((variant) => orientations.map((orientation) => ({ variant, orientation })));
+const rows = variants.flatMap((variant) => orientations.flatMap((orientation) => [false, true].map((invalid) => ({ variant, orientation, invalid }))));
 
 export const Playground: Story = {};
 
@@ -78,7 +78,7 @@ export const States: Story = {
   render: () => (
     <div style={{ display: 'grid', gridTemplateColumns: `repeat(${columns.length}, auto)`, gap: 12, alignItems: 'start' }}>
       {rows.map((row) => columns.map((column) => {
-        const name = `${row.variant} / ${row.orientation} / ${column.check}${column.disabled ? ' / disabled' : ''}`;
+        const name = `${row.variant} / ${row.orientation} / ${column.check}${column.disabled ? ' / disabled' : ''}${row.invalid ? ' / invalid' : ''}`;
 
         return (
           <CheckboxCard key={name} variant={row.variant} orientation={row.orientation}>
@@ -91,6 +91,7 @@ export const States: Story = {
                 defaultChecked={column.check === 'checked'}
                 indeterminate={column.check === 'indeterminate'}
                 disabled={column.disabled}
+                aria-invalid={row.invalid}
               />
               <CheckboxIndicator>
                 <CheckboxCardControlCheckedIcon />

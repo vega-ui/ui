@@ -239,7 +239,7 @@ Typical candidates:
 - `Dialog`
 - `Calendar`
 - `PhoneField`
-- `DataGrid`
+- `Grid`
 
 The profile should be declared in `index.md`, and validation should check that the component directory contains the required file set for that profile.
 

@@ -1,9 +1,10 @@
-import { FC, FormEvent, useMemo } from 'react';
+import { FC, useState } from 'react';
+import { useMergeRefs } from '@vega-ui/hooks';
+import { ROOT } from '@vega-ui/core';
+import { useOutput } from '../../../internals/widget';
 import { TextFieldInput, TextFieldInputProps } from '../../../TextField';
-import { useMaskito } from '@maskito/react';
-import { mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
 import { useTimeFieldContext } from '../../contexts';
-import { getTimeMaskOptions } from '../../helpers';
+import { defaultTextOf, timeFieldWidget } from '@vega-ui/widgets/time-field';
 
 export type TimeFieldInputProps = Omit<TextFieldInputProps, 'value' | 'defaultValue'>
 
@@ -11,26 +12,24 @@ export type TimeFieldInputProps = Omit<TextFieldInputProps, 'value' | 'defaultVa
  * TimeFieldInput — the masked text input of a TimeField.
  *
  * The time comes from `TimeField`; `onChange` and `onInput` still report
- * each edit of the text. When `min` or `max` change, the text is normalized
- * again like typing does, dispatching `input`.
+ * each edit of the text. An incomplete time and a time outside `min` and
+ * `max` make the input invalid through `setCustomValidity` with the message
+ * of the browser, so `:invalid`, `reportValidity()` and the form submit check
+ * work natively.
  */
-export const TimeFieldInput: FC<TimeFieldInputProps> = ({ ref, onInput, ...props }) => {
-  const { template, min, max, step, text, changeText, inputRef } = useTimeFieldContext()
-
-  const options = useMemo(() => getTimeMaskOptions({ template, min, max, step }), [template, min, max, step]);
-
-  const maskitoRef = useMaskito({ options });
-
-  const onTimeInput = (event: FormEvent<HTMLInputElement>) => changeText?.(event.currentTarget.value)
+export const TimeFieldInput: FC<TimeFieldInputProps> = ({ ref, ...props }) => {
+  const { handle } = useTimeFieldContext()
+  const [defaultValue] = useState(() => defaultTextOf(handle.instance.state))
+  const attrs = useOutput(handle, timeFieldWidget.output.root)
+  const mergedRef = useMergeRefs([handle.rootAt(ROOT, timeFieldWidget.output.root), ref])
 
   return (
     <TextFieldInput
       type='text'
       inputMode='numeric'
-      value={text}
-      onInput={mergeEventHandlers(onTimeInput, onInput)}
-      ref={mergeRefs([maskitoRef, ref, inputRef])}
-      {...props}
+      defaultValue={defaultValue}
+      ref={mergedRef}
+      {...handle.listen(attrs, props)}
     />
   )
 }

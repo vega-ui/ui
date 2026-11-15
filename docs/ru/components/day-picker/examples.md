@@ -4,7 +4,7 @@
 
 ### Базовый: дни одного месяца
 
-`DayPicker` — низкоуровневая сетка дней без заголовка; `DayPickerLayout` рендерит месяц, заданный через `month`. Ключи ячеек — ISO-дни, поэтому `defaultSelected` — тоже ISO-день. `locale` задаёт первый день недели, а сетке нужен `aria-label`, потому что у неё нет видимого заголовка.
+`DayPicker` — низкоуровневая сетка дней без заголовка; `DayPickerLayout` рендерит месяц дня в фокусе, а он начинается с выбранного дня; стрелки и Page Up / Page Down переходят в другие месяцы. Ключи ячеек — ISO-дни, поэтому `defaultValue` — тоже ISO-день. `locale` задаёт первый день недели, а сетке нужен `aria-label`, потому что у неё нет видимого заголовка.
 
 <!-- example: day-picker/one-month-of-days.tsx -->
 ```tsx
@@ -12,7 +12,7 @@ import { DayPicker, DayPickerCell, DayPickerLayout } from '@vega-ui/react';
 
 export default function OneMonthOfDays() {
   return (
-    <DayPicker aria-label='March 2026' locale='en-GB' month='2026-03-01' defaultSelected='2026-03-15'>
+    <DayPicker aria-label='Days' locale='en-GB' defaultValue='2026-03-15'>
       <DayPickerLayout>
         <DayPickerCell />
       </DayPickerLayout>
@@ -26,7 +26,7 @@ export default function OneMonthOfDays() {
 
 ### Контролируемый/с состоянием: выбранный день
 
-`selected` и `onSelectCell` делают выбор контролируемым; в одиночном режиме `null` означает «контролируемый, ничего не выбрано» — на это опирается кнопка очистки.
+`value` и `onChangeValue` делают выбор контролируемым; в одиночном режиме `null` означает «контролируемый, ничего не выбрано» — на это опирается кнопка очистки.
 
 <!-- example: day-picker/selected-day.tsx -->
 ```tsx
@@ -48,7 +48,7 @@ export default function SelectedDay({ locale = 'en-US' }: { locale?: string }) {
 
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-6)', justifyItems: 'start', width: '100%' }}>
-      <DayPicker aria-label='Invoice due date, November 2026' locale={locale} month='2026-11-01' selected={due} onSelectCell={setDue}>
+      <DayPicker aria-label='Invoice due date' locale={locale} defaultFocusedDate='2026-11-01' value={due} onChangeValue={setDue}>
         <DayPickerLayout>
           <DayPickerCell />
         </DayPickerLayout>
@@ -63,7 +63,7 @@ export default function SelectedDay({ locale = 'en-US' }: { locale?: string }) {
 
 ### Контролируемый/с состоянием: видимый месяц с собственной навигацией
 
-Со скроллером месяц можно листать свайпом. Храните `month` в состоянии и обновляйте его из `onChangePeriod`, чтобы собственный заголовок оставался синхронизирован со свайпами, а его кнопки могли сдвигать сетку. `DayPicker` не переносит активную ячейку при смене `month`, поэтому пример хранит `active` в состоянии и переводит его в новый месяц, когда прежний активный день ушёл из вида.
+Со скроллером месяц можно листать свайпом. Пикер показывает месяц дня в фокусе, поэтому пример контролирует `focusedDate`: свайпы и навигация с клавиатуры сообщают новый день через `onChangeFocusedDate`, заголовок берёт месяц из него, а кнопки переносят его на тот же день предыдущего или следующего месяца.
 
 <!-- example: day-picker/visible-month-with-own-navigation.tsx -->
 ```tsx
@@ -78,52 +78,40 @@ import {
   Text,
 } from '@vega-ui/react';
 import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
+import { addCalendarMonths, getSameDayInCalendarMonth, gregorianCalendar } from '@vega-ui/i18n';
 import { useState } from 'react';
 
 const monthFormat = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' });
 
-function addMonths(month: string, amount: number) {
-  const date = new Date(month);
-  date.setUTCMonth(date.getUTCMonth() + amount);
-
-  return date.toISOString().slice(0, 10);
-}
-
 export default function VisibleMonthWithOwnNavigation() {
-  const [month, setMonth] = useState('2026-11-01');
-  const [active, setActive] = useState('2026-11-01');
+  const [focused, setFocused] = useState('2026-11-01');
   const [selected, setSelected] = useState<string | null>(null);
 
-  const showMonth = (next: string) => {
-    setMonth(next);
-    setActive((current) => {
-      if (current.slice(0, 7) === next.slice(0, 7)) return current;
-
-      return next;
-    });
+  const showMonth = (amount: number) => {
+    const month = addCalendarMonths(gregorianCalendar, focused, amount);
+    setFocused(getSameDayInCalendarMonth(gregorianCalendar, focused, month));
   };
 
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-4)', inlineSize: 'fit-content' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <IconButton aria-label='Previous month' size='sm' variant='secondary' appearance='ghost' onClick={() => showMonth(addMonths(month, -1))}>
+        <IconButton aria-label='Previous month' size='sm' variant='secondary' appearance='ghost' onClick={() => showMonth(-1)}>
           <Icon><ChevronLeft /></Icon>
         </IconButton>
-        <Text fontWeight={600} aria-live='polite'>{monthFormat.format(new Date(month))}</Text>
-        <IconButton aria-label='Next month' size='sm' variant='secondary' appearance='ghost' onClick={() => showMonth(addMonths(month, 1))}>
+        <Text fontWeight={600} aria-live='polite'>{monthFormat.format(new Date(focused))}</Text>
+        <IconButton aria-label='Next month' size='sm' variant='secondary' appearance='ghost' onClick={() => showMonth(1)}>
           <Icon><ChevronRight /></Icon>
         </IconButton>
       </div>
       <DayPicker
         aria-label='Pickup day'
         locale='en-US'
-        month={month}
-        active={active}
-        onChangeActive={setActive}
-        selected={selected}
-        onSelectCell={setSelected}
+        focusedDate={focused}
+        onChangeFocusedDate={setFocused}
+        value={selected}
+        onChangeValue={setSelected}
       >
-        <DayPickerScroller onChangePeriod={showMonth}>
+        <DayPickerScroller>
           <DayPickerScrollerContent>
             <DayPickerScrollerLayout>
               <DayPickerCell />
@@ -191,19 +179,19 @@ export default function SeveralDaysInAForm() {
       <Fieldset>
         <FieldsetLegend>Extra shifts in November</FieldsetLegend>
         <DayPicker
-          aria-label='Shift days, November 2026'
+          aria-label='Shift days'
           aria-describedby={hintId}
           locale='en-US'
           selection='multiple'
-          month='2026-11-01'
-          selected={days}
-          onSelectCell={change}
+          defaultFocusedDate='2026-11-01'
+          value={days}
+          onChangeValue={change}
         >
           <DayPickerLayout>
             <DayPickerCell />
           </DayPickerLayout>
         </DayPicker>
-        <HelperText id={hintId} error={missing}>
+        <HelperText id={hintId} invalid={missing}>
           {missing ? 'Pick at least one day.' : 'Pick every day you can work.'}
         </HelperText>
       </Fieldset>
@@ -225,7 +213,7 @@ export default function SeveralDaysInAForm() {
 
 ### Раскладка/оверлей: два месяца рядом
 
-Один `DayPicker` может содержать несколько раскладок, поэтому диапазон можно выбрать на двух месяцах. Задайте каждой раскладке свой `month` и отдельный `offset`, чтобы индексы строк оставались уникальными во всей сетке; `aria-label` на каждой раскладке называет её месяц для скринридера.
+Один `DayPicker` может содержать несколько раскладок, поэтому диапазон можно выбрать на двух месяцах. Задайте каждой раскладке свой `month` и отдельный `offset`, чтобы индексы строк оставались уникальными во всей сетке; `aria-label` на каждой раскладке называет её месяц для скринридера. `min` и `max` удерживают навигацию с клавиатуры в двух показанных месяцах.
 
 <!-- example: day-picker/two-months-side-by-side.tsx -->
 ```tsx
@@ -251,9 +239,11 @@ export default function TwoMonthsSideBySide() {
         aria-label='Travel dates'
         locale='en-US'
         selection='range'
-        month={months[0]}
-        selected={range}
-        onSelectCell={setRange}
+        defaultFocusedDate={months[0]}
+        min='2026-11-01'
+        max='2026-12-31'
+        value={range}
+        onChangeValue={setRange}
         style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 'var(--spacing-16)', width: '100%' }}
       >
         {months.map((month, index) => (
@@ -314,19 +304,19 @@ export default function RangeTooLong() {
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-3)', justifyItems: 'start', width: '100%' }}>
       <DayPicker
-        aria-label='Rental period, November 2026'
+        aria-label='Rental period'
         aria-describedby={messageId}
         locale='en-US'
         selection='range'
-        month='2026-11-01'
-        selected={range}
-        onSelectCell={setRange}
+        defaultFocusedDate='2026-11-01'
+        value={range}
+        onChangeValue={setRange}
       >
         <DayPickerLayout>
           <DayPickerCell />
         </DayPickerLayout>
       </DayPicker>
-      <HelperText id={messageId} error={invalid} aria-live='polite'>{message}</HelperText>
+      <HelperText id={messageId} invalid={invalid} aria-live='polite'>{message}</HelperText>
     </div>
   );
 }
@@ -337,7 +327,7 @@ export default function RangeTooLong() {
 
 ### Отключённый: окно бронирования и закрытые дни
 
-`from` и `to` отключают все дни вне окна, а предикат `disabled` закрывает воскресенья и праздник; если закрыты только отдельные дни, подойдёт и массив ISO-дней. Отключённые дни нельзя выбрать или сфокусировать, поэтому правило написано рядом с сеткой и связано через `aria-describedby`.
+`min` и `max` отключают все дни вне окна, а предикат `disabled` закрывает воскресенья и праздник; если закрыты только отдельные дни, подойдёт и массив ISO-дней. Отключённые дни нельзя выбрать или сфокусировать, поэтому правило написано рядом с сеткой и связано через `aria-describedby`.
 
 <!-- example: day-picker/booking-window-and-closed-weekdays.tsx -->
 ```tsx
@@ -363,13 +353,13 @@ export default function BookingWindowAndClosedWeekdays() {
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-3)', justifyItems: 'start', width: '100%' }}>
       <DayPicker
-        aria-label='Pickup day, November 2026'
+        aria-label='Pickup day'
         aria-describedby={hintId}
         locale='en-US'
-        month='2026-11-01'
-        from='2026-11-03'
-        to='2026-11-28'
-        disabled={isClosed}
+        defaultFocusedDate='2026-11-01'
+        min='2026-11-03'
+        max='2026-11-28'
+        disabledDates={isClosed}
       >
         <DayPickerLayout>
           <DayPickerCell />
@@ -388,7 +378,7 @@ export default function BookingWindowAndClosedWeekdays() {
 
 ### Пограничный случай: месяц другой календарной системы
 
-С календарной системой из `createCalendarSystem` (см. [Адаптер календарной системы](../../i18n.md#адаптер-календарной-системы)) сетка показывает месяц этого календаря: в фарвардине 1405 года 31 день, он начинается с ISO-дня `2026-03-21`, а неделя в `fa-IR` начинается с субботы. `month` — любой ISO-день внутри месяца; `dir='rtl'` на предке отражает сетку и стрелки.
+С календарной системой из `createCalendarSystem` (см. [Адаптер календарной системы](../../i18n.md#адаптер-календарной-системы)) сетка показывает месяц этого календаря: в фарвардине 1405 года 31 день, он начинается с ISO-дня `2026-03-21`, а неделя в `fa-IR` начинается с субботы. `defaultFocusedDate` — любой ISO-день внутри месяца; `dir='rtl'` на предке отражает сетку и стрелки.
 
 <!-- example: day-picker/month-of-another-calendar-system.tsx -->
 ```tsx
@@ -401,17 +391,20 @@ const persianMonth = new Intl.DateTimeFormat('fa-IR-u-ca-persian', { month: 'lon
 
 export default function MonthOfAnotherCalendarSystem() {
   const [day, setDay] = useState<string | null>('2026-03-21');
+  const [focusedDate, setFocusedDate] = useState('2026-04-01');
+  const month = persianMonth.format(new Date(focusedDate));
 
   return (
     <div dir='rtl' lang='fa-IR' style={{ display: 'grid', gap: 'var(--spacing-6)', justifyItems: 'start', width: '100%' }}>
-      <Text fontWeight={600}>{persianMonth.format(new Date('2026-04-01'))}</Text>
+      <Text fontWeight={600}>{month}</Text>
       <DayPicker
-        aria-label={persianMonth.format(new Date('2026-04-01'))}
+        aria-label={month}
         calendar={persianCalendar}
         locale='fa-IR'
-        month='2026-04-01'
-        selected={day}
-        onSelectCell={setDay}
+        focusedDate={focusedDate}
+        onChangeFocusedDate={setFocusedDate}
+        value={day}
+        onChangeValue={setDay}
       >
         <DayPickerLayout>
           <DayPickerCell />
@@ -447,7 +440,7 @@ function OverflowDay() {
 
 export default function OverflowDays() {
   return (
-    <DayPicker aria-label='February 2026' locale='en-US' month='2026-02-01'>
+    <DayPicker aria-label='Days' locale='en-US' defaultFocusedDate='2026-02-01'>
       <DayPickerLayout includeOverflowDays>
         <OverflowDay />
       </DayPickerLayout>

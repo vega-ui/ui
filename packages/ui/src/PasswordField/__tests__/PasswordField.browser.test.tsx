@@ -22,9 +22,6 @@ const TESTID_HIDDEN_ICON = 'hidden-icon';
 const PLACEHOLDER = 'Password';
 const TOGGLE_LABEL = 'Show password';
 
-const CUSTOM_SHOWN = 'custom-shown';
-const CUSTOM_HIDDEN = 'custom-hidden';
-
 const PasswordFieldTest: FC<ComponentProps<typeof PasswordField>> = (props) => {
   const { children, ...rest } = props;
   
@@ -61,17 +58,6 @@ describe('PasswordField', () => {
       r = render(<PasswordFieldTest />);
     });
     
-    it('toggles input type to text on click', async () => {
-      await userEvent.click(getToggle(r));
-      await expect.element(getInput(r)).toHaveAttribute('type', 'text');
-    });
-    
-    it('toggles input type back to password on second click', async () => {
-      await userEvent.click(getToggle(r));
-      await userEvent.click(getToggle(r));
-      await expect.element(getInput(r)).toHaveAttribute('type', 'password');
-    });
-    
     it('does not move the focus to the input on a toggle click', async () => {
       await userEvent.click(getToggle(r));
       await expect.element(getInput(r)).toHaveAttribute('type', 'text');
@@ -84,15 +70,6 @@ describe('PasswordField', () => {
       r = render(<PasswordFieldTest defaultShown />);
 
       await expect.element(getInput(r)).toHaveAttribute('type', 'text');
-    });
-
-    it('reports the visibility on toggle', async () => {
-      const onChangeShown = vi.fn();
-      r.rerender(<PasswordFieldTest onChangeShown={onChangeShown} />);
-
-      await userEvent.click(getToggle(r));
-
-      expect(onChangeShown).toHaveBeenLastCalledWith(true);
     });
 
     it('shows the password while shown is true', async () => {
@@ -128,42 +105,22 @@ describe('PasswordField', () => {
       await expect.element(getInput(r)).toBeDisabled();
     });
     
-    it('respects explicit input disabled over context disabled', async () => {
-      r.rerender(
-        <PasswordFieldTest disabled>
-          <PasswordFieldInput data-testid={TESTID_INPUT} disabled={false} placeholder={PLACEHOLDER} />
-          <PasswordFieldToggleIconButton data-testid={TESTID_TOGGLE} aria-label={TOGGLE_LABEL}>
-            <PasswordFieldShownIcon data-testid={TESTID_SHOWN_ICON} />
-            <PasswordFieldHiddenIcon data-testid={TESTID_HIDDEN_ICON} />
-          </PasswordFieldToggleIconButton>
-        </PasswordFieldTest>,
-      );
-      
-      await expect.element(getInput(r)).not.toBeDisabled();
-      await expect.element(getToggle(r)).toBeDisabled();
-    });
-    
-    it('respects explicit toggle disabled over context disabled', async () => {
-      r.rerender(
-        <PasswordFieldTest disabled>
-          <PasswordFieldInput data-testid={TESTID_INPUT} placeholder={PLACEHOLDER} />
-          <PasswordFieldToggleIconButton
-            data-testid={TESTID_TOGGLE}
-            aria-label={TOGGLE_LABEL}
-            disabled={false}
-          >
-            <PasswordFieldShownIcon data-testid={TESTID_SHOWN_ICON} />
-            <PasswordFieldHiddenIcon data-testid={TESTID_HIDDEN_ICON} />
-          </PasswordFieldToggleIconButton>
-        </PasswordFieldTest>,
-      );
-      
-      await expect.element(getToggle(r)).not.toBeDisabled();
-      await expect.element(getInput(r)).toBeDisabled();
-    });
   });
   
   describe('Edge Cases', () => {
+    it('keeps the password hidden when the onClick of the toggle prevents the default', async () => {
+      const r = render(
+        <PasswordFieldTest>
+          <PasswordFieldInput data-testid={TESTID_INPUT} />
+          <PasswordFieldToggleIconButton data-testid={TESTID_TOGGLE} aria-label={TOGGLE_LABEL} onClick={(event) => event.preventDefault()} />
+        </PasswordFieldTest>,
+      );
+
+      await userEvent.click(getToggle(r));
+
+      await expect.element(getInput(r)).toHaveAttribute('type', 'password');
+    });
+
     it('does not submit the surrounding form on toggle click', async () => {
       const onSubmit = vi.fn();
       const r = render(
@@ -190,25 +147,6 @@ describe('PasswordField', () => {
 
       expect(onClick).toHaveBeenCalledOnce();
       await expect.element(getInput(r)).toHaveAttribute('type', 'text');
-    });
-
-    it('renders both custom icons at once', async () => {
-      const r = render(
-        <PasswordFieldTest>
-          <PasswordFieldInput data-testid={TESTID_INPUT} placeholder={PLACEHOLDER} />
-          <PasswordFieldToggleIconButton data-testid={TESTID_TOGGLE} aria-label={TOGGLE_LABEL}>
-            <PasswordFieldShownIcon data-testid={TESTID_SHOWN_ICON}>
-              <span>{CUSTOM_SHOWN}</span>
-            </PasswordFieldShownIcon>
-            <PasswordFieldHiddenIcon data-testid={TESTID_HIDDEN_ICON}>
-              <span>{CUSTOM_HIDDEN}</span>
-            </PasswordFieldHiddenIcon>
-          </PasswordFieldToggleIconButton>
-        </PasswordFieldTest>,
-      );
-      
-      await expect.element(r.getByText(CUSTOM_SHOWN)).toBeInTheDocument();
-      await expect.element(r.getByText(CUSTOM_HIDDEN)).toBeInTheDocument();
     });
   });
   

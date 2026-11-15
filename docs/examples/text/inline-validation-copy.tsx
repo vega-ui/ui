@@ -26,7 +26,7 @@ export default function InlineValidationCopy() {
     <form onSubmit={onSubmit} style={{ display: 'grid', gap: 'var(--spacing-3)', width: '100%' }}>
       <Label htmlFor='coupon-code'>Coupon code</Label>
       <div style={{ display: 'flex', gap: 'var(--spacing-4)' }}>
-        <TextField error={error !== ''} style={{ flex: 1, minWidth: 0 }}>
+        <TextField style={{ flex: 1, minWidth: 0 }}>
           <TextFieldInput
             id='coupon-code'
             name='coupon'

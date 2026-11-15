@@ -341,7 +341,7 @@ export default function ErrorSummary() {
       <div style={{ display: 'grid', gap: 'var(--spacing-8)' }}>
         <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
           <Label htmlFor='order-email'>Billing email</Label>
-          <TextField error={Boolean(errors.email)}>
+          <TextField>
             <TextFieldInput
               id='order-email'
               type='email'
@@ -351,11 +351,11 @@ export default function ErrorSummary() {
               aria-describedby={errors.email ? 'order-email-error' : undefined}
             />
           </TextField>
-          {errors.email && <HelperText id='order-email-error' error>{errors.email}</HelperText>}
+          {errors.email && <HelperText id='order-email-error' invalid>{errors.email}</HelperText>}
         </div>
         <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
           <Label htmlFor='order-seats'>Seats</Label>
-          <TextField error={Boolean(errors.seats)}>
+          <TextField>
             <TextFieldInput
               id='order-seats'
               inputMode='numeric'
@@ -365,7 +365,7 @@ export default function ErrorSummary() {
               aria-describedby={errors.seats ? 'order-seats-error' : undefined}
             />
           </TextField>
-          {errors.seats && <HelperText id='order-seats-error' error>{errors.seats}</HelperText>}
+          {errors.seats && <HelperText id='order-seats-error' invalid>{errors.seats}</HelperText>}
         </div>
       </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--spacing-6)', alignItems: 'center' }}>

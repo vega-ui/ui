@@ -36,20 +36,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
 } from '@vega-ui/react';
 
 export const locales = ['en-US', 'ru-RU', 'ar-EG', 'he-IL'];
@@ -59,26 +65,38 @@ export default function MinimalComposition({ locale = 'en-US' }: { locale?: stri
     <Calendar locale={locale}>
       <CalendarHeader>
         <CalendarPrevButton aria-label='Previous' />
-        <CalendarViewButtonGroup>
+        <CalendarHeading>
           <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
           <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-        </CalendarViewButtonGroup>
+        </CalendarHeading>
         <CalendarNextButton aria-label='Next' />
       </CalendarHeader>
       <CalendarContent>
-        <CalendarDays aria-label='Days'>
+        <CalendarDays>
           <CalendarWeekdays>
             <CalendarWeekday />
           </CalendarWeekdays>
-          <CalendarWeeks>
-            <CalendarDay />
-          </CalendarWeeks>
+          <CalendarDaysScroller>
+            <CalendarDaysScrollerContent>
+              <CalendarWeeks>
+                <CalendarDay />
+              </CalendarWeeks>
+            </CalendarDaysScrollerContent>
+          </CalendarDaysScroller>
         </CalendarDays>
         <CalendarMonths>
-          <CalendarMonth />
+          <CalendarMonthsGrid>
+            <CalendarMonth />
+          </CalendarMonthsGrid>
         </CalendarMonths>
         <CalendarYears>
-          <CalendarYear />
+          <CalendarYearsScroller>
+            <CalendarYearsScrollerContent>
+              <CalendarYearsGrid>
+                <CalendarYear />
+              </CalendarYearsGrid>
+            </CalendarYearsScrollerContent>
+          </CalendarYearsScroller>
         </CalendarYears>
       </CalendarContent>
     </Calendar>
@@ -94,8 +112,9 @@ export default function MinimalComposition({ locale = 'en-US' }: { locale?: stri
 ## Необязательные части
 
 - `CalendarHeader`, `CalendarPrevButton`, `CalendarNextButton`: элементы навигации; «назад» и «вперёд» следуют текущему виду
-- `CalendarViewButtonGroup`, `CalendarViewButton`: переключатели видов месяцев и лет
-- `CalendarMonthLabel`, `CalendarYearLabel`: подписи видимого месяца и года
+- `CalendarViewButton`: переключатели видов месяцев и лет
+- `CalendarHeading`: заголовок показанного месяца, который даёт имя сетке дней; обычно оборачивает кнопки видов
+- `CalendarMonthLabel`, `CalendarYearLabel`: подписи месяца и года дня в фокусе
 - `CalendarContent`: обёртка для видов
 - `CalendarDays`, `CalendarMonths`, `CalendarYears`: виды дней, месяцев и лет
 - `CalendarDay`, `CalendarMonth`, `CalendarYear`: шаблоны ячеек видов, с `useCalendarDayContext`, `useCalendarMonthContext`, `useCalendarYearContext`
@@ -105,9 +124,9 @@ export default function MinimalComposition({ locale = 'en-US' }: { locale?: stri
 Типичная композиция:
 
 1. `Calendar`
-2. `CalendarHeader` с `CalendarPrevButton`, `CalendarViewButtonGroup`, `CalendarNextButton`
+2. `CalendarHeader` с `CalendarPrevButton`, `CalendarHeading` вокруг кнопок `CalendarViewButton`, `CalendarNextButton`
 3. `CalendarContent`
-4. `CalendarDays`, `CalendarMonths`, `CalendarYears`; видим только текущий `view`
+4. `CalendarDays`, `CalendarMonths`, `CalendarYears`; видим только текущий `view`, а виды месяцев и лет смонтированы, только пока открыты или закрываются
 
 ## Варианты
 
@@ -115,7 +134,7 @@ export default function MinimalComposition({ locale = 'en-US' }: { locale?: stri
 - Переключение видов: дни, месяцы, годы
 - Плотность: `compact` и варианты размеров
 - Глубина композиции: стандартные виды или пользовательские шаблоны ячеек
-- Локаль и календарная система: пропсы корня `locale` и `calendar`, по умолчанию — локаль среды выполнения и григорианский календарь; см. [Даты и календарные системы](../../i18n.md#пропсы-локали-и-календаря)
+- Локаль и календарная система: пропсы корня `locale` и `calendar`, по умолчанию — `"en-US"` и григорианский календарь; см. [Даты и календарные системы](../../i18n.md#пропсы-локали-и-календаря)
 
 ## Связанные документы
 
@@ -133,7 +152,7 @@ export default function MinimalComposition({ locale = 'en-US' }: { locale?: stri
 - Режим выбора меняет форму значения.
 - Ограничения отключённых дат могут задаваться списком значений или логикой предиката.
 - Пользовательские шаблоны ячеек нужно перепроверять на клавиатурную навигацию, дни соседних месяцев и смену видимого периода.
-- `value`, `defaultValue`, `min`, `max`, `month` и `disabledDates` — ISO-строки `YYYY-MM-DD` в любой календарной системе; только сетка и подписи следуют `calendar`.
+- `value`, `defaultValue`, `min`, `max`, `focusedDate`, `today` и `disabledDates` — ISO-строки `YYYY-MM-DD` в любой календарной системе; только сетка и подписи следуют `calendar`.
 - Негригорианские календари создаются через `createCalendarSystem`; см. [Даты и календарные системы](../../i18n.md#адаптер-календарной-системы).
 
 ## Частые ошибки

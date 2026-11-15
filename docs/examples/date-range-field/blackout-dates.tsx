@@ -4,20 +4,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   DateRangeField,
   DateRangeFieldCalendar,
   DateRangeFieldInput,
@@ -63,7 +69,7 @@ export default function BlackoutDates() {
           format='dd.MM.yyyy'
           separator='.'
           disabledDates={BLACKOUT_DATES}
-          error={invalid}
+         
           value={rental}
           onChangeValue={onChangeValue}
         >
@@ -79,13 +85,13 @@ export default function BlackoutDates() {
               <DateRangeFieldTriggerIconButton aria-label='Choose rental dates' />
             </PopoverTrigger>
             <PopoverContent>
-              <DateRangeFieldCalendar>
+              <DateRangeFieldCalendar aria-label='Choose rental dates'>
                 <CalendarHeader>
                   <CalendarPrevButton aria-label='Previous month' />
-                  <CalendarViewButtonGroup>
+                  <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-                  </CalendarViewButtonGroup>
+                  </CalendarHeading>
                   <CalendarNextButton aria-label='Next month' />
                 </CalendarHeader>
                 <CalendarContent>
@@ -93,22 +99,34 @@ export default function BlackoutDates() {
                     <CalendarWeekdays>
                       <CalendarWeekday />
                     </CalendarWeekdays>
-                    <CalendarWeeks>
-                      <CalendarDay />
-                    </CalendarWeeks>
+                    <CalendarDaysScroller>
+                      <CalendarDaysScrollerContent>
+                        <CalendarWeeks>
+                          <CalendarDay />
+                        </CalendarWeeks>
+                      </CalendarDaysScrollerContent>
+                    </CalendarDaysScroller>
                   </CalendarDays>
                   <CalendarMonths>
-                    <CalendarMonth />
+                    <CalendarMonthsGrid>
+                      <CalendarMonth />
+                    </CalendarMonthsGrid>
                   </CalendarMonths>
                   <CalendarYears>
-                    <CalendarYear />
+                    <CalendarYearsScroller>
+                      <CalendarYearsScrollerContent>
+                        <CalendarYearsGrid>
+                          <CalendarYear />
+                        </CalendarYearsGrid>
+                      </CalendarYearsScrollerContent>
+                    </CalendarYearsScroller>
                   </CalendarYears>
                 </CalendarContent>
               </DateRangeFieldCalendar>
             </PopoverContent>
           </Popover>
         </DateRangeField>
-        <HelperText id='rental-dates-hint' error={invalid}>{invalid ? error : 'Unavailable from 12 to 14 June 2026.'}</HelperText>
+        <HelperText id='rental-dates-hint' invalid={invalid}>{invalid ? error : 'Unavailable from 12 to 14 June 2026.'}</HelperText>
       </div>
       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--spacing-4)' }}>
         <Button type='submit'>Book van</Button>

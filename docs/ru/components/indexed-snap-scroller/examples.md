@@ -304,7 +304,7 @@ export default function WeekStripForm() {
         </IndexedSnapScroller>
       </div>
       <input type='hidden' name='deliveryDate' value={selected} />
-      {error && <HelperText id='delivery-day-error' error>{error}</HelperText>}
+      {error && <HelperText id='delivery-day-error' invalid>{error}</HelperText>}
       <div style={{ display: 'grid', gap: 'var(--spacing-6)', marginBlockStart: 'var(--spacing-4)' }}>
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--spacing-4)' }}>
           <Button type='reset' variant='secondary' appearance='ghost'>Reset</Button>

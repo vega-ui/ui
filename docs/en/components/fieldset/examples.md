@@ -334,7 +334,7 @@ export default function AtLeastOneChannel() {
         style={invalid ? { borderColor: 'var(--color-error)' } : undefined}
       >
         <FieldsetLegend>Two-factor codes</FieldsetLegend>
-        <HelperText id={`${id}-message`} error={invalid}>
+        <HelperText id={`${id}-message`} invalid={invalid}>
           {invalid ? 'Choose at least one way to receive codes.' : 'Pick one or more channels.'}
         </HelperText>
         {CHANNELS.map((channel) => (

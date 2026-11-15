@@ -39,7 +39,7 @@ export default function ExplainAnEmptyRequiredChoice() {
         <ListboxOption value='team'>Team, $12 per member</ListboxOption>
         <ListboxOption value='business'>Business, $24 per member</ListboxOption>
       </Listbox>
-      {invalid && <HelperText id={errorId} error>Choose a plan to create the workspace.</HelperText>}
+      {invalid && <HelperText id={errorId} invalid>Choose a plan to create the workspace.</HelperText>}
       <Button type='submit' style={{ alignSelf: 'flex-end', marginBlockStart: 'var(--spacing-9)' }}>Create workspace</Button>
       {done && (
         <Text size={2} role='status' style={{ color: 'var(--label-secondary)', marginBlockStart: 'var(--spacing-4)' }}>

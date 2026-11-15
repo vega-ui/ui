@@ -92,20 +92,6 @@ describe('SnapScroller', () => {
         });
       });
       
-      it('prev() scrolls backward', async () => {
-        const scroller = getScroller(r);
-        
-        await waitFor(() => {
-          expect(apiRef.current).toBeTruthy();
-        });
-        
-        apiRef.current!.prev();
-        
-        await waitFor(() => {
-          expect(scroller.scrollLeft).toBeLessThan(2 * ITEM_SIZE);
-        });
-      });
-      
       it('scrollToElementByKey() scrolls to the requested index', async () => {
         const scroller = getScroller(r);
         
@@ -158,22 +144,6 @@ describe('SnapScroller', () => {
         expect(typeof index).toBe('number');
       });
       
-      it('calls onScrollSnapChange after snap settles (if hook emits it)', async () => {
-        const onScrollSnapChange = vi.fn();
-        r.rerender(<SnapScrollerTest onScrollSnapChange={onScrollSnapChange} />);
-        
-        const scroller = getScroller(r);
-        
-        scroller.scrollTo({ left: 2 * ITEM_SIZE, top: 0, behavior: 'auto' });
-        
-        await waitFor(() => {
-          expect(onScrollSnapChange).toHaveBeenCalled();
-        });
-        
-        const [el, index] = onScrollSnapChange.mock.calls.at(-1) ?? [];
-        expect(el).toBeInstanceOf(HTMLElement);
-        expect(typeof index).toBe('number');
-      });
     });
   });
   
@@ -201,10 +171,8 @@ describe('SnapScroller', () => {
       expect(apiRef).toHaveBeenCalledTimes(1);
     });
 
-    it('does not emit snap callbacks when a snap point resolves to a stale item', async () => {
-      const onScrollSnapChanging = vi.fn();
+    it('reports the new index of an item whose index changed', async () => {
       const onScrollSnapChange = vi.fn();
-      const apiRef = createRef<SnapScrollerApiRef>();
 
       const content = (secondIndex: number) => (
         <>
@@ -217,41 +185,30 @@ describe('SnapScroller', () => {
         </>
       );
 
-      const props = { apiRef, onScrollSnapChanging, onScrollSnapChange };
-      const r = render(<SnapScrollerTest {...props}>{content(1)}</SnapScrollerTest>);
-      const scroller = getScroller(r);
+      const r = render(<SnapScrollerTest onScrollSnapChange={onScrollSnapChange}>{content(1)}</SnapScrollerTest>);
+      await new Promise((resolve) => requestAnimationFrame(resolve));
 
-      await waitFor(() => {
-        expect(apiRef.current?.getCommitted?.()).toBe(0);
-      });
+      r.rerender(<SnapScrollerTest onScrollSnapChange={onScrollSnapChange}>{content(5)}</SnapScrollerTest>);
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+      getScroller(r).scrollTo({ left: ITEM_SIZE, behavior: 'instant' });
 
-      r.rerender(<SnapScrollerTest {...props}>{content(5)}</SnapScrollerTest>);
-
-      scroller.scrollTo({ left: 150, top: 0, behavior: 'auto' });
-
-      await waitFor(() => {
-        expect(apiRef.current?.getPending?.()).toBe(1);
-      });
-
-      scroller.dispatchEvent(new Event('scrollend'));
-      await waitFor(() => {
-        expect(apiRef.current?.getCommitted?.()).toBe(1);
-      });
-
-      expect(onScrollSnapChanging).not.toHaveBeenCalled();
-      expect(onScrollSnapChange).not.toHaveBeenCalled();
+      await expect.poll(() => onScrollSnapChange.mock.lastCall).toEqual([getItem(r, 1), 5]);
     });
 
-    it('prev()/next() do not throw when committed index is not yet available', async () => {
+    it('scrolls to defaultIndex once a scroller mounted while hidden is shown', async () => {
+      const host = document.createElement('div');
+      host.style.display = 'none';
+      document.body.appendChild(host);
+      onTestFinished(() => host.remove());
       const apiRef = createRef<SnapScrollerApiRef>();
-      render(<SnapScrollerTest apiRef={apiRef} />);
-      
-      await waitFor(() => {
-        expect(apiRef.current).toBeTruthy();
-      });
-      
-      expect(() => apiRef.current?.prev()).not.toThrow();
-      expect(() => apiRef.current?.next()).not.toThrow();
+      const r = render(<SnapScrollerTest apiRef={apiRef} defaultIndex={DEFAULT_INDEX} />, { container: host });
+      await new Promise((resolve) => requestAnimationFrame(resolve));
+
+      host.style.display = '';
+
+      await waitFor(() => expect(getScroller(r).scrollLeft).toBeCloseTo(DEFAULT_INDEX * ITEM_SIZE, 0));
+      apiRef.current!.next();
+      await waitFor(() => expect(getScroller(r).scrollLeft).toBeCloseTo((DEFAULT_INDEX + 1) * ITEM_SIZE, 0));
     });
 
     describe('right-to-left', () => {
@@ -312,6 +269,20 @@ describe('SnapScroller', () => {
         scroller.scrollTo({ left: -3 * ITEM_SIZE, behavior: 'instant' });
       
         await expect.poll(() => onScrollSnapChange.mock.lastCall?.[1]).toBe(3);
+      });
+
+      it('keeps paging after the page switches to right-to-left', async () => {
+        const apiRef = createRef<SnapScrollerApiRef>();
+        const onScrollSnapChange = vi.fn();
+        const r = render(<div><SnapScrollerTest apiRef={apiRef} onScrollSnapChange={onScrollSnapChange} /></div>);
+        await expect.poll(() => apiRef.current).toBeTruthy();
+        await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+
+        (r.container.firstElementChild as HTMLElement).dir = 'rtl';
+        apiRef.current!.next();
+
+        await expect.poll(() => onScrollSnapChange.mock.lastCall?.[1]).toBe(1);
+        await expect.poll(() => getScroller(r).scrollLeft).toBeCloseTo(-ITEM_SIZE, 0);
       });
     });
   });

@@ -68,7 +68,7 @@ export default function FailedRemoveAction() {
               </IconButton>
             </div>
             {failed && (
-              <HelperText id={errorId} error role='alert' style={{ paddingInlineStart: 'calc(var(--spacing-8) + var(--spacing-4))', paddingBlockEnd: 'var(--spacing-2)' }}>
+              <HelperText id={errorId} invalid role='alert' style={{ paddingInlineStart: 'calc(var(--spacing-8) + var(--spacing-4))', paddingBlockEnd: 'var(--spacing-2)' }}>
                 Signed contracts cannot be removed. Ask an admin to archive it instead.
               </HelperText>
             )}

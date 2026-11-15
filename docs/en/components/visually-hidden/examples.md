@@ -36,9 +36,7 @@ export default function BasicUsage() {
           <Text size={3} style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>{plan.price}</Text>
           <Link href={`/pricing/${plan.slug}`} style={{ marginBlockStart: 'var(--spacing-4)', fontSize: 'var(--font-size-2)' }}>
             Learn more
-            <VisuallyHidden asChild>
-              <span> about the {plan.name} plan</span>
-            </VisuallyHidden>
+            <VisuallyHidden> about the {plan.name} plan</VisuallyHidden>
           </Link>
         </li>
       ))}
@@ -50,7 +48,7 @@ export default function BasicUsage() {
 
 ### Basic: icon-only button with a text name
 
-Hidden text inside the button becomes its accessible name and can include data the visual badge shows only as a number. The badge itself is `aria-hidden` so the count is not read twice. `asChild` renders a `<span>`, because the default `<div>` is not valid inside a button.
+Hidden text inside the button becomes its accessible name and can include data the visual badge shows only as a number. The badge itself is `aria-hidden` so the count is not read twice.
 
 <!-- example: visually-hidden/icon-only-control-label.tsx -->
 ```tsx
@@ -64,8 +62,8 @@ export default function IconOnlyControlLabel() {
   return (
     <IconButton type='button' variant='secondary' appearance='ghost' onClick={() => setUnread(0)} style={{ position: 'relative' }}>
       <Icon><BellIcon /></Icon>
-      <VisuallyHidden asChild>
-        <span>Notifications, {unread} unread</span>
+      <VisuallyHidden>
+        Notifications, {unread} unread
       </VisuallyHidden>
       {unread > 0 && (
         <span
@@ -177,8 +175,8 @@ export default function HiddenHelperDescription() {
           style={{ paddingInlineStart: 0, fontVariantNumeric: 'tabular-nums' }}
         />
       </TextField>
-      <VisuallyHidden asChild>
-        <span id='monthly-budget-currency'>Amount in US dollars</span>
+      <VisuallyHidden id='monthly-budget-currency'>
+        Amount in US dollars
       </VisuallyHidden>
       <Button type='submit' style={{ alignSelf: 'flex-start', marginBlockStart: 'var(--spacing-9)' }}>Save budget</Button>
       <output style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>
@@ -293,7 +291,7 @@ export default function HiddenValidationCue() {
   return (
     <form noValidate onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', width: '100%' }}>
       <Label htmlFor='custom-domain'>Custom domain</Label>
-      <TextField error={error !== ''}>
+      <TextField>
         <TextFieldInput
           id='custom-domain'
           name='domain'
@@ -303,10 +301,10 @@ export default function HiddenValidationCue() {
         />
       </TextField>
       {error !== '' && (
-        <HelperText id='custom-domain-error' error style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3)' }}>
+        <HelperText id='custom-domain-error' invalid style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3)' }}>
           <Icon size='xs' style={{ flexShrink: 0 }}><CircleAlertIcon /></Icon>
-          <VisuallyHidden asChild>
-            <span>Error:</span>
+          <VisuallyHidden>
+            Error:
           </VisuallyHidden>
           {error}
         </HelperText>
@@ -357,8 +355,8 @@ export default function HiddenDisabledExplanation() {
           >
             {size.label}
             {!size.inStock && (
-              <VisuallyHidden asChild>
-                <span>, sold out</span>
+              <VisuallyHidden>
+                , sold out
               </VisuallyHidden>
             )}
           </Button>
@@ -375,7 +373,7 @@ export default function HiddenDisabledExplanation() {
 
 ### Edge: text alternative for a symbol rating
 
-Star characters are read as "black star" one by one. They are hidden with `aria-hidden`, and a hidden span inside the paragraph reads "Rated 3 out of 5". `asChild` keeps a `<span>` inside the `<p>`, where a `<div>` is not allowed.
+Star characters are read as "black star" one by one. They are hidden with `aria-hidden`, and a hidden span inside the paragraph reads "Rated 3 out of 5".
 
 <!-- example: visually-hidden/slotted-hidden-element.tsx -->
 ```tsx
@@ -396,8 +394,8 @@ export default function SlottedHiddenElement() {
             <span aria-hidden='true' style={{ color: 'var(--color-primary-500)', letterSpacing: 'var(--spacing-1)' }}>
               {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
             </span>
-            <VisuallyHidden asChild>
-              <span>Rated {review.rating} out of 5</span>
+            <VisuallyHidden>
+              Rated {review.rating} out of 5
             </VisuallyHidden>
           </p>
           <Text size={3} style={{ color: 'var(--label-secondary)' }}>{review.text}</Text>

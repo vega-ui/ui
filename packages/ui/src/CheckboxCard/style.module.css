@@ -45,3 +45,7 @@
 .checkboxCard:where([data-variant='secondary']):has(input[type='checkbox']:indeterminate) {
     --card-border-color: var(--color-secondary-500);
 }
+
+.checkboxCard:has(input[type='checkbox']:is([aria-invalid='true'], :user-invalid)) {
+    --card-border-color: var(--color-error);
+}

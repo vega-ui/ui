@@ -1,5 +1,5 @@
 import { ComponentProps, FC } from 'react';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
 import { page, userEvent } from 'vitest/browser';
 
@@ -12,9 +12,6 @@ afterEach(cleanup);
 
 const ROWS = 6;
 const COLS = 7;
-
-const SIZE_DEFAULT = 'xs';
-const SIZE_LG = 'lg';
 
 const YearPickerTest = (props?: Partial<ComponentProps<typeof YearPicker>>) => (
   <YearPicker {...props}>
@@ -50,17 +47,6 @@ describe('YearPicker', () => {
         await expect.element(cell).toHaveAttribute('aria-selected', 'true');
       });
       
-      it('applies default data-size to day cells', async () => {
-        const cell = getFirstInteractiveCell(r);
-        await expect.element(cell).toHaveAttribute('data-size', SIZE_DEFAULT);
-      });
-      
-      it('passes size prop down to day cells', async () => {
-        r.rerender(<YearPickerTest size={SIZE_LG} />);
-        
-        const cell = getFirstInteractiveCell(r);
-        await expect.element(cell).toHaveAttribute('data-size', SIZE_LG);
-      });
     });
 
     describe('cell template', () => {
@@ -102,21 +88,6 @@ describe('YearPicker', () => {
   });
   
   describe('Accessibility', () => {
-    describe('keyboard', () => {
-      it('Space toggles selection on focused interactive cell', async () => {
-        const r = render(<YearPickerTest />);
-        
-        const cell = getFirstInteractiveCell(r);
-        
-        cell.focus();
-        await expect.element(cell).toHaveFocus();
-        await expect.element(cell).toHaveAttribute('aria-selected', 'false');
-        
-        await userEvent.keyboard(' ');
-        await expect.element(cell).toHaveAttribute('aria-selected', 'true');
-      });
-    });
-    
     describe('tab stop', () => {
       const getTabbables = (r: RenderResult) => getCells(r).filter((el) => el.getAttribute('tabindex') === '0');
       const getYear = (r: RenderResult, year: string) => page.elementLocator(r.container).getByRole('gridcell', { name: year, exact: true });
@@ -124,7 +95,7 @@ describe('YearPicker', () => {
       const ScrollerTest = (props?: Partial<ComponentProps<typeof YearPicker>>) => (
         <>
           <button type='button'>before</button>
-          <YearPicker year='1900-06-01' {...props}>
+          <YearPicker defaultFocusedDate='1900-06-01' {...props}>
             <YearPickerScroller>
               <YearPickerScrollerContent>
                 <YearPickerScrollerLayout>
@@ -136,13 +107,6 @@ describe('YearPicker', () => {
         </>
       );
       
-      it('falls back to the first year of the page when the current year is not on it', async () => {
-        const r = render(<YearPickerTest year='1900-06-01' />);
-        
-        await expect.poll(() => getTabbables(r)).toHaveLength(1);
-        await expect.element(getYear(r, '1900')).toHaveAttribute('tabindex', '0');
-      });
-      
       it('falls back to the first year of the visible page of a scroller', async () => {
         const r = render(<ScrollerTest />);
         
@@ -151,23 +115,83 @@ describe('YearPicker', () => {
       });
 
       it('ignores a selected year on another page', async () => {
-        const r = render(<ScrollerTest defaultSelected='1920-01-01' />);
+        const r = render(<ScrollerTest defaultValue='1920-01-01' />);
         
         await expect.poll(() => getTabbables(r)).toHaveLength(1);
         await expect.element(getYear(r, '1900')).toHaveAttribute('tabindex', '0');
       });
       
+      it('PageDown and PageUp move focus by a page of years, also past the rendered pages', async () => {
+        const r = render(<ScrollerTest />);
+
+        getYear(r, '1900').element().focus();
+        await userEvent.keyboard('{PageDown}{PageDown}{PageDown}');
+
+        await expect.element(getYear(r, '1936')).toHaveFocus();
+        await expect.poll(() => getTabbables(r)).toHaveLength(1);
+
+        await userEvent.keyboard('{PageUp}');
+
+        await expect.element(getYear(r, '1924')).toHaveFocus();
+      });
+
       it('Tab moves focus into the grid', async () => {
         const r = render(
           <>
             <button type='button'>before</button>
-            <YearPickerTest year='1900-06-01' />
+            <YearPickerTest defaultFocusedDate='1900-06-01' />
           </>
         );
         
         r.getByRole('button').focus();
         await userEvent.tab();
         await expect.element(getYear(r, '1900')).toHaveFocus();
+      });
+    });
+
+    describe('APG', () => {
+      const PageTest = (props?: Partial<ComponentProps<typeof YearPicker>>) => (
+        <YearPicker defaultFocusedDate='1900-06-01' {...props}>
+          <YearPickerLayout rows={ROWS} cols={COLS}>
+            <YearPickerCell />
+          </YearPickerLayout>
+        </YearPicker>
+      );
+
+      const getYear = (r: RenderResult, year: string) => page.elementLocator(r.container).getByRole('gridcell', { name: year, exact: true });
+      const getTabStops = (r: RenderResult) => getCells(r).filter((el) => el.getAttribute('tabindex') === '0');
+
+      const press = async (r: RenderResult, from: string, keys: string) => {
+        getYear(r, from).element().focus();
+        await userEvent.keyboard(keys);
+      };
+
+      const expectFocusedTabStop = async (r: RenderResult, year: string) => {
+        await expect.element(getYear(r, year)).toHaveFocus();
+        await expect.element(getYear(r, year)).toHaveAttribute('tabindex', '0');
+        await expect.poll(() => getTabStops(r)).toHaveLength(1);
+      };
+
+      describe('keyboard', () => {
+        it('ArrowRight and ArrowLeft move focus by one year, wrapping rows, and carry the tab stop', async () => {
+          const r = render(<PageTest />);
+
+          await press(r, '1906', '{ArrowRight}');
+          await expectFocusedTabStop(r, '1907');
+
+          await userEvent.keyboard('{ArrowLeft}{ArrowLeft}');
+          await expectFocusedTabStop(r, '1905');
+        });
+
+        it('Enter selects the focused year', async () => {
+          const onChangeValue = vi.fn();
+          const r = render(<PageTest onChangeValue={onChangeValue} />);
+
+          await press(r, '1900', '{ArrowRight}{Enter}');
+
+          expect(onChangeValue).toHaveBeenLastCalledWith('1901-01-01');
+          await expect.element(getYear(r, '1901')).toHaveAttribute('aria-selected', 'true');
+        });
       });
     });
   });

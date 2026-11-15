@@ -551,7 +551,7 @@ export default function SelectRequiredError() {
         </SelectListbox>
       </Select>
       {invalid && (
-        <HelperText id={errorId} error>
+        <HelperText id={errorId} invalid>
           Choose a reason so we can route your feedback.
         </HelperText>
       )}

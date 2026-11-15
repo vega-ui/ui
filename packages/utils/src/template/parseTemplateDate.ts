@@ -2,15 +2,18 @@ import { CalendarSystem, padDatePart, toLatinDigits } from '@vega-ui/i18n'
 import { getTemplateSegments } from './getTemplateSegments'
 import { getTemplateSegmentRange, TemplateFields } from './getTemplateSegmentRange'
 import { formatTemplateDate } from './formatTemplateDate'
+import { expandTwoDigitYear } from './expandTwoDigitYear'
 
 /**
  * Parses a string written by a template (see `formatTemplateDate`) in a
  * calendar system into a `YYYY-MM-DD` string, or into `YYYY-MM-DDTHH:mm[:ss]`
  * when the template has a time.
  * Digits of other numbering systems (`۱۴۰۵/۰۱/۰۱`) are read as Latin digits.
+ * A two-digit year (`yy`) is read around the year of `referenceDate`, see
+ * `expandTwoDigitYear`.
  * Returns `undefined` for an incomplete, malformed or non-existent value.
  */
-export const parseTemplateDate = (calendar: CalendarSystem, text: string, template: string) => {
+export const parseTemplateDate = (calendar: CalendarSystem, text: string, template: string, referenceDate?: string) => {
   const value = toLatinDigits(text)
 
   if (value.length !== template.length) return undefined
@@ -21,6 +24,11 @@ export const parseTemplateDate = (calendar: CalendarSystem, text: string, templa
   for (const { type, start, end } of segments) {
     const part = value.slice(start, end)
     if (!/^\d+$/.test(part)) return undefined
+
+    if (type === 'y' && part.length === 2) {
+      fields.y = expandTwoDigitYear(calendar, part, referenceDate)
+      continue
+    }
 
     fields[type] = Number(part)
   }

@@ -5,6 +5,7 @@ import tseslint from 'typescript-eslint';
 
 import storybook from 'eslint-plugin-storybook'
 import reactHooks from 'eslint-plugin-react-hooks'
+import components from './eslint/components.mjs'
 
 export default tseslint.config([
   globalIgnores(['**/dist', 'storybook-static', 'coverage', 'apps/docs/.next', 'apps/docs/out', 'apps/docs/next-env.d.ts', 'apps/docs/generated']),
@@ -24,6 +25,38 @@ export default tseslint.config([
       '@typescript-eslint/strict-boolean-expressions': 'off',
       '@typescript-eslint/no-floating-promises': 'off',
       '@typescript-eslint/explicit-function-return-type': 'off'
+    },
+  },
+  {
+    files: ['packages/ui/src/**/*.ts', 'packages/ui/src/**/*.tsx'],
+    plugins: { components },
+    rules: {
+      'components/boundaries': 'error',
+      'components/cycles': 'error',
+    },
+  },
+  {
+    files: ['packages/widgets/src/**/*.ts'],
+    rules: {
+      'no-restricted-imports': ['error', {
+        patterns: [{ group: ['react', 'react/*', 'react-dom', 'react-dom/*'], message: 'Widgets stay framework-free.' }],
+      }],
+    },
+  },
+  {
+    files: ['packages/core/src/**/*.ts', 'packages/widgets/src/**/*.ts'],
+    ignores: ['packages/core/src/dom/**', '**/__tests__/**'],
+    rules: {
+      'no-restricted-globals': ['error', ...[
+        'window', 'document', 'navigator', 'location', 'localStorage', 'sessionStorage',
+        'getComputedStyle', 'matchMedia', 'requestAnimationFrame', 'cancelAnimationFrame',
+        'setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'queueMicrotask',
+        'Node', 'Element', 'HTMLElement', 'Event', 'ResizeObserver', 'MutationObserver', 'IntersectionObserver',
+        'globalThis', 'self', 'performance',
+      ].map((name) => ({ name, message: 'Pure code reaches the browser only through inputs and actions.' }))],
+      '@typescript-eslint/no-restricted-types': ['error', {
+        types: Object.fromEntries(['Node', 'Element', 'HTMLElement', 'Event', 'Document', 'Window'].map((name) => [name, 'Pure code reaches the browser only through inputs and actions.'])),
+      }],
     },
   },
   {

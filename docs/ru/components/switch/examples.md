@@ -206,7 +206,7 @@ export default function OverlayToggleList() {
 
 ### Ошибка: правило для нескольких переключателей
 
-Выключение обоих каналов нарушает продуктовое правило. Ошибка появляется сразу, оба поля получают `aria-invalid` и `aria-describedby` со ссылкой на неё, а включение любого канала убирает ошибку. Собственного невалидного стиля у `Switch` нет, поэтому состояние передаёт сообщение.
+Выключение обоих каналов нарушает продуктовое правило. Ошибка появляется сразу, оба поля получают `aria-invalid` и `aria-describedby` со ссылкой на неё, а включение любого канала убирает ошибку. `aria-invalid` также рисует обводку ошибки у обоих переключателей.
 
 <!-- example: switch/at-least-one-channel.tsx -->
 ```tsx
@@ -251,7 +251,7 @@ export default function AtLeastOneChannel() {
           </Switch>
         </div>
       </div>
-      {invalid && <HelperText id='channels-error' error>Keep at least one channel on, or nobody will be paged during an incident.</HelperText>}
+      {invalid && <HelperText id='channels-error' invalid>Keep at least one channel on, or nobody will be paged during an incident.</HelperText>}
     </Fieldset>
   );
 }

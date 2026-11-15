@@ -1,6 +1,6 @@
 # Table Troubleshooting
 
-## Table Should Probably Be A DataGrid
+## Table Should Probably Be A Grid
 
 ### Symptom
 
@@ -13,11 +13,11 @@ The feature keeps accumulating selection, inline editing, or cell-level interact
 ### How To Verify
 
 - List the required interactions for rows and cells.
-- Compare them with existing `DataGrid` family behavior.
+- Compare them with existing `Grid` family behavior.
 
 ### Fix
 
-- Switch to `DataGrid` when grid-like interaction becomes central.
+- Switch to `Grid` when grid-like interaction becomes central.
 - Keep `Table` for semantic, mostly read-only layouts.
 
 ## Columns Clip On Small Screens

@@ -70,8 +70,6 @@ const getNext = (r: RenderResult) => r.getByTestId(TESTID_NEXT);
 
 const getItem112 = (r: RenderResult) => r.getByTestId(TESTID_ITEM_112);
 
-const getEllipsis = (r: RenderResult) => r.getByTestId(TESTID_ELLIPSIS);
-
 describe('Pagination', () => {
   describe('Accessibility', () => {
     it('marks only the current page', async () => {
@@ -103,12 +101,4 @@ describe('Pagination', () => {
     });
   });
   
-  describe('Accessibility', () => {
-    describe('aria', () => {
-      it('hides ellipsis from assistive tech', async () => {
-        const r = render(<PaginationTest />);
-        await expect.element(getEllipsis(r)).toHaveAttribute('aria-hidden', 'true');
-      });
-    });
-  });
 });

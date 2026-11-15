@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { CountryCode } from 'libphonenumber-js';
+import { PhoneCountry } from '@vega-ui/i18n';
 
 import { PhoneField, PhoneFieldProps } from './PhoneField';
 import {
@@ -15,7 +15,7 @@ import {
   SelectValue,
 } from '../Select';
 
-const codes: CountryCode[] = ['US', 'RU', 'FR', 'GB', 'DE', 'JP', 'BR', 'IN'];
+const countries: PhoneCountry[] = ['US', 'RU', 'FR', 'GB', 'DE', 'JP', 'BR', 'IN'];
 
 const meta = {
   title: 'Form/Fields/PhoneField',
@@ -34,12 +34,11 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     size: { control: 'radio', options: ['xs', 'sm', 'md', 'lg', 'xl'] },
-    code: { control: 'select', options: codes },
+    country: { control: 'select', options: countries },
     strictMask: { control: 'boolean' },
-    error: { control: 'boolean' },
   },
   args: {
-    code: 'RU',
+    country: 'RU',
   },
   render: (args) => (
     <PhoneField {...args}>
@@ -53,10 +52,10 @@ type Story = StoryObj<typeof meta>;
 
 const sizes: PhoneFieldProps['size'][] = ['xs', 'sm', 'md', 'lg', 'xl'];
 const states = [
-  { label: 'default', inputDisabled: false, selectDisabled: false, error: false },
-  { label: 'disabled', inputDisabled: true, selectDisabled: true, error: false },
-  { label: 'error', inputDisabled: false, selectDisabled: false, error: true },
-  { label: 'select disabled', inputDisabled: false, selectDisabled: true, error: false },
+  { label: 'default', inputDisabled: false, selectDisabled: false, invalid: false },
+  { label: 'disabled', inputDisabled: true, selectDisabled: true, invalid: false },
+  { label: 'invalid', inputDisabled: false, selectDisabled: false, invalid: true },
+  { label: 'select disabled', inputDisabled: false, selectDisabled: true, invalid: false },
 ];
 
 export const Playground: Story = {};
@@ -65,7 +64,7 @@ export const Matrix: Story = {
   render: () => (
     <div style={{ display: 'grid', gridTemplateColumns: `repeat(${states.length}, auto)`, gap: 12, alignItems: 'center' }}>
       {sizes.map((size) => states.map((state) => (
-        <PhoneField key={`${size}-${state.label}`} size={size} defaultCode='RU' error={state.error}>
+        <PhoneField key={`${size}-${state.label}`} size={size} defaultCountry='RU'>
           <PhoneFieldSelect disabled={state.selectDisabled}>
             <SelectHiddenSelect />
             <SelectCombobox aria-label='Country'>
@@ -80,6 +79,7 @@ export const Matrix: Story = {
           </PhoneFieldSelect>
           <PhoneFieldInput
             aria-label='Phone number'
+            aria-invalid={state.invalid}
             disabled={state.inputDisabled}
             placeholder={`${size} / ${state.label}`}
             autoComplete='tel'
@@ -93,9 +93,9 @@ export const Matrix: Story = {
 export const CountryMasks: Story = {
   render: () => (
     <div style={{ display: 'grid', gridTemplateColumns: 'auto auto', gap: 12, alignItems: 'center' }}>
-      {codes.map((code) => (
-        <PhoneField key={code} code={code}>
-          <PhoneFieldInput aria-label={`Phone number, ${code}`} placeholder={code} autoComplete='tel' />
+      {countries.map((country) => (
+        <PhoneField key={country} country={country}>
+          <PhoneFieldInput aria-label={`Phone number, ${country}`} placeholder={country} autoComplete='tel' />
         </PhoneField>
       ))}
     </div>

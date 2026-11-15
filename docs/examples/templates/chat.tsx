@@ -257,7 +257,7 @@ const MessageItem = ({ message, first, receipt, fresh, quoted, onToggleReaction 
             {time}
           </div>
         )}
-        {(!first || own) && <VisuallyHidden asChild><span>{author}</span></VisuallyHidden>}
+        {(!first || own) && <VisuallyHidden>{author}</VisuallyHidden>}
         <div style={{ display: 'flex', flexDirection: own ? 'row-reverse' : 'row', alignItems: 'flex-end', gap: 'var(--spacing-4)', maxInlineSize: '100%' }}>
           <div
             style={{
@@ -534,7 +534,7 @@ export default function Chat() {
           <span style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 'var(--spacing-4)' }}>
             <span style={{ ...truncate, fontWeight: count > 0 ? 600 : 500 }}>
               {item.title}
-              {item.kind === 'direct' && <VisuallyHidden asChild><span>{`, ${presenceLabels[people[item.id].presence]}`}</span></VisuallyHidden>}
+              {item.kind === 'direct' && <VisuallyHidden>{`, ${presenceLabels[people[item.id].presence]}`}</VisuallyHidden>}
             </span>
             <span className='chat-muted' style={{ flexShrink: 0, fontSize: 'var(--font-size-1)', fontVariantNumeric: 'tabular-nums' }}>
               <bdi>{last?.day === 'Today' ? last.time : last?.day}</bdi>
@@ -545,7 +545,7 @@ export default function Chat() {
             {count > 0 && (
               <Badge size='xs' variant='info' appearance='fill' style={{ flexShrink: 0, fontVariantNumeric: 'tabular-nums' }}>
                 {count}
-                <VisuallyHidden asChild><span> unread</span></VisuallyHidden>
+                <VisuallyHidden> unread</VisuallyHidden>
               </Badge>
             )}
           </span>

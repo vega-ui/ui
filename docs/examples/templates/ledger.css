@@ -1,0 +1,101 @@
+.lg-root {
+  display: grid;
+  gap: var(--spacing-12);
+  inline-size: 100%;
+  max-inline-size: 960px;
+  margin-inline: auto;
+}
+
+.lg-grid {
+  position: relative;
+  block-size: 520px;
+  overflow: auto;
+  border: 1px solid var(--separator-opaque);
+  border-radius: var(--radius-4);
+  background: var(--surface-primary);
+  font-size: var(--font-size-2);
+  font-variant-numeric: tabular-nums;
+  color: var(--label-primary);
+  overscroll-behavior: contain;
+}
+
+.lg-row {
+  grid-template-columns: 88px 128px minmax(160px, 1fr) 144px 128px;
+  min-inline-size: 680px;
+  block-size: 40px;
+}
+
+.lg-head {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 1;
+  background: var(--surface-primary);
+  border-block-end: 1px solid var(--separator-opaque);
+}
+
+.lg-body {
+  position: relative;
+  min-inline-size: 680px;
+}
+
+.lg-body .lg-row {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-start: 0;
+  border-block-end: 1px solid var(--separator-non-opaque);
+}
+
+.lg-grid [role='columnheader'] {
+  justify-content: flex-start;
+  padding-inline: var(--spacing-6);
+  color: var(--label-secondary);
+  font-weight: 500;
+}
+
+.lg-grid [role='gridcell'],
+.lg-grid [role='rowheader'] {
+  justify-content: flex-start;
+  min-inline-size: 0;
+  padding-inline: var(--spacing-6);
+  outline-offset: -2px;
+  cursor: default;
+}
+
+.lg-grid [role='rowheader'] {
+  color: var(--label-tertiary);
+}
+
+.lg-grid .lg-end {
+  justify-content: flex-end;
+}
+
+.lg-grid .lg-muted {
+  color: var(--label-secondary);
+}
+
+.lg-grid [data-income] {
+  color: var(--color-green-accent-700);
+}
+
+.lg-grid [role='gridcell'][aria-selected='true'] {
+  background: color-mix(in oklch, var(--color-primary-500) 16%, transparent);
+}
+
+.lg-grid :focus-visible {
+  outline: 2px solid var(--focus-color);
+}
+
+.lg-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lg-status {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-6);
+  font-variant-numeric: tabular-nums;
+}

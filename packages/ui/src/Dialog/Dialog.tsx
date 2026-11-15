@@ -1,8 +1,9 @@
 'use client';
 
 import { FC, ReactNode } from 'react';
+import { useWidget, widgetEnvironment } from '../internals/widget';
 import { DialogProvider } from './contexts';
-import { useControlledState } from '@vega-ui/hooks';
+import { modalDialogWidget } from '@vega-ui/widgets/modal-dialog';
 
 export interface DialogProps {
   /**
@@ -36,13 +37,10 @@ export const Dialog: FC<DialogProps> = ({
   defaultOpen = false,
   children,
 }) => {
-  const [open, setOpen] = useControlledState(controlledOpen, defaultOpen, onChangeOpen)
+  const handle = useWidget(modalDialogWidget, { open: controlledOpen, defaultOpen, onChangeOpen }, widgetEnvironment)
 
   return (
-    <DialogProvider
-      open={open}
-      changeOpen={setOpen}
-    >
+    <DialogProvider handle={handle}>
       {children}
     </DialogProvider>
   )

@@ -1,20 +1,37 @@
 import { FC } from 'react';
-import { DataGridPickerItem, DataGridPickerItemProps } from '../../../DataGridPicker';
+import { GridCell, GridCellProps, GridItem, GridItemSize, GridItemVariant } from '../../../Grid';
+import { useDayPickerContext } from '../../contexts';
 
-export type DayPickerItemProps = DataGridPickerItemProps
+export interface DayPickerItemProps extends Omit<GridCellProps, 'value' | 'asChild'> {
+  /**
+   * Date of the cell as a `YYYY-MM-DD` string, used as its key in the grid.
+   */
+  value?: string
+
+  /**
+   * Controls the item’s visual size. Defaults to the size of the DayPicker.
+   */
+  size?: GridItemSize
+
+  /**
+   * Color of the selected item. Defaults to the variant of the DayPicker.
+   */
+  variant?: GridItemVariant
+}
 
 /**
- * DayPickerItem is a semantic wrapper around DataGridPickerItem,
- * representing a single day cell within a DayPicker grid.
- *
- * The component adds no new logic or styling — all selection mechanics,
- * range highlighting, keyboard focus management, and disabled/excluded
- * handling come directly from DataGridPickerItem.
- *
- * Using this wrapper improves readability and conveys intent when
- * composing calendar layouts, while preserving full compatibility with
- * DataGridPicker’s single/multiple/range selection modes.
+ * DayPickerItem is a day cell of the DayPicker: a GridCell keyed by its
+ * `YYYY-MM-DD` value with the look of GridItem. The size and variant
+ * come from the DayPicker unless set on the item.
  */
-export const DayPickerItem: FC<DayPickerItemProps> = (props) => {
-  return <DataGridPickerItem {...props} />
+export const DayPickerItem: FC<DayPickerItemProps> = ({ value, size, variant, children, ...props }) => {
+  const { size: _size, variant: _variant } = useDayPickerContext()
+
+  return (
+    <GridCell value={value} {...props} asChild>
+      <GridItem size={size ?? _size} variant={variant ?? _variant}>
+        {children}
+      </GridItem>
+    </GridCell>
+  )
 }

@@ -27,6 +27,7 @@
 - `variant` changes the checked and indeterminate color family.
 - Disabled state overrides both background and border semantics.
 - Focus lives on the visually hidden input but is rendered through the indicator.
+- `aria-invalid='true'` on `CheckboxInput` or its `:user-invalid`, for example a `required` box left unchecked after a submit attempt, switches the border to `--color-error`. The component never sets `aria-invalid` itself.
 
 ## Examples
 

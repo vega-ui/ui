@@ -25,20 +25,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   DateField,
   DateFieldCalendar,
   DateFieldInput,
@@ -57,13 +63,13 @@ export default function MinimalComposition() {
           <DateFieldTriggerIconButton aria-label='Choose due date' />
         </PopoverTrigger>
         <PopoverContent>
-          <DateFieldCalendar>
+          <DateFieldCalendar aria-label='Choose due date'>
             <CalendarHeader>
               <CalendarPrevButton aria-label='Previous month' />
-              <CalendarViewButtonGroup>
+              <CalendarHeading>
                 <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                 <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-              </CalendarViewButtonGroup>
+              </CalendarHeading>
               <CalendarNextButton aria-label='Next month' />
             </CalendarHeader>
             <CalendarContent>
@@ -71,15 +77,27 @@ export default function MinimalComposition() {
                 <CalendarWeekdays>
                   <CalendarWeekday />
                 </CalendarWeekdays>
-                <CalendarWeeks>
-                  <CalendarDay />
-                </CalendarWeeks>
+                <CalendarDaysScroller>
+                  <CalendarDaysScrollerContent>
+                    <CalendarWeeks>
+                      <CalendarDay />
+                    </CalendarWeeks>
+                  </CalendarDaysScrollerContent>
+                </CalendarDaysScroller>
               </CalendarDays>
               <CalendarMonths>
-                <CalendarMonth />
+                <CalendarMonthsGrid>
+                  <CalendarMonth />
+                </CalendarMonthsGrid>
               </CalendarMonths>
               <CalendarYears>
-                <CalendarYear />
+                <CalendarYearsScroller>
+                  <CalendarYearsScrollerContent>
+                    <CalendarYearsGrid>
+                      <CalendarYear />
+                    </CalendarYearsGrid>
+                  </CalendarYearsScrollerContent>
+                </CalendarYearsScroller>
               </CalendarYears>
             </CalendarContent>
           </DateFieldCalendar>
@@ -118,7 +136,7 @@ export default function MinimalComposition() {
 
 ### Вероятная причина
 
-`DateFieldInput` — нативный input, и с `name` отправляется введённый в него текст.
+`DateFieldInput` отправляет показанный текст под своим `name`, как любой нативный input.
 
 ### Как проверить
 
@@ -126,22 +144,58 @@ export default function MinimalComposition() {
 
 ### Исправление
 
-Берите ISO-день из `onChangeValue` на корне, а не текст. Чтобы отправить его с формой, уберите `name` у input и задайте его скрытому input с этим днём, как в разделе [Форма/интеграция](./examples.md#формаинтеграция).
+Сохраните день `YYYY-MM-DD` из `onChangeValue` в состоянии и отправьте его через свой скрытый input. См. [Форма/интеграция](./examples.md#формаинтеграция).
 
 ## Отключённые даты всё ещё можно ввести
 
 ### Симптом
 
-Календарь блокирует некоторые дни, но если ввести один из них вручную, он принимается и отправляется.
+Календарь блокирует некоторые дни, но ввод одного из них принимается и отправляется.
 
 ### Вероятная причина
 
-`min` и `max` ограничивают введённые даты, но `disabledDates` действует только на календарь.
+Как и дата вне `min` и `max`, введённый день из `disabledDates` остаётся в поле и только делает его невалидным.
 
 ### Как проверить
 
-- Введите отключённый день и отправьте форму.
+- Введите отключённый день и проверьте `input.validity.customError` или `:invalid`.
 
 ### Исправление
 
-Проверяйте то же правило `disabledDates` в валидации при отправке и на сервере.
+Дайте браузеру заблокировать отправку (не используйте `noValidate`) или сами проверьте `form.checkValidity()`, а своё сообщение показывайте из `onInvalid`. Проверяйте то же правило на сервере.
+
+## Календарь закрывается после выбора
+
+### Симптом
+
+Всплывающий календарь закрывается сразу после выбора дня, а продукту нужно, чтобы он оставался открытым.
+
+### Вероятная причина
+
+Выбор закрывает календарь и возвращает фокус на триггер, как описано в паттерне WAI-ARIA date picker dialog.
+
+### Как проверить
+
+- Выберите день кликом или <kbd>Enter</kbd> и проверьте, скрывается ли календарь.
+
+### Исправление
+
+Сделайте `open` у `Popover` контролируемым и возвращайте `true` в `onChangeValue` у `DateFieldCalendar`. Он вызывается после того, как поле закрыло календарь, в том же обновлении, поэтому календарь не скрывается.
+
+## Двузначный год попадает не в то столетие
+
+### Симптом
+
+С форматом вроде `MM/dd/yy` введённый год оказывается в неожиданном столетии.
+
+### Вероятная причина
+
+Двузначный год читается в пределах 80 лет до и 19 лет после года `today`, как в CLDR и ICU. Неверная дата устройства или `today` сдвигает это окно.
+
+### Как проверить
+
+- Проверьте `today` на корне или дату устройства, если он не задан.
+
+### Исправление
+
+Передайте `today` явно или используйте четырёхзначный год (`yyyy`), если ожидаются даты далеко в прошлом или будущем.

@@ -280,7 +280,7 @@ export default function RenameInDialog() {
 
 ### Error: email validated on blur and submit
 
-The error appears on blur or submit and is re-checked on each keystroke while it is shown, so it clears as soon as the address becomes valid. `error` only paints the wrapper; `aria-invalid` and `aria-describedby` on the input carry the state to screen readers.
+The error appears on blur or submit and is re-checked on each keystroke while it is shown, so it clears as soon as the address becomes valid. `aria-invalid` on the input paints the wrapper and, with `aria-describedby`, carries the state to screen readers.
 
 <!-- example: text-field/email-validation-error.tsx -->
 ```tsx
@@ -315,7 +315,7 @@ export default function EmailValidationError() {
     <form noValidate onSubmit={onSubmit} style={{ display: 'grid', gap: 'var(--spacing-12)', width: '100%' }}>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor={id}>Invite a teammate</Label>
-        <TextField error={invalid}>
+        <TextField>
           <TextFieldInput
             id={id}
             type='email'
@@ -326,7 +326,7 @@ export default function EmailValidationError() {
             onBlur={() => setError(getEmailError(email))}
           />
         </TextField>
-        <HelperText id={messageId} error={invalid}>
+        <HelperText id={messageId} invalid={invalid}>
           {invalid ? error : 'We will email them a link to join the workspace.'}
         </HelperText>
       </div>
@@ -443,7 +443,7 @@ export default function AsyncUsernameCheck() {
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-3)', width: '100%' }}>
       <Label htmlFor={id}>Username</Label>
-      <TextField error={taken}>
+      <TextField>
         <TextFieldInput
           id={id}
           value={username}
@@ -458,7 +458,7 @@ export default function AsyncUsernameCheck() {
           {available && <Icon size='sm' aria-hidden><CheckIcon /></Icon>}
         </span>
       </TextField>
-      <HelperText id={statusId} error={taken} aria-live='polite'>{message}</HelperText>
+      <HelperText id={statusId} invalid={taken} aria-live='polite'>{message}</HelperText>
     </div>
   );
 }

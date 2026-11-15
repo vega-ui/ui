@@ -24,7 +24,7 @@
 
 Необязательный визуальный выбор даты, синхронизированный со значением поля.
 
-Его дочерние элементы — части `Calendar`: `CalendarHeader` с `CalendarPrevButton`, `CalendarViewButtonGroup` (`CalendarViewButton view='month'` и `view='year'`) и `CalendarNextButton`, затем `CalendarContent` с `CalendarDays`, `CalendarMonths` и `CalendarYears`. Календарь получает `locale` и `calendar` от `DateTimeField`.
+Его дочерние элементы — части `Calendar`: `CalendarHeader` с `CalendarPrevButton`, `CalendarHeading` с `CalendarViewButton view='month'` и `view='year'` и `CalendarNextButton`, затем `CalendarContent` с `CalendarDays`, `CalendarMonths` и `CalendarYears`. Календарь получает `locale` и `calendar` от `DateTimeField`.
 
 ## Порядок композиции
 
@@ -43,20 +43,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   DateTimeField,
   DateTimeFieldCalendar,
   DateTimeFieldInput,
@@ -75,13 +81,13 @@ export default function MinimalComposition() {
           <DateTimeFieldTriggerIconButton aria-label='Choose start date' />
         </PopoverTrigger>
         <PopoverContent>
-          <DateTimeFieldCalendar>
+          <DateTimeFieldCalendar aria-label='Choose start date'>
             <CalendarHeader>
               <CalendarPrevButton aria-label='Previous month' />
-              <CalendarViewButtonGroup>
+              <CalendarHeading>
                 <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                 <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-              </CalendarViewButtonGroup>
+              </CalendarHeading>
               <CalendarNextButton aria-label='Next month' />
             </CalendarHeader>
             <CalendarContent>
@@ -89,15 +95,27 @@ export default function MinimalComposition() {
                 <CalendarWeekdays>
                   <CalendarWeekday />
                 </CalendarWeekdays>
-                <CalendarWeeks>
-                  <CalendarDay />
-                </CalendarWeeks>
+                <CalendarDaysScroller>
+                  <CalendarDaysScrollerContent>
+                    <CalendarWeeks>
+                      <CalendarDay />
+                    </CalendarWeeks>
+                  </CalendarDaysScrollerContent>
+                </CalendarDaysScroller>
               </CalendarDays>
               <CalendarMonths>
-                <CalendarMonth />
+                <CalendarMonthsGrid>
+                  <CalendarMonth />
+                </CalendarMonthsGrid>
               </CalendarMonths>
               <CalendarYears>
-                <CalendarYear />
+                <CalendarYearsScroller>
+                  <CalendarYearsScrollerContent>
+                    <CalendarYearsGrid>
+                      <CalendarYear />
+                    </CalendarYearsGrid>
+                  </CalendarYearsScrollerContent>
+                </CalendarYearsScroller>
               </CalendarYears>
             </CalendarContent>
           </DateTimeFieldCalendar>

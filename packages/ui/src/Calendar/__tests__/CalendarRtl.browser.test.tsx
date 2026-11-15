@@ -11,12 +11,17 @@ import {
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
+  CalendarHeading,
   CalendarWeekdays, CalendarWeekday,
   CalendarDay,
   CalendarWeeks,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarYear,
   CalendarYears,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
+  CalendarYearsGrid,
 } from '../components';
 import { useCalendarContext, useCalendarDayContext } from '../contexts';
 import { formatCalendarDate, gregorianCalendar } from '@vega-ui/i18n';
@@ -41,9 +46,9 @@ const RtlCalendar = (props: ComponentProps<typeof Calendar>) => (
     <Calendar locale={LOCALE} style={{ width: 320 }} {...props}>
       <CalendarHeader>
         <CalendarPrevButton data-testid='prev' aria-label='Previous' />
-        <CalendarViewButtonGroup>
+        <CalendarHeading>
           <CalendarViewButton view='year' data-testid='year-button'>Year</CalendarViewButton>
-        </CalendarViewButtonGroup>
+        </CalendarHeading>
         <CalendarNextButton data-testid='next' aria-label='Next' />
       </CalendarHeader>
       <CalendarContent>
@@ -51,12 +56,22 @@ const RtlCalendar = (props: ComponentProps<typeof Calendar>) => (
           <CalendarWeekdays>
             <CalendarWeekday />
           </CalendarWeekdays>
-          <CalendarWeeks>
-            <LabeledDay />
-          </CalendarWeeks>
+          <CalendarDaysScroller>
+            <CalendarDaysScrollerContent>
+              <CalendarWeeks>
+                <LabeledDay />
+              </CalendarWeeks>
+            </CalendarDaysScrollerContent>
+          </CalendarDaysScroller>
         </CalendarDays>
         <CalendarYears data-testid='year-picker'>
-          <CalendarYear />
+          <CalendarYearsScroller>
+            <CalendarYearsScrollerContent>
+              <CalendarYearsGrid>
+                <CalendarYear />
+              </CalendarYearsGrid>
+            </CalendarYearsScrollerContent>
+          </CalendarYearsScroller>
         </CalendarYears>
       </CalendarContent>
     </Calendar>
@@ -85,14 +100,14 @@ const isPageVisible = (cell: Locator) => {
 
 describe('Calendar in a right-to-left context', () => {
   it('shows the visible month in view on mount', async () => {
-    const r = render(<RtlCalendar defaultMonth='2026-03-01' />);
+    const r = render(<RtlCalendar defaultFocusedDate='2026-03-01' />);
 
     await expect.poll(() => isPageVisible(getDay(r, '2026-03-15'))).toBe(true);
     expect(getScroller(r).scrollLeft).toBeLessThan(0);
   });
 
   it('ArrowRight moves to the previous day and ArrowLeft to the next day', async () => {
-    const r = render(<RtlCalendar defaultMonth='2026-03-01' defaultValue='2026-03-10' />);
+    const r = render(<RtlCalendar defaultFocusedDate='2026-03-01' defaultValue='2026-03-10' />);
 
     await expect.poll(() => isPageVisible(getDay(r, '2026-03-15'))).toBe(true);
 
@@ -105,8 +120,8 @@ describe('Calendar in a right-to-left context', () => {
   });
 
   it('ArrowRight from the first day of the month moves to the previous month', async () => {
-    const onChangeMonth = vi.fn();
-    const r = render(<RtlCalendar defaultMonth='2026-03-01' defaultValue='2026-03-01' onChangeMonth={onChangeMonth} />);
+    const onChangeFocusedDate = vi.fn();
+    const r = render(<RtlCalendar defaultFocusedDate='2026-03-01' defaultValue='2026-03-01' onChangeFocusedDate={onChangeFocusedDate} />);
 
     await expect.poll(() => isPageVisible(getDay(r, '2026-03-15'))).toBe(true);
     await nextFrame();
@@ -115,12 +130,12 @@ describe('Calendar in a right-to-left context', () => {
     await userEvent.keyboard('{ArrowRight}');
 
     await expect.element(getDay(r, '2026-02-28')).toHaveFocus();
-    await expect.poll(() => onChangeMonth).toHaveBeenLastCalledWith('2026-02-01');
+    await expect.poll(() => onChangeFocusedDate).toHaveBeenLastCalledWith('2026-02-28');
   });
 
   it('Next shows the next month on the left and Prev the previous month on the right', async () => {
-    const onChangeMonth = vi.fn();
-    const r = render(<RtlCalendar defaultMonth='2026-03-01' onChangeMonth={onChangeMonth} />);
+    const onChangeFocusedDate = vi.fn();
+    const r = render(<RtlCalendar defaultFocusedDate='2026-03-01' onChangeFocusedDate={onChangeFocusedDate} />);
 
     await expect.poll(() => isPageVisible(getDay(r, '2026-03-15'))).toBe(true);
     await nextFrame();
@@ -130,17 +145,17 @@ describe('Calendar in a right-to-left context', () => {
     expect(april.getBoundingClientRect().left).toBeLessThan(march.getBoundingClientRect().left);
 
     await userEvent.click(r.getByTestId('next'));
-    await expect.poll(() => onChangeMonth).toHaveBeenLastCalledWith('2026-04-01');
+    await expect.poll(() => onChangeFocusedDate).toHaveBeenLastCalledWith('2026-04-01');
     await expect.poll(() => isPageVisible(getDay(r, '2026-04-15'))).toBe(true);
 
     await userEvent.click(r.getByTestId('prev'));
-    await expect.poll(() => onChangeMonth).toHaveBeenLastCalledWith('2026-03-01');
+    await expect.poll(() => onChangeFocusedDate).toHaveBeenLastCalledWith('2026-03-01');
     await expect.poll(() => isPageVisible(getDay(r, '2026-03-15'))).toBe(true);
   });
 
   it('swiping to the left shows the next month and to the right the previous month', async () => {
-    const onChangeMonth = vi.fn();
-    const r = render(<RtlCalendar defaultMonth='2026-03-01' onChangeMonth={onChangeMonth} />);
+    const onChangeFocusedDate = vi.fn();
+    const r = render(<RtlCalendar defaultFocusedDate='2026-03-01' onChangeFocusedDate={onChangeFocusedDate} />);
 
     await expect.poll(() => isPageVisible(getDay(r, '2026-03-15'))).toBe(true);
     await nextFrame();
@@ -148,16 +163,16 @@ describe('Calendar in a right-to-left context', () => {
     const scroller = getScroller(r);
 
     scroller.scrollBy({ left: -scroller.clientWidth, behavior: 'instant' });
-    await expect.poll(() => onChangeMonth).toHaveBeenLastCalledWith('2026-04-01');
+    await expect.poll(() => onChangeFocusedDate).toHaveBeenLastCalledWith('2026-04-01');
     await nextFrame();
 
     scroller.scrollBy({ left: scroller.clientWidth, behavior: 'instant' });
-    await expect.poll(() => onChangeMonth).toHaveBeenLastCalledWith('2026-03-01');
+    await expect.poll(() => onChangeFocusedDate).toHaveBeenLastCalledWith('2026-03-01');
   });
 
   it('keeps reporting months while swiping past the rendered pages', async () => {
-    const onChangeMonth = vi.fn();
-    const r = render(<RtlCalendar defaultMonth='2026-01-01' onChangeMonth={onChangeMonth} />);
+    const onChangeFocusedDate = vi.fn();
+    const r = render(<RtlCalendar defaultFocusedDate='2026-01-01' onChangeFocusedDate={onChangeFocusedDate} />);
 
     await expect.poll(() => isPageVisible(getDay(r, '2026-01-15'))).toBe(true);
     await nextFrame();
@@ -168,12 +183,12 @@ describe('Calendar in a right-to-left context', () => {
       await nextFrame();
     }
 
-    await expect.poll(() => onChangeMonth.mock.calls.map(([month]) => month)).toEqual(['2026-02-01', '2026-03-01', '2026-04-01', '2026-05-01', '2026-06-01']);
+    await expect.poll(() => onChangeFocusedDate.mock.calls.map(([month]) => month)).toEqual(['2026-02-01', '2026-03-01', '2026-04-01', '2026-05-01', '2026-06-01']);
     await expect.poll(() => isPageVisible(getDay(r, '2026-06-15'))).toBe(true);
   });
 
   it('Next shows the next page of years in the year view', async () => {
-    const r = render(<RtlCalendar defaultMonth='2026-03-01' defaultView='year' />);
+    const r = render(<RtlCalendar defaultFocusedDate='2026-03-01' defaultView='year' />);
 
     await expect.poll(() => isPageVisible(getYear(r, '2026-01-01'))).toBe(true);
     await nextFrame();

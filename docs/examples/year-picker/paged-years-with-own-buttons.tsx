@@ -13,6 +13,7 @@ import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
 import { useRef, useState } from 'react';
 
 const PERIOD = 20;
+const FIRST_YEAR = '2007-01-01';
 
 function getYear(key: string) {
   return Number(key.slice(0, 4));
@@ -20,22 +21,11 @@ function getYear(key: string) {
 
 export default function PagedYearsWithOwnButtons() {
   const scrollerRef = useRef<IndexedSnapScrollerApiRef>(null);
-  const [page, setPage] = useState('2016-01-01');
-  const [active, setActive] = useState('2026-01-01');
+  const [page, setPage] = useState(FIRST_YEAR);
   const [selected, setSelected] = useState<string | null>(null);
 
   const firstYear = getYear(page);
   const lastYear = firstYear + PERIOD - 1;
-
-  const changePage = (next: string) => {
-    setPage(next);
-    setActive((current) => {
-      const year = getYear(current);
-      if (year >= getYear(next) && year < getYear(next) + PERIOD) return current;
-
-      return next;
-    });
-  };
 
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-4)', inlineSize: 'fit-content' }}>
@@ -51,13 +41,12 @@ export default function PagedYearsWithOwnButtons() {
       <YearPicker
         aria-label='Founding year'
         locale='en-US'
-        year='2016-01-01'
-        active={active}
-        onChangeActive={setActive}
-        selected={selected}
-        onSelectCell={setSelected}
+        defaultFocusedDate={FIRST_YEAR}
+        value={selected}
+        onChangeValue={setSelected}
+        period={PERIOD}
       >
-        <YearPickerScroller apiRef={scrollerRef} period={PERIOD} onChangePeriod={changePage}>
+        <YearPickerScroller apiRef={scrollerRef} onChangePeriod={setPage}>
           <YearPickerScrollerContent>
             <YearPickerScrollerLayout rows={5} cols={4}>
               <YearPickerCell />

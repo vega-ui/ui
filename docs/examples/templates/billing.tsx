@@ -422,7 +422,7 @@ export default function Billing() {
                   <form noValidate onSubmit={saveCard} style={{ display: 'grid', gap: 'var(--spacing-8)', marginBlockStart: 'var(--spacing-10)' }}>
                     <div style={field}>
                       <Label htmlFor={`${id}-name`}>Name on card</Label>
-                      <TextField error={cardErrors.name !== undefined}>
+                      <TextField>
                         <TextFieldInput
                           id={`${id}-name`}
                           name='name'
@@ -433,11 +433,11 @@ export default function Billing() {
                           onChange={(event) => changeCard('name', event.currentTarget.value)}
                         />
                       </TextField>
-                      {cardErrors.name && <HelperText id={`${id}-name-error`} error>{cardErrors.name}</HelperText>}
+                      {cardErrors.name && <HelperText id={`${id}-name-error`} invalid>{cardErrors.name}</HelperText>}
                     </div>
                     <div style={field}>
                       <Label htmlFor={`${id}-number`}>Card number</Label>
-                      <TextField error={cardErrors.number !== undefined}>
+                      <TextField>
                         <TextFieldInput
                           id={`${id}-number`}
                           name='number'
@@ -451,12 +451,12 @@ export default function Billing() {
                           style={{ fontVariantNumeric: 'tabular-nums' }}
                         />
                       </TextField>
-                      {cardErrors.number && <HelperText id={`${id}-number-error`} error>{cardErrors.number}</HelperText>}
+                      {cardErrors.number && <HelperText id={`${id}-number-error`} invalid>{cardErrors.number}</HelperText>}
                     </div>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 140px), 1fr))', gap: 'var(--spacing-8)' }}>
                       <div style={field}>
                         <Label htmlFor={`${id}-expiry`}>Expiry</Label>
-                        <TextField error={cardErrors.expiry !== undefined}>
+                        <TextField>
                           <TextFieldInput
                             id={`${id}-expiry`}
                             name='expiry'
@@ -470,11 +470,11 @@ export default function Billing() {
                             style={{ fontVariantNumeric: 'tabular-nums' }}
                           />
                         </TextField>
-                        {cardErrors.expiry && <HelperText id={`${id}-expiry-error`} error>{cardErrors.expiry}</HelperText>}
+                        {cardErrors.expiry && <HelperText id={`${id}-expiry-error`} invalid>{cardErrors.expiry}</HelperText>}
                       </div>
                       <div style={field}>
                         <Label htmlFor={`${id}-cvc`}>CVC</Label>
-                        <TextField error={cardErrors.cvc !== undefined}>
+                        <TextField>
                           <TextFieldInput
                             id={`${id}-cvc`}
                             name='cvc'
@@ -488,7 +488,7 @@ export default function Billing() {
                             style={{ fontVariantNumeric: 'tabular-nums' }}
                           />
                         </TextField>
-                        {cardErrors.cvc && <HelperText id={`${id}-cvc-error`} error>{cardErrors.cvc}</HelperText>}
+                        {cardErrors.cvc && <HelperText id={`${id}-cvc-error`} invalid>{cardErrors.cvc}</HelperText>}
                       </div>
                     </div>
                     <div style={{ ...actions, marginBlockStart: 'var(--spacing-4)' }}>

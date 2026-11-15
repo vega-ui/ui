@@ -104,4 +104,12 @@ describe('mergeProps', () => {
     );
     expect(result['aria-describedby']).toBe('tooltip hint');
   });
+
+  test('passes a single ref through and adds none when no ref is given', () => {
+    const ref = { current: null };
+
+    expect(mergeProps({ ref: undefined }, { id: 'a' }).ref).toBeUndefined();
+    expect(mergeProps({ ref: undefined }, { ref }).ref).toBe(ref);
+    expect(mergeProps({ ref }, { ref: undefined }).ref).toBe(ref);
+  });
 });

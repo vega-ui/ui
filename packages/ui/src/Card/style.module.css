@@ -4,7 +4,6 @@
 
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
     box-sizing: border-box;
     border: 1px solid var(--card-border-color);
     background: var(--card-background-color);

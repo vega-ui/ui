@@ -8,7 +8,8 @@
 | --- | --- | --- | --- | --- |
 | `variant` | `CheckboxVariant` | `'primary'` | No | Visual variant of the checkbox, for theme or context switching. |
 | `size` | `CheckboxSize` | `'md'` | No | Size of the checkbox input and its visual marker. |
-| `ref` | `Ref<HTMLLabelElement>` | — | No | Ref to the native label element. |
+| `ref` | `Ref<HTMLLabelElement>` | — | No | Ref to the native label element, or to the child element with `asChild`. |
+| `asChild` | `boolean` | — | No | Renders the checkbox as its only child instead of a `<label>`, for a checkbox inside another label. |
 
 Also accepts all `<label>` attributes.
 <!-- AUTO-GENERATED:ROOT_API:end -->
@@ -45,7 +46,7 @@ Also accepts all `<div>` attributes.
 | `size` | `IconSize` | — | No | Predefined size token for the icon. Can be overridden by explicit width and height. |
 | `ref` | `Ref<SVGSVGElement>` | — | No | Ref to the SVG element |
 | `strokeWidth` | `number` | — | No | Stroke thickness for SVG lines and shapes (in px or pt). |
-| `children` | `ReactNode` | — | No | Icon content (required). Accepts: icons from `~/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
+| `children` | `ReactNode` | — | No | Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
 
 Also accepts all HTML attributes.
 <!-- AUTO-GENERATED:PART_API:CheckboxCheckedIcon:end -->
@@ -58,7 +59,7 @@ Also accepts all HTML attributes.
 | `size` | `IconSize` | — | No | Predefined size token for the icon. Can be overridden by explicit width and height. |
 | `ref` | `Ref<SVGSVGElement>` | — | No | Ref to the SVG element |
 | `strokeWidth` | `number` | — | No | Stroke thickness for SVG lines and shapes (in px or pt). |
-| `children` | `ReactNode` | — | No | Icon content (required). Accepts: icons from `~/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
+| `children` | `ReactNode` | — | No | Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
 
 Also accepts all HTML attributes.
 <!-- AUTO-GENERATED:PART_API:CheckboxIndeterminateIcon:end -->

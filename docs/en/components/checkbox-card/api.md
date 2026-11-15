@@ -62,11 +62,11 @@ Visual control region for the checkbox affordance.
 <!-- AUTO-GENERATED:PART_API:CheckboxCardControl:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `variant` | `CheckboxVariant` | — | No | Visual variant of the checkbox, for theme or context switching. |
+| `ref` | `Ref<HTMLSpanElement>` | — | No | Ref to the `<span>` that holds the checkbox inside the card's label. |
 | `size` | `CheckboxSize` | — | No | Size of the checkbox input and its visual marker. |
-| `ref` | `Ref<HTMLLabelElement>` | — | No | Ref to the native label element. |
+| `variant` | `CheckboxVariant` | — | No | Visual variant of the checkbox, for theme or context switching. |
 
-Also accepts all `<label>` attributes.
+Also accepts all `<span>` attributes.
 <!-- AUTO-GENERATED:PART_API:CheckboxCardControl:end -->
 
 ## `CheckboxCardControlInput`
@@ -92,7 +92,7 @@ Checked-state icon.
 | `size` | `IconSize` | — | No | Predefined size token for the icon. Can be overridden by explicit width and height. |
 | `ref` | `Ref<SVGSVGElement>` | — | No | Ref to the SVG element |
 | `strokeWidth` | `number` | — | No | Stroke thickness for SVG lines and shapes (in px or pt). |
-| `children` | `ReactNode` | — | No | Icon content (required). Accepts: icons from `~/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
+| `children` | `ReactNode` | — | No | Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
 
 Also accepts all HTML attributes.
 <!-- AUTO-GENERATED:PART_API:CheckboxCardControlCheckedIcon:end -->
@@ -107,7 +107,7 @@ Indeterminate-state icon.
 | `size` | `IconSize` | — | No | Predefined size token for the icon. Can be overridden by explicit width and height. |
 | `ref` | `Ref<SVGSVGElement>` | — | No | Ref to the SVG element |
 | `strokeWidth` | `number` | — | No | Stroke thickness for SVG lines and shapes (in px or pt). |
-| `children` | `ReactNode` | — | No | Icon content (required). Accepts: icons from `~/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
+| `children` | `ReactNode` | — | No | Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
 
 Also accepts all HTML attributes.
 <!-- AUTO-GENERATED:PART_API:CheckboxCardControlIndeterminateIcon:end -->

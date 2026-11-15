@@ -206,7 +206,7 @@ export default function OverlayToggleList() {
 
 ### Error: rule across several switches
 
-Turning both channels off breaks a product rule. The error appears right away, both inputs get `aria-invalid` and `aria-describedby` pointing at it, and turning either channel back on clears it. `Switch` has no invalid style of its own, so the message carries the state.
+Turning both channels off breaks a product rule. The error appears right away, both inputs get `aria-invalid` and `aria-describedby` pointing at it, and turning either channel back on clears it. `aria-invalid` also draws the error outline of both switches.
 
 <!-- example: switch/at-least-one-channel.tsx -->
 ```tsx
@@ -251,7 +251,7 @@ export default function AtLeastOneChannel() {
           </Switch>
         </div>
       </div>
-      {invalid && <HelperText id='channels-error' error>Keep at least one channel on, or nobody will be paged during an incident.</HelperText>}
+      {invalid && <HelperText id='channels-error' invalid>Keep at least one channel on, or nobody will be paged during an incident.</HelperText>}
     </Fieldset>
   );
 }

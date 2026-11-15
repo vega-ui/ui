@@ -2,7 +2,7 @@
 
 ## Overview
 
-`Tooltip` owns delayed open behavior and floating-layer coordination for a short, non-essential description. It is intentionally narrow: trigger plus descriptive content, with an optional arrow for visual anchoring.
+`Tooltip` owns delayed open behavior and floating-layer coordination for a short, non-essential description. It is intentionally narrow: trigger plus descriptive content.
 
 ## Required Parts
 
@@ -20,16 +20,13 @@ Required. Renders the visible descriptive content.
 
 ## Optional Parts
 
-### `TooltipArrow`
-
-Optional visual arrow when the floating content should point back to the trigger more clearly.
+There are no optional parts.
 
 ## Composition Order
 
 1. `Tooltip`
 2. `TooltipTrigger`
 3. `TooltipContent`
-4. `TooltipArrow`
 
 ## Valid Composition Patterns
 
@@ -39,7 +36,6 @@ import {
   Button,
   Text,
   Tooltip,
-  TooltipArrow,
   TooltipContent,
   TooltipTrigger,
 } from '@vega-ui/react';
@@ -51,7 +47,6 @@ export default function MinimalComposition() {
         <Button>Publish</Button>
       </TooltipTrigger>
       <TooltipContent>
-        <TooltipArrow />
         <Text size={2}>Anyone with the link can view the page</Text>
       </TooltipContent>
     </Tooltip>

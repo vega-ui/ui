@@ -58,20 +58,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
 } from '@vega-ui/react';
 
 export default function DenseEmbeddedCalendar() {
@@ -79,26 +85,38 @@ export default function DenseEmbeddedCalendar() {
     <Calendar compact size='xs' variant='primary' locale='en-US' defaultValue='2026-11-18'>
       <CalendarHeader>
         <CalendarPrevButton aria-label='Previous' />
-        <CalendarViewButtonGroup>
+        <CalendarHeading>
           <CalendarViewButton view='month'><CalendarMonthLabel format='short' /></CalendarViewButton>
           <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-        </CalendarViewButtonGroup>
+        </CalendarHeading>
         <CalendarNextButton aria-label='Next' />
       </CalendarHeader>
       <CalendarContent>
-        <CalendarDays aria-label='Days'>
+        <CalendarDays>
           <CalendarWeekdays format='narrow'>
             <CalendarWeekday />
           </CalendarWeekdays>
-          <CalendarWeeks>
-            <CalendarDay />
-          </CalendarWeeks>
+          <CalendarDaysScroller>
+            <CalendarDaysScrollerContent>
+              <CalendarWeeks>
+                <CalendarDay />
+              </CalendarWeeks>
+            </CalendarDaysScrollerContent>
+          </CalendarDaysScroller>
         </CalendarDays>
-        <CalendarMonths cols={4} format='short'>
-          <CalendarMonth />
+        <CalendarMonths>
+          <CalendarMonthsGrid cols={4} format='short'>
+            <CalendarMonth />
+          </CalendarMonthsGrid>
         </CalendarMonths>
         <CalendarYears>
-          <CalendarYear />
+          <CalendarYearsScroller>
+            <CalendarYearsScrollerContent>
+              <CalendarYearsGrid>
+                <CalendarYear />
+              </CalendarYearsGrid>
+            </CalendarYearsScrollerContent>
+          </CalendarYearsScroller>
         </CalendarYears>
       </CalendarContent>
     </Calendar>

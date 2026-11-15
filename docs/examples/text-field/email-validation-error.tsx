@@ -29,7 +29,7 @@ export default function EmailValidationError() {
     <form noValidate onSubmit={onSubmit} style={{ display: 'grid', gap: 'var(--spacing-12)', width: '100%' }}>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor={id}>Invite a teammate</Label>
-        <TextField error={invalid}>
+        <TextField>
           <TextFieldInput
             id={id}
             type='email'
@@ -40,7 +40,7 @@ export default function EmailValidationError() {
             onBlur={() => setError(getEmailError(email))}
           />
         </TextField>
-        <HelperText id={messageId} error={invalid}>
+        <HelperText id={messageId} invalid={invalid}>
           {invalid ? error : 'We will email them a link to join the workspace.'}
         </HelperText>
       </div>

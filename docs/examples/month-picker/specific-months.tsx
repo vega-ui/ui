@@ -17,8 +17,8 @@ export default function SpecificMonths() {
         aria-label='Event month, 2026'
         aria-describedby={hintId}
         locale='en-US'
-        year='2026-01-01'
-        disabled={closedMonths}
+        defaultFocusedDate='2026-01-01'
+        disabledDates={closedMonths}
         style={{ width: '100%' }}
       >
         <MonthPickerLayout cols={4} format='short'>

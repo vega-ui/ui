@@ -22,15 +22,11 @@ For decision-oriented navigation across related controls, see [Component Familie
 - [Button](./button/)
 - [ButtonBase](./button-base/)
 - [Calendar](./calendar/)
-- [CalendarBase](./calendar-base/)
 - [Card](./card/)
 - [Checkbox](./checkbox/)
 - [CheckboxCard](./checkbox-card/)
 - [Code](./code/)
 - [Collapsible](./collapsible/)
-- [DataGrid](./data-grid/)
-- [DataGridPicker](./data-grid-picker/)
-- [DataGridSelectable](./data-grid-selectable/)
 - [DateField](./date-field/)
 - [DateRangeField](./date-range-field/)
 - [DateTimeField](./date-time-field/)
@@ -38,6 +34,7 @@ For decision-oriented navigation across related controls, see [Component Familie
 - [Dialog](./dialog/)
 - [Drawer](./drawer/)
 - [Fieldset](./fieldset/)
+- [Grid](./grid/)
 - [Heading](./heading/)
 - [HelperText](./helper-text/)
 - [Icon](./icon/)
@@ -91,7 +88,7 @@ Each component now lives in its own directory under `docs/components/<component>
 - `troubleshooting.md`: optional common failure modes and fixes
 - `anatomy.md`: optional compound-component structure and composition contract
 
-For now, every component has `index.md`. Use the additional files for higher-complexity components such as `Select`, `Dialog`, `Calendar`, `PhoneField`, and `DataGrid`.
+For now, every component has `index.md`. Use the additional files for higher-complexity components such as `Select`, `Dialog`, `Calendar`, `PhoneField`, and `Grid`.
 
 ## Doc Profiles
 

@@ -21,7 +21,6 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     size: { control: 'radio', options: sizes },
-    error: { control: 'boolean' },
   },
   args: {},
   render: (args) => (
@@ -35,9 +34,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const states = [
-  { label: 'default', disabled: false, error: false },
-  { label: 'disabled', disabled: true, error: false },
-  { label: 'error', disabled: false, error: true },
+  { label: 'default', disabled: false, invalid: false },
+  { label: 'disabled', disabled: true, invalid: false },
+  { label: 'invalid', disabled: false, invalid: true },
 ];
 
 export const Playground: Story = {};
@@ -46,8 +45,8 @@ export const Matrix: Story = {
   render: () => (
     <div style={{ display: 'grid', gridTemplateColumns: `repeat(${states.length}, auto)`, gap: 12, alignItems: 'center' }}>
       {sizes.map((size) => states.map((state) => (
-        <TextField key={`${size}-${state.label}`} size={size} error={state.error}>
-          <TextFieldInput aria-label='Text' disabled={state.disabled} placeholder={`${size} / ${state.label}`} />
+        <TextField key={`${size}-${state.label}`} size={size}>
+          <TextFieldInput aria-label='Text' aria-invalid={state.invalid} disabled={state.disabled} placeholder={`${size} / ${state.label}`} />
         </TextField>
       )))}
     </div>

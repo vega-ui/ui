@@ -9,14 +9,13 @@ export default function StaticYearGrid() {
       <YearPicker
         aria-label='Budget year'
         locale='en-US'
-        year='2025-01-01'
-        from='2025-01-01'
-        to='2030-01-01'
-        selected={year}
-        onSelectCell={setYear}
+        min='2025-01-01'
+        max='2030-01-01'
+        value={year}
+        onChangeValue={setYear}
         style={{ width: '100%' }}
       >
-        <YearPickerLayout rows={2} cols={3}>
+        <YearPickerLayout rows={2} cols={3} start='2025-01-01'>
           <YearPickerCell />
         </YearPickerLayout>
       </YearPicker>

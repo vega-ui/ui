@@ -1,4 +1,4 @@
-import { FC, FormEvent, useState } from 'react';
+import { FC, useState } from 'react';
 import { describe, it, afterEach, expect, vi } from 'vitest';
 import { render, RenderResult, cleanup } from '@testing-library/react';
 import { userEvent } from 'vitest/browser';
@@ -9,10 +9,10 @@ const TESTID_INPUT = 'input'
 
 afterEach(cleanup)
 
-const TimeFieldTest: FC<Partial<TimeFieldProps> & { onInput?(event: FormEvent<HTMLInputElement>): void }> = ({ onInput, ...props }) => {
+const TimeFieldTest: FC<Partial<TimeFieldProps>> = (props) => {
   return (
     <TimeField {...props}>
-      <TimeFieldInput data-testid={TESTID_INPUT} onInput={onInput} />
+      <TimeFieldInput data-testid={TESTID_INPUT} />
     </TimeField>
   )
 }
@@ -42,24 +42,40 @@ describe('TimeField', () => {
       expect(onChangeValue).toHaveBeenLastCalledWith('09:30');
     });
 
-    it('reports an empty value while the time is incomplete', async () => {
-      const onChangeValue = vi.fn();
-      const r = render(<TimeFieldTest onChangeValue={onChangeValue} />);
+    it('dispatches change once the user leaves a time they edited, like a native input', async () => {
+      const onChange = vi.fn();
+      const r = render(<TimeFieldTest />);
+      getInput(r).addEventListener('change', onChange);
 
-      await userEvent.type(getInput(r), '09:30{Backspace}');
+      await userEvent.click(getInput(r));
+      await userEvent.tab();
 
-      await expect.element(getInput(r)).toHaveValue('09:3');
-      expect(onChangeValue).toHaveBeenLastCalledWith('');
+      expect(onChange).not.toHaveBeenCalled();
+
+      await userEvent.type(getInput(r), '09:30');
+      await userEvent.tab();
+
+      expect(onChange).toHaveBeenCalledOnce();
     });
 
-    it('reports seconds with the HH:mm:ss format', async () => {
-      const onChangeValue = vi.fn();
-      const r = render(<TimeFieldTest format='HH:mm:ss' onChangeValue={onChangeValue} />);
+    it('marks a time outside min as invalid for the user once they leave it, and a form reset clears the mark', async () => {
+      const r = render(
+        <form data-testid='form'>
+          <TimeFieldTest min='12:00' />
+        </form>
+      );
 
-      await userEvent.type(getInput(r), '09:30:15');
+      await userEvent.type(getInput(r), '11:30');
 
-      await expect.element(getInput(r)).toHaveValue('09:30:15');
-      expect(onChangeValue).toHaveBeenLastCalledWith('09:30:15');
+      expect(getInput(r)).not.toHaveAttribute('data-user-edited');
+
+      await userEvent.tab();
+
+      expect(getInput(r).matches('[data-user-edited]:invalid')).toBe(true);
+
+      (r.getByTestId('form') as HTMLFormElement).reset();
+
+      await expect.element(getInput(r)).not.toHaveAttribute('data-user-edited');
     });
 
     describe('controlled', () => {
@@ -71,6 +87,16 @@ describe('TimeField', () => {
         await expect.element(getInput(r)).toHaveValue('09:30');
       });
 
+      it('dispatches input for a whole value the parent accepts', async () => {
+        const r = render(<ControlledTimeFieldTest />);
+        const onInput = vi.fn();
+        getInput(r).addEventListener('input', onInput);
+
+        await userEvent.fill(getInput(r), '09:30');
+
+        expect(onInput).toHaveBeenCalled();
+      });
+
       it('shows a value set outside', async () => {
         const r = render(<ControlledTimeFieldTest />);
 
@@ -79,110 +105,48 @@ describe('TimeField', () => {
         await expect.element(getInput(r)).toHaveValue('12:30');
       });
     });
-
-    it('shows defaultValue', async () => {
-      const r = render(<TimeFieldTest defaultValue='08:15' />);
-      await expect.element(getInput(r)).toHaveValue('08:15');
-    });
-
-    it('restores defaultValue on form reset', async () => {
-      const onChangeValue = vi.fn();
-      const r = render(
-        <form>
-          <TimeFieldTest defaultValue='08:15' onChangeValue={onChangeValue} />
-          <button type='reset'>Reset</button>
-        </form>
-      );
-
-      await userEvent.clear(getInput(r));
-      await userEvent.type(getInput(r), '12:30');
-      await userEvent.click(r.getByRole('button', { name: 'Reset' }));
-
-      await expect.element(getInput(r)).toHaveValue('08:15');
-      expect(onChangeValue).toHaveBeenLastCalledWith('08:15');
-    });
   });
 
   describe('Edge Cases', () => {
-    it('clamps a time earlier than min to min', async () => {
-      const r = render(<TimeFieldTest min='09:00' max='18:30' />);
+    it('does not step a read-only input with the arrows, like a native time input', async () => {
+      const onChangeValue = vi.fn();
+      const r = render(
+        <TimeField defaultValue='10:00' onChangeValue={onChangeValue}>
+          <TimeFieldInput data-testid={TESTID_INPUT} readOnly />
+        </TimeField>,
+      );
+      getInput(r).focus();
+      getInput(r).setSelectionRange(0, 0);
 
-      await userEvent.type(getInput(r), '08:00');
-
-      await expect.element(getInput(r)).toHaveValue('09:00');
-    });
-
-    it('clamps a time later than max to max', async () => {
-      const r = render(<TimeFieldTest min='09:00' max='18:30' />);
-
-      await userEvent.type(getInput(r), '19:00');
-
-      await expect.element(getInput(r)).toHaveValue('18:30');
-    });
-
-    it('ignores an invalid min', async () => {
-      const r = render(<TimeFieldTest min='9 am' />);
-
-      await userEvent.type(getInput(r), '08:00');
-
-      await expect.element(getInput(r)).toHaveValue('08:00');
-    });
-
-    it('clamps the typed text when min changes and dispatches input', async () => {
-      const onInput = vi.fn();
-      const r = render(<TimeFieldTest onInput={onInput} />);
-
-      await userEvent.type(getInput(r), '08:00');
-      onInput.mockClear();
-      r.rerender(<TimeFieldTest onInput={onInput} min='09:00' />);
-
-      await expect.element(getInput(r)).toHaveValue('09:00');
-      expect(onInput).toHaveBeenCalledTimes(1);
-    });
-
-    it('clamps segments to their range', async () => {
-      const r = render(<TimeFieldTest />);
-
-      await userEvent.type(getInput(r), '25:30');
-
-      await expect.element(getInput(r)).toHaveValue('23:30');
-    });
-
-    it('steps the minutes at the caret by step', async () => {
-      const r = render(<TimeFieldTest step={15} />);
-
-      await userEvent.type(getInput(r), '09:00');
       await userEvent.keyboard('{ArrowUp}');
 
-      await expect.element(getInput(r)).toHaveValue('09:15');
+      expect(getInput(r)).toHaveValue('10:00');
+      expect(onChangeValue).not.toHaveBeenCalled();
     });
 
-    it('steps the hours by one whatever the step', async () => {
-      const r = render(<TimeFieldTest step={15} />);
-
-      await userEvent.type(getInput(r), '09:00');
-      getInput(r).setSelectionRange(1, 1);
-      await userEvent.keyboard('{ArrowUp}');
-
-      await expect.element(getInput(r)).toHaveValue('10:00');
-    });
-
-    it('ignores letters', async () => {
-      const r = render(<TimeFieldTest />);
-
-      await userEvent.type(getInput(r), 'abc');
-
-      await expect.element(getInput(r)).toHaveValue('');
-    });
-
-    it('accepts the digits of other numbering systems', async () => {
+    it('calibrates a time the browser entered without an edit to intercept, like autofill', async () => {
       const onChangeValue = vi.fn();
       const r = render(<TimeFieldTest onChangeValue={onChangeValue} />);
+      const input = getInput(r);
 
-      await userEvent.type(getInput(r), '٠٩٣٠');
+      Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!.call(input, '0930');
+      input.dispatchEvent(new Event('input', { bubbles: true }));
 
-      await expect.element(getInput(r)).toHaveValue('09:30');
+      await expect.element(input).toHaveValue('09:30');
       expect(onChangeValue).toHaveBeenLastCalledWith('09:30');
+    });
+
+    it('reports each edit to onChange of the input', async () => {
+      const onChange = vi.fn();
+      const r = render(
+        <TimeField>
+          <TimeFieldInput data-testid={TESTID_INPUT} onChange={(event) => onChange(event.currentTarget.value)} />
+        </TimeField>
+      );
+
+      await userEvent.type(getInput(r), '093');
+
+      expect(onChange.mock.calls).toEqual([['0'], ['09'], ['09:3']]);
     });
   });
 

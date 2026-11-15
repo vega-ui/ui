@@ -35,25 +35,15 @@ describe('normalizeTemplateDate', () => {
     expect(normalizeTemplateDate(gregorianCalendar, '01.13.2026', 'dd.mm.yyyy')).toBe('01.12.2026');
   });
 
-  it('clamps a complete value to min and max', () => {
-    const bounds = { min: '2026-01-10', max: '2026-01-20' };
-
-    expect(normalizeTemplateDate(gregorianCalendar, '05.01.2026', 'dd.mm.yyyy', bounds)).toBe('10.01.2026');
-    expect(normalizeTemplateDate(gregorianCalendar, '25.01.2026', 'dd.mm.yyyy', bounds)).toBe('20.01.2026');
-    expect(normalizeTemplateDate(gregorianCalendar, '05.01.20', 'dd.mm.yyyy', bounds)).toBe('05.01.20');
-  });
-
-  it('clamps a date time to min and max', () => {
-    const template = 'dd.mm.yyyy, HH:MM';
-    const bounds = { min: '2026-01-10T09:00', max: '2026-01-20T18:00:30' };
-
-    expect(normalizeTemplateDate(gregorianCalendar, '10.01.2026, 08:59', template, bounds)).toBe('10.01.2026, 09:00');
-    expect(normalizeTemplateDate(gregorianCalendar, '10.01.2026, 09:00', template, bounds)).toBe('10.01.2026, 09:00');
-    expect(normalizeTemplateDate(gregorianCalendar, '20.01.2026, 19:00', template, bounds)).toBe('20.01.2026, 18:00');
-  });
-
   it('replaces the digits of other numbering systems', () => {
     expect(normalizeTemplateDate(gregorianCalendar, '٣٩', 'dd.mm.yyyy')).toBe('31');
     expect(normalizeTemplateDate(createCalendarSystem('persian'), '۱۴۰۵/۰۱/۰۱', 'yyyy/mm/dd')).toBe('1405/01/01');
+  });
+
+  it('keeps a two-digit year and clamps the day by its expanded year', () => {
+    expect(normalizeTemplateDate(gregorianCalendar, '00', 'yy', { referenceDate: '2026-06-15' })).toBe('00');
+    expect(normalizeTemplateDate(gregorianCalendar, '02/31/27', 'mm/dd/yy', { referenceDate: '2026-06-15' })).toBe('02/28/27');
+    expect(normalizeTemplateDate(gregorianCalendar, '02/31/28', 'mm/dd/yy', { referenceDate: '2026-06-15' })).toBe('02/29/28');
+    expect(normalizeTemplateDate(gregorianCalendar, '02/31/00', 'mm/dd/yy', { referenceDate: '1950-06-15' })).toBe('02/28/00');
   });
 });

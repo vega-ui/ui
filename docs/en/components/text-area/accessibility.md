@@ -21,7 +21,7 @@
 ## Form Semantics
 
 - Use native textarea props for `name`, `required`, and value handling.
-- Apply invalid semantics on the textarea when the field is truly invalid.
+- The error look follows `aria-invalid='true'` on the textarea or `:user-invalid`. Set `aria-invalid` for errors only your app knows; native constraints such as `required` and `minLength` mark the field on their own once the user edits it or tries to submit.
 
 ## Accessibility Risks
 

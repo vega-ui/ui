@@ -5,7 +5,7 @@
 <!-- AUTO-GENERATED:ROOT_API:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `children` | `ReactNode` | — | Yes | — |
+| `children` | `ReactNode` | — | Yes | The single element that receives the props of `Slot`. |
 <!-- AUTO-GENERATED:ROOT_API:end -->
 
 Any other props are merged into the child element.

@@ -4,7 +4,7 @@
 
 ### Базовый: месяцы одного года
 
-`MonthPickerLayout` рендерит все месяцы года, заданного через `year` — любой ISO-день внутри него. Ключ каждой ячейки — первый день её месяца, поэтому `defaultSelected` для марта — `'2026-03-01'`. У сетки нет видимого заголовка, поэтому ей передан `aria-label`.
+`MonthPickerLayout` рендерит все месяцы года, в котором находится месяц в фокусе; без `focusedDate` это первый выбранный месяц. Ключ каждой ячейки — первый день её месяца, поэтому `defaultValue` для марта — `'2026-03-01'`. У сетки нет видимого заголовка, поэтому ей передан `aria-label`.
 
 <!-- example: month-picker/months-of-one-year.tsx -->
 ```tsx
@@ -12,7 +12,7 @@ import { MonthPicker, MonthPickerCell, MonthPickerLayout } from '@vega-ui/react'
 
 export default function MonthsOfOneYear() {
   return (
-    <MonthPicker aria-label='Start month, 2026' locale='en-US' year='2026-01-01' defaultSelected='2026-03-01' style={{ width: '100%' }}>
+    <MonthPicker aria-label='Start month, 2026' locale='en-US' defaultValue='2026-03-01' style={{ width: '100%' }}>
       <MonthPickerLayout>
         <MonthPickerCell />
       </MonthPickerLayout>
@@ -26,7 +26,7 @@ export default function MonthsOfOneYear() {
 
 ### Контролируемый/с состоянием: месяц оплаты с переключением года
 
-Выбранный месяц и видимый год — отдельные части состояния: кнопки меняют год, клик меняет месяц, а строка ниже показывает результат. `MonthPicker` сохраняет активную ячейку при смене `year`, поэтому кнопки переносят в новый год и `active`.
+Выбранный месяц и месяц в фокусе — отдельные части состояния: кнопки переносят `focusedDate` на тот же месяц предыдущего или следующего года, клик меняет выбор, а строка ниже показывает результат. Пикер показывает год месяца в фокусе и держит на нём точку Tab; `onChangeFocusedDate` синхронизирует состояние, когда фокус перемещается внутри сетки.
 
 <!-- example: month-picker/billing-month-with-year-navigation.tsx -->
 ```tsx
@@ -44,13 +44,13 @@ import { useState } from 'react';
 const monthFormat = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' });
 
 export default function BillingMonthWithYearNavigation() {
-  const [year, setYear] = useState(2026);
-  const [active, setActive] = useState('2026-10-01');
+  const [focused, setFocused] = useState('2026-10-01');
   const [month, setMonth] = useState<string | null>('2026-10-01');
 
+  const year = Number(focused.slice(0, 4));
+
   const showYear = (next: number) => {
-    setYear(next);
-    setActive(`${next}-01-01`);
+    setFocused(`${next}${focused.slice(4)}`);
   };
 
   return (
@@ -67,11 +67,10 @@ export default function BillingMonthWithYearNavigation() {
       <MonthPicker
         aria-label={`Billing month, ${year}`}
         locale='en-US'
-        year={`${year}-01-01`}
-        active={active}
-        onChangeActive={setActive}
-        selected={month}
-        onSelectCell={setMonth}
+        focusedDate={focused}
+        onChangeFocusedDate={setFocused}
+        value={month}
+        onChangeValue={setMonth}
         style={{ width: '100%' }}
       >
         <MonthPickerLayout cols={4} format='short'>
@@ -152,15 +151,15 @@ export default function ReportPeriod() {
           aria-describedby={hintId}
           locale='en-US'
           selection='range'
-          year='2026-01-01'
-          selected={period}
-          onSelectCell={change}
+          defaultFocusedDate='2026-01-01'
+          value={period}
+          onChangeValue={change}
         >
           <MonthPickerLayout cols={4} format='short'>
             <MonthPickerCell />
           </MonthPickerLayout>
         </MonthPicker>
-        <HelperText id={hintId} error={missing}>
+        <HelperText id={hintId} invalid={missing}>
           {missing ? 'Pick the first and the last month of the period.' : 'Pick the first and the last month.'}
         </HelperText>
       </Fieldset>
@@ -181,7 +180,7 @@ export default function ReportPeriod() {
 
 ### Раскладка/оверлей: фильтр по месяцу в поповере
 
-Компактная сетка месяцев за триггером — для фильтра выписок или дашборда. Поповер контролируемый и закрывается после выбора месяца; месяцы после последней выписки отключены через `to`.
+Компактная сетка месяцев за триггером — для фильтра выписок или дашборда. Поповер контролируемый и закрывается после выбора месяца; месяцы после последней выписки отключены через `max`.
 
 <!-- example: month-picker/month-filter-in-a-popover.tsx -->
 ```tsx
@@ -221,10 +220,9 @@ export default function MonthFilterInAPopover() {
         <MonthPicker
           aria-label='Statement month, 2026'
           locale='en-US'
-          year='2026-01-01'
-          to='2026-10-01'
-          selected={month}
-          onSelectCell={pick}
+          max='2026-10-01'
+          value={month}
+          onChangeValue={pick}
         >
           <MonthPickerLayout cols={4} format='short'>
             <MonthPickerCell />
@@ -283,16 +281,16 @@ export default function PeriodTooLong() {
         aria-describedby={messageId}
         locale='en-US'
         selection='range'
-        year='2026-01-01'
-        selected={period}
-        onSelectCell={setPeriod}
+        defaultFocusedDate='2026-02-01'
+        value={period}
+        onChangeValue={setPeriod}
         style={{ width: '100%' }}
       >
         <MonthPickerLayout cols={4} format='short'>
           <MonthPickerCell />
         </MonthPickerLayout>
       </MonthPicker>
-      <HelperText id={messageId} error={invalid} aria-live='polite'>{message}</HelperText>
+      <HelperText id={messageId} invalid={invalid} aria-live='polite'>{message}</HelperText>
     </div>
   );
 }
@@ -303,7 +301,7 @@ export default function PeriodTooLong() {
 
 ### Отключённый: месяцы без данных
 
-`from` и `to` отключают месяцы вне периода, за который есть данные, — здесь с июня 2025 по октябрь 2026. Правило написано рядом с сеткой и связано через `aria-describedby`; одно отключённое состояние его не объясняет.
+`min` и `max` отключают месяцы вне периода, за который есть данные, — здесь с июня 2025 по октябрь 2026. Правило написано рядом с сеткой и связано через `aria-describedby`; одно отключённое состояние его не объясняет.
 
 <!-- example: month-picker/months-without-data.tsx -->
 ```tsx
@@ -324,9 +322,9 @@ export default function MonthsWithoutData() {
         aria-label='Statement month, 2026'
         aria-describedby={hintId}
         locale='en-US'
-        year='2026-01-01'
-        from='2025-06-01'
-        to='2026-10-01'
+        defaultFocusedDate='2026-01-01'
+        min='2025-06-01'
+        max='2026-10-01'
         style={{ width: '100%' }}
       >
         <MonthPickerLayout cols={4} format='short'>
@@ -365,8 +363,8 @@ export default function SpecificMonths() {
         aria-label='Event month, 2026'
         aria-describedby={hintId}
         locale='en-US'
-        year='2026-01-01'
-        disabled={closedMonths}
+        defaultFocusedDate='2026-01-01'
+        disabledDates={closedMonths}
         style={{ width: '100%' }}
       >
         <MonthPickerLayout cols={4} format='short'>
@@ -384,7 +382,7 @@ export default function SpecificMonths() {
 
 ### Пограничный случай: год из 13 месяцев
 
-С календарной системой из `createCalendarSystem` (см. [Адаптер календарной системы](../../i18n.md#адаптер-календарной-системы)) сетка показывает месяцы этого календаря. Еврейский год 5784 — високосный, в нём 13 месяцев, включая Адар I и Адар II, поэтому последняя строка неполная. `year='2024-03-15'` — любой день этого года; его первый месяц начинается `2023-09-16`, а ключ каждой ячейки — ISO-день начала её месяца, а не начало григорианского месяца: у Адара I это `'2024-02-10'`.
+С календарной системой из `createCalendarSystem` (см. [Адаптер календарной системы](../../i18n.md#адаптер-календарной-системы)) сетка показывает месяцы этого календаря. Еврейский год 5784 — високосный, в нём 13 месяцев, включая Адар I и Адар II, поэтому последняя строка неполная. Выбранный Адар I — месяц в фокусе, поэтому пикер показывает его год; первый месяц этого года начинается `2023-09-16`, а ключ каждой ячейки — ISO-день начала её месяца, а не начало григорианского месяца: у Адара I это `'2024-02-10'`.
 
 <!-- example: month-picker/13-month-year.tsx -->
 ```tsx
@@ -403,9 +401,8 @@ export default function ThirteenMonthYear() {
         aria-label='Month of 5784'
         calendar={hebrewCalendar}
         locale='en-US'
-        year='2024-03-15'
-        selected={month}
-        onSelectCell={setMonth}
+        value={month}
+        onChangeValue={setMonth}
         style={{ width: '100%' }}
       >
         <MonthPickerLayout cols={4}>

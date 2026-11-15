@@ -1,16 +1,8 @@
-import {
-  FC,
-  HTMLAttributes,
-  PropsWithChildren,
-  Ref,
-  useCallback,
-  useImperativeHandle,
-  useRef,
-} from 'react';
+import { FC, HTMLAttributes, PropsWithChildren, Ref, useImperativeHandle } from 'react';
+import { csx } from '@vega-ui/utils';
+import { SnapScrollerProvider } from './contexts'
+import { useSnapScroller } from './hooks';
 import style from './style.module.css'
-import { csx, mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
-import { SnapScrollerProvider } from './contexts';
-import { useEventCallback, useScrollSnap } from '@vega-ui/hooks';
 import { SnapScrollerApiRef } from './types';
 
 export interface SnapScrollerProps extends HTMLAttributes<HTMLDivElement> {
@@ -21,7 +13,7 @@ export interface SnapScrollerProps extends HTMLAttributes<HTMLDivElement> {
   
   /**
    * Ref to the scroller’s imperative API.
-   * Provides `element`, `prev()` and `next()` methods for programmatic control.
+   * Provides `prev()`, `next()` and `scrollToElementByKey()` for programmatic control.
    */
   apiRef?: Ref<SnapScrollerApiRef>;
   
@@ -62,8 +54,7 @@ export interface SnapScrollerProps extends HTMLAttributes<HTMLDivElement> {
 
 /**
  * SnapScroller is a scroll container optimized for CSS Scroll Snap.
- * It detects the currently snapped child, exposes imperative navigation,
- * and supports infinite scrolling by notifying when the viewport reaches edges.
+ * It detects the currently snapped child and exposes imperative navigation.
  *
  * Children must be direct scroller items and carry `data-index` so the
  * snapped page can be derived.
@@ -71,9 +62,6 @@ export interface SnapScrollerProps extends HTMLAttributes<HTMLDivElement> {
 export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
   ref,
   className,
-  onScroll: _onScroll,
-  onWheel: _onWheel,
-  onTouchStart: _onTouchStart,
   onScrollSnapChange,
   onScrollSnapChanging,
   defaultIndex,
@@ -81,74 +69,16 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
   apiRef,
   ...props
 }) => {
-  const scrollerRef = useRef<HTMLDivElement>(null)
-  const target = useRef<number | null>(null)
-  
-  const {
-    onScroll,
-    itemRef,
-    removeItemRef,
-    scrollToElementByKey,
-    getCommitted,
-    getPending,
-    measure
-  } = useScrollSnap<number, HTMLDivElement>({
-    scrollerRef,
-    onSnapChanging: onScrollSnapChanging,
-    onSnapChange(element, index) {
-      if (index === target.current) target.current = null
-      onScrollSnapChange?.(element, index)
-    },
-  })
-  
-  const didInitScroll = useRef(false)
-  
-  const releaseTarget = () => {
-    target.current = null
-  }
-  
-  const scrollByDelta = useEventCallback((delta: number) => {
-    if (getCommitted() == null) measure()
-    
-    const index = target.current ?? getCommitted()
-    if (index == null) return
+  const { handle, ref: mergedRef, api } = useSnapScroller({ ref, defaultIndex, onScrollSnapChange, onScrollSnapChanging })
 
-    const next = index + delta
-    if (scrollToElementByKey(next)) target.current = next
-  });
-  
-  useImperativeHandle(apiRef, () => ({
-    prev() {
-      scrollByDelta(-1);
-    },
-    next() {
-      scrollByDelta(1);
-    },
-    scrollToElementByKey,
-    getCommitted,
-    getPending,
-    measure,
-  }), [scrollByDelta, scrollToElementByKey, getCommitted, getPending, measure]);
-  
-  const setScrollRef = useCallback((element: HTMLDivElement | null) => {
-    if (!element || scrollerRef.current) return;
-    scrollerRef.current = element;
-    
-    if (didInitScroll.current) return;
-    didInitScroll.current = true;
-    
-    if (defaultIndex !== undefined) scrollToElementByKey(defaultIndex, 'instant');
-  }, [defaultIndex, scrollToElementByKey]);
+  useImperativeHandle(apiRef, () => api, [api])
 
   return (
-    <SnapScrollerProvider removeItemRef={removeItemRef} itemRef={itemRef}>
+    <SnapScrollerProvider handle={handle}>
       <div
-        onScroll={mergeEventHandlers(onScroll, _onScroll)}
-        onWheel={mergeEventHandlers(releaseTarget, _onWheel)}
-        onTouchStart={mergeEventHandlers(releaseTarget, _onTouchStart)}
-        ref={mergeRefs([setScrollRef, ref])}
+        ref={mergedRef}
         className={csx(className, style.scrollView)}
-        {...props}
+        {...handle.listen({}, props)}
       >
         {children}
       </div>

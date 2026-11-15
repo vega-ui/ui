@@ -5,20 +5,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   Card,
   Checkbox,
   CheckboxCheckedIcon,
@@ -426,7 +432,7 @@ export default function TravelSearch() {
     }
 
     if (next.dates) {
-      focusField(form, 'dates');
+      document.getElementById(`${id}-dates`)?.focus();
       return;
     }
 
@@ -438,7 +444,7 @@ export default function TravelSearch() {
 
   return (
     <div className='travel' style={{ display: 'grid', gap: 'var(--spacing-16)', width: '100%', maxWidth: 960, marginInline: 'auto' }}>
-      <Card asChild style={{ alignItems: 'stretch', gap: 'var(--spacing-10)', minWidth: 0 }}>
+      <Card asChild style={{ gap: 'var(--spacing-10)', minWidth: 0 }}>
         <form noValidate role='search' aria-labelledby={`${id}-title`} onSubmit={submit}>
           <Heading id={`${id}-title`} as='h1' size={6} fontWeight={700}>Find flights</Heading>
           <div className='travelSearchRow'>
@@ -452,7 +458,7 @@ export default function TravelSearch() {
               <Label htmlFor={`${id}-to`}>To</Label>
               <Popover placement='bottom-start' open={expanded} onChangeOpen={setSuggestOpen}>
                 <PopoverTrigger asChild>
-                  <TextField size='xs' error={errors.destination !== undefined}>
+                  <TextField size='xs'>
                     <TextFieldInput
                       id={`${id}-to`}
                       name='to'
@@ -497,7 +503,7 @@ export default function TravelSearch() {
                   </div>
                 </PopoverContent>
               </Popover>
-              {errors.destination && <HelperText id={`${id}-to-error`} error>{errors.destination}</HelperText>}
+              {errors.destination && <HelperText id={`${id}-to-error`} invalid>{errors.destination}</HelperText>}
             </div>
             <div style={field}>
               <Label htmlFor={`${id}-dates`}>Dates</Label>
@@ -506,13 +512,11 @@ export default function TravelSearch() {
                 format='MM/dd/yyyy'
                 separator='/'
                 min='2026-11-04'
-                error={errors.dates !== undefined}
                 value={dates}
                 onChangeValue={changeDates}
               >
                 <DateRangeFieldInput
                   id={`${id}-dates`}
-                  name='dates'
                   placeholder='mm/dd/yyyy – mm/dd/yyyy'
                   aria-invalid={errors.dates !== undefined}
                   aria-describedby={errors.dates ? `${id}-dates-error` : undefined}
@@ -523,13 +527,13 @@ export default function TravelSearch() {
                     <DateRangeFieldTriggerIconButton aria-label='Choose travel dates' />
                   </PopoverTrigger>
                   <PopoverContent>
-                    <DateRangeFieldCalendar>
+                    <DateRangeFieldCalendar aria-label='Choose travel dates'>
                       <CalendarHeader>
                         <CalendarPrevButton aria-label='Previous month' />
-                        <CalendarViewButtonGroup>
+                        <CalendarHeading>
                           <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                           <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-                        </CalendarViewButtonGroup>
+                        </CalendarHeading>
                         <CalendarNextButton aria-label='Next month' />
                       </CalendarHeader>
                       <CalendarContent>
@@ -537,22 +541,34 @@ export default function TravelSearch() {
                           <CalendarWeekdays>
                             <CalendarWeekday />
                           </CalendarWeekdays>
-                          <CalendarWeeks>
-                            <CalendarDay />
-                          </CalendarWeeks>
+                          <CalendarDaysScroller>
+                            <CalendarDaysScrollerContent>
+                              <CalendarWeeks>
+                                <CalendarDay />
+                              </CalendarWeeks>
+                            </CalendarDaysScrollerContent>
+                          </CalendarDaysScroller>
                         </CalendarDays>
                         <CalendarMonths>
-                          <CalendarMonth />
+                          <CalendarMonthsGrid>
+                            <CalendarMonth />
+                          </CalendarMonthsGrid>
                         </CalendarMonths>
                         <CalendarYears>
-                          <CalendarYear />
+                          <CalendarYearsScroller>
+                            <CalendarYearsScrollerContent>
+                              <CalendarYearsGrid>
+                                <CalendarYear />
+                              </CalendarYearsGrid>
+                            </CalendarYearsScrollerContent>
+                          </CalendarYearsScroller>
                         </CalendarYears>
                       </CalendarContent>
                     </DateRangeFieldCalendar>
                   </PopoverContent>
                 </Popover>
               </DateRangeField>
-              {errors.dates && <HelperText id={`${id}-dates-error`} error>{errors.dates}</HelperText>}
+              {errors.dates && <HelperText id={`${id}-dates-error`} invalid>{errors.dates}</HelperText>}
             </div>
             <div style={field}>
               <Label id={`${id}-travellers-label`}>Travellers</Label>

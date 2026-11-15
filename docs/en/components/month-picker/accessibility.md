@@ -16,16 +16,17 @@
 | <kbd>Enter</kbd> / <kbd>Space</kbd> | Selects the focused month. |
 <!-- AUTO-GENERATED:KEYBOARD:end -->
 
-- Keyboard behavior is inherited from `DataGridPicker` and the month-item grid primitives.
+- Keyboard behavior is inherited from `Grid` and the month-item grid primitives.
 
 ## Focus Behavior
 
-- Without `defaultActive`, the tab stop is the current month when it is in the visible year, otherwise the first selected month in it, otherwise its first month
+- The picker shows the year of the focused month (`focusedDate`). The tab stop is the focused month when it can be focused; otherwise the selected month or the current month in that year; otherwise its first available month
 - Focus should remain visible on the current month item, including custom layouts.
 
 ## Screen Reader Semantics
 
 - Month labels should be localized consistently with the rest of the app.
+- In `multiple` and `range` selection the grid has `aria-multiselectable="true"`.
 
 ## Form Semantics
 

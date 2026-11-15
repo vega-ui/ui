@@ -6,7 +6,7 @@
 
 ## Summary
 
-`TextField` is a [compound component](../../glossary.md#compound-component) for single-line text entry. The root provides shared size and error state, while `TextFieldInput` owns the native input element. It is the base single-line field wrapper that other specialized text-entry controls build on.
+`TextField` is a [compound component](../../glossary.md#compound-component) for single-line text entry. The root provides shared size and shows the error look of the input, while `TextFieldInput` owns the native input element. It is the base single-line field wrapper that other specialized text-entry controls build on.
 
 ## Imports
 
@@ -59,7 +59,7 @@ export default function WorkEmailField() {
 
 ## Required Parts
 
-- `TextField`: layout wrapper with size and error context
+- `TextField`: layout wrapper with size context
 - `TextFieldInput`: native input element
 
 ## Optional Parts
@@ -76,7 +76,7 @@ export default function WorkEmailField() {
 ## Variants
 
 - Size: `sm`, `md`, `lg`
-- State: default, `error`, disabled input
+- State: default, invalid (`aria-invalid` or `:user-invalid` on the input), disabled input
 - Composition: plain input, prefix/suffix controls, controlled or uncontrolled value
 
 ## Related Docs
@@ -94,7 +94,7 @@ export default function WorkEmailField() {
 
 - `TextField` itself is not the input; form attributes belong on `TextFieldInput`.
 - Prefix and suffix actions change hit area and layout density, so they should be intentional.
-- Error visuals live on the wrapper, but input semantics still belong to the native input.
+- The wrapper draws the error look, but it follows the native input: `aria-invalid='true'` or `:user-invalid`.
 - Once masking, password reveal, numeric stepping, or phone formatting become part of the field contract, a specialized field is usually clearer than stretching `TextField`.
 
 ## Common Mistakes

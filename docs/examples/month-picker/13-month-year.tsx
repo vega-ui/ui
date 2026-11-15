@@ -13,9 +13,8 @@ export default function ThirteenMonthYear() {
         aria-label='Month of 5784'
         calendar={hebrewCalendar}
         locale='en-US'
-        year='2024-03-15'
-        selected={month}
-        onSelectCell={setMonth}
+        value={month}
+        onChangeValue={setMonth}
         style={{ width: '100%' }}
       >
         <MonthPickerLayout cols={4}>

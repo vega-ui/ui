@@ -10,20 +10,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   Card,
   DateRangeField,
   DateRangeFieldCalendar,
@@ -188,7 +194,7 @@ export default function Booking() {
         </section>
       </article>
 
-      <Card asChild style={{ alignItems: 'stretch', gap: 'var(--spacing-10)', flex: '1 1 340px', minWidth: 0 }}>
+      <Card asChild style={{ gap: 'var(--spacing-10)', flex: '1 1 340px', minWidth: 0 }}>
         <form noValidate aria-labelledby={`${id}-price`} onSubmit={reserve}>
           <Text id={`${id}-price`} size={2} style={{ color: 'var(--label-secondary)' }}>
             <Text size={5} fontWeight={700} style={{ color: 'var(--label-primary)', ...amount }}>{currency.format(NIGHTLY_RATE)}</Text>
@@ -212,13 +218,12 @@ export default function Booking() {
                 format='MM/dd/yyyy'
                 separator='/'
                 disabledDates={BOOKED}
-                error={stayError !== ''}
                 value={stay}
                 onChangeValue={changeStay}
               >
                 <DateRangeFieldInput
-                  id={`${id}-stay`}
                   name='stay'
+                  id={`${id}-stay`}
                   placeholder='mm/dd/yyyy – mm/dd/yyyy'
                   aria-invalid={stayError !== ''}
                   aria-describedby={`${id}-stay-hint`}
@@ -228,13 +233,13 @@ export default function Booking() {
                     <DateRangeFieldTriggerIconButton aria-label='Choose stay dates' />
                   </PopoverTrigger>
                   <PopoverContent>
-                    <DateRangeFieldCalendar>
+                    <DateRangeFieldCalendar aria-label='Choose stay dates'>
                       <CalendarHeader>
                         <CalendarPrevButton aria-label='Previous month' />
-                        <CalendarViewButtonGroup>
+                        <CalendarHeading>
                           <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                           <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-                        </CalendarViewButtonGroup>
+                        </CalendarHeading>
                         <CalendarNextButton aria-label='Next month' />
                       </CalendarHeader>
                       <CalendarContent>
@@ -242,22 +247,34 @@ export default function Booking() {
                           <CalendarWeekdays>
                             <CalendarWeekday />
                           </CalendarWeekdays>
-                          <CalendarWeeks>
-                            <CalendarDay />
-                          </CalendarWeeks>
+                          <CalendarDaysScroller>
+                            <CalendarDaysScrollerContent>
+                              <CalendarWeeks>
+                                <CalendarDay />
+                              </CalendarWeeks>
+                            </CalendarDaysScrollerContent>
+                          </CalendarDaysScroller>
                         </CalendarDays>
                         <CalendarMonths>
-                          <CalendarMonth />
+                          <CalendarMonthsGrid>
+                            <CalendarMonth />
+                          </CalendarMonthsGrid>
                         </CalendarMonths>
                         <CalendarYears>
-                          <CalendarYear />
+                          <CalendarYearsScroller>
+                            <CalendarYearsScrollerContent>
+                              <CalendarYearsGrid>
+                                <CalendarYear />
+                              </CalendarYearsGrid>
+                            </CalendarYearsScrollerContent>
+                          </CalendarYearsScroller>
                         </CalendarYears>
                       </CalendarContent>
                     </DateRangeFieldCalendar>
                   </PopoverContent>
                 </Popover>
               </DateRangeField>
-              <HelperText id={`${id}-stay-hint`} error={stayError !== ''}>
+              <HelperText id={`${id}-stay-hint`} invalid={stayError !== ''}>
                 {stayError === '' ? 'Booked Nov 20–23. Two nights minimum.' : stayError}
               </HelperText>
             </div>
@@ -317,7 +334,7 @@ export default function Booking() {
           <form noValidate onSubmit={sendRequest} style={{ display: 'grid', gap: 'var(--spacing-8)', marginBlockStart: 'var(--spacing-10)' }}>
             <div style={field}>
               <Label htmlFor={`${id}-guest-name`}>Full name</Label>
-              <TextField error={guestErrors.name !== undefined}>
+              <TextField>
                 <TextFieldInput
                   id={`${id}-guest-name`}
                   name='name'
@@ -326,11 +343,11 @@ export default function Booking() {
                   aria-describedby={guestErrors.name ? `${id}-guest-name-error` : undefined}
                 />
               </TextField>
-              {guestErrors.name && <HelperText id={`${id}-guest-name-error`} error>{guestErrors.name}</HelperText>}
+              {guestErrors.name && <HelperText id={`${id}-guest-name-error`} invalid>{guestErrors.name}</HelperText>}
             </div>
             <div style={field}>
               <Label htmlFor={`${id}-guest-email`}>Email</Label>
-              <TextField error={guestErrors.email !== undefined}>
+              <TextField>
                 <TextFieldInput
                   id={`${id}-guest-email`}
                   name='email'
@@ -340,7 +357,7 @@ export default function Booking() {
                   aria-describedby={guestErrors.email ? `${id}-guest-email-error` : undefined}
                 />
               </TextField>
-              {guestErrors.email && <HelperText id={`${id}-guest-email-error`} error>{guestErrors.email}</HelperText>}
+              {guestErrors.email && <HelperText id={`${id}-guest-email-error`} invalid>{guestErrors.email}</HelperText>}
             </div>
             <div style={field}>
               <Label htmlFor={`${id}-message`}>Message to Marta (optional)</Label>

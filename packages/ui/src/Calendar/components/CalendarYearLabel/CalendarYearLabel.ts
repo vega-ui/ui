@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { useCalendarContext } from '../../contexts';
+import { useCalendarInternalContext, useCalendarStateContext } from '../../contexts';
 import { formatCalendarDate } from '@vega-ui/i18n';
 
 export interface CalendarYearLabelProps {
@@ -10,7 +10,7 @@ export interface CalendarYearLabelProps {
    * - "numeric" → 2026
    * - "2-digit" → 26
    *
-   * Default is typically `"numeric"`.
+   * @default "numeric"
    */
   format?: Intl.DateTimeFormatOptions['year']
 }
@@ -21,14 +21,16 @@ export interface CalendarYearLabelProps {
  * A presentational component that renders the current calendar year
  * as a localized string.
  *
- * The year value is obtained from `CalendarContext` and formatted using
+ * The year is the year of the focused day of the `Calendar`, formatted using
  * the `Intl.DateTimeFormat` API in the locale and calendar system of the `Calendar`.
  *
  * This component is purely visual and contains no calendar logic,
  * navigation, or state management.
  */
 export const CalendarYearLabel: FC<CalendarYearLabelProps> = ({ format = 'numeric' }) => {
-  const { month, calendar, locale } = useCalendarContext()
-  
+  const { calendar, locale } = useCalendarInternalContext()
+  const { month } = useCalendarStateContext()
+  if (month === undefined) return null
+
   return formatCalendarDate(calendar, month, locale, { year: format })
 }

@@ -2,7 +2,7 @@
     --progress-track-br-ratio: 1;
     --progress-track-height: var(--progress-height);
 
-    --dynamic-width: calc(var(--progress-value) / var(--progress-max) * 100%);
+    --dynamic-width: calc((var(--progress-value) - var(--progress-min)) / (var(--progress-max) - var(--progress-min)) * 100%);
 
     width: var(--progress-track-width, var(--dynamic-width));
 

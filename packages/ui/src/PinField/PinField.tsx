@@ -1,9 +1,8 @@
-import { FC, HTMLAttributes, Ref, useCallback, useMemo, useRef, useState } from 'react';
-import { clamp, csx, mergeRefs } from '@vega-ui/utils';
-import { useControlledState, useFormReset } from '@vega-ui/hooks';
-import { useMaskito } from '@maskito/react';
-import { MaskitoOptions } from '@maskito/core';
+import { FC, HTMLAttributes, Ref } from 'react';
+import { csx } from '@vega-ui/utils';
+import { useWidget, widgetEnvironment } from '../internals/widget';
 import { PinFieldProvider } from './contexts';
+import { pinFieldWidget } from '@vega-ui/widgets/pin-field';
 import { PinFieldSize } from './types';
 import style from './style.module.css'
 
@@ -41,11 +40,6 @@ export interface PinFieldProps extends Omit<HTMLAttributes<HTMLDivElement>, 'def
   size?: PinFieldSize
 
   /**
-   * Shows the field in an error state.
-   */
-  error?: boolean
-
-  /**
    * Ref to the root element.
    */
   ref?: Ref<HTMLDivElement>
@@ -66,7 +60,6 @@ export interface PinFieldProps extends Omit<HTMLAttributes<HTMLDivElement>, 'def
 export const PinField: FC<PinFieldProps> = ({
   className,
   placeholder,
-  error,
   size = 'md',
   ref,
   mask,
@@ -78,55 +71,17 @@ export const PinField: FC<PinFieldProps> = ({
   onChangeValue,
   ...props
 }) => {
-  const rootRef = useRef<HTMLDivElement>(null)
-  const [value, setValue] = useControlledState(controlledValue, defaultValue, onChangeValue)
-  const [active, setActive] = useState(0)
-  const [selectedAll, setSelectedAll] = useState(false)
-
-  const inputRef = useRef<HTMLInputElement>(null)
-
-  const options = useMemo<MaskitoOptions>(() => ({
-    mask: mask ?? /^\d+$/,
-  }), [mask])
-  
-  const inputMaskitoRef = useMaskito({ options });
-  
-  const syncActive = useCallback((index?: number) => {
-    const input = inputRef.current;
-    if (!input || input.selectionStart === null) return;
-    
-    const selectionStart = index ?? input.selectionStart ?? 0;
-    const clampedSelectedStart = clamp(0, selectionStart, maxLength - 1);
-
-    input.selectionStart = clampedSelectedStart;
-    input.selectionEnd = clampedSelectedStart + 1
-    
-    setActive(clamp(0, input.selectionStart, maxLength - 1));
-  }, [maxLength])
-
-  useFormReset(rootRef, () => {
-    if (controlledValue !== undefined) return
-    setValue(defaultValue)
-  })
+  const handle = useWidget(pinFieldWidget, { maxLength, mask, disabled, value: controlledValue, defaultValue, onChangeValue }, widgetEnvironment)
 
   return (
     <PinFieldProvider
+      handle={handle}
       maxLength={maxLength}
       disabled={disabled}
       size={size}
       placeholder={placeholder}
-      innerInputRef={inputRef}
-      selectedAll={selectedAll}
-      setSelectedAll={setSelectedAll}
-      inputRef={inputMaskitoRef}
-      syncActive={syncActive}
-      setActive={setActive}
-      value={value}
-      setValue={setValue}
-      active={active}
-      error={error}
     >
-      <div className={csx(style.field, className)} ref={mergeRefs([rootRef, ref])} {...props}>
+      <div className={csx(style.field, className)} ref={ref} {...props}>
         {children}
       </div>
     </PinFieldProvider>

@@ -1,14 +1,14 @@
-import type { Ref, RefCallback, RefObject } from 'react';
+import type { Ref, RefCallback } from 'react';
 
-export const mergeRefs = <T = unknown>(
-  refs: Array<Ref<T> | undefined | null>
-): RefCallback<T> => {
+export const mergeRefs = <Value = unknown>(
+  refs: Array<Ref<Value> | undefined | null>
+): RefCallback<Value> => {
   return (value) => {
     refs.forEach((ref) => {
       if (typeof ref === 'function') {
         ref(value);
       } else if (ref != null && typeof ref === 'object') {
-        (ref as RefObject<T | null>).current = value;
+        ref.current = value;
       }
     });
   };

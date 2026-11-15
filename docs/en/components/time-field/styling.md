@@ -32,6 +32,15 @@ The root is a `TextField` wrapper with time-specific context only.
 - format changes input behavior, not visual styling
 - bounds and step affect masking logic, not the surface
 - error and disabled visuals come from the inherited field/input contract
+- the error look follows `aria-invalid='true'`, `:user-invalid` or `[data-user-edited]:invalid` on `TimeFieldInput`
+
+`TimeField` writes the text of `TimeFieldInput` itself, and Chromium and WebKit do not count that text as an edit of the user, so the input does not match `:user-invalid` after it. In your own CSS, pair `:user-invalid` with `[data-user-edited]:invalid`:
+
+```css
+.pickup-time:has(input:is(:user-invalid, [data-user-edited]:invalid)) label {
+  color: var(--color-error);
+}
+```
 
 ## Examples
 

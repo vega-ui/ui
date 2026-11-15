@@ -390,7 +390,7 @@ export default function SectionErrors() {
           <AccordionContent>
             <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
               <Label htmlFor='payout-iban'>IBAN</Label>
-              <TextField error={error !== ''}>
+              <TextField>
                 <TextFieldInput
                   id='payout-iban'
                   value={iban}
@@ -399,7 +399,7 @@ export default function SectionErrors() {
                   aria-describedby={error ? 'payout-iban-error' : undefined}
                 />
               </TextField>
-              {error && <HelperText id='payout-iban-error' error>{error}</HelperText>}
+              {error && <HelperText id='payout-iban-error' invalid>{error}</HelperText>}
             </div>
           </AccordionContent>
         </AccordionItem>
@@ -418,7 +418,7 @@ export default function SectionErrors() {
 
 ### Отключённый: секция недоступна на текущем тарифе
 
-`AccordionTrigger` через `asChild` рендерит нативную кнопку, поэтому её можно сделать `disabled` и связать с объяснением через `aria-describedby`. Секция остаётся видимой, но не открывается.
+`AccordionTrigger` рендерит нативную кнопку, поэтому принимает `disabled` и связывается с объяснением через `aria-describedby`. Секция остаётся видимой, но не открывается.
 
 <!-- example: accordion/disabled-section.tsx -->
 ```tsx
@@ -451,11 +451,9 @@ export default function DisabledSection() {
         </AccordionItem>
         <AccordionItem value='sso'>
           <AccordionHeader>
-            <AccordionTrigger asChild>
-              <button type='button' disabled aria-describedby='sso-reason' style={{ cursor: 'not-allowed', color: 'var(--label-tertiary)' }}>
-                SAML single sign-on
-                <AccordionIcon />
-              </button>
+            <AccordionTrigger disabled aria-describedby='sso-reason' style={{ cursor: 'not-allowed', color: 'var(--label-tertiary)' }}>
+              SAML single sign-on
+              <AccordionIcon />
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>

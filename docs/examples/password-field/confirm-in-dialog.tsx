@@ -69,7 +69,7 @@ export default function ConfirmInDialog() {
           <form onSubmit={onSubmit} style={{ display: 'grid', gap: 'var(--spacing-12)', marginBlockStart: 'var(--spacing-8)' }}>
             <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
               <Label htmlFor={`${id}-password`}>Password</Label>
-              <PasswordField error={error !== ''}>
+              <PasswordField>
                 <PasswordFieldInput
                   id={`${id}-password`}
                   name='password'
@@ -84,7 +84,7 @@ export default function ConfirmInDialog() {
                   <PasswordFieldHiddenIcon />
                 </PasswordFieldToggleIconButton>
               </PasswordField>
-              <HelperText id={`${id}-error`} error>{error}</HelperText>
+              <HelperText id={`${id}-error`} invalid>{error}</HelperText>
             </div>
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--spacing-4)' }}>
               <DialogClose asChild>

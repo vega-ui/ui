@@ -39,6 +39,10 @@ export interface ProgressProps extends HTMLAttributes<HTMLDivElement> {
    */
   valueText?: string
   
+  /**
+   * Shows a looping animation instead of the fill, for work whose amount is not known yet.
+   * The value is not announced while it is on.
+   */
   indeterminate?: boolean
 
   /**
@@ -63,6 +67,7 @@ export const Progress: FC<ProgressProps> = ({
 }) => {
   const mergedStyle = {
     '--progress-value': value,
+    '--progress-min': min,
     '--progress-max': max,
     ...style,
   } as CSSProperties
@@ -74,7 +79,7 @@ export const Progress: FC<ProgressProps> = ({
       aria-valuemax={max}
       aria-valuemin={min}
       aria-valuetext={valueText}
-      aria-valuenow={value}
+      aria-valuenow={indeterminate ? undefined : value}
       data-full-width={fullWidth}
       className={csx(styles.progress, className)}
       data-variant={variant}

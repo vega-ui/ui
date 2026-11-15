@@ -2,7 +2,7 @@
 
 ## Обзор
 
-`Tooltip` владеет отложенным открытием и координацией всплывающего слоя для короткого несущественного описания. Он намеренно узкий: триггер плюс описательное содержимое и необязательная стрелка для визуальной привязки.
+`Tooltip` владеет отложенным открытием и координацией всплывающего слоя для короткого несущественного описания. Он намеренно узкий: триггер плюс описательное содержимое.
 
 ## Обязательные части
 
@@ -20,16 +20,13 @@
 
 ## Необязательные части
 
-### `TooltipArrow`
-
-Необязательная визуальная стрелка, когда всплывающее содержимое должно яснее указывать на триггер.
+Необязательных частей нет.
 
 ## Порядок композиции
 
 1. `Tooltip`
 2. `TooltipTrigger`
 3. `TooltipContent`
-4. `TooltipArrow`
 
 ## Корректные паттерны композиции
 
@@ -39,7 +36,6 @@ import {
   Button,
   Text,
   Tooltip,
-  TooltipArrow,
   TooltipContent,
   TooltipTrigger,
 } from '@vega-ui/react';
@@ -51,7 +47,6 @@ export default function MinimalComposition() {
         <Button>Publish</Button>
       </TooltipTrigger>
       <TooltipContent>
-        <TooltipArrow />
         <Text size={2}>Anyone with the link can view the page</Text>
       </TooltipContent>
     </Tooltip>

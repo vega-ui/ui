@@ -21,7 +21,7 @@ const meta = {
       control: 'radio',
       options: ['sm', 'md', 'lg'],
     },
-    error: {
+    invalid: {
       control: 'boolean',
     },
   },
@@ -38,9 +38,9 @@ export const Playground: Story = {};
 export const Matrix: Story = {
   render: () => (
     <div style={{ display: 'grid', gridTemplateColumns: `repeat(${sizes.length}, auto)`, gap: 12, alignItems: 'center' }}>
-      {[false, true].map((error) => sizes.map((size) => (
-        <HelperText key={`${error}-${size}`} size={size} error={error}>
-          {`${size}${error ? ' / error' : ''}`}
+      {[false, true].map((invalid) => sizes.map((size) => (
+        <HelperText key={`${invalid}-${size}`} size={size} invalid={invalid}>
+          {`${size}${invalid ? ' / invalid' : ''}`}
         </HelperText>
       )))}
     </div>

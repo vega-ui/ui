@@ -1,23 +1,24 @@
 'use client';
 
-import { CSSProperties } from 'react';
-import { createContext } from '@vega-ui/react-kit/context';
-import { Placement } from '@floating-ui/react';
+import { createContext } from '../../../internals/context';
+import { createHandle, WidgetHandle } from '../../../internals/widget';
+import { Placement } from '../../../internals/anchor';
+import { popoverShape, popoverWidget } from '@vega-ui/widgets/popover';
 
 export interface PopoverContextState {
-  open: boolean
-  changeOpen: (value: boolean) => void
+  handle: WidgetHandle<typeof popoverShape>
+  close: () => void
   contentId?: string
   placement?: Placement
   role?: 'listbox' | 'dialog'
-  setReference?: (element: Element | null) => void
+  anchorName?: string
+  anchored?: boolean
   setAnchor?: (element: Element | null) => void
-  setFloating?: (element: HTMLElement | null) => void
-  contentStyles?: CSSProperties
+  setContent?: (element: HTMLElement | null) => void
 }
 
 export const [PopoverProvider, usePopoverContext] = createContext<PopoverContextState>('PopoverContext', {
-  open: false,
-  changeOpen: () => undefined,
+  handle: createHandle(popoverWidget, { role: undefined }, { id: 'popover' }),
+  close: () => undefined,
   placement: 'bottom',
 })

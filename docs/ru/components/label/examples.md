@@ -194,7 +194,7 @@ export default function RequiredFieldError() {
         <Label htmlFor={id}>
           VAT number <span aria-hidden style={{ color: 'var(--color-error)' }}>*</span>
         </Label>
-        <TextField error={invalid}>
+        <TextField>
           <TextFieldInput
             id={id}
             name='vat'
@@ -205,7 +205,7 @@ export default function RequiredFieldError() {
             onChange={(event) => setTaxId(event.currentTarget.value)}
           />
         </TextField>
-        <HelperText id={messageId} error={invalid}>
+        <HelperText id={messageId} invalid={invalid}>
           {invalid ? 'Enter the VAT number to issue tax invoices.' : 'Printed on every invoice, for example DE123456789.'}
         </HelperText>
       </div>

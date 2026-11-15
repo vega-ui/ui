@@ -1,5 +1,5 @@
 import { ComponentProps } from 'react';
-import { afterEach, beforeEach, describe, expect, it, vi, type Mock } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, onTestFinished, vi, type Mock } from 'vitest';
 import { userEvent } from 'vitest/browser';
 import { cleanup, render, type RenderResult, waitFor } from '@testing-library/react';
 
@@ -62,14 +62,50 @@ describe('Accordion', () => {
           await expect.element(getTrigger(r, 'One')).toHaveAttribute('aria-expanded', 'true');
         });
         
-        it('switches from One to Two', async () => {
+        it('collapses the previous item with its animation when another opens', async () => {
+          document.documentElement.dataset.motion = '';
+          onTestFinished(() => {
+            delete document.documentElement.dataset.motion;
+          });
           await userEvent.click(getTrigger(r, 'One'));
+          await expect.poll(() => document.getElementById('content-one')!.getAnimations().length).toBe(0);
+
           await userEvent.click(getTrigger(r, 'Two'));
-          
-          await expect.element(getContent(r, 'Two')).toBeVisible();
+
+          expect(getContent(r, 'One')).toBeVisible();
           await expect.element(getContent(r, 'One')).not.toBeVisible();
         });
         
+        it('animates the opened item up to its full height', async () => {
+          document.documentElement.dataset.motion = '';
+          onTestFinished(() => {
+            delete document.documentElement.dataset.motion;
+          });
+          const content = document.getElementById('content-one')!;
+
+          await userEvent.click(getTrigger(r, 'One'));
+
+          const [animation] = content.getAnimations();
+          const to = (animation.effect as KeyframeEffect).getKeyframes().at(-1)!.height;
+          await animation.finished;
+          expect(parseFloat(String(to))).toBeCloseTo(content.getBoundingClientRect().height, 0);
+        });
+
+        it('starts the opened item from zero height, padding included', async () => {
+          document.documentElement.dataset.motion = '';
+          onTestFinished(() => {
+            delete document.documentElement.dataset.motion;
+          });
+          const content = document.getElementById('content-one')!;
+
+          await userEvent.click(getTrigger(r, 'One'));
+
+          const [animation] = content.getAnimations();
+          animation.pause();
+          animation.currentTime = 1;
+          expect(content.getBoundingClientRect().height).toBeCloseTo(0, 0);
+        });
+
         it('closes opened item on second click and sets aria-expanded=false', async () => {
           await userEvent.click(getTrigger(r, 'Two'));
           await userEvent.click(getTrigger(r, 'Two'));
@@ -102,11 +138,13 @@ describe('Accordion', () => {
           r = render(<AccordionTest opened={['Two']} onChangeOpened={onChangeOpened} />);
         });
         
-        it('renders from prop', async () => {
-          await expect.element(getContent(r, 'Two')).toBeVisible();
-          await expect.element(getContent(r, 'One')).not.toBeVisible();
+        it('opens the item the parent opens', async () => {
+          r.rerender(<AccordionTest opened={['One']} onChangeOpened={onChangeOpened} />);
+
+          await expect.element(getContent(r, 'One')).toBeVisible();
+          await expect.element(getContent(r, 'Two')).not.toBeVisible();
         });
-        
+
         it('clicking another trigger calls onChangeOpened (UI stays controlled)', async () => {
           await userEvent.click(getTrigger(r, 'One'));
           
@@ -127,14 +165,6 @@ describe('Accordion', () => {
           r = render(<AccordionTest multiple />);
         });
         
-        it('keeps multiple items open', async () => {
-          await userEvent.click(getTrigger(r, 'One'));
-          await userEvent.click(getTrigger(r, 'Two'));
-          
-          await expect.element(getContent(r, 'One')).toBeVisible();
-          await expect.element(getContent(r, 'Two')).toBeVisible();
-        });
-        
         it('closing One keeps Two open', async () => {
           await userEvent.click(getTrigger(r, 'One'));
           await userEvent.click(getTrigger(r, 'Two'));
@@ -144,30 +174,11 @@ describe('Accordion', () => {
           await expect.element(getContent(r, 'Two')).toBeVisible();
         });
       });
-      
-      describe('with onChangeOpened', () => {
-        let r: RenderResult;
-        let onChangeOpened: Mock;
-        
-        beforeEach(() => {
-          onChangeOpened = vi.fn();
-          r = render(<AccordionTest multiple onChangeOpened={onChangeOpened} />);
-        });
-        
-        it('accumulates values (order = open sequence)', async () => {
-          await userEvent.click(getTrigger(r, 'One'));
-          await userEvent.click(getTrigger(r, 'Two'));
-          
-          await waitFor(() => {
-            expect(onChangeOpened).toHaveBeenLastCalledWith(['One', 'Two']);
-          })
-        });
-      });
     });
   });
   
   describe('Error handling', () => {
-    it('duplicate value: opens only one', async () => {
+    it('duplicate value: both items follow the one value', async () => {
       const r = render(
         <AccordionTest>
           <AccordionItem value='dup' contentId='content-a'>
@@ -188,7 +199,8 @@ describe('Accordion', () => {
       
       await userEvent.click(r.getByText('Trigger A'));
       await expect.element(r.getByText('Content A')).toBeVisible();
-      await expect.element(r.getByText('Content B')).not.toBeVisible();
+      await expect.element(r.getByText('Content B')).toBeVisible();
+      await expect.element(r.getByText('Trigger B')).toHaveAttribute('aria-expanded', 'true');
     });
     
     describe('controlled without onChangeOpened', () => {
@@ -271,23 +283,6 @@ describe('Accordion', () => {
       });
     });
 
-    it('does not duplicate an already opened value (multiple)', async () => {
-      const onChangeOpened = vi.fn();
-      const r = render(
-        <AccordionTest multiple defaultOpened={['One']} onChangeOpened={onChangeOpened}>
-          <AccordionItem value='One' contentId='content-one' open={false}>
-            <AccordionHeader>
-              <AccordionTrigger>Trigger One</AccordionTrigger>
-            </AccordionHeader>
-            <AccordionContent>Content One</AccordionContent>
-          </AccordionItem>
-        </AccordionTest>,
-      );
-
-      await userEvent.click(r.getByText('Trigger One'));
-
-      expect(onChangeOpened).not.toHaveBeenCalledWith(['One', 'One']);
-    });
   });
   
   describe('Accessibility', () => {

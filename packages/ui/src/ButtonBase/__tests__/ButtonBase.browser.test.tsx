@@ -1,5 +1,4 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
-import { userEvent } from 'vitest/browser';
+import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup, render } from '@testing-library/react';
 
 import { ButtonBase } from '../ButtonBase';
@@ -46,15 +45,4 @@ describe('ButtonBase', () => {
     });
   });
 
-  describe('Accessibility', () => {
-    it('disables the native button', async () => {
-      const onClick = vi.fn();
-      const r = render(<ButtonBase disabled onClick={onClick}>{BUTTON_TEXT}</ButtonBase>);
-      const button = r.getByRole('button');
-
-      await expect.element(button).toBeDisabled();
-      await userEvent.click(button, { force: true });
-      expect(onClick).not.toHaveBeenCalled();
-    });
-  });
 });

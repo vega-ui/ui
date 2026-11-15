@@ -1,13 +1,13 @@
 'use client';
 
-import { createContext } from '@vega-ui/react-kit/context';
+import { createContext } from '../../../internals/context';
+import { createHandle, WidgetHandle } from '../../../internals/widget';
+import { modalDialogShape, modalDialogWidget } from '@vega-ui/widgets/modal-dialog';
 
 export interface DialogContextState {
-  open: boolean
-  changeOpen: (value: boolean) => void
+  handle: WidgetHandle<typeof modalDialogShape>
 }
 
 export const [DialogProvider, useDialogContext] = createContext<DialogContextState>('DialogContext', {
-  open: false,
-  changeOpen: () => undefined,
+  handle: createHandle(modalDialogWidget, {}, { id: 'dialog' }),
 })

@@ -1,28 +1,33 @@
 'use client';
 
-import { RefObject } from 'react'
-import { createContext } from '@vega-ui/react-kit/context';
+import { createContext } from '../../../internals/context';
+import { createHandle, WidgetHandle } from '../../../internals/widget';
 import { CalendarSystem, gregorianCalendar } from '@vega-ui/i18n';
 import { CalendarDatesDisabled } from '../../../Calendar';
+import { dateRangeFieldShape, dateRangeFieldWidget } from '@vega-ui/widgets/date-range-field';
 
 export interface DateRangeFieldContextState {
-  date: [start: string, end: string]
-  template: string
+  handle: WidgetHandle<typeof dateRangeFieldShape>
   calendar: CalendarSystem
   locale?: string
-  rangeSeparator: string
-  text?: string
+  today?: string
   disabled?: boolean
-  changeText?(text: string): void
+  readOnly?: boolean
   disabledDates?: CalendarDatesDisabled
-  inputRef?: RefObject<HTMLInputElement | null>
   min?: string
   max?: string
 }
 
 export const [DateRangeFieldProvider, useDateRangeFieldContext] = createContext<DateRangeFieldContextState>('DateRangeFieldContext', {
-  template: 'dd.mm.yyyy',
+  handle: createHandle(dateRangeFieldWidget, {
+    format: 'dd.MM.yyyy',
+    separator: '.',
+    rangeSeparator: ' – ',
+    calendar: gregorianCalendar,
+    today: undefined,
+    min: undefined,
+    max: undefined,
+    disabledDates: undefined,
+  }, { id: 'date-range-field' }),
   calendar: gregorianCalendar,
-  rangeSeparator: ' – ',
-  date: ['', ''],
 })

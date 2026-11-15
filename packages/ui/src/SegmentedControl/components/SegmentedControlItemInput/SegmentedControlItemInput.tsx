@@ -1,7 +1,7 @@
 import { FC, InputHTMLAttributes } from 'react';
 import { VisuallyHidden } from '../../../VisuallyHidden';
 import { useSegmentedControlContext, useSegmentedControlItemContext } from '../../contexts';
-import { csx, mergeEventHandlers } from '@vega-ui/utils';
+import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
 
 export type SegmentedControlItemInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'value' | 'name'>
@@ -18,8 +18,8 @@ export type SegmentedControlItemInputProps = Omit<InputHTMLAttributes<HTMLInputE
  *   correct context and behavior
  */
 export const SegmentedControlItemInput: FC<SegmentedControlItemInputProps> = ({ className, onChange: _onChange, ...props }) => {
-  const { onChange, name, disabled, selected, defaultSelected } = useSegmentedControlContext()
-  const { value } = useSegmentedControlItemContext()
+  const { onChange, name, selected, defaultSelected } = useSegmentedControlContext()
+  const { value, disabled } = useSegmentedControlItemContext()
   
   const controlled = selected !== undefined
   
@@ -27,7 +27,10 @@ export const SegmentedControlItemInput: FC<SegmentedControlItemInputProps> = ({ 
     <VisuallyHidden asChild>
       <input
         className={csx(style.input, className)}
-        onChange={mergeEventHandlers(onChange, _onChange)}
+        onChange={(event) => {
+          _onChange?.(event)
+          if (!event.isPropagationStopped()) onChange?.(event)
+        }}
         disabled={disabled}
         checked={controlled ? value === selected : undefined}
         defaultChecked={controlled ? undefined : value === defaultSelected}

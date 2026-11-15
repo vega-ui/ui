@@ -1,52 +1,56 @@
 'use client';
 
-import { RefObject } from 'react';
-import { CalendarSystem, getDefaultLocale, gregorianCalendar } from '@vega-ui/i18n';
-import { CalendarDatesDisabled, CalendarSelection, CalendarView } from '../../types';
-import { DataGridApiRef } from '../../../DataGrid';
-import { IndexedSnapScrollerApiRef } from '../../../IndexedSnapScroller';
-import { createContext } from '@vega-ui/react-kit/context';
+import { CalendarSystem, gregorianCalendar } from '@vega-ui/i18n';
+import { createContext } from '../../../internals/context';
+import { CalendarSelection, CalendarSize, CalendarVariant, CalendarView } from '../../types';
+import { createHandle, WidgetHandle } from '../../../internals/widget';
+import { createCalendar, CalendarShape, CalendarWidget } from '@vega-ui/widgets/calendar';
 
-export interface CalendarContextState {
-  to?: string
-  from?: string
-  month: string
+export interface CalendarInternalContextState {
+  today?: string
   calendar: CalendarSystem
   locale: string
-  activeDay: string
   view: CalendarView
   selection: CalendarSelection
-  value?: string | null | string[]
-  defaultValue?: string | null | string[]
+  size: CalendarSize
+  variant: CalendarVariant
   disabled?: boolean
-  disabledDates?: CalendarDatesDisabled
-  scrollerApiRef: RefObject<IndexedSnapScrollerApiRef | null>
-  scrollerYearApiRef: RefObject<IndexedSnapScrollerApiRef | null>
-  yearPickerApiRef: RefObject<DataGridApiRef<string> | null>
-  dayPickerApiRef: RefObject<DataGridApiRef<string> | null>
-  monthPickerApiRef: RefObject<DataGridApiRef<string> | null>
-  changeActiveDay(day: string): void
-  closeView?(): void
-  changePeriod?(month: string): void
-  changeYear?(year: string): void
-  changeMonth?(month: string): void
-  onSelectDay?(day: string | string[]): void
-  toggleView?(view: Exclude<CalendarView, 'day'>): void
-  prev?(): void
-  next?(): void
+  readOnly?: boolean
+  headingId?: string
+  handle: WidgetHandle<CalendarShape>
+  widget: CalendarWidget
+  changeFocusedDate(date: string): void
+  closeView(): void
+  toggleView(view: Exclude<CalendarView, 'day'>): void
+  prev(): void
+  next(): void
 }
 
-export const [CalendarProvider, useCalendarContext] = createContext<CalendarContextState>('CalendarContext', {
-  month: '',
+export type CalendarContextState = Pick<
+  CalendarInternalContextState,
+  'today' | 'view' | 'locale' | 'calendar' | 'headingId' | 'changeFocusedDate' | 'toggleView' | 'closeView' | 'prev' | 'next'
+>
+
+const defaultWidget = createCalendar()
+
+export const [CalendarProvider, useCalendarInternalContext] = createContext<CalendarInternalContextState>('CalendarContext', {
+  handle: createHandle(defaultWidget, { calendar: gregorianCalendar, today: undefined, min: undefined, max: undefined, isDisabled: () => false, selected: [], autoFocus: undefined, disabled: false, yearsPerPage: 12 }, { id: 'calendar' }),
+  widget: defaultWidget,
   calendar: gregorianCalendar,
-  locale: getDefaultLocale(),
-  activeDay: '',
-  dayPickerApiRef: { current: null },
-  monthPickerApiRef: { current: null },
-  yearPickerApiRef: { current: null },
-  scrollerApiRef: { current: null },
-  scrollerYearApiRef: { current: null },
-  changeActiveDay() {},
+  locale: 'en-US',
+  changeFocusedDate() {},
+  closeView() {},
+  toggleView() {},
+  prev() {},
+  next() {},
   selection: 'single',
+  size: 'xs',
+  variant: 'secondary',
   view: 'day',
 })
+
+export const useCalendarContext = (): CalendarContextState => {
+  const { today, view, locale, calendar, headingId, changeFocusedDate, toggleView, closeView, prev, next } = useCalendarInternalContext()
+
+  return { today, view, locale, calendar, headingId, changeFocusedDate, toggleView, closeView, prev, next }
+}

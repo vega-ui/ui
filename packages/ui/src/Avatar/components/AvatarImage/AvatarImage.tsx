@@ -1,6 +1,9 @@
-import { FC, ImgHTMLAttributes, Ref, useState } from 'react';
+import { FC, ImgHTMLAttributes, Ref } from 'react';
+import { useMergeRefs } from '@vega-ui/hooks';
+import { useOutput, useWidget, widgetEnvironment } from '../../../internals/widget';
 import style from './style.module.css';
 import { csx } from '@vega-ui/utils';
+import { avatarImageWidget } from '@vega-ui/widgets/avatar';
 
 export interface AvatarImageProps extends ImgHTMLAttributes<HTMLImageElement> {
   /**
@@ -16,12 +19,6 @@ export interface AvatarImageProps extends ImgHTMLAttributes<HTMLImageElement> {
   fallbackSrc?: string
 }
 
-export enum ImageStatus {
-  INITIAL = 'initial',
-  ERROR = 'error',
-  LOADED = 'loaded'
-}
-
 /**
  * The AvatarImage component renders a user’s profile image within an avatar and optionally falls back to a secondary fallbackSrc image if the primary source fails to load
  */
@@ -33,21 +30,16 @@ export const AvatarImage: FC<AvatarImageProps> = ({
   className,
   ...props
 }) => {
-  const [imageStatus, setImageStatus] = useState(ImageStatus.INITIAL)
-
-  const onLoad = () => setImageStatus(ImageStatus.LOADED)
-  const onError = () => setImageStatus(ImageStatus.ERROR)
+  const handle = useWidget(avatarImageWidget, { src, fallbackSrc }, widgetEnvironment)
+  const attrs = useOutput(handle, avatarImageWidget.output.root)
+  const mergedRef = useMergeRefs([handle.root, ref])
 
   return (
     <img
-      ref={ref}
-      data-status={imageStatus}
-      onLoad={onLoad}
-      onError={onError}
+      ref={mergedRef}
       alt={alt}
-      src={imageStatus === ImageStatus.ERROR && fallbackSrc !== undefined ? fallbackSrc : src}
       className={csx(style.image, className)}
-      {...props}
+      {...handle.listen(attrs, props)}
     />
   )
 }

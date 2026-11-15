@@ -8,7 +8,10 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonthLabel,
   CalendarNextButton,
   CalendarPrevButton,
@@ -89,7 +92,9 @@ export const HomeWorld = () => {
           >
             <CalendarHeader>
               <CalendarPrevButton aria-label={preset.previous} />
-              <Text fontWeight={600}><CalendarMonthLabel /> <CalendarYearLabel /></Text>
+              <CalendarHeading>
+                <Text fontWeight={600}><CalendarMonthLabel /> <CalendarYearLabel /></Text>
+              </CalendarHeading>
               <CalendarNextButton aria-label={preset.next} />
             </CalendarHeader>
             <CalendarContent>
@@ -97,9 +102,13 @@ export const HomeWorld = () => {
                 <CalendarWeekdays format='narrow'>
                   <CalendarWeekday />
                 </CalendarWeekdays>
-                <CalendarWeeks>
-                  <CalendarDay />
-                </CalendarWeeks>
+                <CalendarDaysScroller>
+                  <CalendarDaysScrollerContent>
+                    <CalendarWeeks>
+                      <CalendarDay />
+                    </CalendarWeeks>
+                  </CalendarDaysScrollerContent>
+                </CalendarDaysScroller>
               </CalendarDays>
             </CalendarContent>
           </Calendar>

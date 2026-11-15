@@ -6,11 +6,11 @@
 <!-- AUTO-GENERATED:ROOT_API:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `multiple` | `M` | — | No | Allows selecting several options. Determines the structure of `value`: an array when true. |
-| `value` | `M extends true ? V[] : V \| null` | — | No | The currently selected value (controlled). Without `multiple`, `null` clears the selection, while `undefined` makes the list uncontrolled. |
-| `defaultValue` | `ListboxValue<V, M>` | — | No | The default selected value (uncontrolled). |
-| `onChangeValue` | `(value: ListboxValue<V, M>) => void` | — | No | Callback fired when the selection changes. |
-| `disabled` | `boolean` | — | No | Prevents interaction and removes the list from the tab order. |
+| `multiple` | `Multiple` | — | No | Allows selecting several options. Determines the structure of `value`: an array when true. |
+| `value` | `Multiple extends true ? Value[] : Value \| null` | — | No | The currently selected value (controlled). Without `multiple`, `null` clears the selection, while `undefined` makes the list uncontrolled. |
+| `defaultValue` | `ListboxValue<Value, Multiple>` | — | No | The default selected value (uncontrolled). |
+| `onChangeValue` | `(value: ListboxValue<Value, Multiple>) => void` | — | No | Callback fired when the selection changes. |
+| `disabled` | `boolean` | `false` | No | Prevents interaction and removes the list from the tab order. |
 | `size` | `OptionSize` | `'md'` | No | Visual size of the options. |
 | `typeahead` | `boolean` | `true` | No | Enables moving to an option by typing the start of its label. |
 | `ref` | `Ref<HTMLDivElement>` | — | No | Ref forwarded to the listbox element. |
@@ -36,7 +36,7 @@ Groups related options like a native `optgroup`. Name it with `aria-labelledby` 
 <!-- AUTO-GENERATED:PART_API:ListboxOption:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `value` | `V` | — | Yes | The value of this option, passed to the change callback when it is selected. |
+| `value` | `Value` | — | Yes | The value of this option, passed to the change callback when it is selected. |
 | `label` | `string` | — | No | Plain text of this option for typeahead, used instead of the text of its content. |
 | `children` | `ReactNode` | — | No | The content displayed for this option. Can include text, icons, or complex markup. |
 | `size` | `OptionSize` | — | No | Size of the option for visual styling. |
@@ -66,4 +66,5 @@ Also accepts all `<div>` attributes.
 ## State Model
 
 - The list owns the selection, the active option, and typeahead.
+- When the active option is removed or disabled, the next enabled option becomes active, or the previous one when it was the last; like a native `select` that loses its selected option, this calls no `onChangeActive`.
 - Without `multiple` the value is one option, and with `multiple` it is an array.

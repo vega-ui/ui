@@ -161,8 +161,8 @@ When to use:
 
 Composition notes:
 
-- put `name` on `NumberFieldInput`
-- choose default or controlled value model explicitly
+- put `name` on a hidden input that mirrors `value`; `name` on `NumberFieldInput` submits the shown text with its separators
+- control the value so the hidden input and a reset follow it
 
 Trade-offs:
 
@@ -182,30 +182,37 @@ import {
 } from '@vega-ui/react';
 import { FormEvent, useId, useState } from 'react';
 
+const DEFAULT_BUDGET = 2500;
+
 export default function FormSubmitAndReset() {
   const id = useId();
+  const [budget, setBudget] = useState(DEFAULT_BUDGET);
   const [submitted, setSubmitted] = useState('');
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const raw = String(new FormData(event.currentTarget).get('monthlyBudget'));
-    const budget = Number(raw.replace(/\s/g, ''));
-    setSubmitted(`Field text “${raw}” → number ${budget}`);
+    setSubmitted(`monthlyBudget=${new FormData(event.currentTarget).get('monthlyBudget')}`);
+  };
+
+  const onReset = () => {
+    setBudget(DEFAULT_BUDGET);
+    setSubmitted('');
   };
 
   return (
     <form
       onSubmit={onSubmit}
-      onReset={() => setSubmitted('')}
+      onReset={onReset}
       style={{ display: 'grid', gap: 'var(--spacing-12)', width: '100%', maxWidth: 280 }}
     >
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor={id}>Monthly budget, USD</Label>
-        <NumberField min={0} max={1000000} step={500} defaultValue={2500} maximumFractionDigits={0}>
+        <NumberField min={0} max={1000000} step={500} value={budget} onChangeValue={setBudget} maximumFractionDigits={0}>
           <NumberFieldDecrementButton aria-label='Decrease budget by 500' />
-          <NumberFieldInput id={id} name='monthlyBudget' required />
+          <NumberFieldInput id={id} required />
           <NumberFieldIncrementButton aria-label='Increase budget by 500' />
         </NumberField>
+        <input type='hidden' name='monthlyBudget' value={Number.isNaN(budget) ? '' : budget} />
       </div>
       <div style={{ display: 'flex', gap: 'var(--spacing-4)' }}>
         <Button type='submit'>Save</Button>

@@ -39,7 +39,7 @@ export default function ValueOutsidePolicyHint() {
         </SliderThumb>
       </Slider>
       {invalid && (
-        <HelperText id='cpu-limit-error' error>
+        <HelperText id='cpu-limit-error' invalid>
           Shared clusters allow up to {policyLimit}%. Lower the limit to save.
         </HelperText>
       )}

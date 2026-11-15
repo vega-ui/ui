@@ -1,9 +1,11 @@
-import { FC } from 'react';
+import { FC, MouseEvent } from 'react';
 import { IconButton, IconButtonProps } from '../../../IconButton';
 import { useTextFieldContext } from '../../../TextField/contexts';
+import { useOutput } from '../../../internals/widget';
 import { usePasswordFieldContext } from '../../contexts';
+import { passwordFieldWidget } from '@vega-ui/widgets/password-field';
 import style from './style.module.css';
-import { csx, mergeEventHandlers } from '@vega-ui/utils';
+import { csx } from '@vega-ui/utils';
 
 export type PasswordFieldToggleIconButtonProps = IconButtonProps
 
@@ -19,9 +21,15 @@ export type PasswordFieldToggleIconButtonProps = IconButtonProps
  * The button does not manage any state itself and is intended to be composed
  * with visibility icons inside `PasswordField`.
  */
-export const PasswordFieldToggleIconButton: FC<PasswordFieldToggleIconButtonProps> = ({ disabled, className, children, onClick, type = 'button', ...props }) => {
+export const PasswordFieldToggleIconButton: FC<PasswordFieldToggleIconButtonProps> = ({ disabled, className, children, onClick: _onClick, type = 'button', ...props }) => {
   const { size } = useTextFieldContext()
-  const { shown, toggleShow, disabled: _disabled } = usePasswordFieldContext()
+  const { handle, toggleShow, disabled: _disabled } = usePasswordFieldContext()
+  const attrs = useOutput(handle, passwordFieldWidget.output.toggle)
+
+  const onClick = (event: MouseEvent<HTMLButtonElement>) => {
+    _onClick?.(event)
+    if (!event.defaultPrevented) toggleShow()
+  }
   
   return (
     <IconButton
@@ -31,8 +39,8 @@ export const PasswordFieldToggleIconButton: FC<PasswordFieldToggleIconButtonProp
       disabled={disabled ?? _disabled}
       variant='secondary'
       appearance='transparent'
-      aria-pressed={shown}
-      onClick={mergeEventHandlers(toggleShow, onClick)}
+      {...attrs}
+      onClick={onClick}
       {...props}
     >
       {children}

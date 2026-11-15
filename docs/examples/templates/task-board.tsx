@@ -7,20 +7,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   Checkbox,
   CheckboxCheckedIcon,
   CheckboxIndicator,
@@ -238,8 +244,7 @@ export default function TaskBoard() {
 
     const invalid = (['title', 'due'] as const).find((name) => nextErrors[name]);
     if (invalid) {
-      const element = form.elements.namedItem(invalid);
-      if (element instanceof HTMLElement) element.focus();
+      document.getElementById(`${id}-${invalid}`)?.focus();
       return;
     }
 
@@ -320,14 +325,14 @@ export default function TaskBoard() {
               {task.due !== '' && (
                 <Text size={2} style={{ ...meta, color: overdue ? 'var(--color-error)' : 'var(--label-secondary)', fontWeight: overdue ? 500 : undefined }}>
                   <Icon size='xs' aria-hidden='true'><CalendarIcon /></Icon>
-                  <VisuallyHidden asChild><span>{overdue ? 'Overdue, was due' : 'Due'}</span></VisuallyHidden>
+                  <VisuallyHidden>{overdue ? 'Overdue, was due' : 'Due'}</VisuallyHidden>
                   {dueLabel(task.due)}
                 </Text>
               )}
               {task.subtasks.total > 0 && (
                 <Text size={2} style={{ ...meta, color: 'var(--label-secondary)' }}>
                   <Icon size='xs' aria-hidden='true'><ListChecks /></Icon>
-                  <VisuallyHidden asChild><span>Subtasks</span></VisuallyHidden>
+                  <VisuallyHidden>Subtasks</VisuallyHidden>
                   {`${task.subtasks.done}/${task.subtasks.total}`}
                 </Text>
               )}
@@ -369,7 +374,7 @@ export default function TaskBoard() {
     const count = (
       <Badge size='xs' variant='info' appearance='surface' style={{ fontVariantNumeric: 'tabular-nums' }}>
         {items.length}
-        <VisuallyHidden asChild><span>{items.length === 1 ? ' task' : ' tasks'}</span></VisuallyHidden>
+        <VisuallyHidden>{items.length === 1 ? ' task' : ' tasks'}</VisuallyHidden>
       </Badge>
     );
 
@@ -438,7 +443,7 @@ export default function TaskBoard() {
             <form noValidate onSubmit={createTask} style={{ display: 'grid', gap: 'var(--spacing-8)', marginBlockStart: 'var(--spacing-10)' }}>
               <div style={field}>
                 <Label htmlFor={`${id}-title`}>Title</Label>
-                <TextField error={errors.title !== undefined}>
+                <TextField>
                   <TextFieldInput
                     id={`${id}-title`}
                     name='title'
@@ -449,7 +454,7 @@ export default function TaskBoard() {
                     onChange={() => setErrors({ ...errors, title: undefined })}
                   />
                 </TextField>
-                {errors.title && <HelperText id={`${id}-title-error`} error>{errors.title}</HelperText>}
+                {errors.title && <HelperText id={`${id}-title-error`} invalid>{errors.title}</HelperText>}
               </div>
               <div style={field}>
                 <Label htmlFor={`${id}-description`}>Description (optional)</Label>
@@ -486,7 +491,6 @@ export default function TaskBoard() {
                 <DateField
                   format='MM/dd/yyyy'
                   separator='/'
-                  error={errors.due !== undefined}
                   value={draftDue}
                   onChangeValue={(value) => {
                     setDraftDue(value);
@@ -495,7 +499,6 @@ export default function TaskBoard() {
                 >
                   <DateFieldInput
                     id={`${id}-due`}
-                    name='due'
                     placeholder='mm/dd/yyyy'
                     aria-invalid={errors.due !== undefined}
                     aria-describedby={describe('due')}
@@ -505,13 +508,13 @@ export default function TaskBoard() {
                       <DateFieldTriggerIconButton aria-label='Choose due date' />
                     </PopoverTrigger>
                     <PopoverContent>
-                      <DateFieldCalendar>
+                      <DateFieldCalendar aria-label='Choose due date'>
                         <CalendarHeader>
                           <CalendarPrevButton aria-label='Previous month' />
-                          <CalendarViewButtonGroup>
+                          <CalendarHeading>
                             <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                             <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-                          </CalendarViewButtonGroup>
+                          </CalendarHeading>
                           <CalendarNextButton aria-label='Next month' />
                         </CalendarHeader>
                         <CalendarContent>
@@ -519,22 +522,34 @@ export default function TaskBoard() {
                             <CalendarWeekdays>
                               <CalendarWeekday />
                             </CalendarWeekdays>
-                            <CalendarWeeks>
-                              <CalendarDay />
-                            </CalendarWeeks>
+                            <CalendarDaysScroller>
+                              <CalendarDaysScrollerContent>
+                                <CalendarWeeks>
+                                  <CalendarDay />
+                                </CalendarWeeks>
+                              </CalendarDaysScrollerContent>
+                            </CalendarDaysScroller>
                           </CalendarDays>
                           <CalendarMonths>
-                            <CalendarMonth />
+                            <CalendarMonthsGrid>
+                              <CalendarMonth />
+                            </CalendarMonthsGrid>
                           </CalendarMonths>
                           <CalendarYears>
-                            <CalendarYear />
+                            <CalendarYearsScroller>
+                              <CalendarYearsScrollerContent>
+                                <CalendarYearsGrid>
+                                  <CalendarYear />
+                                </CalendarYearsGrid>
+                              </CalendarYearsScrollerContent>
+                            </CalendarYearsScroller>
                           </CalendarYears>
                         </CalendarContent>
                       </DateFieldCalendar>
                     </PopoverContent>
                   </Popover>
                 </DateField>
-                {errors.due && <HelperText id={`${id}-due-error`} error>{errors.due}</HelperText>}
+                {errors.due && <HelperText id={`${id}-due-error`} invalid>{errors.due}</HelperText>}
               </div>
               <Fieldset>
                 <FieldsetLegend size={3} style={{ marginBlockEnd: 'var(--spacing-5)' }}>Labels</FieldsetLegend>

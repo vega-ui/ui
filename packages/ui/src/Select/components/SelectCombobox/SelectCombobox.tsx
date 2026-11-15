@@ -1,10 +1,10 @@
-import { FC, HTMLAttributes, Ref } from 'react';
-import { csx, mergeProps } from '@vega-ui/utils';
+import { FC, HTMLAttributes, MouseEvent, Ref } from 'react';
+import { csx, mergeEventHandlers } from '@vega-ui/utils';
 import { useMergeRefs } from '@vega-ui/hooks';
-import { useStore } from '@vega-ui/react-kit/store';
+import { useOutput } from '../../../internals/widget';
 import style from './style.module.css';
 import { useSelectContext } from '../../contexts';
-import { useListboxContext } from '../../../Listbox/contexts';
+import { COMBOBOX, selectWidget } from '@vega-ui/widgets/select';
 
 export interface SelectComboboxProps extends HTMLAttributes<HTMLButtonElement> {
   /**
@@ -28,31 +28,27 @@ export interface SelectComboboxProps extends HTMLAttributes<HTMLButtonElement> {
 export const SelectCombobox: FC<SelectComboboxProps> = ({
   className,
   children,
+  style: _style,
+  onMouseDown: _onMouseDown,
   ref,
   ...props
 }) => {
-  const { disabled, readOnly, size, variant, open, comboboxProps, setReference } = useSelectContext()
-  const { id, store } = useListboxContext()
-  const activeId = useStore(store, (state) => state.activeId)
-  const mergedRef = useMergeRefs([ref, setReference])
-  
+  const { handle, size, variant, anchorName } = useSelectContext()
+  const attrs = useOutput(handle, selectWidget.output.combobox)
+  const mergedRef = useMergeRefs([ref, handle.part(COMBOBOX)])
+
+  const onMouseDown = (event: MouseEvent<HTMLButtonElement>) => event.preventDefault()
+
   return (
     <button
-      role='combobox'
       type='button'
-      disabled={disabled}
       data-size={size}
       data-variant={variant}
-      data-open={open}
-      aria-readonly={readOnly}
-      aria-haspopup='listbox'
-      aria-expanded={Boolean(open)}
-      aria-controls={id}
-      popoverTarget={disabled || readOnly ? undefined : id}
-      aria-activedescendant={open ? activeId : undefined}
       ref={mergedRef}
       className={csx(style.combobox, className)}
-      {...mergeProps(comboboxProps, props)}
+      style={{ anchorName, ..._style }}
+      onMouseDown={mergeEventHandlers(_onMouseDown, onMouseDown)}
+      {...handle.merge(attrs, props)}
     >
       {children}
     </button>

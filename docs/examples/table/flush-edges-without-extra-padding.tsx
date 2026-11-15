@@ -23,7 +23,7 @@ export default function FlushEdgesWithoutExtraPadding() {
       <Button size='sm' variant='secondary' appearance='ghost' aria-pressed={edgePadded} onClick={() => setEdgePadded(!edgePadded)}>
         edgePadded: {String(edgePadded)}
       </Button>
-      <Card appearance='outline' size='sm' style={{ alignItems: 'stretch', width: '100%', maxWidth: 360 }}>
+      <Card appearance='outline' size='sm' style={{ width: '100%', maxWidth: 360 }}>
         <Heading as='h3' size={4} fontWeight={600}>Subscription</Heading>
         <Table fullWidth edgePadded={edgePadded}>
           <TableBody>

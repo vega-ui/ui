@@ -1,1 +1,0 @@
-export { useDataGridContext, DataGridProvider } from './context'

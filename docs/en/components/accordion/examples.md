@@ -390,7 +390,7 @@ export default function SectionErrors() {
           <AccordionContent>
             <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
               <Label htmlFor='payout-iban'>IBAN</Label>
-              <TextField error={error !== ''}>
+              <TextField>
                 <TextFieldInput
                   id='payout-iban'
                   value={iban}
@@ -399,7 +399,7 @@ export default function SectionErrors() {
                   aria-describedby={error ? 'payout-iban-error' : undefined}
                 />
               </TextField>
-              {error && <HelperText id='payout-iban-error' error>{error}</HelperText>}
+              {error && <HelperText id='payout-iban-error' invalid>{error}</HelperText>}
             </div>
           </AccordionContent>
         </AccordionItem>
@@ -418,7 +418,7 @@ export default function SectionErrors() {
 
 ### Disabled: section unavailable on the current plan
 
-`AccordionTrigger` renders a native button through `asChild`, so the button can be `disabled` and point to the reason with `aria-describedby`. The section stays visible but cannot be opened.
+`AccordionTrigger` renders a native button, so it takes `disabled` and points to the reason with `aria-describedby`. The section stays visible but cannot be opened.
 
 <!-- example: accordion/disabled-section.tsx -->
 ```tsx
@@ -451,11 +451,9 @@ export default function DisabledSection() {
         </AccordionItem>
         <AccordionItem value='sso'>
           <AccordionHeader>
-            <AccordionTrigger asChild>
-              <button type='button' disabled aria-describedby='sso-reason' style={{ cursor: 'not-allowed', color: 'var(--label-tertiary)' }}>
-                SAML single sign-on
-                <AccordionIcon />
-              </button>
+            <AccordionTrigger disabled aria-describedby='sso-reason' style={{ cursor: 'not-allowed', color: 'var(--label-tertiary)' }}>
+              SAML single sign-on
+              <AccordionIcon />
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>

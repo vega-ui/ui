@@ -143,7 +143,7 @@ const ProductOptions = ({ prefix, color, size, sizeError, onChangeColor, onChang
           <SegmentedControlIndicator />
         </SegmentedControl>
         {sizeError
-          ? <HelperText id={`${prefix}-size-error`} error>Choose a size to add this to your bag.</HelperText>
+          ? <HelperText id={`${prefix}-size-error`} invalid>Choose a size to add this to your bag.</HelperText>
           : <HelperText id={`${prefix}-size-hint`}>XL is sold out. Fits true to size; size down for a closer fit.</HelperText>}
       </div>
     </div>
@@ -274,7 +274,7 @@ export default function ProductPage() {
             <span>{`${selectedColor.name} · ${sizeLabel ?? 'Choose a size'}`}</span>
             <span style={{ color: 'var(--color-primary-500)' }}>Change</span>
           </Button>
-          {sizeError && <HelperText id={`${id}-sheet-error`} error className='productPageSheetTrigger'>Choose a size to add this to your bag.</HelperText>}
+          {sizeError && <HelperText id={`${id}-sheet-error`} invalid className='productPageSheetTrigger'>Choose a size to add this to your bag.</HelperText>}
 
           <div style={field}>
             <Label htmlFor={`${id}-quantity`}>Quantity</Label>

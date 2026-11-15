@@ -19,7 +19,7 @@ export default function NonStrictMaskForLenientPasteBehavior() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', width: '100%', maxWidth: 340 }}>
       <Label htmlFor={id}>Customer phone</Label>
-      <PhoneField defaultCode='US' strictMask={false} onChangeCode={setCountry}>
+      <PhoneField defaultCountry='US' strictMask={false} onChangeCountry={setCountry}>
         <PhoneFieldSelect>
           <SelectCombobox aria-label='Country'>
             <SelectValue />

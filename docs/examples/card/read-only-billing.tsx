@@ -9,7 +9,7 @@ export default function ReadOnlyBilling() {
           Only workspace owners can change billing details. Ask Maria Chen to update them.
         </Text>
       </div>
-      <fieldset disabled aria-describedby='billing-contact-note' style={{ border: 0, margin: 0, padding: 0, display: 'grid', gap: 'var(--spacing-8)', alignSelf: 'stretch' }}>
+      <fieldset disabled aria-describedby='billing-contact-note' style={{ border: 0, margin: 0, padding: 0, display: 'grid', gap: 'var(--spacing-8)' }}>
         <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
           <Label htmlFor='billing-contact-name'>Name</Label>
           <TextField>

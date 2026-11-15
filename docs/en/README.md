@@ -13,6 +13,7 @@ This directory is the starting point for project-level documentation outside Sto
 
 - `getting-started.md`: install, styles, fonts, and local development
 - `architecture.md`: monorepo layout and package responsibilities
+- `widgets.md`: writing a widget on `@vega-ui/core`, step by step, with a reference of every part
 - `glossary.md`: shared terminology used across component documentation
 - `families/`: decision-oriented navigation across related component groups
 - `styling/`: global theming, tokens, and CSS variable model

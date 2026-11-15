@@ -27,7 +27,7 @@ export default function UncontrolledNativeFormSubmit() {
   return (
     <form onSubmit={onSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', width: '100%', maxWidth: 340 }}>
       <Label htmlFor={id}>Phone number</Label>
-      <PhoneField defaultCode='DE'>
+      <PhoneField defaultCountry='DE'>
         <PhoneFieldSelect>
           <SelectHiddenSelect name='country' />
           <SelectCombobox aria-label='Country'>
@@ -40,7 +40,7 @@ export default function UncontrolledNativeFormSubmit() {
             <SelectOption value='CH'>CH</SelectOption>
           </SelectListbox>
         </PhoneFieldSelect>
-        <PhoneFieldInput id={id} name='phone' autoComplete='tel' required />
+        <PhoneFieldInput name='phone' id={id} autoComplete='tel' required />
       </PhoneField>
       <Button type='submit' style={{ alignSelf: 'flex-end', marginBlockStart: 'var(--spacing-9)' }}>Request a callback</Button>
       {submitted && (

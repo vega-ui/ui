@@ -1,15 +1,15 @@
 'use client';
 
-import { createContext } from '@vega-ui/react-kit/context';
+import { createContext } from '../../../internals/context';
+import { createHandle, WidgetHandle } from '../../../internals/widget';
+import { drawerShape, drawerWidget } from '@vega-ui/widgets/drawer';
 import { DrawerPosition } from '../../types';
 
 export interface DrawerContextState {
-  open: boolean
-  changeOpen: (value: boolean) => void
+  handle: WidgetHandle<typeof drawerShape>
   position?: DrawerPosition
 }
 
 export const [DrawerProvider, useDrawerContext] = createContext<DrawerContextState>('DrawerContext', {
-  open: false,
-  changeOpen: () => undefined,
+  handle: createHandle(drawerWidget, { position: 'end' }, { id: 'drawer' }),
 })

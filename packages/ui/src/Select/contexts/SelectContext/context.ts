@@ -1,31 +1,30 @@
 'use client';
 
-import { CSSProperties } from 'react';
-import { createContext } from '@vega-ui/react-kit/context';
+import { createContext } from '../../../internals/context';
+import { createHandle, WidgetHandle } from '../../../internals/widget';
+import { ListboxItemData, ListboxValue } from '@vega-ui/widgets/listbox';
+import { selectShape, selectWidget } from '@vega-ui/widgets/select';
 import { SelectSize, SelectVariant } from '../../types';
 
-type Value = string | number | null | undefined
+export type SelectHandle = WidgetHandle<typeof selectShape, ListboxItemData>
 
 export interface SelectContextState {
+  handle: SelectHandle
   size?: SelectSize
   variant?: SelectVariant
-  selected: Value
-  open?: boolean
-  changeOpen?(open: boolean): void
+  selected: ListboxValue | null
+  open: boolean
   disabled?: boolean
   readOnly?: boolean
-  comboboxProps: Record<string, unknown>
-  listboxStyles: CSSProperties
   valueElement?: HTMLSpanElement | null
   setValueElement?(element: HTMLSpanElement | null): void
-  setReference?(element: HTMLElement | null): void
+  anchorName?: string
   focusCombobox?(): void
-  setFloating?(element: HTMLElement | null): void
 }
 
 export const [SelectProvider, useSelectContext] = createContext<SelectContextState>('SelectContext', {
-  selected: undefined,
-  comboboxProps: {},
-  listboxStyles: {},
+  handle: createHandle(selectWidget, { items: [], disabled: false, readOnly: false, typeahead: true }, { id: 'select' }),
+  selected: null,
+  open: false,
   size: 'md',
 })

@@ -1,7 +1,9 @@
 'use client';
 
-import { createContext } from '@vega-ui/react-kit/context';
+import { createContext } from '../../../internals/context';
+import { createHandle, WidgetHandle } from '../../../internals/widget';
 import { SliderOrientation } from '../../types';
+import { sliderShape, sliderWidget } from '@vega-ui/widgets/slider';
 
 export interface SliderContextState {
   min: number
@@ -12,10 +14,7 @@ export interface SliderContextState {
   disabled?: boolean
   name?: string
   values: number[]
-  /**
-   * Sets the value of the thumb at `index`, kept between its neighbours.
-   */
-  changeThumb(index: number, value: number): void
+  handle: WidgetHandle<typeof sliderShape>
 }
 
 export const [SliderProvider, useSliderContext] = createContext<SliderContextState>('SliderContext', {
@@ -25,5 +24,5 @@ export const [SliderProvider, useSliderContext] = createContext<SliderContextSta
   gap: 0,
   orientation: 'horizontal',
   values: [],
-  changeThumb() {},
+  handle: createHandle(sliderWidget, { min: 0, max: 100, step: 1, gap: 0, orientation: 'horizontal' }, { id: 'slider' }),
 })

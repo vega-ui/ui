@@ -28,7 +28,6 @@ const meta = {
   argTypes: {
     size: { control: 'radio', options: ['xs', 'sm', 'md', 'lg', 'xl'] },
     disabled: { control: 'boolean' },
-    error: { control: 'boolean' },
     shown: { control: 'boolean' },
   },
   args: {},
@@ -48,10 +47,10 @@ type Story = StoryObj<typeof meta>;
 
 const sizes: PasswordFieldProps['size'][] = ['xs', 'sm', 'md', 'lg', 'xl'];
 const states = [
-  { label: 'default', shown: false, disabled: false, error: false },
-  { label: 'shown', shown: true, disabled: false, error: false },
-  { label: 'disabled', shown: false, disabled: true, error: false },
-  { label: 'error', shown: false, disabled: false, error: true },
+  { label: 'default', shown: false, disabled: false, invalid: false },
+  { label: 'shown', shown: true, disabled: false, invalid: false },
+  { label: 'disabled', shown: false, disabled: true, invalid: false },
+  { label: 'invalid', shown: false, disabled: false, invalid: true },
 ];
 
 export const Playground: Story = {};
@@ -65,9 +64,8 @@ export const Matrix: Story = {
           size={size}
           defaultShown={state.shown}
           disabled={state.disabled}
-          error={state.error}
         >
-          <PasswordFieldInput aria-label='Password' defaultValue={`${size} / ${state.label}`} />
+          <PasswordFieldInput aria-label='Password' aria-invalid={state.invalid} defaultValue={`${size} / ${state.label}`} />
           <PasswordFieldToggleIconButton aria-label='Show password'>
             <PasswordFieldShownIcon />
             <PasswordFieldHiddenIcon />

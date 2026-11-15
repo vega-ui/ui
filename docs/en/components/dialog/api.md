@@ -51,7 +51,7 @@ The native modal `<dialog>`.
 Also accepts all `<dialog>` attributes.
 <!-- AUTO-GENERATED:PART_API:DialogContent:end -->
 
-- It sets no `id` or `aria-labelledby` itself: name it with `aria-labelledby` pointing to your heading's `id`, or with `aria-label`. `onCancel` and `onClose` run after the internal handlers.
+- It sets no `id` or `aria-labelledby` itself: name it with `aria-labelledby` pointing to your heading's `id`, or with `aria-label`. `onCancel` and `onClose` run before the internal handlers.
 - `blurred` (default `true`) blurs the page behind the dialog; `overlay` (default `true`) dims it, and with `overlay={false}` the dialog stays modal over a transparent backdrop; `shadowed` (default `true`) adds the surface shadow.
 - `closedBy` sets which user actions close the dialog, like the native `closedby` attribute: `'any'` (a backdrop click or `Escape`), `'closerequest'` (`Escape` only, the default), or `'none'`. A backdrop click does not close the dialog unless `closedBy='any'`.
 - Closes on submit of a `<form method="dialog">` inside it, also with `closedBy='none'`. The close goes through `onChangeOpen(false)`, so the close transition plays and a controlled parent can keep it open; the submit button's `value` becomes the dialog's `returnValue`.
@@ -138,7 +138,9 @@ export default function CloseWithHandler() {
 
 ## `useDialogContext`
 
-Advanced hook for custom wrappers and close actions. Returns `{ open, changeOpen }`.
+Advanced hook for custom wrappers. Returns `{ handle }`, the widget handle of the dialog: read `open` with `useSnapshot(handle, (state) => state.open)`. For a close action use `DialogClose` with `asChild`.
+
+The handlers you pass run first: `event.preventDefault()` in `onClick` of `DialogTrigger` or `DialogClose`, or in `onCancel` or `onSubmit` of `DialogContent`, keeps the dialog as it is.
 
 Use it only when the exported parts are not enough for the desired composition.
 
@@ -156,7 +158,6 @@ Use it only when the exported parts are not enough for the desired composition.
 - Open state can be controlled with `open` or uncontrolled with `defaultOpen`.
 - `DialogTrigger` is the normal open path for uncontrolled usage.
 - Every close request allowed by `closedBy` (backdrop click, `Escape`) every `DialogClose` click, and every `<form method="dialog">` submit go through `onChangeOpen(false)`; a controlled dialog stays open until `open` becomes `false`. A close the browser makes without asking, such as `close()` called on the element or a forced close after repeated `Escape`, is final: it stays closed until `open` changes.
-- When the browser closes the dialog on its own while `open` is still `true`, the dialog reopens.
 
 ## Integration Notes
 

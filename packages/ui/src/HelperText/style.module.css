@@ -1,8 +1,8 @@
 .helperText {
     display: inline-block;
-    color: var(--label-tertiary);
+    --t-color: var(--label-tertiary);
 }
 
-.helperText:where([data-error='true']) {
-    color: var(--color-error);
+.helperText:where([data-invalid='true']) {
+    --t-color: var(--color-error);
 }

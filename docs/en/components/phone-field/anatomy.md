@@ -8,17 +8,17 @@
 
 ### `PhoneField`
 
-Root provider for phone formatting and country state.
+Root provider for phone formatting and country state. It holds the number in E.164; `PhoneFieldInput` submits the shown text under its `name`.
 
 ### `PhoneFieldInput`
 
-Visible text input for the number value.
+Visible text input that shows the number formatted.
 
 ## Optional Parts
 
 ### `PhoneFieldSelect`
 
-Country-code picker: a `Select` bound to the field country. Picking an option updates the country and moves the focus into the input.
+Country-code picker: a `Select` bound to the field country. Picking an option updates the country, writes its calling code into the input and moves the focus into the input.
 
 ### Select parts
 
@@ -65,7 +65,7 @@ export default function MinimalComposition() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-3)', width: '100%', maxWidth: 320 }}>
       <Label htmlFor={id}>Phone number</Label>
-      <PhoneField defaultCode='US'>
+      <PhoneField defaultCountry='US'>
         <PhoneFieldSelect>
           <SelectHiddenSelect name='country' />
           <SelectCombobox aria-label='Country'>
@@ -78,7 +78,7 @@ export default function MinimalComposition() {
             <SelectOption value='DE'>DE</SelectOption>
           </SelectListbox>
         </PhoneFieldSelect>
-        <PhoneFieldInput id={id} name='phone' autoComplete='tel' />
+        <PhoneFieldInput name='phone' id={id} autoComplete='tel' />
       </PhoneField>
     </div>
   );
@@ -86,7 +86,7 @@ export default function MinimalComposition() {
 ```
 <!-- /example -->
 
-The `Label` names the input, the country trigger gets its own `aria-label`, and the hidden select submits the country next to the number. Without `PhoneFieldSelect` the field still formats by `code` alone.
+The `Label` names the input, the country trigger gets its own `aria-label`, and the hidden select submits the country next to the number. Without `PhoneFieldSelect` the field still formats by `country` alone.
 
 ## Invalid Composition Patterns
 

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Placement } from '@floating-ui/react';
+import { Placement } from '../internals/anchor';
 
 import { Popover, PopoverProps } from './Popover';
 import { PopoverContent, PopoverContentProps, PopoverTrigger } from './components';

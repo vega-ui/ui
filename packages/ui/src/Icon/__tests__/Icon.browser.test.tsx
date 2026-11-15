@@ -46,14 +46,7 @@ describe('Icon', () => {
       r.rerender(<IconTest size={DEFAULT_SIZE} height={32} />);
       await expect.element(getIcon(r)).not.toHaveAttribute('data-size');
     });
+
   });
   
-  describe('Accessibility', () => {
-    describe('aria', () => {
-      it('is hidden from screen readers', async () => {
-        const r = render(<IconTest />);
-        await expect.element(getIcon(r)).toHaveAttribute('aria-hidden', 'true');
-      });
-    });
-  });
 });

@@ -59,7 +59,7 @@ export default function RemainingCharacters() {
           onChange={(event) => setSubject(event.currentTarget.value)}
         />
       </TextField>
-      <HelperText id={`${id}-count`} error={remaining === 0} style={{ fontVariantNumeric: 'tabular-nums' }}>{message}</HelperText>
+      <HelperText id={`${id}-count`} invalid={remaining === 0} style={{ fontVariantNumeric: 'tabular-nums' }}>{message}</HelperText>
       <VisuallyHidden>
         <div role='status'>{remaining <= 10 ? message : ''}</div>
       </VisuallyHidden>
@@ -147,7 +147,7 @@ export default function ReservedMessageSpace() {
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 'var(--spacing-8)', width: '100%' }}>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)', alignContent: 'start' }}>
         <Label htmlFor={`${id}-code`}>Booking code</Label>
-        <TextField error={invalid}>
+        <TextField>
           <TextFieldInput
             id={`${id}-code`}
             value={code}
@@ -157,7 +157,7 @@ export default function ReservedMessageSpace() {
             onChange={(event) => setCode(event.currentTarget.value.toUpperCase())}
           />
         </TextField>
-        <HelperText id={`${id}-message`} error={invalid} style={{ minHeight: '2lh' }}>
+        <HelperText id={`${id}-message`} invalid={invalid} style={{ minHeight: '2lh' }}>
           {invalid ? 'Three letters, a hyphen and four digits.' : ''}
         </HelperText>
       </div>
@@ -209,7 +209,7 @@ export default function NativeValidityMessage() {
     <form onSubmit={(event) => event.preventDefault()} style={{ display: 'grid', gap: 'var(--spacing-12)', width: '100%' }}>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor={id}>Postal code</Label>
-        <TextField error={invalid}>
+        <TextField>
           <TextFieldInput
             id={id}
             name='postalCode'
@@ -223,7 +223,7 @@ export default function NativeValidityMessage() {
             onInput={onInput}
           />
         </TextField>
-        {invalid && <HelperText id={`${id}-error`} error>{error}</HelperText>}
+        {invalid && <HelperText id={`${id}-error`} invalid>{error}</HelperText>}
         <HelperText id={`${id}-hint`}>We deliver within Germany only.</HelperText>
       </div>
       <Button type='submit' style={{ justifySelf: 'start' }}>Check delivery</Button>

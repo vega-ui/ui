@@ -52,6 +52,14 @@
     --checkbox-color: var(--text-color-inverse);
 }
 
+/* invalid */
+
+.checkbox:has(input[type='checkbox']:is([aria-invalid='true'], :user-invalid)) {
+    --checkbox-border-color: var(--color-error);
+    --checkbox-border-color-hover: var(--color-error);
+    --checkbox-border-color-active: var(--color-error);
+}
+
 /* disabled */
 
 .checkbox:has(input[type='checkbox']:disabled) {

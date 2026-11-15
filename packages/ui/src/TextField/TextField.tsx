@@ -16,11 +16,6 @@ export interface TextFieldProps extends HTMLAttributes<HTMLDivElement> {
   size?: TextFieldSize
 
   /**
-   * Shows the input in an error state.
-   */
-  error?: boolean
-
-  /**
    * Ref forwarded to wrapper element
    * Useful for programmatic control, focus, or integration.
    */
@@ -32,13 +27,11 @@ export const TextField: FC<TextFieldProps> = ({
   className,
   size = 'md',
   children,
-  error,
   ...props
 }) => {
   return (
-    <TextFieldProvider error={error} size={size}>
+    <TextFieldProvider size={size}>
       <div
-        data-error={error}
         data-size={size}
         className={csx(style.field, className)}
         {...props}

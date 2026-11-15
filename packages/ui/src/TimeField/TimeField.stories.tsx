@@ -6,9 +6,9 @@ import { getTimeTemplate } from '@vega-ui/utils';
 
 const sizes: TimeFieldProps['size'][] = ['xs', 'sm', 'md', 'lg', 'xl'];
 const states = [
-  { label: 'default', error: false, disabled: false },
-  { label: 'error', error: true, disabled: false },
-  { label: 'disabled', error: false, disabled: true },
+  { label: 'default', invalid: false, disabled: false },
+  { label: 'invalid', invalid: true, disabled: false },
+  { label: 'disabled', invalid: false, disabled: true },
 ];
 
 const meta = {
@@ -25,7 +25,6 @@ const meta = {
     min: { control: 'text' },
     max: { control: 'text' },
     step: { control: 'number' },
-    error: { control: 'boolean' },
   },
   args: {
     format: 'HH:mm',
@@ -46,8 +45,8 @@ export const Matrix: Story = {
   render: (args) => (
     <div style={{ display: 'grid', gridTemplateColumns: `repeat(${states.length}, 160px)`, gap: 12, alignItems: 'center' }}>
       {sizes.map((size) => states.map((state) => (
-        <TimeField key={`${size}-${state.label}`} {...args} size={size} error={state.error}>
-          <TimeFieldInput aria-label={`${size} / ${state.label}`} placeholder={getTimeTemplate(args.format ?? 'HH:mm')} disabled={state.disabled} />
+        <TimeField key={`${size}-${state.label}`} {...args} size={size}>
+          <TimeFieldInput aria-label={`${size} / ${state.label}`} aria-invalid={state.invalid} placeholder={getTimeTemplate(args.format ?? 'HH:mm')} disabled={state.disabled} />
         </TimeField>
       )))}
     </div>

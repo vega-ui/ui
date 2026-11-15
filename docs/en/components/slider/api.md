@@ -6,9 +6,9 @@
 <!-- AUTO-GENERATED:ROOT_API:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `value` | `V` | — | No | Controlled value: a number for one thumb, or an array with one entry per `SliderThumb` by its `index`. |
-| `defaultValue` | `V` | — | No | Initial value for uncontrolled usage: a number for one thumb, or an array with one entry per `SliderThumb` by its `index`. Defaults to the middle of the range, like `<input type="range">`. |
-| `onChangeValue` | `(value: NoInfer<V>) => void` | — | No | Called when a thumb changes, with a number or an array, in the shape of `value` or `defaultValue`. |
+| `value` | `Value` | — | No | Controlled value: a number for one thumb, or an array with one entry per `SliderThumb` by its `index`. |
+| `defaultValue` | `Value` | — | No | Initial value for uncontrolled usage: a number for one thumb, or an array with one entry per `SliderThumb` by its `index`. Defaults to the middle of the range, like `<input type="range">`. |
+| `onChangeValue` | `(value: NoInfer<Value>) => void` | — | No | Called when a thumb changes, with a number or an array, in the shape of `value` or `defaultValue`. |
 | `min` | `number` | `0` | No | The minimum allowed value. Defaults to `0`. |
 | `max` | `number` | `100` | No | The maximum allowed value. Defaults to `100`. |
 | `step` | `number \| 'any'` | `1` | No | The granularity of the values, a number or `'any'`. Defaults to `1`. |
@@ -38,7 +38,7 @@ Also accepts all `<div>` attributes.
 <!-- AUTO-GENERATED:PART_API:SliderTrack:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `ref` | `Ref<HTMLDivElement>` | — | No | — |
+| `ref` | `Ref<HTMLDivElement>` | — | No | Ref to the track element. |
 
 Also accepts all `<div>` attributes.
 <!-- AUTO-GENERATED:PART_API:SliderTrack:end -->
@@ -48,7 +48,7 @@ Also accepts all `<div>` attributes.
 <!-- AUTO-GENERATED:PART_API:SliderRange:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `ref` | `Ref<HTMLDivElement>` | — | No | — |
+| `ref` | `Ref<HTMLDivElement>` | — | No | Ref to the range element. |
 
 Also accepts all `<div>` attributes.
 <!-- AUTO-GENERATED:PART_API:SliderRange:end -->
@@ -102,7 +102,7 @@ Root state, available anywhere inside `Slider`:
 | `disabled` | `boolean \| undefined` | Root `disabled`. |
 | `name` | `string \| undefined` | Root `name`. |
 | `values` | `number[]` | Current values of all thumbs by `index`, snapped to the step grid and sorted, an array even for one thumb. |
-| `changeThumb(index, value)` | `(index: number, value: number) => void` | Sets the value of the thumb at `index`, kept between its neighbours; reports through `onChangeValue`. |
+| `handle` | `WidgetHandle` | The slider widget: a custom input becomes a thumb with `` ref={handle.rootAt(`thumb-${index}`)} `` and `{...handle.listen({}, props)}`. |
 
 ### `useSliderThumbContext`
 
@@ -194,7 +194,7 @@ export default function Usesliderthumbcontext() {
 
 - Uncontrolled: `defaultValue` sets the start; a reset of the form of the thumbs restores it, including a form linked with the `form` attribute. Without `value` and `defaultValue` the slider has one thumb in the middle of the range and reports numbers, like `<input type="range">`.
 - Controlled: `value` with `onChangeValue`. A change the parent does not apply is rolled back, like a controlled input.
-- Each thumb is a controlled native input: pointer, keyboard, focus, forms and assistive technologies come from the browser, and `onChange` on a thumb fires for every change.
+- Each thumb is a controlled native input: pointer, Home, End, focus, forms and assistive technologies come from the browser. The slider steps the arrows and Page Up and Page Down itself, the same in every browser, and `onChange` on a thumb fires for every change.
 - Values off the step grid or outside `min`/`max` are snapped like `<input type="range">` does, without calling `onChangeValue`.
 - The shape is fixed by the first value: switching between a number and an array on the fly is not supported.
 

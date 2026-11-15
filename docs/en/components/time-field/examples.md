@@ -28,7 +28,7 @@ export default function ReminderTime() {
 
 ### Controlled/Stateful: shift start and end
 
-`value` and `onChangeValue` on the root keep both times in parent state. The start is the `min` of the end field, so an end before the start is clamped, and the shift length is computed from the two values. While a time is incomplete its value is `''`.
+`value` and `onChangeValue` on the root keep both times in parent state. The start is the `min` of the end field, so an end before the start makes the end input invalid, and `aria-invalid` marks it; the shift length is computed from the two values. While a time is incomplete its value is `''`.
 
 <!-- example: time-field/controlled-time-value.tsx -->
 ```tsx
@@ -45,6 +45,7 @@ const describeShift = (start: string, end: string) => {
   if (!start || !end) return 'Enter both times';
 
   const length = toMinutes(end) - toMinutes(start);
+  if (length < 0) return 'Ends before it starts';
 
   return `${Math.floor(length / 60)} h ${length % 60} min`;
 };
@@ -52,6 +53,7 @@ const describeShift = (start: string, end: string) => {
 export default function ShiftHours() {
   const [start, setStart] = useState('09:00');
   const [end, setEnd] = useState('17:30');
+  const endsBeforeStart = start !== '' && end !== '' && end < start;
 
   return (
     <Fieldset style={{ display: 'grid', gap: 'var(--spacing-8)', width: '100%', maxWidth: 260 }}>
@@ -65,7 +67,7 @@ export default function ShiftHours() {
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor='shift-end'>Ends</Label>
         <TimeField min={start} value={end} onChangeValue={setEnd}>
-          <TimeFieldInput id='shift-end' placeholder='hh:mm' />
+          <TimeFieldInput id='shift-end' placeholder='hh:mm' aria-invalid={endsBeforeStart} />
         </TimeField>
       </div>
       <Text size={2} aria-live='polite' style={{ color: 'var(--label-secondary)' }}>
@@ -81,7 +83,7 @@ export default function ShiftHours() {
 
 ### Form/Integration: submitting a time
 
-For `HH:mm` and `HH:mm:ss` the typed text already is the value, so `name` on `TimeFieldInput` submits it as is. `required` and `pattern` block an empty or incomplete time, and the reset button restores `defaultValue` of the root.
+For `HH:mm` and `HH:mm:ss` the typed text already is the value, so `name` on `TimeFieldInput` submits it as is. `required` blocks an empty time and the field makes an incomplete one invalid; the reset button restores `defaultValue` of the root.
 
 <!-- example: time-field/submitting-a-time.tsx -->
 ```tsx
@@ -106,7 +108,6 @@ export default function QuietHoursForm() {
             id='quiet-from'
             name='quietFrom'
             required
-            pattern='\d{2}:\d{2}'
             placeholder='hh:mm'
             aria-describedby='quiet-from-hint'
           />
@@ -188,7 +189,7 @@ export default function OpeningHoursTable() {
 
 ### Error: time outside an overnight window
 
-`min` and `max` cannot describe a window that crosses midnight, so the field has no bounds and the submit handler checks the 22:00–06:00 rule itself. `error` and `aria-invalid` mark the field, and the next change of the value clears the error.
+`min` and `max` cannot describe a window that crosses midnight, so the field has no bounds and the submit handler checks the 22:00–06:00 rule itself. `aria-invalid` marks the field, and the next change of the value clears the error.
 
 <!-- example: time-field/time-outside-allowed-range.tsx -->
 ```tsx
@@ -219,7 +220,7 @@ export default function NightDeliveryForm() {
     <form onSubmit={onSubmit} style={{ display: 'grid', gap: 'var(--spacing-12)', width: '100%', maxWidth: 260 }}>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor='night-delivery'>Night delivery at</Label>
-        <TimeField error={invalid} value={time} onChangeValue={onChangeValue}>
+        <TimeField value={time} onChangeValue={onChangeValue}>
           <TimeFieldInput
             id='night-delivery'
             required
@@ -228,7 +229,7 @@ export default function NightDeliveryForm() {
             aria-describedby='night-delivery-hint'
           />
         </TimeField>
-        <HelperText id='night-delivery-hint' error={invalid}>{invalid ? error : 'Between 22:00 and 06:00.'}</HelperText>
+        <HelperText id='night-delivery-hint' invalid={invalid}>{invalid ? error : 'Between 22:00 and 06:00.'}</HelperText>
       </div>
       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--spacing-4)' }}>
         <Button type='submit'>Book</Button>
@@ -318,24 +319,30 @@ export default function DisabledByFieldset() {
 
 ### Edge: bound time window
 
-Like a native `<input type="time">`, a complete time outside `min` and `max` is clamped to the nearest bound, so `07:15` becomes `09:00`. The readout shows the clamped value.
+Like a native `<input type="time">`, a complete time outside `min` and `max` stays as typed and makes the input invalid, so `07:15` is kept. The example compares the value with the window to set `aria-invalid` and show a message; the readout shows the typed value.
 
 <!-- example: time-field/bound-time-window.tsx -->
 ```tsx
 import { useState } from 'react';
 import { HelperText, Label, Text, TimeField, TimeFieldInput } from '@vega-ui/react';
 
+const OPENS_AT = '09:00';
+const CLOSES_AT = '18:00';
+
 export default function BoundTimeWindow() {
   const [callback, setCallback] = useState('');
+  const outsideHours = callback !== '' && (callback < OPENS_AT || callback > CLOSES_AT);
 
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-8)', width: '100%', maxWidth: 260 }}>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor='callback-time'>Call me back at</Label>
-        <TimeField min='09:00' max='18:00' value={callback} onChangeValue={setCallback}>
-          <TimeFieldInput id='callback-time' placeholder='hh:mm' aria-describedby='callback-time-hint' />
+        <TimeField min={OPENS_AT} max={CLOSES_AT} value={callback} onChangeValue={setCallback}>
+          <TimeFieldInput id='callback-time' placeholder='hh:mm' aria-invalid={outsideHours} aria-describedby='callback-time-hint' />
         </TimeField>
-        <HelperText id='callback-time-hint'>Support works 09:00–18:00. Try 07:15 or 19:40.</HelperText>
+        <HelperText id='callback-time-hint' invalid={outsideHours}>
+          {outsideHours ? 'Outside support hours, 09:00–18:00.' : 'Support works 09:00–18:00. Try 07:15 or 19:40.'}
+        </HelperText>
       </div>
       <Text size={2} style={{ color: 'var(--label-secondary)' }}>
         Value: {callback ? <code>{callback}</code> : 'no complete time'}

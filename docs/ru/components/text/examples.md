@@ -253,7 +253,7 @@ export default function InlineValidationCopy() {
     <form onSubmit={onSubmit} style={{ display: 'grid', gap: 'var(--spacing-3)', width: '100%' }}>
       <Label htmlFor='coupon-code'>Coupon code</Label>
       <div style={{ display: 'flex', gap: 'var(--spacing-4)' }}>
-        <TextField error={error !== ''} style={{ flex: 1, minWidth: 0 }}>
+        <TextField style={{ flex: 1, minWidth: 0 }}>
           <TextFieldInput
             id='coupon-code'
             name='coupon'
@@ -318,7 +318,7 @@ export default function MutedExplanatoryText() {
 
 ### Пограничный случай: переводы строк в данных
 
-`Text` использует `white-space: pre-line`: переводы строк в строке становятся разрывами, что удобно для адреса. Текст из CMS с жёсткими переносами отрисуется так же, поэтому переопределяйте это через `whiteSpace: 'normal'`, когда переводы строк не несут смысла.
+`Text` схлопывает пробелы, как нативный `<span>`, поэтому переводы строк в строке не разрывают её. Текст из CMS с жёсткими переносами читается одним абзацем; адрес, где переводы строк важны, задаёт `whiteSpace: 'pre-line'`.
 
 <!-- example: text/multiline-content.tsx -->
 ```tsx
@@ -330,8 +330,8 @@ const description = 'Soft merino wool sweater with a relaxed fit,\nribbed cuffs 
 export default function MultilineContent() {
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-8)', width: '100%' }}>
-      <Text size={3}>{address}</Text>
-      <Text size={3} style={{ whiteSpace: 'normal' }}>{description}</Text>
+      <Text size={3} style={{ whiteSpace: 'pre-line' }}>{address}</Text>
+      <Text size={3}>{description}</Text>
     </div>
   );
 }

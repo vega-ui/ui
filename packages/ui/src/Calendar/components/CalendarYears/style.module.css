@@ -17,6 +17,12 @@
     transform: translateY(0);
 }
 
+@starting-style {
+    .picker:where([data-visible='true']) {
+        transform: translateY(calc(-100% - var(--spacing-1)));
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .picker {
         transition: none;

@@ -18,13 +18,14 @@ export default function PagedYearRange() {
         aria-label='Birth year'
         aria-describedby={hintId}
         locale='en-US'
-        year='1990-01-01'
-        from='1926-01-01'
-        to='2008-01-01'
-        selected={birthYear}
-        onSelectCell={setBirthYear}
+        defaultFocusedDate='1990-01-01'
+        min='1926-01-01'
+        max='2008-01-01'
+        value={birthYear}
+        onChangeValue={setBirthYear}
+        period={20}
       >
-        <YearPickerScroller period={20}>
+        <YearPickerScroller>
           <YearPickerScrollerContent>
             <YearPickerScrollerLayout rows={5} cols={4}>
               <YearPickerCell />

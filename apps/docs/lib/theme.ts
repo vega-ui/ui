@@ -21,7 +21,7 @@ export const RATIO_VARS = [
   '--option-br-ratio',
   '--select-br-ratio',
   '--segmented-control-br-ratio',
-  '--data-grid-picker-item-br-ratio',
+  '--grid-item-br-ratio',
   '--badge-border-radius-ratio',
 ];
 

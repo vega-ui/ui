@@ -4,20 +4,26 @@ import {
   CalendarContent,
   CalendarDay,
   CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonth,
   CalendarMonthLabel,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekday,
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYear,
   CalendarYearLabel,
   CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
   DateTimeField,
   DateTimeFieldCalendar,
   DateTimeFieldInput,
@@ -48,12 +54,11 @@ export default function MaintenanceWindowForm() {
     <form onSubmit={(event) => event.preventDefault()} style={{ display: 'grid', gap: 'var(--spacing-12)', width: '100%', maxWidth: 320 }}>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor='maintenance-start'>Maintenance starts</Label>
-        <DateTimeField dateFormat='dd.MM.yyyy' error={invalid}>
+        <DateTimeField dateFormat='dd.MM.yyyy'>
           <DateTimeFieldInput
-            id='maintenance-start'
             name='maintenanceStart'
+            id='maintenance-start'
             required
-            pattern='\d{2}\.\d{2}\.\d{4}, \d{2}:\d{2}'
             placeholder='dd.mm.yyyy, hh:mm'
             aria-invalid={invalid}
             aria-describedby='maintenance-start-hint'
@@ -65,13 +70,13 @@ export default function MaintenanceWindowForm() {
               <DateTimeFieldTriggerIconButton aria-label='Choose maintenance date' />
             </PopoverTrigger>
             <PopoverContent>
-              <DateTimeFieldCalendar>
+              <DateTimeFieldCalendar aria-label='Choose maintenance date'>
                 <CalendarHeader>
                   <CalendarPrevButton aria-label='Previous month' />
-                  <CalendarViewButtonGroup>
+                  <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-                  </CalendarViewButtonGroup>
+                  </CalendarHeading>
                   <CalendarNextButton aria-label='Next month' />
                 </CalendarHeader>
                 <CalendarContent>
@@ -79,22 +84,34 @@ export default function MaintenanceWindowForm() {
                     <CalendarWeekdays>
                       <CalendarWeekday />
                     </CalendarWeekdays>
-                    <CalendarWeeks>
-                      <CalendarDay />
-                    </CalendarWeeks>
+                    <CalendarDaysScroller>
+                      <CalendarDaysScrollerContent>
+                        <CalendarWeeks>
+                          <CalendarDay />
+                        </CalendarWeeks>
+                      </CalendarDaysScrollerContent>
+                    </CalendarDaysScroller>
                   </CalendarDays>
                   <CalendarMonths>
-                    <CalendarMonth />
+                    <CalendarMonthsGrid>
+                      <CalendarMonth />
+                    </CalendarMonthsGrid>
                   </CalendarMonths>
                   <CalendarYears>
-                    <CalendarYear />
+                    <CalendarYearsScroller>
+                      <CalendarYearsScrollerContent>
+                        <CalendarYearsGrid>
+                          <CalendarYear />
+                        </CalendarYearsGrid>
+                      </CalendarYearsScrollerContent>
+                    </CalendarYearsScroller>
                   </CalendarYears>
                 </CalendarContent>
               </DateTimeFieldCalendar>
             </PopoverContent>
           </Popover>
         </DateTimeField>
-        <HelperText id='maintenance-start-hint' error={invalid}>{invalid ? error : HINT}</HelperText>
+        <HelperText id='maintenance-start-hint' invalid={invalid}>{invalid ? error : HINT}</HelperText>
       </div>
       <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--spacing-4)' }}>
         <Button type='submit'>Save</Button>

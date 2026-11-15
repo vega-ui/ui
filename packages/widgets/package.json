@@ -1,0 +1,60 @@
+{
+  "name": "@vega-ui/widgets",
+  "version": "0.0.0",
+  "description": "Framework-free widgets of @vega-ui components, built on @vega-ui/core",
+  "license": "MIT",
+  "keywords": [
+    "ui-kit",
+    "ui",
+    "headless",
+    "ts",
+    "typescript",
+    "js"
+  ],
+  "author": "VegaUI Team",
+  "bugs": {
+    "url": "https://github.com/vega-ui/ui/issues"
+  },
+  "homepage": "https://github.com/vega-ui/ui#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vega-ui/ui.git",
+    "directory": "packages/widgets"
+  },
+  "type": "module",
+  "exports": {
+    "./mask": null,
+    "./drag": null,
+    "./*": {
+      "source": "./src/*/index.ts",
+      "import": {
+        "types": "./dist/*/index.d.ts",
+        "default": "./dist/*/index.js"
+      }
+    }
+  },
+  "files": [
+    "dist/*"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "vite build",
+    "check-types": "tsc -p tsconfig.app.json --noEmit",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@vega-ui/core": "workspace:*",
+    "@vega-ui/i18n": "workspace:*",
+    "@vega-ui/utils": "workspace:*"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5",
+    "vite-plugin-dts": "^4.5.4",
+    "vite-tsconfig-paths": "^6.0.5"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "packageManager": "pnpm@10.0.0"
+}

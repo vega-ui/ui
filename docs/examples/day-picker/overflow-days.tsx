@@ -15,7 +15,7 @@ function OverflowDay() {
 
 export default function OverflowDays() {
   return (
-    <DayPicker aria-label='February 2026' locale='en-US' month='2026-02-01'>
+    <DayPicker aria-label='Days' locale='en-US' defaultFocusedDate='2026-02-01'>
       <DayPickerLayout includeOverflowDays>
         <OverflowDay />
       </DayPickerLayout>

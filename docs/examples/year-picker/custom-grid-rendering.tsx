@@ -13,7 +13,7 @@ const rows = createYearPickerGrid({ start: START, rows: 2, cols: 5 });
 
 export default function CustomGridRendering() {
   return (
-    <YearPicker aria-label='Season, 2020s' locale='en-US' year={START} style={{ width: '100%' }}>
+    <YearPicker aria-label='Season, 2020s' locale='en-US' defaultFocusedDate={START} style={{ width: '100%' }}>
       <YearPickerRowGroup>
         {rows.map(({ row, data }) => (
           <YearPickerRow key={row} row={row}>

@@ -16,7 +16,7 @@ Required. One handle: `index` picks its entry of the root `value` and the positi
 
 ### `SliderThumbInput`
 
-Required, a direct child of `SliderThumb`. A controlled native range input: focus, keyboard, form value and accessibility come from the browser; its `min` and `max` are the neighbours.
+Required, a direct child of `SliderThumb`. A controlled native range input: focus, Home and End, form value and accessibility come from the browser, the arrows and Page Up and Page Down from the slider; its `min` and `max` are the neighbours.
 
 ## Optional Parts
 

@@ -140,13 +140,13 @@ When to use:
 
 Composition notes:
 
-- `Text` uses `white-space: pre-line`
+- set `whiteSpace: 'pre-line'` on `Text`; by default it collapses newlines like a native `<span>`
 - keep line breaks meaningful rather than decorative
 
 Trade-offs:
 
 - preserves authored copy structure
-- unexpected newlines in data will also be rendered
+- copy without meaningful newlines stays on the default
 
 <!-- example: text/multiline-content.tsx -->
 ```tsx
@@ -158,8 +158,8 @@ const description = 'Soft merino wool sweater with a relaxed fit,\nribbed cuffs 
 export default function MultilineContent() {
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-8)', width: '100%' }}>
-      <Text size={3}>{address}</Text>
-      <Text size={3} style={{ whiteSpace: 'normal' }}>{description}</Text>
+      <Text size={3} style={{ whiteSpace: 'pre-line' }}>{address}</Text>
+      <Text size={3}>{description}</Text>
     </div>
   );
 }

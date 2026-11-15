@@ -1,4 +1,4 @@
-import { Button, Tooltip, TooltipArrow, TooltipContent, TooltipTrigger } from '@vega-ui/react';
+import { Button, Tooltip, TooltipContent, TooltipTrigger } from '@vega-ui/react';
 import { useState } from 'react';
 
 const limit = 3;
@@ -22,7 +22,6 @@ export default function SlottedDisabledButton() {
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <TooltipArrow />
             {blocked ? `Your plan includes ${limit} projects` : 'Create an empty project'}
           </TooltipContent>
         </Tooltip>

@@ -56,7 +56,7 @@ export default function FailedProgressFlowWithStoppedCompletion() {
           <ProgressTrack />
         </Progress>
         {failed && (
-          <HelperText id={errorId} error role='alert'>
+          <HelperText id={errorId} invalid role='alert'>
             Connection lost at {percent}%. The uploaded part is kept — retry to continue.
           </HelperText>
         )}

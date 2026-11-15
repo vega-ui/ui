@@ -27,6 +27,7 @@
 }
 
 .availabilityGrid [role='rowheader'] {
+  justify-content: flex-start;
   font-size: var(--font-size-1);
 }
 

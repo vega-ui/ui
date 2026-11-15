@@ -168,7 +168,7 @@ export const HomePlatform = () => {
             {demo === 'form' && (
               <form className={styles.form} onSubmit={onSubmit}>
                 <Label htmlFor={`${id}-email`}>{t.form.label}</Label>
-                <TextField error={message !== ''}>
+                <TextField>
                   <TextFieldInput
                     ref={inputRef}
                     id={`${id}-email`}
@@ -181,7 +181,7 @@ export const HomePlatform = () => {
                     onInput={onInput}
                   />
                 </TextField>
-                <HelperText id={`${id}-message`} error={message !== ''}>
+                <HelperText id={`${id}-message`} invalid={message !== ''}>
                   {message || (sent ? t.form.sent : t.form.hint)}
                 </HelperText>
                 <Button type='submit' size='sm' className={styles.submit}>{t.form.submit}</Button>
