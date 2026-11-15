@@ -19,7 +19,7 @@ export default function RevenueSplitSummary() {
         <Heading id={titleId} as='h3' size={4} fontWeight={600}>Q3 revenue by channel</Heading>
         <Text size={2} style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>{currency.format(total)} total</Text>
       </div>
-      <MeterStack value={total} max={total} role='group' aria-labelledby={titleId} size='lg' fullWidth>
+      <MeterStack value={total} max={total} aria-labelledby={titleId} size='lg' fullWidth>
         {channels.map((channel) => (
           <MeterStackSegment
             key={channel.id}

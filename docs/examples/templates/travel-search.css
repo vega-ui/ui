@@ -90,12 +90,6 @@
   font-variant-numeric: tabular-nums;
 }
 
-.travelCheck {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-4);
-}
-
 [dir='rtl'] .travelArrow {
   scale: -1 1;
 }

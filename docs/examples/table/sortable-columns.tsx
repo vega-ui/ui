@@ -71,7 +71,7 @@ export default function SortableColumns() {
 
               return (
                 <TableHeading key={column.key} scope='col' aria-sort={active ? direction : undefined}>
-                  <Button size='sm' variant='secondary' appearance='transparent' onClick={() => sortBy(column.key)}>
+                  <Button size='sm' variant='secondary' appearance='transparent' style={{ font: 'inherit' }} onClick={() => sortBy(column.key)}>
                     {column.label}
                     <Icon size='xs' aria-hidden='true'>{icon}</Icon>
                   </Button>

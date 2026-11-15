@@ -1,8 +1,11 @@
 .checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-4);
     cursor: pointer;
 
     --checkbox-size: var(--spacing-8);
-    --checkbox-br-ratio: 0.333;
+    --checkbox-br-ratio: var(--br-ratio);
 
     --checkbox-border-color: var(--fills-primary);
     --checkbox-border-color-hover: var(--fills-primary-hover);

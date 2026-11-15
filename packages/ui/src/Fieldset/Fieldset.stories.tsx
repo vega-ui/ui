@@ -28,10 +28,12 @@ const meta: Meta<typeof Fieldset> = {
   args: {
     children: [
       <FieldsetLegend key='legend'>Title</FieldsetLegend>,
-      <Label key='label' htmlFor='fieldset-playground-field'>Field</Label>,
-      <TextField key='field'>
-        <TextFieldInput id='fieldset-playground-field' />
-      </TextField>,
+      <div key='field' style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
+        <Label htmlFor='fieldset-playground-field'>Field</Label>
+        <TextField>
+          <TextFieldInput id='fieldset-playground-field' />
+        </TextField>
+      </div>,
     ],
   },
 };
@@ -54,10 +56,12 @@ export const Matrix: Story = {
           <Fieldset key={id} {...cell}>
             <FieldsetLegend>{`${cell.appearance}${cell.disabled ? ' / disabled' : ''}`}</FieldsetLegend>
             <FieldsetHeader>Helper copy in the header.</FieldsetHeader>
-            <Label htmlFor={`${id}-field`}>Field</Label>
-            <TextField>
-              <TextFieldInput id={`${id}-field`} />
-            </TextField>
+            <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
+              <Label htmlFor={`${id}-field`}>Field</Label>
+              <TextField>
+                <TextFieldInput id={`${id}-field`} />
+              </TextField>
+            </div>
             <Checkbox>
               <CheckboxInput defaultChecked />
               <CheckboxIndicator>

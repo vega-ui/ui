@@ -262,9 +262,9 @@ const FlightFilters = ({ prefix, filters, onChange }: FiltersProps) => (
     </div>
 
     <Fieldset className='travelFieldset' style={{ gap: 'var(--spacing-5)' }}>
-      <FieldsetLegend style={{ marginBlockEnd: 'var(--spacing-3)' }}><Text size={3} fontWeight={500}>Stops</Text></FieldsetLegend>
+      <FieldsetLegend style={{ marginBlockEnd: 'var(--spacing-3)' }}>Stops</FieldsetLegend>
       {stopOptions.map((option) => (
-        <Checkbox key={option.value} className='travelCheck'>
+        <Checkbox key={option.value}>
           <CheckboxInput
             name={`${prefix}-stops`}
             value={option.value}
@@ -280,12 +280,12 @@ const FlightFilters = ({ prefix, filters, onChange }: FiltersProps) => (
     </Fieldset>
 
     <Fieldset className='travelFieldset' style={{ gap: 'var(--spacing-5)' }}>
-      <FieldsetLegend style={{ marginBlockEnd: 'var(--spacing-3)' }}><Text size={3} fontWeight={500}>Airlines</Text></FieldsetLegend>
+      <FieldsetLegend style={{ marginBlockEnd: 'var(--spacing-3)' }}>Airlines</FieldsetLegend>
       {airlines.map((airline) => {
         const count = flights.filter((flight) => flight.airline === airline).length;
 
         return (
-          <Checkbox key={airline} className='travelCheck'>
+          <Checkbox key={airline}>
             <CheckboxInput
               name={`${prefix}-airlines`}
               value={airline}

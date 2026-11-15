@@ -440,7 +440,7 @@ export default function DenseFooterControls() {
           <TableRow>
             <TableData colSpan={2} style={{ paddingBlock: 'var(--spacing-3)' }}>
               <nav aria-label='Members pages' style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Pagination size='sm' variant='secondary' style={{ alignItems: 'center', gap: 'var(--spacing-2)' }}>
+                <Pagination size='sm' variant='secondary' style={{ alignItems: 'center' }}>
                   <PaginationText size={2} aria-live='polite' style={{ fontVariantNumeric: 'tabular-nums' }}>
                     {start + 1}–{start + visible.length} of {members.length}
                   </PaginationText>
@@ -709,7 +709,7 @@ export default function TruncatedLargeRange() {
         </div>
       </div>
       <nav aria-label='Log pages'>
-        <Pagination size='xs' style={{ gap: 'var(--spacing-2)' }}>
+        <Pagination size='xs'>
           <PaginationListItem>
             <PaginationTriggerIconButton aria-label='First page' disabled={page === 1} onClick={() => setPage(1)}>
               <Icon><ChevronsLeft /></Icon>

@@ -12,7 +12,7 @@ The component primarily relies on:
 
 | Variable | Used By | Purpose |
 | --- | --- | --- |
-| `--spacing-6` | root list | gap between items |
+| `--spacing-2` | root list | gap between items |
 | `--padding-block` | page items / ellipsis | square aspect-ratio sizing |
 | `--spacing-8` | pagination text | inline text padding |
 | `--color-primary-500` | pagination text | primary text tone |

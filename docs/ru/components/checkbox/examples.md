@@ -30,7 +30,7 @@ export default function LabeledCheckbox() {
       <FieldsetLegend style={{ marginBlockEnd: 'var(--spacing-5)' }}>Email me when</FieldsetLegend>
       <div style={{ display: 'grid', gap: 'var(--spacing-6)' }}>
         {options.map((option) => (
-          <Checkbox key={option.value} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+          <Checkbox key={option.value}>
             <CheckboxInput name='notifications' value={option.value} defaultChecked={option.checked} />
             <CheckboxIndicator>
               <CheckboxCheckedIcon />
@@ -90,7 +90,7 @@ export default function IndeterminateParentSelector() {
 
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-6)', width: '100%' }}>
-      <Checkbox style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)', fontWeight: 600 }}>
+      <Checkbox style={{ fontWeight: 600 }}>
         <CheckboxInput checked={allSelected} indeterminate={someSelected} onChange={toggleAll} />
         <CheckboxIndicator>
           <CheckboxCheckedIcon />
@@ -100,7 +100,7 @@ export default function IndeterminateParentSelector() {
       </Checkbox>
       <div role='group' aria-label='Billing permissions' style={{ display: 'grid', gap: 'var(--spacing-6)', paddingInlineStart: 'var(--spacing-12)' }}>
         {permissions.map((permission) => (
-          <Checkbox key={permission} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+          <Checkbox key={permission}>
             <CheckboxInput checked={selected.includes(permission)} onChange={() => toggle(permission)} />
             <CheckboxIndicator>
               <CheckboxCheckedIcon />
@@ -165,7 +165,7 @@ export default function FormDataSubmission() {
           <FieldsetLegend style={{ marginBlockEnd: 'var(--spacing-5)' }}>Subscriptions</FieldsetLegend>
           <div style={{ display: 'grid', gap: 'var(--spacing-6)' }}>
             {topics.map((topic) => (
-              <Checkbox key={topic.value} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+              <Checkbox key={topic.value}>
                 <CheckboxInput name='topics' value={topic.value} defaultChecked={topic.value === 'security'} />
                 <CheckboxIndicator>
                   <CheckboxCheckedIcon />
@@ -176,7 +176,7 @@ export default function FormDataSubmission() {
             ))}
           </div>
         </Fieldset>
-        <Checkbox style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+        <Checkbox>
           <CheckboxInput name='summary' value='weekly' />
           <CheckboxIndicator>
             <CheckboxCheckedIcon />
@@ -265,7 +265,7 @@ export default function CheckboxListInsideADrawer() {
             <FieldsetLegend style={{ marginBlockEnd: 'var(--spacing-5)' }}>Status</FieldsetLegend>
             <div style={{ display: 'grid', gap: 'var(--spacing-6)' }}>
               {statuses.map((status) => (
-                <Checkbox key={status.value} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+                <Checkbox key={status.value}>
                   <CheckboxInput name='status' value={status.value} defaultChecked={applied.includes(status.value)} />
                   <CheckboxIndicator>
                     <CheckboxCheckedIcon />
@@ -428,7 +428,7 @@ export default function RequiredAgreementCheckbox() {
   return (
     <form onSubmit={handleSubmit} style={{ display: 'grid', gap: 'var(--spacing-12)', justifyItems: 'start', width: '100%' }}>
       <div style={{ display: 'grid', gap: 'var(--spacing-2)' }}>
-        <Checkbox style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+        <Checkbox>
           <CheckboxInput
             name='terms'
             required
@@ -486,7 +486,7 @@ export default function DisabledByFieldset() {
 
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-8)', width: '100%' }}>
-      <Checkbox style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+      <Checkbox>
         <CheckboxInput checked={useDefaults} onChange={(event) => setUseDefaults(event.currentTarget.checked)} />
         <CheckboxIndicator>
           <CheckboxCheckedIcon />
@@ -498,7 +498,7 @@ export default function DisabledByFieldset() {
         <FieldsetLegend style={{ marginBlockEnd: 'var(--spacing-5)' }}>Delivery channels</FieldsetLegend>
         <div style={{ display: 'grid', gap: 'var(--spacing-6)' }}>
           {channels.map((channel) => (
-            <Checkbox key={channel.value} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+            <Checkbox key={channel.value}>
               <CheckboxInput name='channels' value={channel.value} defaultChecked={channel.value === 'email'} />
               <CheckboxIndicator>
                 <CheckboxCheckedIcon />
@@ -508,7 +508,7 @@ export default function DisabledByFieldset() {
             </Checkbox>
           ))}
           <div style={{ display: 'grid', gap: 'var(--spacing-2)' }}>
-            <Checkbox style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+            <Checkbox>
               <CheckboxInput defaultChecked disabled aria-describedby='security-alerts-note' />
               <CheckboxIndicator>
                 <CheckboxCheckedIcon />
@@ -530,7 +530,7 @@ export default function DisabledByFieldset() {
 
 ### Пограничный случай: длинные подписи в узкой колонке
 
-Длинный текст переносится, а индикатор остаётся на первой строке: выровняйте строку по `flex-start` и задайте `CheckboxIndicator` `flex-shrink: 0`, иначе flex сожмёт квадрат. Неразрывным строкам вроде email-адресов нужен `overflow-wrap: anywhere`.
+Длинный текст переносится, а индикатор остаётся на первой строке: выровняйте строку по `flex-start`; `CheckboxIndicator` не сжимается. Неразрывным строкам вроде email-адресов нужен `overflow-wrap: anywhere`.
 
 <!-- example: checkbox/long-label-wrapping.tsx -->
 ```tsx
@@ -545,17 +545,17 @@ import {
 export default function LongLabelWrapping() {
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-8)', width: '100%' }}>
-      <Checkbox style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--spacing-4)' }}>
+      <Checkbox style={{ alignItems: 'flex-start' }}>
         <CheckboxInput name='data-processing' />
-        <CheckboxIndicator style={{ flexShrink: 0, marginBlockStart: 'var(--spacing-1)' }}>
+        <CheckboxIndicator style={{ marginBlockStart: 'var(--spacing-1)' }}>
           <CheckboxCheckedIcon />
           <CheckboxIndeterminateIcon />
         </CheckboxIndicator>
         I consent to the processing of my personal data by Acme Analytics GmbH and its sub-processors in the European Economic Area for the purposes described in the Data Processing Agreement.
       </Checkbox>
-      <Checkbox style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--spacing-4)' }}>
+      <Checkbox style={{ alignItems: 'flex-start' }}>
         <CheckboxInput name='export-recipient' />
-        <CheckboxIndicator style={{ flexShrink: 0, marginBlockStart: 'var(--spacing-1)' }}>
+        <CheckboxIndicator style={{ marginBlockStart: 'var(--spacing-1)' }}>
           <CheckboxCheckedIcon />
           <CheckboxIndeterminateIcon />
         </CheckboxIndicator>
@@ -617,7 +617,7 @@ export default function ManyOptionsWithSelectAll() {
 
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-6)', width: '100%' }}>
-      <Checkbox style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)', fontWeight: 600 }}>
+      <Checkbox style={{ fontWeight: 600 }}>
         <CheckboxInput checked={allSelected} indeterminate={someSelected} onChange={toggleAll} />
         <CheckboxIndicator>
           <CheckboxCheckedIcon />
@@ -639,7 +639,7 @@ export default function ManyOptionsWithSelectAll() {
         }}
       >
         {deployments.map((deployment) => (
-          <Checkbox key={deployment} size='sm' style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+          <Checkbox key={deployment} size='sm'>
             <CheckboxInput checked={selected.has(deployment)} onChange={() => toggle(deployment)} />
             <CheckboxIndicator>
               <CheckboxCheckedIcon />

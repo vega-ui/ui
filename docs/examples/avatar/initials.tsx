@@ -28,7 +28,7 @@ export default function Initials() {
         const label = name === '' ? 'Unnamed user' : name;
         return (
           <li key={label} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-6)' }}>
-            <Avatar size='sm' aria-hidden='true' style={{ flexShrink: 0 }}>
+            <Avatar size='sm' aria-hidden='true'>
               {initials === '' && <AvatarIcon><User /></AvatarIcon>}
               {initials !== '' && <AvatarFallback>{initials}</AvatarFallback>}
             </Avatar>

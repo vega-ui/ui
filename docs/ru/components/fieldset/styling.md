@@ -16,7 +16,7 @@
 | `--label-secondary` | потомок `.sublegend` внутри `Fieldset` | приглушённый вспомогательный текст legend |
 | `--radius-4` | `Fieldset` | базовый радиус скругления |
 | `--radius-5` | `Fieldset[data-appearance='outlined']` | радиус для внешнего вида outlined |
-| `--spacing-6` | корень и заголовок | вертикальный отступ между элементами группы |
+| `--spacing-6` | корень и legend без рамки | вертикальный отступ между элементами группы и под legend |
 | `--spacing-12`, `--spacing-14` | внешний вид outlined | адаптивные внутренние отступы |
 
 ## Переменные частей
@@ -31,7 +31,7 @@
 
 ### Legend
 
-`FieldsetLegend` сохраняет нативное поведение legend и лишь убирает внутренние отступы по умолчанию.
+`FieldsetLegend` сохраняет нативное поведение legend, убирает внутренние отступы по умолчанию и использует размер текста `Label`. Legend не получает flex-`gap`, поэтому во внешнем виде transparent у неё `margin-block-end: var(--spacing-6)`; задайте свой `marginBlockEnd`, когда меняете `gap`.
 
 ## Взаимодействие состояний и вариантов
 
@@ -61,9 +61,9 @@ const COLUMNS = ['Status', 'Owner', 'Due date', 'Priority', 'Last updated'];
 export default function UseThemeTokensToTightenSpacing() {
   return (
     <Fieldset appearance='outlined' style={{ gap: 'var(--spacing-3)', padding: 'var(--spacing-8)', width: '100%', maxWidth: 260 }}>
-      <FieldsetLegend size={3}>Visible columns</FieldsetLegend>
+      <FieldsetLegend>Visible columns</FieldsetLegend>
       {COLUMNS.map((column) => (
-        <Checkbox key={column} size='sm' style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+        <Checkbox key={column} size='sm'>
           <CheckboxInput name='columns' value={column} defaultChecked />
           <CheckboxIndicator>
             <CheckboxCheckedIcon />

@@ -16,7 +16,7 @@ The component primarily consumes shared system tokens:
 | `--label-secondary` | `Fieldset` descendant `.sublegend` | muted supporting legend text |
 | `--radius-4` | `Fieldset` | base border radius |
 | `--radius-5` | `Fieldset[data-appearance='outlined']` | outlined appearance radius |
-| `--spacing-6` | root and header | vertical spacing between grouped elements |
+| `--spacing-6` | root and transparent legend | vertical spacing between grouped elements and below the legend |
 | `--spacing-12`, `--spacing-14` | outlined appearance | responsive inner padding |
 
 ## Part-Level Variables
@@ -31,7 +31,7 @@ The component primarily consumes shared system tokens:
 
 ### Legend
 
-`FieldsetLegend` keeps native legend behavior and only removes default padding.
+`FieldsetLegend` keeps native legend behavior, removes default padding, and uses the `Label` text size. A legend does not take the flex `gap`, so in the transparent appearance it gets `margin-block-end: var(--spacing-6)`; set your own `marginBlockEnd` when you change the `gap`.
 
 ## State And Variant Interaction
 
@@ -61,9 +61,9 @@ const COLUMNS = ['Status', 'Owner', 'Due date', 'Priority', 'Last updated'];
 export default function UseThemeTokensToTightenSpacing() {
   return (
     <Fieldset appearance='outlined' style={{ gap: 'var(--spacing-3)', padding: 'var(--spacing-8)', width: '100%', maxWidth: 260 }}>
-      <FieldsetLegend size={3}>Visible columns</FieldsetLegend>
+      <FieldsetLegend>Visible columns</FieldsetLegend>
       {COLUMNS.map((column) => (
-        <Checkbox key={column} size='sm' style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+        <Checkbox key={column} size='sm'>
           <CheckboxInput name='columns' value={column} defaultChecked />
           <CheckboxIndicator>
             <CheckboxCheckedIcon />

@@ -289,7 +289,7 @@ export default function TruncatedLargeRange() {
         </div>
       </div>
       <nav aria-label='Log pages'>
-        <Pagination size='xs' style={{ gap: 'var(--spacing-2)' }}>
+        <Pagination size='xs'>
           <PaginationListItem>
             <PaginationTriggerIconButton aria-label='First page' disabled={page === 1} onClick={() => setPage(1)}>
               <Icon><ChevronsLeft /></Icon>

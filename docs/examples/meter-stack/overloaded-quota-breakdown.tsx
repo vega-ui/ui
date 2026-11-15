@@ -23,7 +23,7 @@ export default function OverloadedQuotaBreakdown() {
         <MeterStack
           value={used}
           max={seats}
-          role='group'
+         
           aria-labelledby={titleId}
           aria-describedby={overloaded ? errorId : undefined}
           fullWidth

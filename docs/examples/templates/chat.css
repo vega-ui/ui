@@ -67,11 +67,6 @@
   --chat-ring: var(--color-primary-500);
 }
 
-.chat-conversation[aria-selected='true'] .chat-muted {
-  color: inherit;
-  opacity: 0.8;
-}
-
 .chat-channel-icon {
   background: color-mix(in oklch, currentColor 10%, transparent);
 }

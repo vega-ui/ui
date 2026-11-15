@@ -55,7 +55,7 @@ export default function BasicUsage() {
 
 ## Edge Cases
 
-- Long values may wrap because the component allows `word-wrap: break-word`.
+- Long values wrap inside the chip because the component sets `overflow-wrap: anywhere`.
 - `Code` is optimized for inline snippets, not large fenced code blocks.
 - It inherits `Text` props, so size changes also affect the chip surface proportions.
 

@@ -31,7 +31,7 @@ The root maps size to row height, padding, and text scale. Selected state remaps
 
 ### Selected option surface
 
-The selected state sets its colors with zero specificity, so a class on the list can recolor selected rows from `examples.css` without touching the others.
+The selected state sets its colors with zero specificity, so a class on the list can recolor selected rows from `examples.css` without touching the others. Inside a selected option `--label-secondary` and `--label-tertiary` are derived from `--option-color`, so secondary text that uses them stays readable on the selected fill.
 
 <!-- example: option/selected-option-surface.tsx -->
 ```tsx

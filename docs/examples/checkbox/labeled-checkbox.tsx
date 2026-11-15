@@ -20,7 +20,7 @@ export default function LabeledCheckbox() {
       <FieldsetLegend style={{ marginBlockEnd: 'var(--spacing-5)' }}>Email me when</FieldsetLegend>
       <div style={{ display: 'grid', gap: 'var(--spacing-6)' }}>
         {options.map((option) => (
-          <Checkbox key={option.value} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+          <Checkbox key={option.value}>
             <CheckboxInput name='notifications' value={option.value} defaultChecked={option.checked} />
             <CheckboxIndicator>
               <CheckboxCheckedIcon />

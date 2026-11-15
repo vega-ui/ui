@@ -72,7 +72,7 @@ export default function MeetingTimes() {
 
   return (
     <Fieldset style={{ display: 'grid', gap: 'var(--spacing-8)', width: '100%', maxWidth: 320 }}>
-      <FieldsetLegend style={{ marginBlockEnd: 'var(--spacing-6)' }}>Meeting</FieldsetLegend>
+      <FieldsetLegend>Meeting</FieldsetLegend>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor='meeting-start'>Starts</Label>
         <DateTimeField dateFormat='dd.MM.yyyy' timeStep={15} value={start} onChangeValue={changeStart}>

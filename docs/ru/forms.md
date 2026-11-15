@@ -244,7 +244,7 @@ export default function DisabledByFieldset() {
 
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-8)', width: '100%' }}>
-      <Checkbox style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+      <Checkbox>
         <CheckboxInput checked={useDefaults} onChange={(event) => setUseDefaults(event.currentTarget.checked)} />
         <CheckboxIndicator>
           <CheckboxCheckedIcon />
@@ -256,7 +256,7 @@ export default function DisabledByFieldset() {
         <FieldsetLegend style={{ marginBlockEnd: 'var(--spacing-5)' }}>Delivery channels</FieldsetLegend>
         <div style={{ display: 'grid', gap: 'var(--spacing-6)' }}>
           {channels.map((channel) => (
-            <Checkbox key={channel.value} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+            <Checkbox key={channel.value}>
               <CheckboxInput name='channels' value={channel.value} defaultChecked={channel.value === 'email'} />
               <CheckboxIndicator>
                 <CheckboxCheckedIcon />
@@ -266,7 +266,7 @@ export default function DisabledByFieldset() {
             </Checkbox>
           ))}
           <div style={{ display: 'grid', gap: 'var(--spacing-2)' }}>
-            <Checkbox style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+            <Checkbox>
               <CheckboxInput defaultChecked disabled aria-describedby='security-alerts-note' />
               <CheckboxIndicator>
                 <CheckboxCheckedIcon />

@@ -2,6 +2,20 @@
     padding: var(--spacing-6);
 }
 
+thead > tr > .heading {
+    position: relative;
+    border-block-end: hidden;
+}
+
+thead > tr > .heading::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: 0;
+    block-size: 1px;
+    background-color: var(--border-color);
+}
+
 .heading:where([data-align='start']) {
     text-align: start;
 }
@@ -15,7 +29,7 @@
 }
 
 .heading:where([data-align='between']) {
-    text-align: center;
+    text-align: start;
 }
 
 .heading:where([data-align='between']):first-child {

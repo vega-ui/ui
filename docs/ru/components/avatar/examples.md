@@ -147,7 +147,7 @@ export default function PhotoUpload() {
 
 ### Раскладка/оверлей: ветка комментариев с длинным текстом
 
-Аватар выровнен по верху многострочного комментария. В flex-строке длинный текст может его сжать, поэтому у аватара `flex-shrink: 0`, а у колонки текста — `min-width: 0` и `overflow-wrap: anywhere` для длинной ссылки.
+Аватар выровнен по верху многострочного комментария. Аватар не сжимается в flex-строке, поэтому длинный текст его не сдавит; у колонки текста — `min-width: 0` и `overflow-wrap: anywhere` для длинной ссылки.
 
 <!-- example: avatar/comment-thread.tsx -->
 ```tsx
@@ -179,7 +179,7 @@ export default function CommentThread() {
     <ol style={{ listStyle: 'none', margin: 0, padding: 0, display: 'grid', gap: 'var(--spacing-10)', width: '100%', maxWidth: 420 }}>
       {comments.map((comment) => (
         <li key={comment.id} style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--spacing-6)' }}>
-          <Avatar size='sm' aria-hidden='true' style={{ flexShrink: 0 }}>
+          <Avatar size='sm' aria-hidden='true'>
             {comment.photo && <AvatarImage src={comment.photo} alt='' />}
             <AvatarFallback>{comment.initials}</AvatarFallback>
           </Avatar>
@@ -277,7 +277,7 @@ export default function Initials() {
         const label = name === '' ? 'Unnamed user' : name;
         return (
           <li key={label} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-6)' }}>
-            <Avatar size='sm' aria-hidden='true' style={{ flexShrink: 0 }}>
+            <Avatar size='sm' aria-hidden='true'>
               {initials === '' && <AvatarIcon><User /></AvatarIcon>}
               {initials !== '' && <AvatarFallback>{initials}</AvatarFallback>}
             </Avatar>

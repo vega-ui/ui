@@ -38,7 +38,7 @@
 <!-- example: badge/styling-examples.css -->
 ```css
 .brandBadge {
-  --badge-border-radius-ratio: 0.5;
+  --badge-br-ratio: 0.5;
 }
 ```
 <!-- /example -->

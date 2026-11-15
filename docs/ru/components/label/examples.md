@@ -241,7 +241,7 @@ export default function LabelForDisabledField() {
 
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-8)', width: '100%' }}>
-      <Checkbox style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+      <Checkbox>
         <CheckboxInput checked={sameAsCompany} onChange={(event) => setSameAsCompany(event.currentTarget.checked)} />
         <CheckboxIndicator>
           <CheckboxCheckedIcon />

@@ -34,7 +34,7 @@ export default function IndeterminateParentSelector() {
 
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-6)', width: '100%' }}>
-      <Checkbox style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)', fontWeight: 600 }}>
+      <Checkbox style={{ fontWeight: 600 }}>
         <CheckboxInput checked={allSelected} indeterminate={someSelected} onChange={toggleAll} />
         <CheckboxIndicator>
           <CheckboxCheckedIcon />
@@ -44,7 +44,7 @@ export default function IndeterminateParentSelector() {
       </Checkbox>
       <div role='group' aria-label='Billing permissions' style={{ display: 'grid', gap: 'var(--spacing-6)', paddingInlineStart: 'var(--spacing-12)' }}>
         {permissions.map((permission) => (
-          <Checkbox key={permission} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+          <Checkbox key={permission}>
             <CheckboxInput checked={selected.includes(permission)} onChange={() => toggle(permission)} />
             <CheckboxIndicator>
               <CheckboxCheckedIcon />

@@ -24,6 +24,18 @@ The token package provides raw building blocks, not component behavior.
 - shadows: elevation and surface shadow tokens
 - layers: z-index and layer ordering tokens
 
+## Scales And Roundness
+
+`--spacing` and `--radius` are the bases of the `--spacing-*` and `--radius-*` scales. The scales are computed on `:root`, so override the bases on `:root` too: a base set on a nested element does not recompute them.
+
+`--br-ratio` sets how round the controls are. Buttons, icon buttons, fields, checkboxes, options, selects, segmented controls, grid items, badges and inline code take their corner radius as their height times this ratio, so one value changes them all. The default is `0.333`; `0.5` makes them pill-shaped and `0` square. It is read on each control, so it also works on a nested element. A component's own `--*-br-ratio` still overrides it.
+
+```css
+:root {
+  --br-ratio: 0.5;
+}
+```
+
 ## Color Guidance
 
 The strongest rule from [packages/tokens/README.md](../../../packages/tokens/README.md) is:

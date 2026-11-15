@@ -22,7 +22,7 @@
 ## Part-Level Variables
 
 - `SegmentedControl`: root track, size model, and focus outline.
-- `SegmentedControlItem`: label sizing, padding, and active or disabled text treatment. The active segment is the one whose radio is checked — target it with `:has(input:checked)`.
+- `SegmentedControlItem`: label sizing, padding, and active or disabled text treatment. The active segment is the one whose radio is checked — target it with `:has(input:checked)`. Segments share the width equally and may shrink below their padding in a narrow container; text that still does not fit is clipped.
 - `SegmentedControlIndicator`: animated selected-state surface.
 - `SegmentedControlItemInput`: semantic carrier for native radio-group behavior.
 

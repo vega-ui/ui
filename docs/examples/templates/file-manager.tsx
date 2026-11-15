@@ -430,7 +430,7 @@ export default function FileManager() {
 
   const owner = (item: Item) => (
     <span style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
-      <Avatar size='sm' aria-hidden='true' style={{ flexShrink: 0 }}>
+      <Avatar size='sm' aria-hidden='true'>
         <AvatarFallback>{people[item.owner].initials}</AvatarFallback>
       </Avatar>
       <Text size={2} style={nowrap}>{item.owner === ME ? 'You' : people[item.owner].name}</Text>
@@ -451,7 +451,7 @@ export default function FileManager() {
             <ul aria-label='People with access' style={{ display: 'grid', gap: 'var(--spacing-6)', margin: 0, padding: 0, listStyle: 'none' }}>
               {Object.keys(people).map((person) => (
                 <li key={person} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-5)' }}>
-                  <Avatar size='sm' aria-hidden='true' style={{ flexShrink: 0 }}>
+                  <Avatar size='sm' aria-hidden='true'>
                     <AvatarFallback>{people[person].initials}</AvatarFallback>
                   </Avatar>
                   <Text size={3} style={{ flex: 1, minWidth: 0, overflowWrap: 'anywhere' }}>{person === ME ? `${people[person].name} (you)` : people[person].name}</Text>

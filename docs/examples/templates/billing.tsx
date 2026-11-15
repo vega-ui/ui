@@ -371,7 +371,7 @@ export default function Billing() {
                   <Text id={`${id}-storage`} size={2} fontWeight={500}>Storage</Text>
                   <Text size={2} style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>{`${storageUsed} of ${STORAGE_LIMIT} GB`}</Text>
                 </div>
-                <MeterStack value={storageUsed} max={STORAGE_LIMIT} role='group' aria-labelledby={`${id}-storage`} fullWidth>
+                <MeterStack value={storageUsed} max={STORAGE_LIMIT} aria-labelledby={`${id}-storage`} fullWidth>
                   {storage.map((item) => (
                     <MeterStackSegment
                       key={item.id}

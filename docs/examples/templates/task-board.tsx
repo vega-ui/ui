@@ -294,7 +294,7 @@ export default function TaskBoard() {
             >
               {task.title}
             </Text>
-            <Avatar size='sm' role='img' aria-label={`Assigned to ${person.name}`} title={person.name} style={{ flexShrink: 0 }}>
+            <Avatar size='sm' role='img' aria-label={`Assigned to ${person.name}`} title={person.name}>
               <AvatarFallback>{person.initials}</AvatarFallback>
             </Avatar>
           </div>
@@ -552,10 +552,10 @@ export default function TaskBoard() {
                 {errors.due && <HelperText id={`${id}-due-error`} invalid>{errors.due}</HelperText>}
               </div>
               <Fieldset>
-                <FieldsetLegend size={3} style={{ marginBlockEnd: 'var(--spacing-5)' }}>Labels</FieldsetLegend>
+                <FieldsetLegend style={{ marginBlockEnd: 'var(--spacing-5)' }}>Labels</FieldsetLegend>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--spacing-5) var(--spacing-10)' }}>
                   {(Object.keys(labels) as LabelName[]).map((label) => (
-                    <Checkbox key={label} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+                    <Checkbox key={label}>
                       <CheckboxInput name='labels' value={label} />
                       <CheckboxIndicator>
                         <CheckboxCheckedIcon />

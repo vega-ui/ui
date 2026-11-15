@@ -9,7 +9,7 @@ import {
 export default function ValidCompositionPatterns() {
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-8)' }}>
-      <Checkbox style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+      <Checkbox>
         <CheckboxInput name='archived' />
         <CheckboxIndicator>
           <CheckboxCheckedIcon />

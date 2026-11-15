@@ -23,7 +23,7 @@ export default function ShiftHours() {
 
   return (
     <Fieldset style={{ display: 'grid', gap: 'var(--spacing-8)', width: '100%', maxWidth: 260 }}>
-      <FieldsetLegend style={{ marginBlockEnd: 'var(--spacing-6)' }}>Shift</FieldsetLegend>
+      <FieldsetLegend>Shift</FieldsetLegend>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor='shift-start'>Starts</Label>
         <TimeField value={start} onChangeValue={setStart}>

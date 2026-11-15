@@ -40,7 +40,7 @@ export default function ServiceHealthByPeriod() {
           <Text id={titleId} size={2} fontWeight={500}>Checkout API</Text>
           <Text size={2} style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>{uptime}% healthy</Text>
         </div>
-        <MeterStack value={total} max={total} role='group' aria-labelledby={titleId} fullWidth>
+        <MeterStack value={total} max={total} aria-labelledby={titleId} fullWidth>
           <MeterStackSegment
             value={healthy}
             aria-label='Healthy'

@@ -8,7 +8,7 @@ import {
 
 export default function MinimalComposition() {
   return (
-    <Checkbox style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+    <Checkbox>
       <CheckboxInput name='remember' />
       <CheckboxIndicator>
         <CheckboxCheckedIcon />

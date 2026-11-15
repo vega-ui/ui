@@ -12,7 +12,7 @@ The root and `GridCell` expose no variables of their own; styling mostly comes f
 | --- | --- | --- |
 | grid layout properties | root grid | overall row flow |
 | cell-level local styles | `GridCell` | width, height, local spacing |
-| `--grid-item-size` | `GridItem` | Item size. |
+| `--grid-item-size` | `GridItem` | Item height and minimum width, padding included. |
 | `--grid-item-br-ratio` | `GridItem` | Radius ratio of an item. |
 | `--grid-item-color` | `GridItem` | Item text color. |
 | `--grid-item-background-color` | `GridItem` | Item background. |

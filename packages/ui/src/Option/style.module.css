@@ -1,6 +1,6 @@
 .option {
     --option-height: var(--spacing-21);
-    --option-br-ratio: 0.333;
+    --option-br-ratio: var(--br-ratio);
 
     --option-color: var(--text-color);
     --option-background-color: transparent;
@@ -62,6 +62,8 @@
     --option-background-color: var(--color-primary-500);
     --option-background-color-hover: var(--color-primary-600);
     --option-background-color-active: var(--color-primary-700);
+    --label-secondary: color-mix(in oklch, var(--option-color) 80%, transparent);
+    --label-tertiary: color-mix(in oklch, var(--option-color) 64%, transparent);
 }
 
 .option:not([aria-disabled='true']):hover,

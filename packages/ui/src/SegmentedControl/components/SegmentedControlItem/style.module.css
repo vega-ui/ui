@@ -10,6 +10,8 @@
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
+    min-width: 0;
+    overflow: hidden;
     border-radius: inherit;
     position: relative;
     outline: none;
@@ -63,7 +65,7 @@
 }
 
 .item:where([data-disabled='true']) {
-    --item-color: var(--disable-text-color);
+    --item-color: var(--disable-label-text-color);
     --item-background-color-hover: transparent;
     --item-background-color-active: transparent;
 

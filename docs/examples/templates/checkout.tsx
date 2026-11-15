@@ -64,7 +64,7 @@ const field = { display: 'grid', gap: 'var(--spacing-3)', alignContent: 'start' 
 const columns = { display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 180px), 1fr))', gap: 'var(--spacing-8)' } as const;
 const amount = { fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap' } as const;
 const fieldOrder = ['email', 'phone', 'country', 'name', 'address', 'city', 'postal'];
-const legend = { fontWeight: 600, marginBlockEnd: 'var(--spacing-6)' } as const;
+const legend = { fontWeight: 600 } as const;
 
 type Errors = Partial<Record<string, string>>;
 

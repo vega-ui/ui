@@ -19,7 +19,7 @@ export type FieldsetLegendProps = TextProps
  */
 export const FieldsetLegend: FC<FieldsetLegendProps> = ({ children, ...props }) => {
   return (
-    <Text className={style.legend} size={5} fontWeight={500} asChild {...props}>
+    <Text className={style.legend} size={3} fontWeight={500} asChild {...props}>
       <legend>{children}</legend>
     </Text>
   )

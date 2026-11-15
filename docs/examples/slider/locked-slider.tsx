@@ -42,7 +42,7 @@ export default function LockedSlider() {
           </Switch>
         </div>
         <Fieldset disabled={automatic}>
-          <FieldsetLegend size={3} style={{ marginBlockEnd: 'var(--spacing-3)' }}>Manual brightness</FieldsetLegend>
+          <FieldsetLegend style={{ marginBlockEnd: 'var(--spacing-3)' }}>Manual brightness</FieldsetLegend>
           <Slider defaultValue={60}>
             <SliderTrack>
               <SliderRange />

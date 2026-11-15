@@ -1,5 +1,5 @@
-.fallback {
-    font-size: calc(var(--avatar-size) * 0.4) !important;
-    line-height: 1 !important;
+.fallback[data-size] {
+    font-size: calc(var(--avatar-size) * 0.4);
+    line-height: 1;
     color: inherit;
 }

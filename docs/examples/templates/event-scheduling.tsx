@@ -245,7 +245,7 @@ export default function EventScheduling() {
   const host = (
     <Card style={{ gap: 'var(--spacing-10)', flex: '1 1 260px', minWidth: 0 }} aria-labelledby={`${id}-event`}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-6)', minWidth: 0 }}>
-        <Avatar size='lg' aria-hidden='true' style={{ flexShrink: 0 }}>
+        <Avatar size='lg' aria-hidden='true'>
           <AvatarFallback>MK</AvatarFallback>
         </Avatar>
         <div style={{ display: 'grid', minWidth: 0 }}>

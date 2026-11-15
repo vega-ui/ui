@@ -57,7 +57,7 @@ export default function ParticipantsDialog() {
         <ul aria-label='Attendees' style={{ listStyle: 'none', margin: 0, marginBlockStart: 'var(--spacing-10)', padding: 0, display: 'grid', gap: 'var(--spacing-6)', maxHeight: 220, overflowY: 'auto' }}>
           {attendees.map((person) => (
             <li key={person.name} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-6)' }}>
-              <Avatar size='xs' aria-hidden='true' style={{ flexShrink: 0 }}>
+              <Avatar size='xs' aria-hidden='true'>
                 <AvatarFallback>{person.initials}</AvatarFallback>
               </Avatar>
               <Text size={2} fontWeight={500} style={{ flex: 1 }}>{person.name}</Text>

@@ -62,7 +62,7 @@ export default function FiltersAnchoredToASearchField() {
             </div>
             <div style={{ display: 'grid', gap: 'var(--spacing-6)' }}>
               {statuses.map((status) => (
-                <Checkbox key={status} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+                <Checkbox key={status}>
                   <CheckboxInput checked={draft.includes(status)} onChange={() => toggle(status)} />
                   <CheckboxIndicator>
                     <CheckboxCheckedIcon />

@@ -256,7 +256,7 @@ export default function Notifications() {
                   <ul style={{ display: 'grid', margin: 0, padding: 0, listStyle: 'none' }}>
                     {group.items.map((item) => (
                       <li key={item.id} className='nt-item' data-unread={item.unread}>
-                        <Avatar size='md' aria-hidden='true' style={{ flexShrink: 0 }}>
+                        <Avatar size='md' aria-hidden='true'>
                           <AvatarFallback>{people[item.actor].initials}</AvatarFallback>
                         </Avatar>
                         <div style={{ display: 'grid', gap: 'var(--spacing-2)', flex: 1, minWidth: 0 }}>
@@ -358,7 +358,7 @@ export default function Notifications() {
                         <TableData key={channel.key} dataAlign='center'>
                           {!available && <Text size={2} aria-label='Not available' style={{ color: 'var(--label-quaternary)' }}>—</Text>}
                           {available && (
-                            <Checkbox style={{ display: 'inline-flex' }}>
+                            <Checkbox>
                               <CheckboxInput
                                 data-field={row.key === 'requests' && index === 0 ? 'requests' : undefined}
                                 aria-label={`${row.label} by ${channel.label.toLowerCase()}`}

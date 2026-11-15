@@ -45,7 +45,7 @@ export default function DisabledByFieldset() {
 
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-12)', width: '100%', maxWidth: 300 }}>
-      <Checkbox style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
+      <Checkbox>
         <CheckboxInput checked={asap} onChange={(event) => setAsap(event.currentTarget.checked)} />
         <CheckboxIndicator>
           <CheckboxCheckedIcon />
@@ -54,7 +54,7 @@ export default function DisabledByFieldset() {
         Ship as soon as possible
       </Checkbox>
       <Fieldset disabled={asap} style={{ display: 'grid', gap: 'var(--spacing-8)' }}>
-        <FieldsetLegend style={{ marginBlockEnd: 'var(--spacing-6)' }}>Scheduled shipping</FieldsetLegend>
+        <FieldsetLegend>Scheduled shipping</FieldsetLegend>
         <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
           <Label htmlFor='ship-on'>Ship on</Label>
           <DateField format='dd.MM.yyyy' separator='.'>
