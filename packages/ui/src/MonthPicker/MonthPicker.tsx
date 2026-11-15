@@ -13,7 +13,7 @@ import { createPeriodPicker, monthRules, PeriodValue } from '@vega-ui/widgets/da
 import { useToday } from '../internals/calendar';
 import { MonthPickerProvider } from './contexts';
 
-export interface MonthPickerProps<S extends GridSelection = 'single'> extends Omit<GridProps<string, S>, 'active' | 'defaultActive' | 'onChangeActive' | 'apiRef' | 'disabled'> {
+export interface MonthPickerProps<SelectionMode extends GridSelection = 'single'> extends Omit<GridProps<string, SelectionMode>, 'active' | 'defaultActive' | 'onChangeActive' | 'apiRef' | 'disabled'> {
   /**
    * Ref to the grid’s imperative API, with `YYYY-MM-DD` keys.
    * - `focus(date?)` — moves focus to the month of this date, or to the tab stop without one; a month that is not rendered yet takes focus as soon as it renders
@@ -99,13 +99,13 @@ export interface MonthPickerProps<S extends GridSelection = 'single'> extends Om
  * Custom month layouts can be composed by passing children, allowing
  * full control over how months are rendered within the grid.
  */
-export const MonthPicker = <S extends GridSelection = 'single'>({
+export const MonthPicker = <SelectionMode extends GridSelection = 'single'>({
   children,
   calendar = gregorianCalendar,
   locale = 'en-US',
   size = 'xs',
   variant = 'secondary',
-  selection = 'single' as S,
+  selection = 'single' as SelectionMode,
   today: _today,
   apiRef,
   cells,
@@ -129,7 +129,7 @@ export const MonthPicker = <S extends GridSelection = 'single'>({
   className,
   ref,
   ...props
-}: PropsWithChildren<MonthPickerProps<S>>) => {
+}: PropsWithChildren<MonthPickerProps<SelectionMode>>) => {
   const today = useToday(_today)
   const [widget] = useState(() => createPeriodPicker(monthRules))
 

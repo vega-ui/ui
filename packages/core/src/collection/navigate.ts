@@ -1,10 +1,10 @@
 import { Collection } from './collection'
 
-export const has = <K>(collection: Collection<K>, key: K | null | undefined): key is K => key != null && collection.index.has(key)
+export const has = <Key>(collection: Collection<Key>, key: Key | null | undefined): key is Key => key != null && collection.index.has(key)
 
-export const isNavigable = <K>(collection: Collection<K>, key: K) => collection.index.has(key) && !collection.disabled.has(key)
+export const isNavigable = <Key>(collection: Collection<Key>, key: Key) => collection.index.has(key) && !collection.disabled.has(key)
 
-const scan = <K>(collection: Collection<K>, from: number, direction: 1 | -1): K | null => {
+const scan = <Key>(collection: Collection<Key>, from: number, direction: 1 | -1): Key | null => {
   for (let position = from; position >= 0 && position < collection.order.length; position += direction) {
     const key = collection.order[position]
     if (!collection.disabled.has(key)) return key
@@ -13,29 +13,29 @@ const scan = <K>(collection: Collection<K>, from: number, direction: 1 | -1): K 
   return null
 }
 
-export const first = <K>(collection: Collection<K>) => scan(collection, 0, 1)
+export const first = <Key>(collection: Collection<Key>) => scan(collection, 0, 1)
 
-export const last = <K>(collection: Collection<K>) => scan(collection, collection.order.length - 1, -1)
+export const last = <Key>(collection: Collection<Key>) => scan(collection, collection.order.length - 1, -1)
 
-export const next = <K>(collection: Collection<K>, from: K | null): K | null => {
+export const next = <Key>(collection: Collection<Key>, from: Key | null): Key | null => {
   if (!has(collection, from)) return first(collection)
 
   return scan(collection, collection.index.get(from)! + 1, 1)
 }
 
-export const previous = <K>(collection: Collection<K>, from: K | null): K | null => {
+export const previous = <Key>(collection: Collection<Key>, from: Key | null): Key | null => {
   if (!has(collection, from)) return last(collection)
 
   return scan(collection, collection.index.get(from)! - 1, -1)
 }
 
-export const nearest = <K>(collection: Collection<K>, position: number): K | null => {
+export const nearest = <Key>(collection: Collection<Key>, position: number): Key | null => {
   const clamped = Math.min(Math.max(position, 0), collection.order.length - 1)
 
   return scan(collection, clamped, 1) ?? scan(collection, clamped, -1)
 }
 
-export const between = <K>(collection: Collection<K>, from: K, to: K): K[] => {
+export const between = <Key>(collection: Collection<Key>, from: Key, to: Key): Key[] => {
   const start = collection.index.get(from)
   const end = collection.index.get(to)
   if (start === undefined || end === undefined) return []
@@ -43,9 +43,9 @@ export const between = <K>(collection: Collection<K>, from: K, to: K): K[] => {
   return collection.order.slice(Math.min(start, end), Math.max(start, end) + 1).filter((key) => !collection.disabled.has(key))
 }
 
-export const selectable = <K>(collection: Collection<K>): K[] => collection.order.filter((key) => !collection.disabled.has(key))
+export const selectable = <Key>(collection: Collection<Key>): Key[] => collection.order.filter((key) => !collection.disabled.has(key))
 
-export const findByLabel = <K>(collection: Collection<K>, text: string, from: K | null, inclusive = false): K | null => {
+export const findByLabel = <Key>(collection: Collection<Key>, text: string, from: Key | null, inclusive = false): Key | null => {
   const needle = text.toLowerCase()
   const start = has(collection, from) ? collection.index.get(from)! + (inclusive ? 0 : 1) : 0
 

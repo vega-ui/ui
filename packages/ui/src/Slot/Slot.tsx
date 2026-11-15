@@ -1,12 +1,12 @@
 import { cloneElement, HTMLAttributes, isValidElement, ReactElement, ReactNode } from 'react';
 import { mergeProps } from '@vega-ui/utils';
 
-export type SlotProps<T> = Omit<HTMLAttributes<HTMLElement>, keyof T> & Record<string, unknown> & {
+export type SlotProps<Value> = Omit<HTMLAttributes<HTMLElement>, keyof Value> & Record<string, unknown> & {
   /** The single element that receives the props of `Slot`. */
   children: ReactNode
-} & T
+} & Value
 
-export const Slot = <T,>({ children, ...props }: SlotProps<T>): ReactElement => {
+export const Slot = <Value,>({ children, ...props }: SlotProps<Value>): ReactElement => {
   if (!isValidElement<{ [p: string]: unknown }>(children)) {
     throw new Error('[Slot] `asChild` must be a valid React-element.');
   }

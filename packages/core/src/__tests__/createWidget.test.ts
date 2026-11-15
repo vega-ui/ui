@@ -55,19 +55,20 @@ describe('Critical User Paths', () => {
     expect(widget.render(listbox.output.option, 'apple')).toMatchObject({ 'data-active': true })
   })
 
-  it('hands a changed followed option to the steps and keeps other option changes silent', () => {
-    const followed = state({ options: { page: 0, label: '' }, owns: {}, follows: ['page'], internal: { seen: internal([] as number[]) } })
+  it('hands a changed followed option to the steps, names the changed options, and keeps other option changes silent', () => {
+    const followed = state({ options: { page: 0, label: '' }, owns: { count: controlled(0) }, follows: ['page'], internal: { seen: internal([] as (readonly string[] | undefined)[]) } })
     const pager = defineWidget({
       state: followed,
-      step: [(current, input) => (input.is(lifecycle.options) ? keep(followed.seen.set(current, [...current.seen, current.options.page])) : undefined)],
+      step: [(current, input) => (input.is(lifecycle.options) ? keep(followed.seen.set(current, [...current.seen, input.changed])) : undefined)],
       output: {},
     })
     const widget = createWidget(pager, { page: 0, label: '' }, { id: 'pager' })
 
     widget.setOptions({ page: 0, label: 'next' })
     widget.setOptions({ page: 2, label: 'next' })
+    widget.setOptions({ page: 3, label: 'next', count: 1 })
 
-    expect(widget.state.seen).toEqual([2])
+    expect(widget.state.seen).toEqual([['page'], ['count', 'page']])
   })
 })
 
@@ -145,34 +146,72 @@ describe('Error handling', () => {
     widget.subscribe(listener)
 
     expect(widget.dispatch(createInput(nav.forward))).toEqual({ answer: 'handled', actions: [act.focusPart('end')] })
-    expect(onError).toHaveBeenCalledExactlyOnceWith(error)
+    expect(onError).toHaveBeenCalledExactlyOnceWith(error, undefined)
     expect(onChangeSecond).toHaveBeenCalledExactlyOnceWith(1)
     expect(listener).toHaveBeenCalledOnce()
     expect(createWidget(both, { onChangeFirst: () => { throw error } }, { id: 'pair' }).dispatch(createInput(nav.forward)).answer).toBe('handled')
     expect(() => createWidget(both, { onChangeFirst: () => { throw error } }, { id: 'pair', strict: true }).dispatch(createInput(nav.forward))).toThrow(error)
   })
 
-  it('throws on a broken invariant in strict mode, from the first snapshot on, and repairs it otherwise', () => {
-    const onRepair = vi.fn()
-    expect(() => createWidget(listbox, { items: fruits, mode: 'single', defaultActive: 'cherry' }, { id: 'widget', strict: true })).toThrow(InvariantError)
+  it('hands to onError what an invariant, the options or a part throws, and keeps the previous state and attributes outside strict mode', () => {
+    const error = new Error('boom')
+    const onError = vi.fn()
+    const throwing = defineWidget({
+      state: shape,
+      step: [(current, input) => (input.is(nav.forward) ? handled(shape.active.set(current, 'banana'), [act.focusPart('end')]) : undefined)],
+      invariants: { broken: { check: (current) => { if (current.active === 'banana') throw error; return true }, repair: (current) => current } },
+    })
+    const selecting = { select: (current: typeof shape.__snapshot) => { if (current.active === 'cherry') throw error; return [current.active] }, render: ([active]: readonly unknown[]) => ({ 'data-active': active }) }
+    const widget = createWidget(throwing, { items: fruits, mode: 'single', defaultActive: 'apple' }, { id: 'widget', onError })
 
-    const strict = createWidget(listbox, { items: fruits, mode: 'single', defaultActive: 'apple' }, { id: 'widget', strict: true })
-    expect(() => strict.setOptions({ items: fruits, mode: 'single', active: 'cherry' })).toThrow(InvariantError)
-
-    const lenient = createWidget(listbox, { items: fruits, mode: 'single', defaultActive: 'cherry' }, { id: 'widget', onRepair })
-    expect(lenient.state.active).toBe('apple')
-    expect(onRepair).toHaveBeenCalledWith(expect.objectContaining({ invariant: 'activeExists' }))
-
-    lenient.setOptions({ items: fruits.filter((fruit) => fruit.id !== 'apple'), mode: 'single' })
-    expect(lenient.state.active).toBe('banana')
+    expect(widget.dispatch(forward)).toEqual({ answer: 'pass', actions: [] })
+    expect(widget.state.active).toBe('apple')
+    expect(widget.setOptions({ items: null as never, mode: 'single' })).toEqual({ answer: 'pass', actions: [] })
+    expect(widget.state.options.items).toBe(fruits)
+    expect(widget.render(selecting)).toEqual({ 'data-active': 'apple' })
+    widget.setOptions({ items: fruits, mode: 'single', active: 'cherry' })
+    expect(widget.render(selecting)).toEqual({ 'data-active': 'apple' })
+    expect(onError).toHaveBeenCalledTimes(3)
+    expect(() => createWidget(throwing, { items: fruits, mode: 'single' }, { id: 'widget', strict: true }).dispatch(forward)).toThrow(error)
   })
 
-  it('never repairs a value the parent controls', () => {
+  it('throws in strict mode on an invariant a step breaks and repairs it otherwise', () => {
+    const breaking = defineWidget({ state: shape, step: [(current) => handled(shape.active.set(current, 'cherry'))], invariants: listbox.invariants })
+
+    expect(() => createWidget(breaking, { items: fruits, mode: 'single' }, { id: 'widget', strict: true }).dispatch(forward)).toThrow(InvariantError)
+
+    const lenient = createWidget(breaking, { items: fruits, mode: 'single' }, { id: 'widget', onRepair: vi.fn() })
+    lenient.dispatch(forward)
+    expect(lenient.state.active).toBe('apple')
+  })
+
+  it('repairs an invariant the options break, in strict mode too, and hands the repair the snapshot before', () => {
+    const onRepair = vi.fn()
+    const widget = createWidget(listbox, { items: fruits, mode: 'single', defaultActive: 'cherry' }, { id: 'widget', strict: true, onRepair })
+    expect(widget.state.active).toBe('apple')
+    expect(onRepair).toHaveBeenCalledWith(expect.objectContaining({ invariant: 'activeExists' }))
+
+    widget.setOptions({ items: fruits.filter((fruit) => fruit.id !== 'apple'), mode: 'single' })
+    expect(widget.state.active).toBe('banana')
+
+    const repair = vi.fn((current: typeof shape.__snapshot) => shape.active.set(current, null))
+    const watched = defineWidget({ state: shape, invariants: { activeExists: { check: listbox.invariants.activeExists.check, repair } } })
+    const previous = createWidget(watched, { items: fruits, mode: 'single', defaultActive: 'apple' }, { id: 'widget', strict: true })
+    const before = previous.state
+    previous.setOptions({ items: fruits.filter((fruit) => fruit.id !== 'apple'), mode: 'single' })
+    expect(repair).toHaveBeenCalledWith(expect.anything(), before)
+  })
+
+  it('never repairs a value the parent controls, and a strict widget does not blame a later step for it', () => {
     const onRepair = vi.fn()
     const widget = createWidget(listbox, { items: fruits, mode: 'multiple', value: ['cherry'] }, { id: 'widget', onRepair })
 
     expect(widget.state.value).toEqual(['cherry'])
     expect(onRepair).toHaveBeenCalledWith(expect.objectContaining({ invariant: 'valueSelectable' }))
+
+    const strict = createWidget(listbox, { items: fruits, mode: 'multiple', value: ['cherry'], defaultActive: 'apple' }, { id: 'widget', strict: true })
+    strict.dispatch(forward)
+    expect(strict.state.active).toBe('banana')
   })
 
   it('keeps the change a step made to a controlled value when another value is repaired in the same commit', () => {

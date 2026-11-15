@@ -23,6 +23,7 @@ export const drawerShape = state({
     drag: internal(null as number | null),
   },
   observes: { ...modalDialogValues.observes, rtl: matching(DIALOG, ':dir(rtl)') },
+  parts: [DIALOG],
 })
 
 type DrawerSnapshot = typeof drawerShape.__snapshot

@@ -5,7 +5,7 @@ import { Step } from '../step'
 
 export interface Invariant<State> {
   check(state: State): boolean
-  repair(state: State): State
+  repair(state: State, before: State): State
 }
 
 export type OutputOf<WidgetShape extends AnyShape> = Readonly<Record<string, Part<SnapshotOf<WidgetShape>, KeyOf<WidgetShape>>>>

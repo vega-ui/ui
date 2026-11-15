@@ -22,6 +22,7 @@ export const tooltipShape = state({
     focusVisible: matching(TRIGGER, ':focus-visible'),
     warm: reading((options: { group?: TooltipGroup }) => options.group?.isWarm() ?? false, false),
   },
+  parts: [TRIGGER, CONTENT],
 })
 
 type TooltipSnapshot = typeof tooltipShape.__snapshot
@@ -101,7 +102,8 @@ const pressing = listening<TooltipSnapshot>([pointer.down], (state, input) => {
 })
 
 const dismissing = listening<TooltipSnapshot>([key.escape], (state, input) => {
-  if (!input.is(key.escape) || !state.open) return undefined
+  if (!input.is(key.escape)) return undefined
+  if (!state.open) return state.timers.has(SHOW) ? keep(state, [act.cancelTimer(SHOW)]) : undefined
 
   const result = hide(state)
   return handled(result.state, result.actions)

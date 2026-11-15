@@ -54,6 +54,7 @@ const createPeriodShape = (collectionOf: (options: PeriodOptionsBase) => Collect
   internal: { ...gridInternal<string>(), origin: internal(undefined as string | undefined) },
   observes: { paged: matching(PAGES, '*') },
   collection: collectionOf,
+  parts: [PAGES],
 })
 
 export type PeriodShape = ReturnType<typeof createPeriodShape>
@@ -105,21 +106,21 @@ export const createPeriodPicker = (rules: PeriodRules) => {
     return layouts.layoutFor({ entries: options.entries, cells: options.cells, exclude, compare: options.compare ?? compareStrings }).layout.collection
   })
 
-  type S = PeriodSnapshot
+  type State = PeriodSnapshot
 
-  const context = (state: S) => contextOf(state.options)
+  const context = (state: State) => contextOf(state.options)
 
-  const selectedOf = (state: S) => keysOf(state.value).filter(isDate)
+  const selectedOf = (state: State) => keysOf(state.value).filter(isDate)
 
-  const focusedOf = (state: S) => state.focusedDate ?? selectedOf(state)[0] ?? state.options.today
+  const focusedOf = (state: State) => state.focusedDate ?? selectedOf(state)[0] ?? state.options.today
 
-  const originOf = (state: S) => state.origin ?? focusedOf(state)
+  const originOf = (state: State) => state.origin ?? focusedOf(state)
 
-  const originated = (state: S) => (state.origin === undefined ? shape.origin.set(state, focusedOf(state)) : state)
+  const originated = (state: State) => (state.origin === undefined ? shape.origin.set(state, focusedOf(state)) : state)
 
   const actives = new WeakMap<object, string | undefined>()
 
-  const activeOf = (state: S) => {
+  const activeOf = (state: State) => {
     if (actives.has(state)) return actives.get(state)
 
     const focused = focusedOf(state)
@@ -129,13 +130,13 @@ export const createPeriodPicker = (rules: PeriodRules) => {
     return found
   }
 
-  const active: Field<S, string | undefined> = {
+  const active: Field<State, string | undefined> = {
     name: 'active',
     get: activeOf,
     set: (state, date) => (date === undefined ? state : shape.focusedDate.set(state, date)),
   }
 
-  const pageEdgeOf = (state: S, intent: PeriodIntent, from: string) => {
+  const pageEdgeOf = (state: State, intent: PeriodIntent, from: string) => {
     const { period } = state.options
     if (intent !== 'gridStart' && intent !== 'gridEnd') return undefined
     if (!state.paged || !rules.pageEdge || period === undefined) return undefined
@@ -146,7 +147,7 @@ export const createPeriodPicker = (rules: PeriodRules) => {
     return rules.pageEdge(from, origin, period, intent === 'gridStart' ? 'start' : 'end', context(state))
   }
 
-  const logic = createGridLogic<S, string>({
+  const logic = createGridLogic<State, string>({
     active,
     value: shape.value,
     anchor: shape.anchor,
@@ -162,9 +163,9 @@ export const createPeriodPicker = (rules: PeriodRules) => {
   const show = rules.show ?? ((date, _active, current) => available(date, current))
   const resolve = rules.resolve ?? available
 
-  const focusing = (state: S, target: string | undefined) => (target === undefined ? handled(state) : handled(logic.activate(state, target), [act.focus(target)]))
+  const focusing = (state: State, target: string | undefined) => (target === undefined ? handled(state) : handled(logic.activate(state, target), [act.focus(target)]))
 
-  const commands: Step<S> = (state, input) => {
+  const commands: Step<State> = (state, input) => {
     if (input.is(SHOW) && input.key !== undefined) {
       const target = show(input.key, activeOf(state), context(state))
       return keep(target === undefined ? logic.activateWithin(state, input.keys ?? []) : logic.activate(state, target))
@@ -182,7 +183,7 @@ export const createPeriodPicker = (rules: PeriodRules) => {
     return undefined
   }
 
-  const moveFrom = (state: S, target: (from: string) => string | undefined) => {
+  const moveFrom = (state: State, target: (from: string) => string | undefined) => {
     const from = activeOf(state)
     if (from === undefined) return handled(state)
 
@@ -190,7 +191,7 @@ export const createPeriodPicker = (rules: PeriodRules) => {
     return focusing(state, to === from ? undefined : to)
   }
 
-  const paging = listening<S>([SHIFT_PAGE_UP, SHIFT_PAGE_DOWN, nav.pageBackward, nav.pageForward], (state, input) => {
+  const paging = listening<State>([SHIFT_PAGE_UP, SHIFT_PAGE_DOWN, nav.pageBackward, nav.pageForward], (state, input) => {
     const up = input.is(SHIFT_PAGE_UP)
     if ((up || input.is(SHIFT_PAGE_DOWN)) && rules.navigate) {
       const navigate = rules.navigate

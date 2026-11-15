@@ -1,8 +1,9 @@
 import { describe, expect, it, vi } from 'vitest'
 import { focus, key, mod, timer } from '../input'
-import { TYPEAHEAD } from '../fragments'
+import { roving, selection, TYPEAHEAD } from '../fragments'
 import { simulate } from '../test'
-import { fruits, listbox } from './fixtures/listbox'
+import { defineWidget } from '../widget'
+import { fruits, listbox, shape } from './fixtures/listbox'
 
 describe('Critical User Paths', () => {
   it('moves the active option with the arrows, skips disabled options and asks to reveal the new one', () => {
@@ -133,5 +134,31 @@ describe('Edge Cases', () => {
     const widget = simulate(listbox, { items: fruits, mode: 'single', defaultActive: 'apple' })
 
     expect(() => widget.send(key.tab)).toThrow(/does not listen to key Tab/)
+  })
+})
+
+describe('Performance', () => {
+  it('reads the value a constant number of times when Shift + Mod + Home extends over every option, however many there are', () => {
+    const readsFor = (count: number) => {
+      let reads = 0
+      const value = { ...shape.value, get: (current: typeof shape.__snapshot) => { reads += 1; return [...shape.value.get(current)] } }
+      const extending = defineWidget({
+        state: shape,
+        step: [
+          roving({ active: shape.active, strategy: 'activedescendant' }),
+          selection({ value, active: shape.active, anchor: shape.anchor, mode: shape.options.mode, strategy: 'activedescendant' }),
+        ],
+      })
+      const many = Array.from({ length: count }, (_, position) => ({ id: `fruit-${position}`, label: `Fruit ${position}` }))
+      const widget = simulate(extending, { items: many, mode: 'multiple' }).send(focus.enter).send(key.with(key.a, mod.mod)).send(key.end)
+
+      reads = 0
+      widget.send(key.with(key.home, mod.shift, mod.mod))
+      expect(widget.state.value).toHaveLength(count)
+
+      return reads
+    }
+
+    expect(readsFor(400)).toBe(readsFor(40))
   })
 })

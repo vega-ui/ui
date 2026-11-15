@@ -120,6 +120,28 @@ describe('Critical User Paths', () => {
 })
 
 describe('Edge Cases', () => {
+  it('forgets a page the browser cannot scroll to once the scroll ends short of it, so the next step starts from the shown page', () => {
+    const clamped = (left: number) => ({ part: ROOT, scroller: { top: 0, left, width: 500, height: 50, clientWidth: 260, clientHeight: 50 } })
+    const snapScroller = shown().send(scroll.end, scrolled(200, 5))
+
+    snapScroller.send(createInput(SNAP_NEXT)).send(scroll.end, clamped(240)).send(createInput(SNAP_PREVIOUS))
+    expect(snapScroller.actions).toEqual([act.scrollTo(ROOT, { left: 100 })])
+
+    const scrolledBack = shown().send(scroll.end, scrolled(200, 5)).send(createInput(SNAP_NEXT)).send(scroll.end, clamped(240)).send(scroll.end, clamped(0))
+    expect(scrolledBack.actions).toContainEqual(act.emit('snapChanging', 0))
+
+    const stopped = shown().send(createInput(SNAP_NEXT)).send(createInput(SNAP_NEXT))
+    stopped.send(scroll.end, { part: ROOT, scroller: { top: 0, left: 120, width: 500, height: 50, clientWidth: 380, clientHeight: 50 } })
+    expect(stopped.actions).toContainEqual(act.emit('snapChanging', 1))
+  })
+
+  it('keeps the page it scrolls to when a scroll ends on the way there, so quick steps add up', () => {
+    const snapScroller = shown().send(createInput(SNAP_NEXT))
+
+    snapScroller.send(scroll.end, scrolled(0, 5)).send(createInput(SNAP_NEXT))
+    expect(snapScroller.actions).toEqual([act.scrollTo(ROOT, { left: 200 })])
+  })
+
   it('does not scroll to the item it already shows and keeps reporting the scroll of the user', () => {
     const snapScroller = shown()
 

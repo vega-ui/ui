@@ -12,6 +12,7 @@ export const collapsibleShape = state({
   },
   owns: { open: controlled(false) },
   internal: { expanded: internal(null as boolean | null), closing: internal(false), reported: internal(undefined as boolean | undefined) },
+  parts: [TRIGGER, CONTENT],
 })
 
 type CollapsibleSnapshot = typeof collapsibleShape.__snapshot

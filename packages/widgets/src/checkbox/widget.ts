@@ -5,6 +5,7 @@ export const INPUT = 'input'
 export const checkboxShape = state({
   options: { indeterminate: undefined as boolean | undefined },
   owns: {},
+  parts: [INPUT],
 })
 
 export const checkboxWidget = defineWidget({

@@ -5,9 +5,9 @@ import { Attrs, Part, Rendered, renderPart } from '../output'
 import { Action, Answer, runSteps } from '../step'
 import { Widget } from './defineWidget'
 
-export interface Dispatched<K = unknown> {
+export interface Dispatched<Key = unknown> {
   readonly answer: Answer | 'pass'
-  readonly actions: readonly Action<K>[]
+  readonly actions: readonly Action<Key>[]
 }
 
 export interface Repaired {
@@ -30,14 +30,14 @@ export interface WidgetEnvironment {
   readonly onDispatch?: (trace: Trace) => void
 }
 
-export interface WidgetInstance<Sh extends AnyShape> {
-  readonly state: SnapshotOf<Sh>
+export interface WidgetInstance<WidgetShape extends AnyShape> {
+  readonly state: SnapshotOf<WidgetShape>
   readonly observed: Readonly<Record<string, Observed<unknown>>>
   readonly listens: readonly InputSpec[]
-  dispatch(input: Input<KeyOf<Sh>>, observed?: ObservedValues): Dispatched<KeyOf<Sh>>
+  dispatch(input: Input<KeyOf<WidgetShape>>, observed?: ObservedValues): Dispatched<KeyOf<WidgetShape>>
   observe(values: ObservedValues): void
-  setOptions(options: OptionsOf<Sh>): Dispatched<KeyOf<Sh>>
-  render(part: Part<SnapshotOf<Sh>, KeyOf<Sh>>, key?: KeyOf<Sh>): Attrs
+  setOptions(options: OptionsOf<WidgetShape>): Dispatched<KeyOf<WidgetShape>>
+  render(part: Part<SnapshotOf<WidgetShape>, KeyOf<WidgetShape>>, key?: KeyOf<WidgetShape>): Attrs
   subscribe(listener: () => void): () => void
 }
 
@@ -49,25 +49,30 @@ export class InvariantError extends Error {
 
 const PASSED: Dispatched<never> = { answer: 'pass', actions: [] }
 
-export const createWidget = <Sh extends AnyShape>(widget: Widget<Sh>, options: OptionsOf<Sh>, environment: WidgetEnvironment): WidgetInstance<Sh> => {
-  type S = SnapshotOf<Sh>
-  type K = KeyOf<Sh>
+export const createWidget = <WidgetShape extends AnyShape>(widget: Widget<WidgetShape>, options: OptionsOf<WidgetShape>, environment: WidgetEnvironment): WidgetInstance<WidgetShape> => {
+  type State = SnapshotOf<WidgetShape>
+  type Key = KeyOf<WidgetShape>
   type Mutable = Record<string, unknown>
 
   const { id } = environment
   const shape = widget.shape
   const listeners = new Set<() => void>()
-  const rendered = new Map<Part<S, K>, Map<K | undefined, Rendered>>()
+  const rendered = new Map<Part<State, Key>, Map<Key | undefined, Rendered>>()
 
-  const enforce = (state: S): S => {
+  const fail = (error: unknown, input?: Input) => {
+    if (environment.strict) throw error
+    environment.onError?.(error, input)
+  }
+
+  const enforce = (state: State, before: State, byStep: boolean): State => {
     let next = state
 
     for (const name in widget.invariants) {
       const invariant = widget.invariants[name]
       if (invariant.check(next)) continue
-      if (environment.strict) throw new InvariantError(name, next)
+      if (byStep && environment.strict && invariant.check(before)) throw new InvariantError(name, next)
 
-      const repaired = shape.restore(invariant.repair(next), next) as S
+      const repaired = shape.restore(invariant.repair(next, before), next) as State
       environment.onRepair?.({ invariant: name, before: next, after: repaired })
       next = repaired
     }
@@ -75,9 +80,10 @@ export const createWidget = <Sh extends AnyShape>(widget: Widget<Sh>, options: O
     return next
   }
 
-  let current = enforce(shape.create(options, id) as S)
+  const created = shape.create(options, id) as State
+  let current = enforce(created, created, false)
 
-  const withTimers = (state: S, actions: readonly Action[], fired?: string): S => {
+  const withTimers = (state: State, actions: readonly Action[], fired?: string): State => {
     const changed = actions.some((action) => action.type === 'timer' || action.type === 'cancelTimer')
     if (!changed && fired === undefined) return state
 
@@ -92,7 +98,7 @@ export const createWidget = <Sh extends AnyShape>(widget: Widget<Sh>, options: O
     return { ...state, timers }
   }
 
-  const notifyChanges = (before: S, after: S) => {
+  const notifyChanges = (before: State, after: State) => {
     for (const name of shape.owned) {
       const previous = (before as Mutable)[name]
       const value = (after as Mutable)[name]
@@ -104,14 +110,13 @@ export const createWidget = <Sh extends AnyShape>(widget: Widget<Sh>, options: O
       try {
         onChange(value)
       } catch (error) {
-        if (environment.strict) throw error
-        environment.onError?.(error)
+        fail(error)
       }
     }
   }
 
-  const forgetLeftItems = (before: S, after: S) => {
-    const items = (after as Mutable).collection as Collection<K> | undefined
+  const forgetLeftItems = (before: State, after: State) => {
+    const items = (after as Mutable).collection as Collection<Key> | undefined
     if (items === undefined || items === (before as Mutable).collection) return
 
     for (const byKey of rendered.values()) {
@@ -121,31 +126,38 @@ export const createWidget = <Sh extends AnyShape>(widget: Widget<Sh>, options: O
     }
   }
 
-  const commit = (next: S, report = true) => {
+  const commit = (next: State, report = true, byStep = false, input?: Input) => {
     const before = current
-    current = enforce(next)
-    if (current === before) return
+    try {
+      current = enforce(next, before, byStep)
+    } catch (error) {
+      fail(error, input)
+      return false
+    }
+    if (current === before) return true
 
     forgetLeftItems(before, current)
     if (report) notifyChanges(before, current)
     for (const listener of listeners) listener()
+    return true
   }
 
-  const dispatch = (input: Input<K>, observed?: ObservedValues, report = true): Dispatched<K> => {
+  const dispatch = (input: Input<Key>, observed?: ObservedValues, report = true): Dispatched<Key> => {
     const before = current
-    const base = observed ? (shape.observe(current, observed) as S) : current
     const fired = input.type === 'timer' ? input.name : undefined
+    let base = current
     let result
 
     try {
+      if (observed) base = shape.observe(current, observed) as State
       result = runSteps(widget.steps, base, input)
     } catch (error) {
-      if (environment.strict) throw error
-      environment.onError?.(error, input)
+      fail(error, input)
     }
 
-    const dispatched: Dispatched<K> = result ? { answer: result.answer, actions: result.actions } : PASSED
-    commit(withTimers(result ? result.state : base, dispatched.actions, fired), report)
+    const answered: Dispatched<Key> = result ? { answer: result.answer, actions: result.actions } : PASSED
+    const committed = commit(withTimers(result ? result.state : base, answered.actions, fired), report, result !== undefined, input)
+    const dispatched = committed ? answered : PASSED
     environment.onDispatch?.({ ...dispatched, input, before, after: current })
 
     return dispatched
@@ -163,18 +175,32 @@ export const createWidget = <Sh extends AnyShape>(widget: Widget<Sh>, options: O
     dispatch,
 
     observe(values) {
-      commit(shape.observe(current, values) as S)
+      let next
+      try {
+        next = shape.observe(current, values) as State
+      } catch (error) {
+        fail(error)
+        return
+      }
+      commit(next)
     },
 
     setOptions(next) {
       const previous = current.options as Mutable
-      commit(shape.sync(current, next) as S, false)
+      let resynced
+      try {
+        resynced = shape.sync(current, next) as State
+      } catch (error) {
+        fail(error)
+        return PASSED
+      }
+      commit(resynced, false)
 
-      const changed = [...shape.owned, ...shape.followed].some((name) => !Object.is(previous[name], (next as Mutable)[name]))
-      if (!changed) return PASSED
+      const changed = [...shape.owned, ...shape.followed].filter((name) => !Object.is(previous[name], (next as Mutable)[name]))
+      if (changed.length === 0) return PASSED
 
       const synced = current as Mutable
-      const dispatched = dispatch(createInput(lifecycle.options), undefined, false)
+      const dispatched = dispatch(createInput(lifecycle.options, { changed }), undefined, false)
       const owned = shape.owned.find((name) => !Object.is(synced[name], (current as Mutable)[name]))
       if (owned !== undefined && environment.strict) throw new Error(`A step changed the owned value "${owned}" on lifecycle.options`)
 
@@ -185,10 +211,14 @@ export const createWidget = <Sh extends AnyShape>(widget: Widget<Sh>, options: O
       let byKey = rendered.get(part)
       if (!byKey) rendered.set(part, (byKey = new Map()))
 
-      const next = renderPart(part, current, key as K, byKey.get(key))
-      byKey.set(key, next)
-
-      return next.attrs
+      try {
+        const next = renderPart(part, current, key as Key, byKey.get(key))
+        byKey.set(key, next)
+        return next.attrs
+      } catch (error) {
+        fail(error)
+        return byKey.get(key)?.attrs ?? {}
+      }
     },
 
     subscribe(listener) {

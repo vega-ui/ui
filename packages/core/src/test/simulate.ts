@@ -4,15 +4,15 @@ import { Action, Answer } from '../step'
 import { createWidget, Widget } from '../widget'
 import { hears } from '../dom/sources'
 
-export interface Simulation<Sh extends AnyShape> {
-  readonly state: SnapshotOf<Sh>
+export interface Simulation<WidgetShape extends AnyShape> {
+  readonly state: SnapshotOf<WidgetShape>
   readonly answer: Answer | 'pass'
   readonly actions: readonly Action[]
-  send(spec: InputSpec | Input<KeyOf<Sh>>, payload?: Payload<KeyOf<Sh>>): Simulation<Sh>
-  setOptions(options: OptionsOf<Sh>): Simulation<Sh>
-  observe(values: ObservedValues): Simulation<Sh>
-  pressAt(key: KeyOf<Sh>): Simulation<Sh>
-  type(text: string): Simulation<Sh>
+  send(spec: InputSpec | Input<KeyOf<WidgetShape>>, payload?: Payload<KeyOf<WidgetShape>>): Simulation<WidgetShape>
+  setOptions(options: OptionsOf<WidgetShape>): Simulation<WidgetShape>
+  observe(values: ObservedValues): Simulation<WidgetShape>
+  pressAt(key: KeyOf<WidgetShape>): Simulation<WidgetShape>
+  type(text: string): Simulation<WidgetShape>
 }
 
 export interface SimulationEnvironment {
@@ -20,15 +20,15 @@ export interface SimulationEnvironment {
   readonly rtl?: boolean
 }
 
-const isInput = <K>(spec: InputSpec | Input<K>): spec is Input<K> => 'is' in spec
+const isInput = <Key>(spec: InputSpec | Input<Key>): spec is Input<Key> => 'is' in spec
 
-export const simulate = <Sh extends AnyShape>(widget: Widget<Sh>, options: OptionsOf<Sh>, environment: SimulationEnvironment = {}): Simulation<Sh> => {
+export const simulate = <WidgetShape extends AnyShape>(widget: Widget<WidgetShape>, options: OptionsOf<WidgetShape>, environment: SimulationEnvironment = {}): Simulation<WidgetShape> => {
   const instance = createWidget(widget, options, { id: 'widget', strict: true })
   const direction = { orientation: environment.orientation ?? 'vertical', rtl: environment.rtl ?? false }
 
   let last: { answer: Answer | 'pass'; actions: readonly Action[] } = { answer: 'pass', actions: [] }
 
-  const simulation: Simulation<Sh> = {
+  const simulation: Simulation<WidgetShape> = {
     get state() {
       return instance.state
     },

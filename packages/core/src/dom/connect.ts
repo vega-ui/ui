@@ -11,18 +11,18 @@ import { pressesText, readMeasure, scrollerBelow, scrollOf } from './measure'
 import { cancels, delivers, DomEvent, eventsFor, hears, spins } from './sources'
 import { inOpenPopup, isTextEntry, yieldsToNative } from './yield'
 
-export interface Bound<K> {
+export interface Bound<Key> {
   readonly element: Element
-  readonly key: K | undefined
-  readonly output: Part<unknown, K>
+  readonly key: Key | undefined
+  readonly output: Part<unknown, Key>
 }
 
-export interface Elements<K> {
+export interface Elements<Key> {
   rootOf(node: Node): Element | undefined
-  bound(): Iterable<Bound<K>>
+  bound(): Iterable<Bound<Key>>
   part(name: string): Element | null
-  item(key: K): Element | null
-  keyOf(element: Element): K | undefined
+  item(key: Key): Element | null
+  keyOf(element: Element): Key | undefined
   partOf(element: Element): string | undefined
   roots(): Iterable<Element>
   watchRoots(listener: () => void): () => void
@@ -51,23 +51,23 @@ export interface DomHandlers {
   submit(event: SubmitEvent): boolean
 }
 
-export interface Connection<K = unknown> extends DomHandlers {
+export interface Connection<Key = unknown> extends DomHandlers {
   readonly events: readonly DomEvent[]
   listen(element: Element): () => void
-  send(input: Input<K>): Dispatched<K>
+  send(input: Input<Key>): Dispatched<Key>
   observe(): void
   paint(): void
-  apply(actions: readonly Action<K>[]): void
+  apply(actions: readonly Action<Key>[]): void
   flush(): void
   disconnect(): void
 }
 
 export interface ConnectionEnvironment {
-  readonly onError?: (error: unknown, action: Action) => void
+  readonly onError?: (error: unknown, action?: Action) => void
 }
 
-interface Waiting<K> {
-  readonly action: Action<K>
+interface Waiting<Key> {
+  readonly action: Action<Key>
   readonly wasKnown: boolean
 }
 
@@ -171,13 +171,13 @@ const orientationOf = (root: Element): Orientation => {
   return IMPLICIT_ORIENTATIONS.get(root.getAttribute('role') ?? '') ?? 'vertical'
 }
 
-export const connect = <Sh extends AnyShape>(instance: WidgetInstance<Sh>, elements: Elements<KeyOf<Sh>>, environment: ConnectionEnvironment = {}): Connection<KeyOf<Sh>> => {
-  type K = KeyOf<Sh>
+export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<WidgetShape>, elements: Elements<KeyOf<WidgetShape>>, environment: ConnectionEnvironment = {}): Connection<KeyOf<WidgetShape>> => {
+  type Key = KeyOf<WidgetShape>
 
   const events = eventsFor(instance.listens)
   const drags = delivers(instance.listens, pointer.drag)
   const dragsOver = delivers(instance.listens, pointer.dragOver)
-  const deferred: Extract<Action<K>, { type: 'measure' | 'awaitAnimations' }>[] = []
+  const deferred: Extract<Action<Key>, { type: 'measure' | 'awaitAnimations' }>[] = []
   const timers = new Map<string, ReturnType<typeof setTimeout>>()
   const startTimer = (name: string, ms: number) => {
     clearTimeout(timers.get(name))
@@ -186,9 +186,9 @@ export const connect = <Sh extends AnyShape>(instance: WidgetInstance<Sh>, eleme
       send(createInput(timer(name)))
     }, ms))
   }
-  const pending: Waiting<K>[] = []
+  const pending: Waiting<Key>[] = []
   const controller = new AbortController()
-  let pressed: { id: number; key: K | undefined; pointerType: string; claimed: boolean } | null = null
+  let pressed: { id: number; key: Key | undefined; pointerType: string; claimed: boolean } | null = null
   let swallowsClick = false
   const scrubs = new Map<string, Animation>()
   const heights = new Map<string, Animation>()
@@ -206,7 +206,7 @@ export const connect = <Sh extends AnyShape>(instance: WidgetInstance<Sh>, eleme
 
     if (declares(layout.resize)) {
       resizes = new ResizeObserver((entries) => {
-        for (const entry of entries) send(createInput<K>(layout.resize, { part: elements.partOf(entry.target) }))
+        for (const entry of entries) send(createInput<Key>(layout.resize, { part: elements.partOf(entry.target) }))
       })
     }
 
@@ -216,12 +216,12 @@ export const connect = <Sh extends AnyShape>(instance: WidgetInstance<Sh>, eleme
 
         const controls = Array.from(event.target.elements)
         const owns = [...elements.roots()].some((root) => controls.some((control) => root.contains(control)))
-        if (owns) queueMicrotask(() => void send(createInput<K>(browser.reset)))
+        if (owns) queueMicrotask(() => void send(createInput<Key>(browser.reset)))
       }, { signal: controller.signal })
     }
 
     if (declares(layout.viewport)) {
-      const changed = () => void send(createInput<K>(layout.viewport))
+      const changed = () => void send(createInput<Key>(layout.viewport))
       window.addEventListener('resize', changed, { signal: controller.signal })
       window.visualViewport?.addEventListener('resize', changed, { signal: controller.signal })
       window.visualViewport?.addEventListener('scroll', changed, { signal: controller.signal })
@@ -238,7 +238,7 @@ export const connect = <Sh extends AnyShape>(instance: WidgetInstance<Sh>, eleme
           return
         }
 
-        send(createInput<K>(text.select, { part: partAt(field), field: fieldOf(field) }))
+        send(createInput<Key>(text.select, { part: partAt(field), field: fieldOf(field) }))
       }
       const hold = () => {
         held = true
@@ -283,7 +283,7 @@ export const connect = <Sh extends AnyShape>(instance: WidgetInstance<Sh>, eleme
 
   const isOwn = (target: EventTarget | null) => rootAt(target) !== undefined
 
-  const find = <T>(target: EventTarget | null, lookup: (element: Element) => T | undefined): T | undefined => {
+  const find = <Found>(target: EventTarget | null, lookup: (element: Element) => Found | undefined): Found | undefined => {
     const root = rootAt(target)
 
     for (let element = target instanceof Element ? target : null; element && element !== root; element = element.parentElement) {
@@ -337,7 +337,7 @@ export const connect = <Sh extends AnyShape>(instance: WidgetInstance<Sh>, eleme
     return values
   }
 
-  const run = (action: Action<K>, waits: boolean) => {
+  const run = (action: Action<Key>, waits: boolean) => {
     switch (action.type) {
       case 'focus': {
         const element = elements.item(action.key)
@@ -503,7 +503,7 @@ export const connect = <Sh extends AnyShape>(instance: WidgetInstance<Sh>, eleme
     }
   }
 
-  const attempt = (action: Action<K>) => {
+  const attempt = (action: Action<Key>) => {
     try {
       return run(action, true)
     } catch (error) {
@@ -512,18 +512,18 @@ export const connect = <Sh extends AnyShape>(instance: WidgetInstance<Sh>, eleme
     }
   }
 
-  const known = (action: Action<K>) => targets(action) && collection.has(instance.state.collection, action.key)
+  const known = (action: Action<Key>) => targets(action) && collection.has(instance.state.collection, action.key)
 
-  const stale = ({ action, wasKnown }: Waiting<K>) => wasKnown && !known(action)
+  const stale = ({ action, wasKnown }: Waiting<Key>) => wasKnown && !known(action)
 
-  const retry = (waiting: readonly Waiting<K>[]) => {
+  const retry = (waiting: readonly Waiting<Key>[]) => {
     for (const entry of waiting) {
       if (stale(entry)) continue
       if (attempt(entry.action)) pending.push(entry)
     }
   }
 
-  const apply = (actions: readonly Action<K>[]) => {
+  const apply = (actions: readonly Action<Key>[]) => {
     if (actions.some((action) => action.type === 'focus')) {
       const kept = pending.filter(({ action }) => action.type !== 'focus')
       pending.splice(0, pending.length, ...kept)
@@ -540,18 +540,22 @@ export const connect = <Sh extends AnyShape>(instance: WidgetInstance<Sh>, eleme
         if (!definition) continue
 
         const previous = painted.get(element)?.[channel]
-        const selected = definition.select(instance.state, key as K)
-        if (previous && sameSelection(previous.selected, selected)) continue
+        try {
+          const selected = definition.select(instance.state, key as Key)
+          if (previous && sameSelection(previous.selected, selected)) continue
 
-        const values: Readonly<Record<string, unknown>> = definition.render(selected)
-        for (const name in values) {
-          if (previous && Object.is(previous.values[name], values[name])) continue
-          WRITERS[channel](element, name, values[name])
+          const values: Readonly<Record<string, unknown>> = definition.render(selected)
+          for (const name in values) {
+            if (previous && Object.is(previous.values[name], values[name])) continue
+            WRITERS[channel](element, name, values[name])
+          }
+          const dropped = previous ? Object.keys(previous.values).filter((name) => !(name in values)) : []
+          for (const name of dropped) WRITERS[channel](element, name, undefined)
+
+          painted.set(element, { ...painted.get(element), [channel]: { selected, values } })
+        } catch (error) {
+          environment.onError?.(error)
         }
-        const dropped = previous ? Object.keys(previous.values).filter((name) => !(name in values)) : []
-        for (const name of dropped) WRITERS[channel](element, name, undefined)
-
-        painted.set(element, { ...painted.get(element), [channel]: { selected, values } })
       }
     }
   }
@@ -561,7 +565,7 @@ export const connect = <Sh extends AnyShape>(instance: WidgetInstance<Sh>, eleme
     const animations = element ? element.getAnimations({ subtree: true }).filter((animation) => animation.effect instanceof KeyframeEffect && animation.effect.target === element) : []
 
     void Promise.allSettled(animations.map((animation) => animation.finished)).then(() => {
-      if (!controller.signal.aborted) send(createInput<K>(browser.animationEnd, { part }))
+      if (!controller.signal.aborted) send(createInput<Key>(browser.animationEnd, { part }))
     })
   }
 
@@ -569,13 +573,13 @@ export const connect = <Sh extends AnyShape>(instance: WidgetInstance<Sh>, eleme
     if (deferred.length === 0) return
 
     const actions = deferred.splice(0)
-    const results: Measured<K>[] = []
+    const results: Measured<Key>[] = []
     for (const action of actions) {
-      if (action.type === 'measure') results.push(readMeasure<K>(elements, action.request, instance.state.collection.order as readonly K[]))
+      if (action.type === 'measure') results.push(readMeasure<Key>(elements, action.request, instance.state.collection.order as readonly Key[]))
       else awaitAnimations(action.part)
     }
 
-    for (const measured of results) send(createInput<K>(measure.done, { measured }))
+    for (const measured of results) send(createInput<Key>(measure.done, { measured }))
   }
 
   const flush = () => {
@@ -584,14 +588,14 @@ export const connect = <Sh extends AnyShape>(instance: WidgetInstance<Sh>, eleme
     runDeferred()
   }
 
-  const settle = (event: Event, input: Input<K>, answer: Answer | 'pass') => {
+  const settle = (event: Event, input: Input<Key>, answer: Answer | 'pass') => {
     if (answer === 'pass') return false
 
     consumed.add(event)
     return answer === 'handled' && cancels(event, input)
   }
 
-  const send = (input: Input<K>, focused?: boolean): Dispatched<K> => {
+  const send = (input: Input<Key>, focused?: boolean): Dispatched<Key> => {
     if (controller.signal.aborted) return { answer: 'pass', actions: [] }
 
     const result = instance.dispatch(input, observed(focused))
@@ -601,7 +605,7 @@ export const connect = <Sh extends AnyShape>(instance: WidgetInstance<Sh>, eleme
     return result
   }
 
-  const dispatch = (event: Event, input: Input<K>, focused?: boolean) => {
+  const dispatch = (event: Event, input: Input<Key>, focused?: boolean) => {
     seen.add(event)
     return settle(event, input, send(input, focused).answer)
   }
@@ -648,7 +652,7 @@ export const connect = <Sh extends AnyShape>(instance: WidgetInstance<Sh>, eleme
     if (!swallowsClick) return
 
     swallowsClick = false
-    if (!isOwn(event.target)) return
+    if (event.detail === 0 || !isOwn(event.target)) return
 
     event.preventDefault()
     event.stopPropagation()
@@ -660,6 +664,7 @@ export const connect = <Sh extends AnyShape>(instance: WidgetInstance<Sh>, eleme
   const onPointerMove = (event: PointerEvent) => {
     if (!pressed || event.pointerId !== pressed.id) return
     if (event.buttons === 0) return release(event, 'release')
+    if (event.defaultPrevented) return
     runDeferred()
     const point = { x: event.clientX, y: event.clientY }
     const { pointerType } = pressed
@@ -848,8 +853,8 @@ export const connect = <Sh extends AnyShape>(instance: WidgetInstance<Sh>, eleme
   const listen = (element: Element) => {
     const typed = element as HTMLElement
 
-    const on = <T extends keyof HTMLElementEventMap>(type: T, handler: (event: HTMLElementEventMap[T]) => boolean, { passive = false } = {}) => {
-      const listener = (event: HTMLElementEventMap[T]) => {
+    const on = <EventType extends keyof HTMLElementEventMap>(type: EventType, handler: (event: HTMLElementEventMap[EventType]) => boolean, { passive = false } = {}) => {
+      const listener = (event: HTMLElementEventMap[EventType]) => {
         if (handler(event)) event.preventDefault()
       }
       typed.addEventListener(type, listener, { passive, signal: controller.signal })
@@ -923,7 +928,7 @@ export const connect = <Sh extends AnyShape>(instance: WidgetInstance<Sh>, eleme
 
   const observe = () => instance.observe(observed())
 
-  const receive = (input: Input) => void send(input as Input<K>)
+  const receive = (input: Input) => void send(input as Input<Key>)
   receivers.set(elements, receive)
 
   return { ...handlers, events, listen, send: (input) => send(input), observe, paint, apply, flush, disconnect }

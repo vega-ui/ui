@@ -1,53 +1,56 @@
 import { Collection, collection } from '../collection'
-import { InputSpec, key, mod, nav, pointer } from '../input'
+import { InputSpec, key, mod, nav, pointer, timer } from '../input'
 import { Field, Reader } from '../state'
-import { FocusStrategy, handled, keep, Result, show, Step } from '../step'
+import { act, FocusStrategy, handled, keep, Result, show, Step } from '../step'
+
+export const DRAGGED = 'dragged'
 
 export type SelectionMode = 'single' | 'multiple' | 'range'
 
 export type ExtendMode = 'toggle' | 'range'
 
-export interface Extension<K> {
-  readonly anchor: K
-  readonly base: readonly K[]
-  readonly to: K
+export interface Extension<Key> {
+  readonly anchor: Key
+  readonly base: readonly Key[]
+  readonly to: Key
+  readonly value: readonly Key[]
 }
 
-export interface Gesture<K> {
+export interface Gesture<Key> {
   readonly phase: 'idle' | 'pressed' | 'dragging' | 'dragged'
-  readonly pointed?: K
-  readonly from?: K
+  readonly pointed?: Key
+  readonly from?: Key
 }
 
 export const IDLE_GESTURE: Gesture<never> = { phase: 'idle' }
 
-export interface SelectionOptions<S, K> {
-  readonly value: Field<S, readonly K[]>
-  readonly active: Field<S, K | null>
-  readonly anchor: Field<S, K | null>
-  readonly mode: Reader<S, SelectionMode | undefined>
+export interface SelectionOptions<State, Key> {
+  readonly value: Field<State, readonly Key[]>
+  readonly active: Field<State, Key | null>
+  readonly anchor: Field<State, Key | null>
+  readonly mode: Reader<State, SelectionMode | undefined>
   readonly strategy: FocusStrategy
   readonly keys?: readonly InputSpec[]
   readonly extend?: ExtendMode
-  readonly extension?: Field<S, Extension<K> | null>
-  readonly gesture?: Field<S, Gesture<K>>
-  readonly selectable?: (state: S, key: K) => boolean
-  readonly between?: (state: S, from: K, to: K) => readonly K[]
-  readonly compare?: (state: S, first: K, second: K) => number
-  readonly resolveRange?: (state: S, start: K, end: K) => readonly K[] | undefined
-  readonly all?: (state: S) => readonly K[] | undefined
+  readonly extension?: Field<State, Extension<Key> | null>
+  readonly gesture?: Field<State, Gesture<Key>>
+  readonly selectable?: (state: State, key: Key) => boolean
+  readonly between?: (state: State, from: Key, to: Key) => readonly Key[]
+  readonly compare?: (state: State, first: Key, second: Key) => number
+  readonly resolveRange?: (state: State, start: Key, end: Key) => readonly Key[] | undefined
+  readonly all?: (state: State) => readonly Key[] | undefined
 }
 
-export interface Selection<S, K> {
-  (state: S, input: Parameters<Step<S, K>>[1]): Result<S, K> | undefined
+export interface Selection<State, Key> {
+  (state: State, input: Parameters<Step<State, Key>>[1]): Result<State, Key> | undefined
   readonly listens: readonly InputSpec[]
-  isSelected(state: S, key: K): boolean
-  edges(state: S): readonly [K, K] | undefined
-  toggle(state: S, key: K): S
-  extend(state: S, from: K, to: K): S
-  selectAll(state: S): S
-  press(state: S, key: K): S
-  drag(state: S, key: K): S
+  isSelected(state: State, key: Key): boolean
+  edges(state: State): readonly [Key, Key] | undefined
+  toggle(state: State, key: Key): State
+  extend(state: State, from: Key, to: Key): State
+  selectAll(state: State): State
+  press(state: State, key: Key): State
+  drag(state: State, key: Key): State
 }
 
 const SHIFT_FORWARD = key.with(nav.forward, mod.shift)
@@ -57,35 +60,35 @@ const TO_FIRST = key.with(nav.first, mod.shift, mod.mod)
 const TO_LAST = key.with(nav.last, mod.shift, mod.mod)
 const SELECT_ALL = key.with(key.a, mod.mod)
 
-export const isSelected = <K>(value: readonly K[], target: K) => value.includes(target)
-
-const union = <K>(current: readonly K[], added: readonly K[]) => [...current, ...added.filter((key) => !current.includes(key))]
+export const isSelected = <Key>(value: readonly Key[], target: Key) => value.includes(target)
 
 const sets = new WeakMap<readonly unknown[], ReadonlySet<unknown>>()
 
-const setOf = <K>(keys: readonly K[]): ReadonlySet<K> => {
+const setOf = <Key>(keys: readonly Key[]): ReadonlySet<Key> => {
   let found = sets.get(keys)
   if (!found) sets.set(keys, (found = new Set(keys)))
 
-  return found as ReadonlySet<K>
+  return found as ReadonlySet<Key>
 }
 
-const sameKeys = <K>(current: readonly K[], next: readonly K[]) => current.length === next.length && next.every((key) => setOf(current).has(key))
+const sameKeys = <Key>(current: readonly Key[], next: readonly Key[]) => current.length === next.length && next.every((key) => setOf(current).has(key))
 
-export const selection = <S extends { collection: Collection<K> }, K>(options: SelectionOptions<S, K>): Selection<S, K> => {
+const union = <Key>(current: readonly Key[], added: readonly Key[]) => [...current, ...added.filter((key) => !setOf(current).has(key))]
+
+export const selection = <State extends { collection: Collection<Key> }, Key>(options: SelectionOptions<State, Key>): Selection<State, Key> => {
   const { active, anchor, mode, strategy, keys = [key.space], extend: extendMode = 'toggle', extension, gesture } = options
-  const value: Field<S, readonly K[]> = {
+  const value: Field<State, readonly Key[]> = {
     ...options.value,
     set: (state, next) => (sameKeys(options.value.get(state), next) ? state : options.value.set(state, next)),
   }
-  const selectable = options.selectable ?? ((state: S, target: K) => collection.isNavigable(state.collection, target))
-  const compare = options.compare ?? ((state: S, first: K, second: K) => (state.collection.index.get(first) ?? 0) - (state.collection.index.get(second) ?? 0))
-  const between = options.between ?? ((state: S, from: K, to: K) => collection.between(state.collection, from, to))
-  const edgeCache = new WeakMap<readonly K[], { collection: Collection<K>; edges: readonly [K, K] }>()
+  const selectable = options.selectable ?? ((state: State, target: Key) => collection.isNavigable(state.collection, target))
+  const compare = options.compare ?? ((state: State, first: Key, second: Key) => (state.collection.index.get(first) ?? 0) - (state.collection.index.get(second) ?? 0))
+  const between = options.between ?? ((state: State, from: Key, to: Key) => collection.between(state.collection, from, to))
+  const edgeCache = new WeakMap<readonly Key[], { collection: Collection<Key>; edges: readonly [Key, Key] }>()
 
-  const ordered = (state: S, first: K, second: K): [K, K] => (compare(state, first, second) > 0 ? [second, first] : [first, second])
+  const ordered = (state: State, first: Key, second: Key): [Key, Key] => (compare(state, first, second) > 0 ? [second, first] : [first, second])
 
-  const edges = (state: S): readonly [K, K] | undefined => {
+  const edges = (state: State): readonly [Key, Key] | undefined => {
     const current = value.get(state)
     if (mode.get(state) !== 'range' || current.length === 0) return undefined
 
@@ -99,14 +102,14 @@ export const selection = <S extends { collection: Collection<K> }, K>(options: S
     return found
   }
 
-  const selected = (state: S, target: K): boolean => {
+  const selected = (state: State, target: Key): boolean => {
     if (mode.get(state) !== 'range') return setOf(value.get(state)).has(target)
 
     const found = edges(state)
     return found !== undefined && compare(state, target, found[0]) >= 0 && compare(state, target, found[1]) <= 0
   }
 
-  const rangeValue = (state: S, first: K, second: K): readonly K[] => {
+  const rangeValue = (state: State, first: Key, second: Key): readonly Key[] => {
     const [start, end] = ordered(state, first, second)
     const resolved = options.resolveRange?.(state, start, end)
     if (resolved) return resolved
@@ -114,7 +117,7 @@ export const selection = <S extends { collection: Collection<K> }, K>(options: S
     return start === end ? [start] : [start, end]
   }
 
-  const keysBetween = (state: S, first: K, second: K): readonly K[] => {
+  const keysBetween = (state: State, first: Key, second: Key): readonly Key[] => {
     const [start, end] = ordered(state, first, second)
     const resolved = options.resolveRange?.(state, start, end)
     if (resolved) return resolved
@@ -122,9 +125,9 @@ export const selection = <S extends { collection: Collection<K> }, K>(options: S
     return between(state, start, end).filter((target) => selectable(state, target))
   }
 
-  const clearExtension = (state: S) => (extension ? extension.set(state, null) : state)
+  const clearExtension = (state: State) => (extension ? extension.set(state, null) : state)
 
-  const toggle = (state: S, target: K): S => {
+  const toggle = (state: State, target: Key): State => {
     if (!selectable(state, target)) return state
 
     switch (mode.get(state)) {
@@ -146,23 +149,25 @@ export const selection = <S extends { collection: Collection<K> }, K>(options: S
     }
   }
 
-  const anchorFor = (state: S, fallback: K) => {
+  const anchorFor = (state: State, fallback: Key) => {
     const anchored = anchor.get(state)
     if (anchored != null && collection.has(state.collection, anchored) && selected(state, anchored)) return anchored
 
     return fallback
   }
 
-  const extendMultiple = (state: S, from: K, to: K): S => {
+  const extendMultiple = (state: State, from: Key, to: Key): State => {
     const previous = extension?.get(state)
-    const continued = previous && previous.to === from ? previous : { anchor: anchorFor(state, from), base: value.get(state), to: from }
-    const kept = continued.base.filter((key) => selected(state, key))
+    const current = value.get(state)
+    const continued = previous && previous.to === from && sameKeys(previous.value, current) ? previous : { anchor: anchorFor(state, from), base: current, to: from, value: current }
+    const chosen = setOf(current)
+    const kept = continued.base.filter((key) => chosen.has(key))
     const next = value.set(active.set(state, to), union(kept, keysBetween(state, continued.anchor, to)))
 
-    return extension ? extension.set(next, { ...continued, to }) : next
+    return extension ? extension.set(next, { ...continued, to, value: value.get(next) }) : next
   }
 
-  const extendRange = (state: S, from: K, to: K): S => {
+  const extendRange = (state: State, from: Key, to: Key): State => {
     const found = edges(state)
     if (!found || !selectable(state, to)) return state
 
@@ -170,7 +175,7 @@ export const selection = <S extends { collection: Collection<K> }, K>(options: S
     return value.set(active.set(state, to), rangeValue(state, start === from ? end : start, to))
   }
 
-  const extend = (state: S, from: K, to: K): S => {
+  const extend = (state: State, from: Key, to: Key): State => {
     switch (mode.get(state)) {
       case 'multiple': return extendMultiple(state, from, to)
       case 'range': return extendRange(state, from, to)
@@ -178,19 +183,19 @@ export const selection = <S extends { collection: Collection<K> }, K>(options: S
     }
   }
 
-  const selectAll = (state: S): S => {
+  const selectAll = (state: State): State => {
     if (mode.get(state) !== 'multiple') return state
 
     const every = options.all?.(state) ?? state.collection.order.filter((target) => selectable(state, target))
     return value.set(clearExtension(state), every)
   }
 
-  const press = (state: S, target: K): S => {
+  const press = (state: State, target: Key): State => {
     if (!gesture || !selectable(state, target)) return state
 
     switch (mode.get(state)) {
       case 'multiple': {
-        const started = extension ? extension.set(state, { anchor: target, base: value.get(state), to: target }) : state
+        const started = extension ? extension.set(state, { anchor: target, base: value.get(state), to: target, value: value.get(state) }) : state
         return gesture.set(started, { phase: 'pressed', pointed: target })
       }
       case 'range': {
@@ -203,7 +208,7 @@ export const selection = <S extends { collection: Collection<K> }, K>(options: S
     }
   }
 
-  const drag = (state: S, target: K): S => {
+  const drag = (state: State, target: Key): State => {
     if (!gesture) return state
 
     const { phase, pointed, from } = gesture.get(state)
@@ -216,7 +221,7 @@ export const selection = <S extends { collection: Collection<K> }, K>(options: S
     return value.set(dragging, rangeValue(state, from, target))
   }
 
-  const step: Step<S, K> = (state, input) => {
+  const step: Step<State, Key> = (state, input) => {
     const current = mode.get(state)
     if (current === undefined) return undefined
 
@@ -224,8 +229,12 @@ export const selection = <S extends { collection: Collection<K> }, K>(options: S
     const multiple = current === 'multiple'
 
     if (gesture && (input.is(pointer.release) || input.is(pointer.cancel))) {
-      return keep(gesture.set(state, gesture.get(state).phase === 'dragging' ? { phase: 'dragged' } : IDLE_GESTURE))
+      if (gesture.get(state).phase !== 'dragging') return keep(gesture.set(state, IDLE_GESTURE))
+
+      return keep(gesture.set(state, { phase: 'dragged' }), [act.timer(DRAGGED, 0)])
     }
+
+    if (gesture && input.is(timer(DRAGGED))) return keep(gesture.set(state, IDLE_GESTURE))
 
     if (input.is(pointer.press)) {
       if (gesture && gesture.get(state).phase === 'dragged') return keep(gesture.set(state, IDLE_GESTURE))

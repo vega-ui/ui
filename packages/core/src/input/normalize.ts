@@ -33,7 +33,7 @@ const edges = (input: Input<unknown>) => {
   return undefined
 }
 
-export const toNav = <K>(input: Input<K>, direction: Direction): Input<K> => {
+export const toNav = <Key>(input: Input<Key>, direction: Direction): Input<Key> => {
   if (input.type !== 'key') return input
 
   const target = alongAxis(input, direction) ?? edges(input)
@@ -42,7 +42,7 @@ export const toNav = <K>(input: Input<K>, direction: Direction): Input<K> => {
   return createInput({ type: target.type, name: target.name, mods: input.mods }, payloadOf(input))
 }
 
-export const normalizationsOf = <K>(input: Input<K>, orientation: Orientation): readonly [Input<K>, Input<K>] => [
+export const normalizationsOf = <Key>(input: Input<Key>, orientation: Orientation): readonly [Input<Key>, Input<Key>] => [
   toNav(input, { orientation, rtl: false }),
   toNav(input, { orientation, rtl: true }),
 ]

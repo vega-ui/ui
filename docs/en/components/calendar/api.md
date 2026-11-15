@@ -13,16 +13,16 @@
 | `compact` | `boolean` | — | No | Shrinks the calendar to the width of its content: the root gets `data-compact="true"`. |
 | `max` | `string` | — | No | Latest selectable date as a `YYYY-MM-DD` string. Months and years beyond this date become unavailable. Day, Month, and Year pickers use this to disable or clamp navigation. |
 | `min` | `string` | — | No | Earliest selectable date as a `YYYY-MM-DD` string. Months and years before this date become unavailable. All pickers respect this constraint when computing active ranges. |
-| `selection` | `S` | `'single'` | No | Selection mode. Determines the structure of `value`, all dates are `YYYY-MM-DD` strings: 'single' — a string, `''` when nothing is selected; 'multiple' — an array of strings; 'range' — a `[start, end]` tuple with `start` not after `end`, `''` marks an unset bound |
+| `selection` | `SelectionMode` | `'single'` | No | Selection mode. Determines the structure of `value`, all dates are `YYYY-MM-DD` strings: 'single' — a string, `''` when nothing is selected; 'multiple' — an array of strings; 'range' — a `[start, end]` tuple with `start` not after `end`, `''` marks an unset bound |
 | `view` | `CalendarView` | — | No | Controlled visible view: 'day' — the days of the visible month (`CalendarDays`); 'month' — the months of the visible year (`CalendarMonths`); 'year' — pages of years (`CalendarYears`) |
-| `value` | `CalendarValue<S>` | — | No | Controlled selection value, shaped by the `selection` mode. Malformed or non-existent dates are treated as unselected. |
-| `defaultValue` | `CalendarValue<S>` | — | No | Uncontrolled initial selection value, shaped by the `selection` mode. |
+| `value` | `CalendarValue<SelectionMode>` | — | No | Controlled selection value, shaped by the `selection` mode. Malformed or non-existent dates are treated as unselected. |
+| `defaultValue` | `CalendarValue<SelectionMode>` | — | No | Uncontrolled initial selection value, shaped by the `selection` mode. |
 | `defaultView` | `CalendarView` | `'day'` | No | Initial view for uncontrolled usage. |
 | `disabled` | `boolean` | — | No | Disables the whole calendar: no date can be selected and navigation is off. |
 | `readOnly` | `boolean` | — | No | Makes the selection read-only like a native `readonly` input: the day grid gets `aria-readonly="true"`, navigation still works, and picking a day neither changes the selection nor calls `onChangeValue`. |
 | `autoFocus` | `boolean` | — | No | Moves the focus into the calendar when it mounts, onto the tab stop of the shown view: the focused day, otherwise the selected day or today, otherwise the first available day. |
 | `disabledDates` | `CalendarDatesDisabled` | — | No | Dates that cannot be selected, as `YYYY-MM-DD` strings: a single date; an array of dates; a predicate `(date: string) => boolean` |
-| `onChangeValue` | `(value: CalendarValue<S>) => void` | — | No | Fires when the user changes the selection. The value is shaped by the `selection` mode. |
+| `onChangeValue` | `(value: CalendarValue<SelectionMode>) => void` | — | No | Fires when the user changes the selection. The value is shaped by the `selection` mode. |
 | `onChangeView` | `(view: CalendarView) => void` | — | No | Fires when the visible view changes. |
 | `focusedDate` | `string` | — | No | Controlled focused day as a `YYYY-MM-DD` string. The calendar shows its month, and the day is the tab stop of the day grid when it can be focused. |
 | `defaultFocusedDate` | `string` | — | No | Initial focused day for uncontrolled usage. Default: the selected day, otherwise `today` clamped to `min` and `max` |

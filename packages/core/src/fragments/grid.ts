@@ -4,8 +4,8 @@ export type GridWrap = 'horizontal' | 'vertical' | 'both'
 
 export type GridIntent = 'forward' | 'backward' | 'up' | 'down' | 'rowStart' | 'rowEnd' | 'gridStart' | 'gridEnd' | 'pageUp' | 'pageDown'
 
-export interface GridCellPosition<K> {
-  readonly key: K
+export interface GridCellPosition<Key> {
+  readonly key: Key
   readonly row: number
   readonly col: number
 }
@@ -15,37 +15,37 @@ export interface GridCellFlags {
   readonly selectable?: boolean
 }
 
-export interface GridCell<K> extends GridCellPosition<K> {
+export interface GridCell<Key> extends GridCellPosition<Key> {
   readonly excluded: boolean
   readonly selectable: boolean
 }
 
-interface Line<K> {
+interface Line<Key> {
   readonly indexes: number[]
-  readonly keys: Map<number, K>
+  readonly keys: Map<number, Key>
 }
 
-export interface GridLayout<K> {
-  readonly cells: ReadonlyMap<K, GridCell<K>>
-  readonly keys: readonly K[]
+export interface GridLayout<Key> {
+  readonly cells: ReadonlyMap<Key, GridCell<Key>>
+  readonly keys: readonly Key[]
   readonly rows: readonly number[]
   readonly cols: readonly number[]
-  readonly byRow: ReadonlyMap<number, Line<K>>
-  readonly byCol: ReadonlyMap<number, Line<K>>
-  readonly compare: (first: K, second: K) => number
-  readonly collection: Collection<K>
+  readonly byRow: ReadonlyMap<number, Line<Key>>
+  readonly byCol: ReadonlyMap<number, Line<Key>>
+  readonly compare: (first: Key, second: Key) => number
+  readonly collection: Collection<Key>
 }
 
-export interface GridLayoutOptions<K> {
-  readonly positions: readonly GridCellPosition<K>[]
-  readonly flags?: ReadonlyMap<K, GridCellFlags>
-  readonly isExcluded?: (key: K) => boolean
-  readonly compare?: (first: K, second: K) => number
+export interface GridLayoutOptions<Key> {
+  readonly positions: readonly GridCellPosition<Key>[]
+  readonly flags?: ReadonlyMap<Key, GridCellFlags>
+  readonly isExcluded?: (key: Key) => boolean
+  readonly compare?: (first: Key, second: Key) => number
 }
 
 const ascending = (first: number, second: number) => first - second
 
-const addTo = <K>(lines: Map<number, Line<K>>, index: number, at: number, key: K) => {
+const addTo = <Key>(lines: Map<number, Line<Key>>, index: number, at: number, key: Key) => {
   let line = lines.get(index)
   if (!line) lines.set(index, (line = { indexes: [], keys: new Map() }))
 
@@ -53,11 +53,11 @@ const addTo = <K>(lines: Map<number, Line<K>>, index: number, at: number, key: K
   line.keys.set(at, key)
 }
 
-const sortLines = <K>(lines: Map<number, Line<K>>) => {
+const sortLines = <Key>(lines: Map<number, Line<Key>>) => {
   for (const line of lines.values()) line.indexes.sort(ascending)
 }
 
-const byPosition = <K>(cells: ReadonlyMap<K, GridCellPosition<K>>) => (first: K, second: K) => {
+const byPosition = <Key>(cells: ReadonlyMap<Key, GridCellPosition<Key>>) => (first: Key, second: Key) => {
   const firstCell = cells.get(first)
   const secondCell = cells.get(second)
   if (firstCell && !secondCell) return -1
@@ -67,13 +67,13 @@ const byPosition = <K>(cells: ReadonlyMap<K, GridCellPosition<K>>) => (first: K,
   return firstCell.row - secondCell.row || firstCell.col - secondCell.col
 }
 
-export const createGridLayout = <K>({ positions, flags, isExcluded, compare }: GridLayoutOptions<K>): GridLayout<K> => {
-  const known = new Map<K, GridCellPosition<K>>(positions.map((cell) => [cell.key, cell]))
+export const createGridLayout = <Key>({ positions, flags, isExcluded, compare }: GridLayoutOptions<Key>): GridLayout<Key> => {
+  const known = new Map<Key, GridCellPosition<Key>>(positions.map((cell) => [cell.key, cell]))
   const order = compare ?? byPosition(known)
 
-  const cells = new Map<K, GridCell<K>>()
-  const byRow = new Map<number, Line<K>>()
-  const byCol = new Map<number, Line<K>>()
+  const cells = new Map<Key, GridCell<Key>>()
+  const byRow = new Map<number, Line<Key>>()
+  const byCol = new Map<number, Line<Key>>()
 
   for (const { key, row, col } of positions) {
     const cellFlags = flags?.get(key)
@@ -92,7 +92,7 @@ export const createGridLayout = <K>({ positions, flags, isExcluded, compare }: G
   const cols = [...byCol.keys()].sort(ascending)
   const keys = rows.flatMap((row) => byRow.get(row)!.indexes.map((col) => byRow.get(row)!.keys.get(col)!))
   const every = [...cells.keys()]
-  const collection: Collection<K> = {
+  const collection: Collection<Key> = {
     order: every,
     index: new Map(every.map((key, position) => [key, position])),
     disabled: new Set(every.filter((key) => cells.get(key)!.excluded)),
@@ -102,7 +102,7 @@ export const createGridLayout = <K>({ positions, flags, isExcluded, compare }: G
   return { cells, keys, rows, cols, byRow, byCol, compare: order, collection }
 }
 
-const edgeOf = <K>(lines: ReadonlyMap<number, Line<K>>, index: number | undefined, side: 'first' | 'last') => {
+const edgeOf = <Key>(lines: ReadonlyMap<number, Line<Key>>, index: number | undefined, side: 'first' | 'last') => {
   const line = index === undefined ? undefined : lines.get(index)
   if (!line) return undefined
 
@@ -116,7 +116,7 @@ const nextIn = (indexes: readonly number[], current: number, direction: 1 | -1) 
   return indexes[position + direction]
 }
 
-const along = <K>(lines: ReadonlyMap<number, Line<K>>, all: readonly number[], lineIndex: number, at: number, direction: 1 | -1, wraps: boolean) => {
+const along = <Key>(lines: ReadonlyMap<number, Line<Key>>, all: readonly number[], lineIndex: number, at: number, direction: 1 | -1, wraps: boolean) => {
   const line = lines.get(lineIndex)
   if (!line) return undefined
 
@@ -127,7 +127,7 @@ const along = <K>(lines: ReadonlyMap<number, Line<K>>, all: readonly number[], l
   return edgeOf(lines, nextIn(all, lineIndex, direction), direction === 1 ? 'first' : 'last')
 }
 
-export const gridNeighbor = <K>(layout: GridLayout<K>, from: K, intent: GridIntent, wrap: GridWrap | undefined): K | undefined => {
+export const gridNeighbor = <Key>(layout: GridLayout<Key>, from: Key, intent: GridIntent, wrap: GridWrap | undefined): Key | undefined => {
   const cell = layout.cells.get(from)
   if (!cell || cell.excluded) return undefined
 
@@ -148,7 +148,7 @@ export const gridNeighbor = <K>(layout: GridLayout<K>, from: K, intent: GridInte
   }
 }
 
-export const gridBetween = <K>(layout: GridLayout<K>, from: K, to: K): K[] => {
+export const gridBetween = <Key>(layout: GridLayout<Key>, from: Key, to: Key): Key[] => {
   if (!layout.cells.has(from) || !layout.cells.has(to)) return []
 
   const [start, end] = layout.compare(from, to) > 0 ? [to, from] : [from, to]

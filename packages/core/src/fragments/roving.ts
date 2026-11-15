@@ -3,18 +3,18 @@ import { focus, nav, pointer } from '../input'
 import { Field } from '../state'
 import { FocusStrategy, handled, keep, listening, show, Step } from '../step'
 
-export interface RovingOptions<S, K> {
-  readonly active: Field<S, K | null>
+export interface RovingOptions<State, Key> {
+  readonly active: Field<State, Key | null>
   readonly strategy: FocusStrategy
   readonly hover?: boolean
   readonly page?: number
   readonly wrap?: boolean
 }
 
-export const roving = <S extends { collection: Collection<K> }, K>({ active, strategy, hover = false, page, wrap = false }: RovingOptions<S, K>): Step<S, K> => {
-  const move = (state: S, key: K | null) => (key == null ? handled(state) : handled(active.set(state, key), [show(strategy, key)]))
+export const roving = <State extends { collection: Collection<Key> }, Key>({ active, strategy, hover = false, page, wrap = false }: RovingOptions<State, Key>): Step<State, Key> => {
+  const move = (state: State, key: Key | null) => (key == null ? handled(state) : handled(active.set(state, key), [show(strategy, key)]))
 
-  const paged = (items: Collection<K>, current: K | null, distance: number) => {
+  const paged = (items: Collection<Key>, current: Key | null, distance: number) => {
     const position = collection.has(items, current) ? items.index.get(current)! : -1
 
     return collection.nearest(items, position + distance)
@@ -22,7 +22,7 @@ export const roving = <S extends { collection: Collection<K> }, K>({ active, str
 
   const listens = [nav.forward, nav.backward, nav.first, nav.last, nav.pageForward, nav.pageBackward, focus.enter, pointer.down, ...(hover ? [pointer.hover] : [])]
 
-  return listening<S, K>(listens, (state, input) => {
+  return listening<State, Key>(listens, (state, input) => {
     const items = state.collection
     const current = active.get(state)
 

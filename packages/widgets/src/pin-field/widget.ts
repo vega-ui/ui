@@ -12,7 +12,7 @@ const slotsOf = (maxLength: number) => {
   const known = slotLists.get(maxLength)
   if (known) return known
 
-  const list = Array.from({ length: maxLength }, (_, slot) => slot)
+  const list = [...Array(maxLength).keys()]
   slotLists.set(maxLength, list)
 
   return list
@@ -34,6 +34,7 @@ export const pinFieldShape = state({
   },
   observes: { password: matching(ROOT, '[type="password"]') },
   collection: (options) => slots.of(slotsOf(options.maxLength)),
+  parts: [ROOT],
 })
 
 type PinFieldSnapshot = typeof pinFieldShape.__snapshot

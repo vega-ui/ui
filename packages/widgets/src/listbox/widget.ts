@@ -6,7 +6,6 @@ import {
   Field,
   focus,
   handled,
-  idOf,
   internal,
   keep,
   key,
@@ -19,7 +18,7 @@ import {
   typeahead,
   TYPEAHEAD,
 } from '@vega-ui/core'
-import { entries, keysOf, ListboxEntry, ListboxSelected, ListboxValue, optionInvariants, optionPart, valueOf, valuesOf } from './items'
+import { activeIdOf, entries, keysOf, ListboxEntry, ListboxSelected, ListboxValue, optionInvariants, optionPart, valueOf, valuesOf } from './items'
 
 export const listboxShape = state({
   options: { items: [] as readonly ListboxEntry[], mode: 'single' as SelectionMode, disabled: false, typeahead: true },
@@ -82,7 +81,7 @@ export const listboxWidget = defineWidget({
 
   output: {
     root: listboxShape.part(
-      (state) => [state.options.mode, state.options.disabled, state.active == null ? null : idOf(state, 'option', state.active)] as const,
+      (state) => [state.options.mode, state.options.disabled, activeIdOf(state)] as const,
       ([mode, disabled, activeId]) => ({
         role: 'listbox',
         tabIndex: disabled ? undefined : 0,

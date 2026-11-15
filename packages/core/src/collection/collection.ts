@@ -1,21 +1,21 @@
-export interface Collection<K> {
-  readonly order: readonly K[]
-  readonly index: ReadonlyMap<K, number>
-  readonly disabled: ReadonlySet<K>
-  readonly labels: ReadonlyMap<K, string>
+export interface Collection<Key> {
+  readonly order: readonly Key[]
+  readonly index: ReadonlyMap<Key, number>
+  readonly disabled: ReadonlySet<Key>
+  readonly labels: ReadonlyMap<Key, string>
 }
 
-export interface SourceSpec<Item, K> {
-  key(item: Item): K
+export interface SourceSpec<Item, Key> {
+  key(item: Item): Key
   disabled?(item: Item): boolean
   label?(item: Item): string
 }
 
-export interface Source<Item, K> {
-  of(items: readonly Item[]): Collection<K>
+export interface Source<Item, Key> {
+  of(items: readonly Item[]): Collection<Key>
 }
 
-const build = <Item, K>(items: readonly Item[], spec: SourceSpec<Item, K>): Collection<K> => {
+const build = <Item, Key>(items: readonly Item[], spec: SourceSpec<Item, Key>): Collection<Key> => {
   const order = items.map(spec.key)
   const index = new Map(order.map((key, position) => [key, position]))
   const disabled = new Set(items.filter((item) => spec.disabled?.(item)).map(spec.key))
@@ -24,8 +24,8 @@ const build = <Item, K>(items: readonly Item[], spec: SourceSpec<Item, K>): Coll
   return { order, index, disabled, labels }
 }
 
-export const source = <Item, K>(spec: SourceSpec<Item, K>): Source<Item, K> => {
-  const cache = new WeakMap<readonly Item[], Collection<K>>()
+export const source = <Item, Key>(spec: SourceSpec<Item, Key>): Source<Item, Key> => {
+  const cache = new WeakMap<readonly Item[], Collection<Key>>()
 
   return {
     of(items) {
@@ -40,4 +40,4 @@ export const source = <Item, K>(spec: SourceSpec<Item, K>): Source<Item, K> => {
   }
 }
 
-export const emptyCollection = <K>(): Collection<K> => ({ order: [], index: new Map(), disabled: new Set(), labels: new Map() })
+export const emptyCollection = <Key>(): Collection<Key> => ({ order: [], index: new Map(), disabled: new Set(), labels: new Map() })

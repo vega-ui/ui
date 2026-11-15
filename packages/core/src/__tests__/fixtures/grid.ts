@@ -38,15 +38,15 @@ export const shape = state({
   collection: ({ cells, excluded, disabled }) => layoutFor(cells, excluded, disabled).collection,
 })
 
-type S = typeof shape.__snapshot
+type State = typeof shape.__snapshot
 
-export const layoutOf = (current: S) => layouts.get(current.collection)!
+export const layoutOf = (current: State) => layouts.get(current.collection)!
 
-const navigable = (current: S, target: string | undefined): target is string => target !== undefined && layoutOf(current).cells.get(target)?.excluded === false
+const navigable = (current: State, target: string | undefined): target is string => target !== undefined && layoutOf(current).cells.get(target)?.excluded === false
 
-const selectable = (current: S, target: string) => navigable(current, target) && !current.options.disabled.includes(target)
+const selectable = (current: State, target: string) => navigable(current, target) && !current.options.disabled.includes(target)
 
-export const select = selection<S, string>({
+export const select = selection<State, string>({
   value: shape.value,
   active: shape.active,
   anchor: shape.anchor,
@@ -69,7 +69,7 @@ const INTENTS = [
   [nav.last, 'rowEnd'],
 ] as const
 
-const moving = listening<S>(INTENTS.flatMap(([spec]) => [spec, key.with(spec, mod.shift)]), (current, input) => {
+const moving = listening<State>(INTENTS.flatMap(([spec]) => [spec, key.with(spec, mod.shift)]), (current, input) => {
   for (const [spec, intent] of INTENTS) {
     const extending = input.is(key.with(spec, mod.shift))
     if (!input.is(spec) && !extending) continue
@@ -87,13 +87,13 @@ const moving = listening<S>(INTENTS.flatMap(([spec]) => [spec, key.with(spec, mo
   return undefined
 })
 
-const following: Step<S> = (current, input) => {
+const following: Step<State> = (current, input) => {
   if (!input.is(focus.enter) && !input.is(focus.move)) return undefined
 
   return keep(navigable(current, input.key) ? shape.active.set(current, input.key) : current)
 }
 
-const pointing = listening<S>([pointer.down, pointer.dragOver, pointer.press], (current, input) => {
+const pointing = listening<State>([pointer.down, pointer.dragOver, pointer.press], (current, input) => {
   if (input.is(pointer.down)) {
     if (!navigable(current, input.key)) return keep(current)
     return keep(select.press(shape.active.set(current, input.key), input.key))

@@ -664,7 +664,7 @@ describe('Sheet', () => {
       r.getByTestId(TESTID_CLOSE).addEventListener('click', onClick);
 
       await drag(r.getByTestId(TESTID_CLOSE), -150);
-      fireEvent.click(r.getByTestId(TESTID_CLOSE));
+      fireEvent.click(r.getByTestId(TESTID_CLOSE), { detail: 1 });
 
       expect(onClick).not.toHaveBeenCalled();
     });

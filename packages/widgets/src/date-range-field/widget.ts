@@ -21,6 +21,7 @@ export const dateRangeFieldShape = state({
   follows: ['format', 'separator', 'rangeSeparator', 'calendar', 'today'],
   internal: { text: internal(''), pending: internal(undefined as PendingText | undefined), committed: internal(''), touched: internal(false) },
   observes: { readOnly: matching(ROOT, '[readonly]') },
+  parts: [ROOT],
 })
 
 type DateRangeFieldSnapshot = typeof dateRangeFieldShape.__snapshot
@@ -50,7 +51,7 @@ const maskOf = (state: DateRangeFieldSnapshot) => {
   return [...dateMask, ...Array.from(state.options.rangeSeparator), ...dateMask]
 }
 
-const dateRangeField = maskedField<DateRangeFieldSnapshot, DateRange>({
+const dateRangeField = maskedField<DateRangeFieldSnapshot, DateRange, DateRange>({
   text: dateRangeFieldShape.text,
   value: dateRangeFieldShape.value,
   pending: dateRangeFieldShape.pending,
@@ -60,10 +61,10 @@ const dateRangeField = maskedField<DateRangeFieldSnapshot, DateRange>({
   parse: (state, shown) => parseTemplateRange(state.options.calendar, shown, templateOf(state), state.options.rangeSeparator, state.options.today),
   format: (state, range) => formatTemplateRange(state.options.calendar, range, templateOf(state), state.options.rangeSeparator),
   same: (first, second) => first[0] === second[0] && first[1] === second[1],
-  picked: (state, range) => formatTemplateRange(state.options.calendar, range as DateRange, templateOf(state), state.options.rangeSeparator),
+  picked: (state, range) => formatTemplateRange(state.options.calendar, range, templateOf(state), state.options.rangeSeparator),
 })
 
-export const { defaultTextOf } = dateRangeField
+export const { defaultTextOf, pick: PICK_VALUE } = dateRangeField
 
 export const dateRangeFieldWidget = defineWidget({
   state: dateRangeFieldShape,

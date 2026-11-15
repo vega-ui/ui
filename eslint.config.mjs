@@ -52,7 +52,11 @@ export default tseslint.config([
         'getComputedStyle', 'matchMedia', 'requestAnimationFrame', 'cancelAnimationFrame',
         'setTimeout', 'clearTimeout', 'setInterval', 'clearInterval', 'queueMicrotask',
         'Node', 'Element', 'HTMLElement', 'Event', 'ResizeObserver', 'MutationObserver', 'IntersectionObserver',
+        'globalThis', 'self', 'performance',
       ].map((name) => ({ name, message: 'Pure code reaches the browser only through inputs and actions.' }))],
+      '@typescript-eslint/no-restricted-types': ['error', {
+        types: Object.fromEntries(['Node', 'Element', 'HTMLElement', 'Event', 'Document', 'Window'].map((name) => [name, 'Pure code reaches the browser only through inputs and actions.'])),
+      }],
     },
   },
   {

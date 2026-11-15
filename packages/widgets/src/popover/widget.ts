@@ -7,8 +7,9 @@ export const CLOSE_POPOVER = command('closePopover')
 export const popoverShape = state({
   options: { role: undefined as 'listbox' | 'dialog' | undefined },
   owns: { open: controlled(false) },
-  internal: { closing: internal(false) },
+  internal: { mounted: internal(false) },
   observes: { shown: matching(CONTENT, ':popover-open') },
+  parts: [CONTENT],
 })
 
 type PopoverSnapshot = typeof popoverShape.__snapshot
@@ -17,7 +18,7 @@ const SHOW = [act.showPopover(CONTENT)]
 const HIDE = [act.hidePopover(CONTENT)]
 const SETTLING = [act.awaitAnimations(CONTENT)]
 
-export const isRendered = (state: PopoverSnapshot) => state.shown || state.closing
+export const isRendered = (state: PopoverSnapshot) => state.shown || state.mounted
 
 const following: Step<PopoverSnapshot> = (state, input) => {
   if (!input.is(lifecycle.connect) && !input.is(lifecycle.options)) return undefined
@@ -36,15 +37,17 @@ const toggling = listening<PopoverSnapshot>([browser.toggle], (state, input) => 
   if (!input.is(browser.toggle) || input.part !== CONTENT) return undefined
 
   const next = popoverShape.open.set(state, input.to === true)
-  if (input.to === true) return keep(popoverShape.closing.set(next, false))
+  if (input.to === true) return keep(popoverShape.mounted.set(next, true))
 
-  return keep(popoverShape.closing.set(next, true), SETTLING)
+  return keep(next, SETTLING)
 })
 
 const settling: Step<PopoverSnapshot> = (state, input) => {
   if (!input.is(browser.animationEnd) || input.part !== CONTENT) return undefined
 
-  return keep(popoverShape.closing.set(state, false))
+  if (state.shown) return keep(state)
+
+  return keep(popoverShape.mounted.set(state, false))
 }
 
 export const popoverWidget = defineWidget({

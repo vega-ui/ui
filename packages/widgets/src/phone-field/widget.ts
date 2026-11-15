@@ -5,7 +5,7 @@ import { applyPatternEdit, calibratePattern, maskedField, PendingText } from '..
 import { callingCodeOf, getPhoneInvalidity, phoneCaretRange, phoneMaskOf, phoneRules, phoneValueOf } from './phoneMask'
 import { getTypedCountry } from './getTypedCountry'
 
-export const SELECT_COUNTRY = command('selectCountry')
+export const SELECT_COUNTRY = command<{ readonly to: PhoneCountry }>()('selectCountry')
 
 const NO_COUNTRY = '' as PhoneCountry
 
@@ -29,6 +29,7 @@ export const phoneFieldShape = state({
     touched: internal(false),
   },
   observes: { readOnly: matching(ROOT, '[readonly]'), required: matching(ROOT, '[required]') },
+  parts: [ROOT],
 })
 
 type PhoneFieldSnapshot = typeof phoneFieldShape.__snapshot
@@ -68,7 +69,7 @@ const resetting = listening<PhoneFieldSnapshot>([browser.reset], (state, input) 
 const selecting: Step<PhoneFieldSnapshot> = (state, input) => {
   if (!input.is(SELECT_COUNTRY)) return undefined
 
-  const next = phoneFieldShape.country.set(state, input.to as PhoneCountry)
+  const next = phoneFieldShape.country.set(state, input.to)
   if (state.readOnly) return handled(next, [act.focusPart(ROOT)])
 
   const callingCode = callingCodeOf(next.options.numbering, next.country)

@@ -42,7 +42,7 @@ const viewportOf = (): Viewport => {
   return { width: clientWidth, height: clientHeight, keyboardInset }
 }
 
-const metricsOf = <K>(element: Element, request: MeasureRequest<K>): Metrics => {
+const metricsOf = <Key>(element: Element, request: MeasureRequest<Key>): Metrics => {
   const metrics: { rect?: Rect; scroll?: ScrollBox; styles?: Record<string, string> } = {}
   if (request.rect) metrics.rect = rectOf(element)
   if (request.scroll) metrics.scroll = scrollOf(element)
@@ -55,7 +55,7 @@ const metricsOf = <K>(element: Element, request: MeasureRequest<K>): Metrics => 
   return metrics
 }
 
-export const readMeasure = <K>(elements: Elements<K>, request: MeasureRequest<K>, order: readonly K[]): Measured<K> => {
+export const readMeasure = <Key>(elements: Elements<Key>, request: MeasureRequest<Key>, order: readonly Key[]): Measured<Key> => {
   const parts: Record<string, Metrics> = {}
   for (const name of request.parts ?? []) {
     const element = elements.part(name)
@@ -63,12 +63,12 @@ export const readMeasure = <K>(elements: Elements<K>, request: MeasureRequest<K>
   }
 
   const keys = request.items === 'all' ? order : (request.items ?? [])
-  const items: (readonly [K, Metrics])[] = []
+  const items: (readonly [Key, Metrics])[] = []
   for (const key of keys) {
     const element = elements.item(key)
     if (element) items.push([key, metricsOf(element, request)])
   }
 
-  const measured: Measured<K> = { name: request.name, parts, items }
+  const measured: Measured<Key> = { name: request.name, parts, items }
   return request.viewport ? { ...measured, viewport: viewportOf() } : measured
 }

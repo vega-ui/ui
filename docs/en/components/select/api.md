@@ -12,9 +12,9 @@
 | `readOnly` | `boolean` | `false` | No | If true, the select cannot be changed but remains focusable. |
 | `variant` | `SelectVariant` | `'field'` | No | Visual style variant for the select control. |
 | `size` | `SelectSize` | `'md'` | No | Visual size of the select control. |
-| `value` | `V \| null` | — | No | The currently selected value (controlled). `null` clears the selection, while `undefined` makes the select uncontrolled. |
-| `defaultValue` | `V` | — | No | The default selected value (uncontrolled). |
-| `onChangeValue` | `(value: V \| null) => void` | — | No | Callback fired when an option is selected. |
+| `value` | `Value \| null` | — | No | The currently selected value (controlled). `null` clears the selection, while `undefined` makes the select uncontrolled. |
+| `defaultValue` | `Value` | — | No | The default selected value (uncontrolled). |
+| `onChangeValue` | `(value: Value \| null) => void` | — | No | Callback fired when an option is selected. |
 | `ref` | `Ref<HTMLDivElement>` | — | No | Ref to the root element. |
 | `open` | `boolean` | — | No | Controls the open state of the Select dropdown. When provided, the Select becomes a controlled component and relies on this value to determine whether the listbox is open or closed. |
 | `onChangeOpen` | `(open: boolean) => void` | — | No | Callback fired when the open state changes. Called with the next open state (`true` or `false`) whenever the Select is opened or closed by user interaction. Useful for synchronizing the Select state with external logic. |
@@ -98,7 +98,7 @@ Selectable list item.
 <!-- AUTO-GENERATED:PART_API:SelectOption:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `value` | `V` | — | Yes | The value of this option, passed to the change callback when it is selected. |
+| `value` | `Value` | — | Yes | The value of this option, passed to the change callback when it is selected. |
 | `label` | `string` | — | No | Plain text of this option for typeahead, used instead of the text of its content. |
 | `children` | `ReactNode` | — | No | The content displayed for this option. Can include text, icons, or complex markup. |
 | `size` | `OptionSize` | — | No | Size of the option for visual styling. |

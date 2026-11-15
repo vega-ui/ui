@@ -7,11 +7,11 @@ import { Option, OptionProps } from '../../../Option';
 import { useListboxContext } from '../../contexts'
 import { optionPart } from '@vega-ui/widgets/listbox';
 
-export interface ListboxOptionProps<V> extends Omit<OptionProps, 'id' | 'selected' | 'active'> {
+export interface ListboxOptionProps<Value> extends Omit<OptionProps, 'id' | 'selected' | 'active'> {
   /**
    * The value of this option, passed to the change callback when it is selected.
    */
-  value: V
+  value: Value
 
   /**
    * Plain text of this option for typeahead, used instead of the text of its content.
@@ -20,14 +20,14 @@ export interface ListboxOptionProps<V> extends Omit<OptionProps, 'id' | 'selecte
 }
 
 /** A ListboxOption is a single choice of a Listbox or a Select: it registers in the list, which owns selection and keyboard navigation */
-export const ListboxOption = <V extends string | number>({
+export const ListboxOption = <Value extends string | number>({
   value,
   label,
   size,
   disabled,
   ref,
   ...props
-}: ListboxOptionProps<V>) => {
+}: ListboxOptionProps<Value>) => {
   const { handle, size: listSize, disabled: listDisabled } = useListboxContext()
   const key = useId()
   const optionDisabled = disabled || listDisabled

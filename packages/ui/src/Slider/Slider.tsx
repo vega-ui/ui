@@ -8,25 +8,25 @@ import { sliderWidget, valuesOf } from '@vega-ui/widgets/slider';
 import { SliderOrientation, SliderSize, SliderVariant } from './types';
 import style from './style.module.css'
 
-export interface SliderProps<V extends number | number[] = number> extends Omit<HTMLAttributes<HTMLDivElement>, 'defaultValue'> {
+export interface SliderProps<Value extends number | number[] = number> extends Omit<HTMLAttributes<HTMLDivElement>, 'defaultValue'> {
   /**
    * Controlled value: a number for one thumb, or an array with one entry
    * per `SliderThumb` by its `index`.
    */
-  value?: V
+  value?: Value
 
   /**
    * Initial value for uncontrolled usage: a number for one thumb, or an array
    * with one entry per `SliderThumb` by its `index`. Defaults to the middle of
    * the range, like `<input type="range">`.
    */
-  defaultValue?: V
+  defaultValue?: Value
 
   /**
    * Called when a thumb changes, with a number or an array, in the shape of
    * `value` or `defaultValue`.
    */
-  onChangeValue?(value: NoInfer<V>): void
+  onChangeValue?(value: NoInfer<Value>): void
 
   /**
    * The minimum allowed value. Defaults to `0`.
@@ -84,7 +84,7 @@ export interface SliderProps<V extends number | number[] = number> extends Omit<
 /** Slider lets users pick one or several numbers from a range by dragging thumbs along a track.
  *  Each `SliderThumb` is a native `<input type="range">` limited by its neighbors, so keyboard,
  *  form submission, and assistive technologies work as with the native element. */
-export const Slider = <V extends number | number[] = number>({
+export const Slider = <Value extends number | number[] = number>({
   className,
   value,
   defaultValue,
@@ -102,8 +102,8 @@ export const Slider = <V extends number | number[] = number>({
   ref,
   children,
   ...props
-}: SliderProps<V>) => {
-  const initialValue = defaultValue ?? (max < min ? min : snapToStep(min + (max - min) / 2, { min, max, step })) as V
+}: SliderProps<Value>) => {
+  const initialValue = defaultValue ?? (max < min ? min : snapToStep(min + (max - min) / 2, { min, max, step })) as Value
   const gap = step === 'any' ? 0 : minStepsBetweenThumbs * step
 
   const handle = useWidget(sliderWidget, {

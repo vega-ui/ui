@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { act, browser, focus, key, lifecycle, mod, pointer, timer, TYPEAHEAD } from '@vega-ui/core'
+import { act, browser, focus, key, lifecycle, mod, pointer, renderPart, timer, TYPEAHEAD } from '@vega-ui/core'
 import { simulate } from '@vega-ui/core/test'
 import { isSelected, ListboxEntry } from '../../listbox'
 import { COMBOBOX, LISTBOX, selectWidget } from '../widget'
@@ -286,6 +286,28 @@ describe('Critical User Paths', () => {
 })
 
 describe('Edge Cases', () => {
+  it('points the active descendant only at an option that exists, while the parent controls an active key the list lacks', () => {
+    const select = simulate(selectWidget, { ...base, open: true, active: 'gone' }).send(lifecycle.connect).observe({ shown: true })
+    expect(renderPart(selectWidget.output.combobox, select.state, undefined as never).attrs['aria-activedescendant']).toBeUndefined()
+
+    select.setOptions({ ...base, open: true, active: 'c' })
+    expect(renderPart(selectWidget.output.combobox, select.state, undefined as never).attrs['aria-activedescendant']).toBeDefined()
+  })
+
+  it('keeps a list the browser closed hidden when the parent keeps open and changes another option', () => {
+    const onChangeOpen = vi.fn()
+    const select = simulate(selectWidget, { ...base, open: true, onChangeOpen }).send(lifecycle.connect).observe({ shown: true })
+
+    select.send(browser.toggle, { to: false }).observe({ shown: false })
+    expect(onChangeOpen).toHaveBeenCalledExactlyOnceWith(false)
+
+    select.setOptions({ ...base, open: true, value: 'c', onChangeOpen })
+    expect(select.actions).toEqual([])
+
+    select.setOptions({ ...base, open: false, value: 'c', onChangeOpen }).setOptions({ ...base, open: true, value: 'c', onChangeOpen })
+    expect(select.actions).toEqual([SHOW])
+  })
+
   it('drops the typed letters once the timer fires, even after the select became disabled or read-only', () => {
     for (const blocked of [{ disabled: true }, { readOnly: true }]) {
       const select = simulate(selectWidget, base)

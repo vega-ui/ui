@@ -18,6 +18,7 @@ export const numberFieldShape = state({
   owns: { value: controlled(NaN) },
   internal: { text: internal(''), pending: internal(undefined as PendingText | undefined), committed: internal(''), touched: internal(false) },
   observes: { readOnly: matching(ROOT, '[readonly]') },
+  parts: [ROOT],
 })
 
 type NumberFieldSnapshot = typeof numberFieldShape.__snapshot

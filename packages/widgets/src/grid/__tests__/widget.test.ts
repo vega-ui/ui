@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { act, createInput, createWidget, focus, key, mod, pointer, renderPart } from '@vega-ui/core'
+import { act, createInput, createWidget, DRAGGED, focus, key, mod, pointer, renderPart, timer } from '@vega-ui/core'
 import { simulate } from '@vega-ui/core/test'
 import { ACTIVATE_WITHIN, createGrid, FOCUS, GridEntry } from '../widget'
 
@@ -130,6 +130,16 @@ describe('Critical User Paths', () => {
     widget.send(pointer.release).send(pointer.press, { key: 'e' })
     expect(widget.state.value).toEqual(['a', 'b', 'c', 'd', 'e'])
   })
+
+  it('swallows only the click in the same task as the release of a drag, so a later click without a press still selects', () => {
+    const widget = simulateGrid({ selection: 'multiple' })
+
+    widget.send(pointer.down, { key: 'a' }).send(pointer.dragOver, { key: 'b' }).send(pointer.release)
+    expect(widget.actions).toEqual([act.timer(DRAGGED, 0)])
+
+    widget.send(timer(DRAGGED)).send(pointer.press, { key: 'i' })
+    expect(widget.state.value).toEqual(['a', 'b', 'i'])
+  })
 })
 
 describe('Error handling', () => {
@@ -225,6 +235,27 @@ describe('Edge Cases', () => {
     expect(renderPart(grid.output.cell, widget.state, 'b').attrs['aria-disabled']).toBe(false)
   })
 
+  it('drops a selected cell from the value once it is disabled, without reporting it, in strict mode too', () => {
+    const onChangeValue = vi.fn()
+    const widget = simulateGrid({ selection: 'multiple', defaultValue: ['b', 'c'], onChangeValue })
+
+    widget.setOptions({ ...grid.emptyOptions, entries: widget.state.options.entries, selection: 'multiple', defaultValue: ['b', 'c'], disabled: ['b'], onChangeValue } as GridOptions)
+
+    expect(widget.state.value).toEqual(['c'])
+    expect(onChangeValue).not.toHaveBeenCalled()
+  })
+
+  it('leaves the disabled cells out of a range resolveRange gives, with Shift + arrows and with Mod+A', () => {
+    const resolveRange = (start: string, end: string) => KEYS.slice(KEYS.indexOf(start), KEYS.indexOf(end) + 1)
+    const widget = simulateGrid({ selection: 'multiple', disabled: ['b'], defaultActive: 'a', resolveRange })
+
+    widget.send(key.space).send(key.with(key.arrowRight, mod.shift)).send(key.with(key.arrowRight, mod.shift))
+    expect(widget.state.value).toEqual(['a', 'c'])
+
+    widget.send(key.with(key.a, mod.mod))
+    expect(widget.state.value).not.toContain('b')
+  })
+
   it('never selects without a selection mode and leaves the cells without aria-selected', () => {
     const widget = simulateGrid().pressAt('b').send(key.enter, { key: 'b' }).send(key.space)
 
@@ -291,6 +322,19 @@ describe('Edge Cases', () => {
 
     widget.send(key.arrowRight)
     expect(widget.state.active).toBe('c')
+  })
+
+  it('starts a new Shift + arrow extension from the value the parent wrote meanwhile instead of continuing the old one', () => {
+    const onChangeValue = vi.fn()
+    const widget = simulateGrid({ selection: 'multiple', value: [], defaultActive: 'a', onChangeValue })
+
+    widget.send(key.space).setOptions({ ...grid.emptyOptions, entries: widget.state.options.entries, selection: 'multiple', value: ['a'], onChangeValue } as GridOptions)
+    widget.send(key.with(key.arrowRight, mod.shift)).setOptions({ ...grid.emptyOptions, entries: widget.state.options.entries, selection: 'multiple', value: ['a', 'b'], onChangeValue } as GridOptions)
+    expect(widget.state.value).toEqual(['a', 'b'])
+
+    widget.setOptions({ ...grid.emptyOptions, entries: widget.state.options.entries, selection: 'multiple', value: ['g', 'h'], onChangeValue } as GridOptions)
+    widget.send(key.with(key.arrowRight, mod.shift))
+    expect(onChangeValue).toHaveBeenLastCalledWith(['g', 'h', 'b', 'c'])
   })
 
   it('keeps the cells selected before a Shift + arrow and leaves the disabled cells out of it', () => {

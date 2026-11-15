@@ -13,7 +13,7 @@ import { createPeriodPicker, dayRules, PeriodValue, SHOW } from '@vega-ui/widget
 import { useToday } from '../internals/calendar';
 import { DayPickerProvider } from './contexts';
 
-export interface DayPickerProps<S extends GridSelection = 'single'> extends Omit<GridProps<string, S>, 'active' | 'defaultActive' | 'onChangeActive' | 'apiRef' | 'disabled'> {
+export interface DayPickerProps<SelectionMode extends GridSelection = 'single'> extends Omit<GridProps<string, SelectionMode>, 'active' | 'defaultActive' | 'onChangeActive' | 'apiRef' | 'disabled'> {
   /**
    * Ref to the grid’s imperative API, with `YYYY-MM-DD` keys.
    * - `focus(date?)` — moves focus to the day of this date, or to the tab stop without one; a day that is not rendered yet takes focus as soon as it renders
@@ -103,11 +103,11 @@ export interface DayPickerProps<S extends GridSelection = 'single'> extends Omit
  * The tab stop is the focused day; without one it is the selected day,
  * otherwise today, otherwise the first available day of the month.
  */
-export const DayPicker = <S extends GridSelection = 'single'>({
+export const DayPicker = <SelectionMode extends GridSelection = 'single'>({
   children,
   size = 'xs',
   variant = 'secondary',
-  selection = 'single' as S,
+  selection = 'single' as SelectionMode,
   calendar = gregorianCalendar,
   locale = 'en-US',
   today: _today,
@@ -133,7 +133,7 @@ export const DayPicker = <S extends GridSelection = 'single'>({
   className,
   ref,
   ...props
-}: PropsWithChildren<DayPickerProps<S>>) => {
+}: PropsWithChildren<DayPickerProps<SelectionMode>>) => {
   const today = useToday(_today)
   const [widget] = useState(() => createPeriodPicker(dayRules))
 

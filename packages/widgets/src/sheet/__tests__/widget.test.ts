@@ -152,6 +152,21 @@ describe('Critical User Paths', () => {
 })
 
 describe('Edge Cases', () => {
+  it('rests at the new offset of its snap point when the parent changes the snap points', () => {
+    const sheet = openSheet()
+    expect(sheet.state.paint?.offset).toBe(200)
+
+    sheet.setOptions({ snapPoints: [0.25, 1], steppedSnapPoints: false, open: true })
+    expect(sheet.state.paint?.offset).toBe(400)
+  })
+
+  it('keeps a sheet the browser closed closed when the parent keeps open and changes the snap point', () => {
+    const sheet = openSheet({ activeSnapPoint: 0 })
+
+    sheet.send(browser.close, { part: DIALOG }).setOptions({ snapPoints: [0.5, 1], steppedSnapPoints: false, open: true, activeSnapPoint: 1 } as SheetOptions)
+    expect(sheet.actions).not.toContainEqual(act.showModal(DIALOG))
+  })
+
   it('stays open and returns to its snap point after a drag down when only a button closes it', () => {
     const onChangeOpen = vi.fn()
     const sheet = grab(openSheet({ onChangeOpen }, false), 300)

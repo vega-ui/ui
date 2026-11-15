@@ -24,9 +24,9 @@ export interface ListboxShape extends AnyShape {
   readonly __key: string
 }
 
-export interface OptionFields<S> {
-  readonly active: Field<S, string | null>
-  readonly typed: Field<S, string>
+export interface OptionFields<State> {
+  readonly active: Field<State, string | null>
+  readonly typed: Field<State, string>
 }
 
 export const entries = source({
@@ -71,6 +71,8 @@ export const isSelected = (state: ListboxState, key: string) => {
   return value !== undefined && valuesOf(state.value).includes(value)
 }
 
+export const activeIdOf = (state: ListboxState) => (state.active !== null && collection.has(state.collection, state.active) ? idOf(state, 'option', state.active) : null)
+
 export const optionPart: Part<ListboxState, string> = {
   select: (state, key) => [idOf(state, 'option', key), state.active === key, isSelected(state, key), state.collection.disabled.has(key)],
   render: ([id, active, selected, disabled]) => ({
@@ -82,10 +84,15 @@ export const optionPart: Part<ListboxState, string> = {
   }),
 }
 
-export const optionInvariants = <S extends ListboxState & { readonly typed: string }>(fields: OptionFields<S>): Readonly<Record<string, Invariant<S>>> => ({
+export const optionInvariants = <State extends ListboxState & { readonly typed: string }>(fields: OptionFields<State>): Readonly<Record<string, Invariant<State>>> => ({
   activeExists: {
     check: (state) => state.active === null || collection.isNavigable(state.collection, state.active),
-    repair: (state) => fields.active.set(state, null),
+    repair: (state, before) => {
+      const position = state.active === null ? undefined : before.collection.index.get(state.active)
+      if (position === undefined) return fields.active.set(state, null)
+
+      return fields.active.set(state, collection.nearest(state.collection, position))
+    },
   },
   typedExpires: {
     check: (state) => state.typed === '' || state.timers.has(TYPEAHEAD),

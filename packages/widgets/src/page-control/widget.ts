@@ -45,16 +45,22 @@ const scrubbing: Step<PageControlSnapshot> = (state, input) => {
   return keep(pageControlShape.active.set(state, index), [act.focus(index)])
 }
 
-const tabOf = (selected: boolean) => ({
+const tabOf = (selected: boolean, focusable = selected) => ({
   role: 'tab',
-  tabIndex: selected ? 0 : -1,
+  tabIndex: focusable ? 0 : -1,
   'aria-selected': selected,
   'data-active': selected,
 })
 
 export const currentTabOf = (current: boolean) => ({ ...tabOf(current), 'aria-current': current ? 'page' : undefined })
 
-export const tabPart = pageControlShape.part((state, key) => [state.active === key] as const, ([selected]) => tabOf(selected))
+const tabStopOf = (state: PageControlSnapshot) => {
+  if (state.active !== null && collection.isNavigable(state.collection, state.active)) return state.active
+
+  return collection.first(state.collection)
+}
+
+export const tabPart = pageControlShape.part((state, key) => [state.active === key, tabStopOf(state) === key] as const, ([selected, focusable]) => tabOf(selected, focusable))
 
 export const pageControlWidget = defineWidget({
   state: pageControlShape,

@@ -21,13 +21,14 @@ export const dateTimeFieldShape = state({
   follows: ['dateFormat', 'dateSeparator', 'separator', 'timeFormat', 'calendar', 'today'],
   internal: { text: internal(''), pending: internal(undefined as PendingText | undefined), committed: internal(''), touched: internal(false) },
   observes: { readOnly: matching(ROOT, '[readonly]') },
+  parts: [ROOT],
 })
 
 type DateTimeFieldSnapshot = typeof dateTimeFieldShape.__snapshot
 
 const templateOf = (state: DateTimeFieldSnapshot) => getDateTimeTemplate(state.options)
 
-const dateTimeField = maskedField<DateTimeFieldSnapshot, string>({
+const dateTimeField = maskedField<DateTimeFieldSnapshot, string, string>({
   text: dateTimeFieldShape.text,
   value: dateTimeFieldShape.value,
   pending: dateTimeFieldShape.pending,
@@ -57,11 +58,11 @@ const dateTimeField = maskedField<DateTimeFieldSnapshot, string>({
   picked: (state, date) => {
     const time = getISOTimePart(state.value) ?? '00:00:00'
 
-    return formatTemplateDate(state.options.calendar, `${String(date)}T${time}`, templateOf(state))
+    return formatTemplateDate(state.options.calendar, `${date}T${time}`, templateOf(state))
   },
 })
 
-export const { defaultTextOf } = dateTimeField
+export const { defaultTextOf, pick: PICK_VALUE } = dateTimeField
 
 export const dateTimeFieldWidget = defineWidget({
   state: dateTimeFieldShape,

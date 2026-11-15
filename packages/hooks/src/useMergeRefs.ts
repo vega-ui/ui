@@ -6,7 +6,7 @@ import { mergeRefs } from '@vega-ui/utils'
  * changes, so that React does not detach and attach them on every render.
  * The number of `refs` must not change between renders.
  */
-export const useMergeRefs = <T,>(refs: Array<Ref<T> | undefined | null>) => {
+export const useMergeRefs = <Value,>(refs: Array<Ref<Value> | undefined | null>) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   return useMemo(() => mergeRefs(refs), refs)
 }

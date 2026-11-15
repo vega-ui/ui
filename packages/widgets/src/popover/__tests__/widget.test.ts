@@ -23,6 +23,27 @@ describe('Critical User Paths', () => {
 })
 
 describe('Edge Cases', () => {
+  it('keeps the children between the hide and its toggle event, so a closing popover does not empty for a frame', () => {
+    const popover = simulate(popoverWidget, { role: undefined })
+    popover.observe({ shown: true }).send(browser.toggle, { part: CONTENT, to: true })
+
+    popover.observe({ shown: false })
+    expect(isRendered(popover.state)).toBe(true)
+
+    popover.send(browser.toggle, { part: CONTENT, to: false }).send(browser.animationEnd, { part: CONTENT })
+    expect(isRendered(popover.state)).toBe(false)
+  })
+
+  it('keeps the children when it reopens during the closing animation and that animation ends late', () => {
+    const popover = simulate(popoverWidget, { role: undefined })
+    popover.observe({ shown: true }).send(browser.toggle, { part: CONTENT, to: true })
+    popover.observe({ shown: false }).send(browser.toggle, { part: CONTENT, to: false })
+    popover.observe({ shown: true }).send(browser.toggle, { part: CONTENT, to: true }).send(browser.animationEnd, { part: CONTENT })
+
+    popover.observe({ shown: false })
+    expect(isRendered(popover.state)).toBe(true)
+  })
+
   it('hides itself on a close request only when no parent controls open, so a parent may keep it open', () => {
     const own = simulate(popoverWidget, { role: undefined, defaultOpen: true })
     own.observe({ shown: true }).send(CLOSE_POPOVER)

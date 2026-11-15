@@ -139,6 +139,14 @@ describe('Critical User Paths', () => {
 })
 
 describe('Edge Cases', () => {
+  it('points the active descendant only at an option that exists, while the parent controls an active key the list lacks', () => {
+    const listbox = simulate(listboxWidget, { ...single, active: 'gone' })
+    expect(renderPart(listboxWidget.output.root, listbox.state, undefined as never).attrs['aria-activedescendant']).toBeUndefined()
+
+    listbox.setOptions({ ...single, active: 'c' })
+    expect(renderPart(listboxWidget.output.root, listbox.state, undefined as never).attrs['aria-activedescendant']).toBeDefined()
+  })
+
   it('drops the typed letters once the timer fires, even after the list became disabled', () => {
     const listbox = simulate(listboxWidget, single).send(focus.enter)
     listbox.type('g')
@@ -175,7 +183,7 @@ describe('Edge Cases', () => {
     expect(listbox.state.value).toBeNull()
   })
 
-  it('drops the active option once it is disabled, so Enter selects nothing', () => {
+  it('moves the active option to the nearest enabled one once it is disabled, without reporting it', () => {
     const onChangeValue = vi.fn()
     const widget = createWidget(listboxWidget, { ...single, onChangeValue }, { id: 'listbox' })
     const withAlphaDisabled = letters.map((entry) => (entry.key === 'a' ? { ...entry, data: { ...entry.data, disabled: true } } : entry))
@@ -184,9 +192,18 @@ describe('Edge Cases', () => {
     expect(widget.state.active).toBe('a')
 
     widget.setOptions({ ...single, items: withAlphaDisabled, onChangeValue })
-    widget.dispatch(createInput(key.enter))
 
-    expect(widget.state.active).toBeNull()
+    expect(widget.state.active).toBe('c')
     expect(onChangeValue).not.toHaveBeenCalled()
+  })
+
+  it('moves the active option to the next one once it is removed, or to the previous one when it was last, in strict mode too', () => {
+    const middle = simulate(listboxWidget, { ...single, defaultActive: 'c' })
+    middle.setOptions({ ...single, items: letters.filter((entry) => entry.key !== 'c') })
+    expect(middle.state.active).toBe('d')
+
+    const last = simulate(listboxWidget, { ...single, defaultActive: 'd' })
+    last.setOptions({ ...single, items: letters.filter((entry) => entry.key !== 'd') })
+    expect(last.state.active).toBe('c')
   })
 })

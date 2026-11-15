@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { getFloatExpansion } from '../getFloatExpansion'
 import { getUnfloatedTop } from '../getUnfloatedTop'
 
-describe('getUnfloatedTop', () => {
+describe('Critical User Paths', () => {
   it('inverts the gap the panel is painted with', () => {
     const lowestTop = 200
     const inset = 16
@@ -14,7 +14,9 @@ describe('getUnfloatedTop', () => {
       expect(top - gap).toBeCloseTo(paintedTop)
     }
   })
+})
 
+describe('Edge Cases', () => {
   it('has no gap when the panel cannot rest below its inset', () => {
     expect(getUnfloatedTop(50, 10, 16)).toBe(50)
   })

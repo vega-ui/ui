@@ -48,7 +48,7 @@ A `Select` bound to the field country: its value is the PhoneField `country`, pi
 | `disabled` | `boolean` | — | No | Whether the select is disabled. Prevents interaction and applies a disabled style. |
 | `readOnly` | `boolean` | — | No | If true, the select cannot be changed but remains focusable. |
 | `variant` | `SelectVariant` | — | No | Visual style variant for the select control. |
-| `onChangeValue` | `(value: V \| null) => void` | — | No | Callback fired when an option is selected. |
+| `onChangeValue` | `(value: Value \| null) => void` | — | No | Callback fired when an option is selected. |
 | `ref` | `Ref<HTMLDivElement>` | — | No | Ref to the root element. |
 | `typeahead` | `boolean` | `true` | No | Enables moving to an option by typing the start of its label. |
 | `open` | `boolean` | — | No | Controls the open state of the Select dropdown. When provided, the Select becomes a controlled component and relies on this value to determine whether the listbox is open or closed. |

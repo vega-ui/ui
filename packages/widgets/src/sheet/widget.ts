@@ -70,6 +70,8 @@ export const sheetShape = state({
     releaseDuration: internal(null as number | null),
   },
   observes: modalDialogValues.observes,
+  follows: ['snapPoints'],
+  parts: [DIALOG, SURFACE],
 })
 
 type SheetSnapshot = typeof sheetShape.__snapshot
@@ -229,7 +231,7 @@ const snapping: Step<SheetSnapshot> = (state, input) => {
   if (!input.is(NEXT_SNAP_POINT)) return undefined
 
   const { offsets, active } = layoutOf(state)
-  const order = offsets.map((_, index) => index).sort((first, second) => offsets[second] - offsets[first])
+  const order = [...offsets.keys()].sort((first, second) => offsets[second] - offsets[first])
   const next = order[(order.indexOf(active) + 1) % order.length]
   if (next === active) return keep(state)
 

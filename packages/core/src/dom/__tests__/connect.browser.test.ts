@@ -40,8 +40,8 @@ const keydown = (target: Element, init: KeyboardEventInit) => {
   return event
 }
 
-const click = (target: Element) => {
-  const event = new MouseEvent('click', { bubbles: true, cancelable: true })
+const click = (target: Element, detail = 1) => {
+  const event = new MouseEvent('click', { bubbles: true, cancelable: true, detail })
   target.dispatchEvent(event)
   return event
 }
@@ -343,7 +343,7 @@ describe('Critical User Paths', () => {
     expect(hitTest).toHaveBeenCalledTimes(1)
   })
 
-  it('tells a drag what it pressed, holds the native scroll once a step claims the pointer and swallows the click that ends it', () => {
+  it('tells a drag what it pressed, holds the native scroll once a step claims the pointer and swallows the click that ends it, never a keyboard click after a touch drag without one', () => {
     const root = document.createElement('div')
     const scroller = document.createElement('div')
     const field = document.createElement('input')
@@ -386,6 +386,37 @@ describe('Critical User Paths', () => {
     pointer(document, 'pointerup', { buttons: 0 })
     pointer(outside, 'pointerdown')
     expect(click(field).defaultPrevented).toBe(false)
+
+    pointer(field, 'pointerdown', { isPrimary: true, button: 0, pointerType: 'touch' })
+    pointer(document, 'pointermove', { pointerType: 'touch' })
+    pointer(document, 'pointerup', { buttons: 0 })
+    expect(click(field, 0).defaultPrevented).toBe(false)
+    expect(click(field).defaultPrevented).toBe(false)
+  })
+
+  it('leaves out of the drag a move the user prevented, and still ends the drag on the release', () => {
+    const root = document.createElement('div')
+    document.body.appendChild(root)
+    const elements = createElements<string>()
+    elements.setRoot(root)
+
+    const inputs: string[] = []
+    const dragging = defineWidget({
+      state: shape,
+      step: [listening([pointerInput.down, pointerInput.drag, pointerInput.release], (state, input) => {
+        inputs.push(input.name)
+        return keep(state)
+      })],
+    })
+    connect(createWidget(dragging, { items: fruits, mode: 'single' }, { id: 'widget', strict: true }), elements).listen(root)
+    root.addEventListener('pointermove', (event) => event.preventDefault(), { once: true })
+
+    pointer(root, 'pointerdown', { isPrimary: true, button: 0, buttons: 1 })
+    pointer(root, 'pointermove', { buttons: 1 })
+    pointer(root, 'pointermove', { buttons: 1 })
+    pointer(document, 'pointerup', { buttons: 0 })
+
+    expect(inputs).toEqual(['down', 'drag', 'release'])
   })
 
   it('answers the measure a press asked for before a drag that comes in the same task', () => {
@@ -738,6 +769,51 @@ describe('Critical User Paths', () => {
 })
 
 describe('Edge Cases', () => {
+  it('hands to onError what a part throws while painting, and still paints the other elements', () => {
+    const { root, items, instance, elements, stop } = mount({ items: fruits, mode: 'single', defaultActive: 'apple' })
+    stop()
+    const error = new Error('boom')
+    const onError = vi.fn()
+    const option: Part<unknown, string> = {
+      ...listbox.output.option,
+      live: {
+        select: (state, key) => {
+          if (key === 'banana') throw error
+          return [(state as typeof shape.__snapshot).active === key]
+        },
+        render: ([active]) => ({ 'data-current': active === true }),
+      },
+    }
+    for (const fruit of fruits) elements.setItem(fruit.id, items.get(fruit.id)!, undefined, option)
+    connect(instance, elements, { onError }).listen(root)
+
+    keydown(root, { key: 'End' })
+    expect(items.get('fig')!.hasAttribute('data-current')).toBe(true)
+    expect(onError).toHaveBeenCalledWith(error)
+  })
+
+  it('hears a symbol key the layout types with Shift, and still tells Shift apart on letters', () => {
+    const root = document.createElement('div')
+    document.body.appendChild(root)
+    const elements = createElements<string>()
+    elements.setRoot(root)
+    const heard: string[] = []
+    const watching = defineWidget({
+      state: shape,
+      step: [listening([key.asterisk, key.of('a')], (state, input) => {
+        if (input.is(key.asterisk)) heard.push('*')
+        if (input.is(key.of('a'))) heard.push('a')
+        return handled(state)
+      })],
+    })
+    connect(createWidget(watching, { items: fruits, mode: 'single' }, { id: 'widget', strict: true }), elements).listen(root)
+
+    keydown(root, { key: '*', shiftKey: true })
+    keydown(root, { key: 'A', shiftKey: true })
+    keydown(root, { key: 'a' })
+    expect(heard).toEqual(['*', 'a'])
+  })
+
   it('tells a widget about an image that loaded or failed before its root registered', async () => {
     const loaded = Object.assign(document.createElement('img'), { src: 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' })
     const broken = Object.assign(document.createElement('img'), { src: 'data:image/png;base64,broken' })

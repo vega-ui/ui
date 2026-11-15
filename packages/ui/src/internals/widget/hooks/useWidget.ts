@@ -20,6 +20,7 @@ import {
   lifecycle,
   OptionsOf,
   Part,
+  PartOf,
   SnapshotOf,
   Widget,
   WidgetEnvironment,
@@ -75,44 +76,44 @@ const PROPS: Record<PropEvent, keyof Listeners> = {
   submit: 'onSubmit',
 }
 
-export interface UseWidgetOptions<Sh extends AnyShape, D> extends Omit<WidgetEnvironment, 'id' | 'onError'> {
-  readonly elements?: ElementRegistry<KeyOf<Sh>, D>
+export interface UseWidgetOptions<WidgetShape extends AnyShape, Data> extends Omit<WidgetEnvironment, 'id' | 'onError'> {
+  readonly elements?: ElementRegistry<KeyOf<WidgetShape>, Data>
   readonly onError?: (error: unknown, source?: Input | Action) => void
 }
 
-export interface HandleOptions<Sh extends AnyShape, D> extends UseWidgetOptions<Sh, D> {
+export interface HandleOptions<WidgetShape extends AnyShape, Data> extends UseWidgetOptions<WidgetShape, Data> {
   readonly id: string
 }
 
-export type WidgetOptions<Sh extends AnyShape, D> = OptionsOf<Sh> | ((entries: readonly Entry<KeyOf<Sh>, D>[]) => OptionsOf<Sh>)
+export type WidgetOptions<WidgetShape extends AnyShape, Data> = OptionsOf<WidgetShape> | ((entries: readonly Entry<KeyOf<WidgetShape>, Data>[]) => OptionsOf<WidgetShape>)
 
-export interface WidgetHandle<Sh extends AnyShape, D = undefined> {
-  readonly instance: WidgetInstance<Sh>
-  readonly elements: ElementRegistry<KeyOf<Sh>, D>
+export interface WidgetHandle<WidgetShape extends AnyShape, Data = undefined> {
+  readonly instance: WidgetInstance<WidgetShape>
+  readonly elements: ElementRegistry<KeyOf<WidgetShape>, Data>
   readonly listeners: Partial<Listeners>
-  readonly connection: { current: Connection<KeyOf<Sh>> | null }
+  readonly connection: { current: Connection<KeyOf<WidgetShape>> | null }
   subscribe(listener: () => void): () => void
-  setOptions(options: WidgetOptions<Sh, D>): void
+  setOptions(options: WidgetOptions<WidgetShape, Data>): void
   settle(): void
   root(element: Element | null): void
-  rootAt(name: string, output?: Part<SnapshotOf<Sh>, KeyOf<Sh>>): (element: Element | null) => void
-  part(name: string, output?: Part<SnapshotOf<Sh>, KeyOf<Sh>>): (element: Element | null) => void
-  send(input: Input<KeyOf<Sh>>): Dispatched
+  rootAt(name: PartOf<WidgetShape>, output?: Part<SnapshotOf<WidgetShape>, KeyOf<WidgetShape>>): (element: Element | null) => void
+  part(name: PartOf<WidgetShape>, output?: Part<SnapshotOf<WidgetShape>, KeyOf<WidgetShape>>): (element: Element | null) => void
+  send(input: Input<KeyOf<WidgetShape>>): Dispatched
   merge(attrs: Attrs, props?: Props): Props
   listen(attrs: Attrs, props?: Props): Props
 }
 
-const resolve = <Sh extends AnyShape, D>(options: WidgetOptions<Sh, D>, elements: ElementRegistry<KeyOf<Sh>, D>) => (typeof options === 'function' ? options(elements.entries()) : options)
+const resolve = <WidgetShape extends AnyShape, Data>(options: WidgetOptions<WidgetShape, Data>, elements: ElementRegistry<KeyOf<WidgetShape>, Data>) => (typeof options === 'function' ? options(elements.entries()) : options)
 
-export const createHandle = <Sh extends AnyShape, D>(widget: Widget<Sh>, options: WidgetOptions<Sh, D>, { elements = createElements<KeyOf<Sh>, D>(), onError, ...environment }: HandleOptions<Sh, D>): WidgetHandle<Sh, D> => {
+export const createHandle = <WidgetShape extends AnyShape, Data>(widget: Widget<WidgetShape>, options: WidgetOptions<WidgetShape, Data>, { elements = createElements<KeyOf<WidgetShape>, Data>(), onError, ...environment }: HandleOptions<WidgetShape, Data>): WidgetHandle<WidgetShape, Data> => {
   const instance = createWidget(widget, resolve(options, elements), { ...environment, onError })
   const open = () => connect(instance, elements, { onError })
-  const connection: { current: Connection<KeyOf<Sh>> | null } = { current: open() }
+  const connection: { current: Connection<KeyOf<WidgetShape>> | null } = { current: open() }
   const parts = new Map<string, (element: Element | null) => void>()
   const roots = new Map<string, (element: Element | null) => void>()
   const natives = new Map<string, () => void>()
   const subscribers = new Set<() => void>()
-  const queued: Action<KeyOf<Sh>>[] = []
+  const queued: Action<KeyOf<WidgetShape>>[] = []
   let muted = false
   let missed = false
 
@@ -126,7 +127,7 @@ export const createHandle = <Sh extends AnyShape, D>(widget: Widget<Sh>, options
     else notify()
   })
 
-  const forward = <E extends SyntheticEvent>(handle: (connection: Connection, event: E['nativeEvent']) => boolean) => (event: E) => {
+  const forward = <ReactEvent extends SyntheticEvent>(handle: (connection: Connection, event: ReactEvent['nativeEvent']) => boolean) => (event: ReactEvent) => {
     if (connection.current && handle(connection.current, event.nativeEvent)) event.preventDefault()
   }
 
@@ -236,14 +237,14 @@ export const createHandle = <Sh extends AnyShape, D>(widget: Widget<Sh>, options
   }
 }
 
-const drifted = <Sh extends AnyShape>(widget: Widget<Sh>, instance: WidgetInstance<Sh>) => {
+const drifted = <WidgetShape extends AnyShape>(widget: Widget<WidgetShape>, instance: WidgetInstance<WidgetShape>) => {
   const { options } = instance.state
   const state = instance.state as Record<string, unknown>
 
   return widget.shape.owned.some((name) => (options as Record<string, unknown>)[name] !== undefined && !Object.is(state[name], (options as Record<string, unknown>)[name]))
 }
 
-export const useWidget = <Sh extends AnyShape, D = undefined>(widget: Widget<Sh>, options: WidgetOptions<Sh, D>, settings: UseWidgetOptions<Sh, D> = {}): WidgetHandle<Sh, D> => {
+export const useWidget = <WidgetShape extends AnyShape, Data = undefined>(widget: Widget<WidgetShape>, options: WidgetOptions<WidgetShape, Data>, settings: UseWidgetOptions<WidgetShape, Data> = {}): WidgetHandle<WidgetShape, Data> => {
   const id = useId()
   const [handle] = useState(() => createHandle(widget, options, { ...settings, id }))
   const [, rerender] = useReducer((n: number) => n + 1, 0)

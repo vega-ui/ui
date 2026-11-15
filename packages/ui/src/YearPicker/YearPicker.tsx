@@ -13,7 +13,7 @@ import { createPeriodPicker, PAGES, PeriodValue, SHOW, yearRules } from '@vega-u
 import { useToday } from '../internals/calendar';
 import { YearPickerProvider } from './contexts';
 
-export interface YearPickerProps<S extends GridSelection = 'single'> extends Omit<GridProps<string, S>, 'active' | 'defaultActive' | 'onChangeActive' | 'apiRef' | 'disabled'> {
+export interface YearPickerProps<SelectionMode extends GridSelection = 'single'> extends Omit<GridProps<string, SelectionMode>, 'active' | 'defaultActive' | 'onChangeActive' | 'apiRef' | 'disabled'> {
   /**
    * Ref to the grid’s imperative API, with `YYYY-MM-DD` keys.
    * - `focus(date?)` — moves focus to the year of this date, or to the tab stop without one; a year that is not rendered yet takes focus as soon as it renders
@@ -108,13 +108,13 @@ export interface YearPickerProps<S extends GridSelection = 'single'> extends Omi
  * without one it is the selected year, otherwise the current year, otherwise
  * the first available year.
  */
-export const YearPicker = <S extends GridSelection = 'single'>({
+export const YearPicker = <SelectionMode extends GridSelection = 'single'>({
   children,
   calendar = gregorianCalendar,
   locale = 'en-US',
   size = 'xs',
   variant = 'secondary',
-  selection = 'single' as S,
+  selection = 'single' as SelectionMode,
   today: _today,
   apiRef,
   cells,
@@ -139,7 +139,7 @@ export const YearPicker = <S extends GridSelection = 'single'>({
   className,
   ref,
   ...props
-}: PropsWithChildren<YearPickerProps<S>>) => {
+}: PropsWithChildren<YearPickerProps<SelectionMode>>) => {
   const today = useToday(_today)
   const [widget] = useState(() => createPeriodPicker(yearRules))
 

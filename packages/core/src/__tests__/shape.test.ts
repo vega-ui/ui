@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import { idOf } from '../state'
+import { command, createInput, Input, key } from '../input'
+import { idOf, state } from '../state'
+import { act, keep, Step } from '../step'
 import { fruits, shape } from './fixtures/listbox'
 
 
@@ -19,6 +21,26 @@ describe('Critical User Paths', () => {
 })
 
 describe('Edge Cases', () => {
+  it('types the payload a command carries for the sender and for the step that reads it', () => {
+    const pick = command<{ readonly to: number }>()('pick')
+    const next = (input: Input) => (input.is(pick) ? input.to + 1 : input.is(key.enter))
+
+    expect(next(createInput(pick, { to: 1 }))).toBe(2)
+    expect(next(createInput(key.enter))).toBe(true)
+    // @ts-expect-error a payload the command does not carry
+    expect(next(createInput(pick, { to: 'one' }))).toBe('one1')
+  })
+
+  it('names in an action only a part the shape declares', () => {
+    const popup = state({ options: {}, owns: {}, parts: ['popup'] })
+    const showing: Step<typeof popup.__snapshot> = (current) => keep(current, [act.showPopover('popup')])
+    // @ts-expect-error a part the shape does not declare
+    const mistyped: Step<typeof popup.__snapshot> = (current) => keep(current, [act.showPopover('popu')])
+
+    expect(showing(popup.create({}, 'w'), undefined as never)?.actions).toEqual([act.showPopover('popup')])
+    expect(mistyped).toBeTypeOf('function')
+  })
+
   it('tells a value the parent controls from one only its default sets', () => {
     expect(shape.active.controlled(shape.create({ items: fruits, mode: 'single', active: 'fig' }, 'w'))).toBe(true)
     expect(shape.active.controlled(shape.create({ items: fruits, mode: 'single', defaultActive: 'fig' }, 'w'))).toBe(false)

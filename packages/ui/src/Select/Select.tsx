@@ -13,7 +13,7 @@ import { FOCUS_COMBOBOX, isShown, selectWidget } from '@vega-ui/widgets/select';
 import { SelectProvider } from './contexts';
 import { SelectSize, SelectVariant } from './types';
 
-export interface SelectProps<V extends string | number = string> extends HTMLAttributes<HTMLDivElement> {
+export interface SelectProps<Value extends string | number = string> extends HTMLAttributes<HTMLDivElement> {
   /**
    * Whether the select is disabled.
    * Prevents interaction and applies a disabled style.
@@ -39,19 +39,19 @@ export interface SelectProps<V extends string | number = string> extends HTMLAtt
    * The currently selected value (controlled).
    * `null` clears the selection, while `undefined` makes the select uncontrolled.
    */
-  value?: V | null | undefined
+  value?: Value | null | undefined
 
   /**
    * The default selected value (uncontrolled).
    */
-  defaultValue?: V | undefined
+  defaultValue?: Value | undefined
 
   /**
    * Callback fired when an option is selected.
    *
    * @param value - The selected option value
    */
-  onChangeValue?(value: V | null): void
+  onChangeValue?(value: Value | null): void
 
   /**
    * Ref to the root element.
@@ -96,7 +96,7 @@ export interface SelectProps<V extends string | number = string> extends HTMLAtt
 const readValue = (state: typeof selectWidget.shape.__snapshot) => state.value
 
 /** A Select is a UI component that provides a dropdown menu of options from which users can choose one. It is commonly used for forms and filtering, offering a list of predefined values in a compact, accessible manner */
-export const Select = <V extends string | number>({
+export const Select = <Value extends string | number>({
   className,
   disabled = false,
   readOnly = false,
@@ -112,7 +112,7 @@ export const Select = <V extends string | number>({
   onChangeOpen,
   ref,
   ...props
-}: SelectProps<V>) => {
+}: SelectProps<Value>) => {
   const [valueElement, setValueElement] = useState<HTMLSpanElement | null>(null)
   const handle = useWidget(selectWidget, (items: readonly ListboxEntry[]) => ({
     items,

@@ -8,3 +8,7 @@ export const isInteractiveChild = (children: ReactNode): boolean => {
 
   return INTERACTIVE_TAGS.has(children.type)
 }
+
+const INTERACTIVE = [...INTERACTIVE_TAGS, 'a[href]'].join(', ')
+
+export const isInteractiveElement = (element: Element | null) => element !== null && element.matches(INTERACTIVE)

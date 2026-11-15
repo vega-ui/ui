@@ -14,6 +14,7 @@ export const timeFieldShape = state({
   follows: ['format'],
   internal: { text: internal(''), pending: internal(undefined as PendingText | undefined), committed: internal(''), touched: internal(false) },
   observes: { readOnly: matching(ROOT, '[readonly]') },
+  parts: [ROOT],
 })
 
 type TimeFieldSnapshot = typeof timeFieldShape.__snapshot

@@ -17,7 +17,7 @@ import { eraseKey, GridProvider } from './contexts';
 import { Slot } from '../Slot';
 import style from './style.module.css';
 
-export interface GridProps<K extends GridKey = GridKey, S extends GridSelection | undefined = undefined> extends Omit<HTMLAttributes<HTMLDivElement>, 'defaultValue'> {
+export interface GridProps<Key extends GridKey = GridKey, SelectionMode extends GridSelection | undefined = undefined> extends Omit<HTMLAttributes<HTMLDivElement>, 'defaultValue'> {
   /**
    * Ref to the grid’s root element.
    */
@@ -27,7 +27,7 @@ export interface GridProps<K extends GridKey = GridKey, S extends GridSelection 
    * Ref to the grid’s imperative API.
    * - `focus(key?)` — moves focus to the cell with this key, or to the tab stop without one; a cell that is not rendered yet becomes the active cell and takes focus as soon as it renders
    */
-  apiRef?: Ref<GridApiRef<K>>;
+  apiRef?: Ref<GridApiRef<Key>>;
 
   /**
    * When `true`, renders the child element instead of a `<div>`, merging the props,
@@ -45,7 +45,7 @@ export interface GridProps<K extends GridKey = GridKey, S extends GridSelection 
    * A rendered cell that is not in `cells` is not seen by the grid.
    * Without it the grid learns its cells from the rendered `GridCell`s.
    */
-  cells?: readonly GridLayoutCell<K>[];
+  cells?: readonly GridLayoutCell<Key>[];
 
   /**
    * Navigation wrap mode.
@@ -62,17 +62,17 @@ export interface GridProps<K extends GridKey = GridKey, S extends GridSelection 
    * otherwise the first focusable cell. Pass it to a server-rendered grid: without it only the selected
    * cell of `selection='single'` is a tab stop in the server HTML.
    */
-  defaultActive?: K;
+  defaultActive?: Key;
 
   /**
    * Controlled active (focused) cell key.
    */
-  active?: K;
+  active?: Key;
 
   /**
    * Fires when the active (focused) cell key changes.
    */
-  onChangeActive?: (active: K) => void;
+  onChangeActive?: (active: Key) => void;
 
   /**
    * Exclude cells from focus traversal: excluded cells are not focusable at all.
@@ -81,7 +81,7 @@ export interface GridProps<K extends GridKey = GridKey, S extends GridSelection 
    * - an array of keys
    * - a predicate `(key) => boolean`
    */
-  exclude?: GridKeys<K>;
+  exclude?: GridKeys<Key>;
 
   /**
    * Overrides keyboard navigation. Receives the navigation intent (`forward` and `backward`
@@ -90,7 +90,7 @@ export interface GridProps<K extends GridKey = GridKey, S extends GridSelection 
    * A key of a cell that is not rendered yet becomes the active cell and takes focus
    * as soon as it renders.
    */
-  getNextKey?: (intent: GridIntent, from: K, next: K | undefined) => K | undefined;
+  getNextKey?: (intent: GridIntent, from: Key, next: Key | undefined) => Key | undefined;
 
   /**
    * Selection mode. Without it the grid has no selection: cells have no
@@ -99,7 +99,7 @@ export interface GridProps<K extends GridKey = GridKey, S extends GridSelection 
    * - `'multiple'` — independent multi-selection, the recommended model of the WAI-ARIA listbox pattern: a click, Enter or Space toggles a cell, moving the focus keeps the selection, Shift + arrows add the cells from the most recently selected one, Shift + Space selects from the most recently selected cell to the focused one, a pointer drag adds the cells in between, and Ctrl+A or Command+A selects all
    * - `'range'` — range selection between two points (Shift + arrows or pointer drag); it has no select all
    */
-  selection?: S;
+  selection?: SelectionMode;
 
   /**
    * Disabled cells, marked with `aria-disabled`: they stay focusable but cannot be selected,
@@ -110,7 +110,7 @@ export interface GridProps<K extends GridKey = GridKey, S extends GridSelection 
    * - an array of disabled keys
    * - a single key
    */
-  disabled?: GridKeys<K>;
+  disabled?: GridKeys<Key>;
 
   /**
    * Makes the selection read-only like a native `readonly` input: the grid gets
@@ -123,22 +123,22 @@ export interface GridProps<K extends GridKey = GridKey, S extends GridSelection 
    * Controlled selected cells: a key in `'single'` mode, an array of keys otherwise.
    * In `'single'` mode `null` means controlled with nothing selected.
    */
-  value?: (S extends 'multiple' | 'range' ? K[] : S extends 'single' ? K | null : never) | undefined;
+  value?: (SelectionMode extends 'multiple' | 'range' ? Key[] : SelectionMode extends 'single' ? Key | null : never) | undefined;
 
   /**
    * Uncontrolled initially selected cells.
    */
-  defaultValue?: (S extends 'multiple' | 'range' ? K[] : S extends 'single' ? K : never) | undefined;
+  defaultValue?: (SelectionMode extends 'multiple' | 'range' ? Key[] : SelectionMode extends 'single' ? Key : never) | undefined;
 
   /**
    * The smallest key that can be selected, by the `compare` order, or by position without `compare`.
    */
-  min?: (S extends GridSelection ? K : never) | undefined;
+  min?: (SelectionMode extends GridSelection ? Key : never) | undefined;
 
   /**
    * The largest key that can be selected, by the `compare` order, or by position without `compare`.
    */
-  max?: (S extends GridSelection ? K : never) | undefined;
+  max?: (SelectionMode extends GridSelection ? Key : never) | undefined;
 
   /**
    * Given the start and the end key, ordered by `compare`, returns the list of keys forming the range.
@@ -147,7 +147,7 @@ export interface GridProps<K extends GridKey = GridKey, S extends GridSelection 
    * selects the range from the `gridStart` to the `gridEnd` key of `getNextKey`: pass both when not
    * every cell is rendered, as in a virtualized grid. Return only the keys that can be selected.
    */
-  resolveRange?: (start: K, end: K) => K[];
+  resolveRange?: (start: Key, end: Key) => Key[];
 
   /**
    * Orders two cell keys for ranges, `min` and `max`, like the compare function of `Array.prototype.sort`:
@@ -156,13 +156,13 @@ export interface GridProps<K extends GridKey = GridKey, S extends GridSelection 
    * of a cell that is not rendered is not ordered: pass it for keys with an order of their own,
    * like dates, and for grids that render only part of their cells.
    */
-  compare?: (a: K, b: K) => number;
+  compare?: (a: Key, b: Key) => number;
 
   /**
    * Fires when the user changes the selection, with the new value:
    * a key in `'single'` mode, an array of keys otherwise.
    */
-  onChangeValue?: (value: S extends 'multiple' | 'range' ? K[] : S extends 'single' ? K : never) => void;
+  onChangeValue?: (value: SelectionMode extends 'multiple' | 'range' ? Key[] : SelectionMode extends 'single' ? Key : never) => void;
 }
 
 /**
@@ -181,7 +181,7 @@ export interface GridProps<K extends GridKey = GridKey, S extends GridSelection 
  * the active cell when it is focusable, otherwise the first selected
  * focusable cell, otherwise the first focusable cell.
  */
-export const Grid = <K extends GridKey = GridKey, S extends GridSelection | undefined = undefined>({
+export const Grid = <Key extends GridKey = GridKey, SelectionMode extends GridSelection | undefined = undefined>({
   cells,
   wrap,
   exclude,
@@ -205,10 +205,10 @@ export const Grid = <K extends GridKey = GridKey, S extends GridSelection | unde
   children,
   ref,
   ...props
-}: PropsWithChildren<GridProps<K, S>>) => {
-  const [grid] = useState(() => createGrid<K>())
+}: PropsWithChildren<GridProps<Key, SelectionMode>>) => {
+  const [grid] = useState(() => createGrid<Key>())
 
-  const handle = useWidget(grid, (entries: readonly GridEntry<K>[]) => ({
+  const handle = useWidget(grid, (entries: readonly GridEntry<Key>[]) => ({
     entries,
     cells,
     wrap,
@@ -223,15 +223,15 @@ export const Grid = <K extends GridKey = GridKey, S extends GridSelection | unde
     getNextKey,
     active,
     defaultActive,
-    onChangeActive: (key: K | undefined) => {
+    onChangeActive: (key: Key | undefined) => {
       if (key !== undefined) onChangeActive?.(key)
     },
     value,
     defaultValue,
-    onChangeValue: onChangeValue as ((value: GridValue<K>) => void) | undefined,
+    onChangeValue: onChangeValue as ((value: GridValue<Key>) => void) | undefined,
   }), widgetEnvironment)
 
-  useImperativeHandle(apiRef, () => ({ focus: (key?: K) => void handle.send(createInput(FOCUS, { key })) }), [handle])
+  useImperativeHandle(apiRef, () => ({ focus: (key?: Key) => void handle.send(createInput(FOCUS, { key })) }), [handle])
 
   const Element = asChild ? Slot : 'div'
   const attrs = useOutput(handle, grid.output.root)

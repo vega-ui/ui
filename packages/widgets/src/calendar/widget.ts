@@ -30,7 +30,7 @@ export const YEARS_SCROLLER = 'yearsScroller'
 
 type OpenableView = Exclude<CalendarView, 'day'>
 
-const VIEW_PARTS: Record<OpenableView, string> = { month: MONTHS, year: YEARS }
+const VIEW_PARTS: Record<OpenableView, typeof MONTHS | typeof YEARS> = { month: MONTHS, year: YEARS }
 
 const NEVER_DISABLED = () => false
 
@@ -57,6 +57,7 @@ const createCalendarShape = () => state({
     leaving: internal([] as readonly OpenableView[]),
   },
   observes: { daysScrolled: matching(DAYS_SCROLLER, '*'), yearsScrolled: matching(YEARS_SCROLLER, '*') },
+  parts: [DAYS, MONTHS, YEARS, DAYS_SCROLLER, YEARS_SCROLLER],
 })
 
 export type CalendarShape = ReturnType<typeof createCalendarShape>
@@ -70,11 +71,11 @@ const isOpenable = (view: unknown): view is OpenableView => view === 'month' || 
 export const createCalendar = () => {
   const shape = createCalendarShape()
 
-  type S = CalendarSnapshot
+  type State = CalendarSnapshot
 
   let availabilityFor: { min: string | undefined; max: string | undefined; isDisabled: (date: string) => boolean; availability: DateAvailability } | undefined
 
-  const availabilityOf = (state: S): DateAvailability => {
+  const availabilityOf = (state: State): DateAvailability => {
     const { min, max, isDisabled } = state.options
     if (!availabilityFor || availabilityFor.min !== min || availabilityFor.max !== max || availabilityFor.isDisabled !== isDisabled) {
       availabilityFor = { min, max, isDisabled, availability: { from: min, to: max, isDisabled } }
@@ -83,7 +84,7 @@ export const createCalendar = () => {
     return availabilityFor.availability
   }
 
-  const focusedOf = (state: S) => {
+  const focusedOf = (state: State) => {
     if (state.focusedDate !== undefined) return state.focusedDate
 
     const [selected] = state.options.selected
@@ -93,21 +94,21 @@ export const createCalendar = () => {
     return today === undefined ? undefined : clampDate(today, min, max)
   }
 
-  const focusDays = (state: S) => [act.send(DAYS, FOCUS_GRID, { key: focusedOf(state) })]
+  const focusDays = (state: State) => [act.send(DAYS, FOCUS_GRID, { key: focusedOf(state) })]
 
-  const monthOf = (state: S) => {
+  const monthOf = (state: State) => {
     const focused = focusedOf(state)
     return focused === undefined ? undefined : getCalendarMonthStart(state.options.calendar, focused)
   }
 
-  const requestedOf = (state: S): CalendarView => state.requested ?? (state.options.autoFocus ? state.view : 'day')
+  const requestedOf = (state: State): CalendarView => state.requested ?? (state.options.autoFocus ? state.view : 'day')
 
-  const close = (state: S) => shape.requested.set(shape.view.set(state, 'day'), 'day')
+  const close = (state: State) => shape.requested.set(shape.view.set(state, 'day'), 'day')
 
 
-  const showDay = (state: S, date: string) => close(shape.focusedDate.set(state, getAvailableDate(state.options.calendar, date, availabilityOf(state)) ?? date))
+  const showDay = (state: State, date: string) => close(shape.focusedDate.set(state, getAvailableDate(state.options.calendar, date, availabilityOf(state)) ?? date))
 
-  const stepMonth = (state: S, step: number) => {
+  const stepMonth = (state: State, step: number) => {
     const focused = focusedOf(state)
     if (focused === undefined) return state
 
@@ -118,14 +119,14 @@ export const createCalendar = () => {
     return shape.focusedDate.set(state, day ?? month)
   }
 
-  const focusedYearOf = (state: S) => {
+  const focusedYearOf = (state: State) => {
     if (state.focusedYear !== undefined) return state.focusedYear
 
     const focused = focusedOf(state)
     return focused === undefined ? undefined : getCalendarYearStart(state.options.calendar, focused)
   }
 
-  const stepYears = (state: S, step: number) => {
+  const stepYears = (state: State, step: number) => {
     const focusedYear = focusedYearOf(state)
     if (focusedYear === undefined) return state
 
@@ -135,7 +136,7 @@ export const createCalendar = () => {
     return shape.focusedYear.set(state, getCalendarYearStart(calendar, target))
   }
 
-  const open = (state: S, view: Exclude<CalendarView, 'day'>) => {
+  const open = (state: State, view: Exclude<CalendarView, 'day'>) => {
     const opened = shape.requested.set(shape.view.set(state, view), view)
     const focused = focusedOf(state)
     if (view !== 'year' || focused === undefined) return opened
@@ -143,12 +144,12 @@ export const createCalendar = () => {
     return shape.focusedYear.set(opened, getCalendarYearStart(state.options.calendar, focused))
   }
 
-  const pickMonth = (state: S, month: string) => {
+  const pickMonth = (state: State, month: string) => {
     const focused = focusedOf(state)
     return showDay(state, focused === undefined ? month : getSameDayInCalendarMonth(state.options.calendar, focused, month))
   }
 
-  const pickYear = (state: S, year: string) => {
+  const pickYear = (state: State, year: string) => {
     const { calendar, min, max } = state.options
     const focused = focusedOf(state)
     if (focused === undefined) return showDay(state, clampDate(getSameMonthInCalendarYear(calendar, year, year), min, max))
@@ -157,13 +158,13 @@ export const createCalendar = () => {
     return showDay(state, clampDate(getSameDayInCalendarMonth(calendar, focused, month), min, max))
   }
 
-  const scroll = (scrolled: boolean, part: string, step: number): Action<never>[] => {
+  const scroll = (scrolled: boolean, part: typeof DAYS_SCROLLER | typeof YEARS_SCROLLER, step: number): Action<never, typeof part>[] => {
     if (!scrolled) return []
 
     return [act.send(part, step < 0 ? SNAP_PREVIOUS : SNAP_NEXT)]
   }
 
-  const paging: Step<S> = (state, input) => {
+  const paging: Step<State> = (state, input) => {
     if (!input.is(PREVIOUS) && !input.is(NEXT)) return undefined
 
     const step = input.is(PREVIOUS) ? -1 : 1
@@ -173,7 +174,7 @@ export const createCalendar = () => {
     return keep(state)
   }
 
-  const switching = (result: Result<S> | undefined): Result<S> | undefined => {
+  const switching = (result: Result<State> | undefined): Result<State> | undefined => {
     if (!result) return result
 
     const { state } = result
@@ -187,14 +188,14 @@ export const createCalendar = () => {
     return { ...result, state: shape.leaving.set(switched, [...kept, previous]), actions: [...result.actions, act.awaitAnimations(VIEW_PARTS[previous])] }
   }
 
-  const following: Step<S> = (state, input) => {
+  const following: Step<State> = (state, input) => {
     if (input.is(lifecycle.connect)) return keep(shape.shownView.set(state, state.view))
     if (input.is(lifecycle.options)) return switching(keep(state))
 
     return undefined
   }
 
-  const settling: Step<S> = (state, input) => {
+  const settling: Step<State> = (state, input) => {
     if (!input.is(browser.animationEnd)) return undefined
 
     if (input.part !== MONTHS && input.part !== YEARS) return undefined
@@ -204,9 +205,9 @@ export const createCalendar = () => {
     return keep(shape.leaving.set(state, state.leaving.filter((leaving) => leaving !== view)))
   }
 
-  const views = listening<S>([key.escape], (state, input) => switching(viewing(state, input)))
+  const views = listening<State>([key.escape], (state, input) => switching(viewing(state, input)))
 
-  const viewing: Step<S> = (state, input) => {
+  const viewing: Step<State> = (state, input) => {
     if (input.is(key.escape)) return state.view === 'day' ? undefined : handled(close(state), focusDays(state))
     if (input.is(CLOSE_VIEW)) return keep(close(state), state.view === 'day' ? [] : focusDays(state))
 
@@ -228,9 +229,9 @@ export const createCalendar = () => {
     return undefined
   }
 
-  const mountedOf = (state: S, view: OpenableView) => state.view === view || state.leaving.includes(view)
+  const mountedOf = (state: State, view: OpenableView) => state.view === view || state.leaving.includes(view)
 
-  const pagesTo = (state: S, step: -1 | 1) => {
+  const pagesTo = (state: State, step: -1 | 1) => {
     if (state.view === 'month') return false
     if (state.view === 'year') return true
 

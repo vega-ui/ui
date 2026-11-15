@@ -27,7 +27,7 @@ import {
   typeahead,
   TYPEAHEAD,
 } from '@vega-ui/core'
-import { entries, keysOf, ListboxEntry, ListboxValue, optionInvariants, optionPart, valueOf } from '../listbox'
+import { activeIdOf, entries, keysOf, ListboxEntry, ListboxValue, optionInvariants, optionPart, valueOf } from '../listbox'
 
 export const COMBOBOX = 'combobox'
 export const LISTBOX = 'listbox'
@@ -41,6 +41,7 @@ export const selectShape = state({
   internal: { typed: internal(''), moved: internal(false) },
   observes: { shown: matching(LISTBOX, ':popover-open') },
   collection: (options) => entries.of(options.items),
+  parts: [COMBOBOX, LISTBOX],
 })
 
 type SelectSnapshot = typeof selectShape.__snapshot
@@ -55,7 +56,7 @@ export const isShown = (state: SelectSnapshot) => state.shown
 
 const selectedKey = (state: SelectSnapshot) => (state.value === null ? null : (keysOf(state, state.value)[0] ?? null))
 
-const navigable = (state: SelectSnapshot, key: unknown): key is string => collection.has(state.collection, key as string | null) && collection.isNavigable(state.collection, key as string)
+const navigable = (state: SelectSnapshot, key: string | null | undefined): key is string => collection.has(state.collection, key) && collection.isNavigable(state.collection, key)
 
 const activate = (state: SelectSnapshot, at: string | null) => selectShape.moved.set(selectShape.active.set(state, at), false)
 
@@ -64,7 +65,7 @@ const startAt = (state: SelectSnapshot) => {
   return selected !== null && navigable(state, selected) ? selected : collection.first(state.collection)
 }
 
-const opened = (state: SelectSnapshot, at = startAt(state), before: readonly Action<string>[] = []) =>
+const opened = (state: SelectSnapshot, at = startAt(state), before: readonly Action<string, typeof COMBOBOX | typeof LISTBOX>[] = []) =>
   handled(activate(selectShape.open.set(state, true), at), at === null ? [...before, ...SHOW] : [...before, ...SHOW, act.reveal(at)])
 
 const closed = (state: SelectSnapshot) => selectShape.active.set(selectShape.open.set(state, false), null)
@@ -88,8 +89,11 @@ const whenEnabled: Step<SelectSnapshot> = (state, input) => {
   return state.options.disabled || state.options.readOnly ? keep(state) : undefined
 }
 
+const OPENING = ['open', 'disabled', 'readOnly']
+
 const followOpen: Step<SelectSnapshot> = (state, input) => {
   if (!input.is(lifecycle.connect) && !input.is(lifecycle.options)) return undefined
+  if (input.is(lifecycle.options) && !input.changed?.some((name) => OPENING.includes(name))) return keep(state)
 
   const open = state.open && !state.options.disabled && !state.options.readOnly
   if (open === state.shown) return keep(state)
@@ -168,7 +172,7 @@ export const selectWidget = defineWidget({
 
   output: {
     combobox: selectShape.part(
-      (state) => [state.shown, state.options.disabled, state.options.readOnly, idOf(state, LISTBOX), state.active === null ? null : idOf(state, 'option', state.active)] as const,
+      (state) => [state.shown, state.options.disabled, state.options.readOnly, idOf(state, LISTBOX), activeIdOf(state)] as const,
       ([shown, disabled, readOnly, listboxId, activeId]) => ({
         role: 'combobox',
         disabled,

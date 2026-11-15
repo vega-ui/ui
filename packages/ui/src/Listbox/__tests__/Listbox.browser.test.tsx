@@ -103,7 +103,7 @@ describe('Listbox', () => {
       expect(onChangeValue).toHaveBeenCalledWith(49);
     });
 
-    it('drops the active option when it is removed', async () => {
+    it('moves the active option to the next enabled one when it is removed', async () => {
       const r = render(<Listbox data-testid={LISTBOX} aria-label='Letters'>{options}</Listbox>);
 
       getListbox(r).focus();
@@ -111,7 +111,7 @@ describe('Listbox', () => {
 
       r.rerender(<Listbox data-testid={LISTBOX} aria-label='Letters'>{options.slice(1)}</Listbox>);
 
-      await expect.poll(() => getListbox(r).hasAttribute('aria-activedescendant')).toBe(false);
+      await toBeActive(r, 'Gamma');
     });
 
     it('skips an option disabled after mounting', async () => {

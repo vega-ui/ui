@@ -80,6 +80,18 @@ describe('Edge Cases', () => {
 })
 
 describe('Accessibility', () => {
+  it('keeps one tab stop on the first enabled page when the active page is missing, out of range or disabled', () => {
+    const tabStops = (options: Parameters<typeof simulate<typeof pageControlWidget.shape>>[1]) => {
+      const { state } = simulate(pageControlWidget, options)
+      return [0, 1, 2].filter((index) => pageControlWidget.output.tab.render(pageControlWidget.output.tab.select(state, index)).tabIndex === 0)
+    }
+
+    expect(tabStops({ items: pages([0, 1, 2]) })).toEqual([0])
+    expect(tabStops({ items: pages([0, 1, 2]), active: 5 })).toEqual([0])
+    expect(tabStops({ items: pages([0, 1, 2], [0]), active: 0 })).toEqual([1])
+    expect(tabStops({ items: pages([0, 1, 2]), active: 2 })).toEqual([2])
+  })
+
   it('marks a page the item forces as current like the active tab, with aria-current, and a forced other page like an inactive one', () => {
     const active = pageControlWidget.output.tab.render(pageControlWidget.output.tab.select(simulate(pageControlWidget, { items: pages([0]), defaultActive: 0 }).state, 0))
 

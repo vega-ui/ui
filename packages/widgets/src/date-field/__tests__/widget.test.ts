@@ -2,8 +2,7 @@ import { describe, expect, it, vi } from 'vitest'
 import { act, createInput, focus, key, lifecycle, ROOT, text } from '@vega-ui/core'
 import { simulate } from '@vega-ui/core/test'
 import { createCalendarSystem, gregorianCalendar } from '@vega-ui/i18n'
-import { PICK_VALUE } from '../../mask'
-import { dateFieldWidget } from '../widget'
+import { dateFieldWidget, PICK_VALUE } from '../widget'
 
 type DateFieldOptions = Parameters<typeof simulate<typeof dateFieldWidget.shape>>[1]
 

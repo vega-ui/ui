@@ -103,6 +103,16 @@ describe('Edge Cases', () => {
     expect(tooltip.actions).toEqual([act.watchKeys()])
   })
 
+  it('cancels a pending open on Escape and leaves the key to the browser', () => {
+    const tooltip = simulate(tooltipWidget, options)
+
+    tooltip.send(pointer.enter, { part: TRIGGER, pointerType: 'mouse' }).send(key.escape)
+
+    expect(tooltip.answer).toBe('keep')
+    expect(tooltip.actions).toEqual([act.cancelTimer('show')])
+    expect(tooltip.state.timers.has('show')).toBe(false)
+  })
+
   it('lets Escape through while closed', () => {
     const tooltip = simulate(tooltipWidget, options)
 

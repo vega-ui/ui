@@ -1,12 +1,14 @@
 import { describe, expect, it } from 'vitest'
 import { getReleaseDuration } from '../getReleaseDuration'
 
-describe('getReleaseDuration', () => {
+describe('Critical User Paths', () => {
   it('starts at the speed of the pointer', () => {
     expect(getReleaseDuration(400, 3000)).toBe(300)
     expect(getReleaseDuration(-400, -3000)).toBe(300)
   })
+})
 
+describe('Edge Cases', () => {
   it('keeps within the limits', () => {
     expect(getReleaseDuration(100, 5000)).toBe(200)
     expect(getReleaseDuration(400, 500)).toBe(500)

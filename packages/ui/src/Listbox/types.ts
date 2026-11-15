@@ -1,1 +1,1 @@
-export type ListboxValue<V, M extends boolean> = M extends true ? V[] : V | null
+export type ListboxValue<Value, Multiple extends boolean> = Multiple extends true ? Value[] : Value | null

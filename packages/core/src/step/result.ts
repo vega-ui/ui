@@ -1,34 +1,35 @@
 import { Collection } from '../collection'
 import { Input, InputSpec } from '../input'
+import { PartOfState } from '../state/shape'
 import { Action } from './actions'
 
 export type Answer = 'handled' | 'keep' | 'stop'
 
-export type KeyOfState<S> = S extends { readonly collection: Collection<infer K> } ? K : unknown
+export type KeyOfState<State> = State extends { readonly collection: Collection<infer Key> } ? Key : unknown
 
-export interface Result<S, K = KeyOfState<S>> {
-  readonly state: S
-  readonly actions: readonly Action<K>[]
+export interface Result<State, Key = KeyOfState<State>, PartName extends string = PartOfState<State>> {
+  readonly state: State
+  readonly actions: readonly Action<Key, PartName>[]
   readonly answer: Answer
 }
 
-export interface Step<S, K = KeyOfState<S>> {
-  (state: S, input: Input<K>): Result<S, K> | undefined
+export interface Step<State, Key = KeyOfState<State>, PartName extends string = PartOfState<State>> {
+  (state: State, input: Input<Key>): Result<State, Key, PartName> | undefined
   readonly listens?: readonly InputSpec[]
 }
 
-export const listening = <S, K = KeyOfState<S>>(listens: readonly InputSpec[], step: (state: S, input: Input<K>) => Result<S, K> | undefined): Step<S, K> =>
+export const listening = <State, Key = KeyOfState<State>, PartName extends string = PartOfState<State>>(listens: readonly InputSpec[], step: (state: State, input: Input<Key>) => Result<State, Key, PartName> | undefined): Step<State, Key, PartName> =>
   Object.assign(step, { listens })
 
-const NO_ACTIONS: readonly Action<never>[] = []
+const NO_ACTIONS: readonly Action<never, never>[] = []
 
-export const handled = <S, K = KeyOfState<S>>(state: S, actions: readonly Action<K>[] = NO_ACTIONS): Result<S, K> => ({ state, actions, answer: 'handled' })
+export const handled = <State, Key = KeyOfState<State>, PartName extends string = never>(state: State, actions: readonly Action<Key, PartName>[] = NO_ACTIONS): Result<State, Key, PartName> => ({ state, actions, answer: 'handled' })
 
-export const keep = <S, K = KeyOfState<S>>(state: S, actions: readonly Action<K>[] = NO_ACTIONS): Result<S, K> => ({ state, actions, answer: 'keep' })
+export const keep = <State, Key = KeyOfState<State>, PartName extends string = never>(state: State, actions: readonly Action<Key, PartName>[] = NO_ACTIONS): Result<State, Key, PartName> => ({ state, actions, answer: 'keep' })
 
-export const stop = <S, K = KeyOfState<S>>(state: S): Result<S, K> => ({ state, actions: NO_ACTIONS, answer: 'stop' })
+export const stop = <State, Key = KeyOfState<State>>(state: State): Result<State, Key, never> => ({ state, actions: NO_ACTIONS, answer: 'stop' })
 
-export const runSteps = <S, K>(steps: readonly Step<S, K>[], state: S, input: Input<K>): Result<S, K> | undefined => {
+export const runSteps = <State, Key, PartName extends string>(steps: readonly Step<State, Key, PartName>[], state: State, input: Input<Key>): Result<State, Key, PartName> | undefined => {
   for (const step of steps) {
     const result = step(state, input)
     if (result) return result

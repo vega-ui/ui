@@ -155,6 +155,27 @@ describe('Grid', () => {
   });
   
   describe('Edge Cases', () => {
+    it('leaves the role to a control a component renders as the cell with asChild', async () => {
+      const Action: FC<ComponentProps<'button'>> = (props) => <button type='button' {...props} />
+      const r = render(
+        <Grid aria-label='Grid'>
+          <GridRowGroup>
+            <GridRow row={0}>
+              <GridCell col={0} asChild>
+                <Action data-testid='action'>Go</Action>
+              </GridCell>
+              <GridCell col={1} asChild>
+                <span data-testid='plain'>Plain</span>
+              </GridCell>
+            </GridRow>
+          </GridRowGroup>
+        </Grid>
+      );
+
+      await expect.element(r.getByTestId('action')).not.toHaveAttribute('role');
+      await expect.element(r.getByTestId('plain')).toHaveAttribute('role', 'gridcell');
+    });
+
     it('renders on table elements with asChild and navigates them', async () => {
       const r = render(
         <Grid aria-label='Grid' asChild>

@@ -1,9 +1,9 @@
-import { FC, HTMLAttributes, PropsWithChildren, Ref } from 'react';
+import { FC, HTMLAttributes, PropsWithChildren, Ref, useCallback, useState } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { useMergeRefs } from '@vega-ui/hooks';
 import { useGridCell } from '../../hooks';
-import { isInteractiveChild } from '../../helpers';
+import { isInteractiveChild, isInteractiveElement } from '../../helpers';
 import { Slot } from '../../../Slot';
 import { GridKey } from '../../types';
 
@@ -69,8 +69,10 @@ export const GridCell: FC<PropsWithChildren<GridCellProps>> = ({
   ...props
 }) => {
   const Element = asChild ? Slot : 'div'
-  const cell = useGridCell({ value, col, excluded, disabled, selectable: true, interactive: asChild === true && isInteractiveChild(children) })
-  const cellRef = useMergeRefs([ref, cell.ref])
+  const [interactiveElement, setInteractiveElement] = useState(false)
+  const detect = useCallback((element: HTMLElement | null) => setInteractiveElement(isInteractiveElement(element)), [])
+  const cell = useGridCell({ value, col, excluded, disabled, selectable: true, interactive: asChild === true && (isInteractiveChild(children) || interactiveElement) })
+  const cellRef = useMergeRefs([ref, cell.ref, detect])
 
   return (
     <Element

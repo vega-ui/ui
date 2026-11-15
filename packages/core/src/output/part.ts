@@ -18,16 +18,16 @@ export type Properties = Readonly<Record<string, unknown>> & {
 
 export type LiveValues = Readonly<Record<string, string | number | boolean | undefined>>
 
-export interface Channel<S, K, V> {
-  select(state: S, key: K): readonly unknown[]
-  render(selected: readonly unknown[]): V
+export interface Channel<State, Key, Value> {
+  select(state: State, key: Key): readonly unknown[]
+  render(selected: readonly unknown[]): Value
 }
 
-export interface Part<S, K> {
-  select(state: S, key: K): readonly unknown[]
+export interface Part<State, Key> {
+  select(state: State, key: Key): readonly unknown[]
   render(selected: readonly unknown[]): Attrs
-  readonly props?: Channel<S, K, Properties>
-  readonly live?: Channel<S, K, LiveValues>
+  readonly props?: Channel<State, Key, Properties>
+  readonly live?: Channel<State, Key, LiveValues>
 }
 
 export interface Rendered {
@@ -37,7 +37,7 @@ export interface Rendered {
 
 export const sameSelection = (previous: readonly unknown[], next: readonly unknown[]) => previous.length === next.length && previous.every((item, position) => Object.is(item, next[position]))
 
-export const renderPart = <S, K>(part: Part<S, K>, state: S, key: K, previous?: Rendered): Rendered => {
+export const renderPart = <State, Key>(part: Part<State, Key>, state: State, key: Key, previous?: Rendered): Rendered => {
   const selected = part.select(state, key)
   if (previous && sameSelection(previous.selected, selected)) return previous
 

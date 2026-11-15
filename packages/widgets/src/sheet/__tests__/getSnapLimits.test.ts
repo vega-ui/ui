@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { getSnapLimits } from '../getSnapLimits'
 
-describe('getSnapLimits', () => {
+describe('Critical User Paths', () => {
   it('returns the outermost stops', () => {
     expect(getSnapLimits([300, 0, 150], 300)).toEqual([0, 300])
   })
@@ -11,7 +11,9 @@ describe('getSnapLimits', () => {
     expect(getSnapLimits([300, 0, 150], 150, true)).toEqual([0, 300])
     expect(getSnapLimits([300, 0, 150], 0, true)).toEqual([0, 150])
   })
+})
 
+describe('Edge Cases', () => {
   it('skips the stops that share the current position when stepped', () => {
     expect(getSnapLimits([50, 0, 0], 0, true)).toEqual([0, 50])
   })

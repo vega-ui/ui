@@ -5,18 +5,18 @@ import { act, FocusStrategy, handled, keep, listening, show, Step } from '../ste
 
 export const TYPEAHEAD = 'typeahead'
 
-export interface TypeaheadOptions<S, K> {
-  readonly active: Field<S, K | null>
-  readonly typed: Field<S, string>
+export interface TypeaheadOptions<State, Key> {
+  readonly active: Field<State, Key | null>
+  readonly typed: Field<State, string>
   readonly strategy: FocusStrategy
-  readonly enabled?: Reader<S, boolean>
+  readonly enabled?: Reader<State, boolean>
   readonly delay?: number
 }
 
-export const typeahead = <S extends { collection: Collection<K>; timers: ReadonlyMap<string, number> }, K>({ active, typed, strategy, enabled, delay = 500 }: TypeaheadOptions<S, K>): Step<S, K> => {
+export const typeahead = <State extends { collection: Collection<Key>; timers: ReadonlyMap<string, number> }, Key>({ active, typed, strategy, enabled, delay = 500 }: TypeaheadOptions<State, Key>): Step<State, Key> => {
   const expire = timer(TYPEAHEAD)
 
-  return listening<S, K>([key.printable, focus.leave], (state, input) => {
+  return listening<State, Key>([key.printable, focus.leave], (state, input) => {
     if (input.is(expire)) return handled(typed.set(state, ''))
     if (input.is(focus.leave) && typed.get(state) !== '') return keep(typed.set(state, ''), [act.cancelTimer(TYPEAHEAD)])
     if (enabled && !enabled.get(state)) return undefined

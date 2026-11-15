@@ -14,7 +14,7 @@ import { CalendarDatesDisabled, CalendarView, CalendarSelection, CalendarValue, 
 import { CLOSE_VIEW, createCalendar, DAYS, FOCUS_DATE, FOCUS_YEAR, NEXT, PICK, PREVIOUS, TOGGLE_VIEW } from '@vega-ui/widgets/calendar';
 import style from './style.module.css';
 
-export interface CalendarProps<S extends CalendarSelection = 'single'> extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
+export interface CalendarProps<SelectionMode extends CalendarSelection = 'single'> extends Omit<HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
   /**
    * Visual variant of the buttons and cells of the calendar.
    * @default "secondary"
@@ -56,7 +56,7 @@ export interface CalendarProps<S extends CalendarSelection = 'single'> extends O
    *
    * @default 'single'
    */
-  selection?: S;
+  selection?: SelectionMode;
 
   /**
    * Controlled visible view:
@@ -70,12 +70,12 @@ export interface CalendarProps<S extends CalendarSelection = 'single'> extends O
    * Controlled selection value, shaped by the `selection` mode.
    * Malformed or non-existent dates are treated as unselected.
    */
-  value?: CalendarValue<S>;
+  value?: CalendarValue<SelectionMode>;
 
   /**
    * Uncontrolled initial selection value, shaped by the `selection` mode.
    */
-  defaultValue?: CalendarValue<S>;
+  defaultValue?: CalendarValue<SelectionMode>;
 
   /**
    * Initial view for uncontrolled usage.
@@ -115,7 +115,7 @@ export interface CalendarProps<S extends CalendarSelection = 'single'> extends O
    * Fires when the user changes the selection.
    * The value is shaped by the `selection` mode.
    */
-  onChangeValue?(value: CalendarValue<S>): void;
+  onChangeValue?(value: CalendarValue<SelectionMode>): void;
 
   /**
    * Fires when the visible view changes.
@@ -185,7 +185,7 @@ const ALWAYS_DISABLED = () => true
  * Keyboard focus starts on the focused day; without one on the selected day,
  * otherwise on today, otherwise on the first available day of the month.
  */
-export const Calendar = <S extends CalendarSelection = 'single'>({
+export const Calendar = <SelectionMode extends CalendarSelection = 'single'>({
   max,
   min,
   value,
@@ -205,13 +205,13 @@ export const Calendar = <S extends CalendarSelection = 'single'>({
   variant = 'secondary',
   compact,
   className,
-  selection = 'single' as S,
+  selection = 'single' as SelectionMode,
   defaultView = 'day',
   onChangeView,
   onChangeValue,
   children,
   ...props
-}: CalendarProps<S>) => {
+}: CalendarProps<SelectionMode>) => {
   const locale = _locale ?? 'en-US'
   const today = useToday(_today)
   const headingId = useId()
@@ -253,12 +253,12 @@ export const Calendar = <S extends CalendarSelection = 'single'>({
 
   const onSelectDay = useEventCallback((day: PeriodValue) => {
     if (!Array.isArray(day) || selection !== 'range') {
-      onChangeValue?.(day as CalendarValue<S>)
+      onChangeValue?.(day as CalendarValue<SelectionMode>)
       return
     }
 
     const [start = '', end = ''] = day
-    onChangeValue?.([start, end] as CalendarValue<S>)
+    onChangeValue?.([start, end] as CalendarValue<SelectionMode>)
   })
 
   const changeFocusedDate = useEventCallback((date: string) => void handle.send(createInput(FOCUS_DATE, { value: date })))

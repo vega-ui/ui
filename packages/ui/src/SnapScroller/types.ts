@@ -9,11 +9,11 @@
  * - `prev()` — scrolls to the previous snap-aligned item.
  * - `scrollToElementByKey(key, behavior)` — scrolls to the item whose `data-index` equals `key`.
  */
-export interface SnapScrollerApiRef<K = number> {
+export interface SnapScrollerApiRef<Key = number> {
   next(): void
   prev(): void
-  scrollToElementByKey(key: K, behavior?: ScrollBehavior): void
+  scrollToElementByKey(key: Key, behavior?: ScrollBehavior): void
   measure(): void
-  getPending(): K | null
-  getCommitted(): K | null
+  getPending(): Key | null
+  getCommitted(): Key | null
 }

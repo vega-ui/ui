@@ -1,26 +1,26 @@
 import { Part } from '../output'
 import { Bound, Elements } from './connect'
 
-export interface Entry<K, D> {
-  readonly key: K
-  readonly data: D
+export interface Entry<Key, Data> {
+  readonly key: Key
+  readonly data: Data
 }
 
-interface Registered<K, D> extends Entry<K, D> {
+interface Registered<Key, Data> extends Entry<Key, Data> {
   readonly element: Element
 }
 
-export interface ElementRegistry<K, D = undefined> extends Elements<K> {
-  setRoot(element: Element | null, name?: string, output?: Part<unknown, K>): void
-  setPart(name: string, element: Element | null, output?: Part<unknown, K>): void
-  setItem(key: K, element: Element | null, data?: D, output?: Part<unknown, K>): () => void
-  entries(): readonly Entry<K, D>[]
-  within(container: Element): K[]
+export interface ElementRegistry<Key, Data = undefined> extends Elements<Key> {
+  setRoot(element: Element | null, name?: string, output?: Part<unknown, Key>): void
+  setPart(name: string, element: Element | null, output?: Part<unknown, Key>): void
+  setItem(key: Key, element: Element | null, data?: Data, output?: Part<unknown, Key>): () => void
+  entries(): readonly Entry<Key, Data>[]
+  within(container: Element): Key[]
   readonly version: number
   subscribe(listener: () => void): () => void
 }
 
-const byPosition = <K, D>(first: Registered<K, D>, second: Registered<K, D>) => {
+const byPosition = <Key, Data>(first: Registered<Key, Data>, second: Registered<Key, Data>) => {
   if (first.element === second.element) return 0
   return first.element.compareDocumentPosition(second.element) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1
 }
@@ -31,15 +31,15 @@ export const registryOf = (root: Element): Elements<unknown> | undefined => regi
 
 export const ROOT = 'root'
 
-export const createElements = <K, D = undefined>(): ElementRegistry<K, D> => {
+export const createElements = <Key, Data = undefined>(): ElementRegistry<Key, Data> => {
   const roots = new Map<string, Element>()
   let version = 0
-  let ordered: readonly Entry<K, D>[] | null = []
+  let ordered: readonly Entry<Key, Data>[] | null = []
   const parts = new Map<string, Element>()
   const names = new Map<Element, string>()
-  const items = new Map<K, Registered<K, D>>()
-  const keys = new Map<Element, K>()
-  const bindings = new Map<Element, Bound<K>>()
+  const items = new Map<Key, Registered<Key, Data>>()
+  const keys = new Map<Element, Key>()
+  const bindings = new Map<Element, Bound<Key>>()
   const listeners = new Set<() => void>()
   const rootListeners = new Set<() => void>()
 
@@ -83,11 +83,11 @@ export const createElements = <K, D = undefined>(): ElementRegistry<K, D> => {
     if (touchesItems(records)) reorder()
   })
 
-  const bind = (element: Element, key: K | undefined, output: Part<unknown, K> | undefined) => {
+  const bind = (element: Element, key: Key | undefined, output: Part<unknown, Key> | undefined) => {
     if (output) bindings.set(element, { element, key, output })
   }
 
-  const remove = (key: K) => {
+  const remove = (key: Key) => {
     const previous = items.get(key)
     if (!previous) return
 
@@ -96,7 +96,7 @@ export const createElements = <K, D = undefined>(): ElementRegistry<K, D> => {
     bindings.delete(previous.element)
   }
 
-  const setPart = (name: string, element: Element | null, output?: Part<unknown, K>) => {
+  const setPart = (name: string, element: Element | null, output?: Part<unknown, Key>) => {
     const previous = parts.get(name)
     if (previous) {
       names.delete(previous)
@@ -112,7 +112,7 @@ export const createElements = <K, D = undefined>(): ElementRegistry<K, D> => {
     }
   }
 
-  const registry: ElementRegistry<K, D> = {
+  const registry: ElementRegistry<Key, Data> = {
     rootOf(node) {
       let nearest: Element | undefined
       for (const root of roots.values()) {
@@ -184,7 +184,7 @@ export const createElements = <K, D = undefined>(): ElementRegistry<K, D> => {
       remove(key)
 
       if (element) {
-        items.set(key, { key, element, data: data as D })
+        items.set(key, { key, element, data: data as Data })
         keys.set(element, key)
         bind(element, key, output)
       }

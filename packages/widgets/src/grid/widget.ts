@@ -40,7 +40,7 @@ import {
 import { createKeyMatcher } from '@vega-ui/utils'
 import { GridKey, GridKeys, GridLayoutCell, GridRangePosition, GridSelection } from './types'
 
-export type GridValue<K extends GridKey = GridKey> = K | null | readonly K[]
+export type GridValue<Key extends GridKey = GridKey> = Key | null | readonly Key[]
 
 export interface GridCellData {
   readonly row: number
@@ -51,27 +51,27 @@ export interface GridCellData {
   readonly interactive: boolean
 }
 
-export type GridEntry<K extends GridKey = GridKey> = Entry<K, GridCellData>
+export type GridEntry<Key extends GridKey = GridKey> = Entry<Key, GridCellData>
 
 export const FOCUS = command('focus')
 export const ACTIVATE_WITHIN = command('activateWithin')
 
-export interface GridBaseOptions<K extends GridKey> {
-  readonly entries: readonly GridEntry<K>[]
-  readonly cells: readonly GridLayoutCell<K>[] | undefined
+export interface GridBaseOptions<Key extends GridKey> {
+  readonly entries: readonly GridEntry<Key>[]
+  readonly cells: readonly GridLayoutCell<Key>[] | undefined
   readonly wrap: GridWrap | undefined
-  readonly exclude: GridKeys<K> | undefined
-  readonly disabled: GridKeys<K> | undefined
+  readonly exclude: GridKeys<Key> | undefined
+  readonly disabled: GridKeys<Key> | undefined
   readonly readOnly: boolean | undefined
   readonly selection: GridSelection | undefined
-  readonly min: K | undefined
-  readonly max: K | undefined
-  readonly compare: ((first: K, second: K) => number) | undefined
-  readonly resolveRange: ((start: K, end: K) => K[]) | undefined
-  readonly getNextKey: ((intent: GridIntent, from: K, next: K | undefined) => K | undefined) | undefined
+  readonly min: Key | undefined
+  readonly max: Key | undefined
+  readonly compare: ((first: Key, second: Key) => number) | undefined
+  readonly resolveRange: ((start: Key, end: Key) => Key[]) | undefined
+  readonly getNextKey: ((intent: GridIntent, from: Key, next: Key | undefined) => Key | undefined) | undefined
 }
 
-export const gridOptions = <K extends GridKey>(): GridBaseOptions<K> => ({
+export const gridOptions = <Key extends GridKey>(): GridBaseOptions<Key> => ({
   entries: [],
   cells: undefined,
   wrap: undefined,
@@ -86,52 +86,52 @@ export const gridOptions = <K extends GridKey>(): GridBaseOptions<K> => ({
   getNextKey: undefined,
 })
 
-export const gridInternal = <K extends GridKey>() => ({
-  extension: internal(null as Extension<K> | null),
-  anchor: internal(null as K | null),
-  gesture: internal<Gesture<K>>(IDLE_GESTURE),
+export const gridInternal = <Key extends GridKey>() => ({
+  extension: internal(null as Extension<Key> | null),
+  anchor: internal(null as Key | null),
+  gesture: internal<Gesture<Key>>(IDLE_GESTURE),
 })
 
-export interface GridState<K extends GridKey = GridKey> extends Browser, Identified {
-  readonly options: GridBaseOptions<K> & ControlledOptions<{ value: Controlled<GridValue<K>> }>
-  readonly collection: Collection<K>
+export interface GridState<Key extends GridKey = GridKey> extends Browser, Identified {
+  readonly options: GridBaseOptions<Key> & ControlledOptions<{ value: Controlled<GridValue<Key>> }>
+  readonly collection: Collection<Key>
   readonly timers: ReadonlyMap<string, number>
-  readonly value: GridValue<K>
-  readonly extension: Extension<K> | null
-  readonly anchor: K | null
-  readonly gesture: Gesture<K>
+  readonly value: GridValue<Key>
+  readonly extension: Extension<Key> | null
+  readonly anchor: Key | null
+  readonly gesture: Gesture<Key>
 }
 
-export interface GridShape<K extends GridKey = GridKey> extends AnyShape {
-  readonly __snapshot: GridState<K>
-  readonly __key: K
+export interface GridShape<Key extends GridKey = GridKey> extends AnyShape {
+  readonly __snapshot: GridState<Key>
+  readonly __key: Key
 }
 
-export interface GridLayoutInputs<K extends GridKey> {
-  readonly entries: readonly GridEntry<K>[]
-  readonly cells: readonly GridLayoutCell<K>[] | undefined
-  readonly exclude: GridKeys<K> | undefined
-  readonly compare: ((first: K, second: K) => number) | undefined
+export interface GridLayoutInputs<Key extends GridKey> {
+  readonly entries: readonly GridEntry<Key>[]
+  readonly cells: readonly GridLayoutCell<Key>[] | undefined
+  readonly exclude: GridKeys<Key> | undefined
+  readonly compare: ((first: Key, second: Key) => number) | undefined
 }
 
-export interface GridLaid<K extends GridKey> {
-  readonly inputs: GridLayoutInputs<K>
-  readonly layout: GridLayout<K>
-  readonly data: ReadonlyMap<K, GridCellData>
-  isExcluded(key: K): boolean
+export interface GridLaid<Key extends GridKey> {
+  readonly inputs: GridLayoutInputs<Key>
+  readonly layout: GridLayout<Key>
+  readonly data: ReadonlyMap<Key, GridCellData>
+  isExcluded(key: Key): boolean
 }
 
-export interface GridLayouts<K extends GridKey> {
-  layoutFor(inputs: GridLayoutInputs<K>): GridLaid<K>
-  laidOf(collection: Collection<K>): GridLaid<K>
+export interface GridLayouts<Key extends GridKey> {
+  layoutFor(inputs: GridLayoutInputs<Key>): GridLaid<Key>
+  laidOf(collection: Collection<Key>): GridLaid<Key>
 }
 
-const sameInputs = <K extends GridKey>(first: GridLayoutInputs<K>, second: GridLayoutInputs<K>) =>
+const sameInputs = <Key extends GridKey>(first: GridLayoutInputs<Key>, second: GridLayoutInputs<Key>) =>
   first.entries === second.entries && first.cells === second.cells && first.exclude === second.exclude && first.compare === second.compare
 
-export const createGridLayouts = <K extends GridKey>(): GridLayouts<K> => {
-  const byEntries = new WeakMap<readonly GridEntry<K>[], GridLaid<K>>()
-  const byCollection = new WeakMap<object, GridLaid<K>>()
+export const createGridLayouts = <Key extends GridKey>(): GridLayouts<Key> => {
+  const byEntries = new WeakMap<readonly GridEntry<Key>[], GridLaid<Key>>()
+  const byCollection = new WeakMap<object, GridLaid<Key>>()
 
   return {
     layoutFor(inputs) {
@@ -153,39 +153,39 @@ export const createGridLayouts = <K extends GridKey>(): GridLayouts<K> => {
   }
 }
 
-export interface GridRules<S extends GridState<K>, K extends GridKey> {
-  readonly active: Field<S, K | undefined>
-  readonly value: Field<S, GridValue<K>>
-  readonly anchor: Field<S, K | null>
-  readonly extension: Field<S, Extension<K> | null>
-  readonly gesture: Field<S, Gesture<K>>
-  readonly layouts: GridLayouts<K>
-  next?(state: S, intent: GridIntent, from: K, found: K | undefined): K | undefined
+export interface GridRules<State extends GridState<Key>, Key extends GridKey> {
+  readonly active: Field<State, Key | undefined>
+  readonly value: Field<State, GridValue<Key>>
+  readonly anchor: Field<State, Key | null>
+  readonly extension: Field<State, Extension<Key> | null>
+  readonly gesture: Field<State, Gesture<Key>>
+  readonly layouts: GridLayouts<Key>
+  next?(state: State, intent: GridIntent, from: Key, found: Key | undefined): Key | undefined
 }
 
-export interface GridWidget<K extends GridKey = GridKey> {
-  readonly output: { readonly root: Part<GridState<K>, K>; readonly cell: Part<GridState<K>, K> }
-  layoutOf(state: GridState<K>): GridLayout<K>
-  isExcluded(state: GridState<K>, key: K): boolean
-  isDisabled(state: GridState<K>, key: K): boolean
-  isSelected(state: GridState<K>, key: K): boolean
-  rangeOf(state: GridState<K>, key: K): GridRangePosition | undefined
-  tabStop(state: GridState<K>): K | undefined
+export interface GridWidget<Key extends GridKey = GridKey> {
+  readonly output: { readonly root: Part<GridState<Key>, Key>; readonly cell: Part<GridState<Key>, Key> }
+  layoutOf(state: GridState<Key>): GridLayout<Key>
+  isExcluded(state: GridState<Key>, key: Key): boolean
+  isDisabled(state: GridState<Key>, key: Key): boolean
+  isSelected(state: GridState<Key>, key: Key): boolean
+  rangeOf(state: GridState<Key>, key: Key): GridRangePosition | undefined
+  tabStop(state: GridState<Key>): Key | undefined
 }
 
-export interface GridLogic<S extends GridState<K>, K extends GridKey> {
-  readonly steps: readonly Step<S, K>[]
-  readonly output: { readonly root: Part<S, K>; readonly cell: Part<S, K> }
-  readonly invariants: Readonly<Record<string, Invariant<S>>>
-  layoutOf(state: S): GridLayout<K>
-  isExcluded(state: S, key: K): boolean
-  isDisabled(state: S, key: K): boolean
-  isSelected(state: S, key: K): boolean
-  rangeOf(state: S, key: K): GridRangePosition | undefined
-  tabStop(state: S): K | undefined
-  navigable(state: S, key: K | undefined): key is K
-  activate(state: S, key: K): S
-  activateWithin(state: S, keys: readonly K[]): S
+export interface GridLogic<State extends GridState<Key>, Key extends GridKey> {
+  readonly steps: readonly Step<State, Key>[]
+  readonly output: { readonly root: Part<State, Key>; readonly cell: Part<State, Key> }
+  readonly invariants: Readonly<Record<string, Invariant<State>>>
+  layoutOf(state: State): GridLayout<Key>
+  isExcluded(state: State, key: Key): boolean
+  isDisabled(state: State, key: Key): boolean
+  isSelected(state: State, key: Key): boolean
+  rangeOf(state: State, key: Key): GridRangePosition | undefined
+  tabStop(state: State): Key | undefined
+  navigable(state: State, key: Key | undefined): key is Key
+  activate(state: State, key: Key): State
+  activateWithin(state: State, keys: readonly Key[]): State
 }
 
 const SELECT_KEYS = [key.space]
@@ -219,29 +219,29 @@ const cellTabIndex = (excluded: boolean, active: boolean) => {
   return active ? 0 : -1
 }
 
-const isKeyList = <K extends GridKey>(value: GridValue<K>): value is readonly K[] => Array.isArray(value)
+const isKeyList = <Key extends GridKey>(value: GridValue<Key>): value is readonly Key[] => Array.isArray(value)
 
-export const keysOf = <K extends GridKey>(value: GridValue<K>): readonly K[] => {
+export const keysOf = <Key extends GridKey>(value: GridValue<Key>): readonly Key[] => {
   if (isKeyList(value)) return value
   return value === null ? [] : [value]
 }
 
-export const createGridLogic = <S extends GridState<K>, K extends GridKey>(rules: GridRules<S, K>): GridLogic<S, K> => {
+export const createGridLogic = <State extends GridState<Key>, Key extends GridKey>(rules: GridRules<State, Key>): GridLogic<State, Key> => {
   const { layouts } = rules
 
-  const laidOf = (state: S) => layouts.laidOf(state.collection)
-  const layoutOf = (state: S) => laidOf(state).layout
-  const dataOf = (state: S, target: K) => laidOf(state).data.get(target)
+  const laidOf = (state: State) => layouts.laidOf(state.collection)
+  const layoutOf = (state: State) => laidOf(state).layout
+  const dataOf = (state: State, target: Key) => laidOf(state).data.get(target)
 
-  let matcherFor: { keys: GridKeys<K> | undefined; matches: (target: K) => boolean } | undefined
+  let matcherFor: { keys: GridKeys<Key> | undefined; matches: (target: Key) => boolean } | undefined
 
-  const matcherOf = (keys: GridKeys<K> | undefined) => {
+  const matcherOf = (keys: GridKeys<Key> | undefined) => {
     if (!matcherFor || matcherFor.keys !== keys) matcherFor = { keys, matches: createKeyMatcher(keys) }
 
     return matcherFor.matches
   }
 
-  const isOutside = (state: S, target: K) => {
+  const isOutside = (state: State, target: Key) => {
     const { min, max } = state.options
     const { compare } = layoutOf(state)
     if (min !== undefined && compare(target, min) < 0) return true
@@ -249,25 +249,27 @@ export const createGridLogic = <S extends GridState<K>, K extends GridKey>(rules
     return max !== undefined && compare(target, max) > 0
   }
 
-  const isExcluded = (state: S, target: K) => layoutOf(state).cells.get(target)?.excluded ?? laidOf(state).isExcluded(target)
+  const isExcluded = (state: State, target: Key) => layoutOf(state).cells.get(target)?.excluded ?? laidOf(state).isExcluded(target)
 
-  const isDisabled = (state: S, target: K) => dataOf(state, target)?.disabled === true || matcherOf(state.options.disabled)(target) || isOutside(state, target)
+  const isDisabled = (state: State, target: Key) => dataOf(state, target)?.disabled === true || matcherOf(state.options.disabled)(target) || isOutside(state, target)
 
-  const navigable = (state: S, target: K | undefined): target is K => target !== undefined && layoutOf(state).cells.get(target)?.excluded === false
+  const navigable = (state: State, target: Key | undefined): target is Key => target !== undefined && layoutOf(state).cells.get(target)?.excluded === false
 
-  const accepts = (state: S, target: K) => layoutOf(state).cells.get(target)?.selectable !== false
+  const accepts = (state: State, target: Key) => layoutOf(state).cells.get(target)?.selectable !== false
 
-  const selectable = (state: S, target: K | undefined): target is K => state.options.selection !== undefined && navigable(state, target) && accepts(state, target) && !isDisabled(state, target)
+  const selectable = (state: State, target: Key | undefined): target is Key => state.options.selection !== undefined && navigable(state, target) && accepts(state, target) && !isDisabled(state, target)
 
-  const activeField: Field<S, K | null> = {
+  const keepsSelected = (state: State, target: Key) => !layoutOf(state).cells.has(target) || selectable(state, target)
+
+  const activeField: Field<State, Key | null> = {
     name: 'active',
     get: (state) => rules.active.get(state) ?? null,
     set: (state, target) => rules.active.set(state, target ?? undefined),
   }
 
-  const writeValue = (state: S, keys: readonly K[]) => rules.value.set(state, state.options.selection === 'single' ? keys[0] ?? null : keys)
+  const writeValue = (state: State, keys: readonly Key[]) => rules.value.set(state, state.options.selection === 'single' ? keys[0] ?? null : keys)
 
-  const valueField: Field<S, readonly K[]> = {
+  const valueField: Field<State, readonly Key[]> = {
     name: 'value',
     get: (state) => keysOf(rules.value.get(state)),
     set: (state, keys) => {
@@ -277,13 +279,13 @@ export const createGridLogic = <S extends GridState<K>, K extends GridKey>(rules
     },
   }
 
-  const nextOf = rules.next ?? ((state: S, intent: GridIntent, from: K, found: K | undefined) => (state.options.getNextKey ? state.options.getNextKey(intent, from, found) : found))
+  const nextOf = rules.next ?? ((state: State, intent: GridIntent, from: Key, found: Key | undefined) => (state.options.getNextKey ? state.options.getNextKey(intent, from, found) : found))
 
-  const next = (state: S, from: K, intent: GridIntent) => nextOf(state, intent, from, gridNeighbor(layoutOf(state), from, intent, state.options.wrap))
+  const next = (state: State, from: Key, intent: GridIntent) => nextOf(state, intent, from, gridNeighbor(layoutOf(state), from, intent, state.options.wrap))
 
-  const tabStops = new WeakMap<object, K | undefined>()
+  const tabStops = new WeakMap<object, Key | undefined>()
 
-  const initialTabStop = (state: S) => {
+  const initialTabStop = (state: State) => {
     const active = rules.active.get(state)
     if (active !== undefined && !laidOf(state).isExcluded(active)) return active
 
@@ -292,7 +294,7 @@ export const createGridLogic = <S extends GridState<K>, K extends GridKey>(rules
     return single !== undefined && !laidOf(state).isExcluded(single) ? single : undefined
   }
 
-  const findTabStop = (state: S): K | undefined => {
+  const findTabStop = (state: State): Key | undefined => {
     const { keys } = layoutOf(state)
     if (keys.length === 0) return initialTabStop(state)
 
@@ -302,7 +304,7 @@ export const createGridLogic = <S extends GridState<K>, K extends GridKey>(rules
     return keys.find((target) => isSelected(state, target)) ?? keys[0]
   }
 
-  const tabStop = (state: S): K | undefined => {
+  const tabStop = (state: State): Key | undefined => {
     if (tabStops.has(state)) return tabStops.get(state)
 
     const found = findTabStop(state)
@@ -311,7 +313,7 @@ export const createGridLogic = <S extends GridState<K>, K extends GridKey>(rules
     return found
   }
 
-  const select = selection<S, K>({
+  const select = selection<State, Key>({
     value: valueField,
     active: activeField,
     anchor: rules.anchor,
@@ -324,7 +326,7 @@ export const createGridLogic = <S extends GridState<K>, K extends GridKey>(rules
     selectable,
     compare: (state, first, second) => layoutOf(state).compare(first, second),
     between: (state, from, to) => gridBetween(layoutOf(state), from, to),
-    resolveRange: (state, start, end) => state.options.resolveRange?.(start, end),
+    resolveRange: (state, start, end) => state.options.resolveRange?.(start, end)?.filter((target) => keepsSelected(state, target)),
     all: (state) => {
       const { resolveRange } = state.options
       if (!resolveRange) return layoutOf(state).keys.filter((target) => selectable(state, target))
@@ -334,18 +336,19 @@ export const createGridLogic = <S extends GridState<K>, K extends GridKey>(rules
       const last = from === undefined ? undefined : next(state, from, 'gridEnd')
       if (first === undefined || last === undefined) return keysOf(rules.value.get(state))
 
-      return layoutOf(state).compare(first, last) > 0 ? resolveRange(last, first) : resolveRange(first, last)
+      const resolved = layoutOf(state).compare(first, last) > 0 ? resolveRange(last, first) : resolveRange(first, last)
+      return resolved.filter((target) => keepsSelected(state, target))
     },
   })
 
-  const isSelected = (state: S, target: K): boolean => {
+  const isSelected = (state: State, target: Key): boolean => {
     if (!selectable(state, target)) return false
     if (state.options.selection === 'single') return rules.value.get(state) === target
 
     return select.isSelected(state, target)
   }
 
-  const rangeOf = (state: S, target: K): GridRangePosition | undefined => {
+  const rangeOf = (state: State, target: Key): GridRangePosition | undefined => {
     const edges = select.edges(state)
     if (!edges || edges[0] === edges[1] || !isSelected(state, target)) return undefined
     if (target === edges[0]) return 'start'
@@ -354,9 +357,9 @@ export const createGridLogic = <S extends GridState<K>, K extends GridKey>(rules
     return 'between'
   }
 
-  const activate = (state: S, target: K) => rules.active.set(state, target)
+  const activate = (state: State, target: Key) => rules.active.set(state, target)
 
-  const activateWithin = (state: S, keys: readonly K[]) => {
+  const activateWithin = (state: State, keys: readonly Key[]) => {
     const current = tabStop(state)
     if (current !== undefined && keys.includes(current)) return state
 
@@ -364,7 +367,7 @@ export const createGridLogic = <S extends GridState<K>, K extends GridKey>(rules
     return found === undefined ? state : activate(state, found)
   }
 
-  const commands: Step<S, K> = (state, input) => {
+  const commands: Step<State, Key> = (state, input) => {
     if (input.is(FOCUS)) {
       const target = input.key ?? tabStop(state)
       if (target === undefined) return handled(state)
@@ -377,7 +380,7 @@ export const createGridLogic = <S extends GridState<K>, K extends GridKey>(rules
     return undefined
   }
 
-  const content = listening<S, K>([key.enter, key.f2, key.escape, key.tab, SHIFT_TAB], (state, input) => {
+  const content = listening<State, Key>([key.enter, key.f2, key.escape, key.tab, SHIFT_TAB], (state, input) => {
     if ((input.type !== 'key' && input.type !== 'nav') || input.key === undefined) return undefined
 
     if (!input.inside) {
@@ -392,13 +395,13 @@ export const createGridLogic = <S extends GridState<K>, K extends GridKey>(rules
     return keep(state)
   })
 
-  const following: Step<S, K> = (state, input) => {
+  const following: Step<State, Key> = (state, input) => {
     if (!input.is(focus.enter) && !input.is(focus.move)) return undefined
 
     return keep(navigable(state, input.key) ? activate(state, input.key) : state)
   }
 
-  const moving = listening<S, K>(INTENTS.flatMap(([spec]) => [spec, key.with(spec, mod.shift)]), (state, input) => {
+  const moving = listening<State, Key>(INTENTS.flatMap(([spec]) => [spec, key.with(spec, mod.shift)]), (state, input) => {
     const found = intentOf(input)
     if (!found) return undefined
 
@@ -414,13 +417,13 @@ export const createGridLogic = <S extends GridState<K>, K extends GridKey>(rules
     return handled(extended, [act.focus(to)])
   })
 
-  const entering = listening<S, K>([key.enter], (state, input) => {
+  const entering = listening<State, Key>([key.enter], (state, input) => {
     if (!input.is(key.enter) || !selectable(state, input.key)) return undefined
 
     return handled(select.toggle(state, input.key))
   })
 
-  const pointing = listening<S, K>([pointer.down, pointer.dragOver, pointer.press], (state, input) => {
+  const pointing = listening<State, Key>([pointer.down, pointer.dragOver, pointer.press], (state, input) => {
     if (input.is(pointer.down)) {
       const reset = rules.gesture.set(state, IDLE_GESTURE)
       if (!navigable(state, input.key)) return keep(reset)
@@ -447,12 +450,12 @@ export const createGridLogic = <S extends GridState<K>, K extends GridKey>(rules
     return undefined
   })
 
-  const root: Part<S, K> = {
+  const root: Part<State, Key> = {
     select: (state) => [state.options.selection, state.options.readOnly],
     render: ([mode, readOnly]) => ({ role: 'grid', 'aria-multiselectable': mode === 'multiple' || mode === 'range' || undefined, 'aria-readonly': readOnly || undefined }),
   }
 
-  const cell: Part<S, K> = {
+  const cell: Part<State, Key> = {
     select: (state, target) => {
       const laid = layoutOf(state).cells.get(target)
       const selectableCell = laid?.selectable ?? true
@@ -475,10 +478,10 @@ export const createGridLogic = <S extends GridState<K>, K extends GridKey>(rules
     }),
   }
 
-  const invariants: Record<string, Invariant<S>> = {
+  const invariants: Record<string, Invariant<State>> = {
     valueSelectable: {
-      check: (state) => state.options.selection === undefined || keysOf(rules.value.get(state)).every((target) => !layoutOf(state).cells.has(target) || selectable(state, target)),
-      repair: (state) => writeValue(state, keysOf(rules.value.get(state)).filter((target) => !layoutOf(state).cells.has(target) || selectable(state, target))),
+      check: (state) => state.options.selection === undefined || keysOf(rules.value.get(state)).every((target) => keepsSelected(state, target)),
+      repair: (state) => writeValue(state, keysOf(rules.value.get(state)).filter((target) => keepsSelected(state, target))),
     },
     gestureOwned: {
       check: (state) => {
@@ -505,20 +508,20 @@ export const createGridLogic = <S extends GridState<K>, K extends GridKey>(rules
   }
 }
 
-export const createGrid = <K extends GridKey = GridKey>() => {
-  const layouts = createGridLayouts<K>()
+export const createGrid = <Key extends GridKey = GridKey>() => {
+  const layouts = createGridLayouts<Key>()
 
   const shape = state({
-    options: gridOptions<K>(),
+    options: gridOptions<Key>(),
     owns: {
-      active: controlled(undefined as K | undefined),
-      value: controlled(null as GridValue<K>),
+      active: controlled(undefined as Key | undefined),
+      value: controlled(null as GridValue<Key>),
     },
-    internal: gridInternal<K>(),
+    internal: gridInternal<Key>(),
     collection: ({ entries, cells, exclude, compare }) => layouts.layoutFor({ entries, cells, exclude, compare }).layout.collection,
   })
 
-  const logic = createGridLogic<typeof shape.__snapshot, K>({
+  const logic = createGridLogic<typeof shape.__snapshot, Key>({
     active: shape.active,
     value: shape.value,
     anchor: shape.anchor,
@@ -529,7 +532,7 @@ export const createGrid = <K extends GridKey = GridKey>() => {
 
   const { steps, invariants, ...view } = logic
 
-  return { ...defineWidget({ state: shape, step: steps, output: logic.output, invariants }), ...view, emptyOptions: gridOptions<K>() }
+  return { ...defineWidget({ state: shape, step: steps, output: logic.output, invariants }), ...view, emptyOptions: gridOptions<Key>() }
 }
 
-export type GridSnapshot<K extends GridKey = GridKey> = ReturnType<typeof createGrid<K>>['shape']['__snapshot']
+export type GridSnapshot<Key extends GridKey = GridKey> = ReturnType<typeof createGrid<Key>>['shape']['__snapshot']

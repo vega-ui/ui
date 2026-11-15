@@ -12,8 +12,8 @@ export interface SnapPages {
 export const MEASURE_SNAP = command('measureSnap')
 export const SNAP_NEXT = command('snapNext')
 export const SNAP_PREVIOUS = command('snapPrevious')
-export const SNAP_TO = command('snapTo')
-export const SNAP_INDEX = command('snapIndex')
+export const SNAP_TO = command<{ readonly key: number; readonly value?: ScrollBehavior }>()('snapTo')
+export const SNAP_INDEX = command<{ readonly key: number }>()('snapIndex')
 
 const OFFSETS = 'snapOffsets'
 
@@ -61,16 +61,17 @@ export const snapScrollerShape = state({
   },
   observes: { rtl: matching(ROOT, ':dir(rtl)') },
   collection: (options) => entries.of(options.items),
+  parts: [ROOT],
 })
 
 type SnapScrollerSnapshot = typeof snapScrollerShape.__snapshot
 
 interface Outcome {
   readonly state: SnapScrollerSnapshot
-  readonly actions: readonly Action<number>[]
+  readonly actions: readonly Action<number, typeof ROOT>[]
 }
 
-const MEASURE = [act.measure<number>({ name: OFFSETS, parts: [ROOT], items: 'all', rect: true, scroll: true, styles: ['scroll-padding-inline-start'] })]
+const MEASURE = [act.measure<number, typeof ROOT>({ name: OFFSETS, parts: [ROOT], items: 'all', rect: true, scroll: true, styles: ['scroll-padding-inline-start'] })]
 
 const centerOf = (pages: SnapPages) => Math.floor(pages.size / 2)
 
@@ -201,7 +202,7 @@ const recenter = (state: SnapScrollerSnapshot, key: number): Outcome => {
 const restore = (state: SnapScrollerSnapshot): Outcome => {
   if (state.options.pages && !sameKeys(state.offsets, windowOf(state))) return { state, actions: [] }
 
-  const actions: Action<number>[] = []
+  const actions: Action<number, typeof ROOT>[] = []
   const { anchor, queued, announced } = state
   const anchorLeft = anchor ? leftOf(state, anchor.key) : undefined
 
@@ -287,11 +288,12 @@ const following = listening<SnapScrollerSnapshot>([scroll.move], (state, input) 
 const settling = listening<SnapScrollerSnapshot>([scroll.end], (state, input) => {
   if (!input.is(scroll.end) || input.part !== ROOT || !input.scroller) return undefined
 
-  const scrolled = snapScrollerShape.left.set(state, inlineLeft(input.scroller))
+  const unreachable = state.target !== null && (leftOf(state, state.target) ?? 0) > input.scroller.width - input.scroller.clientWidth + 1
+  const scrolled = snapScrollerShape.left.set(unreachable ? snapScrollerShape.target.set(state, null) : state, inlineLeft(input.scroller))
   const key = snappedAt(state.offsets, inlineLeft(input.scroller))
   if (key === null || key === state.committed) return keep(scrolled)
 
-  const changing = key !== state.pending && reports(state, key) ? [act.emit('snapChanging', key)] : []
+  const changing = key !== state.pending && reports(scrolled, key) ? [act.emit('snapChanging', key)] : []
   const settled = recenter(snapAt(scrolled, key), key)
 
   return keep(settled.state, [...changing, ...settled.actions])
@@ -332,7 +334,7 @@ const jumping: Step<SnapScrollerSnapshot> = (state, input) => {
   const left = leftOf(state, input.key)
   if (left === undefined) return keep(state)
 
-  const behavior = input.value as ScrollBehavior | undefined
+  const behavior = input.value
   const next = behavior === 'instant' ? snapScrollerShape.pending.set(state, input.key) : state
 
   return keep(next, [scrollTo(next, left, behavior)])

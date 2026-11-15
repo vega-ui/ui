@@ -56,7 +56,7 @@ describe('Critical User Paths', () => {
   })
 
   it('steps a month to the same day or the nearest available one, within min and max and across the years', () => {
-    const stepped = (focused: string, step: typeof NEXT, overrides: Partial<CalendarOptions> = {}) =>
+    const stepped = (focused: string, step: typeof NEXT | typeof PREVIOUS, overrides: Partial<CalendarOptions> = {}) =>
       simulate(createCalendar(), options({ defaultFocusedDate: focused, ...overrides })).send(step).state.focusedDate
     const disabling = (...dates: string[]) => ({ isDisabled: (date: string) => dates.includes(date) })
 

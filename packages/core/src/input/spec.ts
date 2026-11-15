@@ -4,10 +4,16 @@ export interface Mod {
   readonly mod: ModName
 }
 
-export interface InputSpec {
+export interface InputSpec<Carried = unknown> {
   readonly type: string
   readonly name: string
   readonly mods: ReadonlySet<ModName>
+  readonly __carries?: Carried
+}
+
+export interface Command<Name extends string = string, Carried = unknown> extends InputSpec<Carried> {
+  readonly type: 'command'
+  readonly name: Name
 }
 
 export interface Point {
@@ -53,25 +59,25 @@ export interface Viewport {
   readonly keyboardInset: number
 }
 
-export interface Measured<K = unknown> {
+export interface Measured<Key = unknown> {
   readonly name: string
   readonly parts: Readonly<Record<string, Metrics>>
-  readonly items: readonly (readonly [K, Metrics])[]
+  readonly items: readonly (readonly [Key, Metrics])[]
   readonly viewport?: Viewport
 }
 
-export interface Payload<K = unknown> {
+export interface Payload<Key = unknown> {
   readonly char?: string
-  readonly key?: K
+  readonly key?: Key
   readonly part?: string
   readonly inside?: boolean
   readonly content?: boolean
-  readonly keys?: readonly K[]
+  readonly keys?: readonly Key[]
   readonly value?: string
   readonly point?: Point
   readonly to?: unknown
   readonly backdrop?: boolean
-  readonly measured?: Measured<K>
+  readonly measured?: Measured<Key>
   readonly pointerType?: string
   readonly time?: number
   readonly primary?: boolean
@@ -80,9 +86,11 @@ export interface Payload<K = unknown> {
   readonly delta?: Point
   readonly field?: TextState
   readonly edit?: TextEdit
+  readonly changed?: readonly string[]
 }
 
-export interface Input<K = unknown> extends InputSpec, Payload<K> {
+export interface Input<Key = unknown> extends InputSpec, Payload<Key> {
+  is<Name extends string, Carried>(spec: Command<Name, Carried>): this is Input<Key> & Carried & { readonly name: Name }
   is(spec: InputSpec): boolean
 }
 
@@ -95,6 +103,10 @@ export const defineInput = (type: string, name: string, mods: ReadonlySet<ModNam
 
 export const PRINTABLE = 'printable'
 
+const isShifted = (name: string) => [...name].length === 1 && name !== ' ' && name.toLowerCase() === name.toUpperCase()
+
+const withoutShift = (mods: ReadonlySet<ModName>): ReadonlySet<ModName> => (mods.has('shift') ? new Set([...mods].filter((mod) => mod !== 'shift')) : mods)
+
 const matches = (input: Input<unknown>, target: InputSpec) => {
   if (target.type !== input.type) return false
 
@@ -102,11 +114,14 @@ const matches = (input: Input<unknown>, target: InputSpec) => {
     return input.char !== undefined && [...input.char].length === 1 && (input.mods.size === 0 || sameMods(input.mods, SHIFT_ONLY))
   }
 
-  return target.name === input.name && sameMods(target.mods, input.mods)
+  if (target.name !== input.name) return false
+  if (!isShifted(target.name)) return sameMods(target.mods, input.mods)
+
+  return sameMods(withoutShift(target.mods), withoutShift(input.mods))
 }
 
-export const createInput = <K = unknown>(base: InputSpec, payload: Payload<K> = {}): Input<K> => {
-  const input: Input<K> = {
+export const createInput = <Key = unknown, Carried = unknown>(base: InputSpec<Carried>, payload: Payload<Key> & NoInfer<Carried> = {} as Payload<Key> & NoInfer<Carried>): Input<Key> => {
+  const input: Input<Key> = {
     type: base.type,
     name: base.name,
     mods: base.mods,
@@ -129,13 +144,14 @@ export const createInput = <K = unknown>(base: InputSpec, payload: Payload<K> = 
     delta: payload.delta,
     field: payload.field,
     edit: payload.edit,
-    is: (target) => matches(input, target),
+    changed: payload.changed,
+    is: ((target: InputSpec) => matches(input, target)) as Input<Key>['is'],
   }
 
   return input
 }
 
-export const payloadOf = <K>({ char, key, part, inside, content, keys, value, point, to, backdrop, measured, pointerType, time, primary, text, scroller, delta, field, edit }: Payload<K>): Payload<K> => ({ char, key, part, inside, content, keys, value, point, to, backdrop, measured, pointerType, time, primary, text, scroller, delta, field, edit })
+export const payloadOf = <Key>({ char, key, part, inside, content, keys, value, point, to, backdrop, measured, pointerType, time, primary, text, scroller, delta, field, edit, changed }: Payload<Key>): Payload<Key> => ({ char, key, part, inside, content, keys, value, point, to, backdrop, measured, pointerType, time, primary, text, scroller, delta, field, edit, changed })
 
 export const mod: Record<ModName, Mod> = {
   shift: { mod: 'shift' },
@@ -240,4 +256,11 @@ export const lifecycle = {
 
 export const timer = (name: string) => defineInput('timer', name)
 
-export const command = (name: string) => defineInput('command', name)
+export function command<const Name extends string>(name: Name): Command<Name>
+export function command<Carried>(): <const Name extends string>(name: Name) => Command<Name, Carried>
+export function command(name?: string) {
+  const named = (commandName: string): Command => ({ type: 'command', name: commandName, mods: NONE })
+  if (name === undefined) return named
+
+  return named(name)
+}
