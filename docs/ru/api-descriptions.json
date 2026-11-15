@@ -8,7 +8,7 @@
     "ru": "Необязательный собственный CSS-класс для обёртки аккордеона. Полезен для переопределения стилей или локальной стилизации."
   },
   "Accordion.defaultOpened": {
-    "en": "An array of item `id's that should be open by default when the accordion mounts.",
+    "en": "An array of item `id`s that should be open by default when the accordion mounts.",
     "ru": "Массив `id` элементов, которые должны быть открыты по умолчанию при монтировании аккордеона."
   },
   "Accordion.multiple": {
@@ -48,8 +48,8 @@
     "ru": "Визуальный размер заголовка, независимый от тега `as`. Обычно соответствует типографической шкале дизайн-системы. Принимает значения от 1 (наименьший) до 11 (наибольший)."
   },
   "AccordionIcon.children": {
-    "en": "Icon content (required). Accepts: icons from `~/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler)",
-    "ru": "Содержимое иконки (обязательно). Принимает: иконки из `~/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler)"
+    "en": "Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler)",
+    "ru": "Содержимое иконки. Принимает: иконки из `@vega-ui/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler)"
   },
   "AccordionIcon.ref": {
     "en": "Ref to the SVG element",
@@ -116,8 +116,8 @@
     "ru": "Визуальный размер текста, обычно соответствует типографической шкале дизайн-системы."
   },
   "AlertIcon.children": {
-    "en": "Icon content (required). Accepts: icons from `~/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler)",
-    "ru": "Содержимое иконки (обязательно). Принимает: иконки из `~/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler)"
+    "en": "Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler)",
+    "ru": "Содержимое иконки. Принимает: иконки из `@vega-ui/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler)"
   },
   "AlertIcon.ref": {
     "en": "Ref to the SVG element",
@@ -176,8 +176,8 @@
     "ru": "Визуальный размер текста, обычно соответствует типографической шкале дизайн-системы."
   },
   "AvatarIcon.children": {
-    "en": "Icon content (required). Accepts: icons from `~/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler)",
-    "ru": "Содержимое иконки (обязательно). Принимает: иконки из `~/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler)"
+    "en": "Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler)",
+    "ru": "Содержимое иконки. Принимает: иконки из `@vega-ui/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler)"
   },
   "AvatarIcon.ref": {
     "en": "Ref to the SVG element",
@@ -320,8 +320,8 @@
     "ru": "Неконтролируемое начальное значение выбора, форма которого зависит от режима `selection`."
   },
   "Calendar.defaultView": {
-    "en": "Initial view for uncontrolled usage. Default: `'day'`",
-    "ru": "Начальный вид для неконтролируемого использования. По умолчанию: `'day'`"
+    "en": "Initial view for uncontrolled usage.",
+    "ru": "Начальный вид для неконтролируемого использования."
   },
   "Calendar.disabled": {
     "en": "Disables the whole calendar: no date can be selected and navigation is off.",
@@ -364,8 +364,8 @@
     "ru": "Делает выбор доступным только для чтения, как нативный input с `readonly`: сетка дней получает `aria-readonly=\"true\"`, навигация работает, а выбор дня не меняет выделение и не вызывает `onChangeValue`."
   },
   "Calendar.selection": {
-    "en": "Selection mode. Determines the structure of `value`, all dates are `YYYY-MM-DD` strings: 'single' — a string, `''` when nothing is selected; 'multiple' — an array of strings; 'range' — a `[start, end]` tuple with `start` not after `end`, `''` marks an unset bound. Default: `'single'`",
-    "ru": "Режим выбора. Определяет форму `value`, все даты — строки `YYYY-MM-DD`: 'single' — строка, `''`, когда ничего не выбрано; 'multiple' — массив строк; 'range' — кортеж `[start, end]`, где `start` не позже `end`, а `''` обозначает незаданную границу. По умолчанию: `'single'`"
+    "en": "Selection mode. Determines the structure of `value`, all dates are `YYYY-MM-DD` strings: 'single' — a string, `''` when nothing is selected; 'multiple' — an array of strings; 'range' — a `[start, end]` tuple with `start` not after `end`, `''` marks an unset bound",
+    "ru": "Режим выбора. Определяет форму `value`, все даты — строки `YYYY-MM-DD`: 'single' — строка, `''`, когда ничего не выбрано; 'multiple' — массив строк; 'range' — кортеж `[start, end]`, где `start` не позже `end`, а `''` обозначает незаданную границу"
   },
   "Calendar.size": {
     "en": "Size of the buttons, cells and weekday names of the calendar.",
@@ -816,8 +816,8 @@
     "ru": "Визуальный вариант чекбокса для переключения темы или контекста."
   },
   "CheckboxCardControlCheckedIcon.children": {
-    "en": "Icon content (required). Accepts: icons from `~/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler)",
-    "ru": "Содержимое иконки (обязательно). Принимает: иконки из `~/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler)"
+    "en": "Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler)",
+    "ru": "Содержимое иконки. Принимает: иконки из `@vega-ui/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler)"
   },
   "CheckboxCardControlCheckedIcon.ref": {
     "en": "Ref to the SVG element",
@@ -832,8 +832,8 @@
     "ru": "Толщина обводки линий и фигур SVG (в px или pt)."
   },
   "CheckboxCardControlIndeterminateIcon.children": {
-    "en": "Icon content (required). Accepts: icons from `~/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler)",
-    "ru": "Содержимое иконки (обязательно). Принимает: иконки из `~/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler)"
+    "en": "Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler)",
+    "ru": "Содержимое иконки. Принимает: иконки из `@vega-ui/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler)"
   },
   "CheckboxCardControlIndeterminateIcon.ref": {
     "en": "Ref to the SVG element",
@@ -888,8 +888,8 @@
     "ru": "Визуальный размер заголовка, независимый от тега `as`. Обычно соответствует типографической шкале дизайн-системы. Принимает значения от 1 (наименьший) до 11 (наибольший)."
   },
   "CheckboxCheckedIcon.children": {
-    "en": "Icon content (required). Accepts: icons from `~/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler)",
-    "ru": "Содержимое иконки (обязательно). Принимает: иконки из `~/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler)"
+    "en": "Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler)",
+    "ru": "Содержимое иконки. Принимает: иконки из `@vega-ui/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler)"
   },
   "CheckboxCheckedIcon.ref": {
     "en": "Ref to the SVG element",
@@ -904,8 +904,8 @@
     "ru": "Толщина обводки линий и фигур SVG (в px или pt)."
   },
   "CheckboxIndeterminateIcon.children": {
-    "en": "Icon content (required). Accepts: icons from `~/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler)",
-    "ru": "Содержимое иконки (обязательно). Принимает: иконки из `~/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler)"
+    "en": "Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler)",
+    "ru": "Содержимое иконки. Принимает: иконки из `@vega-ui/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler)"
   },
   "CheckboxIndeterminateIcon.ref": {
     "en": "Ref to the SVG element",
@@ -1060,8 +1060,8 @@
     "ru": "Неконтролируемое начальное значение выбора, форма которого зависит от режима `selection`."
   },
   "DateFieldCalendar.defaultView": {
-    "en": "Initial view for uncontrolled usage. Default: `'day'`",
-    "ru": "Начальный вид для неконтролируемого использования. По умолчанию: `'day'`"
+    "en": "Initial view for uncontrolled usage.",
+    "ru": "Начальный вид для неконтролируемого использования."
   },
   "DateFieldCalendar.disabled": {
     "en": "Disables the whole calendar: no date can be selected and navigation is off.",
@@ -1104,8 +1104,8 @@
     "ru": "Делает выбор доступным только для чтения, как нативный input с `readonly`: сетка дней получает `aria-readonly=\"true\"`, навигация работает, а выбор дня не меняет выделение и не вызывает `onChangeValue`."
   },
   "DateFieldCalendar.selection": {
-    "en": "Selection mode. Determines the structure of `value`, all dates are `YYYY-MM-DD` strings: 'single' — a string, `''` when nothing is selected; 'multiple' — an array of strings; 'range' — a `[start, end]` tuple with `start` not after `end`, `''` marks an unset bound. Default: `'single'`",
-    "ru": "Режим выбора. Определяет форму `value`, все даты — строки `YYYY-MM-DD`: 'single' — строка, `''`, когда ничего не выбрано; 'multiple' — массив строк; 'range' — кортеж `[start, end]`, где `start` не позже `end`, а `''` обозначает незаданную границу. По умолчанию: `'single'`"
+    "en": "Selection mode. Determines the structure of `value`, all dates are `YYYY-MM-DD` strings: 'single' — a string, `''` when nothing is selected; 'multiple' — an array of strings; 'range' — a `[start, end]` tuple with `start` not after `end`, `''` marks an unset bound",
+    "ru": "Режим выбора. Определяет форму `value`, все даты — строки `YYYY-MM-DD`: 'single' — строка, `''`, когда ничего не выбрано; 'multiple' — массив строк; 'range' — кортеж `[start, end]`, где `start` не позже `end`, а `''` обозначает незаданную границу"
   },
   "DateFieldCalendar.size": {
     "en": "Size of the buttons, cells and weekday names of the calendar.",
@@ -1248,8 +1248,8 @@
     "ru": "Неконтролируемое начальное значение выбора, форма которого зависит от режима `selection`."
   },
   "DateRangeFieldCalendar.defaultView": {
-    "en": "Initial view for uncontrolled usage. Default: `'day'`",
-    "ru": "Начальный вид для неконтролируемого использования. По умолчанию: `'day'`"
+    "en": "Initial view for uncontrolled usage.",
+    "ru": "Начальный вид для неконтролируемого использования."
   },
   "DateRangeFieldCalendar.disabled": {
     "en": "Disables the whole calendar: no date can be selected and navigation is off.",
@@ -1292,8 +1292,8 @@
     "ru": "Делает выбор доступным только для чтения, как нативный input с `readonly`: сетка дней получает `aria-readonly=\"true\"`, навигация работает, а выбор дня не меняет выделение и не вызывает `onChangeValue`."
   },
   "DateRangeFieldCalendar.selection": {
-    "en": "Selection mode. Determines the structure of `value`, all dates are `YYYY-MM-DD` strings: 'single' — a string, `''` when nothing is selected; 'multiple' — an array of strings; 'range' — a `[start, end]` tuple with `start` not after `end`, `''` marks an unset bound. Default: `'single'`",
-    "ru": "Режим выбора. Определяет форму `value`, все даты — строки `YYYY-MM-DD`: 'single' — строка, `''`, когда ничего не выбрано; 'multiple' — массив строк; 'range' — кортеж `[start, end]`, где `start` не позже `end`, а `''` обозначает незаданную границу. По умолчанию: `'single'`"
+    "en": "Selection mode. Determines the structure of `value`, all dates are `YYYY-MM-DD` strings: 'single' — a string, `''` when nothing is selected; 'multiple' — an array of strings; 'range' — a `[start, end]` tuple with `start` not after `end`, `''` marks an unset bound",
+    "ru": "Режим выбора. Определяет форму `value`, все даты — строки `YYYY-MM-DD`: 'single' — строка, `''`, когда ничего не выбрано; 'multiple' — массив строк; 'range' — кортеж `[start, end]`, где `start` не позже `end`, а `''` обозначает незаданную границу"
   },
   "DateRangeFieldCalendar.size": {
     "en": "Size of the buttons, cells and weekday names of the calendar.",
@@ -1444,8 +1444,8 @@
     "ru": "Неконтролируемое начальное значение выбора, форма которого зависит от режима `selection`."
   },
   "DateTimeFieldCalendar.defaultView": {
-    "en": "Initial view for uncontrolled usage. Default: `'day'`",
-    "ru": "Начальный вид для неконтролируемого использования. По умолчанию: `'day'`"
+    "en": "Initial view for uncontrolled usage.",
+    "ru": "Начальный вид для неконтролируемого использования."
   },
   "DateTimeFieldCalendar.disabled": {
     "en": "Disables the whole calendar: no date can be selected and navigation is off.",
@@ -1488,8 +1488,8 @@
     "ru": "Делает выбор доступным только для чтения, как нативный input с `readonly`: сетка дней получает `aria-readonly=\"true\"`, навигация работает, а выбор дня не меняет выделение и не вызывает `onChangeValue`."
   },
   "DateTimeFieldCalendar.selection": {
-    "en": "Selection mode. Determines the structure of `value`, all dates are `YYYY-MM-DD` strings: 'single' — a string, `''` when nothing is selected; 'multiple' — an array of strings; 'range' — a `[start, end]` tuple with `start` not after `end`, `''` marks an unset bound. Default: `'single'`",
-    "ru": "Режим выбора. Определяет форму `value`, все даты — строки `YYYY-MM-DD`: 'single' — строка, `''`, когда ничего не выбрано; 'multiple' — массив строк; 'range' — кортеж `[start, end]`, где `start` не позже `end`, а `''` обозначает незаданную границу. По умолчанию: `'single'`"
+    "en": "Selection mode. Determines the structure of `value`, all dates are `YYYY-MM-DD` strings: 'single' — a string, `''` when nothing is selected; 'multiple' — an array of strings; 'range' — a `[start, end]` tuple with `start` not after `end`, `''` marks an unset bound",
+    "ru": "Режим выбора. Определяет форму `value`, все даты — строки `YYYY-MM-DD`: 'single' — строка, `''`, когда ничего не выбрано; 'multiple' — массив строк; 'range' — кортеж `[start, end]`, где `start` не позже `end`, а `''` обозначает незаданную границу"
   },
   "DateTimeFieldCalendar.size": {
     "en": "Size of the buttons, cells and weekday names of the calendar.",
@@ -2228,8 +2228,8 @@
     "ru": "Визуальный размер вспомогательного текста. Настраивает размер шрифта и интервалы относительно размера элемента формы."
   },
   "Icon.children": {
-    "en": "Icon content (required). Accepts: icons from `~/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler)",
-    "ru": "Содержимое иконки (обязательно). Принимает: иконки из `~/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler)"
+    "en": "Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler)",
+    "ru": "Содержимое иконки. Принимает: иконки из `@vega-ui/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler)"
   },
   "Icon.ref": {
     "en": "Ref to the SVG element",
@@ -3024,8 +3024,8 @@
     "ru": "Визуальный размер текстового поля. Влияет на отступы, размер шрифта и общую высоту. 'sm': компактное поле; 'md': по умолчанию; 'lg': просторная раскладка"
   },
   "PasswordFieldHiddenIcon.children": {
-    "en": "Icon content (required). Accepts: icons from `~/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler)",
-    "ru": "Содержимое иконки (обязательно). Принимает: иконки из `~/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler)"
+    "en": "Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler)",
+    "ru": "Содержимое иконки. Принимает: иконки из `@vega-ui/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler)"
   },
   "PasswordFieldHiddenIcon.ref": {
     "en": "Ref to the SVG element",
@@ -3044,8 +3044,8 @@
     "ru": "Ref, передаваемый на нижележащий нативный элемент `<input>`."
   },
   "PasswordFieldShownIcon.children": {
-    "en": "Icon content (required). Accepts: icons from `~/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler)",
-    "ru": "Содержимое иконки (обязательно). Принимает: иконки из `~/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler)"
+    "en": "Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler)",
+    "ru": "Содержимое иконки. Принимает: иконки из `@vega-ui/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler)"
   },
   "PasswordFieldShownIcon.ref": {
     "en": "Ref to the SVG element",
@@ -3444,8 +3444,8 @@
     "ru": "Ref на нижележащий элемент `<button>`. Полезен для управления фокусом, позиционирования и императивного доступа."
   },
   "SelectIcon.children": {
-    "en": "Icon content (required). Accepts: icons from `~/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler)",
-    "ru": "Содержимое иконки (обязательно). Принимает: иконки из `~/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler)"
+    "en": "Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler)",
+    "ru": "Содержимое иконки. Принимает: иконки из `@vega-ui/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler)"
   },
   "SelectIcon.ref": {
     "en": "Ref to the SVG element",

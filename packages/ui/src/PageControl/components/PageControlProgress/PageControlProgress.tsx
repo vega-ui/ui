@@ -36,7 +36,7 @@ export interface PageControlProgressProps extends PageControlItemProps {
   size?: PageControlSize
 }
 
-/** PageControlProgress is a UI component used within PageControl to represent a navigation item with a visual progress indicator. It animates over time and triggers a callback when the progress completes, enabling automatic step transitions. */
+/** PageControlProgress is a UI component used within PageControl to represent a navigation item with a visual progress indicator. It fills over `duration` while active; the native `onAnimationEnd` fires once the fill completes, enabling automatic step transitions. */
 export const PageControlProgress: FC<PageControlProgressProps> = ({
   className,
   index,

@@ -44,6 +44,12 @@
     flex-shrink: 0;
 }
 
+@supports not (overlay: auto) {
+    .listbox:where(:not(:popover-open)) {
+        transition: none;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .listbox {
         scale: 1;

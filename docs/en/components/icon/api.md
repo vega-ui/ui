@@ -9,7 +9,7 @@
 | `size` | `IconSize` | — | No | Predefined size token for the icon. Can be overridden by explicit width and height. |
 | `ref` | `Ref<SVGSVGElement>` | — | No | Ref to the SVG element |
 | `strokeWidth` | `number` | — | No | Stroke thickness for SVG lines and shapes (in px or pt). |
-| `children` | `ReactNode` | — | No | Icon content (required). Accepts: icons from `~/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
+| `children` | `ReactNode` | — | No | Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
 
 Also accepts all HTML attributes.
 <!-- AUTO-GENERATED:ROOT_API:end -->

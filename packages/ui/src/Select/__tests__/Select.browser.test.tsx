@@ -243,6 +243,21 @@ describe('Select', () => {
   });
   
   describe('Edge Cases', () => {
+    it('hides a closing list at once where the browser cannot keep it in the top layer for the fade', async () => {
+      document.documentElement.dataset.motion = '';
+      onTestFinished(() => {
+        delete document.documentElement.dataset.motion;
+      });
+      const r = render(<SelectTest />);
+      await userEvent.click(getCombobox(r));
+      await toBeOpened(r);
+
+      await userEvent.keyboard('{Escape}');
+      await toBeClosed(r);
+
+      expect(getComputedStyle(getListbox(r)).visibility === 'visible').toBe(CSS.supports('overlay', 'auto'));
+    });
+
     it('lets a form field in the list take the focus and closes when the focus leaves it', async () => {
       const r = render(
         <>

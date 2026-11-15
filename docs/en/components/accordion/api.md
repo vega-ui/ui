@@ -11,7 +11,7 @@
 | `children` | `ReactElement<AccordionItemProps> \| ReactElement<AccordionItemProps>[]` | — | No | Accordion items to render. Should be one or more `<AccordionItem>` components. Accepts a single element or an array of elements. |
 | `opened` | `string[]` | — | No | IDs of currently open items. Enables controlled mode when set. |
 | `onChangeOpened` | `(opened?: string[]) => void` | — | No | Called when open item IDs change. |
-| `defaultOpened` | `string[]` | `[]` | No | An array of item `id's that should be open by default when the accordion mounts. |
+| `defaultOpened` | `string[]` | `[]` | No | An array of item `id`s that should be open by default when the accordion mounts. |
 | `multiple` | `boolean` | `false` | No | Allows multiple accordion items to be open at the same time. If `false`, only one item can be open at once (classic accordion behavior). |
 
 Also accepts all `<ul>` attributes.
@@ -81,7 +81,7 @@ Also accepts all `<h1>–<h6>` attributes.
 | `size` | `IconSize` | — | No | Predefined size token for the icon. Can be overridden by explicit width and height. |
 | `ref` | `Ref<SVGSVGElement>` | — | No | Ref to the SVG element |
 | `strokeWidth` | `number` | — | No | Stroke thickness for SVG lines and shapes (in px or pt). |
-| `children` | `ReactNode` | — | No | Icon content (required). Accepts: icons from `~/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
+| `children` | `ReactNode` | — | No | Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
 
 Also accepts all HTML attributes.
 <!-- AUTO-GENERATED:PART_API:AccordionIcon:end -->

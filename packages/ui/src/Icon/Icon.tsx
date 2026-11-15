@@ -18,9 +18,9 @@ export interface IconProps extends SVGProps<SVGElement> {
   strokeWidth?: number
 
   /**
-   * Icon content (required).
+   * Icon content.
    * Accepts:
-   * – icons from `~/icons`
+   * – icons from `@vega-ui/icons`
    * – custom inline SVG
    * – third-party icon components (e.g. Lucide, Tabler)
    */

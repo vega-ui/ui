@@ -54,7 +54,7 @@ export interface CalendarProps<S extends CalendarSelection = 'single'> extends O
    * - 'multiple' — an array of strings
    * - 'range'    — a `[start, end]` tuple with `start` not after `end`, `''` marks an unset bound
    *
-   * Default: `'single'`
+   * @default 'single'
    */
   selection?: S;
 
@@ -80,7 +80,7 @@ export interface CalendarProps<S extends CalendarSelection = 'single'> extends O
   /**
    * Initial view for uncontrolled usage.
    *
-   * Default: `'day'`
+   * @default 'day'
    */
   defaultView?: CalendarView;
 
