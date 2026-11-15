@@ -3,9 +3,10 @@
     border-radius: inherit;
     width: var(--switch-indicator-width, var(--switch-indicator-size));
     height: var(--switch-indicator-size);
-    transform: var(--switch-indicator-transform, translateX(0%));
+    position: relative;
+    inset-inline-start: var(--switch-indicator-offset, 0%);
     transition-delay: var(--switch-indicator-transition-delay, 0s);
     transition:
-            transform var(--transition-fast-state-delay) ease-in,
+            inset-inline-start var(--transition-fast-state-delay) ease-in,
             width var(--transition-fast-state-delay) ease-in;
 }

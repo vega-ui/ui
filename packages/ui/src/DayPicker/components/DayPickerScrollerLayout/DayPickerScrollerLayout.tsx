@@ -18,5 +18,5 @@ export const DayPickerScrollerLayout: FC<DayPickerScrollerLayoutProps> = (props)
   const { referenceMonth } = useDayPickerScrollerContext()
   const { calendar } = useDayPickerContext()
   
-  return <DayPickerLayout scope={index} month={addCalendarMonths(calendar, referenceMonth, index)} offset={index} {...props} />
+  return <DayPickerLayout month={addCalendarMonths(calendar, referenceMonth, index)} offset={index} {...props} />
 }

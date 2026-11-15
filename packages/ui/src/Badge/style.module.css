@@ -1,6 +1,5 @@
 .badge {
     --badge-size: var(--spacing-14);
-    --badge-padding-inline: 0;
     --badge-border-radius-ratio: 0.333;
     --badge-font-size: var(--font-size-1);
     --badge-background-color: var(--color-blue-accent-500);

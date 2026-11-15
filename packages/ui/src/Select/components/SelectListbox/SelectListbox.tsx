@@ -1,9 +1,11 @@
-import { FC, HTMLAttributes, MouseEvent, Ref, ToggleEvent, useLayoutEffect, useRef } from 'react'
-import { csx, mergeEventHandlers, togglePopover } from '@vega-ui/utils';
+import { FC, HTMLAttributes, MouseEvent, Ref } from 'react'
+import { csx, mergeEventHandlers } from '@vega-ui/utils';
 import { useMergeRefs } from '@vega-ui/hooks';
+import { useOutput } from '../../../internals/widget';
+import { isTextEntry } from '@vega-ui/core';
 import styles from './style.module.css';
 import { useSelectContext } from '../../contexts';
-import { useListboxContext } from '../../../Listbox/contexts';
+import { LISTBOX, selectWidget } from '@vega-ui/widgets/select';
 
 export interface SelectListboxProps extends Omit<HTMLAttributes<HTMLDivElement>, 'id'> {
   /**
@@ -30,34 +32,24 @@ export const SelectListbox: FC<SelectListboxProps> = ({
   ref,
   ...props
 }) => {
-  const { listboxStyles, open, changeOpen, setFloating } = useSelectContext()
-  const { id } = useListboxContext()
-  const listboxRef = useRef<HTMLDivElement>(null)
-  const mergedRef = useMergeRefs([setFloating, listboxRef, ref])
-
-  useLayoutEffect(() => {
-    togglePopover(listboxRef.current, open ?? false)
-  }, [open])
+  const { handle, variant, anchorName } = useSelectContext()
+  const attrs = useOutput(handle, selectWidget.output.listbox)
+  const mergedRef = useMergeRefs([handle.part(LISTBOX), ref])
 
   const onMouseDown = (event: MouseEvent<HTMLDivElement>) => {
-    if (!(event.target as Element).closest('input, textarea, select, [contenteditable]')) event.preventDefault()
-  }
-
-  const onToggle = (event: ToggleEvent<HTMLDivElement>) => {
-    if (event.newState === 'closed' && open) changeOpen?.(false)
+    if (!(event.target instanceof Element) || !isTextEntry(event.target)) event.preventDefault()
   }
 
   return (
     <div
-      id={id}
       popover='auto'
-      role='listbox'
       ref={mergedRef}
+      data-variant={variant}
       className={csx(styles.listbox, className)}
-      style={{ ...listboxStyles, ...style }}
-      onMouseDown={mergeEventHandlers(onMouseDown, _onMouseDown)}
-      onToggle={mergeEventHandlers(onToggle, _onToggle)}
-      {...props}
+      style={{ positionAnchor: anchorName, ...style }}
+      onMouseDown={mergeEventHandlers(_onMouseDown, onMouseDown)}
+      onToggle={mergeEventHandlers(_onToggle, handle.listeners.onToggle)}
+      {...handle.merge(attrs, props)}
     >
       {children}
     </div>

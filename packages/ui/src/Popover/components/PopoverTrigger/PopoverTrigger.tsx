@@ -1,7 +1,6 @@
 'use client';
 
 import { ButtonHTMLAttributes, FC, Ref } from 'react';
-import { useMergeRefs } from '@vega-ui/hooks';
 import { Slot } from '../../../Slot';
 import { usePopoverContext } from '../../contexts';
 
@@ -23,21 +22,22 @@ export interface PopoverTriggerProps extends ButtonHTMLAttributes<HTMLButtonElem
 export const PopoverTrigger: FC<PopoverTriggerProps> = ({
   ref,
   asChild,
+  style,
   children,
   ...props
 }) => {
   const Element = asChild ? Slot : 'button'
 
-  const { role, contentId, setReference } = usePopoverContext()
-  const mergedRef = useMergeRefs([setReference, ref])
+  const { role, contentId, anchorName, anchored } = usePopoverContext()
 
   return (
     <Element
       type={Element === 'button' ? 'button' : undefined}
       popoverTarget={contentId}
       aria-haspopup={role}
+      style={anchored ? style : { anchorName, ...style }}
       {...props}
-      ref={mergedRef}
+      ref={ref}
     >
       {children}
     </Element>

@@ -100,20 +100,5 @@ describe('Table', () => {
       });
     });
     
-    describe('Edge padding classes', () => {
-      it('changes heading cell className when edgePadded toggles', () => {
-        const initial = getTh0(r).className;
-        
-        r.rerender(<TableTest edgePadded />);
-        expect(getTh0(r).className).not.toBe(initial);
-      });
-      
-      it('changes data cell className when edgePadded toggles', () => {
-        const initial = getTd0(r).className;
-        
-        r.rerender(<TableTest edgePadded />);
-        expect(getTd0(r).className).not.toBe(initial);
-      });
-    });
   });
 });

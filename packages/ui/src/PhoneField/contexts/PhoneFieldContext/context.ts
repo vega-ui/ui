@@ -1,15 +1,15 @@
 'use client';
 
-import { createContext } from '@vega-ui/react-kit/context';
-import { Ref } from 'react';
-import { CountryCode } from 'libphonenumber-js';
+import { phoneNumbering } from '@vega-ui/i18n';
+import { createContext } from '../../../internals/context';
+import { createHandle, WidgetHandle } from '../../../internals/widget';
+import { phoneFieldShape, phoneFieldWidget } from '@vega-ui/widgets/phone-field';
 
 export interface PhoneFieldContextState {
-  inputRef?: Ref<HTMLInputElement | null>
-  onSelectValue?(value: CountryCode): void
-  phone?: string
-  changePhone?(value: string): void
-  code?: CountryCode
+  handle: WidgetHandle<typeof phoneFieldShape>
+  disabled?: boolean
 }
 
-export const [PhoneFieldProvider, usePhoneFieldContext] = createContext<PhoneFieldContextState>('PhoneFieldContext', {})
+export const [PhoneFieldProvider, usePhoneFieldContext] = createContext<PhoneFieldContextState>('PhoneFieldContext', {
+  handle: createHandle(phoneFieldWidget, { strict: true, numbering: phoneNumbering }, { id: 'phone-field' }),
+})

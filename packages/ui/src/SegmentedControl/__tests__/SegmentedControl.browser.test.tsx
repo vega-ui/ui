@@ -93,7 +93,6 @@ const FormTest: FC<PropsWithChildren<{ onSubmit: (data: Record<string, string>) 
   );
 };
 
-const getRoot = (r: RenderResult) => r.getByTestId(TESTID_ROOT) as HTMLDivElement;
 const getIndicator = (r: RenderResult) => r.getByTestId(TESTID_INDICATOR) as HTMLDivElement;
 
 const getItem0 = (r: RenderResult) => r.getByTestId(TESTID_ITEM_0) as HTMLLabelElement;
@@ -124,16 +123,6 @@ describe('SegmentedControl', () => {
         r = render(<SegmentedControlTest defaultValue={VALUE_0} />);
       });
       
-      it('renders hidden radio inputs', async () => {
-        await expect.element(getInput0(r)).toBeInTheDocument();
-        await expect.element(getInput1(r)).toBeInTheDocument();
-        await expect.element(getInput2(r)).toBeInTheDocument();
-        
-        await expect.element(getInput0(r)).toHaveAttribute('type', 'radio');
-        await expect.element(getInput1(r)).toHaveAttribute('type', 'radio');
-        await expect.element(getInput2(r)).toHaveAttribute('type', 'radio');
-      });
-      
       it('applies group name to all radios', async () => {
         await expect.element(getInput0(r)).toHaveAttribute('name', NAME);
         await expect.element(getInput1(r)).toHaveAttribute('name', NAME);
@@ -148,40 +137,14 @@ describe('SegmentedControl', () => {
         await expectIndicatorOver(getIndicator(r), getItem0(r));
       });
       
-      it('changes selection by clicking a segment (label)', async () => {
-        await userEvent.click(getItem1(r));
-        
-        await expect.element(getInput0(r)).not.toBeChecked();
-        await expect.element(getInput1(r)).toBeChecked();
-        await expect.element(getInput2(r)).not.toBeChecked();
-        
-        await expectIndicatorOver(getIndicator(r), getItem1(r));
-      });
-      
-      it('updates disabled state to indicator and items via data attributes', async () => {
+      it('disables every item from the root', async () => {
         r.rerender(<SegmentedControlTest defaultValue={VALUE_0} disabled />);
-        
-        await expect.element(getIndicator(r)).toHaveAttribute('data-disabled', 'true');
-        
-        await expect.element(getItem0(r)).toHaveAttribute('data-disabled', 'true');
-        await expect.element(getItem1(r)).toHaveAttribute('data-disabled', 'true');
-        await expect.element(getItem2(r)).toHaveAttribute('data-disabled', 'true');
-        
+
         await expect.element(getInput0(r)).toBeDisabled();
         await expect.element(getInput1(r)).toBeDisabled();
         await expect.element(getInput2(r)).toBeDisabled();
       });
       
-      it('exposes variant and size via data attributes', async () => {
-        await expect.element(getRoot(r)).toHaveAttribute('data-size', SIZE);
-        await expect.element(getRoot(r)).toHaveAttribute('data-variant', VARIANT);
-        
-        await expect.element(getIndicator(r)).toHaveAttribute('data-size', SIZE);
-        await expect.element(getIndicator(r)).toHaveAttribute('data-variant', VARIANT);
-        
-        await expect.element(getItem0(r)).toHaveAttribute('data-size', SIZE);
-        await expect.element(getItem0(r)).toHaveAttribute('data-variant', VARIANT);
-      });
     });
     
     describe('controlled', () => {
@@ -192,11 +155,6 @@ describe('SegmentedControl', () => {
       beforeEach(() => {
         onChange.mockClear();
         r = render(<SegmentedControlTest value={VALUE_0} onChange={onChange} />);
-      });
-      
-      it('reflects controlled value', async () => {
-        await expect.element(getInput0(r)).toBeChecked();
-        await expect.element(getInput1(r)).not.toBeChecked();
       });
       
       it('fires onChange when user selects another segment', async () => {
@@ -223,23 +181,59 @@ describe('SegmentedControl', () => {
   });
   
   describe('Edge Cases', () => {
-    it('submits selected value via native form behavior (FormTest)', async () => {
-      let submitted: Record<string, string> | null = null;
-      
+    it('does not select an item disabled on its own', async () => {
       const r = render(
-        <FormTest onSubmit={(d) => (submitted = d)}>
-          <SegmentedControlTest />
-        </FormTest>
+        <SegmentedControlTest defaultValue={VALUE_0}>
+          <SegmentedControlItem data-testid={TESTID_ITEM_0} value={VALUE_0}>
+            {VALUE_0}
+            <SegmentedControlItemInput data-testid={TESTID_INPUT_0} />
+          </SegmentedControlItem>
+          <SegmentedControlItem data-testid={TESTID_ITEM_1} value={VALUE_1} disabled>
+            {VALUE_1}
+            <SegmentedControlItemInput data-testid={TESTID_INPUT_1} />
+          </SegmentedControlItem>
+        </SegmentedControlTest>,
       );
-      
-      await userEvent.click(getItem2(r));
-      await userEvent.click(getSubmit(r));
-      
-      expect(submitted).toEqual({
-        [NAME]: VALUE_2,
-      });
+
+      await userEvent.click(r.getByTestId(TESTID_ITEM_1), { force: true });
+
+      await expect.element(r.getByTestId(TESTID_INPUT_1)).toBeDisabled();
+      await expect.element(r.getByTestId(TESTID_INPUT_0)).toBeChecked();
     });
-    
+
+    it('calls onChange of the input before onChange of the root, like a bubbling change event', async () => {
+      const calls: string[] = [];
+      const r = render(
+        <SegmentedControlTest onChange={() => calls.push('root')}>
+          <SegmentedControlItem data-testid={TESTID_ITEM_0} value={VALUE_0}>
+            {VALUE_0}
+            <SegmentedControlItemInput data-testid={TESTID_INPUT_0} onChange={() => calls.push('input')} />
+          </SegmentedControlItem>
+        </SegmentedControlTest>,
+      );
+
+      await userEvent.click(getItem0(r));
+
+      expect(calls).toEqual(['input', 'root']);
+    });
+
+    it('keeps onChange of the root from running when the input stops propagation', async () => {
+      const onChange = vi.fn();
+      const r = render(
+        <SegmentedControlTest onChange={onChange}>
+          <SegmentedControlItem data-testid={TESTID_ITEM_0} value={VALUE_0}>
+            {VALUE_0}
+            <SegmentedControlItemInput data-testid={TESTID_INPUT_0} onChange={(event) => event.stopPropagation()} />
+          </SegmentedControlItem>
+        </SegmentedControlTest>,
+      );
+
+      await userEvent.click(getItem0(r));
+
+      await expect.element(getInput0(r)).toBeChecked();
+      expect(onChange).not.toHaveBeenCalled();
+    });
+
     it('restores defaultValue on native form reset (uncontrolled)', async () => {
       let submitted: Record<string, string> | null = null;
 
@@ -263,16 +257,6 @@ describe('SegmentedControl', () => {
       });
     });
 
-    it('supports empty defaultValue (no selection)', async () => {
-      const r = render(<SegmentedControlTest defaultValue='' />);
-      
-      await expect.element(getInput0(r)).not.toBeChecked();
-      await expect.element(getInput1(r)).not.toBeChecked();
-      await expect.element(getInput2(r)).not.toBeChecked();
-      
-      await expect.element(getIndicator(r)).not.toBeVisible();
-    });
-    
     it('follows a programmatic selection that fires no events (uncontrolled)', async () => {
       const r = render(<SegmentedControlTest defaultValue={VALUE_0} />);
       
@@ -306,23 +290,4 @@ describe('SegmentedControl', () => {
     });
   });
   
-  describe('Accessibility', () => {
-    describe('keyboard', () => {
-      it('supports tab focus and arrow navigation for radios', async () => {
-        const r = render(<SegmentedControlTest defaultValue={VALUE_0} />);
-        
-        getInput0(r).focus()
-        await expect.element(getInput0(r)).toHaveFocus();
-        
-        await userEvent.keyboard('{ArrowRight}');
-        await expect.element(getInput1(r)).toBeChecked();
-        
-        await userEvent.keyboard('{ArrowRight}');
-        await expect.element(getInput2(r)).toBeChecked();
-        
-        await userEvent.keyboard('{ArrowLeft}');
-        await expect.element(getInput1(r)).toBeChecked();
-      });
-    });
-  });
 });

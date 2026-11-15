@@ -1,10 +1,12 @@
 'use client';
 
-import { FC, HTMLAttributes, Ref, ToggleEvent, useLayoutEffect, useRef, useState } from 'react';
-import { csx, mergeEventHandlers, togglePopover } from '@vega-ui/utils';
+import { FC, HTMLAttributes, Ref } from 'react';
+import { csx } from '@vega-ui/utils';
 import { useMergeRefs } from '@vega-ui/hooks';
+import { useOutput, useSnapshot } from '../../../internals/widget';
 import styles from './style.module.css';
 import { usePopoverContext } from '../../contexts';
+import { CONTENT, isRendered, popoverWidget } from '@vega-ui/widgets/popover';
 
 export interface PopoverContentProps extends HTMLAttributes<HTMLDivElement> {
   /**
@@ -27,62 +29,24 @@ export const PopoverContent: FC<PopoverContentProps> = ({
   className,
   children,
   style,
-  onToggle: _onToggle,
   ...props
 }) => {
-  const { open, changeOpen, role, contentId, placement = 'bottom', setFloating, contentStyles } = usePopoverContext()
-  const element = useRef<HTMLDivElement>(null)
-  const mergedRef = useMergeRefs([element, setFloating, ref])
-  const [rendered, setRendered] = useState(false)
-  const [shown, setShown] = useState(false)
+  const { handle, contentId, placement = 'bottom', anchorName, setContent } = usePopoverContext()
+  const attrs = useOutput(handle, popoverWidget.output.content)
+  const rendered = useSnapshot(handle, isRendered)
+  const mergedRef = useMergeRefs([handle.rootAt(CONTENT), setContent, ref])
   const [side, align = 'center'] = placement.split('-')
-
-  useLayoutEffect(() => {
-    togglePopover(element.current, open)
-  }, [open])
-
-  useLayoutEffect(() => {
-    const popover = element.current
-    if (!popover) return
-
-    if (open || shown) {
-      setRendered(true)
-      return
-    }
-
-    let cancelled = false
-
-    Promise.allSettled(popover.getAnimations().map((animation) => animation.finished)).then(() => {
-      if (!cancelled) setRendered(false)
-    })
-
-    return () => {
-      cancelled = true
-    }
-  }, [open, shown])
-
-  const onToggle = (event: ToggleEvent<HTMLDivElement>) => {
-    if (event.target !== event.currentTarget) return
-
-    const next = event.newState === 'open'
-    setShown(next)
-    if (next !== open) changeOpen(next)
-  }
 
   return (
     <div
       id={contentId}
-      popover='auto'
-      role={role}
       ref={mergedRef}
-      style={{ ...contentStyles, ...style }}
+      style={{ positionAnchor: anchorName, ...style }}
       data-shadowed={shadowed}
-      data-status={open ? 'open' : 'close'}
       data-side={side}
       data-align={align}
       className={csx(styles.content, className)}
-      onToggle={mergeEventHandlers(onToggle, _onToggle)}
-      {...props}
+      {...handle.listen(attrs, props)}
     >
       {rendered && children}
     </div>

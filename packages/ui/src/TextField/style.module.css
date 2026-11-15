@@ -50,7 +50,7 @@
 
 /* textField/error */
 
-.field:where([data-error='true']) {
+.field:where(:has(input:is([aria-invalid='true'], :user-invalid, [data-user-edited]:invalid))) {
     outline-color: var(--color-error);
 }
 

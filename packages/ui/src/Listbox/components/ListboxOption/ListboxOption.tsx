@@ -1,12 +1,11 @@
 'use client';
 
-import { MouseEvent, PointerEvent, useId } from 'react';
-import { mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
-import { useRegistryItem } from '@vega-ui/react-kit/registry';
-import { useStore } from '@vega-ui/react-kit/store';
+import { useCallback, useId } from 'react';
+import { useMergeRefs } from '@vega-ui/hooks';
+import { useOutput } from '../../../internals/widget';
 import { Option, OptionProps } from '../../../Option';
-import { useListboxContext } from '../../contexts';
-import { ListboxItemData, ListboxState } from '../../../internals/listbox';
+import { useListboxContext } from '../../contexts'
+import { optionPart } from '@vega-ui/widgets/listbox';
 
 export interface ListboxOptionProps<V> extends Omit<OptionProps, 'id' | 'selected' | 'active'> {
   /**
@@ -26,43 +25,18 @@ export const ListboxOption = <V extends string | number>({
   label,
   size,
   disabled,
-  onClick: _onClick,
-  onPointerMove: _onPointerMove,
   ref,
   ...props
 }: ListboxOptionProps<V>) => {
-  const {
-    size: listSize,
-    disabled: listDisabled,
-    store,
-    isSelected,
-    onSelect,
-  } = useListboxContext()
-
-  const id = useId()
+  const { handle, size: listSize, disabled: listDisabled } = useListboxContext()
+  const key = useId()
   const optionDisabled = disabled || listDisabled
-  const active = useStore<ListboxState, boolean>(store, (state) => state.activeId === id)
-  const optionRef = useRegistryItem<ListboxItemData, HTMLDivElement>(store, id, { value, disabled: optionDisabled, label })
-
-  const onClick = () => {
-    onSelect(value)
-  }
-
-  const onPointerMove = (event: PointerEvent<HTMLDivElement>) => {
-    if (event.pointerType === 'mouse' && !optionDisabled && !active) store.setActive(id, 'pointer')
-  }
-
-  return (
-    <Option
-      size={size ?? listSize}
-      active={active}
-      selected={isSelected(value)}
-      disabled={optionDisabled}
-      onClick={mergeEventHandlers<MouseEvent<HTMLDivElement>>(onClick, _onClick)}
-      onPointerMove={mergeEventHandlers(onPointerMove, _onPointerMove)}
-      ref={mergeRefs([optionRef, ref])}
-      {...props}
-      id={id}
-    />
+  const register = useCallback(
+    (element: HTMLElement | null) => handle.elements.setItem(key, element, element ? { value, disabled: optionDisabled, label: label ?? element.textContent ?? '' } : undefined),
+    [handle, key, value, optionDisabled, label],
   )
+  const attrs = useOutput(handle, optionPart, key)
+  const optionRef = useMergeRefs([register, ref])
+
+  return <Option size={size ?? listSize} disabled={optionDisabled} ref={optionRef} {...handle.merge(attrs, props)} />
 }

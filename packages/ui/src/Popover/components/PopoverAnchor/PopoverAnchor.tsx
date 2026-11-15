@@ -20,14 +20,14 @@ export interface PopoverAnchorProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 /** The PopoverAnchor component marks the element the popover is positioned against instead of its trigger, such as a whole field around a small button */
-export const PopoverAnchor: FC<PopoverAnchorProps> = ({ asChild, ref, children, ...props }) => {
+export const PopoverAnchor: FC<PopoverAnchorProps> = ({ asChild, ref, style, children, ...props }) => {
   const Element = asChild ? Slot : 'div'
 
-  const { setAnchor } = usePopoverContext()
+  const { anchorName, setAnchor } = usePopoverContext()
   const mergedRef = useMergeRefs([setAnchor, ref])
 
   return (
-    <Element {...props} ref={mergedRef}>
+    <Element style={{ anchorName, ...style }} {...props} ref={mergedRef}>
       {children}
     </Element>
   )

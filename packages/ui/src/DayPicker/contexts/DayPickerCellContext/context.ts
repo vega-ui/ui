@@ -1,6 +1,6 @@
 'use client';
 
-import { createContext } from '@vega-ui/react-kit/context';
+import { createContext } from '../../../internals/context';
 import { CalendarDateFields } from '@vega-ui/i18n';
 
 export interface DayPickerCellContextData {
@@ -28,10 +28,16 @@ export interface DayPickerCellContextData {
    * Whether the day belongs to the rendered month; overflow days are not.
    */
   inMonth: boolean
+
+  /**
+   * Whether the day is today of the picker.
+   */
+  isToday: boolean
 }
 
 export const [DayPickerCellProvider, useDayPickerCellContext] = createContext<DayPickerCellContextData>('DayPickerCell', {
   col: 0,
   label: '',
   inMonth: false,
+  isToday: false,
 })

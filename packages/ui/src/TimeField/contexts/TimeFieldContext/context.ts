@@ -1,18 +1,13 @@
 'use client';
 
-import { RefObject } from 'react'
-import { createContext } from '@vega-ui/react-kit/context';
+import { createContext } from '../../../internals/context';
+import { createHandle, WidgetHandle } from '../../../internals/widget';
+import { timeFieldShape, timeFieldWidget } from '@vega-ui/widgets/time-field';
 
 export interface TimeFieldContextState {
-  template: string
-  text?: string
-  changeText?(text: string): void
-  inputRef?: RefObject<HTMLInputElement | null>
-  min?: string
-  max?: string
-  step?: number
+  handle: WidgetHandle<typeof timeFieldShape>
 }
 
 export const [TimeFieldProvider, useTimeFieldContext] = createContext<TimeFieldContextState>('TimeFieldContext', {
-  template: 'HH:MM'
+  handle: createHandle(timeFieldWidget, { format: 'HH:mm', min: undefined, max: undefined, step: 1 }, { id: 'time-field' }),
 })

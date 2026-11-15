@@ -1,9 +1,10 @@
 'use client';
 
 import { ButtonHTMLAttributes, FC, MouseEvent, Ref } from 'react';
-import { mergeEventHandlers } from '@vega-ui/utils';
+import { createInput } from '@vega-ui/core';
 import { Slot } from '../../../Slot';
 import { useDrawerContext } from '../../contexts';
+import { OPEN_DIALOG } from '@vega-ui/widgets/modal-dialog';
 
 export interface DrawerTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
@@ -25,18 +26,20 @@ export interface DrawerTriggerProps extends ButtonHTMLAttributes<HTMLButtonEleme
 export const DrawerTrigger: FC<DrawerTriggerProps> = ({ asChild, children, onClick: _onClick, ...props }) => {
   const Element = asChild ? Slot : 'button'
 
-  const { changeOpen } = useDrawerContext()
+  const { handle } = useDrawerContext()
 
   const onClick = (event: MouseEvent<HTMLButtonElement>) => {
-    event.currentTarget.focus()
-    changeOpen(true)
+    _onClick?.(event)
+    if (event.defaultPrevented) return
+
+    handle.send(createInput(OPEN_DIALOG))
   }
 
   return (
     <Element
       type={Element === 'button' ? 'button' : undefined}
       aria-haspopup='dialog'
-      onClick={mergeEventHandlers(onClick, _onClick)}
+      onClick={onClick}
       {...props}
     >
       {children}

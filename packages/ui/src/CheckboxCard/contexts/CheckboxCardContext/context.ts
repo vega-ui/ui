@@ -1,7 +1,7 @@
 'use client';
 
 import { CheckboxCardSize, CheckboxVariant } from '../../types';
-import { createContext } from '@vega-ui/react-kit/context';
+import { createContext } from '../../../internals/context';
 
 export interface CheckboxCardContextState {
   size: CheckboxCardSize

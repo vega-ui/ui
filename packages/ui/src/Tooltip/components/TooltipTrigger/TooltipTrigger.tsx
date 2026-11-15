@@ -1,9 +1,11 @@
 'use client';
 
-import { ButtonHTMLAttributes, FC, FocusEvent, PointerEvent, Ref } from 'react';
+import { ButtonHTMLAttributes, FC, Ref } from 'react';
+import { useSnapshot } from '../../../internals/widget';
 import { Slot } from '../../../Slot';
 import { useTooltipContext } from '../../contexts';
-import { csx, mergeEventHandlers } from '@vega-ui/utils';
+import { TRIGGER } from '@vega-ui/widgets/tooltip';
+import { csx } from '@vega-ui/utils';
 import { useMergeRefs } from '@vega-ui/hooks';
 
 export interface TooltipTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -25,43 +27,22 @@ export const TooltipTrigger: FC<TooltipTriggerProps> = ({
   asChild,
   children,
   ref,
-  onPointerEnter: _onPointerEnter,
-  onPointerLeave: _onPointerLeave,
-  onPointerDown: _onPointerDown,
-  onFocus: _onFocus,
-  onBlur: _onBlur,
+  style,
   'aria-describedby': describedBy,
   ...props
 }) => {
   const Element = asChild ? Slot : 'button'
 
-  const { open, show, showNow, hide, hideAfterDelay, contentId, context, setReference } = useTooltipContext()
-  const mergedRef = useMergeRefs([setReference, ref])
-
-  const onPointerEnter = (event: PointerEvent<HTMLButtonElement>) => {
-    if (event.pointerType !== 'touch') show()
-  }
-
-  const onPointerLeave = (event: PointerEvent<HTMLButtonElement>) => {
-    if (event.relatedTarget instanceof Node && context.elements.floating?.contains(event.relatedTarget)) return
-
-    hideAfterDelay()
-  }
-
-  const onFocus = (event: FocusEvent<HTMLButtonElement>) => {
-    if (event.currentTarget.matches(':focus-visible')) showNow()
-  }
+  const { handle, contentId, anchorName } = useTooltipContext()
+  const open = useSnapshot(handle, (state) => state.open)
+  const mergedRef = useMergeRefs([handle.rootAt(TRIGGER), ref])
 
   return (
     <Element
       type={Element === 'button' ? 'button' : undefined}
       aria-describedby={csx(describedBy, open ? contentId : undefined) || undefined}
-      onPointerEnter={mergeEventHandlers(onPointerEnter, _onPointerEnter)}
-      onPointerLeave={mergeEventHandlers(onPointerLeave, _onPointerLeave)}
-      onPointerDown={mergeEventHandlers(hide, _onPointerDown)}
-      onFocus={mergeEventHandlers(onFocus, _onFocus)}
-      onBlur={mergeEventHandlers(hide, _onBlur)}
-      {...props}
+      style={{ anchorName, ...style }}
+      {...handle.listen({}, props)}
       ref={mergedRef}
     >
       {children}

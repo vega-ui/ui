@@ -1,37 +1,21 @@
 'use client';
 
-import { Ref, RefObject } from 'react';
-import { createContext } from '@vega-ui/react-kit/context';
+import { createContext } from '../../../internals/context';
+import { createHandle, WidgetHandle } from '../../../internals/widget';
 import { PinFieldSize } from '../../types';
+import { pinFieldShape, pinFieldWidget } from '@vega-ui/widgets/pin-field';
 
 export interface PinFieldContextState {
+  handle: WidgetHandle<typeof pinFieldShape>
   size?: PinFieldSize
   placeholder?: string
-  inputRef?: Ref<HTMLInputElement | null>
-  innerInputRef: RefObject<HTMLInputElement | null>
   disabled?: boolean
-  selectedAll?: boolean
-  error?: boolean
   maxLength: number
-  active: number
-  value: string
-  setValue(value: string): void
-  setActive(position: number): void
-  setSelectedAll(all: boolean): void
-  syncActive(index?: number, expand?: boolean): void
 }
 
 export const [PinFieldProvider, usePinFieldContext] = createContext<PinFieldContextState>('PinFieldContext', {
+  handle: createHandle(pinFieldWidget, { maxLength: 4, mask: undefined, disabled: false }, { id: 'pin-field' }),
   size: 'md',
-  inputRef: undefined,
-  innerInputRef: { current: null },
   disabled: false,
   maxLength: 4,
-  error: false,
-  active: 0,
-  value: '',
-  setValue() {},
-  setActive() {},
-  setSelectedAll() {},
-  syncActive() {},
 })

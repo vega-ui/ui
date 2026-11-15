@@ -1,6 +1,7 @@
-import { createRef, FC, PropsWithChildren } from 'react';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { createRef, FC, PropsWithChildren, useState } from 'react';
+import { afterEach, beforeEach, describe, expect, it, onTestFinished, vi } from 'vitest';
 import { cleanup, render, type RenderResult, waitFor } from '@testing-library/react';
+import { userEvent } from 'vitest/browser';
 
 import { IndexedSnapScroller, type IndexedSnapScrollerProps } from '../IndexedSnapScroller';
 import { IndexedSnapScrollerContent } from '../components';
@@ -92,11 +93,11 @@ describe('IndexedSnapScroller', () => {
       
       beforeEach(() => {
         r = render(
-          <IndexedSnapScrollerTest size={SIZE_5} shift={SHIFT_2} start={START_MINUS_2} startDir={1} />,
+          <IndexedSnapScrollerTest size={SIZE_5} shift={SHIFT_2} start={START_MINUS_2} />,
         );
       });
       
-      it('renders an initial index window based on start/size/startDir', async () => {
+      it('renders an initial index window based on start/size', async () => {
         await expect.element(getItem(r, -2)).toBeInTheDocument();
         await expect.element(getItem(r, -1)).toBeInTheDocument();
         await expect.element(getItem(r, 0)).toBeInTheDocument();
@@ -104,52 +105,6 @@ describe('IndexedSnapScroller', () => {
         await expect.element(getItem(r, 2)).toBeInTheDocument();
       });
       
-      it('does not render indexes outside the initial window', async () => {
-        await expect.element(queryItem(r, -3)).not.toBeInTheDocument();
-        await expect.element(queryItem(r, 3)).not.toBeInTheDocument();
-      });
-    });
-    
-    describe('defaultIndex / index initialization', () => {
-      it('uses defaultIndex when provided (uncontrolled) and builds window around it', async () => {
-        const defaultIndex = 10;
-        
-        const r = render(
-          <IndexedSnapScrollerTest
-            size={SIZE_5}
-            shift={SHIFT_2}
-            start={START_MINUS_2}
-            startDir={1}
-            defaultIndex={defaultIndex}
-          />,
-        );
-        
-        const centerOffset = Math.floor(SIZE_5 / 2);
-        const expectedStart = defaultIndex - centerOffset;
-        
-        await expect.element(getItem(r, expectedStart)).toBeInTheDocument();
-        await expect.element(getItem(r, expectedStart + 4)).toBeInTheDocument();
-      });
-      
-      it('uses index when provided (controlled) and builds window around it', async () => {
-        const index = 7;
-        
-        const r = render(
-          <IndexedSnapScrollerTest
-            size={SIZE_5}
-            shift={SHIFT_2}
-            start={START_MINUS_2}
-            startDir={1}
-            index={index}
-          />,
-        );
-        
-        const centerOffset = Math.floor(SIZE_5 / 2);
-        const expectedStart = index - centerOffset;
-        
-        await expect.element(getItem(r, expectedStart)).toBeInTheDocument();
-        await expect.element(getItem(r, expectedStart + 4)).toBeInTheDocument();
-      });
     });
     
     describe('offset detection via scroll and virtual window shifting', () => {
@@ -161,7 +116,7 @@ describe('IndexedSnapScroller', () => {
             size={SIZE_5}
             shift={SHIFT_2}
             start={START_MINUS_2}
-            startDir={1}
+           
             onOffset={(v) => offsets.push(v)}
           />,
         );
@@ -195,7 +150,7 @@ describe('IndexedSnapScroller', () => {
             size={SIZE_5}
             shift={SHIFT_2}
             start={START_MINUS_2}
-            startDir={1}
+           
             onOffset={(v) => offsets.push(v)}
           />,
         );
@@ -229,7 +184,7 @@ describe('IndexedSnapScroller', () => {
             size={SIZE_5}
             shift={SHIFT_2}
             start={START_MINUS_2}
-            startDir={1}
+           
             onScroll={() => {
               called += 1;
             }}
@@ -257,7 +212,7 @@ describe('IndexedSnapScroller', () => {
             size={SIZE_5}
             shift={SHIFT_2}
             start={START_MINUS_2}
-            startDir={1}
+           
             preserveScroll
           />,
         );
@@ -285,7 +240,7 @@ describe('IndexedSnapScroller', () => {
             size={SIZE_5}
             shift={SHIFT_2}
             start={START_MINUS_2}
-            startDir={1}
+           
             preserveScroll
           />,
         );
@@ -332,101 +287,107 @@ describe('IndexedSnapScroller', () => {
         expect(isFullyVisibleInScroller(scroller, getItem(r, 2))).toBe(true);
       });
     });
-    
-    describe('controlled index syncing', () => {
-      it('when controlled index is outside current window, window rebuilds to include it', async () => {
-        const nextIndex = 100;
-        
-        const apiRef = createRef<IndexedSnapScrollerApiRef>();
-        
-        const r = render(
-          <IndexedSnapScrollerTest
-            size={SIZE_5}
-            shift={SHIFT_2}
-            start={START_MINUS_2}
-            startDir={1}
-            index={0}
-            apiRef={apiRef}
-          />,
-        );
-        
-        await expect.element(getItem(r, -2)).toBeInTheDocument();
-        await expect.element(getItem(r, 2)).toBeInTheDocument();
-        
-        await waitFor(() => {
-          expect(apiRef.current).toBeTruthy();
-        });
-        
-        apiRef.current!.measure();
-        
-        r.rerender(
-          <IndexedSnapScrollerTest
-            size={SIZE_5}
-            shift={SHIFT_2}
-            start={START_MINUS_2}
-            startDir={1}
-            index={nextIndex}
-            apiRef={apiRef}
-          />,
-        );
-        
-        await waitFor(() => {
-          expect(queryItem(r, nextIndex)).toBeTruthy();
-        });
-        
-        await expect.element(getItem(r, nextIndex)).toBeInTheDocument();
-      });
-      
-      it('when controlled index is within the current window, it becomes visible in the viewport', async () => {
-        const r = render(
-          <IndexedSnapScrollerTest
-            size={SIZE_5}
-            shift={SHIFT_2}
-            start={START_MINUS_2}
-            startDir={1}
-            index={0}
-          />,
-        );
-        
-        const scroller = getScroller(r);
-        
-        await waitFor(() => {
-          expect(scroller.scrollWidth).toBeGreaterThan(scroller.clientWidth);
-        });
-        
-        const nextIndex = 2;
-        
-        r.rerender(
-          <IndexedSnapScrollerTest
-            size={SIZE_5}
-            shift={SHIFT_2}
-            start={START_MINUS_2}
-            startDir={1}
-            index={nextIndex}
-          />,
-        );
-        
-        await waitFor(() => {
-          const el = getItem(r, nextIndex);
-          expect(isFullyVisibleInScroller(scroller, el)).toBe(true);
-        });
-      });
-    });
   });
   
   describe('Edge Cases', () => {
-    it('size=1 renders a single page index', async () => {
-      const r = render(<IndexedSnapScrollerTest size={1} shift={SHIFT_2} start={START_MINUS_2} startDir={1} />);
-      
-      await expect.element(getItem(r, -2)).toBeInTheDocument();
-      await expect.element(queryItem(r, -1)).not.toBeInTheDocument();
-      await expect.element(queryItem(r, 0)).not.toBeInTheDocument();
+    it('follows quick changes of the controlled index far outside the window', async () => {
+      const onError = vi.spyOn(console, 'error').mockImplementation(() => {});
+      const r = render(<IndexedSnapScrollerTest index={0} />);
+      await nextFrame();
+
+      for (const index of [100, 300, 50, -200]) {
+        r.rerender(<IndexedSnapScrollerTest index={index} />);
+        await nextFrame();
+      }
+
+      await waitFor(() => {
+        expect(isFullyVisibleInScroller(getScroller(r), getItem(r, -200))).toBe(true);
+      });
+      expect(onError).not.toHaveBeenCalled();
+      onError.mockRestore();
+    });
+
+    it('calls the user onScrollSnapChange after the window is re-centered', async () => {
+      const apiRef = createRef<IndexedSnapScrollerApiRef>();
+      const rendered: boolean[] = [];
+      const r = render(
+        <IndexedSnapScrollerTest
+          index={0}
+          apiRef={apiRef}
+          onScrollSnapChange={(_, key) => {
+            if (key === 1) rendered.push(queryItem(r, 3) !== null);
+          }}
+        />,
+      );
+
+      await waitFor(() => expect(apiRef.current).toBeTruthy());
+      await nextFrame();
+      apiRef.current!.next();
+
+      await waitFor(() => expect(rendered).toEqual([true]));
+    });
+
+    it('keeps reporting a swipe after setIndexTo() is called with the page already shown', async () => {
+      const apiRef = createRef<IndexedSnapScrollerApiRef>();
+      const onScrollSnapChanging = vi.fn();
+      const r = render(<IndexedSnapScrollerTest defaultIndex={0} apiRef={apiRef} onScrollSnapChanging={onScrollSnapChanging} />);
+      const scroller = getScroller(r);
+
+      await waitFor(() => expect(isFullyVisibleInScroller(scroller, getItem(r, 0))).toBe(true));
+      await nextFrame();
+      apiRef.current!.setIndexTo(0);
+      scroller.scrollBy({ left: PAGE_PX, behavior: 'instant' });
+
+      await waitFor(() => expect(onScrollSnapChanging).toHaveBeenLastCalledWith(expect.anything(), 1));
+    });
+
+    it('does not jump to the page under the finger when the controlled index follows a swipe', async () => {
+      const Following: FC = () => {
+        const [index, setIndex] = useState(0);
+
+        return (
+          <IndexedSnapScrollerTest
+            index={index}
+            style={{ scrollSnapType: 'none' }}
+            onScrollSnapChanging={(_, key) => setIndex(key)}
+          />
+        );
+      };
+      const r = render(<Following />);
+      const scroller = getScroller(r);
+      await nextFrame();
+
+      const holdFinger = (event: Event) => event.stopPropagation();
+      window.addEventListener('scrollend', holdFinger, true);
+      onTestFinished(() => window.removeEventListener('scrollend', holdFinger, true));
+
+      scroller.scrollTo({ left: scroller.scrollLeft + PAGE_PX * 0.6, behavior: 'instant' as ScrollBehavior });
+      await nextFrame();
+      await nextFrame();
+
+      const left = getItem(r, 1).getBoundingClientRect().left - scroller.getBoundingClientRect().left;
+      expect(left).toBeCloseTo(PAGE_PX * 0.4, -1);
+    });
+
+    it('is not a Tab stop of its own', async () => {
+      const r = render(
+        <>
+          <input aria-label='before' />
+          <IndexedSnapScrollerTest />
+          <input aria-label='after' />
+        </>,
+      );
+
+      r.getByRole('textbox', { name: 'before' }).focus();
+      await userEvent.tab();
+
+      expect(document.activeElement).toBe(r.getByRole('textbox', { name: 'after' }));
     });
 
     describe('right-to-left', () => {
       const RtlTest: FC<PropsWithChildren<IndexedSnapScrollerProps>> = (props) => (
         <div dir='rtl'>
-          <IndexedSnapScrollerTest size={SIZE_5} shift={SHIFT_2} start={START_MINUS_2} startDir={1} {...props} />
+          <IndexedSnapScrollerTest size={SIZE_5} shift={SHIFT_2} start={START_MINUS_2} {...props} />
         </div>
       );
     

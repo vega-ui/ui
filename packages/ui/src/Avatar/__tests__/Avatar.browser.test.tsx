@@ -1,15 +1,18 @@
 import { ComponentProps } from 'react';
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { renderToString } from 'react-dom/server';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, fireEvent, render, type RenderResult } from '@testing-library/react';
 
 import { Avatar } from '../Avatar';
 import { AvatarFallback, AvatarImage } from '../components';
-import { ImageStatus } from '../components';
+import { ImageStatus } from '@vega-ui/widgets/avatar';
 
 afterEach(cleanup);
 
 const AVATAR_INITIALS = 'BC';
 const AVATAR_ALT = 'User avatar';
+const LOADING_SRC = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+const BROKEN_SRC = 'data:image/png;base64,broken';
 const AVATAR_SRC = 'https://example.com/avatar.png';
 const AVATAR_FALLBACK_SRC = 'https://example.com/fallback.png';
 
@@ -48,46 +51,70 @@ describe('Avatar', () => {
       );
     })
 
-    it('AvatarImage: switches to fallbackSrc on error', async () => {
-      const img = getImage(r);
-
-      await expect.element(img).toHaveAttribute('data-status', ImageStatus.INITIAL);
-      await expect.element(img).toHaveAttribute('src', AVATAR_SRC);
-
-      fireEvent.error(img);
-
-      await expect.element(img).toHaveAttribute('data-status', ImageStatus.ERROR);
-      await expect.element(img).toHaveAttribute('src', AVATAR_FALLBACK_SRC);
-    });
-
-    it('AvatarImage: error without fallbackSrc keeps src unchanged', async () => {
+    it('keeps showing fallbackSrc once it loads', async () => {
       r.rerender(
         <AvatarTest>
-          <AvatarImage
-            data-testid='image'
-            src={AVATAR_SRC}
-          />
-        </AvatarTest>
-      )
-      const img = getImage(r);
+          <AvatarFallback data-testid='fallback'>{AVATAR_INITIALS}</AvatarFallback>
+          <AvatarImage data-testid='image' alt={AVATAR_ALT} src={BROKEN_SRC} fallbackSrc={LOADING_SRC} />
+        </AvatarTest>,
+      );
 
-      fireEvent.error(img);
+      await expect.element(getImage(r)).toHaveAttribute('data-status', ImageStatus.LOADED);
+      await new Promise((resolve) => setTimeout(resolve, 100));
 
-      await expect.element(img).toHaveAttribute('data-status', ImageStatus.ERROR);
-      await expect.element(img).toHaveAttribute('src', AVATAR_SRC);
+      expect(getImage(r).getAttribute('src')).toBe(LOADING_SRC);
+      expect(getImage(r).dataset.status).toBe(ImageStatus.LOADED);
+    });
+
+    it('tries a new src again after a failed one', async () => {
+      fireEvent.error(getImage(r));
+      await expect.element(getImage(r)).toHaveAttribute('src', AVATAR_FALLBACK_SRC);
+
+      r.rerender(
+        <AvatarTest>
+          <AvatarFallback data-testid='fallback'>{AVATAR_INITIALS}</AvatarFallback>
+          <AvatarImage data-testid='image' alt={AVATAR_ALT} src={LOADING_SRC} fallbackSrc={AVATAR_FALLBACK_SRC} />
+        </AvatarTest>,
+      );
+
+      await expect.element(getImage(r)).toHaveAttribute('src', LOADING_SRC);
+    });
+
+    it('keeps calling onLoad and onError of the image', async () => {
+      const onLoad = vi.fn();
+      const onError = vi.fn();
+      r.rerender(
+        <AvatarTest>
+          <AvatarImage data-testid='image' src={AVATAR_SRC} onLoad={onLoad} onError={onError} />
+        </AvatarTest>,
+      );
+
+      fireEvent.error(getImage(r));
+      fireEvent.load(getImage(r));
+
+      expect(onError).toHaveBeenCalledOnce();
+      expect(onLoad).toHaveBeenCalledOnce();
+      await expect.element(getImage(r)).toHaveAttribute('data-status', ImageStatus.LOADED);
     });
   });
   
   describe('Edge Cases', () => {
-    it('AvatarImage: load sets data-status=loaded', async () => {
-      const r = render(<AvatarTest />)
+    it('shows a server-rendered image that loaded before hydration, or its fallback when it failed', async () => {
+      const tree = (
+        <>
+          <AvatarImage data-testid='loaded' alt={AVATAR_ALT} src={LOADING_SRC} />
+          <AvatarImage data-testid='broken' alt={AVATAR_ALT} src={BROKEN_SRC} fallbackSrc={LOADING_SRC} />
+        </>
+      );
+      const container = document.body.appendChild(document.createElement('div'));
+      container.innerHTML = renderToString(tree);
+      const images = [...container.querySelectorAll('img')];
+      await expect.poll(() => images.every((image) => image.complete)).toBe(true);
 
-      const img = getImage(r);
-      await expect.element(img).toHaveAttribute('data-status', ImageStatus.INITIAL);
+      const r = render(tree, { container, hydrate: true });
 
-      fireEvent.load(img);
-
-      await expect.element(img).toHaveAttribute('data-status', ImageStatus.LOADED);
+      await expect.element(r.getByTestId('loaded')).toHaveAttribute('data-status', ImageStatus.LOADED);
+      await expect.element(r.getByTestId('broken')).toHaveAttribute('src', LOADING_SRC);
     });
   });
 });

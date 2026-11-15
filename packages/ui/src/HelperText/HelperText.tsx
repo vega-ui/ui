@@ -13,19 +13,19 @@ export interface HelperTextProps extends Omit<TextProps, 'size'> {
    */
   size?: HelperTextSize
   /**
-   * Displays the helper text in an error state.
+   * Shows the helper text as the message of an invalid field.
    * Changes color to red.
    */
-  error?: boolean
+  invalid?: boolean
 }
 
 /** Helper Text is a UI component that provides additional guidance or information to assist users in completing a task, typically displayed below an input field or form element to clarify its purpose or offer instructions */
-export const HelperText: FC<HelperTextProps> = ({ className, size = 'md', error, children, ...props }) => {
+export const HelperText: FC<HelperTextProps> = ({ className, size = 'md', invalid, children, ...props }) => {
   return (
     <Text
       asChild
       className={csx(style.helperText, className)}
-      data-error={error}
+      data-invalid={invalid}
       size={sizeMapper(size)}
       {...props}
     >

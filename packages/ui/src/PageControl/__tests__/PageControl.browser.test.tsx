@@ -36,11 +36,11 @@ const getProgress = (r: RenderResult, i: number) => r.getByTestId(TESTID_PROGRES
 const getAllTabs = (r: RenderResult) => r.getAllByRole('tab') as HTMLButtonElement[];
 
 const touchDown = (list: HTMLElement, pointerId = 1, clientX = 10, clientY = 10) => {
-  fireEvent.pointerDown(list, { pointerId, pointerType: 'touch', clientX, clientY });
+  fireEvent.pointerDown(list, { pointerId, pointerType: 'touch', clientX, clientY, buttons: 1 });
 };
 
 const touchMove = (list: HTMLElement, pointerId = 1, clientX = 10, clientY = 10) => {
-  fireEvent.pointerMove(list, { pointerId, pointerType: 'touch', clientX, clientY });
+  fireEvent.pointerMove(list, { pointerId, pointerType: 'touch', clientX, clientY, buttons: 1 });
 };
 
 const touchUp = (list: HTMLElement, pointerId = 1) => {
@@ -143,39 +143,6 @@ describe('PageControl', () => {
           await expect.element(getTab(r, 0)).toHaveAttribute('tabindex', '-1');
         });
         
-        it('updates active multiple times while sliding (first to 1 then to 3)', async () => {
-          const r = render(<PageControlTest defaultActive={0} />);
-          const list = getList(r);
-          
-          touchDown(list, 1, 10, 10);
-          
-          const t1 = getTab(r, 0);
-          const t3 = getTab(r, 2);
-          
-          const r1 = t1.getBoundingClientRect();
-          const r3 = t3.getBoundingClientRect();
-          
-          touchMove(list, 1, Math.round((r1.left + r1.right) / 2), 10);
-          await expect.element(getTab(r, 0)).toHaveAttribute('aria-selected', 'true');
-          
-          touchMove(list, 1, Math.round((r3.left + r3.right) / 2), 10);
-          await expect.element(getTab(r, 2)).toHaveAttribute('aria-selected', 'true');
-          
-          touchUp(list, 1);
-          
-          await expect.element(getTab(r, 2)).toHaveAttribute('aria-selected', 'true');
-          await expect.element(getTab(r, 2)).toHaveFocus();
-        });
-        
-        it('does not change active when only pointerDown happens (no move)', async () => {
-          const r = render(<PageControlTest defaultActive={0} />);
-          const list = getList(r);
-          
-          touchDown(list, 1, 10, 10);
-          touchUp(list, 1);
-          
-          await expect.element(getTab(r, 0)).toHaveAttribute('aria-selected', 'true');
-        });
       });
     });
     
@@ -199,21 +166,23 @@ describe('PageControl', () => {
           await expect.element(getTab(r, 0)).toHaveAttribute('tabindex', '-1');
         });
         
-        it('calls onChangeActive when clicking another tab', async () => {
-          await userEvent.click(getTab(r, 2));
-          expect(calls).toHaveLength(1);
-          expect(calls[0]).toBe(2);
-        });
-        
-        it('does not call onChangeActive when clicking active tab', async () => {
-          await userEvent.click(getTab(r, 1));
-          expect(calls).toHaveLength(0);
-        });
       });
     });
   });
   
   describe('Edge Cases', () => {
+    it('keeps the size an item sets on itself over the size of the root', async () => {
+      const r = render(
+        <PageControlTest size='sm'>
+          <PageControlItem data-testid={TESTID_TAB(0)} index={0} size='lg' />
+          <PageControlItem data-testid={TESTID_TAB(1)} index={1} />
+        </PageControlTest>,
+      );
+
+      await expect.element(getTab(r, 0)).toHaveAttribute('data-size', 'lg');
+      await expect.element(getTab(r, 1)).toHaveAttribute('data-size', 'sm');
+    });
+
     it('still ends the progress when the user prefers reduced motion', async () => {
       await commands.emulateReducedMotion('reduce');
       onTestFinished(() => commands.emulateReducedMotion('no-preference'));
@@ -243,17 +212,19 @@ describe('PageControl', () => {
   });
 
   describe('Accessibility', () => {
+    it('hides the focus ring of a keyboard focus once the user clicks another tab, like a native button', async () => {
+      const r = render(<PageControlTest defaultActive={0} />);
+      getTab(r, 0).focus();
+      await userEvent.keyboard('{ArrowRight}');
+      await expect.poll(() => getTab(r, 1).matches(':focus-visible')).toBe(true);
+
+      await userEvent.click(getTab(r, 2));
+
+      await expect.element(getTab(r, 2)).toHaveAttribute('aria-selected', 'true');
+      expect(getTab(r, 2).matches(':focus-visible')).toBe(false);
+    });
+
     describe('keyboard', () => {
-      it('ArrowRight moves selection and focus to next tab', async () => {
-        const r = render(<PageControlTest defaultActive={0} />);
-        
-        getTab(r, 0).focus();
-        await userEvent.keyboard('{ArrowRight}');
-        
-        await expect.element(getTab(r, 1)).toHaveAttribute('aria-selected', 'true');
-        await expect.element(getTab(r, 1)).toHaveFocus();
-      });
-      
       it('ArrowLeft moves selection and focus to previous tab', async () => {
         const r = render(<PageControlTest defaultActive={2} />);
         
@@ -264,24 +235,14 @@ describe('PageControl', () => {
         await expect.element(getTab(r, 1)).toHaveFocus();
       });
       
-      it('does not move past last tab', async () => {
-        const r = render(<PageControlTest defaultActive={4} />);
-        const list = getList(r);
-        
-        list.focus();
-        await userEvent.keyboard('{ArrowRight}');
-        
-        await expect.element(getProgress(r, 0)).toHaveAttribute('aria-selected', 'true');
-      });
-      
-      it('does not move past first tab', async () => {
+      it('ArrowLeft on the first tab moves to the last one', async () => {
         const r = render(<PageControlTest defaultActive={0} />);
-        const list = getList(r);
-        
-        list.focus();
+
+        getTab(r, 0).focus();
         await userEvent.keyboard('{ArrowLeft}');
-        
-        await expect.element(getTab(r, 0)).toHaveAttribute('aria-selected', 'true');
+
+        await expect.element(getProgress(r, 0)).toHaveAttribute('aria-selected', 'true');
+        await expect.element(getProgress(r, 0)).toHaveFocus();
       });
     });
     

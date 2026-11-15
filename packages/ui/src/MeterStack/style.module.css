@@ -3,6 +3,7 @@
     --meter-stack-br-ratio: 1;
     --meter-stack-gap-ratio: 0.25;
     --meter-stack-value: 0;
+    --meter-stack-min: 0;
     --meter-stack-max: 1;
 
     height: var(--meter-stack-height);

@@ -1,10 +1,12 @@
-import { FC, useRef, useState } from 'react';
+import { FC } from 'react';
+import { useWidget, widgetEnvironment } from '../internals/widget';
 import { TextField, TextFieldProps } from '../TextField';
 import { DateFieldProvider } from './contexts';
 import { CalendarDatesDisabled } from '../Calendar';
-import { useControlledState, useFormReset } from '@vega-ui/hooks';
-import { formatTemplateDate, parseISODate, parseTemplateDate, getDateTemplate } from '@vega-ui/utils';
+import { parseISODate } from '@vega-ui/utils';
 import { CalendarSystem, gregorianCalendar } from '@vega-ui/i18n';
+import { useToday } from '../internals/calendar';
+import { dateFieldWidget } from '@vega-ui/widgets/date-field';
 
 export interface DateFieldProps extends Omit<TextFieldProps, 'defaultValue'> {
   /**
@@ -49,14 +51,14 @@ export interface DateFieldProps extends Omit<TextFieldProps, 'defaultValue'> {
   /**
    * Minimum allowed date as a `YYYY-MM-DD` string.
    * Dates earlier than this value cannot be selected
-   * and will be clamped or rejected during input parsing.
+   * in the calendar and make a typed value invalid, like a native input.
    */
   min?: string
   
   /**
    * Maximum allowed date as a `YYYY-MM-DD` string.
    * Dates later than this value cannot be selected
-   * and will be clamped or rejected during input parsing.
+   * in the calendar and make a typed value invalid, like a native input.
    */
   max?: string
   
@@ -67,10 +69,25 @@ export interface DateFieldProps extends Omit<TextFieldProps, 'defaultValue'> {
   disabledDates?: CalendarDatesDisabled
   
   /**
-   * Disables the field.
-   * Prevents user input and interaction and applies the disabled visual state.
+   * Disables the field like a native `disabled` input: the input and the
+   * trigger are disabled, and the date is not submitted.
    */
   disabled?: boolean
+
+  /**
+   * Makes the field read-only like a native `readonly` input: the input is
+   * `readonly`, the calendar still opens to show the date, and picking a day
+   * does not change it. The date is still submitted.
+   */
+  readOnly?: boolean
+
+  /**
+   * Today as a `YYYY-MM-DD` string, passed to `DateFieldCalendar` and used to
+   * read a two-digit year (`yy`) of `format`: within 80 years before and 19
+   * years after the year of today. Defaults to the date of the device, read
+   * after hydration and followed when the day or the time zone changes.
+   */
+  today?: string
   
   /**
    * Calendar system the date is typed and picked in. The value stays a
@@ -82,7 +99,7 @@ export interface DateFieldProps extends Omit<TextFieldProps, 'defaultValue'> {
   /**
    * BCP 47 locale of the calendar popup (month and day names, first day of
    * the week), e.g. `de-DE`. The typed format still comes from `format`.
-   * Defaults to the locale of the runtime, like `Intl`.
+   * @default "en-US"
    */
   locale?: string
 }
@@ -105,56 +122,36 @@ export const DateField: FC<DateFieldProps> = ({
   min: _min,
   disabledDates,
   disabled,
+  readOnly,
   calendar = gregorianCalendar,
   locale,
+  today: _today,
   value,
   defaultValue = '',
   onChangeValue,
+  children,
   ...props
 }) => {
+  const today = useToday(_today)
   const min = parseISODate(_min) ? _min : undefined
   const max = parseISODate(_max) ? _max : undefined
-  const [date, setDate] = useControlledState(value, defaultValue, onChangeValue)
-  const [text, setText] = useState('')
-  
-  const inputInnerRef = useRef<HTMLInputElement>(null)
-  
-  const template = getDateTemplate(format, separator)
+  const handle = useWidget(dateFieldWidget, { format, separator, calendar, today, min, max, disabledDates, value, defaultValue, onChangeValue }, widgetEnvironment)
 
-  const getDate = (text: string) => parseTemplateDate(calendar, text, template) ?? ''
-  const getText = (date: string) => date ? formatTemplateDate(calendar, date, template) : ''
-
-  const shownText = getDate(text) === date ? text : getText(date)
-
-  const changeText = (text: string) => {
-    setText(text)
-
-    const nextDate = getDate(text)
-    if (nextDate !== date) setDate(nextDate)
-  }
-
-  useFormReset(inputInnerRef, () => {
-    if (value !== undefined) return
-
-    setText(getText(defaultValue))
-    setDate(defaultValue)
-  })
-  
   return (
     <DateFieldProvider
+      handle={handle}
       max={max}
       min={min}
-      date={date}
       disabled={disabled}
+      readOnly={readOnly}
       disabledDates={disabledDates}
-      inputRef={inputInnerRef}
-      text={shownText}
-      changeText={changeText}
-      template={template}
       calendar={calendar}
       locale={locale}
+      today={today}
     >
-      <TextField {...props} />
+      <TextField {...props}>
+        {children}
+      </TextField>
     </DateFieldProvider>
   )
 }

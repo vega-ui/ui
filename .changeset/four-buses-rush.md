@@ -1,5 +1,4 @@
 ---
-"@vega-ui/hooks": minor
 "@vega-ui/utils": minor
 "@vega-ui/react": minor
 ---
@@ -30,7 +29,6 @@ Fixes:
 - `IndexedSnapScroller`: with fractional item widths, scrolling no longer gets stuck on the last item of the window
 - `DateRangeFieldCalendar`: removed a leftover `console.log`
 
-- `@vega-ui/hooks`: `useSelection` accepts `null` as an empty single selection; `useScrollSnap` updates the pending snap on instant programmatic scrolls and no longer swallows snap changes when re-measuring or committing on `scrollend`
 - `@vega-ui/utils`: new `formatISODate`, `parseISODate`, `parseISODateTime`, `sanitizeISODates`
 
 Breaking: the `Calendar` props above and the `min` / `max` / `disabledDates` types of the date fields change.

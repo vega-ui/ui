@@ -1,9 +1,10 @@
 'use client';
 
-import { ButtonHTMLAttributes, FC, Ref } from 'react';
-import { mergeEventHandlers } from '@vega-ui/utils';
+import { ButtonHTMLAttributes, FC, MouseEvent, Ref } from 'react';
+import { createInput } from '@vega-ui/core';
 import { Slot } from '../../../Slot';
 import { useDrawerContext } from '../../contexts';
+import { CLOSE_DIALOG } from '@vega-ui/widgets/modal-dialog';
 
 export interface DrawerCloseProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
@@ -24,14 +25,15 @@ export interface DrawerCloseProps extends ButtonHTMLAttributes<HTMLButtonElement
 export const DrawerClose: FC<DrawerCloseProps> = ({ asChild, children, onClick: _onClick, ...props }) => {
   const Element = asChild ? Slot : 'button'
 
-  const { changeOpen } = useDrawerContext()
+  const { handle } = useDrawerContext()
 
-  const onClick = () => {
-    changeOpen(false)
+  const onClick = (event: MouseEvent<HTMLButtonElement>) => {
+    _onClick?.(event)
+    if (!event.defaultPrevented) handle.send(createInput(CLOSE_DIALOG))
   }
 
   return (
-    <Element type='button' onClick={mergeEventHandlers(onClick, _onClick)} {...props}>
+    <Element type='button' onClick={onClick} {...props}>
       {children}
     </Element>
   )

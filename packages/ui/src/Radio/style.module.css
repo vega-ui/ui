@@ -48,6 +48,14 @@
     border-width: calc(var(--radio-size) / 3);
 }
 
+/* invalid */
+
+.radio:is([aria-invalid='true'], :user-invalid) {
+    --radio-border-color: var(--color-error);
+    --radio-border-color-hover: var(--color-error);
+    --radio-border-color-active: var(--color-error);
+}
+
 /* disabled */
 
 .radio:disabled {

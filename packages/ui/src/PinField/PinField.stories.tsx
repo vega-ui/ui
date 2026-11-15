@@ -31,7 +31,6 @@ const meta = {
     },
     maxLength: { control: { type: 'number', min: 1, max: 12 } },
     placeholder: { control: 'text' },
-    error: { control: 'boolean' },
     disabled: { control: 'boolean' },
   },
   args: {
@@ -53,9 +52,9 @@ type Story = StoryObj<typeof meta>;
 
 const sizes: PinFieldProps['size'][] = ['xs', 'sm', 'md', 'lg', 'xl'];
 const states = [
-  { label: 'default', disabled: false, error: false },
-  { label: 'disabled', disabled: true, error: false },
-  { label: 'error', disabled: false, error: true },
+  { label: 'default', disabled: false, invalid: false },
+  { label: 'disabled', disabled: true, invalid: false },
+  { label: 'invalid', disabled: false, invalid: true },
 ];
 const layouts = [
   { label: '4', groups: [[0, 1, 2, 3]] },
@@ -70,8 +69,8 @@ export const Matrix: Story = {
   render: () => (
     <div style={{ display: 'grid', gridTemplateColumns: `repeat(${states.length}, auto)`, gap: 16, alignItems: 'center' }}>
       {sizes.map((size) => states.map((state) => (
-        <PinField key={`${size}-${state.label}`} size={size} disabled={state.disabled} error={state.error} defaultValue='12'>
-          <PinFieldInput aria-label='Code' />
+        <PinField key={`${size}-${state.label}`} size={size} disabled={state.disabled} defaultValue='12'>
+          <PinFieldInput aria-label='Code' aria-invalid={state.invalid} />
           <PinFieldSlot index={0} />
           <PinFieldSlot index={1} />
           <PinFieldSlot index={2} />

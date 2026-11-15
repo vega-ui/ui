@@ -1,35 +1,18 @@
 'use client';
 
-import { CSSProperties, Ref } from 'react';
-import { createContext } from '@vega-ui/react-kit/context';
-import { FloatingContext } from '@floating-ui/react';
+import { createContext } from '../../../internals/context';
+import { createHandle, WidgetHandle } from '../../../internals/widget';
+import { Placement } from '../../../internals/anchor';
+import { tooltipShape, tooltipWidget } from '@vega-ui/widgets/tooltip';
 
 export interface TooltipContextState {
-  open: boolean
-  changeOpen: (value: boolean) => void
-  show: () => void
-  showNow: () => void
-  cancelHide: () => void
-  hide: () => void
-  hideAfterDelay: () => void
-  context: FloatingContext
+  handle: WidgetHandle<typeof tooltipShape>
   contentId?: string
-  side?: string
-  arrowX?: number
-  arrowY?: number
-  arrowRef?: Ref<SVGSVGElement>
-  setReference?: (element: Element | null) => void
-  setFloating?: (element: HTMLElement | null) => void
-  contentStyle?: CSSProperties
+  placement?: Placement
+  anchorName?: string
+  setContent?: (element: HTMLElement | null) => void
 }
 
 export const [TooltipProvider, useTooltipContext] = createContext<TooltipContextState>('TooltipContext', {
-  open: false,
-  changeOpen: () => undefined,
-  show: () => undefined,
-  showNow: () => undefined,
-  cancelHide: () => undefined,
-  hide: () => undefined,
-  hideAfterDelay: () => undefined,
-  context: {} as FloatingContext
+  handle: createHandle(tooltipWidget, { delayOpen: 500, delayClose: 250, group: undefined }, { id: 'tooltip' }),
 })

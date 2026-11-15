@@ -1,0 +1,8 @@
+.calendar {
+    display: grid;
+    gap: var(--spacing-6);
+}
+
+.calendar:where([data-compact='true']) {
+    width: min-content;
+}

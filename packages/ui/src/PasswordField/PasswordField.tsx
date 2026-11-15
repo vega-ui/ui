@@ -1,9 +1,11 @@
 'use client';
 
-import { FC, useRef } from 'react';
-import { useControlledState } from '@vega-ui/hooks';
+import { FC } from 'react';
+import { createInput } from '@vega-ui/core';
+import { useSnapshot, useWidget, widgetEnvironment } from '../internals/widget';
 import { TextField, TextFieldProps } from '../TextField';
 import { PasswordFieldProvider } from './contexts';
+import { passwordFieldWidget, TOGGLE_SHOWN } from '@vega-ui/widgets/password-field';
 
 export interface PasswordFieldProps extends TextFieldProps {
   /**
@@ -40,15 +42,15 @@ export const PasswordField: FC<PasswordFieldProps> = ({
   children,
   ...props
 }) => {
-  const inputRef = useRef<HTMLInputElement>(null)
-  const [shown, setShown] = useControlledState(controlledShown, defaultShown, onChangeShown)
+  const handle = useWidget(passwordFieldWidget, { shown: controlledShown, defaultShown, onChangeShown }, widgetEnvironment)
+  const shown = useSnapshot(handle, (state) => state.shown)
 
-  const toggleShow = () => setShown(!shown)
+  const toggleShow = () => void handle.send(createInput(TOGGLE_SHOWN))
 
   return (
     <PasswordFieldProvider
+      handle={handle}
       shown={shown}
-      inputRef={inputRef}
       toggleShow={toggleShow}
       disabled={disabled}
     >

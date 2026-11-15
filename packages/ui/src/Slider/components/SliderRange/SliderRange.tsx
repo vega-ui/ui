@@ -6,6 +6,7 @@ import { useSliderContext } from '../../contexts';
 import style from './style.module.css'
 
 export interface SliderRangeProps extends HTMLAttributes<HTMLDivElement> {
+  /** Ref to the range element. */
   ref?: Ref<HTMLDivElement>
 }
 

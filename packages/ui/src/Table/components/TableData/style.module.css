@@ -27,9 +27,9 @@
 }
 
 .dataNotEdgePadded:first-child {
-    padding-left: 0;
+    padding-inline-start: 0;
 }
 
 .dataNotEdgePadded:last-child {
-    padding-right: 0;
+    padding-inline-end: 0;
 }

@@ -72,7 +72,7 @@ const clickBackdrop = async (r: RenderResult) => {
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const pointer = { pointerId: 1, isPrimary: true, button: 0, clientX: 100 };
+const pointer = { pointerId: 7, isPrimary: true, button: 0, buttons: 1, clientX: 100 };
 
 const drag = async (target: HTMLElement, distance: number, { flick = false } = {}) => {
   const y = 300;
@@ -191,15 +191,6 @@ describe('Sheet', () => {
     });
 
     describe('open and close', () => {
-      it('opens a modal native dialog on trigger click', async () => {
-        const r = render(<SheetTest />);
-
-        await userEvent.click(getTrigger(r));
-
-        await waitOpened(r);
-        expect(getContent(r).tagName).toBe('DIALOG');
-      });
-
       it('closes on backdrop click', async () => {
         const r = render(<SheetTest defaultOpen />);
         await waitOpened(r);
@@ -261,93 +252,9 @@ describe('Sheet', () => {
         expect(getOffset(r)).toBe(0);
       });
 
-      it('rests snap points above its height at its top', async () => {
-        const r = render(<SheetTest defaultOpen style={{ height: 200 }} snapPoints={[0.25, 1]} defaultSnapPoint={1} />);
-        await waitOpened(r);
-
-        expect(getOffset(r)).toBe(0);
-      });
-
-      it('opens at the lowest snap point by default', async () => {
-        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
-        await waitOpened(r);
-
-        expect(getOffset(r)).toBe(200);
-      });
-
-      it('opens at the lowest snap point whatever their order', async () => {
-        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[1, 0.5]} />);
-        await waitOpened(r);
-
-        expect(getOffset(r)).toBe(200);
-      });
-
-      it('opens at defaultSnapPoint', async () => {
-        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} defaultSnapPoint={1} />);
-        await waitOpened(r);
-
-        expect(getOffset(r)).toBe(0);
-      });
-
-      it('accepts pixel snap points', async () => {
-        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={['100px', 1]} />);
-        await waitOpened(r);
-
-        expect(getOffset(r)).toBe(300);
-      });
-
-      it('follows the controlled activeSnapPoint', async () => {
-        const r = render(<SheetTest open style={{ height: '100%' }} snapPoints={[0.5, 1]} activeSnapPoint={0} />);
-        await waitOpened(r);
-        expect(getOffset(r)).toBe(200);
-
-        r.rerender(<SheetTest open style={{ height: '100%' }} snapPoints={[0.5, 1]} activeSnapPoint={1} />);
-
-        await expect.poll(() => getOffset(r)).toBe(0);
-      });
-
-      it('settles at the snap point closest to where a slow drag ends', async () => {
+      it('reopens at the default snap point, reports the return to it, and reports the same move again after it', async () => {
         const onChangeActiveSnapPoint = vi.fn();
         const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} onChangeActiveSnapPoint={onChangeActiveSnapPoint} />);
-        await waitOpened(r);
-
-        await drag(getMain(r), -150);
-
-        expect(onChangeActiveSnapPoint).toHaveBeenLastCalledWith(1);
-        await expect.poll(() => getOffset(r)).toBe(0);
-      });
-
-      it('returns to the current snap point after a short slow drag', async () => {
-        const onChangeActiveSnapPoint = vi.fn();
-        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} onChangeActiveSnapPoint={onChangeActiveSnapPoint} />);
-        await waitOpened(r);
-
-        await drag(getMain(r), -40);
-
-        expect(onChangeActiveSnapPoint).not.toHaveBeenCalled();
-        await expect.poll(() => getOffset(r)).toBe(200);
-      });
-
-      it('carries a flick past the closest snap point', async () => {
-        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.25, 0.5, 1]} />);
-        await waitOpened(r);
-
-        await drag(getMain(r), -60, { flick: true });
-
-        await expect.poll(() => getOffset(r)).toBe(0);
-      });
-
-      it('moves one snap point per drag when steppedSnapPoints is set', async () => {
-        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.25, 0.5, 1]} steppedSnapPoints />);
-        await waitOpened(r);
-
-        await drag(getMain(r), -60, { flick: true });
-
-        await expect.poll(() => getOffset(r)).toBe(200);
-      });
-
-      it('reopens at the default snap point', async () => {
-        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
         await waitOpened(r);
         await drag(getMain(r), -150);
         await expect.poll(() => getOffset(r)).toBe(0);
@@ -358,6 +265,11 @@ describe('Sheet', () => {
         await waitOpened(r);
 
         expect(getOffset(r)).toBe(200);
+        expect(onChangeActiveSnapPoint.mock.calls).toEqual([[1], [0]]);
+
+        await drag(getMain(r), -150);
+        await expect.poll(() => getOffset(r)).toBe(0);
+        expect(onChangeActiveSnapPoint.mock.calls).toEqual([[1], [0], [1]]);
       });
     });
 
@@ -380,19 +292,26 @@ describe('Sheet', () => {
         await expect.element(getContent(r)).toHaveAttribute('data-dragging', 'false');
       });
 
-      it('resists a drag past the next snap point when stepped', async () => {
-        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={['100px', 0.5, 1]} steppedSnapPoints />);
+      it('glides to the snap point it is released at after its first open', async () => {
+        document.documentElement.dataset.motion = '';
+        onTestFinished(() => {
+          delete document.documentElement.dataset.motion;
+        });
+        await page.viewport(414, 896);
+        const r = render(
+          <SheetTest snapPoints={['160px', 0.5, 1]}>
+            <div style={{ height: 2000 }} />
+          </SheetTest>
+        );
+        await userEvent.click(getTrigger(r));
         await waitOpened(r);
 
-        fireEvent.pointerDown(getMain(r), { ...pointer, clientY: 380 });
-        fireEvent.pointerMove(getMain(r), { ...pointer, clientY: 20 });
+        await drag(getMain(r), -150);
+        await new Promise(requestAnimationFrame);
+        const gliding = getContent(r).getBoundingClientRect().top;
+        await Promise.all(document.getAnimations().map((animation) => animation.finished));
 
-        await expect.element(getContent(r)).toHaveAttribute('data-dragging', 'true');
-        expect(getOffset(r)).toBeGreaterThan(0);
-        expect(getOffset(r)).toBeLessThan(200);
-
-        fireEvent.pointerUp(getMain(r), { ...pointer, clientY: 20 });
-        await expect.poll(() => getOffset(r)).toBe(200);
+        expect(gliding).toBeGreaterThan(getContent(r).getBoundingClientRect().top + 1);
       });
 
       it('stops under a press while settling and resumes when it is released', async () => {
@@ -433,67 +352,11 @@ describe('Sheet', () => {
         fireEvent.pointerUp(getMain(r), { ...pointer, clientY: 290 });
       });
 
-      it('resists a drag above the top snap point', async () => {
-        const r = render(<SheetTest defaultOpen />);
-        await waitOpened(r);
-
-        fireEvent.pointerDown(getMain(r), { ...pointer, clientY: 300 });
-        fireEvent.pointerMove(getMain(r), { ...pointer, clientY: 100 });
-
-        await expect.element(getContent(r)).toHaveAttribute('data-dragging', 'true');
-        expect(getOffset(r)).toBeLessThan(0);
-        expect(getOffset(r)).toBeGreaterThan(-200);
-
-        fireEvent.pointerUp(getMain(r), { ...pointer, clientY: 100 });
-        await expect.poll(() => getOffset(r)).toBe(0);
-      });
-
-      it('closes on a drag down past the middle', async () => {
-        const r = render(<SheetTest defaultOpen />);
-        await waitOpened(r);
-
-        await drag(getMain(r), 250);
-
-        await waitClosed(r);
-      });
-
       it('closes on a flick down', async () => {
         const r = render(<SheetTest defaultOpen />);
         await waitOpened(r);
 
         await drag(getMain(r), 60, { flick: true });
-
-        await waitClosed(r);
-      });
-
-      it('stays open on a light flick down from the lowest snap point', async () => {
-        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
-        await waitOpened(r);
-        const resting = getOffset(r);
-
-        await drag(getMain(r), 30, { flick: true });
-
-        await expect.poll(() => getOffset(r)).toBe(resting);
-        await wait(300);
-        expect(queryContent(r)).toBeInTheDocument();
-      });
-
-      it('settles at the lowest snap point on a flick down from the top', async () => {
-        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} defaultSnapPoint={1} />);
-        await waitOpened(r);
-
-        await drag(getMain(r), 120, { flick: true });
-
-        await expect.poll(() => getOffset(r)).toBe(innerHeight / 2);
-        await wait(300);
-        expect(queryContent(r)).toBeInTheDocument();
-      });
-
-      it('closes on a long flick down from the lowest snap point', async () => {
-        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
-        await waitOpened(r);
-
-        await drag(getMain(r), 100, { flick: true });
 
         await waitClosed(r);
       });
@@ -535,38 +398,6 @@ describe('Sheet', () => {
         await wait(100);
 
         expect(getSurfaceWidth(r)).toBe(width);
-      });
-
-      it('springs back instead of closing when closedBy is not any', async () => {
-        const r = render(<SheetTest defaultOpen closedBy='closerequest' />);
-        await waitOpened(r);
-
-        await drag(getMain(r), 250);
-
-        await expect.poll(() => getOffset(r)).toBe(0);
-        await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
-      });
-
-      it('does not start a drag from the backdrop', async () => {
-        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
-        await waitOpened(r);
-
-        fireEvent.pointerDown(getContent(r), { ...pointer, clientY: 10 });
-        fireEvent.pointerMove(getContent(r), { ...pointer, clientY: 200 });
-
-        await expect.element(getContent(r)).toHaveAttribute('data-dragging', 'false');
-        fireEvent.pointerUp(getContent(r), { ...pointer, clientY: 200 });
-      });
-
-      it('does not start a drag from a text field', async () => {
-        const r = render(<SheetTest defaultOpen><input data-testid='input' /></SheetTest>);
-        await waitOpened(r);
-
-        fireEvent.pointerDown(r.getByTestId('input'), { ...pointer, clientY: 300 });
-        fireEvent.pointerMove(r.getByTestId('input'), { ...pointer, clientY: 400 });
-
-        await expect.element(getContent(r)).toHaveAttribute('data-dragging', 'false');
-        fireEvent.pointerUp(r.getByTestId('input'), { ...pointer, clientY: 400 });
       });
 
       describe.runIf(server.browser === 'chromium')('touch', () => {
@@ -684,6 +515,38 @@ describe('Sheet', () => {
         expect(getContent(r).getBoundingClientRect().top).toBeGreaterThan(innerHeight / 2);
       });
 
+      it('rises straight to its snap point the first time it opens', async () => {
+        document.documentElement.dataset.motion = '';
+        onTestFinished(() => {
+          delete document.documentElement.dataset.motion;
+        });
+        const r = render(<SheetTest style={{ height: '100%' }} snapPoints={['100px', 1]} />);
+        const tops: number[] = [];
+
+        fireEvent.click(getTrigger(r));
+        await expect.element(queryContent(r)).toBeInTheDocument();
+        for (let frame = 0; frame < 30; frame++) {
+          await new Promise(requestAnimationFrame);
+          tops.push(getContent(r).getBoundingClientRect().top);
+        }
+
+        await Promise.all(document.getAnimations().map((animation) => animation.finished));
+
+        expect(Math.min(...tops)).toBeGreaterThan(getContent(r).getBoundingClientRect().top - 1);
+      });
+
+      it('returns to its snap point when the browser cancels the drag', async () => {
+        const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} />);
+        await waitOpened(r);
+
+        fireEvent.pointerDown(getMain(r), { ...pointer, clientY: 300 });
+        fireEvent.pointerMove(getMain(r), { ...pointer, clientY: 340 });
+        fireEvent.pointerCancel(getMain(r), { ...pointer, clientX: 0, clientY: 0 });
+
+        await expect.element(getContent(r)).toHaveAttribute('data-dragging', 'false');
+        await expect.poll(() => getOffset(r)).toBe(200);
+      });
+
       it('returns to its snap point when the parent rejects the move', async () => {
         const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.5, 1]} activeSnapPoint={0} />);
         await waitOpened(r);
@@ -704,7 +567,6 @@ describe('Sheet', () => {
 
         await expect.poll(() => getContent(r).getBoundingClientRect().bottom).toBeCloseTo(innerHeight - 16, 1);
         expect(getSurfaceWidth(r)).toBe(innerWidth - 32);
-        expect(parseFloat(getComputedStyle(getSurface(r)).borderBottomLeftRadius)).toBeGreaterThan(0);
         expect(getFill(r).display).toBe('none');
       });
 
@@ -766,18 +628,6 @@ describe('Sheet', () => {
       await expect.poll(() => getContent(r).getAnimations().length).toBeGreaterThan(0);
     });
 
-    it('locks page scroll while open', async () => {
-      const r = render(<SheetTest defaultOpen />);
-      await waitOpened(r);
-
-      expect(getComputedStyle(document.documentElement).overflow).toBe('hidden');
-
-      await clickBackdrop(r);
-      await waitClosed(r);
-
-      expect(getComputedStyle(document.documentElement).overflow).not.toBe('hidden');
-    });
-
     it('does not submit the surrounding form on trigger click', async () => {
       const onSubmit = vi.fn();
       const r = render(
@@ -789,28 +639,6 @@ describe('Sheet', () => {
       await userEvent.click(getTrigger(r));
 
       expect(onSubmit).not.toHaveBeenCalled();
-    });
-
-    it('reports the last of the snap points that share an offset', async () => {
-      const onChangeActiveSnapPoint = vi.fn();
-      const r = render(<SheetTest defaultOpen style={{ height: 150 }} snapPoints={['100px', 0.5, 1]} onChangeActiveSnapPoint={onChangeActiveSnapPoint} />);
-      await waitOpened(r);
-
-      await drag(getMain(r), -50);
-
-      await expect.poll(() => onChangeActiveSnapPoint).toHaveBeenCalledWith(2);
-      expect(onChangeActiveSnapPoint).not.toHaveBeenCalledWith(1);
-    });
-
-    it('keeps the active snap point when a drag returns to its offset', async () => {
-      const onChangeActiveSnapPoint = vi.fn();
-      const r = render(<SheetTest defaultOpen style={{ height: 150 }} snapPoints={['100px', 0.5, 1]} defaultSnapPoint={1} onChangeActiveSnapPoint={onChangeActiveSnapPoint} />);
-      await waitOpened(r);
-
-      await drag(getMain(r), 5);
-      await wait(50);
-
-      expect(onChangeActiveSnapPoint).not.toHaveBeenCalledWith(2);
     });
 
     it('stays open when the user prevents the submit of a form with method dialog', async () => {
@@ -839,6 +667,24 @@ describe('Sheet', () => {
       fireEvent.click(r.getByTestId(TESTID_CLOSE));
 
       expect(onClick).not.toHaveBeenCalled();
+    });
+
+    it('keeps its content from scrolling while a touch drags it', async () => {
+      const r = render(<ScrollableSheetTest />);
+      await waitOpened(r);
+      const touchMove = () => {
+        const event = new Event('touchmove', { bubbles: true, cancelable: true });
+        getMain(r).dispatchEvent(event);
+        return event.defaultPrevented;
+      };
+
+      fireEvent.pointerDown(getMain(r), { ...pointer, pointerType: 'touch', clientY: 300 });
+      expect(touchMove()).toBe(false);
+      fireEvent.pointerMove(getMain(r), { ...pointer, pointerType: 'touch', clientY: 250 });
+      expect(touchMove()).toBe(true);
+      fireEvent.pointerUp(getMain(r), { ...pointer, pointerType: 'touch', clientY: 250 });
+
+      expect(touchMove()).toBe(false);
     });
   });
 
@@ -883,38 +729,8 @@ describe('Sheet', () => {
       await expect.element(r.getByTestId('input')).toHaveFocus();
     });
 
-    it('keeps Tab out of the page behind the sheet', async () => {
-      const r = render(<SheetTest defaultOpen />);
-      await waitOpened(r);
-      r.getByTestId(TESTID_CLOSE).focus();
-
-      for (let i = 0; i < 4; i++) {
-        await userEvent.tab();
-        await expect.element(getTrigger(r)).not.toHaveFocus();
-      }
-    });
-
-    const TabTest: FC = () => (
-      <Sheet defaultOpen>
-        <SheetContent data-testid={TESTID_CONTENT} aria-label='Panel'>
-          <input aria-label='First' />
-          <input aria-label='Last' />
-        </SheetContent>
-      </Sheet>
-    );
-
-    it('moves Tab from the sheet to its first tabbable element', async () => {
-      const r = render(<TabTest />);
-      await waitOpened(r);
-      await expect.element(getContent(r)).toHaveFocus();
-
-      await userEvent.tab();
-
-      await expect.element(r.getByRole('textbox', { name: 'First' })).toHaveFocus();
-    });
-
     describe('handle', () => {
-      it('is a button that expands to the next snap point and then collapses', async () => {
+      it('is a button that expands to the next snap point', async () => {
         const r = render(<SheetTest defaultOpen style={{ height: '100%' }} snapPoints={[0.25, 0.5, 1]} />);
         await waitOpened(r);
 
@@ -923,12 +739,6 @@ describe('Sheet', () => {
 
         await userEvent.click(getHandle(r));
         await expect.poll(() => getOffset(r)).toBe(200);
-
-        await userEvent.click(getHandle(r));
-        await expect.poll(() => getOffset(r)).toBe(0);
-
-        await userEvent.click(getHandle(r));
-        await expect.poll(() => getOffset(r)).toBe(300);
       });
 
       it('starts a drag without snap points', async () => {

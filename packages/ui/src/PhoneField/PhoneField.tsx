@@ -1,137 +1,95 @@
-import { FC, useCallback, useEffect, useMemo, useRef } from 'react';
-import { flushSync } from 'react-dom';
+import { FC } from 'react';
+import { PhoneCountry, PhoneNumbering, phoneNumbering } from '@vega-ui/i18n';
+import { useWidget, widgetEnvironment } from '../internals/widget';
 import { TextField, TextFieldProps } from '../TextField';
-import { useMaskito } from '@maskito/react'
-import { MaskitoOptions, maskitoTransform } from '@maskito/core';
-import { maskitoPhoneOptionsGenerator } from '@maskito/phone';
-import metadata from 'libphonenumber-js/min/metadata';
-import { CountryCode, getCountryCallingCode } from 'libphonenumber-js';
 import { PhoneFieldProvider } from './contexts';
-import { getTypedCountry } from './helpers';
-import { mergeRefs, writeInputValue } from '@vega-ui/utils';
-import { useControlledState, useFormReset, useLatest } from '@vega-ui/hooks';
+import { phoneFieldWidget } from '@vega-ui/widgets/phone-field';
 
 export interface PhoneFieldProps extends Omit<TextFieldProps, 'defaultValue'> {
   /**
-   * Controlled phone number, as the text of the input.
+   * Controlled phone number in E.164, like `"+79123456789"`: the digits typed
+   * so far after `+` and the calling code, `''` while the field has no digit
+   * after the calling code. The input shows it formatted.
    */
   value?: string
 
   /**
-   * Initial phone number for uncontrolled usage. Defaults to `''`.
-   * Its country is selected unless `code` is set.
+   * Initial phone number for uncontrolled usage, like `value`. Defaults to
+   * `''`. Its country is selected unless `country` is set.
    */
   defaultValue?: string
 
   /**
-   * Called with the phone number when it changes.
+   * Called with the phone number in E.164 when the user changes it.
    */
   onChangeValue?(value: string): void
 
   /**
-   * ISO 3166-1 alpha-2 country code used to determine the phone mask format.
-   * Example: 'US', 'RU', 'FR'.
+   * Controlled ISO 3166-1 alpha-2 country, like `"US"`: the country selected
+   * in `PhoneFieldSelect` and the calling code a strict mask starts an empty
+   * field with. A change of it never changes the number.
    */
-  code?: CountryCode
-  
-  /**
-   * ISO 3166-1 alpha-2 country code used to determine the phone mask format.
-   * Example: 'US', 'RU', 'FR'.
-   */
-  defaultCode?: CountryCode
-  
-  /**
-   * ISO 3166-1 alpha-2 country code used to determine the phone mask format.
-   * Example: 'US', 'RU', 'FR'.
-   */
-  onChangeCode?(code: CountryCode): void
+  country?: PhoneCountry
 
   /**
-   * If true, enforces the phone number mask strictly — only valid characters in the correct positions are allowed.
+   * Initial country for uncontrolled usage, like `country`.
+   */
+  defaultCountry?: PhoneCountry
+
+  /**
+   * Called with the country when the user picks one in `PhoneFieldSelect` or
+   * types a number of another country.
+   */
+  onChangeCountry?(country: PhoneCountry): void
+
+  /**
+   * If true, enforces the phone number mask strictly — only valid characters
+   * in the correct positions are allowed, and the calling code stays in
+   * front of the number.
    */
   strictMask?: boolean
+
+  /**
+   * Phone numbering plan the field reads, checks and formats numbers with.
+   * Defaults to `phoneNumbering` of `@vega-ui/i18n` on libphonenumber;
+   * another engine can be passed as an object of the same interface.
+   */
+  numbering?: PhoneNumbering
+
+  /**
+   * Disables the field like a native `disabled` input: the input and the
+   * country select are disabled, and the number is not submitted.
+   */
+  disabled?: boolean
 }
 
 /** The PhoneField component is a specialized text input for phone numbers, supporting country-specific formatting, optional input masking, and accessibility via native input semantics */
 export const PhoneField: FC<PhoneFieldProps> = ({
-  defaultCode = '' as CountryCode,
-  code: _code,
-  onChangeCode,
-  value: controlledValue,
+  defaultCountry = '' as PhoneCountry,
+  country,
+  onChangeCountry,
+  value,
   defaultValue = '',
   onChangeValue,
-  children,
   strictMask = true,
+  numbering = phoneNumbering,
+  disabled,
+  children,
   ...props
 }) => {
-  const [code, setCode] = useControlledState(_code, getTypedCountry(defaultValue) ?? defaultCode, onChangeCode)
-  const [phone, setPhone] = useControlledState(controlledValue, defaultValue, onChangeValue)
-  const codeRef = useLatest(code)
-  
-  const innerRef = useRef<HTMLInputElement>(null)
-  const shownCode = useRef(code)
-
-  const options = useMemo<MaskitoOptions>(() => maskitoPhoneOptionsGenerator({
-    metadata,
+  const handle = useWidget(phoneFieldWidget, {
     strict: strictMask,
-    countryIsoCode: code,
-  }), [strictMask, code])
+    numbering,
+    value,
+    defaultValue,
+    onChangeValue,
+    country,
+    defaultCountry,
+    onChangeCountry,
+  }, widgetEnvironment)
 
-  const detectCode = (value: string) => {
-    const typedCode = getTypedCountry(value)
-    if (typedCode === undefined || typedCode === code) return
-
-    shownCode.current = typedCode
-    setCode(typedCode)
-  }
-
-  const changePhone = (value: string) => {
-    setPhone(value)
-    detectCode(value)
-  }
-
-  useFormReset(innerRef, () => {
-    if (controlledValue !== undefined) return
-
-    setPhone(defaultValue)
-    if (_code !== undefined) return
-
-    const resetCode = getTypedCountry(defaultValue) ?? defaultCode
-    shownCode.current = resetCode
-    setCode(resetCode)
-  })
-
-  const inputRef = useMaskito({ options })
-  
-  useEffect(() => {
-    if (shownCode.current === code) return
-
-    shownCode.current = code
-    setPhone(maskitoTransform(`+${getCountryCallingCode(code)}`, options))
-  }, [code, options, setPhone])
-
-  const onSelect = useCallback((value: CountryCode) => {
-    shownCode.current = value
-    flushSync(() => setCode(value))
-    innerRef.current?.focus()
-
-    if (codeRef.current !== value) {
-      shownCode.current = codeRef.current
-      return
-    }
-
-    const input = innerRef.current
-    if (input) writeInputValue(input, `+${getCountryCallingCode(value)}`)
-  }, [setCode, codeRef])
-  
   return (
-    <PhoneFieldProvider
-      inputRef={mergeRefs([inputRef, innerRef])}
-      onSelectValue={onSelect}
-      phone={phone}
-      changePhone={changePhone}
-      code={code}
-    >
+    <PhoneFieldProvider handle={handle} disabled={disabled}>
       <TextField {...props}>
         {children}
       </TextField>

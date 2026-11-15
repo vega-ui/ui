@@ -10,6 +10,7 @@ export default mergeConfig(
   defineProject({
     plugins: [svgr(), react()],
     resolve: { conditions: ['source', ...defaultClientConditions] },
+    optimizeDeps: { include: ['react-dom/server', 'react-dom/client'] },
     test: {
       maxWorkers: 1,
       css: true,

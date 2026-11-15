@@ -7,7 +7,7 @@
  * Methods:
  * - `next()` — scrolls to the next snap-aligned item.
  * - `prev()` — scrolls to the previous snap-aligned item.
- * - `to(index)` — scrolls to the item whose `data-index` equals `index`.
+ * - `scrollToElementByKey(key, behavior)` — scrolls to the item whose `data-index` equals `key`.
  */
 export interface SnapScrollerApiRef<K = number> {
   next(): void

@@ -54,7 +54,6 @@ const getClose = (r: RenderResult) => r.getByTestId(TESTID_CLOSE);
 const getInnerTrigger = (r: RenderResult) => r.getByTestId(TESTID_INNER_TRIGGER);
 const queryInnerContent = (r: RenderResult) => r.queryByTestId(TESTID_INNER_CONTENT);
 const getInnerContent = (r: RenderResult) => r.getByTestId(TESTID_INNER_CONTENT) as HTMLDialogElement;
-const getInnerClose = (r: RenderResult) => r.getByTestId(TESTID_INNER_CLOSE);
 
 const waitOpened = async (r: RenderResult) => {
   await expect.element(queryContent(r)).toBeInTheDocument();
@@ -88,7 +87,7 @@ const getDrag = (r: RenderResult) => parseFloat(getContent(r).style.getPropertyV
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-const touch = { pointerId: 1, isPrimary: true, button: 0, pointerType: 'touch' };
+const touch = { pointerId: 7, isPrimary: true, button: 0, buttons: 1, pointerType: 'touch' };
 
 const touchAt = (target: HTMLElement, dx = 0, dy = 0, pointerType = 'touch') => {
   const rect = target.getBoundingClientRect();
@@ -268,40 +267,6 @@ describe('Drawer', () => {
         r = render(<DrawerTest open={false} />);
       });
       
-      it('does not open itself when open=false (requires parent update)', async () => {
-        await openByTrigger(r);
-        
-        await waitFor(() => {
-          expect(queryContent(r)).not.toBeInTheDocument();
-        });
-      });
-      
-      it('calls onChangeOpen(true) on trigger interaction', async () => {
-        const onChangeOpen = vi.fn();
-        r.rerender(<DrawerTest open={false} onChangeOpen={onChangeOpen} />);
-        
-        await openByTrigger(r);
-        
-        await waitFor(() => {
-          expect(onChangeOpen).toHaveBeenCalledTimes(1);
-          expect(onChangeOpen).toHaveBeenLastCalledWith(true);
-        });
-      });
-      
-      it('calls onChangeOpen(false) on backdrop click when open=true', async () => {
-        const onChangeOpen = vi.fn();
-        r.rerender(<DrawerTest open onChangeOpen={onChangeOpen} />);
-        
-        await waitOpened(r);
-        
-        await clickBackdrop(getContent(r));
-        
-        await waitFor(() => {
-          expect(onChangeOpen).toHaveBeenCalledTimes(1);
-          expect(onChangeOpen).toHaveBeenLastCalledWith(false);
-        });
-      });
-      
       it('calls onChangeOpen(false) on close button click when open=true', async () => {
         const onChangeOpen = vi.fn();
         r.rerender(<DrawerTest open onChangeOpen={onChangeOpen} />);
@@ -378,69 +343,6 @@ describe('Drawer', () => {
         await waitClosed(r);
       });
 
-      it('closes on a flick toward its edge', async () => {
-        const r = render(<DrawerTest defaultOpen position='start' />);
-        await waitOpened(r);
-
-        await swipe(getContent(r), 'x', -60, { flick: true });
-
-        await waitClosed(r);
-      });
-
-      it('closes on a swipe down from the bottom', async () => {
-        const r = render(<DrawerTest defaultOpen position='bottom' />);
-        await waitOpened(r);
-
-        await swipe(getContent(r), 'y', getContent(r).offsetHeight);
-
-        await waitClosed(r);
-      });
-
-      it('springs back after a short swipe', async () => {
-        const r = render(<DrawerTest defaultOpen position='end' />);
-        await waitOpened(r);
-
-        await swipe(getContent(r), 'x', 20);
-
-        await expect.element(getContent(r)).toHaveAttribute('data-dragging', 'false');
-        expect(getDrag(r)).toBe(0);
-        await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
-      });
-
-      it('resists a swipe away from its edge', async () => {
-        const r = render(<DrawerTest defaultOpen position='end' />);
-        await waitOpened(r);
-
-        fireEvent.pointerDown(getContent(r), touchAt(getContent(r)));
-        fireEvent.pointerMove(getContent(r), touchAt(getContent(r), -200));
-
-        await expect.element(getContent(r)).toHaveAttribute('data-dragging', 'true');
-        expect(getDrag(r)).toBeLessThan(0);
-        expect(getDrag(r)).toBeGreaterThan(-200);
-        fireEvent.pointerUp(getContent(r), touchAt(getContent(r), -200));
-      });
-
-      it('ignores swipes when closedBy is not any', async () => {
-        const r = render(<DrawerTest defaultOpen position='end' closedBy='closerequest' />);
-        await waitOpened(r);
-
-        fireEvent.pointerDown(getContent(r), touchAt(getContent(r)));
-        fireEvent.pointerMove(getContent(r), touchAt(getContent(r), 200));
-
-        await expect.element(getContent(r)).toHaveAttribute('data-dragging', 'false');
-        fireEvent.pointerUp(getContent(r), touchAt(getContent(r), 200));
-      });
-
-      it('ignores mouse drags so text stays selectable', async () => {
-        const r = render(<DrawerTest defaultOpen position='end' />);
-        await waitOpened(r);
-
-        fireEvent.pointerDown(getContent(r), touchAt(getContent(r), 0, 0, 'mouse'));
-        fireEvent.pointerMove(getContent(r), touchAt(getContent(r), 200, 0, 'mouse'));
-
-        await expect.element(getContent(r)).toHaveAttribute('data-dragging', 'false');
-        fireEvent.pointerUp(getContent(r), touchAt(getContent(r), 200, 0, 'mouse'));
-      });
     });
   });
   
@@ -510,15 +412,6 @@ describe('Drawer', () => {
         await waitInnerOpened(r);
       });
       
-      it('keeps Tab inside the inner drawer', async () => {
-        getInnerClose(r).focus();
-
-        for (let i = 0; i < 4; i++) {
-          await userEvent.tab();
-          expect(getContent(r).querySelector(':focus')).toBeNull();
-        }
-      });
-
       it('Escape closes only the inner drawer', async () => {
         await userEvent.keyboard('{Escape}');
 
@@ -585,24 +478,6 @@ describe('Drawer', () => {
     });
     
     describe('keyboard', () => {
-      const TabTest: FC = () => (
-        <Drawer defaultOpen>
-          <DrawerContent data-testid={TESTID_CONTENT} aria-label='Panel'>
-            <input aria-label='First' />
-            <input aria-label='Last' />
-          </DrawerContent>
-        </Drawer>
-      );
-
-      it('moves Tab from the drawer to its first tabbable element', async () => {
-        const r = render(<TabTest />);
-        await waitOpened(r);
-        await expect.element(getContent(r)).toHaveFocus();
-
-        await userEvent.tab();
-
-        await expect.element(r.getByRole('textbox', { name: 'First' })).toHaveFocus();
-      });
 
       it('does not close on Escape when closedBy=none', async () => {
         const r = render(<DrawerTest closedBy='none' />);

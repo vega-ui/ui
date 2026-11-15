@@ -1,9 +1,10 @@
 'use client';
 import { DialogHTMLAttributes, FC, ReactNode, Ref } from 'react';
 import { createPortal } from 'react-dom';
-import { csx, mergeEventHandlers } from '@vega-ui/utils';
+import { csx } from '@vega-ui/utils';
 import { useMergeRefs } from '@vega-ui/hooks';
-import { ModalDialogClosedBy, useModalDialog } from '../../../internals/modalDialog';
+import { useSnapshot } from '../../../internals/widget';
+import { DIALOG, isMounted, isRendered, ModalDialogClosedBy, modalDialogWidget } from '@vega-ui/widgets/modal-dialog';
 import styles from './style.module.css';
 import { useDialogContext } from '../../contexts';
 
@@ -61,14 +62,12 @@ export const DialogContent: FC<DialogContentProps> = ({
   ref,
   className,
   children,
-  onCancel: _onCancel,
-  onSubmit: _onSubmit,
-  onClose: _onClose,
   ...props
 }) => {
-  const { open, changeOpen } = useDialogContext()
-  const { ref: dialogRef, mounted, rendered, onCancel, onSubmit, onClose } = useModalDialog({ open, onChangeOpen: changeOpen, closedBy })
-  const mergedRef = useMergeRefs([dialogRef, ref])
+  const { handle } = useDialogContext()
+  const mounted = useSnapshot(handle, isMounted)
+  const rendered = useSnapshot(handle, isRendered)
+  const mergedRef = useMergeRefs([handle.rootAt(DIALOG, modalDialogWidget.output.dialog), ref])
 
   if (!mounted) return null
 
@@ -78,13 +77,9 @@ export const DialogContent: FC<DialogContentProps> = ({
       data-shadowed={shadowed}
       data-blurred={blurred}
       data-overlay={overlay}
-      data-status={open ? 'open' : 'close'}
       className={csx(styles.dialog, className)}
       ref={mergedRef}
-      onCancel={mergeEventHandlers(onCancel, _onCancel)}
-      onSubmit={mergeEventHandlers(onSubmit, _onSubmit)}
-      onClose={mergeEventHandlers(onClose, _onClose)}
-      {...props}
+      {...handle.listen({}, props)}
     >
       {rendered && children}
     </dialog>,

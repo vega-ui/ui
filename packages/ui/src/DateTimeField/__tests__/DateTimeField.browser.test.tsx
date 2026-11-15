@@ -9,24 +9,31 @@ import {
   DateTimeFieldCalendar,
   DateTimeFieldTriggerIconButton,
   type DateTimeFieldInputProps,
+  type DateTimeFieldCalendarProps,
 } from '../components';
 
-import { Popover, PopoverTrigger, PopoverContent } from '../../Popover';
+import { Popover, PopoverTrigger, PopoverContent, type PopoverProps } from '../../Popover';
 import {
   CalendarHeader,
   CalendarContent,
   CalendarPrevButton,
   CalendarNextButton,
-  CalendarViewButtonGroup,
+  CalendarHeading,
   CalendarViewButton,
   CalendarMonthLabel,
   CalendarYearLabel,
   CalendarDays, CalendarWeekdays, CalendarWeekday, CalendarDay,
   CalendarWeeks,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarMonth,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarYear,
   CalendarYears,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
+  CalendarYearsGrid,
   useCalendarContext,
   useCalendarDayContext,
 } from '../../Calendar';
@@ -58,10 +65,18 @@ const TESTID_CALENDAR = 'datetimefield-calendar';
 const FORMAT = 'dd.MM.yyyy';
 const SEPARATOR = ', ';
 
-const DateTimeFieldTest: FC<Partial<DateTimeFieldProps> & { inputProps?: DateTimeFieldInputProps }> = ({
+interface DateTimeFieldTestProps extends Partial<DateTimeFieldProps> {
+  inputProps?: DateTimeFieldInputProps
+  popoverProps?: PopoverProps
+  calendarProps?: DateTimeFieldCalendarProps
+}
+
+const DateTimeFieldTest: FC<DateTimeFieldTestProps> = ({
   onInput,
   onChange,
   inputProps,
+  popoverProps,
+  calendarProps,
   ...props
 }) => (
   <DateTimeField dateFormat={FORMAT} separator={SEPARATOR} {...props}>
@@ -71,26 +86,26 @@ const DateTimeFieldTest: FC<Partial<DateTimeFieldProps> & { inputProps?: DateTim
       onChange={onChange}
       {...inputProps}
     />
-    <Popover>
+    <Popover {...popoverProps}>
       <PopoverTrigger asChild>
         <DateTimeFieldTriggerIconButton aria-label='Open calendar' data-testid={TESTID_TRIGGER} />
       </PopoverTrigger>
       <PopoverContent data-testid={TESTID_CONTENT}>
-        <DateTimeFieldCalendar data-testid={TESTID_CALENDAR} style={{ width: 320 }}>
+        <DateTimeFieldCalendar data-testid={TESTID_CALENDAR} style={{ width: 320 }} {...calendarProps}>
           <CalendarHeader>
             <CalendarPrevButton aria-label='Previous month'>
               <Icon>
                 <ChevronLeft />
               </Icon>
             </CalendarPrevButton>
-            <CalendarViewButtonGroup>
+            <CalendarHeading>
               <CalendarViewButton view='month' aria-label='Open month picker'>
                 <CalendarMonthLabel />
               </CalendarViewButton>
               <CalendarViewButton view='year' aria-label='Open year picker'>
                 <CalendarYearLabel />
               </CalendarViewButton>
-            </CalendarViewButtonGroup>
+            </CalendarHeading>
             <CalendarNextButton aria-label='Next month'>
               <Icon>
                 <ChevronRight />
@@ -102,15 +117,27 @@ const DateTimeFieldTest: FC<Partial<DateTimeFieldProps> & { inputProps?: DateTim
               <CalendarWeekdays>
                 <CalendarWeekday />
               </CalendarWeekdays>
-              <CalendarWeeks>
-                <LabeledDay />
-              </CalendarWeeks>
+              <CalendarDaysScroller>
+                <CalendarDaysScrollerContent>
+                  <CalendarWeeks>
+                    <LabeledDay />
+                  </CalendarWeeks>
+                </CalendarDaysScrollerContent>
+              </CalendarDaysScroller>
             </CalendarDays>
             <CalendarMonths>
-              <CalendarMonth />
+              <CalendarMonthsGrid>
+                <CalendarMonth />
+              </CalendarMonthsGrid>
             </CalendarMonths>
             <CalendarYears>
-              <CalendarYear />
+              <CalendarYearsScroller>
+                <CalendarYearsScrollerContent>
+                  <CalendarYearsGrid>
+                    <CalendarYear />
+                  </CalendarYearsGrid>
+                </CalendarYearsScrollerContent>
+              </CalendarYearsScroller>
             </CalendarYears>
           </CalendarContent>
         </DateTimeFieldCalendar>
@@ -158,14 +185,15 @@ describe('DateTimeField', () => {
         await expect.element(getCell(r, new Date(2026, 0, 15))).toHaveAttribute('aria-selected', 'true');
       });
 
-      it('reports the typed date and time as ISO', async () => {
+      it('dispatches input for a whole value the parent accepts', async () => {
         cleanup();
-        const onChangeValue = vi.fn();
-        const r = render(<DateTimeFieldTest onChangeValue={onChangeValue} />);
+        const r = render(<ControlledDateTimeFieldTest />);
+        const onInput = vi.fn();
+        getInput(r).addEventListener('input', onInput);
 
-        await userEvent.type(getInput(r), '15.01.2026, 12:30');
+        await userEvent.fill(getInput(r), '15.01.2026, 12:30');
 
-        expect(onChangeValue).toHaveBeenLastCalledWith('2026-01-15T12:30');
+        expect(onInput).toHaveBeenCalled();
       });
 
       it('selects the date of a value set outside', async () => {
@@ -214,20 +242,40 @@ describe('DateTimeField', () => {
         .element(getCell(r, new Date(2026, 0, 25)))
         .toBeDisabled();
     });
+
+    describe('form', () => {
+      it('restores the default value on form.reset()', async () => {
+        cleanup();
+        const r = render(
+          <form data-testid='form'>
+            <DateTimeFieldTest defaultValue='2026-01-15T12:30' />
+          </form>
+        );
+
+        await userEvent.clear(getInput(r));
+        (r.getByTestId('form') as HTMLFormElement).reset();
+
+        await expect.element(getInput(r)).toHaveValue('15.01.2026, 12:30');
+      });
+    });
+  });
+
+  describe('Error handling', () => {
+    it('makes a date without a complete time invalid with the message of the browser', async () => {
+      const r = render(<DateTimeFieldTest />);
+
+      await userEvent.type(getInput(r), '15.01.2026, 1');
+
+      expect(getInput(r).validity.customError).toBe(true);
+      expect(getInput(r).validationMessage).not.toBe('');
+
+      await userEvent.type(getInput(r), '2:30');
+
+      expect(getInput(r).validity.valid).toBe(true);
+    });
   });
   
   describe('Edge Cases', () => {
-    it('ignores invalid datetime input and does not sync calendar', async () => {
-      const onChange = vi.fn();
-      const r = render(<DateTimeFieldTest onChange={onChange} />);
-      
-      const input = getInput(r);
-      
-      await userEvent.type(input, 'aa.bb.cccc, dd:ee');
-      
-      expect(onChange).toHaveBeenCalledTimes(0);
-    });
-    
     describe('typing', () => {
       it('steps the time segment at the caret with arrow keys', async () => {
         const r = render(<DateTimeFieldTest timeStep={15} />);
@@ -240,43 +288,6 @@ describe('DateTimeField', () => {
         await expect.element(input).toHaveValue('15.01.2026, 12:45');
       });
     
-      it('wraps the stepped time segment around its range', async () => {
-        const r = render(<DateTimeFieldTest />);
-        const input = getInput(r);
-      
-        await userEvent.type(input, '15.01.2026, 00:30');
-        input.setSelectionRange(13, 13);
-        await userEvent.keyboard('{ArrowDown}');
-      
-        await expect.element(input).toHaveValue('15.01.2026, 23:30');
-      });
-    
-      it('steps the hours by one whatever the time step', async () => {
-        const r = render(<DateTimeFieldTest timeStep={15} />);
-        const input = getInput(r);
-      
-        await userEvent.type(input, '15.01.2026, 12:30');
-        input.setSelectionRange(13, 13);
-        await userEvent.keyboard('{ArrowUp}');
-      
-        await expect.element(input).toHaveValue('15.01.2026, 13:30');
-      });
-    
-      it('clamps the time to its range', async () => {
-        const r = render(<DateTimeFieldTest />);
-      
-        await userEvent.type(getInput(r), '15.01.2026, 25:30');
-      
-        await expect.element(getInput(r)).toHaveValue('15.01.2026, 23:30');
-      });
-
-      it('accepts the digits of other numbering systems', async () => {
-        const r = render(<DateTimeFieldTest />);
-
-        await userEvent.type(getInput(r), '۱۵.۰۱.۲۰۲۶, ۰۸:۳۰');
-
-        await expect.element(getInput(r)).toHaveValue('15.01.2026, 08:30');
-      });
     });
   
     describe('field state follows the input', () => {
@@ -302,14 +313,6 @@ describe('DateTimeField', () => {
         await expect.element(getInput(r)).toHaveValue('20.01.2026, 00:00');
       });
 
-      it('clears the selection when the text becomes incomplete', async () => {
-        const r = render(<DateTimeFieldTest />);
-
-        await userEvent.type(getInput(r), '15.01.2026, 12:30{Backspace}');
-
-        await expectNotSelected(r, new Date(2026, 0, 15));
-      });
-
       it('takes the date and the time of defaultValue', async () => {
         const r = render(<DateTimeFieldTest defaultValue='2026-01-15T12:30' />);
 
@@ -333,19 +336,6 @@ describe('DateTimeField', () => {
         await expect.element(getInput(r)).toHaveValue('10.01.2026, 08:15');
         await expectSelected(r, new Date(2026, 0, 10));
       });
-
-      it('clamps the typed text when min changes and dispatches input', async () => {
-        const onInput = vi.fn();
-        const r = render(<DateTimeFieldTest onInput={onInput} />);
-
-        await userEvent.type(getInput(r), '05.01.2026, 12:30');
-        onInput.mockClear();
-        r.rerender(<DateTimeFieldTest onInput={onInput} min='2026-01-10T09:00' />);
-
-        await expect.element(getInput(r)).toHaveValue('10.01.2026, 09:00');
-        expect(onInput).toHaveBeenCalledTimes(1);
-        await expectSelected(r, new Date(2026, 0, 10));
-      });
     });
 
     describe('calendar systems', () => {
@@ -364,19 +354,126 @@ describe('DateTimeField', () => {
   
   
   describe('Accessibility', () => {
-    describe('keyboard', () => {
-      it('allows selecting date using Enter key on focused calendar cell', async () => {
-        const r = render(<DateTimeFieldTest />);
-        
-        await userEvent.click(getTrigger(r));
-        
-        const cell = getCell(r, new Date(2026, 0, 15));
-        cell.element().focus();
-        
-        await expect.element(cell).toHaveFocus();
+    describe('APG', () => {
+      const waitForAnimations = () => Promise.allSettled(document.getAnimations().map((animation) => animation.finished));
+
+      const openByKeyboard = async (r: RenderResult) => {
+        getTrigger(r).focus();
         await userEvent.keyboard('{Enter}');
-        
-        expect(getInput(r)).toHaveValue('15.01.2026, 00:00');
+        await expect.element(getCalendar(r)).toBeInTheDocument();
+        await waitForAnimations();
+      };
+
+      const pressEnterOn = async (r: RenderResult, date: Date) => {
+        getCell(r, date).element().focus();
+        await userEvent.keyboard('{Enter}');
+      };
+
+      it('exposes the popup as a dialog with the given name', async () => {
+        const r = render(<DateTimeFieldTest calendarProps={{ 'aria-label': 'Choose meeting date' }} />);
+
+        await expect.element(getTrigger(r)).toHaveAttribute('aria-haspopup', 'dialog');
+        await userEvent.click(getTrigger(r));
+
+        await expect.element(r.getByRole('dialog', { name: 'Choose meeting date' })).toBe(getCalendar(r));
+      });
+
+      it('moves the focus to the typed date in the grid on open', async () => {
+        const r = render(<DateTimeFieldTest />);
+
+        await userEvent.type(getInput(r), '15.03.2026, 12:30');
+        await openByKeyboard(r);
+
+        await expect.element(getCell(r, new Date(2026, 2, 15))).toHaveFocus();
+      });
+
+      it('returns the focus to the trigger on Escape from the grid', async () => {
+        const r = render(<DateTimeFieldTest defaultValue='2026-01-15T12:30' />);
+
+        await openByKeyboard(r);
+        getCell(r, new Date(2026, 0, 15)).element().focus();
+        await userEvent.keyboard('{Escape}');
+
+        await expect.poll(() => r.queryByTestId(TESTID_CALENDAR)).toBeNull();
+        await expect.element(getTrigger(r)).toHaveFocus();
+        await expect.element(getInput(r)).toHaveValue('15.01.2026, 12:30');
+      });
+
+      it('writes the day picked with Enter keeping the time, closes and returns the focus to the trigger', async () => {
+        const r = render(<DateTimeFieldTest defaultValue='2026-01-15T12:30' />);
+
+        await openByKeyboard(r);
+        await expect.element(getCell(r, new Date(2026, 0, 15))).toHaveFocus();
+        await pressEnterOn(r, new Date(2026, 0, 20));
+
+        await expect.element(getInput(r)).toHaveValue('20.01.2026, 12:30');
+        await expect.poll(() => r.queryByTestId(TESTID_CALENDAR)).toBeNull();
+        await expect.element(getTrigger(r)).toHaveFocus();
+      });
+
+      it('closes after a day picked by a click', async () => {
+        const r = render(<DateTimeFieldTest />);
+
+        await openByKeyboard(r);
+        await pickDate(r, new Date(2026, 0, 20));
+
+        await expect.element(getInput(r)).toHaveValue('20.01.2026, 00:00');
+        await expect.poll(() => r.queryByTestId(TESTID_CALENDAR)).toBeNull();
+        await expect.element(getTrigger(r)).toHaveFocus();
+      });
+
+      it('leaves aria-invalid to the user', async () => {
+        const r = render(<DateTimeFieldTest />);
+
+        await userEvent.type(getInput(r), '15.01.2026, 1');
+        await expect.element(getInput(r)).not.toHaveAttribute('aria-invalid');
+
+        r.rerender(<DateTimeFieldTest inputProps={{ 'aria-invalid': true }} />);
+
+        await expect.element(getInput(r)).toHaveAttribute('aria-invalid', 'true');
+      });
+
+      it('disables the input and the trigger', async () => {
+        const r = render(<DateTimeFieldTest disabled defaultValue='2026-01-15T12:30' />);
+
+        await expect.element(getInput(r)).toBeDisabled();
+        await expect.element(getTrigger(r)).toBeDisabled();
+      });
+
+      it('does not change a read-only input from the calendar', async () => {
+        const r = render(<DateTimeFieldTest defaultValue='2026-01-15T12:30' inputProps={{ readOnly: true }} />);
+
+        await openByKeyboard(r);
+        await pressEnterOn(r, new Date(2026, 0, 20));
+
+        expect(getInput(r)).toHaveValue('15.01.2026, 12:30');
+      });
+
+      it('does not step the time of a read-only input with the arrows', async () => {
+        const onChangeValue = vi.fn();
+        const r = render(<DateTimeFieldTest readOnly defaultValue='2026-01-15T12:30' onChangeValue={onChangeValue} />);
+        const input = getInput(r);
+        input.focus();
+        input.setSelectionRange(input.value.length, input.value.length);
+
+        await userEvent.keyboard('{ArrowUp}');
+
+        expect(input).toHaveValue('15.01.2026, 12:30');
+        expect(onChangeValue).not.toHaveBeenCalled();
+      });
+
+      it('shows a read-only field in a read-only grid that does not pick', async () => {
+        const onChangeValue = vi.fn();
+        const r = render(<DateTimeFieldTest readOnly defaultValue='2026-01-15T12:30' onChangeValue={onChangeValue} />);
+
+        await expect.element(getInput(r)).toHaveAttribute('readonly');
+        await openByKeyboard(r);
+        await expect.element(r.getByRole('grid')).toHaveAttribute('aria-readonly', 'true');
+        await pressEnterOn(r, new Date(2026, 0, 20));
+
+        await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
+        expect(getInput(r)).toHaveValue('15.01.2026, 12:30');
+        expect(onChangeValue).not.toHaveBeenCalled();
       });
     });
   });

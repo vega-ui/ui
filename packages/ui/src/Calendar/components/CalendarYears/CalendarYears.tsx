@@ -1,88 +1,50 @@
-import { FC, HTMLAttributes, KeyboardEvent, ReactNode } from 'react';
-import {
-  YearPicker,
-  YearPickerScroller,
-  YearPickerScrollerContent,
-  YearPickerScrollerLayout,
-} from '../../../YearPicker';
-import { useCalendarBaseContext } from '../../../CalendarBase';
-import { useCalendarContext } from '../../contexts';
+import { FC, HTMLAttributes, ReactNode, Ref } from 'react';
+import { useMergeRefs } from '@vega-ui/hooks';
+import { csx } from '@vega-ui/utils';
+import { YearPicker } from '../../../YearPicker';
+import { useSnapshot } from '../../../internals/widget';
+import { useCalendarInternalContext, useCalendarPartsContext } from '../../contexts';
+import { YEARS } from '@vega-ui/widgets/calendar';
 import style from './style.module.css'
-import { csx, mergeEventHandlers } from '@vega-ui/utils';
-import { getCalendarYearStart } from '@vega-ui/i18n';
 
-export interface CalendarYearsProps extends HTMLAttributes<HTMLDivElement> {
+export interface CalendarYearsProps extends Omit<HTMLAttributes<HTMLDivElement>, 'defaultValue'> {
   /**
-   * Template of a year cell, rendered once for every year of the visible pages.
-   * Read the year with `useCalendarYearContext()`; usually `<CalendarYear />`.
+   * Ref to the year grid element.
+   */
+  ref?: Ref<HTMLDivElement>
+
+  /**
+   * Content of the year grid: `CalendarYearsGrid`, or `CalendarYearsScroller`
+   * with pages of it.
    */
   children: ReactNode
-
-  /**
-   * Format of the years (`Intl.DateTimeFormat` `year`).
-   * @default "numeric"
-   */
-  format?: Intl.DateTimeFormatOptions['year']
 }
 
 /**
  * `CalendarYears` is the year view of `Calendar`: pages of years, swipeable,
  * in the calendar system of the `Calendar` (an era change gives two years).
- * Picking a year shows the same month of it; Escape goes back to the days.
+ * It is mounted while the year view is open and until its exit transition
+ * ends. Picking a year shows the same month of it; Escape goes back to the days.
  */
-export const CalendarYears: FC<CalendarYearsProps> = ({ children, format, className, onKeyDown: _onKeyDown, ...props }) => {
-  const {
-    from,
-    to,
-    view,
-    month,
-    calendar,
-    locale,
-    yearPickerApiRef,
-    scrollerYearApiRef,
-    closeView,
-    changeYear,
-    disabled,
-  } = useCalendarContext()
-  const { size, variant } = useCalendarBaseContext()
+export const CalendarYears: FC<CalendarYearsProps> = ({ children, className, ref, ...props }) => {
+  const { years } = useCalendarPartsContext()
+  const { handle, widget, view } = useCalendarInternalContext()
+  const open = view === 'year'
+  const mounted = useSnapshot(handle, (state) => widget.mountedOf(state, 'year'))
+  const rootRef = useMergeRefs([handle.part(YEARS), ref])
 
-  const year = getCalendarYearStart(calendar, month)
-
-  const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (event.key !== 'Escape') return
-
-    event.stopPropagation()
-    closeView?.()
-  }
+  if (!mounted) return null
 
   return (
     <YearPicker
-      selection='single'
-      data-visible={view === 'year'}
-      selected={year}
-      defaultActive={year}
-      year={year}
-      calendar={calendar}
-      locale={locale}
-      variant={variant}
-      size={size}
-      inert={view !== 'year'}
-      from={from && getCalendarYearStart(calendar, from)}
-      to={to && getCalendarYearStart(calendar, to)}
+      {...years}
+      ref={rootRef}
+      data-visible={open}
+      inert={!open}
       className={csx(style.picker, className)}
-      apiRef={yearPickerApiRef}
-      onKeyDown={mergeEventHandlers(onKeyDown, _onKeyDown)}
-      disabled={disabled ? () => true : undefined}
-      onSelectCell={changeYear}
       {...props}
     >
-      <YearPickerScroller apiRef={scrollerYearApiRef} inert={disabled}>
-        <YearPickerScrollerContent>
-          <YearPickerScrollerLayout format={format}>
-            {children}
-          </YearPickerScrollerLayout>
-        </YearPickerScrollerContent>
-      </YearPickerScroller>
+      {children}
     </YearPicker>
   )
 }

@@ -19,6 +19,63 @@
             overlay var(--duration-exit) allow-discrete;
 }
 
+.content:where([data-side]) {
+    position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
+    position-visibility: always;
+}
+
+.content:where([data-side='top']) {
+    position-area: top;
+    margin-bottom: var(--spacing-5);
+}
+
+.content:where([data-side='bottom']) {
+    position-area: bottom;
+    margin-top: var(--spacing-5);
+}
+
+.content:where([data-side='left']) {
+    position-area: left;
+    margin-right: var(--spacing-5);
+}
+
+.content:where([data-side='right']) {
+    position-area: right;
+    margin-left: var(--spacing-5);
+}
+
+.content:where([data-side='top'][data-align='start']) {
+    position-area: top span-self-x-end;
+}
+
+.content:where([data-side='top'][data-align='end']) {
+    position-area: top span-self-x-start;
+}
+
+.content:where([data-side='bottom'][data-align='start']) {
+    position-area: bottom span-self-x-end;
+}
+
+.content:where([data-side='bottom'][data-align='end']) {
+    position-area: bottom span-self-x-start;
+}
+
+.content:where([data-side='left'][data-align='start']) {
+    position-area: left span-bottom;
+}
+
+.content:where([data-side='left'][data-align='end']) {
+    position-area: left span-top;
+}
+
+.content:where([data-side='right'][data-align='start']) {
+    position-area: right span-bottom;
+}
+
+.content:where([data-side='right'][data-align='end']) {
+    position-area: right span-top;
+}
+
 .content:where([data-shadowed='true']) {
     box-shadow: var(--surface-shadow);
 }

@@ -1,5 +1,4 @@
-import { FC, SelectHTMLAttributes } from 'react';
-import { mergeEventHandlers } from '@vega-ui/utils';
+import { FC, FocusEvent, SelectHTMLAttributes } from 'react';
 import { VisuallyHidden } from '../../../VisuallyHidden';
 import { useSelectContext } from '../../contexts';
 
@@ -15,13 +14,18 @@ export const SelectHiddenSelect: FC<SelectHiddenSelectProps> = ({ onFocus: _onFo
   const { selected, disabled, focusCombobox } = useSelectContext()
   const value = selected ?? ''
 
+  const onFocus = (event: FocusEvent<HTMLSelectElement>) => {
+    _onFocus?.(event)
+    if (!event.defaultPrevented) focusCombobox?.()
+  }
+
   return (
     <VisuallyHidden>
       <select
         value={value}
         disabled={disabled}
         onChange={() => {}}
-        onFocus={mergeEventHandlers(focusCombobox, _onFocus)}
+        onFocus={onFocus}
         aria-hidden='true'
         tabIndex={-1}
         {...props}

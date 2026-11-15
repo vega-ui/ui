@@ -6,6 +6,7 @@ import { useSliderContext } from '../../contexts';
 import style from './style.module.css'
 
 export interface SliderTrackProps extends HTMLAttributes<HTMLDivElement> {
+  /** Ref to the track element. */
   ref?: Ref<HTMLDivElement>
 }
 

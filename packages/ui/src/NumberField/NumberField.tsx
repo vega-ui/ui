@@ -1,19 +1,13 @@
 'use client';
 
-import {
-  FC,
-  Ref, useEffect,
-  useRef,
-  KeyboardEvent,
-  useCallback, useMemo, useState,
-} from 'react';
+import { FC, Ref } from 'react';
+import { createInput } from '@vega-ui/core';
+import { useSnapshot, useWidget, widgetEnvironment } from '../internals/widget';
 import { TextField, TextFieldProps } from '../TextField';
 import style from './style.module.css'
-import { addWithPrecision, clamp, csx, mergeEventHandlers, mergeRefs, writeInputValue } from '@vega-ui/utils';
-import { useControlledState, useEventCallback, useFormReset } from '@vega-ui/hooks';
-import { formatNumberValue, getNumberMaskOptions, getNumberValue } from './helpers';
-import { useMaskito } from '@maskito/react';
+import { csx } from '@vega-ui/utils';
 import { NumberFieldProvider } from './contexts';
+import { DECREMENT, INCREMENT, isMaxOf, isMinOf, numberFieldWidget } from '@vega-ui/widgets/number-field';
 
 export interface NumberFieldProps extends Omit<TextFieldProps, 'defaultValue'> {
   /**
@@ -51,12 +45,6 @@ export interface NumberFieldProps extends Omit<TextFieldProps, 'defaultValue'> {
    * Ref forwarded to the element.
    */
   ref?: Ref<HTMLDivElement>
-
-  /**
-   * Number of decimal places to round the input value to.
-   * Useful for financial or scientific precision.
-   */
-  precision?: number
 
   /**
    * Enables changing the value with the mouse wheel when focused.
@@ -98,128 +86,36 @@ export const NumberField: FC<NumberFieldProps> = ({
   min = Number.MIN_SAFE_INTEGER,
   max = Number.MAX_SAFE_INTEGER,
   step = 1,
-  precision = 0,
   allowEmpty = true,
   changeOnWheel = true,
   maximumFractionDigits = 2,
   children,
   ref,
-  onKeyDown: _onKeyDown,
   value: controlledValue,
   defaultValue = NaN,
   onChangeValue,
   ...props
 }) => {
-  const [number, setNumber] = useControlledState(controlledValue, defaultValue, onChangeValue)
-  const [text, setText] = useState('')
-  const isMin = Number.isFinite(number) && number <= min
-  const isMax = Number.isFinite(number) && number >= max
-
-  const maskitoOptions = useMemo(() => getNumberMaskOptions({
-    max,
+  const handle = useWidget(numberFieldWidget, {
     min,
-    minusSign: '-',
-    precision,
-    allowEmpty,
+    max,
+    step,
     maximumFractionDigits,
-  }), [max, min, precision, allowEmpty, maximumFractionDigits])
+    allowEmpty,
+    changeOnWheel,
+    value: controlledValue,
+    defaultValue,
+    onChangeValue,
+  }, widgetEnvironment)
+  const isMin = useSnapshot(handle, isMinOf)
+  const isMax = useSnapshot(handle, isMaxOf)
 
-  const innerInputRef = useRef<HTMLInputElement>(null)
-  const wrapperRef = useRef<HTMLDivElement>(null)
-  
-  const inputRef = useMaskito({
-    options: maskitoOptions
-  })
-
-  const shownText = Object.is(getNumberValue(text), number) ? text : formatNumberValue(number, maskitoOptions)
-
-  const changeText = (value: string) => {
-    setText(value)
-
-    const nextNumber = getNumberValue(value)
-    if (!Object.is(nextNumber, number)) setNumber(nextNumber)
-  }
-
-  useFormReset(innerInputRef, () => {
-    if (controlledValue !== undefined) return
-
-    setText(formatNumberValue(defaultValue, maskitoOptions))
-    setNumber(defaultValue)
-  })
-  
-  const changeValue = useCallback((value: number) => {
-    const input = innerInputRef.current
-    if (!input) return
-    
-    const currentValue = input.value
-    if (currentValue === String(value)) return;
-    
-    writeInputValue(input, String(value))
-  }, [])
-
-  const increment = useCallback(() => {
-    const input = innerInputRef.current
-    if (!input) return
-    
-    const value = input.value
-    
-    if (value === '' || value === undefined) {
-      const v = min !== Number.MIN_SAFE_INTEGER ? min : 0
-      changeValue(v)
-      return
-    }
-
-    const nextValue = clamp(min, addWithPrecision(getNumberValue(value), step), max);
-    changeValue(nextValue)
-  }, [max, min, step, changeValue])
-
-  const decrement = useCallback(() => {
-    const input = innerInputRef.current
-    if (!input) return
-    
-    const value = input.value
-    
-    if (value === '' || value === undefined) {
-      const v = min !== Number.MIN_SAFE_INTEGER ? min : 0
-      changeValue(v)
-      return
-    }
-
-    const nextValue = clamp(min, addWithPrecision(getNumberValue(value), -step), max);
-    changeValue(nextValue)
-  }, [min, max, step, changeValue])
-
-  const onKeyDown = (e: KeyboardEvent) => {
-    if (e.key === 'ArrowUp') {
-      e.preventDefault()
-      increment()
-    }
-
-    if (e.key === 'ArrowDown') {
-      e.preventDefault()
-      decrement()
-    }
-  }
-  
-  const onWheel = useEventCallback((e: WheelEvent) => {
-    if (e.target !== document.activeElement) return
-
-    e.preventDefault()
-
-    if (e.deltaY < 0) increment()
-    else decrement()
-  })
-
-  useEffect(() => {
-    const elem = wrapperRef.current
-    if (!elem || !changeOnWheel) return
-
-    elem.addEventListener('wheel', onWheel)
-    return () => elem.removeEventListener('wheel', onWheel)
-  }, [onWheel, changeOnWheel]);
+  const increment = () => handle.send(createInput(INCREMENT))
+  const decrement = () => handle.send(createInput(DECREMENT))
 
   return (
     <NumberFieldProvider
+      handle={handle}
       size={size}
       isMax={isMax}
       isMin={isMin}
@@ -227,16 +123,12 @@ export const NumberField: FC<NumberFieldProps> = ({
       min={min}
       increment={increment}
       decrement={decrement}
-      text={shownText}
-      changeText={changeText}
       disabled={disabled}
-      inputRef={mergeRefs([inputRef, innerInputRef])}
     >
       <TextField
-        ref={mergeRefs([ref, wrapperRef])}
+        ref={ref}
         size={size}
         className={csx(style.numberTextField, className)}
-        onKeyDown={mergeEventHandlers(onKeyDown, _onKeyDown)}
         {...props}
       >
         {children}

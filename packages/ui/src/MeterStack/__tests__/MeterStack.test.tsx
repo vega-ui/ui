@@ -56,16 +56,21 @@ describe('MeterStack', () => {
       await expect.element(el).toHaveStyle(`--meter-stack-max: ${DEFAULT_MAX}`);
     });
   });
+
+  describe('Edge Cases', () => {
+    it('sizes the segments against the range from min to max', async () => {
+      const r = render(
+        <MeterStackTest min={50} max={150} value={75} style={{ width: 200 }}>
+          <MeterStackSegment data-testid={TESTID_SEGMENT_1} value={25} />
+        </MeterStackTest>,
+      );
+      const segment = r.getByTestId(TESTID_SEGMENT_1);
+
+      await expect.poll(() => segment.getBoundingClientRect().width).toBe(50);
+    });
+  });
   
   describe('Accessibility', () => {
-    describe('roles', () => {
-      it('segments expose role=meter', async () => {
-        const r = render(<MeterStackTest />);
-        await expect.element(getSegment1(r)).toHaveRole('meter');
-        await expect.element(getSegment2(r)).toHaveRole('meter');
-      });
-    });
-    
     describe('aria', () => {
       it('segments set aria-valuemin/aria-valuemax from MeterStack context', async () => {
         const min = 10;

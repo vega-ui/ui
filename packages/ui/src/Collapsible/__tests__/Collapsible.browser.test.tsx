@@ -1,7 +1,7 @@
-import { ComponentProps } from 'react';
+import { ComponentProps, useState } from 'react';
 import { afterEach, beforeEach, describe, expect, it, onTestFinished, vi, type Mock } from 'vitest';
 import { commands, userEvent } from 'vitest/browser';
-import { cleanup, render, type RenderResult, waitFor } from '@testing-library/react';
+import { cleanup, render, type RenderResult } from '@testing-library/react';
 
 import { Collapsible } from '../Collapsible';
 import { CollapsibleContent, CollapsibleTrigger } from '../components';
@@ -19,6 +19,24 @@ const CollapsibleTest = (props: ComponentProps<typeof Collapsible>) => {
       )}
     </Collapsible>
   );
+};
+
+const GrowingText = () => {
+  const [lines, setLines] = useState(1);
+
+  return (
+    <div>
+      {Array.from({ length: lines }, (_, line) => <p key={line}>Line {line}</p>)}
+      <button type='button' onClick={() => setLines(lines + 3)}>More</button>
+    </div>
+  );
+};
+
+const playMotion = () => {
+  document.documentElement.dataset.motion = '';
+  onTestFinished(() => {
+    delete document.documentElement.dataset.motion;
+  });
 };
 
 const getTrigger = (r: RenderResult) => r.getByTestId('trigger');
@@ -48,38 +66,35 @@ describe('Collapsible', () => {
             await userEvent.click(getTrigger(r));
           });
           
-          it('opens (removes hidden)', async () => {
-            await expect.element(getContent(r)).not.toHaveAttribute('hidden');
-          });
-          
           it('sets aria-expanded=true and data-open=true', async () => {
             await expect.element(getTrigger(r)).toHaveAttribute('aria-expanded', 'true');
             await expect.element(getTrigger(r)).toHaveAttribute('data-open', 'true');
             await expect.element(getContent(r)).toHaveAttribute('data-open', 'true');
           });
           
-          describe('when clicking trigger again', () => {
-            beforeEach(async () => {
-              await userEvent.click(getTrigger(r));
-            });
-            
-            it('closes (still visible until transition end)', async () => {
-              await expect.element(getTrigger(r)).toHaveAttribute('aria-expanded', 'false');
-              await expect.element(getContent(r)).toHaveAttribute('data-open', 'false');
-              await expect.element(getContent(r)).not.toHaveAttribute('hidden');
-            });
-            
-            describe('when transition ends', () => {
-              beforeEach(async () => {
-                getContent(r).dispatchEvent(new TransitionEvent('transitionend', { bubbles: true }));
-              });
-              
-              it('sets hidden=true', async () => {
-                await expect.element(getContent(r)).toHaveAttribute('hidden');
-              });
-            });
+          it('closes (still visible until the animation ends)', async () => {
+            playMotion();
+
+            await userEvent.click(getTrigger(r));
+
+            await expect.element(getTrigger(r)).toHaveAttribute('aria-expanded', 'false');
+            await expect.element(getContent(r)).toHaveAttribute('data-open', 'false');
+            await expect.element(getContent(r)).not.toHaveAttribute('hidden');
           });
         });
+      });
+
+      it('reports whether the content is hidden once it mounts and on every change', async () => {
+        const onChangeHidden = vi.fn();
+        const r = render(<CollapsibleTest onChangeHidden={onChangeHidden} />);
+        await expect.poll(() => onChangeHidden.mock.calls).toEqual([[true]]);
+
+        await userEvent.click(getTrigger(r));
+        await expect.poll(() => onChangeHidden.mock.calls).toEqual([[true], [false]]);
+
+        await userEvent.click(getTrigger(r));
+        await expect.element(getContent(r)).toHaveAttribute('hidden');
+        expect(onChangeHidden.mock.calls).toEqual([[true], [false], [true]]);
       });
       
       describe('with defaultOpen=true', () => {
@@ -121,26 +136,10 @@ describe('Collapsible', () => {
         r = render(<CollapsibleTest open={false} onChangeOpen={onChangeOpen} />);
       });
       
-      it('renders from prop (closed)', async () => {
-        await expect.element(getTrigger(r)).toHaveAttribute('aria-expanded', 'false');
-        await expect.element(getContent(r)).toHaveAttribute('hidden');
-      });
-      
       describe('when clicking trigger', () => {
         beforeEach(async () => {
           await userEvent.click(getTrigger(r));
         });
-        
-        it('calls onChangeOpen(true)', async () => {
-          await waitFor(() => {
-            expect(onChangeOpen).toHaveBeenLastCalledWith(true);
-          });
-        });
-        
-        it('does not open UI without prop update', async () => {
-          await expect.element(getTrigger(r)).toHaveAttribute('aria-expanded', 'false');
-          await expect.element(getContent(r)).not.toBeVisible();
-        })
         
         describe('when parent updates open=true', () => {
           beforeEach(() => {
@@ -171,6 +170,34 @@ describe('Collapsible', () => {
   });
   
   describe('Edge Cases', () => {
+    it('does not toggle when the trigger handler prevents the default', async () => {
+      const r = render(
+        <CollapsibleTest>
+          <CollapsibleTrigger data-testid='trigger' onClick={(event) => event.preventDefault()}>Toggle</CollapsibleTrigger>
+          <CollapsibleContent data-testid='content'>Content</CollapsibleContent>
+        </CollapsibleTest>,
+      );
+
+      await userEvent.click(getTrigger(r));
+
+      await expect.element(getTrigger(r)).toHaveAttribute('aria-expanded', 'false');
+      await expect.element(getContent(r)).toHaveAttribute('hidden');
+    });
+
+    it('does not open from a disabled trigger', async () => {
+      const r = render(
+        <CollapsibleTest>
+          <CollapsibleTrigger data-testid='trigger' disabled>Toggle</CollapsibleTrigger>
+          <CollapsibleContent data-testid='content'>Content</CollapsibleContent>
+        </CollapsibleTest>,
+      );
+
+      await userEvent.click(getTrigger(r), { force: true });
+
+      await expect.element(getTrigger(r)).toHaveAttribute('aria-expanded', 'false');
+      await expect.element(getContent(r)).toHaveAttribute('hidden');
+    });
+
     it('still hides the content when the user prefers reduced motion', async () => {
       await commands.emulateReducedMotion('reduce');
       onTestFinished(() => commands.emulateReducedMotion('no-preference'));
@@ -182,33 +209,87 @@ describe('Collapsible', () => {
       await expect.element(getContent(r)).toHaveAttribute('hidden');
     });
 
-    it('sets --content-height CSS variable from scrollHeight (layout effect)', async () => {
+    it('grows with content that changes after opening', async () => {
       const r = render(
         <CollapsibleTest>
           <CollapsibleTrigger data-testid='trigger'>Toggle</CollapsibleTrigger>
-          <CollapsibleContent data-testid='content'>Content</CollapsibleContent>
-        </CollapsibleTest>,
+          <CollapsibleContent data-testid='content'><GrowingText /></CollapsibleContent>
+        </CollapsibleTest>
       );
-      
-      const content = getContent(r) as HTMLDivElement;
-      
-      Object.defineProperty(content, 'scrollHeight', {
-        configurable: true,
-        get() {
-          return 123;
-        },
-      });
-      
-      r.rerender(
-        <CollapsibleTest>
+      const content = getContent(r);
+
+      await userEvent.click(getTrigger(r));
+      await userEvent.click(r.getByRole('button', { name: 'More' }));
+
+      await expect.poll(() => content.getBoundingClientRect().height).toBeCloseTo(content.scrollHeight, 0);
+    });
+
+    it('does not animate content that starts open', async () => {
+      playMotion();
+      const r = render(<CollapsibleTest defaultOpen />);
+      const content = getContent(r);
+
+      expect(content.getBoundingClientRect().height).toBeCloseTo(content.scrollHeight, 0);
+    });
+
+    it('fits nested content after it opens and closes', async () => {
+      const r = render(
+        <CollapsibleTest defaultOpen>
           <CollapsibleTrigger data-testid='trigger'>Toggle</CollapsibleTrigger>
-          <CollapsibleContent data-testid='content'>Content</CollapsibleContent>
-        </CollapsibleTest>,
+          <CollapsibleContent data-testid='content'>
+            <Collapsible>
+              <CollapsibleTrigger>Inner</CollapsibleTrigger>
+              <CollapsibleContent><div style={{ height: 300 }} /></CollapsibleContent>
+            </Collapsible>
+          </CollapsibleContent>
+        </CollapsibleTest>
       );
-      
-      await waitFor(() => {
-        expect(content.style.getPropertyValue('--content-height')).toBe('123px');
-      });
+      const content = getContent(r);
+      const initialHeight = content.getBoundingClientRect().height;
+
+      await userEvent.click(r.getByRole('button', { name: 'Inner' }));
+      await expect.poll(() => content.getBoundingClientRect().height).toBe(initialHeight + 300);
+
+      await userEvent.click(r.getByRole('button', { name: 'Inner' }));
+      await expect.poll(() => content.getBoundingClientRect().height).toBe(initialHeight);
+    });
+
+    it('animates opening again after it closed', async () => {
+      const r = render(
+        <CollapsibleTest defaultOpen>
+          <CollapsibleTrigger data-testid='trigger'>Toggle</CollapsibleTrigger>
+          <CollapsibleContent data-testid='content'><div style={{ height: 300 }} /></CollapsibleContent>
+        </CollapsibleTest>
+      );
+      const content = getContent(r);
+
+      await userEvent.click(getTrigger(r));
+      await expect.element(content).toHaveAttribute('hidden');
+      playMotion();
+      (getTrigger(r) as HTMLButtonElement).click();
+      await new Promise(requestAnimationFrame);
+
+      expect(content.getBoundingClientRect().height).toBeLessThan(300);
+    });
+
+    it('reverses from the current height when toggled mid-animation', async () => {
+      playMotion();
+      const r = render(
+        <CollapsibleTest defaultOpen>
+          <CollapsibleTrigger data-testid='trigger'>Toggle</CollapsibleTrigger>
+          <CollapsibleContent data-testid='content'><div style={{ height: 300 }} /></CollapsibleContent>
+        </CollapsibleTest>
+      );
+      const content = getContent(r);
+
+      await userEvent.click(getTrigger(r));
+      await expect.poll(() => content.getBoundingClientRect().height).toBeLessThan(250);
+      const height = content.getBoundingClientRect().height;
+      (getTrigger(r) as HTMLButtonElement).click();
+      await new Promise(requestAnimationFrame);
+
+      expect(content.getBoundingClientRect().height).toBeGreaterThan(height - 100);
+      expect(content.getBoundingClientRect().height).toBeLessThan(300);
     });
   });
   

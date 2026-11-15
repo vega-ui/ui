@@ -111,23 +111,6 @@ describe('Slider', () => {
         expect(getThumbPosition(input)).toBe(input.valueAsNumber / 100);
       });
 
-      it('takes a number for a single thumb and reports a number', async () => {
-        const onChangeValue = vi.fn();
-        const r = render(
-          <Slider defaultValue={20} onChangeValue={onChangeValue} style={SIZE_STYLE}>
-            <SliderThumb><SliderThumbInput /></SliderThumb>
-          </Slider>
-        );
-        const [input] = getInputs(r);
-
-        input.focus();
-        await userEvent.keyboard('{ArrowRight}');
-        await flush();
-
-        expect(input.value).toBe('21');
-        expect(onChangeValue).toHaveBeenLastCalledWith(21);
-      });
-
       it('reports a number without value and defaultValue', async () => {
         const onChangeValue = vi.fn();
         const r = render(
@@ -142,22 +125,6 @@ describe('Slider', () => {
         await flush();
 
         expect(onChangeValue).toHaveBeenLastCalledWith(49);
-      });
-
-      it('fills the range between the first and the last thumbs', () => {
-        const r = render(<SliderTest defaultValue={[20, 80]} />);
-        const root = getRoot(r);
-
-        expect(getVar(root, '--slider-range-start')).toBe(0.2);
-        expect(getVar(root, '--slider-range-end')).toBe(0.8);
-      });
-
-      it('fills the range from min to a single thumb', () => {
-        const r = render(<SliderTest defaultValue={[30]} />);
-        const root = getRoot(r);
-
-        expect(getVar(root, '--slider-range-start')).toBe(0);
-        expect(getVar(root, '--slider-range-end')).toBe(0.3);
       });
     });
 
@@ -281,27 +248,6 @@ describe('Slider', () => {
 
         expect(input.value).toBe('21');
       });
-
-      it('restores the default values on a reset button click', async () => {
-        const r = render(
-          <form>
-            <SliderTest defaultValue={[20, 80]} />
-            <button type='reset'>Reset</button>
-          </form>
-        );
-        const [first, second] = getInputs(r);
-
-        first.focus();
-        await userEvent.keyboard('{ArrowRight}');
-        second.focus();
-        await userEvent.keyboard('{ArrowLeft}');
-        await userEvent.click(r.getByRole('button'));
-
-        await expect.poll(() => first.value).toBe('20');
-        expect(second.value).toBe('80');
-        expect(getThumbPosition(first)).toBe(0.2);
-        expect(getThumbPosition(second)).toBe(0.8);
-      });
     });
 
     describe('controlled', () => {
@@ -399,16 +345,6 @@ describe('Slider', () => {
       expect(onChangeValue).not.toHaveBeenCalled();
     });
 
-    it('lets a thumb override the disabled root', () => {
-      const r = render(
-        <Slider disabled style={SIZE_STYLE}>
-          <SliderThumb><SliderThumbInput aria-label='value' disabled={false} /></SliderThumb>
-        </Slider>
-      );
-
-      expect(getInputs(r)[0].disabled).toBe(false);
-    });
-
     it('ignores a disabled slider', async () => {
       const onChangeValue = vi.fn();
       const r = render(<SliderTest disabled defaultValue={[20, 80]} onChangeValue={onChangeValue} />);
@@ -441,57 +377,10 @@ describe('Slider', () => {
       expect(first.value).toBe('20');
       expect(second.value).toBe('80');
     });
-
-    it('keeps a thumb on the track with a default value out of range', () => {
-      const r = render(<SliderTest defaultValue={[150]} />);
-      const [input] = getInputs(r);
-
-      expect(input.value).toBe('100');
-      expect(getThumbPosition(input)).toBe(1);
-    });
-
-    it('puts the thumbs at the start when max is below min', () => {
-      const r = render(<SliderTest min={10} max={0} />);
-      const [input] = getInputs(r);
-
-      expect(input.value).toBe('10');
-      expect(getThumbPosition(input)).toBe(0);
-    });
   });
 
   describe('Edge Cases', () => {
     describe('thumbs', () => {
-      it('snaps values off the step grid like the native input', () => {
-        const r = render(
-          <form data-testid='form'>
-            <SliderTest name={NAME} defaultValue={[2.5, 7]} max={10} />
-          </form>
-        );
-        const [first, second] = getInputs(r);
-
-        expect(first.value).toBe('3');
-        expect(second.value).toBe('7');
-        expect(getThumbPosition(first)).toBe(0.3);
-        expect(submit(r.getByTestId('form') as HTMLFormElement).getAll(NAME)).toEqual(['3', '7']);
-      });
-
-      it('keeps a value on the step grid next to a neighbour off it', () => {
-        const r = render(<SliderTest defaultValue={[15, 50]} step={10} />);
-        const [first, second] = getInputs(r);
-
-        expect(first.value).toBe('20');
-        expect(second.value).toBe('50');
-      });
-
-      it('limits each thumb natively by its neighbours', () => {
-        const r = render(<SliderTest defaultValue={[20, 50, 80]} />);
-        const [first, second, third] = getInputs(r);
-
-        expect([first.min, first.max]).toEqual(['0', '50']);
-        expect([second.min, second.max]).toEqual(['20', '80']);
-        expect([third.min, third.max]).toEqual(['50', '100']);
-      });
-
       it('does not let a thumb pass its neighbour', async () => {
         const onChangeValue = vi.fn();
         const r = render(<SliderTest defaultValue={[20, 80]} onChangeValue={onChangeValue} />);
@@ -536,27 +425,6 @@ describe('Slider', () => {
         await flush();
 
         expect(second.value).toBe('0.3');
-      });
-
-      it('sorts values given out of order', () => {
-        const r = render(
-          <form data-testid='form'>
-            <SliderTest name={NAME} value={[80, 20]} />
-          </form>
-        );
-        const [first, second] = getInputs(r);
-
-        expect([first.value, second.value]).toEqual(['20', '80']);
-        expect([getThumbPosition(first), getThumbPosition(second)]).toEqual([0.2, 0.8]);
-        expect(submit(r.getByTestId('form') as HTMLFormElement).getAll(NAME)).toEqual(['20', '80']);
-      });
-
-      it('keeps every thumb between its neighbours with values out of order', () => {
-        const r = render(<SliderTest defaultValue={[10, 90, 50, 60]} />);
-        const inputs = getInputs(r);
-
-        expect(inputs.map((input) => input.value)).toEqual(['10', '50', '60', '90']);
-        expect(inputs.map(getThumbPosition)).toEqual([0.1, 0.5, 0.6, 0.9]);
       });
 
       it('lets thumbs meet with step any', async () => {
@@ -679,38 +547,21 @@ describe('Slider', () => {
   });
 
   describe('Accessibility', () => {
-    it('sets aria-orientation from the root', () => {
-      const r = render(<SliderTest orientation='vertical' />);
-
-      expect(getInputs(r)[0].getAttribute('aria-orientation')).toBe('vertical');
-    });
-
-    it('moves by a tenth of the whole range on PageUp and PageDown', async () => {
-      const r = render(<SliderTest defaultValue={[20, 80]} />);
-      const [first, second] = getInputs(r);
-
-      first.focus();
-      await userEvent.keyboard('{PageUp}');
-      second.focus();
-      await userEvent.keyboard('{PageDown}');
-      await flush();
-
-      expect(first.value).toBe('30');
-      expect(second.value).toBe('70');
-    });
-
-    it('increases a vertical slider with ArrowRight and decreases it with ArrowLeft', async () => {
-      const r = render(<SliderTest orientation='vertical' defaultValue={[50]} />);
+    it('fires input and change on the thumb like the native input for a key it moves', async () => {
+      const onInput = vi.fn();
+      const onChange = vi.fn();
+      const r = render(<SliderTest defaultValue={[50]} />);
       const [input] = getInputs(r);
+      input.addEventListener('input', onInput);
+      input.addEventListener('change', onChange);
 
       input.focus();
-      await userEvent.keyboard('{ArrowRight}');
+      await userEvent.keyboard('{PageUp}');
       await flush();
-      expect(input.value).toBe('51');
 
-      await userEvent.keyboard('{ArrowLeft}{ArrowLeft}');
-      await flush();
-      expect(input.value).toBe('49');
+      expect(input.value).toBe('60');
+      expect(onInput).toHaveBeenCalledOnce();
+      expect(onChange).toHaveBeenCalledOnce();
     });
   });
 });

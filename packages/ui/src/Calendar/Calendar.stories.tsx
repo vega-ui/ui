@@ -6,24 +6,30 @@ import {
   CalendarContent,
   CalendarDays,
   CalendarHeader,
+  CalendarHeading,
   CalendarMonthLabel,
   CalendarMonthLabelProps,
   CalendarMonth,
   CalendarMonths,
-  CalendarMonthsProps,
+  CalendarMonthsGrid,
+  CalendarMonthsGridProps,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
   CalendarWeekdays, CalendarWeekday,
   CalendarWeekdaysProps,
   CalendarWeeks,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarWeeksProps,
   CalendarYearLabel,
   CalendarYearLabelProps,
   CalendarYear,
   CalendarYears,
-  CalendarYearsProps,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
+  CalendarYearsGrid,
+  CalendarYearsGridProps,
 } from './components';
 import { Text } from '../Text';
 import { gregorianCalendar, createCalendarSystem } from '@vega-ui/i18n';
@@ -35,23 +41,23 @@ interface CalendarPartsProps {
   weekday?: CalendarWeekdaysProps['format'];
   day?: CalendarWeeksProps['format'];
   includeOverflowDays?: boolean;
-  monthCols?: CalendarMonthsProps['cols'];
-  month?: CalendarMonthsProps['format'];
-  year?: CalendarYearsProps['format'];
+  monthCols?: CalendarMonthsGridProps['cols'];
+  month?: CalendarMonthsGridProps['format'];
+  year?: CalendarYearsGridProps['format'];
 }
 
 const CalendarParts: FC<CalendarPartsProps> = ({ monthLabel, yearLabel, weekday = 'short', day, includeOverflowDays, monthCols, month, year }) => (
   <>
     <CalendarHeader>
       <CalendarPrevButton aria-label='Previous' />
-      <CalendarViewButtonGroup>
+      <CalendarHeading>
         <CalendarViewButton view='month'>
           <CalendarMonthLabel format={monthLabel} />
         </CalendarViewButton>
         <CalendarViewButton view='year'>
           <CalendarYearLabel format={yearLabel} />
         </CalendarViewButton>
-      </CalendarViewButtonGroup>
+      </CalendarHeading>
       <CalendarNextButton aria-label='Next' />
     </CalendarHeader>
     <CalendarContent>
@@ -59,15 +65,27 @@ const CalendarParts: FC<CalendarPartsProps> = ({ monthLabel, yearLabel, weekday 
         <CalendarWeekdays format={weekday}>
           <CalendarWeekday />
         </CalendarWeekdays>
-        <CalendarWeeks format={day} includeOverflowDays={includeOverflowDays}>
-          <CalendarDay />
-        </CalendarWeeks>
+        <CalendarDaysScroller>
+          <CalendarDaysScrollerContent>
+            <CalendarWeeks format={day} includeOverflowDays={includeOverflowDays}>
+              <CalendarDay />
+            </CalendarWeeks>
+          </CalendarDaysScrollerContent>
+        </CalendarDaysScroller>
       </CalendarDays>
-      <CalendarMonths cols={monthCols} format={month}>
-        <CalendarMonth />
+      <CalendarMonths>
+        <CalendarMonthsGrid cols={monthCols} format={month}>
+          <CalendarMonth />
+        </CalendarMonthsGrid>
       </CalendarMonths>
-      <CalendarYears format={year}>
-        <CalendarYear />
+      <CalendarYears>
+        <CalendarYearsScroller>
+          <CalendarYearsScrollerContent>
+            <CalendarYearsGrid format={year}>
+              <CalendarYear />
+            </CalendarYearsGrid>
+          </CalendarYearsScrollerContent>
+        </CalendarYearsScroller>
       </CalendarYears>
     </CalendarContent>
   </>
@@ -80,7 +98,6 @@ const meta = {
     CalendarHeader,
     CalendarPrevButton,
     CalendarNextButton,
-    CalendarViewButtonGroup,
     CalendarViewButton,
     CalendarMonthLabel,
     CalendarYearLabel,
@@ -121,7 +138,7 @@ const meta = {
       control: 'radio',
       options: ['day', 'month', 'year'],
     },
-    defaultMonth: {
+    defaultFocusedDate: {
       control: 'text',
     },
     min: {

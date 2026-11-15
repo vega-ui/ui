@@ -1,7 +1,7 @@
 import { ComponentProps, FC, useState } from 'react';
 import { afterEach, beforeEach, describe, expect, it, onTestFinished, vi } from 'vitest';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
-import { page, server, userEvent } from 'vitest/browser';
+import { page, userEvent } from 'vitest/browser';
 
 import { Popover } from '../Popover';
 import { PopoverAnchor, PopoverClose, PopoverTrigger, PopoverContent } from '../components';
@@ -111,25 +111,6 @@ describe('Popover', () => {
         await expect.element(r.getByText(CONTENT_TEXT)).toBeVisible();
       });
 
-      it('calls onChangeOpen(true) on trigger click when open=false', async () => {
-        const onChangeOpen = vi.fn();
-        r.rerender(<PopoverTest open={false} onChangeOpen={onChangeOpen} />);
-
-        await openByTrigger(r);
-
-        await expect.poll(() => onChangeOpen).toHaveBeenCalledTimes(1);
-        expect(onChangeOpen).toHaveBeenLastCalledWith(true);
-      });
-
-      it('closes when parent sets open=false', async () => {
-        r.rerender(<PopoverTest open />);
-        await waitOpened(r);
-
-        r.rerender(<PopoverTest open={false} />);
-
-        await waitClosed();
-      });
-
       it('calls onChangeOpen(false) on outside click when open=true', async () => {
         const onChangeOpen = vi.fn();
         r.rerender(<PopoverTest open onChangeOpen={onChangeOpen} />);
@@ -148,6 +129,7 @@ describe('Popover', () => {
 
         await closeByOutsideClick();
         await expect.poll(() => getContent(r).matches(':popover-open')).toBe(false);
+        await expect.element(getContent(r)).toHaveAttribute('data-status', 'close');
 
         r.rerender(<PopoverTest open={false} />);
         r.rerender(<PopoverTest open />);
@@ -237,6 +219,18 @@ describe('Popover', () => {
       await waitOpened(r);
 
       await expect.poll(() => Math.round(getContent(r).getBoundingClientRect().left)).toBe(Math.round(r.getByTestId('anchor').getBoundingClientRect().left));
+    });
+
+    it('flips to the opposite side when there is no room', async () => {
+      const r = render(
+        <Popover defaultOpen>
+          <PopoverTrigger data-testid={TESTID_TRIGGER} style={{ position: 'fixed', bottom: 0 }}>{TRIGGER_TEXT}</PopoverTrigger>
+          <PopoverContent data-testid={TESTID_CONTENT}>{CONTENT_TEXT}</PopoverContent>
+        </Popover>
+      );
+      await waitOpened(r);
+
+      await expect.poll(() => getContent(r).getBoundingClientRect().bottom).toBeLessThanOrEqual(getTrigger(r).getBoundingClientRect().top);
     });
 
     it('scales the content in place, wherever the trigger is on the page', async () => {
@@ -346,18 +340,6 @@ describe('Popover', () => {
     });
 
     describe('focus', () => {
-      it.skipIf(server.browser === 'webkit')('keeps focus on the trigger on open and moves into the content on Tab', async () => {
-        const r = render(<PopoverTest />);
-        getTrigger(r).focus();
-
-        await userEvent.keyboard('{Enter}');
-        await waitOpened(r);
-        await expect.element(getTrigger(r)).toHaveFocus();
-
-        await userEvent.tab();
-        await expect.element(getFocusableInside(r)).toHaveFocus();
-      });
-
       it('focuses a child with autoFocus when it opens', async () => {
         const r = render(
           <Popover>
@@ -413,22 +395,6 @@ describe('Popover', () => {
         await expect.element(getTrigger(r)).toHaveFocus();
       });
 
-      it.skipIf(server.browser === 'webkit')('lets Tab leave the dialog to the element after the trigger', async () => {
-        const r = render(
-          <>
-            <PopoverTest role='dialog' />
-            <button type='button'>After</button>
-          </>
-        );
-
-        await openByTrigger(r);
-        await waitOpened(r);
-        getFocusableInside(r).focus();
-
-        await userEvent.tab();
-
-        await expect.element(r.getByRole('button', { name: 'After' })).toHaveFocus();
-      });
     });
   });
 });

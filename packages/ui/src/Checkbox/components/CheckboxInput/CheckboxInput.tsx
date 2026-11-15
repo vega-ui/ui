@@ -1,8 +1,10 @@
 'use client';
 
-import { FC, InputHTMLAttributes, Ref, useLayoutEffect, useRef } from 'react';
+import { FC, InputHTMLAttributes, Ref } from 'react';
+import { useMergeRefs } from '@vega-ui/hooks';
+import { useWidget, widgetEnvironment } from '../../../internals/widget';
 import { VisuallyHidden } from '../../../VisuallyHidden';
-import { mergeRefs } from '@vega-ui/utils';
+import { checkboxWidget, INPUT } from '@vega-ui/widgets/checkbox';
 
 export interface CheckboxInputProps extends InputHTMLAttributes<HTMLInputElement> {
   /**
@@ -30,7 +32,7 @@ export interface CheckboxInputProps extends InputHTMLAttributes<HTMLInputElement
  *
  * Checked state is set on this input like on a native checkbox:
  * `checked`, `defaultChecked`, `onChange` and `disabled`. The
- * `indeterminate` prop is applied imperatively via a layout effect.
+ * `indeterminate` prop is written to the input property.
  *
  * This component acts as the single source of truth for form integration
  * and event handling, while all visual representation is delegated to
@@ -38,15 +40,11 @@ export interface CheckboxInputProps extends InputHTMLAttributes<HTMLInputElement
  */
 
 export const CheckboxInput: FC<CheckboxInputProps> = ({ ref, indeterminate, ...props }) => {
-  const inputRef = useRef<HTMLInputElement>(null)
-
-  useLayoutEffect(() => {
-    if (!inputRef.current) return
-    if (indeterminate !== undefined) inputRef.current.indeterminate = indeterminate
-  }, [indeterminate]);
+  const handle = useWidget(checkboxWidget, { indeterminate }, widgetEnvironment)
+  const mergedRef = useMergeRefs([handle.rootAt(INPUT, checkboxWidget.output.input), ref])
 
   return (
-    <VisuallyHidden asChild ref={mergeRefs([inputRef, ref])}>
+    <VisuallyHidden asChild ref={mergedRef}>
       <input
         type='checkbox'
         {...props}

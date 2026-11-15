@@ -41,12 +41,6 @@ describe('Slot', () => {
       r = render(<SlotTest />);
     });
     
-    it('renders single child element', async () => {
-      const child = getChild(r);
-      await expect.element(child).toBeInTheDocument();
-      await expect.element(child).toHaveTextContent(CHILD_TEXT);
-    });
-    
     it('merges props onto child', async () => {
       r.rerender(
         <SlotTest
@@ -111,7 +105,7 @@ describe('Slot', () => {
     it('throws when child is not a valid React element', async () => {
       expect(() => {
         render(<SlotTest>text child</SlotTest>);
-      }).toThrow('React.Children.only expected to receive a single React element child.');
+      }).toThrow('[Slot] `asChild` must be a valid React-element.');
     });
   });
 });

@@ -1,5 +1,7 @@
-import { FC, HTMLAttributes, PropsWithChildren, Ref, useEffect } from 'react';
-import { csx, mergeRefs } from '@vega-ui/utils';
+import { FC, HTMLAttributes, PropsWithChildren, Ref } from 'react';
+import { useMergeRefs } from '@vega-ui/hooks';
+import { useItem } from '../../../internals/widget';
+import { csx } from '@vega-ui/utils';
 import { Slot } from '../../../Slot';
 import { useSnapScrollerContext } from '../../contexts';
 import style from './style.module.css'
@@ -19,7 +21,7 @@ export interface SnapScrollerContentProps extends HTMLAttributes<HTMLDivElement>
   
   /**
    * External ref to the item's root element.
-   * Will be merged with internal `itemRef(index)` to participate in snapping logic.
+   * Merged with the ref that registers the item with the scroller under its `index`.
    */
   ref?: Ref<HTMLDivElement>
 }
@@ -33,23 +35,17 @@ export const SnapScrollerContent: FC<PropsWithChildren<SnapScrollerContentProps>
   children,
   ...props
 }) => {
-  const { itemRef, removeItemRef } = useSnapScrollerContext()
-  
+  const { handle } = useSnapScrollerContext()
+  const register = useItem(handle, index)
+  const mergedRef = useMergeRefs([register, ref])
+
   const Element = asChild ? Slot : 'div'
-  
-  useEffect(() => {
-    return () => {
-      removeItemRef(index)
-    }
-    // unmount-only: a cleanup on index change would delete freshly re-keyed neighbor entries
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   return (
     <Element
       data-index={index}
       className={csx(style.content, className)}
-      ref={mergeRefs([itemRef(index), ref])}
+      ref={mergedRef}
       {...props}
     >
       {children}

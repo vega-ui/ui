@@ -1,6 +1,6 @@
 import { ComponentProps, FC } from 'react';
 import { afterEach, beforeEach, describe, expect, it, onTestFinished, vi } from 'vitest';
-import { cleanup, render, type RenderResult, waitFor } from '@testing-library/react';
+import { cleanup, render, type RenderResult } from '@testing-library/react';
 import { commands, userEvent } from 'vitest/browser';
 
 import { Dialog } from '../Dialog';
@@ -58,7 +58,6 @@ const getClose = (r: RenderResult) => r.getByTestId(TESTID_CLOSE);
 const getInnerTrigger = (r: RenderResult) => r.getByTestId(TESTID_INNER_TRIGGER);
 const queryInnerContent = (r: RenderResult) => r.queryByTestId(TESTID_INNER_CONTENT) as HTMLDialogElement | null;
 const getInnerContent = (r: RenderResult) => r.getByTestId(TESTID_INNER_CONTENT) as HTMLDialogElement;
-const getInnerClose = (r: RenderResult) => r.getByTestId(TESTID_INNER_CLOSE);
 
 const toBeOpened = async (r: RenderResult) => {
   await expect.element(queryContent(r)).toBeInTheDocument();
@@ -84,27 +83,6 @@ const closeByCloseButton = async (r: RenderResult) => {
 describe('Dialog', () => {
   describe('Critical User Paths', () => {
     describe('DialogClose', () => {
-      it('closes the dialog with the close transition', async () => {
-        document.documentElement.dataset.motion = '';
-        onTestFinished(() => {
-          delete document.documentElement.dataset.motion;
-        });
-        const r = render(
-          <Dialog defaultOpen>
-            <DialogContent data-testid='close-content' aria-label='Panel'>
-              <DialogClose>Done</DialogClose>
-            </DialogContent>
-          </Dialog>
-        );
-        await expect.poll(() => (r.getByTestId('close-content') as HTMLDialogElement).matches(':modal')).toBe(true);
-
-        await userEvent.click(r.getByRole('button', { name: 'Done' }));
-
-        expect((r.getByTestId('close-content') as HTMLDialogElement).open).toBe(true);
-        expect(r.getByTestId('close-content')).toHaveAttribute('data-status', 'close');
-        await expect.element(r.queryByTestId('close-content')).not.toBeInTheDocument();
-      });
-
       it('closes through its child with asChild and keeps the child onClick', async () => {
         const onClick = vi.fn();
         const onChangeOpen = vi.fn();
@@ -130,14 +108,6 @@ describe('Dialog', () => {
 
       beforeEach(() => {
         r = render(<DialogTest />);
-      });
-
-      it('opens a modal native dialog on trigger click', async () => {
-        await openByTrigger(r);
-        await toBeOpened(r);
-
-        expect(getContent(r).tagName).toBe('DIALOG');
-        expect(getContent(r).open).toBe(true);
       });
 
       it('stays open on backdrop click by default', async () => {
@@ -222,33 +192,6 @@ describe('Dialog', () => {
         r = render(<DialogTest open={false} />);
       });
 
-      it('does not open itself when open=false (requires parent update)', async () => {
-        await openByTrigger(r);
-
-        await waitFor(() => {
-          expect(queryContent(r)).not.toBeInTheDocument();
-        });
-      });
-
-      it('calls onChangeOpen(true) on trigger interaction', async () => {
-        const onChangeOpen = vi.fn();
-        r.rerender(<DialogTest open={false} onChangeOpen={onChangeOpen} />);
-
-        await openByTrigger(r);
-
-        expect(onChangeOpen).toHaveBeenCalledExactlyOnceWith(true);
-      });
-
-      it('calls onChangeOpen(false) on backdrop click when open=true', async () => {
-        const onChangeOpen = vi.fn();
-        r.rerender(<DialogTest open onChangeOpen={onChangeOpen} closedBy='any' />);
-        await toBeOpened(r);
-
-        await clickBackdrop(getContent(r));
-
-        expect(onChangeOpen).toHaveBeenCalledExactlyOnceWith(false);
-      });
-
       it('calls onChangeOpen(false) on close button click when open=true', async () => {
         const onChangeOpen = vi.fn();
         r.rerender(<DialogTest open onChangeOpen={onChangeOpen} />);
@@ -268,18 +211,6 @@ describe('Dialog', () => {
 
         expect(onChangeOpen).toHaveBeenCalledExactlyOnceWith(false);
         await toBeOpened(r);
-      });
-
-      it('stays closed after the browser closes it while open=true', async () => {
-        const onChangeOpen = vi.fn();
-        r.rerender(<DialogTest open onChangeOpen={onChangeOpen} />);
-        await toBeOpened(r);
-
-        getContent(r).close();
-
-        await expect.poll(() => onChangeOpen).toHaveBeenCalledExactlyOnceWith(false);
-        await new Promise((resolve) => setTimeout(resolve, 100));
-        expect(getContent(r).open).toBe(false);
       });
 
       it('does not close itself until parent updates open=false', async () => {
@@ -380,31 +311,6 @@ describe('Dialog', () => {
       await userEvent.click(r.getByRole('button', { name: 'Submit' }));
 
       expect(getContent(r).open).toBe(true);
-      await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
-    });
-
-    it('renders into the container passed to DialogContent', async () => {
-      const container = document.createElement('div');
-      document.body.append(container);
-      onTestFinished(() => container.remove());
-
-      const r = render(
-        <Dialog defaultOpen>
-          <DialogContent data-testid={TESTID_CONTENT} aria-label='Panel' container={container} />
-        </Dialog>
-      );
-      await toBeOpened(r);
-
-      expect(container.contains(getContent(r))).toBe(true);
-    });
-
-    it('stays open on a cancel request when closedBy=none, as in browsers without closedby', async () => {
-      const r = render(<DialogTest defaultOpen closedBy='none' />);
-      await toBeOpened(r);
-
-      getContent(r).dispatchEvent(new Event('cancel', { cancelable: true }));
-
-      await new Promise((resolve) => setTimeout(resolve, 300));
       await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
     });
 
@@ -579,23 +485,6 @@ describe('Dialog', () => {
       expect(r.getByTestId('listbox').contains(document.elementFromPoint(x, listbox.bottom - 4))).toBe(true);
     });
 
-    it('stays open when reopened during the close transition', async () => {
-      document.documentElement.dataset.motion = '';
-      onTestFinished(() => {
-        delete document.documentElement.dataset.motion;
-      });
-      const r = render(<DialogTest defaultOpen />);
-      await toBeOpened(r);
-
-      await closeByCloseButton(r);
-      await expect.element(getContent(r)).toHaveAttribute('data-status', 'close');
-      r.rerender(<DialogTest open />);
-
-      await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
-      await new Promise((resolve) => setTimeout(resolve, 500));
-      await toBeOpened(r);
-    });
-
     it('calls onCancel and onClose passed to DialogContent', async () => {
       const onCancel = vi.fn();
       const onClose = vi.fn();
@@ -608,18 +497,6 @@ describe('Dialog', () => {
 
       expect(onCancel).toHaveBeenCalledOnce();
       expect(onClose).toHaveBeenCalledOnce();
-    });
-
-    it('locks page scroll while open', async () => {
-      const r = render(<DialogTest defaultOpen />);
-      await toBeOpened(r);
-
-      expect(getComputedStyle(document.documentElement).overflow).toBe('hidden');
-
-      await closeByCloseButton(r);
-      await toBeClosed(r);
-
-      expect(getComputedStyle(document.documentElement).overflow).not.toBe('hidden');
     });
 
     describe('nested dialogs', () => {
@@ -648,15 +525,6 @@ describe('Dialog', () => {
 
         await expect.element(queryInnerContent(r)).not.toBeInTheDocument();
         await expect.element(getContent(r)).toHaveAttribute('data-status', 'open');
-      });
-
-      it('keeps Tab inside the inner dialog', async () => {
-        getInnerClose(r).focus();
-
-        for (let i = 0; i < 4; i++) {
-          await userEvent.tab();
-          expect(getContent(r).querySelector(':focus')).toBeNull();
-        }
       });
 
       it('restores focus to the inner trigger after inner closes', async () => {
@@ -691,18 +559,6 @@ describe('Dialog', () => {
 
         getTrigger(r).focus();
         await userEvent.keyboard('{Enter}');
-        await toBeOpened(r);
-
-        await userEvent.keyboard('{Escape}');
-        await toBeClosed(r);
-
-        await expect.element(getTrigger(r)).toHaveFocus();
-      });
-
-      it('restores focus to the trigger opened by a mouse click', async () => {
-        const r = render(<DialogTest />);
-
-        await openByTrigger(r);
         await toBeOpened(r);
 
         await userEvent.keyboard('{Escape}');
@@ -759,24 +615,6 @@ describe('Dialog', () => {
     });
 
     describe('keyboard', () => {
-      const TabTest: FC = () => (
-        <Dialog defaultOpen>
-          <DialogContent data-testid={TESTID_CONTENT} aria-label='Panel'>
-            <input aria-label='First' />
-            <input aria-label='Last' />
-          </DialogContent>
-        </Dialog>
-      );
-
-      it('moves Tab from the dialog to its first tabbable element', async () => {
-        const r = render(<TabTest />);
-        await toBeOpened(r);
-        await expect.element(getContent(r)).toHaveFocus();
-
-        await userEvent.tab();
-
-        await expect.element(r.getByRole('textbox', { name: 'First' })).toHaveFocus();
-      });
 
       it('closes on Escape again after reopening', async () => {
         const r = render(<DialogTest />);

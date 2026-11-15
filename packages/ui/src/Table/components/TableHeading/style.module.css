@@ -27,9 +27,9 @@
 }
 
 .headingNotEdgePadded:first-child {
-    padding-left: 0;
+    padding-inline-start: 0;
 }
 
 .headingNotEdgePadded:last-child {
-    padding-right: 0;
+    padding-inline-end: 0;
 }

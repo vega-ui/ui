@@ -1,8 +1,11 @@
 'use client';
-import { FC, HTMLAttributes, useCallback } from 'react';
+import { FC, HTMLAttributes } from 'react';
+import { createInput } from '@vega-ui/core';
+import { useSnapshot } from '../../../internals/widget';
 import { Collapsible } from '../../../Collapsible';
 import style from './style.module.css'
 import { AccordionItemProvider, useAccordionContext } from '../../contexts';
+import { TOGGLE_ITEM } from '@vega-ui/widgets/accordion';
 import { AccordionSize } from '../../types';
 import { csx } from '@vega-ui/utils';
 
@@ -57,17 +60,18 @@ export const AccordionItem: FC<AccordionItemProps> = ({
   children,
   ...props
 }) => {
-  const { opened, onChangeOpened, size: _size = 'md' } = useAccordionContext()
+  const { handle, size: _size = 'md' } = useAccordionContext()
+  const opened = useSnapshot(handle, (state) => state.opened.includes(value))
 
-  const onChange = useCallback((state: boolean) => {
+  const onChange = (state: boolean) => {
     onChangeOpen?.(value, state)
-    onChangeOpened?.(value, state)
-  }, [value, onChangeOpen, onChangeOpened])
+    handle.send(createInput(TOGGLE_ITEM, { value, to: state }))
+  }
 
   return (
     <AccordionItemProvider size={size ?? _size}>
       <li className={csx(className, style.item)} {...props}>
-        <Collapsible contentId={contentId} open={open ?? opened.includes(value)} onChangeOpen={onChange}>
+        <Collapsible contentId={contentId} open={open ?? opened} onChangeOpen={onChange}>
           {children}
         </Collapsible>
       </li>

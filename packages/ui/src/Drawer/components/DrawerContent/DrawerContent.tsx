@@ -1,9 +1,11 @@
 'use client';
-import { CSSProperties, DialogHTMLAttributes, FC, Ref, useState } from 'react';
+import { DialogHTMLAttributes, FC, Ref } from 'react';
 import { createPortal } from 'react-dom';
-import { csx, findScrollableAncestor, isBackdropPoint, isTextInteraction, mergeEventHandlers, projectMomentum, rubberBand } from '@vega-ui/utils';
-import { DragGesture, useDragGesture, useMergeRefs } from '@vega-ui/hooks';
-import { ModalDialogClosedBy, useModalDialog } from '../../../internals/modalDialog';
+import { csx } from '@vega-ui/utils';
+import { useMergeRefs } from '@vega-ui/hooks';
+import { useSnapshot } from '../../../internals/widget';
+import { DIALOG, isMounted, isRendered, ModalDialogClosedBy } from '@vega-ui/widgets/modal-dialog';
+import { drawerWidget } from '@vega-ui/widgets/drawer';
 import style from './style.module.css'
 import { useDrawerContext } from '../../contexts';
 
@@ -67,68 +69,13 @@ export const DrawerContent: FC<DrawerContentProps> = ({
   container,
   children,
   ref,
-  onCancel: _onCancel,
-  onSubmit: _onSubmit,
-  onClose: _onClose,
   style: _style,
   ...props
 }) => {
-  const { open, changeOpen, position } = useDrawerContext()
-  const { ref: dialogRef, dialog, mounted, rendered, onCancel, onSubmit, onClose } = useModalDialog({ open, onChangeOpen: changeOpen, closedBy })
-  const mergedRef = useMergeRefs([dialogRef, ref])
-  const [drag, setDrag] = useState<number | null>(null)
-
-  const edge = position?.split('-')[0]
-  const axis = edge === 'top' || edge === 'bottom' ? 'y' : 'x'
-
-  const getSize = () => {
-    if (!dialog) return 0
-    return axis === 'x' ? dialog.offsetWidth : dialog.offsetHeight
-  }
-
-  const getDirection = () => {
-    if (edge === 'bottom') return 1
-    if (edge === 'top') return -1
-
-    const rtl = dialog !== null && dialog.matches(':dir(rtl)')
-
-    if (edge === 'end') return rtl ? -1 : 1
-    return rtl ? 1 : -1
-  }
-
-  const shouldStart = (event: PointerEvent, dragDirection: 1 | -1) => {
-    if (!dialog || closedBy !== 'any' || event.pointerType === 'mouse') return false
-    if (isBackdropPoint(dialog, event) || isTextInteraction(event.target)) return false
-    if (axis === 'x') return true
-
-    const direction = getDirection()
-    const scroller = findScrollableAncestor(event.target as Element, dialog)
-    if (!scroller) return true
-    if (dragDirection !== direction) return false
-    if (direction === 1) return scroller.scrollTop <= 0
-
-    return scroller.scrollTop + scroller.clientHeight >= scroller.scrollHeight
-  }
-
-  const onMove = ({ delta }: DragGesture) => {
-    const direction = getDirection()
-    const toward = delta * direction
-
-    if (toward >= 0) {
-      setDrag(delta)
-      return
-    }
-
-    setDrag(rubberBand(toward, getSize()) * direction)
-  }
-
-  const onEnd = ({ delta, velocity }: DragGesture) => {
-    setDrag(null)
-
-    if ((delta + projectMomentum(velocity)) * getDirection() > getSize() / 2) changeOpen(false)
-  }
-
-  useDragGesture(dialog, { axis, shouldStart, onMove, onEnd })
+  const { handle, position } = useDrawerContext()
+  const mounted = useSnapshot(handle, isMounted)
+  const rendered = useSnapshot(handle, isRendered)
+  const mergedRef = useMergeRefs([handle.rootAt(DIALOG, drawerWidget.output.dialog), ref])
 
   if (!mounted) return null
 
@@ -138,18 +85,13 @@ export const DrawerContent: FC<DrawerContentProps> = ({
       data-position={position}
       data-full-width={fullWidth}
       data-full-height={fullHeight}
-      data-status={open ? 'open' : 'close'}
       data-shadow={shadowed}
       data-blurred={blurred}
       data-overlay={overlay}
-      data-dragging={drag !== null}
       ref={mergedRef}
       className={csx(style.drawer, className)}
-      onCancel={mergeEventHandlers(onCancel, _onCancel)}
-      onSubmit={mergeEventHandlers(onSubmit, _onSubmit)}
-      onClose={mergeEventHandlers(onClose, _onClose)}
-      style={{ '--drawer-drag': `${drag ?? 0}px`, ..._style } as CSSProperties}
-      {...props}
+      style={_style}
+      {...handle.listen({}, props)}
     >
       {rendered && children}
     </dialog>,

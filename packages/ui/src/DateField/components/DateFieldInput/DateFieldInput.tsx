@@ -1,9 +1,10 @@
-import { FC, FormEvent, useMemo } from 'react';
+import { FC, useState } from 'react';
+import { useMergeRefs } from '@vega-ui/hooks';
+import { ROOT } from '@vega-ui/core';
+import { useOutput } from '../../../internals/widget';
 import { TextFieldInput, TextFieldInputProps } from '../../../TextField';
-import { useMaskito } from '@maskito/react';
 import { useDateFieldContext } from '../../contexts';
-import { mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
-import { getDateMaskOptions } from '../../helpers';
+import { defaultTextOf, dateFieldWidget } from '@vega-ui/widgets/date-field';
 
 export type DateFieldInputProps = Omit<TextFieldInputProps, 'value' | 'defaultValue'>
 
@@ -11,37 +12,29 @@ export type DateFieldInputProps = Omit<TextFieldInputProps, 'value' | 'defaultVa
  * DateFieldInput — a masked date text input used inside DateField.
  *
  * Applies a date mask based on the current format, separator and calendar
- * system and enforces min/max date constraints. The date comes from
- * `DateField`; `onChange` and `onInput` still report each edit of the text.
- * When `min` or `max` change, the text is normalized again like typing does,
- * dispatching `input`.
+ * system. The date comes from `DateField`; `onChange` and `onInput` still
+ * report each edit of the text.
  *
- * Integrates with DateFieldContext for format, separator, boundaries,
- * change handler, and shared input ref. Merges internal and external refs.
+ * Like a native input, it submits the shown text under `name`. An incomplete
+ * date, a date outside `min` and `max` and an unavailable date make the input
+ * invalid through `setCustomValidity` with the message of the browser, so
+ * `:invalid`, `reportValidity()` and the form submit check work natively.
  */
-export const DateFieldInput: FC<DateFieldInputProps> = ({ ref, onInput, ...props }) => {
-  const { template, calendar, inputRef, min, max, text, changeText, disabled } = useDateFieldContext()
-  
-  const options = useMemo(() => getDateMaskOptions({
-    template,
-    calendar,
-    min,
-    max,
-  }), [template, calendar, min, max]);
-  
-  const maskitoRef = useMaskito({ options });
-
-  const onDateInput = (event: FormEvent<HTMLInputElement>) => changeText?.(event.currentTarget.value)
+export const DateFieldInput: FC<DateFieldInputProps> = ({ ref, ...props }) => {
+  const { handle, disabled, readOnly } = useDateFieldContext()
+  const [defaultValue] = useState(() => defaultTextOf(handle.instance.state))
+  const attrs = useOutput(handle, dateFieldWidget.output.root)
+  const mergedRef = useMergeRefs([handle.rootAt(ROOT, dateFieldWidget.output.root), ref])
 
   return (
     <TextFieldInput
       type='text'
       inputMode='numeric'
       disabled={disabled}
-      value={text}
-      onInput={mergeEventHandlers(onDateInput, onInput)}
-      ref={mergeRefs([maskitoRef, ref, inputRef])}
-      {...props}
+      readOnly={readOnly}
+      defaultValue={defaultValue}
+      ref={mergedRef}
+      {...handle.listen(attrs, props)}
     />
   )
 }

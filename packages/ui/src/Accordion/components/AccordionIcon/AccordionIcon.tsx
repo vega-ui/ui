@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { useSnapshot } from '../../../internals/widget';
 import { csx } from '@vega-ui/utils';
 import { ChevronDown } from '@vega-ui/icons';
 import { Icon, IconProps } from '../../../Icon';
@@ -22,7 +23,8 @@ export type AccordionIconProps = IconProps
  */
 export const AccordionIcon: FC<AccordionIconProps> = ({ className, children, ...props }) => {
   const { size } = useAccordionItemContext()
-  const { opened } = useCollapsibleContext()
+  const { handle } = useCollapsibleContext()
+  const opened = useSnapshot(handle, (state) => state.open)
   
   return (
     <Icon aria-hidden={true} className={csx(style.icon, className)} data-open={opened} size={size} {...props}>

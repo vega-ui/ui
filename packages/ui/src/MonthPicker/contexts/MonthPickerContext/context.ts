@@ -1,16 +1,24 @@
 'use client';
 
-import { createContext } from '@vega-ui/react-kit/context';
-import { CalendarSystem, getDefaultLocale, gregorianCalendar } from '@vega-ui/i18n';
+import { createContext } from '../../../internals/context';
+import { CalendarSystem, gregorianCalendar } from '@vega-ui/i18n';
+import { GridItemSize, GridItemVariant } from '../../../Grid';
 
 export interface MonthPickerContextData {
-  year: string
+  /**
+   * First day of the year of the focused month, `undefined` until the focused
+   * month is known (on the server without `today`).
+   */
+  year?: string
   calendar: CalendarSystem
+  size: GridItemSize
+  variant: GridItemVariant
   locale: string
 }
 
 export const [MonthPickerProvider, useMonthPickerContext] = createContext<MonthPickerContextData>('MonthPickerContext', {
-  year: '',
   calendar: gregorianCalendar,
-  locale: getDefaultLocale(),
+  size: 'xs',
+  variant: 'secondary',
+  locale: 'en-US',
 })

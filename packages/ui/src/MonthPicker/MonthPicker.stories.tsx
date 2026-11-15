@@ -9,7 +9,7 @@ import {
 } from './components';
 import { addCalendarMonths, getCalendarMonthStart, getCalendarYearStart, gregorianCalendar, createCalendarSystem } from '@vega-ui/i18n';
 import { formatISODate, getCurrentDate } from '@vega-ui/utils';
-import type { DataGridSelection } from '../DataGridSelectable';
+import type { GridSelection } from '../Grid';
 
 const meta = {
   title: 'Data/MonthPicker',
@@ -56,12 +56,12 @@ const isSummer = (month: string) => [6, 7, 8].includes(gregorianCalendar.toField
 const variants: MonthPickerProps['variant'][] = ['primary', 'secondary'];
 const sizes: MonthPickerProps['size'][] = ['xs', 'sm', 'md', 'lg', 'xl'];
 
-const states: { label: string; props: MonthPickerProps<DataGridSelection> }[] = [
-  { label: 'single', props: { selection: 'single', defaultSelected: thisMonth } },
-  { label: 'multiple', props: { selection: 'multiple', defaultSelected: [shift(-2), thisMonth, shift(2)] } },
-  { label: 'range', props: { selection: 'range', defaultSelected: [shift(-1), shift(2)] } },
-  { label: 'from / to', props: { selection: 'range', from: monthOfYear(2), to: monthOfYear(8) } },
-  { label: 'disabled', props: { selection: 'multiple', disabled: isSummer } },
+const states: { label: string; props: MonthPickerProps<GridSelection> }[] = [
+  { label: 'single', props: { selection: 'single', defaultValue: thisMonth } },
+  { label: 'multiple', props: { selection: 'multiple', defaultValue: [shift(-2), thisMonth, shift(2)] } },
+  { label: 'range', props: { selection: 'range', defaultValue: [shift(-1), shift(2)] } },
+  { label: 'min / max', props: { selection: 'range', min: monthOfYear(2), max: monthOfYear(8) } },
+  { label: 'disabled', props: { selection: 'multiple', disabledDates: isSummer } },
 ];
 
 const calendarSystems = [
@@ -81,7 +81,7 @@ export const Matrix: Story = {
       {variants.map((variant) => sizes.map((size) => (
         <div key={`${variant}-${size}`} style={{ display: 'grid', gap: 8 }}>
           <span>{`${variant} / ${size}`}</span>
-          <MonthPicker aria-label='Month' variant={variant} size={size} defaultSelected={thisMonth}>
+          <MonthPicker aria-label='Month' variant={variant} size={size} defaultValue={thisMonth}>
             <MonthPickerLayout format='short'>
               <MonthPickerCell />
             </MonthPickerLayout>
@@ -115,7 +115,7 @@ export const CalendarSystems: Story = {
       {calendarSystems.map(({ name, locale, calendar, year }) => (
         <div key={name} style={{ display: 'grid', gap: 8 }}>
           <span>{`${name} / ${locale}`}</span>
-          <MonthPicker aria-label='Month' style={{ width: 300 }} calendar={calendar} locale={locale} year={year}>
+          <MonthPicker aria-label='Month' style={{ width: 300 }} calendar={calendar} locale={locale} defaultFocusedDate={year}>
             <MonthPickerLayout>
               <MonthPickerCell />
             </MonthPickerLayout>
@@ -132,7 +132,7 @@ export const Locales: Story = {
       {locales.map((locale) => (
         <div key={locale} style={{ display: 'grid', gap: 8 }}>
           <span>{locale}</span>
-          <MonthPicker aria-label='Month' style={{ width: 300 }} locale={locale} defaultSelected={thisMonth}>
+          <MonthPicker aria-label='Month' style={{ width: 300 }} locale={locale} defaultValue={thisMonth}>
             <MonthPickerLayout>
               <MonthPickerCell />
             </MonthPickerLayout>

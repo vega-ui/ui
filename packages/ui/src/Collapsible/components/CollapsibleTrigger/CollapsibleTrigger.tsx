@@ -1,9 +1,12 @@
 'use client';
-import { FC, HTMLAttributes, MouseEvent, Ref } from 'react';
+import { ButtonHTMLAttributes, FC, Ref } from 'react';
+import { useMergeRefs } from '@vega-ui/hooks';
+import { useOutput } from '../../../internals/widget';
 import { useCollapsibleContext } from '../../contexts';
+import { collapsibleWidget, TRIGGER } from '@vega-ui/widgets/collapsible';
 import { Slot } from '../../../Slot';
 
-export interface CollapsibleTriggerProps extends HTMLAttributes<HTMLElement> {
+export interface CollapsibleTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   /**
    * If true, renders the trigger as a child component using `Slot` (e.g. <a> or <div>).
    * This allows custom semantics or styling while preserving collapsible behavior.
@@ -18,8 +21,6 @@ export interface CollapsibleTriggerProps extends HTMLAttributes<HTMLElement> {
 
 /** The CollapsibleTrigger component is the interactive element—typically a button or custom slot—that toggles the open or closed state of a Collapsible section */
 export const CollapsibleTrigger: FC<CollapsibleTriggerProps> = ({
-  className,
-  onClick: _onClick,
   children,
   asChild,
   ref,
@@ -27,25 +28,15 @@ export const CollapsibleTrigger: FC<CollapsibleTriggerProps> = ({
 }) => {
   const Element = asChild ? Slot : 'button';
 
-  const { opened, open, close, contentId } = useCollapsibleContext()
-
-  const onClick = (e: MouseEvent<HTMLElement>) => {
-    if (opened) close()
-    else open()
-
-    _onClick?.(e)
-  }
+  const { handle } = useCollapsibleContext()
+  const attrs = useOutput(handle, collapsibleWidget.output.trigger)
+  const triggerRef = useMergeRefs([handle.rootAt(TRIGGER), ref])
 
   return (
     <Element
-      ref={ref}
-      onClick={onClick}
-      data-open={opened}
-      aria-expanded={opened}
-      aria-controls={contentId}
-      className={className}
+      ref={triggerRef}
       type={Element === 'button' ? 'button' : undefined}
-      {...props}
+      {...handle.listen(attrs, props)}
     >
       {children}
     </Element>

@@ -1,7 +1,10 @@
 import { FC, HTMLAttributes, PointerEvent } from 'react';
+import { createInput } from '@vega-ui/core';
+import { useOutput, useSnapshot } from '../../../internals/widget';
 import style from './style.module.css';
-import { csx, mergeEventHandlers } from '@vega-ui/utils';
+import { csx } from '@vega-ui/utils';
 import { usePinFieldContext } from '../../contexts';
+import { SELECT_SLOT, slotGlyphOf, slotPart } from '@vega-ui/widgets/pin-field';
 
 export interface PinFieldSlotProps extends HTMLAttributes<HTMLDivElement> {
   /**
@@ -17,41 +20,25 @@ export const PinFieldSlot: FC<PinFieldSlotProps> = ({
   onPointerDown: _onPointerDown,
   ...props
 }) => {
-  const {
-    innerInputRef,
-    placeholder,
-    value,
-    size,
-    disabled,
-    error,
-    syncActive,
-    active,
-    selectedAll,
-  } = usePinFieldContext()
-  
-  const onPointerDown = (e: PointerEvent<HTMLDivElement>) => {
-    if (!innerInputRef.current || disabled) return;
-    
-    e.preventDefault();
-    innerInputRef.current.focus();
-    
-    requestAnimationFrame(() => syncActive(index))
-  };
-  
+  const { handle, placeholder, size } = usePinFieldContext()
+  const attrs = useOutput(handle, slotPart, index)
+  const glyph = useSnapshot(handle, (state) => slotGlyphOf(state, index))
+
+  const onPointerDown = (event: PointerEvent<HTMLDivElement>) => {
+    _onPointerDown?.(event)
+    if (event.defaultPrevented) return
+
+    if (handle.send(createInput(SELECT_SLOT, { to: index })).answer === 'handled') event.preventDefault()
+  }
+
   return (
     <div
-      aria-hidden='true'
       data-size={size}
       className={csx(style.slot, className)}
-      data-placeholder={!value[index]}
-      data-caret={active === index}
-      data-active={active === index || selectedAll}
-      data-disabled={disabled}
-      data-error={error}
-      onPointerDown={mergeEventHandlers(onPointerDown, _onPointerDown)}
-      {...props}
+      onPointerDown={onPointerDown}
+      {...handle.merge(attrs, props)}
     >
-      {!value[index] ? placeholder?.[index] : value[index]}
+      {glyph || placeholder?.[index]}
     </div>
   )
 }

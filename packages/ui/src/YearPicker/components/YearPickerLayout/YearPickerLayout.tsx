@@ -30,13 +30,13 @@ export interface YearPickerLayoutProps extends YearPickerRowGroupProps {
   
   /**
    * First year of page `0`, given as a `YYYY-MM-DD` string of any day in it.
-   * Pages are aligned to it. Defaults to the visible year of the YearPicker.
+   * Pages are aligned to it. Defaults to the first focused year of the YearPicker.
    */
   start?: string;
   
   /**
    * Page index relative to `start`.
-   * Defaults to the page containing the visible year of the YearPicker.
+   * Defaults to the page containing the focused year of the YearPicker.
    */
   offset?: number;
   
@@ -67,25 +67,30 @@ export const YearPickerLayout: FC<YearPickerLayoutProps> = ({
   children,
   ...props
 }) => {
-  const { year, calendar, locale: contextLocale } = useYearPickerContext()
+  const { year, anchor, calendar, locale: contextLocale } = useYearPickerContext()
   const locale = _locale ?? contextLocale
-  const formatYear = useMemo(() => createCalendarDateFormatter(calendar, locale, { year: format }), [locale, format, calendar])
-  
-  const start = _start ?? year
-  const offset = _offset ?? Math.floor(getCalendarYearsDistance(calendar, start, year) / (rows * cols))
-  
+  const start = _start ?? anchor
+
+  const pageOffset = start === undefined || year === undefined ? 0 : Math.floor(getCalendarYearsDistance(calendar, start, year) / (rows * cols))
+  const offset = _offset ?? pageOffset
+
+  const grid = useMemo(() => {
+    if (start === undefined) return []
+
+    const formatYear = createCalendarDateFormatter(calendar, locale, { year: format })
+
+    return createYearPickerGrid({ start, rows, cols, offset, calendar }).map(({ row, data }) => ({
+      row,
+      data: data.map(({ col, year }) => ({ col, date: year, fields: calendar.toFields(year), label: formatYear(year) })),
+    }))
+  }, [start, offset, rows, cols, calendar, locale, format])
+
   return (
     <YearPickerRowGroup {...props}>
-      {createYearPickerGrid({ start, rows, cols, offset, calendar }).map(({ row, data }) => (
+      {grid.map(({ row, data }) => (
         <YearPickerRow row={row} key={row}>
-          {data.map(({ col, year }) => (
-            <YearPickerCellProvider
-              key={year}
-              col={col}
-              date={year}
-              fields={calendar.toFields(year)}
-              label={formatYear(year)}
-            >
+          {data.map((cell) => (
+            <YearPickerCellProvider key={cell.date} {...cell}>
               {children}
             </YearPickerCellProvider>
           ))}

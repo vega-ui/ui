@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Tooltip } from './Tooltip';
-import { TooltipArrow, TooltipContent, TooltipTrigger } from './components';
+import { TooltipContent, TooltipTrigger } from './components';
 import { Button } from '../Button';
 import { Text } from '../Text';
 
@@ -11,7 +11,6 @@ const meta = {
   subcomponents: {
     TooltipTrigger,
     TooltipContent,
-    TooltipArrow,
   },
   parameters: {
     layout: 'centered',
@@ -32,7 +31,6 @@ const meta = {
         <Button variant='secondary'>Save draft</Button>
       </TooltipTrigger>,
       <TooltipContent key='content'>
-        <TooltipArrow />
         <Text size={2}>Drafts are saved automatically every minute</Text>
       </TooltipContent>,
     ],

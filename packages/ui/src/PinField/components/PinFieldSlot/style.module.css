@@ -8,7 +8,7 @@
     width: var(--input-height);
     aspect-ratio: 1 / 1;
     border-radius: calc(var(--input-height) * var(--input-br-ratio));
-    outline: 1px solid transparent;
+    outline: 1px solid var(--pin-field-slot-outline-color, transparent);
     transition: outline-color var(--transition-state-delay) ease,
                 background-color var(--transition-state-delay) ease;
     will-change: outline-color;
@@ -66,12 +66,6 @@
     background-color: var(--text-color);
     animation: cursor-blink 1s steps(2) infinite;
     height: var(--cursor-height);
-}
-
-/* slot/error */
-
-.slot:where([data-error='true']) {
-    outline-color: var(--color-error);
 }
 
 /* slot/hover */

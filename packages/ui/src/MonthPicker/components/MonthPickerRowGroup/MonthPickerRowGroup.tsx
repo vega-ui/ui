@@ -1,20 +1,20 @@
 import { FC } from 'react';
-import { DataGridPickerRowGroup, DataGridPickerRowGroupProps } from '../../../DataGridPicker';
+import { GridRowGroup, GridRowGroupProps } from '../../../Grid';
 
-export type MonthPickerRowGroupProps = DataGridPickerRowGroupProps
+export type MonthPickerRowGroupProps = GridRowGroupProps
 
 /**
  * MonthPickerRowGroup is a semantic wrapper around
- * DataGridPickerRowGroup that groups multiple MonthPickerRow
+ * GridRowGroup that groups multiple MonthPickerRow
  * components into a cohesive grid section.
  *
  * It introduces no additional logic or behavior — all keyboard
  * navigation, selection handling, and layout structure are inherited
- * from the underlying DataGridPickerRowGroup.
+ * from the underlying GridRowGroup.
  *
  * Using this wrapper improves readability and provides clearer intent
  * when composing custom MonthPicker layouts.
  */
 export const MonthPickerRowGroup: FC<MonthPickerRowGroupProps> = (props) => {
-  return <DataGridPickerRowGroup {...props} />
+  return <GridRowGroup {...props} />
 }

@@ -1,9 +1,10 @@
 'use client';
 
 import { FC, ReactNode } from 'react';
-import { useControlledState } from '@vega-ui/hooks';
+import { useWidget, widgetEnvironment } from '../internals/widget';
 import { DrawerProvider } from './contexts';
 import { DrawerPosition } from './types';
+import { drawerWidget } from '@vega-ui/widgets/drawer';
 
 export interface DrawerProps {
   /**
@@ -41,17 +42,13 @@ export const Drawer: FC<DrawerProps> = ({
   position = 'end',
   defaultOpen = false,
   open: controlledOpen,
-  onChangeOpen: controlledOnChangeOpen,
+  onChangeOpen,
   children,
 }) => {
-  const [open, setOpen] = useControlledState(controlledOpen, defaultOpen, controlledOnChangeOpen)
+  const handle = useWidget(drawerWidget, { position, open: controlledOpen, defaultOpen, onChangeOpen }, widgetEnvironment)
 
   return (
-    <DrawerProvider
-      open={open}
-      changeOpen={setOpen}
-      position={position}
-    >
+    <DrawerProvider handle={handle} position={position}>
       {children}
     </DrawerProvider>
   )

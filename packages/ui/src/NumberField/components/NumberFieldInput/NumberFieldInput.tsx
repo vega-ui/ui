@@ -1,8 +1,11 @@
-import { FC, FormEvent } from 'react';
+import { FC, useState } from 'react';
+import { useMergeRefs } from '@vega-ui/hooks';
+import { useOutput } from '../../../internals/widget';
 import style from '../../style.module.css';
 import { TextFieldInput, TextFieldInputProps } from '../../../TextField';
-import { csx, mergeEventHandlers, mergeRefs } from '@vega-ui/utils';
+import { csx } from '@vega-ui/utils';
 import { useNumberFieldContext } from '../../contexts';
+import { defaultTextOf, numberFieldWidget } from '@vega-ui/widgets/number-field';
 
 export type NumberFieldInputProps = Omit<TextFieldInputProps, 'value' | 'defaultValue'>
 
@@ -17,22 +20,20 @@ export type NumberFieldInputProps = Omit<TextFieldInputProps, 'value' | 'default
  *
  * `NumberFieldInput` is designed to be used only as a child of `NumberField`.
  */
-export const NumberFieldInput: FC<NumberFieldInputProps> = ({ ref, disabled, className, onInput, ...props }) => {
-  const { disabled: _disabled, max, min, inputRef, text, changeText } = useNumberFieldContext()
-
-  const onNumberInput = (event: FormEvent<HTMLInputElement>) => changeText?.(event.currentTarget.value)
+export const NumberFieldInput: FC<NumberFieldInputProps> = ({ ref, disabled, className, ...props }) => {
+  const { handle, disabled: _disabled } = useNumberFieldContext()
+  const [defaultValue] = useState(() => defaultTextOf(handle.instance.state))
+  const attrs = useOutput(handle, numberFieldWidget.output.root)
+  const mergedRef = useMergeRefs([handle.root, ref])
 
   return (
     <TextFieldInput
-      aria-valuemax={max}
-      aria-valuemin={min}
-      value={text}
-      ref={mergeRefs([inputRef, ref])}
+      defaultValue={defaultValue}
+      ref={mergedRef}
       inputMode='numeric'
       disabled={disabled ?? _disabled}
       className={csx(style.numberTextField, className)}
-      onInput={mergeEventHandlers(onNumberInput, onInput)}
-      {...props}
+      {...handle.listen(attrs, props)}
     />
   )
 }

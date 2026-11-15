@@ -1,9 +1,9 @@
 import { FC, PropsWithChildren } from 'react';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
-import { DataGridPickerScrollerContent, type DataGridPickerScrollerContentProps } from '../../../DataGridPicker';
+import { IndexedSnapScrollerContent, type IndexedSnapScrollerContentProps } from '../../../IndexedSnapScroller';
 
-export type DayPickerScrollerContentProps = Omit<DataGridPickerScrollerContentProps, 'index'>
+export type DayPickerScrollerContentProps = Omit<IndexedSnapScrollerContentProps, 'index'>
 
 /**
  * DayPickerScrollerContent is a styled wrapper around
@@ -18,5 +18,5 @@ export type DayPickerScrollerContentProps = Omit<DataGridPickerScrollerContentPr
  * its page index from the surrounding IndexedSnapScroller context.
  */
 export const DayPickerScrollerContent: FC<PropsWithChildren<DayPickerScrollerContentProps>> = ({ className, ...props }) => {
-  return <DataGridPickerScrollerContent {...props} className={csx(style.content, className)} />
+  return <IndexedSnapScrollerContent {...props} className={csx(style.content, className)} />
 }

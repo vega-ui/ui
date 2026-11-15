@@ -1,10 +1,12 @@
-import { FC, useRef, useState } from 'react';
+import { FC } from 'react';
+import { useWidget, widgetEnvironment } from '../internals/widget';
 import { TextField, TextFieldProps } from '../TextField';
 import { DateRangeFieldProvider } from './contexts';
 import { CalendarDatesDisabled } from '../Calendar';
-import { useControlledState, useFormReset } from '@vega-ui/hooks';
-import { formatTemplateRange, parseISODate, parseTemplateRange, getDateTemplate } from '@vega-ui/utils';
+import { parseISODate } from '@vega-ui/utils';
 import { CalendarSystem, gregorianCalendar } from '@vega-ui/i18n';
+import { useToday } from '../internals/calendar';
+import { dateRangeFieldWidget } from '@vega-ui/widgets/date-range-field';
 
 export interface DateRangeFieldProps extends Omit<TextFieldProps, 'defaultValue'> {
   /**
@@ -47,7 +49,7 @@ export interface DateRangeFieldProps extends Omit<TextFieldProps, 'defaultValue'
   separator: string
   
   /**
-   * Separator used between the start and end dates in the range input, by default an en dash between non-breaking spaces (`'\u00A0–\u00A0'`).
+   * Separator used between the start and end dates in the range input.
    *
    * Defines how two dates are visually and logically separated when entering
    * or displaying a date range.
@@ -67,14 +69,14 @@ export interface DateRangeFieldProps extends Omit<TextFieldProps, 'defaultValue'
   /**
    * Minimum allowed date as a `YYYY-MM-DD` string.
    * Dates earlier than this value cannot be selected
-   * and will be clamped or rejected during input parsing.
+   * in the calendar and make a typed value invalid, like a native input.
    */
   min?: string
   
   /**
    * Maximum allowed date as a `YYYY-MM-DD` string.
    * Dates later than this value cannot be selected
-   * and will be clamped or rejected during input parsing.
+   * in the calendar and make a typed value invalid, like a native input.
    */
   max?: string
   
@@ -85,10 +87,25 @@ export interface DateRangeFieldProps extends Omit<TextFieldProps, 'defaultValue'
   disabledDates?: CalendarDatesDisabled
   
   /**
-   * Disables the field.
-   * Prevents user input and interaction, and applies the disabled visual state.
+   * Disables the field like a native `disabled` input: the input and the
+   * trigger are disabled, and the dates are not submitted.
    */
   disabled?: boolean
+
+  /**
+   * Makes the field read-only like a native `readonly` input: the input is
+   * `readonly`, the calendar still opens to show the range, and picking days
+   * does not change it. The dates are still submitted.
+   */
+  readOnly?: boolean
+
+  /**
+   * Today as a `YYYY-MM-DD` string, passed to `DateRangeFieldCalendar` and
+   * used to read a two-digit year (`yy`) of `format`: within 80 years before
+   * and 19 years after the year of today. Defaults to the date of the device,
+   * read after hydration and followed when the day or the time zone changes.
+   */
+  today?: string
   
   /**
    * Calendar system the dates are typed and picked in. The values stay
@@ -100,7 +117,7 @@ export interface DateRangeFieldProps extends Omit<TextFieldProps, 'defaultValue'
   /**
    * BCP 47 locale of the calendar popup (month and day names, first day of
    * the week), e.g. `de-DE`. The typed format still comes from `format`.
-   * Defaults to the locale of the runtime, like `Intl`.
+   * @default "en-US"
    */
   locale?: string
 }
@@ -123,56 +140,48 @@ export const DateRangeField: FC<DateRangeFieldProps> = ({
   min: _min,
   disabledDates,
   rangeSeparator = ' – ',
+  readOnly,
   calendar = gregorianCalendar,
   locale,
+  today: _today,
   value,
   defaultValue = ['', ''],
   onChangeValue,
+  children,
   ...props
 }) => {
+  const today = useToday(_today)
   const min = parseISODate(_min) ? _min : undefined
   const max = parseISODate(_max) ? _max : undefined
-  const [range, setRange] = useControlledState(value, defaultValue, onChangeValue)
-  const [text, setText] = useState('')
-  
-  const inputInnerRef = useRef<HTMLInputElement>(null)
-  
-  const template = getDateTemplate(format, separator)
+  const handle = useWidget(dateRangeFieldWidget, {
+    format,
+    separator,
+    rangeSeparator,
+    calendar,
+    today,
+    min,
+    max,
+    disabledDates,
+    value,
+    defaultValue,
+    onChangeValue,
+  }, widgetEnvironment)
 
-  const textRange = parseTemplateRange(calendar, text, template, rangeSeparator)
-  const isTextShown = textRange[0] === range[0] && textRange[1] === range[1]
-  const shownText = isTextShown ? text : formatTemplateRange(calendar, range, template, rangeSeparator)
-
-  const changeText = (text: string) => {
-    setText(text)
-
-    const [start, end] = parseTemplateRange(calendar, text, template, rangeSeparator)
-    if (start !== range[0] || end !== range[1]) setRange([start, end])
-  }
-
-  useFormReset(inputInnerRef, () => {
-    if (value !== undefined) return
-
-    setText(formatTemplateRange(calendar, defaultValue, template, rangeSeparator))
-    setRange(defaultValue)
-  })
-  
   return (
     <DateRangeFieldProvider
+      handle={handle}
       max={max}
       min={min}
-      date={range}
-      text={shownText}
-      changeText={changeText}
-      disabledDates={disabledDates}
       disabled={disabled}
-      inputRef={inputInnerRef}
-      template={template}
+      readOnly={readOnly}
+      disabledDates={disabledDates}
       calendar={calendar}
       locale={locale}
-      rangeSeparator={rangeSeparator}
+      today={today}
     >
-      <TextField {...props} />
+      <TextField {...props}>
+        {children}
+      </TextField>
     </DateRangeFieldProvider>
   )
 }

@@ -1,0 +1,8 @@
+.grid {
+    isolation: isolate;
+}
+
+.grid:where(:not(table)) {
+    display: grid;
+    grid-auto-flow: row;
+}

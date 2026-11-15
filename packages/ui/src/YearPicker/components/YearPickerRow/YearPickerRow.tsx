@@ -1,17 +1,17 @@
 import { FC } from 'react';
-import { DataGridPickerRow, DataGridPickerRowProps } from '../../../DataGridPicker';
+import { GridRow, GridRowProps } from '../../../Grid';
 
-export type YearPickerRowProps = DataGridPickerRowProps
+export type YearPickerRowProps = GridRowProps
 
 /**
- * YearPickerRow is a thin wrapper around DataGridPickerRow used to
+ * YearPickerRow is a thin wrapper around GridRow used to
  * structure rows within the YearPicker grid. It provides semantic
  * clarity and keeps year-specific layouts consistent, while delegating
  * all row behavior (navigation, focus, range logic) to the underlying
- * DataGridPickerRow.
+ * GridRow.
  */
 export const YearPickerRow: FC<YearPickerRowProps> = (props) => {
   return (
-    <DataGridPickerRow {...props} />
+    <GridRow {...props} />
   )
 }

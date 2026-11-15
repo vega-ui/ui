@@ -12,17 +12,23 @@ import {
   CalendarMonthLabel,
   CalendarMonth,
   CalendarMonths,
+  CalendarMonthsGrid,
   CalendarNextButton,
   CalendarPrevButton,
   CalendarViewButton,
-  CalendarViewButtonGroup,
+  CalendarHeading,
   CalendarWeekdays,
   CalendarWeekday,
   CalendarDay,
   CalendarWeeks,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
   CalendarYearLabel,
   CalendarYear,
   CalendarYears,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
+  CalendarYearsGrid,
 } from '../Calendar';
 import { gregorianCalendar, createCalendarSystem, getDateFormat, getDateSeparator } from '@vega-ui/i18n';
 
@@ -49,9 +55,9 @@ const getPlaceholder = (format: string, rangeSeparator = defaultRangeSeparator) 
 const locales = ['en-US', 'de-DE', 'ja-JP', 'fr-FR'];
 const sizes: DateRangeFieldProps['size'][] = ['xs', 'sm', 'md', 'lg', 'xl'];
 const states = [
-  { label: 'default', error: false, disabled: false },
-  { label: 'error', error: true, disabled: false },
-  { label: 'disabled', error: false, disabled: true },
+  { label: 'default', invalid: false, disabled: false },
+  { label: 'invalid', invalid: true, disabled: false },
+  { label: 'disabled', invalid: false, disabled: true },
 ];
 
 const DateRangeFieldParts: FC<DateRangeFieldInputProps> = (props) => (
@@ -65,14 +71,14 @@ const DateRangeFieldParts: FC<DateRangeFieldInputProps> = (props) => (
         <DateRangeFieldCalendar>
           <CalendarHeader>
             <CalendarPrevButton aria-label='Previous' />
-            <CalendarViewButtonGroup>
+            <CalendarHeading>
               <CalendarViewButton view='month'>
                 <CalendarMonthLabel />
               </CalendarViewButton>
               <CalendarViewButton view='year'>
                 <CalendarYearLabel />
               </CalendarViewButton>
-            </CalendarViewButtonGroup>
+            </CalendarHeading>
             <CalendarNextButton aria-label='Next' />
           </CalendarHeader>
           <CalendarContent>
@@ -80,15 +86,27 @@ const DateRangeFieldParts: FC<DateRangeFieldInputProps> = (props) => (
               <CalendarWeekdays format='narrow'>
                 <CalendarWeekday />
               </CalendarWeekdays>
-              <CalendarWeeks>
-                <CalendarDay />
-              </CalendarWeeks>
+              <CalendarDaysScroller>
+                <CalendarDaysScrollerContent>
+                  <CalendarWeeks>
+                    <CalendarDay />
+                  </CalendarWeeks>
+                </CalendarDaysScrollerContent>
+              </CalendarDaysScroller>
             </CalendarDays>
             <CalendarMonths>
-              <CalendarMonth />
+              <CalendarMonthsGrid>
+                <CalendarMonth />
+              </CalendarMonthsGrid>
             </CalendarMonths>
             <CalendarYears>
-              <CalendarYear />
+              <CalendarYearsScroller>
+                <CalendarYearsScrollerContent>
+                  <CalendarYearsGrid>
+                    <CalendarYear />
+                  </CalendarYearsGrid>
+                </CalendarYearsScrollerContent>
+              </CalendarYearsScroller>
             </CalendarYears>
           </CalendarContent>
         </DateRangeFieldCalendar>
@@ -123,7 +141,6 @@ const meta = {
     max: { control: 'text' },
     locale: { control: 'text' },
     calendar: { control: 'select', options: Object.keys(calendars), mapping: calendars },
-    error: { control: 'boolean' },
     disabled: { control: 'boolean' },
   },
   args: {
@@ -148,8 +165,8 @@ export const Matrix: Story = {
   render: (args) => (
     <div style={{ display: 'grid', gridTemplateColumns: `repeat(${states.length}, 300px)`, gap: 12, alignItems: 'center' }}>
       {sizes.map((size) => states.map((state) => (
-        <DateRangeField key={`${size}-${state.label}`} {...args} size={size} error={state.error} disabled={state.disabled}>
-          <DateRangeFieldParts aria-label={`${size} / ${state.label}`} placeholder={getPlaceholder(args.format, args.rangeSeparator)} />
+        <DateRangeField key={`${size}-${state.label}`} {...args} size={size} disabled={state.disabled}>
+          <DateRangeFieldParts aria-label={`${size} / ${state.label}`} aria-invalid={state.invalid} placeholder={getPlaceholder(args.format, args.rangeSeparator)} />
         </DateRangeField>
       )))}
     </div>

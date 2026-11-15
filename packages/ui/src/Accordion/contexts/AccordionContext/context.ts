@@ -1,16 +1,16 @@
 'use client';
 
-import { createContext } from '@vega-ui/react-kit/context';
+import { createContext } from '../../../internals/context';
+import { createHandle, WidgetHandle } from '../../../internals/widget';
+import { accordionShape, accordionWidget } from '@vega-ui/widgets/accordion';
 import { AccordionSize } from '../../types';
 
 export interface AccordionContextState {
-  opened: string[],
-  onChangeOpened: (value: string, state: boolean) => void
+  handle: WidgetHandle<typeof accordionShape>
   size?: AccordionSize
 }
 
-export const [AccordionProvider, useAccordionContext] = createContext<AccordionContextState>('AlertContext', {
-  opened: [],
-  onChangeOpened: () => undefined,
+export const [AccordionProvider, useAccordionContext] = createContext<AccordionContextState>('AccordionContext', {
+  handle: createHandle(accordionWidget, { multiple: false }, { id: 'accordion' }),
   size: 'md',
 })

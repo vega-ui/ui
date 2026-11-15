@@ -5,7 +5,7 @@
     --y: calc(var(--avatar-size) / 2);
 
     mask-image: radial-gradient(
-            ellipse 1px 1px at var(--x) var(--y),
+            circle at var(--x) var(--y),
             #0000 var(--r),
             #000 0
     );
@@ -13,6 +13,10 @@
 
     transition: --r var(--transition-fast-state-delay) ease-in-out,
                 margin var(--transition-state-delay) ease-in-out;
+}
+
+.avatar:not(:first-child):dir(rtl) {
+    --x: calc(var(--avatar-size) * 1.5 - var(--avatar-stack-item-gap));
 }
 
 .avatar:not(:first-child):hover {

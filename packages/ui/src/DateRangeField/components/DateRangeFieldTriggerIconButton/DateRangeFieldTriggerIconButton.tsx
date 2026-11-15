@@ -15,14 +15,30 @@ export type DateRangeFieldTriggerIconButtonProps = IconButtonProps
  *
  * Purpose:
  * Provides a clickable icon button that opens the associated calendar picker,
- * visually indicating that a date can be selected.
+ * visually indicating that a date can be selected. It has
+ * `aria-haspopup="dialog"`.
  */
-export const DateRangeFieldTriggerIconButton: FC<DateRangeFieldTriggerIconButtonProps> = ({ children, className, type = 'button', ...props }) => {
+export const DateRangeFieldTriggerIconButton: FC<DateRangeFieldTriggerIconButtonProps> = ({
+  children,
+  className,
+  type = 'button',
+  'aria-haspopup': ariaHasPopup = 'dialog',
+  ...props
+}) => {
   const { size } = useTextFieldContext()
   const { disabled } = useDateRangeFieldContext()
 
   return (
-    <IconButton type={type} size={size} variant='secondary' appearance='transparent' disabled={disabled} className={csx(style.button, className)} {...props}>
+    <IconButton
+      type={type}
+      size={size}
+      variant='secondary'
+      appearance='transparent'
+      disabled={disabled}
+      aria-haspopup={ariaHasPopup}
+      className={csx(style.button, className)}
+      {...props}
+    >
       {children ?? <Icon><CalendarIcon /></Icon>}
     </IconButton>
   )

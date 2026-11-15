@@ -1,0 +1,148 @@
+.item {
+    --grid-item-size: var(--spacing-18);
+    --grid-item-br-ratio: 0.333;
+
+    --grid-item-color: var(--text-color);
+    --grid-item-background-color: transparent;
+    --grid-item-background-color-hover: var(--fills-quaternary-hover);
+    --grid-item-background-color-active: var(--fills-quaternary-active);
+
+    --grid-item-selected-color: var(--text-color-inverse);
+    --grid-item-selected-background-color: transparent;
+    --grid-item-selected-background-color-hover: transparent;
+    --grid-item-selected-background-color-active: transparent;
+
+    --grid-item-range-background-color: var(--fills-tertiary);
+    --grid-item-range-background-color-hover: var(--fills-tertiary-hover);
+    --grid-item-range-background-color-active: var(--fills-tertiary-active);
+
+    position: relative;
+    font-size: var(--font-size-2);
+    font-family: var(--default-font-family);
+    color: var(--grid-item-color);
+    background-color: var(--grid-item-background-color);
+    height: var(--grid-item-size);
+    min-width: var(--grid-item-size);
+    cursor: pointer;
+    border-radius: calc(var(--grid-item-size) * var(--grid-item-br-ratio));
+}
+
+/* sizes */
+
+.item:where([data-size='xs']) {
+    --grid-item-size: var(--spacing-16);
+    font-size: var(--font-size-2);
+}
+
+.item:where([data-size='sm']) {
+    --grid-item-size: var(--spacing-18);
+    font-size: var(--font-size-2);
+}
+
+.item:where([data-size='md']) {
+    --grid-item-size: var(--spacing-21);
+    font-size: var(--font-size-3);
+}
+
+.item:where([data-size='lg']) {
+    --grid-item-size: var(--spacing-24);
+    font-size: var(--font-size-4);
+}
+
+.item:where([data-size='xl']) {
+    --grid-item-size: var(--spacing-26);
+    font-size: var(--font-size-4);
+}
+
+/* variants */
+
+.item:where([data-variant='primary']) {
+    --grid-item-selected-color: var(--color-white);
+    --grid-item-selected-background-color: var(--color-primary-500);
+    --grid-item-selected-background-color-hover: var(--color-primary-600);
+    --grid-item-selected-background-color-active: var(--color-primary-700);
+}
+
+.item:where([data-variant='secondary']) {
+    --grid-item-selected-color: var(--text-color-inverse);
+    --grid-item-selected-background-color: var(--color-secondary-500);
+    --grid-item-selected-background-color-hover: var(--color-secondary-600);
+    --grid-item-selected-background-color-active: var(--color-secondary-700);
+}
+
+/* selected */
+
+.item[aria-selected='true']:not([data-range='between']) {
+    --grid-item-color: var(--grid-item-selected-color);
+    --grid-item-background-color: var(--grid-item-selected-background-color);
+    --grid-item-background-color-hover: var(--grid-item-selected-background-color-hover);
+    --grid-item-background-color-active: var(--grid-item-selected-background-color-active);
+}
+
+/* range between */
+
+.item:where([data-range='between']) {
+    --grid-item-background-color: transparent;
+    --grid-item-background-color-hover: var(--grid-item-range-background-color-hover);
+    --grid-item-background-color-active: var(--grid-item-range-background-color-active);
+}
+
+.item:where([data-range]):after {
+    content: '';
+    position: absolute;
+    top: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    background: var(--grid-item-range-background-color);
+    inset: 0;
+}
+
+.item:where([data-range='start']) {
+    touch-action: none;
+}
+
+.item:where([data-range='start']):after {
+    border-start-start-radius: inherit;
+    border-end-start-radius: inherit;
+}
+
+.item:where([data-range='end']) {
+    touch-action: none;
+}
+
+.item:where([data-range='end']):after {
+    border-start-end-radius: inherit;
+    border-end-end-radius: inherit;
+}
+
+/* disabled */
+
+.item[aria-disabled='true'] {
+    cursor: not-allowed;
+    color: var(--disable-label-text-color);
+    background: initial;
+    touch-action: none;
+    pointer-events: none;
+}
+
+.item[aria-disabled='true'][aria-selected='true']:not([data-range='between']) {
+    background: var(--disable-background-color);
+    color: var(--disable-label-text-color);
+}
+
+/* focus */
+
+.item:focus-visible {
+    outline: 2px solid var(--focus-color);
+}
+
+/* interactive states */
+
+.item:not([aria-disabled='true']):hover {
+    --grid-item-background-color: var(--grid-item-background-color-hover);
+}
+
+.item:not([aria-disabled='true']):active {
+    --grid-item-background-color: var(--grid-item-background-color-active);
+}

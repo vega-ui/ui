@@ -1,9 +1,11 @@
-import { FC, HTMLAttributes, PropsWithChildren, useRef, PointerEvent, MouseEvent, KeyboardEvent, Ref } from 'react';
+import { FC, HTMLAttributes, PropsWithChildren, Ref } from 'react';
+import { useMergeRefs } from '@vega-ui/hooks';
+import { useOutput, useSnapshot, useWidget, widgetEnvironment } from '../internals/widget';
+import { csx } from '@vega-ui/utils';
 import { PageControlProvider } from './contexts';
+import { activeOf, PageControlEntry, pageControlWidget } from '@vega-ui/widgets/page-control';
 import style from './style.module.css'
-import { csx, mergeEventHandlers, safeSetPointerCapture } from '@vega-ui/utils';
 import { PageControlSize } from './types';
-import { useControlledState, useRefMap } from '@vega-ui/hooks';
 
 export interface PageControlProps extends HTMLAttributes<HTMLUListElement> {
   /**
@@ -36,103 +38,32 @@ export interface PageControlProps extends HTMLAttributes<HTMLUListElement> {
 /** PageControl is a UI component that displays a sequence of page indicators, allowing users to navigate between steps or views. It supports interaction, active state management, and visual variants such as default or high-contrast styles. */
 export const PageControl: FC<PropsWithChildren<PageControlProps>> = ({
   ref,
-  active: controlledActive,
+  active,
   defaultActive = 0,
   onChangeActive,
   children,
   className,
   size = 'md',
-  onKeyDown: _onKeyDown,
-  onClick: _onClick,
-  onPointerDown: _onPointerDown,
-  onPointerUp: _onPointerUp,
-  onPointerMove: _onPointerMove,
   ...props
 }) => {
-  const [active, setActive] = useControlledState(controlledActive, defaultActive, onChangeActive)
-
-  const { getItem, itemRef } = useRefMap()
-  
-  const y = useRef<number>(null)
-  const moved = useRef(false)
-  
-  const changeActive = (index: number) => {
-    const item = getItem(index);
-    if (!item) return
-    
-    item.focus()
-    setActive(index)
-  }
-  
-  
-  const changeActiveByElement = (element: HTMLElement) => {
-    const index = element?.dataset?.index
-    if (!index || active === Number(index)) return
-    
-    changeActive(Number(index))
-  }
-  
-  const onClick = (e: MouseEvent<HTMLUListElement>) => {
-    const target = document.elementFromPoint(e.clientX, e.clientY)
-    changeActiveByElement(target as HTMLElement)
-  }
-  
-  const onPointerDown = (e: PointerEvent<HTMLUListElement>) => {
-    // Pointer move only for touch and pen
-    if (e.pointerType === 'mouse') return
-    
-    const { y: elemY, bottom } = e.currentTarget.getBoundingClientRect()
-    y.current = (elemY + bottom) / 2
-    
-    moved.current = true;
-  }
-  
-  const onPointerMove = (e: PointerEvent<HTMLUListElement>) => {
-    safeSetPointerCapture(e.currentTarget, e.pointerId)
-    
-    if (!y.current || !moved.current) return
-    const target = document.elementFromPoint(e.clientX, y.current)
-    if (!target) return
-    
-    changeActiveByElement(target as HTMLElement)
-  }
-  
-  const onPointerUp = () => {
-    moved.current = false;
-    y.current = null
-  }
-  
-  const onKeyDown = (e: KeyboardEvent) => {
-    if (active === undefined) return
-    
-    switch (e.key) {
-      case 'ArrowRight': {
-        e.preventDefault()
-        changeActive(active + 1)
-        
-        return
-      }
-      case 'ArrowLeft': {
-        e.preventDefault()
-        changeActive(active - 1)
-        
-        return
-      }
-    }
-  }
+  const handle = useWidget(pageControlWidget, (items: readonly PageControlEntry[]) => ({
+    items,
+    active,
+    defaultActive,
+    onChangeActive: (index: number | null) => {
+      if (index !== null) onChangeActive?.(index)
+    },
+  }), widgetEnvironment)
+  const attrs = useOutput(handle, pageControlWidget.output.root)
+  const rootRef = useMergeRefs([handle.root, ref])
+  const current = useSnapshot(handle, activeOf)
 
   return (
-    <PageControlProvider itemRef={itemRef} size={size} active={active}>
+    <PageControlProvider handle={handle} size={size} active={current ?? undefined}>
       <ul
-        role='tablist'
-        ref={ref}
-        onKeyDown={mergeEventHandlers(onKeyDown, _onKeyDown)}
-        onClick={mergeEventHandlers(onClick, _onClick)}
-        onPointerDown={mergeEventHandlers(onPointerDown, _onPointerDown)}
-        onPointerMove={mergeEventHandlers(onPointerMove, _onPointerMove)}
-        onPointerUp={mergeEventHandlers(onPointerUp, _onPointerUp)}
+        ref={rootRef}
         className={csx(style.pageControl, className)}
-        {...props}
+        {...handle.listen(attrs, props)}
       >
         {children}
       </ul>

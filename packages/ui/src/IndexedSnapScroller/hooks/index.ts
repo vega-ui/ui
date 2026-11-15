@@ -1,1 +1,0 @@
-export { useIndexes } from './useIndexes'

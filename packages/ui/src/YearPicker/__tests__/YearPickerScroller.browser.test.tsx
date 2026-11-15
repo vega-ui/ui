@@ -14,7 +14,7 @@ describe('YearPickerScroller', () => {
     const onChangePeriod = vi.fn();
     
     render(
-      <YearPicker aria-label='Years' year='2026-05-10'>
+      <YearPicker aria-label='Years' defaultFocusedDate='2026-05-10'>
         <YearPickerScroller apiRef={apiRef} onChangePeriod={onChangePeriod}>
           <YearPickerScrollerContent>
             <YearPickerScrollerLayout>

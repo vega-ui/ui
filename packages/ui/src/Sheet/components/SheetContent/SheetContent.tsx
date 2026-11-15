@@ -1,12 +1,14 @@
 'use client';
 
-import { CSSProperties, DialogHTMLAttributes, FC, Ref } from 'react';
+import { DialogHTMLAttributes, FC, Ref, useLayoutEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { csx, mergeEventHandlers } from '@vega-ui/utils';
-import { useKeyboardInset, useMergeRefs } from '@vega-ui/hooks';
-import { ModalDialogClosedBy, useModalDialog } from '../../../internals/modalDialog';
+import { createInput } from '@vega-ui/core';
+import { csx } from '@vega-ui/utils';
+import { useMergeRefs } from '@vega-ui/hooks';
+import { useSnapshot } from '../../../internals/widget';
+import { DIALOG, isMounted, isRendered, ModalDialogClosedBy } from '@vega-ui/widgets/modal-dialog';
 import { useSheetContext } from '../../contexts';
-import { useSheetDrag } from '../../hooks';
+import { MEASURE_SHEET, sheetWidget, SURFACE } from '@vega-ui/widgets/sheet';
 import styles from './style.module.css'
 
 export interface SheetContentProps extends DialogHTMLAttributes<HTMLDialogElement> {
@@ -59,16 +61,17 @@ export const SheetContent: FC<SheetContentProps> = ({
   closedBy = 'any',
   container,
   style,
-  onCancel: _onCancel,
-  onSubmit: _onSubmit,
-  onClose: _onClose,
   ...props
 }) => {
-  const { open, changeOpen } = useSheetContext()
-  const { ref: dialogRef, dialog, mounted, rendered, onCancel, onSubmit, onClose } = useModalDialog({ open, onChangeOpen: changeOpen, closedBy })
-  const mergedRef = useMergeRefs([dialogRef, ref])
-  const keyboardInset = useKeyboardInset()
-  const surfaceRef = useSheetDrag({ dialog, rendered, keyboardInset, swipeable: closedBy === 'any' })
+  const { handle } = useSheetContext()
+  const mounted = useSnapshot(handle, isMounted)
+  const rendered = useSnapshot(handle, isRendered)
+  const [dialog, setDialog] = useState<HTMLDialogElement | null>(null)
+  const mergedRef = useMergeRefs([handle.rootAt(DIALOG, sheetWidget.output.dialog), setDialog, ref])
+
+  useLayoutEffect(() => {
+    if (dialog) handle.send(createInput(MEASURE_SHEET))
+  }, [handle, dialog, rendered])
 
   if (!mounted) return null
 
@@ -76,21 +79,14 @@ export const SheetContent: FC<SheetContentProps> = ({
     <dialog
       closedby={closedBy}
       className={csx(styles.content, className)}
-      onCancel={mergeEventHandlers(onCancel, _onCancel)}
-      onSubmit={mergeEventHandlers(onSubmit, _onSubmit)}
-      onClose={mergeEventHandlers(onClose, _onClose)}
-      data-status={open ? 'open' : 'close'}
       ref={mergedRef}
-      style={{
-        '--sheet-keyboard-inset': `${keyboardInset}px`,
-        ...style,
-      } as CSSProperties}
+      style={style}
       data-shadow={shadowed}
       data-blurred={blurred}
       data-overlay={overlay}
-      {...props}
+      {...handle.listen({}, props)}
     >
-      <div ref={surfaceRef} className={styles.surface} />
+      <div ref={handle.part(SURFACE, sheetWidget.output.surface)} className={styles.surface} />
       {rendered && children}
     </dialog>,
     container ?? document.body

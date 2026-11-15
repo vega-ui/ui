@@ -1,7 +1,10 @@
 import { ButtonHTMLAttributes, FC, Ref } from 'react';
+import { useMergeRefs } from '@vega-ui/hooks';
+import { useItem, useOutput } from '../../../internals/widget';
+import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
 import { usePageControlContext } from '../../contexts';
-import { csx, mergeRefs } from '@vega-ui/utils';
+import { currentTabOf, tabPart } from '@vega-ui/widgets/page-control';
 import { PageControlSize } from '../../types';
 
 export interface PageControlItemProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -34,28 +37,25 @@ export const PageControlItem: FC<PageControlItemProps> = ({
   className,
   size,
   current,
+  disabled = current,
   ref,
   ...props
 }) => {
-  const { active, size: _size, itemRef } = usePageControlContext()
-  
-  const _current = active === index
-  const selected = current ?? _current
-  
+  const { handle, size: _size } = usePageControlContext()
+  const register = useItem(handle, index, { disabled: disabled === true })
+  const itemRef = useMergeRefs([register, ref])
+  const attrs = useOutput(handle, tabPart, index)
+  const forced = current === undefined ? undefined : currentTabOf(current)
+
   return (
     <button
-      role='tab'
       type='button'
-      tabIndex={selected ? 0 : -1}
-      ref={mergeRefs([ref, itemRef?.(index)])}
-      disabled={current}
+      ref={itemRef}
+      disabled={disabled}
       data-index={index}
-      aria-current={current ? 'page' : undefined}
       className={csx(style.pageControlItem, className)}
-      aria-selected={selected}
-      data-active={selected}
-      data-size={_size ?? size}
-      {...props}
+      data-size={size ?? _size}
+      {...handle.merge(attrs, { ...forced, ...props })}
     />
   )
 }

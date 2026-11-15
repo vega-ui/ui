@@ -1,9 +1,9 @@
-import { FC, ReactNode, Ref } from 'react';
+import { FC, HTMLAttributes, ReactNode, Ref } from 'react';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
 import { Slot } from '../Slot';
 
-export interface VisuallyHiddenProps {
+export interface VisuallyHiddenProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * Optional class name for the hidden element.
    * Can be used to override or extend default visually hidden styles.

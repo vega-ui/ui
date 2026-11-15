@@ -41,7 +41,7 @@ type Story = StoryObj<typeof meta>;
 
 const variants: SwitchProps['variant'][] = ['primary', 'secondary'];
 const sizes: SwitchProps['size'][] = ['sm', 'md', 'lg'];
-const rows = variants.flatMap((variant) => [false, true].flatMap((checked) => [false, true].map((disabled) => ({ variant, checked, disabled }))));
+const rows = variants.flatMap((variant) => [false, true].flatMap((checked) => [false, true].flatMap((disabled) => [false, true].map((invalid) => ({ variant, checked, disabled, invalid })))));
 
 export const Playground: Story = {};
 
@@ -49,11 +49,11 @@ export const States: Story = {
   render: () => (
     <div style={{ display: 'grid', gridTemplateColumns: `repeat(${sizes.length}, auto)`, gap: 12, alignItems: 'center' }}>
       {rows.map((row) => sizes.map((size) => {
-        const name = `${row.variant}${row.checked ? ' / checked' : ''}${row.disabled ? ' / disabled' : ''} / ${size}`;
+        const name = `${row.variant}${row.checked ? ' / checked' : ''}${row.disabled ? ' / disabled' : ''}${row.invalid ? ' / invalid' : ''} / ${size}`;
 
         return (
           <Switch key={name} variant={row.variant} size={size}>
-            <SwitchInput aria-label={name} defaultChecked={row.checked} disabled={row.disabled} />
+            <SwitchInput aria-label={name} defaultChecked={row.checked} disabled={row.disabled} aria-invalid={row.invalid} />
             <SwitchIndicator />
           </Switch>
         );

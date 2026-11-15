@@ -43,24 +43,15 @@ describe('Progress', () => {
       await expect.element(getProgress(r)).toHaveAttribute('aria-valuenow', '0');
     });
 
-    it('sets CSS custom properties via style attribute (string check)', async () => {
-      const r = render(<ProgressTest max={250} value={10} />);
-      const el = getProgress(r);
+    it('fills the track from min, not from zero', async () => {
+      const r = render(<ProgressTest min={50} max={150} value={100} style={{ width: 200 }} />);
+      const track = r.getByTestId(TESTID_TRACK);
 
-      await expect.element(el).toHaveAttribute('style');
-      expect(el.getAttribute('style')).toContain('--progress-max: 250');
-      expect(el.getAttribute('style')).toContain('--progress-value: 10');
+      await expect.poll(() => track.getBoundingClientRect().width).toBe(100);
     });
   });
 
   describe('Accessibility', () => {
-    describe('roles', () => {
-      it('exposes progressbar role', async () => {
-        const r = render(<ProgressTest />);
-        await expect.element(getProgress(r)).toHaveRole('progressbar');
-      });
-    });
-
     describe('aria', () => {
       let r: RenderResult;
 

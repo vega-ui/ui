@@ -12,7 +12,7 @@ import {
 } from './components';
 import { addCalendarYears, getCalendarYearStart, gregorianCalendar, createCalendarSystem } from '@vega-ui/i18n';
 import { formatISODate, getCurrentDate } from '@vega-ui/utils';
-import type { DataGridSelection } from '../DataGridSelectable';
+import type { GridSelection } from '../Grid';
 
 const meta = {
   title: 'Data/YearPicker',
@@ -58,12 +58,12 @@ const shift = (years: number) => addCalendarYears(gregorianCalendar, thisYear, y
 const variants: YearPickerProps['variant'][] = ['primary', 'secondary'];
 const sizes: YearPickerProps['size'][] = ['xs', 'sm', 'md', 'lg', 'xl'];
 
-const states: { label: string; start?: string; props: YearPickerProps<DataGridSelection> }[] = [
-  { label: 'single', props: { selection: 'single', defaultSelected: thisYear } },
-  { label: 'multiple', props: { selection: 'multiple', defaultSelected: [thisYear, shift(2), shift(5)] } },
-  { label: 'range', props: { selection: 'range', defaultSelected: [shift(1), shift(4)] } },
-  { label: 'from / to', start: shift(-6), props: { selection: 'range', from: shift(-2), to: shift(2) } },
-  { label: 'disabled', props: { selection: 'multiple', disabled: [shift(1), shift(2)] } },
+const states: { label: string; start?: string; props: YearPickerProps<GridSelection> }[] = [
+  { label: 'single', props: { selection: 'single', defaultValue: thisYear } },
+  { label: 'multiple', props: { selection: 'multiple', defaultValue: [thisYear, shift(2), shift(5)] } },
+  { label: 'range', props: { selection: 'range', defaultValue: [shift(1), shift(4)] } },
+  { label: 'min / max', start: shift(-6), props: { selection: 'range', min: shift(-2), max: shift(2) } },
+  { label: 'disabled', props: { selection: 'multiple', disabledDates: [shift(1), shift(2)] } },
 ];
 
 const calendarSystems = [
@@ -83,7 +83,7 @@ export const Matrix: Story = {
       {variants.map((variant) => sizes.map((size) => (
         <div key={`${variant}-${size}`} style={{ display: 'grid', gap: 8 }}>
           <span>{`${variant} / ${size}`}</span>
-          <YearPicker aria-label='Year' variant={variant} size={size} defaultSelected={thisYear}>
+          <YearPicker aria-label='Year' variant={variant} size={size} defaultValue={thisYear}>
             <YearPickerLayout>
               <YearPickerCell />
             </YearPickerLayout>
@@ -114,8 +114,9 @@ export const States: Story = {
 export const Swipable: Story = {
   args: {
     selection: 'range',
+    period: 20,
     children: (
-      <YearPickerScroller period={20}>
+      <YearPickerScroller>
         <YearPickerScrollerContent>
           <YearPickerScrollerLayout rows={5} cols={4}>
             <YearPickerCell />
@@ -132,7 +133,7 @@ export const CalendarSystems: Story = {
       {calendarSystems.map(({ name, locale, calendar, year, start }) => (
         <div key={name} style={{ display: 'grid', gap: 8 }}>
           <span>{`${name} / ${locale}`}</span>
-          <YearPicker aria-label='Year' calendar={calendar} locale={locale} year={year}>
+          <YearPicker aria-label='Year' calendar={calendar} locale={locale} defaultFocusedDate={year}>
             <YearPickerLayout start={start}>
               <YearPickerCell />
             </YearPickerLayout>
@@ -149,7 +150,7 @@ export const Locales: Story = {
       {locales.map((locale) => (
         <div key={locale} style={{ display: 'grid', gap: 8 }}>
           <span>{locale}</span>
-          <YearPicker aria-label='Year' locale={locale} defaultSelected={thisYear}>
+          <YearPicker aria-label='Year' locale={locale} defaultValue={thisYear}>
             <YearPickerLayout>
               <YearPickerCell />
             </YearPickerLayout>

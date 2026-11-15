@@ -21,7 +21,7 @@ export interface DayPickerLayoutProps extends DayPickerRowGroupProps {
   
   /**
    * Month to render, given as a `YYYY-MM-DD` string of any day in it.
-   * Defaults to the month of the parent DayPicker.
+   * Defaults to the month of the focused day of the parent DayPicker.
    */
   month?: string;
   
@@ -55,6 +55,7 @@ export interface DayPickerLayoutProps extends DayPickerRowGroupProps {
   /**
    * Defines the first day of the week.
    * 0 = Sunday, 1 = Monday, … 6 = Saturday.
+   * Defaults to the first day of the week of the locale.
    */
   weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
 }
@@ -69,45 +70,49 @@ export interface DayPickerLayoutProps extends DayPickerRowGroupProps {
  * Its children are the template of a day cell, rendered once per day inside
  * the cell context (`useDayPickerCellContext`), usually `<DayPickerCell />`.
  * Cells sit in a Row and RowGroup structure, so focus,
- * keyboard navigation, selection and disabled cells work as in DataGridPicker.
+ * keyboard navigation, selection and disabled cells work as in Grid.
  */
 export const DayPickerLayout: FC<DayPickerLayoutProps> = ({
-  month,
+  month: _month,
   locale: _locale,
   format = 'numeric',
   rows = 6,
   offset = 0,
   includeOverflowDays = false,
-  weekStartsOn,
+  weekStartsOn: _weekStartsOn,
   children,
   ...props
 }) => {
-  const { month: contextMonth, calendar, locale: contextLocale } = useDayPickerContext()
+  const { month: contextMonth, calendar, locale: contextLocale, today } = useDayPickerContext()
   const locale = _locale ?? contextLocale
-  const formatDay = useMemo(() => createCalendarDayFormatter(calendar, locale, format), [locale, format, calendar])
+  const month = _month ?? contextMonth
+  const weekStartsOn = _weekStartsOn ?? getFirstDayOfWeek(locale)
 
-  const grid = createDayPickerGrid({
-    month: month ?? contextMonth,
-    calendar,
-    rows,
-    offset,
-    includeOverflowDays,
-    weekStartsOn: weekStartsOn ?? getFirstDayOfWeek(locale)
-  })
-  
+  const grid = useMemo(() => {
+    if (month === undefined) return []
+
+    const formatDay = createCalendarDayFormatter(calendar, locale, format)
+    const rowsOfDays = createDayPickerGrid({ month, calendar, rows, offset, includeOverflowDays, weekStartsOn })
+
+    return rowsOfDays.map(({ row, data }) => ({
+      row,
+      data: data.map(({ col, date, inCurrentMonth }) => ({
+        col,
+        date,
+        fields: date === undefined ? undefined : calendar.toFields(date),
+        label: date === undefined ? '' : formatDay(date),
+        inMonth: inCurrentMonth,
+        isToday: date !== undefined && date === today,
+      })),
+    }))
+  }, [month, calendar, locale, format, rows, offset, includeOverflowDays, weekStartsOn, today])
+
   return (
     <DayPickerRowGroup {...props}>
       {grid.map(({ row, data }) => (
         <DayPickerRow row={row} key={row}>
-          {data.map(({ col, date, inCurrentMonth }) => (
-            <DayPickerCellProvider
-              key={col}
-              col={col}
-              date={date}
-              fields={date === undefined ? undefined : calendar.toFields(date)}
-              label={date === undefined ? '' : formatDay(date)}
-              inMonth={inCurrentMonth}
-            >
+          {data.map(({ col, ...cell }) => (
+            <DayPickerCellProvider key={col} col={col} {...cell}>
               {children}
             </DayPickerCellProvider>
           ))}

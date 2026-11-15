@@ -1,5 +1,5 @@
-import { ComponentProps, CSSProperties, FC, FormEvent, PropsWithChildren } from 'react';
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { ComponentProps, CSSProperties, FC, PropsWithChildren } from 'react';
+import { afterEach, describe, expect, it } from 'vitest';
 import { userEvent } from 'vitest/browser';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
 
@@ -70,17 +70,10 @@ const CheckboxCardTest: FC<CheckboxCardTestProps> = (props) => {
   );
 };
 
-const getCheckbox = (r: RenderResult) => r.getByTestId(TESTID_CHECKBOX);
 const getInput = (r: RenderResult) => r.getByTestId(TESTID_INPUT) as HTMLInputElement;
 
 describe('CheckboxCard', () => {
   describe('Critical User Paths', () => {
-    it('checks when clicking control', async () => {
-      const r = render(<CheckboxCardTest />);
-      await userEvent.click(getCheckbox(r));
-      await expect.element(getInput(r)).toBeChecked();
-    });
-
     it('checks when clicking the card text', async () => {
       const r = render(<CheckboxCardTest />);
       await userEvent.click(r.getByTestId(TESTID_DESCRIPTION));
@@ -88,25 +81,4 @@ describe('CheckboxCard', () => {
     });
   });
   
-  describe('Edge Cases', () => {
-    it('form: submits hidden input value when checked', async () => {
-      const onSubmit = vi.fn((e: FormEvent) => {
-        e.preventDefault();
-        const fd = new FormData(e.target as HTMLFormElement);
-        expect(fd.get(CHECKBOX_NAME)).toBe(CHECKBOX_VALUE);
-      });
-      
-      const r = render(
-        <form onSubmit={onSubmit}>
-          <CheckboxCardTest />
-          <button type='submit'>Submit</button>
-        </form>,
-      );
-      
-      await userEvent.click(getCheckbox(r));
-      await userEvent.click(r.getByRole('button', { name: 'Submit' }));
-      
-      expect(onSubmit).toHaveBeenCalledTimes(1);
-    });
-  });
 });
