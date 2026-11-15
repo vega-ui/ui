@@ -229,11 +229,12 @@ describe('Critical User Paths', () => {
     connect(createWidget(waiting, { items: fruits, mode: 'single' }, { id: 'waiting', strict: true }), elements).listen(root)
 
     const fading = panel.animate([{ opacity: 1 }, { opacity: 0 }], 100)
+    fading.pause()
     keydown(root, { key: 'Escape' })
     await new Promise((resolve) => setTimeout(resolve, 20))
     expect(ended).toEqual([])
 
-    await fading.finished
+    fading.finish()
     await vi.waitFor(() => expect(ended).toEqual(['panel']))
   })
 
