@@ -1,7 +1,7 @@
 import { ComponentProps, FC } from 'react';
 import { afterEach, beforeEach, describe, expect, it, onTestFinished, vi } from 'vitest';
 import { cleanup, render, type RenderResult, waitFor } from '@testing-library/react';
-import { userEvent } from 'vitest/browser';
+import { server, userEvent } from 'vitest/browser';
 
 import { Tooltip } from '../Tooltip';
 import { TooltipContent, TooltipTrigger } from '../components';
@@ -33,6 +33,8 @@ const focusByKeyboard = async (element: HTMLElement) => {
   await userEvent.keyboard('{Shift}');
   element.focus();
 };
+
+const pressTab = () => userEvent.keyboard(server.browser === 'webkit' ? '{Alt>}{Tab}{/Alt}' : '{Tab}');
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -70,20 +72,21 @@ describe('Tooltip', () => {
       });
       
       it('opens on keyboard focus', async () => {
-        await focusByKeyboard(getTrigger(r));
-        
+        await pressTab();
+
         await waitFor(() => {
           expect(queryContent(r)).toBeInTheDocument();
         });
       });
-      
+
       it('closes on blur', async () => {
-        await focusByKeyboard(getTrigger(r));
+        render(<button type='button'>Next</button>);
+        await pressTab();
         await waitFor(() => {
           expect(queryContent(r)).toBeInTheDocument();
         });
-        
-        getTrigger(r).blur();
+
+        await pressTab();
         await waitFor(() => {
           expect(queryContent(r)).not.toBeInTheDocument();
         });
