@@ -21,11 +21,11 @@ Also accepts all `<div>` attributes.
 <!-- AUTO-GENERATED:PART_API:AvatarStackItem:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `ref` | `Ref<HTMLDivElement>` | — | No | Ref forwarded to the root `div` element of the avatar. Enables access to the DOM node, e.g., for focus or measurements. |
+| `ref` | `Ref<HTMLSpanElement>` | — | No | Ref forwarded to the root `span` element of the avatar. Enables access to the DOM node, e.g., for focus or measurements. |
 | `size` | `AvatarSize` | — | No | Defines the size of the avatar. Affects both the container and any nested content (image, initials, etc.). |
 | `variant` | `AvatarVariant` | — | No | Visual variant of the avatar. Can be used to differentiate between roles, types, or contexts. 'primary': Default visual style; 'secondary': Alternate or less prominent style |
 
-Also accepts all `<div>` attributes.
+Also accepts all `<span>` attributes.
 <!-- AUTO-GENERATED:PART_API:AvatarStackItem:end -->
 
 ## Types

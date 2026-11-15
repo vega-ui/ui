@@ -36,9 +36,7 @@ export default function BasicUsage() {
           <Text size={3} style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>{plan.price}</Text>
           <Link href={`/pricing/${plan.slug}`} style={{ marginBlockStart: 'var(--spacing-4)', fontSize: 'var(--font-size-2)' }}>
             Learn more
-            <VisuallyHidden asChild>
-              <span> about the {plan.name} plan</span>
-            </VisuallyHidden>
+            <VisuallyHidden> about the {plan.name} plan</VisuallyHidden>
           </Link>
         </li>
       ))}
@@ -50,7 +48,7 @@ export default function BasicUsage() {
 
 ### Базовый: кнопка-иконка с текстовым именем
 
-Скрытый текст внутри кнопки становится её доступным именем и может содержать данные, которые бейдж показывает лишь числом. Сам бейдж помечен `aria-hidden`, чтобы число не читалось дважды. `asChild` рендерит `<span>`, потому что `<div>` по умолчанию недопустим внутри кнопки.
+Скрытый текст внутри кнопки становится её доступным именем и может содержать данные, которые бейдж показывает лишь числом. Сам бейдж помечен `aria-hidden`, чтобы число не читалось дважды.
 
 <!-- example: visually-hidden/icon-only-control-label.tsx -->
 ```tsx
@@ -64,8 +62,8 @@ export default function IconOnlyControlLabel() {
   return (
     <IconButton type='button' variant='secondary' appearance='ghost' onClick={() => setUnread(0)} style={{ position: 'relative' }}>
       <Icon><BellIcon /></Icon>
-      <VisuallyHidden asChild>
-        <span>Notifications, {unread} unread</span>
+      <VisuallyHidden>
+        Notifications, {unread} unread
       </VisuallyHidden>
       {unread > 0 && (
         <span
@@ -177,8 +175,8 @@ export default function HiddenHelperDescription() {
           style={{ paddingInlineStart: 0, fontVariantNumeric: 'tabular-nums' }}
         />
       </TextField>
-      <VisuallyHidden asChild>
-        <span id='monthly-budget-currency'>Amount in US dollars</span>
+      <VisuallyHidden id='monthly-budget-currency'>
+        Amount in US dollars
       </VisuallyHidden>
       <Button type='submit' style={{ alignSelf: 'flex-start', marginBlockStart: 'var(--spacing-9)' }}>Save budget</Button>
       <output style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>
@@ -305,8 +303,8 @@ export default function HiddenValidationCue() {
       {error !== '' && (
         <HelperText id='custom-domain-error' invalid style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3)' }}>
           <Icon size='xs' style={{ flexShrink: 0 }}><CircleAlertIcon /></Icon>
-          <VisuallyHidden asChild>
-            <span>Error:</span>
+          <VisuallyHidden>
+            Error:
           </VisuallyHidden>
           {error}
         </HelperText>
@@ -357,8 +355,8 @@ export default function HiddenDisabledExplanation() {
           >
             {size.label}
             {!size.inStock && (
-              <VisuallyHidden asChild>
-                <span>, sold out</span>
+              <VisuallyHidden>
+                , sold out
               </VisuallyHidden>
             )}
           </Button>
@@ -375,7 +373,7 @@ export default function HiddenDisabledExplanation() {
 
 ### Пограничный случай: текстовая альтернатива рейтинга из символов
 
-Символы звёзд читаются по одному как «чёрная звезда». Они скрыты через `aria-hidden`, а скрытый `span` внутри абзаца читается как «Rated 3 out of 5». `asChild` оставляет `<span>` внутри `<p>`, где `<div>` недопустим.
+Символы звёзд читаются по одному как «чёрная звезда». Они скрыты через `aria-hidden`, а скрытый `span` внутри абзаца читается как «Rated 3 out of 5».
 
 <!-- example: visually-hidden/slotted-hidden-element.tsx -->
 ```tsx
@@ -396,8 +394,8 @@ export default function SlottedHiddenElement() {
             <span aria-hidden='true' style={{ color: 'var(--color-primary-500)', letterSpacing: 'var(--spacing-1)' }}>
               {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
             </span>
-            <VisuallyHidden asChild>
-              <span>Rated {review.rating} out of 5</span>
+            <VisuallyHidden>
+              Rated {review.rating} out of 5
             </VisuallyHidden>
           </p>
           <Text size={3} style={{ color: 'var(--label-secondary)' }}>{review.text}</Text>

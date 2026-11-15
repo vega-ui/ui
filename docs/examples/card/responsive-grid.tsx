@@ -13,7 +13,7 @@ export default function ResponsiveGrid() {
         <Card key={integration.id} size='sm' aria-labelledby={`integration-${integration.id}`} style={{ gap: 'var(--spacing-4)' }}>
           <Heading id={`integration-${integration.id}`} as='h3' size={3} fontWeight={600}>{integration.name}</Heading>
           <Text size={2} style={{ color: 'var(--label-secondary)' }}>{integration.description}</Text>
-          <Button size='sm' variant='secondary' appearance='ghost' aria-describedby={`integration-${integration.id}`} style={{ marginBlockStart: 'auto' }}>
+          <Button size='sm' variant='secondary' appearance='ghost' aria-describedby={`integration-${integration.id}`} style={{ marginBlockStart: 'auto', alignSelf: 'flex-start' }}>
             Connect
           </Button>
         </Card>

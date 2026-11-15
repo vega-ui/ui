@@ -37,7 +37,7 @@ export const PageControlItem: FC<PageControlItemProps> = ({
   className,
   size,
   current,
-  disabled = current,
+  disabled,
   ref,
   ...props
 }) => {

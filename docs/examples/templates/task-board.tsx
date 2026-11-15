@@ -325,14 +325,14 @@ export default function TaskBoard() {
               {task.due !== '' && (
                 <Text size={2} style={{ ...meta, color: overdue ? 'var(--color-error)' : 'var(--label-secondary)', fontWeight: overdue ? 500 : undefined }}>
                   <Icon size='xs' aria-hidden='true'><CalendarIcon /></Icon>
-                  <VisuallyHidden asChild><span>{overdue ? 'Overdue, was due' : 'Due'}</span></VisuallyHidden>
+                  <VisuallyHidden>{overdue ? 'Overdue, was due' : 'Due'}</VisuallyHidden>
                   {dueLabel(task.due)}
                 </Text>
               )}
               {task.subtasks.total > 0 && (
                 <Text size={2} style={{ ...meta, color: 'var(--label-secondary)' }}>
                   <Icon size='xs' aria-hidden='true'><ListChecks /></Icon>
-                  <VisuallyHidden asChild><span>Subtasks</span></VisuallyHidden>
+                  <VisuallyHidden>Subtasks</VisuallyHidden>
                   {`${task.subtasks.done}/${task.subtasks.total}`}
                 </Text>
               )}
@@ -374,7 +374,7 @@ export default function TaskBoard() {
     const count = (
       <Badge size='xs' variant='info' appearance='surface' style={{ fontVariantNumeric: 'tabular-nums' }}>
         {items.length}
-        <VisuallyHidden asChild><span>{items.length === 1 ? ' task' : ' tasks'}</span></VisuallyHidden>
+        <VisuallyHidden>{items.length === 1 ? ' task' : ' tasks'}</VisuallyHidden>
       </Badge>
     );
 

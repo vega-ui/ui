@@ -22,7 +22,8 @@
 
 - The root uses `role='tablist'`.
 - Items expose tab-like semantics and active selection.
-- Progress items may expose meter semantics while active.
+- Progress items stay tabs while active; the fill is visual only.
+- An item marked `current` stays focusable and gets `aria-current='page'`.
 
 ## Form Semantics
 

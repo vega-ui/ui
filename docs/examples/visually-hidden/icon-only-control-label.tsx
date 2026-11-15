@@ -8,8 +8,8 @@ export default function IconOnlyControlLabel() {
   return (
     <IconButton type='button' variant='secondary' appearance='ghost' onClick={() => setUnread(0)} style={{ position: 'relative' }}>
       <Icon><BellIcon /></Icon>
-      <VisuallyHidden asChild>
-        <span>Notifications, {unread} unread</span>
+      <VisuallyHidden>
+        Notifications, {unread} unread
       </VisuallyHidden>
       {unread > 0 && (
         <span

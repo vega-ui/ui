@@ -42,7 +42,6 @@
 .p,
 .li {
     --t-color: var(--site-muted);
-    white-space: normal;
     font-size: var(--site-body-size);
     line-height: var(--site-body-leading);
 }

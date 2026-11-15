@@ -80,5 +80,14 @@ describe('CheckboxCard', () => {
       await expect.element(getInput(r)).toBeChecked();
     });
   });
-  
+
+  describe('Accessibility', () => {
+    it('labels the input with the card alone, without a label nested in it', async () => {
+      const r = render(<CheckboxCardTest />);
+      const card = r.getByTestId(TESTID_CARD);
+
+      expect(card.tagName).toBe('LABEL');
+      expect(card.querySelectorAll('label')).toHaveLength(0);
+    });
+  });
 });

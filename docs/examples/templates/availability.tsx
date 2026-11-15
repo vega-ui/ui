@@ -200,7 +200,7 @@ export default function Availability() {
       </header>
 
       <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', gap: 'var(--spacing-16)' }}>
-        <Card style={{ alignItems: 'stretch', gap: 'var(--spacing-10)', flex: '999 1 480px', minWidth: 0 }} aria-labelledby={`${id}-weekly`}>
+        <Card style={{ gap: 'var(--spacing-10)', flex: '999 1 480px', minWidth: 0 }} aria-labelledby={`${id}-weekly`}>
           <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-4) var(--spacing-8)' }}>
             <div style={{ display: 'grid', gap: 'var(--spacing-1)' }}>
               <Heading id={`${id}-weekly`} as='h2' size={4} fontWeight={600}>Weekly hours</Heading>
@@ -266,7 +266,7 @@ export default function Availability() {
         </Card>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: 'var(--spacing-12)', flex: '1 1 300px', minWidth: 0 }}>
-          <Card style={{ alignItems: 'stretch', gap: 'var(--spacing-8)' }}>
+          <Card style={{ gap: 'var(--spacing-8)' }}>
             <div style={field}>
               <Label htmlFor={`${id}-timezone`}>Time zone</Label>
               <Select value={timezone} onChangeValue={(next) => setTimezone(next ?? null)}>
@@ -285,7 +285,7 @@ export default function Availability() {
             </div>
           </Card>
 
-          <Card style={{ alignItems: 'stretch', gap: 'var(--spacing-8)' }} aria-labelledby={`${id}-exceptions`}>
+          <Card style={{ gap: 'var(--spacing-8)' }} aria-labelledby={`${id}-exceptions`}>
             <div style={{ display: 'grid', gap: 'var(--spacing-1)' }}>
               <Heading id={`${id}-exceptions`} as='h2' size={4} fontWeight={600}>Date exceptions</Heading>
               <Text size={2} style={{ color: 'var(--label-secondary)' }}>Days that differ from your weekly hours.</Text>

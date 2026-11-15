@@ -28,8 +28,8 @@ export default function IconOnlyControlLabel() {
   return (
     <IconButton type='button' variant='secondary' appearance='ghost' onClick={() => setUnread(0)} style={{ position: 'relative' }}>
       <Icon><BellIcon /></Icon>
-      <VisuallyHidden asChild>
-        <span>Notifications, {unread} unread</span>
+      <VisuallyHidden>
+        Notifications, {unread} unread
       </VisuallyHidden>
       {unread > 0 && (
         <span
@@ -105,8 +105,8 @@ export default function HiddenHelperDescription() {
           style={{ paddingInlineStart: 0, fontVariantNumeric: 'tabular-nums' }}
         />
       </TextField>
-      <VisuallyHidden asChild>
-        <span id='monthly-budget-currency'>Amount in US dollars</span>
+      <VisuallyHidden id='monthly-budget-currency'>
+        Amount in US dollars
       </VisuallyHidden>
       <Button type='submit' style={{ alignSelf: 'flex-start', marginBlockStart: 'var(--spacing-9)' }}>Save budget</Button>
       <output style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>

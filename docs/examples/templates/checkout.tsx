@@ -349,7 +349,7 @@ export default function Checkout() {
         </Fieldset>
       </div>
 
-      <Card style={{ alignItems: 'stretch', gap: 'var(--spacing-10)', flex: '1 1 300px', minWidth: 0 }} aria-labelledby={`${id}-summary`}>
+      <Card style={{ gap: 'var(--spacing-10)', flex: '1 1 300px', minWidth: 0 }} aria-labelledby={`${id}-summary`}>
         <Heading id={`${id}-summary`} as='h2' size={4} fontWeight={600}>Order summary</Heading>
         <Table fullWidth style={{ borderStyle: 'hidden' }}>
           <TableBody>

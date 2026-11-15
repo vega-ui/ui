@@ -330,7 +330,7 @@ export default function LongInlinePath() {
 
 ### Пограничный случай: многострочный фрагмент
 
-`Code` наследует от `Text` `white-space: pre-line`, который схлопывает отступы. Для фрагмента кода оберните его в `<pre>`, задайте `Code` `whiteSpace: 'pre'` и `display: 'block'`, а горизонтальную прокрутку оставьте `<pre>`.
+`Code` схлопывает пробелы, как строчный текст, и теряет отступы и переносы строк. Для фрагмента кода оберните его в `<pre>`, задайте `Code` `whiteSpace: 'pre'` и `display: 'block'`, а горизонтальную прокрутку оставьте `<pre>`.
 
 <!-- example: code/multiline-snippet.tsx -->
 ```tsx

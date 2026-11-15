@@ -330,7 +330,7 @@ export default function LongInlinePath() {
 
 ### Edge: multi-line snippet
 
-`Code` inherits `white-space: pre-line` from `Text`, which collapses indentation. For a snippet, wrap it in `<pre>`, set `whiteSpace: 'pre'` and `display: 'block'` on `Code`, and let the `<pre>` scroll horizontally.
+`Code` collapses whitespace like inline text, which drops indentation and line breaks. For a snippet, wrap it in `<pre>`, set `whiteSpace: 'pre'` and `display: 'block'` on `Code`, and let the `<pre>` scroll horizontally.
 
 <!-- example: code/multiline-snippet.tsx -->
 ```tsx

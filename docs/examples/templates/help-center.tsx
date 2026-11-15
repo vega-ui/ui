@@ -258,7 +258,7 @@ export default function HelpCenter() {
         </section>
 
         <aside style={{ display: 'grid', gap: 'var(--spacing-12)', flex: '1 1 320px', minWidth: 0 }}>
-          <Card style={{ alignItems: 'stretch', gap: 'var(--spacing-8)' }} aria-labelledby={`${id}-status-title`}>
+          <Card style={{ gap: 'var(--spacing-8)' }} aria-labelledby={`${id}-status-title`}>
             <Collapsible>
               <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-4) var(--spacing-8)' }}>
                 <div style={{ display: 'grid', gap: 'var(--spacing-2)', minWidth: 0 }}>
@@ -288,7 +288,7 @@ export default function HelpCenter() {
             </Collapsible>
           </Card>
 
-          <Card style={{ alignItems: 'stretch', gap: 'var(--spacing-10)' }} aria-labelledby={`${id}-contact`}>
+          <Card style={{ gap: 'var(--spacing-10)' }} aria-labelledby={`${id}-contact`}>
             <div style={{ display: 'grid', gap: 'var(--spacing-2)' }}>
               <Heading id={`${id}-contact`} as='h2' size={4} fontWeight={600}>Still need help?</Heading>
               <Text size={2} style={{ color: 'var(--label-secondary)' }}>Our team replies within one business day.</Text>

@@ -194,7 +194,7 @@ export default function Booking() {
         </section>
       </article>
 
-      <Card asChild style={{ alignItems: 'stretch', gap: 'var(--spacing-10)', flex: '1 1 340px', minWidth: 0 }}>
+      <Card asChild style={{ gap: 'var(--spacing-10)', flex: '1 1 340px', minWidth: 0 }}>
         <form noValidate aria-labelledby={`${id}-price`} onSubmit={reserve}>
           <Text id={`${id}-price`} size={2} style={{ color: 'var(--label-secondary)' }}>
             <Text size={5} fontWeight={700} style={{ color: 'var(--label-primary)', ...amount }}>{currency.format(NIGHTLY_RATE)}</Text>

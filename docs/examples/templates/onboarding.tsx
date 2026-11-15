@@ -139,7 +139,7 @@ export default function Onboarding() {
 
   if (created) {
     return (
-      <Card style={{ alignItems: 'stretch', gap: 'var(--spacing-10)', width: '100%', maxWidth: 560, marginInline: 'auto' }}>
+      <Card style={{ gap: 'var(--spacing-10)', width: '100%', maxWidth: 560, marginInline: 'auto' }}>
         <Alert variant='success'>
           <AlertIcon />
           <AlertMain>
@@ -155,7 +155,7 @@ export default function Onboarding() {
   }
 
   return (
-    <Card asChild style={{ alignItems: 'stretch', gap: 'var(--spacing-12)', width: '100%', maxWidth: 560, marginInline: 'auto' }}>
+    <Card asChild style={{ gap: 'var(--spacing-12)', width: '100%', maxWidth: 560, marginInline: 'auto' }}>
       <form noValidate aria-labelledby={`${id}-heading`} onSubmit={submit}>
         <div style={{ display: 'grid', gap: 'var(--spacing-6)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>

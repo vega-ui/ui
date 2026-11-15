@@ -311,8 +311,8 @@ export default function ExternalLinkNewTab() {
       <Link href='https://stripe.com/privacy' target='_blank' rel='noopener noreferrer'>
         Stripe’s privacy policy
         <Icon size='2xs' style={{ marginInlineStart: 'var(--spacing-1)', verticalAlign: 'baseline' }}><ExternalLinkIcon /></Icon>
-        <VisuallyHidden asChild>
-          <span>(opens in a new tab)</span>
+        <VisuallyHidden>
+          (opens in a new tab)
         </VisuallyHidden>
       </Link>
       .

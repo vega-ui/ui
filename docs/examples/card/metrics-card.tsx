@@ -26,7 +26,7 @@ export default function MetricsCard() {
         {loading && <Spinner size={3} aria-label='Refreshing revenue' />}
       </div>
       <Text size={2} style={{ color: 'var(--label-tertiary)', fontVariantNumeric: 'tabular-nums' }}>Updated at {updatedAt}</Text>
-      <Button size='sm' variant='secondary' appearance='ghost' disabled={loading} onClick={refresh} style={{ marginBlockStart: 'var(--spacing-6)' }}>Refresh</Button>
+      <Button size='sm' variant='secondary' appearance='ghost' disabled={loading} onClick={refresh} style={{ marginBlockStart: 'var(--spacing-6)', alignSelf: 'flex-start' }}>Refresh</Button>
     </Card>
   );
 }

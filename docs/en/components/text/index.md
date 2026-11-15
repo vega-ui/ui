@@ -57,7 +57,7 @@ export default function BasicUsage() {
 ## Edge Cases
 
 - `asChild` changes the rendered element but keeps the text styling contract.
-- `white-space: pre-line` preserves newline breaks from content strings.
+- Whitespace collapses like in a native `<span>`; set `whiteSpace: 'pre-line'` to keep newlines from content strings.
 - Very large text sizes should still be checked against layout and line length.
 
 ## Common Mistakes

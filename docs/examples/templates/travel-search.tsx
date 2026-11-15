@@ -444,7 +444,7 @@ export default function TravelSearch() {
 
   return (
     <div className='travel' style={{ display: 'grid', gap: 'var(--spacing-16)', width: '100%', maxWidth: 960, marginInline: 'auto' }}>
-      <Card asChild style={{ alignItems: 'stretch', gap: 'var(--spacing-10)', minWidth: 0 }}>
+      <Card asChild style={{ gap: 'var(--spacing-10)', minWidth: 0 }}>
         <form noValidate role='search' aria-labelledby={`${id}-title`} onSubmit={submit}>
           <Heading id={`${id}-title`} as='h1' size={6} fontWeight={700}>Find flights</Heading>
           <div className='travelSearchRow'>

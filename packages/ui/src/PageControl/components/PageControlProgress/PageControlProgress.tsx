@@ -1,7 +1,7 @@
-import { FC, Ref, useRef, useEffect, useState, CSSProperties } from 'react';
+import { FC, Ref, CSSProperties } from 'react';
 import style from './style.module.css'
 import { PageControlItem, PageControlItemProps } from '../PageControlItem';
-import { csx, mergeRefs } from '@vega-ui/utils';
+import { csx } from '@vega-ui/utils';
 import { usePageControlContext } from '../../contexts';
 import { PageControlSize } from '../../types';
 
@@ -41,54 +41,16 @@ export const PageControlProgress: FC<PageControlProgressProps> = ({
   className,
   index,
   duration = 5000,
-  current: _current,
   size,
   style: _style,
-  ref,
   ...props
 }) => {
-  const { active, size: _size } = usePageControlContext()
-  const progressRef = useRef<HTMLButtonElement>(null)
-  const [progressValue, setProgressValue] = useState(0)
-  
-  const current = _current ?? (active === index)
-  
-  useEffect(() => {
-    const el = progressRef.current
-    if (!el || active !== index) return
-    
-    let prevRounded = 0
-    let frame = 0
-    
-    const readProgress = () => {
-      const style = getComputedStyle(el, '::after')
-      const matrix = new DOMMatrixReadOnly(style.transform)
-      const x = matrix.m41
-      
-      const percent = 1 - Math.abs(x / el.offsetWidth)
-      const rounded = Math.round(percent * 100)
-      
-      if (prevRounded !== rounded) {
-        prevRounded = rounded
-        setProgressValue(rounded)
-      }
-      
-      if (percent < 1) frame = requestAnimationFrame(readProgress)
-    }
-    
-    frame = requestAnimationFrame(readProgress)
+  const { size: _size } = usePageControlContext()
 
-    return () => cancelAnimationFrame(frame)
-  }, [active, index])
-  
   return (
     <PageControlItem
       index={index}
       size={size ?? _size}
-      role={current ? 'meter' : 'tab'}
-      ref={mergeRefs([ref, progressRef])}
-      aria-valuemax={current ? 100 : undefined}
-      aria-valuenow={current ? progressValue : undefined}
       className={csx(style.pageControlProgress, className)}
       style={{
         '--duration': `${duration}ms`,

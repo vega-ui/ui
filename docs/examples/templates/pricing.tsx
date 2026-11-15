@@ -272,7 +272,7 @@ export default function Pricing() {
               aria-labelledby={`${id}-${plan.id}`}
               className='pricingPlan'
               data-popular={popular}
-              style={{ alignItems: 'stretch', gap: 'var(--spacing-12)', minWidth: 0 }}
+              style={{ gap: 'var(--spacing-12)', minWidth: 0 }}
             >
               <div style={{ display: 'grid', gap: 'var(--spacing-2)' }}>
                 <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-4)' }}>
@@ -313,7 +313,7 @@ export default function Pricing() {
         })}
       </section>
 
-      <Card aria-labelledby={`${id}-calc`} style={{ alignItems: 'stretch', gap: 'var(--spacing-12)', minWidth: 0 }}>
+      <Card aria-labelledby={`${id}-calc`} style={{ gap: 'var(--spacing-12)', minWidth: 0 }}>
         <div style={{ display: 'grid', gap: 'var(--spacing-2)' }}>
           <Heading id={`${id}-calc`} as='h2' size={5} fontWeight={600}>Estimate your cost</Heading>
           <Text size={2} style={secondary}>{`Prices ${cycle === 'yearly' ? 'billed yearly' : 'billed monthly'}, before tax.`}</Text>

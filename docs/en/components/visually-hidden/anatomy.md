@@ -51,9 +51,7 @@ export default function BasicUsage() {
           <Text size={3} style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>{plan.price}</Text>
           <Link href={`/pricing/${plan.slug}`} style={{ marginBlockStart: 'var(--spacing-4)', fontSize: 'var(--font-size-2)' }}>
             Learn more
-            <VisuallyHidden asChild>
-              <span> about the {plan.name} plan</span>
-            </VisuallyHidden>
+            <VisuallyHidden> about the {plan.name} plan</VisuallyHidden>
           </Link>
         </li>
       ))}

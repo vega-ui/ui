@@ -268,7 +268,7 @@ export default function TeamMembers() {
         </div>
       </header>
 
-      <Card style={{ alignItems: 'stretch', gap: 'var(--spacing-3)' }}>
+      <Card style={{ gap: 'var(--spacing-3)' }}>
         <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', justifyContent: 'space-between', gap: 'var(--spacing-2) var(--spacing-8)' }}>
           <Text id={`${id}-seats`} size={3} fontWeight={500}>Seats</Text>
           <Text size={2} style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>{`${used} of ${SEATS} seats used`}</Text>
@@ -349,7 +349,7 @@ export default function TeamMembers() {
 
       <section aria-labelledby={`${id}-invites`} style={{ display: 'grid', gap: 'var(--spacing-8)' }}>
         <Heading id={`${id}-invites`} as='h2' size={4} fontWeight={600}>{`Pending invites · ${invites.length}`}</Heading>
-        <Card style={{ alignItems: 'stretch', gap: 0, paddingBlock: 'var(--spacing-2)' }}>
+        <Card style={{ gap: 0, paddingBlock: 'var(--spacing-2)' }}>
           {invites.length === 0 && (
             <Text size={3} style={{ paddingBlock: 'var(--spacing-8)', color: 'var(--label-secondary)', textAlign: 'center' }}>No pending invites.</Text>
           )}

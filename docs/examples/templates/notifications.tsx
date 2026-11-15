@@ -261,7 +261,7 @@ export default function Notifications() {
                         </Avatar>
                         <div style={{ display: 'grid', gap: 'var(--spacing-2)', flex: 1, minWidth: 0 }}>
                           <Text size={2} style={{ overflowWrap: 'anywhere' }}>
-                            {item.unread && <VisuallyHidden asChild><span>Unread: </span></VisuallyHidden>}
+                            {item.unread && <VisuallyHidden>Unread: </VisuallyHidden>}
                             <Text size={2} fontWeight={600}>{people[item.actor].name}</Text>
                             {` ${item.action} `}
                             <Link
@@ -383,7 +383,7 @@ export default function Notifications() {
           {errors.requests && <HelperText id={`${id}-requests-error`} invalid>{errors.requests}</HelperText>}
         </section>
 
-        <Card style={{ alignItems: 'stretch', gap: 'var(--spacing-12)' }}>
+        <Card style={{ gap: 'var(--spacing-12)' }}>
           <div style={{ ...field, maxWidth: 360 }}>
             <Label htmlFor={`${id}-pause`}>Pause notifications</Label>
             <Select

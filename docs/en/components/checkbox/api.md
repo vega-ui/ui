@@ -8,7 +8,8 @@
 | --- | --- | --- | --- | --- |
 | `variant` | `CheckboxVariant` | `'primary'` | No | Visual variant of the checkbox, for theme or context switching. |
 | `size` | `CheckboxSize` | `'md'` | No | Size of the checkbox input and its visual marker. |
-| `ref` | `Ref<HTMLLabelElement>` | — | No | Ref to the native label element. |
+| `ref` | `Ref<HTMLLabelElement>` | — | No | Ref to the native label element, or to the child element with `asChild`. |
+| `asChild` | `boolean` | — | No | Renders the checkbox as its only child instead of a `<label>`, for a checkbox inside another label. |
 
 Also accepts all `<label>` attributes.
 <!-- AUTO-GENERATED:ROOT_API:end -->

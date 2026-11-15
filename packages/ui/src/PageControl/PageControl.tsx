@@ -7,7 +7,7 @@ import { activeOf, PageControlEntry, pageControlWidget } from '@vega-ui/widgets/
 import style from './style.module.css'
 import { PageControlSize } from './types';
 
-export interface PageControlProps extends HTMLAttributes<HTMLUListElement> {
+export interface PageControlProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * Controlled active index.
    */
@@ -25,9 +25,9 @@ export interface PageControlProps extends HTMLAttributes<HTMLUListElement> {
   onChangeActive?: (value: number) => void
   
   /**
-   * Ref forwarded to the underlying <ul> element.
+   * Ref forwarded to the underlying <div> element.
    */
-  ref?: Ref<HTMLUListElement>
+  ref?: Ref<HTMLDivElement>
   
   /**
    * Defines the size of the page control items.
@@ -60,13 +60,13 @@ export const PageControl: FC<PropsWithChildren<PageControlProps>> = ({
 
   return (
     <PageControlProvider handle={handle} size={size} active={current ?? undefined}>
-      <ul
+      <div
         ref={rootRef}
         className={csx(style.pageControl, className)}
         {...handle.listen(attrs, props)}
       >
         {children}
-      </ul>
+      </div>
     </PageControlProvider>
   )
 }

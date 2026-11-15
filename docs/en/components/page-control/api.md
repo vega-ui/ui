@@ -9,10 +9,10 @@
 | `active` | `number` | — | No | Controlled active index. |
 | `defaultActive` | `number` | `0` | No | Uncontrolled initial active index. |
 | `onChangeActive` | `(value: number) => void` | — | No | Callback that is triggered when the user selects a different page. Receives the new index as a number. |
-| `ref` | `Ref<HTMLUListElement>` | — | No | Ref forwarded to the underlying `<ul>` element. |
+| `ref` | `Ref<HTMLDivElement>` | — | No | Ref forwarded to the underlying `<div>` element. |
 | `size` | `PageControlSize` | `'md'` | No | Defines the size of the page control items. |
 
-Also accepts all `<ul>` attributes.
+Also accepts all `<div>` attributes.
 <!-- AUTO-GENERATED:ROOT_API:end -->
 
 ## Child Parts

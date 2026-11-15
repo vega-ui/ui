@@ -40,8 +40,8 @@ export default function CopyToClipboard() {
       <IconButton type='button' size='sm' variant='secondary' appearance='ghost' aria-label='Copy invite link' onClick={copy}>
         <Icon>{copied ? <CheckIcon /> : <CopyIcon />}</Icon>
       </IconButton>
-      <VisuallyHidden asChild>
-        <span role='status'>{copied ? 'Copied' : ''}</span>
+      <VisuallyHidden role='status'>
+        {copied ? 'Copied' : ''}
       </VisuallyHidden>
     </div>
   );

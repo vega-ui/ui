@@ -28,8 +28,8 @@ export default function HiddenDisabledExplanation() {
           >
             {size.label}
             {!size.inStock && (
-              <VisuallyHidden asChild>
-                <span>, sold out</span>
+              <VisuallyHidden>
+                , sold out
               </VisuallyHidden>
             )}
           </Button>

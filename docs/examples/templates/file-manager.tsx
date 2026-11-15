@@ -666,7 +666,7 @@ export default function FileManager() {
         </section>
 
         <aside aria-labelledby={`${id}-storage`} className='fm-aside'>
-          <Card style={{ alignItems: 'stretch', gap: 'var(--spacing-8)' }}>
+          <Card style={{ gap: 'var(--spacing-8)' }}>
             <div style={{ display: 'grid', gap: 'var(--spacing-4)' }}>
               <Heading id={`${id}-storage`} as='h2' size={3} fontWeight={600}>Storage</Heading>
               <Meter value={used} max={QUOTA} high={QUOTA * 0.9} valueText={`${formatSize(used)} of ${formatSize(QUOTA)} used`} aria-labelledby={`${id}-storage`} fullWidth>

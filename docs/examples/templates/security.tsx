@@ -371,7 +371,7 @@ export default function Security() {
         <Text size={3} style={muted}>Keep your Northwind account safe: a strong password, a second step at sign-in and a close eye on where you’re signed in.</Text>
       </header>
 
-      <Card asChild style={{ alignItems: 'stretch', gap: 'var(--spacing-12)' }}>
+      <Card asChild style={{ gap: 'var(--spacing-12)' }}>
         <section aria-labelledby={`${id}-password`}>
           <div style={{ display: 'grid', gap: 'var(--spacing-2)' }}>
             <Heading id={`${id}-password`} as='h2' size={4} fontWeight={600}>Password</Heading>
@@ -426,7 +426,7 @@ export default function Security() {
                         <Icon size='xs' aria-hidden='true' style={{ flexShrink: 0 }}>{ok ? <CheckIcon strokeWidth={2.5} /> : <CircleIcon />}</Icon>
                         <Text size={2} style={{ color: 'inherit' }}>
                           {rule.label}
-                          <VisuallyHidden asChild><span>{ok ? ', met' : ', not met'}</span></VisuallyHidden>
+                          <VisuallyHidden>{ok ? ', met' : ', not met'}</VisuallyHidden>
                         </Text>
                       </li>
                     );
@@ -462,7 +462,7 @@ export default function Security() {
         </section>
       </Card>
 
-      <Card asChild style={{ alignItems: 'stretch', gap: 'var(--spacing-8)' }}>
+      <Card asChild style={{ gap: 'var(--spacing-8)' }}>
         <section aria-labelledby={`${id}-2fa`}>
           <div style={sectionHeader}>
             <div style={{ display: 'grid', gap: 'var(--spacing-2)', flex: '1 1 280px' }}>
@@ -502,7 +502,7 @@ export default function Security() {
         </section>
       </Card>
 
-      <Card asChild style={{ alignItems: 'stretch', gap: 'var(--spacing-8)' }}>
+      <Card asChild style={{ gap: 'var(--spacing-8)' }}>
         <section aria-labelledby={`${id}-passkeys`}>
           <div style={{ display: 'grid', gap: 'var(--spacing-2)' }}>
             <Heading ref={passkeysRef} tabIndex={-1} id={`${id}-passkeys`} as='h2' size={4} fontWeight={600} style={{ outline: 'none' }}>Passkeys</Heading>
@@ -625,7 +625,7 @@ export default function Security() {
         <Text size={2} role='status' style={{ ...muted, minBlockSize: 'var(--line-height-2)' }}>{notice}</Text>
       </section>
 
-      <Card style={{ alignItems: 'stretch' }}>
+      <Card>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
           <div style={{ display: 'grid', gap: 'var(--spacing-1)', minWidth: 0 }}>
             <Label htmlFor={`${id}-alerts`}>Login alerts</Label>

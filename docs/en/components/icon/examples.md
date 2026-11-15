@@ -286,8 +286,8 @@ export default function StandaloneMeaningfulIcon() {
               >
                 {check.passed ? <CircleCheckIcon /> : <CircleXIcon />}
               </Icon>
-              <VisuallyHidden asChild>
-                <span>{check.passed ? 'Passed' : 'Failed'}</span>
+              <VisuallyHidden>
+                {check.passed ? 'Passed' : 'Failed'}
               </VisuallyHidden>
             </td>
           </tr>

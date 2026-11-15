@@ -457,8 +457,8 @@ export const ThemeEditor = () => {
               <Icon size='xs'><Download /></Icon>
               {e.download}
             </Button>
-            <VisuallyHidden asChild>
-              <span role='status'>{linkCopied ? e.linkCopied : ''}</span>
+            <VisuallyHidden role='status'>
+              {linkCopied ? e.linkCopied : ''}
             </VisuallyHidden>
           </div>
         </div>

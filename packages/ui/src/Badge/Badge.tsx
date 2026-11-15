@@ -3,7 +3,7 @@ import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { BadgeAppearance, BadgeSize, BadgeVariant } from './types';
 
-export interface BadgeProps extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
+export interface BadgeProps extends DetailedHTMLProps<HTMLAttributes<HTMLSpanElement>, HTMLSpanElement> {
   /**
    * Semantic color style of the badge.
    * Indicates the meaning or status represented by the badge.
@@ -38,8 +38,8 @@ export const Badge: FC<BadgeProps> = ({
   ...props
 }) => {
   return (
-    <div ref={ref} data-size={size} data-variant={variant} data-appearance={appearance} className={csx(style.badge, className)} {...props}>
+    <span ref={ref} data-size={size} data-variant={variant} data-appearance={appearance} className={csx(style.badge, className)} {...props}>
       {children}
-    </div>
+    </span>
   )
 }

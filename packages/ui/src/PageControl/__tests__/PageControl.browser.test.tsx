@@ -97,15 +97,9 @@ describe('PageControl', () => {
         it('does nothing when clicking element without data-index', async () => {
           r.rerender(
             <PageControlTest defaultActive={0}>
-              <li>
-                <span data-testid='no-index'>x</span>
-              </li>
-              <li>
-                <PageControlItem data-testid={TESTID_TAB(0)} index={0} />
-              </li>
-              <li>
-                <PageControlItem data-testid={TESTID_TAB(1)} index={1} />
-              </li>
+              <span data-testid='no-index'>x</span>
+              <PageControlItem data-testid={TESTID_TAB(0)} index={0} />
+              <PageControlItem data-testid={TESTID_TAB(1)} index={1} />
             </PageControlTest>
           );
           
@@ -195,20 +189,6 @@ describe('PageControl', () => {
 
       await expect.poll(() => onAnimationEnd.mock.calls.length).toBe(1);
     });
-
-    it('cancels the progress animation frame on unmount', () => {
-      const cancel = vi.spyOn(window, 'cancelAnimationFrame');
-      const r = render(
-        <PageControl defaultActive={0}>
-          <PageControlProgress index={0} />
-        </PageControl>
-      );
-
-      r.unmount();
-
-      expect(cancel).toHaveBeenCalled();
-      cancel.mockRestore();
-    });
   });
 
   describe('Accessibility', () => {
@@ -247,37 +227,26 @@ describe('PageControl', () => {
     });
     
     describe('aria', () => {
-      it('item current sets aria-current=page and disables item', async () => {
+      it('item current sets aria-current=page and stays focusable', async () => {
         const r = render(
           <PageControlTest defaultActive={0}>
-            <li>
-              <PageControlItem data-testid={TESTID_TAB(0)} index={0} />
-            </li>
-            <li>
-              <PageControlItem data-testid={TESTID_TAB(1)} index={1} current />
-            </li>
+            <PageControlItem data-testid={TESTID_TAB(0)} index={0} />
+            <PageControlItem data-testid={TESTID_TAB(1)} index={1} current />
           </PageControlTest>
         );
         
         await expect.element(getTab(r, 1)).toHaveAttribute('aria-current', 'page');
-        await expect.element(getTab(r, 1)).toBeDisabled();
+        await expect.element(getTab(r, 1)).toBeEnabled();
+        getTab(r, 1).focus();
+        await expect.element(getTab(r, 1)).toHaveFocus();
       });
       
-      it('item exposes meter role and valuemax/valuenow only when current', async () => {
+      it('active progress item stays the selected tab of the tablist', async () => {
         const r = render(<PageControlTest defaultActive={4} />);
         const progress = getProgress(r, 0);
         
-        await expect.element(progress).toHaveRole('meter');
-        await expect.element(progress).toHaveAttribute('aria-valuemax', '100');
-        await expect.element(progress).toHaveAttribute('aria-valuenow', '0');
-      });
-      
-      it('item is a tab and has no valuemax/valuenow when not current', async () => {
-        const r = render(<PageControlTest defaultActive={0} />);
-        const progress = getProgress(r, 0);
-        
-        await expect.element(progress).not.toHaveRole('meter')
-        await expect.element(progress).not.toHaveAttribute('aria-valuemax');
+        await expect.element(progress).toHaveRole('tab');
+        await expect.element(progress).toHaveAttribute('aria-selected', 'true');
         await expect.element(progress).not.toHaveAttribute('aria-valuenow');
       });
     });

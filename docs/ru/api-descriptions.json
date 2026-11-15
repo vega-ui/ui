@@ -148,8 +148,8 @@
     "ru": "Визуальный размер текста, обычно соответствует типографической шкале дизайн-системы."
   },
   "Avatar.ref": {
-    "en": "Ref forwarded to the root `div` element of the avatar. Enables access to the DOM node, e.g., for focus or measurements.",
-    "ru": "Ref, передаваемый на корневой элемент `div` аватара. Даёт доступ к DOM-узлу, например для фокуса или измерений."
+    "en": "Ref forwarded to the root `span` element of the avatar. Enables access to the DOM node, e.g., for focus or measurements.",
+    "ru": "Ref, передаваемый на корневой элемент `span` аватара. Даёт доступ к DOM-узлу, например для фокуса или измерений."
   },
   "Avatar.size": {
     "en": "Defines the size of the avatar. Affects both the container and any nested content (image, initials, etc.).",
@@ -212,8 +212,8 @@
     "ru": "Вариант для всех аватаров группы. Применяет единый визуальный стиль (например, `primary`, `secondary`)."
   },
   "AvatarStackItem.ref": {
-    "en": "Ref forwarded to the root `div` element of the avatar. Enables access to the DOM node, e.g., for focus or measurements.",
-    "ru": "Ref, передаваемый на корневой элемент `div` аватара. Даёт доступ к DOM-узлу, например для фокуса или измерений."
+    "en": "Ref forwarded to the root `span` element of the avatar. Enables access to the DOM node, e.g., for focus or measurements.",
+    "ru": "Ref, передаваемый на корневой элемент `span` аватара. Даёт доступ к DOM-узлу, например для фокуса или измерений."
   },
   "AvatarStackItem.size": {
     "en": "Defines the size of the avatar. Affects both the container and any nested content (image, initials, etc.).",
@@ -768,8 +768,12 @@
     "ru": "Задаёт размер карточки. Влияет на отступы, размер шрифта и, возможно, поведение раскладки."
   },
   "Checkbox.ref": {
-    "en": "Ref to the native label element.",
-    "ru": "Ref на нативный элемент label."
+    "en": "Ref to the native label element, or to the child element with `asChild`.",
+    "ru": "Ref на нативный элемент label или, с `asChild`, на дочерний элемент."
+  },
+  "Checkbox.asChild": {
+    "en": "Renders the checkbox as its only child instead of a `<label>`, for a checkbox inside another label.",
+    "ru": "Рендерит чекбокс как его единственный дочерний элемент вместо `<label>` — для чекбокса внутри другой метки."
   },
   "Checkbox.size": {
     "en": "Size of the checkbox input and its visual marker.",
@@ -800,8 +804,8 @@
     "ru": "Вариант, управляющий визуальным стилем карточки-чекбокса. Обычно используется для переключения между брендовой и нейтральной темами."
   },
   "CheckboxCardControl.ref": {
-    "en": "Ref to the native label element.",
-    "ru": "Ref на нативный элемент label."
+    "en": "Ref to the `<span>` that holds the checkbox inside the card's label.",
+    "ru": "Ref на `<span>`, который держит чекбокс внутри метки карточки."
   },
   "CheckboxCardControl.size": {
     "en": "Size of the checkbox input and its visual marker.",
@@ -2812,8 +2816,8 @@
     "ru": "Колбэк, вызываемый, когда пользователь выбирает другую страницу. Получает новый индекс в виде числа."
   },
   "PageControl.ref": {
-    "en": "Ref forwarded to the underlying `<ul>` element.",
-    "ru": "Ref, передаваемый на нижележащий элемент `<ul>`."
+    "en": "Ref forwarded to the underlying `<div>` element.",
+    "ru": "Ref, передаваемый на нижележащий элемент `<div>`."
   },
   "PageControl.size": {
     "en": "Defines the size of the page control items.",
@@ -3512,8 +3516,8 @@
     "ru": "Точка привязки, в которой открывается шторка в неконтролируемом режиме, — индекс в `snapPoints`. По умолчанию — самая нижняя."
   },
   "Sheet.onChangeActiveSnapPoint": {
-    "en": "Callback fired when the user moves the sheet to another snap point.",
-    "ru": "Колбэк, вызываемый, когда пользователь перемещает шторку к другой точке привязки."
+    "en": "Callback fired when the active snap point changes: the user moves the sheet to another snap point, or an uncontrolled sheet returns to its default snap point once it closes.",
+    "ru": "Колбэк, вызываемый при смене активной точки привязки: пользователь перемещает шторку к другой точке, или неуправляемая шторка после закрытия возвращается в точку по умолчанию."
   },
   "Sheet.onChangeOpen": {
     "en": "Callback fired when the open state changes.",
@@ -3876,8 +3880,8 @@
     "ru": "Ref, передаваемый на нижележащую кнопку или элемент в слоте. Полезен для управления фокусом, программного доступа или улучшения доступности."
   },
   "VisuallyHidden.asChild": {
-    "en": "Renders the content using a child component instead of a native `<div>`. Useful for integrating into custom elements without extra wrappers.",
-    "ru": "Рендерит содержимое через дочерний компонент вместо нативного `<div>`. Полезно для встраивания в собственные элементы без лишних обёрток."
+    "en": "Renders the content using a child component instead of a native `<span>`. Useful for integrating into custom elements without extra wrappers.",
+    "ru": "Рендерит содержимое через дочерний компонент вместо нативного `<span>`. Полезно для встраивания в собственные элементы без лишних обёрток."
   },
   "VisuallyHidden.children": {
     "en": "The content to be hidden visually but accessible via screen readers. Often used for labels, instructions, or announcements.",

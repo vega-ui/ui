@@ -3,12 +3,12 @@ import { csx } from '@vega-ui/utils';
 import style from './style.module.css'
 import { AvatarSize, AvatarVariant } from './types';
 
-export interface AvatarProps extends HTMLAttributes<HTMLDivElement> {
+export interface AvatarProps extends HTMLAttributes<HTMLSpanElement> {
   /**
-   * Ref forwarded to the root `div` element of the avatar.
+   * Ref forwarded to the root `span` element of the avatar.
    * Enables access to the DOM node, e.g., for focus or measurements.
    */
-  ref?: Ref<HTMLDivElement>
+  ref?: Ref<HTMLSpanElement>
 
   /**
    * Defines the size of the avatar.
@@ -36,7 +36,7 @@ export const Avatar: FC<AvatarProps> = ({
   ...props
 }) => {
   return (
-    <div
+    <span
       ref={ref}
       data-size={size}
       data-variant={variant}
@@ -44,6 +44,6 @@ export const Avatar: FC<AvatarProps> = ({
       {...props}
     >
       {children}
-    </div>
+    </span>
   )
 }

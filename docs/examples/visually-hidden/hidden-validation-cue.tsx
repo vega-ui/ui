@@ -35,8 +35,8 @@ export default function HiddenValidationCue() {
       {error !== '' && (
         <HelperText id='custom-domain-error' invalid style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3)' }}>
           <Icon size='xs' style={{ flexShrink: 0 }}><CircleAlertIcon /></Icon>
-          <VisuallyHidden asChild>
-            <span>Error:</span>
+          <VisuallyHidden>
+            Error:
           </VisuallyHidden>
           {error}
         </HelperText>

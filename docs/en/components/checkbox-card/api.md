@@ -62,11 +62,11 @@ Visual control region for the checkbox affordance.
 <!-- AUTO-GENERATED:PART_API:CheckboxCardControl:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `variant` | `CheckboxVariant` | — | No | Visual variant of the checkbox, for theme or context switching. |
+| `ref` | `Ref<HTMLSpanElement>` | — | No | Ref to the `<span>` that holds the checkbox inside the card's label. |
 | `size` | `CheckboxSize` | — | No | Size of the checkbox input and its visual marker. |
-| `ref` | `Ref<HTMLLabelElement>` | — | No | Ref to the native label element. |
+| `variant` | `CheckboxVariant` | — | No | Visual variant of the checkbox, for theme or context switching. |
 
-Also accepts all `<label>` attributes.
+Also accepts all `<span>` attributes.
 <!-- AUTO-GENERATED:PART_API:CheckboxCardControl:end -->
 
 ## `CheckboxCardControlInput`

@@ -19,15 +19,15 @@ Large text appears visually like a section title, but assistive technology does 
 
 Use `Heading` when the content participates in document structure.
 
-## Newlines Are Rendering Unexpectedly
+## Newlines Do Not Break The Line
 
 ### Symptom
 
-Line breaks appear in the UI even though the text was expected to render as one paragraph.
+An address or other multiline string renders as one line.
 
 ### Likely Cause
 
-`Text` uses `white-space: pre-line`, so newline characters are preserved.
+`Text` collapses whitespace like a native `<span>`, so newline characters are not shown.
 
 ### How To Verify
 
@@ -36,7 +36,7 @@ Line breaks appear in the UI even though the text was expected to render as one 
 
 ### Fix
 
-Normalize the content before rendering or use a different rendering strategy when line breaks are not intended.
+Set `whiteSpace: 'pre-line'` on the `Text` when the line breaks are meaningful.
 
 ## Text Color Overrides Make Helper Copy Hard To Read
 

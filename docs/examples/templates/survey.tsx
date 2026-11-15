@@ -189,7 +189,7 @@ export default function Survey() {
 
   if (sent) {
     return (
-      <Card className='survey' style={{ alignItems: 'stretch', gap: 'var(--spacing-10)', width: '100%', maxWidth: 600, marginInline: 'auto' }}>
+      <Card className='survey' style={{ gap: 'var(--spacing-10)', width: '100%', maxWidth: 600, marginInline: 'auto' }}>
         <div style={{ display: 'grid', gap: 'var(--spacing-2)' }}>
           <Heading ref={headingRef} tabIndex={-1} as='h1' size={6} fontWeight={700} style={{ outline: 'none' }}>Thank you for your feedback</Heading>
           <Text size={3} style={secondary}>Every answer is read by the product team. We share what we change in the monthly changelog.</Text>
@@ -209,7 +209,7 @@ export default function Survey() {
   }
 
   return (
-    <Card asChild className='survey' style={{ alignItems: 'stretch', gap: 'var(--spacing-12)', width: '100%', maxWidth: 600, marginInline: 'auto' }}>
+    <Card asChild className='survey' style={{ gap: 'var(--spacing-12)', width: '100%', maxWidth: 600, marginInline: 'auto' }}>
       <form noValidate aria-labelledby={`${id}-heading`} onSubmit={submit}>
         <div style={{ display: 'grid', gap: 'var(--spacing-6)' }}>
           <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: 'var(--spacing-2) var(--spacing-8)' }}>

@@ -15,8 +15,8 @@ export default function SlottedHiddenElement() {
             <span aria-hidden='true' style={{ color: 'var(--color-primary-500)', letterSpacing: 'var(--spacing-1)' }}>
               {'★'.repeat(review.rating)}{'☆'.repeat(5 - review.rating)}
             </span>
-            <VisuallyHidden asChild>
-              <span>Rated {review.rating} out of 5</span>
+            <VisuallyHidden>
+              Rated {review.rating} out of 5
             </VisuallyHidden>
           </p>
           <Text size={3} style={{ color: 'var(--label-secondary)' }}>{review.text}</Text>

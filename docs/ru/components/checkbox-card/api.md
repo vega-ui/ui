@@ -62,11 +62,11 @@
 <!-- AUTO-GENERATED:PART_API:CheckboxCardControl:start -->
 | Проп | Тип | По умолчанию | Обязательный | Описание |
 | --- | --- | --- | --- | --- |
-| `variant` | `CheckboxVariant` | — | Нет | Визуальный вариант чекбокса для переключения темы или контекста. |
+| `ref` | `Ref<HTMLSpanElement>` | — | Нет | Ref на `<span>`, который держит чекбокс внутри метки карточки. |
 | `size` | `CheckboxSize` | — | Нет | Размер чекбокса и его визуального маркера. |
-| `ref` | `Ref<HTMLLabelElement>` | — | Нет | Ref на нативный элемент label. |
+| `variant` | `CheckboxVariant` | — | Нет | Визуальный вариант чекбокса для переключения темы или контекста. |
 
-Также принимает все атрибуты `<label>`.
+Также принимает все атрибуты `<span>`.
 <!-- AUTO-GENERATED:PART_API:CheckboxCardControl:end -->
 
 ## `CheckboxCardControlInput`

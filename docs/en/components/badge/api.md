@@ -10,7 +10,7 @@
 | `appearance` | `BadgeAppearance` | `'ghost'` | No | Visual appearance of the badge. Defines how the badge is styled (background, border, etc.). |
 | `size` | `BadgeSize` | `'md'` | No | Size of the badge. Affects padding, font size, and overall dimensions. |
 
-Also accepts `ref` and all `<div>` attributes.
+Also accepts `ref` and all `<span>` attributes.
 <!-- AUTO-GENERATED:ROOT_API:end -->
 
 ## Child Parts
