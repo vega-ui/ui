@@ -80,7 +80,8 @@ describe('Tooltip', () => {
       });
 
       it('closes on blur', async () => {
-        render(<button type='button'>Next</button>);
+        const next = render(<button type='button'>Next</button>).getByRole('button', { name: 'Next' });
+        await userEvent.hover(next, { force: true });
         await pressTab();
         await waitFor(() => {
           expect(queryContent(r)).toBeInTheDocument();
