@@ -131,7 +131,7 @@ VegaUI — воркспейс `pnpm` под управлением Turborepo. Г
 7. Node-тесты на `simulate`: каждая клавиша паттерна как список поступлений.
 8. Компонент: `useWidget`, `useOutput`, `useItem`, больше ничего.
 
-Пример: [packages/widgets/src/select/widget.ts](../../packages/widgets/src/select/widget.ts).
+Пример: [packages/widgets/src/select/widget.ts](../../packages/widgets/src/select/widget.ts). Виджет, написанный по шагам, с устройством каждой части: [Как писать виджеты](./widgets.md).
 
 ## Истории, тесты и документация
 

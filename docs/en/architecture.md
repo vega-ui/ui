@@ -131,7 +131,7 @@ Logic shared by two widgets lives in `packages/widgets/src/<segment>`; a context
 7. Node tests on `simulate`: every key of the pattern as a list of inputs.
 8. The component: `useWidget`, `useOutput`, `useItem`, nothing else.
 
-Example: [packages/widgets/src/select/widget.ts](../../packages/widgets/src/select/widget.ts).
+Example: [packages/widgets/src/select/widget.ts](../../packages/widgets/src/select/widget.ts). A widget written step by step, with the details of every part: [Writing Widgets](./widgets.md).
 
 ## Stories, Tests, And Docs
 
