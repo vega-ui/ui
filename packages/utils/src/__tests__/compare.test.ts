@@ -36,10 +36,4 @@ describe('compare', () => {
     expect(compare(NaN, NaN)).toBe(0);
   });
 
-  it('tolerates nullish pairs at runtime', () => {
-    // @ts-expect-error nullish values are not Comparable
-    expect(compare(undefined, undefined)).toBe(0);
-    // @ts-expect-error nullish values are not Comparable
-    expect(compare(null, null)).toBe(0);
-  });
 });

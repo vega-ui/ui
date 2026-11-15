@@ -1,4 +1,4 @@
-import type { Ref, RefCallback, RefObject } from 'react';
+import type { Ref, RefCallback } from 'react';
 
 export const mergeRefs = <T = unknown>(
   refs: Array<Ref<T> | undefined | null>
@@ -8,7 +8,7 @@ export const mergeRefs = <T = unknown>(
       if (typeof ref === 'function') {
         ref(value);
       } else if (ref != null && typeof ref === 'object') {
-        (ref as RefObject<T | null>).current = value;
+        ref.current = value;
       }
     });
   };

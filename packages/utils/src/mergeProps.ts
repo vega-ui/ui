@@ -52,7 +52,8 @@ export function mergeProps<T extends Record<string, unknown>>(...args: T[]): T {
       }
 
       if (key === 'ref') {
-        result[key] = mergeRefs([existingValue as Ref<unknown>, newValue as Ref<unknown>])
+        if (existingValue === undefined || newValue === undefined) result[key] = existingValue ?? newValue
+        else result[key] = mergeRefs([existingValue as Ref<unknown>, newValue as Ref<unknown>])
         continue
       }
 

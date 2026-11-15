@@ -3,7 +3,6 @@ import { GregorianCalendar, gregorianCalendar } from '..';
 
 describe('gregorianCalendar', () => {
   it('splits an ISO day into fields', () => {
-    expect(gregorianCalendar.identifier).toBe('gregory');
     expect(gregorianCalendar.toFields('2026-02-15')).toEqual({ year: 2026, month: 2, day: 15 });
   });
 

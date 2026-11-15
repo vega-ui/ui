@@ -1,13 +1,14 @@
 {
   "name": "@vega-ui/i18n",
   "version": "0.0.0",
-  "description": "Locale and calendar system support for @vega-ui/react",
+  "description": "Locale, calendar system and phone number support for @vega-ui/react",
   "license": "MIT",
   "keywords": [
     "ui-kit",
     "ui",
     "i18n",
     "calendar",
+    "phone",
     "ts",
     "typescript",
     "js"
@@ -45,6 +46,9 @@
     "check-types": "tsc -p tsconfig.app.json --noEmit",
     "test": "vitest run",
     "test:watch": "vitest --watch"
+  },
+  "dependencies": {
+    "libphonenumber-js": "^1.12.34"
   },
   "devDependencies": {
     "vite": "^6.3.5",

@@ -26,6 +26,7 @@ export default defineConfig({
     },
     chunkSizeWarningLimit: 10000,
     rollupOptions: {
+      external: [/^libphonenumber-js(\/|$)/],
       output: {
         preserveModules: true,
       },
