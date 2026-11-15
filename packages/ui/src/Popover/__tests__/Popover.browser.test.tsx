@@ -185,6 +185,22 @@ describe('Popover', () => {
   });
 
   describe('Edge Cases', () => {
+    it('hides a closing popover at once where the browser cannot keep it in the top layer for the fade', async () => {
+      document.documentElement.dataset.motion = '';
+      onTestFinished(() => {
+        delete document.documentElement.dataset.motion;
+      });
+      const r = render(<PopoverTest />);
+      await openByTrigger(r);
+      await waitOpened(r);
+      const content = getContent(r);
+
+      await closeByEscape();
+      await expect.poll(() => content.matches(':popover-open')).toBe(false);
+
+      expect(content.isConnected && getComputedStyle(content).display !== 'none').toBe(CSS.supports('overlay', 'auto'));
+    });
+
     it('closes with PopoverClose and returns focus to the trigger', async () => {
       const r = render(
         <Popover role='dialog'>
