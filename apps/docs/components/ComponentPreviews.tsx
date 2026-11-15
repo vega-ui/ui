@@ -3,20 +3,18 @@
 import type { CSSProperties, ReactNode } from 'react';
 import {
   Accordion, AccordionContent, AccordionHeader, AccordionIcon, AccordionItem, AccordionTrigger, Alert, AlertContent,
-  AlertIcon, Avatar, AvatarFallback, AvatarStack, AvatarStackItem, Badge, Button, ButtonBase, Calendar, CalendarBase,
-  CalendarBaseControlIconButton, CalendarBaseHeader, CalendarBasePickerButton, CalendarBaseWeekLabel,
-  CalendarBaseWeekLabels, CalendarContent, CalendarDay, CalendarDays, CalendarHeader, CalendarMonth, CalendarMonthLabel,
-  CalendarMonths, CalendarNextButton, CalendarPrevButton, CalendarViewButton, CalendarViewButtonGroup, CalendarWeekday,
-  CalendarWeekdays, CalendarWeeks, CalendarYear, CalendarYearLabel, CalendarYears, Card, Checkbox, CheckboxCard,
+  AlertIcon, Avatar, AvatarFallback, AvatarStack, AvatarStackItem, Badge, Button, ButtonBase, Calendar,
+  CalendarContent, CalendarDay, CalendarDays, CalendarHeader, CalendarHeading, CalendarMonth, CalendarMonthLabel,
+  CalendarMonths, CalendarMonthsGrid, CalendarNextButton, CalendarPrevButton, CalendarViewButton, CalendarWeekday,
+  CalendarWeekdays, CalendarWeeks, CalendarDaysScroller, CalendarDaysScrollerContent, CalendarYear, CalendarYearLabel, CalendarYears, CalendarYearsScroller, CalendarYearsScrollerContent, CalendarYearsGrid, Card, Checkbox, CheckboxCard,
   CheckboxCardContent, CheckboxCardControl, CheckboxCardControlCheckedIcon, CheckboxCardControlIndeterminateIcon,
   CheckboxCardControlInput, CheckboxCardDescription, CheckboxCardTitle,
   CheckboxCheckedIcon, CheckboxIndeterminateIcon, CheckboxIndicator, CheckboxInput, Code, Collapsible,
-  CollapsibleContent, CollapsibleTrigger, DataGrid, DataGridCell, DataGridPicker, DataGridPickerItem,
-  DataGridPickerRow, DataGridPickerRowGroup, DataGridRow, DataGridRowGroup, DataGridSelectable, DataGridSelectableCell,
-  DataGridSelectableRow, DataGridSelectableRowGroup, DateField, DateFieldCalendar, DateFieldInput, DateFieldTriggerIconButton, DateRangeField,
+  CollapsibleContent, CollapsibleTrigger,
+  DateField, DateFieldCalendar, DateFieldInput, DateFieldTriggerIconButton, DateRangeField,
   DateRangeFieldCalendar, DateRangeFieldInput, DateRangeFieldTriggerIconButton, DateTimeField, DateTimeFieldCalendar,
   DateTimeFieldInput, DateTimeFieldTriggerIconButton, DayPicker, DayPickerCell, DayPickerLayout, Dialog, DialogClose, DialogContent,
-  DialogTrigger, Drawer, DrawerClose, DrawerContent, DrawerTrigger, Fieldset, FieldsetLegend, Heading, HelperText, Icon,
+  DialogTrigger, Drawer, DrawerClose, DrawerContent, DrawerTrigger, Fieldset, FieldsetLegend, Grid, GridCell, GridRow, GridRowGroup, Heading, HelperText, Icon,
   IconButton, IndexedSnapScroller, IndexedSnapScrollerContent, Label, Link, Listbox, ListboxOption, Meter, MeterStack,
   MeterStackSegment, MeterTrack, MonthPicker, MonthPickerCell, MonthPickerLayout, NumberField,
   NumberFieldDecrementButton, NumberFieldIncrementButton, NumberFieldInput, Option, PageControl, PageControlItem,
@@ -27,18 +25,16 @@ import {
   SelectListbox, SelectOption, SelectValue, Separator, Sheet, SheetClose, SheetContent, SheetHandle, SheetTrigger,
   Slider, SliderRange, SliderThumb, SliderThumbIndicator, SliderThumbInput, SliderTrack, SnapScroller,
   SnapScrollerContent, Spinner, Switch, SwitchIndicator, SwitchInput, Table, TableBody, TableData, TableHead,
-  TableHeading, TableRow, Text, TextArea, TextField, TextFieldInput, TimeField, TimeFieldInput, Tooltip, TooltipArrow,
+  TableHeading, TableRow, Text, TextArea, TextField, TextFieldInput, TimeField, TimeFieldInput, Tooltip,
   TooltipContent, TooltipTrigger, useIndexedSnapScrollerContext, VisuallyHidden, YearPicker, YearPickerCell,
   YearPickerLayout,
 } from '@vega-ui/react';
-import { Bell, Check, ChevronLeft, ChevronRight, Heart, Search, Star, XIcon } from '@vega-ui/icons';
+import { Bell, Check, Heart, Search, Star, XIcon } from '@vega-ui/icons';
 import styles from './ComponentPreviews.module.css';
 
 export interface Preview {
   node: ReactNode
 }
-
-const WEEK = ['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'];
 
 const MONTHS = ['November 2026', 'December 2026', 'January 2027'];
 
@@ -166,10 +162,10 @@ export const PREVIEWS: Record<string, Preview> = {
               <DateFieldCalendar>
                 <CalendarHeader>
                   <CalendarPrevButton aria-label='Previous month' />
-                  <CalendarViewButtonGroup>
+                  <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-                  </CalendarViewButtonGroup>
+                  </CalendarHeading>
                   <CalendarNextButton aria-label='Next month' />
                 </CalendarHeader>
                 <CalendarContent>
@@ -177,15 +173,27 @@ export const PREVIEWS: Record<string, Preview> = {
                     <CalendarWeekdays>
                       <CalendarWeekday />
                     </CalendarWeekdays>
-                    <CalendarWeeks>
-                      <CalendarDay />
-                    </CalendarWeeks>
+                    <CalendarDaysScroller>
+                      <CalendarDaysScrollerContent>
+                        <CalendarWeeks>
+                          <CalendarDay />
+                        </CalendarWeeks>
+                      </CalendarDaysScrollerContent>
+                    </CalendarDaysScroller>
                   </CalendarDays>
                   <CalendarMonths>
-                    <CalendarMonth />
+                    <CalendarMonthsGrid>
+                      <CalendarMonth />
+                    </CalendarMonthsGrid>
                   </CalendarMonths>
                   <CalendarYears>
-                    <CalendarYear />
+                    <CalendarYearsScroller>
+                      <CalendarYearsScrollerContent>
+                        <CalendarYearsGrid>
+                          <CalendarYear />
+                        </CalendarYearsGrid>
+                      </CalendarYearsScrollerContent>
+                    </CalendarYearsScroller>
                   </CalendarYears>
                 </CalendarContent>
               </DateFieldCalendar>
@@ -209,10 +217,10 @@ export const PREVIEWS: Record<string, Preview> = {
               <DateRangeFieldCalendar>
                 <CalendarHeader>
                   <CalendarPrevButton aria-label='Previous month' />
-                  <CalendarViewButtonGroup>
+                  <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-                  </CalendarViewButtonGroup>
+                  </CalendarHeading>
                   <CalendarNextButton aria-label='Next month' />
                 </CalendarHeader>
                 <CalendarContent>
@@ -220,15 +228,27 @@ export const PREVIEWS: Record<string, Preview> = {
                     <CalendarWeekdays>
                       <CalendarWeekday />
                     </CalendarWeekdays>
-                    <CalendarWeeks>
-                      <CalendarDay />
-                    </CalendarWeeks>
+                    <CalendarDaysScroller>
+                      <CalendarDaysScrollerContent>
+                        <CalendarWeeks>
+                          <CalendarDay />
+                        </CalendarWeeks>
+                      </CalendarDaysScrollerContent>
+                    </CalendarDaysScroller>
                   </CalendarDays>
                   <CalendarMonths>
-                    <CalendarMonth />
+                    <CalendarMonthsGrid>
+                      <CalendarMonth />
+                    </CalendarMonthsGrid>
                   </CalendarMonths>
                   <CalendarYears>
-                    <CalendarYear />
+                    <CalendarYearsScroller>
+                      <CalendarYearsScrollerContent>
+                        <CalendarYearsGrid>
+                          <CalendarYear />
+                        </CalendarYearsGrid>
+                      </CalendarYearsScrollerContent>
+                    </CalendarYearsScroller>
                   </CalendarYears>
                 </CalendarContent>
               </DateRangeFieldCalendar>
@@ -252,10 +272,10 @@ export const PREVIEWS: Record<string, Preview> = {
               <DateTimeFieldCalendar>
                 <CalendarHeader>
                   <CalendarPrevButton aria-label='Previous month' />
-                  <CalendarViewButtonGroup>
+                  <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-                  </CalendarViewButtonGroup>
+                  </CalendarHeading>
                   <CalendarNextButton aria-label='Next month' />
                 </CalendarHeader>
                 <CalendarContent>
@@ -263,15 +283,27 @@ export const PREVIEWS: Record<string, Preview> = {
                     <CalendarWeekdays>
                       <CalendarWeekday />
                     </CalendarWeekdays>
-                    <CalendarWeeks>
-                      <CalendarDay />
-                    </CalendarWeeks>
+                    <CalendarDaysScroller>
+                      <CalendarDaysScrollerContent>
+                        <CalendarWeeks>
+                          <CalendarDay />
+                        </CalendarWeeks>
+                      </CalendarDaysScrollerContent>
+                    </CalendarDaysScroller>
                   </CalendarDays>
                   <CalendarMonths>
-                    <CalendarMonth />
+                    <CalendarMonthsGrid>
+                      <CalendarMonth />
+                    </CalendarMonthsGrid>
                   </CalendarMonths>
                   <CalendarYears>
-                    <CalendarYear />
+                    <CalendarYearsScroller>
+                      <CalendarYearsScrollerContent>
+                        <CalendarYearsGrid>
+                          <CalendarYear />
+                        </CalendarYearsGrid>
+                      </CalendarYearsScrollerContent>
+                    </CalendarYearsScroller>
                   </CalendarYears>
                 </CalendarContent>
               </DateTimeFieldCalendar>
@@ -364,7 +396,7 @@ export const PREVIEWS: Record<string, Preview> = {
     node: (
       <div className={styles.field}>
         <Label htmlFor='preview-phone'>Phone</Label>
-        <PhoneField code='US'>
+        <PhoneField country='US'>
           <PhoneFieldInput id='preview-phone' placeholder='+1 (___) ___-____' />
         </PhoneField>
       </div>
@@ -547,7 +579,6 @@ export const PREVIEWS: Record<string, Preview> = {
           <IconButton variant='secondary' appearance='ghost' aria-label='Notifications'><Icon><Bell /></Icon></IconButton>
         </TooltipTrigger>
         <TooltipContent>
-          <TooltipArrow />
           <Text size={2}>Notifications</Text>
         </TooltipContent>
       </Tooltip>
@@ -598,103 +629,60 @@ export const PREVIEWS: Record<string, Preview> = {
       <Calendar locale='en-US' defaultValue='2026-11-03'>
         <CalendarHeader>
           <CalendarPrevButton aria-label='Previous month' />
-          <CalendarViewButtonGroup>
+          <CalendarHeading>
             <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
             <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
-          </CalendarViewButtonGroup>
+          </CalendarHeading>
           <CalendarNextButton aria-label='Next month' />
         </CalendarHeader>
         <CalendarContent>
           <CalendarDays>
             <CalendarWeekdays><CalendarWeekday /></CalendarWeekdays>
-            <CalendarWeeks><CalendarDay /></CalendarWeeks>
+            <CalendarDaysScroller><CalendarDaysScrollerContent><CalendarWeeks><CalendarDay /></CalendarWeeks></CalendarDaysScrollerContent></CalendarDaysScroller>
           </CalendarDays>
-          <CalendarMonths><CalendarMonth /></CalendarMonths>
-          <CalendarYears><CalendarYear /></CalendarYears>
+          <CalendarMonths><CalendarMonthsGrid><CalendarMonth /></CalendarMonthsGrid></CalendarMonths>
+          <CalendarYears><CalendarYearsScroller><CalendarYearsScrollerContent><CalendarYearsGrid><CalendarYear /></CalendarYearsGrid></CalendarYearsScrollerContent></CalendarYearsScroller></CalendarYears>
         </CalendarContent>
       </Calendar>
     ),
   },
-  'calendar-base': {
-    node: (
-      <CalendarBase size='sm'>
-        <CalendarBaseHeader>
-          <CalendarBaseControlIconButton aria-label='Previous month'><Icon><ChevronLeft /></Icon></CalendarBaseControlIconButton>
-          <CalendarBasePickerButton>November 2026</CalendarBasePickerButton>
-          <CalendarBaseControlIconButton aria-label='Next month'><Icon><ChevronRight /></Icon></CalendarBaseControlIconButton>
-        </CalendarBaseHeader>
-        <CalendarBaseWeekLabels>
-          {WEEK.map((day) => <CalendarBaseWeekLabel key={day}>{day}</CalendarBaseWeekLabel>)}
-        </CalendarBaseWeekLabels>
-        <DayPicker locale='en-GB' month='2026-11-01' aria-label='November 2026' defaultSelected='2026-11-03'>
-          <DayPickerLayout includeOverflowDays><DayPickerCell /></DayPickerLayout>
-        </DayPicker>
-      </CalendarBase>
-    ),
-  },
   'day-picker': {
     node: (
-      <DayPicker aria-label='November 2026' locale='en-GB' month='2026-11-01' defaultSelected='2026-11-03'>
+      <DayPicker aria-label='November 2026' locale='en-GB' defaultValue='2026-11-03'>
         <DayPickerLayout><DayPickerCell /></DayPickerLayout>
       </DayPicker>
     ),
   },
   'month-picker': {
     node: (
-      <MonthPicker aria-label='Month, 2026' locale='en-US' year='2026-01-01' defaultSelected='2026-11-01' className={styles.wide}>
+      <MonthPicker aria-label='Month, 2026' locale='en-US' defaultValue='2026-11-01' className={styles.wide}>
         <MonthPickerLayout><MonthPickerCell /></MonthPickerLayout>
       </MonthPicker>
     ),
   },
   'year-picker': {
     node: (
-      <YearPicker aria-label='Year' year='2026-01-01' defaultSelected='2026-01-01' className={styles.wide}>
+      <YearPicker aria-label='Year' defaultValue='2026-01-01' className={styles.wide}>
         <YearPickerLayout><YearPickerCell /></YearPickerLayout>
       </YearPicker>
     ),
   },
-  'data-grid': {
+  'grid': {
     node: (
-      <DataGrid aria-label='Release checklist' className={styles.sheet}>
-        <DataGridRowGroup>
-          <DataGridRow row={0}>
-            <DataGridCell col={0}>Design</DataGridCell>
-            <DataGridCell col={1}>Build</DataGridCell>
-            <DataGridCell col={2}>Ship</DataGridCell>
-          </DataGridRow>
-          <DataGridRow row={1}>
-            <DataGridCell col={0}>Done</DataGridCell>
-            <DataGridCell col={1}>Review</DataGridCell>
-            <DataGridCell col={2}>Planned</DataGridCell>
-          </DataGridRow>
-        </DataGridRowGroup>
-      </DataGrid>
-    ),
-  },
-  'data-grid-picker': {
-    node: (
-      <DataGridPicker aria-label='Plan length' defaultSelected='6m' defaultActive='6m' className={styles.wide}>
-        <DataGridPickerRowGroup>
-          <DataGridPickerRow row={0}>
-            <DataGridPickerItem col={0} value='1m'>1 mo</DataGridPickerItem>
-            <DataGridPickerItem col={1} value='6m'>6 mo</DataGridPickerItem>
-            <DataGridPickerItem col={2} value='12m'>12 mo</DataGridPickerItem>
-          </DataGridPickerRow>
-        </DataGridPickerRowGroup>
-      </DataGridPicker>
-    ),
-  },
-  'data-grid-selectable': {
-    node: (
-      <DataGridSelectable aria-label='Quarter' defaultSelected='q2' defaultActive='q2' className={styles.selectable}>
-        <DataGridSelectableRowGroup>
-          {[['q1', 'q2'], ['q3', 'q4']].map((cells, row) => (
-            <DataGridSelectableRow key={cells[0]} row={row}>
-              {cells.map((cell, col) => <DataGridSelectableCell key={cell} col={col} cellKey={cell}>{cell.toUpperCase()}</DataGridSelectableCell>)}
-            </DataGridSelectableRow>
-          ))}
-        </DataGridSelectableRowGroup>
-      </DataGridSelectable>
+      <Grid aria-label='Release checklist' className={styles.sheet}>
+        <GridRowGroup>
+          <GridRow row={0}>
+            <GridCell col={0}>Design</GridCell>
+            <GridCell col={1}>Build</GridCell>
+            <GridCell col={2}>Ship</GridCell>
+          </GridRow>
+          <GridRow row={1}>
+            <GridCell col={0}>Done</GridCell>
+            <GridCell col={1}>Review</GridCell>
+            <GridCell col={2}>Planned</GridCell>
+          </GridRow>
+        </GridRowGroup>
+      </Grid>
     ),
   },
   table: {

@@ -19,7 +19,7 @@
     --option-br-ratio: var(--theme-ratio);
     --select-br-ratio: var(--theme-ratio);
     --segmented-control-br-ratio: var(--theme-ratio);
-    --data-grid-picker-item-br-ratio: var(--theme-ratio);
+    --grid-item-br-ratio: var(--theme-ratio);
     --badge-border-radius-ratio: var(--theme-ratio);
 }
 

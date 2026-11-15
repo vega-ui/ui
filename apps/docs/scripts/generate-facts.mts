@@ -28,13 +28,14 @@ interface Detector {
   css?: RegExp
   js?: RegExp
   note?: Note | ((css: string, js: string) => Note | undefined)
+  status?: { baseline: 'low', baseline_low_date: string, support: Record<typeof BROWSERS[number], string> }
 }
 
 const DETECTORS: Detector[] = [
   { id: 'dialog', mdn: 'HTML/Reference/Elements/dialog', js: /\.showModal\(/ },
   { id: 'popover', mdn: 'API/Popover_API', js: /\.togglePopover\(|\.showPopover\(|popover:"(?:auto|manual|hint)"/, css: /:popover-open/ },
   { id: 'dialog-closedby', mdn: 'HTML/Reference/Elements/dialog#closedby', js: /closedby:/, note: 'closedby' },
-  { id: 'anchor-positioning', mdn: 'CSS/CSS_anchor_positioning', css: /anchor-name:|position-anchor:|anchor\(/, note: (css) => /@supports not \(anchor-name/.test(css) ? 'fallback' : undefined },
+  { id: 'anchor-positioning', mdn: 'CSS/CSS_anchor_positioning', css: /anchor-name:|position-anchor:|position-area:|anchor\(/, note: (css) => /@supports not \(anchor-name/.test(css) ? 'fallback' : undefined, status: { baseline: 'low', baseline_low_date: '2026-01-13', support: { chrome: '129', edge: '129', firefox: '147', safari: '26', safari_ios: '26' } } },
   { id: 'has', mdn: 'CSS/:has', css: /:has\(/ },
   { id: 'modal', mdn: 'CSS/:modal', css: /:modal\b/ },
   { id: 'backdrop', mdn: 'CSS/::backdrop', css: /::backdrop/ },
@@ -89,8 +90,11 @@ const compareVersions = (a: string, b: string) => {
 
 const kB = (bytes: number) => Math.round(bytes / 102.4) / 10;
 
+const REACT = ['react', 'react-dom', 'react/*', 'react-dom/*'];
+const RUNTIME = ['@vega-ui/core', '@vega-ui/widgets'];
+
 const bundle = async (dir: string) => {
-  const result = await esbuild.build({
+  const build = (external: string[]) => esbuild.build({
     entryPoints: [path.join(uiDir, 'dist', dir, 'index.js')],
     bundle: true,
     minify: true,
@@ -99,10 +103,14 @@ const bundle = async (dir: string) => {
     write: false,
     metafile: true,
     outfile: 'out.js',
-    external: ['react', 'react-dom', 'react/*', 'react-dom/*'],
+    external,
     logLevel: 'silent',
   });
+  const result = await build([...REACT, ...RUNTIME.flatMap((name) => [name, `${name}/*`])]);
   const js = result.outputFiles[0].text;
+  const usesRuntime = Object.values(result.metafile.outputs)[0].imports.some((entry) => RUNTIME.some((name) => entry.path === name || entry.path.startsWith(`${name}/`)));
+  const whole = usesRuntime ? (await build(REACT)).outputFiles[0].text : js;
+  const runtime = usesRuntime ? kB(gzipSync(whole).length - gzipSync(js).length) : null;
   const exports = Object.values(result.metafile.outputs)[0].exports;
   const modules = Object.keys(result.metafile.inputs)
     .map((input) => path.resolve(input))
@@ -121,8 +129,9 @@ const bundle = async (dir: string) => {
     logLevel: 'silent',
   })).outputFiles[0].text;
 
-  return { js, css, exports };
+  return { js, whole, css, exports, runtime };
 };
+
 
 const measure = (js: string, css: string) => {
   const gzipJs = gzipSync(js).length;
@@ -146,14 +155,15 @@ const detect = (js: string, css: string) => DETECTORS.flatMap((detector) => {
   if (!feature || feature.kind !== 'feature') throw new Error(`Unknown web feature ${detector.id}`);
 
   const note = typeof detector.note === 'function' ? detector.note(css, js) : detector.note;
-  const support = Object.fromEntries(BROWSERS.map((browser) => [browser, feature.status.support[browser] ?? null]));
+  const status = detector.status ?? feature.status;
+  const support = Object.fromEntries(BROWSERS.map((browser) => [browser, status.support[browser] ?? null]));
 
   return [{
     id: detector.id,
     name: feature.name,
     mdn: `${MDN}${detector.mdn}`,
-    baseline: feature.status.baseline,
-    since: feature.status.baseline_low_date ?? null,
+    baseline: status.baseline,
+    since: status.baseline_low_date ?? null,
     support,
     required: !note || note === 'tokens',
     note: note ?? null,
@@ -251,14 +261,14 @@ for (const component of getComponents()) {
   const dir = dirs.get(component.slug);
   if (!dir) continue;
 
-  const { js, css, exports } = await bundle(dir);
-  const detected = detect(js, css);
+  const { js, whole, css, exports, runtime } = await bundle(dir);
+  const detected = detect(whole, css);
 
   facts[component.slug] = {
     entry: `@vega-ui/react/${dir}`,
     ...summarize(detected),
     features: detected.map(({ id, name, mdn, required, note }) => ({ id, name, mdn, required, note })),
-    size: measure(js, css),
+    size: { ...measure(js, css), runtime },
     tests: countTests(dir),
     ...history(dir, exports),
   };

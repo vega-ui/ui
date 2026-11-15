@@ -70,6 +70,7 @@ const en = {
       checkout: { title: 'Checkout', description: 'Contact and shipping address, country select, shipping options and an order summary with live totals.' },
       booking: { title: 'Booking', description: 'Stay dates with unavailable nights, a guest counter, a price breakdown and a confirm sheet.' },
       orders: { title: 'Orders table', description: 'Search, status and period filters over a paginated table with an empty state.' },
+      ledger: { title: 'Ledger', description: 'A virtualized grid of 100,000 transactions: arrows, Page Up/Down and Ctrl+Home move through every row, Shift + arrows, a drag or Ctrl+A select cells, and the selected amounts add up.' },
       onboarding: { title: 'Onboarding', description: 'A three-step workspace setup with progress, per-step validation and a review step.' },
       'sign-in': { title: 'Sign in', description: 'Email and password with errors, then a two-factor code step.' },
       'team-members': { title: 'Team members', description: 'Members with roles, an invite dialog that checks every address, pending invites and seat usage.' },
@@ -174,7 +175,7 @@ const en = {
     catalog: {
       eyebrow: 'Catalog',
       title: 'Everything [a product] needs.',
-      text: '{count} components share the same tokens, the same parts model and the same keyboard rules. Sizes are JS and CSS after gzip.',
+      text: '{count} components share the same tokens, the same parts model and the same keyboard rules. Sizes are JS and CSS after gzip, without the widget runtime they share.',
       link: 'All components',
     },
     finale: {
@@ -310,7 +311,8 @@ const en = {
     browsers: { chrome: 'Chrome', edge: 'Edge', firefox: 'Firefox', safari: 'Safari', safari_ios: 'Safari on iOS' } as Record<string, string>,
     unsupported: 'no',
     gzip: '≈ {size} kB gzip',
-    sizeHint: 'The minified {entry} entry with its dependencies bundled and React left external, plus its CSS modules: JS {js} kB and CSS {css} kB gzip, {brotli} kB brotli. The shared tokens and theme stylesheet is not counted.',
+    sizeHint: 'The minified {entry} entry with its dependencies bundled and React and the widget runtime left external, plus its CSS modules: JS {js} kB and CSS {css} kB gzip, {brotli} kB brotli. The shared tokens and theme stylesheet is not counted.',
+    runtimeHint: 'It also needs {runtime} kB gzip of the widget runtime, which all components share, so the browser downloads it once.',
     added: 'Added in {version}',
     changed: 'last changed in {version}',
     uses: 'Uses',
@@ -418,6 +420,7 @@ const ru: Dictionary = {
       checkout: { title: 'Оформление заказа', description: 'Контакты и адрес доставки, выбор страны, способы доставки и состав заказа с живыми итогами.' },
       booking: { title: 'Бронирование', description: 'Даты проживания с занятыми ночами, счётчик гостей, расчёт цены и шторка подтверждения.' },
       orders: { title: 'Таблица заказов', description: 'Поиск, фильтры по статусу и периоду, таблица с пагинацией и пустым состоянием.' },
+      ledger: { title: 'Журнал операций', description: 'Виртуализированная сетка из 100 000 операций: стрелки, Page Up/Down и Ctrl+Home ходят по всем строкам, Shift + стрелки, перетаскивание или Ctrl+A выделяют ячейки, а выделенные суммы складываются.' },
       onboarding: { title: 'Онбординг', description: 'Настройка рабочего пространства в три шага: прогресс, проверка на каждом шаге и итоговый шаг.' },
       'sign-in': { title: 'Вход', description: 'Почта и пароль с ошибками, затем шаг с кодом двухфакторной защиты.' },
       'team-members': { title: 'Участники команды', description: 'Участники с ролями, диалог приглашения с проверкой каждого адреса, ожидающие приглашения и занятые места.' },
@@ -522,7 +525,7 @@ const ru: Dictionary = {
     catalog: {
       eyebrow: 'Каталог',
       title: 'Всё, что нужно [продукту].',
-      text: 'Компонентов — {count}, и у всех одни токены, одна модель частей и одни правила клавиатуры. Размеры — JS и CSS после gzip.',
+      text: 'Компонентов — {count}, и у всех одни токены, одна модель частей и одни правила клавиатуры. Размеры — JS и CSS после gzip, без общего для них рантайма виджетов.',
       link: 'Все компоненты',
     },
     finale: {
@@ -668,7 +671,8 @@ const ru: Dictionary = {
     browsers: { chrome: 'Chrome', edge: 'Edge', firefox: 'Firefox', safari: 'Safari', safari_ios: 'Safari на iOS' },
     unsupported: 'нет',
     gzip: '≈ {size} КБ gzip',
-    sizeHint: 'Минифицированная точка входа {entry} с собранными зависимостями и внешним React, плюс её CSS-модули: JS {js} КБ и CSS {css} КБ в gzip, {brotli} КБ в brotli. Общие стили токенов и темы не учитываются.',
+    sizeHint: 'Минифицированная точка входа {entry} с собранными зависимостями, кроме React и рантайма виджетов, плюс её CSS-модули: JS {js} КБ и CSS {css} КБ в gzip, {brotli} КБ в brotli. Общие стили токенов и темы не учитываются.',
+    runtimeHint: 'Ещё ему нужно {runtime} КБ gzip рантайма виджетов: он общий для всех компонентов, поэтому браузер скачивает его один раз.',
     added: 'Добавлен в {version}',
     changed: 'последнее изменение в {version}',
     uses: 'Использует',

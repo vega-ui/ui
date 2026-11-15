@@ -14,6 +14,7 @@ const CATEGORY_BY_TEMPLATE: Record<string, string> = {
   checkout: 'commerce',
   'product-page': 'commerce',
   orders: 'data',
+  ledger: 'data',
   analytics: 'data',
   inbox: 'communication',
   chat: 'communication',
