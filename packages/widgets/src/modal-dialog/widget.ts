@@ -1,0 +1,147 @@
+import { act, browser, command, controlled, defineWidget, field, handled, internal, keep, lifecycle, listening, matching, ownedField, pointer, state, Step } from '@vega-ui/core'
+
+/**
+ * Which user actions close a modal, like the native `closedby` attribute:
+ * `any` a backdrop click or `Escape`, `closerequest` only `Escape`, `none` neither.
+ */
+export type ModalDialogClosedBy = 'any' | 'closerequest' | 'none'
+
+type Stage = 'closed' | 'mounting' | 'open' | 'closedByBrowser'
+
+export const DIALOG = 'dialog'
+
+export const OPEN_DIALOG = command('openDialog')
+export const CLOSE_DIALOG = command('closeDialog')
+
+export const modalDialogValues = {
+  owns: { open: controlled(false) },
+  internal: { stage: internal('closed' as Stage), returnValue: internal(undefined as string | undefined), pressedBackdrop: internal(false) },
+  observes: { closedByAny: matching(DIALOG, '[closedby="any"]'), closedByNone: matching(DIALOG, '[closedby="none"]') },
+}
+
+export const modalDialogShape = state({ options: {}, ...modalDialogValues })
+
+export interface ModalDialogState {
+  readonly options: object
+  readonly open: boolean
+  readonly stage: Stage
+  readonly returnValue: string | undefined
+  readonly pressedBackdrop: boolean
+  readonly closedByAny: boolean
+  readonly closedByNone: boolean
+}
+
+const fieldsOf = <S extends ModalDialogState>() => ({
+  open: ownedField<S, boolean>('open'),
+  stage: field<S, Stage>('stage'),
+  returnValue: field<S, string | undefined>('returnValue'),
+  pressedBackdrop: field<S, boolean>('pressedBackdrop'),
+})
+
+const SHOW = [act.showModal(DIALOG)]
+const SETTLING = [act.awaitAnimations(DIALOG)]
+
+export const isMounted = (state: ModalDialogState) => state.open || state.stage !== 'closed'
+
+export const isRendered = (state: ModalDialogState) => state.stage === 'open' || state.stage === 'closedByBrowser'
+
+export const closeModalDialog = <S extends ModalDialogState>(state: S, returnValue?: string) => {
+  const fields = fieldsOf<S>()
+  const next = fields.returnValue.set(fields.open.set(state, false), returnValue)
+  if (fields.open.controlled(state)) return handled(next)
+  if (state.stage === 'open') return handled(next, SETTLING)
+
+  return handled(fields.stage.set(next, 'closed'))
+}
+
+export const modalDialogSteps = <S extends ModalDialogState>(): Step<S>[] => {
+  const fields = fieldsOf<S>()
+
+  const open = (state: S) => {
+    const next = fields.open.set(state, true)
+    if (fields.open.controlled(state) || state.stage === 'open') return keep(next)
+
+    return keep(fields.stage.set(next, 'mounting'), SHOW)
+  }
+
+  const commands: Step<S> = (state, input) => {
+    if (input.is(OPEN_DIALOG)) return open(state)
+    if (input.is(CLOSE_DIALOG)) return closeModalDialog(state)
+
+    return undefined
+  }
+
+  const following: Step<S> = (state, input) => {
+    if (!input.is(lifecycle.connect) && !input.is(lifecycle.options)) return undefined
+    if (state.open) return keep(fields.stage.set(state, state.stage === 'open' ? 'open' : 'mounting'), state.stage === 'open' ? [] : SHOW)
+    if (state.stage === 'open') return keep(state, SETTLING)
+    if (state.stage === 'closedByBrowser') return keep(fields.stage.set(state, 'closed'))
+
+    return keep(state)
+  }
+
+  const shown = listening<S>([browser.toggle], (state, input) => {
+    if (!input.is(browser.toggle) || input.part !== DIALOG || input.to !== true) return undefined
+    if (!state.open) return keep(state)
+
+    return keep(fields.stage.set(state, 'open'))
+  })
+
+  const requests = listening<S>([browser.cancel, browser.submit, pointer.down, pointer.press], (state, input) => {
+    if (input.is(browser.cancel) && input.part === DIALOG) {
+      const reset = fields.pressedBackdrop.set(state, false)
+      return state.closedByNone ? handled(reset) : closeModalDialog(reset)
+    }
+
+    if (input.is(browser.submit) && input.part === DIALOG && input.to === 'dialog') return closeModalDialog(state, input.value)
+
+    if (input.is(pointer.down) && input.part === DIALOG) return keep(fields.pressedBackdrop.set(state, input.backdrop === true))
+
+    if (input.is(pointer.press) && input.part === DIALOG) {
+      const backdrop = state.pressedBackdrop && input.backdrop === true
+      const reset = fields.pressedBackdrop.set(state, false)
+      if (!backdrop || !state.closedByAny || !state.open) return keep(reset)
+
+      return closeModalDialog(reset)
+    }
+
+    return undefined
+  })
+
+  const settled: Step<S> = (state, input) => {
+    if (!input.is(browser.animationEnd) || input.part !== DIALOG) return undefined
+    if (state.open || state.stage !== 'open') return keep(state)
+
+    return keep(state, [act.closeDialog(DIALOG, state.returnValue)])
+  }
+
+  const closed = listening<S>([browser.close], (state, input) => {
+    if (!input.is(browser.close) || input.part !== DIALOG) return undefined
+    if (!state.open) return keep(fields.stage.set(state, 'closed'))
+
+    const next = fields.open.set(state, false)
+    return keep(fields.stage.set(next, fields.open.controlled(state) ? 'closedByBrowser' : 'closed'))
+  })
+
+  return [commands, following, shown, requests, settled, closed]
+}
+
+export const modalDialogStatus = (open: boolean) => ({ 'data-status': open ? 'open' : 'close' })
+
+type ModalDialogSnapshot = typeof modalDialogShape.__snapshot
+
+export const modalDialogWidget = defineWidget({
+  state: modalDialogShape,
+
+  step: modalDialogSteps<ModalDialogSnapshot>(),
+
+  output: {
+    dialog: {
+      ...modalDialogShape.part(() => [] as const, () => ({})),
+      live: {
+        select: (state: ModalDialogSnapshot) => [state.open],
+        render: ([open]) => modalDialogStatus(open === true),
+      },
+    },
+  },
+})

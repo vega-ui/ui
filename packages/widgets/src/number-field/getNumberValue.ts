@@ -1,0 +1,1 @@
+export const getNumberValue = (value: string | number) => typeof value !== 'number' ? parseFloat(value.replace(/\s/g, '')) : value
