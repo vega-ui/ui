@@ -4094,5 +4094,61 @@
   "YearPickerScrollerLayout.start": {
     "en": "First year of page `0`, given as a `YYYY-MM-DD` string of any day in it. Pages are aligned to it. Defaults to the first focused year of the YearPicker.",
     "ru": "Первый год страницы `0` — строка `YYYY-MM-DD` любого дня в нём. Страницы выравниваются по нему. По умолчанию — первый год в фокусе YearPicker."
+  },
+  "Tabs.activation": {
+    "en": "`automatic` shows a tab as soon as the arrow keys move to it; `manual` only moves the focus, and Enter or Space shows the focused tab. A click shows the clicked tab in both.",
+    "ru": "`automatic` показывает вкладку, как только на неё переходят стрелками; `manual` только переносит фокус, а вкладку в фокусе показывают Enter или пробел. Щелчок показывает вкладку в обоих режимах."
+  },
+  "Tabs.defaultValue": {
+    "en": "Value of the tab selected on mount. Without it the first enabled tab is shown.",
+    "ru": "Значение вкладки, выбранной при монтировании. Без него показана первая доступная вкладка."
+  },
+  "Tabs.onChangeValue": {
+    "en": "Called with the value of the tab the user selects.",
+    "ru": "Вызывается со значением вкладки, которую выбрал пользователь."
+  },
+  "Tabs.orientation": {
+    "en": "Direction of the tab list: the arrow keys follow it.",
+    "ru": "Направление списка вкладок: стрелки следуют ему."
+  },
+  "Tabs.ref": {
+    "en": "Ref forwarded to the root `<div>` element.",
+    "ru": "Ref, передаваемый корневому элементу `<div>`."
+  },
+  "Tabs.size": {
+    "en": "Size of the tabs.",
+    "ru": "Размер вкладок."
+  },
+  "Tabs.value": {
+    "en": "Value of the selected tab. Enables controlled mode when set.",
+    "ru": "Значение выбранной вкладки. Если задано, компонент становится контролируемым."
+  },
+  "Tabs.variant": {
+    "en": "Color of the line under the selected tab.",
+    "ru": "Цвет линии под выбранной вкладкой."
+  },
+  "TabsList.ref": {
+    "en": "Ref forwarded to the `<div role=\"tablist\">` element.",
+    "ru": "Ref, передаваемый элементу `<div role=\"tablist\">`."
+  },
+  "TabsPanel.ref": {
+    "en": "Ref forwarded to the `<div role=\"tabpanel\">` element.",
+    "ru": "Ref, передаваемый элементу `<div role=\"tabpanel\">`."
+  },
+  "TabsPanel.value": {
+    "en": "Value of the TabsTab that shows this panel.",
+    "ru": "Значение TabsTab, которая показывает эту панель."
+  },
+  "TabsTab.ref": {
+    "en": "Ref forwarded to the `<button role=\"tab\">` element.",
+    "ru": "Ref, передаваемый элементу `<button role=\"tab\">`."
+  },
+  "TabsTab.size": {
+    "en": "Size of the tab. Falls back to the size of Tabs.",
+    "ru": "Размер вкладки. По умолчанию берётся размер Tabs."
+  },
+  "TabsTab.value": {
+    "en": "Value of the tab, matched by the `value` of its TabsPanel.",
+    "ru": "Значение вкладки; совпадает с `value` её TabsPanel."
   }
 }

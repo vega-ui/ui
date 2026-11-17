@@ -1,0 +1,67 @@
+.list {
+    --tabs-separator-color: transparent;
+    --tabs-tab-height: var(--spacing-21);
+
+    display: flex;
+    position: relative;
+    gap: var(--spacing-12);
+    margin-block-end: var(--spacing-8);
+    box-shadow: inset 0 -1px 0 var(--tabs-separator-color);
+}
+
+.list:where([data-size='sm']) {
+    --tabs-tab-height: var(--spacing-18);
+}
+
+.list:where([data-size='lg']) {
+    --tabs-tab-height: var(--spacing-24);
+}
+
+.list::after {
+    content: '';
+    position: absolute;
+    position-anchor: --tabs-selected;
+    pointer-events: none;
+    top: calc(anchor(bottom) - 2px);
+    left: anchor(left);
+    width: anchor-size(width);
+    height: 2px;
+    border-radius: 2px;
+    background-color: var(--tabs-indicator-color);
+    transition:
+            top var(--duration-spring) var(--ease-smooth),
+            left var(--duration-spring) var(--ease-smooth),
+            width var(--duration-spring) var(--ease-smooth),
+            height var(--duration-spring) var(--ease-smooth);
+}
+
+.list:where([aria-orientation='vertical']) {
+    --tabs-separator-color: var(--separator-non-opaque);
+
+    flex-direction: column;
+    gap: 0;
+    margin-block-end: 0;
+    margin-inline-end: var(--spacing-8);
+    box-shadow: none;
+    border-inline-start: 1px solid var(--tabs-separator-color);
+}
+
+.list:where([aria-orientation='vertical'])::after {
+    top: calc(anchor(top) + var(--spacing-3));
+    left: auto;
+    inset-inline-start: calc(anchor(start) - 1px);
+    width: 2px;
+    height: calc(anchor-size(height) - var(--spacing-6));
+}
+
+@supports not (anchor-name: --tabs-selected) {
+    .list::after {
+        display: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .list::after {
+        display: none;
+    }
+}

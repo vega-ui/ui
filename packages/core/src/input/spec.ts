@@ -245,6 +245,7 @@ export const browser = {
   close: defineInput('browser', 'close'),
   submit: defineInput('browser', 'submit'),
   reset: defineInput('browser', 'reset'),
+  reveal: defineInput('browser', 'reveal'),
   animationEnd: defineInput('browser', 'animationEnd'),
   flushed: defineInput('browser', 'flushed'),
 }

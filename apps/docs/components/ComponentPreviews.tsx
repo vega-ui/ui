@@ -25,7 +25,7 @@ import {
   SelectListbox, SelectOption, SelectValue, Separator, Sheet, SheetClose, SheetContent, SheetHandle, SheetTrigger,
   Slider, SliderRange, SliderThumb, SliderThumbIndicator, SliderThumbInput, SliderTrack, SnapScroller,
   SnapScrollerContent, Spinner, Switch, SwitchIndicator, SwitchInput, Table, TableBody, TableData, TableHead,
-  TableHeading, TableRow, Text, TextArea, TextField, TextFieldInput, TimeField, TimeFieldInput, Tooltip,
+  TableHeading, TableRow, Tabs, TabsList, TabsPanel, TabsTab, Text, TextArea, TextField, TextFieldInput, TimeField, TimeFieldInput, Tooltip,
   TooltipContent, TooltipTrigger, useIndexedSnapScrollerContext, VisuallyHidden, YearPicker, YearPickerCell,
   YearPickerLayout,
 } from '@vega-ui/react';
@@ -698,6 +698,20 @@ export const PREVIEWS: Record<string, Preview> = {
           <TableRow><TableData>Team</TableData><TableData className={styles.end}>$29</TableData></TableRow>
         </TableBody>
       </Table>
+    ),
+  },
+  tabs: {
+    node: (
+      <Tabs size='sm' defaultValue='overview' className={styles.wide}>
+        <TabsList aria-label='Project'>
+          <TabsTab value='overview'>Overview</TabsTab>
+          <TabsTab value='activity'>Activity</TabsTab>
+          <TabsTab value='settings'>Settings</TabsTab>
+        </TabsList>
+        <TabsPanel value='overview'><Text size={2}>12 of 18 launch tasks done</Text></TabsPanel>
+        <TabsPanel value='activity'><Text size={2}>Mira moved a task to review</Text></TabsPanel>
+        <TabsPanel value='settings'><Text size={2}>Visible to the workspace</Text></TabsPanel>
+      </Tabs>
     ),
   },
   alert: {

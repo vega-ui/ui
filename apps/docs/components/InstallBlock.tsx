@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Icon, SegmentedControl, SegmentedControlIndicator, SegmentedControlItem, SegmentedControlItemInput } from '@vega-ui/react';
+import { Icon, Tabs, TabsList, TabsPanel, TabsTab } from '@vega-ui/react';
 import { SquareTerminal } from '@vega-ui/icons';
 import { codeKey } from '@/lib/code';
 import type { Highlighted } from '@/lib/highlight';
@@ -16,29 +16,21 @@ export const InstallBlock = ({ variants, highlighted }: { variants: InstallVaria
   const current = variants.find((variant) => variant.manager === manager) ?? variants[0];
 
   return (
-    <div className={styles.block}>
+    <Tabs size='sm' value={manager} onChangeValue={setManager} className={styles.block}>
       <div className={styles.toolbar}>
         <Icon size='sm' className={styles.terminal}><SquareTerminal /></Icon>
-        <SegmentedControl
-          size='xs'
-          name='package-manager'
-          role='radiogroup'
-          aria-label={t.code.managers}
-          value={manager}
-          onChange={(event) => setManager(event.target.value)}
-          className={styles.managers}
-        >
+        <TabsList aria-label={t.code.managers} className={styles.managers}>
           {variants.map((variant) => (
-            <SegmentedControlItem key={variant.manager} value={variant.manager}>
-              <SegmentedControlItemInput />
-              {variant.manager}
-            </SegmentedControlItem>
+            <TabsTab key={variant.manager} value={variant.manager}>{variant.manager}</TabsTab>
           ))}
-          <SegmentedControlIndicator />
-        </SegmentedControl>
+        </TabsList>
         <span className={styles.copy}><CopyButton code={current.code} /></span>
       </div>
-      <CodeBody code={current.code} html={highlighted[codeKey(current.code)]} />
-    </div>
+      {variants.map((variant) => (
+        <TabsPanel key={variant.manager} value={variant.manager}>
+          <CodeBody code={variant.code} html={highlighted[codeKey(variant.code)]} />
+        </TabsPanel>
+      ))}
+    </Tabs>
   );
 };

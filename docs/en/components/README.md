@@ -66,6 +66,7 @@ For decision-oriented navigation across related controls, see [Component Familie
 - [Spinner](./spinner/)
 - [Switch](./switch/)
 - [Table](./table/)
+- [Tabs](./tabs/)
 - [Text](./text/)
 - [TextArea](./text-area/)
 - [TextField](./text-field/)

@@ -41,6 +41,23 @@
     display: none;
 }
 
+.tabs::after {
+    content: '';
+    position: absolute;
+    position-anchor: --site-tabs-current;
+    pointer-events: none;
+    top: calc(anchor(bottom) - 2px);
+    left: anchor(left);
+    width: anchor-size(width);
+    height: 2px;
+    border-radius: 2px;
+    background-color: var(--site-text);
+    transition:
+            top var(--duration-spring) var(--ease-smooth),
+            left var(--duration-spring) var(--ease-smooth),
+            width var(--duration-spring) var(--ease-smooth);
+}
+
 @supports (animation-timeline: scroll()) {
     .tabs {
         --tabs-fade-direction: to right;
@@ -75,18 +92,34 @@
 }
 
 .tab {
+    position: relative;
     flex-shrink: 0;
     padding: var(--spacing-5) var(--spacing-2);
-    border-bottom: 2px solid transparent;
     color: var(--site-muted);
     font-size: var(--font-size-3);
     text-decoration: none;
     white-space: nowrap;
-    transition: color var(--transition-state-delay) ease;
+    transition: color var(--duration-spring) var(--ease-smooth);
+}
+
+.tab::after {
+    content: '';
+    position: absolute;
+    pointer-events: none;
+    inset-inline: 0;
+    bottom: 0;
+    height: 2px;
+    border-radius: 2px;
+    background-color: transparent;
+    transition: background-color var(--transition-fast-state-delay) ease;
 }
 
 .tab:hover {
     color: var(--site-text);
+}
+
+.tab:not([aria-current='page']):hover::after {
+    background-color: var(--fills-secondary);
 }
 
 .tab:focus-visible {
@@ -95,9 +128,35 @@
 }
 
 .tab[aria-current='page'] {
-    border-bottom-color: var(--site-text);
+    anchor-name: --site-tabs-current;
     color: var(--site-text);
-    font-weight: 500;
+}
+
+@supports not (anchor-name: --site-tabs-current) {
+    .tabs::after {
+        display: none;
+    }
+
+    .tab[aria-current='page']::after {
+        background-color: var(--site-text);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .tabs::after {
+        display: none;
+    }
+
+    .tab[aria-current='page']::after {
+        background-color: var(--site-text);
+        animation: line-in var(--transition-state-delay) ease;
+    }
+}
+
+@keyframes line-in {
+    from {
+        opacity: 0;
+    }
 }
 
 :global(html):has(.frame) {

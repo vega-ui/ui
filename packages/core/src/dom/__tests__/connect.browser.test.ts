@@ -6,7 +6,7 @@ import { handled, keep, listening } from '../../step'
 import { browser, command, createInput, focus, key, layout, Measured, measure, nav, pointer as pointerInput, scroll, text, TextState } from '../../input'
 import { fruits, listbox, shape } from '../../__tests__/fixtures/listbox'
 import { Part } from '../../output'
-import { reading, state } from '../../state'
+import { internal, reading, state } from '../../state'
 
 type Options = Parameters<typeof shape.create>[0]
 
@@ -738,6 +738,58 @@ describe('Critical User Paths', () => {
     form.reset()
 
     await expect.poll(() => restored).toEqual(['default'])
+  })
+
+  it('paints each element of a keyed part with its key and tells a widget which one the page search revealed, hiding it again when no step shows it', async () => {
+    const root = document.createElement('div')
+    const panels = new Map(['first', 'second'].map((name) => [name, document.createElement('div')]))
+    document.body.append(root, ...panels.values())
+    const elements = createElements<string>()
+    elements.setRoot(root)
+
+    const panelShape = state({ options: { shows: true }, owns: {}, internal: { shown: internal('first') } })
+    const revealed: unknown[] = []
+    const revealing = defineWidget({
+      state: panelShape,
+      step: [listening([browser.reveal], (current, input) => {
+        if (!input.is(browser.reveal)) return undefined
+        revealed.push([input.part, input.key])
+        if (!current.options.shows) return undefined
+
+        return keep(panelShape.shown.set(current, input.key as string))
+      })],
+    })
+    const panel: Part<unknown, string> = {
+      ...panelShape.part(() => [] as const, () => ({})),
+      live: {
+        select: (current, key) => [(current as typeof panelShape.__snapshot).shown === key],
+        render: ([shown]) => ({ hidden: shown ? undefined : 'until-found' }),
+      },
+    }
+    for (const [name, element] of panels) elements.setPart('panel', element, panel, name)
+    const instance = createWidget(revealing, { shows: true }, { id: 'widget', strict: true })
+    connect(instance, elements).flush()
+    expect(panels.get('first')!.hasAttribute('hidden')).toBe(false)
+    expect(panels.get('second')!.getAttribute('hidden')).toBe('until-found')
+
+    const reveal = (element: Element) => {
+      element.dispatchEvent(new Event('beforematch', { bubbles: true }))
+      element.removeAttribute('hidden')
+    }
+
+    reveal(panels.get('second')!)
+    expect(revealed).toEqual([['panel', 'second']])
+    expect(panels.get('first')!.getAttribute('hidden')).toBe('until-found')
+
+    instance.setOptions({ shows: false })
+    reveal(panels.get('first')!)
+    await expect.poll(() => panels.get('first')!.getAttribute('hidden')).toBe('until-found')
+    expect(panels.get('second')!.hasAttribute('hidden')).toBe(false)
+
+    const stranger = document.createElement('div')
+    root.appendChild(stranger)
+    reveal(stranger)
+    expect(revealed).toHaveLength(2)
   })
 
   it('takes the keys pressed anywhere on the page only while a step watches them', () => {

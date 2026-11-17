@@ -45,7 +45,7 @@ export const eventsFor = (listens: readonly InputSpec[]): readonly DomEvent[] =>
 
 export const spins = (listens: readonly InputSpec[]) => listens.some(among(pointer.spin))
 
-const fromPage = among(browser.reset, layout.resize, layout.viewport, text.select)
+const fromPage = among(browser.reset, browser.reveal, layout.resize, layout.viewport, text.select)
 
 export const delivers = (listens: readonly InputSpec[], spec: InputSpec) => {
   if (fromPage(spec)) return listens.some(among(spec))

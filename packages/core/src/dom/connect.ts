@@ -20,6 +20,7 @@ export interface Bound<Key> {
 export interface Elements<Key> {
   rootOf(node: Node): Element | undefined
   bound(): Iterable<Bound<Key>>
+  boundOf(element: Element): Bound<Key> | undefined
   part(name: string): Element | null
   item(key: Key): Element | null
   keyOf(element: Element): Key | undefined
@@ -56,7 +57,7 @@ export interface Connection<Key = unknown> extends DomHandlers {
   listen(element: Element): () => void
   send(input: Input<Key>): Dispatched<Key>
   observe(): void
-  paint(): void
+  paint(element?: Element): void
   apply(actions: readonly Action<Key>[]): void
   flush(): void
   disconnect(): void
@@ -218,6 +219,16 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
         const owns = [...elements.roots()].some((root) => controls.some((control) => root.contains(control)))
         if (owns) queueMicrotask(() => void send(createInput<Key>(browser.reset)))
       }, { signal: controller.signal })
+    }
+
+    if (declares(browser.reveal)) {
+      document.addEventListener('beforematch', (event) => {
+        const revealed = event.target instanceof Element ? elements.boundOf(event.target) : undefined
+        if (!revealed) return
+
+        send(createInput<Key>(browser.reveal, { part: elements.partOf(revealed.element), key: revealed.key }))
+        queueMicrotask(() => paint(revealed.element))
+      }, { capture: true, signal: controller.signal })
     }
 
     if (declares(layout.viewport)) {
@@ -533,31 +544,42 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
     if (pending.length > 0) queueMicrotask(flush)
   }
 
-  const paint = () => {
-    for (const { element, key, output } of elements.bound()) {
-      for (const channel of CHANNELS) {
-        const definition = output[channel]
-        if (!definition) continue
+  const paintBound = ({ element, key, output }: Bound<Key>) => {
+    for (const channel of CHANNELS) {
+      const definition = output[channel]
+      if (!definition) continue
 
-        const previous = painted.get(element)?.[channel]
-        try {
-          const selected = definition.select(instance.state, key as Key)
-          if (previous && sameSelection(previous.selected, selected)) continue
+      const previous = painted.get(element)?.[channel]
+      try {
+        const selected = definition.select(instance.state, key as Key)
+        if (previous && sameSelection(previous.selected, selected)) continue
 
-          const values: Readonly<Record<string, unknown>> = definition.render(selected)
-          for (const name in values) {
-            if (previous && Object.is(previous.values[name], values[name])) continue
-            WRITERS[channel](element, name, values[name])
-          }
-          const dropped = previous ? Object.keys(previous.values).filter((name) => !(name in values)) : []
-          for (const name of dropped) WRITERS[channel](element, name, undefined)
-
-          painted.set(element, { ...painted.get(element), [channel]: { selected, values } })
-        } catch (error) {
-          environment.onError?.(error)
+        const values: Readonly<Record<string, unknown>> = definition.render(selected)
+        for (const name in values) {
+          if (previous && Object.is(previous.values[name], values[name])) continue
+          WRITERS[channel](element, name, values[name])
         }
+        const dropped = previous ? Object.keys(previous.values).filter((name) => !(name in values)) : []
+        for (const name of dropped) WRITERS[channel](element, name, undefined)
+
+        painted.set(element, { ...painted.get(element), [channel]: { selected, values } })
+      } catch (error) {
+        environment.onError?.(error)
       }
     }
+  }
+
+  const paint = (element?: Element) => {
+    if (!element) {
+      for (const bound of elements.bound()) paintBound(bound)
+      return
+    }
+
+    const bound = elements.boundOf(element)
+    if (!bound) return
+
+    painted.delete(element)
+    paintBound(bound)
   }
 
   const awaitAnimations = (part: string) => {

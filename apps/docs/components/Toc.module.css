@@ -19,6 +19,7 @@
 }
 
 .list {
+    position: relative;
     display: flex;
     flex-direction: column;
     margin: 0;
@@ -27,16 +28,44 @@
     list-style: none;
 }
 
+.list::after {
+    content: '';
+    position: absolute;
+    position-anchor: --site-toc-current;
+    pointer-events: none;
+    top: calc(anchor(top) + var(--spacing-3));
+    inset-inline-start: -1px;
+    width: 2px;
+    height: calc(anchor-size(height) - var(--spacing-6));
+    border-radius: 2px;
+    background-color: var(--site-text);
+    transition:
+            top var(--duration-spring) var(--ease-smooth),
+            height var(--duration-spring) var(--ease-smooth);
+}
+
 .link {
     display: block;
-    margin-inline-start: -1px;
+    position: relative;
     padding: var(--spacing-3) 0 var(--spacing-3) var(--spacing-8);
-    border-inline-start: 1px solid transparent;
     color: var(--site-muted);
     font-size: var(--site-subheadline-size);
     line-height: var(--site-subheadline-leading);
     text-decoration: none;
-    transition: color var(--transition-state-delay) ease, border-color var(--transition-state-delay) ease;
+    transition: color var(--duration-spring) var(--ease-smooth);
+}
+
+.link::after {
+    content: '';
+    position: absolute;
+    pointer-events: none;
+    inset-inline-start: -1px;
+    top: var(--spacing-3);
+    bottom: var(--spacing-3);
+    width: 2px;
+    border-radius: 2px;
+    background-color: transparent;
+    transition: background-color var(--transition-fast-state-delay) ease;
 }
 
 .link[data-depth='3'] {
@@ -47,11 +76,42 @@
     color: var(--site-text);
 }
 
+.link:not([aria-current]):hover::after {
+    background-color: var(--fills-secondary);
+}
+
 .link:focus-visible {
     outline-offset: -2px;
 }
 
 .link[aria-current] {
-    border-inline-start-color: var(--site-text);
+    anchor-name: --site-toc-current;
     color: var(--site-text);
+}
+
+@supports not (anchor-name: --site-toc-current) {
+    .list::after {
+        display: none;
+    }
+
+    .link[aria-current]::after {
+        background-color: var(--site-text);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .list::after {
+        display: none;
+    }
+
+    .link[aria-current]::after {
+        background-color: var(--site-text);
+        animation: line-in var(--transition-state-delay) ease;
+    }
+}
+
+@keyframes line-in {
+    from {
+        opacity: 0;
+    }
 }
