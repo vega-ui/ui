@@ -11,6 +11,23 @@ Choose `Select` if all of the following are true:
 
 Choose another control if visibility, binary state, or richer action content is more important than compact field behavior.
 
+## `Select` vs `Combobox`
+
+Use `Select` when:
+
+- the set is short and fixed
+- users should see every option without typing
+
+Use `Combobox` when:
+
+- the set is long, such as countries or people, and users type part of an option to find it
+- options are loaded from a server for the typed text
+
+Trade-off:
+
+- `Select` always holds one of the options
+- `Combobox` finds an option fast in a long set, but the app filters the options and checks that one was picked
+
 ## `Select` vs `SegmentedControl`
 
 Use `Select` when:

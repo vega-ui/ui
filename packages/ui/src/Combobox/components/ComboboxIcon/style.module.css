@@ -1,0 +1,8 @@
+.icon {
+    color: var(--combobox-icon-color, var(--label-tertiary));
+    transition: transform var(--transition-fast-state-delay) ease-in-out;
+}
+
+.icon:where([data-open='true']) {
+    transform: rotate(180deg);
+}

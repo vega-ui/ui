@@ -231,6 +231,7 @@ export const text = {
   edit: defineInput('text', 'edit'),
   change: defineInput('text', 'change'),
   select: defineInput('text', 'select'),
+  key: defineInput('text', 'key'),
 }
 
 export const measure = {

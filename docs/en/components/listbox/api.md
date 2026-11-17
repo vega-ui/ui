@@ -37,7 +37,7 @@ Groups related options like a native `optgroup`. Name it with `aria-labelledby` 
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
 | `value` | `Value` | — | Yes | The value of this option, passed to the change callback when it is selected. |
-| `label` | `string` | — | No | Plain text of this option for typeahead, used instead of the text of its content. |
+| `label` | `string` | — | No | Plain text of this option, used instead of the text of its content for typeahead and as the text a Combobox writes into its input. |
 | `children` | `ReactNode` | — | No | The content displayed for this option. Can include text, icons, or complex markup. |
 | `size` | `OptionSize` | — | No | Size of the option for visual styling. |
 | `disabled` | `boolean` | — | No | Disables the entire Option. |

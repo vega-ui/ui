@@ -444,6 +444,7 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
         if (!isTextField(element)) return waits
         if (element.value !== action.value) {
           writeValue(element, action.value)
+          if (action.selection && element.ownerDocument.activeElement === element) element.setSelectionRange(...action.selection)
           const changed = new InputEvent('input', { bubbles: true, inputType: 'insertReplacementText' })
           seen.add(changed)
           element.dispatchEvent(changed)
@@ -706,7 +707,9 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
       if (!root || !target) return false
 
       const input = keyInput(event)
-      if (target !== root && yieldsToNative(target, input)) return false
+      if (target !== root && yieldsToNative(target, input)) {
+        return declares(text.key) ? dispatch(event, createInput(text.key, { char: input.char, part: partAt(target), field: fieldOf(target) })) : false
+      }
       if (!hears(instance.listens, input, orientationOf(root))) return false
 
       const { key, item, inside } = locate(target)

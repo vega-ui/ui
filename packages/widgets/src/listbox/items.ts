@@ -84,16 +84,18 @@ export const optionPart: Part<ListboxState, string> = {
   }),
 }
 
-export const optionInvariants = <State extends ListboxState & { readonly typed: string }>(fields: OptionFields<State>): Readonly<Record<string, Invariant<State>>> => ({
-  activeExists: {
-    check: (state) => state.active === null || collection.isNavigable(state.collection, state.active),
-    repair: (state, before) => {
-      const position = state.active === null ? undefined : before.collection.index.get(state.active)
-      if (position === undefined) return fields.active.set(state, null)
+export const activeExists = <State extends ListboxState>(active: Field<State, string | null>): Invariant<State> => ({
+  check: (state) => state.active === null || collection.isNavigable(state.collection, state.active),
+  repair: (state, before) => {
+    const position = state.active === null ? undefined : before.collection.index.get(state.active)
+    if (position === undefined) return active.set(state, null)
 
-      return fields.active.set(state, collection.nearest(state.collection, position))
-    },
+    return active.set(state, collection.nearest(state.collection, position))
   },
+})
+
+export const optionInvariants = <State extends ListboxState & { readonly typed: string }>(fields: OptionFields<State>): Readonly<Record<string, Invariant<State>>> => ({
+  activeExists: activeExists(fields.active),
   typedExpires: {
     check: (state) => state.typed === '' || state.timers.has(TYPEAHEAD),
     repair: (state) => fields.typed.set(state, ''),

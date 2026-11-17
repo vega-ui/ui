@@ -27,6 +27,7 @@ const SOURCES: readonly Source[] = [
   { event: 'pointerout', cancelable: false, always: false, gives: among(pointer.leave) },
   { event: 'focusin', cancelable: false, always: true, gives: among(focus.enter, focus.move) },
   { event: 'focusout', cancelable: false, always: true, gives: among(focus.leave) },
+  { event: 'keydown', cancelable: false, always: false, gives: among(text.key) },
   { event: 'beforeinput', cancelable: true, always: false, gives: among(text.edit) },
   { event: 'input', cancelable: false, always: false, gives: among(text.change) },
   { event: 'toggle', cancelable: false, always: false, gives: among(browser.toggle) },

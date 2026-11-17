@@ -1,6 +1,6 @@
 'use client';
 
-import { useId, useRef, useState } from 'react';
+import { MouseEvent, useId, useRef, useState } from 'react';
 import {
   Icon,
   IconButton,
@@ -109,6 +109,8 @@ const openInStackBlitz = (title: string, code: string, styles: Record<string, st
   form.remove();
 };
 
+const FOCUSABLE = 'input:not([type=hidden]):not(:disabled), textarea:not(:disabled), select:not(:disabled), button:not(:disabled), [href], [tabindex]:not([tabindex="-1"])';
+
 export const Workbench = ({ slug, example, code, html }: { slug: string, example?: string, code?: string, html?: string }) => {
   const locale = useLocale();
   const t = useDictionary();
@@ -123,6 +125,7 @@ export const Workbench = ({ slug, example, code, html }: { slug: string, example
   const [exampleLocale, setExampleLocale] = useState(locales?.[0]);
   const [fullHtml, setFullHtml] = useState<string>();
   const requested = useRef(false);
+  const specimen = useRef<HTMLDivElement>(null);
   const preview = Example ? <Example locale={exampleLocale} /> : PREVIEWS[slug]?.node;
 
   const changeLocale = (next: string | null) => {
@@ -144,6 +147,12 @@ export const Workbench = ({ slug, example, code, html }: { slug: string, example
       });
   };
 
+  const focusSpecimen = (event: MouseEvent<HTMLDivElement>) => {
+    if (event.target !== event.currentTarget && event.target !== specimen.current) return;
+
+    specimen.current?.querySelector<HTMLElement>(FOCUSABLE)?.focus();
+  };
+
   const toggleCode = () => {
     loadFullCode();
     setOpen(!open);
@@ -157,7 +166,7 @@ export const Workbench = ({ slug, example, code, html }: { slug: string, example
 
   return (
     <div role='group' className={styles.workbench} aria-label={t.code.preview}>
-      <div className={styles.bench}>
+      <div className={styles.bench} onClick={focusSpecimen}>
         <div className={styles.tools}>
           {locales && (
             <Select size='xs' variant='inline' value={exampleLocale} onChangeValue={changeLocale}>
@@ -185,7 +194,7 @@ export const Workbench = ({ slug, example, code, html }: { slug: string, example
             <Icon size='xs'><RotateCcw /></Icon>
           </IconButton>
         </div>
-        <div key={run} dir={dir} lang={exampleLocale} className={styles.specimen} data-wide={meta?.wide || undefined}>{preview}</div>
+        <div key={run} ref={specimen} dir={dir} lang={exampleLocale} className={styles.specimen} data-wide={meta?.wide || undefined}>{preview}</div>
       </div>
 
       {code && (

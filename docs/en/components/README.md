@@ -27,6 +27,7 @@ For decision-oriented navigation across related controls, see [Component Familie
 - [CheckboxCard](./checkbox-card/)
 - [Code](./code/)
 - [Collapsible](./collapsible/)
+- [Combobox](./combobox/)
 - [DateField](./date-field/)
 - [DateRangeField](./date-range-field/)
 - [DateTimeField](./date-time-field/)
