@@ -979,6 +979,106 @@
     "en": "Ref forwarded to the native trigger element (typically a button).",
     "ru": "Ref, передаваемый на нативный элемент триггера (обычно кнопку)."
   },
+  "Combobox.autocomplete": {
+    "en": "How the text and the list relate, as in `aria-autocomplete`, which the input gets: `list` when the app filters the options by the text, `none` when the options stay the same, `both` to also complete the text with the first matching option, its rest selected, and `inline` to only complete it, leaving the list closed while typing.",
+    "ru": "Как связаны текст и список, как в `aria-autocomplete`, который получает поле: `list`, когда приложение фильтрует варианты по тексту, `none`, когда варианты не меняются, `both`, чтобы ещё и дополнять текст первым подходящим вариантом с выделенным остатком, и `inline`, чтобы только дополнять его, оставляя список закрытым при вводе."
+  },
+  "Combobox.defaultOpen": {
+    "en": "Whether the list is open initially (uncontrolled).",
+    "ru": "Открыт ли список изначально (неконтролируемо)."
+  },
+  "Combobox.defaultValue": {
+    "en": "The value of the option picked initially (uncontrolled).",
+    "ru": "Значение варианта, выбранного изначально (неконтролируемо)."
+  },
+  "Combobox.disabled": {
+    "en": "Whether the combobox is disabled. Disables the input and keeps the list closed.",
+    "ru": "Отключён ли combobox. Отключает поле и держит список закрытым."
+  },
+  "Combobox.onChangeOpen": {
+    "en": "Called when the list opens or closes by user interaction.",
+    "ru": "Вызывается, когда пользователь открывает или закрывает список."
+  },
+  "Combobox.onChangeValue": {
+    "en": "Called when an option is picked, and with `null` when the text is edited or cleared.",
+    "ru": "Вызывается при выборе варианта, а с `null` — когда текст правят или очищают."
+  },
+  "Combobox.open": {
+    "en": "Whether the list is open (controlled). The list is shown only while it has options.",
+    "ru": "Открыт ли список (контролируемо). Список показывается, только пока в нём есть варианты."
+  },
+  "Combobox.readOnly": {
+    "en": "If true, the text cannot be changed and the list stays closed, but the input remains focusable.",
+    "ru": "Если true, текст нельзя изменить и список остаётся закрытым, но поле остаётся фокусируемым."
+  },
+  "Combobox.ref": {
+    "en": "Ref to the root element.",
+    "ru": "Ref на корневой элемент."
+  },
+  "Combobox.size": {
+    "en": "Size of the options and of the list corners.",
+    "ru": "Размер вариантов и углов списка."
+  },
+  "Combobox.value": {
+    "en": "The value of the picked option (controlled). `null` clears it, while `undefined` makes the combobox uncontrolled.",
+    "ru": "Значение выбранного варианта (контролируемо). `null` очищает его, а `undefined` делает combobox неконтролируемым."
+  },
+  "ComboboxIcon.children": {
+    "en": "Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler)",
+    "ru": "Содержимое иконки. Принимает: иконки из `@vega-ui/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler)"
+  },
+  "ComboboxIcon.ref": {
+    "en": "Ref to the SVG element",
+    "ru": "Ref на SVG-элемент"
+  },
+  "ComboboxIcon.size": {
+    "en": "Predefined size token for the icon. Can be overridden by explicit width and height.",
+    "ru": "Предопределённый токен размера иконки. Может быть переопределён явными шириной и высотой."
+  },
+  "ComboboxIcon.strokeWidth": {
+    "en": "Stroke thickness for SVG lines and shapes (in px or pt).",
+    "ru": "Толщина обводки линий и фигур SVG (в px или pt)."
+  },
+  "ComboboxInput.ref": {
+    "en": "Ref forwarded to the underlying native `<input>` element.",
+    "ru": "Ref, передаваемый на нижележащий нативный элемент `<input>`."
+  },
+  "ComboboxListbox.ref": {
+    "en": "Ref to the list element.",
+    "ru": "Ref на элемент списка."
+  },
+  "ComboboxTrigger.appearance": {
+    "en": "Adjusts the button's structural appearance (background, border, etc.).",
+    "ru": "Настраивает структурный внешний вид кнопки (фон, рамка и т. д.)."
+  },
+  "ComboboxTrigger.asChild": {
+    "en": "When true, renders the button as a child component using `Slot` (e.g., from Radix UI). Enables polymorphic rendering — useful for making the button act as a link or custom tag.",
+    "ru": "Если true, рендерит кнопку как дочерний компонент через `Slot` (например, из Radix UI). Включает полиморфный рендер — полезно, чтобы кнопка работала как ссылка или собственный тег."
+  },
+  "ComboboxTrigger.children": {
+    "en": "Content of the button — text, icon, or any React node.",
+    "ru": "Содержимое кнопки — текст, иконка или любой React-узел."
+  },
+  "ComboboxTrigger.className": {
+    "en": "Optional custom CSS class for the button element. Useful for design system overrides or scoped styles.",
+    "ru": "Необязательный собственный CSS-класс для элемента кнопки. Полезен для переопределений дизайн-системы или локальных стилей."
+  },
+  "ComboboxTrigger.disabled": {
+    "en": "Disables the button when true. Prevents user interaction and applies a visually disabled state. Not applied with `asChild`: the child element owns its disabled state, for example, `aria-disabled` or a link without `href`.",
+    "ru": "Отключает кнопку при true. Запрещает взаимодействие и применяет визуальное отключённое состояние. Не применяется с `asChild`: отключённым состоянием владеет дочерний элемент, например через `aria-disabled` или ссылку без `href`."
+  },
+  "ComboboxTrigger.ref": {
+    "en": "Ref forwarded to the native `<button>` element. Allows direct DOM access for focus management or measuring.",
+    "ru": "Ref, передаваемый на нативный элемент `<button>`. Даёт прямой доступ к DOM для управления фокусом или измерений."
+  },
+  "ComboboxTrigger.size": {
+    "en": "Size of the button container. Controls padding and overall clickable area.",
+    "ru": "Размер контейнера кнопки. Управляет отступами и общей кликабельной областью."
+  },
+  "ComboboxTrigger.variant": {
+    "en": "Defines the visual style of the button, affecting color schemes and emphasis.",
+    "ru": "Определяет визуальный стиль кнопки: цветовую схему и акцент."
+  },
   "DateField.calendar": {
     "en": "Calendar system the date is typed and picked in. The value stays a `YYYY-MM-DD` day. Defaults to the Gregorian calendar.",
     "ru": "Календарная система, в которой дата вводится и выбирается. Значение остаётся днём в формате `YYYY-MM-DD`. По умолчанию — григорианский календарь."
@@ -2400,8 +2500,8 @@
     "ru": "Отключает весь Option."
   },
   "ListboxOption.label": {
-    "en": "Plain text of this option for typeahead, used instead of the text of its content.",
-    "ru": "Простой текст варианта для поиска при наборе; используется вместо текста его содержимого."
+    "en": "Plain text of this option, used instead of the text of its content for typeahead and as the text a Combobox writes into its input.",
+    "ru": "Простой текст варианта; используется вместо текста его содержимого для поиска при наборе и как текст, который Combobox записывает в своё поле."
   },
   "ListboxOption.ref": {
     "en": "Ref forwarded to the root div of the option.",
@@ -3388,8 +3488,8 @@
     "ru": "Отключает весь Option."
   },
   "SelectOption.label": {
-    "en": "Plain text of this option for typeahead, used instead of the text of its content.",
-    "ru": "Простой текст варианта для поиска при наборе; используется вместо текста его содержимого."
+    "en": "Plain text of this option, used instead of the text of its content for typeahead and as the text a Combobox writes into its input.",
+    "ru": "Простой текст варианта; используется вместо текста его содержимого для поиска при наборе и как текст, который Combobox записывает в своё поле."
   },
   "SelectOption.ref": {
     "en": "Ref forwarded to the root div of the option.",

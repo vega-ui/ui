@@ -142,6 +142,7 @@ const runStep = async (page: Page, specimen: Locator, step: Step) => {
 const runCheck = async (page: Page, check: Check) => {
   const name = check.example.split('/').at(-1);
   const workbench = page.getByRole('group', { name: 'Live preview' }).filter({ hasText: `${name} · ` });
+  await workbench.first().waitFor({ timeout: TIMEOUT }).catch(() => {});
   if (await workbench.count() !== 1) return [`${await workbench.count()} workbenches for ${check.example}`];
 
   await workbench.scrollIntoViewIfNeeded();

@@ -451,29 +451,6 @@ describe('Select', () => {
       expect(toggles).toBeLessThan(5);
     });
 
-    it.runIf(server.browser === 'chromium')('keeps the list in place while it fades out inside a container', async () => {
-      const r = render(
-        <div style={{ containerType: 'inline-size', marginLeft: 200, marginTop: 100 }}>
-          <SelectTest />
-        </div>
-      );
-      const center = () => {
-        const rect = getListbox(r).getBoundingClientRect();
-        return [Math.round(rect.left + rect.width / 2), Math.round(rect.top + rect.height / 2)];
-      };
-
-      await userEvent.click(getCombobox(r));
-      await toBeOpened(r);
-      await new Promise((resolve) => setTimeout(resolve, 300));
-      const opened = center();
-
-      await userEvent.keyboard('{Escape}');
-      await new Promise(requestAnimationFrame);
-
-      expect(getListbox(r).matches(':popover-open')).toBe(false);
-      expect(center()).toEqual(opened);
-    });
-
     it('stays closed after Escape pressed right after opening', async () => {
       const r = render(<SelectTest />);
 

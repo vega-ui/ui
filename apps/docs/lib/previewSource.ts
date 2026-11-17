@@ -13,7 +13,11 @@ const LAYOUT_STYLES: Record<string, string> = {
 const HELPERS = [
   { name: 'WEEK', pattern: /^const WEEK = .+;$/m },
   { name: 'IndexedSlide', pattern: /^const IndexedSlide = [\s\S]+?\n};$/m },
+  { name: 'CITIES', pattern: /^const CITIES = .+;$/m },
+  { name: 'ComboboxPreview', pattern: /^const ComboboxPreview = [\s\S]+?\n};$/m },
 ];
+
+const REACT_HOOKS = ['useId', 'useState'];
 
 const ICONS = source.match(/import \{([^}]+)\} from '@vega-ui\/icons';/)?.[1].split(',').map((name) => name.trim()) ?? [];
 
@@ -45,15 +49,17 @@ export const getPreviewSource = (slug: string) => {
   const jsx = entries.get(slug);
   if (!jsx) return null;
 
-  const helpers = HELPERS.filter((helper) => jsx.includes(helper.name)).map((helper) => cleanClasses(source.match(helper.pattern)?.[0] ?? ''));
+  const direct = HELPERS.filter((helper) => jsx.includes(helper.name)).map((helper) => source.match(helper.pattern)?.[0] ?? '');
+  const helpers = HELPERS.filter((helper) => [jsx, ...direct].some((code) => code.includes(helper.name))).map((helper) => cleanClasses(source.match(helper.pattern)?.[0] ?? ''));
   const body = [...helpers, cleanClasses(jsx)].join('\n\n');
   const helperNames = HELPERS.map((helper) => helper.name);
   const used = [...new Set([...body.matchAll(/<([A-Z]\w*)|\b(use[A-Z]\w*)\(/g)].map((match) => match[1] ?? match[2]))]
     .filter((name) => !helperNames.includes(name))
     .sort();
+  const hooks = used.filter((name) => REACT_HOOKS.includes(name));
   const icons = used.filter((name) => ICONS.includes(name));
-  const components = used.filter((name) => !ICONS.includes(name));
-  const imports = [formatImport(components, '@vega-ui/react'), icons.length > 0 && formatImport(icons, '@vega-ui/icons')].filter(Boolean);
+  const components = used.filter((name) => !ICONS.includes(name) && !REACT_HOOKS.includes(name));
+  const imports = [hooks.length > 0 && formatImport(hooks, 'react'), formatImport(components, '@vega-ui/react'), icons.length > 0 && formatImport(icons, '@vega-ui/icons')].filter(Boolean);
 
   return `${imports.join('\n')}\n\n${body}`;
 };

@@ -115,7 +115,7 @@ Typical composition:
 ## Edge Cases
 
 - `disabled` blocks interaction completely; `readOnly` preserves focusability while preventing changes. See [Disabled](../../glossary.md#disabled) and [Read-Only](../../glossary.md#read-only).
-- A search field inside `SelectListbox` is not supported: a listbox holds only options and groups.
+- A search field inside `SelectListbox` is not supported: a listbox holds only options and groups. For a field users type into to find an option, use [Combobox](../combobox/).
 - Values are typed as `string | number`; object values are not supported by the public API.
 - `SelectHiddenSelect` is recommended when the value should participate in native [form participation](../../glossary.md#form-participation).
 - If the product needs richer arbitrary overlay content rather than one scalar value, the correct abstraction is usually `Popover` or `Dialog`, not `Select`.

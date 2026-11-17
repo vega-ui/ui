@@ -30,6 +30,7 @@
 }
 
 .listbox:where(:not(:popover-open)) {
+    display: none;
     scale: .95;
     opacity: 0;
     visibility: hidden;
@@ -37,7 +38,15 @@
             scale var(--duration-exit) var(--ease-exit),
             opacity var(--duration-exit) var(--ease-exit),
             visibility var(--duration-exit),
+            display var(--duration-exit) allow-discrete,
             overlay var(--duration-exit) allow-discrete;
+}
+
+@starting-style {
+    .listbox:where(:popover-open) {
+        scale: .95;
+        opacity: 0;
+    }
 }
 
 .listbox > * {

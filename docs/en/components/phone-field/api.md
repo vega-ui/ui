@@ -50,10 +50,10 @@ A `Select` bound to the field country: its value is the PhoneField `country`, pi
 | `variant` | `SelectVariant` | — | No | Visual style variant for the select control. |
 | `onChangeValue` | `(value: Value \| null) => void` | — | No | Callback fired when an option is selected. |
 | `ref` | `Ref<HTMLDivElement>` | — | No | Ref to the root element. |
-| `typeahead` | `boolean` | `true` | No | Enables moving to an option by typing the start of its label. |
 | `open` | `boolean` | — | No | Controls the open state of the Select dropdown. When provided, the Select becomes a controlled component and relies on this value to determine whether the listbox is open or closed. |
-| `onChangeOpen` | `(open: boolean) => void` | — | No | Callback fired when the open state changes. Called with the next open state (`true` or `false`) whenever the Select is opened or closed by user interaction. Useful for synchronizing the Select state with external logic. |
 | `defaultOpen` | `boolean` | — | No | Sets the initial open state of the Select when used in uncontrolled mode. Applied only on the first render and ignored afterward. |
+| `onChangeOpen` | `(open: boolean) => void` | — | No | Callback fired when the open state changes. Called with the next open state (`true` or `false`) whenever the Select is opened or closed by user interaction. Useful for synchronizing the Select state with external logic. |
+| `typeahead` | `boolean` | `true` | No | Enables moving to an option by typing the start of its label. |
 
 Also accepts all `<div>` attributes.
 <!-- AUTO-GENERATED:PART_API:PhoneFieldSelect:end -->
