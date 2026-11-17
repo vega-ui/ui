@@ -1,6 +1,6 @@
 'use client';
 
-import type { CSSProperties, ReactNode } from 'react';
+import { useId, useState, type CSSProperties, type ReactNode } from 'react';
 import {
   Accordion, AccordionContent, AccordionHeader, AccordionIcon, AccordionItem, AccordionTrigger, Alert, AlertContent,
   AlertIcon, Avatar, AvatarFallback, AvatarStack, AvatarStackItem, Badge, Button, ButtonBase, Calendar,
@@ -10,7 +10,7 @@ import {
   CheckboxCardContent, CheckboxCardControl, CheckboxCardControlCheckedIcon, CheckboxCardControlIndeterminateIcon,
   CheckboxCardControlInput, CheckboxCardDescription, CheckboxCardTitle,
   CheckboxCheckedIcon, CheckboxIndeterminateIcon, CheckboxIndicator, CheckboxInput, Code, Collapsible,
-  CollapsibleContent, CollapsibleTrigger,
+  CollapsibleContent, CollapsibleTrigger, Combobox, ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger,
   DateField, DateFieldCalendar, DateFieldInput, DateFieldTriggerIconButton, DateRangeField,
   DateRangeFieldCalendar, DateRangeFieldInput, DateRangeFieldTriggerIconButton, DateTimeField, DateTimeFieldCalendar,
   DateTimeFieldInput, DateTimeFieldTriggerIconButton, DayPicker, DayPickerCell, DayPickerLayout, Dialog, DialogClose, DialogContent,
@@ -50,6 +50,31 @@ const IndexedSlide = () => {
   const { index } = useIndexedSnapScrollerContext();
 
   return <IndexedSnapScrollerContent className={styles.slide}>{MONTHS[index] ?? `Month ${index + 1}`}</IndexedSnapScrollerContent>;
+};
+
+const CITIES = ['Amsterdam', 'Athens', 'Berlin', 'Lisbon', 'Madrid', 'Prague', 'Vienna'];
+
+const ComboboxPreview = () => {
+  const id = useId();
+  const [query, setQuery] = useState('');
+  const matches = CITIES.filter((city) => city.toLowerCase().includes(query.trim().toLowerCase()));
+
+  return (
+    <div className={styles.field}>
+      <Label htmlFor={id}>City</Label>
+      <Combobox>
+        <TextField>
+          <ComboboxInput id={id} placeholder='Start typing a city' value={query} onChange={(event) => setQuery(event.target.value)} />
+          <ComboboxTrigger aria-label='Show cities'>
+            <ComboboxIcon />
+          </ComboboxTrigger>
+        </TextField>
+        <ComboboxListbox aria-label='Cities'>
+          {matches.map((city) => <ListboxOption key={city} value={city}>{city}</ListboxOption>)}
+        </ComboboxListbox>
+      </Combobox>
+    </div>
+  );
 };
 
 export const PREVIEWS: Record<string, Preview> = {
@@ -434,6 +459,7 @@ export const PREVIEWS: Record<string, Preview> = {
       </SegmentedControl>
     ),
   },
+  combobox: { node: <ComboboxPreview /> },
   select: {
     node: (
       <div className={styles.field}>

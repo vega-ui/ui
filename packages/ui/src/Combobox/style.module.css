@@ -1,0 +1,24 @@
+.combobox {
+    --combobox-size: 0;
+    --combobox-br-ratio: var(--br-ratio);
+}
+
+.combobox:where([data-size='xs']) {
+    --combobox-size: var(--spacing-16);
+}
+
+.combobox:where([data-size='sm']) {
+    --combobox-size: var(--spacing-18);
+}
+
+.combobox:where([data-size='md']) {
+    --combobox-size: var(--spacing-21);
+}
+
+.combobox:where([data-size='lg']) {
+    --combobox-size: var(--spacing-24);
+}
+
+.combobox:where([data-size='xl']) {
+    --combobox-size: var(--spacing-26);
+}

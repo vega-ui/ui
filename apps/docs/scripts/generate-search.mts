@@ -47,6 +47,7 @@ const KEYWORDS: Record<typeof LOCALES[number], Record<string, string>> = {
     'checkbox-card': 'карточка с флажком',
     'code': 'код',
     'collapsible': 'раскрывающийся блок',
+    'combobox': 'поле с подсказками автодополнение поиск',
     'date-field': 'поле даты дата',
     'date-range-field': 'диапазон дат период',
     'date-time-field': 'дата и время',

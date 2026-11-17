@@ -14,12 +14,12 @@ export interface ListboxOptionProps<Value> extends Omit<OptionProps, 'id' | 'sel
   value: Value
 
   /**
-   * Plain text of this option for typeahead, used instead of the text of its content.
+   * Plain text of this option, used instead of the text of its content for typeahead and as the text a Combobox writes into its input.
    */
   label?: string
 }
 
-/** A ListboxOption is a single choice of a Listbox or a Select: it registers in the list, which owns selection and keyboard navigation */
+/** A ListboxOption is a single choice of a Listbox, a Select or a Combobox: it registers in the list, which owns selection and keyboard navigation */
 export const ListboxOption = <Value extends string | number>({
   value,
   label,
@@ -28,14 +28,14 @@ export const ListboxOption = <Value extends string | number>({
   ref,
   ...props
 }: ListboxOptionProps<Value>) => {
-  const { handle, size: listSize, disabled: listDisabled } = useListboxContext()
+  const { handle, size: listSize, disabled: listDisabled, option = optionPart } = useListboxContext()
   const key = useId()
   const optionDisabled = disabled || listDisabled
   const register = useCallback(
     (element: HTMLElement | null) => handle.elements.setItem(key, element, element ? { value, disabled: optionDisabled, label: label ?? element.textContent ?? '' } : undefined),
     [handle, key, value, optionDisabled, label],
   )
-  const attrs = useOutput(handle, optionPart, key)
+  const attrs = useOutput(handle, option, key)
   const optionRef = useMergeRefs([register, ref])
 
   return <Option size={size ?? listSize} disabled={optionDisabled} ref={optionRef} {...handle.merge(attrs, props)} />

@@ -536,7 +536,7 @@ describe('Critical User Paths', () => {
     expect(viewports).toBe(1)
   })
 
-  it('hands a step the edit and the field of a text input and writes the text it answers with', () => {
+  it('hands a step the edit and the field of a text input and writes the text it answers with, selected before the input event', () => {
     const field = document.createElement('input')
     document.body.appendChild(field)
     field.focus()
@@ -559,7 +559,7 @@ describe('Critical User Paths', () => {
     })
     const connection = connect(createWidget(editing, { items: fruits, mode: 'single' }, { id: 'widget', strict: true }), elements)
     connection.listen(field)
-    const onInput = vi.fn()
+    const onInput = vi.fn(() => [field.selectionStart, field.selectionEnd])
     const onChange = vi.fn()
     field.addEventListener('input', onInput)
     field.addEventListener('change', onChange)
@@ -571,6 +571,7 @@ describe('Critical User Paths', () => {
     expect(field.value).toBe('a!')
     expect([field.selectionStart, field.selectionEnd]).toEqual([1, 1])
     expect(onInput).toHaveBeenCalledOnce()
+    expect(onInput).toHaveReturnedWith([1, 1])
     expect(fields).toEqual([])
 
     keydown(field, { key: 'ArrowUp' })
@@ -927,6 +928,31 @@ describe('Edge Cases', () => {
 
     keydown(field, { key: 'ArrowDown' })
     expect(instance.state.active).toBe('banana')
+  })
+
+  it('tells a widget that asks for it about a key it yields to a text field, without preventing the key', () => {
+    const { root, items } = mount({ items: fruits, mode: 'single' })
+    const field = Object.assign(document.createElement('input'), { value: 'abc' })
+    root.appendChild(field)
+    const elements = createElements<string>()
+    elements.setRoot(root)
+    elements.setItem('apple', items.get('apple')!)
+
+    const yielded: (string | undefined)[] = []
+    const editing = defineWidget({
+      state: shape,
+      step: [listening([text.key], (state, input) => {
+        if (!input.is(text.key)) return undefined
+
+        yielded.push(input.field?.value)
+        return handled(state)
+      })],
+    })
+    connect(createWidget(editing, { items: fruits, mode: 'single' }, { id: 'editing', strict: true }), elements).listen(root)
+
+    expect(keydown(field, { key: 'End' }).defaultPrevented).toBe(false)
+    expect(keydown(field, { key: 'x' }).defaultPrevented).toBe(false)
+    expect(yielded).toEqual(['abc', 'abc'])
   })
 
   it('yields the line keys to a multi-line field inside the root', () => {

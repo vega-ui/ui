@@ -1,0 +1,62 @@
+.listbox {
+    inset: auto;
+    margin: var(--spacing-5) 0 0;
+    position-area: bottom span-self-x-end;
+    position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
+    position-visibility: always;
+    min-width: anchor-size(width);
+    border: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-3);
+    padding: var(--spacing-4);
+    outline: none;
+    box-sizing: border-box;
+    background: var(--surface-secondary);
+    box-shadow: var(--surface-shadow);
+    width: max-content;
+    z-index: var(--z-index-popover);
+    overflow: auto;
+    max-height: 250px;
+    transition:
+            scale var(--duration-spring) var(--ease-spring),
+            opacity var(--duration-exit) var(--ease-smooth);
+    border-radius: calc(var(--combobox-size) * var(--combobox-listbox-br-ratio, var(--combobox-br-ratio)));
+}
+
+.listbox:where(:not(:popover-open)) {
+    display: none;
+    scale: .95;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+            scale var(--duration-exit) var(--ease-exit),
+            opacity var(--duration-exit) var(--ease-exit),
+            visibility var(--duration-exit),
+            display var(--duration-exit) allow-discrete,
+            overlay var(--duration-exit) allow-discrete;
+}
+
+@starting-style {
+    .listbox:where(:popover-open) {
+        scale: .95;
+        opacity: 0;
+    }
+}
+
+.listbox > * {
+    flex-shrink: 0;
+}
+
+@supports not (overlay: auto) {
+    .listbox:where(:not(:popover-open)) {
+        transition: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .listbox {
+        scale: 1;
+    }
+}

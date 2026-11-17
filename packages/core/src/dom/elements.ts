@@ -66,7 +66,7 @@ export const createElements = <Key, Data = undefined>(): ElementRegistry<Key, Da
     return false
   }
 
-  const touchesItems = (records: MutationRecord[]) => records.some((record) => [...record.addedNodes, ...record.removedNodes].some(holdsItem))
+  const movesItems = (records: MutationRecord[]) => records.some((record) => [...record.addedNodes].some(holdsItem))
 
   const reorder = () => {
     const current = ordered
@@ -80,7 +80,7 @@ export const createElements = <Key, Data = undefined>(): ElementRegistry<Key, Da
   }
 
   const observer = typeof MutationObserver === 'undefined' ? null : new MutationObserver((records) => {
-    if (touchesItems(records)) reorder()
+    if (movesItems(records)) reorder()
   })
 
   const bind = (element: Element, key: Key | undefined, output: Part<unknown, Key> | undefined) => {
@@ -156,7 +156,7 @@ export const createElements = <Key, Data = undefined>(): ElementRegistry<Key, Da
     setRoot(element, name = ROOT, output) {
       const previous = roots.get(name) ?? null
       if (element === previous) return
-      if (observer && touchesItems(observer.takeRecords())) reorder()
+      if (observer && movesItems(observer.takeRecords())) reorder()
 
       if (previous && registries.get(previous) === registry) registries.delete(previous)
       if (element) roots.set(name, element)

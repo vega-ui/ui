@@ -79,6 +79,7 @@ Use `SegmentedControl` when:
 ## Do Not Choose This Component When
 
 - the field must stay compact in a form; use [Select](../select/)
+- users type to find one option in a long set; use [Combobox](../combobox/)
 - the value must submit natively without extra wiring; use [Radio](../radio/) or [Checkbox](../checkbox/)
 - an option needs its own buttons or links inside it
 - the list holds actions rather than values
