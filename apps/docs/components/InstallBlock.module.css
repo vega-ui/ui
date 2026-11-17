@@ -10,7 +10,7 @@
     display: flex;
     align-items: center;
     gap: var(--spacing-5);
-    padding: var(--spacing-4) var(--spacing-5) var(--spacing-4) var(--spacing-8);
+    padding-inline: var(--spacing-8) var(--spacing-5);
     border-bottom: 1px solid var(--site-line);
 }
 
@@ -19,6 +19,11 @@
 }
 
 .managers {
+    align-self: flex-end;
+    margin: 0;
+}
+
+.managers [role='tab'] {
     font-family: var(--site-mono);
 }
 

@@ -12,7 +12,7 @@ interface Registered<Key, Data> extends Entry<Key, Data> {
 
 export interface ElementRegistry<Key, Data = undefined> extends Elements<Key> {
   setRoot(element: Element | null, name?: string, output?: Part<unknown, Key>): void
-  setPart(name: string, element: Element | null, output?: Part<unknown, Key>): void
+  setPart(name: string, element: Element | null, output?: Part<unknown, Key>, key?: Key): void
   setItem(key: Key, element: Element | null, data?: Data, output?: Part<unknown, Key>): () => void
   entries(): readonly Entry<Key, Data>[]
   within(container: Element): Key[]
@@ -36,6 +36,7 @@ export const createElements = <Key, Data = undefined>(): ElementRegistry<Key, Da
   let version = 0
   let ordered: readonly Entry<Key, Data>[] | null = []
   const parts = new Map<string, Element>()
+  const keyedParts = new Map<string, Map<Key, Element>>()
   const names = new Map<Element, string>()
   const items = new Map<Key, Registered<Key, Data>>()
   const keys = new Map<Element, Key>()
@@ -96,7 +97,29 @@ export const createElements = <Key, Data = undefined>(): ElementRegistry<Key, Da
     bindings.delete(previous.element)
   }
 
-  const setPart = (name: string, element: Element | null, output?: Part<unknown, Key>) => {
+  const setKeyedPart = (name: string, key: Key, element: Element | null, output?: Part<unknown, Key>) => {
+    let keyed = keyedParts.get(name)
+    if (!keyed) keyedParts.set(name, (keyed = new Map()))
+
+    const previous = keyed.get(key)
+    if (previous) {
+      names.delete(previous)
+      bindings.delete(previous)
+    }
+
+    if (!element) {
+      keyed.delete(key)
+      return
+    }
+
+    keyed.set(key, element)
+    names.set(element, name)
+    bind(element, key, output)
+  }
+
+  const setPart = (name: string, element: Element | null, output?: Part<unknown, Key>, key?: Key) => {
+    if (key !== undefined) return setKeyedPart(name, key, element, output)
+
     const previous = parts.get(name)
     if (previous) {
       names.delete(previous)
@@ -127,6 +150,7 @@ export const createElements = <Key, Data = undefined>(): ElementRegistry<Key, Da
     item: (key) => items.get(key)?.element ?? null,
     keyOf: (element) => keys.get(element),
     bound: () => bindings.values(),
+    boundOf: (element) => bindings.get(element),
     partOf: (element) => names.get(element),
     roots: () => roots.values(),
 

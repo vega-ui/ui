@@ -12,7 +12,7 @@ The widget is plain TypeScript with no React and no DOM. It runs and is tested i
 |---|---|
 | `@vega-ui/core` | The pipeline: state, inputs, steps, actions, output, the widget instance, the DOM adapter `connect`, the fragments, `simulate` in `@vega-ui/core/test` |
 | `@vega-ui/widgets` | The widgets of the components, one entry point per folder: `@vega-ui/widgets/listbox`, `@vega-ui/widgets/select`. A folder shared by several widgets, like `mask` or `drag`, is a segment and is closed in `exports` |
-| `packages/ui/src/internals/widget` | The React adapter: `useWidget`, `useOutput`, `useItem`, `useSnapshot` and the diagnostics |
+| `packages/ui/src/internals/widget` | The React adapter: `useWidget`, `useOutput`, `useItem`, `usePart`, `useSnapshot` and the diagnostics |
 
 ## The Pipeline
 
@@ -239,7 +239,7 @@ An input is a value, never a string: `key.enter`, `key.with(key.a, mod.mod)`, `n
 
 - **Keys and directions.** The adapter turns the arrows into `nav.forward`, `nav.backward`, `nav.up` and `nav.down` by `aria-orientation` and the writing direction of the root, so a step never knows about RTL. Declare `nav.*` for a list and `key.*` for a key that means the same in every direction.
 - **Pointer.** `pointer.down`, `press`, `drag`, `dragOver`, `release`, `cancel`, `hover`, `enter`, `leave`, `wheel` and `spin` carry the `key` of the item and the `part` they hit.
-- **Browser.** `browser.toggle` after a popover or a dialog opened or closed, `browser.cancel` / `close` / `submit` of a `<dialog>`, `browser.reset` after a form reset, `browser.animationEnd` and `browser.flushed` as answers to actions.
+- **Browser.** `browser.toggle` after a popover or a dialog opened or closed, `browser.cancel` / `close` / `submit` of a `<dialog>`, `browser.reset` after a form reset, `browser.reveal` when find in page is about to reveal a part with `hidden="until-found"`, `browser.animationEnd` and `browser.flushed` as answers to actions.
 - **Lifecycle.** `lifecycle.connect` once the adapter is connected and the items are registered; `lifecycle.options` when the parent changes a value it controls or an option in `follows`, with `changed`, the names that changed.
 - `defineInput(type, name)` declares an input of a kind of your own for an adapter of your own.
 
@@ -357,7 +357,7 @@ connection.send(createInput(lifecycle.connect))
 - An event the user's handler prevented, one an inner widget handled or one whose target is outside the root in the DOM is skipped.
 - The adapter attaches nothing until a root registers, so a widget created on the server touches nothing.
 
-The React adapter in `packages/ui/src/internals/widget` wraps it: `useWidget` creates the handle, syncs the options during the render of the owner and tells the subscribers after the commit; `handle.root`, `handle.rootAt(name)` and `handle.part(name)` are refs that register elements; `handle.send(input)` sends a command; `useSnapshot(handle, select)` reads a value of the snapshot for a component that needs it.
+The React adapter in `packages/ui/src/internals/widget` wraps it: `useWidget` creates the handle, syncs the options during the render of the owner and tells the subscribers after the commit; `handle.root`, `handle.rootAt(name)` and `handle.part(name)` are refs that register elements, and `usePart(handle, name, part, key)` registers one of many keyed elements of a part, like a tab panel, and writes its channels again after every commit, since React renders over an attribute like `hidden="until-found"`; `handle.send(input)` sends a command; `useSnapshot(handle, select)` reads a value of the snapshot for a component that needs it.
 
 ### Fragments
 

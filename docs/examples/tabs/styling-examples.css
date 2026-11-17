@@ -1,0 +1,8 @@
+.successTabs [role='tablist'] {
+  --tabs-indicator-color: var(--color-green-500);
+  --tabs-separator-color: var(--separator-non-opaque);
+}
+
+.railLessTabs [role='tablist'] {
+  --tabs-separator-color: transparent;
+}

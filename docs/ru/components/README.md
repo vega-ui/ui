@@ -67,6 +67,7 @@
 - [Spinner](./spinner/)
 - [Switch](./switch/)
 - [Table](./table/)
+- [Tabs](./tabs/)
 - [Text](./text/)
 - [TextArea](./text-area/)
 - [TextField](./text-field/)

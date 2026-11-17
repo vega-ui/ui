@@ -12,7 +12,7 @@
 |---|---|
 | `@vega-ui/core` | Конвейер: состояние, входы, шаги, действия, вывод, экземпляр виджета, DOM-адаптер `connect`, фрагменты, `simulate` в `@vega-ui/core/test` |
 | `@vega-ui/widgets` | Виджеты компонентов, по точке входа на папку: `@vega-ui/widgets/listbox`, `@vega-ui/widgets/select`. Папка, общая для нескольких виджетов, как `mask` или `drag`, — сегмент, и она закрыта в `exports` |
-| `packages/ui/src/internals/widget` | React-адаптер: `useWidget`, `useOutput`, `useItem`, `useSnapshot` и диагностика |
+| `packages/ui/src/internals/widget` | React-адаптер: `useWidget`, `useOutput`, `useItem`, `usePart`, `useSnapshot` и диагностика |
 
 ## Конвейер
 
@@ -239,7 +239,7 @@ export const Tag = ({ value, disabled = false, children, ...props }: TagProps) =
 
 - **Клавиши и направления.** Адаптер превращает стрелки в `nav.forward`, `nav.backward`, `nav.up` и `nav.down` по `aria-orientation` и направлению письма корня, поэтому шаг ничего не знает про RTL. Объявляйте `nav.*` для списка и `key.*` для клавиши, которая значит одно и то же в любом направлении.
 - **Указатель.** `pointer.down`, `press`, `drag`, `dragOver`, `release`, `cancel`, `hover`, `enter`, `leave`, `wheel` и `spin` несут `key` элемента и `part`, в которую попали.
-- **Браузер.** `browser.toggle` — после того как поповер или диалог открылся или закрылся, `browser.cancel` / `close` / `submit` у `<dialog>`, `browser.reset` — после сброса формы, `browser.animationEnd` и `browser.flushed` — ответы на действия.
+- **Браузер.** `browser.toggle` — после того как поповер или диалог открылся или закрылся, `browser.cancel` / `close` / `submit` у `<dialog>`, `browser.reset` — после сброса формы, `browser.reveal` — когда поиск по странице вот-вот раскроет часть с `hidden="until-found"`, `browser.animationEnd` и `browser.flushed` — ответы на действия.
 - **Жизненный цикл.** `lifecycle.connect` — когда адаптер подключён и элементы зарегистрированы; `lifecycle.options` — когда родитель меняет контролируемое значение или опцию из `follows`, с `changed` — именами изменившихся.
 - `defineInput(type, name)` объявляет вход собственного вида для собственного адаптера.
 
@@ -357,7 +357,7 @@ connection.send(createInput(lifecycle.connect))
 - Событие, отменённое обработчиком пользователя, обработанное внутренним виджетом или с целью вне корня в DOM, пропускается.
 - Адаптер ни на что не подписывается, пока не зарегистрирован корень, поэтому виджет, созданный на сервере, ничего не трогает.
 
-React-адаптер в `packages/ui/src/internals/widget` оборачивает его: `useWidget` создаёт handle, синхронизирует опции во время рендера владельца и оповещает подписчиков после фиксации; `handle.root`, `handle.rootAt(name)` и `handle.part(name)` — рефы, регистрирующие элементы; `handle.send(input)` отправляет команду; `useSnapshot(handle, select)` читает значение снимка для компонента, которому оно нужно.
+React-адаптер в `packages/ui/src/internals/widget` оборачивает его: `useWidget` создаёт handle, синхронизирует опции во время рендера владельца и оповещает подписчиков после фиксации; `handle.root`, `handle.rootAt(name)` и `handle.part(name)` — рефы, регистрирующие элементы, а `usePart(handle, name, part, key)` регистрирует один из многих элементов части по ключу, например панель вкладки, и заново пишет его каналы после каждой фиксации, потому что React перерисовывает атрибут вроде `hidden="until-found"`; `handle.send(input)` отправляет команду; `useSnapshot(handle, select)` читает значение снимка для компонента, которому оно нужно.
 
 ### Фрагменты
 

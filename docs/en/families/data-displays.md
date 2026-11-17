@@ -10,6 +10,7 @@ Use this page when the UI is showing structured information and the first decisi
 - Use [Grid](../components/grid/) with `GridItem` inside its cells when the grid should read like a picker surface rather than a general interaction matrix.
 - Use [Pagination](../components/pagination/) when content is split into discrete pages.
 - Use [PageControl](../components/page-control/) when the UI needs compact page or slide indicators rather than full pagination chrome.
+- Use [Tabs](../components/tabs/) when one area shows one of several panels and switching keeps the URL.
 
 ## By Interaction Model
 
@@ -19,6 +20,7 @@ Use this page when the UI is showing structured information and the first decisi
 - Picker-shaped grid: [Grid](../components/grid/) with `selection` and `GridItem`
 - Full page navigation: [Pagination](../components/pagination/)
 - Compact page or slide indicator: [PageControl](../components/page-control/)
+- Panels switched in place: [Tabs](../components/tabs/)
 
 ## Common Misclassifications
 

@@ -10,7 +10,7 @@ describe('Edge Cases', () => {
     const shape = state({ options: {}, owns: {} })
     const widget = defineWidget({
       state: shape,
-      step: [listening([browser.reset, layout.resize, layout.viewport, text.select], (current) => keep(current))],
+      step: [listening([browser.reset, browser.reveal, layout.resize, layout.viewport, text.select], (current) => keep(current))],
       output: {},
     })
 

@@ -1,0 +1,12 @@
+.tabs:where([data-variant='primary']) {
+    --tabs-indicator-color: var(--color-primary-500);
+}
+
+.tabs:where([data-variant='secondary']) {
+    --tabs-indicator-color: var(--color-secondary-500);
+}
+
+.tabs:where([data-orientation='vertical']) {
+    display: flex;
+    align-items: flex-start;
+}
