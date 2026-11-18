@@ -1,7 +1,8 @@
 import { describe, expect, it, vi } from 'vitest'
-import { act, browser, focus, key, lifecycle, mod, pointer, timer, TYPEAHEAD } from '@vega-ui/core'
+import { act, browser, focus, key, lifecycle, measure, mod, pointer, timer, TYPEAHEAD } from '@vega-ui/core'
 import { simulate } from '@vega-ui/core/test'
-import { CHECK, CONTENT, MenuEntry, MenuItemData, menuCheckboxWidget, menuRadioGroupWidget, menuWidget, TRIGGER } from '../widget'
+import { AIM, AIMING, CHECK, CONTENT, DISMISS, MenuEntry, MenuItemData, menuCheckboxWidget, menuRadioGroupWidget, menuWidget, OPENING, submenuWidget, TRIGGER } from '../widget'
+import { aims } from '../aim'
 
 const item = (value: string, data: Partial<MenuItemData> = {}): MenuEntry => ({ key: value, data: { kind: 'item', disabled: false, label: value, ...data } })
 
@@ -9,6 +10,11 @@ const items = [item('copy', { label: 'Copy' }), item('cut', { label: 'Cut', disa
 
 const HIDE = act.hidePopover(CONTENT)
 const RETURN = act.focusPart(TRIGGER)
+
+const CLOSE_UP = [HIDE, act.sendUp(TRIGGER, DISMISS)]
+const SHARE = { name: AIMING, parts: { [CONTENT]: { rect: { x: 200, y: 100, width: 160, height: 120 } } }, items: [] }
+
+const openSub = (options: Partial<Parameters<typeof simulate<typeof submenuWidget.shape>>[1]> = {}) => simulate(submenuWidget, { items, ...options }).observe({ shown: true, disabled: false, triggerFocused: true })
 
 const open = (options: Partial<Parameters<typeof simulate<typeof menuWidget.shape>>[1]> = {}) => simulate(menuWidget, { items, ...options }).observe({ shown: true })
 
@@ -99,6 +105,103 @@ describe('Critical User Paths', () => {
     group.send(CHECK, { value: '200' }).send(CHECK, { value: '100' })
     expect(onChangeValue).toHaveBeenCalledExactlyOnceWith('100')
     expect(menuRadioGroupWidget.output.radio.render(menuRadioGroupWidget.output.radio.select(group.state, '100'))).toEqual({ 'aria-checked': true, 'data-checked': true })
+  })
+
+  it('opens from its item on Enter, Space or the arrow into it with the focus on the first item, and leaves the arrows along the menu to the parent', () => {
+    for (const opening of [key.enter, key.space, key.arrowRight]) {
+      const widget = simulate(submenuWidget, { items }).observe({ shown: false, disabled: false, triggerFocused: true })
+      widget.send(opening, { part: TRIGGER })
+      expect(widget.answer).toBe('handled')
+      expect(widget.actions).toEqual([act.showPopover(CONTENT), act.focus('copy')])
+    }
+
+    const widget = simulate(submenuWidget, { items }).observe({ shown: false, disabled: false, triggerFocused: true })
+    widget.send(key.arrowDown, { part: TRIGGER }).send(key.end, { part: TRIGGER }).send(key.printable, { part: TRIGGER, char: 'p' })
+    expect(widget.answer).toBe('pass')
+  })
+
+  it('opens without taking the focus when the pointer rests on its item or clicks it, and not on a disabled item', () => {
+    const widget = simulate(submenuWidget, { items }).observe({ shown: false, disabled: false, triggerFocused: true })
+
+    widget.send(pointer.enter, { part: TRIGGER, pointerType: 'mouse' })
+    expect(widget.actions).toEqual([act.timer(OPENING, 100)])
+    widget.observe({ triggerFocused: false, triggerHovered: true }).send(timer(OPENING))
+    expect(widget.actions).toEqual([act.timer(OPENING, 100)])
+    widget.observe({ triggerHovered: false }).send(timer(OPENING))
+    expect(widget.actions).toEqual([])
+    widget.observe({ triggerFocused: true }).send(timer(OPENING))
+    expect(widget.actions).toEqual([act.showPopover(CONTENT)])
+
+    widget.send(pointer.leave, { part: TRIGGER, pointerType: 'mouse' })
+    expect(widget.actions).toEqual([act.cancelTimer(OPENING)])
+
+    widget.send(pointer.press, { part: TRIGGER })
+    expect(widget.actions).toEqual([act.cancelTimer(OPENING), act.showPopover(CONTENT)])
+
+    widget.send(browser.toggle, { to: true, part: CONTENT })
+    expect(widget.actions).toEqual([])
+
+    const disabled = simulate(submenuWidget, { items }).observe({ shown: false, disabled: true, triggerFocused: true })
+    disabled.send(pointer.enter, { part: TRIGGER, pointerType: 'mouse' }).send(key.enter, { part: TRIGGER })
+    expect(disabled.answer).toBe('handled')
+    expect(disabled.actions).toEqual([])
+  })
+
+  it('closes on Escape or the arrow out of it with the focus back on its item, by the writing direction', () => {
+    const widget = openSub()
+    widget.send(key.arrowLeft, { key: 'copy', part: CONTENT })
+    expect(widget.answer).toBe('handled')
+    expect(widget.actions).toEqual([HIDE, RETURN])
+
+    widget.observe({ shown: true }).send(key.escape, { key: 'copy', part: CONTENT })
+    expect(widget.actions).toEqual([HIDE, RETURN])
+
+    const rightToLeft = simulate(submenuWidget, { items }, { rtl: true }).observe({ shown: true, disabled: false, triggerFocused: true })
+    rightToLeft.send(key.arrowRight, { key: 'copy', part: CONTENT })
+    expect(rightToLeft.actions).toEqual([HIDE, RETURN])
+  })
+
+  it('closes every menu up to the menu button when an item of a submenu runs', () => {
+    const sub = openSub()
+    sub.send(pointer.press, { key: 'paste' })
+    expect(sub.actions).toEqual(CLOSE_UP)
+
+    const middle = openSub()
+    middle.send(DISMISS)
+    expect(middle.actions).toEqual(CLOSE_UP)
+
+    const root = open()
+    root.send(DISMISS)
+    expect(root.actions).toEqual([HIDE, RETURN])
+  })
+
+  it('keeps the focus on its item while the pointer heads from it into the submenu over other items', () => {
+    const sub = openSub()
+    sub.send(pointer.leave, { part: TRIGGER, point: { x: 150, y: 110 }, pointerType: 'mouse' })
+    expect(sub.actions).toEqual([act.measure({ name: AIMING, parts: [CONTENT], rect: true })])
+    sub.send(measure.done, { measured: SHARE })
+    expect(sub.actions).toEqual([act.sendUp(TRIGGER, AIM, { point: { x: 150, y: 110 }, measured: SHARE })])
+
+    const parent = open()
+    parent.send(AIM, { point: { x: 150, y: 110 }, measured: SHARE })
+    expect(parent.actions).toEqual([act.timer(AIMING, 300)])
+
+    parent.send(pointer.hover, { key: 'paste', point: { x: 180, y: 120 } })
+    expect(parent.actions).toEqual([])
+
+    parent.send(pointer.hover, { key: 'paste', point: { x: 150, y: 160 } })
+    expect(parent.actions).toEqual([act.focus('paste', true)])
+
+    parent.send(AIM, { point: { x: 150, y: 110 }, measured: SHARE }).send(timer(AIMING))
+    parent.send(pointer.hover, { key: 'cut', point: { x: 180, y: 120 } }).send(pointer.hover, { key: 'copy', point: { x: 180, y: 120 } })
+    expect(parent.actions).toEqual([act.focus('copy', true)])
+  })
+
+  it('aims at the near edge of the submenu on either side of its item', () => {
+    const rect = { x: 200, y: 100, width: 160, height: 120 }
+    expect(aims({ from: { x: 150, y: 110 }, rect }, { x: 190, y: 190 })).toBe(true)
+    expect(aims({ from: { x: 150, y: 110 }, rect }, { x: 140, y: 200 })).toBe(false)
+    expect(aims({ from: { x: 400, y: 110 }, rect }, { x: 370, y: 180 })).toBe(true)
   })
 })
 

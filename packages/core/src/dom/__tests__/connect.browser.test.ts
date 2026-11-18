@@ -91,6 +91,30 @@ describe('Critical User Paths', () => {
     expect(instance.state.focused).toBe(false)
   })
 
+  it('tells every widget the focus leaves, the outer one too when the inner one handles its leaving', () => {
+    const outer = mount({ items: fruits, mode: 'single' })
+    const inner = document.createElement('div')
+    inner.tabIndex = -1
+    outer.root.appendChild(inner)
+    const outside = document.createElement('button')
+    document.body.appendChild(outside)
+
+    const elements = createElements<string>()
+    elements.setRoot(inner)
+    const leaving = defineWidget({
+      state: shape,
+      step: [listening([focus.leave], (state, input) => (input.is(focus.leave) ? keep(state) : undefined))],
+    })
+    const instance = createWidget(leaving, { items: fruits, mode: 'single' }, { id: 'inner', strict: true })
+    connect(instance, elements).listen(inner)
+
+    outer.root.focus()
+    inner.focus()
+    outside.focus()
+    expect(instance.state.focused).toBe(false)
+    expect(outer.instance.state.focused).toBe(false)
+  })
+
   it('runs a timer action and feeds its firing back as an input', () => {
     vi.useFakeTimers()
     const { root, instance } = mount({ items: fruits, mode: 'single' })
@@ -171,6 +195,25 @@ describe('Critical User Paths', () => {
 
     connection.send(createInput(PING, { key: 'nested' }))
     expect(inner.instance.state.active).toBe('date')
+  })
+
+  it('delivers an input from a part to the nearest widget around it', () => {
+    const outer = mount({ items: fruits, mode: 'single' })
+    const handle = document.createElement('div')
+    outer.root.appendChild(handle)
+
+    const elements = createElements<string>()
+    elements.setRoot(handle, 'handle')
+
+    const PING = command('ping')
+    const sending = defineWidget({
+      state: state({ options: {}, owns: {}, parts: ['handle'] }),
+      step: [listening([PING], (current, input) => (input.is(PING) ? handled(current, [act.sendUp('handle', key.printable, { char: 'd' })]) : undefined))],
+    })
+    const connection = connect(createWidget(sending, {}, { id: 'sending', strict: true }), elements)
+
+    connection.send(createInput(PING))
+    expect(outer.instance.state.active).toBe('date')
   })
 
   it('writes the live values and the properties of a part itself, without a render, and only when what they read changes', () => {
@@ -294,7 +337,7 @@ describe('Critical User Paths', () => {
     keydown(content, { key: 'Escape' })
     outside.focus()
 
-    expect(inputs).toEqual([['enter', undefined], ['move', undefined], ['Escape', 'content'], ['leave', undefined]])
+    expect(inputs).toEqual([['enter', 'trigger'], ['move', 'content'], ['Escape', 'content'], ['leave', undefined]])
   })
 
   it('reports the pointer entering and leaving a part once, with the part it moves to and the pointer type', () => {
@@ -312,7 +355,7 @@ describe('Critical User Paths', () => {
     const recording = defineWidget({
       state: shape,
       step: [listening([pointerInput.enter, pointerInput.leave], (state, input) => {
-        inputs.push([input.name, input.part, input.to, input.pointerType])
+        inputs.push([input.name, input.part, input.to, input.pointerType, input.point])
         return keep(state)
       })],
     })
@@ -323,13 +366,13 @@ describe('Critical User Paths', () => {
     pointer(trigger, 'pointerover', { pointerType: 'mouse', relatedTarget: document.body })
     pointer(trigger, 'pointerout', { pointerType: 'mouse', relatedTarget: icon })
     pointer(icon, 'pointerover', { pointerType: 'mouse', relatedTarget: trigger })
-    pointer(icon, 'pointerout', { pointerType: 'mouse', relatedTarget: content })
+    pointer(icon, 'pointerout', { pointerType: 'mouse', relatedTarget: content, clientX: 40, clientY: 12 })
     pointer(content, 'pointerover', { pointerType: 'mouse', relatedTarget: icon })
 
     expect(inputs).toEqual([
-      ['enter', 'trigger', undefined, 'mouse'],
-      ['leave', 'trigger', 'content', 'mouse'],
-      ['enter', 'content', undefined, 'mouse'],
+      ['enter', 'trigger', undefined, 'mouse', undefined],
+      ['leave', 'trigger', 'content', 'mouse', { x: 40, y: 12 }],
+      ['enter', 'content', undefined, 'mouse', undefined],
     ])
   })
 
@@ -1282,6 +1325,45 @@ describe('Accessibility', () => {
     outer.dir = 'rtl'
     keydown(root, { key: 'ArrowLeft' })
     expect(instance.state.active).toBe('date')
+  })
+
+  it('turns the arrows across the axis into cross moves by the writing direction, only for a widget that reads them', () => {
+    const record = () => {
+      const root = document.createElement('div')
+      root.tabIndex = 0
+      document.body.appendChild(root)
+      const elements = createElements<string>()
+      elements.setRoot(root)
+
+      const moves: string[] = []
+      const crossing = defineWidget({
+        state: state({ options: {}, owns: {} }),
+        step: [listening([nav.crossForward, nav.crossBackward], (current, input) => {
+          moves.push(input.name)
+          return handled(current)
+        })],
+      })
+      connect(createWidget(crossing, {}, { id: 'crossing', strict: true }), elements).listen(root)
+
+      return { root, moves }
+    }
+
+    const vertical = record()
+    keydown(vertical.root, { key: 'ArrowRight' })
+    keydown(vertical.root, { key: 'ArrowDown' })
+    vertical.root.dir = 'rtl'
+    keydown(vertical.root, { key: 'ArrowRight' })
+    expect(vertical.moves).toEqual(['crossForward', 'crossBackward'])
+
+    const horizontal = record()
+    horizontal.root.setAttribute('aria-orientation', 'horizontal')
+    keydown(horizontal.root, { key: 'ArrowUp' })
+    keydown(horizontal.root, { key: 'ArrowRight' })
+    expect(horizontal.moves).toEqual(['crossBackward'])
+
+    const { root, instance } = mount({ items: fruits, mode: 'single', defaultActive: 'apple' })
+    expect(keydown(root, { key: 'ArrowRight' }).defaultPrevented).toBe(false)
+    expect(instance.state.active).toBe('apple')
   })
 
   it('reads the implicit horizontal orientation of a tablist', () => {

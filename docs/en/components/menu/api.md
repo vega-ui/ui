@@ -23,6 +23,8 @@
 - `MenuRadioItem`: one choice of a radio group.
 - `MenuGroup`: a group of related items.
 - `MenuItemIndicator`: the check mark of a checkbox or radio item.
+- `MenuSubmenu`: a submenu, with no element of its own.
+- `MenuSubmenuTrigger`: the item that opens a submenu.
 
 ### `MenuTrigger`
 
@@ -129,6 +131,29 @@ Also accepts all HTML attributes.
 - Its size follows the size of the menu: `xs` in a `sm` menu, `sm` in a `md` menu, `md` in a `lg` menu. Pass `size` to change it.
 - Without children it renders a check icon; pass another icon, such as a dot for radio items, as its children.
 
+### `MenuSubmenu`
+
+<!-- AUTO-GENERATED:PART_API:MenuSubmenu:start -->
+| Prop | Type | Default | Required | Description |
+| --- | --- | --- | --- | --- |
+| `children` | `ReactNode` | — | No | The MenuSubmenuTrigger and the MenuContent of the submenu. |
+| `open` | `boolean` | — | No | Whether the submenu is shown. Enables controlled mode when set. |
+| `defaultOpen` | `boolean` | — | No | Whether the submenu is shown on mount. |
+| `onChangeOpen` | `(open: boolean) => void` | — | No | Called when the submenu is shown or hidden. |
+<!-- AUTO-GENERATED:PART_API:MenuSubmenu:end -->
+
+### `MenuSubmenuTrigger`
+
+<!-- AUTO-GENERATED:PART_API:MenuSubmenuTrigger:start -->
+| Prop | Type | Default | Required | Description |
+| --- | --- | --- | --- | --- |
+| `label` | `string` | — | No | Plain text of the item for typeahead, used instead of the text of its content. |
+| `disabled` | `boolean` | `false` | No | Keeps the item focusable with aria-disabled, as the menu pattern asks, but never opens the submenu. |
+| `ref` | `Ref<HTMLButtonElement>` | — | No | Ref forwarded to the `<button role="menuitem" aria-haspopup="menu">` element. |
+
+Also accepts all `<button>` attributes.
+<!-- AUTO-GENERATED:PART_API:MenuSubmenuTrigger:end -->
+
 ## Types
 
 - `MenuProps`
@@ -140,6 +165,8 @@ Also accepts all HTML attributes.
 - `MenuRadioItemProps`
 - `MenuGroupProps`
 - `MenuItemIndicatorProps`: the props of [Icon](../icon/)
+- `MenuSubmenuProps`
+- `MenuSubmenuTriggerProps`
 - `MenuSize`: `'xs' | 'sm' | 'md' | 'lg' | 'xl'`
 - `Placement`, the type of `placement`: a side (`'top' | 'right' | 'bottom' | 'left'`), optionally followed by `-start` or `-end`
 

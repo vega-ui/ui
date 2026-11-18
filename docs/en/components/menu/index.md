@@ -101,6 +101,7 @@ export default function MinimalComposition() {
 - Placement through `placement`: a side (`top`, `right`, `bottom`, `left`) with an optional `-start` or `-end`; `bottom-start` by default
 - Size variants through `size`: `xs`, `sm`, `md`, `lg`, `xl`
 - Plain items that run an action, checkbox items, radio groups and link items with `asChild`
+- Submenus through `MenuSubmenu` and `MenuSubmenuTrigger`, nested to any depth
 
 ## Related Docs
 
@@ -119,7 +120,9 @@ export default function MinimalComposition() {
 - `preventDefault()` in the `onClick` of an item keeps the menu open. Your `onClick` runs before the menu reacts.
 - Space on a checkbox or radio item changes it and keeps the menu open; Enter or a click changes it and closes the menu.
 - `MenuContent` and its items stay rendered while the menu is closed, so state inside them is kept and the trigger can open the menu on its last item.
-- Submenus, a menubar and a context menu opened by a right click are not part of this version.
+- An item of a submenu that runs closes every menu and gives the focus back to the menu button. Escape and the arrow out of a submenu close only that submenu.
+- While the pointer moves from a submenu item toward its open submenu, the items it crosses on the way do not take the focus, so the submenu stays open.
+- A menubar and a context menu opened by a right click are not part of this version.
 
 ## Common Mistakes
 

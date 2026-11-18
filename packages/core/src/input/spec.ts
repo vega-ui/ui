@@ -189,6 +189,8 @@ export const key = {
 export const nav = {
   forward: defineInput('nav', 'forward'),
   backward: defineInput('nav', 'backward'),
+  crossForward: defineInput('nav', 'crossForward'),
+  crossBackward: defineInput('nav', 'crossBackward'),
   up: defineInput('nav', 'up'),
   down: defineInput('nav', 'down'),
   first: defineInput('nav', 'first'),

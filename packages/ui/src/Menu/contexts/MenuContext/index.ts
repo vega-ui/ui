@@ -1,1 +1,1 @@
-export { MenuProvider, useMenuContext } from './context'
+export { MenuProvider, useMenuContext, type MenuContextState } from './context'

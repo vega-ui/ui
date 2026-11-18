@@ -23,6 +23,8 @@
 - `MenuRadioItem`: один вариант группы радиопунктов.
 - `MenuGroup`: группа связанных пунктов.
 - `MenuItemIndicator`: галочка пункта-флажка или радиопункта.
+- `MenuSubmenu`: вложенное меню без своего элемента.
+- `MenuSubmenuTrigger`: пункт, который открывает вложенное меню.
 
 ### `MenuTrigger`
 
@@ -129,6 +131,29 @@
 - Её размер следует размеру меню: `xs` в меню `sm`, `sm` в меню `md`, `md` в меню `lg`. Чтобы изменить его, передайте `size`.
 - Без дочерних элементов рендерит галочку; другую иконку, например точку для радиопунктов, передайте дочерним элементом.
 
+### `MenuSubmenu`
+
+<!-- AUTO-GENERATED:PART_API:MenuSubmenu:start -->
+| Проп | Тип | По умолчанию | Обязательный | Описание |
+| --- | --- | --- | --- | --- |
+| `children` | `ReactNode` | — | Нет | MenuSubmenuTrigger и MenuContent этого вложенного меню. |
+| `open` | `boolean` | — | Нет | Показано ли вложенное меню. Если задано, компонент становится контролируемым. |
+| `defaultOpen` | `boolean` | — | Нет | Показано ли вложенное меню при монтировании. |
+| `onChangeOpen` | `(open: boolean) => void` | — | Нет | Вызывается, когда вложенное меню показывается или скрывается. |
+<!-- AUTO-GENERATED:PART_API:MenuSubmenu:end -->
+
+### `MenuSubmenuTrigger`
+
+<!-- AUTO-GENERATED:PART_API:MenuSubmenuTrigger:start -->
+| Проп | Тип | По умолчанию | Обязательный | Описание |
+| --- | --- | --- | --- | --- |
+| `label` | `string` | — | Нет | Простой текст пункта для поиска при наборе; используется вместо текста его содержимого. |
+| `disabled` | `boolean` | `false` | Нет | Оставляет пункт фокусируемым через aria-disabled, как требует паттерн меню, но никогда не открывает вложенное меню. |
+| `ref` | `Ref<HTMLButtonElement>` | — | Нет | Ref, передаваемый элементу `<button role="menuitem" aria-haspopup="menu">`. |
+
+Также принимает все атрибуты `<button>`.
+<!-- AUTO-GENERATED:PART_API:MenuSubmenuTrigger:end -->
+
 ## Типы
 
 - `MenuProps`
@@ -140,6 +165,8 @@
 - `MenuRadioItemProps`
 - `MenuGroupProps`
 - `MenuItemIndicatorProps`: пропсы [Icon](../icon/)
+- `MenuSubmenuProps`
+- `MenuSubmenuTriggerProps`
 - `MenuSize`: `'xs' | 'sm' | 'md' | 'lg' | 'xl'`
 - `Placement`, тип `placement`: сторона (`'top' | 'right' | 'bottom' | 'left'`), за которой может идти `-start` или `-end`
 

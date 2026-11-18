@@ -1,10 +1,11 @@
-import { createInput, Input, key, nav, payloadOf } from './spec'
+import { createInput, Input, InputSpec, key, nav, payloadOf } from './spec'
 
 export type Orientation = 'horizontal' | 'vertical' | 'grid'
 
 export interface Direction {
   readonly orientation: Orientation
   readonly rtl: boolean
+  readonly cross?: boolean
 }
 
 const inline = (input: Input<unknown>, rtl: boolean) => {
@@ -25,6 +26,25 @@ const alongAxis = (input: Input<unknown>, { orientation, rtl }: Direction) => {
   return undefined
 }
 
+const acrossAxis = (input: Input<unknown>, { orientation, rtl }: Direction) => {
+  if (orientation === 'horizontal') {
+    if (input.name === key.arrowDown.name) return nav.crossForward
+    if (input.name === key.arrowUp.name) return nav.crossBackward
+    return undefined
+  }
+
+  const along = inline(input, rtl)
+  if (along === nav.forward) return nav.crossForward
+  if (along === nav.backward) return nav.crossBackward
+  return undefined
+}
+
+const crossing = (input: Input<unknown>, direction: Direction) => {
+  if (!direction.cross || direction.orientation === 'grid') return undefined
+
+  return acrossAxis(input, direction)
+}
+
 const edges = (input: Input<unknown>) => {
   if (input.name === key.home.name) return nav.first
   if (input.name === key.end.name) return nav.last
@@ -36,19 +56,21 @@ const edges = (input: Input<unknown>) => {
 export const toNav = <Key>(input: Input<Key>, direction: Direction): Input<Key> => {
   if (input.type !== 'key') return input
 
-  const target = alongAxis(input, direction) ?? edges(input)
+  const target = alongAxis(input, direction) ?? crossing(input, direction) ?? edges(input)
   if (!target) return input
 
   return createInput({ type: target.type, name: target.name, mods: input.mods }, payloadOf(input))
 }
 
-export const normalizationsOf = <Key>(input: Input<Key>, orientation: Orientation): readonly [Input<Key>, Input<Key>] => [
-  toNav(input, { orientation, rtl: false }),
-  toNav(input, { orientation, rtl: true }),
+export const readsCrossAxis = (listens: readonly InputSpec[]) => listens.some((spec) => spec.type === 'nav' && (spec.name === nav.crossForward.name || spec.name === nav.crossBackward.name))
+
+export const normalizationsOf = <Key>(input: Input<Key>, orientation: Orientation, cross = false): readonly [Input<Key>, Input<Key>] => [
+  toNav(input, { orientation, rtl: false, cross }),
+  toNav(input, { orientation, rtl: true, cross }),
 ]
 
-export const readsDirection = (input: Input<unknown>, orientation: Orientation) => {
-  const [leftToRight, rightToLeft] = normalizationsOf(input, orientation)
+export const readsDirection = (input: Input<unknown>, orientation: Orientation, cross = false) => {
+  const [leftToRight, rightToLeft] = normalizationsOf(input, orientation, cross)
 
   return leftToRight.name !== rightToLeft.name
 }

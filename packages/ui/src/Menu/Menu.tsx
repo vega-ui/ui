@@ -49,9 +49,10 @@ export const Menu: FC<MenuProps> = ({
 }) => {
   const handle = useWidget(menuWidget, (items: readonly MenuEntry[]) => ({ items, open, defaultOpen, onChangeOpen }), widgetEnvironment)
   const anchorName = anchorNameOf(useId())
+  const [side, align = 'center'] = placement.split('-')
 
   return (
-    <MenuProvider handle={handle} size={size} placement={placement} anchorName={anchorName}>
+    <MenuProvider handle={handle} size={size} side={side} align={align} anchorName={anchorName}>
       {children}
     </MenuProvider>
   )

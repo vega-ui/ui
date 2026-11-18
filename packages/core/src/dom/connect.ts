@@ -1,5 +1,5 @@
 import { collection } from '../collection'
-import { browser, createInput, Direction, focus, Input, InputSpec, layout, measure, Measured, Orientation, pointer, readsDirection, scroll, text, TextState, timer, toNav } from '../input'
+import { browser, createInput, Direction, focus, Input, InputSpec, layout, measure, Measured, Orientation, pointer, readsCrossAxis, readsDirection, scroll, text, TextState, timer, toNav } from '../input'
 import { Part, sameSelection, ValidationAttributes } from '../output'
 import { AnyShape, capitalize, KeyOf, ObservedValues } from '../state'
 import { Action, Answer, targets } from '../step'
@@ -283,11 +283,13 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
   const seen = new WeakSet<Event>()
   const painted = new WeakMap<Element, Partial<Record<ChannelName, Painted>>>()
 
+  const cross = readsCrossAxis(instance.listens)
+
   const directionOf = (root: Element, input: Input<unknown>): Direction => {
     const orientation = orientationOf(root)
-    if (!readsDirection(input, orientation)) return { orientation, rtl: false }
+    if (!readsDirection(input, orientation, cross)) return { orientation, rtl: false, cross }
 
-    return { orientation, rtl: root.matches(':dir(rtl)') }
+    return { orientation, rtl: root.matches(':dir(rtl)'), cross }
   }
 
   const rootAt = (target: EventTarget | null) => (target instanceof Node ? elements.rootOf(target) : undefined)
@@ -325,9 +327,8 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
     return { key, item, inside: control instanceof Element }
   }
 
-  const holderOf = (item: Element) => {
-    const own = new Set(elements.roots())
-    for (let node: Element | null = item; node && !own.has(node); node = node.parentElement) {
+  const receiverFrom = (start: Element | null, stops: ReadonlySet<Element>) => {
+    for (let node = start; node && !stops.has(node); node = node.parentElement) {
       const registry = registryOf(node)
       if (!registry || registry === elements) continue
 
@@ -423,7 +424,13 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
       case 'sendAt': {
         const element = elements.item(action.key)
         if (!element) return waits
-        holderOf(element)?.(createInput(action.input, action.payload))
+        receiverFrom(element, new Set(elements.roots()))?.(createInput(action.input, action.payload))
+        return false
+      }
+      case 'sendUp': {
+        const element = elements.part(action.part)
+        if (!element) return waits
+        receiverFrom(element.parentElement, new Set())?.(createInput(action.input, action.payload))
         return false
       }
       case 'showModal': {
@@ -812,7 +819,7 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
 
     pointerout(event) {
       if (!accepts(event) || !crosses(event.target, event.relatedTarget)) return false
-      return dispatch(event, createInput(pointer.leave, { key: keyAt(event.target), part: partAt(event.target), to: partAt(event.relatedTarget), pointerType: event.pointerType }))
+      return dispatch(event, createInput(pointer.leave, { key: keyAt(event.target), part: partAt(event.target), to: partAt(event.relatedTarget), point: { x: event.clientX, y: event.clientY }, pointerType: event.pointerType }))
     },
 
     focusin(event) {
@@ -823,13 +830,14 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
       }
 
       const key = keyAt(event.target)
-      if (isOwn(event.relatedTarget)) return dispatch(event, createInput(focus.move, { key }), true)
+      const part = partAt(event.target)
+      if (isOwn(event.relatedTarget)) return dispatch(event, createInput(focus.move, { key, part }), true)
 
-      return dispatch(event, createInput(focus.enter, { key }), true)
+      return dispatch(event, createInput(focus.enter, { key, part }), true)
     },
 
     focusout(event) {
-      if (!accepts(event) || isOwn(event.relatedTarget)) return false
+      if (seen.has(event) || !isOwn(event.target) || isOwn(event.relatedTarget)) return false
 
       pending.length = 0
       if (pressed) {
@@ -838,7 +846,9 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
         send(createInput(pointer.cancel, { key }))
       }
 
-      return dispatch(event, createInput(focus.leave), false)
+      seen.add(event)
+      send(createInput(focus.leave), false)
+      return false
     },
 
     beforeinput(event) {

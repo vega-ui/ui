@@ -47,7 +47,8 @@
     line-height: var(--line-height-4);
 }
 
-.item:focus {
+.item:focus,
+.item:where([data-open='true']) {
     background-color: var(--menu-item-background-color-focus);
 }
 

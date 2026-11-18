@@ -2635,6 +2635,34 @@
     "en": "Value of the item, given to the MenuRadioGroup when the user checks it.",
     "ru": "Значение пункта, которое получает MenuRadioGroup, когда пользователь его отмечает."
   },
+  "MenuSubmenu.children": {
+    "en": "The MenuSubmenuTrigger and the MenuContent of the submenu.",
+    "ru": "MenuSubmenuTrigger и MenuContent этого вложенного меню."
+  },
+  "MenuSubmenu.defaultOpen": {
+    "en": "Whether the submenu is shown on mount.",
+    "ru": "Показано ли вложенное меню при монтировании."
+  },
+  "MenuSubmenu.onChangeOpen": {
+    "en": "Called when the submenu is shown or hidden.",
+    "ru": "Вызывается, когда вложенное меню показывается или скрывается."
+  },
+  "MenuSubmenu.open": {
+    "en": "Whether the submenu is shown. Enables controlled mode when set.",
+    "ru": "Показано ли вложенное меню. Если задано, компонент становится контролируемым."
+  },
+  "MenuSubmenuTrigger.disabled": {
+    "en": "Keeps the item focusable with aria-disabled, as the menu pattern asks, but never opens the submenu.",
+    "ru": "Оставляет пункт фокусируемым через aria-disabled, как требует паттерн меню, но никогда не открывает вложенное меню."
+  },
+  "MenuSubmenuTrigger.label": {
+    "en": "Plain text of the item for typeahead, used instead of the text of its content.",
+    "ru": "Простой текст пункта для поиска при наборе; используется вместо текста его содержимого."
+  },
+  "MenuSubmenuTrigger.ref": {
+    "en": "Ref forwarded to the `<button role=\"menuitem\" aria-haspopup=\"menu\">` element.",
+    "ru": "Ref, передаваемый элементу `<button role=\"menuitem\" aria-haspopup=\"menu\">`."
+  },
   "MenuTrigger.asChild": {
     "en": "Renders the only child element as the trigger instead of a `<button>`, like your own Button.",
     "ru": "Рендерит триггером единственный дочерний элемент вместо `<button>`, например вашу Button."

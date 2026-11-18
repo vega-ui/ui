@@ -3,7 +3,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button } from '../Button';
 import { Separator } from '../Separator';
 import { Menu } from './Menu';
-import { MenuCheckboxItem, MenuContent, MenuGroup, MenuItem, MenuItemIndicator, MenuRadioGroup, MenuRadioItem, MenuTrigger } from './components';
+import { ChevronRightIcon } from '@vega-ui/icons';
+import { Icon } from '../Icon';
+import { MenuCheckboxItem, MenuContent, MenuGroup, MenuItem, MenuItemIndicator, MenuRadioGroup, MenuRadioItem, MenuSubmenu, MenuSubmenuTrigger, MenuTrigger } from './components';
 
 const meta = {
   title: 'Overlay/Menu',
@@ -17,6 +19,8 @@ const meta = {
     MenuRadioItem,
     MenuGroup,
     MenuItemIndicator,
+    MenuSubmenu,
+    MenuSubmenuTrigger,
   },
   parameters: {
     layout: 'centered',
@@ -38,6 +42,20 @@ const meta = {
       <MenuContent key='content'>
         <MenuItem>Undo</MenuItem>
         <MenuItem disabled>Redo</MenuItem>
+        <MenuSubmenu>
+          <MenuSubmenuTrigger>Find<Icon size='xs' style={{ marginInlineStart: 'auto' }}><ChevronRightIcon /></Icon></MenuSubmenuTrigger>
+          <MenuContent>
+            <MenuItem>Find…</MenuItem>
+            <MenuItem>Find next</MenuItem>
+            <MenuSubmenu>
+              <MenuSubmenuTrigger>Replace<Icon size='xs' style={{ marginInlineStart: 'auto' }}><ChevronRightIcon /></Icon></MenuSubmenuTrigger>
+              <MenuContent>
+                <MenuItem>Replace…</MenuItem>
+                <MenuItem>Replace all</MenuItem>
+              </MenuContent>
+            </MenuSubmenu>
+          </MenuContent>
+        </MenuSubmenu>
         <Separator />
         <MenuGroup aria-label='View'>
           <MenuCheckboxItem defaultChecked><MenuItemIndicator />Ruler</MenuCheckboxItem>

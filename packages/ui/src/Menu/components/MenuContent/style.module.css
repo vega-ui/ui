@@ -102,6 +102,18 @@
     --menu-origin-y: bottom;
 }
 
+.content:where([data-side='inline-end']) {
+    position-area: inline-end span-block-end;
+    margin-block-start: calc(var(--spacing-4) * -1);
+    margin-inline-start: calc(var(--spacing-4) + var(--spacing-2));
+    --menu-origin-x: left;
+    --menu-origin-y: top;
+}
+
+.content:where([data-side='inline-end']):dir(rtl) {
+    --menu-origin-x: right;
+}
+
 .content:where([data-side='top'][data-align='center'], [data-side='bottom'][data-align='center']) {
     --menu-origin-x: center;
 }

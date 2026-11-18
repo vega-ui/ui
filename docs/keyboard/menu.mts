@@ -21,6 +21,14 @@ const openZoom = [{ focus: { role: 'button', name: 'Zoom 100%' } }, { press: 'En
 const priority = 'menu/priority-typeahead.tsx';
 const openPriority = [{ focus: { role: 'button', name: 'Priority: Medium' } }, { press: 'Enter' }, { focus: { role: 'menuitemradio', name: 'Urgent' } }];
 
+const share = 'menu/file-submenus.tsx';
+const fileTrigger = { role: 'button', name: 'Actions for Q3 report.pdf' };
+const fileMenu = { role: 'menu', name: 'Actions for Q3 report.pdf' };
+const shareItem = item('Share');
+const shareMenu = { role: 'menu', name: 'Share' };
+const onShare = [{ focus: fileTrigger }, { press: 'Enter' }, { press: 'End' }, { press: 'ArrowUp' }, { press: 'ArrowUp' }];
+const inShare = [...onShare, { press: 'ArrowRight' }];
+
 export default [
   {
     keys: ['Enter', 'Space'],
@@ -73,14 +81,33 @@ export default [
   },
   {
     keys: ['Enter'],
-    en: 'In the menu: runs the focused item, closes the menu and returns the focus to the trigger. A checkbox item is checked or unchecked, and a radio item is checked, before the menu closes. A disabled item does nothing, and a `preventDefault()` in the `onClick` of an item keeps the menu open.',
-    ru: 'В меню: выполняет пункт в фокусе, закрывает меню и возвращает фокус на триггер. Пункт-флажок перед закрытием отмечается или снимается, а радиопункт — отмечается. Отключённый пункт ничего не делает, а `preventDefault()` в `onClick` пункта оставляет меню открытым.',
+    en: 'In the menu: runs the focused item, closes the menu and returns the focus to the trigger. An item of a submenu closes every menu. A checkbox item is checked or unchecked, and a radio item is checked, before the menu closes. A disabled item does nothing, and a `preventDefault()` in the `onClick` of an item keeps the menu open.',
+    ru: 'В меню: выполняет пункт в фокусе, закрывает меню и возвращает фокус на триггер. Пункт вложенного меню закрывает все меню. Пункт-флажок перед закрытием отмечается или снимается, а радиопункт — отмечается. Отключённый пункт ничего не делает, а `preventDefault()` в `onClick` пункта оставляет меню открытым.',
     checks: [
+      { example: share, steps: inShare, press: 'Enter', before: [{ visible: shareMenu }], expect: [{ hidden: shareMenu }, { hidden: fileMenu }, { focused: fileTrigger }] },
       { example, steps: open, press: 'Enter', before: [{ visible: menu }], expect: [{ hidden: menu }, { focused: trigger }, { attr: 'aria-expanded', of: trigger, is: 'false' }] },
       { example, steps: [...open, { press: 'ArrowDown' }], press: 'Enter', before: [{ focused: item('Redo') }], expect: [{ visible: menu }, { focused: item('Redo') }] },
       { example: view, steps: openView, press: 'Enter', before: [{ attr: 'aria-checked', of: showCompleted, is: 'false' }], expect: [{ hidden: viewMenu }, { focused: viewTrigger }] },
       { example: view, steps: [...openView, { press: 'Enter' }], press: 'Enter', before: [{ hidden: viewMenu }, { focused: viewTrigger }], expect: [{ attr: 'aria-checked', of: showCompleted, is: 'true' }, { focused: showCompleted }] },
       { example: zoom, steps: openZoom, press: 'Enter', before: [{ focused: zoomIn }], expect: [{ visible: zoomMenu }, { focused: zoomIn }, { visible: { role: 'button', name: 'Zoom 125%' } }] },
+    ],
+  },
+  {
+    keys: ['Enter', 'Space'],
+    en: 'On an item that opens a submenu: opens the submenu and moves the focus to its first item.',
+    ru: 'На пункте, который открывает вложенное меню: открывает его и переносит фокус на его первый пункт.',
+    checks: [
+      { example: share, steps: onShare, press: 'Enter', before: [{ hidden: shareMenu }, { attr: 'aria-expanded', of: shareItem, is: 'false' }], expect: [{ visible: shareMenu }, { focused: item('Copy link') }, { attr: 'aria-expanded', of: shareItem, is: 'true' }] },
+      { example: share, steps: onShare, press: 'Space', before: [{ hidden: shareMenu }], expect: [{ visible: shareMenu }, { focused: item('Copy link') }] },
+    ],
+  },
+  {
+    keys: ['ArrowRight', 'ArrowLeft'],
+    en: 'On an item that opens a submenu, the Right arrow opens the submenu with the focus on its first item; in a submenu, the Left arrow closes it and returns the focus to its item. In a right-to-left page the two arrows swap.',
+    ru: 'На пункте, который открывает вложенное меню, стрелка вправо открывает его с фокусом на первом пункте; во вложенном меню стрелка влево закрывает его и возвращает фокус на его пункт. На странице с письмом справа налево стрелки меняются местами.',
+    checks: [
+      { example: share, steps: onShare, press: 'ArrowRight', before: [{ hidden: shareMenu }], expect: [{ visible: shareMenu }, { focused: item('Copy link') }] },
+      { example: share, steps: inShare, press: 'ArrowLeft', before: [{ visible: shareMenu }], expect: [{ hidden: shareMenu }, { visible: fileMenu }, { focused: shareItem }] },
     ],
   },
   {
@@ -95,17 +122,19 @@ export default [
   },
   {
     keys: ['Escape'],
-    en: 'Closes the menu without running an item and returns the focus to the trigger.',
-    ru: 'Закрывает меню, не выполняя пункт, и возвращает фокус на триггер.',
+    en: 'Closes the menu without running an item and returns the focus to the trigger. In a submenu it closes only the submenu and returns the focus to its item.',
+    ru: 'Закрывает меню, не выполняя пункт, и возвращает фокус на триггер. Во вложенном меню закрывает только его и возвращает фокус на его пункт.',
     checks: [
+      { example: share, steps: inShare, press: 'Escape', before: [{ visible: shareMenu }], expect: [{ hidden: shareMenu }, { visible: fileMenu }, { focused: shareItem }] },
       { example, steps: [...open, { press: 'ArrowDown' }], press: 'Escape', before: [{ visible: menu }], expect: [{ hidden: menu }, { focused: trigger }] },
     ],
   },
   {
     keys: ['Tab', 'Shift+Tab'],
-    en: 'In the menu: Tab closes the menu and moves the focus on to the next element after it; Shift+Tab closes the menu and returns the focus to the trigger.',
-    ru: 'В меню: Tab закрывает меню и переносит фокус дальше, на следующий за ним элемент; Shift+Tab закрывает меню и возвращает фокус на триггер.',
+    en: 'In the menu: Tab closes the menu and moves the focus on to the next element after it; Shift+Tab closes the menu and returns the focus to the trigger. From a submenu both close every menu.',
+    ru: 'В меню: Tab закрывает меню и переносит фокус дальше, на следующий за ним элемент; Shift+Tab закрывает меню и возвращает фокус на триггер. Из вложенного меню оба закрывают все меню.',
     checks: [
+      { example: share, steps: inShare, press: 'Shift+Tab', before: [{ visible: shareMenu }], expect: [{ hidden: shareMenu }, { hidden: fileMenu }, { focused: fileTrigger }] },
       { example, steps: open, press: 'Tab', before: [{ visible: menu }], expect: [{ hidden: menu }] },
       { example, steps: open, press: 'Shift+Tab', before: [{ visible: menu }], expect: [{ hidden: menu }, { focused: trigger }] },
     ],
