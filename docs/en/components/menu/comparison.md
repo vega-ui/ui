@@ -53,4 +53,4 @@ Main trade-off: a menu saves space but takes an extra click and hides what is po
 - The choice is a form value: use [Select](../select/), [Combobox](../combobox/) or [Radio](../radio/)
 - The floating content has fields or other controls: use [Popover](../popover/)
 - The list is the main navigation of the site: use a `<nav>` with links
-- You need submenus, a menubar or a context menu opened by a right click: they are not part of this version
+- You need a menubar or a context menu opened by a right click: they are not part of this version

@@ -8,5 +8,7 @@ export {
   MenuRadioItem, type MenuRadioItemProps,
   MenuGroup, type MenuGroupProps,
   MenuItemIndicator, type MenuItemIndicatorProps,
+  MenuSubmenu, type MenuSubmenuProps,
+  MenuSubmenuTrigger, type MenuSubmenuTriggerProps,
 } from './components'
 export type { MenuSize } from './types'

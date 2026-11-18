@@ -5,7 +5,7 @@ import { userEvent } from 'vitest/browser';
 
 import { Separator } from '../../Separator';
 import { Menu } from '../Menu';
-import { MenuCheckboxItem, MenuContent, MenuItem, MenuItemIndicator, MenuRadioGroup, MenuRadioItem, MenuTrigger } from '../components';
+import { MenuCheckboxItem, MenuContent, MenuItem, MenuItemIndicator, MenuRadioGroup, MenuRadioItem, MenuSubmenu, MenuSubmenuTrigger, MenuTrigger } from '../components';
 
 afterEach(cleanup);
 
@@ -37,6 +37,47 @@ const MenuTest: FC<MenuTestProps> = ({ onUndo, onRedo, onRuler, onZoom, label, .
     <input aria-label='after' />
   </>
 );
+
+interface SubmenuTestProps {
+  onEmail?: () => void
+  onShare?: () => void
+}
+
+const SubmenuTest: FC<SubmenuTestProps> = ({ onEmail, onShare }) => (
+  <div>
+    <Menu>
+      <MenuTrigger>File</MenuTrigger>
+      <MenuContent>
+        <MenuItem>New</MenuItem>
+        <MenuSubmenu>
+          <MenuSubmenuTrigger onClick={onShare}>Share</MenuSubmenuTrigger>
+          <MenuContent>
+            <MenuItem onClick={onEmail}>Email</MenuItem>
+            <MenuItem>Messages</MenuItem>
+          </MenuContent>
+        </MenuSubmenu>
+        <MenuSubmenu>
+          <MenuSubmenuTrigger>Export</MenuSubmenuTrigger>
+          <MenuContent>
+            <MenuItem>PDF</MenuItem>
+          </MenuContent>
+        </MenuSubmenu>
+        <MenuItem>Print</MenuItem>
+      </MenuContent>
+    </Menu>
+    <input aria-label='after' />
+  </div>
+);
+
+const menus = () => [...document.querySelectorAll<HTMLElement>('[role="menu"]')]
+const menuItem = (name: string) => [...document.querySelectorAll<HTMLElement>('[role^="menuitem"]')].find((element) => element.textContent === name)!
+const isShown = (element: HTMLElement) => element.matches(':popover-open')
+
+const openFile = async () => {
+  document.querySelector<HTMLElement>('[aria-haspopup="menu"]:not([role])')!.focus();
+  await userEvent.keyboard('{Enter}');
+  await expect.poll(() => document.activeElement).toBe(menuItem('New'));
+};
 
 const trigger = () => document.querySelector<HTMLButtonElement>('[aria-haspopup="menu"]')!;
 const menu = () => document.querySelector<HTMLElement>('[role="menu"]')!;
@@ -162,6 +203,82 @@ describe('Critical User Paths', () => {
     await userEvent.keyboard('r');
     expect(document.activeElement).toBe(item('Ruler'));
   });
+
+  it('opens a submenu with the arrow into it, closes only it on Escape, and closes every menu back on the menu button when its item runs', async () => {
+    const onEmail = vi.fn();
+    render(<SubmenuTest onEmail={onEmail} />);
+
+    await openFile();
+    await userEvent.keyboard('{ArrowDown}{ArrowRight}');
+    expect(document.activeElement).toBe(menuItem('Email'));
+    expect(menuItem('Share').getAttribute('aria-expanded')).toBe('true');
+
+    await userEvent.keyboard('{Escape}');
+    expect(document.activeElement).toBe(menuItem('Share'));
+    expect(isShown(menus()[0])).toBe(true);
+
+    await userEvent.keyboard(' ');
+    await userEvent.keyboard('{Enter}');
+    expect(onEmail).toHaveBeenCalledOnce();
+    expect(menus().some(isShown)).toBe(false);
+    expect(document.activeElement).toBe(document.querySelector('[aria-haspopup="menu"]:not([role])'));
+  });
+
+  it('opens a submenu when the pointer rests on its item or clicks it, and closes it when the pointer takes another item', async () => {
+    const onShare = vi.fn();
+    render(<SubmenuTest onShare={onShare} />);
+
+    await openFile();
+    await userEvent.hover(menuItem('Share'));
+    await expect.poll(() => isShown(menus()[1])).toBe(true);
+    expect(document.activeElement).toBe(menuItem('Share'));
+
+    await userEvent.hover(menuItem('Messages'));
+    expect(document.activeElement).toBe(menuItem('Messages'));
+
+    await userEvent.hover(menuItem('Print'));
+    await expect.poll(() => isShown(menus()[1])).toBe(false);
+    expect(document.activeElement).toBe(menuItem('Print'));
+
+    await userEvent.click(menuItem('Share'));
+    expect(isShown(menus()[1])).toBe(true);
+    expect(onShare).toHaveBeenCalledOnce();
+  });
+
+  it('keeps a submenu open while the pointer crosses another submenu item on its way into it', async () => {
+    render(<SubmenuTest />);
+
+    await openFile();
+    await userEvent.hover(menuItem('Share'));
+    await expect.poll(() => isShown(menus()[1])).toBe(true);
+
+    const share = menuItem('Share');
+    const exporting = menuItem('Export');
+    const from = share.getBoundingClientRect();
+    const to = exporting.getBoundingClientRect();
+    const leave = { bubbles: true, pointerType: 'mouse', clientX: from.right - 2, clientY: from.bottom - 1 };
+    const over = { bubbles: true, pointerType: 'mouse', clientX: from.right - 1, clientY: to.top + 4 };
+
+    share.dispatchEvent(new PointerEvent('pointerout', { ...leave, relatedTarget: exporting }));
+    exporting.dispatchEvent(new PointerEvent('pointerover', { ...over, relatedTarget: share }));
+    await new Promise((resolve) => setTimeout(resolve, 20));
+    exporting.dispatchEvent(new PointerEvent('pointermove', over));
+    await new Promise((resolve) => setTimeout(resolve, 200));
+
+    expect(isShown(menus()[1])).toBe(true);
+    expect(isShown(menus()[2])).toBe(false);
+    expect(document.activeElement).toBe(share);
+  });
+
+  it('closes every menu on Tab from a submenu', async () => {
+    const result = render(<SubmenuTest />);
+
+    await openFile();
+    await userEvent.keyboard('{ArrowDown}{ArrowRight}');
+    await userEvent.tab();
+    expect(menus().some(isShown)).toBe(false);
+    expect(document.activeElement).toBe(result.getByRole('textbox', { name: 'after' }));
+  });
 });
 
 describe('Error handling', () => {
@@ -241,6 +358,17 @@ describe('Accessibility', () => {
     expect(item('Fit').getAttribute('role')).toBe('menuitemradio');
     expect(item('Help').tagName).toBe('A');
     expect([...menu().querySelectorAll('[role^="menuitem"]')].every((element) => element.getAttribute('tabindex') === '-1')).toBe(true);
+  });
+
+  it('wires a submenu item to its submenu, which its item names', () => {
+    render(<SubmenuTest />);
+
+    const share = menuItem('Share');
+    expect(share.getAttribute('role')).toBe('menuitem');
+    expect(share.getAttribute('aria-haspopup')).toBe('menu');
+    expect(share.getAttribute('aria-expanded')).toBe('false');
+    expect(share.getAttribute('aria-controls')).toBe(menus()[1].id);
+    expect(menus()[1].getAttribute('aria-labelledby')).toBe(share.id);
   });
 
   it('names the menu by aria-label instead of the trigger when you pass one', () => {

@@ -1,4 +1,4 @@
-import { browser, focus, Input, InputSpec, layout, normalizationsOf, Orientation, pointer, scroll, text } from '../input'
+import { browser, focus, Input, InputSpec, layout, normalizationsOf, Orientation, pointer, readsCrossAxis, scroll, text } from '../input'
 
 export type DomEvent = 'keydown' | 'click' | 'pointerdown' | 'pointermove' | 'pointerover' | 'pointerout' | 'touchmove' | 'wheel' | 'scroll' | 'scrollend' | 'focusin' | 'focusout' | 'beforeinput' | 'input' | 'toggle' | 'load' | 'error' | 'cancel' | 'close' | 'submit'
 
@@ -60,7 +60,7 @@ export const delivers = (listens: readonly InputSpec[], spec: InputSpec) => {
 export const hears = (listens: readonly InputSpec[], input: Input<unknown>, orientation?: Orientation) => {
   if (input.type !== 'key') return delivers(listens, input)
 
-  const candidates = orientation === undefined ? [input] : normalizationsOf(input, orientation)
+  const candidates = orientation === undefined ? [input] : normalizationsOf(input, orientation, readsCrossAxis(listens))
 
   return candidates.some((candidate) => listens.some((declared) => candidate.is(declared)))
 }

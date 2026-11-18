@@ -40,6 +40,10 @@ Renders `<div role="group">` around related items. Name it with `aria-labelledby
 
 Renders a check icon with `aria-hidden`. Inside a checkbox or radio item it keeps its space in every item and is visible only in a checked one, so the labels of checked and unchecked items line up. Its children replace the icon.
 
+### `MenuSubmenu` and `MenuSubmenuTrigger`
+
+`MenuSubmenu` holds a submenu inside a `MenuContent`: whether it is shown (`open`, `defaultOpen`, `onChangeOpen`), with no element of its own. `MenuSubmenuTrigger` renders `<button role="menuitem" aria-haspopup="menu">` with `aria-expanded` and `aria-controls`: it is an item of the menu around it and names the submenu. The submenu is the `MenuContent` that follows it inside the same `MenuSubmenu`; it opens beside the item, at the end of the line in the writing direction, and takes the size of the menu around it. A submenu can hold another `MenuSubmenu`.
+
 ### `Separator`
 
 The [Separator](../separator/) component, a `role="separator"` line between groups of items. The menu adds space around it.
@@ -49,8 +53,9 @@ The [Separator](../separator/) component, a `role="separator"` line between grou
 1. `Menu`
 2. `MenuTrigger`
 3. `MenuContent`
-4. Items, groups and separators in the order they are shown
-5. `MenuItemIndicator` and the label inside a checkbox or radio item
+4. Items, groups, separators and `MenuSubmenu` in the order they are shown
+5. Inside `MenuSubmenu`: `MenuSubmenuTrigger`, then the `MenuContent` of the submenu
+6. `MenuItemIndicator` and the label inside a checkbox or radio item
 
 ## Valid Composition Patterns
 
@@ -123,6 +128,10 @@ An item outside the menu is not part of the `role="menu"`, and the menu does not
 ### `MenuRadioItem` outside `MenuRadioGroup`
 
 A radio item needs its group to hold the value; outside a group it is never checked.
+
+### `MenuSubmenuTrigger` outside `MenuSubmenu`
+
+The item that opens a submenu belongs to its `MenuSubmenu`; outside one it takes the place of the menu button of the menu around it. Put it and the `MenuContent` of the submenu inside the same `MenuSubmenu`.
 
 ### Headings and controls as children of the menu
 

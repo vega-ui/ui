@@ -30,6 +30,7 @@ export type Action<Key = unknown, PartName extends string = string> =
   | { readonly type: 'hidePopover'; readonly part: PartName }
   | { readonly type: 'send'; readonly part: PartName; readonly input: InputSpec; readonly payload: Payload }
   | { readonly type: 'sendAt'; readonly key: Key; readonly input: InputSpec; readonly payload: Payload }
+  | { readonly type: 'sendUp'; readonly part: PartName; readonly input: InputSpec; readonly payload: Payload }
   | { readonly type: 'measure'; readonly request: MeasureRequest<Key, PartName> }
   | { readonly type: 'awaitAnimations'; readonly part: PartName }
   | { readonly type: 'showModal'; readonly part: PartName }
@@ -58,6 +59,7 @@ export const act = {
   hidePopover: <PartName extends string>(part: PartName): Action<never, PartName> => ({ type: 'hidePopover', part }),
   send: <PartName extends string>(part: PartName, input: InputSpec, payload: Payload = {}): Action<never, PartName> => ({ type: 'send', part, input, payload }),
   sendAt: <Key>(key: Key, input: InputSpec, payload: Payload = {}): Action<Key, never> => ({ type: 'sendAt', key, input, payload }),
+  sendUp: <PartName extends string>(part: PartName, input: InputSpec, payload: Payload = {}): Action<never, PartName> => ({ type: 'sendUp', part, input, payload }),
   measure: <Key, PartName extends string = never>(request: MeasureRequest<Key, PartName>): Action<Key, PartName> => ({ type: 'measure', request }),
   awaitAnimations: <PartName extends string>(part: PartName): Action<never, PartName> => ({ type: 'awaitAnimations', part }),
   showModal: <PartName extends string>(part: PartName): Action<never, PartName> => ({ type: 'showModal', part }),

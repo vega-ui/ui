@@ -1,4 +1,4 @@
-import { createInput, Input, InputSpec, Orientation, Payload, pointer, toNav } from '../input'
+import { createInput, Input, InputSpec, Orientation, Payload, pointer, readsCrossAxis, toNav } from '../input'
 import { AnyShape, KeyOf, ObservedValues, OptionsOf, SnapshotOf } from '../state'
 import { Action, Answer } from '../step'
 import { createWidget, Widget } from '../widget'
@@ -24,7 +24,7 @@ const isInput = <Key>(spec: InputSpec | Input<Key>): spec is Input<Key> => 'is' 
 
 export const simulate = <WidgetShape extends AnyShape>(widget: Widget<WidgetShape>, options: OptionsOf<WidgetShape>, environment: SimulationEnvironment = {}): Simulation<WidgetShape> => {
   const instance = createWidget(widget, options, { id: 'widget', strict: true })
-  const direction = { orientation: environment.orientation ?? 'vertical', rtl: environment.rtl ?? false }
+  const direction = { orientation: environment.orientation ?? 'vertical', rtl: environment.rtl ?? false, cross: readsCrossAxis(widget.listens) }
 
   let last: { answer: Answer | 'pass'; actions: readonly Action[] } = { answer: 'pass', actions: [] }
 

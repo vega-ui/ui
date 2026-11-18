@@ -1,5 +1,6 @@
 import {
   act,
+  Action,
   browser,
   collection,
   command,
@@ -16,17 +17,21 @@ import {
   lifecycle,
   listening,
   matching,
+  measure,
   mod,
   nav,
+  Point,
   pointer,
   roving,
   source,
   state,
   Step,
+  timer,
   typeahead,
 } from '@vega-ui/core'
+import { Aim, aims } from './aim'
 
-export type MenuItemKind = 'item' | 'checkbox' | 'radio'
+export type MenuItemKind = 'item' | 'checkbox' | 'radio' | 'submenu'
 
 export interface MenuItemData {
   readonly kind: MenuItemKind
@@ -41,8 +46,15 @@ export const TRIGGER = 'trigger'
 export const CONTENT = 'content'
 
 export const CHECK = command('check')
+export const DISMISS = command('dismiss')
+export const AIM = command('aim')
 
-const ROLES: Record<MenuItemKind, string> = { item: 'menuitem', checkbox: 'menuitemcheckbox', radio: 'menuitemradio' }
+export const OPENING = 'opening'
+const OPEN_DELAY = 100
+export const AIMING = 'aiming'
+const AIM_GRACE = 300
+
+const ROLES: Record<MenuItemKind, string> = { item: 'menuitem', checkbox: 'menuitemcheckbox', radio: 'menuitemradio', submenu: 'menuitem' }
 
 const entries = source({
   key: (entry: MenuEntry) => entry.key,
@@ -52,17 +64,31 @@ const entries = source({
 export const menuShape = state({
   options: { items: [] as readonly MenuEntry[] },
   owns: { open: controlled(false) },
-  internal: { active: internal(null as string | null), typed: internal(''), staying: internal(null as string | null) },
-  observes: { shown: matching(CONTENT, ':popover-open') },
+  internal: {
+    active: internal(null as string | null),
+    typed: internal(''),
+    staying: internal(null as string | null),
+    aim: internal(null as Aim | null),
+    leftAt: internal(null as Point | null),
+  },
+  observes: {
+    shown: matching(CONTENT, ':popover-open'),
+    disabled: matching(TRIGGER, '[aria-disabled="true"]'),
+    triggerFocused: matching(TRIGGER, ':focus'),
+    triggerHovered: matching(TRIGGER, ':hover'),
+  },
   collection: (options) => entries.of(options.items),
   parts: [TRIGGER, CONTENT],
 })
 
 type MenuSnapshot = typeof menuShape.__snapshot
+type MenuAction = Action<string, typeof TRIGGER | typeof CONTENT>
 
 const SHOW = [act.showPopover(CONTENT)]
 const HIDE = [act.hidePopover(CONTENT)]
 const RETURN = [act.focusPart(TRIGGER)]
+const CLOSE_ALL: readonly MenuAction[] = [...HIDE, ...RETURN]
+const CLOSE_UP: readonly MenuAction[] = [...HIDE, act.sendUp(TRIGGER, DISMISS)]
 
 export const isShown = (state: MenuSnapshot) => state.shown
 
@@ -74,8 +100,9 @@ const dataOf = (state: MenuSnapshot, key: string | undefined) => {
 
 const closed = (state: MenuSnapshot) => {
   const hidden = menuShape.open.set(state, false)
+  const idle = menuShape.staying.set(menuShape.active.set(hidden, null), null)
 
-  return menuShape.staying.set(menuShape.active.set(hidden, null), null)
+  return menuShape.leftAt.set(menuShape.aim.set(idle, null), null)
 }
 
 const opened = (state: MenuSnapshot, at: string | null) => {
@@ -87,6 +114,14 @@ const opened = (state: MenuSnapshot, at: string | null) => {
 
 const search = typeahead({ active: menuShape.active, typed: menuShape.typed, strategy: 'focus', enabled: { get: isShown } })
 
+const moving = roving<MenuSnapshot, string>({ active: menuShape.active, strategy: 'focus', wrap: true })
+
+const inside = (step: Step<MenuSnapshot>) => listening<MenuSnapshot>(step.listens ?? [], (state, input) => {
+  if (input.part === TRIGGER || input.is(focus.enter)) return undefined
+
+  return step(state, input)
+})
+
 const following: Step<MenuSnapshot> = (state, input) => {
   if (!input.is(lifecycle.connect) && !input.is(lifecycle.options)) return undefined
   if (input.is(lifecycle.options) && !input.changed?.includes('open')) return keep(state)
@@ -95,13 +130,13 @@ const following: Step<MenuSnapshot> = (state, input) => {
   return keep(state, state.open ? SHOW : HIDE)
 }
 
-const toggling = listening<MenuSnapshot>([browser.toggle], (state, input) => {
+const toggling = (focusesFirst: boolean) => listening<MenuSnapshot>([browser.toggle], (state, input) => {
   if (!input.is(browser.toggle) || input.part !== CONTENT) return undefined
   if (!input.to) return keep(closed(state))
 
   const next = menuShape.open.set(state, true)
   const first = collection.first(state.collection)
-  if (state.active !== null || first === null) return keep(next)
+  if (!focusesFirst || state.active !== null || first === null) return keep(next)
 
   return keep(menuShape.active.set(next, first), [act.focus(first)])
 })
@@ -114,12 +149,49 @@ const fromTrigger = listening<MenuSnapshot>([nav.forward, nav.backward], (state,
   return undefined
 })
 
+const fromParent = listening<MenuSnapshot>([key.enter, key.space, nav.crossForward, pointer.press], (state, input) => {
+  const opens = input.is(key.enter) || input.is(key.space) || input.is(nav.crossForward)
+  if (input.part !== TRIGGER || (!opens && !input.is(pointer.press))) return undefined
+  if (state.disabled) return handled(state)
+  if (input.is(pointer.press)) return keep(menuShape.open.set(state, true), [act.cancelTimer(OPENING), ...SHOW])
+
+  return opened(state, collection.first(state.collection))
+})
+
+const resting = listening<MenuSnapshot>([pointer.enter, timer(OPENING)], (state, input) => {
+  if (input.is(timer(OPENING))) {
+    if (state.disabled) return keep(state)
+    if (state.triggerFocused) return keep(menuShape.open.set(state, true), SHOW)
+    if (state.triggerHovered) return keep(state, [act.timer(OPENING, OPEN_DELAY)])
+
+    return keep(state)
+  }
+  if (!input.is(pointer.enter) || input.part !== TRIGGER || input.pointerType === 'touch') return undefined
+  if (state.disabled || state.shown) return keep(state)
+
+  return keep(state, [act.timer(OPENING, OPEN_DELAY)])
+})
+
+const departing = listening<MenuSnapshot>([pointer.leave], (state, input) => {
+  if (!input.is(pointer.leave) || input.part !== TRIGGER || input.pointerType === 'touch') return undefined
+  if (!state.shown) return keep(state, [act.cancelTimer(OPENING)])
+  if (input.to === CONTENT || input.point === undefined) return keep(state)
+
+  return keep(menuShape.leftAt.set(state, input.point), [act.measure({ name: AIMING, parts: [CONTENT], rect: true })])
+})
+
+const measured = listening<MenuSnapshot>([measure.done], (state, input) => {
+  if (!input.is(measure.done) || input.measured?.name !== AIMING || state.leftAt === null) return undefined
+
+  return keep(menuShape.leftAt.set(state, null), [act.sendUp(TRIGGER, AIM, { point: state.leftAt, measured: input.measured })])
+})
+
 const entering = listening<MenuSnapshot>([focus.enter, focus.move], (state, input) => {
   if (!input.is(focus.enter) && !input.is(focus.move)) return undefined
+  if (collection.has(state.collection, input.key)) return keep(menuShape.staying.set(menuShape.active.set(state, input.key), null))
+  if (input.part === CONTENT) return keep(menuShape.staying.set(menuShape.active.set(state, null), null))
 
-  const active = collection.has(state.collection, input.key) ? input.key : null
-
-  return keep(menuShape.staying.set(menuShape.active.set(state, active), null))
+  return undefined
 })
 
 const forgetting = (state: MenuSnapshot, input: Input<string>) => search(state, input) ?? keep(state)
@@ -139,6 +211,12 @@ const escaping = listening<MenuSnapshot>([key.escape], (state, input) => {
   return handled(closed(state), [...HIDE, ...RETURN])
 })
 
+const backingOut = listening<MenuSnapshot>([nav.crossBackward], (state, input) => {
+  if (!input.is(nav.crossBackward) || !state.shown || input.part !== CONTENT) return undefined
+
+  return handled(closed(state), [...HIDE, ...RETURN])
+})
+
 const tabbingBack = listening<MenuSnapshot>([key.with(key.tab, mod.shift)], (state, input) => {
   if (!input.is(key.with(key.tab, mod.shift)) || !state.shown || input.part !== CONTENT) return undefined
 
@@ -150,7 +228,7 @@ const spacing = listening<MenuSnapshot>([key.space], (state, input) => {
   if (!input.is(key.space) || data === undefined || input.key === undefined) return undefined
   if (data.disabled) return handled(state)
 
-  const staying = data.kind === 'item' ? null : input.key
+  const staying = data.kind === 'checkbox' || data.kind === 'radio' ? input.key : null
 
   return handled(menuShape.staying.set(state, staying), [act.click(input.key)])
 })
@@ -162,7 +240,7 @@ const checking = (key: string, data: MenuItemData) => {
   return []
 }
 
-const pressing = listening<MenuSnapshot>([pointer.press], (state, input) => {
+const pressing = (closing: readonly MenuAction[]) => listening<MenuSnapshot>([pointer.press], (state, input) => {
   const data = dataOf(state, input.key)
   if (!input.is(pointer.press) || data === undefined || input.key === undefined) return undefined
 
@@ -170,23 +248,33 @@ const pressing = listening<MenuSnapshot>([pointer.press], (state, input) => {
   if (data.disabled) return handled(next)
   if (state.staying === input.key) return keep(next, checking(input.key, data))
 
-  return keep(closed(next), [...checking(input.key, data), ...HIDE, ...RETURN])
+  return keep(closed(next), [...checking(input.key, data), ...closing])
 })
 
-const moving = roving<MenuSnapshot, string>({ active: menuShape.active, strategy: 'focus', wrap: true })
+const dismissing = (closing: readonly MenuAction[]) => listening<MenuSnapshot>([DISMISS], (state, input) => {
+  if (!input.is(DISMISS)) return undefined
 
-const movingInside = listening<MenuSnapshot>(moving.listens ?? [], (state, input) => {
-  if (input.part === TRIGGER) return undefined
+  return keep(closed(state), closing)
+})
 
-  return moving(state, input)
+const aiming = listening<MenuSnapshot>([AIM, timer(AIMING)], (state, input) => {
+  if (input.is(timer(AIMING))) return keep(menuShape.aim.set(state, null))
+
+  const rect = input.measured?.parts[CONTENT]?.rect
+  if (!input.is(AIM) || input.point === undefined || rect === undefined) return undefined
+
+  return keep(menuShape.aim.set(state, { from: input.point, rect }), [act.timer(AIMING, AIM_GRACE)])
 })
 
 const hovering = listening<MenuSnapshot>([pointer.hover], (state, input) => {
   const data = dataOf(state, input.key)
   if (!input.is(pointer.hover) || data === undefined || input.key === undefined) return undefined
-  if (data.disabled || input.key === state.active) return undefined
+  if (state.aim !== null && input.point !== undefined && aims(state.aim, input.point)) return keep(state)
 
-  return keep(menuShape.active.set(state, input.key), [act.focus(input.key, true)])
+  const next = menuShape.aim.set(state, null)
+  if (data.disabled || input.key === state.active) return state.aim === null ? undefined : keep(next)
+
+  return keep(menuShape.active.set(next, input.key), [act.focus(input.key, true)])
 })
 
 export const itemPart = menuShape.part(
@@ -194,22 +282,29 @@ export const itemPart = menuShape.part(
   ([kind, disabled]) => ({ role: ROLES[kind], tabIndex: -1, 'aria-disabled': disabled || undefined }),
 )
 
+const contentPart = menuShape.part(
+  (state) => [idOf(state, CONTENT), idOf(state, TRIGGER)] as const,
+  ([id, triggerId]) => ({ id, role: 'menu', tabIndex: -1, 'aria-labelledby': triggerId }),
+)
+
 export const menuWidget = defineWidget({
   state: menuShape,
 
   step: [
     following,
-    toggling,
+    toggling(true),
     fromTrigger,
     entering,
     leaving,
     escaping,
     tabbingBack,
     spacing,
-    pressing,
+    pressing(CLOSE_ALL),
+    dismissing(CLOSE_ALL),
+    aiming,
     hovering,
-    search,
-    movingInside,
+    inside(search),
+    inside(moving),
   ],
 
   output: {
@@ -217,10 +312,40 @@ export const menuWidget = defineWidget({
       (state) => [idOf(state, TRIGGER), idOf(state, CONTENT), state.shown] as const,
       ([id, contentId, shown]) => ({ id, 'aria-haspopup': 'menu', 'aria-expanded': shown, 'aria-controls': contentId, popoverTarget: contentId, 'data-open': shown }),
     ),
-    content: menuShape.part(
-      (state) => [idOf(state, CONTENT), idOf(state, TRIGGER)] as const,
-      ([id, triggerId]) => ({ id, role: 'menu', tabIndex: -1, 'aria-labelledby': triggerId }),
+    content: contentPart,
+    item: itemPart,
+  },
+})
+
+export const submenuWidget = defineWidget({
+  state: menuShape,
+
+  step: [
+    following,
+    toggling(false),
+    fromParent,
+    resting,
+    departing,
+    measured,
+    entering,
+    leaving,
+    escaping,
+    backingOut,
+    spacing,
+    pressing(CLOSE_UP),
+    dismissing(CLOSE_UP),
+    aiming,
+    hovering,
+    inside(search),
+    inside(moving),
+  ],
+
+  output: {
+    trigger: menuShape.part(
+      (state) => [idOf(state, TRIGGER), idOf(state, CONTENT), state.shown] as const,
+      ([id, contentId, shown]) => ({ id, 'aria-haspopup': 'menu', 'aria-expanded': shown, 'aria-controls': contentId, 'data-open': shown }),
     ),
+    content: contentPart,
     item: itemPart,
   },
 })
