@@ -73,6 +73,7 @@ Also accepts all `<button>` attributes.
 | `defaultChecked` | `boolean` | — | No | Whether the item is checked on mount. |
 | `onChangeChecked` | `(checked: boolean) => void` | — | No | Called with the new checked state when the user checks or unchecks the item. |
 | `label` | `string` | — | No | Plain text of the item for typeahead, used instead of the text of its content. |
+| `keepOpen` | `boolean` | `true` | No | Keeps the menu open when a click or Enter toggles the item, as Space does. Set it to false to close the menu as a plain item does. |
 | `disabled` | `boolean` | `false` | No | Keeps the item focusable with aria-disabled, as the menu pattern asks, but never checks it. |
 | `ref` | `Ref<HTMLButtonElement>` | — | No | Ref forwarded to the `<button role="menuitemcheckbox">` element. |
 
@@ -99,6 +100,7 @@ Also accepts all `<div>` attributes.
 | --- | --- | --- | --- | --- |
 | `value` | `string` | — | Yes | Value of the item, given to the MenuRadioGroup when the user checks it. |
 | `label` | `string` | — | No | Plain text of the item for typeahead, used instead of the text of its content. |
+| `keepOpen` | `boolean` | `true` | No | Keeps the menu open when a click or Enter checks the item, as Space does. Set it to false to close the menu as a plain item does. |
 | `disabled` | `boolean` | `false` | No | Keeps the item focusable with aria-disabled, as the menu pattern asks, but never checks it. |
 | `ref` | `Ref<HTMLButtonElement>` | — | No | Ref forwarded to the `<button role="menuitemradio">` element. |
 

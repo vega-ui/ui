@@ -118,11 +118,11 @@ export default function MinimalComposition() {
 
 - A disabled item gets `aria-disabled="true"`, not native `disabled`: the arrow keys and typeahead still reach it, but its `onClick` is not called and the menu stays open.
 - `preventDefault()` in the `onClick` of an item keeps the menu open. Your `onClick` runs before the menu reacts.
-- Space on a checkbox or radio item changes it and keeps the menu open; Enter or a click changes it and closes the menu.
+- A click, Enter or Space on a checkbox or radio item changes it and keeps the menu open, for view options a user toggles one after another; `keepOpen={false}` makes a click and Enter close the menu as on a plain item.
 - `MenuContent` and its items stay rendered while the menu is closed, so state inside them is kept and the trigger can open the menu on its last item.
 - An item of a submenu that runs closes every menu and gives the focus back to the menu button. Escape and the arrow out of a submenu close only that submenu.
 - While the pointer moves from a submenu item toward its open submenu, the items it crosses on the way do not take the focus, so the submenu stays open.
-- A menubar and a context menu opened by a right click are not part of this version.
+- A menu opened by a right click or a long touch is [ContextMenu](../context-menu/), built from the same parts. A menubar is not part of this version.
 
 ## Common Mistakes
 

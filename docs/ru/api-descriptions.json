@@ -1079,6 +1079,26 @@
     "en": "Defines the visual style of the button, affecting color schemes and emphasis.",
     "ru": "Определяет визуальный стиль кнопки: цветовую схему и акцент."
   },
+  "ContextMenu.children": {
+    "en": "The ContextMenuTrigger and the MenuContent of the menu.",
+    "ru": "ContextMenuTrigger и MenuContent этого меню."
+  },
+  "ContextMenu.onChangeOpen": {
+    "en": "Called when the menu is shown or hidden.",
+    "ru": "Вызывается, когда меню показывается или скрывается."
+  },
+  "ContextMenu.size": {
+    "en": "Size of the menu items.",
+    "ru": "Размер пунктов меню."
+  },
+  "ContextMenuTrigger.asChild": {
+    "en": "Renders the only child element as the area instead of a `<div>`, like a row or a card of your own.",
+    "ru": "Рендерит единственный дочерний элемент областью вместо `<div>`, например вашу строку или карточку."
+  },
+  "ContextMenuTrigger.ref": {
+    "en": "Ref forwarded to the area element.",
+    "ru": "Ref, передаваемый элементу области."
+  },
   "DateField.calendar": {
     "en": "Calendar system the date is typed and picked in. The value stays a `YYYY-MM-DD` day. Defaults to the Gregorian calendar.",
     "ru": "Календарная система, в которой дата вводится и выбирается. Значение остаётся днём в формате `YYYY-MM-DD`. По умолчанию — григорианский календарь."
@@ -2547,6 +2567,10 @@
     "en": "Whether the item is checked on mount.",
     "ru": "Отмечен ли пункт при монтировании."
   },
+  "MenuCheckboxItem.keepOpen": {
+    "en": "Keeps the menu open when a click or Enter toggles the item, as Space does. Set it to false to close the menu as a plain item does.",
+    "ru": "Оставляет меню открытым, когда щелчок или Enter переключает пункт, как это делает пробел. Поставьте false, чтобы пункт закрывал меню, как обычный."
+  },
   "MenuCheckboxItem.disabled": {
     "en": "Keeps the item focusable with aria-disabled, as the menu pattern asks, but never checks it.",
     "ru": "Оставляет пункт фокусируемым через aria-disabled, как требует паттерн меню, но никогда его не отмечает."
@@ -2618,6 +2642,10 @@
   "MenuRadioGroup.value": {
     "en": "Value of the checked MenuRadioItem. Enables controlled mode when set.",
     "ru": "Значение отмеченного MenuRadioItem. Если задано, компонент становится контролируемым."
+  },
+  "MenuRadioItem.keepOpen": {
+    "en": "Keeps the menu open when a click or Enter checks the item, as Space does. Set it to false to close the menu as a plain item does.",
+    "ru": "Оставляет меню открытым, когда щелчок или Enter отмечает пункт, как это делает пробел. Поставьте false, чтобы пункт закрывал меню, как обычный."
   },
   "MenuRadioItem.disabled": {
     "en": "Keeps the item focusable with aria-disabled, as the menu pattern asks, but never checks it.",

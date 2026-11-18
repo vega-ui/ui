@@ -216,6 +216,36 @@ describe('Critical User Paths', () => {
     expect(outer.instance.state.active).toBe('date')
   })
 
+  it('asks for a context menu with the point and the part, and keeps the menu of the browser away only when a step handles it', () => {
+    const area = document.createElement('div')
+    const inner = document.createElement('span')
+    area.appendChild(inner)
+    document.body.appendChild(area)
+
+    const elements = createElements<string>()
+    elements.setRoot(area, 'area')
+
+    const inputs: unknown[] = []
+    const asking = defineWidget({
+      state: state({ options: {}, owns: {}, parts: ['area'] }),
+      step: [listening([browser.contextMenu], (current, input) => {
+        if (!input.is(browser.contextMenu)) return undefined
+        inputs.push([input.part, input.point])
+        return input.point?.x === 10 ? handled(current) : undefined
+      })],
+    })
+    connect(createWidget(asking, {}, { id: 'asking', strict: true }), elements).listen(area)
+
+    const handledMenu = new MouseEvent('contextmenu', { bubbles: true, cancelable: true, clientX: 10, clientY: 20 })
+    inner.dispatchEvent(handledMenu)
+    const passedMenu = new MouseEvent('contextmenu', { bubbles: true, cancelable: true, clientX: 30, clientY: 40 })
+    inner.dispatchEvent(passedMenu)
+
+    expect(inputs).toEqual([['area', { x: 10, y: 20 }], ['area', { x: 30, y: 40 }]])
+    expect(handledMenu.defaultPrevented).toBe(true)
+    expect(passedMenu.defaultPrevented).toBe(false)
+  })
+
   it('writes the live values and the properties of a part itself, without a render, and only when what they read changes', () => {
     const { root, items, elements } = mount({ items: fruits, mode: 'multiple', defaultActive: 'apple' })
     const mixed = document.createElement('input')

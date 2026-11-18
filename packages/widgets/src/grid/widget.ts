@@ -437,7 +437,7 @@ export const createGridLogic = <State extends GridState<Key>, Key extends GridKe
       const dragged = select.drag(state, input.key)
       if (dragged === state) return keep(state)
 
-      return keep(activate(dragged, input.key), [act.focus(input.key, true)])
+      return keep(activate(dragged, input.key), [act.focus(input.key, { preventScroll: true })])
     }
 
     if (input.is(pointer.press)) {

@@ -17,10 +17,10 @@
 | <kbd>↓</kbd> / <kbd>↑</kbd> | In the menu: moves the focus to the next or previous item. From the last item it moves to the first, and from the first to the last. Disabled items take the focus too. |
 | <kbd>Home</kbd> / <kbd>End</kbd> | In the menu: moves the focus to the first or last item. |
 | <kbd>c</kbd> | Typeahead: a printable character moves the focus to the next item whose label starts with the typed text; characters typed quickly add up, and the same character typed again moves on to the next item that starts with it. Disabled items are included. The label is the text of the item, or its `label` prop. |
-| <kbd>Enter</kbd> | In the menu: runs the focused item, closes the menu and returns the focus to the trigger. An item of a submenu closes every menu. A checkbox item is checked or unchecked, and a radio item is checked, before the menu closes. A disabled item does nothing, and a `preventDefault()` in the `onClick` of an item keeps the menu open. |
+| <kbd>Enter</kbd> | In the menu: runs the focused item, closes the menu and returns the focus to the trigger. An item of a submenu closes every menu. A checkbox or radio item is checked or unchecked and the menu stays open, unless the item has `keepOpen={false}`. A disabled item does nothing, and a `preventDefault()` in the `onClick` of an item keeps the menu open. |
 | <kbd>Enter</kbd> / <kbd>Space</kbd> | On an item that opens a submenu: opens the submenu and moves the focus to its first item. |
 | <kbd>→</kbd> / <kbd>←</kbd> | On an item that opens a submenu, the Right arrow opens the submenu with the focus on its first item; in a submenu, the Left arrow closes it and returns the focus to its item. In a right-to-left page the two arrows swap. |
-| <kbd>Space</kbd> | In the menu: runs a plain item like Enter. A checkbox or radio item is checked or unchecked, and the menu stays open. |
+| <kbd>Space</kbd> | In the menu: runs a plain item like Enter. A checkbox or radio item is checked or unchecked, and the menu stays open even with `keepOpen={false}`. |
 | <kbd>Escape</kbd> | Closes the menu without running an item and returns the focus to the trigger. In a submenu it closes only the submenu and returns the focus to its item. |
 | <kbd>Tab</kbd> / <kbd>Shift</kbd> + <kbd>Tab</kbd> | In the menu: Tab closes the menu and moves the focus on to the next element after it; Shift+Tab closes the menu and returns the focus to the trigger. From a submenu both close every menu. |
 <!-- AUTO-GENERATED:KEYBOARD:end -->

@@ -10,7 +10,7 @@ import {
   CheckboxCardContent, CheckboxCardControl, CheckboxCardControlCheckedIcon, CheckboxCardControlIndeterminateIcon,
   CheckboxCardControlInput, CheckboxCardDescription, CheckboxCardTitle,
   CheckboxCheckedIcon, CheckboxIndeterminateIcon, CheckboxIndicator, CheckboxInput, Code, Collapsible,
-  CollapsibleContent, CollapsibleTrigger, Combobox, ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger,
+  CollapsibleContent, CollapsibleTrigger, Combobox, ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger, ContextMenu, ContextMenuTrigger,
   DateField, DateFieldCalendar, DateFieldInput, DateFieldTriggerIconButton, DateRangeField,
   DateRangeFieldCalendar, DateRangeFieldInput, DateRangeFieldTriggerIconButton, DateTimeField, DateTimeFieldCalendar,
   DateTimeFieldInput, DateTimeFieldTriggerIconButton, DayPicker, DayPickerCell, DayPickerLayout, Dialog, DialogClose, DialogContent,
@@ -591,6 +591,22 @@ export const PREVIEWS: Record<string, Preview> = {
           <MenuItem>Paste</MenuItem>
         </MenuContent>
       </Menu>
+    ),
+  },
+  'context-menu': {
+    node: (
+      <ContextMenu>
+        <ContextMenuTrigger className={styles.contextArea}>
+          <Text size={2} className={styles.secondary}>Right click here</Text>
+        </ContextMenuTrigger>
+        <MenuContent aria-label='Edit'>
+          <MenuItem>Cut</MenuItem>
+          <MenuItem>Copy</MenuItem>
+          <MenuItem disabled>Paste</MenuItem>
+          <Separator />
+          <MenuItem>Select all</MenuItem>
+        </MenuContent>
+      </ContextMenu>
     ),
   },
   sheet: {

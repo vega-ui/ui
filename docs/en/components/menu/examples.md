@@ -98,7 +98,7 @@ export default function AccountMenu() {
 
 ### Controlled/Stateful: view options with checkbox and radio items
 
-Two `MenuCheckboxItem` switch parts of a task list on and off, and a `MenuRadioGroup` picks the sort order. The parent keeps all three values, so the summary next to the trigger follows them. `MenuItemIndicator` keeps its space in every item and shows the check mark only in the checked ones. Space checks an item and keeps the menu open for the next change; Enter or a click checks it and closes the menu.
+Two `MenuCheckboxItem` switch parts of a task list on and off, and a `MenuRadioGroup` picks the sort order. The parent keeps all three values, so the summary next to the trigger follows them. `MenuItemIndicator` keeps its space in every item and shows the check mark only in the checked ones. A click, Enter or Space checks an item and keeps the menu open for the next change.
 
 <!-- example: menu/view-options.tsx -->
 ```tsx

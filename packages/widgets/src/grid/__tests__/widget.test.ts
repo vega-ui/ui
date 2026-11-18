@@ -115,7 +115,7 @@ describe('Critical User Paths', () => {
 
     widget.send(pointer.down, { key: 'e' }).send(pointer.dragOver, { key: 'h' })
     expect(widget.state.value).toEqual(['b', 'h'])
-    expect(widget.actions).toEqual([act.focus('h', true)])
+    expect(widget.actions).toEqual([act.focus('h', { preventScroll: true })])
 
     widget.send(pointer.release).send(pointer.press, { key: 'h' })
     expect(widget.state.value).toEqual(['b', 'h'])

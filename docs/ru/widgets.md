@@ -239,7 +239,7 @@ export const Tag = ({ value, disabled = false, children, ...props }: TagProps) =
 
 - **Клавиши и направления.** Адаптер превращает стрелки в `nav.forward`, `nav.backward`, `nav.up` и `nav.down` по `aria-orientation` и направлению письма корня, поэтому шаг ничего не знает про RTL. Объявляйте `nav.*` для списка и `key.*` для клавиши, которая значит одно и то же в любом направлении.
 - **Указатель.** `pointer.down`, `press`, `drag`, `dragOver`, `release`, `cancel`, `hover`, `enter`, `leave`, `wheel` и `spin` несут `key` элемента и `part`, в которую попали.
-- **Браузер.** `browser.toggle` — после того как поповер или диалог открылся или закрылся, `browser.cancel` / `close` / `submit` у `<dialog>`, `browser.reset` — после сброса формы, `browser.reveal` — когда поиск по странице вот-вот раскроет часть с `hidden="until-found"`, `browser.animationEnd` и `browser.flushed` — ответы на действия.
+- **Браузер.** `browser.toggle` — после того как поповер или диалог открылся или закрылся, `browser.cancel` / `close` / `submit` у `<dialog>`, `browser.reset` — после сброса формы, `browser.reveal` — когда поиск по странице вот-вот раскроет часть с `hidden="until-found"`, `browser.contextMenu` — от правого щелчка, долгого нажатия или клавиши контекстного меню, с точкой `point` и частью `part`, `browser.animationEnd` и `browser.flushed` — ответы на действия.
 - **Жизненный цикл.** `lifecycle.connect` — когда адаптер подключён и элементы зарегистрированы; `lifecycle.options` — когда родитель меняет контролируемое значение или опцию из `follows`, с `changed` — именами изменившихся.
 - `defineInput(type, name)` объявляет вход собственного вида для собственного адаптера.
 

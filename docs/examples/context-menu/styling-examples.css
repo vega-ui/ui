@@ -1,0 +1,9 @@
+.fileRow[data-open='true'] {
+  background: var(--fills-secondary);
+  border-color: var(--color-primary-500);
+}
+
+.boardMenu[role='menu'] {
+  --menu-item-height: 28px;
+  --menu-max-height: 240px;
+}

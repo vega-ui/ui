@@ -29,6 +29,12 @@ export interface MenuCheckboxItemProps extends Omit<ButtonHTMLAttributes<HTMLBut
   label?: string
 
   /**
+   * Keeps the menu open when a click or Enter toggles the item, as Space does. Set it to false to close the menu as a plain item does.
+   * @default true
+   */
+  keepOpen?: boolean
+
+  /**
    * Keeps the item focusable with aria-disabled, as the menu pattern asks, but never checks it.
    */
   disabled?: boolean
@@ -39,19 +45,20 @@ export interface MenuCheckboxItemProps extends Omit<ButtonHTMLAttributes<HTMLBut
   ref?: Ref<HTMLButtonElement>
 }
 
-/** MenuCheckboxItem is an item that checks and unchecks: a click or Enter toggles it and closes the menu, Space toggles it and keeps the menu open. */
+/** MenuCheckboxItem is an item that checks and unchecks: a click, Enter or Space toggles it and keeps the menu open, unless keepOpen is false. */
 export const MenuCheckboxItem: FC<MenuCheckboxItemProps> = ({
   checked,
   defaultChecked,
   onChangeChecked,
   label,
+  keepOpen = true,
   disabled = false,
   onClick: _onClick,
   className,
   ref,
   ...props
 }) => {
-  const { handle, size, register, attrs, onClick } = useMenuItem('checkbox', disabled, label, _onClick)
+  const { handle, size, register, attrs, onClick } = useMenuItem('checkbox', disabled, label, _onClick, { keepOpen })
   const check = useWidget(menuCheckboxWidget, { checked, defaultChecked, onChangeChecked }, widgetEnvironment)
   const checkAttrs = useOutput(check, menuCheckboxWidget.output.item)
   const itemRef = useMergeRefs([check.root, register, ref])
