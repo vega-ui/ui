@@ -1,0 +1,8 @@
+.indicator {
+    flex-shrink: 0;
+    color: var(--label-primary);
+}
+
+:where([role='menuitemcheckbox'], [role='menuitemradio']):where(:not([aria-checked='true'])) .indicator {
+    visibility: hidden;
+}

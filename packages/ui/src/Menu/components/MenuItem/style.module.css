@@ -1,0 +1,73 @@
+.item {
+    --menu-item-background-color: transparent;
+    --menu-item-background-color-focus: var(--color-primary-100);
+    --menu-item-background-color-active: var(--color-primary-200);
+
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-4);
+    width: 100%;
+    min-height: var(--menu-item-height, var(--spacing-21));
+    margin: 0;
+    padding: var(--spacing-2) var(--spacing-8);
+    box-sizing: border-box;
+    border: none;
+    border-radius: calc(var(--menu-item-height, var(--spacing-21)) * var(--br-ratio));
+    outline: none;
+    background-color: var(--menu-item-background-color);
+    color: var(--text-color);
+    font-family: var(--default-font-family);
+    font-size: var(--text-font-size-3);
+    line-height: var(--line-height-3);
+    text-align: start;
+    text-decoration: none;
+    white-space: nowrap;
+    user-select: none;
+    cursor: pointer;
+    transition: background-color var(--transition-state-delay) ease, color var(--transition-state-delay) ease;
+}
+
+.item:where([data-size='xs']) {
+    font-size: var(--text-font-size-2);
+    line-height: var(--line-height-2);
+}
+
+.item:where([data-size='sm']) {
+    font-size: var(--text-font-size-2);
+    line-height: var(--line-height-2);
+}
+
+.item:where([data-size='lg']) {
+    font-size: var(--text-font-size-4);
+    line-height: var(--line-height-4);
+}
+
+.item:where([data-size='xl']) {
+    font-size: var(--text-font-size-4);
+    line-height: var(--line-height-4);
+}
+
+.item:focus {
+    background-color: var(--menu-item-background-color-focus);
+}
+
+.item:focus-visible {
+    outline: 2px solid var(--focus-color);
+}
+
+.item:where(:not([aria-disabled='true'])):active {
+    background-color: var(--menu-item-background-color-active);
+}
+
+.item:where([aria-disabled='true']) {
+    --menu-item-background-color-focus: var(--fills-secondary);
+
+    color: var(--disable-label-text-color);
+    cursor: not-allowed;
+}
+
+@media (forced-colors: active) {
+    .item:focus {
+        outline: 2px solid Highlight;
+    }
+}

@@ -2515,6 +2515,134 @@
     "en": "The value of this option, passed to the change callback when it is selected.",
     "ru": "Значение этого варианта, которое передаётся в колбэк изменения при его выборе."
   },
+  "Menu.children": {
+    "en": "The MenuTrigger and the MenuContent of the menu.",
+    "ru": "MenuTrigger и MenuContent этого меню."
+  },
+  "Menu.defaultOpen": {
+    "en": "Whether the menu is shown on mount.",
+    "ru": "Показано ли меню при монтировании."
+  },
+  "Menu.onChangeOpen": {
+    "en": "Called when the menu is shown or hidden.",
+    "ru": "Вызывается, когда меню показывается или скрывается."
+  },
+  "Menu.open": {
+    "en": "Whether the menu is shown. Enables controlled mode when set.",
+    "ru": "Показано ли меню. Если задано, компонент становится контролируемым."
+  },
+  "Menu.placement": {
+    "en": "Preferred placement of the menu relative to its trigger. The menu moves to the opposite side when there is no room.",
+    "ru": "Предпочтительное расположение меню относительно триггера. Если места не хватает, меню переходит на противоположную сторону."
+  },
+  "Menu.size": {
+    "en": "Size of the menu items.",
+    "ru": "Размер пунктов меню."
+  },
+  "MenuCheckboxItem.checked": {
+    "en": "Whether the item is checked. Enables controlled mode when set.",
+    "ru": "Отмечен ли пункт. Если задано, компонент становится контролируемым."
+  },
+  "MenuCheckboxItem.defaultChecked": {
+    "en": "Whether the item is checked on mount.",
+    "ru": "Отмечен ли пункт при монтировании."
+  },
+  "MenuCheckboxItem.disabled": {
+    "en": "Keeps the item focusable with aria-disabled, as the menu pattern asks, but never checks it.",
+    "ru": "Оставляет пункт фокусируемым через aria-disabled, как требует паттерн меню, но никогда его не отмечает."
+  },
+  "MenuCheckboxItem.label": {
+    "en": "Plain text of the item for typeahead, used instead of the text of its content.",
+    "ru": "Простой текст пункта для поиска при наборе; используется вместо текста его содержимого."
+  },
+  "MenuCheckboxItem.onChangeChecked": {
+    "en": "Called with the new checked state when the user checks or unchecks the item.",
+    "ru": "Вызывается с новым состоянием, когда пользователь отмечает или снимает пункт."
+  },
+  "MenuCheckboxItem.ref": {
+    "en": "Ref forwarded to the `<button role=\"menuitemcheckbox\">` element.",
+    "ru": "Ref, передаваемый элементу `<button role=\"menuitemcheckbox\">`."
+  },
+  "MenuContent.ref": {
+    "en": "Ref forwarded to the `<div role=\"menu\">` element.",
+    "ru": "Ref, передаваемый элементу `<div role=\"menu\">`."
+  },
+  "MenuGroup.ref": {
+    "en": "Ref forwarded to the `<div role=\"group\">` element.",
+    "ru": "Ref, передаваемый элементу `<div role=\"group\">`."
+  },
+  "MenuItem.asChild": {
+    "en": "Renders the only child element as the item instead of a `<button>`, like an `<a>` that navigates.",
+    "ru": "Рендерит пунктом единственный дочерний элемент вместо `<button>`, например `<a>` для перехода."
+  },
+  "MenuItem.disabled": {
+    "en": "Keeps the item focusable with aria-disabled, as the menu pattern asks, but never activates it.",
+    "ru": "Оставляет пункт фокусируемым через aria-disabled, как требует паттерн меню, но никогда его не выполняет."
+  },
+  "MenuItem.label": {
+    "en": "Plain text of the item for typeahead, used instead of the text of its content.",
+    "ru": "Простой текст пункта для поиска при наборе; используется вместо текста его содержимого."
+  },
+  "MenuItem.ref": {
+    "en": "Ref forwarded to the item element.",
+    "ru": "Ref, передаваемый элементу пункта."
+  },
+  "MenuItemIndicator.children": {
+    "en": "Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler)",
+    "ru": "Содержимое иконки. Принимает: иконки из `@vega-ui/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler)"
+  },
+  "MenuItemIndicator.ref": {
+    "en": "Ref to the SVG element",
+    "ru": "Ref на SVG-элемент"
+  },
+  "MenuItemIndicator.size": {
+    "en": "Predefined size token for the icon. Can be overridden by explicit width and height.",
+    "ru": "Предопределённый токен размера иконки. Может быть переопределён явными шириной и высотой."
+  },
+  "MenuItemIndicator.strokeWidth": {
+    "en": "Stroke thickness for SVG lines and shapes (in px or pt).",
+    "ru": "Толщина обводки линий и фигур SVG (в px или pt)."
+  },
+  "MenuRadioGroup.defaultValue": {
+    "en": "Value of the MenuRadioItem checked on mount.",
+    "ru": "Значение MenuRadioItem, отмеченного при монтировании."
+  },
+  "MenuRadioGroup.onChangeValue": {
+    "en": "Called with the value of the MenuRadioItem the user checks.",
+    "ru": "Вызывается со значением MenuRadioItem, который отметил пользователь."
+  },
+  "MenuRadioGroup.ref": {
+    "en": "Ref forwarded to the `<div role=\"group\">` element.",
+    "ru": "Ref, передаваемый элементу `<div role=\"group\">`."
+  },
+  "MenuRadioGroup.value": {
+    "en": "Value of the checked MenuRadioItem. Enables controlled mode when set.",
+    "ru": "Значение отмеченного MenuRadioItem. Если задано, компонент становится контролируемым."
+  },
+  "MenuRadioItem.disabled": {
+    "en": "Keeps the item focusable with aria-disabled, as the menu pattern asks, but never checks it.",
+    "ru": "Оставляет пункт фокусируемым через aria-disabled, как требует паттерн меню, но никогда его не отмечает."
+  },
+  "MenuRadioItem.label": {
+    "en": "Plain text of the item for typeahead, used instead of the text of its content.",
+    "ru": "Простой текст пункта для поиска при наборе; используется вместо текста его содержимого."
+  },
+  "MenuRadioItem.ref": {
+    "en": "Ref forwarded to the `<button role=\"menuitemradio\">` element.",
+    "ru": "Ref, передаваемый элементу `<button role=\"menuitemradio\">`."
+  },
+  "MenuRadioItem.value": {
+    "en": "Value of the item, given to the MenuRadioGroup when the user checks it.",
+    "ru": "Значение пункта, которое получает MenuRadioGroup, когда пользователь его отмечает."
+  },
+  "MenuTrigger.asChild": {
+    "en": "Renders the only child element as the trigger instead of a `<button>`, like your own Button.",
+    "ru": "Рендерит триггером единственный дочерний элемент вместо `<button>`, например вашу Button."
+  },
+  "MenuTrigger.ref": {
+    "en": "Ref forwarded to the trigger element.",
+    "ru": "Ref, передаваемый элементу триггера."
+  },
   "Meter.fullWidth": {
     "en": "Whether the meter should expand to fill the width with its container.",
     "ru": "Растягивается ли индикатор на всю ширину контейнера."

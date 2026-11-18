@@ -44,6 +44,7 @@
 - [Label](./label/)
 - [Link](./link/)
 - [Listbox](./listbox/)
+- [Menu](./menu/)
 - [Meter](./meter/)
 - [MeterStack](./meter-stack/)
 - [MonthPicker](./month-picker/)

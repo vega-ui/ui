@@ -1,0 +1,150 @@
+.content {
+    --menu-item-height: var(--spacing-21);
+
+    inset: auto;
+    margin: 0;
+    border: none;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-1);
+    padding: var(--spacing-4);
+    box-sizing: border-box;
+    width: max-content;
+    min-width: var(--spacing-52);
+    max-height: var(--menu-max-height, 320px);
+    overflow: auto;
+    outline: none;
+    background: var(--surface-secondary);
+    box-shadow: var(--surface-shadow);
+    border-radius: calc(var(--menu-item-height) * var(--br-ratio) + var(--spacing-4));
+    position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
+    position-visibility: always;
+    transform-origin: var(--menu-origin-x, left) var(--menu-origin-y, top);
+    transition:
+            scale var(--duration-spring) var(--ease-spring),
+            opacity var(--duration-exit) var(--ease-smooth);
+}
+
+.content:where([data-size='xs']) {
+    --menu-item-height: var(--spacing-16);
+}
+
+.content:where([data-size='sm']) {
+    --menu-item-height: var(--spacing-18);
+}
+
+.content:where([data-size='lg']) {
+    --menu-item-height: var(--spacing-24);
+}
+
+.content:where([data-size='xl']) {
+    --menu-item-height: var(--spacing-26);
+}
+
+.content:where([data-side='top']) {
+    position-area: top;
+    margin-bottom: var(--spacing-5);
+    --menu-origin-y: bottom;
+}
+
+.content:where([data-side='bottom']) {
+    position-area: bottom;
+    margin-top: var(--spacing-5);
+    --menu-origin-y: top;
+}
+
+.content:where([data-side='left']) {
+    position-area: left;
+    margin-right: var(--spacing-5);
+    --menu-origin-x: right;
+}
+
+.content:where([data-side='right']) {
+    position-area: right;
+    margin-left: var(--spacing-5);
+    --menu-origin-x: left;
+}
+
+.content:where([data-side='top'][data-align='start']) {
+    position-area: top span-self-x-end;
+}
+
+.content:where([data-side='top'][data-align='end']) {
+    position-area: top span-self-x-start;
+    --menu-origin-x: right;
+}
+
+.content:where([data-side='bottom'][data-align='start']) {
+    position-area: bottom span-self-x-end;
+}
+
+.content:where([data-side='bottom'][data-align='end']) {
+    position-area: bottom span-self-x-start;
+    --menu-origin-x: right;
+}
+
+.content:where([data-side='left'][data-align='start']) {
+    position-area: left span-bottom;
+}
+
+.content:where([data-side='left'][data-align='end']) {
+    position-area: left span-top;
+    --menu-origin-y: bottom;
+}
+
+.content:where([data-side='right'][data-align='start']) {
+    position-area: right span-bottom;
+}
+
+.content:where([data-side='right'][data-align='end']) {
+    position-area: right span-top;
+    --menu-origin-y: bottom;
+}
+
+.content:where([data-side='top'][data-align='center'], [data-side='bottom'][data-align='center']) {
+    --menu-origin-x: center;
+}
+
+.content:where([data-side='left'][data-align='center'], [data-side='right'][data-align='center']) {
+    --menu-origin-y: center;
+}
+
+.content > * {
+    flex-shrink: 0;
+}
+
+.content :where([role='separator']) {
+    margin-block: var(--spacing-2);
+}
+
+.content:where(:not(:popover-open)) {
+    display: none;
+    scale: .95;
+    opacity: 0;
+    transition:
+            scale var(--duration-exit) var(--ease-exit),
+            opacity var(--duration-exit) var(--ease-exit),
+            display var(--duration-exit) allow-discrete,
+            overlay var(--duration-exit) allow-discrete;
+}
+
+@starting-style {
+    .content:where(:popover-open) {
+        scale: .95;
+        opacity: 0;
+    }
+}
+
+@supports not (overlay: auto) {
+    .content:where(:not(:popover-open)) {
+        transition: none;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .content,
+    .content:where(:not(:popover-open)) {
+        scale: 1;
+    }
+}

@@ -15,7 +15,7 @@ import {
   DateRangeFieldCalendar, DateRangeFieldInput, DateRangeFieldTriggerIconButton, DateTimeField, DateTimeFieldCalendar,
   DateTimeFieldInput, DateTimeFieldTriggerIconButton, DayPicker, DayPickerCell, DayPickerLayout, Dialog, DialogClose, DialogContent,
   DialogTrigger, Drawer, DrawerClose, DrawerContent, DrawerTrigger, Fieldset, FieldsetLegend, Grid, GridCell, GridRow, GridRowGroup, Heading, HelperText, Icon,
-  IconButton, IndexedSnapScroller, IndexedSnapScrollerContent, Label, Link, Listbox, ListboxOption, Meter, MeterStack,
+  IconButton, IndexedSnapScroller, IndexedSnapScrollerContent, Label, Link, Listbox, ListboxOption, Menu, MenuContent, MenuItem, MenuTrigger, Meter, MeterStack,
   MeterStackSegment, MeterTrack, MonthPicker, MonthPickerCell, MonthPickerLayout, NumberField,
   NumberFieldDecrementButton, NumberFieldIncrementButton, NumberFieldInput, Option, PageControl, PageControlItem,
   Pagination, PaginationItem, PaginationLink, PaginationList, PasswordField, PasswordFieldHiddenIcon, PasswordFieldInput,
@@ -577,6 +577,20 @@ export const PREVIEWS: Record<string, Preview> = {
           </div>
         </PopoverContent>
       </Popover>
+    ),
+  },
+  menu: {
+    node: (
+      <Menu>
+        <MenuTrigger asChild><Button variant='secondary' appearance='ghost'>Edit</Button></MenuTrigger>
+        <MenuContent>
+          <MenuItem>Undo</MenuItem>
+          <MenuItem disabled>Redo</MenuItem>
+          <Separator />
+          <MenuItem>Copy</MenuItem>
+          <MenuItem>Paste</MenuItem>
+        </MenuContent>
+      </Menu>
     ),
   },
   sheet: {
