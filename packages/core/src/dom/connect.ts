@@ -325,6 +325,19 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
     return { key, item, inside: control instanceof Element }
   }
 
+  const holderOf = (item: Element) => {
+    const own = new Set(elements.roots())
+    for (let node: Element | null = item; node && !own.has(node); node = node.parentElement) {
+      const registry = registryOf(node)
+      if (!registry || registry === elements) continue
+
+      const receiver = receivers.get(registry)
+      if (receiver) return receiver
+    }
+
+    return undefined
+  }
+
   const focusElement = (element: HTMLElement, preventScroll?: boolean) => {
     focusing = element
     element.focus({ preventScroll })
@@ -405,6 +418,12 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
         const receiver = registry ? receivers.get(registry) : undefined
         if (!receiver) return waits
         receiver(createInput(action.input, action.payload))
+        return false
+      }
+      case 'sendAt': {
+        const element = elements.item(action.key)
+        if (!element) return waits
+        holderOf(element)?.(createInput(action.input, action.payload))
         return false
       }
       case 'showModal': {

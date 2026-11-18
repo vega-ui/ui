@@ -1,0 +1,11 @@
+.denseMenu[role='menu'] {
+  --menu-item-height: 28px;
+  --menu-max-height: 240px;
+}
+
+.dangerItem[role='menuitem'] {
+  --menu-item-background-color-focus: color-mix(in oklch, var(--color-error) 12%, transparent);
+  --menu-item-background-color-active: color-mix(in oklch, var(--color-error) 20%, transparent);
+
+  color: var(--color-error);
+}

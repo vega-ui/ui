@@ -145,6 +145,34 @@ describe('Critical User Paths', () => {
     expect(inner.instance.state.active).toBe('date')
   })
 
+  it('delivers an input to the widget whose root is an item or holds it, and to no one for an item outside other widgets', () => {
+    const outer = document.createElement('div')
+    document.body.appendChild(outer)
+    const inner = mount({ items: fruits, mode: 'single' }, outer)
+    const nested = document.createElement('div')
+    inner.root.appendChild(nested)
+    const plain = document.createElement('div')
+    outer.appendChild(plain)
+
+    const elements = createElements<string>()
+    elements.setRoot(outer)
+    elements.setItem('nested', nested)
+    elements.setItem('plain', plain)
+
+    const PING = command('ping')
+    const sending = defineWidget({
+      state: shape,
+      step: [listening([PING], (state, input) => (input.is(PING) && input.key !== undefined ? handled(state, [act.sendAt(input.key, key.printable, { char: 'd' })]) : undefined))],
+    })
+    const connection = connect(createWidget(sending, { items: fruits, mode: 'single' }, { id: 'widget', strict: true }), elements)
+
+    connection.send(createInput(PING, { key: 'plain' }))
+    expect(inner.instance.state.active).toBe(null)
+
+    connection.send(createInput(PING, { key: 'nested' }))
+    expect(inner.instance.state.active).toBe('date')
+  })
+
   it('writes the live values and the properties of a part itself, without a render, and only when what they read changes', () => {
     const { root, items, elements } = mount({ items: fruits, mode: 'multiple', defaultActive: 'apple' })
     const mixed = document.createElement('input')

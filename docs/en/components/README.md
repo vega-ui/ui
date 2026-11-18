@@ -44,6 +44,7 @@ For decision-oriented navigation across related controls, see [Component Familie
 - [Label](./label/)
 - [Link](./link/)
 - [Listbox](./listbox/)
+- [Menu](./menu/)
 - [Meter](./meter/)
 - [MeterStack](./meter-stack/)
 - [MonthPicker](./month-picker/)

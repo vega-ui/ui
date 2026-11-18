@@ -29,6 +29,7 @@ export type Action<Key = unknown, PartName extends string = string> =
   | { readonly type: 'showPopover'; readonly part: PartName }
   | { readonly type: 'hidePopover'; readonly part: PartName }
   | { readonly type: 'send'; readonly part: PartName; readonly input: InputSpec; readonly payload: Payload }
+  | { readonly type: 'sendAt'; readonly key: Key; readonly input: InputSpec; readonly payload: Payload }
   | { readonly type: 'measure'; readonly request: MeasureRequest<Key, PartName> }
   | { readonly type: 'awaitAnimations'; readonly part: PartName }
   | { readonly type: 'showModal'; readonly part: PartName }
@@ -56,6 +57,7 @@ export const act = {
   showPopover: <PartName extends string>(part: PartName): Action<never, PartName> => ({ type: 'showPopover', part }),
   hidePopover: <PartName extends string>(part: PartName): Action<never, PartName> => ({ type: 'hidePopover', part }),
   send: <PartName extends string>(part: PartName, input: InputSpec, payload: Payload = {}): Action<never, PartName> => ({ type: 'send', part, input, payload }),
+  sendAt: <Key>(key: Key, input: InputSpec, payload: Payload = {}): Action<Key, never> => ({ type: 'sendAt', key, input, payload }),
   measure: <Key, PartName extends string = never>(request: MeasureRequest<Key, PartName>): Action<Key, PartName> => ({ type: 'measure', request }),
   awaitAnimations: <PartName extends string>(part: PartName): Action<never, PartName> => ({ type: 'awaitAnimations', part }),
   showModal: <PartName extends string>(part: PartName): Action<never, PartName> => ({ type: 'showModal', part }),
@@ -78,6 +80,6 @@ export type FocusStrategy = 'focus' | 'activedescendant'
 
 export const show = <Key>(strategy: FocusStrategy, key: Key): Action<Key, never> => (strategy === 'activedescendant' ? act.reveal(key) : act.focus(key))
 
-const TARGETED = new Set(['focus', 'focusInside', 'reveal', 'click'])
+const TARGETED = new Set(['focus', 'focusInside', 'reveal', 'click', 'sendAt'])
 
 export const targets = (action: Action<unknown>): action is Extract<Action<unknown>, { key: unknown }> => TARGETED.has(action.type)
