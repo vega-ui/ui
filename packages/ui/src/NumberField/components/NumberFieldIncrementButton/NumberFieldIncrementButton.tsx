@@ -1,13 +1,13 @@
-import { FC, MouseEvent } from 'react';
-import { Icon } from '../../../Icon';
-import { IconButton, IconButtonProps } from '../../../IconButton';
-import { PlusIcon } from '@vega-ui/icons';
+import { FC } from 'react';
+import { useMergeRefs } from '@vega-ui/hooks';
+import { Button, ButtonProps, ButtonShape } from '../../../Button';
 import { useSnapshot } from '../../../internals/widget';
+import { INCREMENT } from '@vega-ui/widgets/number-field';
 import { useNumberFieldContext } from '../../contexts';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css';
 
-export type NumberFieldIncrementProps = IconButtonProps
+export type NumberFieldIncrementProps = ButtonProps
 
 /**
  * `NumberFieldIncrementButton` is an action control used within `NumberField`
@@ -20,33 +20,29 @@ export type NumberFieldIncrementProps = IconButtonProps
  * This component does not manage state directly and is designed to work
  * exclusively as a child of `NumberField`.
  */
-export const NumberFieldIncrementButton: FC<NumberFieldIncrementProps> = ({
+export const NumberFieldIncrementButton: FC<NumberFieldIncrementProps & ButtonShape> = ({
   disabled,
   className,
-  onClick: _onClick,
+  ref,
   children,
   type = 'button',
   ...props
 }) => {
-  const { handle, increment, disabled: _disabled, isMax, size } = useNumberFieldContext()
+  const { handle, disabled: _disabled, isMax, size } = useNumberFieldContext()
   const readOnly = useSnapshot(handle, (state) => state.readOnly)
-
-  const onClick = (event: MouseEvent<HTMLButtonElement>) => {
-    _onClick?.(event)
-    if (!event.defaultPrevented) increment()
-  }
+  const mergedRef = useMergeRefs([handle.rootAt(INCREMENT), ref])
 
   return (
-    <IconButton
+    <Button
       type={type}
       disabled={(disabled ?? _disabled) || isMax || readOnly}
       size={size}
-      onClick={onClick}
       variant='secondary'
       appearance='transparent'
       className={csx(style.button, className)}
-      {...props}>
-      {children ?? <Icon><PlusIcon/></Icon>}
-    </IconButton>
+      {...handle.listen({}, props)}
+      ref={mergedRef}>
+      {children}
+    </Button>
   )
 }

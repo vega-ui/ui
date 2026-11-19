@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Checkbox, CheckboxProps } from './Checkbox';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 import { CheckboxCheckedIcon, CheckboxInput, CheckboxInputProps, CheckboxIndeterminateIcon, CheckboxIndicator } from './components';
 import { subcomponentArgs } from '../../../../.storybook/subcomponentArgs';
 
@@ -59,8 +60,8 @@ export const Playground: Story = {
       <Checkbox {...checkboxProps}>
         <CheckboxInput {...inputProps} aria-label='Checkbox' />
         <CheckboxIndicator>
-          <CheckboxCheckedIcon />
-          <CheckboxIndeterminateIcon />
+          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+          <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
         </CheckboxIndicator>
       </Checkbox>
     );
@@ -83,8 +84,8 @@ export const States: Story = {
               aria-invalid={row.invalid}
             />
             <CheckboxIndicator>
-              <CheckboxCheckedIcon />
-              <CheckboxIndeterminateIcon />
+              <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+              <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
             </CheckboxIndicator>
           </Checkbox>
         );

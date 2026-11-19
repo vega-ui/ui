@@ -4,6 +4,7 @@ import { cleanup, render, type RenderResult } from '@testing-library/react';
 import { server, userEvent } from 'vitest/browser';
 
 import { Combobox, ComboboxProps } from '../Combobox';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger } from '../components';
 import { ListboxOption } from '../../Listbox';
 import { TextField } from '../../TextField';
@@ -36,7 +37,7 @@ const ComboboxTest: FC<ComboboxProps & { onText?(text: string): void, options?: 
             onText?.(event.target.value);
           }}
         />
-        <ComboboxTrigger aria-label='Show fruits'><ComboboxIcon /></ComboboxTrigger>
+        <ComboboxTrigger square aria-label='Show fruits'><ComboboxIcon><ChevronDownIcon /></ComboboxIcon></ComboboxTrigger>
       </TextField>
       <ComboboxListbox aria-label='Fruits'>
         {matches.map((fruit) => <ListboxOption key={fruit.value} value={fruit.value}>{fruit.label}</ListboxOption>)}

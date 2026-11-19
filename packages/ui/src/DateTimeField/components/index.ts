@@ -1,3 +1,3 @@
 export * from './DateTimeFieldInput'
 export * from './DateTimeFieldCalendar'
-export * from './DateTimeFieldTriggerIconButton'
+export * from './DateTimeFieldTrigger'

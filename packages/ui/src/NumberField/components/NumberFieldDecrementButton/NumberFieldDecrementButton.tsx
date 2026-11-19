@@ -1,13 +1,13 @@
-import { FC, MouseEvent } from 'react';
-import { Icon } from '../../../Icon';
-import { IconButton, IconButtonProps } from '../../../IconButton';
-import { MinusIcon } from '@vega-ui/icons';
+import { FC } from 'react';
+import { useMergeRefs } from '@vega-ui/hooks';
+import { Button, ButtonProps, ButtonShape } from '../../../Button';
 import { useSnapshot } from '../../../internals/widget';
+import { DECREMENT } from '@vega-ui/widgets/number-field';
 import { useNumberFieldContext } from '../../contexts';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css';
 
-export type NumberFieldDecrementProps = IconButtonProps
+export type NumberFieldDecrementProps = ButtonProps
 
 /**
  * `NumberFieldDecrementButton` is an action control used within `NumberField`
@@ -20,34 +20,30 @@ export type NumberFieldDecrementProps = IconButtonProps
  * This component does not manage state directly and is designed to work
  * exclusively as a child of `NumberField`.
  */
-export const NumberFieldDecrementButton: FC<NumberFieldDecrementProps> = ({
+export const NumberFieldDecrementButton: FC<NumberFieldDecrementProps & ButtonShape> = ({
   disabled,
   className,
   children,
-  onClick: _onClick,
+  ref,
   type = 'button',
   ...props
 }) => {
-  const { handle, decrement, disabled: _disabled, isMin, size } = useNumberFieldContext()
+  const { handle, disabled: _disabled, isMin, size } = useNumberFieldContext()
   const readOnly = useSnapshot(handle, (state) => state.readOnly)
-
-  const onClick = (event: MouseEvent<HTMLButtonElement>) => {
-    _onClick?.(event)
-    if (!event.defaultPrevented) decrement()
-  }
+  const mergedRef = useMergeRefs([handle.rootAt(DECREMENT), ref])
 
   return (
-    <IconButton
+    <Button
       type={type}
       disabled={(disabled ?? _disabled) || isMin || readOnly}
       variant='secondary'
       appearance='transparent'
-      onClick={onClick}
       size={size}
       className={csx(style.button, className)}
-      {...props}
+      {...handle.listen({}, props)}
+      ref={mergedRef}
     >
-      {children ?? <Icon><MinusIcon/></Icon>}
-    </IconButton>
+      {children}
+    </Button>
   )
 }

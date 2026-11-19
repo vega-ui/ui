@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { act, browser, createInput, focus, key, lifecycle, pointer, ROOT, text } from '@vega-ui/core'
+import { act, browser, focus, key, lifecycle, pointer, ROOT, text } from '@vega-ui/core'
 import { simulate } from '@vega-ui/core/test'
 import { DECREMENT, INCREMENT, isMaxOf, isMinOf, numberFieldWidget } from '../widget'
 
@@ -25,7 +25,7 @@ const typeInto = (numberField: Simulation, chars: string) => {
   return numberField
 }
 
-const wheel = (y: number) => ({ delta: { x: 0, y } })
+const wheel = (y: number, part: string = ROOT) => ({ part, delta: { x: 0, y } })
 
 const rootOf = (state: Simulation['state']) => numberFieldWidget.output.root.render(numberFieldWidget.output.root.select(state, undefined as never))
 
@@ -45,13 +45,27 @@ describe('Critical User Paths', () => {
     expect(numberField.state.value).toBe(9)
     expect(numberField.actions).toEqual([act.commitText(ROOT, '9')])
 
-    numberField.send(createInput(INCREMENT))
+    numberField.send(pointer.press, { part: INCREMENT })
     expect(numberField.state.value).toBe(10)
     expect(isMaxOf(numberField.state)).toBe(true)
 
-    numberField.send(key.arrowDown).send(createInput(DECREMENT)).send(createInput(DECREMENT))
+    numberField.send(key.arrowDown).send(pointer.press, { part: DECREMENT }).send(pointer.press, { part: DECREMENT })
     expect(numberField.state.value).toBe(0)
     expect(isMinOf(numberField.state)).toBe(true)
+  })
+
+  it('commits the typed number when the focus moves from the input to a button', () => {
+    const numberField = typeInto(simulateNumber(), '5')
+
+    numberField.send(focus.move, { part: INCREMENT })
+    expect(numberField.actions).toContainEqual(act.commit(ROOT))
+  })
+
+  it('leaves a press on the input itself to the caret', () => {
+    const numberField = typeInto(simulateNumber(), '5')
+
+    expect(numberField.send(pointer.press, { part: ROOT }).answer).toBe('pass')
+    expect(numberField.state.value).toBe(5)
   })
 
   it('starts stepping an empty field at min, or at zero without one, or at max below zero', () => {
@@ -60,19 +74,21 @@ describe('Critical User Paths', () => {
     expect(simulateNumber({ max: -5 }).send(key.arrowUp).state.value).toBe(-5)
   })
 
-  it('changes the number on the wheel only while the field has the focus', () => {
+  it('changes the number on the wheel over the input only while the input has the focus', () => {
     const numberField = typeInto(simulateNumber(), '5')
 
     numberField.send(pointer.spin, wheel(-10))
     expect(numberField.answer).toBe('pass')
 
-    numberField.observe({ focused: true }).send(pointer.spin, wheel(-10))
+    numberField.observe({ inputFocused: true }).send(pointer.spin, wheel(-10))
     expect(numberField.state.value).toBe(6)
+
+    expect(numberField.send(pointer.spin, wheel(-10, INCREMENT)).answer).toBe('pass')
 
     numberField.send(pointer.spin, wheel(10))
     expect(numberField.state.value).toBe(5)
 
-    expect(simulateNumber({ changeOnWheel: false }).observe({ focused: true }).send(pointer.spin, wheel(-10)).answer).toBe('pass')
+    expect(simulateNumber({ changeOnWheel: false }).observe({ inputFocused: true }).send(pointer.spin, wheel(-10)).answer).toBe('pass')
   })
 
   it('steps ten steps with PageUp and PageDown and jumps to min and max with Home and End', () => {
@@ -96,7 +112,7 @@ describe('Critical User Paths', () => {
   it('restores the default number on a form reset', () => {
     const numberField = simulateNumber({ defaultValue: 3 }).send(lifecycle.connect)
 
-    numberField.send(createInput(INCREMENT))
+    numberField.send(pointer.press, { part: INCREMENT })
     expect(numberField.state.text).toBe('4')
 
     numberField.send(browser.reset)
@@ -147,7 +163,7 @@ describe('Edge Cases', () => {
   it('adds a fractional step without floating point noise or a trailing zero', () => {
     const numberField = typeInto(simulateNumber({ step: 0.1 }), '0.2')
 
-    numberField.send(createInput(INCREMENT))
+    numberField.send(pointer.press, { part: INCREMENT })
     expect(numberField.state.text).toBe('0.3')
 
     expect(typeInto(simulateNumber({ step: 0.1 }), '0.9').send(key.arrowUp).state.text).toBe('1')
@@ -155,9 +171,9 @@ describe('Edge Cases', () => {
   })
 
   it('leaves the arrows, the buttons and the wheel alone in a read-only field', () => {
-    const numberField = simulateNumber({ defaultValue: 5 }).send(lifecycle.connect).observe({ readOnly: true, focused: true })
+    const numberField = simulateNumber({ defaultValue: 5 }).send(lifecycle.connect).observe({ readOnly: true, inputFocused: true })
 
-    numberField.send(key.arrowUp).send(createInput(INCREMENT)).send(pointer.spin, wheel(-10))
+    numberField.send(key.arrowUp).send(pointer.press, { part: INCREMENT }).send(pointer.spin, wheel(-10))
     expect(numberField.answer).toBe('pass')
     expect(numberField.state.value).toBe(5)
   })
@@ -165,6 +181,15 @@ describe('Edge Cases', () => {
   it('reads a comma as the decimal point and digits of other scripts', () => {
     expect(typeInto(simulateNumber(), '1,5').state.value).toBe(1.5)
     expect(typeInto(simulateNumber(), '١٢').state.value).toBe(12)
+  })
+
+  it('leaves the keys on a stepper button to the browser, since only the field takes them', () => {
+    const numberField = simulateNumber({ defaultValue: 5, min: 1, max: 9 }).send(lifecycle.connect)
+
+    expect(numberField.send(key.arrowUp, { part: INCREMENT }).answer).toBe('pass')
+    expect(numberField.send(key.home, { part: DECREMENT }).answer).toBe('pass')
+    expect(numberField.send(key.pageUp, { part: INCREMENT }).answer).toBe('pass')
+    expect(numberField.state.value).toBe(5)
   })
 
   it('leaves Home and End to the browser without min and max', () => {

@@ -10,12 +10,13 @@ React component library for VegaUI.
 ## Install
 
 ```bash
-pnpm add @vega-ui/react @vega-ui/theme-core @vega-ui/icons
+pnpm add @vega-ui/react @vega-ui/theme-core
 ```
 
 - `@vega-ui/react`: the components and their stylesheet.
 - `@vega-ui/theme-core`: the light and dark themes the components read their colors from.
-- `@vega-ui/icons`: the icons used across the examples. pnpm and Yarn Plug'n'Play only let the app import packages it lists itself.
+
+The components draw no icons of their own: pass any icon set or your own SVG. The examples use `@vega-ui/icons`, built on `lucide-react`; add it with `pnpm add @vega-ui/icons` to copy them as they are.
 
 ## Connect Styles
 

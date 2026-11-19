@@ -1189,8 +1189,8 @@ describe('Calendar', () => {
           render(
             <Calendar defaultValue='2026-03-15'>
               <CalendarHeader>
-                <CalendarPrevButton aria-label='Previous month' />
-                <CalendarNextButton aria-label='Next month' />
+                <CalendarPrevButton square aria-label='Previous month' />
+                <CalendarNextButton square aria-label='Next month' />
               </CalendarHeader>
             </Calendar>
           );

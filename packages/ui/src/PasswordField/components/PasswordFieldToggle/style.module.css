@@ -1,5 +1,5 @@
 .button {
-    --icon-button-size: var(--input-height);
+    --button-height: var(--input-height);
 
     --button-color: var(--text-color);
     --button-color-hover: var(--text-color);

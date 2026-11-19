@@ -9,7 +9,7 @@ afterEach(cleanup);
 const TESTID_ICON = 'icon';
 const DEFAULT_SIZE = 'md';
 
-const IconTest: FC<ComponentProps<typeof Icon>> = (props) => {
+const IconTest: FC<Partial<ComponentProps<typeof Icon>>> = (props) => {
   const { children, ...rest } = props;
   
   return (

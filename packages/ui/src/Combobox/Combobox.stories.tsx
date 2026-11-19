@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useState } from 'react';
 
 import { Combobox, ComboboxProps } from './Combobox';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger } from './components';
 import { ComboboxSize } from './types';
 import { ListboxOption } from '../Listbox';
@@ -66,8 +67,8 @@ export const Playground: Story = {
               setQuery(selectionEnd === value.length ? value.slice(0, selectionStart ?? undefined) : value);
             }}
           />
-          <ComboboxTrigger aria-label='Show countries'>
-            <ComboboxIcon />
+          <ComboboxTrigger square aria-label='Show countries'>
+            <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
           </ComboboxTrigger>
         </TextField>
         <ComboboxListbox aria-label='Countries'>
@@ -91,8 +92,8 @@ export const Matrix: Story = {
         >
           <TextField size={size}>
             <ComboboxInput aria-label={`${state} / ${size}`} defaultValue='Peru' aria-invalid={state === 'invalid'} />
-            <ComboboxTrigger aria-label='Show options'>
-              <ComboboxIcon />
+            <ComboboxTrigger square aria-label='Show options'>
+              <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
             </ComboboxTrigger>
           </TextField>
           <ComboboxListbox>

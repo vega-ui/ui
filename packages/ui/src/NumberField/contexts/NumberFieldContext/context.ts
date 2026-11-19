@@ -13,8 +13,6 @@ export interface NumberFieldContextState {
   disabled?: boolean
   max?: number
   min?: number
-  decrement(): void
-  increment(): void
 }
 
 export const [NumberFieldProvider, useNumberFieldContext] = createContext<NumberFieldContextState>('NumberFieldContext', {
@@ -27,10 +25,4 @@ export const [NumberFieldProvider, useNumberFieldContext] = createContext<Number
     changeOnWheel: true,
   }, { id: 'number-field' }),
   size: 'md',
-  decrement() {
-    return
-  },
-  increment() {
-    return
-  },
 })

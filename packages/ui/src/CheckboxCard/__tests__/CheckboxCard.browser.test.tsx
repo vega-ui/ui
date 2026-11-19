@@ -4,16 +4,15 @@ import { userEvent } from 'vitest/browser';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
 
 import { CheckboxCard } from '../CheckboxCard';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 import {
   CheckboxCardContent,
   CheckboxCardControl,
-  CheckboxCardControlCheckedIcon,
   CheckboxCardControlInput,
-  CheckboxCardControlIndicator,
-  CheckboxCardControlIndeterminateIcon,
   CheckboxCardDescription,
   CheckboxCardTitle,
 } from '../components';
+import { CheckboxCheckedIcon, CheckboxIndeterminateIcon, CheckboxIndicator } from '../../Checkbox';
 
 afterEach(cleanup);
 
@@ -59,10 +58,10 @@ const CheckboxCardTest: FC<CheckboxCardTestProps> = (props) => {
               disabled={disabled}
               onChange={onChange}
             />
-            <CheckboxCardControlIndicator data-testid={TESTID_INDICATOR}>
-              <CheckboxCardControlCheckedIcon data-testid={TESTID_CHECKED_ICON} />
-              <CheckboxCardControlIndeterminateIcon data-testid={TESTID_INDETERMINATE_ICON} />
-            </CheckboxCardControlIndicator>
+            <CheckboxIndicator data-testid={TESTID_INDICATOR}>
+              <CheckboxCheckedIcon data-testid={TESTID_CHECKED_ICON}><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+              <CheckboxIndeterminateIcon data-testid={TESTID_INDETERMINATE_ICON}><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
+            </CheckboxIndicator>
           </CheckboxCardControl>
         </>
       )}

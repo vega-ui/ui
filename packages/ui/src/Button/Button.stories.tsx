@@ -1,4 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { GlobeIcon } from '@vega-ui/icons';
+import { Icon } from '../Icon';
 import { Button, ButtonProps } from './Button';
 
 const meta = {
@@ -28,6 +30,9 @@ const meta = {
     disabled: {
       control: 'boolean',
     },
+    square: {
+      control: 'boolean',
+    },
   },
   args: {
     children: 'Button',
@@ -50,6 +55,38 @@ export const Matrix: Story = {
       {rows.map((row) => sizes.map((size) => (
         <Button key={`${row.variant}-${row.appearance}-${row.disabled}-${size}`} {...row} size={size}>
           {`${row.variant} / ${row.appearance}${row.disabled ? ' / disabled' : ''} / ${size}`}
+        </Button>
+      )))}
+    </div>
+  ),
+};
+
+export const Square: Story = {
+  parameters: {
+    design: {
+      type: 'figma',
+      url: 'https://www.figma.com/design/bcj4NcXIOZNwLIAzNFRnkt/vega-ui--Community-?node-id=0-5550&t=2RYEGgF9z3n5SpP5-4',
+    },
+  },
+  args: {
+    square: true,
+    'aria-label': 'Change language',
+    children: <Icon><GlobeIcon /></Icon>,
+  },
+};
+
+export const SquareMatrix: Story = {
+  render: () => (
+    <div style={{ display: 'grid', gridTemplateColumns: `repeat(${sizes.length}, auto)`, gap: 12, alignItems: 'center' }}>
+      {rows.map((row) => sizes.map((size) => (
+        <Button
+          key={`${row.variant}-${row.appearance}-${row.disabled}-${size}`}
+          {...row}
+          square
+          size={size}
+          aria-label={`${row.variant} / ${row.appearance}${row.disabled ? ' / disabled' : ''} / ${size}`}
+        >
+          <Icon><GlobeIcon /></Icon>
         </Button>
       )))}
     </div>

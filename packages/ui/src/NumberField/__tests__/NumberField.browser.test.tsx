@@ -17,9 +17,9 @@ const TESTID_INPUT = 'input';
 const NumberFieldTest: FC<Partial<ComponentProps<typeof NumberField>>> = (props) => {
   return (
     <NumberField {...props}>
-      <NumberFieldDecrementButton data-testid={TESTID_DECREMENT} />
+      <NumberFieldDecrementButton square aria-label='Decrease' data-testid={TESTID_DECREMENT} />
       <NumberFieldInput data-testid={TESTID_INPUT} />
-      <NumberFieldIncrementButton data-testid={TESTID_INCREMENT} />
+      <NumberFieldIncrementButton square aria-label='Increase' data-testid={TESTID_INCREMENT} />
     </NumberField>
   );
 };
@@ -37,9 +37,9 @@ describe('NumberField', () => {
         return (
           <>
             <NumberField {...props} value={value} onChangeValue={setValue}>
-              <NumberFieldDecrementButton data-testid={TESTID_DECREMENT} />
+              <NumberFieldDecrementButton square aria-label='Decrease' data-testid={TESTID_DECREMENT} />
               <NumberFieldInput data-testid={TESTID_INPUT} />
-              <NumberFieldIncrementButton data-testid={TESTID_INCREMENT} />
+              <NumberFieldIncrementButton square aria-label='Increase' data-testid={TESTID_INCREMENT} />
             </NumberField>
             <button type='button' onClick={() => setValue(10)}>Fill</button>
           </>
@@ -178,9 +178,9 @@ describe('NumberField', () => {
       const onChangeValue = vi.fn();
       const r = render(
         <NumberField defaultValue={5} onChangeValue={onChangeValue}>
-          <NumberFieldDecrementButton data-testid={TESTID_DECREMENT} onClick={(event) => event.preventDefault()} />
+          <NumberFieldDecrementButton square aria-label='Decrease' data-testid={TESTID_DECREMENT} onClick={(event) => event.preventDefault()} />
           <NumberFieldInput data-testid={TESTID_INPUT} />
-          <NumberFieldIncrementButton data-testid={TESTID_INCREMENT} onClick={(event) => event.preventDefault()} />
+          <NumberFieldIncrementButton square aria-label='Increase' data-testid={TESTID_INCREMENT} onClick={(event) => event.preventDefault()} />
         </NumberField>,
       );
 
@@ -195,9 +195,9 @@ describe('NumberField', () => {
       const onChangeValue = vi.fn();
       const r = render(
         <NumberField defaultValue={5} onChangeValue={onChangeValue}>
-          <NumberFieldDecrementButton data-testid={TESTID_DECREMENT} />
+          <NumberFieldDecrementButton square aria-label='Decrease' data-testid={TESTID_DECREMENT} />
           <NumberFieldInput data-testid={TESTID_INPUT} readOnly />
-          <NumberFieldIncrementButton data-testid={TESTID_INCREMENT} />
+          <NumberFieldIncrementButton square aria-label='Increase' data-testid={TESTID_INCREMENT} />
         </NumberField>,
       );
       getInput(r).focus();
@@ -228,7 +228,7 @@ describe('NumberField', () => {
       const r = render(
         <NumberField max={5} defaultValue={5}>
           <NumberFieldInput data-testid={TESTID_INPUT} />
-          <NumberFieldIncrementButton data-testid={TESTID_INCREMENT} />
+          <NumberFieldIncrementButton square aria-label='Increase' data-testid={TESTID_INCREMENT} />
         </NumberField>,
       );
       

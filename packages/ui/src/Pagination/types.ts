@@ -1,5 +1,5 @@
-import { IconButtonSize } from '../IconButton';
+import { ButtonSize } from '../Button';
 import { ButtonBaseVariant } from '../ButtonBase';
 
-export type PaginationSize = IconButtonSize
+export type PaginationSize = ButtonSize
 export type PaginationVariant = ButtonBaseVariant

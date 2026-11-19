@@ -65,12 +65,12 @@
     "@vega-ui/core": "workspace:*",
     "@vega-ui/hooks": "workspace:*",
     "@vega-ui/i18n": "workspace:*",
-    "@vega-ui/icons": "workspace:*",
     "@vega-ui/utils": "workspace:*",
     "@vega-ui/widgets": "workspace:*"
   },
   "devDependencies": {
     "@testing-library/react": "^16.1.0",
+    "@vega-ui/icons": "workspace:*",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react": "^4.3.4",

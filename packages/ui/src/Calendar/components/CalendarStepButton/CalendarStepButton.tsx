@@ -1,43 +1,36 @@
-import { FC, MouseEvent } from 'react';
-import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
+import { FC } from 'react';
+import { useMergeRefs } from '@vega-ui/hooks';
+import { NEXT_BUTTON, PREVIOUS_BUTTON } from '@vega-ui/widgets/calendar';
 import { useOutput } from '../../../internals/widget';
-import { Icon } from '../../../Icon';
-import { IconButton, IconButtonProps } from '../../../IconButton';
+import { Button, ButtonProps, ButtonShape } from '../../../Button';
 import { useCalendarInternalContext } from '../../contexts';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 
-export interface CalendarStepButtonProps extends IconButtonProps {
+export type CalendarStepButtonProps = ButtonProps & ButtonShape & {
   step: -1 | 1
 }
 
-export const CalendarStepButton: FC<CalendarStepButtonProps> = ({ step, children, disabled, className, onClick: _onClick, ...props }) => {
-  const { handle, widget, prev, next, size, variant } = useCalendarInternalContext()
+export const CalendarStepButton: FC<CalendarStepButtonProps> = ({ step, ref, children, disabled, className, ...props }) => {
+  const { handle, widget, size, variant } = useCalendarInternalContext()
 
   const backward = step < 0
   const attrs = useOutput(handle, backward ? widget.output.previous : widget.output.next)
-
-  const onClick = (event: MouseEvent<HTMLButtonElement>) => {
-    _onClick?.(event)
-    if (event.defaultPrevented) return
-
-    if (backward) prev()
-    else next()
-  }
+  const mergedRef = useMergeRefs([handle.part(backward ? PREVIOUS_BUTTON : NEXT_BUTTON), ref])
 
   return (
-    <IconButton
+    <Button
+      ref={mergedRef}
       type='button'
       appearance='ghost'
-      variant={variant satisfies IconButtonProps['variant']}
-      size={size satisfies IconButtonProps['size']}
-      disabled={disabled || attrs.disabled === true}
+      variant={variant satisfies ButtonProps['variant']}
+      size={size satisfies ButtonProps['size']}
+      disabled={disabled || attrs.disabled}
       className={csx(style.button, backward ? style.prev : style.next, className)}
       data-visible={attrs['data-visible']}
-      onClick={onClick}
       {...props}
     >
-      {children ?? <Icon className={style.icon}>{backward ? <ChevronLeft /> : <ChevronRight />}</Icon>}
-    </IconButton>
+      {children}
+    </Button>
   )
 }

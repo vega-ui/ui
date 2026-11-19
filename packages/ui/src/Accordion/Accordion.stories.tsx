@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Accordion } from './Accordion';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { Text } from '../Text';
 import { AccordionTrigger, AccordionContent, AccordionItem, AccordionHeader, AccordionIcon } from './components';
 import { Separator } from '../Separator';
@@ -14,7 +15,7 @@ const items = values.map((value, index) => (
     <AccordionHeader>
       <AccordionTrigger>
         {`Section ${value}`}
-        <AccordionIcon />
+        <AccordionIcon><ChevronDownIcon /></AccordionIcon>
       </AccordionTrigger>
     </AccordionHeader>
     <AccordionContent>

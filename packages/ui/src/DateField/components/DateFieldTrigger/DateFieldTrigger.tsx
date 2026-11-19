@@ -1,24 +1,16 @@
 import { FC } from 'react';
-import { IconButton, IconButtonProps } from '../../../IconButton';
-import { Icon } from '../../../Icon';
-import { CalendarIcon } from '@vega-ui/icons';
+import { Button, ButtonProps, ButtonShape } from '../../../Button';
 import { useDateFieldContext } from '../../contexts';
 import { useTextFieldContext } from '../../../TextField/contexts';
 import { csx } from '@vega-ui/utils';
 import style from './style.module.css';
 
-export type DateFieldTriggerIconButtonProps = IconButtonProps
+export type DateFieldTriggerProps = ButtonProps
 
 /**
- * DateFieldTriggerIconButton — a button component used to trigger the
- * calendar popover in a DateField.
- *
- * Purpose:
- * Provides a clickable icon button that opens the associated calendar picker,
- * visually indicating that a date can be selected. It has
- * `aria-haspopup="dialog"`.
+ * `DateFieldTrigger` is the button that opens the calendar popover of a DateField, with `aria-haspopup="dialog"`. Pass the icon as its children, with `square` and an `aria-label` for an icon alone, or render your own element with `asChild`.
  */
-export const DateFieldTriggerIconButton: FC<DateFieldTriggerIconButtonProps> = ({
+export const DateFieldTrigger: FC<DateFieldTriggerProps & ButtonShape> = ({
   children,
   className,
   type = 'button',
@@ -29,7 +21,7 @@ export const DateFieldTriggerIconButton: FC<DateFieldTriggerIconButtonProps> = (
   const { disabled } = useDateFieldContext()
 
   return (
-    <IconButton
+    <Button
       type={type}
       size={size}
       variant='secondary'
@@ -39,7 +31,7 @@ export const DateFieldTriggerIconButton: FC<DateFieldTriggerIconButtonProps> = (
       className={csx(style.button, className)}
       {...props}
     >
-      {children ?? <Icon><CalendarIcon /></Icon>}
-    </IconButton>
+      {children}
+    </Button>
   )
 }

@@ -1,10 +1,10 @@
 import { describe, expect, it, vi } from 'vitest'
-import { act, browser, key, lifecycle } from '@vega-ui/core'
+import { act, browser, key, lifecycle, pointer } from '@vega-ui/core'
 import { simulate } from '@vega-ui/core/test'
 import { gregorianCalendar } from '@vega-ui/i18n'
 import { FOCUS } from '../../grid'
 import { SNAP_NEXT, SNAP_PREVIOUS } from '../../snap-scroller'
-import { CalendarOptions, CLOSE_VIEW, createCalendar, DAYS, DAYS_SCROLLER, MONTHS, NEXT, PICK, PREVIOUS, TOGGLE_VIEW, YEARS, YEARS_SCROLLER } from '../widget'
+import { CalendarOptions, CLOSE_VIEW, createCalendar, DAYS, DAYS_SCROLLER, MONTH_VIEW_BUTTON, MONTHS, NEXT, NEXT_BUTTON, PICK, PREVIOUS, PREVIOUS_BUTTON, TOGGLE_VIEW, YEAR_VIEW_BUTTON, YEARS, YEARS_SCROLLER } from '../widget'
 
 const options = (overrides: Partial<CalendarOptions> = {}): CalendarOptions => ({
   calendar: gregorianCalendar,
@@ -44,6 +44,30 @@ describe('Critical User Paths', () => {
     widget.send(NEXT).send(NEXT).send(PREVIOUS)
     expect(calendar.focusedYearOf(widget.state)).toBe('2038-01-01')
     expect(widget.state.focusedDate).toBe('2026-02-28')
+  })
+
+  it('opens the month and year views with a press of their buttons, and goes back to the days on a second press', () => {
+    const calendar = createCalendar()
+    const widget = simulate(calendar, options({ defaultFocusedDate: '2026-01-15' }))
+
+    widget.send(pointer.press, { part: MONTH_VIEW_BUTTON })
+    expect(widget.state.view).toBe('month')
+
+    widget.send(pointer.press, { part: YEAR_VIEW_BUTTON })
+    expect(widget.state.view).toBe('year')
+
+    widget.send(pointer.press, { part: YEAR_VIEW_BUTTON })
+    expect(widget.state.view).toBe('day')
+  })
+
+  it('pages with a press of the previous and next buttons, and leaves a press elsewhere alone', () => {
+    const calendar = createCalendar()
+    const widget = simulate(calendar, options({ defaultFocusedDate: '2026-01-15' }))
+
+    widget.send(pointer.press, { part: NEXT_BUTTON }).send(pointer.press, { part: NEXT_BUTTON }).send(pointer.press, { part: PREVIOUS_BUTTON })
+    expect(widget.state.focusedDate).toBe('2026-02-15')
+
+    expect(widget.send(pointer.press).answer).toBe('pass')
   })
 
   it('pages years from the focused day when the calendar opens in the year view', () => {

@@ -45,11 +45,11 @@ const RtlCalendar = (props: ComponentProps<typeof Calendar>) => (
   <div dir='rtl'>
     <Calendar locale={LOCALE} style={{ width: 320 }} {...props}>
       <CalendarHeader>
-        <CalendarPrevButton data-testid='prev' aria-label='Previous' />
+        <CalendarPrevButton square data-testid='prev' aria-label='Previous' />
         <CalendarHeading>
           <CalendarViewButton view='year' data-testid='year-button'>Year</CalendarViewButton>
         </CalendarHeading>
-        <CalendarNextButton data-testid='next' aria-label='Next' />
+        <CalendarNextButton square data-testid='next' aria-label='Next' />
       </CalendarHeader>
       <CalendarContent>
         <CalendarDays data-testid='day-picker'>

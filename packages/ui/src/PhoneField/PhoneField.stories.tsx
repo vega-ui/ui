@@ -2,6 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { PhoneCountry } from '@vega-ui/i18n';
 
 import { PhoneField, PhoneFieldProps } from './PhoneField';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import {
   PhoneFieldSelect,
   PhoneFieldInput,
@@ -69,7 +70,7 @@ export const Matrix: Story = {
             <SelectHiddenSelect />
             <SelectCombobox aria-label='Country'>
               <SelectValue />
-              <SelectIcon />
+              <SelectIcon><ChevronDownIcon /></SelectIcon>
             </SelectCombobox>
             <SelectListbox>
               <SelectOption value='RU'>RU</SelectOption>

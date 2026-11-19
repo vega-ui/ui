@@ -4,11 +4,12 @@ import { cleanup, render, type RenderResult } from '@testing-library/react';
 import { userEvent } from 'vitest/browser';
 
 import { PasswordField } from '../PasswordField';
+import { EyeIcon, EyeOffIcon } from '@vega-ui/icons';
 import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleIconButton,
+  PasswordFieldToggle,
 } from '../components';
 
 afterEach(cleanup);
@@ -35,10 +36,10 @@ const PasswordFieldTest: FC<ComponentProps<typeof PasswordField>> = (props) => {
             autoComplete='current-password'
           />
           
-          <PasswordFieldToggleIconButton data-testid={TESTID_TOGGLE} aria-label={TOGGLE_LABEL}>
-            <PasswordFieldShownIcon data-testid={TESTID_SHOWN_ICON} />
-            <PasswordFieldHiddenIcon data-testid={TESTID_HIDDEN_ICON} />
-          </PasswordFieldToggleIconButton>
+          <PasswordFieldToggle square data-testid={TESTID_TOGGLE} aria-label={TOGGLE_LABEL}>
+            <PasswordFieldShownIcon data-testid={TESTID_SHOWN_ICON}><EyeIcon /></PasswordFieldShownIcon>
+            <PasswordFieldHiddenIcon data-testid={TESTID_HIDDEN_ICON}><EyeOffIcon /></PasswordFieldHiddenIcon>
+          </PasswordFieldToggle>
         </>
       )}
     </PasswordField>
@@ -112,7 +113,7 @@ describe('PasswordField', () => {
       const r = render(
         <PasswordFieldTest>
           <PasswordFieldInput data-testid={TESTID_INPUT} />
-          <PasswordFieldToggleIconButton data-testid={TESTID_TOGGLE} aria-label={TOGGLE_LABEL} onClick={(event) => event.preventDefault()} />
+          <PasswordFieldToggle square data-testid={TESTID_TOGGLE} aria-label={TOGGLE_LABEL} onClick={(event) => event.preventDefault()} />
         </PasswordFieldTest>,
       );
 
@@ -139,7 +140,7 @@ describe('PasswordField', () => {
       const r = render(
         <PasswordFieldTest>
           <PasswordFieldInput data-testid={TESTID_INPUT} placeholder={PLACEHOLDER} />
-          <PasswordFieldToggleIconButton data-testid={TESTID_TOGGLE} aria-label={TOGGLE_LABEL} onClick={onClick} />
+          <PasswordFieldToggle square data-testid={TESTID_TOGGLE} aria-label={TOGGLE_LABEL} onClick={onClick} />
         </PasswordFieldTest>,
       );
 

@@ -1,7 +1,7 @@
 import { ButtonBase, ButtonBaseProps } from '../ButtonBase';
 import { FC } from 'react';
 import { csx } from '@vega-ui/utils';
-import { ButtonSize } from './types';
+import { ButtonShape, ButtonSize } from './types';
 import style from './style.module.css';
 
 export interface ButtonProps extends ButtonBaseProps {
@@ -16,22 +16,17 @@ export interface ButtonProps extends ButtonBaseProps {
    * Affects padding, font size, and overall dimensions.
    */
   size?: ButtonSize
-
-  /**
-   * When true, the button expands to fill the width with its container.
-   */
-  fullWidth?: boolean
 }
 
 /** Primary UI component for user interaction */
-export const Button: FC<ButtonProps> = ({
+export const Button: FC<ButtonProps & ButtonShape> = ({
    size = 'md',
    disabled,
    children,
    variant = 'primary',
    appearance = 'fill',
    className,
-   fullWidth,
+   square,
    asChild,
    ref,
    ...props
@@ -39,7 +34,7 @@ export const Button: FC<ButtonProps> = ({
   return (
     <ButtonBase
       asChild={asChild}
-      data-full-width={fullWidth}
+      data-square={square || undefined}
       className={csx(style.button, className)}
       data-size={size}
       disabled={disabled}

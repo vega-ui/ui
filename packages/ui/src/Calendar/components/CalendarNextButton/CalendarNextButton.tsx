@@ -1,8 +1,8 @@
 import { FC } from 'react';
-import { type IconButtonProps } from '../../../IconButton';
+import { type ButtonProps, type ButtonShape } from '../../../Button';
 import { CalendarStepButton } from '../CalendarStepButton';
 
-export type CalendarNextButtonProps = IconButtonProps
+export type CalendarNextButtonProps = ButtonProps
 
 /**
  * `CalendarNextButton` shows the next page of the current view: in the days
@@ -10,7 +10,7 @@ export type CalendarNextButtonProps = IconButtonProps
  * focus on the button; in the years it shows the next page of years. It is
  * hidden in the months and when the next month is after `max`.
  *
- * It shows a chevron by default; pass `children` to replace it. The icon has
- * no text, so give the button an `aria-label`.
+ * Pass the chevron as its children, with `square` and an `aria-label` for
+ * an icon alone; an icon inside it is mirrored in a right-to-left layout.
  */
-export const CalendarNextButton: FC<CalendarNextButtonProps> = (props) => <CalendarStepButton step={1} {...props} />
+export const CalendarNextButton: FC<CalendarNextButtonProps & ButtonShape> = (props) => <CalendarStepButton step={1} {...props} />

@@ -1,4 +1,4 @@
-import { act, Action, browser, command, controlled, defineWidget, handled, internal, keep, key, lifecycle, listening, matching, Result, state, Step } from '@vega-ui/core'
+import { act, Action, browser, command, controlled, defineWidget, handled, Input, internal, keep, key, lifecycle, listening, matching, pointer, Result, state, Step } from '@vega-ui/core'
 import {
   addCalendarMonths,
   addCalendarYears,
@@ -22,6 +22,10 @@ export const PICK = command('pick')
 export const FOCUS_DATE = command('focusDate')
 export const FOCUS_YEAR = command('focusYear')
 
+export const PREVIOUS_BUTTON = 'previousButton'
+export const NEXT_BUTTON = 'nextButton'
+export const MONTH_VIEW_BUTTON = 'monthViewButton'
+export const YEAR_VIEW_BUTTON = 'yearViewButton'
 export const DAYS = 'days'
 export const MONTHS = 'months'
 export const YEARS = 'years'
@@ -57,7 +61,7 @@ const createCalendarShape = () => state({
     leaving: internal([] as readonly OpenableView[]),
   },
   observes: { daysScrolled: matching(DAYS_SCROLLER, '*'), yearsScrolled: matching(YEARS_SCROLLER, '*') },
-  parts: [DAYS, MONTHS, YEARS, DAYS_SCROLLER, YEARS_SCROLLER],
+  parts: [DAYS, MONTHS, YEARS, DAYS_SCROLLER, YEARS_SCROLLER, PREVIOUS_BUTTON, NEXT_BUTTON, MONTH_VIEW_BUTTON, YEAR_VIEW_BUTTON],
 })
 
 export type CalendarShape = ReturnType<typeof createCalendarShape>
@@ -164,15 +168,25 @@ export const createCalendar = () => {
     return [act.send(part, step < 0 ? SNAP_PREVIOUS : SNAP_NEXT)]
   }
 
-  const paging: Step<State> = (state, input) => {
-    if (!input.is(PREVIOUS) && !input.is(NEXT)) return undefined
+  const stepOf = (input: Input): -1 | 1 | undefined => {
+    if (input.is(PREVIOUS)) return -1
+    if (input.is(NEXT)) return 1
+    if (!input.is(pointer.press)) return undefined
+    if (input.part === PREVIOUS_BUTTON) return -1
+    if (input.part === NEXT_BUTTON) return 1
 
-    const step = input.is(PREVIOUS) ? -1 : 1
+    return undefined
+  }
+
+  const paging = listening<State>([pointer.press], (state, input) => {
+    const step = stepOf(input)
+    if (step === undefined) return undefined
+
     if (state.view === 'day') return keep(stepMonth(state, step), scroll(state.daysScrolled, DAYS_SCROLLER, step))
     if (state.view === 'year') return keep(stepYears(state, step), scroll(state.yearsScrolled, YEARS_SCROLLER, step))
 
     return keep(state)
-  }
+  })
 
   const switching = (result: Result<State> | undefined): Result<State> | undefined => {
     if (!result) return result
@@ -205,15 +219,25 @@ export const createCalendar = () => {
     return keep(shape.leaving.set(state, state.leaving.filter((leaving) => leaving !== view)))
   }
 
-  const views = listening<State>([key.escape], (state, input) => switching(viewing(state, input)))
+  const views = listening<State>([key.escape, pointer.press], (state, input) => switching(viewing(state, input)))
+
+  const toggledViewOf = (input: Input): OpenableView | undefined => {
+    if (input.is(TOGGLE_VIEW) && isOpenable(input.value)) return input.value
+    if (!input.is(pointer.press)) return undefined
+    if (input.part === MONTH_VIEW_BUTTON) return 'month'
+    if (input.part === YEAR_VIEW_BUTTON) return 'year'
+
+    return undefined
+  }
 
   const viewing: Step<State> = (state, input) => {
     if (input.is(key.escape)) return state.view === 'day' ? undefined : handled(close(state), focusDays(state))
     if (input.is(CLOSE_VIEW)) return keep(close(state), state.view === 'day' ? [] : focusDays(state))
 
-    if (input.is(TOGGLE_VIEW) && isOpenable(input.value)) {
-      if (state.view === input.value) return keep(close(state), focusDays(state))
-      return keep(open(state, input.value))
+    const toggled = toggledViewOf(input)
+    if (toggled !== undefined) {
+      if (state.view === toggled) return keep(close(state), focusDays(state))
+      return keep(open(state, toggled))
     }
 
     if (input.is(PICK) && input.value !== undefined) {

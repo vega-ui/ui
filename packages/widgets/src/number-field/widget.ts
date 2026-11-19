@@ -1,10 +1,10 @@
-import { command, controlled, defineWidget, focus, handled, Input, internal, key, listening, matching, nav, pointer, ROOT, state, Step } from '@vega-ui/core'
+import { controlled, defineWidget, focus, handled, Input, internal, key, listening, matching, nav, pointer, ROOT, state, Step } from '@vega-ui/core'
 import { addWithPrecision, clamp } from '@vega-ui/utils'
 import { applyNumberEdit, blurredNumber, calibrateNumberField, formatMaskedNumber, maskedField, NumberMask, PendingText } from '../mask'
 import { getNumberValue } from './getNumberValue'
 
-export const INCREMENT = command('increment')
-export const DECREMENT = command('decrement')
+export const INCREMENT = 'increment'
+export const DECREMENT = 'decrement'
 
 export const numberFieldShape = state({
   options: {
@@ -17,8 +17,8 @@ export const numberFieldShape = state({
   },
   owns: { value: controlled(NaN) },
   internal: { text: internal(''), pending: internal(undefined as PendingText | undefined), committed: internal(''), touched: internal(false) },
-  observes: { readOnly: matching(ROOT, '[readonly]') },
-  parts: [ROOT],
+  observes: { readOnly: matching(ROOT, '[readonly]'), inputFocused: matching(ROOT, ':focus') },
+  parts: [ROOT, INCREMENT, DECREMENT],
 })
 
 type NumberFieldSnapshot = typeof numberFieldShape.__snapshot
@@ -64,15 +64,20 @@ const steppedNumber = (state: NumberFieldSnapshot, direction: 1 | -1, steps = 1)
 
 const directionOf = (state: NumberFieldSnapshot, input: Input): 1 | -1 | undefined => {
   if (state.readOnly) return undefined
-  if (input.is(key.arrowUp) || input.is(INCREMENT)) return 1
-  if (input.is(key.arrowDown) || input.is(DECREMENT)) return -1
-  if (!input.is(pointer.spin) || !state.options.changeOnWheel || !state.focused) return undefined
+  if (input.is(key.arrowUp)) return 1
+  if (input.is(key.arrowDown)) return -1
+  if (input.is(pointer.press) && input.part === INCREMENT) return 1
+  if (input.is(pointer.press) && input.part === DECREMENT) return -1
+  if (!input.is(pointer.spin) || input.part !== ROOT || !state.options.changeOnWheel || !state.inputFocused) return undefined
 
   return (input.delta?.y ?? 0) < 0 ? 1 : -1
 }
 
+const onStepper = (input: Input) => input.part === INCREMENT || input.part === DECREMENT
+
 const targetOf = (state: NumberFieldSnapshot, input: Input) => {
   if (state.readOnly) return undefined
+  if (onStepper(input) && !input.is(pointer.press)) return undefined
   if (input.is(nav.first)) return hasMin(state) ? state.options.min : undefined
   if (input.is(nav.last)) return hasMax(state) ? state.options.max : undefined
   if (input.is(nav.pageBackward)) return steppedNumber(state, 1, PAGE)
@@ -84,7 +89,7 @@ const targetOf = (state: NumberFieldSnapshot, input: Input) => {
   return steppedNumber(state, direction)
 }
 
-const stepping = listening<NumberFieldSnapshot>([key.arrowUp, key.arrowDown, nav.first, nav.last, nav.pageBackward, nav.pageForward, pointer.spin], (state, input) => {
+const stepping = listening<NumberFieldSnapshot>([key.arrowUp, key.arrowDown, nav.first, nav.last, nav.pageBackward, nav.pageForward, pointer.spin, pointer.press], (state, input) => {
   const target = targetOf(state, input)
   if (target === undefined) return undefined
 
@@ -94,8 +99,9 @@ const stepping = listening<NumberFieldSnapshot>([key.arrowUp, key.arrowDown, nav
   return handled(answer.state, answer.actions)
 })
 
-const leaving = listening<NumberFieldSnapshot>([focus.leave], (state, input) => {
-  if (!input.is(focus.leave)) return undefined
+const leaving = listening<NumberFieldSnapshot>([focus.leave, focus.move], (state, input) => {
+  if (!input.is(focus.leave) && !input.is(focus.move)) return undefined
+  if (input.is(focus.move) && input.part === ROOT) return undefined
 
   const blurred = blurredNumber(state.text, maskOf(state))
   const filled = blurred === '' && !state.options.allowEmpty ? formatMaskedNumber(startOf(state), maskOf(state)) : blurred

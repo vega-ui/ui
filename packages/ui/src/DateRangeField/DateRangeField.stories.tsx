@@ -1,8 +1,10 @@
+import { Icon } from '../Icon';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { FC, ReactNode } from 'react';
 
 import { DateRangeField, DateRangeFieldProps } from './DateRangeField';
-import { DateRangeFieldCalendar, DateRangeFieldInput, DateRangeFieldInputProps, DateRangeFieldTriggerIconButton } from './components';
+import { DateRangeFieldCalendar, DateRangeFieldInput, DateRangeFieldInputProps, DateRangeFieldTrigger } from './components';
 import { Popover, PopoverContent, PopoverTrigger } from '../Popover';
 import { Label } from '../Label';
 import {
@@ -65,12 +67,12 @@ const DateRangeFieldParts: FC<DateRangeFieldInputProps> = (props) => (
     <DateRangeFieldInput {...props} />
     <Popover placement='bottom-end'>
       <PopoverTrigger asChild>
-        <DateRangeFieldTriggerIconButton aria-label='Open calendar' />
+        <DateRangeFieldTrigger square aria-label='Open calendar'><Icon><CalendarIcon /></Icon></DateRangeFieldTrigger>
       </PopoverTrigger>
       <PopoverContent>
         <DateRangeFieldCalendar>
           <CalendarHeader>
-            <CalendarPrevButton aria-label='Previous' />
+            <CalendarPrevButton square aria-label='Previous'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
             <CalendarHeading>
               <CalendarViewButton view='month'>
                 <CalendarMonthLabel />
@@ -79,7 +81,7 @@ const DateRangeFieldParts: FC<DateRangeFieldInputProps> = (props) => (
                 <CalendarYearLabel />
               </CalendarViewButton>
             </CalendarHeading>
-            <CalendarNextButton aria-label='Next' />
+            <CalendarNextButton square aria-label='Next'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
           </CalendarHeader>
           <CalendarContent>
             <CalendarDays>
@@ -128,7 +130,7 @@ const meta = {
   subcomponents: {
     DateRangeFieldInput,
     DateRangeFieldCalendar,
-    DateRangeFieldTriggerIconButton,
+    DateRangeFieldTrigger,
   },
   parameters: { layout: 'centered' },
   tags: ['autodocs'],

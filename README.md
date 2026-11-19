@@ -5,8 +5,10 @@ React component library, written by developers for developers 🩵
 ## Install
 
 ```bash
-pnpm add @vega-ui/react @vega-ui/theme-core @vega-ui/icons
+pnpm add @vega-ui/react @vega-ui/theme-core
 ```
+
+Components draw no icons of their own, so any icon set works; the docs examples use the optional `@vega-ui/icons`.
 
 Import the theme and the stylesheet once, at the app entry point, and put the theme class on `<html>`:
 

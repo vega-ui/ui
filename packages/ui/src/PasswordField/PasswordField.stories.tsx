@@ -1,11 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { PasswordField, PasswordFieldProps } from './PasswordField';
+import { EyeIcon, EyeOffIcon } from '@vega-ui/icons';
 import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleIconButton,
+  PasswordFieldToggle,
 } from './components';
 
 const meta = {
@@ -15,7 +16,7 @@ const meta = {
     PasswordFieldHiddenIcon,
     PasswordFieldInput,
     PasswordFieldShownIcon,
-    PasswordFieldToggleIconButton,
+    PasswordFieldToggle,
   },
   parameters: {
     layout: 'centered',
@@ -34,10 +35,10 @@ const meta = {
   render: (args) => (
     <PasswordField {...args}>
       <PasswordFieldInput aria-label='Password' placeholder='Password' autoComplete='current-password' />
-      <PasswordFieldToggleIconButton aria-label='Show password'>
-        <PasswordFieldShownIcon />
-        <PasswordFieldHiddenIcon />
-      </PasswordFieldToggleIconButton>
+      <PasswordFieldToggle square aria-label='Show password'>
+        <PasswordFieldShownIcon><EyeIcon /></PasswordFieldShownIcon>
+        <PasswordFieldHiddenIcon><EyeOffIcon /></PasswordFieldHiddenIcon>
+      </PasswordFieldToggle>
     </PasswordField>
   ),
 } satisfies Meta<typeof PasswordField>;
@@ -66,10 +67,10 @@ export const Matrix: Story = {
           disabled={state.disabled}
         >
           <PasswordFieldInput aria-label='Password' aria-invalid={state.invalid} defaultValue={`${size} / ${state.label}`} />
-          <PasswordFieldToggleIconButton aria-label='Show password'>
-            <PasswordFieldShownIcon />
-            <PasswordFieldHiddenIcon />
-          </PasswordFieldToggleIconButton>
+          <PasswordFieldToggle square aria-label='Show password'>
+            <PasswordFieldShownIcon><EyeIcon /></PasswordFieldShownIcon>
+            <PasswordFieldHiddenIcon><EyeOffIcon /></PasswordFieldHiddenIcon>
+          </PasswordFieldToggle>
         </PasswordField>
       )))}
     </div>

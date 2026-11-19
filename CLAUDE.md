@@ -36,12 +36,12 @@ This is a **pnpm + Turbo monorepo** publishing a React UI component library (`@v
 | `ui` | `@vega-ui/react` | Main component library (~60 components), the published artifact |
 | `tokens` | `@vega-ui/tokens-core` | Design tokens as CSS custom properties (colors, spacing, typography, shadows, radii, animations) |
 | `theme` | `@vega-ui/theme-core` | Light/dark theme CSS files that consume tokens |
-| `icons` | `@vega-ui/icons` | Icon components wrapping `lucide-react` |
+| `icons` | `@vega-ui/icons` | Icon components wrapping `lucide-react`; optional for users, `ui` draws no icons and uses it only in stories and tests |
 | `hooks` | `@vega-ui/hooks` | Shared React hooks (useMap, useMergeRefs, useResizeObserver, etc.) |
 | `widgets` | `@vega-ui/widgets` | Framework-free widgets of the components on `@vega-ui/core`, one entry point per widget (`@vega-ui/widgets/select`) |
 | `utils` | `@vega-ui/utils` | Pure utility functions (capitalize, clamp, csx, date, intl, mergeProps) |
 
-Dependency flow: `ui` → `widgets`, `hooks`, `icons`, `utils` → `tokens` ← `theme`
+Dependency flow: `ui` → `widgets`, `hooks`, `utils` → `tokens` ← `theme`
 
 ### Build
 

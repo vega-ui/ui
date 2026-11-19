@@ -4,6 +4,7 @@ import { cleanup, render } from '@testing-library/react';
 import { userEvent } from 'vitest/browser';
 
 import { Separator } from '../../Separator';
+import { CheckIcon } from '@vega-ui/icons';
 import { Menu } from '../Menu';
 import { MenuCheckboxItem, MenuContent, MenuItem, MenuItemIndicator, MenuRadioGroup, MenuRadioItem, MenuSubmenu, MenuSubmenuTrigger, MenuTrigger } from '../components';
 
@@ -26,10 +27,10 @@ const MenuTest: FC<MenuTestProps> = ({ onUndo, onRedo, onRuler, onZoom, label, .
         <MenuItem onClick={onUndo}>Undo</MenuItem>
         <MenuItem disabled onClick={onRedo}>Redo</MenuItem>
         <Separator />
-        <MenuCheckboxItem defaultChecked onChangeChecked={onRuler}><MenuItemIndicator />Ruler</MenuCheckboxItem>
+        <MenuCheckboxItem defaultChecked onChangeChecked={onRuler}><MenuItemIndicator><CheckIcon /></MenuItemIndicator>Ruler</MenuCheckboxItem>
         <MenuRadioGroup aria-label='Zoom' defaultValue='fit' onChangeValue={onZoom}>
-          <MenuRadioItem value='fit'><MenuItemIndicator />Fit</MenuRadioItem>
-          <MenuRadioItem value='100'><MenuItemIndicator />Actual size</MenuRadioItem>
+          <MenuRadioItem value='fit'><MenuItemIndicator><CheckIcon /></MenuItemIndicator>Fit</MenuRadioItem>
+          <MenuRadioItem value='100'><MenuItemIndicator><CheckIcon /></MenuItemIndicator>Actual size</MenuRadioItem>
         </MenuRadioGroup>
         <MenuItem asChild><a href='#help'>Help</a></MenuItem>
       </MenuContent>
@@ -210,10 +211,10 @@ describe('Critical User Paths', () => {
       <Menu>
         <MenuTrigger>View</MenuTrigger>
         <MenuContent>
-          <MenuCheckboxItem keepOpen={false} onChangeChecked={onGrid}><MenuItemIndicator />Grid</MenuCheckboxItem>
+          <MenuCheckboxItem keepOpen={false} onChangeChecked={onGrid}><MenuItemIndicator><CheckIcon /></MenuItemIndicator>Grid</MenuCheckboxItem>
           <MenuRadioGroup aria-label='Zoom' defaultValue='fit' onChangeValue={onFill}>
-            <MenuRadioItem keepOpen={false} value='fit'><MenuItemIndicator />Fit</MenuRadioItem>
-            <MenuRadioItem keepOpen={false} value='fill'><MenuItemIndicator />Fill</MenuRadioItem>
+            <MenuRadioItem keepOpen={false} value='fit'><MenuItemIndicator><CheckIcon /></MenuItemIndicator>Fit</MenuRadioItem>
+            <MenuRadioItem keepOpen={false} value='fill'><MenuItemIndicator><CheckIcon /></MenuItemIndicator>Fill</MenuRadioItem>
           </MenuRadioGroup>
         </MenuContent>
       </Menu>,

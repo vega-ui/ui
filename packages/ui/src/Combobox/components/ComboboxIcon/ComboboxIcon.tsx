@@ -1,5 +1,4 @@
 import { FC } from 'react';
-import { ChevronDown } from '@vega-ui/icons';
 import { comboboxWidget } from '@vega-ui/widgets/combobox';
 import { csx } from '@vega-ui/utils';
 import { Icon, IconProps } from '../../../Icon';
@@ -12,8 +11,7 @@ import style from './style.module.css';
 export type ComboboxIconProps = IconProps
 
 /**
- * The icon of a `ComboboxTrigger`: a chevron by default, sized by the `TextField` like the icon of a Select.
- * It has `data-open` while the list is shown. Replace the chevron with `children`.
+ * The icon of a `ComboboxTrigger`, sized by the `TextField` like the icon of a Select. It has `data-open` while the list is shown. Pass the icon as its children, such as a chevron.
  */
 export const ComboboxIcon: FC<ComboboxIconProps> = ({ children, className, ...props }) => {
   const { size } = useTextFieldContext()
@@ -22,7 +20,7 @@ export const ComboboxIcon: FC<ComboboxIconProps> = ({ children, className, ...pr
 
   return (
     <Icon className={csx(style.icon, className)} size={sizeMapper(size ?? 'md')} {...attrs} {...props}>
-      {children ?? <ChevronDown />}
+      {children}
     </Icon>
   )
 }

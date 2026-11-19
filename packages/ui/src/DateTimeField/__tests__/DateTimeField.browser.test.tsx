@@ -7,7 +7,7 @@ import { DateTimeField, type DateTimeFieldProps } from '../DateTimeField';
 import {
   DateTimeFieldInput,
   DateTimeFieldCalendar,
-  DateTimeFieldTriggerIconButton,
+  DateTimeFieldTrigger,
   type DateTimeFieldInputProps,
   type DateTimeFieldCalendarProps,
 } from '../components';
@@ -88,12 +88,12 @@ const DateTimeFieldTest: FC<DateTimeFieldTestProps> = ({
     />
     <Popover {...popoverProps}>
       <PopoverTrigger asChild>
-        <DateTimeFieldTriggerIconButton aria-label='Open calendar' data-testid={TESTID_TRIGGER} />
+        <DateTimeFieldTrigger square aria-label='Open calendar' data-testid={TESTID_TRIGGER} />
       </PopoverTrigger>
       <PopoverContent data-testid={TESTID_CONTENT}>
         <DateTimeFieldCalendar data-testid={TESTID_CALENDAR} style={{ width: 320 }} {...calendarProps}>
           <CalendarHeader>
-            <CalendarPrevButton aria-label='Previous month'>
+            <CalendarPrevButton square aria-label='Previous month'>
               <Icon>
                 <ChevronLeft />
               </Icon>
@@ -106,7 +106,7 @@ const DateTimeFieldTest: FC<DateTimeFieldTestProps> = ({
                 <CalendarYearLabel />
               </CalendarViewButton>
             </CalendarHeading>
-            <CalendarNextButton aria-label='Next month'>
+            <CalendarNextButton square aria-label='Next month'>
               <Icon>
                 <ChevronRight />
               </Icon>

@@ -2,5 +2,5 @@ export { DateRangeField, type DateRangeFieldProps } from './DateRangeField'
 export {
   DateRangeFieldInput, type DateRangeFieldInputProps,
   DateRangeFieldCalendar, type DateRangeFieldCalendarProps,
-  DateRangeFieldTriggerIconButton, type DateRangeFieldTriggerIconButtonProps
+  DateRangeFieldTrigger, type DateRangeFieldTriggerProps
 } from './components'

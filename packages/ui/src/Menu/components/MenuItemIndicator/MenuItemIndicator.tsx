@@ -1,6 +1,5 @@
 'use client';
 import { FC } from 'react';
-import { Check } from '@vega-ui/icons';
 import { csx } from '@vega-ui/utils';
 import { Icon, IconProps } from '../../../Icon';
 import { useMenuContext } from '../../contexts';
@@ -9,13 +8,13 @@ import style from './style.module.css'
 
 export type MenuItemIndicatorProps = IconProps
 
-/** MenuItemIndicator is the check mark of a MenuCheckboxItem or a MenuRadioItem: it keeps its place in every item and shows only in a checked one. */
+/** MenuItemIndicator is the mark of a MenuCheckboxItem or a MenuRadioItem: it keeps its place in every item and shows its children only in a checked one. Pass the check mark as its children. */
 export const MenuItemIndicator: FC<MenuItemIndicatorProps> = ({ children, className, ...props }) => {
   const { size } = useMenuContext()
 
   return (
     <Icon className={csx(style.indicator, className)} size={sizeMapper(size ?? 'md')} {...props}>
-      {children ?? <Check />}
+      {children}
     </Icon>
   )
 }

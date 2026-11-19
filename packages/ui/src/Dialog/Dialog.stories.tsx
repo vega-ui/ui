@@ -5,7 +5,6 @@ import { XIcon } from '@vega-ui/icons';
 import { Dialog, DialogProps } from './Dialog';
 import { DialogClose, DialogContent, DialogContentProps, DialogTrigger } from './components';
 import { Button } from '../Button';
-import { IconButton } from '../IconButton';
 import { Icon } from '../Icon';
 import { Text } from '../Text';
 import { Heading } from '../Heading';
@@ -58,14 +57,15 @@ export const Playground: Story = {
         <DialogContent {...contentProps} aria-labelledby='discard-title'>
           <Heading id='discard-title' as='h2' size={4} fontWeight={600}>Discard draft?</Heading>
           <DialogClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ position: 'absolute', insetBlockStart: 16, insetInlineEnd: 16, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ position: 'absolute', insetBlockStart: 16, insetInlineEnd: 16, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </DialogClose>
           <Text size={3}>The message you started will be deleted. This can’t be undone.</Text>
           <form method='dialog' style={{ display: 'flex', gap: 8, justifyContent: 'flex-end', marginTop: 16 }}>

@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Fieldset, FieldsetProps } from './Fieldset';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 import { FieldsetHeader, FieldsetLegend } from './components';
 import { TextField, TextFieldInput } from '../TextField';
 import { Label } from '../Label';
@@ -65,8 +66,8 @@ export const Matrix: Story = {
             <Checkbox>
               <CheckboxInput defaultChecked />
               <CheckboxIndicator>
-                <CheckboxCheckedIcon />
-                <CheckboxIndeterminateIcon />
+                <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+                <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
               </CheckboxIndicator>
               Option
             </Checkbox>

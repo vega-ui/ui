@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Separator } from '../Separator';
-import { ChevronRightIcon } from '@vega-ui/icons';
+import { CheckIcon, ChevronRightIcon } from '@vega-ui/icons';
 import { Icon } from '../Icon';
 import { MenuCheckboxItem, MenuContent, MenuGroup, MenuItem, MenuItemIndicator, MenuSubmenu, MenuSubmenuTrigger } from '../Menu';
 import { ContextMenu } from './ContextMenu';
@@ -44,8 +44,8 @@ const meta = {
         </MenuSubmenu>
         <Separator />
         <MenuGroup aria-label='View'>
-          <MenuCheckboxItem defaultChecked><MenuItemIndicator />Show ruler</MenuCheckboxItem>
-          <MenuCheckboxItem><MenuItemIndicator />Show grid</MenuCheckboxItem>
+          <MenuCheckboxItem defaultChecked><MenuItemIndicator><CheckIcon /></MenuItemIndicator>Show ruler</MenuCheckboxItem>
+          <MenuCheckboxItem><MenuItemIndicator><CheckIcon /></MenuItemIndicator>Show grid</MenuCheckboxItem>
         </MenuGroup>
       </MenuContent>,
     ],
