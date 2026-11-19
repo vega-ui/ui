@@ -5,4 +5,4 @@ export {
   SegmentedControlItemInput, type SegmentedControlItemInputProps,
 } from './components'
 export { useSegmentedControlContext } from './contexts'
-export type { SegmentedControlSize, SegmentedControlVariant } from './types'
+export type { SegmentedControlSize, SegmentedControlValue, SegmentedControlVariant } from './types'

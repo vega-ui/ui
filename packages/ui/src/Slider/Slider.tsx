@@ -26,7 +26,7 @@ export interface SliderProps<Value extends number | number[] = number> extends O
    * Called when a thumb changes, with a number or an array, in the shape of
    * `value` or `defaultValue`.
    */
-  onChangeValue?(value: NoInfer<Value>): void
+  onChangeValue?(value: NoInfer<Value extends number ? number : number[]>): void
 
   /**
    * The minimum allowed value. Defaults to `0`.

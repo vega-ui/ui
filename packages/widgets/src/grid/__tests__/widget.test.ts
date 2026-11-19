@@ -10,7 +10,7 @@ type GridOptions = Parameters<typeof simulate<typeof grid.shape>>[1]
 const KEYS = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i']
 
 const entriesOf = (keys: readonly string[], disabled: readonly string[] = []): GridEntry<string>[] =>
-  keys.map((cell, index) => ({ key: cell, data: { row: Math.floor(index / 3), col: index % 3, excluded: false, disabled: disabled.includes(cell), selectable: true, interactive: false } }))
+  keys.map((cell, index) => ({ key: cell, data: { row: Math.floor(index / 3), col: index % 3, excluded: false, disabled: disabled.includes(cell), selectable: true } }))
 
 const simulateGrid = (options: Partial<GridOptions> = {}) => simulate(grid, { ...grid.emptyOptions, entries: entriesOf(KEYS), ...options } as GridOptions, { orientation: 'grid' })
 
@@ -349,7 +349,7 @@ describe('Edge Cases', () => {
 
   it('orders the cells by row and column, not by the order of the entries or the keys as text', () => {
     const rows = (numbers: readonly number[]): GridEntry<string>[] =>
-      numbers.map((row) => ({ key: `${row}:0`, data: { row, col: 0, excluded: false, disabled: false, selectable: true, interactive: false } }))
+      numbers.map((row) => ({ key: `${row}:0`, data: { row, col: 0, excluded: false, disabled: false, selectable: true } }))
 
     const range = simulateGrid({ entries: rows(Array.from({ length: 11 }, (_, row) => row)), selection: 'range', defaultValue: ['9:0', '10:0'] })
     expect(grid.isSelected(range.state, '10:0')).toBe(true)
@@ -375,7 +375,7 @@ describe('Edge Cases', () => {
     }
     const entries = ['4:0', '4:1', '5:0', '5:1'].map((cell): GridEntry<string> => {
       const [row, col] = positionOf(cell)
-      return { key: cell, data: { row, col, excluded: false, disabled: false, selectable: true, interactive: false } }
+      return { key: cell, data: { row, col, excluded: false, disabled: false, selectable: true } }
     })
     const onChangeValue = vi.fn()
     const widget = simulateGrid({ entries, selection: 'multiple', defaultActive: '5:0', compare: (first, second) => toIndex(first) - toIndex(second), resolveRange, getNextKey, onChangeValue })

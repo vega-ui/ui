@@ -82,6 +82,7 @@ export const menuShape = state({
     disabled: matching(TRIGGER, '[aria-disabled="true"]'),
     triggerFocused: matching(TRIGGER, ':focus'),
     triggerHovered: matching(TRIGGER, ':hover'),
+    focusInside: matching(CONTENT, ':has(:focus)'),
   },
   collection: (options) => entries.of(options.items),
   parts: [TRIGGER, CONTENT, ANCHOR],
@@ -142,7 +143,7 @@ const toggling = (focusesFirst: boolean) => listening<MenuSnapshot>([browser.tog
 
   const next = menuShape.open.set(state, true)
   const first = collection.first(state.collection)
-  if (!focusesFirst || state.active !== null || first === null) return keep(next)
+  if (!focusesFirst || state.active !== null || state.focusInside || first === null) return keep(next)
 
   return keep(menuShape.active.set(next, first), [act.focus(first)])
 })

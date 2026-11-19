@@ -42,6 +42,24 @@ describe('Critical User Paths', () => {
     expect(pinField.actions).toEqual([act.setText(ROOT, '1234', [3, 4])])
   })
 
+  it('writes a pasted code over the slots from the selected one, like typing it', () => {
+    const full = simulatePin({ defaultValue: '5678' })
+
+    full.send(text.edit, typed('5678', [0, 1], '1234', 'insertFromPaste'))
+    expect(full.state.value).toBe('1234')
+
+    const middle = simulatePin({ defaultValue: '5678' })
+
+    middle.send(text.edit, typed('5678', [1, 2], '12', 'insertFromPaste'))
+    expect(middle.state.value).toBe('5128')
+    expect(middle.actions).toEqual([act.setText(ROOT, '5128', [3, 4])])
+
+    const masked = simulatePin({ defaultValue: '5678', mask: [/\d/, /\d/, /\d/, /\d/] })
+
+    masked.send(text.edit, typed('5678', [0, 1], '1 2', 'insertFromPaste'))
+    expect(masked.state.value).toBe('1278')
+  })
+
   it('deletes the digit of the selected slot with Backspace', () => {
     const pinField = simulatePin({ defaultValue: '123' })
 
@@ -195,6 +213,12 @@ describe('Edge Cases', () => {
 
     pinField.send(createInput(SELECT_SLOT, { to: 1 }))
     expect(pinField.actions).toEqual([])
+  })
+
+  it('marks no slot active before the field has the focus', () => {
+    const pinField = simulatePin().send(lifecycle.connect)
+
+    expect(slotsOf(pinField.state).map((slot) => slot['data-active'])).toEqual([false, false, false, false])
   })
 
   it('marks the slot of the caret, every slot of a selected code and the empty slots', () => {

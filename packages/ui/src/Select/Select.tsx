@@ -44,7 +44,7 @@ export interface SelectProps<Value extends string | number = string> extends HTM
   /**
    * The default selected value (uncontrolled).
    */
-  defaultValue?: Value | undefined
+  defaultValue?: NoInfer<Value> | undefined
 
   /**
    * Callback fired when an option is selected.

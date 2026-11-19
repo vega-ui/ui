@@ -6,6 +6,7 @@ import { handled, keep, listening } from '../../step'
 import { browser, command, createInput, focus, key, layout, Measured, measure, nav, pointer as pointerInput, scroll, text, TextState } from '../../input'
 import { fruits, listbox, shape } from '../../__tests__/fixtures/listbox'
 import { Part } from '../../output'
+import { emptyCollection } from '../../collection'
 import { internal, reading, state } from '../../state'
 
 type Options = Parameters<typeof shape.create>[0]
@@ -202,7 +203,7 @@ describe('Critical User Paths', () => {
     const handle = document.createElement('div')
     outer.root.appendChild(handle)
 
-    const elements = createElements<string>()
+    const elements = createElements<never>()
     elements.setRoot(handle, 'handle')
 
     const PING = command('ping')
@@ -222,7 +223,7 @@ describe('Critical User Paths', () => {
     area.appendChild(inner)
     document.body.appendChild(area)
 
-    const elements = createElements<string>()
+    const elements = createElements<never>()
     elements.setRoot(area, 'area')
 
     const inputs: unknown[] = []
@@ -849,7 +850,7 @@ describe('Critical User Paths', () => {
     const elements = createElements<string>()
     elements.setRoot(root)
 
-    const panelShape = state({ options: { shows: true }, owns: {}, internal: { shown: internal('first') } })
+    const panelShape = state({ options: { shows: true }, owns: {}, internal: { shown: internal('first') }, collection: () => emptyCollection<string>() })
     const revealed: unknown[] = []
     const revealing = defineWidget({
       state: panelShape,
@@ -1362,7 +1363,7 @@ describe('Accessibility', () => {
       const root = document.createElement('div')
       root.tabIndex = 0
       document.body.appendChild(root)
-      const elements = createElements<string>()
+      const elements = createElements<never>()
       elements.setRoot(root)
 
       const moves: string[] = []

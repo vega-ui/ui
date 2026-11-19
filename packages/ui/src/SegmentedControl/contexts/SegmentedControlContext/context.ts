@@ -1,6 +1,5 @@
 'use client';
 
-import { ChangeEvent } from 'react';
 import { createContext } from '../../../internals/context';
 import { SegmentedControlSize, SegmentedControlValue, SegmentedControlVariant } from '../../types';
 
@@ -11,7 +10,7 @@ export interface SegmentedControlContextState {
   selected?: SegmentedControlValue
   defaultSelected?: SegmentedControlValue
   name?: string
-  onChange?(e: ChangeEvent<HTMLInputElement>): void
+  onChangeValue?(value: SegmentedControlValue): void
 }
 
 export const [SegmentedControlProvider, useSegmentedControlContext] = createContext<SegmentedControlContextState>('SegmentedControlContext', {

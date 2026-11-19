@@ -128,7 +128,7 @@ export interface GridProps<Key extends GridKey = GridKey, SelectionMode extends 
   /**
    * Uncontrolled initially selected cells.
    */
-  defaultValue?: (SelectionMode extends 'multiple' | 'range' ? Key[] : SelectionMode extends 'single' ? Key : never) | undefined;
+  defaultValue?: NoInfer<SelectionMode extends 'multiple' | 'range' ? Key[] : SelectionMode extends 'single' ? Key : never> | undefined;
 
   /**
    * The smallest key that can be selected, by the `compare` order, or by position without `compare`.

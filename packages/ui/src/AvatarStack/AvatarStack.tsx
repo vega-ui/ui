@@ -1,33 +1,33 @@
 'use client';
 
 import { FC, HTMLAttributes, Ref } from 'react';
-import { AvatarGroupProvider } from './contexts';
+import { AvatarStackProvider } from './contexts';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
-import { AvatarGroupSize, AvatarGroupVariant } from './types';
+import { AvatarStackSize, AvatarStackVariant } from './types';
 
-export interface AvatarGroupProps extends HTMLAttributes<HTMLDivElement> {
+export interface AvatarStackProps extends HTMLAttributes<HTMLDivElement> {
   /**
-   * Ref forwarded to the root `div` element of the avatar group.
+   * Ref forwarded to the root `div` element of the avatar stack.
    * Useful for direct DOM access (e.g., measuring width or attaching listeners).
    */
   ref?: Ref<HTMLDivElement>
 
   /**
-   * Size of all avatar items within the group.
+   * Size of all avatar items within the stack.
    * Ensures consistent sizing across all items.
    */
-  size?: AvatarGroupSize
+  size?: AvatarStackSize
 
   /**
-   * Variant for all avatars in the group.
+   * Variant for all avatars in the stack.
    * Applies a unified visual style (e.g., `primary`, `secondary`).
    */
-  variant?: AvatarGroupVariant
+  variant?: AvatarStackVariant
 }
 
-/** An Avatar Group is a UI component that displays multiple avatars in a compact, overlapping, or grid-like arrangement, commonly used to represent a group of users, such as team members or participants in a conversation.  */
-export const AvatarStack: FC<AvatarGroupProps> = ({
+/** AvatarStack displays multiple avatars in a compact, overlapping arrangement, commonly used to represent a group of users, such as team members or participants in a conversation.  */
+export const AvatarStack: FC<AvatarStackProps> = ({
   className,
   size = 'md',
   variant = 'primary',
@@ -35,10 +35,10 @@ export const AvatarStack: FC<AvatarGroupProps> = ({
   ...props
 }) => {
   return (
-    <AvatarGroupProvider size={size} variant={variant}>
+    <AvatarStackProvider size={size} variant={variant}>
       <div className={csx(style.stack, className)} {...props}>
         {children}
       </div>
-    </AvatarGroupProvider>
+    </AvatarStackProvider>
   )
 }

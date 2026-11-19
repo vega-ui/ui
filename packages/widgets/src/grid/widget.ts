@@ -48,7 +48,6 @@ export interface GridCellData {
   readonly excluded: boolean
   readonly disabled: boolean
   readonly selectable: boolean
-  readonly interactive: boolean
 }
 
 export type GridEntry<Key extends GridKey = GridKey> = Entry<Key, GridCellData>
@@ -466,11 +465,10 @@ export const createGridLogic = <State extends GridState<Key>, Key extends GridKe
         withSelection ? isSelected(state, target) : undefined,
         selectableCell ? isDisabled(state, target) : undefined,
         rangeOf(state, target),
-        dataOf(state, target)?.interactive === true,
       ]
     },
-    render: ([tabIndex, selected, disabled, range, interactive]) => ({
-      role: interactive ? undefined : 'gridcell',
+    render: ([tabIndex, selected, disabled, range]) => ({
+      role: 'gridcell',
       'aria-disabled': disabled,
       'aria-selected': selected,
       'data-range': range,

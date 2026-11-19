@@ -1,12 +1,12 @@
 'use client';
 
-import { ChangeEvent, FC, HTMLAttributes, Ref } from 'react';
+import { HTMLAttributes, Ref } from 'react';
 import { csx } from '@vega-ui/utils';
 import { SegmentedControlProvider } from './contexts';
 import { SegmentedControlSize, SegmentedControlValue, SegmentedControlVariant } from './types';
 import styles from './style.module.css';
 
-export interface SegmentedControlProps extends HTMLAttributes<HTMLDivElement> {
+export interface SegmentedControlProps<Value extends SegmentedControlValue = SegmentedControlValue> extends HTMLAttributes<HTMLDivElement> {
   /**
    * Disables all segments, preventing user interaction.
    */
@@ -31,22 +31,21 @@ export interface SegmentedControlProps extends HTMLAttributes<HTMLDivElement> {
   /**
    * The currently selected value of the segmented control
    */
-  value?: SegmentedControlValue
+  value?: Value
   
   /**
    * The initial selected value when the component is used in an uncontrolled mode
    */
-  defaultValue?: SegmentedControlValue
+  defaultValue?: NoInfer<Value>
   
   /**
-   * Fired when the selected segment changes.
-   *
-   * This event mirrors the native `change` event of a radio input and
-   * can be used to integrate with forms or listen for user selection.
-   *
-   * The event target is the underlying hidden `<input type="radio">`.
+   * Called with the value of the item the user selects. Like the native `change` event bubbling to the root, it
+   * does not run when the `onChange` of the `SegmentedControlItemInput` stops the propagation. `preventDefault`
+   * cannot undo the choice, because the radio is checked before `change`: to turn a choice down, keep the
+   * previous `value` in controlled mode. The root's own `onChange` is the native `change` event that bubbles
+   * from the radio input.
    */
-  onChange?(e: ChangeEvent<HTMLInputElement>): void
+  onChangeValue?: (value: Value) => void
   
   /**
    * The name of the underlying radio group.
@@ -59,30 +58,31 @@ export interface SegmentedControlProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 /** A Segmented Control is a UI component that displays a set of options in a horizontal layout, where each option is a "segment." Users can select one segment to toggle between different views or settings, offering a compact alternative to multiple buttons or switches */
-export const SegmentedControl: FC<SegmentedControlProps> = ({
+export const SegmentedControl = <Value extends SegmentedControlValue = SegmentedControlValue>({
   ref,
   size = 'md',
   disabled,
   className,
   variant = 'secondary',
   value,
-  defaultValue = '',
-  onChange,
+  defaultValue,
+  onChangeValue,
   name,
   ...props
-}) => {
+}: SegmentedControlProps<Value>) => {
   return (
     <SegmentedControlProvider
       variant={variant}
       size={size}
       disabled={disabled}
-      onChange={onChange}
+      onChangeValue={onChangeValue}
       selected={value}
       defaultSelected={defaultValue}
       name={name}
     >
       <div
         ref={ref}
+        role='radiogroup'
         data-size={size}
         data-variant={variant}
         className={csx(styles.segmentedControl, className)}

@@ -1,6 +1,6 @@
 import { act, browser, command, controlled, defineWidget, focus, handled, Input, internal, keep, key, lifecycle, listening, matching, nav, ROOT, source, state, Step, text, TextState } from '@vega-ui/core'
 import { clamp } from '@vega-ui/utils'
-import { applyEdit, applyMaskEdit, calibrateMask, MaskEntry } from '../mask'
+import { applyEdit, applyMaskEdit, calibrateMask, fits, MaskEntry } from '../mask'
 
 export const SELECT_SLOT = command('selectSlot')
 
@@ -26,7 +26,7 @@ export const pinFieldShape = state({
   },
   owns: { value: controlled('') },
   internal: {
-    active: internal(0),
+    active: internal(-1),
     selectedAll: internal(false),
     pending: internal(undefined as { value: string; slot: number } | undefined),
     committed: internal(''),
@@ -56,11 +56,24 @@ const limited = (state: PinFieldSnapshot, field: TextState, data: string) => {
   return data.slice(0, Math.max(room, 0))
 }
 
+const overwritten = (field: TextState, edit: { type: string; data: string }, length: number): TextState => {
+  if (edit.type !== 'insertFromPaste') return field
+
+  const [from, to] = field.selection
+
+  return { ...field, selection: [from, Math.max(to, Math.min(field.value.length, from + length))] }
+}
+
 const edited = (state: PinFieldSnapshot, field: TextState, edit: { type: string; data: string }) => {
   const { mask } = state.options
-  if (mask && !(mask instanceof RegExp)) return applyMaskEdit(field, edit, mask)
+  if (mask && !(mask instanceof RegExp)) {
+    const accepted = [...edit.data].filter((char) => fits(char, mask))
+    return applyMaskEdit(overwritten(field, edit, accepted.length), edit, mask)
+  }
 
-  return applyEdit(field, { ...edit, data: limited(state, field, edit.data) })
+  const target = overwritten(field, edit, edit.data.length)
+
+  return applyEdit(target, { ...edit, data: limited(state, target, edit.data) })
 }
 
 const slotOf = (state: PinFieldSnapshot, position: number) => clamp(0, position, state.options.maxLength - 1)

@@ -155,16 +155,20 @@ describe('Grid', () => {
   });
   
   describe('Edge Cases', () => {
-    it('leaves the role to a control a component renders as the cell with asChild', async () => {
+    it('keeps the gridcell role on a control a component renders as the cell with asChild, and the control still runs', async () => {
+      const onClick = vi.fn()
       const Action: FC<ComponentProps<'button'>> = (props) => <button type='button' {...props} />
       const r = render(
         <Grid aria-label='Grid'>
           <GridRowGroup>
             <GridRow row={0}>
               <GridCell col={0} asChild>
-                <Action data-testid='action'>Go</Action>
+                <Action data-testid='action' onClick={onClick}>Go</Action>
               </GridCell>
               <GridCell col={1} asChild>
+                <button type='button' data-testid='native'>Open</button>
+              </GridCell>
+              <GridCell col={2} asChild>
                 <span data-testid='plain'>Plain</span>
               </GridCell>
             </GridRow>
@@ -172,8 +176,13 @@ describe('Grid', () => {
         </Grid>
       );
 
-      await expect.element(r.getByTestId('action')).not.toHaveAttribute('role');
+      await expect.element(r.getByTestId('native')).toHaveAttribute('role', 'gridcell');
       await expect.element(r.getByTestId('plain')).toHaveAttribute('role', 'gridcell');
+      expect(r.getByTestId('action').getAttribute('role')).toBe('gridcell');
+
+      r.getByTestId('action').focus();
+      await userEvent.keyboard('{Enter}');
+      expect(onClick).toHaveBeenCalledOnce();
     });
 
     it('renders on table elements with asChild and navigates them', async () => {

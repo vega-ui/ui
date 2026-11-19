@@ -47,7 +47,7 @@ export interface ComboboxProps<Value extends string | number = string> extends H
   /**
    * The value of the option picked initially (uncontrolled).
    */
-  defaultValue?: Value | undefined
+  defaultValue?: NoInfer<Value> | undefined
 
   /**
    * Called when an option is picked, and with `null` when the text is edited or cleared.

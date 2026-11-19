@@ -150,19 +150,16 @@ describe('SegmentedControl', () => {
     describe('controlled', () => {
       let r: RenderResult;
       
-      const onChange = vi.fn();
+      const onChangeValue = vi.fn();
       
       beforeEach(() => {
-        onChange.mockClear();
-        r = render(<SegmentedControlTest value={VALUE_0} onChange={onChange} />);
+        onChangeValue.mockClear();
+        r = render(<SegmentedControlTest value={VALUE_0} onChangeValue={onChangeValue} />);
       });
       
-      it('fires onChange when user selects another segment', async () => {
+      it('reports the value of the segment the user selects', async () => {
         await userEvent.click(getItem2(r));
-        expect(onChange).toHaveBeenCalledTimes(1);
-        
-        const [e] = onChange.mock.calls[0] as [Event];
-        expect((e.target as HTMLInputElement).value).toBe(VALUE_2);
+        expect(onChangeValue).toHaveBeenCalledExactlyOnceWith(VALUE_2);
       });
       
       it('does not change selection until parent updates value', async () => {
@@ -172,7 +169,7 @@ describe('SegmentedControl', () => {
         await expect.element(getInput1(r)).not.toBeChecked();
         await expectIndicatorOver(getIndicator(r), getItem0(r));
         
-        r.rerender(<SegmentedControlTest value={VALUE_1} onChange={onChange} />);
+        r.rerender(<SegmentedControlTest value={VALUE_1} onChangeValue={onChangeValue} />);
         await expect.element(getInput0(r)).not.toBeChecked();
         await expect.element(getInput1(r)).toBeChecked();
         await expectIndicatorOver(getIndicator(r), getItem1(r));
@@ -180,6 +177,14 @@ describe('SegmentedControl', () => {
     });
   });
   
+  describe('Accessibility', () => {
+    it('groups the segments as a radio group named by the label you pass', async () => {
+      const r = render(<SegmentedControlTest aria-label='View' />);
+
+      await expect.element(r.getByRole('radiogroup', { name: 'View' })).toBeInTheDocument();
+    });
+  });
+
   describe('Edge Cases', () => {
     it('does not select an item disabled on its own', async () => {
       const r = render(
@@ -217,10 +222,11 @@ describe('SegmentedControl', () => {
       expect(calls).toEqual(['input', 'root']);
     });
 
-    it('keeps onChange of the root from running when the input stops propagation', async () => {
+    it('keeps onChange and onChangeValue of the root from running when the input stops propagation', async () => {
       const onChange = vi.fn();
+      const onChangeValue = vi.fn();
       const r = render(
-        <SegmentedControlTest onChange={onChange}>
+        <SegmentedControlTest onChange={onChange} onChangeValue={onChangeValue}>
           <SegmentedControlItem data-testid={TESTID_ITEM_0} value={VALUE_0}>
             {VALUE_0}
             <SegmentedControlItemInput data-testid={TESTID_INPUT_0} onChange={(event) => event.stopPropagation()} />
@@ -232,6 +238,23 @@ describe('SegmentedControl', () => {
 
       await expect.element(getInput0(r)).toBeChecked();
       expect(onChange).not.toHaveBeenCalled();
+      expect(onChangeValue).not.toHaveBeenCalled();
+    });
+
+    it('reports a number value as the number the item has', async () => {
+      const onChangeValue = vi.fn();
+      const r = render(
+        <SegmentedControlTest onChangeValue={onChangeValue}>
+          <SegmentedControlItem data-testid={TESTID_ITEM_0} value={2}>
+            2x
+            <SegmentedControlItemInput data-testid={TESTID_INPUT_0} />
+          </SegmentedControlItem>
+        </SegmentedControlTest>,
+      );
+
+      await userEvent.click(getItem0(r));
+
+      expect(onChangeValue).toHaveBeenCalledExactlyOnceWith(2);
     });
 
     it('restores defaultValue on native form reset (uncontrolled)', async () => {

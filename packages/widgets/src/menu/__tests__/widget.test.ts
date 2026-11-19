@@ -321,6 +321,16 @@ describe('Error handling', () => {
 })
 
 describe('Edge Cases', () => {
+  it('leaves the focus in a submenu the user reached before the browser reported the menu open', () => {
+    const widget = simulate(menuWidget, { items })
+
+    widget.send(key.arrowUp, { part: TRIGGER })
+    widget.observe({ shown: true }).send(focus.move, { part: CONTENT })
+
+    widget.observe({ focusInside: true }).send(browser.toggle, { to: true, part: CONTENT })
+    expect(widget.actions).toEqual([])
+  })
+
   it('closes on Escape and Shift+Tab with the focus on the trigger, and leaves Tab to the browser', () => {
     const widget = open()
 
