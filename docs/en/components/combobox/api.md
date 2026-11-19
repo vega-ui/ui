@@ -12,7 +12,7 @@
 | `size` | `ComboboxSize` | `'md'` | No | Size of the options and of the list corners. |
 | `autocomplete` | `ComboboxAutocomplete` | `'list'` | No | How the text and the list relate, as in `aria-autocomplete`, which the input gets: `list` when the app filters the options by the text, `none` when the options stay the same, `both` to also complete the text with the first matching option, its rest selected, and `inline` to only complete it, leaving the list closed while typing. |
 | `value` | `Value \| null` | — | No | The value of the picked option (controlled). `null` clears it, while `undefined` makes the combobox uncontrolled. |
-| `defaultValue` | `Value` | — | No | The value of the option picked initially (uncontrolled). |
+| `defaultValue` | `NoInfer<Value>` | — | No | The value of the option picked initially (uncontrolled). |
 | `onChangeValue` | `(value: Value \| null) => void` | — | No | Called when an option is picked, and with `null` when the text is edited or cleared. |
 | `open` | `boolean` | — | No | Whether the list is open (controlled). The list is shown only while it has options. |
 | `defaultOpen` | `boolean` | — | No | Whether the list is open initially (uncontrolled). |
@@ -65,19 +65,20 @@ A button that opens and closes the list for pointer and touch users. Put it insi
 <!-- AUTO-GENERATED:PART_API:ComboboxTrigger:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `size` | `IconButtonSize` | — | No | Size of the button container. Controls padding and overall clickable area. |
 | `asChild` | `boolean` | — | No | When true, renders the button as a child component using `Slot` (e.g., from Radix UI). Enables polymorphic rendering — useful for making the button act as a link or custom tag. |
+| `size` | `ButtonSize` | — | No | Defines the size of the button. Affects padding, font size, and overall dimensions. |
 | `variant` | `ButtonBaseVariant` | — | No | Defines the visual style of the button, affecting color schemes and emphasis. |
 | `appearance` | `ButtonBaseAppearance` | — | No | Adjusts the button's structural appearance (background, border, etc.). |
 | `disabled` | `boolean` | — | No | Disables the button when true. Prevents user interaction and applies a visually disabled state. Not applied with `asChild`: the child element owns its disabled state, for example, `aria-disabled` or a link without `href`. |
 | `className` | `string` | — | No | Optional custom CSS class for the button element. Useful for design system overrides or scoped styles. |
 | `children` | `ReactNode` | — | No | Content of the button — text, icon, or any React node. |
 | `ref` | `Ref<HTMLButtonElement>` | — | No | Ref forwarded to the native `<button>` element. Allows direct DOM access for focus management or measuring. |
+| `square` | `false` | — | No | Makes the button a square as wide as it is high, for a single icon. Name it with `aria-label` or `aria-labelledby`. |
 
 Also accepts all `<button>` attributes.
 <!-- AUTO-GENERATED:PART_API:ComboboxTrigger:end -->
 
-- Put `ComboboxIcon` inside and name the button with `aria-label`
+- For an icon alone, put `ComboboxIcon` inside, add `square` and name the button with `aria-label`; a text button needs no `aria-label`
 - Out of the tab order (`tabIndex={-1}`): keyboard users open the list from the input with `ArrowDown` or `Alt+ArrowDown`
 - A press keeps the focus in the input and opens the list without an active option, or closes it
 - The root sets `aria-controls`, `aria-expanded` and `disabled`; it is disabled while the combobox is `disabled` or `readOnly`
@@ -85,7 +86,7 @@ Also accepts all `<button>` attributes.
 
 ## `ComboboxIcon`
 
-The icon of `ComboboxTrigger`: a chevron by default.
+The icon of `ComboboxTrigger`. It draws no icon of its own: pass one as its children, such as a chevron from any icon set.
 
 <!-- AUTO-GENERATED:PART_API:ComboboxIcon:start -->
 | Prop | Type | Default | Required | Description |
@@ -93,14 +94,13 @@ The icon of `ComboboxTrigger`: a chevron by default.
 | `size` | `IconSize` | — | No | Predefined size token for the icon. Can be overridden by explicit width and height. |
 | `ref` | `Ref<SVGSVGElement>` | — | No | Ref to the SVG element |
 | `strokeWidth` | `number` | — | No | Stroke thickness for SVG lines and shapes (in px or pt). |
-| `children` | `ReactNode` | — | No | Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
+| `children` | `ReactNode` | — | Yes | Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
 
 Also accepts all HTML attributes.
 <!-- AUTO-GENERATED:PART_API:ComboboxIcon:end -->
 
 - Sized by the surrounding `TextField`: `xs` and `sm` fields get an `xs` icon, `md` gets `sm`, `lg` and `xl` get `md`
 - Has `data-open='true'` while the list is shown and turns upside down
-- Replace the chevron with `children`
 
 ## `ListboxOption`
 
@@ -127,7 +127,7 @@ Advanced hook for custom wrappers around the shipped parts. Use it only when the
 | `ComboboxProps<V extends string \| number = string>` | Root prop type | Generic value type of the options. |
 | `ComboboxInputProps` | `TextFieldInputProps` | Every `<input>` attribute. |
 | `ComboboxListboxProps` | `<div>` attributes without `id` | The `id` belongs to the root. |
-| `ComboboxTriggerProps` | `IconButtonProps` | Props of an `IconButton`. |
+| `ComboboxTriggerProps` | `ButtonProps` | Props of a `Button`; with `square`, a required `aria-label` or `aria-labelledby`. |
 | `ComboboxIconProps` | `IconProps` | Props of an `Icon`. |
 | `ComboboxAutocomplete` | `'none' \| 'list' \| 'both' \| 'inline'` | How the text and the list relate, set as `aria-autocomplete` on the input. |
 | `ComboboxSize` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| string` | Size of the options and the list corners. |

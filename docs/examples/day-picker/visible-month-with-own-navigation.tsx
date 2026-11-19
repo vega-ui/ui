@@ -1,14 +1,14 @@
 import {
+  Button,
   DayPicker,
   DayPickerCell,
   DayPickerScroller,
   DayPickerScrollerContent,
   DayPickerScrollerLayout,
   Icon,
-  IconButton,
   Text,
 } from '@vega-ui/react';
-import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import { addCalendarMonths, getSameDayInCalendarMonth, gregorianCalendar } from '@vega-ui/i18n';
 import { useState } from 'react';
 
@@ -26,13 +26,13 @@ export default function VisibleMonthWithOwnNavigation() {
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-4)', inlineSize: 'fit-content' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <IconButton aria-label='Previous month' size='sm' variant='secondary' appearance='ghost' onClick={() => showMonth(-1)}>
-          <Icon><ChevronLeft /></Icon>
-        </IconButton>
+        <Button square aria-label='Previous month' size='sm' variant='secondary' appearance='ghost' onClick={() => showMonth(-1)}>
+          <Icon><ChevronLeftIcon /></Icon>
+        </Button>
         <Text fontWeight={600} aria-live='polite'>{monthFormat.format(new Date(focused))}</Text>
-        <IconButton aria-label='Next month' size='sm' variant='secondary' appearance='ghost' onClick={() => showMonth(1)}>
-          <Icon><ChevronRight /></Icon>
-        </IconButton>
+        <Button square aria-label='Next month' size='sm' variant='secondary' appearance='ghost' onClick={() => showMonth(1)}>
+          <Icon><ChevronRightIcon /></Icon>
+        </Button>
       </div>
       <DayPicker
         aria-label='Pickup day'

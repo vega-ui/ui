@@ -1,9 +1,9 @@
 import { useId, useState } from 'react';
 import {
   Badge,
+  Button,
   Heading,
   Icon,
-  IconButton,
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -44,9 +44,9 @@ export default function ControlledOpenState() {
     >
       <Popover role='dialog' placement='bottom-start' open={open} onChangeOpen={changeOpen}>
         <PopoverTrigger asChild>
-          <IconButton aria-label={unread > 0 ? `Notifications, ${unread} unread` : 'Notifications'} variant='secondary' appearance='ghost'>
+          <Button square aria-label={unread > 0 ? `Notifications, ${unread} unread` : 'Notifications'} variant='secondary' appearance='ghost'>
             <Icon><BellIcon /></Icon>
-          </IconButton>
+          </Button>
         </PopoverTrigger>
         <PopoverContent aria-labelledby={titleId}>
           <div style={{ display: 'grid', gap: 'var(--spacing-8)', width: 280 }}>

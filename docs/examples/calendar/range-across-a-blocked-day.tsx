@@ -24,7 +24,9 @@ import {
   CalendarYearsScroller,
   CalendarYearsScrollerContent,
   HelperText,
+  Icon,
 } from '@vega-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const soldOut = ['2026-11-14', '2026-11-15'];
@@ -48,12 +50,12 @@ export default function RangeAcrossABlockedDay() {
     <div style={{ display: 'grid', gap: 'var(--spacing-3)', justifyItems: 'start', width: '100%' }}>
       <Calendar locale='en-US' selection='range' disabledDates={soldOut} value={[start, end]} onChangeValue={setRange}>
         <CalendarHeader>
-          <CalendarPrevButton aria-label='Previous' />
+          <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
           <CalendarHeading>
             <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
             <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
           </CalendarHeading>
-          <CalendarNextButton aria-label='Next' />
+          <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
         </CalendarHeader>
         <CalendarContent>
           <CalendarDays aria-label='Room dates' aria-describedby={invalid ? errorId : undefined}>

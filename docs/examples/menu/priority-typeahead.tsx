@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Badge, Button, Menu, MenuContent, MenuItemIndicator, MenuRadioGroup, MenuRadioItem, MenuTrigger } from '@vega-ui/react';
+import { CheckIcon } from '@vega-ui/icons';
 
 const priorities = [
   { value: 'urgent', label: 'Urgent', code: 'P1', variant: 'error' },
@@ -23,7 +24,7 @@ export default function PriorityTypeahead() {
             <MenuRadioItem key={item.value} value={item.value} label={item.label}>
               <Badge size='xs' variant={item.variant} appearance='ghost' aria-hidden='true' style={{ fontVariantNumeric: 'tabular-nums' }}>{item.code}</Badge>
               {item.label}
-              <MenuItemIndicator style={{ marginInlineStart: 'auto' }} />
+              <MenuItemIndicator style={{ marginInlineStart: 'auto' }}><CheckIcon /></MenuItemIndicator>
             </MenuRadioItem>
           ))}
         </MenuRadioGroup>

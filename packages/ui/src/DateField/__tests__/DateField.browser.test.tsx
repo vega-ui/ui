@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
 
 import { DateField, type DateFieldProps } from '../DateField';
-import { DateFieldInput, DateFieldCalendar, DateFieldTriggerIconButton, type DateFieldInputProps, type DateFieldCalendarProps } from '../components';
+import { DateFieldInput, DateFieldCalendar, DateFieldTrigger, type DateFieldInputProps, type DateFieldCalendarProps } from '../components';
 import { Popover, PopoverTrigger, PopoverContent, type PopoverProps, type PopoverContentProps } from '../../Popover';
 import { Icon } from '../../Icon';
 
@@ -81,12 +81,12 @@ const DateFieldTest: FC<DateFieldTestProps> = ({
       <DateFieldInput data-testid={TESTID_INPUT} onInput={onInput} onChange={onChange} {...inputProps} />
       <Popover placement='bottom-end' {...popoverProps}>
         <PopoverTrigger asChild>
-          <DateFieldTriggerIconButton aria-label='Open calendar'  data-testid={TESTID_TRIGGER} />
+          <DateFieldTrigger square aria-label='Open calendar'  data-testid={TESTID_TRIGGER} />
         </PopoverTrigger>
         <PopoverContent data-testid={TESTID_CONTENT} {...contentProps}>
           <DateFieldCalendar data-testid={TESTID_CALENDAR_ROOT} style={{ width: 320 }} {...calendarProps}>
             <CalendarHeader>
-              <CalendarPrevButton aria-label='Previous month'>
+              <CalendarPrevButton square aria-label='Previous month'>
                 <Icon>
                   <ChevronLeft />
                 </Icon>
@@ -99,7 +99,7 @@ const DateFieldTest: FC<DateFieldTestProps> = ({
                   <CalendarYearLabel />
                 </CalendarViewButton>
               </CalendarHeading>
-              <CalendarNextButton aria-label='Next month'>
+              <CalendarNextButton square aria-label='Next month'>
                 <Icon>
                   <ChevronRight />
                 </Icon>

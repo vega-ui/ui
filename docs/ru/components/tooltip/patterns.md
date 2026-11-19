@@ -19,8 +19,8 @@
 <!-- example: tooltip/icon-hint.tsx -->
 ```tsx
 import {
+  Button,
   Icon,
-  IconButton,
   Text,
   Tooltip,
   TooltipContent,
@@ -40,9 +40,9 @@ export default function IconHint() {
       {actions.map((action) => (
         <Tooltip key={action.label}>
           <TooltipTrigger asChild>
-            <IconButton aria-label={action.label} variant='secondary' appearance='ghost'>
+            <Button square aria-label={action.label} variant='secondary' appearance='ghost'>
               <Icon>{action.icon}</Icon>
-            </IconButton>
+            </Button>
           </TooltipTrigger>
           <TooltipContent>
             <Text size={2}>{action.hint}</Text>
@@ -77,7 +77,6 @@ import { useId, useState, type FormEvent } from 'react';
 import {
   Button,
   Icon,
-  IconButton,
   Label,
   Text,
   TextField,
@@ -103,9 +102,9 @@ export default function FieldHelper() {
         <Label htmlFor={fieldId}>VAT number (optional)</Label>
         <Tooltip>
           <TooltipTrigger asChild>
-            <IconButton aria-label='About the VAT number' size='xs' variant='secondary' appearance='ghost'>
+            <Button square aria-label='About the VAT number' size='xs' variant='secondary' appearance='ghost'>
               <Icon size='xs'><InfoIcon /></Icon>
-            </IconButton>
+            </Button>
           </TooltipTrigger>
           <TooltipContent>
             <Text size={2}>Printed on invoices for EU business customers</Text>
@@ -144,8 +143,8 @@ export default function FieldHelper() {
 <!-- example: tooltip/dense-data-hint.tsx -->
 ```tsx
 import {
+  Button,
   Icon,
-  IconButton,
   Text,
   Tooltip,
   TooltipContent,
@@ -181,9 +180,9 @@ export default function DenseDataHint() {
             <Text size={2} style={{ color: 'var(--label-secondary)' }}>{metric.label}</Text>
             <Tooltip>
               <TooltipTrigger asChild>
-                <IconButton aria-label={`About ${metric.label}`} size='xs' variant='secondary' appearance='ghost'>
+                <Button square aria-label={`About ${metric.label}`} size='xs' variant='secondary' appearance='ghost'>
                   <Icon size='xs'><InfoIcon /></Icon>
-                </IconButton>
+                </Button>
               </TooltipTrigger>
               <TooltipContent>
                 <Text size={2} style={{ display: 'block', maxWidth: 240 }}>{metric.hint}</Text>

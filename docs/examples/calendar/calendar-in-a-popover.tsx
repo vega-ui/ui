@@ -29,7 +29,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@vega-ui/react';
-import { CalendarIcon } from '@vega-ui/icons';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import { useState } from 'react';
 
 const dateFormat = new Intl.DateTimeFormat('en-US', { dateStyle: 'medium', timeZone: 'UTC' });
@@ -54,12 +54,12 @@ export default function CalendarInAPopover() {
       <PopoverContent aria-label='Choose a due date'>
         <Calendar compact locale='en-US' value={date} onChangeValue={pick}>
           <CalendarHeader>
-            <CalendarPrevButton aria-label='Previous' />
+            <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
             <CalendarHeading>
               <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
               <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
             </CalendarHeading>
-            <CalendarNextButton aria-label='Next' />
+            <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
           </CalendarHeader>
           <CalendarContent>
             <CalendarDays aria-label='Due date'>

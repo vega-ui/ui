@@ -11,7 +11,6 @@ import {
   GridRowGroup,
   Heading,
   Icon,
-  IconButton,
   SegmentedControl,
   SegmentedControlIndicator,
   SegmentedControlItem,
@@ -91,19 +90,20 @@ export default function EditACellInADialog() {
               {person?.name}, {day}
             </Heading>
             <DialogClose asChild>
-              <IconButton
+              <Button
+                square
                 aria-label='Close'
                 variant='secondary'
                 appearance='ghost'
-                style={{ '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+                style={{ '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
               >
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DialogClose>
           </div>
           {editing && (
             <form onSubmit={onSubmit} style={{ display: 'grid', gap: 'var(--spacing-12)', marginBlockStart: 'var(--spacing-12)' }}>
-              <SegmentedControl name='shift' defaultValue={rota[editing[0]].shifts[editing[1]]} role='radiogroup' aria-label='Shift'>
+              <SegmentedControl name='shift' defaultValue={rota[editing[0]].shifts[editing[1]]} aria-label='Shift'>
                 {shiftTypes.map((type) => (
                   <SegmentedControlItem key={type} value={type}>
                     <SegmentedControlItemInput />

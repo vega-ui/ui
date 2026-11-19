@@ -1,5 +1,5 @@
 import type { CSSProperties, FormEvent } from 'react';
-import { Button, Icon, IconButton, Text, TextField, TextFieldInput } from '@vega-ui/react';
+import { Button, Icon, Text, TextField, TextFieldInput } from '@vega-ui/react';
 import { SearchIcon, XIcon } from '@vega-ui/icons';
 import { useRef, useState } from 'react';
 import './examples.css';
@@ -36,16 +36,17 @@ export default function SearchWithClearAndSubmit() {
           onChange={(event) => setQuery(event.currentTarget.value)}
         />
         {query !== '' && (
-          <IconButton
+          <Button
+            square
             type='button'
             aria-label='Clear search'
             variant='secondary'
             appearance='ghost'
             onClick={clear}
-            style={{ '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5, flexShrink: 0 } as CSSProperties}
+            style={{ '--button-height': '24px', '--button-br-ratio': 0.5, flexShrink: 0 } as CSSProperties}
           >
             <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-          </IconButton>
+          </Button>
         )}
         <Button type='submit' size='sm' style={{ flexShrink: 0, marginInlineStart: 'var(--spacing-2)', marginInlineEnd: 'var(--spacing-3)' }}>Search</Button>
       </TextField>

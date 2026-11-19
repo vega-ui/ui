@@ -16,9 +16,9 @@ Required. Provides the typed date input surface.
 
 ## Optional Parts
 
-### `DateFieldTriggerIconButton`
+### `DateFieldTrigger`
 
-Optional trigger affordance for opening a calendar overlay.
+Optional trigger affordance for opening a calendar overlay. It renders a `Button` with no content of its own: pass a calendar icon as children with `square` and an `aria-label` or `aria-labelledby`, a text like "Choose date", or your own button with `asChild`.
 
 ### `DateFieldCalendar`
 
@@ -31,7 +31,7 @@ Its children are the `Calendar` parts: `CalendarHeader` with `CalendarPrevButton
 1. `DateField`
 2. `DateFieldInput`
 3. `Popover`
-4. `DateFieldTriggerIconButton`
+4. `DateFieldTrigger`
 5. `DateFieldCalendar`
 6. `CalendarHeader` and `CalendarContent` with the calendar views
 
@@ -66,11 +66,13 @@ import {
   DateField,
   DateFieldCalendar,
   DateFieldInput,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
+  Icon,
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 export default function MinimalComposition() {
   return (
@@ -78,17 +80,17 @@ export default function MinimalComposition() {
       <DateFieldInput aria-label='Due date' />
       <Popover placement='bottom-end'>
         <PopoverTrigger asChild>
-          <DateFieldTriggerIconButton aria-label='Choose due date' />
+          <DateFieldTrigger square aria-label='Choose due date'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
         </PopoverTrigger>
         <PopoverContent>
           <DateFieldCalendar aria-label='Choose due date'>
             <CalendarHeader>
-              <CalendarPrevButton aria-label='Previous month' />
+              <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
               <CalendarHeading>
                 <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                 <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
               </CalendarHeading>
-              <CalendarNextButton aria-label='Next month' />
+              <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
             </CalendarHeader>
             <CalendarContent>
               <CalendarDays>

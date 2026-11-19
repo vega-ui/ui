@@ -1,3 +1,5 @@
+import { Icon } from '../Icon';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { FC } from 'react';
 import { Calendar, CalendarProps } from './Calendar';
@@ -49,7 +51,7 @@ interface CalendarPartsProps {
 const CalendarParts: FC<CalendarPartsProps> = ({ monthLabel, yearLabel, weekday = 'short', day, includeOverflowDays, monthCols, month, year }) => (
   <>
     <CalendarHeader>
-      <CalendarPrevButton aria-label='Previous' />
+      <CalendarPrevButton square aria-label='Previous'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
       <CalendarHeading>
         <CalendarViewButton view='month'>
           <CalendarMonthLabel format={monthLabel} />
@@ -58,7 +60,7 @@ const CalendarParts: FC<CalendarPartsProps> = ({ monthLabel, yearLabel, weekday 
           <CalendarYearLabel format={yearLabel} />
         </CalendarViewButton>
       </CalendarHeading>
-      <CalendarNextButton aria-label='Next' />
+      <CalendarNextButton square aria-label='Next'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
     </CalendarHeader>
     <CalendarContent>
       <CalendarDays>

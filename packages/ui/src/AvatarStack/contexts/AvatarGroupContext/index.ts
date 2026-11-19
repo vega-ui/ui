@@ -1,1 +1,0 @@
-export { AvatarGroupProvider, useAvatarGroupContext } from './context'

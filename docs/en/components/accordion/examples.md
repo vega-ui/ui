@@ -18,6 +18,7 @@ import {
   Separator,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 
 const questions = [
   {
@@ -50,7 +51,7 @@ export default function Faq() {
           <AccordionHeader>
             <AccordionTrigger>
               {item.question}
-              <AccordionIcon />
+              <AccordionIcon><ChevronDownIcon /></AccordionIcon>
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>
@@ -85,6 +86,7 @@ import {
   Separator,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 
 const sections = [
   { value: 'requirements', title: 'System requirements', body: 'Node.js 20 or later, 2 GB of free memory and outbound HTTPS access.' },
@@ -122,7 +124,7 @@ export default function ExpandAll() {
             <AccordionHeader>
               <AccordionTrigger>
                 {section.title}
-                <AccordionIcon />
+                <AccordionIcon><ChevronDownIcon /></AccordionIcon>
               </AccordionTrigger>
             </AccordionHeader>
             <AccordionContent>
@@ -160,6 +162,7 @@ import {
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 
 export default function SettingsForm() {
   const [opened, setOpened] = useState<string[]>(['profile']);
@@ -187,7 +190,7 @@ export default function SettingsForm() {
           <AccordionHeader>
             <AccordionTrigger>
               Profile
-              <AccordionIcon />
+              <AccordionIcon><ChevronDownIcon /></AccordionIcon>
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>
@@ -212,7 +215,7 @@ export default function SettingsForm() {
           <AccordionHeader>
             <AccordionTrigger>
               Billing
-              <AccordionIcon />
+              <AccordionIcon><ChevronDownIcon /></AccordionIcon>
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>
@@ -267,11 +270,10 @@ import {
   DrawerTrigger,
   Heading,
   Icon,
-  IconButton,
   Separator,
   Text,
 } from '@vega-ui/react';
-import { XIcon } from '@vega-ui/icons';
+import { ChevronDownIcon, XIcon } from '@vega-ui/icons';
 
 const topics = [
   { value: 'invoices', title: 'Where do I find my invoices?', body: 'Open Billing → History. Every invoice can be downloaded as PDF or sent to a billing contact.' },
@@ -289,14 +291,15 @@ export default function HelpDrawer() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
           <Heading id='billing-help-title' as='h2' size={4} fontWeight={600}>Billing help</Heading>
           <DrawerClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </DrawerClose>
         </div>
         <div style={{ overflow: 'auto', marginBlockStart: 'var(--spacing-8)' }}>
@@ -306,7 +309,7 @@ export default function HelpDrawer() {
                 <AccordionHeader as='h3'>
                   <AccordionTrigger>
                     {topic.title}
-                    <AccordionIcon />
+                    <AccordionIcon><ChevronDownIcon /></AccordionIcon>
                   </AccordionTrigger>
                 </AccordionHeader>
                 <AccordionContent>
@@ -347,6 +350,7 @@ import {
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 
 const ibanPattern = /^[A-Z]{2}[0-9]{2}[A-Z0-9]{11,30}$/;
 
@@ -384,7 +388,7 @@ export default function SectionErrors() {
                 Payout details
                 {error && <Text size={2} style={{ color: 'var(--color-error)' }}>1 error</Text>}
               </span>
-              <AccordionIcon />
+              <AccordionIcon><ChevronDownIcon /></AccordionIcon>
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>
@@ -432,6 +436,7 @@ import {
   Separator,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 
 export default function DisabledSection() {
   return (
@@ -441,7 +446,7 @@ export default function DisabledSection() {
           <AccordionHeader>
             <AccordionTrigger>
               Password sign-in
-              <AccordionIcon />
+              <AccordionIcon><ChevronDownIcon /></AccordionIcon>
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>
@@ -453,7 +458,7 @@ export default function DisabledSection() {
           <AccordionHeader>
             <AccordionTrigger disabled aria-describedby='sso-reason' style={{ cursor: 'not-allowed', color: 'var(--label-tertiary)' }}>
               SAML single sign-on
-              <AccordionIcon />
+              <AccordionIcon><ChevronDownIcon /></AccordionIcon>
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>
@@ -489,6 +494,7 @@ import {
   Button,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 
 const changes = [
   'Faster cold start for workspaces with more than 10\u00a0000 files',
@@ -520,7 +526,7 @@ export default function ReleaseNotes() {
             <span style={{ minWidth: 0, overflowWrap: 'anywhere' }}>
               v4.12.0-rc.3+build.20261103.experimental-telemetry-pipeline
             </span>
-            <AccordionIcon />
+            <AccordionIcon><ChevronDownIcon /></AccordionIcon>
           </AccordionTrigger>
         </AccordionHeader>
         <AccordionContent>
@@ -561,6 +567,7 @@ import {
   Separator,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 
 const endpoints = [
   { value: 'list', title: 'GET /v1/invoices', body: 'Returns invoices sorted by creation date, newest first. Supports cursor pagination.' },
@@ -577,7 +584,7 @@ export default function NestedSections() {
           <AccordionHeader as='h3'>
             <AccordionTrigger>
               Invoices
-              <AccordionIcon />
+              <AccordionIcon><ChevronDownIcon /></AccordionIcon>
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>
@@ -587,7 +594,7 @@ export default function NestedSections() {
                   <AccordionHeader as='h4'>
                     <AccordionTrigger>
                       <code style={{ fontFamily: 'var(--code-font-family)', fontSize: 'var(--font-size-2)' }}>{endpoint.title}</code>
-                      <AccordionIcon />
+                      <AccordionIcon><ChevronDownIcon /></AccordionIcon>
                     </AccordionTrigger>
                   </AccordionHeader>
                   <AccordionContent>
@@ -603,7 +610,7 @@ export default function NestedSections() {
           <AccordionHeader as='h3'>
             <AccordionTrigger>
               Customers
-              <AccordionIcon />
+              <AccordionIcon><ChevronDownIcon /></AccordionIcon>
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>

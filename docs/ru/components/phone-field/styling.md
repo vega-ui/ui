@@ -54,7 +54,7 @@
 
 ### Заглушка выбора страны и своя иконка
 
-Пока страна не выбрана, триггер показывает `placeholder` из `SelectValue`, а дочерние элементы `SelectIcon` заменяют стандартный шеврон.
+Пока страна не выбрана, триггер показывает `placeholder` из `SelectValue`, а `SelectIcon` показывает иконку из своих дочерних элементов.
 
 <!-- example: phone-field/select-placeholder-and-custom-icon.tsx -->
 ```tsx
@@ -70,7 +70,7 @@ import {
   SelectOption,
   SelectValue,
 } from '@vega-ui/react';
-import { ChevronsUpDown } from '@vega-ui/icons';
+import { ChevronsUpDownIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 export default function SelectPlaceholderAndCustomIcon() {
@@ -85,7 +85,7 @@ export default function SelectPlaceholderAndCustomIcon() {
           <SelectCombobox aria-label='Country'>
             <SelectValue placeholder='Code' />
             <SelectIcon>
-              <ChevronsUpDown />
+              <ChevronsUpDownIcon />
             </SelectIcon>
           </SelectCombobox>
           <SelectListbox>

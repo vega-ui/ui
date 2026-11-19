@@ -26,7 +26,7 @@ import {
   SegmentedControlItemInput,
   Text,
 } from '@vega-ui/react';
-import { ChevronRight } from '@vega-ui/icons';
+import { ChevronLeftIcon, ChevronRight, ChevronRightIcon } from '@vega-ui/icons';
 import { localize } from '@/lib/i18n';
 import { useDictionary, useLocale } from './LocaleProvider';
 import { HomeTitle } from './HomeTitle';
@@ -71,7 +71,7 @@ export const HomeWorld = () => {
       </div>
       <div className={`${section.frame} ${section.card}`} data-label='Intl.DateTimeFormat'>
         <div className={styles.stage}>
-          <SegmentedControl size='xs' variant='secondary' className={styles.locales} name={`${id}-locale`} role='radiogroup' aria-label={t.locales} value={preset.locale} onChange={(event) => setPreset(PRESETS.find((entry) => entry.locale === event.target.value) ?? PRESETS[0])}>
+          <SegmentedControl size='xs' variant='secondary' className={styles.locales} name={`${id}-locale`} aria-label={t.locales} value={preset.locale} onChangeValue={(value) => setPreset(PRESETS.find((entry) => entry.locale === value) ?? PRESETS[0])}>
             {PRESETS.map((entry) => (
               <SegmentedControlItem key={entry.locale} value={entry.locale}>
                 <SegmentedControlItemInput />
@@ -91,11 +91,11 @@ export const HomeWorld = () => {
             className={styles.calendar}
           >
             <CalendarHeader>
-              <CalendarPrevButton aria-label={preset.previous} />
+              <CalendarPrevButton square aria-label={preset.previous}><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
               <CalendarHeading>
                 <Text fontWeight={600}><CalendarMonthLabel /> <CalendarYearLabel /></Text>
               </CalendarHeading>
-              <CalendarNextButton aria-label={preset.next} />
+              <CalendarNextButton square aria-label={preset.next}><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
             </CalendarHeader>
             <CalendarContent>
               <CalendarDays>

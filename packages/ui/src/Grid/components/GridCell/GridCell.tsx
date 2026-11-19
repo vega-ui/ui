@@ -1,9 +1,8 @@
-import { FC, HTMLAttributes, PropsWithChildren, Ref, useCallback, useState } from 'react';
+import { FC, HTMLAttributes, PropsWithChildren, Ref } from 'react';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { useMergeRefs } from '@vega-ui/hooks';
 import { useGridCell } from '../../hooks';
-import { isInteractiveChild, isInteractiveElement } from '../../helpers';
 import { Slot } from '../../../Slot';
 import { GridKey } from '../../types';
 
@@ -29,10 +28,10 @@ export interface GridCellProps extends HTMLAttributes<HTMLDivElement> {
    * When `true`, renders children via `Slot` and forwards props/refs to the child
    * element instead of using a native `<div>`.
    *
-   * An interactive child, like a `<button>` or a link, keeps its own role: the cell has no `role="gridcell"`
-   * then, so the control is announced for what it is. For a cell that holds a control, prefer the control inside
-   * the cell with `tabIndex={-1}`, `<GridCell><button tabIndex={-1}>…</button></GridCell>`: the cell stays
-   * a gridcell, Enter and F2 move the focus into the control and Escape brings it back.
+   * The child gets `role="gridcell"` too, so a `<button>` child is announced as a cell and still runs on a click,
+   * Enter and Space. A link cannot take that role: put it inside the cell with `tabIndex={-1}`, as any control that
+   * should be announced for what it is, `<GridCell><a href='…' tabIndex={-1}>…</a></GridCell>`. Enter and F2 move
+   * the focus into it and Escape brings it back.
    *
    * @default false
    */
@@ -69,10 +68,8 @@ export const GridCell: FC<PropsWithChildren<GridCellProps>> = ({
   ...props
 }) => {
   const Element = asChild ? Slot : 'div'
-  const [interactiveElement, setInteractiveElement] = useState(false)
-  const detect = useCallback((element: HTMLElement | null) => setInteractiveElement(isInteractiveElement(element)), [])
-  const cell = useGridCell({ value, col, excluded, disabled, selectable: true, interactive: asChild === true && (isInteractiveChild(children) || interactiveElement) })
-  const cellRef = useMergeRefs([ref, cell.ref, detect])
+  const cell = useGridCell({ value, col, excluded, disabled, selectable: true })
+  const cellRef = useMergeRefs([ref, cell.ref])
 
   return (
     <Element

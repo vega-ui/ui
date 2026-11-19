@@ -66,7 +66,7 @@
 
 ### Шапка в стиле Apple
 
-Шапка с небольшим заголовком и круглой кнопкой закрытия 24px в углу — обычная композиция: `Heading` с `size={4}` и `fontWeight={600}` и `SheetClose asChild` вокруг `IconButton`, абсолютно позиционированного в верхнем конечном углу (`position: absolute`, `insetBlockStart: 16`, `insetInlineEnd: 'calc(16px + var(--sheet-inset, var(--spacing-8)))'`, потому что поверхность держит `--sheet-inset` от боков `<dialog>`); содержащий блок для неё — открытый модальный `<dialog>`. У `IconButton` нет для этого опции размера или формы; круглая кнопка 24px получается из двух CSS-переменных, заданных на ней, — `--icon-button-size: 24px` и `--icon-button-br-ratio: 0.5`, — с `Icon size='xs'` внутри.
+Шапка с небольшим заголовком и круглой кнопкой закрытия 24px в углу — обычная композиция: `Heading` с `size={4}` и `fontWeight={600}` и `SheetClose asChild` вокруг `Button` с `square`, абсолютно позиционированного в верхнем конечном углу (`position: absolute`, `insetBlockStart: 16`, `insetInlineEnd: 'calc(16px + var(--sheet-inset, var(--spacing-8)))'`, потому что поверхность держит `--sheet-inset` от боков `<dialog>`); содержащий блок для неё — открытый модальный `<dialog>`. У `Button` нет для этого размера; круглая кнопка 24px получается из двух CSS-переменных, заданных на ней, — `--button-height: 24px` и `--button-br-ratio: 0.5`, — с `Icon size='xs'` внутри.
 
 ## Не переопределяйте
 

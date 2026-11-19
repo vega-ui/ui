@@ -27,7 +27,7 @@
 
 ### Вероятная причина
 
-`DateTimeFieldTriggerIconButton` отрендерен без композиции с `Popover` или без `DateTimeFieldCalendar` внутри оверлея.
+`DateTimeFieldTrigger` отрендерен без композиции с `Popover` или без `DateTimeFieldCalendar` внутри оверлея.
 
 ### Как проверить
 

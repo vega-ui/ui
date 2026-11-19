@@ -33,8 +33,8 @@ export default [
       { example, steps: [{ focus: ship }], press: 'ArrowRight', expect: [{ focused: ship }] },
       { example, dir: 'rtl', steps: [{ focus: design }], press: 'ArrowLeft', expect: [{ focused: build }] },
       { example, dir: 'rtl', steps: [{ focus: build }], press: 'ArrowRight', expect: [{ focused: design }] },
-      { example: blocked, steps: [{ focus: cell('Atlas 09:00') }], press: 'ArrowRight', expect: [{ focused: cell('Atlas 12:00') }] },
-      { example: blocked, steps: [{ focus: cell('Atlas 12:00') }], press: 'ArrowLeft', expect: [{ focused: cell('Atlas 09:00') }] },
+      { example: blocked, steps: [{ focus: cell('Atlas 09:00') }], press: 'ArrowRight', expect: [{ focused: cell('Atlas 10:00, booked') }] },
+      { example: blocked, steps: [{ focus: cell('Atlas 12:00') }], press: 'ArrowLeft', expect: [{ focused: cell('Atlas 11:00, booked') }] },
     ],
   },
   {
@@ -124,6 +124,7 @@ export default [
     checks: [
       { example, steps: [{ focus: design }, { press: 'ArrowRight' }, { press: 'Shift+Tab' }], press: 'Tab', before: [{ attr: 'tabindex', of: build, is: '0' }], expect: [{ focused: build }] },
       { example: editable, steps: [{ focus: rentPlanned }], press: 'Tab', expect: [{ focused: { role: 'button', name: 'Reset' } }] },
+      { example: editable, steps: [{ focus: { role: 'button', name: 'Reset' } }], press: 'Shift+Tab', expect: [{ focused: rentPlanned }] },
       { example: editable, steps: [{ focus: rentPlanned }, { press: 'Enter' }], press: 'Tab', expect: [{ focused: rentPlannedInput }] },
     ],
   },
@@ -132,7 +133,7 @@ export default [
     en: 'With `selection=\'multiple\'`, selects every enabled cell that is not excluded. Command+A on macOS. A `range` selection has two ends picked by the user, so it does not select all.',
     ru: 'При `selection=\'multiple\'` выбирает все включённые и не исключённые ячейки. На macOS — Command+A. У выбора `range` два конца, которые выбирает пользователь, поэтому «выбрать всё» в нём нет.',
     checks: [
-      { example: multiple, steps: [{ focus: cell('Mon Morning') }], press: 'Control+a', before: [{ attr: 'aria-selected', of: cell('Fri Evening'), is: 'false' }], expect: [{ attr: 'aria-selected', of: cell('Mon Morning'), is: 'true' }, { attr: 'aria-selected', of: cell('Fri Evening'), is: 'true' }] },
+      { example: multiple, steps: [{ focus: cell('Mon Morning') }], press: 'Control+A', before: [{ attr: 'aria-selected', of: cell('Fri Evening'), is: 'false' }], expect: [{ attr: 'aria-selected', of: cell('Mon Morning'), is: 'true' }, { attr: 'aria-selected', of: cell('Fri Evening'), is: 'true' }] },
     ],
   },
 ] satisfies KeyboardSpec;

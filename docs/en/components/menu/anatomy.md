@@ -12,7 +12,7 @@ Owns whether the menu is shown (`open`, `defaultOpen`, `onChangeOpen`), the `pla
 
 ### `MenuTrigger`
 
-Renders `<button type="button">` with `aria-haspopup="menu"`, `aria-expanded`, `aria-controls` and `popovertarget` pointing at the menu. With `asChild` it renders your own button, such as `Button` or `IconButton`. It is the CSS anchor the menu is positioned against, and it names the menu.
+Renders `<button type="button">` with `aria-haspopup="menu"`, `aria-expanded`, `aria-controls` and `popovertarget` pointing at the menu. With `asChild` it renders your own button, such as a `Button`, with text or `square`. It is the CSS anchor the menu is positioned against, and it names the menu.
 
 ### `MenuContent`
 
@@ -38,7 +38,7 @@ Renders `<div role="group">` around related items. Name it with `aria-labelledby
 
 ### `MenuItemIndicator`
 
-Renders a check icon with `aria-hidden`. Inside a checkbox or radio item it keeps its space in every item and is visible only in a checked one, so the labels of checked and unchecked items line up. Its children replace the icon.
+Renders the icon passed as its children, such as a check mark, with `aria-hidden`; it draws none of its own. Inside a checkbox or radio item it keeps its space in every item and is visible only in a checked one, so the labels of checked and unchecked items line up.
 
 ### `MenuSubmenu` and `MenuSubmenuTrigger`
 
@@ -78,6 +78,7 @@ import {
   Separator,
   Text,
 } from '@vega-ui/react';
+import { CheckIcon } from '@vega-ui/icons';
 
 const groupHeading: CSSProperties = {
   display: 'block',
@@ -103,14 +104,14 @@ export default function ValidCompositionPatterns() {
         <Separator />
         <MenuGroup aria-labelledby={panelsId}>
           <Text id={panelsId} size={2} fontWeight={500} style={groupHeading}>Panels</Text>
-          <MenuCheckboxItem defaultChecked>Outline<MenuItemIndicator style={indicatorEnd} /></MenuCheckboxItem>
-          <MenuCheckboxItem>Comments<MenuItemIndicator style={indicatorEnd} /></MenuCheckboxItem>
+          <MenuCheckboxItem defaultChecked>Outline<MenuItemIndicator style={indicatorEnd}><CheckIcon /></MenuItemIndicator></MenuCheckboxItem>
+          <MenuCheckboxItem>Comments<MenuItemIndicator style={indicatorEnd}><CheckIcon /></MenuItemIndicator></MenuCheckboxItem>
         </MenuGroup>
         <Separator />
         <MenuRadioGroup aria-labelledby={widthId} defaultValue='standard'>
           <Text id={widthId} size={2} fontWeight={500} style={groupHeading}>Page width</Text>
-          <MenuRadioItem value='standard'>Standard<MenuItemIndicator style={indicatorEnd} /></MenuRadioItem>
-          <MenuRadioItem value='wide'>Wide<MenuItemIndicator style={indicatorEnd} /></MenuRadioItem>
+          <MenuRadioItem value='standard'>Standard<MenuItemIndicator style={indicatorEnd}><CheckIcon /></MenuItemIndicator></MenuRadioItem>
+          <MenuRadioItem value='wide'>Wide<MenuItemIndicator style={indicatorEnd}><CheckIcon /></MenuItemIndicator></MenuRadioItem>
         </MenuRadioGroup>
       </MenuContent>
     </Menu>

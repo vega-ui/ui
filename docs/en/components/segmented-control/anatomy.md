@@ -24,7 +24,7 @@ Required inside every item. The visually hidden native radio: focus, arrow keys,
 
 ## Optional Parts
 
-There are no optional parts. Name the group with `role='radiogroup'` and `aria-label` or `aria-labelledby` on the root.
+There are no optional parts. The root is a `radiogroup`: name it with `aria-label` or `aria-labelledby`.
 
 ## Composition Order
 
@@ -55,7 +55,7 @@ export default function ValidCompositionPatterns() {
     <div style={{ display: 'grid', gap: 'var(--spacing-8)', justifyItems: 'start' }}>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label id='orders-filter-label'>Orders</Label>
-        <SegmentedControl name='orders-filter' defaultValue='open' role='radiogroup' aria-labelledby='orders-filter-label'>
+        <SegmentedControl name='orders-filter' defaultValue='open' aria-labelledby='orders-filter-label'>
           <SegmentedControlItem value='open'>
             <SegmentedControlItemInput />
             Open
@@ -71,7 +71,7 @@ export default function ValidCompositionPatterns() {
           <SegmentedControlIndicator />
         </SegmentedControl>
       </div>
-      <SegmentedControl name='orders-layout' defaultValue='list' size='sm' role='radiogroup' aria-label='Layout'>
+      <SegmentedControl name='orders-layout' defaultValue='list' size='sm' aria-label='Layout'>
         <SegmentedControlItem value='list'>
           <SegmentedControlItemInput aria-label='List' />
           <Icon size='sm'><ListIcon /></Icon>

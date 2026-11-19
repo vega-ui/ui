@@ -21,10 +21,9 @@ export const RadiusPicker = ({ name = 'radius' }: { name?: string }) => {
       size='xs'
       variant='secondary'
       name={name}
-      role='radiogroup'
       aria-label={t.settings.radius}
       value={radius}
-      onChange={(event) => choose(event.target.value)}
+      onChangeValue={choose}
       className={styles.control}
     >
       {RADII.map((step) => (

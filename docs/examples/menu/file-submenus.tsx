@@ -1,7 +1,7 @@
 import { useState, type CSSProperties, type ReactNode } from 'react';
 import {
+  Button,
   Icon,
-  IconButton,
   Menu,
   MenuContent,
   MenuItem,
@@ -16,6 +16,7 @@ import {
 } from '@vega-ui/react';
 import {
   ArchiveIcon,
+  CheckIcon,
   ChevronRightIcon,
   CopyIcon,
   EllipsisIcon,
@@ -102,9 +103,9 @@ export default function FileSubmenus() {
       </div>
       <Menu placement='bottom-end' size='sm'>
         <MenuTrigger asChild>
-          <IconButton size='sm' aria-label='Actions for Q3 report.pdf' variant='secondary' appearance='ghost' style={{ flexShrink: 0 }}>
+          <Button square size='sm' aria-label='Actions for Q3 report.pdf' variant='secondary' appearance='ghost' style={{ flexShrink: 0 }}>
             <Icon><EllipsisIcon /></Icon>
-          </IconButton>
+          </Button>
         </MenuTrigger>
         <MenuContent>
           <MenuItem onClick={() => setStatus('Opened in a new tab')}><Lead><ExternalLinkIcon /></Lead>Open</MenuItem>
@@ -142,7 +143,7 @@ export default function FileSubmenus() {
               <MenuRadioGroup aria-label='Label' value={label} onChangeValue={setLabel}>
                 {labels.map((item) => (
                   <MenuRadioItem key={item.value} value={item.value}>
-                    <MenuItemIndicator />
+                    <MenuItemIndicator><CheckIcon /></MenuItemIndicator>
                     <span aria-hidden style={dot(item.color)} />
                     {item.name}
                   </MenuRadioItem>

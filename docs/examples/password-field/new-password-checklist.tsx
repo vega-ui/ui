@@ -5,10 +5,10 @@ import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleIconButton,
+  PasswordFieldToggle,
   Text,
 } from '@vega-ui/react';
-import { CheckIcon, CircleIcon } from '@vega-ui/icons';
+import { CheckIcon, CircleIcon, EyeIcon, EyeOffIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const RULES = [
@@ -37,10 +37,10 @@ export default function NewPasswordChecklist() {
             aria-describedby={rulesId}
             onChange={(event) => setPassword(event.currentTarget.value)}
           />
-          <PasswordFieldToggleIconButton aria-label='Show password'>
-            <PasswordFieldShownIcon />
-            <PasswordFieldHiddenIcon />
-          </PasswordFieldToggleIconButton>
+          <PasswordFieldToggle square aria-label='Show password'>
+            <PasswordFieldShownIcon><EyeIcon /></PasswordFieldShownIcon>
+            <PasswordFieldHiddenIcon><EyeOffIcon /></PasswordFieldHiddenIcon>
+          </PasswordFieldToggle>
         </PasswordField>
       </div>
       <ul id={rulesId} style={{ display: 'grid', gap: 'var(--spacing-3)', margin: 0, padding: 0, listStyle: 'none' }}>

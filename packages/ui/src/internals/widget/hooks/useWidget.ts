@@ -33,6 +33,7 @@ type Props = Record<string, unknown>
 export interface Listeners {
   onKeyDown(event: KeyboardEvent): void
   onClick(event: MouseEvent): void
+  onContextMenu(event: MouseEvent): void
   onPointerDown(event: PointerEvent): void
   onPointerMove(event: PointerEvent): void
   onPointerOver(event: PointerEvent): void
@@ -60,6 +61,7 @@ const isNative = (event: DomEvent): event is NativeEvent => (NATIVE as readonly 
 const PROPS: Record<PropEvent, keyof Listeners> = {
   keydown: 'onKeyDown',
   click: 'onClick',
+  contextmenu: 'onContextMenu',
   pointerdown: 'onPointerDown',
   pointermove: 'onPointerMove',
   pointerover: 'onPointerOver',
@@ -134,6 +136,7 @@ export const createHandle = <WidgetShape extends AnyShape, Data>(widget: Widget<
   const all: Listeners = {
     onKeyDown: forward((current, event) => current.keydown(event)),
     onClick: forward((current, event) => current.click(event)),
+    onContextMenu: forward((current, event) => current.contextmenu(event)),
     onPointerDown: forward((current, event) => current.pointerdown(event)),
     onPointerMove: forward((current, event) => current.pointermove(event)),
     onPointerOver: forward((current, event) => current.pointerover(event)),

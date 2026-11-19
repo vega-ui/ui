@@ -24,8 +24,10 @@ import {
   CalendarYearsGrid,
   CalendarYearsScroller,
   CalendarYearsScrollerContent,
+  Icon,
   Text,
 } from '@vega-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import { useState } from 'react';
 
 const dateFormat = new Intl.DateTimeFormat('en-US', { dateStyle: 'full', timeZone: 'UTC' });
@@ -53,12 +55,12 @@ export default function ValueAndVisibleMonth() {
     <div style={{ display: 'grid', gap: 'var(--spacing-8)', justifyItems: 'start', width: '100%' }}>
       <Calendar locale='en-US' value={value} onChangeValue={setValue} focusedDate={focusedDate} onChangeFocusedDate={setFocusedDate}>
         <CalendarHeader>
-          <CalendarPrevButton aria-label='Previous' />
+          <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
           <CalendarHeading>
             <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
             <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
           </CalendarHeading>
-          <CalendarNextButton aria-label='Next' />
+          <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
         </CalendarHeader>
         <CalendarContent>
           <CalendarDays aria-label='Delivery date'>

@@ -1,1 +1,1 @@
-export * from './AvatarGroupContext'
+export * from './AvatarStackContext'

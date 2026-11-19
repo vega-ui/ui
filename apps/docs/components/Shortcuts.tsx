@@ -1,13 +1,13 @@
 'use client';
 
 import { useEffect, useId, useState, useSyncExternalStore, type CSSProperties } from 'react';
-import { Dialog, DialogClose, DialogContent, Heading, Icon, IconButton } from '@vega-ui/react';
+import { Dialog, DialogClose, DialogContent, Heading, Icon, Button } from '@vega-ui/react';
 import { XIcon } from '@vega-ui/icons';
 import { isPageShortcut } from '@/lib/shortcuts';
 import { useDictionary } from './LocaleProvider';
 import styles from './Shortcuts.module.css';
 
-const CLOSE_STYLE = { flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties;
+const CLOSE_STYLE = { flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties;
 
 const subscribe = () => () => {};
 
@@ -45,9 +45,9 @@ export const Shortcuts = () => {
         <div className={styles.header}>
           <Heading id={id} as='h2' className={styles.title}>{t.title}</Heading>
           <DialogClose asChild>
-            <IconButton aria-label={t.close} variant='secondary' appearance='ghost' style={CLOSE_STYLE}>
+            <Button square aria-label={t.close} variant='secondary' appearance='ghost' style={CLOSE_STYLE}>
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </DialogClose>
         </div>
         <dl className={styles.list}>

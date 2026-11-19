@@ -1,4 +1,5 @@
 import { Button, Combobox, ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger, HelperText, Label, ListboxOption, Text, TextField } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { FormEvent, useId, useRef, useState } from 'react';
 
 const airports = [
@@ -54,8 +55,8 @@ export default function PickRequiredError() {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
           />
-          <ComboboxTrigger aria-label='Show airports'>
-            <ComboboxIcon />
+          <ComboboxTrigger square aria-label='Show airports'>
+            <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
           </ComboboxTrigger>
         </TextField>
         <ComboboxListbox aria-label='Airports'>

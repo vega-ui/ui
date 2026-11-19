@@ -22,11 +22,11 @@ Required. The visually hidden native checkbox: focus, keyboard, checked state an
 
 ### `CheckboxCheckedIcon`
 
-Optional checked-state icon inside the indicator.
+Shows its children inside the indicator while the checkbox is checked. It draws no icon of its own: pass a check mark from any icon set, such as `<CheckIcon strokeWidth={4} />`.
 
 ### `CheckboxIndeterminateIcon`
 
-Optional indeterminate-state icon inside the indicator.
+Shows its children inside the indicator while the checkbox is indeterminate. It draws no icon of its own: pass a minus from any icon set, such as `<MinusIcon strokeWidth={4} />`.
 
 ## Composition Order
 
@@ -50,6 +50,7 @@ import {
   CheckboxIndicator,
   CheckboxInput,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 export default function ValidCompositionPatterns() {
   return (
@@ -57,15 +58,15 @@ export default function ValidCompositionPatterns() {
       <Checkbox>
         <CheckboxInput name='archived' />
         <CheckboxIndicator>
-          <CheckboxCheckedIcon />
-          <CheckboxIndeterminateIcon />
+          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+          <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
         </CheckboxIndicator>
         Show archived projects
       </Checkbox>
       <Checkbox>
         <CheckboxInput aria-label='Select Q3 marketing report' />
         <CheckboxIndicator>
-          <CheckboxCheckedIcon />
+          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
         </CheckboxIndicator>
       </Checkbox>
     </div>

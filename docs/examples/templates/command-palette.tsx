@@ -8,12 +8,12 @@ import {
   Avatar,
   AvatarFallback,
   Badge,
+  Button,
   Dialog,
   DialogClose,
   DialogContent,
   Heading,
   Icon,
-  IconButton,
   Option,
   Text,
   TextField,
@@ -21,24 +21,25 @@ import {
   VisuallyHidden,
 } from '@vega-ui/react';
 import {
-  Bell,
-  Check,
-  ChevronLeft,
-  CircleDot,
-  Clock,
-  FileText,
-  FolderKanban,
-  House,
-  Keyboard,
-  Link2,
-  Monitor,
-  Moon,
-  Palette,
-  Plus,
-  Search,
-  Settings,
-  Sun,
-  UserPlus,
+  BellIcon,
+  CheckIcon,
+  ChevronLeftIcon,
+  CircleCheckIcon,
+  CircleDotIcon,
+  ClockIcon,
+  FileTextIcon,
+  FolderKanbanIcon,
+  HouseIcon,
+  KeyboardIcon,
+  Link2Icon,
+  MonitorIcon,
+  MoonIcon,
+  PaletteIcon,
+  PlusIcon,
+  SearchIcon,
+  SettingsIcon,
+  SunIcon,
+  UserPlusIcon,
   XIcon,
 } from '@vega-ui/icons';
 import './command-palette.css';
@@ -72,7 +73,7 @@ const pages: { id: PageId, label: string, key: string, icon: ReactNode, title: s
     id: 'home',
     key: 'H',
     label: 'Home',
-    icon: <House />,
+    icon: <HouseIcon />,
     title: 'Good afternoon, Dana',
     description: 'Here’s what changed since yesterday.',
     rows: [
@@ -85,7 +86,7 @@ const pages: { id: PageId, label: string, key: string, icon: ReactNode, title: s
     id: 'projects',
     key: 'P',
     label: 'Projects',
-    icon: <FolderKanban />,
+    icon: <FolderKanbanIcon />,
     title: 'Projects',
     description: '4 active projects in Acme.',
     rows: [
@@ -98,7 +99,7 @@ const pages: { id: PageId, label: string, key: string, icon: ReactNode, title: s
     id: 'issues',
     key: 'I',
     label: 'Issues',
-    icon: <CircleDot />,
+    icon: <CircleDotIcon />,
     title: 'Issues',
     description: '23 open issues assigned to your team.',
     rows: [
@@ -111,7 +112,7 @@ const pages: { id: PageId, label: string, key: string, icon: ReactNode, title: s
     id: 'docs',
     key: 'D',
     label: 'Docs',
-    icon: <FileText />,
+    icon: <FileTextIcon />,
     title: 'Docs',
     description: 'Team handbook, specs and release notes.',
     rows: [
@@ -124,7 +125,7 @@ const pages: { id: PageId, label: string, key: string, icon: ReactNode, title: s
     id: 'settings',
     key: 'S',
     label: 'Settings',
-    icon: <Settings />,
+    icon: <SettingsIcon />,
     title: 'Settings',
     description: 'Workspace, members and notifications.',
     rows: [
@@ -146,21 +147,21 @@ const navigation: Command[] = pages.map((page) => ({
 }));
 
 const actions: Command[] = [
-  { id: 'new-issue', group: 'Actions', label: 'Create issue', description: 'Add an issue to the current project', icon: <Plus />, keywords: 'new bug task', shortcut: ['C'], message: { title: 'Issue created', text: 'ACME-142 was added to Billing v2.' } },
-  { id: 'invite', group: 'Actions', label: 'Invite people', description: 'Send invitations by email', icon: <UserPlus />, keywords: 'member team add', message: { title: 'Invite link ready', text: 'Anyone with the link can join Acme for 7 days.' } },
-  { id: 'copy-link', group: 'Actions', label: 'Copy page link', description: 'Copy a link to this page', icon: <Link2 />, keywords: 'url share', shortcut: ['⌘', '⇧', 'C'], message: { title: 'Link copied', text: 'acme.app/workspace is on your clipboard.' } },
+  { id: 'new-issue', group: 'Actions', label: 'Create issue', description: 'Add an issue to the current project', icon: <PlusIcon />, keywords: 'new bug task', shortcut: ['C'], message: { title: 'Issue created', text: 'ACME-142 was added to Billing v2.' } },
+  { id: 'invite', group: 'Actions', label: 'Invite people', description: 'Send invitations by email', icon: <UserPlusIcon />, keywords: 'member team add', message: { title: 'Invite link ready', text: 'Anyone with the link can join Acme for 7 days.' } },
+  { id: 'copy-link', group: 'Actions', label: 'Copy page link', description: 'Copy a link to this page', icon: <Link2Icon />, keywords: 'url share', shortcut: ['⌘', '⇧', 'C'], message: { title: 'Link copied', text: 'acme.app/workspace is on your clipboard.' } },
 ];
 
 const settings: Command[] = [
-  { id: 'theme', group: 'Settings', label: 'Change theme…', description: 'Light, dark or match your system', icon: <Palette />, keywords: 'appearance dark light mode', opens: 'theme' },
-  { id: 'notifications', group: 'Settings', label: 'Notification settings', description: 'Choose what you’re notified about', icon: <Bell />, keywords: 'email push alerts', page: 'settings' },
-  { id: 'shortcuts', group: 'Settings', label: 'Keyboard shortcuts', description: 'See every shortcut', icon: <Keyboard />, keywords: 'keys hotkeys', shortcut: ['?'], message: { title: 'Keyboard shortcuts', text: 'Press ⌘K to search, G then a letter to jump, C to create an issue.' } },
+  { id: 'theme', group: 'Settings', label: 'Change theme…', description: 'Light, dark or match your system', icon: <PaletteIcon />, keywords: 'appearance dark light mode', opens: 'theme' },
+  { id: 'notifications', group: 'Settings', label: 'Notification settings', description: 'Choose what you’re notified about', icon: <BellIcon />, keywords: 'email push alerts', page: 'settings' },
+  { id: 'shortcuts', group: 'Settings', label: 'Keyboard shortcuts', description: 'See every shortcut', icon: <KeyboardIcon />, keywords: 'keys hotkeys', shortcut: ['?'], message: { title: 'Keyboard shortcuts', text: 'Press ⌘K to search, G then a letter to jump, C to create an issue.' } },
 ];
 
 const themes: Command[] = [
-  { id: 'theme-light', group: 'Theme', label: 'Light', description: 'Always use the light theme', icon: <Sun />, theme: 'light' },
-  { id: 'theme-dark', group: 'Theme', label: 'Dark', description: 'Always use the dark theme', icon: <Moon />, theme: 'dark' },
-  { id: 'theme-system', group: 'Theme', label: 'System', description: 'Follow your device settings', icon: <Monitor />, theme: 'system' },
+  { id: 'theme-light', group: 'Theme', label: 'Light', description: 'Always use the light theme', icon: <SunIcon />, theme: 'light' },
+  { id: 'theme-dark', group: 'Theme', label: 'Dark', description: 'Always use the dark theme', icon: <MoonIcon />, theme: 'dark' },
+  { id: 'theme-system', group: 'Theme', label: 'System', description: 'Follow your device settings', icon: <MonitorIcon />, theme: 'system' },
 ];
 
 const recentIds = ['go-issues', 'new-issue', 'theme'];
@@ -170,9 +171,9 @@ const everything = [...navigation, ...actions, ...settings];
 const recent: Command[] = recentIds
   .map((commandId) => everything.find((command) => command.id === commandId))
   .filter((command) => command !== undefined)
-  .map((command) => ({ ...command, id: `recent-${command.id}`, group: 'Recent', icon: <Clock /> }));
+  .map((command) => ({ ...command, id: `recent-${command.id}`, group: 'Recent', icon: <ClockIcon /> }));
 
-const closeButton = { flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties;
+const closeButton = { flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties;
 const secondary = { color: 'var(--label-secondary)' } as const;
 
 const matchLabel = (label: string, query: string) => {
@@ -363,7 +364,7 @@ export default function CommandPalette() {
           <Text size={3} fontWeight={600} className='paletteBrand'>Acme</Text>
         </span>
         <button type='button' className='paletteTrigger' aria-keyshortcuts='Meta+K Control+K' onClick={() => changeOpen(true)}>
-          <Icon size='xs' aria-hidden='true'><Search /></Icon>
+          <Icon size='xs' aria-hidden='true'><SearchIcon /></Icon>
           <span className='paletteTriggerLabel'>Search or jump to…</span>
           <kbd className='paletteKbd' aria-hidden='true'>{shortcut}</kbd>
         </button>
@@ -398,14 +399,14 @@ export default function CommandPalette() {
           <div role='status'>
             {notice && (
               <Alert variant='success' className='paletteNotice'>
-                <AlertIcon />
+                <AlertIcon><CircleCheckIcon /></AlertIcon>
                 <AlertMain>
                   <AlertTitle>{notice.title}</AlertTitle>
                   <AlertContent>{notice.text}</AlertContent>
                 </AlertMain>
-                <IconButton size='xs' aria-label='Dismiss' variant='secondary' appearance='ghost' style={{ ...closeButton, alignSelf: 'flex-start' }} onClick={() => setNotice(null)}>
+                <Button square size='xs' aria-label='Dismiss' variant='secondary' appearance='ghost' style={{ ...closeButton, alignSelf: 'flex-start' }} onClick={() => setNotice(null)}>
                   <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-                </IconButton>
+                </Button>
               </Alert>
             )}
           </div>
@@ -434,13 +435,13 @@ export default function CommandPalette() {
         <DialogContent ref={dialogRef} aria-label='Command palette' className='paletteDialog'>
           <div className='paletteSearch'>
             {nested && (
-              <IconButton size='xs' aria-label='Back to all commands' variant='secondary' appearance='ghost' onClick={() => setNested(false)}>
-                <Icon size='xs' className='paletteBack'><ChevronLeft /></Icon>
-              </IconButton>
+              <Button square size='xs' aria-label='Back to all commands' variant='secondary' appearance='ghost' onClick={() => setNested(false)}>
+                <Icon size='xs' className='paletteBack'><ChevronLeftIcon /></Icon>
+              </Button>
             )}
             {nested && <Badge size='sm' variant='info' appearance='outline' style={{ flexShrink: 0 }}>Theme</Badge>}
             <TextField size='sm' className='paletteField'>
-              {!nested && <Icon size='xs' aria-hidden='true' style={{ flexShrink: 0, marginInlineStart: 'var(--spacing-6)', color: 'var(--label-secondary)' }}><Search /></Icon>}
+              {!nested && <Icon size='xs' aria-hidden='true' style={{ flexShrink: 0, marginInlineStart: 'var(--spacing-6)', color: 'var(--label-secondary)' }}><SearchIcon /></Icon>}
               <TextFieldInput
                 role='combobox'
                 autoComplete='off'
@@ -459,9 +460,9 @@ export default function CommandPalette() {
               />
             </TextField>
             <DialogClose asChild>
-              <IconButton size='xs' aria-label='Close' variant='secondary' appearance='ghost' style={closeButton}>
+              <Button square size='xs' aria-label='Close' variant='secondary' appearance='ghost' style={closeButton}>
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DialogClose>
           </div>
 
@@ -498,7 +499,7 @@ export default function CommandPalette() {
                         </span>
                         {selected && (
                           <>
-                            <Icon size='sm' aria-hidden='true' style={{ flexShrink: 0, color: 'var(--color-primary-500)' }}><Check /></Icon>
+                            <Icon size='sm' aria-hidden='true' style={{ flexShrink: 0, color: 'var(--color-primary-500)' }}><CheckIcon /></Icon>
                             <VisuallyHidden>, current</VisuallyHidden>
                           </>
                         )}

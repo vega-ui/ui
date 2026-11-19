@@ -4,7 +4,6 @@ const example = 'date-field/typed-date-with-a-calendar-popover.tsx';
 const input = { role: 'textbox', name: 'Payment due' };
 const trigger = { role: 'button', name: 'Choose due date' };
 const previous = { role: 'button', name: 'Previous month' };
-
 const next = { role: 'button', name: 'Next month' };
 const day = (name: string) => ({ role: 'gridcell', name, nth: 1 });
 
@@ -24,6 +23,7 @@ export default [
     ru: 'Во всплывающем календаре: переносит фокус между кнопками шапки и сеткой дней. Календарь не модальный: Tab с его последнего элемента выводит фокус наружу, а календарь остаётся открытым до Escape, клика снаружи или выбора дня.',
     checks: [
       { example, steps: [{ focus: trigger }, { press: 'Enter' }], press: 'Shift+Tab', before: [{ focused: day('31') }], expect: [{ focused: next }] },
+      { example, steps: [{ focus: trigger }, { press: 'Enter' }, { focus: next }], press: 'Tab', before: [{ focused: next }], expect: [{ focused: day('31') }] },
     ],
   },
   {

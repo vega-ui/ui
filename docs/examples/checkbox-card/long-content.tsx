@@ -2,13 +2,14 @@ import {
   CheckboxCard,
   CheckboxCardContent,
   CheckboxCardControl,
-  CheckboxCardControlCheckedIcon,
-  CheckboxCardControlIndeterminateIcon,
+  CheckboxCheckedIcon,
+  CheckboxIndeterminateIcon,
   CheckboxCardControlInput,
   CheckboxCardDescription,
   CheckboxCardTitle,
   CheckboxIndicator,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 const title = 'Automatically archive inactive projects after 90 days without activity';
 const description = 'Archived projects stay searchable and can be restored by any workspace admin. Integrations, webhooks and scheduled exports of archived projects are paused until the project is restored.';
@@ -24,8 +25,8 @@ export default function LongContent() {
         <CheckboxCardControl>
           <CheckboxCardControlInput name='archive' value='truncated' />
           <CheckboxIndicator>
-            <CheckboxCardControlCheckedIcon />
-            <CheckboxCardControlIndeterminateIcon />
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+            <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
           </CheckboxIndicator>
         </CheckboxCardControl>
       </CheckboxCard>
@@ -37,8 +38,8 @@ export default function LongContent() {
         <CheckboxCardControl>
           <CheckboxCardControlInput name='archive' value='wrapped' />
           <CheckboxIndicator>
-            <CheckboxCardControlCheckedIcon />
-            <CheckboxCardControlIndeterminateIcon />
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+            <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
           </CheckboxIndicator>
         </CheckboxCardControl>
       </CheckboxCard>

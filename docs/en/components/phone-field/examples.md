@@ -44,7 +44,7 @@ import {
   SelectOption,
   SelectValue,
 } from '@vega-ui/react';
-import { FlagDE, FlagFR, FlagGBUKM, FlagIN, FlagJP, FlagUS } from '@vega-ui/icons';
+import { ChevronDownIcon, FlagDE, FlagFR, FlagGBUKM, FlagIN, FlagJP, FlagUS } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const countries = [
@@ -75,7 +75,7 @@ export default function SelectWithCountryOptionsAndIcons() {
             <SelectValue>
               <country.Flag width={20} height={15} aria-hidden='true' />
             </SelectValue>
-            <SelectIcon />
+            <SelectIcon><ChevronDownIcon /></SelectIcon>
           </SelectCombobox>
           <SelectListbox>
             {countries.map(({ code, name, callingCode, Flag }) => (
@@ -155,6 +155,7 @@ import {
   SelectValue,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { FormEvent, useId, useState } from 'react';
 
 export default function UncontrolledNativeFormSubmit() {
@@ -175,7 +176,7 @@ export default function UncontrolledNativeFormSubmit() {
           <SelectHiddenSelect name='country' />
           <SelectCombobox aria-label='Country'>
             <SelectValue />
-            <SelectIcon />
+            <SelectIcon><ChevronDownIcon /></SelectIcon>
           </SelectCombobox>
           <SelectListbox>
             <SelectOption value='DE'>DE</SelectOption>
@@ -214,7 +215,6 @@ import {
   DialogTrigger,
   Heading,
   Icon,
-  IconButton,
   Label,
   PhoneField,
   PhoneFieldInput,
@@ -227,7 +227,7 @@ import {
   SelectValue,
   Text,
 } from '@vega-ui/react';
-import { XIcon } from '@vega-ui/icons';
+import { ChevronDownIcon, XIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 export default function FullFieldInsideADialogForm() {
@@ -252,14 +252,15 @@ export default function FullFieldInsideADialogForm() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
             <Heading id={`${id}-title`} as='h2' size={4} fontWeight={600}>Emergency contact</Heading>
             <DialogClose asChild>
-              <IconButton
+              <Button
+                square
                 aria-label='Close'
                 variant='secondary'
                 appearance='ghost'
-                style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+                style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
               >
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DialogClose>
           </div>
           <form
@@ -272,7 +273,7 @@ export default function FullFieldInsideADialogForm() {
                 <SelectHiddenSelect name='country' />
                 <SelectCombobox aria-label='Country'>
                   <SelectValue />
-                  <SelectIcon />
+                  <SelectIcon><ChevronDownIcon /></SelectIcon>
                 </SelectCombobox>
                 <SelectListbox>
                   <SelectOption value='FR'>FR</SelectOption>
@@ -370,6 +371,7 @@ import {
   SwitchIndicator,
   SwitchInput,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 export default function DisabledInput() {
@@ -400,7 +402,7 @@ export default function DisabledInput() {
             <SelectHiddenSelect name='country' />
             <SelectCombobox aria-label='Country'>
               <SelectValue />
-              <SelectIcon />
+              <SelectIcon><ChevronDownIcon /></SelectIcon>
             </SelectCombobox>
             <SelectListbox>
               <SelectOption value='GB'>GB</SelectOption>
@@ -436,6 +438,7 @@ import {
   SelectValue,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 export default function NonStrictMaskForLenientPasteBehavior() {
@@ -449,7 +452,7 @@ export default function NonStrictMaskForLenientPasteBehavior() {
         <PhoneFieldSelect>
           <SelectCombobox aria-label='Country'>
             <SelectValue />
-            <SelectIcon />
+            <SelectIcon><ChevronDownIcon /></SelectIcon>
           </SelectCombobox>
           <SelectListbox>
             <SelectOption value='US'>US</SelectOption>
@@ -489,6 +492,7 @@ import {
   SelectValue,
   useSelectContext,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 const countries = [
@@ -524,7 +528,7 @@ export default function EmojiFlags() {
             <SelectValue>
               <SelectedFlag />
             </SelectValue>
-            <SelectIcon />
+            <SelectIcon><ChevronDownIcon /></SelectIcon>
           </SelectCombobox>
           <SelectListbox>
             {countries.map((country) => (

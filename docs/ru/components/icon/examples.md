@@ -224,7 +224,7 @@ export default function ErrorMessageIcon() {
 
 <!-- example: icon/muted-control-icon.tsx -->
 ```tsx
-import { Button, Icon, IconButton } from '@vega-ui/react';
+import { Button, Icon } from '@vega-ui/react';
 import { LockIcon, Trash2Icon, UploadIcon } from '@vega-ui/icons';
 
 export default function MutedControlIcon() {
@@ -235,9 +235,9 @@ export default function MutedControlIcon() {
           <Icon size='sm'><UploadIcon /></Icon>
           Upload logo
         </Button>
-        <IconButton type='button' variant='secondary' appearance='ghost' aria-label='Delete logo' disabled>
+        <Button square type='button' variant='secondary' appearance='ghost' aria-label='Delete logo' disabled>
           <Icon><Trash2Icon /></Icon>
-        </IconButton>
+        </Button>
       </div>
       <p style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3)', margin: 0, color: 'var(--disable-text-color)', fontSize: 'var(--font-size-2)' }}>
         <Icon size='xs' style={{ flexShrink: 0 }}><LockIcon /></Icon>

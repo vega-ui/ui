@@ -1,6 +1,6 @@
 import { browser, focus, Input, InputSpec, layout, normalizationsOf, Orientation, pointer, readsCrossAxis, scroll, text } from '../input'
 
-export type DomEvent = 'keydown' | 'click' | 'pointerdown' | 'pointermove' | 'pointerover' | 'pointerout' | 'touchmove' | 'wheel' | 'scroll' | 'scrollend' | 'focusin' | 'focusout' | 'beforeinput' | 'input' | 'toggle' | 'load' | 'error' | 'cancel' | 'close' | 'submit'
+export type DomEvent = 'keydown' | 'click' | 'contextmenu' | 'pointerdown' | 'pointermove' | 'pointerover' | 'pointerout' | 'touchmove' | 'wheel' | 'scroll' | 'scrollend' | 'focusin' | 'focusout' | 'beforeinput' | 'input' | 'toggle' | 'load' | 'error' | 'cancel' | 'close' | 'submit'
 
 interface Source {
   readonly event: DomEvent
@@ -14,6 +14,7 @@ const among = (...specs: readonly InputSpec[]) => (spec: InputSpec) => specs.som
 const SOURCES: readonly Source[] = [
   { event: 'keydown', cancelable: true, always: false, gives: (spec) => spec.type === 'key' || spec.type === 'nav' },
   { event: 'click', cancelable: true, always: false, gives: among(pointer.press) },
+  { event: 'contextmenu', cancelable: true, always: false, gives: among(browser.contextMenu) },
   { event: 'pointerdown', cancelable: false, always: false, gives: among(pointer.down, pointer.release, pointer.cancel) },
   { event: 'pointerdown', cancelable: false, always: false, gives: among(pointer.drag) },
   { event: 'touchmove', cancelable: true, always: false, gives: among(pointer.drag) },

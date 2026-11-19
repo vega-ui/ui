@@ -18,7 +18,7 @@ export type SegmentedControlItemInputProps = Omit<InputHTMLAttributes<HTMLInputE
  *   correct context and behavior
  */
 export const SegmentedControlItemInput: FC<SegmentedControlItemInputProps> = ({ className, onChange: _onChange, ...props }) => {
-  const { onChange, name, selected, defaultSelected } = useSegmentedControlContext()
+  const { onChangeValue, name, selected, defaultSelected } = useSegmentedControlContext()
   const { value, disabled } = useSegmentedControlItemContext()
   
   const controlled = selected !== undefined
@@ -29,7 +29,7 @@ export const SegmentedControlItemInput: FC<SegmentedControlItemInputProps> = ({ 
         className={csx(style.input, className)}
         onChange={(event) => {
           _onChange?.(event)
-          if (!event.isPropagationStopped()) onChange?.(event)
+          if (!event.isPropagationStopped()) onChangeValue?.(value)
         }}
         disabled={disabled}
         checked={controlled ? value === selected : undefined}

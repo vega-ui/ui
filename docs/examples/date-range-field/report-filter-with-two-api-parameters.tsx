@@ -27,14 +27,16 @@ import {
   DateRangeField,
   DateRangeFieldCalendar,
   DateRangeFieldInput,
-  DateRangeFieldTriggerIconButton,
+  DateRangeFieldTrigger,
   HelperText,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
   Text,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 const DEFAULT_PERIOD: [string, string] = ['2026-01-01', '2026-03-31'];
 
@@ -72,17 +74,17 @@ export default function ReportFilter() {
           />
           <Popover placement='bottom-end'>
             <PopoverTrigger asChild>
-              <DateRangeFieldTriggerIconButton aria-label='Choose reporting period' />
+              <DateRangeFieldTrigger square aria-label='Choose reporting period'><Icon><CalendarIcon /></Icon></DateRangeFieldTrigger>
             </PopoverTrigger>
             <PopoverContent>
               <DateRangeFieldCalendar aria-label='Choose reporting period'>
                 <CalendarHeader>
-                  <CalendarPrevButton aria-label='Previous month' />
+                  <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                   </CalendarHeading>
-                  <CalendarNextButton aria-label='Next month' />
+                  <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                 </CalendarHeader>
                 <CalendarContent>
                   <CalendarDays>

@@ -80,7 +80,7 @@
 - `PaginationItemProps`
 - `PaginationLinkProps`
 - `PaginationEllipsisProps`
-- `PaginationSize`: `'xs' | 'sm' | 'md' | 'lg' | 'xl'`, шкала размеров `IconButton`
+- `PaginationSize`: `'xs' | 'sm' | 'md' | 'lg' | 'xl'`, шкала размеров `Button`
 - `PaginationVariant`: `'primary' | 'secondary'`
 
 ## Модель состояния

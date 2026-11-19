@@ -2,24 +2,24 @@
 
 ## Overview
 
-`DateRangeField` styling is split across the inherited `TextField` surface, the popover-mounted calendar, and a small local contract on `DateRangeFieldTriggerIconButton`.
+`DateRangeField` styling is split across the inherited `TextField` surface, the popover-mounted calendar, and a small local contract on `DateRangeFieldTrigger`.
 
 ## Public CSS Variables
 
 | Variable | Used By | Purpose |
 | --- | --- | --- |
-| `--icon-button-size` | `DateRangeFieldTriggerIconButton` | Keeps the trigger aligned with input height. |
-| `--button-color` | `DateRangeFieldTriggerIconButton` | Trigger icon color. |
-| `--button-background-color-hover` | `DateRangeFieldTriggerIconButton` | Hover background for the trigger. |
-| `--button-color-hover` | `DateRangeFieldTriggerIconButton` | Trigger icon color on hover. |
-| `--button-color-active` | `DateRangeFieldTriggerIconButton` | Trigger icon color while pressed. |
-| `--button-background-color-active` | `DateRangeFieldTriggerIconButton` | Trigger background while pressed. |
+| `--button-height` | `DateRangeFieldTrigger` | Keeps the trigger aligned with input height. |
+| `--button-color` | `DateRangeFieldTrigger` | Trigger icon color. |
+| `--button-background-color-hover` | `DateRangeFieldTrigger` | Hover background for the trigger. |
+| `--button-color-hover` | `DateRangeFieldTrigger` | Trigger icon color on hover. |
+| `--button-color-active` | `DateRangeFieldTrigger` | Trigger icon color while pressed. |
+| `--button-background-color-active` | `DateRangeFieldTrigger` | Trigger background while pressed. |
 
 ## Part-Level Variables
 
 - `DateRangeField`: inherits most visuals from `TextField`.
 - `DateRangeFieldInput`: follows the same field surface model as other text-entry controls.
-- `DateRangeFieldTriggerIconButton`: uses local button variables backed by theme tokens.
+- `DateRangeFieldTrigger`: uses local button variables backed by theme tokens.
 - `DateRangeFieldCalendar`: follows `Calendar` and `Popover` styling contracts.
 
 ## State And Variant Interaction
@@ -51,16 +51,16 @@
 <!-- example: date-range-field/styling-examples.css -->
 ```css
 .compactRangeTrigger {
-  --icon-button-size: 32px;
+  --button-height: 32px;
 }
 ```
 <!-- /example -->
 
-Children of `DateRangeFieldTriggerIconButton` replace its default calendar icon; the button keeps its size, states and accessible name.
+The icon of `DateRangeFieldTrigger` is its children, so any icon fits; with `square` the button keeps its size and states, and the `aria-label` keeps its name.
 
 <!-- example: date-range-field/custom-trigger-icon.tsx -->
 ```tsx
-import { CalendarDaysIcon } from '@vega-ui/icons';
+import { CalendarDaysIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import {
   CalendarContent,
   CalendarDay,
@@ -88,7 +88,7 @@ import {
   DateRangeField,
   DateRangeFieldCalendar,
   DateRangeFieldInput,
-  DateRangeFieldTriggerIconButton,
+  DateRangeFieldTrigger,
   Icon,
   Popover,
   PopoverContent,
@@ -101,19 +101,19 @@ export default function CustomTriggerIcon() {
       <DateRangeFieldInput aria-label='Trip dates' />
       <Popover placement='bottom-end'>
         <PopoverTrigger asChild>
-          <DateRangeFieldTriggerIconButton aria-label='Choose dates'>
+          <DateRangeFieldTrigger square aria-label='Choose dates'>
             <Icon><CalendarDaysIcon /></Icon>
-          </DateRangeFieldTriggerIconButton>
+          </DateRangeFieldTrigger>
         </PopoverTrigger>
         <PopoverContent>
           <DateRangeFieldCalendar aria-label='Choose dates'>
             <CalendarHeader>
-              <CalendarPrevButton aria-label='Previous month' />
+              <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
               <CalendarHeading>
                 <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                 <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
               </CalendarHeading>
-              <CalendarNextButton aria-label='Next month' />
+              <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
             </CalendarHeader>
             <CalendarContent>
               <CalendarDays>

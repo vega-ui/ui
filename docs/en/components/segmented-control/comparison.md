@@ -51,6 +51,21 @@ Use `CheckboxCard` when:
 
 - options are richer, card-like, or independently selectable
 
+## `SegmentedControl` vs `ToggleGroup`
+
+Use `SegmentedControl` when:
+
+- the choice is a value of a form, submitted with it
+- the options should look like one control with a sliding indicator
+
+Use `ToggleGroup` when:
+
+- the choice changes the view or the content at once, like alignment or a view mode
+- the items should look like toolbar buttons, or sit in a [Toolbar](../toolbar/)
+- several items can be pressed together
+
+Main trade-off: segmented control is a form control on native radios, while [ToggleGroup](../toggle-group/) is a set of buttons with toolbar-style navigation that never takes part in a form.
+
 ## Choose This Component When
 
 - A short exclusive option set should remain visible.

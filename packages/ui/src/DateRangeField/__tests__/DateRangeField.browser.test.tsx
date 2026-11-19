@@ -4,7 +4,7 @@ import { cleanup, render, type RenderResult } from '@testing-library/react';
 import { page, userEvent } from 'vitest/browser';
 
 import { DateRangeField, type DateRangeFieldProps } from '../DateRangeField';
-import { DateRangeFieldInput, DateRangeFieldCalendar, DateRangeFieldTriggerIconButton, type DateRangeFieldInputProps, type DateRangeFieldCalendarProps } from '../components';
+import { DateRangeFieldInput, DateRangeFieldCalendar, DateRangeFieldTrigger, type DateRangeFieldInputProps, type DateRangeFieldCalendarProps } from '../components';
 import { Popover, PopoverTrigger, PopoverContent, type PopoverProps } from '../../Popover';
 import { Icon } from '../../Icon';
 import { Label } from '../../Label';
@@ -90,12 +90,12 @@ const DateRangeFieldTest: FC<DateRangeFieldTestProps> = ({
     />
     <Popover placement='bottom-end' {...popoverProps}>
       <PopoverTrigger asChild>
-        <DateRangeFieldTriggerIconButton aria-label='Open calendar' data-testid={TESTID_TRIGGER} />
+        <DateRangeFieldTrigger square aria-label='Open calendar' data-testid={TESTID_TRIGGER} />
       </PopoverTrigger>
       <PopoverContent data-testid={TESTID_CONTENT}>
         <DateRangeFieldCalendar data-testid={TESTID_CALENDAR_ROOT} style={{ width: 320 }} {...calendarProps}>
           <CalendarHeader>
-            <CalendarPrevButton aria-label='Previous month'>
+            <CalendarPrevButton square aria-label='Previous month'>
               <Icon>
                 <ChevronLeft />
               </Icon>
@@ -108,7 +108,7 @@ const DateRangeFieldTest: FC<DateRangeFieldTestProps> = ({
                 <CalendarYearLabel />
               </CalendarViewButton>
             </CalendarHeading>
-            <CalendarNextButton aria-label='Next month'>
+            <CalendarNextButton square aria-label='Next month'>
               <Icon>
                 <ChevronRight />
               </Icon>

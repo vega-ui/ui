@@ -18,8 +18,13 @@ export interface Scrub {
   readonly progress: number
 }
 
+export interface FocusActionOptions {
+  readonly preventScroll?: boolean
+  readonly focusVisible?: boolean
+}
+
 export type Action<Key = unknown, PartName extends string = string> =
-  | { readonly type: 'focus'; readonly key: Key; readonly preventScroll?: boolean }
+  | { readonly type: 'focus'; readonly key: Key; readonly options?: FocusActionOptions }
   | { readonly type: 'focusInside'; readonly key: Key; readonly at: FocusInsideAt }
   | { readonly type: 'focusPart'; readonly part: PartName }
   | { readonly type: 'reveal'; readonly key: Key }
@@ -48,7 +53,7 @@ export type Action<Key = unknown, PartName extends string = string> =
   | { readonly type: 'emit'; readonly name: string; readonly value: unknown }
 
 export const act = {
-  focus: <Key>(key: Key, preventScroll?: boolean): Action<Key, never> => (preventScroll ? { type: 'focus', key, preventScroll } : { type: 'focus', key }),
+  focus: <Key>(key: Key, options?: FocusActionOptions): Action<Key, never> => (options ? { type: 'focus', key, options } : { type: 'focus', key }),
   focusInside: <Key>(key: Key, at: FocusInsideAt): Action<Key, never> => ({ type: 'focusInside', key, at }),
   focusPart: <PartName extends string>(part: PartName): Action<never, PartName> => ({ type: 'focusPart', part }),
   reveal: <Key>(key: Key): Action<Key, never> => ({ type: 'reveal', key }),

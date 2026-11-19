@@ -24,7 +24,7 @@
 
 ## Необязательные части
 
-Необязательных частей нет. Дайте группе имя через `role='radiogroup'` и `aria-label` или `aria-labelledby` на корне.
+Необязательных частей нет. Корень — это `radiogroup`: дайте ему имя через `aria-label` или `aria-labelledby`.
 
 ## Порядок композиции
 
@@ -55,7 +55,7 @@ export default function ValidCompositionPatterns() {
     <div style={{ display: 'grid', gap: 'var(--spacing-8)', justifyItems: 'start' }}>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label id='orders-filter-label'>Orders</Label>
-        <SegmentedControl name='orders-filter' defaultValue='open' role='radiogroup' aria-labelledby='orders-filter-label'>
+        <SegmentedControl name='orders-filter' defaultValue='open' aria-labelledby='orders-filter-label'>
           <SegmentedControlItem value='open'>
             <SegmentedControlItemInput />
             Open
@@ -71,7 +71,7 @@ export default function ValidCompositionPatterns() {
           <SegmentedControlIndicator />
         </SegmentedControl>
       </div>
-      <SegmentedControl name='orders-layout' defaultValue='list' size='sm' role='radiogroup' aria-label='Layout'>
+      <SegmentedControl name='orders-layout' defaultValue='list' size='sm' aria-label='Layout'>
         <SegmentedControlItem value='list'>
           <SegmentedControlItemInput aria-label='List' />
           <Icon size='sm'><ListIcon /></Icon>

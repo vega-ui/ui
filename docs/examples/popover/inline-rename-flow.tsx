@@ -3,7 +3,6 @@ import {
   Button,
   Heading,
   Icon,
-  IconButton,
   Label,
   Popover,
   PopoverContent,
@@ -34,15 +33,16 @@ export default function InlineRenameFlow() {
         <form onSubmit={onSubmit} style={{ display: 'grid', width: 260 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
             <Heading id={titleId} as='h3' size={5} fontWeight={600}>Rename document</Heading>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
               onClick={() => setOpen(false)}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </div>
           <div style={{ display: 'grid', gap: 'var(--spacing-3)', marginBlockStart: 'var(--spacing-6)' }}>
             <Label htmlFor={fieldId}>Name</Label>

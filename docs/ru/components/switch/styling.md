@@ -55,7 +55,7 @@
 <!-- example: switch/custom-indicator.tsx -->
 ```tsx
 import { Icon, Label, Switch, SwitchIndicator, SwitchInput } from '@vega-ui/react';
-import { Moon } from '@vega-ui/icons';
+import { MoonIcon } from '@vega-ui/icons';
 
 export default function CustomIndicator() {
   return (
@@ -71,7 +71,7 @@ export default function CustomIndicator() {
         <Switch>
           <SwitchInput id='custom-dark-mode' defaultChecked />
           <SwitchIndicator style={{ background: 'var(--color-primary-700)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Icon size='sm'><Moon stroke='var(--color-white)' /></Icon>
+            <Icon size='sm'><MoonIcon stroke='var(--color-white)' /></Icon>
           </SwitchIndicator>
         </Switch>
         <Label htmlFor='custom-dark-mode'>Dark mode</Label>

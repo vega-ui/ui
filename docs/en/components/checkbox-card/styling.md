@@ -53,13 +53,14 @@ import {
   CheckboxCard,
   CheckboxCardContent,
   CheckboxCardControl,
-  CheckboxCardControlCheckedIcon,
-  CheckboxCardControlIndeterminateIcon,
+  CheckboxCheckedIcon,
+  CheckboxIndeterminateIcon,
   CheckboxCardControlInput,
   CheckboxCardDescription,
   CheckboxCardTitle,
   CheckboxIndicator,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 import './local-minimum-width-override.css';
 
 const regions = [
@@ -80,8 +81,8 @@ export default function LocalMinimumWidthOverride() {
           <CheckboxCardControl>
             <CheckboxCardControlInput name='regions' value={region.value} defaultChecked={region.value === 'eu'} />
             <CheckboxIndicator>
-              <CheckboxCardControlCheckedIcon />
-              <CheckboxCardControlIndeterminateIcon />
+              <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+              <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
             </CheckboxIndicator>
           </CheckboxCardControl>
         </CheckboxCard>
@@ -94,7 +95,7 @@ export default function LocalMinimumWidthOverride() {
 
 ### Custom state icons
 
-Children of `CheckboxCardControlCheckedIcon` and `CheckboxCardControlIndeterminateIcon` replace the default icon of that state. The other state keeps its default icon.
+The state icons are the parts of `Checkbox`, and neither draws an icon of its own, so each state shows the icon you pass, from any icon set or your own SVG. The usual look is `<CheckIcon strokeWidth={4} />` and `<MinusIcon strokeWidth={4} />`; here a rocket and a diff sign take their place.
 
 <!-- example: checkbox-card/custom-state-icons.tsx -->
 ```tsx
@@ -102,14 +103,14 @@ import {
   CheckboxCard,
   CheckboxCardContent,
   CheckboxCardControl,
-  CheckboxCardControlCheckedIcon,
-  CheckboxCardControlIndeterminateIcon,
+  CheckboxCheckedIcon,
+  CheckboxIndeterminateIcon,
   CheckboxCardControlInput,
   CheckboxCardDescription,
   CheckboxCardTitle,
   CheckboxIndicator,
 } from '@vega-ui/react';
-import { Diff, Rocket } from '@vega-ui/icons';
+import { CheckIcon, DiffIcon, MinusIcon, RocketIcon } from '@vega-ui/icons';
 
 export default function CustomStateIcons() {
   return (
@@ -122,10 +123,10 @@ export default function CustomStateIcons() {
         <CheckboxCardControl>
           <CheckboxCardControlInput defaultChecked />
           <CheckboxIndicator>
-            <CheckboxCardControlCheckedIcon>
-              <Rocket />
-            </CheckboxCardControlCheckedIcon>
-            <CheckboxCardControlIndeterminateIcon />
+            <CheckboxCheckedIcon>
+              <RocketIcon />
+            </CheckboxCheckedIcon>
+            <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
           </CheckboxIndicator>
         </CheckboxCardControl>
       </CheckboxCard>
@@ -137,10 +138,10 @@ export default function CustomStateIcons() {
         <CheckboxCardControl>
           <CheckboxCardControlInput indeterminate />
           <CheckboxIndicator>
-            <CheckboxCardControlCheckedIcon />
-            <CheckboxCardControlIndeterminateIcon>
-              <Diff />
-            </CheckboxCardControlIndeterminateIcon>
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+            <CheckboxIndeterminateIcon>
+              <DiffIcon />
+            </CheckboxIndeterminateIcon>
           </CheckboxIndicator>
         </CheckboxCardControl>
       </CheckboxCard>

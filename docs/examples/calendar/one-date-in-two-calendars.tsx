@@ -15,8 +15,10 @@ import {
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYearLabel,
+  Icon,
   Text,
 } from '@vega-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import { useState } from 'react';
 
 const islamicCalendar = createCalendarSystem('islamic-umalqura');
@@ -29,11 +31,11 @@ export default function OneDateInTwoCalendars() {
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--spacing-16)', alignItems: 'start' }}>
         <Calendar compact locale='en-GB' value={date} onChangeValue={setDate}>
           <CalendarHeader>
-            <CalendarPrevButton aria-label='Previous month' />
+            <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
             <CalendarHeading>
               <Text fontWeight={600}><CalendarMonthLabel /> <CalendarYearLabel /></Text>
             </CalendarHeading>
-            <CalendarNextButton aria-label='Next month' />
+            <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
           </CalendarHeader>
           <CalendarContent>
             <CalendarDays aria-label='Gregorian date'>
@@ -52,11 +54,11 @@ export default function OneDateInTwoCalendars() {
         </Calendar>
         <Calendar compact dir='rtl' locale='ar-SA' calendar={islamicCalendar} value={date} onChangeValue={setDate}>
           <CalendarHeader>
-            <CalendarPrevButton aria-label='الشهر السابق' />
+            <CalendarPrevButton square aria-label='الشهر السابق'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
             <CalendarHeading>
               <Text fontWeight={600}><CalendarMonthLabel /> <CalendarYearLabel /></Text>
             </CalendarHeading>
-            <CalendarNextButton aria-label='الشهر التالي' />
+            <CalendarNextButton square aria-label='الشهر التالي'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
           </CalendarHeader>
           <CalendarContent>
             <CalendarDays aria-label='التاريخ الهجري'>

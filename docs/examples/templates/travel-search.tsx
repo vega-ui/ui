@@ -33,13 +33,12 @@ import {
   DateRangeField,
   DateRangeFieldCalendar,
   DateRangeFieldInput,
-  DateRangeFieldTriggerIconButton,
+  DateRangeFieldTrigger,
   Fieldset,
   FieldsetLegend,
   Heading,
   HelperText,
   Icon,
-  IconButton,
   Label,
   NumberField,
   NumberFieldDecrementButton,
@@ -75,7 +74,7 @@ import {
   TextFieldInput,
   VisuallyHidden,
 } from '@vega-ui/react';
-import { ArrowRight, MapPin, Plane, SlidersHorizontal, Users, XIcon } from '@vega-ui/icons';
+import { ArrowRightIcon, CalendarIcon, CheckIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, MapPinIcon, MinusIcon, PlaneIcon, PlusIcon, SlidersHorizontalIcon, UsersIcon, XIcon } from '@vega-ui/icons';
 import './travel-search.css';
 
 type Sort = 'best' | 'cheapest' | 'fastest' | 'earliest';
@@ -159,7 +158,7 @@ const shortDate = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numer
 const field = { display: 'grid', gap: 'var(--spacing-3)', alignContent: 'start', minWidth: 0 } as const;
 const secondary = { color: 'var(--label-secondary)' } as const;
 const tabular = { fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap' } as const;
-const closeButton = { flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties;
+const closeButton = { flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties;
 
 const formatDuration = (minutes: number) => `${Math.floor(minutes / 60)} h ${String(minutes % 60).padStart(2, '0')} min`;
 
@@ -272,7 +271,7 @@ const FlightFilters = ({ prefix, filters, onChange }: FiltersProps) => (
             onChange={(event) => onChange({ ...filters, stops: toggle(filters.stops, option.value, event.currentTarget.checked) })}
           />
           <CheckboxIndicator>
-            <CheckboxCheckedIcon />
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
           </CheckboxIndicator>
           {option.label}
         </Checkbox>
@@ -293,7 +292,7 @@ const FlightFilters = ({ prefix, filters, onChange }: FiltersProps) => (
               onChange={(event) => onChange({ ...filters, airlines: toggle(filters.airlines, airline, event.currentTarget.checked) })}
             />
             <CheckboxIndicator>
-              <CheckboxCheckedIcon />
+              <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
             </CheckboxIndicator>
             <span style={{ flex: 1, minWidth: 0 }}>{airline}</span>
             <Text size={2} aria-hidden='true' style={{ ...secondary, ...tabular }}>{count}</Text>
@@ -308,11 +307,10 @@ const FlightFilters = ({ prefix, filters, onChange }: FiltersProps) => (
       <SegmentedControl
         size='xs'
         name={`${prefix}-time`}
-        role='radiogroup'
         aria-labelledby={`${prefix}-time`}
         value={filters.time}
         className='travelTime'
-        onChange={(event) => onChange({ ...filters, time: event.target.value as Time })}
+        onChangeValue={(value) => onChange({ ...filters, time: value })}
       >
         {times.map((time) => (
           <SegmentedControlItem key={time.value} value={time.value}>
@@ -492,7 +490,7 @@ export default function TravelSearch() {
                         onClick={() => choose(item)}
                         style={{ gap: 'var(--spacing-6)', '--option-height': 'var(--spacing-22)' } as CSSProperties}
                       >
-                        <Icon size='sm' aria-hidden='true' style={{ flexShrink: 0, color: 'var(--label-secondary)' }}><MapPin /></Icon>
+                        <Icon size='sm' aria-hidden='true' style={{ flexShrink: 0, color: 'var(--label-secondary)' }}><MapPinIcon /></Icon>
                         <span style={{ display: 'grid', flex: 1, minWidth: 0 }}>
                           <Text size={3}>{item.city}</Text>
                           <Text size={1} style={secondary}>{item.country}</Text>
@@ -524,17 +522,17 @@ export default function TravelSearch() {
                 />
                 <Popover placement='bottom-end'>
                   <PopoverTrigger asChild>
-                    <DateRangeFieldTriggerIconButton aria-label='Choose travel dates' />
+                    <DateRangeFieldTrigger square aria-label='Choose travel dates'><Icon><CalendarIcon /></Icon></DateRangeFieldTrigger>
                   </PopoverTrigger>
                   <PopoverContent>
                     <DateRangeFieldCalendar aria-label='Choose travel dates'>
                       <CalendarHeader>
-                        <CalendarPrevButton aria-label='Previous month' />
+                        <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                         <CalendarHeading>
                           <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                           <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                         </CalendarHeading>
-                        <CalendarNextButton aria-label='Next month' />
+                        <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                       </CalendarHeader>
                       <CalendarContent>
                         <CalendarDays>
@@ -574,7 +572,7 @@ export default function TravelSearch() {
               <Label id={`${id}-travellers-label`}>Travellers</Label>
               <Popover role='dialog' placement='bottom-start' open={travellersOpen} onChangeOpen={setTravellersOpen}>
                 <PopoverTrigger className='travelPicker' aria-labelledby={`${id}-travellers-label ${id}-travellers-value`}>
-                  <Icon size='xs' aria-hidden='true' style={{ flexShrink: 0, color: 'var(--label-secondary)' }}><Users /></Icon>
+                  <Icon size='xs' aria-hidden='true' style={{ flexShrink: 0, color: 'var(--label-secondary)' }}><UsersIcon /></Icon>
                   <span id={`${id}-travellers-value`} style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{formatTravellers(adults, children)}</span>
                 </PopoverTrigger>
                 <PopoverContent aria-labelledby={`${id}-travellers-title`}>
@@ -586,9 +584,9 @@ export default function TravelSearch() {
                         <Text id={`${id}-adults-hint`} size={1} style={secondary}>12 years and older</Text>
                       </span>
                       <NumberField size='xs' min={1} max={9} value={adults} onChangeValue={(next) => setAdults(next ?? 1)} style={{ width: 112 }}>
-                        <NumberFieldDecrementButton aria-label='Remove an adult' />
+                        <NumberFieldDecrementButton square aria-label='Remove an adult'><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
                         <NumberFieldInput id={`${id}-adults`} aria-describedby={`${id}-adults-hint`} />
-                        <NumberFieldIncrementButton aria-label='Add an adult' />
+                        <NumberFieldIncrementButton square aria-label='Add an adult'><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
                       </NumberField>
                     </div>
                     <div className='travelCounter'>
@@ -597,9 +595,9 @@ export default function TravelSearch() {
                         <Text id={`${id}-children-hint`} size={1} style={secondary}>2 to 11 years</Text>
                       </span>
                       <NumberField size='xs' min={0} max={8} value={children} onChangeValue={(next) => setChildren(next ?? 0)} style={{ width: 112 }}>
-                        <NumberFieldDecrementButton aria-label='Remove a child' />
+                        <NumberFieldDecrementButton square aria-label='Remove a child'><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
                         <NumberFieldInput id={`${id}-children`} aria-describedby={`${id}-children-hint`} />
-                        <NumberFieldIncrementButton aria-label='Add a child' />
+                        <NumberFieldIncrementButton square aria-label='Add a child'><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
                       </NumberField>
                     </div>
                     <Button size='xs' onClick={() => setTravellersOpen(false)} style={{ justifySelf: 'end' }}>Done</Button>
@@ -626,7 +624,7 @@ export default function TravelSearch() {
             <div style={{ display: 'grid', gap: 'var(--spacing-1)', minWidth: 0 }}>
               <Heading id={`${id}-results`} as='h2' size={5} fontWeight={600} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3)' }}>
                 {ORIGIN.city}
-                <Icon size='sm' aria-hidden='true' className='travelArrow'><ArrowRight /></Icon>
+                <Icon size='sm' aria-hidden='true' className='travelArrow'><ArrowRightIcon /></Icon>
                 <VisuallyHidden>to</VisuallyHidden>
                 {search.destination.city}
               </Heading>
@@ -636,13 +634,13 @@ export default function TravelSearch() {
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
               <Button size='xs' variant='secondary' appearance='ghost' className='travelFiltersTrigger' onClick={() => setFiltersOpen(true)} style={{ gap: 'var(--spacing-3)' }}>
-                <Icon size='xs' aria-hidden='true'><SlidersHorizontal /></Icon>
+                <Icon size='xs' aria-hidden='true'><SlidersHorizontalIcon /></Icon>
                 {activeFilters > 0 ? `Filters · ${activeFilters}` : 'Filters'}
               </Button>
               <Select size='xs' value={sort} onChangeValue={(next) => setSort((next ?? 'best') as Sort)}>
                 <SelectCombobox aria-label='Sort flights' style={{ minWidth: 150 }}>
                   <SelectValue />
-                  <SelectIcon />
+                  <SelectIcon><ChevronDownIcon /></SelectIcon>
                 </SelectCombobox>
                 <SelectListbox>
                   {sorts.map((item) => (
@@ -669,7 +667,7 @@ export default function TravelSearch() {
                 <li key={flight.id}>
                   <Card size='sm' className='travelFlight'>
                     <div className='travelFlightMain'>
-                      <span aria-hidden='true' className='travelAirline'><Icon size='sm'><Plane /></Icon></span>
+                      <span aria-hidden='true' className='travelAirline'><Icon size='sm'><PlaneIcon /></Icon></span>
                       <div style={{ display: 'grid', gap: 'var(--spacing-1)', minWidth: 0 }}>
                         <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 'var(--spacing-2) var(--spacing-4)' }}>
                           <Text size={2} style={secondary}>{flight.airline}</Text>
@@ -707,16 +705,16 @@ export default function TravelSearch() {
             <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
               <Button size='xs' variant='secondary' appearance='ghost' disabled={activeFilters === 0} onClick={resetFilters}>Reset</Button>
               <SheetClose asChild>
-                <IconButton size='xs' aria-label='Close' variant='secondary' appearance='ghost' style={closeButton}>
+                <Button square size='xs' aria-label='Close' variant='secondary' appearance='ghost' style={closeButton}>
                   <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-                </IconButton>
+                </Button>
               </SheetClose>
             </div>
           </div>
           <FlightFilters prefix={`${id}-sheet`} filters={filters} onChange={setFilters} />
           <Separator style={{ marginBlock: 'var(--spacing-10)' }} />
           <SheetClose asChild>
-            <Button size='sm' fullWidth style={tabular}>{visible.length === 0 ? 'No flights to show' : `Show ${visible.length} ${visible.length === 1 ? 'flight' : 'flights'}`}</Button>
+            <Button size='sm' style={{ ...tabular, width: '100%' }}>{visible.length === 0 ? 'No flights to show' : `Show ${visible.length} ${visible.length === 1 ? 'flight' : 'flights'}`}</Button>
           </SheetClose>
         </SheetContent>
       </Sheet>

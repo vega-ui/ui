@@ -1,5 +1,5 @@
 import { CSSProperties } from 'react';
-import { XIcon } from '@vega-ui/icons';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon, XIcon } from '@vega-ui/icons';
 import {
   Button,
   CalendarContent,
@@ -28,14 +28,13 @@ import {
   DateField,
   DateFieldCalendar,
   DateFieldInput,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
   Dialog,
   DialogClose,
   DialogContent,
   DialogTrigger,
   Heading,
   Icon,
-  IconButton,
   Label,
   Popover,
   PopoverContent,
@@ -52,14 +51,15 @@ export default function DateFieldInsideADialog() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
           <Heading id='schedule-review-title' as='h2' size={4} fontWeight={600}>Schedule review</Heading>
           <DialogClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </DialogClose>
         </div>
         <form method='dialog' style={{ display: 'grid', gap: 'var(--spacing-12)', marginBlockStart: 'var(--spacing-8)' }}>
@@ -69,17 +69,17 @@ export default function DateFieldInsideADialog() {
               <DateFieldInput name='reviewDate' id='review-date' required placeholder='dd.mm.yyyy' />
               <Popover placement='bottom-end'>
                 <PopoverTrigger asChild>
-                  <DateFieldTriggerIconButton aria-label='Choose review date' />
+                  <DateFieldTrigger square aria-label='Choose review date'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
                 </PopoverTrigger>
                 <PopoverContent>
                   <DateFieldCalendar aria-label='Choose review date'>
                     <CalendarHeader>
-                      <CalendarPrevButton aria-label='Previous month' />
+                      <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                       <CalendarHeading>
                         <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                         <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                       </CalendarHeading>
-                      <CalendarNextButton aria-label='Next month' />
+                      <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                     </CalendarHeader>
                     <CalendarContent>
                       <CalendarDays>

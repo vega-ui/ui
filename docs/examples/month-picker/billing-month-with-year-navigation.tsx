@@ -1,12 +1,12 @@
 import {
+  Button,
   Icon,
-  IconButton,
   MonthPicker,
   MonthPickerCell,
   MonthPickerLayout,
   Text,
 } from '@vega-ui/react';
-import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import { useState } from 'react';
 
 const monthFormat = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' });
@@ -24,13 +24,13 @@ export default function BillingMonthWithYearNavigation() {
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-8)', width: '100%' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <IconButton aria-label='Previous year' size='sm' variant='secondary' appearance='ghost' onClick={() => showYear(year - 1)}>
-          <Icon><ChevronLeft /></Icon>
-        </IconButton>
+        <Button square aria-label='Previous year' size='sm' variant='secondary' appearance='ghost' onClick={() => showYear(year - 1)}>
+          <Icon><ChevronLeftIcon /></Icon>
+        </Button>
         <Text fontWeight={600} aria-live='polite'>{year}</Text>
-        <IconButton aria-label='Next year' size='sm' variant='secondary' appearance='ghost' onClick={() => showYear(year + 1)}>
-          <Icon><ChevronRight /></Icon>
-        </IconButton>
+        <Button square aria-label='Next year' size='sm' variant='secondary' appearance='ghost' onClick={() => showYear(year + 1)}>
+          <Icon><ChevronRightIcon /></Icon>
+        </Button>
       </div>
       <MonthPicker
         aria-label={`Billing month, ${year}`}

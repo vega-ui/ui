@@ -8,6 +8,7 @@ import { DocumentLang } from './DocumentLang';
 import { themeScript } from '@/lib/storedTheme';
 import { LocaleProvider } from './LocaleProvider';
 import { SiteHeader } from './SiteHeader';
+import { SiteThemeProvider } from './SiteThemeProvider';
 import { SiteFooter } from './SiteFooter';
 
 export const getRootMetadata = (locale: Locale) => ({
@@ -36,7 +37,7 @@ export const RootDocument = ({ children }: { children: ReactNode }) => (
       <script dangerouslySetInnerHTML={{ __html: localeScript }} />
     </head>
     <body>
-      {children}
+      <SiteThemeProvider>{children}</SiteThemeProvider>
     </body>
   </html>
 );

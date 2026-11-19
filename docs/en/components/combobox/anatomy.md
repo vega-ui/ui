@@ -54,20 +54,20 @@ One suggestion, the same option `Listbox` and `Select` use.
 
 ### `ComboboxTrigger`
 
-A button inside the `TextField`, after the input, that opens and closes the list. It is how pointer and touch users reach the options without typing.
+A button inside the `TextField`, after the input, that opens and closes the list. It is how pointer and touch users reach the options without typing. It renders a `Button` with no content of its own: put `ComboboxIcon` inside with `square` and an `aria-label` or `aria-labelledby`, or a text like "Show all", or render your own button with `asChild`.
 
 - Required: no, recommended when users may not know what to type
-- Put `ComboboxIcon` inside and name the button with `aria-label`
+- For an icon alone, put `ComboboxIcon` inside, add `square` and name the button with `aria-label`
 - Out of the tab order; a press keeps the focus in the input
 - Disabled while the combobox is `disabled` or `readOnly`
 
 ### `ComboboxIcon`
 
-The chevron inside `ComboboxTrigger`.
+The icon inside `ComboboxTrigger`. It draws no icon of its own: pass one as its children, such as a chevron.
 
 - Required: no, but the trigger needs some icon
 - Sized by the `TextField` and turned upside down while the list is shown
-- Takes your own icon as `children`
+- Takes the icon as `children`, from any icon set or your own SVG
 
 ### `ListboxGroup`
 
@@ -99,6 +99,7 @@ The root holds only the field and the list, so the list opens right under the in
 <!-- example: combobox/grouped-options.tsx -->
 ```tsx
 import { Combobox, ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger, Label, ListboxGroup, ListboxOption, Text, TextField } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const regions = [
@@ -142,8 +143,8 @@ export default function GroupedOptions() {
       <Combobox>
         <TextField>
           <ComboboxInput id={id} placeholder='Search by city' value={query} onChange={(event) => setQuery(event.target.value)} />
-          <ComboboxTrigger aria-label='Show time zones'>
-            <ComboboxIcon />
+          <ComboboxTrigger square aria-label='Show time zones'>
+            <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
           </ComboboxTrigger>
         </TextField>
         <ComboboxListbox aria-label='Time zones'>

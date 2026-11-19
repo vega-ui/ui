@@ -1,11 +1,11 @@
 'use client';
 
 import { FC } from 'react';
-import { createInput } from '@vega-ui/core';
-import { useSnapshot, useWidget, widgetEnvironment } from '../internals/widget';
+import { useMergeRefs } from '@vega-ui/hooks';
+import { useWidget, widgetEnvironment } from '../internals/widget';
 import { TextField, TextFieldProps } from '../TextField';
 import { PasswordFieldProvider } from './contexts';
-import { passwordFieldWidget, TOGGLE_SHOWN } from '@vega-ui/widgets/password-field';
+import { passwordFieldWidget } from '@vega-ui/widgets/password-field';
 
 export interface PasswordFieldProps extends TextFieldProps {
   /**
@@ -43,18 +43,11 @@ export const PasswordField: FC<PasswordFieldProps> = ({
   ...props
 }) => {
   const handle = useWidget(passwordFieldWidget, { shown: controlledShown, defaultShown, onChangeShown }, widgetEnvironment)
-  const shown = useSnapshot(handle, (state) => state.shown)
-
-  const toggleShow = () => void handle.send(createInput(TOGGLE_SHOWN))
+  const mergedRef = useMergeRefs([handle.root, ref])
 
   return (
-    <PasswordFieldProvider
-      handle={handle}
-      shown={shown}
-      toggleShow={toggleShow}
-      disabled={disabled}
-    >
-      <TextField ref={ref} size={size} {...props}>
+    <PasswordFieldProvider handle={handle} disabled={disabled}>
+      <TextField ref={mergedRef} size={size} {...handle.listen({}, props)}>
         {children}
       </TextField>
     </PasswordFieldProvider>

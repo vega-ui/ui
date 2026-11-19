@@ -7,7 +7,6 @@ import {
   DialogTrigger,
   Heading,
   Icon,
-  IconButton,
   Label,
   Text,
   TextField,
@@ -39,14 +38,15 @@ export default function TooltipInsideDialog() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
           <Heading id={titleId} as='h2' size={4} fontWeight={600}>Production API key</Heading>
           <DialogClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </DialogClose>
         </div>
         <div style={{ display: 'grid', gap: 'var(--spacing-3)', marginBlockStart: 'var(--spacing-8)' }}>
@@ -57,9 +57,9 @@ export default function TooltipInsideDialog() {
             </TextField>
             <Tooltip delayOpen={0}>
               <TooltipTrigger asChild>
-                <IconButton aria-label='Copy key' variant='secondary' appearance='ghost' style={{ flexShrink: 0 }} onClick={copy}>
+                <Button square aria-label='Copy key' variant='secondary' appearance='ghost' style={{ flexShrink: 0 }} onClick={copy}>
                   <Icon>{copied ? <CheckIcon /> : <CopyIcon />}</Icon>
-                </IconButton>
+                </Button>
               </TooltipTrigger>
               <TooltipContent>
                 <Text size={2}>{copied ? 'Copied to clipboard' : 'Copy to clipboard'}</Text>

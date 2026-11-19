@@ -2,7 +2,7 @@
 
 ## Обзор
 
-`NumberField` переиспользует поверхность `TextField` и добавляет числовое выравнивание и квадратные кнопки шага, привязанные к общей высоте поля ввода.
+`NumberField` переиспользует поверхность `TextField` и добавляет числовое выравнивание и кнопки шага, привязанные к общей высоте поля ввода.
 
 ## Публичные CSS-переменные
 
@@ -27,7 +27,7 @@
 
 ### Кнопки
 
-Кнопки увеличения и уменьшения сопоставляют `--icon-button-size` с `--input-height`.
+Кнопки увеличения и уменьшения сопоставляют `--button-height` с `--input-height`.
 
 ### Поле ввода
 
@@ -52,16 +52,18 @@
 
 ### Размеры
 
-`size` на корне задаёт `--input-height`, а кнопки шага следуют за ним и остаются квадратными при любом размере.
+`size` на корне задаёт `--input-height`, а кнопки шага следуют за ним; с `square` они остаются квадратными при любом размере.
 
 <!-- example: number-field/stepper-sizes.tsx -->
 ```tsx
 import {
+  Icon,
   NumberField,
   NumberFieldDecrementButton,
   NumberFieldIncrementButton,
   NumberFieldInput,
 } from '@vega-ui/react';
+import { MinusIcon, PlusIcon } from '@vega-ui/icons';
 
 const SIZES = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
 
@@ -70,9 +72,9 @@ export default function StepperSizes() {
     <div style={{ display: 'grid', gap: 'var(--spacing-6)', width: '100%', maxWidth: 220 }}>
       {SIZES.map((size) => (
         <NumberField key={size} size={size} min={0} max={10} defaultValue={3}>
-          <NumberFieldDecrementButton aria-label={`Decrease, size ${size}`} />
+          <NumberFieldDecrementButton square aria-label={`Decrease, size ${size}`}><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
           <NumberFieldInput aria-label={`Guests, size ${size}`} />
-          <NumberFieldIncrementButton aria-label={`Increase, size ${size}`} />
+          <NumberFieldIncrementButton square aria-label={`Increase, size ${size}`}><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
         </NumberField>
       ))}
     </div>
@@ -83,7 +85,7 @@ export default function StepperSizes() {
 
 ### Собственные иконки кнопок шага
 
-Дочерние элементы `NumberFieldDecrementButton` и `NumberFieldIncrementButton` заменяют их иконки по умолчанию. У кнопок с одной иконкой нет встроенного имени, поэтому передайте каждой `aria-label`.
+Иконки `NumberFieldDecrementButton` и `NumberFieldIncrementButton` — это их дочерние элементы, поэтому подойдёт любая. У кнопок с одной иконкой и `square` нет встроенного имени, поэтому передайте каждой `aria-label`.
 
 <!-- example: number-field/custom-stepper-icons.tsx -->
 ```tsx
@@ -105,11 +107,11 @@ export default function CustomStepperIcons() {
     <div style={{ display: 'grid', gap: 'var(--spacing-3)', width: '100%', maxWidth: 200 }}>
       <Label htmlFor={id}>Font size, px</Label>
       <NumberField min={8} max={72} defaultValue={16}>
-        <NumberFieldDecrementButton aria-label='Smaller'>
+        <NumberFieldDecrementButton square aria-label='Smaller'>
           <Icon><ChevronDownIcon /></Icon>
         </NumberFieldDecrementButton>
         <NumberFieldInput id={id} />
-        <NumberFieldIncrementButton aria-label='Larger'>
+        <NumberFieldIncrementButton square aria-label='Larger'>
           <Icon><ChevronUpIcon /></Icon>
         </NumberFieldIncrementButton>
       </NumberField>
@@ -122,4 +124,4 @@ export default function CustomStepperIcons() {
 ## Не переопределяйте
 
 - не нарушайте квадратное соотношение между высотой поля и кнопками шага
-- не стилизуйте кнопки шага как посторонние icon button с несовпадающим размером
+- не стилизуйте кнопки шага как посторонние кнопки-иконки с несовпадающим размером

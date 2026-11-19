@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type KeyboardEvent, type MouseEvent } from 'react';
 import NextLink from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Icon, IconButton, Text, TextField, TextFieldInput } from '@vega-ui/react';
+import { Icon, Button, Text, TextField, TextFieldInput } from '@vega-ui/react';
 import { ChevronDown, Search, X } from '@vega-ui/icons';
 import { useDictionary } from './LocaleProvider';
 import styles from './Sidebar.module.css';
@@ -102,9 +102,9 @@ export const Sidebar = ({ sections }: { sections: SidebarSection[] }) => {
           onKeyDown={onKeyDown}
         />
         {query && (
-          <IconButton size='xs' variant='secondary' appearance='ghost' aria-label={t.sidebar.clear} className={styles.clear} onClick={clear}>
+          <Button square size='xs' variant='secondary' appearance='ghost' aria-label={t.sidebar.clear} className={styles.clear} onClick={clear}>
             <Icon size='2xs'><X strokeWidth={2.5} /></Icon>
-          </IconButton>
+          </Button>
         )}
       </TextField>
       <nav ref={navRef} aria-label={t.sidebar.label} className={styles.nav} data-filtering={needle ? true : undefined}>

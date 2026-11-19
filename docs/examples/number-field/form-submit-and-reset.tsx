@@ -1,5 +1,6 @@
 import {
   Button,
+  Icon,
   Label,
   NumberField,
   NumberFieldDecrementButton,
@@ -7,6 +8,7 @@ import {
   NumberFieldInput,
   Text,
 } from '@vega-ui/react';
+import { MinusIcon, PlusIcon } from '@vega-ui/icons';
 import { FormEvent, useId, useState } from 'react';
 
 const DEFAULT_BUDGET = 2500;
@@ -35,9 +37,9 @@ export default function FormSubmitAndReset() {
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor={id}>Monthly budget, USD</Label>
         <NumberField min={0} max={1000000} step={500} value={budget} onChangeValue={setBudget} maximumFractionDigits={0}>
-          <NumberFieldDecrementButton aria-label='Decrease budget by 500' />
+          <NumberFieldDecrementButton square aria-label='Decrease budget by 500'><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
           <NumberFieldInput id={id} required />
-          <NumberFieldIncrementButton aria-label='Increase budget by 500' />
+          <NumberFieldIncrementButton square aria-label='Increase budget by 500'><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
         </NumberField>
         <input type='hidden' name='monthlyBudget' value={Number.isNaN(budget) ? '' : budget} />
       </div>

@@ -72,6 +72,7 @@ export default [
     ru: 'С `multiple`: переносит активный вариант и переключает его.',
     checks: [
       { example: several, steps: [{ focus: toppings }], press: 'Shift+ArrowDown', before: [{ attr: 'aria-selected', of: option('Mushrooms'), is: 'false' }], expect: [{ active: option('Mushrooms') }, { attr: 'aria-selected', of: option('Mushrooms'), is: 'true' }] },
+      { example: several, steps: [{ focus: toppings }, { press: 'ArrowDown' }, { press: 'ArrowDown' }], press: 'Shift+ArrowUp', before: [{ active: option('Black olives') }, { attr: 'aria-selected', of: option('Mushrooms'), is: 'false' }], expect: [{ active: option('Mushrooms') }, { attr: 'aria-selected', of: option('Mushrooms'), is: 'true' }] },
     ],
   },
   {
@@ -88,6 +89,7 @@ export default [
     ru: 'С `multiple`: выбирает все варианты от активного до первого или последнего и делает его активным.',
     checks: [
       { example: several, steps: [{ focus: toppings }], press: 'Control+Shift+End', expect: [{ active: option('Jalapeños') }, { attr: 'aria-selected', of: option('Pepperoni'), is: 'true' }, { attr: 'aria-selected', of: option('Jalapeños'), is: 'true' }] },
+      { example: several, steps: [{ focus: toppings }, { press: 'End' }], press: 'Control+Shift+Home', before: [{ active: option('Jalapeños') }, { attr: 'aria-selected', of: option('Mushrooms'), is: 'false' }], expect: [{ active: option('Extra mozzarella') }, { attr: 'aria-selected', of: option('Mushrooms'), is: 'true' }, { attr: 'aria-selected', of: option('Jalapeños'), is: 'true' }] },
     ],
   },
   {

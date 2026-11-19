@@ -1,3 +1,5 @@
+import { Icon } from '../Icon';
+import { MinusIcon, PlusIcon } from '@vega-ui/icons';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { NumberField, NumberFieldProps } from './NumberField';
@@ -29,9 +31,9 @@ const meta = {
   args: {},
   render: (args) => (
     <NumberField {...args}>
-      <NumberFieldDecrementButton aria-label='Decrease' />
+      <NumberFieldDecrementButton square aria-label='Decrease'><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
       <NumberFieldInput aria-label='Quantity' placeholder='0' />
-      <NumberFieldIncrementButton aria-label='Increase' />
+      <NumberFieldIncrementButton square aria-label='Increase'><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
     </NumberField>
   ),
 } satisfies Meta<typeof NumberField>;
@@ -53,9 +55,9 @@ export const Matrix: Story = {
     <div style={{ display: 'grid', gridTemplateColumns: `repeat(${states.length}, auto)`, gap: 12, alignItems: 'center' }}>
       {sizes.map((size) => states.map((state) => (
         <NumberField key={`${size}-${state.label}`} size={size} disabled={state.disabled}>
-          <NumberFieldDecrementButton aria-label='Decrease' />
+          <NumberFieldDecrementButton square aria-label='Decrease'><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
           <NumberFieldInput aria-label='Quantity' aria-invalid={state.invalid} placeholder={`${size} / ${state.label}`} />
-          <NumberFieldIncrementButton aria-label='Increase' />
+          <NumberFieldIncrementButton square aria-label='Increase'><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
         </NumberField>
       )))}
     </div>

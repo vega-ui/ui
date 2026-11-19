@@ -34,11 +34,10 @@ import {
   DateRangeField,
   DateRangeFieldCalendar,
   DateRangeFieldInput,
-  DateRangeFieldTriggerIconButton,
+  DateRangeFieldTrigger,
   Heading,
   HelperText,
   Icon,
-  IconButton,
   Label,
   NumberField,
   NumberFieldDecrementButton,
@@ -57,7 +56,7 @@ import {
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
-import { Car, Flame, Star, Waves, Wifi, XIcon } from '@vega-ui/icons';
+import { CalendarIcon, CarIcon, ChevronLeftIcon, ChevronRightIcon, CircleCheckIcon, FlameIcon, MinusIcon, PlusIcon, StarIcon, WavesIcon, WifiIcon, XIcon } from '@vega-ui/icons';
 
 const NIGHTLY_RATE = 140;
 const CLEANING_FEE = 45;
@@ -65,10 +64,10 @@ const SERVICE_RATE = 0.12;
 const BOOKED = ['2026-11-20', '2026-11-21', '2026-11-22', '2026-11-23'];
 
 const highlights = [
-  { icon: <Waves />, title: 'Private lake access', text: 'A jetty and two kayaks, a two-minute walk from the door.' },
-  { icon: <Flame />, title: 'Wood sauna and fireplace', text: 'Firewood is stacked and refilled for every stay.' },
-  { icon: <Wifi />, title: 'Fast wifi', text: '300 Mbps fibre and a desk facing the water.' },
-  { icon: <Car />, title: 'Free parking', text: 'Space for two cars, with an EV charger.' },
+  { icon: <WavesIcon />, title: 'Private lake access', text: 'A jetty and two kayaks, a two-minute walk from the door.' },
+  { icon: <FlameIcon />, title: 'Wood sauna and fireplace', text: 'Firewood is stacked and refilled for every stay.' },
+  { icon: <WifiIcon />, title: 'Fast wifi', text: '300 Mbps fibre and a desk facing the water.' },
+  { icon: <CarIcon />, title: 'Free parking', text: 'Space for two cars, with an EV charger.' },
 ];
 
 const currency = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 });
@@ -77,7 +76,7 @@ const day = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', t
 const field = { display: 'grid', gap: 'var(--spacing-3)', alignContent: 'start' } as const;
 const row = { display: 'flex', justifyContent: 'space-between', gap: 'var(--spacing-8)' } as const;
 const amount = { fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap' } as const;
-const closeButton = { flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties;
+const closeButton = { flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties;
 
 const countNights = ([checkIn, checkOut]: [string, string]) => {
   if (checkIn === '' || checkOut === '') return 0;
@@ -163,7 +162,7 @@ export default function Booking() {
           <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 'var(--spacing-4)' }}>
             <Badge size='sm' variant='info'>Guest favourite</Badge>
             <Text size={2} style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--spacing-2)', ...amount }}>
-              <Icon size='xs' aria-hidden='true'><Star /></Icon>
+              <Icon size='xs' aria-hidden='true'><StarIcon /></Icon>
               4.92 · 128 reviews
             </Text>
           </div>
@@ -203,7 +202,7 @@ export default function Booking() {
 
           {requested !== '' && (
             <Alert variant='success'>
-              <AlertIcon />
+              <AlertIcon><CircleCheckIcon /></AlertIcon>
               <AlertMain>
                 <AlertTitle>Request sent</AlertTitle>
                 <AlertContent>{`Thanks, ${requested}. Marta usually replies within an hour.`}</AlertContent>
@@ -230,17 +229,17 @@ export default function Booking() {
                 />
                 <Popover placement='bottom-end'>
                   <PopoverTrigger asChild>
-                    <DateRangeFieldTriggerIconButton aria-label='Choose stay dates' />
+                    <DateRangeFieldTrigger square aria-label='Choose stay dates'><Icon><CalendarIcon /></Icon></DateRangeFieldTrigger>
                   </PopoverTrigger>
                   <PopoverContent>
                     <DateRangeFieldCalendar aria-label='Choose stay dates'>
                       <CalendarHeader>
-                        <CalendarPrevButton aria-label='Previous month' />
+                        <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                         <CalendarHeading>
                           <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                           <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                         </CalendarHeading>
-                        <CalendarNextButton aria-label='Next month' />
+                        <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                       </CalendarHeader>
                       <CalendarContent>
                         <CalendarDays>
@@ -282,9 +281,9 @@ export default function Booking() {
             <div style={field}>
               <Label htmlFor={`${id}-guests`}>Guests</Label>
               <NumberField min={1} max={4} value={guests} onChangeValue={(next) => setGuests(next ?? 1)}>
-                <NumberFieldDecrementButton aria-label='Remove a guest' />
+                <NumberFieldDecrementButton square aria-label='Remove a guest'><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
                 <NumberFieldInput id={`${id}-guests`} name='guests' aria-describedby={`${id}-guests-hint`} />
-                <NumberFieldIncrementButton aria-label='Add a guest' />
+                <NumberFieldIncrementButton square aria-label='Add a guest'><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
               </NumberField>
               <HelperText id={`${id}-guests-hint`}>Up to 4 guests. Infants stay free.</HelperText>
             </div>
@@ -312,7 +311,7 @@ export default function Booking() {
             </div>
           )}
 
-          <Button type='submit' size='sm' fullWidth>Reserve</Button>
+          <Button type='submit' size='sm' style={{ width: '100%' }}>Reserve</Button>
           <Text size={2} style={{ color: 'var(--label-secondary)', textAlign: 'center' }}>You won’t be charged until Marta accepts.</Text>
         </form>
       </Card>
@@ -323,9 +322,9 @@ export default function Booking() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
             <Heading id={`${id}-sheet-title`} as='h2' size={4} fontWeight={600}>Request to book</Heading>
             <SheetClose asChild>
-              <IconButton size='xs' aria-label='Close' variant='secondary' appearance='ghost' style={closeButton}>
+              <Button square size='xs' aria-label='Close' variant='secondary' appearance='ghost' style={closeButton}>
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </SheetClose>
           </div>
           <Text id={`${id}-sheet-summary`} size={3} style={{ display: 'block', marginBlockStart: 'var(--spacing-2)', color: 'var(--label-secondary)', ...amount, whiteSpace: 'normal' }}>

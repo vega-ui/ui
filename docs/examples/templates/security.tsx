@@ -19,7 +19,6 @@ import {
   Heading,
   HelperText,
   Icon,
-  IconButton,
   Label,
   Meter,
   MeterTrack,
@@ -27,7 +26,7 @@ import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleIconButton,
+  PasswordFieldToggle,
   PinField,
   PinFieldInput,
   PinFieldSlot,
@@ -47,7 +46,7 @@ import {
   TextFieldInput,
   VisuallyHidden,
 } from '@vega-ui/react';
-import { Check, CheckIcon, CircleIcon, Copy, Download, Fingerprint, KeyRound, Laptop, MessageSquare, Monitor, Smartphone, XIcon } from '@vega-ui/icons';
+import { CheckIcon, CircleCheckIcon, CircleIcon, CopyIcon, DownloadIcon, EyeIcon, EyeOffIcon, FingerprintIcon, KeyRoundIcon, LaptopIcon, MessageSquareIcon, MonitorIcon, SmartphoneIcon, XIcon } from '@vega-ui/icons';
 import './security.css';
 
 type Method = 'app' | 'sms';
@@ -106,13 +105,13 @@ const initialPasskeys: Passkey[] = [
 ];
 
 const deviceIcons: Record<Session['kind'], ReactNode> = {
-  laptop: <Laptop />,
-  phone: <Smartphone />,
-  desktop: <Monitor />,
+  laptop: <LaptopIcon />,
+  phone: <SmartphoneIcon />,
+  desktop: <MonitorIcon />,
 };
 
 const field = { display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: 'var(--spacing-3)', alignContent: 'start' } as const;
-const closeButton = { flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties;
+const closeButton = { flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties;
 const dialogHeader = { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' } as const;
 const actions = { display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end', gap: 'var(--spacing-4)' } as const;
 const sectionHeader = { display: 'flex', flexWrap: 'wrap', alignItems: 'flex-start', justifyContent: 'space-between', gap: 'var(--spacing-6) var(--spacing-8)' } as const;
@@ -174,10 +173,10 @@ const PasswordInput = ({ id, name, label, autoComplete, error, describedBy, valu
         aria-describedby={[error ? `${id}-error` : '', describedBy ?? ''].join(' ').trim() || undefined}
         onChange={(event) => onChange(event.currentTarget.value)}
       />
-      <PasswordFieldToggleIconButton aria-label='Show password'>
-        <PasswordFieldShownIcon />
-        <PasswordFieldHiddenIcon />
-      </PasswordFieldToggleIconButton>
+      <PasswordFieldToggle square aria-label='Show password'>
+        <PasswordFieldShownIcon><EyeIcon /></PasswordFieldShownIcon>
+        <PasswordFieldHiddenIcon><EyeOffIcon /></PasswordFieldHiddenIcon>
+      </PasswordFieldToggle>
     </PasswordField>
     {error && <HelperText id={`${id}-error`} invalid>{error}</HelperText>}
   </div>
@@ -448,7 +447,7 @@ export default function Security() {
             </VisuallyHidden>
             {passwordSaved && (
               <Alert variant='success'>
-                <AlertIcon />
+                <AlertIcon><CircleCheckIcon /></AlertIcon>
                 <AlertMain>
                   <AlertTitle>Password updated</AlertTitle>
                   <AlertContent>Use it the next time you sign in. Your other sessions stay signed in.</AlertContent>
@@ -522,7 +521,7 @@ export default function Security() {
                     borderBlockStart: index > 0 ? '1px solid var(--separator-opaque)' : undefined,
                   }}
                 >
-                  <span className='sc-tile'><Icon size='sm' aria-hidden='true'><Fingerprint /></Icon></span>
+                  <span className='sc-tile'><Icon size='sm' aria-hidden='true'><FingerprintIcon /></Icon></span>
                   <span style={{ display: 'grid', gap: 'var(--spacing-1)', flex: 1, minWidth: 0 }}>
                     <Text size={3} fontWeight={500} style={{ overflowWrap: 'anywhere' }}>{passkey.name}</Text>
                     <Text size={2} style={muted}>{`${passkey.added} · ${passkey.used}`}</Text>
@@ -643,9 +642,9 @@ export default function Security() {
           <div style={dialogHeader}>
             <Heading id={`${id}-setup-title`} as='h2' size={4} fontWeight={600}>Two-factor authentication</Heading>
             <DialogClose asChild>
-              <IconButton size='xs' aria-label='Close' {...ghost} style={closeButton}>
+              <Button square size='xs' aria-label='Close' {...ghost} style={closeButton}>
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DialogClose>
           </div>
           {stepHeader}
@@ -661,8 +660,8 @@ export default function Security() {
             >
               <div role='radiogroup' aria-labelledby={`${id}-step-title`} style={{ display: 'grid', gap: 'var(--spacing-4)' }}>
                 {([
-                  { value: 'app', title: 'Authenticator app', description: 'Use an app like 1Password, Google Authenticator or Authy. Works offline.', icon: <KeyRound /> },
-                  { value: 'sms', title: 'Text message', description: 'Get a code by SMS. Needs mobile signal.', icon: <MessageSquare /> },
+                  { value: 'app', title: 'Authenticator app', description: 'Use an app like 1Password, Google Authenticator or Authy. Works offline.', icon: <KeyRoundIcon /> },
+                  { value: 'sms', title: 'Text message', description: 'Get a code by SMS. Needs mobile signal.', icon: <MessageSquareIcon /> },
                 ] as const).map((option) => (
                   <label key={option.value} htmlFor={`${id}-method-${option.value}`} className='sc-option' data-checked={method === option.value}>
                     <Radio
@@ -703,7 +702,7 @@ export default function Security() {
                   <Code size={2} style={{ justifySelf: 'start', fontVariantNumeric: 'tabular-nums' }}>{SECRET}</Code>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
                     <Button size='xs' type='button' {...ghost} style={{ gap: 'var(--spacing-2)' }} onClick={() => copy('secret', SECRET.replaceAll(' ', ''))}>
-                      <Icon size='xs' aria-hidden='true'>{copied === 'secret' ? <Check /> : <Copy />}</Icon>
+                      <Icon size='xs' aria-hidden='true'>{copied === 'secret' ? <CheckIcon /> : <CopyIcon />}</Icon>
                       Copy key
                     </Button>
                     <Text size={2} role='status' style={muted}>{copied === 'secret' ? 'Copied' : ''}</Text>
@@ -785,12 +784,12 @@ export default function Security() {
               </ul>
               <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 'var(--spacing-4)' }}>
                 <Button size='xs' type='button' {...ghost} style={{ gap: 'var(--spacing-2)' }} onClick={() => copy('codes', recoveryCodes.join('\n'))}>
-                  <Icon size='xs' aria-hidden='true'>{copied === 'codes' ? <Check /> : <Copy />}</Icon>
+                  <Icon size='xs' aria-hidden='true'>{copied === 'codes' ? <CheckIcon /> : <CopyIcon />}</Icon>
                   Copy codes
                 </Button>
                 <Button size='xs' asChild {...ghost} style={{ gap: 'var(--spacing-2)' }}>
                   <a href={`data:text/plain;charset=utf-8,${encodeURIComponent(recoveryCodes.join('\n'))}`} download='northwind-recovery-codes.txt'>
-                    <Icon size='xs' aria-hidden='true'><Download /></Icon>
+                    <Icon size='xs' aria-hidden='true'><DownloadIcon /></Icon>
                     Download .txt
                   </a>
                 </Button>
@@ -809,7 +808,7 @@ export default function Security() {
                     }}
                   />
                   <CheckboxIndicator>
-                    <CheckboxCheckedIcon />
+                    <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
                   </CheckboxIndicator>
                   I’ve saved my recovery codes
                 </Checkbox>
@@ -833,9 +832,9 @@ export default function Security() {
           <div style={dialogHeader}>
             <Heading id={`${id}-confirm-title`} as='h2' size={4} fontWeight={600}>{confirm?.title}</Heading>
             <DialogClose asChild>
-              <IconButton size='xs' aria-label='Close' {...ghost} style={closeButton}>
+              <Button square size='xs' aria-label='Close' {...ghost} style={closeButton}>
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DialogClose>
           </div>
           <Text id={`${id}-confirm-description`} size={3} style={{ display: 'block', marginBlockStart: 'var(--spacing-4)', ...muted }}>{confirm?.description}</Text>

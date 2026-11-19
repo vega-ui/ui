@@ -44,7 +44,7 @@ import {
 
 export default function MinimalComposition() {
   return (
-    <SegmentedControl name='billing-period' defaultValue='monthly' role='radiogroup' aria-label='Billing period'>
+    <SegmentedControl name='billing-period' defaultValue='monthly' aria-label='Billing period'>
       <SegmentedControlItem value='monthly'>
         <SegmentedControlItemInput />
         Monthly
@@ -55,6 +55,52 @@ export default function MinimalComposition() {
       </SegmentedControlItem>
       <SegmentedControlIndicator />
     </SegmentedControl>
+  );
+}
+```
+<!-- /example -->
+
+## Your Own Component
+
+The minimal composition above shows the parts in place. In an app, compose them once in a file of your own and import that component everywhere. `MySegmentedControl` passes its props to `SegmentedControl`, typed by the value of its items, and adds the indicator after its items; `MySegmentedControlItem` passes its props to the item and adds the radio before its content. See [Component recipes](../../recipes.md).
+
+<!-- example: segmented-control/recipe.tsx -->
+```tsx
+import {
+  SegmentedControl,
+  SegmentedControlIndicator,
+  SegmentedControlItem,
+  SegmentedControlItemInput,
+  type SegmentedControlItemProps,
+  type SegmentedControlProps,
+  type SegmentedControlValue,
+} from '@vega-ui/react';
+
+export function MySegmentedControl<Value extends SegmentedControlValue>({ children, ...props }: SegmentedControlProps<Value>) {
+  return (
+    <SegmentedControl {...props}>
+      {children}
+      <SegmentedControlIndicator />
+    </SegmentedControl>
+  );
+}
+
+export function MySegmentedControlItem({ children, ...props }: SegmentedControlItemProps) {
+  return (
+    <SegmentedControlItem {...props}>
+      <SegmentedControlItemInput />
+      {children}
+    </SegmentedControlItem>
+  );
+}
+
+export default function Recipe() {
+  return (
+    <MySegmentedControl name='report-range' defaultValue='month' aria-label='Report range'>
+      <MySegmentedControlItem value='week'>Week</MySegmentedControlItem>
+      <MySegmentedControlItem value='month'>Month</MySegmentedControlItem>
+      <MySegmentedControlItem value='quarter'>Quarter</MySegmentedControlItem>
+    </MySegmentedControl>
   );
 }
 ```

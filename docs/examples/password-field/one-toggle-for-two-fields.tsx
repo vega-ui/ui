@@ -4,8 +4,9 @@ import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleIconButton,
+  PasswordFieldToggle,
 } from '@vega-ui/react';
+import { EyeIcon, EyeOffIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 export default function OneToggleForTwoFields() {
@@ -18,10 +19,10 @@ export default function OneToggleForTwoFields() {
         <Label htmlFor={`${id}-new`}>New password</Label>
         <PasswordField shown={shown} onChangeShown={setShown}>
           <PasswordFieldInput id={`${id}-new`} autoComplete='new-password' />
-          <PasswordFieldToggleIconButton aria-label='Show passwords'>
-            <PasswordFieldShownIcon />
-            <PasswordFieldHiddenIcon />
-          </PasswordFieldToggleIconButton>
+          <PasswordFieldToggle square aria-label='Show passwords'>
+            <PasswordFieldShownIcon><EyeIcon /></PasswordFieldShownIcon>
+            <PasswordFieldHiddenIcon><EyeOffIcon /></PasswordFieldHiddenIcon>
+          </PasswordFieldToggle>
         </PasswordField>
       </div>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>

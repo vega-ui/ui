@@ -1,4 +1,5 @@
 import { Button, Combobox, ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger, Label, ListboxOption, Text, TextField } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { FormEvent, useId, useState } from 'react';
 
 const countries = [
@@ -40,8 +41,8 @@ export default function NativeFormParticipation() {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
           />
-          <ComboboxTrigger aria-label='Show countries'>
-            <ComboboxIcon />
+          <ComboboxTrigger square aria-label='Show countries'>
+            <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
           </ComboboxTrigger>
         </TextField>
         <ComboboxListbox aria-label='Countries'>

@@ -13,6 +13,7 @@ import {
   TableHeading,
   TableRow,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 import { FormEvent, useState } from 'react';
 
 const members = [
@@ -57,8 +58,8 @@ export default function RowSelectionForm() {
                 <Checkbox>
                   <CheckboxInput aria-label='Select all members' checked={allSelected} indeterminate={someSelected} onChange={toggleAll} />
                   <CheckboxIndicator>
-                    <CheckboxCheckedIcon />
-                    <CheckboxIndeterminateIcon />
+                    <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+                    <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
                   </CheckboxIndicator>
                 </Checkbox>
               </TableHeading>
@@ -79,7 +80,7 @@ export default function RowSelectionForm() {
                       onChange={() => toggle(member.id)}
                     />
                     <CheckboxIndicator>
-                      <CheckboxCheckedIcon />
+                      <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
                     </CheckboxIndicator>
                   </Checkbox>
                 </TableData>

@@ -30,7 +30,7 @@ import {
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
-import { Search } from '@vega-ui/icons';
+import { ChevronDownIcon, SearchIcon } from '@vega-ui/icons';
 
 type Status = 'paid' | 'fulfilled' | 'pending' | 'refunded';
 
@@ -131,7 +131,7 @@ export default function Orders() {
         <div style={{ ...field, flex: '999 1 240px' }}>
           <Label htmlFor={`${id}-search`}>Search</Label>
           <TextField size='sm'>
-            <Icon size='sm' aria-hidden='true' style={{ flexShrink: 0, marginInlineStart: 'var(--spacing-6)', color: 'var(--label-tertiary)' }}><Search /></Icon>
+            <Icon size='sm' aria-hidden='true' style={{ flexShrink: 0, marginInlineStart: 'var(--spacing-6)', color: 'var(--label-tertiary)' }}><SearchIcon /></Icon>
             <TextFieldInput
               id={`${id}-search`}
               type='search'
@@ -146,7 +146,7 @@ export default function Orders() {
           <Select size='sm' value={status} onChangeValue={(next) => filter(() => setStatus(next ?? 'all'))}>
             <SelectCombobox id={`${id}-status`}>
               <SelectValue />
-              <SelectIcon />
+              <SelectIcon><ChevronDownIcon /></SelectIcon>
             </SelectCombobox>
             <SelectListbox>
               <SelectOption value='all'>All statuses</SelectOption>
@@ -161,10 +161,9 @@ export default function Orders() {
           <SegmentedControl
             size='sm'
             name={`${id}-period`}
-            role='radiogroup'
             aria-labelledby={`${id}-period`}
             value={period}
-            onChange={(event) => filter(() => setPeriod(event.target.value))}
+            onChangeValue={(value) => filter(() => setPeriod(value))}
           >
             {periods.map((item) => (
               <SegmentedControlItem key={item.value} value={item.value}>

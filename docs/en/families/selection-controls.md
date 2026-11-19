@@ -12,6 +12,8 @@ Use this page when the user must choose, toggle, or combine values and the first
 - Use [Listbox](../components/listbox/) for an always visible list of one or several choices.
 - Use [Combobox](../components/combobox/) when users type to find one option in a long or remote set.
 - Use [CheckboxCard](../components/checkbox-card/) for rich multi-select option tiles.
+- Use [Toggle](../components/toggle/) for a button that stays pressed, like bold or mute, that applies at once.
+- Use [ToggleGroup](../components/toggle-group/) for a set of such buttons, one pressed at a time or each by itself, like the alignment or the view of a list.
 
 ## By Interaction Model
 
@@ -20,6 +22,7 @@ Use this page when the user must choose, toggle, or combine values and the first
 - Exclusive visible choice: [Radio](../components/radio/), [SegmentedControl](../components/segmented-control/)
 - Exclusive compact field: [Select](../components/select/)
 - Rich descriptive multi-select: [CheckboxCard](../components/checkbox-card/)
+- Pressed state of a button outside a form: [Toggle](../components/toggle/) and [ToggleGroup](../components/toggle-group/)
 
 ## Common Misclassifications
 
@@ -28,6 +31,7 @@ Use this page when the user must choose, toggle, or combine values and the first
 - Do not use [SegmentedControl](../components/segmented-control/) when labels are long or options are numerous.
 - Do not use [Select](../components/select/) when users benefit from seeing all options at once.
 - Do not use [CheckboxCard](../components/checkbox-card/) when the UI only needs a compact row.
+- Do not use [ToggleGroup](../components/toggle-group/) for a value a form submits: its items are buttons, not inputs; use [SegmentedControl](../components/segmented-control/), [Radio](../components/radio/) or [Checkbox](../components/checkbox/).
 
 ## Start Here
 
@@ -35,3 +39,4 @@ Use this page when the user must choose, toggle, or combine values and the first
 - Settings pages: [Switch](../components/switch/), [Checkbox](../components/checkbox/)
 - Short view or mode toggles: [SegmentedControl](../components/segmented-control/)
 - Pricing or feature option tiles: [CheckboxCard](../components/checkbox-card/)
+- Formatting, view and tool toggles: [Toggle](../components/toggle/) and [ToggleGroup](../components/toggle-group/)

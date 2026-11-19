@@ -101,7 +101,7 @@ export const ChangelogView = ({ packages, footers, feed }: { packages: Changelog
           name='changelog-package'
           aria-label={t.changelog.package}
           value={active.slug}
-          onChange={(event) => window.location.replace(`#${event.target.value}`)}
+          onChangeValue={(value) => window.location.replace(`#${value}`)}
         >
           {packages.map((item) => (
             <SegmentedControlItem key={item.slug} value={item.slug}>

@@ -20,6 +20,12 @@ export interface MenuRadioItemProps extends Omit<ButtonHTMLAttributes<HTMLButton
   label?: string
 
   /**
+   * Keeps the menu open when a click or Enter checks the item, as Space does. Set it to false to close the menu as a plain item does.
+   * @default true
+   */
+  keepOpen?: boolean
+
+  /**
    * Keeps the item focusable with aria-disabled, as the menu pattern asks, but never checks it.
    */
   disabled?: boolean
@@ -30,17 +36,18 @@ export interface MenuRadioItemProps extends Omit<ButtonHTMLAttributes<HTMLButton
   ref?: Ref<HTMLButtonElement>
 }
 
-/** MenuRadioItem is one choice of a MenuRadioGroup: a click or Enter checks it and closes the menu, Space checks it and keeps the menu open. */
+/** MenuRadioItem is one choice of a MenuRadioGroup: a click, Enter or Space checks it and keeps the menu open, unless keepOpen is false. */
 export const MenuRadioItem: FC<MenuRadioItemProps> = ({
   value,
   label,
+  keepOpen = true,
   disabled = false,
   onClick: _onClick,
   className,
   ref,
   ...props
 }) => {
-  const { handle, size, register, attrs, onClick } = useMenuItem('radio', disabled, label, _onClick, value)
+  const { handle, size, register, attrs, onClick } = useMenuItem('radio', disabled, label, _onClick, { value, keepOpen })
   const { handle: group } = useMenuRadioGroupContext()
   const radioAttrs = useOutput(group, menuRadioGroupWidget.output.radio, value)
   const registerRadio = useItem(group, value, { disabled })

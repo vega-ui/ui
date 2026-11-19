@@ -127,7 +127,7 @@ export const HomePlatform = () => {
       </div>
       <div className={`${section.frame} ${section.card}`} data-label={`<${DEMOS[demo].tag}>`}>
         <div className={styles.stage}>
-          <SegmentedControl size='xs' variant='secondary' name={`${id}-demo`} role='radiogroup' aria-label={t.demos} value={demo} onChange={(event) => setDemo(event.target.value as Demo)}>
+          <SegmentedControl size='xs' variant='secondary' name={`${id}-demo`} aria-label={t.demos} value={demo} onChangeValue={setDemo}>
             {(Object.keys(DEMOS) as Demo[]).map((value) => (
               <SegmentedControlItem key={value} value={value}>
                 <SegmentedControlItemInput />

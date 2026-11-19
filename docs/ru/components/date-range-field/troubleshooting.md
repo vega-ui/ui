@@ -27,7 +27,7 @@
 
 ### Вероятная причина
 
-`DateRangeFieldTriggerIconButton` отрендерен без `PopoverTrigger`, `PopoverContent` или `DateRangeFieldCalendar`.
+`DateRangeFieldTrigger` отрендерен без `PopoverTrigger`, `PopoverContent` или `DateRangeFieldCalendar`.
 
 ### Как проверить
 

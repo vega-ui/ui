@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
 import { act, browser, focus, key, lifecycle, measure, mod, pointer, timer, TYPEAHEAD } from '@vega-ui/core'
 import { simulate } from '@vega-ui/core/test'
-import { AIM, AIMING, CHECK, CONTENT, DISMISS, MenuEntry, MenuItemData, menuCheckboxWidget, menuRadioGroupWidget, menuWidget, OPENING, submenuWidget, TRIGGER } from '../widget'
+import { AIM, AIMING, ANCHOR, CHECK, CONTENT, contextMenuWidget, DISMISS, HOLDING, MenuEntry, MenuItemData, menuCheckboxWidget, menuRadioGroupWidget, menuWidget, OPENING, submenuWidget, TRIGGER } from '../widget'
 import { aims } from '../aim'
 
 const item = (value: string, data: Partial<MenuItemData> = {}): MenuEntry => ({ key: value, data: { kind: 'item', disabled: false, label: value, ...data } })
@@ -79,6 +79,17 @@ describe('Critical User Paths', () => {
 
     widget.send(pointer.press, { key: 'fit' })
     expect(widget.actions).toEqual([act.sendAt('fit', CHECK, { value: 'fit' }), HIDE, RETURN])
+  })
+
+  it('keeps the menu open on a click or Enter for a checkbox or radio item that asks for it', () => {
+    const kept = [item('grid', { label: 'Grid', kind: 'checkbox', keepOpen: true }), item('fill', { label: 'Fill', kind: 'radio', value: 'fill', keepOpen: true })]
+    const widget = open({ items: kept })
+
+    widget.send(pointer.press, { key: 'grid' })
+    expect(widget.actions).toEqual([act.sendAt('grid', CHECK)])
+
+    widget.send(pointer.press, { key: 'fill' })
+    expect(widget.actions).toEqual([act.sendAt('fill', CHECK, { value: 'fill' })])
   })
 
   it('moves the focus to the next item whose label starts with the typed text', () => {
@@ -190,11 +201,11 @@ describe('Critical User Paths', () => {
     expect(parent.actions).toEqual([])
 
     parent.send(pointer.hover, { key: 'paste', point: { x: 150, y: 160 } })
-    expect(parent.actions).toEqual([act.focus('paste', true)])
+    expect(parent.actions).toEqual([act.focus('paste', { preventScroll: true, focusVisible: false })])
 
     parent.send(AIM, { point: { x: 150, y: 110 }, measured: SHARE }).send(timer(AIMING))
     parent.send(pointer.hover, { key: 'cut', point: { x: 180, y: 120 } }).send(pointer.hover, { key: 'copy', point: { x: 180, y: 120 } })
-    expect(parent.actions).toEqual([act.focus('copy', true)])
+    expect(parent.actions).toEqual([act.focus('copy', { preventScroll: true, focusVisible: false })])
   })
 
   it('aims at the near edge of the submenu on either side of its item', () => {
@@ -202,6 +213,68 @@ describe('Critical User Paths', () => {
     expect(aims({ from: { x: 150, y: 110 }, rect }, { x: 190, y: 190 })).toBe(true)
     expect(aims({ from: { x: 150, y: 110 }, rect }, { x: 140, y: 200 })).toBe(false)
     expect(aims({ from: { x: 400, y: 110 }, rect }, { x: 370, y: 180 })).toBe(true)
+  })
+
+  it('opens at the point of a right click with the focus on the first item, and keeps the menu of the browser away inside it', () => {
+    const widget = simulate(contextMenuWidget, { items }).observe({ shown: false })
+
+    widget.send(browser.contextMenu, { part: TRIGGER, point: { x: 40, y: 60 } })
+    expect(widget.answer).toBe('handled')
+    expect(widget.actions).toEqual([act.cancelTimer(HOLDING), act.showPopover(ANCHOR), act.showPopover(CONTENT), act.focus('copy')])
+    expect(contextMenuWidget.output.anchor.live.render(contextMenuWidget.output.anchor.live.select(widget.state))).toEqual({ '--context-menu-x': '40px', '--context-menu-y': '60px' })
+
+    widget.observe({ shown: true }).send(browser.contextMenu, { key: 'copy', part: CONTENT, point: { x: 50, y: 70 } })
+    expect(widget.answer).toBe('handled')
+    expect(widget.actions).toEqual([])
+  })
+
+  it('closes without moving the focus itself, so the browser gives it back to where it was', () => {
+    const widget = simulate(contextMenuWidget, { items }).observe({ shown: true })
+    widget.send(key.escape, { key: 'copy', part: CONTENT })
+    expect(widget.actions).toEqual([HIDE])
+
+    widget.observe({ shown: true }).send(pointer.press, { key: 'paste' })
+    expect(widget.actions).toEqual([HIDE])
+
+    widget.observe({ shown: true }).send(DISMISS)
+    expect(widget.actions).toEqual([HIDE])
+  })
+
+  it('closes when the focus moves from the menu back into the area, like Shift+Tab does', () => {
+    const widget = simulate(contextMenuWidget, { items }).observe({ shown: true })
+
+    widget.send(focus.move, { key: 'copy', part: CONTENT })
+    expect(widget.actions).toEqual([])
+
+    widget.send(focus.move, { part: TRIGGER })
+    expect(widget.answer).toBe('keep')
+    expect(widget.actions).toEqual([HIDE])
+  })
+
+  it('opens on a long touch that stays in place and takes the touch from the page, and not on a mouse press, a touch that moves away or a touch on a text field', () => {
+    const widget = simulate(contextMenuWidget, { items }).observe({ shown: false })
+
+    widget.send(pointer.down, { part: TRIGGER, pointerType: 'mouse', primary: true, point: { x: 10, y: 10 } })
+    expect(widget.answer).toBe('pass')
+
+    widget.send(pointer.down, { part: TRIGGER, pointerType: 'touch', primary: true, point: { x: 10, y: 10 } })
+    expect(widget.actions).toEqual([act.timer(HOLDING, 700)])
+    widget.send(pointer.drag, { point: { x: 14, y: 13 } })
+    expect(widget.actions).toEqual([])
+    widget.send(timer(HOLDING))
+    expect(widget.actions).toEqual([act.claimPointer(), act.cancelTimer(HOLDING), act.showPopover(ANCHOR), act.showPopover(CONTENT), act.focus('copy')])
+
+    const moved = simulate(contextMenuWidget, { items }).observe({ shown: false })
+    moved.send(pointer.down, { part: TRIGGER, pointerType: 'touch', primary: true, point: { x: 10, y: 10 } }).send(pointer.drag, { point: { x: 10, y: 40 } })
+    expect(moved.actions).toEqual([act.cancelTimer(HOLDING)])
+
+    const lifted = simulate(contextMenuWidget, { items }).observe({ shown: false })
+    lifted.send(pointer.down, { part: TRIGGER, pointerType: 'touch', primary: true, point: { x: 10, y: 10 } }).send(pointer.release, {})
+    expect(lifted.actions).toEqual([act.cancelTimer(HOLDING)])
+
+    const typing = simulate(contextMenuWidget, { items }).observe({ shown: false })
+    typing.send(pointer.down, { part: TRIGGER, pointerType: 'touch', primary: true, textEntry: true, point: { x: 10, y: 10 } })
+    expect(typing.answer).toBe('pass')
   })
 })
 
@@ -248,6 +321,16 @@ describe('Error handling', () => {
 })
 
 describe('Edge Cases', () => {
+  it('leaves the focus in a submenu the user reached before the browser reported the menu open', () => {
+    const widget = simulate(menuWidget, { items })
+
+    widget.send(key.arrowUp, { part: TRIGGER })
+    widget.observe({ shown: true }).send(focus.move, { part: CONTENT })
+
+    widget.observe({ focusInside: true }).send(browser.toggle, { to: true, part: CONTENT })
+    expect(widget.actions).toEqual([])
+  })
+
   it('closes on Escape and Shift+Tab with the focus on the trigger, and leaves Tab to the browser', () => {
     const widget = open()
 
@@ -271,7 +354,7 @@ describe('Edge Cases', () => {
     const widget = open()
 
     widget.send(pointer.hover, { key: 'paste' })
-    expect(widget.actions).toEqual([act.focus('paste', true)])
+    expect(widget.actions).toEqual([act.focus('paste', { preventScroll: true, focusVisible: false })])
 
     widget.send(pointer.hover, { key: 'paste' })
     expect(widget.answer).toBe('pass')

@@ -177,7 +177,7 @@ export const VariablesInspector = ({ slug, variables }: { slug: string, variable
             name={`${scope}-state`}
             aria-label={t.state}
             value={state}
-            onChange={(event) => setState(event.target.value as PreviewState)}
+            onChangeValue={setState}
           >
             {states.map((item) => (
               <SegmentedControlItem key={item} value={item}>

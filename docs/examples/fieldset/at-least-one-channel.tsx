@@ -8,6 +8,7 @@ import {
   FieldsetLegend,
   HelperText,
 } from '@vega-ui/react';
+import { CheckIcon } from '@vega-ui/icons';
 import { FormEvent, useId, useState } from 'react';
 
 const CHANNELS = ['Email', 'Push', 'SMS'];
@@ -51,7 +52,7 @@ export default function AtLeastOneChannel() {
               onChange={() => toggle(channel)}
             />
             <CheckboxIndicator>
-              <CheckboxCheckedIcon />
+              <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
             </CheckboxIndicator>
             {channel}
           </Checkbox>

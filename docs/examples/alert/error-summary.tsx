@@ -11,6 +11,7 @@ import {
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
+import { CircleAlertIcon } from '@vega-ui/icons';
 
 type Errors = { email?: string; seats?: string };
 
@@ -44,7 +45,7 @@ export default function ErrorSummary() {
     <form noValidate onSubmit={submit} style={{ display: 'grid', gap: 'var(--spacing-12)', width: '100%', maxWidth: 420 }}>
       {messages.length > 0 && (
         <Alert variant='error' role='alert'>
-          <AlertIcon />
+          <AlertIcon><CircleAlertIcon /></AlertIcon>
           <AlertMain>
             <AlertTitle>Fix {messages.length === 1 ? 'one error' : `${messages.length} errors`} to continue</AlertTitle>
             <ul style={{ margin: 0, paddingInlineStart: 'var(--spacing-9)' }}>

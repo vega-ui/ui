@@ -26,7 +26,7 @@ export interface ListboxProps<Value extends string | number = string, Multiple e
   /**
    * The default selected value (uncontrolled).
    */
-  defaultValue?: ListboxValue<Value, Multiple>
+  defaultValue?: NoInfer<ListboxValue<Value, Multiple>>
 
   /**
    * Callback fired when the selection changes.

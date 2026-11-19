@@ -46,7 +46,7 @@ The UI should show a mixed state, but the card only looks checked or unchecked.
 
 ### Likely Cause
 
-`indeterminate` was not passed, or the custom control rendering omitted the indeterminate icon path.
+`indeterminate` was not passed to `CheckboxCardControlInput`, or `CheckboxIndicator` holds no `CheckboxIndeterminateIcon` with an icon inside.
 
 ### How To Verify
 
@@ -55,4 +55,4 @@ The UI should show a mixed state, but the card only looks checked or unchecked.
 
 ### Fix
 
-Pass `indeterminate` and keep `CheckboxCardControlIndeterminateIcon` in the control composition when that state matters.
+Pass `indeterminate` to `CheckboxCardControlInput` and put `CheckboxIndeterminateIcon` with a minus inside `CheckboxIndicator` when that state matters.

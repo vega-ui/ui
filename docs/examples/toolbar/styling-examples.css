@@ -1,0 +1,20 @@
+.editorToolbar[role='toolbar'] {
+  gap: var(--spacing-1);
+  padding: var(--spacing-2);
+  border-radius: var(--radius-4);
+  background: var(--fills-tertiary);
+}
+
+.editorToolbar[data-orientation='vertical'] {
+  width: max-content;
+}
+
+.editorToolbar [aria-pressed='true'],
+.editorToolbar [aria-checked='true'] {
+  --button-background-color: var(--fills-primary);
+  --button-background-color-hover: var(--fills-primary-hover);
+  --button-background-color-active: var(--fills-primary-active);
+  --button-color: var(--label-primary);
+  --button-color-hover: var(--label-primary);
+  --button-color-active: var(--label-primary);
+}

@@ -8,6 +8,7 @@ import {
   CheckboxInput,
   HelperText,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 export default function RequiredAgreementCheckbox() {
   const [error, setError] = useState('');
@@ -43,8 +44,8 @@ export default function RequiredAgreementCheckbox() {
             onChange={handleChange}
           />
           <CheckboxIndicator>
-            <CheckboxCheckedIcon />
-            <CheckboxIndeterminateIcon />
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+            <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
           </CheckboxIndicator>
           I agree to the Terms of Service
         </Checkbox>

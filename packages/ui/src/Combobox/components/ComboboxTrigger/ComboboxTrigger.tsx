@@ -3,21 +3,21 @@
 import { FC, MouseEvent } from 'react';
 import { useMergeRefs } from '@vega-ui/hooks';
 import { comboboxWidget, TRIGGER } from '@vega-ui/widgets/combobox';
-import { IconButton, IconButtonProps } from '../../../IconButton';
+import { Button, ButtonProps, ButtonShape } from '../../../Button';
 import { useTextFieldContext } from '../../../TextField/contexts';
 import { useOutput } from '../../../internals/widget';
 import { useComboboxContext } from '../../contexts';
 import style from './style.module.css';
 import { csx } from '@vega-ui/utils';
 
-export type ComboboxTriggerProps = IconButtonProps
+export type ComboboxTriggerProps = ButtonProps
 
 /**
  * A button that opens and closes the list of a Combobox, for the pointer and touch. Put it inside the `TextField`, next to the input.
  *
- * It stays out of the tab order and keeps the focus in the input. Name it with `aria-label`.
+ * It stays out of the tab order and keeps the focus in the input. Pass `ComboboxIcon` as its children, with `square` and an `aria-label` for an icon alone.
  */
-export const ComboboxTrigger: FC<ComboboxTriggerProps> = ({ ref, className, onMouseDown: _onMouseDown, type = 'button', ...props }) => {
+export const ComboboxTrigger: FC<ComboboxTriggerProps & ButtonShape> = ({ ref, className, onMouseDown: _onMouseDown, type = 'button', ...props }) => {
   const { size } = useTextFieldContext()
   const { handle } = useComboboxContext()
   const attrs = useOutput(handle, comboboxWidget.output.trigger)
@@ -29,7 +29,7 @@ export const ComboboxTrigger: FC<ComboboxTriggerProps> = ({ ref, className, onMo
   }
 
   return (
-    <IconButton
+    <Button
       ref={mergedRef}
       type={type}
       size={size}

@@ -26,14 +26,16 @@ import {
   DateRangeField,
   DateRangeFieldCalendar,
   DateRangeFieldInput,
-  DateRangeFieldTriggerIconButton,
+  DateRangeFieldTrigger,
   HelperText,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
   Text,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 const FIRST_DAY = '2026-01-01';
 const LAST_DAY = '2026-12-31';
@@ -59,17 +61,17 @@ export default function ReversedAndOutOfRangeDates() {
           <DateRangeFieldInput id='campaign-dates' placeholder='dd.mm.yyyy - dd.mm.yyyy' aria-invalid={outOfRange} aria-describedby='campaign-dates-hint' />
           <Popover placement='bottom-end'>
             <PopoverTrigger asChild>
-              <DateRangeFieldTriggerIconButton aria-label='Choose campaign dates' />
+              <DateRangeFieldTrigger square aria-label='Choose campaign dates'><Icon><CalendarIcon /></Icon></DateRangeFieldTrigger>
             </PopoverTrigger>
             <PopoverContent>
               <DateRangeFieldCalendar aria-label='Choose campaign dates'>
                 <CalendarHeader>
-                  <CalendarPrevButton aria-label='Previous month' />
+                  <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                   </CalendarHeading>
-                  <CalendarNextButton aria-label='Next month' />
+                  <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                 </CalendarHeader>
                 <CalendarContent>
                   <CalendarDays>

@@ -1,4 +1,5 @@
 import { Combobox, ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger, HelperText, Label, ListboxOption, TextField } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 const regions = [
@@ -24,8 +25,8 @@ export default function DisabledAndReadOnly() {
         <Combobox autocomplete='none' readOnly defaultValue='eu-central'>
           <TextField>
             <ComboboxInput id={regionId} name='region' defaultValue='Frankfurt (eu-central)' aria-describedby={`${regionId}-hint`} />
-            <ComboboxTrigger aria-label='Show regions'>
-              <ComboboxIcon />
+            <ComboboxTrigger square aria-label='Show regions'>
+              <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
             </ComboboxTrigger>
           </TextField>
           <ComboboxListbox aria-label='Regions'>
@@ -39,8 +40,8 @@ export default function DisabledAndReadOnly() {
         <Combobox autocomplete='none' disabled defaultValue='finance'>
           <TextField>
             <ComboboxInput id={ownerId} name='owner' defaultValue='Finance team' aria-describedby={`${ownerId}-hint`} />
-            <ComboboxTrigger aria-label='Show teams'>
-              <ComboboxIcon />
+            <ComboboxTrigger square aria-label='Show teams'>
+              <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
             </ComboboxTrigger>
           </TextField>
           <ComboboxListbox aria-label='Teams'>

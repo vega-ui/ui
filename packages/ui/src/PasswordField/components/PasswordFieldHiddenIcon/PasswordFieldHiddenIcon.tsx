@@ -1,6 +1,5 @@
 import { FC } from 'react';
 import { Icon, IconProps } from '../../../Icon';
-import { EyeOffIcon } from '@vega-ui/icons';
 import { useOutput } from '../../../internals/widget';
 import { usePasswordFieldContext } from '../../contexts';
 import { passwordFieldWidget } from '@vega-ui/widgets/password-field';
@@ -10,15 +9,7 @@ import style from './style.module.css'
 export type PasswordFieldHiddenIconProps = IconProps
 
 /**
- * `PasswordFieldHiddenIcon` is a visual icon used within `PasswordField`
- * to indicate that the password is currently hidden (masked).
- *
- * It reads the visibility state from `PasswordField` context and reflects it
- * via the `data-hidden` attribute, allowing styles or animations to respond
- * to visibility changes.
- *
- * The component is purely presentational and supports icon replacement
- * through the `children` prop.
+ * `PasswordFieldHiddenIcon` shows its children while the password of the `PasswordField` is shown, offering to hide it, and has `data-hidden` otherwise. Pass the icon as its children, such as a crossed out eye.
  */
 export const PasswordFieldHiddenIcon: FC<PasswordFieldHiddenIconProps> = ({ children, className, ...props }) => {
   const { handle } = usePasswordFieldContext()
@@ -26,7 +17,7 @@ export const PasswordFieldHiddenIcon: FC<PasswordFieldHiddenIconProps> = ({ chil
   
   return (
     <Icon className={csx(style.icon, className)} {...attrs} {...props}>
-      {children ?? <EyeOffIcon />}
+      {children}
     </Icon>
   )
 }

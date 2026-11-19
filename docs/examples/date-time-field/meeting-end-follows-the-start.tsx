@@ -26,15 +26,17 @@ import {
   DateTimeField,
   DateTimeFieldCalendar,
   DateTimeFieldInput,
-  DateTimeFieldTriggerIconButton,
+  DateTimeFieldTrigger,
   Fieldset,
   FieldsetLegend,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
   Text,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 const addHours = (iso: string, hours: number) => {
   const date = new Date(`${iso}Z`);
@@ -79,17 +81,17 @@ export default function MeetingTimes() {
           <DateTimeFieldInput id='meeting-start' placeholder='dd.mm.yyyy, hh:mm' />
           <Popover placement='bottom-end'>
             <PopoverTrigger asChild>
-              <DateTimeFieldTriggerIconButton aria-label='Choose start date' />
+              <DateTimeFieldTrigger square aria-label='Choose start date'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
             </PopoverTrigger>
             <PopoverContent>
               <DateTimeFieldCalendar aria-label='Choose start date'>
                 <CalendarHeader>
-                  <CalendarPrevButton aria-label='Previous month' />
+                  <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                   </CalendarHeading>
-                  <CalendarNextButton aria-label='Next month' />
+                  <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                 </CalendarHeader>
                 <CalendarContent>
                   <CalendarDays>
@@ -136,17 +138,17 @@ export default function MeetingTimes() {
           <DateTimeFieldInput id='meeting-end' placeholder='dd.mm.yyyy, hh:mm' />
           <Popover placement='bottom-end'>
             <PopoverTrigger asChild>
-              <DateTimeFieldTriggerIconButton aria-label='Choose end date' />
+              <DateTimeFieldTrigger square aria-label='Choose end date'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
             </PopoverTrigger>
             <PopoverContent>
               <DateTimeFieldCalendar aria-label='Choose end date'>
                 <CalendarHeader>
-                  <CalendarPrevButton aria-label='Previous month' />
+                  <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                   </CalendarHeading>
-                  <CalendarNextButton aria-label='Next month' />
+                  <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                 </CalendarHeader>
                 <CalendarContent>
                   <CalendarDays>

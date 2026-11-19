@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Icon, IconButton, Menu, MenuContent, MenuItem, MenuTrigger, Separator, Text } from '@vega-ui/react';
+import { Button, Icon, Menu, MenuContent, MenuItem, MenuTrigger, Separator, Text } from '@vega-ui/react';
 import { EllipsisIcon } from '@vega-ui/icons';
 
 export default function RowActions() {
@@ -27,9 +27,9 @@ export default function RowActions() {
       </div>
       <Menu placement='bottom-end' size='sm'>
         <MenuTrigger asChild>
-          <IconButton size='sm' aria-label='Actions for Q3 report.pdf' variant='secondary' appearance='ghost' style={{ flexShrink: 0 }}>
+          <Button square size='sm' aria-label='Actions for Q3 report.pdf' variant='secondary' appearance='ghost' style={{ flexShrink: 0 }}>
             <Icon><EllipsisIcon /></Icon>
-          </IconButton>
+          </Button>
         </MenuTrigger>
         <MenuContent>
           <MenuItem onClick={() => setStatus('Renamed just now')}>Rename</MenuItem>

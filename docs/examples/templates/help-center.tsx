@@ -34,7 +34,7 @@ import {
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
-import { CreditCard, KeyRound, Plug, Search } from '@vega-ui/icons';
+import { ChevronDownIcon, CircleCheckIcon, CreditCardIcon, KeyRoundIcon, PlugIcon, SearchIcon } from '@vega-ui/icons';
 import './help-center.css';
 
 const MESSAGE_LIMIT = 1000;
@@ -43,7 +43,7 @@ const categories = [
   {
     value: 'billing',
     title: 'Billing and plans',
-    icon: <CreditCard />,
+    icon: <CreditCardIcon />,
     articles: [
       { value: 'invoice', question: 'Where can I download my invoices?', answer: 'Open Settings → Billing → Invoices. Every invoice is available as a PDF for seven years, and owners can add a VAT number that appears on future invoices.' },
       { value: 'downgrade', question: 'What happens when I downgrade my plan?', answer: 'The change applies at the end of the billing period. Projects over the new limit become read-only until you archive them or upgrade again.' },
@@ -53,7 +53,7 @@ const categories = [
   {
     value: 'account',
     title: 'Account and sign-in',
-    icon: <KeyRound />,
+    icon: <KeyRoundIcon />,
     articles: [
       { value: 'reset', question: 'I forgot my password. How do I reset it?', answer: 'Choose “Forgot password” on the sign-in page and enter your work email. The reset link is valid for one hour.' },
       { value: 'two-factor', question: 'How do I turn on two-factor authentication?', answer: 'Go to Settings → Security and choose an authenticator app or a security key. Keep the recovery codes somewhere safe.' },
@@ -63,7 +63,7 @@ const categories = [
   {
     value: 'integrations',
     title: 'Integrations',
-    icon: <Plug />,
+    icon: <PlugIcon />,
     articles: [
       { value: 'slack', question: 'How do I connect Slack?', answer: 'Open Integrations → Slack and choose “Connect”. A workspace admin may need to approve the app before notifications start.' },
       { value: 'webhooks', question: 'Why are my webhooks delayed?', answer: 'Deliveries retry with backoff for up to 24 hours when your endpoint fails. Check the delivery log for response codes and the last attempt.' },
@@ -190,7 +190,7 @@ export default function HelpCenter() {
         </div>
         <div role='search' style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
           <TextField size='lg' style={{ paddingInlineStart: 'var(--spacing-8)' }}>
-            <Icon aria-hidden='true' style={{ flexShrink: 0, color: 'var(--label-secondary)' }}><Search /></Icon>
+            <Icon aria-hidden='true' style={{ flexShrink: 0, color: 'var(--label-secondary)' }}><SearchIcon /></Icon>
             <TextFieldInput
               type='search'
               style={{ paddingInlineStart: 'var(--spacing-5)' }}
@@ -243,7 +243,7 @@ export default function HelpCenter() {
                     <AccordionHeader>
                       <AccordionTrigger>
                         {article.question}
-                        <AccordionIcon />
+                        <AccordionIcon><ChevronDownIcon /></AccordionIcon>
                       </AccordionTrigger>
                     </AccordionHeader>
                     <AccordionContent>
@@ -297,7 +297,7 @@ export default function HelpCenter() {
             {sent !== '' && (
               <>
                 <Alert variant='success'>
-                  <AlertIcon />
+                  <AlertIcon><CircleCheckIcon /></AlertIcon>
                   <AlertMain>
                     <AlertTitle>Message sent</AlertTitle>
                     <AlertContent style={{ overflowWrap: 'anywhere' }}>{`We’ll reply to ${sent}. Your ticket number is #48213.`}</AlertContent>
@@ -335,7 +335,7 @@ export default function HelpCenter() {
                       aria-describedby={describe('topic')}
                     >
                       <SelectValue placeholder='Choose a topic' />
-                      <SelectIcon />
+                      <SelectIcon><ChevronDownIcon /></SelectIcon>
                     </SelectCombobox>
                     <SelectListbox>
                       {topics.map((item) => (

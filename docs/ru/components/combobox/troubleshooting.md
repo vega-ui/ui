@@ -42,6 +42,7 @@
 <!-- example: combobox/controlled-value-and-text.tsx -->
 ```tsx
 import { Button, Combobox, ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger, Label, ListboxOption, Text, TextField } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const CURRENT_USER = 'ana';
@@ -84,8 +85,8 @@ export default function ControlledValueAndText() {
       <Combobox value={assignee} onChangeValue={(next) => setAssignee(next)}>
         <TextField>
           <ComboboxInput id={id} placeholder='Search people' value={query} onChange={(event) => setQuery(event.target.value)} />
-          <ComboboxTrigger aria-label='Show team members'>
-            <ComboboxIcon />
+          <ComboboxTrigger square aria-label='Show team members'>
+            <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
           </ComboboxTrigger>
         </TextField>
         <ComboboxListbox aria-label='Team members'>
@@ -142,6 +143,7 @@ export default function ControlledValueAndText() {
 <!-- example: combobox/pick-required-error.tsx -->
 ```tsx
 import { Button, Combobox, ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger, HelperText, Label, ListboxOption, Text, TextField } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { FormEvent, useId, useRef, useState } from 'react';
 
 const airports = [
@@ -197,8 +199,8 @@ export default function PickRequiredError() {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
           />
-          <ComboboxTrigger aria-label='Show airports'>
-            <ComboboxIcon />
+          <ComboboxTrigger square aria-label='Show airports'>
+            <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
           </ComboboxTrigger>
         </TextField>
         <ComboboxListbox aria-label='Airports'>

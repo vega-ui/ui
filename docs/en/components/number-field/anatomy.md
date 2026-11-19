@@ -18,11 +18,11 @@ Required. Renders the actual input and syncs with numeric context.
 
 ### `NumberFieldIncrementButton`
 
-Optional. Steps the value up.
+Optional. Steps the value up. It renders a `Button` with no content of its own: pass an icon as children with `square` and an `aria-label` or `aria-labelledby`, a text like "Add", or your own button with `asChild`.
 
 ### `NumberFieldDecrementButton`
 
-Optional. Steps the value down.
+Optional. Steps the value down. It renders a `Button` with no content of its own: pass an icon as children with `square` and an `aria-label` or `aria-labelledby`, a text like "Remove", or your own button with `asChild`.
 
 ## Composition Order
 
@@ -37,12 +37,14 @@ Optional. Steps the value down.
 ```tsx
 import {
   HelperText,
+  Icon,
   Label,
   NumberField,
   NumberFieldDecrementButton,
   NumberFieldIncrementButton,
   NumberFieldInput,
 } from '@vega-ui/react';
+import { MinusIcon, PlusIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 export default function SeatCount() {
@@ -53,9 +55,9 @@ export default function SeatCount() {
     <div style={{ display: 'grid', gap: 'var(--spacing-3)', width: '100%', maxWidth: 240 }}>
       <Label htmlFor={id}>Seats</Label>
       <NumberField min={1} max={50} defaultValue={5}>
-        <NumberFieldDecrementButton aria-label='Remove a seat' />
+        <NumberFieldDecrementButton square aria-label='Remove a seat'><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
         <NumberFieldInput id={id} name='seats' aria-describedby={hintId} />
-        <NumberFieldIncrementButton aria-label='Add a seat' />
+        <NumberFieldIncrementButton square aria-label='Add a seat'><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
       </NumberField>
       <HelperText id={hintId}>From 1 to 50 seats on the Team plan.</HelperText>
     </div>

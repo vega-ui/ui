@@ -5,8 +5,9 @@ import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleIconButton,
+  PasswordFieldToggle,
 } from '@vega-ui/react';
+import { EyeIcon, EyeOffIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 export default function ManagedBySso() {
@@ -17,10 +18,10 @@ export default function ManagedBySso() {
       <Label htmlFor={id}>Password</Label>
       <PasswordField disabled>
         <PasswordFieldInput id={id} placeholder='Managed by Okta' aria-describedby={`${id}-hint`} />
-        <PasswordFieldToggleIconButton aria-label='Show password'>
-          <PasswordFieldShownIcon />
-          <PasswordFieldHiddenIcon />
-        </PasswordFieldToggleIconButton>
+        <PasswordFieldToggle square aria-label='Show password'>
+          <PasswordFieldShownIcon><EyeIcon /></PasswordFieldShownIcon>
+          <PasswordFieldHiddenIcon><EyeOffIcon /></PasswordFieldHiddenIcon>
+        </PasswordFieldToggle>
       </PasswordField>
       <HelperText id={`${id}-hint`}>Your organization signs you in with Okta. Change the password there.</HelperText>
     </div>

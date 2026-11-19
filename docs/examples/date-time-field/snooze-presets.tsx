@@ -27,13 +27,15 @@ import {
   DateTimeField,
   DateTimeFieldCalendar,
   DateTimeFieldInput,
-  DateTimeFieldTriggerIconButton,
+  DateTimeFieldTrigger,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
   Text,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 const toISODateTime = (date: Date) => {
   const pad = (part: number) => String(part).padStart(2, '0');
@@ -68,17 +70,17 @@ export default function SnoozePresets() {
           <DateTimeFieldInput id='remind-at' placeholder='dd.mm.yyyy, hh:mm' />
           <Popover placement='bottom-end'>
             <PopoverTrigger asChild>
-              <DateTimeFieldTriggerIconButton aria-label='Choose reminder date' />
+              <DateTimeFieldTrigger square aria-label='Choose reminder date'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
             </PopoverTrigger>
             <PopoverContent>
               <DateTimeFieldCalendar aria-label='Choose reminder date'>
                 <CalendarHeader>
-                  <CalendarPrevButton aria-label='Previous month' />
+                  <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                   </CalendarHeading>
-                  <CalendarNextButton aria-label='Next month' />
+                  <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                 </CalendarHeader>
                 <CalendarContent>
                   <CalendarDays>

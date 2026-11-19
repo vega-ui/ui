@@ -8,7 +8,7 @@
 | --- | --- | --- | --- | --- |
 | `multiple` | `Multiple` | — | Нет | Позволяет выбирать несколько вариантов. Определяет форму `value`: массив, когда true. |
 | `value` | `Multiple extends true ? Value[] : Value \| null` | — | Нет | Текущее выбранное значение (контролируемо). Без `multiple` значение `null` очищает выбор, а `undefined` делает список неконтролируемым. |
-| `defaultValue` | `ListboxValue<Value, Multiple>` | — | Нет | Значение, выбранное по умолчанию (неконтролируемо). |
+| `defaultValue` | `NoInfer<ListboxValue<Value, Multiple>>` | — | Нет | Значение, выбранное по умолчанию (неконтролируемо). |
 | `onChangeValue` | `(value: ListboxValue<Value, Multiple>) => void` | — | Нет | Колбэк, вызываемый при изменении выбора. |
 | `disabled` | `boolean` | `false` | Нет | Запрещает взаимодействие и убирает список из порядка обхода по Tab. |
 | `size` | `OptionSize` | `'md'` | Нет | Визуальный размер вариантов. |

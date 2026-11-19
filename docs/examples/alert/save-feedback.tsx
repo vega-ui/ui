@@ -14,6 +14,7 @@ import {
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
+import { CheckIcon, CircleAlertIcon, CircleCheckIcon } from '@vega-ui/icons';
 
 type Status = 'idle' | 'saving' | 'saved' | 'failed';
 
@@ -49,7 +50,7 @@ export default function SaveFeedback() {
         <Checkbox>
           <CheckboxInput name='offline' />
           <CheckboxIndicator>
-            <CheckboxCheckedIcon />
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
           </CheckboxIndicator>
           Simulate a network error
         </Checkbox>
@@ -61,7 +62,7 @@ export default function SaveFeedback() {
         <div role='status'>
           {status === 'saved' && (
             <Alert variant='success'>
-              <AlertIcon />
+              <AlertIcon><CircleCheckIcon /></AlertIcon>
               <AlertMain>
                 <AlertContent>Workspace renamed to “{savedName}”.</AlertContent>
               </AlertMain>
@@ -70,7 +71,7 @@ export default function SaveFeedback() {
         </div>
         {status === 'failed' && (
           <Alert variant='error' role='alert'>
-            <AlertIcon />
+            <AlertIcon><CircleAlertIcon /></AlertIcon>
             <AlertMain>
               <AlertTitle>Changes not saved</AlertTitle>
               <AlertContent>We could not reach the server. Check your connection and save again.</AlertContent>

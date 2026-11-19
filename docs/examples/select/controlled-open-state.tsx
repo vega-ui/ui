@@ -9,6 +9,7 @@ import {
   SelectValue,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId, useRef, useState } from 'react';
 
 export default function ControlledOpenState() {
@@ -33,7 +34,7 @@ export default function ControlledOpenState() {
       >
         <SelectCombobox id={id} ref={comboboxRef}>
           <SelectValue placeholder='Nobody assigned' />
-          <SelectIcon />
+          <SelectIcon><ChevronDownIcon /></SelectIcon>
         </SelectCombobox>
         <SelectListbox>
           <SelectOption value='amara'>Amara Okafor</SelectOption>

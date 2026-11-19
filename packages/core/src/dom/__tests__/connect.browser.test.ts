@@ -6,6 +6,7 @@ import { handled, keep, listening } from '../../step'
 import { browser, command, createInput, focus, key, layout, Measured, measure, nav, pointer as pointerInput, scroll, text, TextState } from '../../input'
 import { fruits, listbox, shape } from '../../__tests__/fixtures/listbox'
 import { Part } from '../../output'
+import { emptyCollection } from '../../collection'
 import { internal, reading, state } from '../../state'
 
 type Options = Parameters<typeof shape.create>[0]
@@ -202,7 +203,7 @@ describe('Critical User Paths', () => {
     const handle = document.createElement('div')
     outer.root.appendChild(handle)
 
-    const elements = createElements<string>()
+    const elements = createElements<never>()
     elements.setRoot(handle, 'handle')
 
     const PING = command('ping')
@@ -214,6 +215,36 @@ describe('Critical User Paths', () => {
 
     connection.send(createInput(PING))
     expect(outer.instance.state.active).toBe('date')
+  })
+
+  it('asks for a context menu with the point and the part, and keeps the menu of the browser away only when a step handles it', () => {
+    const area = document.createElement('div')
+    const inner = document.createElement('span')
+    area.appendChild(inner)
+    document.body.appendChild(area)
+
+    const elements = createElements<never>()
+    elements.setRoot(area, 'area')
+
+    const inputs: unknown[] = []
+    const asking = defineWidget({
+      state: state({ options: {}, owns: {}, parts: ['area'] }),
+      step: [listening([browser.contextMenu], (current, input) => {
+        if (!input.is(browser.contextMenu)) return undefined
+        inputs.push([input.part, input.point])
+        return input.point?.x === 10 ? handled(current) : undefined
+      })],
+    })
+    connect(createWidget(asking, {}, { id: 'asking', strict: true }), elements).listen(area)
+
+    const handledMenu = new MouseEvent('contextmenu', { bubbles: true, cancelable: true, clientX: 10, clientY: 20 })
+    inner.dispatchEvent(handledMenu)
+    const passedMenu = new MouseEvent('contextmenu', { bubbles: true, cancelable: true, clientX: 30, clientY: 40 })
+    inner.dispatchEvent(passedMenu)
+
+    expect(inputs).toEqual([['area', { x: 10, y: 20 }], ['area', { x: 30, y: 40 }]])
+    expect(handledMenu.defaultPrevented).toBe(true)
+    expect(passedMenu.defaultPrevented).toBe(false)
   })
 
   it('writes the live values and the properties of a part itself, without a render, and only when what they read changes', () => {
@@ -819,7 +850,7 @@ describe('Critical User Paths', () => {
     const elements = createElements<string>()
     elements.setRoot(root)
 
-    const panelShape = state({ options: { shows: true }, owns: {}, internal: { shown: internal('first') } })
+    const panelShape = state({ options: { shows: true }, owns: {}, internal: { shown: internal('first') }, collection: () => emptyCollection<string>() })
     const revealed: unknown[] = []
     const revealing = defineWidget({
       state: panelShape,
@@ -1332,7 +1363,7 @@ describe('Accessibility', () => {
       const root = document.createElement('div')
       root.tabIndex = 0
       document.body.appendChild(root)
-      const elements = createElements<string>()
+      const elements = createElements<never>()
       elements.setRoot(root)
 
       const moves: string[] = []

@@ -13,11 +13,10 @@ import {
   DrawerTrigger,
   Heading,
   Icon,
-  IconButton,
   Separator,
   Text,
 } from '@vega-ui/react';
-import { XIcon } from '@vega-ui/icons';
+import { ChevronDownIcon, XIcon } from '@vega-ui/icons';
 
 const topics = [
   { value: 'invoices', title: 'Where do I find my invoices?', body: 'Open Billing → History. Every invoice can be downloaded as PDF or sent to a billing contact.' },
@@ -35,14 +34,15 @@ export default function HelpDrawer() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
           <Heading id='billing-help-title' as='h2' size={4} fontWeight={600}>Billing help</Heading>
           <DrawerClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </DrawerClose>
         </div>
         <div style={{ overflow: 'auto', marginBlockStart: 'var(--spacing-8)' }}>
@@ -52,7 +52,7 @@ export default function HelpDrawer() {
                 <AccordionHeader as='h3'>
                   <AccordionTrigger>
                     {topic.title}
-                    <AccordionIcon />
+                    <AccordionIcon><ChevronDownIcon /></AccordionIcon>
                   </AccordionTrigger>
                 </AccordionHeader>
                 <AccordionContent>

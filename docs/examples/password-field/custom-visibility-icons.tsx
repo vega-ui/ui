@@ -4,7 +4,7 @@ import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleIconButton,
+  PasswordFieldToggle,
 } from '@vega-ui/react';
 import { LockIcon, LockOpenIcon } from '@vega-ui/icons';
 import { useId } from 'react';
@@ -17,10 +17,10 @@ export default function CustomVisibilityIcons() {
       <Label htmlFor={id}>Vault passphrase</Label>
       <PasswordField>
         <PasswordFieldInput id={id} autoComplete='current-password' />
-        <PasswordFieldToggleIconButton aria-label='Show passphrase'>
+        <PasswordFieldToggle square aria-label='Show passphrase'>
           <PasswordFieldShownIcon><LockIcon /></PasswordFieldShownIcon>
           <PasswordFieldHiddenIcon><LockOpenIcon /></PasswordFieldHiddenIcon>
-        </PasswordFieldToggleIconButton>
+        </PasswordFieldToggle>
       </PasswordField>
     </div>
   );

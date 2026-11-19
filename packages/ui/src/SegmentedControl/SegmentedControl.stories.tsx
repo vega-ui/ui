@@ -80,7 +80,7 @@ export const Matrix: Story = {
 
         if (row.icons) {
           return (
-            <SegmentedControl key={name} name={name} role='radiogroup' aria-label={name} variant={variant} size={row.size} disabled={row.disabled} defaultValue={row.defaultValue}>
+            <SegmentedControl key={name} name={name} aria-label={name} variant={variant} size={row.size} disabled={row.disabled} defaultValue={row.defaultValue}>
               <SegmentedControlItem value='1'>
                 <SegmentedControlItemInput aria-label='Light' />
                 <Icon size='sm'><SunIcon /></Icon>
@@ -95,7 +95,7 @@ export const Matrix: Story = {
         }
 
         return (
-          <SegmentedControl key={name} name={name} role='radiogroup' aria-label={name} variant={variant} size={row.size} disabled={row.disabled} defaultValue={row.defaultValue}>
+          <SegmentedControl key={name} name={name} aria-label={name} variant={variant} size={row.size} disabled={row.disabled} defaultValue={row.defaultValue}>
             <SegmentedControlItem value='1'>
               <SegmentedControlItemInput />
               Apple
@@ -123,7 +123,6 @@ export const DifferentLength: Story = {
         <SegmentedControl
           key={width}
           name={`different-length-${width}`}
-          role='radiogroup'
           aria-label={`Different length, ${width}`}
           defaultValue='2'
           style={{ display: 'flex', width: width === 'min-content' ? 'min-content' : undefined }}

@@ -5,9 +5,9 @@
 <!-- AUTO-GENERATED:ROOT_API:start -->
 | Проп | Тип | По умолчанию | Обязательный | Описание |
 | --- | --- | --- | --- | --- |
-| `ref` | `Ref<HTMLDivElement>` | — | Нет | Ref, передаваемый на корневой элемент `div` группы аватаров. Полезен для прямого доступа к DOM (например, чтобы измерить ширину или подключить слушатели). |
-| `size` | `AvatarGroupSize` | `'md'` | Нет | Размер всех аватаров в группе. Обеспечивает единый размер всех элементов. |
-| `variant` | `AvatarGroupVariant` | `'primary'` | Нет | Вариант для всех аватаров группы. Применяет единый визуальный стиль (например, `primary`, `secondary`). |
+| `ref` | `Ref<HTMLDivElement>` | — | Нет | Ref, передаваемый на корневой элемент `div` стопки аватаров. Полезен для прямого доступа к DOM (например, чтобы измерить ширину или подключить слушатели). |
+| `size` | `AvatarStackSize` | `'md'` | Нет | Размер всех аватаров в стопке. Обеспечивает единый размер всех элементов. |
+| `variant` | `AvatarStackVariant` | `'primary'` | Нет | Вариант для всех аватаров стопки. Применяет единый визуальный стиль (например, `primary`, `secondary`). |
 
 Также принимает все атрибуты `<div>`.
 <!-- AUTO-GENERATED:ROOT_API:end -->
@@ -30,10 +30,10 @@
 
 ## Типы
 
-- `AvatarGroupProps`
-- `AvatarGroupStackItemProps`
-- `AvatarGroupSize`
-- `AvatarGroupVariant`
+- `AvatarStackProps`
+- `AvatarStackItemProps`
+- `AvatarStackSize`
+- `AvatarStackVariant`
 
 ## Модель состояния
 

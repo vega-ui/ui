@@ -23,13 +23,15 @@ import {
   CalendarYearsGrid,
   CalendarYearsScroller,
   CalendarYearsScrollerContent,
+  Icon,
 } from '@vega-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 export default function SingleDateInALocale() {
   return (
     <Calendar locale='de-DE' defaultValue='2026-03-15'>
       <CalendarHeader>
-        <CalendarPrevButton aria-label='Zurück' />
+        <CalendarPrevButton square aria-label='Vorheriger Monat'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
         <CalendarHeading>
           <CalendarViewButton view='month'>
             <CalendarMonthLabel />
@@ -38,7 +40,7 @@ export default function SingleDateInALocale() {
             <CalendarYearLabel />
           </CalendarViewButton>
         </CalendarHeading>
-        <CalendarNextButton aria-label='Weiter' />
+        <CalendarNextButton square aria-label='Nächster Monat'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
       </CalendarHeader>
       <CalendarContent>
         <CalendarDays>

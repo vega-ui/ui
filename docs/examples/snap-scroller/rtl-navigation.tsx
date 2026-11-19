@@ -1,12 +1,12 @@
 import {
   Icon,
-  IconButton,
+  Button,
   SnapScroller,
   SnapScrollerContent,
   Text,
   type SnapScrollerApiRef,
 } from '@vega-ui/react';
-import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import { useRef, useState, type CSSProperties } from 'react';
 
 const headlines = [
@@ -44,25 +44,27 @@ export default function RtlNavigation() {
         ))}
       </SnapScroller>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <IconButton
+        <Button
+          square
           aria-label='السابق'
           variant='secondary'
           appearance='ghost'
           disabled={current === 0}
           onClick={() => api.current?.prev()}
         >
-          <Icon><ChevronRight /></Icon>
-        </IconButton>
+          <Icon><ChevronRightIcon /></Icon>
+        </Button>
         <Text size={2} dir='ltr' style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>{current + 1} / {headlines.length}</Text>
-        <IconButton
+        <Button
+          square
           aria-label='التالي'
           variant='secondary'
           appearance='ghost'
           disabled={current === headlines.length - 1}
           onClick={() => api.current?.next()}
         >
-          <Icon><ChevronLeft /></Icon>
-        </IconButton>
+          <Icon><ChevronLeftIcon /></Icon>
+        </Button>
       </div>
     </div>
   );

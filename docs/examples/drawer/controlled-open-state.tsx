@@ -6,7 +6,6 @@ import {
   DrawerContent,
   Heading,
   Icon,
-  IconButton,
   Text,
 } from '@vega-ui/react';
 import { ChevronDownIcon, ChevronUpIcon, XIcon } from '@vega-ui/icons';
@@ -64,24 +63,25 @@ export default function ControlledOpenState() {
               <Heading id={titleId} as='h2' size={4} fontWeight={600}>{ticket.title}</Heading>
             </div>
             <DrawerClose asChild>
-              <IconButton
+              <Button
+                square
                 aria-label='Close'
                 variant='secondary'
                 appearance='ghost'
-                style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+                style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
               >
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DrawerClose>
           </div>
           <Text size={3} style={{ display: 'block', marginBlockStart: 'var(--spacing-4)', color: 'var(--label-secondary)' }}>Requested by {ticket.requester} · {ticket.priority} priority</Text>
           <div style={{ display: 'flex', gap: 'var(--spacing-4)', marginBlockStart: 'auto', paddingBlockStart: 'var(--spacing-12)' }}>
-            <IconButton aria-label='Previous ticket' variant='secondary' appearance='ghost' disabled={index === 0} onClick={() => setIndex(index - 1)}>
+            <Button square aria-label='Previous ticket' variant='secondary' appearance='ghost' disabled={index === 0} onClick={() => setIndex(index - 1)}>
               <Icon><ChevronUpIcon /></Icon>
-            </IconButton>
-            <IconButton aria-label='Next ticket' variant='secondary' appearance='ghost' disabled={index === tickets.length - 1} onClick={() => setIndex(index + 1)}>
+            </Button>
+            <Button square aria-label='Next ticket' variant='secondary' appearance='ghost' disabled={index === tickets.length - 1} onClick={() => setIndex(index + 1)}>
               <Icon><ChevronDownIcon /></Icon>
-            </IconButton>
+            </Button>
           </div>
         </DrawerContent>
       </Drawer>

@@ -18,6 +18,7 @@ import {
   FieldsetLegend,
   Text,
 } from '@vega-ui/react';
+import { CheckIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 const CHANNELS = [
@@ -41,7 +42,7 @@ export default function NotificationChannels() {
         <Checkbox key={channel.value}>
           <CheckboxInput name='alertChannels' value={channel.value} defaultChecked={channel.checked} />
           <CheckboxIndicator>
-            <CheckboxCheckedIcon />
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
           </CheckboxIndicator>
           {channel.label}
         </Checkbox>
@@ -146,6 +147,7 @@ import {
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
+import { CheckIcon } from '@vega-ui/icons';
 import { FormEvent, useId, useState } from 'react';
 
 export default function SettingsFormSections() {
@@ -180,14 +182,14 @@ export default function SettingsFormSections() {
         <Checkbox>
           <CheckboxInput name='twoFactor' defaultChecked />
           <CheckboxIndicator>
-            <CheckboxCheckedIcon />
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
           </CheckboxIndicator>
           Two-factor authentication
         </Checkbox>
         <Checkbox>
           <CheckboxInput name='newDeviceAlerts' />
           <CheckboxIndicator>
-            <CheckboxCheckedIcon />
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
           </CheckboxIndicator>
           Email me about sign-ins from new devices
         </Checkbox>
@@ -222,7 +224,6 @@ import {
   FieldsetLegend,
   Heading,
   Icon,
-  IconButton,
   Label,
   Switch,
   SwitchIndicator,
@@ -251,14 +252,15 @@ export default function PrivacySettingsInDialog() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
           <Heading id={`${id}-title`} as='h2' size={4} fontWeight={600}>Privacy</Heading>
           <DialogClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </DialogClose>
         </div>
         <form method='dialog' style={{ display: 'grid', gap: 'var(--spacing-10)', marginBlockStart: 'var(--spacing-8)' }}>
@@ -301,6 +303,7 @@ import {
   FieldsetLegend,
   HelperText,
 } from '@vega-ui/react';
+import { CheckIcon } from '@vega-ui/icons';
 import { FormEvent, useId, useState } from 'react';
 
 const CHANNELS = ['Email', 'Push', 'SMS'];
@@ -344,7 +347,7 @@ export default function AtLeastOneChannel() {
               onChange={() => toggle(channel)}
             />
             <CheckboxIndicator>
-              <CheckboxCheckedIcon />
+              <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
             </CheckboxIndicator>
             {channel}
           </Checkbox>
@@ -369,6 +372,7 @@ import {
   Button,
   Fieldset,
   FieldsetLegend,
+  Icon,
   Label,
   NumberField,
   NumberFieldDecrementButton,
@@ -381,6 +385,7 @@ import {
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
+import { MinusIcon, PlusIcon } from '@vega-ui/icons';
 import { FormEvent, useId, useState } from 'react';
 
 export default function UseOrganizationDefaults() {
@@ -413,9 +418,9 @@ export default function UseOrganizationDefaults() {
         <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
           <Label htmlFor={`${id}-timeout`}>Idle timeout, minutes</Label>
           <NumberField min={5} max={720} step={5} defaultValue={30}>
-            <NumberFieldDecrementButton aria-label='Decrease by 5 minutes' />
+            <NumberFieldDecrementButton square aria-label='Decrease by 5 minutes'><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
             <NumberFieldInput id={`${id}-timeout`} name='idleTimeout' />
-            <NumberFieldIncrementButton aria-label='Increase by 5 minutes' />
+            <NumberFieldIncrementButton square aria-label='Increase by 5 minutes'><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
           </NumberField>
         </div>
         <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>

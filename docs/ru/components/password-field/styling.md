@@ -2,22 +2,22 @@
 
 ## Обзор
 
-`PasswordField` использует контракт стилизации `TextField`. Его собственный визуальный слой — кнопка-переключатель с иконкой, которая привязана к общей высоте поля ввода и токенам наведения.
+`PasswordField` использует контракт стилизации `TextField`. Его собственный визуальный слой — кнопка-переключатель, которая привязана к общей высоте поля ввода и токенам наведения.
 
 ## Публичные CSS-переменные
 
 | Переменная | Где используется | Назначение |
 | --- | --- | --- |
 | `--input-height` | кнопка-переключатель | сохраняет переключатель квадратным по высоте поля |
-| `--text-color` | кнопка-переключатель | цвет иконки по умолчанию |
+| `--text-color` | кнопка-переключатель | цвет иконок внутри |
 | `--fills-quaternary-hover` | кнопка-переключатель | подложка при наведении |
 | `--fills-quaternary-active` | кнопка-переключатель | подложка при нажатии |
-| `--button-color` | `PasswordFieldToggleIconButton` | Цвет иконки кнопки. |
-| `--button-color-hover` | `PasswordFieldToggleIconButton` | Цвет иконки кнопки при наведении. |
-| `--button-color-active` | `PasswordFieldToggleIconButton` | Цвет иконки кнопки при нажатии. |
-| `--button-background-color` | `PasswordFieldToggleIconButton` | Фон кнопки. |
-| `--button-background-color-hover` | `PasswordFieldToggleIconButton` | Фон кнопки при наведении. |
-| `--button-background-color-active` | `PasswordFieldToggleIconButton` | Фон кнопки при нажатии. |
+| `--button-color` | `PasswordFieldToggle` | Цвет иконки кнопки. |
+| `--button-color-hover` | `PasswordFieldToggle` | Цвет иконки кнопки при наведении. |
+| `--button-color-active` | `PasswordFieldToggle` | Цвет иконки кнопки при нажатии. |
+| `--button-background-color` | `PasswordFieldToggle` | Фон кнопки. |
+| `--button-background-color-hover` | `PasswordFieldToggle` | Фон кнопки при наведении. |
+| `--button-background-color-active` | `PasswordFieldToggle` | Фон кнопки при нажатии. |
 
 ## Переменные частей
 
@@ -27,7 +27,7 @@
 
 ### Кнопка-переключатель
 
-`PasswordFieldToggleIconButton` сопоставляет `--icon-button-size` с `--input-height` и использует прозрачный фон до наведения или нажатия.
+`PasswordFieldToggle` сопоставляет `--button-height` с `--input-height` и использует прозрачный фон до наведения или нажатия.
 
 ## Взаимодействие состояний и вариантов
 
@@ -47,7 +47,7 @@ import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleIconButton,
+  PasswordFieldToggle,
 } from '@vega-ui/react';
 import { LockIcon, LockOpenIcon } from '@vega-ui/icons';
 import { useId } from 'react';
@@ -60,10 +60,10 @@ export default function CustomVisibilityIcons() {
       <Label htmlFor={id}>Vault passphrase</Label>
       <PasswordField>
         <PasswordFieldInput id={id} autoComplete='current-password' />
-        <PasswordFieldToggleIconButton aria-label='Show passphrase'>
+        <PasswordFieldToggle square aria-label='Show passphrase'>
           <PasswordFieldShownIcon><LockIcon /></PasswordFieldShownIcon>
           <PasswordFieldHiddenIcon><LockOpenIcon /></PasswordFieldHiddenIcon>
-        </PasswordFieldToggleIconButton>
+        </PasswordFieldToggle>
       </PasswordField>
     </div>
   );

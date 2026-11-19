@@ -3,7 +3,6 @@ import {
   Button,
   Heading,
   Icon,
-  IconButton,
   Sheet,
   SheetClose,
   SheetContent,
@@ -40,14 +39,15 @@ export default function MobileLikePickerSurface() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
           <Heading id={titleId} as='h2' size={4} fontWeight={600}>Delivery time</Heading>
           <SheetClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </SheetClose>
         </div>
         <div style={{ display: 'grid', gap: 'var(--spacing-1)' }}>

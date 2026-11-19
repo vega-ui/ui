@@ -1,13 +1,12 @@
 'use client';
 
 import { FC, Ref } from 'react';
-import { createInput } from '@vega-ui/core';
 import { useSnapshot, useWidget, widgetEnvironment } from '../internals/widget';
 import { TextField, TextFieldProps } from '../TextField';
 import style from './style.module.css'
 import { csx } from '@vega-ui/utils';
 import { NumberFieldProvider } from './contexts';
-import { DECREMENT, INCREMENT, isMaxOf, isMinOf, numberFieldWidget } from '@vega-ui/widgets/number-field';
+import { isMaxOf, isMinOf, numberFieldWidget } from '@vega-ui/widgets/number-field';
 
 export interface NumberFieldProps extends Omit<TextFieldProps, 'defaultValue'> {
   /**
@@ -110,9 +109,6 @@ export const NumberField: FC<NumberFieldProps> = ({
   const isMin = useSnapshot(handle, isMinOf)
   const isMax = useSnapshot(handle, isMaxOf)
 
-  const increment = () => handle.send(createInput(INCREMENT))
-  const decrement = () => handle.send(createInput(DECREMENT))
-
   return (
     <NumberFieldProvider
       handle={handle}
@@ -121,8 +117,6 @@ export const NumberField: FC<NumberFieldProps> = ({
       isMin={isMin}
       max={max}
       min={min}
-      increment={increment}
-      decrement={decrement}
       disabled={disabled}
     >
       <TextField

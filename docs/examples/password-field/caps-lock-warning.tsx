@@ -5,8 +5,9 @@ import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleIconButton,
+  PasswordFieldToggle,
 } from '@vega-ui/react';
+import { EyeIcon, EyeOffIcon } from '@vega-ui/icons';
 import { KeyboardEvent, useId, useState } from 'react';
 
 export default function CapsLockWarning() {
@@ -29,10 +30,10 @@ export default function CapsLockWarning() {
           onKeyUp={onKey}
           onBlur={() => setCapsLock(false)}
         />
-        <PasswordFieldToggleIconButton aria-label='Show password'>
-          <PasswordFieldShownIcon />
-          <PasswordFieldHiddenIcon />
-        </PasswordFieldToggleIconButton>
+        <PasswordFieldToggle square aria-label='Show password'>
+          <PasswordFieldShownIcon><EyeIcon /></PasswordFieldShownIcon>
+          <PasswordFieldHiddenIcon><EyeOffIcon /></PasswordFieldHiddenIcon>
+        </PasswordFieldToggle>
       </PasswordField>
       <HelperText id={`${id}-caps`} aria-live='polite'>
         {capsLock ? 'Caps Lock is on.' : ''}

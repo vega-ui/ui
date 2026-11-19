@@ -66,7 +66,7 @@
 
 ### Apple-like header
 
-The header with a small title and a 24px round close button in the corner is plain composition: a `Heading` with `size={4}` and `fontWeight={600}`, and `SheetClose asChild` around an `IconButton` placed absolutely in the top end corner (`position: absolute`, `insetBlockStart: 16`, `insetInlineEnd: 'calc(16px + var(--sheet-inset, var(--spacing-8)))'`, since the surface keeps `--sheet-inset` clear of the sides of the `<dialog>`); the open modal `<dialog>` is its containing block. `IconButton` has no size or shape option for this; the round 24px button comes from two CSS variables set on it, `--icon-button-size: 24px` and `--icon-button-br-ratio: 0.5`, with `Icon size='xs'` inside.
+The header with a small title and a 24px round close button in the corner is plain composition: a `Heading` with `size={4}` and `fontWeight={600}`, and `SheetClose asChild` around a `Button` with `square` placed absolutely in the top end corner (`position: absolute`, `insetBlockStart: 16`, `insetInlineEnd: 'calc(16px + var(--sheet-inset, var(--spacing-8)))'`, since the surface keeps `--sheet-inset` clear of the sides of the `<dialog>`); the open modal `<dialog>` is its containing block. `Button` has no size for this; the round 24px button comes from two CSS variables set on it, `--button-height: 24px` and `--button-br-ratio: 0.5`, with `Icon size='xs'` inside.
 
 ## Do Not Override
 

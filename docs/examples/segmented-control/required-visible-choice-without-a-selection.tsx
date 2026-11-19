@@ -35,10 +35,9 @@ export default function RequiredVisibleChoiceWithoutASelection() {
         <Label id='size-label'>Size</Label>
         <SegmentedControl
           name='size'
-          role='radiogroup'
           aria-labelledby='size-label'
           aria-describedby={invalid ? 'size-error' : undefined}
-          onChange={() => setInvalid(false)}
+          onChangeValue={() => setInvalid(false)}
         >
           {sizes.map((size) => (
             <SegmentedControlItem key={size} value={size}>

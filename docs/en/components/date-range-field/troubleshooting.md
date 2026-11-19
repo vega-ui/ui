@@ -27,7 +27,7 @@ The icon button is present, but clicking it never reveals the range calendar.
 
 ### Likely Cause
 
-`DateRangeFieldTriggerIconButton` was rendered without `PopoverTrigger`, `PopoverContent`, or `DateRangeFieldCalendar`.
+`DateRangeFieldTrigger` was rendered without `PopoverTrigger`, `PopoverContent`, or `DateRangeFieldCalendar`.
 
 ### How To Verify
 

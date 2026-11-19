@@ -4,6 +4,7 @@ const example = 'date-range-field/booking-range-with-a-calendar-popover.tsx';
 const input = { role: 'textbox', name: 'Stay' };
 const trigger = { role: 'button', name: 'Choose stay dates' };
 const previous = { role: 'button', name: 'Previous month' };
+const next = { role: 'button', name: 'Next month' };
 const range = (start: string, end: string) => `${start}\u00a0–\u00a0${end}`;
 const july = (day: number) => ({ role: 'gridcell', name: String(day), nth: 2 });
 
@@ -14,6 +15,7 @@ export default [
     ru: 'На кнопке-триггере: открывает всплывающий календарь и переносит фокус в сетку дней: на начало диапазона, иначе на сегодня, иначе на первую доступную дату.',
     checks: [
       { example, steps: [{ focus: trigger }], press: 'Enter', before: [{ hidden: previous }], expect: [{ visible: previous }, { focused: july(10) }] },
+      { example, steps: [{ focus: trigger }], press: 'Space', before: [{ hidden: previous }], expect: [{ visible: previous }, { focused: july(10) }] },
     ],
   },
   {
@@ -21,7 +23,8 @@ export default [
     en: 'In the popup: moves the focus between the header buttons and the day grid. The popup is not modal: Tab from its last element leaves it, and it stays open until Escape, an outside click or the end of a range is picked.',
     ru: 'Во всплывающем календаре: переносит фокус между кнопками шапки и сеткой дней. Календарь не модальный: Tab с его последнего элемента выводит фокус наружу, а календарь остаётся открытым до Escape, клика снаружи или выбора конца диапазона.',
     checks: [
-      { example, steps: [{ focus: trigger }, { press: 'Enter' }], press: 'Shift+Tab', expect: [{ focused: { role: 'button', name: 'Next month' } }] },
+      { example, steps: [{ focus: trigger }, { press: 'Enter' }], press: 'Shift+Tab', before: [{ focused: july(10) }], expect: [{ focused: next }] },
+      { example, steps: [{ focus: trigger }, { press: 'Enter' }, { focus: next }], press: 'Tab', before: [{ focused: next }], expect: [{ focused: july(10) }] },
     ],
   },
   {
@@ -30,6 +33,7 @@ export default [
     ru: 'На дне во всплывающем календаре: первое нажатие начинает новый диапазон и оставляет календарь открытым, второе завершает его, записывает диапазон в поле, закрывает календарь и возвращает фокус на кнопку-триггер. Остальные клавиши календаря работают как в Calendar.',
     checks: [
       { example, steps: [{ focus: trigger }, { press: 'Enter' }, { focus: july(11) }], press: 'Enter', before: [{ value: range('10.07.2026', '14.07.2026'), of: input }], expect: [{ value: '11.07.2026', of: input }, { visible: previous }] },
+      { example, steps: [{ focus: trigger }, { press: 'Enter' }, { focus: july(11) }], press: 'Space', expect: [{ value: '11.07.2026', of: input }, { visible: previous }] },
       { example, steps: [{ focus: trigger }, { press: 'Enter' }, { focus: july(11) }, { press: 'Enter' }, { focus: july(13) }], press: 'Enter', expect: [{ value: range('11.07.2026', '13.07.2026'), of: input }, { hidden: previous }, { focused: trigger }] },
     ],
   },

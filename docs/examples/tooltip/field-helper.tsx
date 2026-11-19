@@ -2,7 +2,6 @@ import { useId, useState, type FormEvent } from 'react';
 import {
   Button,
   Icon,
-  IconButton,
   Label,
   Text,
   TextField,
@@ -28,9 +27,9 @@ export default function FieldHelper() {
         <Label htmlFor={fieldId}>VAT number (optional)</Label>
         <Tooltip>
           <TooltipTrigger asChild>
-            <IconButton aria-label='About the VAT number' size='xs' variant='secondary' appearance='ghost'>
+            <Button square aria-label='About the VAT number' size='xs' variant='secondary' appearance='ghost'>
               <Icon size='xs'><InfoIcon /></Icon>
-            </IconButton>
+            </Button>
           </TooltipTrigger>
           <TooltipContent>
             <Text size={2}>Printed on invoices for EU business customers</Text>

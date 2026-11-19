@@ -32,7 +32,7 @@ Current value renderer or placeholder renderer.
 
 ### `SelectIcon`
 
-Optional visual indicator for the trigger.
+Optional icon of the trigger. It draws no icon of its own: pass one as its children, such as a chevron from any icon set. To write the chevron once, see the [recipe](./index.md#your-own-component).
 
 - Required: no
 - Usually placed after `SelectValue`
@@ -66,7 +66,7 @@ Hidden native select for form submission and browser form semantics.
 
 ### `SelectIcon`
 
-Optional visual indicator for the trigger.
+Optional icon of the trigger. It draws no icon of its own: pass one as its children, such as a chevron from any icon set.
 
 - Required: no
 - Usually placed after `SelectValue`
@@ -95,6 +95,7 @@ import {
   SelectOption,
   SelectValue,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 export default function MinimalComposition() {
@@ -107,7 +108,7 @@ export default function MinimalComposition() {
         <SelectHiddenSelect name='language' />
         <SelectCombobox id={id}>
           <SelectValue placeholder='Choose a language' />
-          <SelectIcon />
+          <SelectIcon><ChevronDownIcon /></SelectIcon>
         </SelectCombobox>
         <SelectListbox>
           <SelectOption value='en'>English</SelectOption>

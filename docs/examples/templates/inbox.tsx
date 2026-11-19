@@ -7,7 +7,6 @@ import {
   Heading,
   HelperText,
   Icon,
-  IconButton,
   Label,
   Listbox,
   ListboxOption,
@@ -24,7 +23,7 @@ import {
   Text,
   TextArea,
 } from '@vega-ui/react';
-import { ChevronLeft } from '@vega-ui/icons';
+import { ChevronDownIcon, ChevronLeftIcon } from '@vega-ui/icons';
 import './inbox.css';
 
 type Filter = 'all' | 'unread' | 'assigned';
@@ -242,10 +241,9 @@ export default function Inbox() {
           <SegmentedControl
             size='sm'
             name={`${id}-filter`}
-            role='radiogroup'
             aria-label='Show'
             value={filter}
-            onChange={(event) => setFilter(event.target.value as Filter)}
+            onChangeValue={setFilter}
             style={{ alignSelf: 'stretch' }}
           >
             {filters.map((item) => (
@@ -290,7 +288,8 @@ export default function Inbox() {
         <section className='inboxDetail' aria-labelledby={`${id}-subject`}>
           <div style={{ display: 'grid', gap: 'var(--spacing-8)', paddingBlockEnd: 'var(--spacing-8)', borderBlockEnd: '1px solid var(--separator-opaque)' }}>
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--spacing-4)' }}>
-              <IconButton
+              <Button
+                square
                 ref={backRef}
                 size='xs'
                 variant='secondary'
@@ -299,8 +298,8 @@ export default function Inbox() {
                 className='inboxBack'
                 onClick={back}
               >
-                <Icon size='sm'><ChevronLeft /></Icon>
-              </IconButton>
+                <Icon size='sm'><ChevronLeftIcon /></Icon>
+              </Button>
               <div style={{ display: 'grid', gap: 'var(--spacing-1)', flex: 1, minWidth: 0 }}>
                 <Heading ref={titleRef} id={`${id}-subject`} as='h2' size={5} fontWeight={600} tabIndex={-1} style={{ outline: 'none', overflowWrap: 'anywhere' }}>
                   {conversation.subject}
@@ -316,7 +315,7 @@ export default function Inbox() {
               <Select size='xs' value={conversation.assignee} onChangeValue={assign} style={{ flex: '1 1 180px', maxWidth: 240 }}>
                 <SelectCombobox id={`${id}-assignee`}>
                   <SelectValue />
-                  <SelectIcon />
+                  <SelectIcon><ChevronDownIcon /></SelectIcon>
                 </SelectCombobox>
                 <SelectListbox>
                   {agents.map((agent) => <SelectOption key={agent.value} value={agent.value}>{agent.label}</SelectOption>)}

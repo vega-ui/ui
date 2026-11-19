@@ -46,6 +46,67 @@ export default function MinimalComposition() {
 ```
 <!-- /example -->
 
+## Your Own Component
+
+The minimal composition above shows the parts in place. In an app, compose them once in a file of your own and import that component everywhere. `MyCollapsible` passes its props to `Collapsible`, renders `summary` in a ghost button trigger, and its children in the content. See [Component recipes](../../recipes.md).
+
+<!-- example: collapsible/recipe.tsx -->
+```tsx
+import {
+  Button,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+  Text,
+  type CollapsibleProps,
+} from '@vega-ui/react';
+import type { ReactNode } from 'react';
+
+interface MyCollapsibleProps extends CollapsibleProps {
+  summary: ReactNode
+}
+
+export function MyCollapsible({ summary, children, ...props }: MyCollapsibleProps) {
+  return (
+    <Collapsible {...props}>
+      <CollapsibleTrigger asChild>
+        <Button size='sm' variant='secondary' appearance='ghost' style={{ justifySelf: 'start' }}>{summary}</Button>
+      </CollapsibleTrigger>
+      <CollapsibleContent>{children}</CollapsibleContent>
+    </Collapsible>
+  );
+}
+
+const lines = [
+  { label: 'Team plan · 8 seats × $12', amount: '$96.00' },
+  { label: 'Extra storage · 200 GB', amount: '$20.00' },
+  { label: 'Annual discount −10%', amount: '−$11.60' },
+  { label: 'VAT 19%', amount: '$19.84' },
+];
+
+export default function Recipe() {
+  return (
+    <div style={{ display: 'grid', gap: 'var(--spacing-6)', width: '100%', maxWidth: 360 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 'var(--spacing-8)' }}>
+        <Text size={3} fontWeight={500}>Total due today</Text>
+        <Text size={3} fontWeight={500} style={{ fontVariantNumeric: 'tabular-nums' }}>$124.24</Text>
+      </div>
+      <MyCollapsible summary='Price breakdown'>
+        <dl style={{ margin: 0, display: 'grid', gridTemplateColumns: '1fr auto', gap: 'var(--spacing-4) var(--spacing-8)' }}>
+          {lines.map((line) => (
+            <div key={line.label} style={{ display: 'contents' }}>
+              <dt><Text size={2} style={{ color: 'var(--label-secondary)' }}>{line.label}</Text></dt>
+              <dd style={{ margin: 0, textAlign: 'end' }}><Text size={2} style={{ fontVariantNumeric: 'tabular-nums' }}>{line.amount}</Text></dd>
+            </div>
+          ))}
+        </dl>
+      </MyCollapsible>
+    </div>
+  );
+}
+```
+<!-- /example -->
+
 ## Required Parts
 
 - `Collapsible`: root state owner

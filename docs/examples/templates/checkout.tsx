@@ -33,7 +33,7 @@ import {
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
-import { FlagCA, FlagDE, FlagFR, FlagGBUKM, FlagNL, FlagUS } from '@vega-ui/icons';
+import { ChevronDownIcon, CircleCheckIcon, FlagCA, FlagDE, FlagFR, FlagGBUKM, FlagNL, FlagUS } from '@vega-ui/icons';
 
 const countries = [
   { code: 'US', name: 'United States', callingCode: '+1', Flag: FlagUS },
@@ -142,7 +142,7 @@ export default function Checkout() {
     return (
       <div style={{ display: 'grid', gap: 'var(--spacing-12)', width: '100%', maxWidth: 560, marginInline: 'auto' }}>
         <Alert variant='success'>
-          <AlertIcon />
+          <AlertIcon><CircleCheckIcon /></AlertIcon>
           <AlertMain>
             <AlertTitle>Order #10482 is confirmed</AlertTitle>
             <AlertContent>{`We sent the receipt to ${placed}. You will get a tracking link when it ships.`}</AlertContent>
@@ -193,7 +193,7 @@ export default function Checkout() {
                     <SelectValue>
                       <phoneCountry.Flag width={20} height={15} aria-hidden='true' />
                     </SelectValue>
-                    <SelectIcon />
+                    <SelectIcon><ChevronDownIcon /></SelectIcon>
                   </SelectCombobox>
                   <SelectListbox>
                     {countries.map(({ code, name, callingCode, Flag }) => (
@@ -234,7 +234,7 @@ export default function Checkout() {
                 aria-describedby={describe('country')}
               >
                 <SelectValue placeholder='Choose a country' />
-                <SelectIcon />
+                <SelectIcon><ChevronDownIcon /></SelectIcon>
               </SelectCombobox>
               <SelectListbox>
                 {countries.map((item) => (
@@ -384,7 +384,7 @@ export default function Checkout() {
             </TableRow>
           </TableFoot>
         </Table>
-        <Button type='submit' size='sm' fullWidth>{`Pay ${currency.format(total)}`}</Button>
+        <Button type='submit' size='sm' style={{ width: '100%' }}>{`Pay ${currency.format(total)}`}</Button>
         <Text size={2} style={{ color: 'var(--label-secondary)', textAlign: 'center' }}>You won’t be charged until the order ships.</Text>
       </Card>
     </form>

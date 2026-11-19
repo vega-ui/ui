@@ -31,14 +31,16 @@ import {
   DateField,
   DateFieldCalendar,
   DateFieldInput,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
   Fieldset,
   FieldsetLegend,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@vega-ui/react';
+import { CalendarIcon, CheckIcon, ChevronLeftIcon, ChevronRightIcon, MinusIcon } from '@vega-ui/icons';
 
 export default function DisabledByFieldset() {
   const [asap, setAsap] = useState(true);
@@ -48,8 +50,8 @@ export default function DisabledByFieldset() {
       <Checkbox>
         <CheckboxInput checked={asap} onChange={(event) => setAsap(event.currentTarget.checked)} />
         <CheckboxIndicator>
-          <CheckboxCheckedIcon />
-          <CheckboxIndeterminateIcon />
+          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+          <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
         </CheckboxIndicator>
         Ship as soon as possible
       </Checkbox>
@@ -61,17 +63,17 @@ export default function DisabledByFieldset() {
             <DateFieldInput name='shipOn' id='ship-on' placeholder='dd.mm.yyyy' />
             <Popover placement='bottom-end'>
               <PopoverTrigger asChild>
-                <DateFieldTriggerIconButton aria-label='Choose shipping date' />
+                <DateFieldTrigger square aria-label='Choose shipping date'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
               </PopoverTrigger>
               <PopoverContent>
                 <DateFieldCalendar aria-label='Choose shipping date'>
                   <CalendarHeader>
-                    <CalendarPrevButton aria-label='Previous month' />
+                    <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                     <CalendarHeading>
                       <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                       <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                     </CalendarHeading>
-                    <CalendarNextButton aria-label='Next month' />
+                    <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                   </CalendarHeader>
                   <CalendarContent>
                     <CalendarDays>

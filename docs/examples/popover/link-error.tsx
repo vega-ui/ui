@@ -3,7 +3,6 @@ import {
   Button,
   HelperText,
   Icon,
-  IconButton,
   Label,
   Popover,
   PopoverContent,
@@ -67,9 +66,9 @@ export default function LinkError() {
     >
       <Popover role='dialog' placement='bottom-start' open={open} onChangeOpen={changeOpen}>
         <PopoverTrigger asChild>
-          <IconButton aria-label='Insert link' variant='secondary' appearance='ghost' style={{ flexShrink: 0 }}>
+          <Button square aria-label='Insert link' variant='secondary' appearance='ghost' style={{ flexShrink: 0 }}>
             <Icon><LinkIcon /></Icon>
-          </IconButton>
+          </Button>
         </PopoverTrigger>
         <PopoverContent aria-label='Insert link'>
           <form noValidate onSubmit={onSubmit} style={{ display: 'grid', gap: 'var(--spacing-3)', width: 280 }}>

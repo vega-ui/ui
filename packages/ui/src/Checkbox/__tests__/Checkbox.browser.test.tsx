@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
 
 import { Checkbox } from '../Checkbox';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 import {
   CheckboxCheckedIcon,
   CheckboxInput,
@@ -50,8 +51,8 @@ const CheckboxTest: FC<CheckboxTestProps> = ({
             onChange={onChange}
           />
           <CheckboxIndicator data-testid={TESTID_INDICATOR}>
-            <CheckboxCheckedIcon data-testid={TESTID_CHECKED_ICON} />
-            <CheckboxIndeterminateIcon data-testid={TESTID_INDETERMINATE_ICON} />
+            <CheckboxCheckedIcon data-testid={TESTID_CHECKED_ICON}><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+            <CheckboxIndeterminateIcon data-testid={TESTID_INDETERMINATE_ICON}><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
           </CheckboxIndicator>
         </>
       )}

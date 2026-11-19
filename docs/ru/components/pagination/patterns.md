@@ -20,7 +20,7 @@
 
 <!-- example: pagination/link-based-pagination.tsx -->
 ```tsx
-import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import {
   Icon,
   Pagination,
@@ -74,16 +74,16 @@ export default function LinkBasedPagination() {
   const isLast = page === total;
 
   return (
-    <Pagination aria-label='Blog archive pages'>
+    <Pagination aria-label='Blog archive pages' size='sm'>
       <PaginationList>
         <PaginationItem>
           {isFirst ? (
-            <PaginationLink aria-label='Previous page' aria-disabled='true'><Icon><ChevronLeft /></Icon></PaginationLink>
+            <PaginationLink aria-label='Previous page' aria-disabled='true'><Icon><ChevronLeftIcon /></Icon></PaginationLink>
           ) : (
-            <PaginationLink href={getHref(page - 1)} rel='prev' aria-label='Previous page'><Icon><ChevronLeft /></Icon></PaginationLink>
+            <PaginationLink href={getHref(page - 1)} rel='prev' aria-label='Previous page'><Icon><ChevronLeftIcon /></Icon></PaginationLink>
           )}
         </PaginationItem>
-        {getPageItems(page, total, 1).map((item) => {
+        {getPageItems(page, total, 0).map((item) => {
           if (typeof item === 'string') {
             return <PaginationEllipsis key={item} />;
           }
@@ -96,9 +96,9 @@ export default function LinkBasedPagination() {
         })}
         <PaginationItem>
           {isLast ? (
-            <PaginationLink aria-label='Next page' aria-disabled='true'><Icon><ChevronRight /></Icon></PaginationLink>
+            <PaginationLink aria-label='Next page' aria-disabled='true'><Icon><ChevronRightIcon /></Icon></PaginationLink>
           ) : (
-            <PaginationLink href={getHref(page + 1)} rel='next' aria-label='Next page'><Icon><ChevronRight /></Icon></PaginationLink>
+            <PaginationLink href={getHref(page + 1)} rel='next' aria-label='Next page'><Icon><ChevronRightIcon /></Icon></PaginationLink>
           )}
         </PaginationItem>
       </PaginationList>
@@ -128,7 +128,7 @@ export default function LinkBasedPagination() {
 
 <!-- example: pagination/button-based-pagination.tsx -->
 ```tsx
-import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import {
   Icon,
   Pagination,
@@ -167,16 +167,16 @@ export default function ButtonBasedPagination() {
   const [page, setPage] = useState(1);
 
   return (
-    <Pagination aria-label='Search results pages'>
+    <Pagination aria-label='Search results pages' size='sm'>
       <PaginationList>
         <PaginationItem>
           <PaginationLink asChild>
             <button type='button' aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
-              <Icon><ChevronLeft /></Icon>
+              <Icon><ChevronLeftIcon /></Icon>
             </button>
           </PaginationLink>
         </PaginationItem>
-        {getPageItems(page, total, 1).map((item) => {
+        {getPageItems(page, total, 0).map((item) => {
           if (typeof item === 'string') {
             return <PaginationEllipsis key={item} />;
           }
@@ -194,7 +194,7 @@ export default function ButtonBasedPagination() {
         <PaginationItem>
           <PaginationLink asChild>
             <button type='button' aria-label='Next page' disabled={page === total} onClick={() => setPage(page + 1)}>
-              <Icon><ChevronRight /></Icon>
+              <Icon><ChevronRightIcon /></Icon>
             </button>
           </PaginationLink>
         </PaginationItem>
@@ -224,7 +224,7 @@ export default function ButtonBasedPagination() {
 
 <!-- example: pagination/truncated-large-range.tsx -->
 ```tsx
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from '@vega-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon, ChevronsLeftIcon, ChevronsRightIcon } from '@vega-ui/icons';
 import {
   Button,
   Icon,
@@ -294,18 +294,18 @@ export default function TruncatedLargeRange() {
         </div>
       </div>
       <Pagination aria-label='Log pages' size='xs'>
-        <PaginationList>
+        <PaginationList style={{ flexWrap: 'wrap', justifyContent: 'center' }}>
           <PaginationItem>
             <PaginationLink asChild>
               <button type='button' aria-label='First page' disabled={page === 1} onClick={() => setPage(1)}>
-                <Icon><ChevronsLeft /></Icon>
+                <Icon><ChevronsLeftIcon /></Icon>
               </button>
             </PaginationLink>
           </PaginationItem>
           <PaginationItem>
             <PaginationLink asChild>
               <button type='button' aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
-                <Icon><ChevronLeft /></Icon>
+                <Icon><ChevronLeftIcon /></Icon>
               </button>
             </PaginationLink>
           </PaginationItem>
@@ -327,14 +327,14 @@ export default function TruncatedLargeRange() {
           <PaginationItem>
             <PaginationLink asChild>
               <button type='button' aria-label='Next page' disabled={page === total} onClick={() => setPage(page + 1)}>
-                <Icon><ChevronRight /></Icon>
+                <Icon><ChevronRightIcon /></Icon>
               </button>
             </PaginationLink>
           </PaginationItem>
           <PaginationItem>
             <PaginationLink asChild>
               <button type='button' aria-label='Last page' disabled={page === total} onClick={() => setPage(total)}>
-                <Icon><ChevronsRight /></Icon>
+                <Icon><ChevronsRightIcon /></Icon>
               </button>
             </PaginationLink>
           </PaginationItem>

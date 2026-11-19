@@ -2,7 +2,7 @@ import { collection } from '../collection'
 import { browser, createInput, Direction, focus, Input, InputSpec, layout, measure, Measured, Orientation, pointer, readsCrossAxis, readsDirection, scroll, text, TextState, timer, toNav } from '../input'
 import { Part, sameSelection, ValidationAttributes } from '../output'
 import { AnyShape, capitalize, KeyOf, ObservedValues } from '../state'
-import { Action, Answer, targets } from '../step'
+import { Action, Answer, FocusActionOptions, targets } from '../step'
 import { Dispatched, WidgetInstance } from '../widget'
 import { registryOf } from './elements'
 import { focusableAt, holdsFocusable } from './focusables'
@@ -32,6 +32,7 @@ export interface Elements<Key> {
 export interface DomHandlers {
   keydown(event: KeyboardEvent): boolean
   click(event: MouseEvent): boolean
+  contextmenu(event: MouseEvent): boolean
   pointerdown(event: PointerEvent): boolean
   pointermove(event: PointerEvent): boolean
   pointerover(event: PointerEvent): boolean
@@ -339,9 +340,9 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
     return undefined
   }
 
-  const focusElement = (element: HTMLElement, preventScroll?: boolean) => {
+  const focusElement = (element: HTMLElement, options?: FocusActionOptions) => {
     focusing = element
-    element.focus({ preventScroll })
+    element.focus(options)
     focusing = null
   }
 
@@ -367,7 +368,7 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
       case 'focus': {
         const element = elements.item(action.key)
         if (!element) return waits
-        focusElement(element as HTMLElement, action.preventScroll)
+        focusElement(element as HTMLElement, action.options)
         return waits && document.activeElement !== element
       }
       case 'focusInside': {
@@ -750,6 +751,12 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
       return dispatch(event, createInput(pointer.press, { ...locate(event.target), part: partAt(event.target), backdrop: isBackdrop(event) }))
     },
 
+    contextmenu(event) {
+      if (!accepts(event)) return false
+      if (event.target instanceof Element && isTextEntry(event.target)) return false
+      return dispatch(event, createInput(browser.contextMenu, { key: keyAt(event.target), part: partAt(event.target), point: { x: event.clientX, y: event.clientY } }))
+    },
+
     pointerdown(event) {
       if (!accepts(event) || pressed) return false
 
@@ -770,6 +777,7 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
         time: event.timeStamp,
         primary: event.isPrimary && event.button === 0,
         text: drags ? pressesText(event.target) : undefined,
+        textEntry: event.target instanceof Element && isTextEntry(event.target),
         scroller: scroller ? scrollOf(scroller) : undefined,
       }))
     },
@@ -918,6 +926,7 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
     const attach: Record<DomEvent, () => () => void> = {
       keydown: () => on('keydown', handlers.keydown),
       click: () => on('click', handlers.click),
+      contextmenu: () => on('contextmenu', handlers.contextmenu),
       pointerdown: () => on('pointerdown', handlers.pointerdown),
       pointermove: () => on('pointermove', handlers.pointermove),
       pointerover: () => on('pointerover', handlers.pointerover),

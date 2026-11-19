@@ -1,4 +1,4 @@
-export { AvatarStack, type AvatarGroupProps } from './AvatarStack'
-export { AvatarStackItem, type AvatarGroupStackItemProps } from './components'
-export type { AvatarGroupSize, AvatarGroupVariant } from './types'
-export { useAvatarGroupContext } from './contexts'
+export { AvatarStack, type AvatarStackProps } from './AvatarStack'
+export { AvatarStackItem, type AvatarStackItemProps } from './components'
+export type { AvatarStackSize, AvatarStackVariant } from './types'
+export { useAvatarStackContext } from './contexts'

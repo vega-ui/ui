@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import {
   Icon,
   Pagination,
@@ -37,16 +37,16 @@ export default function ButtonBasedPagination() {
   const [page, setPage] = useState(1);
 
   return (
-    <Pagination aria-label='Search results pages'>
+    <Pagination aria-label='Search results pages' size='sm'>
       <PaginationList>
         <PaginationItem>
           <PaginationLink asChild>
             <button type='button' aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
-              <Icon><ChevronLeft /></Icon>
+              <Icon><ChevronLeftIcon /></Icon>
             </button>
           </PaginationLink>
         </PaginationItem>
-        {getPageItems(page, total, 1).map((item) => {
+        {getPageItems(page, total, 0).map((item) => {
           if (typeof item === 'string') {
             return <PaginationEllipsis key={item} />;
           }
@@ -64,7 +64,7 @@ export default function ButtonBasedPagination() {
         <PaginationItem>
           <PaginationLink asChild>
             <button type='button' aria-label='Next page' disabled={page === total} onClick={() => setPage(page + 1)}>
-              <Icon><ChevronRight /></Icon>
+              <Icon><ChevronRightIcon /></Icon>
             </button>
           </PaginationLink>
         </PaginationItem>

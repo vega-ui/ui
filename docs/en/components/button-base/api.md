@@ -41,4 +41,4 @@ When `asChild` is enabled, one slotted child element becomes the rendered semant
 
 - Set `type='button'` for non-submit actions inside forms.
 - Add an explicit accessible name for icon-only content.
-- Use `Button` or `IconButton` when product code needs higher-level layout and sizing APIs.
+- Use `Button` when product code needs higher-level layout and sizing APIs.

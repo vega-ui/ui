@@ -24,7 +24,9 @@ import {
   CalendarYearsScroller,
   CalendarYearsScrollerContent,
   HelperText,
+  Icon,
 } from '@vega-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 const conference = { min: '2026-11-10', max: '2026-11-20' };
@@ -36,12 +38,12 @@ export default function MinAndMaxInsideOneMonth() {
     <div style={{ display: 'grid', gap: 'var(--spacing-3)', justifyItems: 'start', width: '100%' }}>
       <Calendar locale='en-US' min={conference.min} max={conference.max} defaultFocusedDate={conference.min}>
         <CalendarHeader>
-          <CalendarPrevButton aria-label='Previous' />
+          <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
           <CalendarHeading>
             <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
             <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
           </CalendarHeading>
-          <CalendarNextButton aria-label='Next' />
+          <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
         </CalendarHeader>
         <CalendarContent>
           <CalendarDays aria-label='Session day' aria-describedby={hintId}>

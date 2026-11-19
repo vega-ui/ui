@@ -4,6 +4,7 @@ import { cleanup, render } from '@testing-library/react';
 import { userEvent } from 'vitest/browser';
 
 import { Separator } from '../../Separator';
+import { CheckIcon } from '@vega-ui/icons';
 import { Menu } from '../Menu';
 import { MenuCheckboxItem, MenuContent, MenuItem, MenuItemIndicator, MenuRadioGroup, MenuRadioItem, MenuSubmenu, MenuSubmenuTrigger, MenuTrigger } from '../components';
 
@@ -26,10 +27,10 @@ const MenuTest: FC<MenuTestProps> = ({ onUndo, onRedo, onRuler, onZoom, label, .
         <MenuItem onClick={onUndo}>Undo</MenuItem>
         <MenuItem disabled onClick={onRedo}>Redo</MenuItem>
         <Separator />
-        <MenuCheckboxItem defaultChecked onChangeChecked={onRuler}><MenuItemIndicator />Ruler</MenuCheckboxItem>
+        <MenuCheckboxItem defaultChecked onChangeChecked={onRuler}><MenuItemIndicator><CheckIcon /></MenuItemIndicator>Ruler</MenuCheckboxItem>
         <MenuRadioGroup aria-label='Zoom' defaultValue='fit' onChangeValue={onZoom}>
-          <MenuRadioItem value='fit'><MenuItemIndicator />Fit</MenuRadioItem>
-          <MenuRadioItem value='100'><MenuItemIndicator />Actual size</MenuRadioItem>
+          <MenuRadioItem value='fit'><MenuItemIndicator><CheckIcon /></MenuItemIndicator>Fit</MenuRadioItem>
+          <MenuRadioItem value='100'><MenuItemIndicator><CheckIcon /></MenuItemIndicator>Actual size</MenuRadioItem>
         </MenuRadioGroup>
         <MenuItem asChild><a href='#help'>Help</a></MenuItem>
       </MenuContent>
@@ -139,6 +140,16 @@ describe('Critical User Paths', () => {
     expect(document.activeElement).toBe(item('Ruler'));
   });
 
+  it('gives the focus to the item under the pointer without the keyboard focus ring, after a menu opened with the keyboard', async () => {
+    render(<MenuTest />);
+
+    await openWithKeyboard();
+    await userEvent.hover(item('Ruler'));
+
+    expect(document.activeElement).toBe(item('Ruler'));
+    expect(item('Ruler').matches(':focus-visible')).toBe(false);
+  });
+
   it('runs an item on a click, Enter or Space, closes the menu and gives the focus back to the trigger', async () => {
     const onUndo = vi.fn();
     render(<MenuTest onUndo={onUndo} />);
@@ -153,7 +164,7 @@ describe('Critical User Paths', () => {
     expect(onUndo).toHaveBeenCalledTimes(3);
   });
 
-  it('toggles a checkbox item on Space without closing and on Enter with closing', async () => {
+  it('toggles a checkbox item on Space, Enter or a click and keeps the menu open', async () => {
     const onRuler = vi.fn();
     render(<MenuTest onRuler={onRuler} />);
 
@@ -165,16 +176,17 @@ describe('Critical User Paths', () => {
     await userEvent.keyboard(' ');
     expect(onRuler).toHaveBeenCalledExactlyOnceWith(false);
     expect(item('Ruler').getAttribute('aria-checked')).toBe('false');
-    expect(isOpen()).toBe(true);
-    expect(document.activeElement).toBe(item('Ruler'));
 
     await userEvent.keyboard('{Enter}');
     expect(onRuler).toHaveBeenLastCalledWith(true);
-    expect(isOpen()).toBe(false);
-    expect(document.activeElement).toBe(trigger());
+
+    await userEvent.click(item('Ruler'));
+    expect(onRuler).toHaveBeenLastCalledWith(false);
+    expect(isOpen()).toBe(true);
+    expect(document.activeElement).toBe(item('Ruler'));
   });
 
-  it('checks one radio item of the group on Space without closing and on a click with closing', async () => {
+  it('checks one radio item of the group on Space or a click and keeps the menu open', async () => {
     const onZoom = vi.fn();
     render(<MenuTest onZoom={onZoom} />);
 
@@ -186,10 +198,37 @@ describe('Critical User Paths', () => {
     expect(onZoom).toHaveBeenCalledExactlyOnceWith('100');
     expect(item('Actual size').getAttribute('aria-checked')).toBe('true');
     expect(item('Fit').getAttribute('aria-checked')).toBe('false');
-    expect(isOpen()).toBe(true);
 
     await userEvent.click(item('Fit'));
     expect(onZoom).toHaveBeenLastCalledWith('fit');
+    expect(isOpen()).toBe(true);
+  });
+
+  it('checks a checkbox or radio item with keepOpen false on a click or Enter and closes the menu', async () => {
+    const onGrid = vi.fn();
+    const onFill = vi.fn();
+    render(
+      <Menu>
+        <MenuTrigger>View</MenuTrigger>
+        <MenuContent>
+          <MenuCheckboxItem keepOpen={false} onChangeChecked={onGrid}><MenuItemIndicator><CheckIcon /></MenuItemIndicator>Grid</MenuCheckboxItem>
+          <MenuRadioGroup aria-label='Zoom' defaultValue='fit' onChangeValue={onFill}>
+            <MenuRadioItem keepOpen={false} value='fit'><MenuItemIndicator><CheckIcon /></MenuItemIndicator>Fit</MenuRadioItem>
+            <MenuRadioItem keepOpen={false} value='fill'><MenuItemIndicator><CheckIcon /></MenuItemIndicator>Fill</MenuRadioItem>
+          </MenuRadioGroup>
+        </MenuContent>
+      </Menu>,
+    );
+
+    await userEvent.click(trigger());
+    await userEvent.click(item('Grid'));
+    expect(onGrid).toHaveBeenCalledExactlyOnceWith(true);
+    expect(isOpen()).toBe(false);
+    expect(document.activeElement).toBe(trigger());
+
+    await userEvent.keyboard('{ArrowUp}');
+    await userEvent.keyboard('{Enter}');
+    expect(onFill).toHaveBeenCalledExactlyOnceWith('fill');
     expect(isOpen()).toBe(false);
   });
 

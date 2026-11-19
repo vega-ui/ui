@@ -1,4 +1,4 @@
-import { Check, Minus } from '@vega-ui/icons';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 import {
   Icon,
   Table,
@@ -46,7 +46,7 @@ export default function PlanComparisonTable() {
 
                 return (
                   <TableData key={plans[index]}>
-                    <Icon size='sm' aria-hidden='true'>{value ? <Check /> : <Minus />}</Icon>
+                    <Icon size='sm' aria-hidden='true'>{value ? <CheckIcon /> : <MinusIcon />}</Icon>
                     <VisuallyHidden>{value ? 'Included' : 'Not included'}</VisuallyHidden>
                   </TableData>
                 );

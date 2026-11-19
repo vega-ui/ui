@@ -29,7 +29,7 @@ export default function ForgotPasswordLink() {
         </div>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-4)' }}>
-        <Button type='submit' fullWidth>Sign in</Button>
+        <Button type='submit' style={{ width: '100%' }}>Sign in</Button>
         <output style={{ color: 'var(--label-secondary)', textAlign: 'center', overflowWrap: 'anywhere' }}>
           {signedIn === '' ? '' : `Signed in as ${signedIn}`}
         </output>

@@ -4,7 +4,7 @@ How the behavior of composite components is written on `@vega-ui/core` and `@veg
 
 ## When a Component Needs a Widget
 
-A component gets a widget when it has behavior the native element does not give: a focus that moves between items, a selection, a popup the keyboard drives, a mask over a text field, a drag. `Listbox`, `Select`, `Grid`, the pickers, `Calendar`, the fields, `Slider`, `Sheet` and `Tooltip` have one. A component that is close to its native element, like `Button` or `Switch`, has none: the browser already does what it should.
+A component gets a widget when it has behavior the native element does not give: a focus that moves between items, a selection, a popup the keyboard drives, a mask over a text field, a drag. `Listbox`, `Select`, `Grid`, the pickers, `Calendar`, the fields, `Slider`, `Sheet`, `Toolbar`, `Toggle`, `ToggleGroup` and `Tooltip` have one. A component that is close to its native element, like `Button` or `Switch`, has none: the browser already does what it should.
 
 The widget is plain TypeScript with no React and no DOM. It runs and is tested in node, and an adapter for another framework can reuse it as it is.
 
@@ -239,13 +239,13 @@ An input is a value, never a string: `key.enter`, `key.with(key.a, mod.mod)`, `n
 
 - **Keys and directions.** The adapter turns the arrows into `nav.forward`, `nav.backward`, `nav.up` and `nav.down` by `aria-orientation` and the writing direction of the root, so a step never knows about RTL. Declare `nav.*` for a list and `key.*` for a key that means the same in every direction.
 - **Pointer.** `pointer.down`, `press`, `drag`, `dragOver`, `release`, `cancel`, `hover`, `enter`, `leave`, `wheel` and `spin` carry the `key` of the item and the `part` they hit.
-- **Browser.** `browser.toggle` after a popover or a dialog opened or closed, `browser.cancel` / `close` / `submit` of a `<dialog>`, `browser.reset` after a form reset, `browser.reveal` when find in page is about to reveal a part with `hidden="until-found"`, `browser.animationEnd` and `browser.flushed` as answers to actions.
+- **Browser.** `browser.toggle` after a popover or a dialog opened or closed, `browser.cancel` / `close` / `submit` of a `<dialog>`, `browser.reset` after a form reset, `browser.reveal` when find in page is about to reveal a part with `hidden="until-found"`, `browser.contextMenu` from a right click, a long press or the context menu key, with the `point` and the `part`, `browser.animationEnd` and `browser.flushed` as answers to actions.
 - **Lifecycle.** `lifecycle.connect` once the adapter is connected and the items are registered; `lifecycle.options` when the parent changes a value it controls or an option in `follows`, with `changed`, the names that changed.
 - `defineInput(type, name)` declares an input of a kind of your own for an adapter of your own.
 
 ### Commands
 
-A command is an input a component sends itself, from its own event handler or an imperative method:
+A command is an input a component sends itself from an imperative method. A button that acts on the widget is not a command: register it as a part with `handle.part` and step on `pointer.press` with that `part`, like the previous and next buttons of the calendar.
 
 ```ts
 export const TOGGLE_ITEM = command('toggleItem')

@@ -18,7 +18,7 @@ import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleIconButton,
+  PasswordFieldToggle,
   PinField,
   PinFieldInput,
   PinFieldSlot,
@@ -26,6 +26,7 @@ import {
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
+import { CheckIcon, CircleAlertIcon, CircleCheckIcon, EyeIcon, EyeOffIcon } from '@vega-ui/icons';
 
 const DEMO_PASSWORD = 'northwind';
 const DEMO_CODE = '246810';
@@ -133,7 +134,7 @@ export default function SignIn() {
     return (
       <Card style={card}>
         <Alert variant='success'>
-          <AlertIcon />
+          <AlertIcon><CircleCheckIcon /></AlertIcon>
           <AlertMain>
             <AlertTitle>You’re signed in</AlertTitle>
             <AlertContent>{`Welcome back. Signed in as ${email}.`}</AlertContent>
@@ -171,13 +172,13 @@ export default function SignIn() {
             <Checkbox>
               <CheckboxInput name='trust' />
               <CheckboxIndicator>
-                <CheckboxCheckedIcon />
+                <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
               </CheckboxIndicator>
               Don’t ask again on this device for 30 days
             </Checkbox>
             <div style={{ display: 'grid', gap: 'var(--spacing-4)' }}>
-              <Button size='xs' type='submit' fullWidth>Verify</Button>
-              <Button size='xs' type='button' variant='secondary' appearance='ghost' fullWidth disabled={cooldown > 0} onClick={resend}>
+              <Button size='xs' type='submit' style={{ width: '100%' }}>Verify</Button>
+              <Button size='xs' type='button' variant='secondary' appearance='ghost' disabled={cooldown > 0} onClick={resend} style={{ width: '100%' }}>
                 <span style={{ fontVariantNumeric: 'tabular-nums' }}>{cooldown > 0 ? `Send a new code in ${cooldown}s` : 'Send a new code'}</span>
               </Button>
             </div>
@@ -202,7 +203,7 @@ export default function SignIn() {
 
           {errors.form && (
             <Alert variant='error' role='alert'>
-              <AlertIcon />
+              <AlertIcon><CircleAlertIcon /></AlertIcon>
               <AlertMain>
                 <AlertTitle>Couldn’t sign in</AlertTitle>
                 <AlertContent>{errors.form}</AlertContent>
@@ -237,16 +238,16 @@ export default function SignIn() {
                   aria-invalid={errors.password !== undefined}
                   aria-describedby={errors.password ? `${id}-password-error` : undefined}
                 />
-                <PasswordFieldToggleIconButton aria-label='Show password'>
-                  <PasswordFieldShownIcon />
-                  <PasswordFieldHiddenIcon />
-                </PasswordFieldToggleIconButton>
+                <PasswordFieldToggle square aria-label='Show password'>
+                  <PasswordFieldShownIcon><EyeIcon /></PasswordFieldShownIcon>
+                  <PasswordFieldHiddenIcon><EyeOffIcon /></PasswordFieldHiddenIcon>
+                </PasswordFieldToggle>
               </PasswordField>
               {errors.password && <HelperText id={`${id}-password-error`} invalid>{errors.password}</HelperText>}
             </div>
           </div>
 
-          <Button size='xs' type='submit' fullWidth>Sign in</Button>
+          <Button size='xs' type='submit' style={{ width: '100%' }}>Sign in</Button>
         </form>
       </Card>
       <Text size={2} style={{ textAlign: 'center', color: 'var(--label-tertiary)' }}>{`Demo password: ${DEMO_PASSWORD}`}</Text>

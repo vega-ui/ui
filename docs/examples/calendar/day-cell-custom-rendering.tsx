@@ -23,8 +23,10 @@ import {
   CalendarYearsGrid,
   CalendarYearsScroller,
   CalendarYearsScrollerContent,
+  Icon,
   useCalendarDayContext,
 } from '@vega-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 const fares: Record<string, number> = {
   '2026-11-02': 89,
@@ -63,12 +65,12 @@ export default function DayCellCustomRendering() {
   return (
     <Calendar size='md' locale='en-US' defaultFocusedDate='2026-11-01' disabledDates={hasNoFare}>
       <CalendarHeader>
-        <CalendarPrevButton aria-label='Previous' />
+        <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
         <CalendarHeading>
           <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
           <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
         </CalendarHeading>
-        <CalendarNextButton aria-label='Next' />
+        <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
       </CalendarHeader>
       <CalendarContent>
         <CalendarDays aria-label='Departure date'>

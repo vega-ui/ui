@@ -8,6 +8,7 @@ import {
   SelectValue,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 
 export default function InlineVariantInsideSentenceLikeUi() {
   return (
@@ -17,7 +18,7 @@ export default function InlineVariantInsideSentenceLikeUi() {
         <SelectHiddenSelect name='digest' />
         <SelectCombobox aria-label='Summary frequency'>
           <SelectValue />
-          <SelectIcon />
+          <SelectIcon><ChevronDownIcon /></SelectIcon>
         </SelectCombobox>
         <SelectListbox>
           <SelectOption value='daily'>every day</SelectOption>

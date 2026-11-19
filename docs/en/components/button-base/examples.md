@@ -4,7 +4,7 @@
 
 ### Basic: variants and appearances
 
-`ButtonBase` maps `variant` and `appearance` to colors and state styles but has no height or padding. Every example here adds its own spacing, which is exactly what `Button` and `IconButton` do on top of it.
+`ButtonBase` maps `variant` and `appearance` to colors and state styles but has no height or padding. Every example here adds its own spacing, which is exactly what `Button` does on top of it.
 
 <!-- example: button-base/variant-appearance-matrix.tsx -->
 ```tsx

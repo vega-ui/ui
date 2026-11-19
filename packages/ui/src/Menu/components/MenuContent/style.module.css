@@ -17,7 +17,8 @@
     outline: none;
     background: var(--surface-secondary);
     box-shadow: var(--surface-shadow);
-    border-radius: calc(var(--menu-item-height) * var(--br-ratio) + var(--spacing-4));
+    --menu-radius: calc(var(--menu-item-height) * var(--br-ratio) + var(--spacing-4));
+    border-radius: var(--menu-radius);
     position-try-fallbacks: flip-block, flip-inline, flip-block flip-inline;
     position-visibility: always;
     transform-origin: var(--menu-origin-x, left) var(--menu-origin-y, top);
@@ -114,6 +115,12 @@
     --menu-origin-x: right;
 }
 
+.content:where([data-side='point']) {
+    position-area: block-end inline-end;
+    margin-block-start: calc(var(--menu-radius) * -0.3 - var(--spacing-1));
+    margin-inline-start: calc(var(--menu-radius) * -0.3 - var(--spacing-1));
+}
+
 .content:where([data-side='top'][data-align='center'], [data-side='bottom'][data-align='center']) {
     --menu-origin-x: center;
 }
@@ -158,5 +165,15 @@
     .content,
     .content:where(:not(:popover-open)) {
         scale: 1;
+    }
+}
+
+.content:where([data-side='point']) {
+    scale: none;
+}
+
+@starting-style {
+    .content:where([data-side='point']) {
+        scale: none;
     }
 }

@@ -62,7 +62,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@vega-ui/react';
-import { ChevronDown } from '@vega-ui/icons';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useState } from 'react';
 
 const triggerFormat = new Intl.DateTimeFormat('en-US', { month: 'long', year: 'numeric', timeZone: 'UTC' });
@@ -81,7 +81,7 @@ export default function MonthFilterInAPopover() {
       <PopoverTrigger asChild>
         <Button variant='secondary' appearance='ghost' aria-label={`Statement month, ${triggerFormat.format(new Date(month))}`}>
           {triggerFormat.format(new Date(month))}
-          <Icon size='sm'><ChevronDown /></Icon>
+          <Icon size='sm'><ChevronDownIcon /></Icon>
         </Button>
       </PopoverTrigger>
       <PopoverContent aria-label='Choose a statement month'>

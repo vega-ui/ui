@@ -27,7 +27,7 @@ import {
 
 export default function ViewRangeSelector() {
   return (
-    <SegmentedControl name='calendar-view' defaultValue='week' role='radiogroup' aria-label='Calendar view'>
+    <SegmentedControl name='calendar-view' defaultValue='week' aria-label='Calendar view'>
       <SegmentedControlItem value='day'>
         <SegmentedControlItemInput />
         Day
@@ -80,7 +80,7 @@ import { MonitorIcon, MoonIcon, SunIcon } from '@vega-ui/icons';
 
 export default function IconOnlyModeSelector() {
   return (
-    <SegmentedControl name='appearance' defaultValue='system' size='sm' role='radiogroup' aria-label='Appearance'>
+    <SegmentedControl name='appearance' defaultValue='system' size='sm' aria-label='Appearance'>
       <SegmentedControlItem value='light' title='Light'>
         <SegmentedControlItemInput aria-label='Light' />
         <Icon size='sm'><SunIcon /></Icon>
@@ -127,7 +127,6 @@ import {
   DialogTrigger,
   Heading,
   Icon,
-  IconButton,
   Label,
   SegmentedControl,
   SegmentedControlIndicator,
@@ -162,20 +161,21 @@ export default function ExclusiveSelectorInsideOverlays() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
             <Heading id='display-settings-title' as='h2' size={4} fontWeight={600}>Display settings</Heading>
             <DialogClose asChild>
-              <IconButton
+              <Button
+                square
                 aria-label='Close'
                 variant='secondary'
                 appearance='ghost'
-                style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+                style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
               >
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DialogClose>
           </div>
           <form method='dialog' onSubmit={handleSubmit} style={{ display: 'grid', gap: 'var(--spacing-12)', marginBlockStart: 'var(--spacing-8)' }}>
             <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
               <Label id='density-label'>Row density</Label>
-              <SegmentedControl name='density' defaultValue={density} role='radiogroup' aria-labelledby='density-label'>
+              <SegmentedControl name='density' defaultValue={density} aria-labelledby='density-label'>
                 {densities.map((item) => (
                   <SegmentedControlItem key={item.value} value={item.value}>
                     <SegmentedControlItemInput />
@@ -226,7 +226,6 @@ export default function WithSeparators() {
     <SegmentedControl
       name='sort-order'
       defaultValue='newest'
-      role='radiogroup'
       aria-label='Sort by'
       style={{ display: 'flex', width: 'min-content' }}
     >

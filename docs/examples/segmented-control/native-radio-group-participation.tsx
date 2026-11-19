@@ -22,7 +22,7 @@ export default function NativeRadioGroupParticipation() {
     <form onSubmit={handleSubmit} onReset={() => setResult('')} style={{ display: 'grid', gap: 'var(--spacing-12)', justifyItems: 'start', width: '100%' }}>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label id='export-format-label'>File format</Label>
-        <SegmentedControl name='export-format' defaultValue='csv' role='radiogroup' aria-labelledby='export-format-label'>
+        <SegmentedControl name='export-format' defaultValue='csv' aria-labelledby='export-format-label'>
           <SegmentedControlItem value='csv'>
             <SegmentedControlItemInput />
             CSV

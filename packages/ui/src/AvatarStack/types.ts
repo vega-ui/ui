@@ -1,4 +1,4 @@
 import { AvatarSize, AvatarVariant } from '../Avatar';
 
-export type AvatarGroupVariant = AvatarVariant
-export type AvatarGroupSize = AvatarSize
+export type AvatarStackVariant = AvatarVariant
+export type AvatarStackSize = AvatarSize

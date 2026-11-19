@@ -10,12 +10,14 @@
 ```tsx
 import {
   HelperText,
+  Icon,
   Label,
   NumberField,
   NumberFieldDecrementButton,
   NumberFieldIncrementButton,
   NumberFieldInput,
 } from '@vega-ui/react';
+import { MinusIcon, PlusIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 export default function SeatCount() {
@@ -26,9 +28,9 @@ export default function SeatCount() {
     <div style={{ display: 'grid', gap: 'var(--spacing-3)', width: '100%', maxWidth: 240 }}>
       <Label htmlFor={id}>Seats</Label>
       <NumberField min={1} max={50} defaultValue={5}>
-        <NumberFieldDecrementButton aria-label='Remove a seat' />
+        <NumberFieldDecrementButton square aria-label='Remove a seat'><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
         <NumberFieldInput id={id} name='seats' aria-describedby={hintId} />
-        <NumberFieldIncrementButton aria-label='Add a seat' />
+        <NumberFieldIncrementButton square aria-label='Add a seat'><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
       </NumberField>
       <HelperText id={hintId}>From 1 to 50 seats on the Team plan.</HelperText>
     </div>
@@ -47,6 +49,7 @@ export default function SeatCount() {
 ```tsx
 import {
   Button,
+  Icon,
   Label,
   NumberField,
   NumberFieldDecrementButton,
@@ -54,6 +57,7 @@ import {
   NumberFieldInput,
   Text,
 } from '@vega-ui/react';
+import { MinusIcon, PlusIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const UNIT_PRICE = 24.5;
@@ -71,9 +75,9 @@ export default function OrderTotal({ locale = 'en-US' }: { locale?: string }) {
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor={id}>Notebooks, {currency.format(UNIT_PRICE)} each</Label>
         <NumberField min={0} max={99} value={quantity} onChangeValue={setQuantity}>
-          <NumberFieldDecrementButton aria-label='Decrease quantity' />
+          <NumberFieldDecrementButton square aria-label='Decrease quantity'><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
           <NumberFieldInput id={id} />
-          <NumberFieldIncrementButton aria-label='Increase quantity' />
+          <NumberFieldIncrementButton square aria-label='Increase quantity'><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
         </NumberField>
       </div>
       <Text size={3} fontWeight={500} role='status' style={{ fontVariantNumeric: 'tabular-nums' }}>
@@ -99,6 +103,7 @@ export default function OrderTotal({ locale = 'en-US' }: { locale?: string }) {
 ```tsx
 import {
   Button,
+  Icon,
   Label,
   NumberField,
   NumberFieldDecrementButton,
@@ -106,6 +111,7 @@ import {
   NumberFieldInput,
   Text,
 } from '@vega-ui/react';
+import { MinusIcon, PlusIcon } from '@vega-ui/icons';
 import { FormEvent, useId, useState } from 'react';
 
 const DEFAULT_BUDGET = 2500;
@@ -134,9 +140,9 @@ export default function FormSubmitAndReset() {
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor={id}>Monthly budget, USD</Label>
         <NumberField min={0} max={1000000} step={500} value={budget} onChangeValue={setBudget} maximumFractionDigits={0}>
-          <NumberFieldDecrementButton aria-label='Decrease budget by 500' />
+          <NumberFieldDecrementButton square aria-label='Decrease budget by 500'><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
           <NumberFieldInput id={id} required />
-          <NumberFieldIncrementButton aria-label='Increase budget by 500' />
+          <NumberFieldIncrementButton square aria-label='Increase budget by 500'><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
         </NumberField>
         <input type='hidden' name='monthlyBudget' value={Number.isNaN(budget) ? '' : budget} />
       </div>
@@ -160,12 +166,14 @@ export default function FormSubmitAndReset() {
 <!-- example: number-field/cart-line-items.tsx -->
 ```tsx
 import {
+  Icon,
   NumberField,
   NumberFieldDecrementButton,
   NumberFieldIncrementButton,
   NumberFieldInput,
   Text,
 } from '@vega-ui/react';
+import { MinusIcon, PlusIcon } from '@vega-ui/icons';
 import { useState } from 'react';
 
 interface LineItem {
@@ -213,9 +221,9 @@ export default function CartLineItems() {
             <Text size={2} style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>{currency.format(item.price)}</Text>
           </div>
           <NumberField size='sm' min={0} max={20} value={item.quantity} onChangeValue={(quantity) => changeQuantity(item.sku, quantity)}>
-            <NumberFieldDecrementButton aria-label={`Remove one ${item.name}`} />
+            <NumberFieldDecrementButton square aria-label={`Remove one ${item.name}`}><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
             <NumberFieldInput aria-label={`Quantity of ${item.name}`} />
-            <NumberFieldIncrementButton aria-label={`Add one ${item.name}`} />
+            <NumberFieldIncrementButton square aria-label={`Add one ${item.name}`}><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
           </NumberField>
         </div>
       ))}
@@ -248,12 +256,14 @@ export default function CartLineItems() {
 ```tsx
 import {
   HelperText,
+  Icon,
   Label,
   NumberField,
   NumberFieldDecrementButton,
   NumberFieldIncrementButton,
   NumberFieldInput,
 } from '@vega-ui/react';
+import { MinusIcon, PlusIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const ACTIVE_MEMBERS = 12;
@@ -275,9 +285,9 @@ export default function SeatsBelowActiveMembers() {
     <div style={{ display: 'grid', gap: 'var(--spacing-3)', width: '100%' }}>
       <Label htmlFor={id}>Seats after renewal</Label>
       <NumberField min={1} max={200} value={seats} onChangeValue={setSeats}>
-        <NumberFieldDecrementButton aria-label='Remove a seat' />
+        <NumberFieldDecrementButton square aria-label='Remove a seat'><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
         <NumberFieldInput id={id} aria-invalid={invalid} aria-describedby={messageId} />
-        <NumberFieldIncrementButton aria-label='Add a seat' />
+        <NumberFieldIncrementButton square aria-label='Add a seat'><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
       </NumberField>
       <HelperText id={messageId} invalid={invalid}>
         {invalid ? error : `Covers all ${ACTIVE_MEMBERS} active members.`}
@@ -302,12 +312,14 @@ import {
   CheckboxIndicator,
   CheckboxInput,
   HelperText,
+  Icon,
   Label,
   NumberField,
   NumberFieldDecrementButton,
   NumberFieldIncrementButton,
   NumberFieldInput,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon, PlusIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 export default function LockedUntilOverride() {
@@ -319,16 +331,16 @@ export default function LockedUntilOverride() {
       <Checkbox>
         <CheckboxInput checked={override} onChange={(event) => setOverride(event.currentTarget.checked)} />
         <CheckboxIndicator>
-          <CheckboxCheckedIcon />
+          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
         </CheckboxIndicator>
         Override the default rate limit
       </Checkbox>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor={id}>Requests per minute</Label>
         <NumberField min={60} max={6000} step={60} defaultValue={600} disabled={!override}>
-          <NumberFieldDecrementButton aria-label='Decrease by 60' />
+          <NumberFieldDecrementButton square aria-label='Decrease by 60'><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
           <NumberFieldInput id={id} name='rateLimit' aria-describedby={`${id}-hint`} />
-          <NumberFieldIncrementButton aria-label='Increase by 60' />
+          <NumberFieldIncrementButton square aria-label='Increase by 60'><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
         </NumberField>
         <HelperText id={`${id}-hint`}>
           {override ? 'From 60 to 6,000, in steps of 60.' : 'Uses the plan default of 600.'}
@@ -349,6 +361,7 @@ export default function LockedUntilOverride() {
 <!-- example: number-field/discount-percentage.tsx -->
 ```tsx
 import {
+  Icon,
   Label,
   NumberField,
   NumberFieldDecrementButton,
@@ -356,6 +369,7 @@ import {
   NumberFieldInput,
   Text,
 } from '@vega-ui/react';
+import { MinusIcon, PlusIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const LIST_PRICE = 1290;
@@ -372,10 +386,10 @@ export default function DiscountPercentage({ locale = 'en-US' }: { locale?: stri
     <div style={{ display: 'grid', gap: 'var(--spacing-3)', width: '100%', maxWidth: 260 }}>
       <Label htmlFor={id}>Discount</Label>
       <NumberField min={0} max={100} step={0.5} maximumFractionDigits={1} value={discount} onChangeValue={setDiscount}>
-        <NumberFieldDecrementButton aria-label='Decrease discount by 0.5%' />
+        <NumberFieldDecrementButton square aria-label='Decrease discount by 0.5%'><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
         <NumberFieldInput id={id} aria-describedby={`${id}-price`} />
         <Text size={3} aria-hidden style={{ color: 'var(--label-secondary)' }}>%</Text>
-        <NumberFieldIncrementButton aria-label='Increase discount by 0.5%' />
+        <NumberFieldIncrementButton square aria-label='Increase discount by 0.5%'><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
       </NumberField>
       <Text id={`${id}-price`} size={2} style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>
         Annual plan: {currency.format(price)} instead of {currency.format(LIST_PRICE)}
@@ -394,12 +408,14 @@ export default function DiscountPercentage({ locale = 'en-US' }: { locale?: stri
 ```tsx
 import {
   HelperText,
+  Icon,
   Label,
   NumberField,
   NumberFieldDecrementButton,
   NumberFieldIncrementButton,
   NumberFieldInput,
 } from '@vega-ui/react';
+import { MinusIcon, PlusIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const compact = new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 });
@@ -420,9 +436,9 @@ export default function LargeAmountNoWheel() {
         value={limit}
         onChangeValue={setLimit}
       >
-        <NumberFieldDecrementButton aria-label='Decrease by 10,000' />
+        <NumberFieldDecrementButton square aria-label='Decrease by 10,000'><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
         <NumberFieldInput id={id} aria-describedby={`${id}-hint`} />
-        <NumberFieldIncrementButton aria-label='Increase by 10,000' />
+        <NumberFieldIncrementButton square aria-label='Increase by 10,000'><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
       </NumberField>
       <HelperText id={`${id}-hint`} style={{ fontVariantNumeric: 'tabular-nums' }}>
         {Number.isNaN(limit) ? 'No limit set.' : `About ${compact.format(limit)}. Max 50M.`}

@@ -8,6 +8,7 @@ import {
   Separator,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 
 const questions = [
   {
@@ -40,7 +41,7 @@ export default function Faq() {
           <AccordionHeader>
             <AccordionTrigger>
               {item.question}
-              <AccordionIcon />
+              <AccordionIcon><ChevronDownIcon /></AccordionIcon>
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>

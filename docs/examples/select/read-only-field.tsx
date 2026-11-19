@@ -9,6 +9,7 @@ import {
   SelectOption,
   SelectValue,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 export default function ReadOnlyField() {
@@ -22,7 +23,7 @@ export default function ReadOnlyField() {
         <SelectHiddenSelect name='currency' />
         <SelectCombobox id={id} aria-describedby={hintId}>
           <SelectValue />
-          <SelectIcon />
+          <SelectIcon><ChevronDownIcon /></SelectIcon>
         </SelectCombobox>
         <SelectListbox>
           <SelectOption value='usd'>US dollar (USD)</SelectOption>

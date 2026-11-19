@@ -45,6 +45,7 @@ import {
   SelectOption,
   SelectValue,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 export default function MinimalComposition() {
@@ -57,7 +58,7 @@ export default function MinimalComposition() {
         <SelectHiddenSelect name='language' />
         <SelectCombobox id={id}>
           <SelectValue placeholder='Choose a language' />
-          <SelectIcon />
+          <SelectIcon><ChevronDownIcon /></SelectIcon>
         </SelectCombobox>
         <SelectListbox>
           <SelectOption value='en'>English</SelectOption>
@@ -66,6 +67,61 @@ export default function MinimalComposition() {
           <SelectOption value='ja'>日本語</SelectOption>
         </SelectListbox>
       </Select>
+    </div>
+  );
+}
+```
+<!-- /example -->
+
+## Your Own Component
+
+The minimal composition above shows the parts in place. In an app, compose them once in a file of your own, with your icon set, and import that component everywhere. `MySelect` passes its props to `Select`, its `id` to the trigger for a `Label`, its `name` to the hidden select, and its children into the list. See [Component recipes](../../recipes.md).
+
+<!-- example: select/recipe.tsx -->
+```tsx
+import {
+  Label,
+  Select,
+  SelectCombobox,
+  SelectHiddenSelect,
+  SelectIcon,
+  SelectListbox,
+  SelectOption,
+  SelectValue,
+  type SelectProps,
+} from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
+import { useId } from 'react';
+
+interface MySelectProps<Value extends string | number = string> extends SelectProps<Value> {
+  name?: string
+  placeholder?: string
+}
+
+export function MySelect<Value extends string | number = string>({ id, name, placeholder, children, ...props }: MySelectProps<Value>) {
+  return (
+    <Select {...props}>
+      <SelectHiddenSelect name={name} />
+      <SelectCombobox id={id}>
+        <SelectValue placeholder={placeholder} />
+        <SelectIcon><ChevronDownIcon /></SelectIcon>
+      </SelectCombobox>
+      <SelectListbox>{children}</SelectListbox>
+    </Select>
+  );
+}
+
+export default function Recipe() {
+  const id = useId();
+
+  return (
+    <div style={{ display: 'grid', gap: 'var(--spacing-3)', width: '100%', maxWidth: 280 }}>
+      <Label htmlFor={id}>Interface language</Label>
+      <MySelect id={id} name='language' defaultValue='en' placeholder='Choose a language'>
+        <SelectOption value='en'>English</SelectOption>
+        <SelectOption value='de'>Deutsch</SelectOption>
+        <SelectOption value='ja'>日本語</SelectOption>
+      </MySelect>
     </div>
   );
 }
@@ -83,7 +139,7 @@ export default function MinimalComposition() {
 ## Optional Parts
 
 - `SelectHiddenSelect`: native [form participation](../../glossary.md#form-participation)
-- `SelectIcon`: visual affordance for the trigger
+- `SelectIcon`: the icon of the trigger, such as a chevron you pass as children
 
 ## Composition Order
 

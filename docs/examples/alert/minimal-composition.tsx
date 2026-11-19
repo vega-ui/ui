@@ -5,11 +5,12 @@ import {
   AlertMain,
   AlertTitle,
 } from '@vega-ui/react';
+import { CircleCheckIcon } from '@vega-ui/icons';
 
 export default function MinimalComposition() {
   return (
     <Alert variant='success' style={{ width: '100%' }}>
-      <AlertIcon />
+      <AlertIcon><CircleCheckIcon /></AlertIcon>
       <AlertMain>
         <AlertTitle>Saved</AlertTitle>
         <AlertContent>Profile updated successfully.</AlertContent>

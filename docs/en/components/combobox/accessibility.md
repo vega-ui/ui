@@ -15,7 +15,7 @@
 
 - an accessible name for the input: a visible `Label` or `aria-label`
 - an accessible name for the list: `aria-label` or `aria-labelledby` on `ComboboxListbox`
-- an accessible name for `ComboboxTrigger`: `aria-label`, such as "Show cities"
+- an accessible name for an icon-only `ComboboxTrigger`: `aria-label`, such as "Show cities"
 - an `autocomplete` value that matches what the app does with the text: `list` when it filters, `none` when it does not
 - filtering the options and telling users when nothing matches, outside the list
 - a status message for loading and for the number of results when they come from a server
@@ -27,7 +27,7 @@ The component never adds a name by itself.
 
 - Name the input with a `Label` pointing to its `id`, or with `aria-label` when there is no visible label.
 - Name the list with `aria-label` or `aria-labelledby`, for example "Cities" for a "City" field.
-- Name `ComboboxTrigger` with `aria-label`; its icon has no text.
+- Name an icon-only `ComboboxTrigger` with `aria-label`; its icon has no text. A trigger with text is named by its text.
 - Name every `ListboxGroup` with `aria-labelledby` pointing to its heading, or with `aria-label`.
 - Connect hints, errors and result counts to the input with `aria-describedby`.
 

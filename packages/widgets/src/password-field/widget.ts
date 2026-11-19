@@ -1,19 +1,20 @@
-import { command, controlled, defineWidget, keep, state, Step } from '@vega-ui/core'
+import { controlled, defineWidget, keep, listening, pointer, state } from '@vega-ui/core'
 
-export const TOGGLE_SHOWN = command('toggleShown')
+export const TOGGLE = 'toggle'
 
 export const passwordFieldShape = state({
   options: {},
   owns: { shown: controlled(false) },
+  parts: [TOGGLE],
 })
 
 type PasswordFieldSnapshot = typeof passwordFieldShape.__snapshot
 
-const toggling: Step<PasswordFieldSnapshot> = (state, input) => {
-  if (!input.is(TOGGLE_SHOWN)) return undefined
+const toggling = listening<PasswordFieldSnapshot>([pointer.press], (state, input) => {
+  if (!input.is(pointer.press) || input.part !== TOGGLE) return undefined
 
   return keep(passwordFieldShape.shown.set(state, !state.shown))
-}
+})
 
 export const passwordFieldWidget = defineWidget({
   state: passwordFieldShape,

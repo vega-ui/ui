@@ -11,6 +11,7 @@ import {
   SelectValue,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { FormEvent, useId, useRef, useState } from 'react';
 
 export default function SelectRequiredError() {
@@ -53,7 +54,7 @@ export default function SelectRequiredError() {
           aria-describedby={invalid ? errorId : undefined}
         >
           <SelectValue placeholder='Choose a reason' />
-          <SelectIcon />
+          <SelectIcon><ChevronDownIcon /></SelectIcon>
         </SelectCombobox>
         <SelectListbox>
           <SelectOption value='price'>It is too expensive</SelectOption>

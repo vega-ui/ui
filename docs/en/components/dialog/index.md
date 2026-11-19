@@ -40,7 +40,6 @@ import {
   DialogTrigger,
   Heading,
   Icon,
-  IconButton,
   Text,
 } from '@vega-ui/react';
 import { XIcon } from '@vega-ui/icons';
@@ -63,14 +62,15 @@ export default function MinimalComposition() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
           <Heading id={titleId} as='h2' size={4} fontWeight={600}>Leave Northwind Studio?</Heading>
           <DialogClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </DialogClose>
         </div>
         <Text size={3} style={{ display: 'block', marginBlockStart: 'var(--spacing-4)', color: 'var(--label-secondary)' }}>
@@ -82,6 +82,79 @@ export default function MinimalComposition() {
         </form>
       </DialogContent>
     </Dialog>
+  );
+}
+```
+<!-- /example -->
+
+## Your Own Component
+
+The minimal composition above shows the parts in place. In an app, compose them once in a file of your own, with your icon set, and import that component everywhere. `MyDialog` passes its props to `Dialog`, renders `trigger` in `DialogTrigger`, names the dialog by `title` in its heading, gives the close button its name from `closeLabel`, and puts its children below the heading. See [Component recipes](../../recipes.md).
+
+<!-- example: dialog/recipe.tsx -->
+```tsx
+import { useId, type CSSProperties, type ReactNode } from 'react';
+import {
+  Button,
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTrigger,
+  Heading,
+  Icon,
+  Text,
+  type DialogProps,
+} from '@vega-ui/react';
+import { XIcon } from '@vega-ui/icons';
+
+interface MyDialogProps extends DialogProps {
+  trigger: ReactNode
+  title: ReactNode
+  closeLabel: string
+}
+
+export function MyDialog({ trigger, title, closeLabel, children, ...props }: MyDialogProps) {
+  const titleId = useId();
+
+  return (
+    <Dialog {...props}>
+      <DialogTrigger asChild>{trigger}</DialogTrigger>
+      <DialogContent aria-labelledby={titleId}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
+          <Heading id={titleId} as='h2' size={4} fontWeight={600}>{title}</Heading>
+          <DialogClose asChild>
+            <Button
+              square
+              aria-label={closeLabel}
+              variant='secondary'
+              appearance='ghost'
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
+            >
+              <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
+            </Button>
+          </DialogClose>
+        </div>
+        {children}
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+export default function Recipe() {
+  return (
+    <MyDialog
+      trigger={<Button variant='secondary' appearance='ghost'>Remove Maria Chen</Button>}
+      title='Remove Maria Chen?'
+      closeLabel='Close'
+    >
+      <Text size={3} style={{ display: 'block', marginBlockStart: 'var(--spacing-4)', color: 'var(--label-secondary)' }}>
+        She will lose access to the Design workspace and its 6 projects.
+      </Text>
+      <form method='dialog' style={{ display: 'flex', justifyContent: 'flex-end', gap: 'var(--spacing-4)', marginBlockStart: 'var(--spacing-12)' }}>
+        <Button type='submit' value='cancel' variant='secondary' appearance='ghost'>Cancel</Button>
+        <Button type='submit' value='remove'>Remove</Button>
+      </form>
+    </MyDialog>
   );
 }
 ```
@@ -122,7 +195,7 @@ Typical composition:
 
 - `DialogHeader` → your own layout element, for example a flex row
 - `DialogTitle` → a `Heading` with an `id`, referenced by `aria-labelledby` on `DialogContent`
-- `DialogCloseButton` → `DialogClose asChild` around your own button, for example an `IconButton` with an `aria-label`
+- `DialogCloseButton` → `DialogClose asChild` around your own button, for example a `Button` with `square` and an `aria-label`
 - `useDialogContext()` no longer returns `contentId` or `titleId`, and `DialogTrigger` no longer sets `aria-controls`
 
 ## Related Docs

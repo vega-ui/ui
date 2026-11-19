@@ -46,7 +46,7 @@
 
 ### Вероятная причина
 
-`indeterminate` не передан, или собственный рендер контрола пропустил ветку с иконкой неопределённого состояния.
+`indeterminate` не передан в `CheckboxCardControlInput`, или в `CheckboxIndicator` нет `CheckboxIndeterminateIcon` с иконкой внутри.
 
 ### Как проверить
 
@@ -55,4 +55,4 @@
 
 ### Решение
 
-Передайте `indeterminate` и оставьте `CheckboxCardControlIndeterminateIcon` в композиции контрола, когда это состояние важно.
+Передайте `indeterminate` в `CheckboxCardControlInput` и положите `CheckboxIndeterminateIcon` с минусом внутрь `CheckboxIndicator`, когда это состояние важно.

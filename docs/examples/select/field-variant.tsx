@@ -7,6 +7,7 @@ import {
   SelectOption,
   SelectValue,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 const teams = [
@@ -26,7 +27,7 @@ export default function FieldVariant() {
       <Select>
         <SelectCombobox id={id}>
           <SelectValue placeholder='Choose a team' />
-          <SelectIcon />
+          <SelectIcon><ChevronDownIcon /></SelectIcon>
         </SelectCombobox>
         <SelectListbox>
           {teams.map((team) => (

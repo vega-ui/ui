@@ -5,6 +5,7 @@ import { cleanup, render, type RenderResult } from '@testing-library/react';
 import { userEvent } from 'vitest/browser';
 
 import { PhoneField } from '../PhoneField';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import {
   PhoneFieldInput,
   type PhoneFieldInputProps,
@@ -38,7 +39,7 @@ const PhoneFieldTest: FC<ComponentProps<typeof PhoneField> & { inputProps?: Phon
         <SelectHiddenSelect data-testid={TESTID_HIDDEN_SELECT} />
         <SelectCombobox data-testid={TESTID_COMBOBOX}>
           <SelectValue />
-          <SelectIcon />
+          <SelectIcon><ChevronDownIcon /></SelectIcon>
         </SelectCombobox>
         
         <SelectListbox data-testid={TESTID_LISTBOX}>

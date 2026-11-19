@@ -17,6 +17,7 @@ import {
   SelectOption,
   SelectValue,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 const teams = [
@@ -36,7 +37,7 @@ export default function FieldVariant() {
       <Select>
         <SelectCombobox id={id}>
           <SelectValue placeholder='Choose a team' />
-          <SelectIcon />
+          <SelectIcon><ChevronDownIcon /></SelectIcon>
         </SelectCombobox>
         <SelectListbox>
           {teams.map((team) => (
@@ -71,6 +72,7 @@ import {
   SelectValue,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const priorities = [
@@ -91,7 +93,7 @@ export default function ControlledValueWithClearAction() {
         <Select style={{ flex: 1 }} value={priority} onChangeValue={(next) => setPriority(next ?? null)}>
           <SelectCombobox id={id}>
             <SelectValue placeholder='Not set' />
-            <SelectIcon />
+            <SelectIcon><ChevronDownIcon /></SelectIcon>
           </SelectCombobox>
           <SelectListbox>
             {priorities.map((item) => (
@@ -136,6 +138,7 @@ import {
   SelectValue,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId, useRef, useState } from 'react';
 
 export default function ControlledOpenState() {
@@ -160,7 +163,7 @@ export default function ControlledOpenState() {
       >
         <SelectCombobox id={id} ref={comboboxRef}>
           <SelectValue placeholder='Nobody assigned' />
-          <SelectIcon />
+          <SelectIcon><ChevronDownIcon /></SelectIcon>
         </SelectCombobox>
         <SelectListbox>
           <SelectOption value='amara'>Amara Okafor</SelectOption>
@@ -207,6 +210,7 @@ import {
   SelectValue,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { FormEvent, useId, useState } from 'react';
 
 export default function NativeFormParticipation() {
@@ -231,7 +235,7 @@ export default function NativeFormParticipation() {
           <SelectHiddenSelect name='plan' />
           <SelectCombobox id={planId}>
             <SelectValue />
-            <SelectIcon />
+            <SelectIcon><ChevronDownIcon /></SelectIcon>
           </SelectCombobox>
           <SelectListbox>
             <SelectOption value='starter'>Starter</SelectOption>
@@ -246,7 +250,7 @@ export default function NativeFormParticipation() {
           <SelectHiddenSelect name='cycle' />
           <SelectCombobox id={cycleId}>
             <SelectValue />
-            <SelectIcon />
+            <SelectIcon><ChevronDownIcon /></SelectIcon>
           </SelectCombobox>
           <SelectListbox>
             <SelectOption value='monthly'>Monthly</SelectOption>
@@ -284,6 +288,7 @@ import {
   SelectValue,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 
 export default function InlineVariantInsideSentenceLikeUi() {
   return (
@@ -293,7 +298,7 @@ export default function InlineVariantInsideSentenceLikeUi() {
         <SelectHiddenSelect name='digest' />
         <SelectCombobox aria-label='Summary frequency'>
           <SelectValue />
-          <SelectIcon />
+          <SelectIcon><ChevronDownIcon /></SelectIcon>
         </SelectCombobox>
         <SelectListbox>
           <SelectOption value='daily'>every day</SelectOption>
@@ -323,7 +328,6 @@ import {
   DialogTrigger,
   Heading,
   Icon,
-  IconButton,
   Label,
   Select,
   SelectCombobox,
@@ -334,7 +338,7 @@ import {
   SelectValue,
   Text,
 } from '@vega-ui/react';
-import { XIcon } from '@vega-ui/icons';
+import { ChevronDownIcon, XIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 export default function SelectInsideDialog() {
@@ -359,14 +363,15 @@ export default function SelectInsideDialog() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
             <Heading id={`${id}-title`} as='h2' size={4} fontWeight={600}>Export Q3 report</Heading>
             <DialogClose asChild>
-              <IconButton
+              <Button
+                square
                 aria-label='Close'
                 variant='secondary'
                 appearance='ghost'
-                style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+                style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
               >
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DialogClose>
           </div>
           <form
@@ -378,7 +383,7 @@ export default function SelectInsideDialog() {
               <SelectHiddenSelect name='format' />
               <SelectCombobox id={id}>
                 <SelectValue />
-                <SelectIcon />
+                <SelectIcon><ChevronDownIcon /></SelectIcon>
               </SelectCombobox>
               <SelectListbox>
                 <SelectOption value='xlsx'>Excel workbook (.xlsx)</SelectOption>
@@ -418,6 +423,7 @@ import {
   TableRow,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useState } from 'react';
 
 const initialMembers = [
@@ -460,7 +466,7 @@ export default function SelectInTableRows() {
               >
                 <SelectCombobox aria-label={`Role of ${member.name}`}>
                   <SelectValue />
-                  <SelectIcon />
+                  <SelectIcon><ChevronDownIcon /></SelectIcon>
                 </SelectCombobox>
                 <SelectListbox>
                   <SelectOption value='owner'>Owner</SelectOption>
@@ -499,6 +505,7 @@ import {
   SelectValue,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { FormEvent, useId, useRef, useState } from 'react';
 
 export default function SelectRequiredError() {
@@ -541,7 +548,7 @@ export default function SelectRequiredError() {
           aria-describedby={invalid ? errorId : undefined}
         >
           <SelectValue placeholder='Choose a reason' />
-          <SelectIcon />
+          <SelectIcon><ChevronDownIcon /></SelectIcon>
         </SelectCombobox>
         <SelectListbox>
           <SelectOption value='price'>It is too expensive</SelectOption>
@@ -591,6 +598,7 @@ import {
   SwitchIndicator,
   SwitchInput,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 export default function FullyDisabledField() {
@@ -620,7 +628,7 @@ export default function FullyDisabledField() {
           <SelectHiddenSelect name='weekStart' />
           <SelectCombobox id={selectId}>
             <SelectValue />
-            <SelectIcon />
+            <SelectIcon><ChevronDownIcon /></SelectIcon>
           </SelectCombobox>
           <SelectListbox>
             <SelectOption value='saturday'>Saturday</SelectOption>
@@ -652,6 +660,7 @@ import {
   SelectOption,
   SelectValue,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 export default function ReadOnlyField() {
@@ -665,7 +674,7 @@ export default function ReadOnlyField() {
         <SelectHiddenSelect name='currency' />
         <SelectCombobox id={id} aria-describedby={hintId}>
           <SelectValue />
-          <SelectIcon />
+          <SelectIcon><ChevronDownIcon /></SelectIcon>
         </SelectCombobox>
         <SelectListbox>
           <SelectOption value='usd'>US dollar (USD)</SelectOption>
@@ -700,6 +709,7 @@ import {
   SelectOption,
   SelectValue,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 const slots = Array.from({ length: 24 * 12 }, (_, index) => {
@@ -718,7 +728,7 @@ export default function LongScrollableOptionList() {
         <SelectHiddenSelect name='reminderTime' />
         <SelectCombobox id={id}>
           <SelectValue />
-          <SelectIcon />
+          <SelectIcon><ChevronDownIcon /></SelectIcon>
         </SelectCombobox>
         <SelectListbox>
           {slots.map((slot) => (
@@ -748,6 +758,7 @@ import {
   SelectOption,
   SelectValue,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useState } from 'react';
 
 export default function CustomValueText() {
@@ -757,7 +768,7 @@ export default function CustomValueText() {
     <Select style={{ width: 120 }} value={currency} onChangeValue={(next) => setCurrency(next ?? null)}>
       <SelectCombobox aria-label='Currency'>
         <SelectValue placeholder='Currency'>{currency}</SelectValue>
-        <SelectIcon />
+        <SelectIcon><ChevronDownIcon /></SelectIcon>
       </SelectCombobox>
       <SelectListbox>
         <SelectOption value='USD'>United States dollar (USD)</SelectOption>
@@ -788,6 +799,7 @@ import {
   Spinner,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 interface Project {
@@ -831,7 +843,7 @@ export default function AsyncOptions() {
       <Select value={project?.id ?? null} onChangeValue={onChangeValue} onChangeOpen={onChangeOpen}>
         <SelectCombobox id={id}>
           <SelectValue placeholder='Choose a project'>{project?.name}</SelectValue>
-          <SelectIcon />
+          <SelectIcon><ChevronDownIcon /></SelectIcon>
         </SelectCombobox>
         <SelectListbox aria-busy={loading}>
           {loading && (

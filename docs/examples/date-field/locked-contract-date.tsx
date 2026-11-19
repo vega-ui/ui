@@ -25,13 +25,15 @@ import {
   DateField,
   DateFieldCalendar,
   DateFieldInput,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
   HelperText,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 export default function LockedContractDate() {
   return (
@@ -41,17 +43,17 @@ export default function LockedContractDate() {
         <DateFieldInput id='signed-on' aria-describedby='signed-on-hint' />
         <Popover placement='bottom-end'>
           <PopoverTrigger asChild>
-            <DateFieldTriggerIconButton aria-label='Choose signing date' />
+            <DateFieldTrigger square aria-label='Choose signing date'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
           </PopoverTrigger>
           <PopoverContent>
             <DateFieldCalendar aria-label='Choose signing date'>
               <CalendarHeader>
-                <CalendarPrevButton aria-label='Previous month' />
+                <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                 <CalendarHeading>
                   <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                   <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                 </CalendarHeading>
-                <CalendarNextButton aria-label='Next month' />
+                <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
               </CalendarHeader>
               <CalendarContent>
                 <CalendarDays>

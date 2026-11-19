@@ -54,7 +54,7 @@ The field has no `--phone-field-*` variables, so a theme class retunes the share
 
 ### Select placeholder and custom icon
 
-Without a country the trigger shows the `placeholder` of `SelectValue`, and children of `SelectIcon` replace the default chevron.
+Without a country the trigger shows the `placeholder` of `SelectValue`, and `SelectIcon` shows the icon passed as its children.
 
 <!-- example: phone-field/select-placeholder-and-custom-icon.tsx -->
 ```tsx
@@ -70,7 +70,7 @@ import {
   SelectOption,
   SelectValue,
 } from '@vega-ui/react';
-import { ChevronsUpDown } from '@vega-ui/icons';
+import { ChevronsUpDownIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 export default function SelectPlaceholderAndCustomIcon() {
@@ -85,7 +85,7 @@ export default function SelectPlaceholderAndCustomIcon() {
           <SelectCombobox aria-label='Country'>
             <SelectValue placeholder='Code' />
             <SelectIcon>
-              <ChevronsUpDown />
+              <ChevronsUpDownIcon />
             </SelectIcon>
           </SelectCombobox>
           <SelectListbox>

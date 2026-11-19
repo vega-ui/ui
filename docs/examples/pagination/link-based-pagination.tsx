@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import {
   Icon,
   Pagination,
@@ -52,16 +52,16 @@ export default function LinkBasedPagination() {
   const isLast = page === total;
 
   return (
-    <Pagination aria-label='Blog archive pages'>
+    <Pagination aria-label='Blog archive pages' size='sm'>
       <PaginationList>
         <PaginationItem>
           {isFirst ? (
-            <PaginationLink aria-label='Previous page' aria-disabled='true'><Icon><ChevronLeft /></Icon></PaginationLink>
+            <PaginationLink aria-label='Previous page' aria-disabled='true'><Icon><ChevronLeftIcon /></Icon></PaginationLink>
           ) : (
-            <PaginationLink href={getHref(page - 1)} rel='prev' aria-label='Previous page'><Icon><ChevronLeft /></Icon></PaginationLink>
+            <PaginationLink href={getHref(page - 1)} rel='prev' aria-label='Previous page'><Icon><ChevronLeftIcon /></Icon></PaginationLink>
           )}
         </PaginationItem>
-        {getPageItems(page, total, 1).map((item) => {
+        {getPageItems(page, total, 0).map((item) => {
           if (typeof item === 'string') {
             return <PaginationEllipsis key={item} />;
           }
@@ -74,9 +74,9 @@ export default function LinkBasedPagination() {
         })}
         <PaginationItem>
           {isLast ? (
-            <PaginationLink aria-label='Next page' aria-disabled='true'><Icon><ChevronRight /></Icon></PaginationLink>
+            <PaginationLink aria-label='Next page' aria-disabled='true'><Icon><ChevronRightIcon /></Icon></PaginationLink>
           ) : (
-            <PaginationLink href={getHref(page + 1)} rel='next' aria-label='Next page'><Icon><ChevronRight /></Icon></PaginationLink>
+            <PaginationLink href={getHref(page + 1)} rel='next' aria-label='Next page'><Icon><ChevronRightIcon /></Icon></PaginationLink>
           )}
         </PaginationItem>
       </PaginationList>

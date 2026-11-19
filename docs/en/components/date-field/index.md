@@ -15,7 +15,7 @@ import {
   DateField,
   DateFieldInput,
   DateFieldCalendar,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
   type DateFieldProps,
 } from '@vega-ui/react';
 ```
@@ -25,7 +25,7 @@ import {
 - `DateFieldProps`
 - `DateFieldInputProps`
 - `DateFieldCalendarProps`
-- `DateFieldTriggerIconButtonProps`
+- `DateFieldTriggerProps`
 
 ## Minimal Composition
 
@@ -58,11 +58,13 @@ import {
   DateField,
   DateFieldCalendar,
   DateFieldInput,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
+  Icon,
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 export default function MinimalComposition() {
   return (
@@ -70,17 +72,17 @@ export default function MinimalComposition() {
       <DateFieldInput aria-label='Due date' />
       <Popover placement='bottom-end'>
         <PopoverTrigger asChild>
-          <DateFieldTriggerIconButton aria-label='Choose due date' />
+          <DateFieldTrigger square aria-label='Choose due date'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
         </PopoverTrigger>
         <PopoverContent>
           <DateFieldCalendar aria-label='Choose due date'>
             <CalendarHeader>
-              <CalendarPrevButton aria-label='Previous month' />
+              <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
               <CalendarHeading>
                 <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                 <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
               </CalendarHeading>
-              <CalendarNextButton aria-label='Next month' />
+              <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
             </CalendarHeader>
             <CalendarContent>
               <CalendarDays>
@@ -119,6 +121,131 @@ export default function MinimalComposition() {
 ```
 <!-- /example -->
 
+## Your Own Component
+
+The minimal composition above shows the parts in place. In an app, compose them once in a file of your own, with your icon set, and import that component everywhere. `MyDateField` passes its props to `DateField`, its `id` and `name` to the input, and takes the names of the calendar button and the month buttons as props. See [Component recipes](../../recipes.md).
+
+<!-- example: date-field/recipe.tsx -->
+```tsx
+import {
+  CalendarContent,
+  CalendarDay,
+  CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
+  CalendarHeader,
+  CalendarHeading,
+  CalendarMonth,
+  CalendarMonthLabel,
+  CalendarMonths,
+  CalendarMonthsGrid,
+  CalendarNextButton,
+  CalendarPrevButton,
+  CalendarViewButton,
+  CalendarWeekday,
+  CalendarWeekdays,
+  CalendarWeeks,
+  CalendarYear,
+  CalendarYearLabel,
+  CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
+  DateField,
+  DateFieldCalendar,
+  DateFieldInput,
+  DateFieldTrigger,
+  Icon,
+  Label,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  type DateFieldProps,
+} from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
+import { useId } from 'react';
+
+interface MyDateFieldProps extends DateFieldProps {
+  name?: string
+  calendarLabel: string
+  previousLabel: string
+  nextLabel: string
+}
+
+export function MyDateField({ id, name, calendarLabel, previousLabel, nextLabel, ...props }: MyDateFieldProps) {
+  return (
+    <DateField {...props}>
+      <DateFieldInput id={id} name={name} />
+      <Popover placement='bottom-end'>
+        <PopoverTrigger asChild>
+          <DateFieldTrigger square aria-label={calendarLabel}><Icon><CalendarIcon /></Icon></DateFieldTrigger>
+        </PopoverTrigger>
+        <PopoverContent>
+          <DateFieldCalendar aria-label={calendarLabel}>
+            <CalendarHeader>
+              <CalendarPrevButton square aria-label={previousLabel}><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
+              <CalendarHeading>
+                <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
+                <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
+              </CalendarHeading>
+              <CalendarNextButton square aria-label={nextLabel}><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
+            </CalendarHeader>
+            <CalendarContent>
+              <CalendarDays>
+                <CalendarWeekdays>
+                  <CalendarWeekday />
+                </CalendarWeekdays>
+                <CalendarDaysScroller>
+                  <CalendarDaysScrollerContent>
+                    <CalendarWeeks>
+                      <CalendarDay />
+                    </CalendarWeeks>
+                  </CalendarDaysScrollerContent>
+                </CalendarDaysScroller>
+              </CalendarDays>
+              <CalendarMonths>
+                <CalendarMonthsGrid>
+                  <CalendarMonth />
+                </CalendarMonthsGrid>
+              </CalendarMonths>
+              <CalendarYears>
+                <CalendarYearsScroller>
+                  <CalendarYearsScrollerContent>
+                    <CalendarYearsGrid>
+                      <CalendarYear />
+                    </CalendarYearsGrid>
+                  </CalendarYearsScrollerContent>
+                </CalendarYearsScroller>
+              </CalendarYears>
+            </CalendarContent>
+          </DateFieldCalendar>
+        </PopoverContent>
+      </Popover>
+    </DateField>
+  );
+}
+
+export default function Recipe() {
+  const id = useId();
+
+  return (
+    <div style={{ display: 'grid', gap: 'var(--spacing-3)', width: '100%', maxWidth: 280 }}>
+      <Label htmlFor={id}>Due date</Label>
+      <MyDateField
+        id={id}
+        name='due'
+        format='dd.MM.yyyy'
+        separator='.'
+        calendarLabel='Choose due date'
+        previousLabel='Previous month'
+        nextLabel='Next month'
+      />
+    </div>
+  );
+}
+```
+<!-- /example -->
+
 ## Required Parts
 
 - `DateField`: root state and formatting owner
@@ -126,7 +253,7 @@ export default function MinimalComposition() {
 
 ## Optional Parts
 
-- `DateFieldTriggerIconButton`: calendar trigger affordance
+- `DateFieldTrigger`: calendar trigger affordance
 - `DateFieldCalendar`: visual picker content, usually mounted in `Popover`
 
 ## Composition Order
@@ -134,7 +261,7 @@ export default function MinimalComposition() {
 1. `DateField`
 2. `DateFieldInput`
 3. `Popover`
-4. `DateFieldTriggerIconButton`
+4. `DateFieldTrigger`
 5. `DateFieldCalendar`
 
 ## Variants

@@ -1,37 +1,30 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Icon, IconButton, SegmentedControl, SegmentedControlIndicator, SegmentedControlItem, SegmentedControlItemInput } from '@vega-ui/react';
+import { Icon, Button, SegmentedControl, SegmentedControlIndicator, SegmentedControlItem, SegmentedControlItemInput } from '@vega-ui/react';
 import { Monitor, Moon, RotateCcw, Smartphone, Sun, Tablet } from '@vega-ui/icons';
+import { useTheme } from 'next-themes';
 import { EXAMPLES } from '@/generated/examples';
 import { useDictionary } from './LocaleProvider';
 import styles from './TemplatePreview.module.css';
 
-const readTheme = () => document.documentElement.classList.contains('dark') ? 'dark' : 'light';
-
 export const TemplatePreview = ({ name }: { name: string }) => {
   const t = useDictionary().templates;
   const Template = EXAMPLES[`templates/${name}.tsx`];
+  const { resolvedTheme } = useTheme();
   const [theme, setTheme] = useState('light');
   const [dir, setDir] = useState('ltr');
   const [viewport, setViewport] = useState('desktop');
   const [run, setRun] = useState(0);
 
-  useEffect(() => {
-    setTheme(readTheme());
-
-    const observer = new MutationObserver(() => setTheme(readTheme()));
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-
-    return () => observer.disconnect();
-  }, []);
+  useEffect(() => setTheme(resolvedTheme === 'dark' ? 'dark' : 'light'), [resolvedTheme]);
 
   if (!Template) return null;
 
   return (
     <div role='group' aria-label={t.preview} className={styles.preview}>
       <div className={styles.toolbar}>
-        <SegmentedControl size='xs' variant='secondary' name={`${name}-theme`} role='radiogroup' aria-label={t.theme} value={theme} onChange={(event) => setTheme(event.target.value)}>
+        <SegmentedControl size='xs' variant='secondary' name={`${name}-theme`} aria-label={t.theme} value={theme} onChangeValue={setTheme}>
           <SegmentedControlItem value='light'>
             <SegmentedControlItemInput aria-label={t.light} />
             <Icon size='xs'><Sun /></Icon>
@@ -42,7 +35,7 @@ export const TemplatePreview = ({ name }: { name: string }) => {
           </SegmentedControlItem>
           <SegmentedControlIndicator />
         </SegmentedControl>
-        <SegmentedControl size='xs' variant='secondary' className={styles.viewports} name={`${name}-viewport`} role='radiogroup' aria-label={t.viewport} value={viewport} onChange={(event) => setViewport(event.target.value)}>
+        <SegmentedControl size='xs' variant='secondary' className={styles.viewports} name={`${name}-viewport`} aria-label={t.viewport} value={viewport} onChangeValue={setViewport}>
           <SegmentedControlItem value='desktop'>
             <SegmentedControlItemInput aria-label={t.desktop} />
             <Icon size='xs'><Monitor /></Icon>
@@ -57,7 +50,7 @@ export const TemplatePreview = ({ name }: { name: string }) => {
           </SegmentedControlItem>
           <SegmentedControlIndicator />
         </SegmentedControl>
-        <SegmentedControl size='xs' variant='secondary' name={`${name}-dir`} role='radiogroup' aria-label={t.direction} value={dir} onChange={(event) => setDir(event.target.value)}>
+        <SegmentedControl size='xs' variant='secondary' name={`${name}-dir`} aria-label={t.direction} value={dir} onChangeValue={setDir}>
           <SegmentedControlItem value='ltr'>
             <SegmentedControlItemInput />
             LTR
@@ -68,9 +61,9 @@ export const TemplatePreview = ({ name }: { name: string }) => {
           </SegmentedControlItem>
           <SegmentedControlIndicator />
         </SegmentedControl>
-        <IconButton size='xs' variant='secondary' appearance='ghost' aria-label={t.reset} onClick={() => setRun(run + 1)}>
+        <Button square size='xs' variant='secondary' appearance='ghost' aria-label={t.reset} onClick={() => setRun(run + 1)}>
           <Icon size='xs'><RotateCcw /></Icon>
-        </IconButton>
+        </Button>
       </div>
       <div className={styles.stage}>
         <div key={run} dir={dir} lang='en' data-viewport={viewport} className={`${styles.frame} ${theme}`}>

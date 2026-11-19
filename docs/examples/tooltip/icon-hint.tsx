@@ -1,6 +1,6 @@
 import {
+  Button,
   Icon,
-  IconButton,
   Text,
   Tooltip,
   TooltipContent,
@@ -20,9 +20,9 @@ export default function IconHint() {
       {actions.map((action) => (
         <Tooltip key={action.label}>
           <TooltipTrigger asChild>
-            <IconButton aria-label={action.label} variant='secondary' appearance='ghost'>
+            <Button square aria-label={action.label} variant='secondary' appearance='ghost'>
               <Icon>{action.icon}</Icon>
-            </IconButton>
+            </Button>
           </TooltipTrigger>
           <TooltipContent>
             <Text size={2}>{action.hint}</Text>

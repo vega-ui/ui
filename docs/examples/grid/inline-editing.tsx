@@ -52,6 +52,7 @@ export default function InlineEditing() {
               <GridCell col={1}>
                 <input
                   className='gridCellInput'
+                  tabIndex={-1}
                   aria-label={`${item.category} planned`}
                   inputMode='decimal'
                   value={item.planned}
@@ -61,6 +62,7 @@ export default function InlineEditing() {
               <GridCell col={2}>
                 <input
                   className='gridCellInput'
+                  tabIndex={-1}
                   aria-label={`${item.category} spent`}
                   inputMode='decimal'
                   value={item.spent}

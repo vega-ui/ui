@@ -21,7 +21,6 @@ import {
   Heading,
   HelperText,
   Icon,
-  IconButton,
   Label,
   NumberField,
   NumberFieldDecrementButton,
@@ -44,7 +43,7 @@ import {
   TextFieldInput,
   VisuallyHidden,
 } from '@vega-ui/react';
-import { Check, XIcon } from '@vega-ui/icons';
+import { CheckIcon, ChevronDownIcon, CircleCheckIcon, MinusIcon, PlusIcon, XIcon } from '@vega-ui/icons';
 import './pricing.css';
 
 type Cycle = 'monthly' | 'yearly';
@@ -132,7 +131,7 @@ const currency = new Intl.NumberFormat('en-US', { style: 'currency', currency: '
 const field = { display: 'grid', gap: 'var(--spacing-3)', alignContent: 'start' } as const;
 const amount = { fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap' } as const;
 const secondary = { color: 'var(--label-secondary)' } as const;
-const closeButton = { flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties;
+const closeButton = { flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties;
 
 const validate = (data: FormData) => {
   const errors: Partial<Record<ContactField, string>> = {};
@@ -151,7 +150,7 @@ const FeatureValue = ({ value }: { value: string }) => {
   if (value === 'yes') {
     return (
       <>
-        <Icon size='sm' aria-hidden='true' style={{ color: 'var(--color-primary-500)' }}><Check /></Icon>
+        <Icon size='sm' aria-hidden='true' style={{ color: 'var(--color-primary-500)' }}><CheckIcon /></Icon>
         <VisuallyHidden>Included</VisuallyHidden>
       </>
     );
@@ -233,10 +232,9 @@ export default function Pricing() {
           <SegmentedControl
             size='sm'
             name={`${id}-cycle`}
-            role='radiogroup'
             aria-label='Billing cycle'
             value={cycle}
-            onChange={(event) => setCycle(event.target.value as Cycle)}
+            onChangeValue={setCycle}
           >
             <SegmentedControlItem value='monthly'>
               <SegmentedControlItemInput />
@@ -254,7 +252,7 @@ export default function Pricing() {
 
       {sent !== '' && (
         <Alert variant='success'>
-          <AlertIcon />
+          <AlertIcon><CircleCheckIcon /></AlertIcon>
           <AlertMain>
             <AlertTitle>Thanks, we’ll be in touch</AlertTitle>
             <AlertContent style={{ overflowWrap: 'anywhere' }}>{`Our sales team will reply to ${sent} within one business day.`}</AlertContent>
@@ -292,10 +290,9 @@ export default function Pricing() {
               </div>
               <Button
                 size='xs'
-                fullWidth
                 variant={popular ? undefined : 'secondary'}
                 appearance={popular ? undefined : 'ghost'}
-                aria-describedby={`${id}-${plan.id}`}
+                aria-describedby={`${id}-${plan.id}`} style={{ width: '100%' }}
               >
                 {plan.action}
               </Button>
@@ -303,7 +300,7 @@ export default function Pricing() {
               <ul aria-label={`${plan.title} features`} style={{ display: 'grid', gap: 'var(--spacing-5)', margin: 0, padding: 0, listStyle: 'none' }}>
                 {plan.features.map((feature) => (
                   <li key={feature} style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--spacing-4)' }}>
-                    <Icon size='sm' aria-hidden='true' style={{ flexShrink: 0, marginBlockStart: 'var(--spacing-1)', color: 'var(--color-primary-500)' }}><Check /></Icon>
+                    <Icon size='sm' aria-hidden='true' style={{ flexShrink: 0, marginBlockStart: 'var(--spacing-1)', color: 'var(--color-primary-500)' }}><CheckIcon /></Icon>
                     <Text size={3}>{feature}</Text>
                   </li>
                 ))}
@@ -322,9 +319,9 @@ export default function Pricing() {
           <div style={field}>
             <Label htmlFor={`${id}-seats`}>Seats</Label>
             <NumberField min={1} max={MAX_SEATS} value={seats} onChangeValue={(next) => setSeats(next ?? 1)} style={{ maxWidth: 180 }}>
-              <NumberFieldDecrementButton aria-label='Remove a seat' />
+              <NumberFieldDecrementButton square aria-label='Remove a seat'><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
               <NumberFieldInput id={`${id}-seats`} name='seats' aria-describedby={`${id}-seats-hint`} />
-              <NumberFieldIncrementButton aria-label='Add a seat' />
+              <NumberFieldIncrementButton square aria-label='Add a seat'><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
             </NumberField>
             <HelperText id={`${id}-seats-hint`}>{`From 1 to ${MAX_SEATS} seats.`}</HelperText>
           </div>
@@ -387,7 +384,7 @@ export default function Pricing() {
               <AccordionHeader>
                 <AccordionTrigger>
                   {item.question}
-                  <AccordionIcon />
+                  <AccordionIcon><ChevronDownIcon /></AccordionIcon>
                 </AccordionTrigger>
               </AccordionHeader>
               <AccordionContent>
@@ -412,9 +409,9 @@ export default function Pricing() {
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
               <Heading id={`${id}-contact-title`} as='h2' size={4} fontWeight={600}>Contact sales</Heading>
               <DialogClose asChild>
-                <IconButton size='xs' aria-label='Close' variant='secondary' appearance='ghost' style={closeButton}>
+                <Button square size='xs' aria-label='Close' variant='secondary' appearance='ghost' style={closeButton}>
                   <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-                </IconButton>
+                </Button>
               </DialogClose>
             </div>
             <form noValidate onSubmit={submit} style={{ display: 'grid', gap: 'var(--spacing-8)', marginBlockStart: 'var(--spacing-10)' }}>

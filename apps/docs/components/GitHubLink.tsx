@@ -1,13 +1,13 @@
 'use client';
 
-import { Icon, IconButton } from '@vega-ui/react';
+import { Icon, Button } from '@vega-ui/react';
 import { useDictionary } from './LocaleProvider';
 
 export const GitHubLink = ({ className }: { className?: string }) => {
   const t = useDictionary();
 
   return (
-    <IconButton asChild size='xs' variant='secondary' appearance='transparent' className={className}>
+    <Button square asChild size='xs' variant='secondary' appearance='transparent' className={className}>
       <a href='https://github.com/vega-ui/ui' aria-label={t.links.github}>
         <Icon size='xs'>
           <svg viewBox='0 0 24 24' fill='currentColor' aria-hidden='true'>
@@ -15,6 +15,6 @@ export const GitHubLink = ({ className }: { className?: string }) => {
           </svg>
         </Icon>
       </a>
-    </IconButton>
+    </Button>
   );
 };

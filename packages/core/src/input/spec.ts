@@ -82,6 +82,7 @@ export interface Payload<Key = unknown> {
   readonly time?: number
   readonly primary?: boolean
   readonly text?: boolean
+  readonly textEntry?: boolean
   readonly scroller?: ScrollBox
   readonly delta?: Point
   readonly field?: TextState
@@ -140,6 +141,7 @@ export const createInput = <Key = unknown, Carried = unknown>(base: InputSpec<Ca
     time: payload.time,
     primary: payload.primary,
     text: payload.text,
+    textEntry: payload.textEntry,
     scroller: payload.scroller,
     delta: payload.delta,
     field: payload.field,
@@ -151,7 +153,7 @@ export const createInput = <Key = unknown, Carried = unknown>(base: InputSpec<Ca
   return input
 }
 
-export const payloadOf = <Key>({ char, key, part, inside, content, keys, value, point, to, backdrop, measured, pointerType, time, primary, text, scroller, delta, field, edit, changed }: Payload<Key>): Payload<Key> => ({ char, key, part, inside, content, keys, value, point, to, backdrop, measured, pointerType, time, primary, text, scroller, delta, field, edit, changed })
+export const payloadOf = <Key>({ char, key, part, inside, content, keys, value, point, to, backdrop, measured, pointerType, time, primary, text, textEntry, scroller, delta, field, edit, changed }: Payload<Key>): Payload<Key> => ({ char, key, part, inside, content, keys, value, point, to, backdrop, measured, pointerType, time, primary, text, textEntry, scroller, delta, field, edit, changed })
 
 export const mod: Record<ModName, Mod> = {
   shift: { mod: 'shift' },
@@ -242,6 +244,7 @@ export const measure = {
 
 export const browser = {
   toggle: defineInput('browser', 'toggle'),
+  contextMenu: defineInput('browser', 'contextMenu'),
   load: defineInput('browser', 'load'),
   error: defineInput('browser', 'error'),
   cancel: defineInput('browser', 'cancel'),

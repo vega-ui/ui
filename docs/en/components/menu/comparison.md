@@ -36,7 +36,7 @@ Use `Menu` when:
 
 - there are more actions than fit, or they are used rarely
 
-Use visible `Button`s or `IconButton`s when:
+Use visible `Button`s, with text or `square`, when:
 
 - there are two or three frequent actions
 
@@ -53,4 +53,5 @@ Main trade-off: a menu saves space but takes an extra click and hides what is po
 - The choice is a form value: use [Select](../select/), [Combobox](../combobox/) or [Radio](../radio/)
 - The floating content has fields or other controls: use [Popover](../popover/)
 - The list is the main navigation of the site: use a `<nav>` with links
-- You need a menubar or a context menu opened by a right click: they are not part of this version
+- The menu opens by a right click or a long touch on an area: use [ContextMenu](../context-menu/)
+- You need a menubar: it is not part of this version

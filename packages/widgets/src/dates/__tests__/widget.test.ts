@@ -9,7 +9,7 @@ import { createPeriodPicker, FOCUS_DATE, PeriodOptions, SHOW } from '../widget'
 const entriesOf = (keys: readonly string[], firstCol: number, rowOffset: number): GridEntry<string>[] =>
   keys.map((date, index) => {
     const position = firstCol + index
-    return { key: date, data: { row: rowOffset + Math.floor(position / 7), col: position % 7, excluded: false, disabled: false, selectable: true, interactive: false } }
+    return { key: date, data: { row: rowOffset + Math.floor(position / 7), col: position % 7, excluded: false, disabled: false, selectable: true } }
   })
 
 const daysOf = (month: string, count: number) => Array.from({ length: count }, (_, index) => `${month}-${String(index + 1).padStart(2, '0')}`)

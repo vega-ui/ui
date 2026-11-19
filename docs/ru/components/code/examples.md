@@ -40,8 +40,8 @@ export default function InlineCommand() {
 
 <!-- example: code/copy-command.tsx -->
 ```tsx
-import { Code, Icon, IconButton, Text } from '@vega-ui/react';
-import { Check, Copy } from '@vega-ui/icons';
+import { Button, Code, Icon, Text } from '@vega-ui/react';
+import { CheckIcon, CopyIcon } from '@vega-ui/icons';
 import { useEffect, useState } from 'react';
 
 const command = 'npx @vega-ui/cli init --template dashboard';
@@ -73,9 +73,9 @@ export default function CopyCommand() {
         <Code style={{ flex: 1, minWidth: 0, overflowX: 'auto', whiteSpace: 'nowrap', paddingBlock: 'var(--spacing-3)' }}>
           {command}
         </Code>
-        <IconButton aria-label='Copy command' variant='secondary' appearance='ghost' onClick={copy}>
-          <Icon>{status === 'copied' ? <Check /> : <Copy />}</Icon>
-        </IconButton>
+        <Button square aria-label='Copy command' variant='secondary' appearance='ghost' onClick={copy}>
+          <Icon>{status === 'copied' ? <CheckIcon /> : <CopyIcon />}</Icon>
+        </Button>
       </div>
       <Text size={2} role='status' style={{ minHeight: 'var(--line-height-2)', color: 'var(--label-secondary)' }}>
         {status === 'copied' && 'Copied to clipboard'}
@@ -161,7 +161,6 @@ import {
   DialogTrigger,
   Heading,
   Icon,
-  IconButton,
   Text,
 } from '@vega-ui/react';
 import { XIcon } from '@vega-ui/icons';
@@ -178,14 +177,15 @@ export default function CommandInADialogBody() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
             <Heading as='h2' size={5} id='connect-cli-title'>Connect the CLI</Heading>
             <DialogClose asChild>
-              <IconButton
+              <Button
+                square
                 aria-label='Close'
                 variant='secondary'
                 appearance='ghost'
-                style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+                style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
               >
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DialogClose>
           </div>
           <Text asChild size={3}>

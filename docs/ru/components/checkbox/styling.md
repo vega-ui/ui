@@ -49,7 +49,7 @@
 
 ### Свои иконки состояний
 
-Дочерние элементы `CheckboxCheckedIcon` и `CheckboxIndeterminateIcon` заменяют иконку по умолчанию для этого состояния. Другое состояние сохраняет свою иконку.
+Ни одна из частей не рисует свою иконку, поэтому каждое состояние показывает ту, что вы передали: из любого набора иконок или свой SVG. Обычный вид — `<CheckIcon strokeWidth={4} />` и `<MinusIcon strokeWidth={4} />`; здесь их место занимают ракета и знак разницы. Чтобы писать обычную пару один раз, см. [рецепт](./index.md#свой-компонент).
 
 <!-- example: checkbox/custom-state-icons.tsx -->
 ```tsx
@@ -60,7 +60,7 @@ import {
   CheckboxIndicator,
   CheckboxInput,
 } from '@vega-ui/react';
-import { Diff, Rocket } from '@vega-ui/icons';
+import { CheckIcon, DiffIcon, MinusIcon, RocketIcon } from '@vega-ui/icons';
 
 export default function CustomStateIcons() {
   return (
@@ -69,18 +69,18 @@ export default function CustomStateIcons() {
         <CheckboxInput defaultChecked />
         <CheckboxIndicator>
           <CheckboxCheckedIcon>
-            <Rocket />
+            <RocketIcon />
           </CheckboxCheckedIcon>
-          <CheckboxIndeterminateIcon />
+          <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
         </CheckboxIndicator>
         Deploy after merge
       </Checkbox>
       <Checkbox>
         <CheckboxInput indeterminate />
         <CheckboxIndicator>
-          <CheckboxCheckedIcon />
+          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
           <CheckboxIndeterminateIcon>
-            <Diff />
+            <DiffIcon />
           </CheckboxIndeterminateIcon>
         </CheckboxIndicator>
         Files with changes

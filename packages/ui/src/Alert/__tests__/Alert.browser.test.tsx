@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 import { cleanup, render, type RenderResult } from '@testing-library/react';
 
 import { Alert } from '../Alert';
+import { InfoIcon } from '@vega-ui/icons';
 import { AlertContent, AlertIcon, AlertMain, AlertTitle } from '../components';
 
 afterEach(cleanup);
@@ -14,7 +15,7 @@ const AlertTest = (props: ComponentProps<typeof Alert>) => {
     <Alert data-testid='alert' {...rest}>
       {children ?? (
         <>
-          <AlertIcon data-testid='icon' />
+          <AlertIcon data-testid='icon'><InfoIcon /></AlertIcon>
           <AlertMain data-testid='main'>
             <AlertTitle data-testid='title'>I'm a title</AlertTitle>
             <AlertContent data-testid='content'>I'm a content!</AlertContent>

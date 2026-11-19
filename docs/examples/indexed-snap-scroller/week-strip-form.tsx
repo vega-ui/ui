@@ -2,14 +2,13 @@ import {
   Button,
   HelperText,
   Icon,
-  IconButton,
   IndexedSnapScroller,
   IndexedSnapScrollerContent,
   Text,
   useIndexedSnapScrollerContext,
   type IndexedSnapScrollerApiRef,
 } from '@vega-ui/react';
-import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import { useRef, useState, type FormEvent } from 'react';
 
 const today = new Date();
@@ -102,12 +101,12 @@ export default function WeekStripForm() {
     <form onSubmit={onSubmit} onReset={onReset} style={{ display: 'grid', gap: 'var(--spacing-8)', width: '100%' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-2)' }}>
         <Text id='delivery-day-label' size={3} fontWeight={500} style={{ flex: 1 }}>Delivery day</Text>
-        <IconButton aria-label='Previous week' variant='secondary' appearance='ghost' onClick={() => api.current?.prev()}>
-          <Icon><ChevronLeft /></Icon>
-        </IconButton>
-        <IconButton aria-label='Next week' variant='secondary' appearance='ghost' onClick={() => api.current?.next()}>
-          <Icon><ChevronRight /></Icon>
-        </IconButton>
+        <Button square aria-label='Previous week' variant='secondary' appearance='ghost' onClick={() => api.current?.prev()}>
+          <Icon><ChevronLeftIcon /></Icon>
+        </Button>
+        <Button square aria-label='Next week' variant='secondary' appearance='ghost' onClick={() => api.current?.next()}>
+          <Icon><ChevronRightIcon /></Icon>
+        </Button>
       </div>
       <div
         role='group'

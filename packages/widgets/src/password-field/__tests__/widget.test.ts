@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from 'vitest'
-import { createInput } from '@vega-ui/core'
+import { pointer } from '@vega-ui/core'
 import { simulate } from '@vega-ui/core/test'
-import { passwordFieldWidget, TOGGLE_SHOWN } from '../widget'
+import { passwordFieldWidget, TOGGLE } from '../widget'
 
 type Output = typeof passwordFieldWidget.output
 
@@ -10,16 +10,23 @@ const partsOf = (state: ReturnType<typeof simulate<typeof passwordFieldWidget.sh
 )
 
 describe('Critical User Paths', () => {
-  it('shows the password on a toggle, hides it on the next one and reports each change', () => {
+  it('shows the password on a press of the toggle, hides it on the next one and reports each change', () => {
     const onChangeShown = vi.fn()
     const passwordField = simulate(passwordFieldWidget, { onChangeShown }, { orientation: 'horizontal' })
 
-    passwordField.send(createInput(TOGGLE_SHOWN))
+    passwordField.send(pointer.press, { part: TOGGLE })
     expect(passwordField.state.shown).toBe(true)
 
-    passwordField.send(createInput(TOGGLE_SHOWN))
+    passwordField.send(pointer.press, { part: TOGGLE })
     expect(passwordField.state.shown).toBe(false)
     expect(onChangeShown.mock.calls).toEqual([[true], [false]])
+  })
+
+  it('leaves a press anywhere else in the field alone', () => {
+    const passwordField = simulate(passwordFieldWidget, {}, { orientation: 'horizontal' })
+
+    expect(passwordField.send(pointer.press).answer).toBe('pass')
+    expect(passwordField.state.shown).toBe(false)
   })
 
   it('turns the input into a text field, presses the toggle and swaps the icons while shown', () => {
@@ -31,7 +38,7 @@ describe('Critical User Paths', () => {
       hiddenIcon: { 'data-hidden': true },
     })
 
-    passwordField.send(createInput(TOGGLE_SHOWN))
+    passwordField.send(pointer.press, { part: TOGGLE })
     expect(partsOf(passwordField.state)).toEqual({
       input: { type: 'text' },
       toggle: { 'aria-pressed': true },

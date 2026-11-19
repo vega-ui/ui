@@ -5,7 +5,7 @@ export default function ProductDetails() {
     <Tabs defaultValue='description' style={{ width: '100%', maxWidth: 480 }}>
       <TabsList aria-label='Product details'>
         <TabsTab value='description'>Description</TabsTab>
-        <TabsTab value='specs'>Specifications</TabsTab>
+        <TabsTab value='specs'>Specs</TabsTab>
         <TabsTab value='shipping'>Shipping</TabsTab>
       </TabsList>
       <TabsPanel value='description'>

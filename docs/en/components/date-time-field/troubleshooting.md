@@ -27,7 +27,7 @@ The icon button renders, but the calendar never appears.
 
 ### Likely Cause
 
-`DateTimeFieldTriggerIconButton` was rendered without `Popover` composition or without `DateTimeFieldCalendar` inside the overlay.
+`DateTimeFieldTrigger` was rendered without `Popover` composition or without `DateTimeFieldCalendar` inside the overlay.
 
 ### How To Verify
 

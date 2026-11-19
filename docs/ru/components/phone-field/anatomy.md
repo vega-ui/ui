@@ -57,6 +57,7 @@ import {
   SelectOption,
   SelectValue,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 export default function MinimalComposition() {
@@ -70,7 +71,7 @@ export default function MinimalComposition() {
           <SelectHiddenSelect name='country' />
           <SelectCombobox aria-label='Country'>
             <SelectValue />
-            <SelectIcon />
+            <SelectIcon><ChevronDownIcon /></SelectIcon>
           </SelectCombobox>
           <SelectListbox>
             <SelectOption value='US'>US</SelectOption>

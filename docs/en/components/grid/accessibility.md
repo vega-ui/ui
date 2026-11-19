@@ -27,7 +27,7 @@ The grid should appear with surrounding context that explains what the cells rep
 - active-cell movement should remain visible
 - interactive content inside cells must not hide the current navigation state
 - inputs, buttons, and menus inside a cell have `tabIndex={-1}`, are reached with Enter or F2 and left with Escape, as in the WAI-ARIA grid pattern; Tab on a cell leaves the grid instead of stopping on each of them
-- a cell that is itself a single widget is `<GridCell asChild><button /></GridCell>`: the focus lands on the button directly
+- a cell that is itself a single button is `<GridCell asChild><button /></GridCell>`: the focus lands on the button directly, which keeps `role="gridcell"` and is announced as a cell; to have it announced as a button, or for a link, put the control inside the cell with `tabIndex={-1}`
 - headers with a button, like a sort button, are reachable like cells; static headers need `excluded`
 - with `selection`, test the focus after range expansion and pointer dragging
 - with server rendering, the HTML holds the tab stop only when the grid knows it before its cells render: with `cells` always, otherwise the `active` or `defaultActive` cell, or the selected cell of `selection='single'`. Otherwise the grid is not reachable with Tab until it hydrates, so pass `cells` or `defaultActive` to a server-rendered grid

@@ -14,20 +14,22 @@ import {
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYearLabel,
+  Icon,
   Text,
 } from '@vega-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 export default function ValidCompositionPatterns() {
   return (
     <Calendar locale='en-US'>
       <CalendarHeader>
-        <CalendarPrevButton aria-label='Previous month' />
+        <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
         <CalendarHeading>
           <Text fontWeight={600}>
             <CalendarMonthLabel /> <CalendarYearLabel />
           </Text>
         </CalendarHeading>
-        <CalendarNextButton aria-label='Next month' />
+        <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
       </CalendarHeader>
       <CalendarContent>
         <CalendarDays>

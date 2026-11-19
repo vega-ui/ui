@@ -49,6 +49,11 @@
     font-size: var(--font-size-4);
 }
 
-.button[data-full-width='true'] {
-    width: 100%;
+.button:where([data-square]) {
+    --padding-inline: 0;
+    --icon-size: calc(var(--button-height) / 3);
+
+    aspect-ratio: 1 / 1;
+    width: var(--button-height);
 }
+

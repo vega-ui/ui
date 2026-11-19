@@ -8,7 +8,7 @@ When to use:
 
 Composition notes:
 
-- Use an `IconButton` with a "⋯" icon as the trigger and give it an `aria-label` that names the object, like "Actions for Q3 report.pdf"; the label also names the menu.
+- Use a `Button` with `square` and a "⋯" icon as the trigger and give it an `aria-label` that names the object, like "Actions for Q3 report.pdf"; the label also names the menu.
 - Use `placement='bottom-end'` so the menu lines up with the end of the row.
 - Put a destructive action last, after a `Separator`.
 
@@ -19,7 +19,7 @@ Trade-offs:
 <!-- example: menu/row-actions.tsx -->
 ```tsx
 import { useState } from 'react';
-import { Icon, IconButton, Menu, MenuContent, MenuItem, MenuTrigger, Separator, Text } from '@vega-ui/react';
+import { Button, Icon, Menu, MenuContent, MenuItem, MenuTrigger, Separator, Text } from '@vega-ui/react';
 import { EllipsisIcon } from '@vega-ui/icons';
 
 export default function RowActions() {
@@ -47,9 +47,9 @@ export default function RowActions() {
       </div>
       <Menu placement='bottom-end' size='sm'>
         <MenuTrigger asChild>
-          <IconButton size='sm' aria-label='Actions for Q3 report.pdf' variant='secondary' appearance='ghost' style={{ flexShrink: 0 }}>
+          <Button square size='sm' aria-label='Actions for Q3 report.pdf' variant='secondary' appearance='ghost' style={{ flexShrink: 0 }}>
             <Icon><EllipsisIcon /></Icon>
-          </IconButton>
+          </Button>
         </MenuTrigger>
         <MenuContent>
           <MenuItem onClick={() => setStatus('Renamed just now')}>Rename</MenuItem>
@@ -96,6 +96,7 @@ import {
   Separator,
   Text,
 } from '@vega-ui/react';
+import { CheckIcon } from '@vega-ui/icons';
 
 const sorts = [
   { value: 'due', label: 'Due date' },
@@ -133,11 +134,11 @@ export default function ViewOptions() {
         </MenuTrigger>
         <MenuContent>
           <MenuCheckboxItem checked={showCompleted} onChangeChecked={setShowCompleted}>
-            <MenuItemIndicator />
+            <MenuItemIndicator><CheckIcon /></MenuItemIndicator>
             Show completed
           </MenuCheckboxItem>
           <MenuCheckboxItem checked={showSubtasks} onChangeChecked={setShowSubtasks}>
-            <MenuItemIndicator />
+            <MenuItemIndicator><CheckIcon /></MenuItemIndicator>
             Show subtasks
           </MenuCheckboxItem>
           <Separator />
@@ -145,7 +146,7 @@ export default function ViewOptions() {
             <Text id={sortHeadingId} size={2} fontWeight={500} style={groupHeading}>Sort by</Text>
             {sorts.map((item) => (
               <MenuRadioItem key={item.value} value={item.value}>
-                <MenuItemIndicator />
+                <MenuItemIndicator><CheckIcon /></MenuItemIndicator>
                 {item.label}
               </MenuRadioItem>
             ))}

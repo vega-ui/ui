@@ -9,9 +9,9 @@ export default function FieldsetDisabledActions() {
       <Fieldset disabled={locked} appearance='outlined' style={{ width: '100%', boxSizing: 'border-box' }}>
         <FieldsetLegend>Billing actions</FieldsetLegend>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-4)' }}>
-          <Button type='button' fullWidth>Change plan</Button>
-          <Button type='button' fullWidth variant='secondary' appearance='ghost'>Update card</Button>
-          <Button type='button' fullWidth variant='secondary' appearance='transparent'>Download invoices</Button>
+          <Button type='button' style={{ width: '100%' }}>Change plan</Button>
+          <Button type='button' variant='secondary' appearance='ghost' style={{ width: '100%' }}>Update card</Button>
+          <Button type='button' variant='secondary' appearance='transparent' style={{ width: '100%' }}>Download invoices</Button>
         </div>
       </Fieldset>
       <Button type='button' size='sm' variant='secondary' appearance='ghost' onClick={() => setLocked(!locked)}>

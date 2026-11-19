@@ -30,7 +30,7 @@ Required. Renders the expandable content for the item.
 
 ### `AccordionIcon`
 
-Optional visual affordance for open and closed state. It should remain part of the trigger, not become a separate click target.
+Optional indicator of the open state. It draws no icon of its own: pass one as its children, such as a chevron from any icon set, and it gets `data-open` while the item is expanded, for the rotation. It should remain part of the trigger, not become a separate click target.
 
 ## Composition Order
 
@@ -55,6 +55,7 @@ import {
   Separator,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 
 const questions = [
   {
@@ -87,7 +88,7 @@ export default function Faq() {
           <AccordionHeader>
             <AccordionTrigger>
               {item.question}
-              <AccordionIcon />
+              <AccordionIcon><ChevronDownIcon /></AccordionIcon>
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>

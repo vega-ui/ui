@@ -7,7 +7,6 @@ import { DrawerClose, DrawerContent, DrawerContentProps, DrawerTrigger } from '.
 import { DrawerPosition } from './types';
 import { Button } from '../Button';
 import { Text } from '../Text';
-import { IconButton } from '../IconButton';
 import { Icon } from '../Icon';
 import { Heading } from '../Heading';
 import { Label } from '../Label';
@@ -75,14 +74,15 @@ export const Playground: Story = {
         >
           <Heading id='settings-title' as='h2' size={4} fontWeight={600}>Settings</Heading>
           <DrawerClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ position: 'absolute', insetBlockStart: 16, insetInlineEnd: 16, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ position: 'absolute', insetBlockStart: 16, insetInlineEnd: 16, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </DrawerClose>
           <form method='dialog' style={{ display: 'flex', flexDirection: 'column', gap: 12, minWidth: 280 }}>
             <Label htmlFor='display-name'>Display name</Label>

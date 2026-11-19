@@ -5,7 +5,7 @@ The field follows the WAI-ARIA [Date Picker Dialog](https://www.w3.org/WAI/ARIA/
 ## Labeling
 
 - Name the input with a visible `Label` (`htmlFor`), or with `aria-label` / `aria-labelledby` on `DateTimeFieldInput`.
-- Name the trigger with `aria-label` on `DateTimeFieldTriggerIconButton`, for example "Choose date"; the field never adds a label of its own.
+- Name an icon-only `DateTimeFieldTrigger` with `aria-label`, for example "Choose date"; a trigger with text is named by its text. The field never adds a label of its own.
 - Name the dialog with `aria-label` or `aria-labelledby` on `DateTimeFieldCalendar`. It is `role="dialog"` by default; do not also set `role` on the `Popover`.
 
 ## Keyboard Behavior

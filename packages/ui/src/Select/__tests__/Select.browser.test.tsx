@@ -4,6 +4,7 @@ import { cleanup, fireEvent, render, type RenderResult } from '@testing-library/
 import { server, userEvent } from 'vitest/browser';
 
 import { Select } from '../Select';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import {
   SelectCombobox,
   SelectHiddenSelect,
@@ -42,7 +43,7 @@ const SelectTest: FC<ComponentProps<typeof Select>> = (props) => {
       <SelectHiddenSelect data-testid={TESTID_HIDDEN_SELECT} name={NAME} />
       <SelectCombobox data-testid={TESTID_COMBOBOX}>
         <SelectValue data-testid={TESTID_VALUE} placeholder={PLACEHOLDER} />
-        <SelectIcon />
+        <SelectIcon><ChevronDownIcon /></SelectIcon>
       </SelectCombobox>
       
       <SelectListbox data-testid={TESTID_LISTBOX}>

@@ -7,6 +7,7 @@ import {
   Fieldset,
   FieldsetLegend,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 const options = [
   { value: 'mentions', label: 'Someone mentions me in a comment', checked: true },
@@ -23,8 +24,8 @@ export default function LabeledCheckbox() {
           <Checkbox key={option.value}>
             <CheckboxInput name='notifications' value={option.value} defaultChecked={option.checked} />
             <CheckboxIndicator>
-              <CheckboxCheckedIcon />
-              <CheckboxIndeterminateIcon />
+              <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+              <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
             </CheckboxIndicator>
             {option.label}
           </Checkbox>

@@ -8,7 +8,7 @@
 | --- | --- | --- | --- | --- |
 | `value` | `Value` | — | No | Controlled value: a number for one thumb, or an array with one entry per `SliderThumb` by its `index`. |
 | `defaultValue` | `Value` | — | No | Initial value for uncontrolled usage: a number for one thumb, or an array with one entry per `SliderThumb` by its `index`. Defaults to the middle of the range, like `<input type="range">`. |
-| `onChangeValue` | `(value: NoInfer<Value>) => void` | — | No | Called when a thumb changes, with a number or an array, in the shape of `value` or `defaultValue`. |
+| `onChangeValue` | `(value: NoInfer<Value extends number ? number : number[]>) => void` | — | No | Called when a thumb changes, with a number or an array, in the shape of `value` or `defaultValue`. |
 | `min` | `number` | `0` | No | The minimum allowed value. Defaults to `0`. |
 | `max` | `number` | `100` | No | The maximum allowed value. Defaults to `100`. |
 | `step` | `number \| 'any'` | `1` | No | The granularity of the values, a number or `'any'`. Defaults to `1`. |

@@ -49,6 +49,43 @@ export default function MinimalComposition() {
 ```
 <!-- /example -->
 
+## Your Own Component
+
+The minimal composition above shows the parts in place. In an app, compose them once in a file of your own and import that component everywhere. `MySwitch` passes its props to the native input, since the input holds the state, the name and the `id` for a `Label`, and adds the indicator. See [Component recipes](../../recipes.md).
+
+<!-- example: switch/recipe.tsx -->
+```tsx
+import { Label, Switch, SwitchIndicator, SwitchInput, type SwitchInputProps } from '@vega-ui/react';
+import { useId } from 'react';
+
+export function MySwitch(props: SwitchInputProps) {
+  return (
+    <Switch>
+      <SwitchInput {...props} />
+      <SwitchIndicator />
+    </Switch>
+  );
+}
+
+export default function Recipe() {
+  const id = useId();
+
+  return (
+    <div style={{ display: 'grid', gap: 'var(--spacing-6)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-6)' }}>
+        <MySwitch id={`${id}-wifi`} name='wifi' defaultChecked />
+        <Label htmlFor={`${id}-wifi`}>Wi-Fi</Label>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-6)' }}>
+        <MySwitch id={`${id}-bluetooth`} name='bluetooth' />
+        <Label htmlFor={`${id}-bluetooth`}>Bluetooth</Label>
+      </div>
+    </div>
+  );
+}
+```
+<!-- /example -->
+
 ## Required Parts
 
 - `Switch`: root track and context surface

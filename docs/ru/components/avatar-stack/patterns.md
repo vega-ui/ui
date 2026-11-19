@@ -78,7 +78,7 @@ export default function Reviewers() {
 <!-- example: avatar-stack/mixed-sources.tsx -->
 ```tsx
 import { AvatarFallback, AvatarIcon, AvatarImage, AvatarStack, AvatarStackItem } from '@vega-ui/react';
-import { User } from '@vega-ui/icons';
+import { UserIcon } from '@vega-ui/icons';
 
 const portrait = (hue: number) => `data:image/svg+xml,${encodeURIComponent(`<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' fill='hsl(${hue} 60% 82%)'/><circle cx='32' cy='25' r='11' fill='hsl(${hue} 35% 42%)'/><path d='M12 64c1-13 9-21 20-21s19 8 20 21z' fill='hsl(${hue} 35% 42%)'/></svg>`)}`;
 
@@ -97,7 +97,7 @@ export default function MixedSources() {
         <AvatarFallback>LF</AvatarFallback>
       </AvatarStackItem>
       <AvatarStackItem role='img' aria-label='Anonymous viewer' variant='secondary'>
-        <AvatarIcon><User /></AvatarIcon>
+        <AvatarIcon><UserIcon /></AvatarIcon>
       </AvatarStackItem>
     </AvatarStack>
   );
@@ -136,7 +136,6 @@ import {
   DialogTrigger,
   Heading,
   Icon,
-  IconButton,
   Text,
 } from '@vega-ui/react';
 import { XIcon } from '@vega-ui/icons';
@@ -168,14 +167,15 @@ export default function ParticipantsDialog() {
             </AvatarStack>
           </div>
           <DialogClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </DialogClose>
         </div>
         <Text size={2} style={{ color: 'var(--label-secondary)', marginBlockStart: 'var(--spacing-2)' }}>Thursday, 15:00–16:00 · {attendees.length} attendees</Text>

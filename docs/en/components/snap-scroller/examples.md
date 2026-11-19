@@ -379,13 +379,12 @@ import {
   DialogContent,
   Heading,
   Icon,
-  IconButton,
   SnapScroller,
   SnapScrollerContent,
   Text,
   type SnapScrollerApiRef,
 } from '@vega-ui/react';
-import { ChevronLeft, ChevronRight, XIcon } from '@vega-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon, XIcon } from '@vega-ui/icons';
 import { useRef, useState, type CSSProperties } from 'react';
 
 const rooms = [
@@ -432,14 +431,15 @@ export default function GalleryInDialog() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
             <Heading as='h2' size={5} id='apartment-gallery-title'>Apartment 4B</Heading>
             <DialogClose asChild>
-              <IconButton
+              <Button
+                square
                 aria-label='Close'
                 variant='secondary'
                 appearance='ghost'
-                style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+                style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
               >
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DialogClose>
           </div>
           <SnapScroller
@@ -458,25 +458,27 @@ export default function GalleryInDialog() {
             ))}
           </SnapScroller>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-            <IconButton
+            <Button
+              square
               aria-label='Previous room'
               variant='secondary'
               appearance='ghost'
               disabled={current === 0}
               onClick={() => api.current?.prev()}
             >
-              <Icon><ChevronLeft /></Icon>
-            </IconButton>
+              <Icon><ChevronLeftIcon /></Icon>
+            </Button>
             <Text size={2} style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>{current + 1} / {rooms.length}</Text>
-            <IconButton
+            <Button
+              square
               aria-label='Next room'
               variant='secondary'
               appearance='ghost'
               disabled={current === rooms.length - 1}
               onClick={() => api.current?.next()}
             >
-              <Icon><ChevronRight /></Icon>
-            </IconButton>
+              <Icon><ChevronRightIcon /></Icon>
+            </Button>
           </div>
         </DialogContent>
       </Dialog>
@@ -581,13 +583,13 @@ Previous and next buttons are disabled at the edges based on the committed index
 ```tsx
 import {
   Icon,
-  IconButton,
+  Button,
   SnapScroller,
   SnapScrollerContent,
   Text,
   type SnapScrollerApiRef,
 } from '@vega-ui/react';
-import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import { useRef, useState, type CSSProperties } from 'react';
 
 const products = [
@@ -616,15 +618,16 @@ export default function ButtonControlledCarousel() {
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)', width: '100%' }}>
-      <IconButton
+      <Button
+        square
         aria-label='Previous product'
         variant='secondary'
         appearance='ghost'
         disabled={isFirst}
         onClick={() => api.current?.prev()}
       >
-        <Icon><ChevronLeft /></Icon>
-      </IconButton>
+        <Icon><ChevronLeftIcon /></Icon>
+      </Button>
       <SnapScroller
         apiRef={api}
         tabIndex={0}
@@ -639,15 +642,16 @@ export default function ButtonControlledCarousel() {
           </SnapScrollerContent>
         ))}
       </SnapScroller>
-      <IconButton
+      <Button
+        square
         aria-label='Next product'
         variant='secondary'
         appearance='ghost'
         disabled={isLast}
         onClick={() => api.current?.next()}
       >
-        <Icon><ChevronRight /></Icon>
-      </IconButton>
+        <Icon><ChevronRightIcon /></Icon>
+      </Button>
     </div>
   );
 }
@@ -808,13 +812,13 @@ With `dir='rtl'` the first item is on the right and `next()` moves to the left. 
 ```tsx
 import {
   Icon,
-  IconButton,
+  Button,
   SnapScroller,
   SnapScrollerContent,
   Text,
   type SnapScrollerApiRef,
 } from '@vega-ui/react';
-import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import { useRef, useState, type CSSProperties } from 'react';
 
 const headlines = [
@@ -852,25 +856,27 @@ export default function RtlNavigation() {
         ))}
       </SnapScroller>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <IconButton
+        <Button
+          square
           aria-label='السابق'
           variant='secondary'
           appearance='ghost'
           disabled={current === 0}
           onClick={() => api.current?.prev()}
         >
-          <Icon><ChevronRight /></Icon>
-        </IconButton>
+          <Icon><ChevronRightIcon /></Icon>
+        </Button>
         <Text size={2} dir='ltr' style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>{current + 1} / {headlines.length}</Text>
-        <IconButton
+        <Button
+          square
           aria-label='التالي'
           variant='secondary'
           appearance='ghost'
           disabled={current === headlines.length - 1}
           onClick={() => api.current?.next()}
         >
-          <Icon><ChevronLeft /></Icon>
-        </IconButton>
+          <Icon><ChevronLeftIcon /></Icon>
+        </Button>
       </div>
     </div>
   );

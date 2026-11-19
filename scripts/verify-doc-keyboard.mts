@@ -129,8 +129,10 @@ const waitFor = async (page: Page, specimen: Locator, expectations: Expectation[
   return failed.map(describeExpectation);
 };
 
+const keyOf = (press: string) => (process.platform === 'darwin' && press === 'Shift+F10' ? 'ContextMenu' : press);
+
 const runStep = async (page: Page, specimen: Locator, step: Step) => {
-  if ('press' in step) return page.keyboard.press(step.press);
+  if ('press' in step) return page.keyboard.press(keyOf(step.press));
 
   const locator = await resolve(page, specimen, 'focus' in step ? step.focus : step.click);
   await locator.waitFor({ state: 'attached', timeout: TIMEOUT });
@@ -141,9 +143,9 @@ const runStep = async (page: Page, specimen: Locator, step: Step) => {
 
 const runCheck = async (page: Page, check: Check) => {
   const name = check.example.split('/').at(-1);
-  const workbench = page.getByRole('group', { name: 'Live preview' }).filter({ hasText: `${name} · ` });
-  await workbench.first().waitFor({ timeout: TIMEOUT }).catch(() => {});
-  if (await workbench.count() !== 1) return [`${await workbench.count()} workbenches for ${check.example}`];
+  const workbench = page.getByRole('group', { name: 'Live preview' }).filter({ hasText: `${name} · ` }).first();
+  await workbench.waitFor({ timeout: TIMEOUT }).catch(() => {});
+  if (await workbench.count() === 0) return [`no workbench for ${check.example}`];
 
   await workbench.scrollIntoViewIfNeeded();
   await page.evaluate(() => {
@@ -162,7 +164,7 @@ const runCheck = async (page: Page, check: Check) => {
   const before = await waitFor(page, specimen, check.before ?? []);
   if (before.length > 0) return before.map((message) => `before: ${message}`);
 
-  await page.keyboard.press(check.press);
+  await page.keyboard.press(keyOf(check.press));
 
   return waitFor(page, specimen, check.expect);
 };

@@ -1,15 +1,14 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { CheckboxCard, CheckboxCardProps } from './CheckboxCard';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 import {
   CheckboxCardContent,
   CheckboxCardControl,
-  CheckboxCardControlCheckedIcon,
   CheckboxCardControlInput,
-  CheckboxCardControlIndeterminateIcon,
   CheckboxCardDescription,
   CheckboxCardTitle,
 } from './components';
-import { CheckboxIndicator } from '../Checkbox';
+import { CheckboxCheckedIcon, CheckboxIndeterminateIcon, CheckboxIndicator } from '../Checkbox';
 
 const meta = {
   title: 'Form/Selectors/CheckboxCard',
@@ -20,8 +19,8 @@ const meta = {
     CheckboxCardDescription,
     CheckboxCardControl,
     CheckboxCardControlInput,
-    CheckboxCardControlIndeterminateIcon,
-    CheckboxCardControlCheckedIcon,
+    CheckboxIndeterminateIcon,
+    CheckboxCheckedIcon,
   },
   parameters: {
     layout: 'centered',
@@ -54,8 +53,8 @@ const meta = {
       <CheckboxCardControl key='control'>
         <CheckboxCardControlInput />
         <CheckboxIndicator>
-          <CheckboxCardControlCheckedIcon />
-          <CheckboxCardControlIndeterminateIcon />
+          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+          <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
         </CheckboxIndicator>
       </CheckboxCardControl>,
     ],
@@ -94,8 +93,8 @@ export const States: Story = {
                 aria-invalid={row.invalid}
               />
               <CheckboxIndicator>
-                <CheckboxCardControlCheckedIcon />
-                <CheckboxCardControlIndeterminateIcon />
+                <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+                <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
               </CheckboxIndicator>
             </CheckboxCardControl>
           </CheckboxCard>
@@ -119,8 +118,8 @@ export const LongContent: Story = {
           <CheckboxCardControl>
             <CheckboxCardControlInput />
             <CheckboxIndicator>
-              <CheckboxCardControlCheckedIcon />
-              <CheckboxCardControlIndeterminateIcon />
+              <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+              <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
             </CheckboxIndicator>
           </CheckboxCardControl>
         </CheckboxCard>

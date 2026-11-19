@@ -21,8 +21,8 @@ export const MenuContent: FC<MenuContentProps> = ({
   ref,
   ...props
 }) => {
-  const { handle, size, side, align, anchorName } = useMenuContext()
-  const attrs = useOutput(handle, menuWidget.output.content)
+  const { handle, size, side, align, anchorName, content = menuWidget.output.content } = useMenuContext()
+  const attrs = useOutput(handle, content)
   const contentRef = useMergeRefs([handle.rootAt(CONTENT), ref])
   const named = props['aria-label'] !== undefined || props['aria-labelledby'] !== undefined
 

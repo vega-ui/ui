@@ -45,6 +45,7 @@ import {
   SelectOption,
   SelectValue,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 export default function MinimalComposition() {
@@ -57,7 +58,7 @@ export default function MinimalComposition() {
         <SelectHiddenSelect name='language' />
         <SelectCombobox id={id}>
           <SelectValue placeholder='Choose a language' />
-          <SelectIcon />
+          <SelectIcon><ChevronDownIcon /></SelectIcon>
         </SelectCombobox>
         <SelectListbox>
           <SelectOption value='en'>English</SelectOption>
@@ -66,6 +67,61 @@ export default function MinimalComposition() {
           <SelectOption value='ja'>日本語</SelectOption>
         </SelectListbox>
       </Select>
+    </div>
+  );
+}
+```
+<!-- /example -->
+
+## Свой компонент
+
+Минимальная композиция выше показывает части на месте. В приложении соберите их один раз в своём файле, со своим набором иконок, и импортируйте этот компонент везде. `MySelect` передаёт свои пропсы в `Select`, `id` — триггеру для `Label`, `name` — скрытому select, а дочерние элементы — в список. См. [Рецепты компонентов](../../recipes.md).
+
+<!-- example: select/recipe.tsx -->
+```tsx
+import {
+  Label,
+  Select,
+  SelectCombobox,
+  SelectHiddenSelect,
+  SelectIcon,
+  SelectListbox,
+  SelectOption,
+  SelectValue,
+  type SelectProps,
+} from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
+import { useId } from 'react';
+
+interface MySelectProps<Value extends string | number = string> extends SelectProps<Value> {
+  name?: string
+  placeholder?: string
+}
+
+export function MySelect<Value extends string | number = string>({ id, name, placeholder, children, ...props }: MySelectProps<Value>) {
+  return (
+    <Select {...props}>
+      <SelectHiddenSelect name={name} />
+      <SelectCombobox id={id}>
+        <SelectValue placeholder={placeholder} />
+        <SelectIcon><ChevronDownIcon /></SelectIcon>
+      </SelectCombobox>
+      <SelectListbox>{children}</SelectListbox>
+    </Select>
+  );
+}
+
+export default function Recipe() {
+  const id = useId();
+
+  return (
+    <div style={{ display: 'grid', gap: 'var(--spacing-3)', width: '100%', maxWidth: 280 }}>
+      <Label htmlFor={id}>Interface language</Label>
+      <MySelect id={id} name='language' defaultValue='en' placeholder='Choose a language'>
+        <SelectOption value='en'>English</SelectOption>
+        <SelectOption value='de'>Deutsch</SelectOption>
+        <SelectOption value='ja'>日本語</SelectOption>
+      </MySelect>
     </div>
   );
 }
@@ -83,7 +139,7 @@ export default function MinimalComposition() {
 ## Необязательные части
 
 - `SelectHiddenSelect`: нативное [участие в форме](../../glossary.md#участие-в-форме-form-participation)
-- `SelectIcon`: визуальная подсказка триггера
+- `SelectIcon`: иконка триггера, например переданный дочерним элементом шеврон
 
 ## Порядок композиции
 

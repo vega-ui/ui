@@ -28,10 +28,9 @@ export default function ParentOwnedSelectedSegment() {
     <div style={{ display: 'grid', gap: 'var(--spacing-8)', justifyItems: 'start', width: '100%' }}>
       <SegmentedControl
         name='traffic-range'
-        role='radiogroup'
         aria-label='Date range'
         value={range}
-        onChange={(event) => setRange(event.currentTarget.value)}
+        onChangeValue={setRange}
       >
         {ranges.map((item) => (
           <SegmentedControlItem key={item.value} value={item.value}>

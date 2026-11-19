@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { Button, Icon, IconButton, VisuallyHidden } from '@vega-ui/react';
+import { Button, Icon, VisuallyHidden } from '@vega-ui/react';
 import { Check, Copy, FileText } from '@vega-ui/icons';
 import { getMarkdownPath } from '@/lib/site';
 import { useDictionary } from './LocaleProvider';
@@ -39,11 +39,11 @@ export const CopyPage = () => {
         <Icon size='xs'>{copied ? <Check /> : <Copy />}</Icon>
         <span className={styles.copyLabel}>{copied ? t.doc.copied : t.doc.copyPage}</span>
       </Button>
-      <IconButton asChild size='xs' variant='secondary' appearance='ghost' className={styles.compact}>
+      <Button square asChild size='xs' variant='secondary' appearance='ghost' className={styles.compact}>
         <a href={href} aria-label={t.doc.markdown} title={t.doc.markdown}>
           <Icon size='xs'><FileText /></Icon>
         </a>
-      </IconButton>
+      </Button>
       <VisuallyHidden role='status'>
         {copied ? t.doc.copied : ''}
       </VisuallyHidden>

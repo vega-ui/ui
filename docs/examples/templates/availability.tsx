@@ -33,7 +33,7 @@ import {
   DateField,
   DateFieldCalendar,
   DateFieldInput,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
   Grid,
   GridCell,
   GridColumnHeader,
@@ -43,7 +43,6 @@ import {
   Heading,
   HelperText,
   Icon,
-  IconButton,
   Label,
   Popover,
   PopoverContent,
@@ -61,7 +60,7 @@ import {
   SwitchInput,
   Text,
 } from '@vega-ui/react';
-import { Plus, Trash2 } from '@vega-ui/icons';
+import { CalendarIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, CircleCheckIcon, PlusIcon, Trash2Icon } from '@vega-ui/icons';
 import './availability.css';
 
 const days = [
@@ -273,7 +272,7 @@ export default function Availability() {
                 <SelectHiddenSelect name='timezone' />
                 <SelectCombobox id={`${id}-timezone`}>
                   <SelectValue placeholder='Choose a time zone' />
-                  <SelectIcon />
+                  <SelectIcon><ChevronDownIcon /></SelectIcon>
                 </SelectCombobox>
                 <SelectListbox>
                   {timezones.map((item) => (
@@ -319,17 +318,17 @@ export default function Availability() {
                           />
                           <Popover placement='bottom-end'>
                             <PopoverTrigger asChild>
-                              <DateFieldTriggerIconButton aria-label={`Choose exception ${index + 1} date`} />
+                              <DateFieldTrigger square aria-label={`Choose exception ${index + 1} date`}><Icon><CalendarIcon /></Icon></DateFieldTrigger>
                             </PopoverTrigger>
                             <PopoverContent>
                               <DateFieldCalendar aria-label={`Choose exception ${index + 1} date`}>
                                 <CalendarHeader>
-                                  <CalendarPrevButton aria-label='Previous month' />
+                                  <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                                   <CalendarHeading>
                                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                                   </CalendarHeading>
-                                  <CalendarNextButton aria-label='Next month' />
+                                  <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                                 </CalendarHeader>
                                 <CalendarContent>
                                   <CalendarDays>
@@ -363,9 +362,9 @@ export default function Availability() {
                             </PopoverContent>
                           </Popover>
                         </DateField>
-                        <IconButton size='xs' type='button' variant='secondary' appearance='ghost' aria-label={`Remove ${name}`} onClick={() => removeException(item.key)} style={{ flexShrink: 0 }}>
-                          <Icon size='xs'><Trash2 /></Icon>
-                        </IconButton>
+                        <Button square size='xs' type='button' variant='secondary' appearance='ghost' aria-label={`Remove ${name}`} onClick={() => removeException(item.key)} style={{ flexShrink: 0 }}>
+                          <Icon size='xs'><Trash2Icon /></Icon>
+                        </Button>
                       </div>
                       {error && <HelperText id={`${id}-exception-${item.key}-error`} invalid>{error}</HelperText>}
                       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
@@ -392,7 +391,7 @@ export default function Availability() {
             )}
 
             <Button size='xs' type='button' variant='secondary' appearance='ghost' onClick={addException} style={{ alignSelf: 'flex-start', gap: 'var(--spacing-3)' }}>
-              <Icon size='xs' aria-hidden='true'><Plus /></Icon>
+              <Icon size='xs' aria-hidden='true'><PlusIcon /></Icon>
               Add a date
             </Button>
           </Card>
@@ -402,7 +401,7 @@ export default function Availability() {
       <div style={{ display: 'grid', gap: 'var(--spacing-8)' }}>
         {saved && (
           <Alert variant='success'>
-            <AlertIcon />
+            <AlertIcon><CircleCheckIcon /></AlertIcon>
             <AlertMain>
               <AlertTitle>Availability saved</AlertTitle>
               <AlertContent>{`${describeHours(slots)} a week, shown in ${timezoneLabel}. New bookings follow these hours right away.`}</AlertContent>

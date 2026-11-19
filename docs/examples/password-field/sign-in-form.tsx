@@ -5,11 +5,12 @@ import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleIconButton,
+  PasswordFieldToggle,
   Text,
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
+import { EyeIcon, EyeOffIcon } from '@vega-ui/icons';
 import { FormEvent, useId, useState } from 'react';
 
 export default function SignInForm() {
@@ -37,10 +38,10 @@ export default function SignInForm() {
         <Label htmlFor={`${id}-password`}>Password</Label>
         <PasswordField shown={shown} onChangeShown={setShown}>
           <PasswordFieldInput id={`${id}-password`} name='password' autoComplete='current-password' required />
-          <PasswordFieldToggleIconButton aria-label='Show password'>
-            <PasswordFieldShownIcon />
-            <PasswordFieldHiddenIcon />
-          </PasswordFieldToggleIconButton>
+          <PasswordFieldToggle square aria-label='Show password'>
+            <PasswordFieldShownIcon><EyeIcon /></PasswordFieldShownIcon>
+            <PasswordFieldHiddenIcon><EyeOffIcon /></PasswordFieldHiddenIcon>
+          </PasswordFieldToggle>
         </PasswordField>
       </div>
       <Button type='submit' style={{ marginBlockStart: 'var(--spacing-4)' }}>Sign in</Button>

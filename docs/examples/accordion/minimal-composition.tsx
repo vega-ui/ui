@@ -6,6 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 
 export default function MinimalComposition() {
   return (
@@ -14,7 +15,7 @@ export default function MinimalComposition() {
         <AccordionHeader>
           <AccordionTrigger>
             Account settings
-            <AccordionIcon />
+            <AccordionIcon><ChevronDownIcon /></AccordionIcon>
           </AccordionTrigger>
         </AccordionHeader>
         <AccordionContent>Profile, password, and session settings.</AccordionContent>

@@ -13,7 +13,6 @@ import {
   Button,
   Heading,
   Icon,
-  IconButton,
   Sheet,
   SheetClose,
   SheetContent,
@@ -45,14 +44,15 @@ export default function SheetWithHeadingAndCloseButton() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
           <Heading id={titleId} as='h2' size={4} fontWeight={600}>Share Blue Harbor Cafe</Heading>
           <SheetClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </SheetClose>
         </div>
         <Text id={descriptionId} size={3} style={{ color: 'var(--label-secondary)' }}>12 Quay Street · Open until 22:00</Text>
@@ -158,7 +158,6 @@ import {
   Button,
   Heading,
   Icon,
-  IconButton,
   Sheet,
   SheetClose,
   SheetContent,
@@ -195,14 +194,15 @@ export default function MobileLikePickerSurface() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
           <Heading id={titleId} as='h2' size={4} fontWeight={600}>Delivery time</Heading>
           <SheetClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </SheetClose>
         </div>
         <div style={{ display: 'grid', gap: 'var(--spacing-1)' }}>
@@ -240,7 +240,6 @@ import {
   Button,
   Heading,
   Icon,
-  IconButton,
   Label,
   Sheet,
   SheetClose,
@@ -278,14 +277,15 @@ export default function SheetWithFormContent() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
             <Heading id={titleId} as='h2' size={4} fontWeight={600}>How was your delivery?</Heading>
             <SheetClose asChild>
-              <IconButton
+              <Button
+                square
                 aria-label='Close'
                 variant='secondary'
                 appearance='ghost'
-                style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+                style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
               >
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </SheetClose>
           </div>
           <form method='dialog' onSubmit={onSubmit} style={{ display: 'grid', gap: 'var(--spacing-8)' }}>
@@ -379,7 +379,6 @@ import {
   Button,
   Heading,
   Icon,
-  IconButton,
   Sheet,
   SheetClose,
   SheetContent,
@@ -406,14 +405,15 @@ export default function NestedSheets() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
           <Heading id={placeTitleId} as='h2' size={4} fontWeight={600}>Blue Harbor Cafe</Heading>
           <SheetClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </SheetClose>
         </div>
         <Text size={3}>120 m · Open until 22:00 · ★ 4.8</Text>
@@ -453,7 +453,6 @@ import {
   Heading,
   HelperText,
   Icon,
-  IconButton,
   Label,
   Sheet,
   SheetClose,
@@ -522,14 +521,15 @@ export default function FormError() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
             <Heading id={titleId} as='h2' size={4} fontWeight={600}>Promo code</Heading>
             <SheetClose asChild>
-              <IconButton
+              <Button
+                square
                 aria-label='Close'
                 variant='secondary'
                 appearance='ghost'
-                style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+                style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
               >
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </SheetClose>
           </div>
           <form onSubmit={onSubmit} style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
@@ -571,7 +571,6 @@ import {
   Heading,
   HelperText,
   Icon,
-  IconButton,
   Sheet,
   SheetContent,
   SheetHandle,
@@ -608,13 +607,13 @@ export default function DisabledTrigger() {
           <Text size={2} style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>${price.toFixed(2)}</Text>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
-          <IconButton aria-label='Remove one flat white' size='sm' variant='secondary' appearance='ghost' disabled={empty} onClick={() => setCount(count - 1)}>
+          <Button square aria-label='Remove one flat white' size='sm' variant='secondary' appearance='ghost' disabled={empty} onClick={() => setCount(count - 1)}>
             <Icon size='xs'><MinusIcon /></Icon>
-          </IconButton>
+          </Button>
           <Text size={3} aria-live='polite' style={{ minWidth: '2ch', textAlign: 'center', fontVariantNumeric: 'tabular-nums' }}>{count}</Text>
-          <IconButton aria-label='Add one flat white' size='sm' variant='secondary' appearance='ghost' onClick={() => setCount(count + 1)}>
+          <Button square aria-label='Add one flat white' size='sm' variant='secondary' appearance='ghost' onClick={() => setCount(count + 1)}>
             <Icon size='xs'><PlusIcon /></Icon>
-          </IconButton>
+          </Button>
         </div>
       </div>
       <Sheet>

@@ -14,7 +14,6 @@ import {
   Heading,
   HelperText,
   Icon,
-  IconButton,
   Label,
   Meter,
   MeterTrack,
@@ -34,7 +33,7 @@ import {
   TextArea,
   VisuallyHidden,
 } from '@vega-ui/react';
-import { XIcon } from '@vega-ui/icons';
+import { ChevronDownIcon, XIcon } from '@vega-ui/icons';
 
 type Role = 'owner' | 'admin' | 'editor' | 'viewer';
 
@@ -81,7 +80,7 @@ const initialInvites: Invite[] = [
 
 const field = { display: 'grid', gap: 'var(--spacing-3)', alignContent: 'start' } as const;
 const nowrap = { whiteSpace: 'nowrap' } as const;
-const closeButton = { flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties;
+const closeButton = { flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties;
 const dialogHeader = { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' } as const;
 const actions = { display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end', gap: 'var(--spacing-4)' } as const;
 
@@ -214,9 +213,9 @@ export default function TeamMembers() {
               <div style={dialogHeader}>
                 <Heading id={`${id}-invite-title`} as='h2' size={4} fontWeight={600}>Invite members</Heading>
                 <DialogClose asChild>
-                  <IconButton size='xs' aria-label='Close' variant='secondary' appearance='ghost' style={closeButton}>
+                  <Button square size='xs' aria-label='Close' variant='secondary' appearance='ghost' style={closeButton}>
                     <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-                  </IconButton>
+                  </Button>
                 </DialogClose>
               </div>
               <Text id={`${id}-invite-description`} size={3} style={{ display: 'block', marginBlockStart: 'var(--spacing-4)', color: 'var(--label-secondary)' }}>
@@ -245,7 +244,7 @@ export default function TeamMembers() {
                   <Select value={inviteRole} onChangeValue={(role) => setInviteRole(role ?? 'editor')}>
                     <SelectCombobox id={`${id}-invite-role`}>
                       <SelectValue />
-                      <SelectIcon />
+                      <SelectIcon><ChevronDownIcon /></SelectIcon>
                     </SelectCombobox>
                     <SelectListbox>
                       {assignable.map((role) => <SelectOption key={role} value={role}>{roles[role]}</SelectOption>)}
@@ -323,7 +322,7 @@ export default function TeamMembers() {
                           <Select size='xs' value={member.role} onChangeValue={(role) => changeRole(member, role)} style={{ minWidth: 120 }}>
                             <SelectCombobox aria-label={`Role of ${member.name}`}>
                               <SelectValue />
-                              <SelectIcon />
+                              <SelectIcon><ChevronDownIcon /></SelectIcon>
                             </SelectCombobox>
                             <SelectListbox>
                               {assignable.map((role) => <SelectOption key={role} value={role}>{roles[role]}</SelectOption>)}
@@ -395,9 +394,9 @@ export default function TeamMembers() {
           <div style={dialogHeader}>
             <Heading id={`${id}-remove-title`} as='h2' size={4} fontWeight={600}>{`Remove ${target?.name ?? 'member'}?`}</Heading>
             <DialogClose asChild>
-              <IconButton size='xs' aria-label='Close' variant='secondary' appearance='ghost' style={closeButton}>
+              <Button square size='xs' aria-label='Close' variant='secondary' appearance='ghost' style={closeButton}>
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DialogClose>
           </div>
           <Text id={`${id}-remove-description`} size={3} style={{ display: 'block', marginBlockStart: 'var(--spacing-4)', color: 'var(--label-secondary)' }}>

@@ -206,7 +206,7 @@ export default function VerticalSettings() {
 <!-- example: tabs/tabs-inside-dialog.tsx -->
 ```tsx
 import { useId, type CSSProperties } from 'react';
-import { Button, Dialog, DialogClose, DialogContent, DialogTrigger, Heading, Icon, IconButton, Label, Tabs, TabsList, TabsPanel, TabsTab, Text, TextField, TextFieldInput } from '@vega-ui/react';
+import { Button, Dialog, DialogClose, DialogContent, DialogTrigger, Heading, Icon, Label, Tabs, TabsList, TabsPanel, TabsTab, Text, TextField, TextFieldInput } from '@vega-ui/react';
 import { XIcon } from '@vega-ui/icons';
 
 export default function TabsInsideDialog() {
@@ -222,14 +222,15 @@ export default function TabsInsideDialog() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)', marginBlockEnd: 'var(--spacing-8)' }}>
           <Heading id={titleId} as='h2' size={4} fontWeight={600}>Share “Spring release”</Heading>
           <DialogClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </DialogClose>
         </div>
         <Tabs defaultValue='invite' size='sm'>

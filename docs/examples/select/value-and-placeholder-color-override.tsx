@@ -7,6 +7,7 @@ import {
   SelectOption,
   SelectValue,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 
 export default function ValueAndPlaceholderColorOverride() {
   return (
@@ -19,7 +20,7 @@ export default function ValueAndPlaceholderColorOverride() {
     >
       <SelectCombobox aria-label='Status'>
         <SelectValue placeholder='Any status' />
-        <SelectIcon />
+        <SelectIcon><ChevronDownIcon /></SelectIcon>
       </SelectCombobox>
       <SelectListbox>
         <SelectOption value='open'>Open</SelectOption>

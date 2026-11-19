@@ -4,38 +4,39 @@
 
 ### Basic: the four variants
 
-Each variant gets its matching default icon from `AlertIcon`. `appearance='surface'` adds a border for messages that need more weight, like the declined card. These alerts are part of the page from the start, so they need no live-region role.
+Each `AlertIcon` holds an icon that matches the variant of its alert: `AlertIcon` gives it the size and color, and the choice of icon is yours. `appearance='surface'` adds a border for messages that need more weight, like the declined card. These alerts are part of the page from the start, so they need no live-region role.
 
 <!-- example: alert/variants.tsx -->
 ```tsx
 import { Alert, AlertContent, AlertIcon, AlertMain, AlertTitle } from '@vega-ui/react';
+import { CircleAlertIcon, CircleCheckIcon, InfoIcon, TriangleAlertIcon } from '@vega-ui/icons';
 
 export default function Variants() {
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-6)', width: '100%', maxWidth: 560 }}>
       <Alert variant='info'>
-        <AlertIcon />
+        <AlertIcon><InfoIcon /></AlertIcon>
         <AlertMain>
           <AlertTitle>Scheduled maintenance</AlertTitle>
           <AlertContent>The dashboard will be read-only on Sunday from 02:00 to 03:00 UTC.</AlertContent>
         </AlertMain>
       </Alert>
       <Alert variant='success'>
-        <AlertIcon />
+        <AlertIcon><CircleCheckIcon /></AlertIcon>
         <AlertMain>
           <AlertTitle>Domain verified</AlertTitle>
           <AlertContent>Emails from billing@northwind.io will now pass SPF and DKIM checks.</AlertContent>
         </AlertMain>
       </Alert>
       <Alert variant='warning'>
-        <AlertIcon />
+        <AlertIcon><TriangleAlertIcon /></AlertIcon>
         <AlertMain>
           <AlertTitle>Storage almost full</AlertTitle>
           <AlertContent>You have used 46.2 GB of 50 GB. Uploads stop when the limit is reached.</AlertContent>
         </AlertMain>
       </Alert>
       <Alert variant='error' appearance='surface'>
-        <AlertIcon />
+        <AlertIcon><CircleAlertIcon /></AlertIcon>
         <AlertMain>
           <AlertTitle>Card declined</AlertTitle>
           <AlertContent>The payment for invoice INV-2048 was declined by the bank. Update the card to keep your plan.</AlertContent>
@@ -57,8 +58,8 @@ The parent owns visibility. The dismiss button has its own accessible name, and 
 ```tsx
 import { useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
-import { Alert, AlertContent, AlertIcon, AlertMain, AlertTitle, Button, Heading, Icon, IconButton } from '@vega-ui/react';
-import { XIcon } from '@vega-ui/icons';
+import { Alert, AlertContent, AlertIcon, AlertMain, AlertTitle, Button, Heading, Icon } from '@vega-ui/react';
+import { InfoIcon, XIcon } from '@vega-ui/icons';
 
 export default function Dismissible() {
   const [visible, setVisible] = useState(true);
@@ -74,20 +75,21 @@ export default function Dismissible() {
       <Heading ref={headingRef} id='billing-heading' as='h2' size={4} fontWeight={600} tabIndex={-1}>Billing</Heading>
       {visible && (
         <Alert variant='info'>
-          <AlertIcon />
+          <AlertIcon><InfoIcon /></AlertIcon>
           <AlertMain>
             <AlertTitle>New invoice layout</AlertTitle>
             <AlertContent>Invoices now group usage by project. Old invoices keep their original layout.</AlertContent>
           </AlertMain>
-          <IconButton
+          <Button
+            square
             aria-label='Dismiss'
             variant='secondary'
             appearance='ghost'
             onClick={dismiss}
-            style={{ '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+            style={{ '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
           >
             <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-          </IconButton>
+          </Button>
         </Alert>
       )}
       {!visible && (
@@ -125,6 +127,7 @@ import {
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
+import { CheckIcon, CircleAlertIcon, CircleCheckIcon } from '@vega-ui/icons';
 
 type Status = 'idle' | 'saving' | 'saved' | 'failed';
 
@@ -160,7 +163,7 @@ export default function SaveFeedback() {
         <Checkbox>
           <CheckboxInput name='offline' />
           <CheckboxIndicator>
-            <CheckboxCheckedIcon />
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
           </CheckboxIndicator>
           Simulate a network error
         </Checkbox>
@@ -172,7 +175,7 @@ export default function SaveFeedback() {
         <div role='status'>
           {status === 'saved' && (
             <Alert variant='success'>
-              <AlertIcon />
+              <AlertIcon><CircleCheckIcon /></AlertIcon>
               <AlertMain>
                 <AlertContent>Workspace renamed to “{savedName}”.</AlertContent>
               </AlertMain>
@@ -181,7 +184,7 @@ export default function SaveFeedback() {
         </div>
         {status === 'failed' && (
           <Alert variant='error' role='alert'>
-            <AlertIcon />
+            <AlertIcon><CircleAlertIcon /></AlertIcon>
             <AlertMain>
               <AlertTitle>Changes not saved</AlertTitle>
               <AlertContent>We could not reach the server. Check your connection and save again.</AlertContent>
@@ -217,10 +220,9 @@ import {
   DialogTrigger,
   Heading,
   Icon,
-  IconButton,
   Text,
 } from '@vega-ui/react';
-import { XIcon } from '@vega-ui/icons';
+import { TriangleAlertIcon, XIcon } from '@vega-ui/icons';
 
 const destructive = {
   '--button-background-color': 'var(--color-red-accent-500)',
@@ -238,21 +240,22 @@ export default function DeleteDialog() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
           <Heading id='delete-project-title' as='h2' size={4} fontWeight={600}>Delete “Mobile app”?</Heading>
           <DialogClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </DialogClose>
         </div>
         <Text size={3} asChild>
           <p style={{ marginBlock: 'var(--spacing-4) var(--spacing-8)', color: 'var(--label-secondary)' }}>The project, its 14 environments and all deployment history will be removed.</p>
         </Text>
         <Alert id='delete-project-warning' variant='warning'>
-          <AlertIcon />
+          <AlertIcon><TriangleAlertIcon /></AlertIcon>
           <AlertMain>
             <AlertTitle>3 services still use this project</AlertTitle>
             <AlertContent>Billing API, Notifications and Search will stop receiving configuration updates.</AlertContent>
@@ -290,6 +293,7 @@ import {
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
+import { CircleAlertIcon } from '@vega-ui/icons';
 
 type Errors = { email?: string; seats?: string };
 
@@ -323,7 +327,7 @@ export default function ErrorSummary() {
     <form noValidate onSubmit={submit} style={{ display: 'grid', gap: 'var(--spacing-12)', width: '100%', maxWidth: 420 }}>
       {messages.length > 0 && (
         <Alert variant='error' role='alert'>
-          <AlertIcon />
+          <AlertIcon><CircleAlertIcon /></AlertIcon>
           <AlertMain>
             <AlertTitle>Fix {messages.length === 1 ? 'one error' : `${messages.length} errors`} to continue</AlertTitle>
             <ul style={{ margin: 0, paddingInlineStart: 'var(--spacing-9)' }}>
@@ -388,6 +392,7 @@ The domain and the TXT record have no spaces, so they need `overflow-wrap: anywh
 ```tsx
 import { useState } from 'react';
 import { Alert, AlertContent, AlertIcon, AlertMain, AlertTitle, Button, Text } from '@vega-ui/react';
+import { TriangleAlertIcon } from '@vega-ui/icons';
 
 const record = 'vega-site-verification=8c1f0b6e2d9a4f7b93e5c2a1d0f4e6b8a7c3d9e1f2b4a6c8d0e2f4a6b8c0d2e4';
 
@@ -406,7 +411,7 @@ export default function DomainVerification() {
 
   return (
     <Alert variant='warning' style={{ width: '100%', maxWidth: 560 }}>
-      <AlertIcon />
+      <AlertIcon><TriangleAlertIcon /></AlertIcon>
       <AlertMain style={{ minWidth: 0, gap: 'var(--spacing-4)' }}>
         <AlertTitle style={{ overflowWrap: 'anywhere' }}>Verify northwind-logistics-international.example.com</AlertTitle>
         <AlertContent>Add this TXT record at your DNS provider. Changes can take up to 48 hours to apply.</AlertContent>

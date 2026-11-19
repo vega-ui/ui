@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Button } from '../Button';
 import { Separator } from '../Separator';
 import { Menu } from './Menu';
-import { ChevronRightIcon } from '@vega-ui/icons';
+import { CheckIcon, ChevronRightIcon } from '@vega-ui/icons';
 import { Icon } from '../Icon';
 import { MenuCheckboxItem, MenuContent, MenuGroup, MenuItem, MenuItemIndicator, MenuRadioGroup, MenuRadioItem, MenuSubmenu, MenuSubmenuTrigger, MenuTrigger } from './components';
 
@@ -58,14 +58,14 @@ const meta = {
         </MenuSubmenu>
         <Separator />
         <MenuGroup aria-label='View'>
-          <MenuCheckboxItem defaultChecked><MenuItemIndicator />Ruler</MenuCheckboxItem>
-          <MenuCheckboxItem><MenuItemIndicator />Grid</MenuCheckboxItem>
+          <MenuCheckboxItem defaultChecked><MenuItemIndicator><CheckIcon /></MenuItemIndicator>Ruler</MenuCheckboxItem>
+          <MenuCheckboxItem><MenuItemIndicator><CheckIcon /></MenuItemIndicator>Grid</MenuCheckboxItem>
         </MenuGroup>
         <Separator />
         <MenuRadioGroup aria-label='Zoom' defaultValue='fit'>
-          <MenuRadioItem value='fit'><MenuItemIndicator />Fit to window</MenuRadioItem>
-          <MenuRadioItem value='100'><MenuItemIndicator />Actual size</MenuRadioItem>
-          <MenuRadioItem value='200' disabled><MenuItemIndicator />200%</MenuRadioItem>
+          <MenuRadioItem value='fit'><MenuItemIndicator><CheckIcon /></MenuItemIndicator>Fit to window</MenuRadioItem>
+          <MenuRadioItem value='100'><MenuItemIndicator><CheckIcon /></MenuItemIndicator>Actual size</MenuRadioItem>
+          <MenuRadioItem value='200' disabled><MenuItemIndicator><CheckIcon /></MenuItemIndicator>200%</MenuRadioItem>
         </MenuRadioGroup>
         <Separator />
         <MenuItem asChild><a href='#help'>Help</a></MenuItem>

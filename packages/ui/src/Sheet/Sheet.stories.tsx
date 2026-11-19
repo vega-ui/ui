@@ -5,7 +5,6 @@ import { XIcon } from '@vega-ui/icons';
 import { Sheet, SheetProps } from './Sheet';
 import { SheetClose, SheetContent, SheetContentProps, SheetHandle, SheetTrigger } from './components';
 import { Button } from '../Button';
-import { IconButton } from '../IconButton';
 import { Icon } from '../Icon';
 import { Text } from '../Text';
 import { Heading } from '../Heading';
@@ -76,14 +75,15 @@ export const Playground: Story = {
           <SheetHandle aria-label='Resize sheet' />
           <Heading id='share-title' size={4} fontWeight={600} as='h2'>Share</Heading>
           <SheetClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ position: 'absolute', insetBlockStart: 16, insetInlineEnd: 'calc(16px + var(--sheet-inset, var(--spacing-8)))', '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ position: 'absolute', insetBlockStart: 16, insetInlineEnd: 'calc(16px + var(--sheet-inset, var(--spacing-8)))', '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </SheetClose>
           <form method='dialog' style={{ display: 'grid', gap: 8 }}>
             <Text size={3}>Send Coffee place 1 to a friend or save it for later.</Text>

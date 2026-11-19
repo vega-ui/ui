@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import {
   Icon,
   Pagination,
@@ -39,16 +39,16 @@ export default function RtlPagination() {
   const [page, setPage] = useState(6);
 
   return (
-    <Pagination dir='rtl' lang='ar' aria-label='الصفحات'>
+    <Pagination dir='rtl' lang='ar' aria-label='الصفحات' size='sm'>
       <PaginationList>
         <PaginationItem>
           <PaginationLink asChild>
             <button type='button' aria-label='الصفحة السابقة' disabled={page === 1} onClick={() => setPage(page - 1)}>
-              <Icon><ChevronRight /></Icon>
+              <Icon><ChevronRightIcon /></Icon>
             </button>
           </PaginationLink>
         </PaginationItem>
-        {getPageItems(page, total, 1).map((item) => {
+        {getPageItems(page, total, 0).map((item) => {
           if (typeof item === 'string') {
             return <PaginationEllipsis key={item} />;
           }
@@ -66,7 +66,7 @@ export default function RtlPagination() {
         <PaginationItem>
           <PaginationLink asChild>
             <button type='button' aria-label='الصفحة التالية' disabled={page === total} onClick={() => setPage(page + 1)}>
-              <Icon><ChevronLeft /></Icon>
+              <Icon><ChevronLeftIcon /></Icon>
             </button>
           </PaginationLink>
         </PaginationItem>

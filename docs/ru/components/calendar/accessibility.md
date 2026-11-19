@@ -55,7 +55,7 @@ function NamedDay() {
 
 - недели идут справа налево, первый день недели — справа
 - `ArrowRight` переходит к предыдущему дню, а `ArrowLeft` — к следующему
-- следующий месяц находится слева: его показывают свайп влево и `CalendarNextButton`, а стандартные шевроны зеркалятся
+- следующий месяц находится слева: его показывают свайп влево и `CalendarNextButton`, а иконка внутри `CalendarPrevButton` и `CalendarNextButton` зеркалится
 
 ## Семантика для скринридеров
 
@@ -63,7 +63,7 @@ function NamedDay() {
 - сегодняшний день отмечен `aria-current="date"`
 - в режимах `multiple` и `range` сетка дней получает `aria-multiselectable="true"`
 - `CalendarViewButton` сообщает своё состояние через `aria-pressed`, пока показан её вид
-- `CalendarPrevButton` и `CalendarNextButton` рендерят только шеврон, поэтому задайте им `aria-label`
+- У `CalendarPrevButton` и `CalendarNextButton` нет своего имени: кнопке только с шевроном и `square` нужен `aria-label`, например «Previous month»
 - `Calendar` ставит `lang` на корень, когда передан `locale`, чтобы скринридеры произносили названия месяцев и дней на этом языке
 - пользовательское содержимое дня должно по-прежнему читаться как одна выбираемая ячейка даты
 

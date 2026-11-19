@@ -9,6 +9,7 @@ import {
   Button,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 
 const changes = [
   'Faster cold start for workspaces with more than 10\u00a0000 files',
@@ -40,7 +41,7 @@ export default function ReleaseNotes() {
             <span style={{ minWidth: 0, overflowWrap: 'anywhere' }}>
               v4.12.0-rc.3+build.20261103.experimental-telemetry-pipeline
             </span>
-            <AccordionIcon />
+            <AccordionIcon><ChevronDownIcon /></AccordionIcon>
           </AccordionTrigger>
         </AccordionHeader>
         <AccordionContent>

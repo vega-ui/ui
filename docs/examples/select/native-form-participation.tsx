@@ -10,6 +10,7 @@ import {
   SelectValue,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { FormEvent, useId, useState } from 'react';
 
 export default function NativeFormParticipation() {
@@ -34,7 +35,7 @@ export default function NativeFormParticipation() {
           <SelectHiddenSelect name='plan' />
           <SelectCombobox id={planId}>
             <SelectValue />
-            <SelectIcon />
+            <SelectIcon><ChevronDownIcon /></SelectIcon>
           </SelectCombobox>
           <SelectListbox>
             <SelectOption value='starter'>Starter</SelectOption>
@@ -49,7 +50,7 @@ export default function NativeFormParticipation() {
           <SelectHiddenSelect name='cycle' />
           <SelectCombobox id={cycleId}>
             <SelectValue />
-            <SelectIcon />
+            <SelectIcon><ChevronDownIcon /></SelectIcon>
           </SelectCombobox>
           <SelectListbox>
             <SelectOption value='monthly'>Monthly</SelectOption>

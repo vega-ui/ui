@@ -28,7 +28,7 @@ import {
 
 ## Минимальная композиция
 
-У самого `MeterStack` роли нет, а каждый `MeterStackSegment` рендерится с `role='meter'`. Задайте корню `role='group'` с доступным именем и подпишите каждый сегмент, иначе скринридер прочитает несколько безымянных индикаторов. Ширина сегмента — это `value / max`, поэтому `max` должен быть в той же шкале, что и значения сегментов.
+`MeterStack` рендерится с `role='group'`, а каждый `MeterStackSegment` — с `role='meter'`. Назовите корень через `aria-label` или `aria-labelledby` и подпишите каждый сегмент, иначе скринридер прочитает несколько безымянных индикаторов. Ширина сегмента — это `value / max`, поэтому `max` должен быть в той же шкале, что и значения сегментов.
 
 <!-- example: meter-stack/minimal-composition.tsx -->
 ```tsx
@@ -40,6 +40,89 @@ export default function MinimalComposition() {
       <MeterStackSegment value={0.5} aria-label='Apps' />
       <MeterStackSegment value={0.3} aria-label='Photos' />
     </MeterStack>
+  );
+}
+```
+<!-- /example -->
+
+## Свой компонент
+
+Минимальная композиция выше показывает части на месте. В приложении соберите их один раз в своём файле и импортируйте этот компонент везде. `MyMeterStack` передаёт свои пропсы в `MeterStack`, рендерит `label` над полосой и называет им группу, показывает `summary` рядом с подписью, а сегменты и их легенду строит из `segments`. См. [Рецепты компонентов](../../recipes.md).
+
+<!-- example: meter-stack/recipe.tsx -->
+```tsx
+import {
+  MeterStack,
+  MeterStackSegment,
+  Text,
+  type MeterStackProps,
+} from '@vega-ui/react';
+import { useId, type CSSProperties, type ReactNode } from 'react';
+
+interface Segment {
+  label: string
+  value: number
+  valueText: string
+  color: string
+}
+
+interface MyMeterStackProps extends MeterStackProps {
+  label: ReactNode
+  summary: ReactNode
+  segments: Segment[]
+}
+
+export function MyMeterStack({ label, summary, segments, ...props }: MyMeterStackProps) {
+  const labelId = useId();
+
+  return (
+    <div style={{ display: 'grid', gap: 'var(--spacing-8)', width: '100%' }}>
+      <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 'var(--spacing-8)' }}>
+          <Text id={labelId} size={2} fontWeight={500}>{label}</Text>
+          <Text size={2} style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>{summary}</Text>
+        </div>
+        <MeterStack aria-labelledby={labelId} fullWidth {...props}>
+          {segments.map((segment) => (
+            <MeterStackSegment
+              key={segment.label}
+              value={segment.value}
+              aria-label={segment.label}
+              aria-valuetext={segment.valueText}
+              style={{ '--meter-stack-segment-color': segment.color } as CSSProperties}
+            />
+          ))}
+        </MeterStack>
+      </div>
+      <ul style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 'var(--spacing-4) var(--spacing-8)', margin: 0, padding: 0, listStyle: 'none' }}>
+        {segments.map((segment) => (
+          <li key={segment.label} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-3)' }}>
+            <span aria-hidden='true' style={{ flexShrink: 0, width: 8, height: 8, borderRadius: '50%', background: segment.color }} />
+            <Text size={2}>{segment.label}</Text>
+            <Text size={2} style={{ marginInlineStart: 'auto', color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>{segment.valueText}</Text>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+const categories = [
+  { label: 'Apps', value: 82, valueText: '82 GB', color: 'var(--color-blue-500)' },
+  { label: 'Photos', value: 64, valueText: '64 GB', color: 'var(--color-purple-500)' },
+  { label: 'Messages', value: 18, valueText: '18 GB', color: 'var(--color-green-500)' },
+  { label: 'System', value: 31, valueText: '31 GB', color: 'var(--color-gray-500)' },
+];
+
+export default function Recipe() {
+  return (
+    <MyMeterStack
+      label='iPhone storage'
+      summary='195 GB of 256 GB used'
+      value={195}
+      max={256}
+      segments={categories}
+    />
   );
 }
 ```

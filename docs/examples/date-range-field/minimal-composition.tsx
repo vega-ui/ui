@@ -25,11 +25,13 @@ import {
   DateRangeField,
   DateRangeFieldCalendar,
   DateRangeFieldInput,
-  DateRangeFieldTriggerIconButton,
+  DateRangeFieldTrigger,
+  Icon,
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 export default function MinimalComposition() {
   return (
@@ -37,17 +39,17 @@ export default function MinimalComposition() {
       <DateRangeFieldInput aria-label='Trip dates' />
       <Popover placement='bottom-end'>
         <PopoverTrigger asChild>
-          <DateRangeFieldTriggerIconButton aria-label='Choose trip dates' />
+          <DateRangeFieldTrigger square aria-label='Choose trip dates'><Icon><CalendarIcon /></Icon></DateRangeFieldTrigger>
         </PopoverTrigger>
         <PopoverContent>
           <DateRangeFieldCalendar aria-label='Choose trip dates'>
             <CalendarHeader>
-              <CalendarPrevButton aria-label='Previous month' />
+              <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
               <CalendarHeading>
                 <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                 <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
               </CalendarHeading>
-              <CalendarNextButton aria-label='Next month' />
+              <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
             </CalendarHeader>
             <CalendarContent>
               <CalendarDays>

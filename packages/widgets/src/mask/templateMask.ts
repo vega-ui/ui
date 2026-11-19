@@ -10,7 +10,7 @@ const WORD = /[\p{L}\p{N}_]/u
 
 const isFixed = (entry: MaskEntry | undefined): entry is string => typeof entry === 'string'
 
-const fits = (char: string, mask: readonly MaskEntry[]) => mask.some((entry) => (isFixed(entry) ? entry === char : entry.test(char)))
+export const fits = (char: string, mask: readonly MaskEntry[]) => mask.some((entry) => (isFixed(entry) ? entry === char : entry.test(char)))
 
 const collapsed = (caret: number): TextState['selection'] => [caret, caret]
 

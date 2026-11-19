@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import {
+  Button,
   Icon,
-  IconButton,
   Text,
   Tooltip,
   TooltipContent,
@@ -45,9 +45,9 @@ export default function StatefulCopyFeedback() {
       <Text size={3} style={{ flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontFamily: 'monospace' }}>{inviteLink}</Text>
       <Tooltip delayOpen={0} open={open} onChangeOpen={changeOpen}>
         <TooltipTrigger asChild>
-          <IconButton aria-label='Copy invite link' variant='secondary' appearance='ghost' style={{ flexShrink: 0 }} onClick={copy}>
+          <Button square aria-label='Copy invite link' variant='secondary' appearance='ghost' style={{ flexShrink: 0 }} onClick={copy}>
             <Icon>{copied ? <CheckIcon /> : <CopyIcon />}</Icon>
-          </IconButton>
+          </Button>
         </TooltipTrigger>
         <TooltipContent>
           <Text size={2}>{copied ? 'Copied' : 'Copy invite link'}</Text>

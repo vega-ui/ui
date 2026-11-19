@@ -82,35 +82,9 @@ The native checkbox input. Checked state is set here: `checked`, `defaultChecked
 Also accepts all `<input>` attributes.
 <!-- AUTO-GENERATED:PART_API:CheckboxCardControlInput:end -->
 
-## `CheckboxCardControlCheckedIcon`
+## Parts From `Checkbox`
 
-Checked-state icon.
-
-<!-- AUTO-GENERATED:PART_API:CheckboxCardControlCheckedIcon:start -->
-| Prop | Type | Default | Required | Description |
-| --- | --- | --- | --- | --- |
-| `size` | `IconSize` | — | No | Predefined size token for the icon. Can be overridden by explicit width and height. |
-| `ref` | `Ref<SVGSVGElement>` | — | No | Ref to the SVG element |
-| `strokeWidth` | `number` | — | No | Stroke thickness for SVG lines and shapes (in px or pt). |
-| `children` | `ReactNode` | — | No | Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
-
-Also accepts all HTML attributes.
-<!-- AUTO-GENERATED:PART_API:CheckboxCardControlCheckedIcon:end -->
-
-## `CheckboxCardControlIndeterminateIcon`
-
-Indeterminate-state icon.
-
-<!-- AUTO-GENERATED:PART_API:CheckboxCardControlIndeterminateIcon:start -->
-| Prop | Type | Default | Required | Description |
-| --- | --- | --- | --- | --- |
-| `size` | `IconSize` | — | No | Predefined size token for the icon. Can be overridden by explicit width and height. |
-| `ref` | `Ref<SVGSVGElement>` | — | No | Ref to the SVG element |
-| `strokeWidth` | `number` | — | No | Stroke thickness for SVG lines and shapes (in px or pt). |
-| `children` | `ReactNode` | — | No | Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
-
-Also accepts all HTML attributes.
-<!-- AUTO-GENERATED:PART_API:CheckboxCardControlIndeterminateIcon:end -->
+`CheckboxIndicator`, `CheckboxCheckedIcon` and `CheckboxIndeterminateIcon` inside `CheckboxCardControl` are the parts of [Checkbox](../checkbox/api.md), with the same props. The icon parts draw no icon of their own: pass the check mark and the minus as their children, such as `<CheckIcon strokeWidth={4} />` and `<MinusIcon strokeWidth={4} />` from any icon set.
 
 ## Hooks
 

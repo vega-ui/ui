@@ -72,6 +72,69 @@ export default function MinimalComposition() {
 ```
 <!-- /example -->
 
+## Свой компонент
+
+Минимальная композиция выше показывает части на месте. В приложении соберите их один раз в своём файле, со своим набором иконок, и импортируйте этот компонент везде. `MyMenuCheckboxItem` и `MyMenuRadioItem` передают свои пропсы в `MenuCheckboxItem` и `MenuRadioItem` и ставят галочку в `MenuItemIndicator` перед дочерними элементами. См. [Рецепты компонентов](../../recipes.md).
+
+<!-- example: menu/recipe.tsx -->
+```tsx
+import { useState } from 'react';
+import {
+  Button,
+  Menu,
+  MenuCheckboxItem,
+  MenuContent,
+  MenuItemIndicator,
+  MenuRadioGroup,
+  MenuRadioItem,
+  MenuTrigger,
+  Separator,
+  type MenuCheckboxItemProps,
+  type MenuRadioItemProps,
+} from '@vega-ui/react';
+import { CheckIcon } from '@vega-ui/icons';
+
+export function MyMenuCheckboxItem({ children, ...props }: MenuCheckboxItemProps) {
+  return (
+    <MenuCheckboxItem {...props}>
+      <MenuItemIndicator><CheckIcon /></MenuItemIndicator>
+      {children}
+    </MenuCheckboxItem>
+  );
+}
+
+export function MyMenuRadioItem({ children, ...props }: MenuRadioItemProps) {
+  return (
+    <MenuRadioItem {...props}>
+      <MenuItemIndicator><CheckIcon /></MenuItemIndicator>
+      {children}
+    </MenuRadioItem>
+  );
+}
+
+export default function Recipe() {
+  const [showCompleted, setShowCompleted] = useState(false);
+  const [density, setDensity] = useState('comfortable');
+
+  return (
+    <Menu>
+      <MenuTrigger asChild>
+        <Button size='sm' variant='secondary' appearance='ghost'>View</Button>
+      </MenuTrigger>
+      <MenuContent>
+        <MyMenuCheckboxItem checked={showCompleted} onChangeChecked={setShowCompleted}>Show completed</MyMenuCheckboxItem>
+        <Separator />
+        <MenuRadioGroup aria-label='Density' value={density} onChangeValue={setDensity}>
+          <MyMenuRadioItem value='comfortable'>Comfortable</MyMenuRadioItem>
+          <MyMenuRadioItem value='compact'>Compact</MyMenuRadioItem>
+        </MenuRadioGroup>
+      </MenuContent>
+    </Menu>
+  );
+}
+```
+<!-- /example -->
+
 ## Обязательные части
 
 - `Menu`: корень, который хранит состояние открытия, расположение и размер; своего элемента не рендерит
@@ -84,7 +147,7 @@ export default function MinimalComposition() {
 - `MenuCheckboxItem`: пункт, который отмечается и снимается (`menuitemcheckbox`)
 - `MenuRadioGroup` и `MenuRadioItem`: группа пунктов, из которых отмечен один (`menuitemradio`)
 - `MenuGroup`: `role="group"` вокруг связанных пунктов
-- `MenuItemIndicator`: галочка пункта-флажка или радиопункта
+- `MenuItemIndicator`: отметка пункта-флажка или радиопункта, например галочка из дочерних элементов
 - [Separator](../separator/): линия между группами пунктов
 
 ## Порядок композиции
@@ -118,11 +181,11 @@ export default function MinimalComposition() {
 
 - Отключённый пункт получает `aria-disabled="true"`, а не нативный `disabled`: стрелки и поиск при наборе до него доходят, но его `onClick` не вызывается, и меню остаётся открытым.
 - `preventDefault()` в `onClick` пункта оставляет меню открытым. Ваш `onClick` выполняется раньше, чем реагирует меню.
-- Пробел на пункте-флажке или радиопункте меняет его состояние и оставляет меню открытым; Enter или щелчок меняют состояние и закрывают меню.
+- Щелчок, Enter или пробел на пункте-флажке или радиопункте меняют его состояние и оставляют меню открытым — для настроек вида, которые переключают одну за другой; `keepOpen={false}` заставляет щелчок и Enter закрывать меню, как у обычного пункта.
 - `MenuContent` и его пункты остаются отрендеренными, пока меню закрыто: состояние внутри них сохраняется, а триггер может открыть меню сразу на последнем пункте.
 - Срабатывание пункта вложенного меню закрывает все меню и возвращает фокус на кнопку меню. Escape и стрелка из вложенного меню закрывают только его.
 - Пока указатель идёт от пункта к его открытому вложенному меню, пункты на пути не забирают фокус, и вложенное меню остаётся открытым.
-- Строки меню (menubar) и контекстного меню по правому щелчку в этой версии нет.
+- Меню, которое открывается правым щелчком или долгим нажатием, — это [ContextMenu](../context-menu/) из тех же частей. Строки меню (menubar) в этой версии нет.
 
 ## Частые ошибки
 

@@ -26,7 +26,7 @@ const fileTrigger = { role: 'button', name: 'Actions for Q3 report.pdf' };
 const fileMenu = { role: 'menu', name: 'Actions for Q3 report.pdf' };
 const shareItem = item('Share');
 const shareMenu = { role: 'menu', name: 'Share' };
-const onShare = [{ focus: fileTrigger }, { press: 'Enter' }, { press: 'End' }, { press: 'ArrowUp' }, { press: 'ArrowUp' }];
+const onShare = [{ focus: fileTrigger }, { press: 'Enter' }, { focus: item('Open') }, { press: 'End' }, { press: 'ArrowUp' }, { press: 'ArrowUp' }];
 const inShare = [...onShare, { press: 'ArrowRight' }];
 
 export default [
@@ -81,14 +81,13 @@ export default [
   },
   {
     keys: ['Enter'],
-    en: 'In the menu: runs the focused item, closes the menu and returns the focus to the trigger. An item of a submenu closes every menu. A checkbox item is checked or unchecked, and a radio item is checked, before the menu closes. A disabled item does nothing, and a `preventDefault()` in the `onClick` of an item keeps the menu open.',
-    ru: 'В меню: выполняет пункт в фокусе, закрывает меню и возвращает фокус на триггер. Пункт вложенного меню закрывает все меню. Пункт-флажок перед закрытием отмечается или снимается, а радиопункт — отмечается. Отключённый пункт ничего не делает, а `preventDefault()` в `onClick` пункта оставляет меню открытым.',
+    en: 'In the menu: runs the focused item, closes the menu and returns the focus to the trigger. An item of a submenu closes every menu. A checkbox or radio item is checked or unchecked and the menu stays open, unless the item has `keepOpen={false}`. A disabled item does nothing, and a `preventDefault()` in the `onClick` of an item keeps the menu open.',
+    ru: 'В меню: выполняет пункт в фокусе, закрывает меню и возвращает фокус на триггер. Пункт вложенного меню закрывает все меню. Пункт-флажок или радиопункт отмечается или снимается, а меню остаётся открытым, если у пункта нет `keepOpen={false}`. Отключённый пункт ничего не делает, а `preventDefault()` в `onClick` пункта оставляет меню открытым.',
     checks: [
       { example: share, steps: inShare, press: 'Enter', before: [{ visible: shareMenu }], expect: [{ hidden: shareMenu }, { hidden: fileMenu }, { focused: fileTrigger }] },
       { example, steps: open, press: 'Enter', before: [{ visible: menu }], expect: [{ hidden: menu }, { focused: trigger }, { attr: 'aria-expanded', of: trigger, is: 'false' }] },
       { example, steps: [...open, { press: 'ArrowDown' }], press: 'Enter', before: [{ focused: item('Redo') }], expect: [{ visible: menu }, { focused: item('Redo') }] },
-      { example: view, steps: openView, press: 'Enter', before: [{ attr: 'aria-checked', of: showCompleted, is: 'false' }], expect: [{ hidden: viewMenu }, { focused: viewTrigger }] },
-      { example: view, steps: [...openView, { press: 'Enter' }], press: 'Enter', before: [{ hidden: viewMenu }, { focused: viewTrigger }], expect: [{ attr: 'aria-checked', of: showCompleted, is: 'true' }, { focused: showCompleted }] },
+      { example: view, steps: openView, press: 'Enter', before: [{ attr: 'aria-checked', of: showCompleted, is: 'false' }], expect: [{ attr: 'aria-checked', of: showCompleted, is: 'true' }, { visible: viewMenu }, { focused: showCompleted }] },
       { example: zoom, steps: openZoom, press: 'Enter', before: [{ focused: zoomIn }], expect: [{ visible: zoomMenu }, { focused: zoomIn }, { visible: { role: 'button', name: 'Zoom 125%' } }] },
     ],
   },
@@ -112,8 +111,8 @@ export default [
   },
   {
     keys: ['Space'],
-    en: 'In the menu: runs a plain item like Enter. A checkbox or radio item is checked or unchecked, and the menu stays open.',
-    ru: 'В меню: выполняет обычный пункт, как Enter. Пункт-флажок или радиопункт отмечается или снимается, а меню остаётся открытым.',
+    en: 'In the menu: runs a plain item like Enter. A checkbox or radio item is checked or unchecked, and the menu stays open even with `keepOpen={false}`.',
+    ru: 'В меню: выполняет обычный пункт, как Enter. Пункт-флажок или радиопункт отмечается или снимается, а меню остаётся открытым даже с `keepOpen={false}`.',
     checks: [
       { example, steps: open, press: 'Space', before: [{ visible: menu }], expect: [{ hidden: menu }, { focused: trigger }] },
       { example: view, steps: openView, press: 'Space', before: [{ attr: 'aria-checked', of: showCompleted, is: 'false' }], expect: [{ attr: 'aria-checked', of: showCompleted, is: 'true' }, { visible: viewMenu }, { focused: showCompleted }] },

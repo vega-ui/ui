@@ -30,7 +30,7 @@
 
 ### `AccordionIcon`
 
-Необязательная визуальная подсказка для открытого и закрытого состояния. Она должна оставаться частью триггера, а не становиться отдельной целью клика.
+Необязательный индикатор открытого состояния. Своей иконки у него нет: передайте её дочерним элементом, например шеврон из любого набора иконок, и он получает `data-open`, пока элемент раскрыт, для поворота. Он должен оставаться частью триггера, а не становиться отдельной целью клика.
 
 ## Порядок композиции
 
@@ -55,6 +55,7 @@ import {
   Separator,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 
 const questions = [
   {
@@ -87,7 +88,7 @@ export default function Faq() {
           <AccordionHeader>
             <AccordionTrigger>
               {item.question}
-              <AccordionIcon />
+              <AccordionIcon><ChevronDownIcon /></AccordionIcon>
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>

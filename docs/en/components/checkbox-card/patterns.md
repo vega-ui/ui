@@ -17,8 +17,8 @@ import {
   CheckboxCard,
   CheckboxCardContent,
   CheckboxCardControl,
-  CheckboxCardControlCheckedIcon,
-  CheckboxCardControlIndeterminateIcon,
+  CheckboxCheckedIcon,
+  CheckboxIndeterminateIcon,
   CheckboxCardControlInput,
   CheckboxCardDescription,
   CheckboxCardTitle,
@@ -26,6 +26,7 @@ import {
   Fieldset,
   FieldsetLegend,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 const addons = [
   { value: 'priority-support', title: 'Priority support', description: 'Replies within 1 business hour, 24/7 incident line.' },
@@ -47,8 +48,8 @@ export default function PlanOptionTile() {
             <CheckboxCardControl>
               <CheckboxCardControlInput name='addons' value={addon.value} defaultChecked={addon.value === 'audit-log'} />
               <CheckboxIndicator>
-                <CheckboxCardControlCheckedIcon />
-                <CheckboxCardControlIndeterminateIcon />
+                <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+                <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
               </CheckboxIndicator>
             </CheckboxCardControl>
           </CheckboxCard>
@@ -79,8 +80,8 @@ import {
   CheckboxCard,
   CheckboxCardContent,
   CheckboxCardControl,
-  CheckboxCardControlCheckedIcon,
-  CheckboxCardControlIndeterminateIcon,
+  CheckboxCheckedIcon,
+  CheckboxIndeterminateIcon,
   CheckboxCardControlInput,
   CheckboxCardDescription,
   CheckboxCardTitle,
@@ -89,6 +90,7 @@ import {
   FieldsetLegend,
   Text,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 const contents = [
   { value: 'projects', title: 'Projects', description: 'Boards, tasks and their history' },
@@ -119,8 +121,8 @@ export default function FormDataSubmission() {
               <CheckboxCardControl>
                 <CheckboxCardControlInput name='include' value={content.value} defaultChecked />
                 <CheckboxIndicator>
-                  <CheckboxCardControlCheckedIcon />
-                  <CheckboxCardControlIndeterminateIcon />
+                  <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+                  <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
                 </CheckboxIndicator>
               </CheckboxCardControl>
             </CheckboxCard>

@@ -6,13 +6,9 @@ import { passwordFieldShape, passwordFieldWidget } from '@vega-ui/widgets/passwo
 
 export interface PasswordFieldContextState {
   handle: WidgetHandle<typeof passwordFieldShape>
-  shown: boolean
   disabled?: boolean
-  toggleShow(): void
 }
 
 export const [PasswordFieldProvider, usePasswordFieldContext] = createContext<PasswordFieldContextState>('PasswordFieldContext', {
   handle: createHandle(passwordFieldWidget, {}, { id: 'password-field' }),
-  shown: false,
-  toggleShow() {},
 })

@@ -1,11 +1,13 @@
 import {
   HelperText,
+  Icon,
   Label,
   NumberField,
   NumberFieldDecrementButton,
   NumberFieldIncrementButton,
   NumberFieldInput,
 } from '@vega-ui/react';
+import { MinusIcon, PlusIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const compact = new Intl.NumberFormat('en-US', { notation: 'compact', maximumFractionDigits: 1 });
@@ -26,9 +28,9 @@ export default function LargeAmountNoWheel() {
         value={limit}
         onChangeValue={setLimit}
       >
-        <NumberFieldDecrementButton aria-label='Decrease by 10,000' />
+        <NumberFieldDecrementButton square aria-label='Decrease by 10,000'><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
         <NumberFieldInput id={id} aria-describedby={`${id}-hint`} />
-        <NumberFieldIncrementButton aria-label='Increase by 10,000' />
+        <NumberFieldIncrementButton square aria-label='Increase by 10,000'><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
       </NumberField>
       <HelperText id={`${id}-hint`} style={{ fontVariantNumeric: 'tabular-nums' }}>
         {Number.isNaN(limit) ? 'No limit set.' : `About ${compact.format(limit)}. Max 50M.`}

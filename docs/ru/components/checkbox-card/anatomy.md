@@ -16,8 +16,7 @@
 
 - `CheckboxCardTitle`
 - `CheckboxCardDescription`
-- `CheckboxCardControlCheckedIcon`
-- `CheckboxCardControlIndeterminateIcon`
+- `CheckboxCheckedIcon` и `CheckboxIndeterminateIcon` (из `Checkbox`): внутри `CheckboxIndicator` показывают галочку и минус, которые вы передаёте дочерними элементами
 
 ## Порядок композиции
 

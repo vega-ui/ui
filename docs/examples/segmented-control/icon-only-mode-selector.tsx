@@ -9,7 +9,7 @@ import { MonitorIcon, MoonIcon, SunIcon } from '@vega-ui/icons';
 
 export default function IconOnlyModeSelector() {
   return (
-    <SegmentedControl name='appearance' defaultValue='system' size='sm' role='radiogroup' aria-label='Appearance'>
+    <SegmentedControl name='appearance' defaultValue='system' size='sm' aria-label='Appearance'>
       <SegmentedControlItem value='light' title='Light'>
         <SegmentedControlItemInput aria-label='Light' />
         <Icon size='sm'><SunIcon /></Icon>

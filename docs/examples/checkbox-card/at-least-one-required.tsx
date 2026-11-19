@@ -4,8 +4,8 @@ import {
   CheckboxCard,
   CheckboxCardContent,
   CheckboxCardControl,
-  CheckboxCardControlCheckedIcon,
-  CheckboxCardControlIndeterminateIcon,
+  CheckboxCheckedIcon,
+  CheckboxIndeterminateIcon,
   CheckboxCardControlInput,
   CheckboxCardDescription,
   CheckboxCardTitle,
@@ -14,6 +14,7 @@ import {
   FieldsetLegend,
   HelperText,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 const platforms = [
   { value: 'ios', title: 'iOS', description: 'App Store build, iPhone and iPad' },
@@ -55,8 +56,8 @@ export default function AtLeastOneRequired() {
                   onChange={() => setInvalid(false)}
                 />
                 <CheckboxIndicator>
-                  <CheckboxCardControlCheckedIcon />
-                  <CheckboxCardControlIndeterminateIcon />
+                  <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+                  <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
                 </CheckboxIndicator>
               </CheckboxCardControl>
             </CheckboxCard>

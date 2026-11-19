@@ -30,7 +30,7 @@
 }
 
 .clear {
-    --icon-button-size: var(--spacing-12);
+    --button-height: var(--spacing-12);
     flex: none;
     margin-inline-end: var(--spacing-4);
     border-radius: 50%;

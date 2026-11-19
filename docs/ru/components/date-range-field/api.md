@@ -29,7 +29,7 @@
 ## Дочерние части
 
 - `DateRangeFieldInput`: поверхность ввода дат начала и окончания.
-- `DateRangeFieldTriggerIconButton`: необязательная кнопка-триггер календаря.
+- `DateRangeFieldTrigger`: необязательная кнопка-триггер календаря.
 - `DateRangeFieldCalendar`: содержимое календаря, синхронизированное с выбранным диапазоном.
 
 ### `DateRangeFieldInput`
@@ -73,28 +73,29 @@
 Также принимает все атрибуты `<div>`.
 <!-- AUTO-GENERATED:PART_API:DateRangeFieldCalendar:end -->
 
-### `DateRangeFieldTriggerIconButton`
+### `DateRangeFieldTrigger`
 
-<!-- AUTO-GENERATED:PART_API:DateRangeFieldTriggerIconButton:start -->
+<!-- AUTO-GENERATED:PART_API:DateRangeFieldTrigger:start -->
 | Проп | Тип | По умолчанию | Обязательный | Описание |
 | --- | --- | --- | --- | --- |
-| `size` | `IconButtonSize` | — | Нет | Размер контейнера кнопки. Управляет отступами и общей кликабельной областью. |
 | `asChild` | `boolean` | — | Нет | Если true, рендерит кнопку как дочерний компонент через `Slot` (например, из Radix UI). Включает полиморфный рендер — полезно, чтобы кнопка работала как ссылка или собственный тег. |
+| `size` | `ButtonSize` | — | Нет | Определяет размер кнопки. Влияет на отступы, размер шрифта и общие габариты. |
 | `variant` | `ButtonBaseVariant` | — | Нет | Определяет визуальный стиль кнопки: цветовую схему и акцент. |
 | `appearance` | `ButtonBaseAppearance` | — | Нет | Настраивает структурный внешний вид кнопки (фон, рамка и т. д.). |
 | `disabled` | `boolean` | — | Нет | Отключает кнопку при true. Запрещает взаимодействие и применяет визуальное отключённое состояние. Не применяется с `asChild`: отключённым состоянием владеет дочерний элемент, например через `aria-disabled` или ссылку без `href`. |
 | `className` | `string` | — | Нет | Необязательный собственный CSS-класс для элемента кнопки. Полезен для переопределений дизайн-системы или локальных стилей. |
 | `children` | `ReactNode` | — | Нет | Содержимое кнопки — текст, иконка или любой React-узел. |
 | `ref` | `Ref<HTMLButtonElement>` | — | Нет | Ref, передаваемый на нативный элемент `<button>`. Даёт прямой доступ к DOM для управления фокусом или измерений. |
+| `square` | `false` | — | Нет | Делает кнопку квадратной — такой же ширины, как высоты, — для одной иконки. Назовите её через `aria-label` или `aria-labelledby`. |
 
 Также принимает все атрибуты `<button>`.
-<!-- AUTO-GENERATED:PART_API:DateRangeFieldTriggerIconButton:end -->
+<!-- AUTO-GENERATED:PART_API:DateRangeFieldTrigger:end -->
 
 ## Типы
 
 - `DateRangeFieldProps`
 - `DateRangeFieldInputProps`
-- `DateRangeFieldTriggerIconButtonProps`
+- `DateRangeFieldTriggerProps`
 - `DateRangeFieldCalendarProps`
 
 ## Модель состояния
@@ -111,4 +112,4 @@
 - `readOnly` и `disabled` на корне передаются в input как нативные атрибуты: поле только для чтения по-прежнему открывает календарь, чтобы показать значение, но выбор его не меняет; отключённое поле не отправляется.
 - Двузначный год (`yy` в формате) читается в пределах 80 лет до и 19 лет после года `today`, как в CLDR и ICU: если сегодня 2026 год, `45` — это 2045, а `46` — 1946. Годы вне этого окна показываются двумя цифрами, но ввести их обратно нельзя.
 - `today` (по умолчанию дата устройства, читается после гидратации) передаётся календарю, который открывается на значении, иначе на сегодняшнем дне, ограниченном `min` и `max`.
-- `DateRangeFieldTriggerIconButton` сначала вызывает ваш `onClick`: `event.preventDefault()` в нём оставляет попап закрытым, как у нативной кнопки с `popovertarget`.
+- `DateRangeFieldTrigger` сначала вызывает ваш `onClick`: `event.preventDefault()` в нём оставляет попап закрытым, как у нативной кнопки с `popovertarget`.

@@ -43,7 +43,9 @@ import {
   CalendarYearsScroller,
   CalendarYearsScrollerContent,
   HelperText,
+  Icon,
 } from '@vega-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const DAY = 86_400_000;
@@ -89,12 +91,12 @@ export default function BookingCalendar() {
           onChangeValue={setRange}
         >
           <CalendarHeader>
-            <CalendarPrevButton aria-label='Previous' />
+            <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
             <CalendarHeading>
               <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
               <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
             </CalendarHeading>
-            <CalendarNextButton aria-label='Next' />
+            <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
           </CalendarHeader>
           <CalendarContent>
             <CalendarDays aria-label='Stay dates' aria-describedby={messageId}>
@@ -177,8 +179,10 @@ import {
   CalendarYearsGrid,
   CalendarYearsScroller,
   CalendarYearsScrollerContent,
+  Icon,
   useCalendarDayContext,
 } from '@vega-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 const fares: Record<string, number> = {
   '2026-11-02': 89,
@@ -217,12 +221,12 @@ export default function DayCellCustomRendering() {
   return (
     <Calendar size='md' locale='en-US' defaultFocusedDate='2026-11-01' disabledDates={hasNoFare}>
       <CalendarHeader>
-        <CalendarPrevButton aria-label='Previous' />
+        <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
         <CalendarHeading>
           <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
           <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
         </CalendarHeading>
-        <CalendarNextButton aria-label='Next' />
+        <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
       </CalendarHeader>
       <CalendarContent>
         <CalendarDays aria-label='Departure date'>
@@ -299,10 +303,12 @@ import {
   CalendarYearsGrid,
   CalendarYearsScroller,
   CalendarYearsScrollerContent,
+  Icon,
   useCalendarMonthContext,
   useCalendarWeekdayContext,
   useCalendarYearContext,
 } from '@vega-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 function isLeapYear(year: number) {
   if (year % 400 === 0) return true;
@@ -342,12 +348,12 @@ export default function WeekdayMonthYearTemplates() {
   return (
     <Calendar locale='en-US' defaultFocusedDate='2026-11-01' defaultView='month'>
       <CalendarHeader>
-        <CalendarPrevButton aria-label='Previous' />
+        <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
         <CalendarHeading>
           <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
           <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
         </CalendarHeading>
-        <CalendarNextButton aria-label='Next' />
+        <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
       </CalendarHeader>
       <CalendarContent>
         <CalendarDays>
@@ -425,8 +431,10 @@ import {
   CalendarYearsGrid,
   CalendarYearsScroller,
   CalendarYearsScrollerContent,
+  Icon,
   Text,
 } from '@vega-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import { useState } from 'react';
 
 const persianCalendar = createCalendarSystem('persian');
@@ -438,12 +446,12 @@ export default function NonGregorianCalendar() {
     <div style={{ display: 'grid', gap: 'var(--spacing-6)', justifyItems: 'start', width: '100%' }}>
       <Calendar dir='rtl' locale='fa-IR' calendar={persianCalendar} value={date} onChangeValue={setDate}>
         <CalendarHeader>
-          <CalendarPrevButton aria-label='ماه قبل' />
+          <CalendarPrevButton square aria-label='ماه قبل'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
           <CalendarHeading>
             <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
             <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
           </CalendarHeading>
-          <CalendarNextButton aria-label='ماه بعد' />
+          <CalendarNextButton square aria-label='ماه بعد'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
         </CalendarHeader>
         <CalendarContent>
           <CalendarDays>
@@ -514,8 +522,10 @@ import {
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYearLabel,
+  Icon,
   Text,
 } from '@vega-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import { useState } from 'react';
 
 const islamicCalendar = createCalendarSystem('islamic-umalqura');
@@ -528,11 +538,11 @@ export default function OneDateInTwoCalendars() {
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--spacing-16)', alignItems: 'start' }}>
         <Calendar compact locale='en-GB' value={date} onChangeValue={setDate}>
           <CalendarHeader>
-            <CalendarPrevButton aria-label='Previous month' />
+            <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
             <CalendarHeading>
               <Text fontWeight={600}><CalendarMonthLabel /> <CalendarYearLabel /></Text>
             </CalendarHeading>
-            <CalendarNextButton aria-label='Next month' />
+            <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
           </CalendarHeader>
           <CalendarContent>
             <CalendarDays aria-label='Gregorian date'>
@@ -551,11 +561,11 @@ export default function OneDateInTwoCalendars() {
         </Calendar>
         <Calendar compact dir='rtl' locale='ar-SA' calendar={islamicCalendar} value={date} onChangeValue={setDate}>
           <CalendarHeader>
-            <CalendarPrevButton aria-label='الشهر السابق' />
+            <CalendarPrevButton square aria-label='الشهر السابق'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
             <CalendarHeading>
               <Text fontWeight={600}><CalendarMonthLabel /> <CalendarYearLabel /></Text>
             </CalendarHeading>
-            <CalendarNextButton aria-label='الشهر التالي' />
+            <CalendarNextButton square aria-label='الشهر التالي'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
           </CalendarHeader>
           <CalendarContent>
             <CalendarDays aria-label='التاريخ الهجري'>
@@ -623,7 +633,9 @@ import {
   CalendarYearsGrid,
   type CalendarProps,
   type CalendarSelection,
+  Icon,
 } from '@vega-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 const appSettings = { locale: 'en-GB', min: '1900-01-01', max: '2099-12-31' };
 
@@ -631,12 +643,12 @@ function AppCalendar<S extends CalendarSelection = 'single'>(props: Omit<Calenda
   return (
     <Calendar<S> locale={appSettings.locale} min={appSettings.min} max={appSettings.max} {...props}>
       <CalendarHeader>
-        <CalendarPrevButton aria-label='Previous' />
+        <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
         <CalendarHeading>
           <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
           <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
         </CalendarHeading>
-        <CalendarNextButton aria-label='Next' />
+        <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
       </CalendarHeader>
       <CalendarContent>
         <CalendarDays>

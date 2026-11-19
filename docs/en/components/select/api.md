@@ -13,7 +13,7 @@
 | `variant` | `SelectVariant` | `'field'` | No | Visual style variant for the select control. |
 | `size` | `SelectSize` | `'md'` | No | Visual size of the select control. |
 | `value` | `Value \| null` | — | No | The currently selected value (controlled). `null` clears the selection, while `undefined` makes the select uncontrolled. |
-| `defaultValue` | `Value` | — | No | The default selected value (uncontrolled). |
+| `defaultValue` | `NoInfer<Value>` | — | No | The default selected value (uncontrolled). |
 | `onChangeValue` | `(value: Value \| null) => void` | — | No | Callback fired when an option is selected. |
 | `ref` | `Ref<HTMLDivElement>` | — | No | Ref to the root element. |
 | `open` | `boolean` | — | No | Controls the open state of the Select dropdown. When provided, the Select becomes a controlled component and relies on this value to determine whether the listbox is open or closed. |
@@ -59,7 +59,7 @@ Also accepts all `<span>` attributes.
 
 ## `SelectIcon`
 
-Optional trigger affordance.
+Optional trigger icon. Pass the icon as its children, such as a chevron from any icon set; it is sized by the Select and has `data-open` while the list is shown.
 
 <!-- AUTO-GENERATED:PART_API:SelectIcon:start -->
 | Prop | Type | Default | Required | Description |
@@ -67,7 +67,7 @@ Optional trigger affordance.
 | `size` | `IconSize` | — | No | Predefined size token for the icon. Can be overridden by explicit width and height. |
 | `ref` | `Ref<SVGSVGElement>` | — | No | Ref to the SVG element |
 | `strokeWidth` | `number` | — | No | Stroke thickness for SVG lines and shapes (in px or pt). |
-| `children` | `ReactNode` | — | No | Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
+| `children` | `ReactNode` | — | Yes | Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
 
 Also accepts all HTML attributes.
 <!-- AUTO-GENERATED:PART_API:SelectIcon:end -->

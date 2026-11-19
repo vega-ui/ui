@@ -17,7 +17,6 @@ import {
   Heading,
   HelperText,
   Icon,
-  IconButton,
   Label,
   Link,
   Popover,
@@ -48,7 +47,7 @@ import {
   TimeFieldInput,
   VisuallyHidden,
 } from '@vega-ui/react';
-import { Bell, BellOff } from '@vega-ui/icons';
+import { BellIcon, BellOffIcon, CheckIcon, ChevronDownIcon, CircleCheckIcon } from '@vega-ui/icons';
 import './notifications.css';
 
 type Filter = 'all' | 'mentions' | 'unread';
@@ -202,9 +201,9 @@ export default function Notifications() {
         <Popover role='dialog' placement='bottom-end' open={open} onChangeOpen={setOpen}>
           <span style={{ position: 'relative', display: 'inline-flex' }}>
             <PopoverTrigger asChild>
-              <IconButton size='xs' type='button' {...ghost} aria-label={unread > 0 ? `Notifications, ${unread} unread` : 'Notifications'}>
-                <Icon size='sm'><Bell /></Icon>
-              </IconButton>
+              <Button square size='xs' type='button' {...ghost} aria-label={unread > 0 ? `Notifications, ${unread} unread` : 'Notifications'}>
+                <Icon size='sm'><BellIcon /></Icon>
+              </Button>
             </PopoverTrigger>
             {unread > 0 && (
               <Badge size='xs' variant='error' appearance='fill' aria-hidden='true' className='nt-count'>{unread}</Badge>
@@ -219,11 +218,10 @@ export default function Notifications() {
               <SegmentedControl
                 size='xs'
                 name={`${id}-filter`}
-                role='radiogroup'
                 aria-label='Show'
                 value={filter}
                 style={{ width: '100%' }}
-                onChange={(event) => setFilter(event.currentTarget.value as Filter)}
+                onChangeValue={setFilter}
               >
                 <SegmentedControlItem value='all' style={{ flex: 1 }}>
                   <SegmentedControlItemInput />
@@ -243,7 +241,7 @@ export default function Notifications() {
             <div className='nt-scroller' tabIndex={-1}>
               {groups.length === 0 && (
                 <div style={{ display: 'grid', justifyItems: 'center', gap: 'var(--spacing-3)', padding: 'var(--spacing-20) var(--spacing-8)', textAlign: 'center' }}>
-                  <Icon size='lg' aria-hidden='true' style={{ color: 'var(--label-tertiary)' }}><BellOff /></Icon>
+                  <Icon size='lg' aria-hidden='true' style={{ color: 'var(--label-tertiary)' }}><BellOffIcon /></Icon>
                   <Text size={3} fontWeight={500}>You’re all caught up</Text>
                   <Text size={2} style={{ color: 'var(--label-secondary)' }}>
                     {filter === 'mentions' ? 'No one has mentioned you yet.' : 'New notifications will show up here.'}
@@ -287,9 +285,9 @@ export default function Notifications() {
                         </div>
                         <span style={{ display: 'flex', justifyContent: 'center', flexShrink: 0, inlineSize: 'var(--spacing-16)' }}>
                           {item.unread && (
-                            <IconButton size='xs' type='button' {...quiet} aria-label={`Mark as read: ${item.target}`} onClick={() => markRead(item.id)} style={{ '--icon-button-size': '24px' } as CSSProperties}>
+                            <Button square size='xs' type='button' {...quiet} aria-label={`Mark as read: ${item.target}`} onClick={() => markRead(item.id)} style={{ '--button-height': '24px' } as CSSProperties}>
                               <span className='nt-dot' />
-                            </IconButton>
+                            </Button>
                           )}
                         </span>
                       </li>
@@ -368,7 +366,7 @@ export default function Notifications() {
                                 onChange={() => toggleChannel(row.key, channel.key)}
                               />
                               <CheckboxIndicator>
-                                <CheckboxCheckedIcon />
+                                <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
                               </CheckboxIndicator>
                             </Checkbox>
                           )}
@@ -395,7 +393,7 @@ export default function Notifications() {
             >
               <SelectCombobox id={`${id}-pause`} aria-describedby={`${id}-pause-hint`}>
                 <SelectValue />
-                <SelectIcon />
+                <SelectIcon><ChevronDownIcon /></SelectIcon>
               </SelectCombobox>
               <SelectListbox>
                 {pauses.map((option) => <SelectOption key={option.value} value={option.value}>{option.label}</SelectOption>)}
@@ -473,7 +471,7 @@ export default function Notifications() {
           </VisuallyHidden>
           {saved && (
               <Alert variant='success'>
-                <AlertIcon />
+                <AlertIcon><CircleCheckIcon /></AlertIcon>
                 <AlertMain>
                   <AlertTitle>Preferences saved</AlertTitle>
                   <AlertContent>{pause === 'off' ? 'New notifications follow these settings right away.' : 'Saved. Email and push stay paused until the pause ends.'}</AlertContent>

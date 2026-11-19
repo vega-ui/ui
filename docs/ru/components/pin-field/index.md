@@ -52,6 +52,44 @@ export default function MinimalComposition() {
 ```
 <!-- /example -->
 
+## Свой компонент
+
+Минимальная композиция выше показывает части на месте. В приложении соберите их один раз в своём файле и импортируйте этот компонент везде. `MyPinField` передаёт свои пропсы в `PinField`, `id`, `name` и `autoComplete` — полю ввода для `Label`, формы и автозаполнения, и рисует по ячейке на каждый символ `maxLength`. См. [Рецепты компонентов](../../recipes.md).
+
+<!-- example: pin-field/recipe.tsx -->
+```tsx
+import { Label, PinField, PinFieldInput, PinFieldSlot, type PinFieldProps } from '@vega-ui/react';
+import { useId } from 'react';
+
+interface MyPinFieldProps extends PinFieldProps {
+  name?: string
+  autoComplete?: string
+}
+
+export function MyPinField({ id, name, autoComplete, maxLength = 4, ...props }: MyPinFieldProps) {
+  const slots = Array.from({ length: maxLength }, (_, index) => index);
+
+  return (
+    <PinField maxLength={maxLength} {...props}>
+      <PinFieldInput id={id} name={name} autoComplete={autoComplete} />
+      {slots.map((index) => <PinFieldSlot key={index} index={index} />)}
+    </PinField>
+  );
+}
+
+export default function Recipe() {
+  const id = useId();
+
+  return (
+    <div style={{ display: 'grid', gap: 'var(--spacing-3)', width: '100%', maxWidth: 320 }}>
+      <Label htmlFor={id}>Code from the text message</Label>
+      <MyPinField id={id} name='code' autoComplete='one-time-code' maxLength={6} />
+    </div>
+  );
+}
+```
+<!-- /example -->
+
 ## Обязательные части
 
 - `PinField`: корневой контейнер состояния

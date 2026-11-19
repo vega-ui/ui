@@ -11,6 +11,7 @@ import {
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
+import { CheckIcon } from '@vega-ui/icons';
 import { FormEvent, useId, useState } from 'react';
 
 export default function SettingsFormSections() {
@@ -45,14 +46,14 @@ export default function SettingsFormSections() {
         <Checkbox>
           <CheckboxInput name='twoFactor' defaultChecked />
           <CheckboxIndicator>
-            <CheckboxCheckedIcon />
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
           </CheckboxIndicator>
           Two-factor authentication
         </Checkbox>
         <Checkbox>
           <CheckboxInput name='newDeviceAlerts' />
           <CheckboxIndicator>
-            <CheckboxCheckedIcon />
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
           </CheckboxIndicator>
           Email me about sign-ins from new devices
         </Checkbox>

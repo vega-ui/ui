@@ -19,7 +19,7 @@ Also accepts all `<div>` attributes.
 ## Child Parts
 
 - `PasswordFieldInput`: context-aware password/text input.
-- `PasswordFieldToggleIconButton`: button that toggles shown state.
+- `PasswordFieldToggle`: button that toggles shown state.
 - `PasswordFieldShownIcon`: icon for shown state.
 - `PasswordFieldHiddenIcon`: icon for hidden state.
 
@@ -41,7 +41,7 @@ Also accepts all `<input>` attributes.
 | `size` | `IconSize` | — | No | Predefined size token for the icon. Can be overridden by explicit width and height. |
 | `ref` | `Ref<SVGSVGElement>` | — | No | Ref to the SVG element |
 | `strokeWidth` | `number` | — | No | Stroke thickness for SVG lines and shapes (in px or pt). |
-| `children` | `ReactNode` | — | No | Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
+| `children` | `ReactNode` | — | Yes | Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
 
 Also accepts all HTML attributes.
 <!-- AUTO-GENERATED:PART_API:PasswordFieldHiddenIcon:end -->
@@ -54,33 +54,34 @@ Also accepts all HTML attributes.
 | `size` | `IconSize` | — | No | Predefined size token for the icon. Can be overridden by explicit width and height. |
 | `ref` | `Ref<SVGSVGElement>` | — | No | Ref to the SVG element |
 | `strokeWidth` | `number` | — | No | Stroke thickness for SVG lines and shapes (in px or pt). |
-| `children` | `ReactNode` | — | No | Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
+| `children` | `ReactNode` | — | Yes | Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
 
 Also accepts all HTML attributes.
 <!-- AUTO-GENERATED:PART_API:PasswordFieldShownIcon:end -->
 
-### `PasswordFieldToggleIconButton`
+### `PasswordFieldToggle`
 
-<!-- AUTO-GENERATED:PART_API:PasswordFieldToggleIconButton:start -->
+<!-- AUTO-GENERATED:PART_API:PasswordFieldToggle:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `size` | `IconButtonSize` | — | No | Size of the button container. Controls padding and overall clickable area. |
 | `asChild` | `boolean` | — | No | When true, renders the button as a child component using `Slot` (e.g., from Radix UI). Enables polymorphic rendering — useful for making the button act as a link or custom tag. |
+| `size` | `ButtonSize` | — | No | Defines the size of the button. Affects padding, font size, and overall dimensions. |
 | `variant` | `ButtonBaseVariant` | — | No | Defines the visual style of the button, affecting color schemes and emphasis. |
 | `appearance` | `ButtonBaseAppearance` | — | No | Adjusts the button's structural appearance (background, border, etc.). |
 | `disabled` | `boolean` | — | No | Disables the button when true. Prevents user interaction and applies a visually disabled state. Not applied with `asChild`: the child element owns its disabled state, for example, `aria-disabled` or a link without `href`. |
 | `className` | `string` | — | No | Optional custom CSS class for the button element. Useful for design system overrides or scoped styles. |
 | `children` | `ReactNode` | — | No | Content of the button — text, icon, or any React node. |
 | `ref` | `Ref<HTMLButtonElement>` | — | No | Ref forwarded to the native `<button>` element. Allows direct DOM access for focus management or measuring. |
+| `square` | `false` | — | No | Makes the button a square as wide as it is high, for a single icon. Name it with `aria-label` or `aria-labelledby`. |
 
 Also accepts all `<button>` attributes.
-<!-- AUTO-GENERATED:PART_API:PasswordFieldToggleIconButton:end -->
+<!-- AUTO-GENERATED:PART_API:PasswordFieldToggle:end -->
 
 ## Types
 
 - `PasswordFieldProps`
 - `PasswordFieldInputProps`
-- `PasswordFieldToggleIconButtonProps`
+- `PasswordFieldToggleProps`
 - `PasswordFieldShownIconProps`
 - `PasswordFieldHiddenIconProps`
 
@@ -90,4 +91,4 @@ Also accepts all `<button>` attributes.
 - `PasswordFieldInput` switches its `type` based on context.
 - The toggle button flips the visibility and keeps the focus where the browser put it, like a native button; it exposes the visibility with `aria-pressed`.
 - A custom `onClick` on the toggle runs after the toggle, it does not replace it.
-- `PasswordFieldToggleIconButton` runs your `onClick` first: `event.preventDefault()` in it keeps the password shown or hidden as it is.
+- `PasswordFieldToggle` runs your `onClick` first: `event.preventDefault()` in it keeps the password shown or hidden as it is.

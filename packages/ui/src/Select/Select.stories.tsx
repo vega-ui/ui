@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 
 import { Select, SelectProps } from './Select';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import {
   SelectCombobox,
   SelectHiddenSelect,
@@ -76,7 +77,7 @@ export const Playground: Story = {
       <Select {...selectProps}>
         <SelectCombobox aria-label='Delivery method'>
           <SelectValue {...valueProps} />
-          <SelectIcon />
+          <SelectIcon><ChevronDownIcon /></SelectIcon>
         </SelectCombobox>
         <SelectListbox>
           <SelectOption value='pickup'>Pickup point</SelectOption>
@@ -103,7 +104,7 @@ export const Matrix: Story = {
         >
           <SelectCombobox aria-label={`${row.variant} / ${row.state} / ${size}`} aria-invalid={row.state === 'invalid'}>
             <SelectValue />
-            <SelectIcon />
+            <SelectIcon><ChevronDownIcon /></SelectIcon>
           </SelectCombobox>
           <SelectListbox>
             <SelectOption value='pickup'>Pickup point</SelectOption>
@@ -134,7 +135,7 @@ export const LongList: Story = {
       <Select {...selectProps}>
         <SelectCombobox aria-label='Country'>
           <SelectValue {...valueProps} />
-          <SelectIcon />
+          <SelectIcon><ChevronDownIcon /></SelectIcon>
         </SelectCombobox>
         <SelectListbox>
           {COUNTRIES.map((country) => <SelectOption key={country} value={country}>{country}</SelectOption>)}

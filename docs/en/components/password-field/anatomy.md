@@ -14,25 +14,25 @@ Required. Owns visibility state and provides context to the child parts.
 
 Required. Switches between `type='password'` and `type='text'` based on context.
 
-### `PasswordFieldToggleIconButton`
+### `PasswordFieldToggle`
 
-Required in normal composition. Triggers visibility changes.
+Required in normal composition. Triggers visibility changes. It renders a `Button` with no content of its own: put `PasswordFieldShownIcon` and `PasswordFieldHiddenIcon` with your icons inside with `square` and an `aria-label` or `aria-labelledby`, a text like "Show", or your own button with `asChild`.
 
 ## Optional Parts
 
 ### `PasswordFieldShownIcon`
 
-Optional icon for the shown state.
+Shows its children while the password is hidden, as the icon of the action that shows it. It draws no icon of its own: pass one from any icon set, such as an eye.
 
 ### `PasswordFieldHiddenIcon`
 
-Optional icon for the hidden state.
+Shows its children while the password is shown, as the icon of the action that hides it. It draws no icon of its own: pass one from any icon set, such as a crossed out eye.
 
 ## Composition Order
 
 1. `PasswordField`
 2. `PasswordFieldInput`
-3. `PasswordFieldToggleIconButton`
+3. `PasswordFieldToggle`
 4. `PasswordFieldShownIcon`
 5. `PasswordFieldHiddenIcon`
 
@@ -46,8 +46,9 @@ import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleIconButton,
+  PasswordFieldToggle,
 } from '@vega-ui/react';
+import { EyeIcon, EyeOffIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 export default function SignInPassword() {
@@ -58,10 +59,10 @@ export default function SignInPassword() {
       <Label htmlFor={id}>Password</Label>
       <PasswordField>
         <PasswordFieldInput id={id} name='password' autoComplete='current-password' />
-        <PasswordFieldToggleIconButton aria-label='Show password'>
-          <PasswordFieldShownIcon />
-          <PasswordFieldHiddenIcon />
-        </PasswordFieldToggleIconButton>
+        <PasswordFieldToggle square aria-label='Show password'>
+          <PasswordFieldShownIcon><EyeIcon /></PasswordFieldShownIcon>
+          <PasswordFieldHiddenIcon><EyeOffIcon /></PasswordFieldHiddenIcon>
+        </PasswordFieldToggle>
       </PasswordField>
     </div>
   );

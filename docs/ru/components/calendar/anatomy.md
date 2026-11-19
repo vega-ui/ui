@@ -21,7 +21,7 @@
 
 ### `CalendarPrevButton` / `CalendarNextButton`
 
-Показывают предыдущую или следующую страницу текущего вида. В днях переносят день в фокусе на тот же день предыдущего или следующего месяца, а фокус остаётся на кнопке; в годах показывают предыдущую или следующую страницу лет. Скрыты в виде месяцев, а в днях — когда предыдущий или следующий месяц выходит за `min` / `max`.
+Показывают предыдущую или следующую страницу текущего вида. В днях переносят день в фокусе на тот же день предыдущего или следующего месяца, а фокус остаётся на кнопке; в годах показывают предыдущую или следующую страницу лет. Скрыты в виде месяцев, а в днях — когда предыдущий или следующий месяц выходит за `min` / `max`. Рендерят `Button` без собственного содержимого: передайте шеврон дочерним элементом вместе с `square` и `aria-label` или `aria-labelledby`, текст вроде «Next month» или свою кнопку через `asChild`. `svg` внутри них зеркалится в раскладке справа налево, поэтому один шеврон подходит для обоих направлений.
 
 ### `CalendarHeading`
 
@@ -98,20 +98,22 @@ import {
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYearLabel,
+  Icon,
   Text,
 } from '@vega-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 export default function ValidCompositionPatterns() {
   return (
     <Calendar locale='en-US'>
       <CalendarHeader>
-        <CalendarPrevButton aria-label='Previous month' />
+        <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
         <CalendarHeading>
           <Text fontWeight={600}>
             <CalendarMonthLabel /> <CalendarYearLabel />
           </Text>
         </CalendarHeading>
-        <CalendarNextButton aria-label='Next month' />
+        <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
       </CalendarHeader>
       <CalendarContent>
         <CalendarDays>

@@ -72,6 +72,69 @@ export default function MinimalComposition() {
 ```
 <!-- /example -->
 
+## Your Own Component
+
+The minimal composition above shows the parts in place. In an app, compose them once in a file of your own, with your icon set, and import that component everywhere. `MyMenuCheckboxItem` and `MyMenuRadioItem` pass their props to `MenuCheckboxItem` and `MenuRadioItem` and put the check mark in `MenuItemIndicator` before their children. See [Component recipes](../../recipes.md).
+
+<!-- example: menu/recipe.tsx -->
+```tsx
+import { useState } from 'react';
+import {
+  Button,
+  Menu,
+  MenuCheckboxItem,
+  MenuContent,
+  MenuItemIndicator,
+  MenuRadioGroup,
+  MenuRadioItem,
+  MenuTrigger,
+  Separator,
+  type MenuCheckboxItemProps,
+  type MenuRadioItemProps,
+} from '@vega-ui/react';
+import { CheckIcon } from '@vega-ui/icons';
+
+export function MyMenuCheckboxItem({ children, ...props }: MenuCheckboxItemProps) {
+  return (
+    <MenuCheckboxItem {...props}>
+      <MenuItemIndicator><CheckIcon /></MenuItemIndicator>
+      {children}
+    </MenuCheckboxItem>
+  );
+}
+
+export function MyMenuRadioItem({ children, ...props }: MenuRadioItemProps) {
+  return (
+    <MenuRadioItem {...props}>
+      <MenuItemIndicator><CheckIcon /></MenuItemIndicator>
+      {children}
+    </MenuRadioItem>
+  );
+}
+
+export default function Recipe() {
+  const [showCompleted, setShowCompleted] = useState(false);
+  const [density, setDensity] = useState('comfortable');
+
+  return (
+    <Menu>
+      <MenuTrigger asChild>
+        <Button size='sm' variant='secondary' appearance='ghost'>View</Button>
+      </MenuTrigger>
+      <MenuContent>
+        <MyMenuCheckboxItem checked={showCompleted} onChangeChecked={setShowCompleted}>Show completed</MyMenuCheckboxItem>
+        <Separator />
+        <MenuRadioGroup aria-label='Density' value={density} onChangeValue={setDensity}>
+          <MyMenuRadioItem value='comfortable'>Comfortable</MyMenuRadioItem>
+          <MyMenuRadioItem value='compact'>Compact</MyMenuRadioItem>
+        </MenuRadioGroup>
+      </MenuContent>
+    </Menu>
+  );
+}
+```
+<!-- /example -->
+
 ## Required Parts
 
 - `Menu`: root that owns the open state, the placement and the size; it renders no element
@@ -84,7 +147,7 @@ export default function MinimalComposition() {
 - `MenuCheckboxItem`: an item that is checked or unchecked (`menuitemcheckbox`)
 - `MenuRadioGroup` and `MenuRadioItem`: a group of items where one is checked (`menuitemradio`)
 - `MenuGroup`: a `role="group"` around related items
-- `MenuItemIndicator`: the check mark of a checkbox or radio item
+- `MenuItemIndicator`: the mark of a checkbox or radio item, such as a check mark you pass as children
 - [Separator](../separator/): a line between groups of items
 
 ## Composition Order
@@ -118,11 +181,11 @@ export default function MinimalComposition() {
 
 - A disabled item gets `aria-disabled="true"`, not native `disabled`: the arrow keys and typeahead still reach it, but its `onClick` is not called and the menu stays open.
 - `preventDefault()` in the `onClick` of an item keeps the menu open. Your `onClick` runs before the menu reacts.
-- Space on a checkbox or radio item changes it and keeps the menu open; Enter or a click changes it and closes the menu.
+- A click, Enter or Space on a checkbox or radio item changes it and keeps the menu open, for view options a user toggles one after another; `keepOpen={false}` makes a click and Enter close the menu as on a plain item.
 - `MenuContent` and its items stay rendered while the menu is closed, so state inside them is kept and the trigger can open the menu on its last item.
 - An item of a submenu that runs closes every menu and gives the focus back to the menu button. Escape and the arrow out of a submenu close only that submenu.
 - While the pointer moves from a submenu item toward its open submenu, the items it crosses on the way do not take the focus, so the submenu stays open.
-- A menubar and a context menu opened by a right click are not part of this version.
+- A menu opened by a right click or a long touch is [ContextMenu](../context-menu/), built from the same parts. A menubar is not part of this version.
 
 ## Common Mistakes
 

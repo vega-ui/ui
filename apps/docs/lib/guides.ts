@@ -15,7 +15,7 @@ export interface Guide {
 
 export const GUIDES: { section: GuideSection, slugs: string[] }[] = [
   { section: 'start', slugs: ['getting-started'] },
-  { section: 'guides', slugs: ['styling', 'styling/themes', 'styling/tokens', 'styling/css-variables', 'forms', 'nextjs', 'i18n', 'architecture', 'widgets', 'glossary'] },
+  { section: 'guides', slugs: ['styling', 'styling/themes', 'styling/tokens', 'styling/css-variables', 'forms', 'recipes', 'nextjs', 'i18n', 'architecture', 'widgets', 'glossary'] },
   { section: 'families', slugs: ['families', 'families/selection-controls', 'families/text-inputs', 'families/date-inputs', 'families/overlays', 'families/data-displays', 'families/status-feedback', 'families/layout-primitives'] },
 ];
 

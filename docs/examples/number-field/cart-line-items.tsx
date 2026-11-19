@@ -1,10 +1,12 @@
 import {
+  Icon,
   NumberField,
   NumberFieldDecrementButton,
   NumberFieldIncrementButton,
   NumberFieldInput,
   Text,
 } from '@vega-ui/react';
+import { MinusIcon, PlusIcon } from '@vega-ui/icons';
 import { useState } from 'react';
 
 interface LineItem {
@@ -52,9 +54,9 @@ export default function CartLineItems() {
             <Text size={2} style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>{currency.format(item.price)}</Text>
           </div>
           <NumberField size='sm' min={0} max={20} value={item.quantity} onChangeValue={(quantity) => changeQuantity(item.sku, quantity)}>
-            <NumberFieldDecrementButton aria-label={`Remove one ${item.name}`} />
+            <NumberFieldDecrementButton square aria-label={`Remove one ${item.name}`}><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
             <NumberFieldInput aria-label={`Quantity of ${item.name}`} />
-            <NumberFieldIncrementButton aria-label={`Add one ${item.name}`} />
+            <NumberFieldIncrementButton square aria-label={`Add one ${item.name}`}><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
           </NumberField>
         </div>
       ))}

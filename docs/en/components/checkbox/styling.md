@@ -49,7 +49,7 @@
 
 ### Custom state icons
 
-Children of `CheckboxCheckedIcon` and `CheckboxIndeterminateIcon` replace the default icon of that state. The other state keeps its default icon.
+Neither part draws an icon of its own, so each state shows the icon you pass, from any icon set or your own SVG. The usual look is `<CheckIcon strokeWidth={4} />` and `<MinusIcon strokeWidth={4} />`; here a rocket and a diff sign take their place. To write the usual pair once, see the [recipe](./index.md#your-own-component).
 
 <!-- example: checkbox/custom-state-icons.tsx -->
 ```tsx
@@ -60,7 +60,7 @@ import {
   CheckboxIndicator,
   CheckboxInput,
 } from '@vega-ui/react';
-import { Diff, Rocket } from '@vega-ui/icons';
+import { CheckIcon, DiffIcon, MinusIcon, RocketIcon } from '@vega-ui/icons';
 
 export default function CustomStateIcons() {
   return (
@@ -69,18 +69,18 @@ export default function CustomStateIcons() {
         <CheckboxInput defaultChecked />
         <CheckboxIndicator>
           <CheckboxCheckedIcon>
-            <Rocket />
+            <RocketIcon />
           </CheckboxCheckedIcon>
-          <CheckboxIndeterminateIcon />
+          <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
         </CheckboxIndicator>
         Deploy after merge
       </Checkbox>
       <Checkbox>
         <CheckboxInput indeterminate />
         <CheckboxIndicator>
-          <CheckboxCheckedIcon />
+          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
           <CheckboxIndeterminateIcon>
-            <Diff />
+            <DiffIcon />
           </CheckboxIndeterminateIcon>
         </CheckboxIndicator>
         Files with changes

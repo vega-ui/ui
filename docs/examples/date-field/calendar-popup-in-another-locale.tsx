@@ -25,13 +25,15 @@ import {
   DateField,
   DateFieldCalendar,
   DateFieldInput,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
   HelperText,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 export default function CalendarPopupInAnotherLocale() {
   return (
@@ -41,17 +43,17 @@ export default function CalendarPopupInAnotherLocale() {
         <DateFieldInput id='liefertermin' placeholder='TT.MM.JJJJ' aria-describedby='liefertermin-hint' />
         <Popover placement='bottom-end'>
           <PopoverTrigger asChild>
-            <DateFieldTriggerIconButton aria-label='Datum auswählen' />
+            <DateFieldTrigger square aria-label='Datum auswählen'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
           </PopoverTrigger>
           <PopoverContent>
             <DateFieldCalendar aria-label='Datum auswählen'>
               <CalendarHeader>
-                <CalendarPrevButton aria-label='Vorheriger Monat' />
+                <CalendarPrevButton square aria-label='Vorheriger Monat'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                 <CalendarHeading>
                   <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                   <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                 </CalendarHeading>
-                <CalendarNextButton aria-label='Nächster Monat' />
+                <CalendarNextButton square aria-label='Nächster Monat'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
               </CalendarHeader>
               <CalendarContent>
                 <CalendarDays>
