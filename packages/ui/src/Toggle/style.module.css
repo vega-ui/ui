@@ -1,0 +1,17 @@
+.toggle[data-pressed='true'] {
+    --button-chroma-ratio: 0.03;
+
+    --button-color: var(--color-primary-500);
+    --button-color-hover: var(--color-primary-600);
+    --button-color-active: var(--color-primary-700);
+
+    --button-background-color: oklch(from var(--color-primary-500) l calc(c + var(--button-chroma-ratio)) h / 0.10);
+    --button-background-color-hover: oklch(from var(--color-primary-500) l calc(c + var(--button-chroma-ratio)) h / 0.15);
+    --button-background-color-active: oklch(from var(--color-primary-500) l calc(c + var(--button-chroma-ratio)) h / 0.20);
+}
+
+.toggle[data-pressed='true']:disabled,
+.toggle[data-pressed='true'][aria-disabled='true'] {
+    --button-background-color: var(--disable-background-color);
+    --button-color: var(--disable-text-color);
+}

@@ -4,6 +4,7 @@ import path from 'node:path'
 const SRC = path.resolve(import.meta.dirname, '../packages/ui/src')
 const OPEN_FOLDERS = ['contexts', 'hooks']
 const RELATIVE_IMPORT = /from\s*'(\.[^']*)'/g
+const NOT_SHIPPED = /\.stories\.tsx?$|\/__tests__\//
 
 const folderOf = (file) => {
   const parts = path.relative(SRC, file).split(path.sep)
@@ -31,7 +32,7 @@ const componentGraph = () => {
   graph = new Map()
   for (const file of sourceFiles(SRC)) {
     const from = folderOf(file)
-    if (!from || isInternal(from.owner)) continue
+    if (!from || isInternal(from.owner) || NOT_SHIPPED.test(file)) continue
     for (const [, spec] of fs.readFileSync(file, 'utf8').matchAll(RELATIVE_IMPORT)) {
       const to = folderOf(path.resolve(path.dirname(file), spec))
       if (!to || to.owner === from.owner || isInternal(to.owner)) continue
@@ -88,7 +89,7 @@ const boundaries = {
 const cycles = {
   meta: { type: 'problem', schema: [] },
   create: (context) => onImports(context, (node, from, to) => {
-    if (isInternal(from.owner) || isInternal(to.owner) || !reaches(to.owner, from.owner)) return
+    if (NOT_SHIPPED.test(context.filename) || isInternal(from.owner) || isInternal(to.owner) || !reaches(to.owner, from.owner)) return
 
     context.report({ node: node.source, message: `${from.owner} and ${to.owner} import each other.` })
   }),
