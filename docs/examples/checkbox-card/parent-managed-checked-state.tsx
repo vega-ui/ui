@@ -3,14 +3,15 @@ import {
   CheckboxCard,
   CheckboxCardContent,
   CheckboxCardControl,
-  CheckboxCardControlCheckedIcon,
-  CheckboxCardControlIndeterminateIcon,
+  CheckboxCheckedIcon,
+  CheckboxIndeterminateIcon,
   CheckboxCardControlInput,
   CheckboxCardDescription,
   CheckboxCardTitle,
   CheckboxIndicator,
   Text,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 const extras = [
   { value: 'storage', title: 'Extra storage', description: '+500 GB for files and backups', price: 12 },
@@ -48,8 +49,8 @@ export default function ParentManagedCheckedState() {
                 onChange={(event) => toggle(extra.value, event.currentTarget.checked)}
               />
               <CheckboxIndicator>
-                <CheckboxCardControlCheckedIcon />
-                <CheckboxCardControlIndeterminateIcon />
+                <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+                <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
               </CheckboxIndicator>
             </CheckboxCardControl>
           </CheckboxCard>

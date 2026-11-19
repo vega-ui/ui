@@ -34,6 +34,7 @@ import {
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
+import { CheckIcon, CircleAlertIcon, CircleCheckIcon } from '@vega-ui/icons';
 
 type Status = 'idle' | 'saving' | 'saved' | 'failed';
 
@@ -69,7 +70,7 @@ export default function SaveFeedback() {
         <Checkbox>
           <CheckboxInput name='offline' />
           <CheckboxIndicator>
-            <CheckboxCheckedIcon />
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
           </CheckboxIndicator>
           Simulate a network error
         </Checkbox>
@@ -81,7 +82,7 @@ export default function SaveFeedback() {
         <div role='status'>
           {status === 'saved' && (
             <Alert variant='success'>
-              <AlertIcon />
+              <AlertIcon><CircleCheckIcon /></AlertIcon>
               <AlertMain>
                 <AlertContent>Workspace renamed to “{savedName}”.</AlertContent>
               </AlertMain>
@@ -90,7 +91,7 @@ export default function SaveFeedback() {
         </div>
         {status === 'failed' && (
           <Alert variant='error' role='alert'>
-            <AlertIcon />
+            <AlertIcon><CircleAlertIcon /></AlertIcon>
             <AlertMain>
               <AlertTitle>Changes not saved</AlertTitle>
               <AlertContent>We could not reach the server. Check your connection and save again.</AlertContent>
@@ -124,6 +125,7 @@ Trade-offs:
 ```tsx
 import { useState } from 'react';
 import { Alert, AlertContent, AlertIcon, AlertMain, AlertTitle, Button, Text } from '@vega-ui/react';
+import { TriangleAlertIcon } from '@vega-ui/icons';
 
 const record = 'vega-site-verification=8c1f0b6e2d9a4f7b93e5c2a1d0f4e6b8a7c3d9e1f2b4a6c8d0e2f4a6b8c0d2e4';
 
@@ -142,7 +144,7 @@ export default function DomainVerification() {
 
   return (
     <Alert variant='warning' style={{ width: '100%', maxWidth: 560 }}>
-      <AlertIcon />
+      <AlertIcon><TriangleAlertIcon /></AlertIcon>
       <AlertMain style={{ minWidth: 0, gap: 'var(--spacing-4)' }}>
         <AlertTitle style={{ overflowWrap: 'anywhere' }}>Verify northwind-logistics-international.example.com</AlertTitle>
         <AlertContent>Add this TXT record at your DNS provider. Changes can take up to 48 hours to apply.</AlertContent>
@@ -181,8 +183,8 @@ Trade-offs:
 ```tsx
 import { useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
-import { Alert, AlertContent, AlertIcon, AlertMain, AlertTitle, Button, Heading, Icon, IconButton } from '@vega-ui/react';
-import { XIcon } from '@vega-ui/icons';
+import { Alert, AlertContent, AlertIcon, AlertMain, AlertTitle, Button, Heading, Icon } from '@vega-ui/react';
+import { InfoIcon, XIcon } from '@vega-ui/icons';
 
 export default function Dismissible() {
   const [visible, setVisible] = useState(true);
@@ -198,20 +200,21 @@ export default function Dismissible() {
       <Heading ref={headingRef} id='billing-heading' as='h2' size={4} fontWeight={600} tabIndex={-1}>Billing</Heading>
       {visible && (
         <Alert variant='info'>
-          <AlertIcon />
+          <AlertIcon><InfoIcon /></AlertIcon>
           <AlertMain>
             <AlertTitle>New invoice layout</AlertTitle>
             <AlertContent>Invoices now group usage by project. Old invoices keep their original layout.</AlertContent>
           </AlertMain>
-          <IconButton
+          <Button
+            square
             aria-label='Dismiss'
             variant='secondary'
             appearance='ghost'
             onClick={dismiss}
-            style={{ '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+            style={{ '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
           >
             <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-          </IconButton>
+          </Button>
         </Alert>
       )}
       {!visible && (

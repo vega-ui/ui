@@ -1,5 +1,5 @@
 import { useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import {
   Grid,
   GridCell,
@@ -8,7 +8,7 @@ import {
   GridRowGroup,
   GridScroller,
   Icon,
-  IconButton,
+  Button,
   IndexedSnapScrollerContent,
   Text,
   useIndexedSnapScrollerContext,
@@ -55,13 +55,13 @@ export default function PagedPickerWithOwnButtons() {
   return (
     <Grid aria-label='Graduation year' selection='single' wrap='horizontal' defaultValue={2021} defaultActive={2021} style={{ width: 280 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <IconButton aria-label='Previous years' size='sm' variant='secondary' appearance='transparent' onClick={() => scrollerRef.current?.prev()}>
-          <Icon><ChevronLeft /></Icon>
-        </IconButton>
+        <Button square aria-label='Previous years' size='sm' variant='secondary' appearance='transparent' onClick={() => scrollerRef.current?.prev()}>
+          <Icon><ChevronLeftIcon /></Icon>
+        </Button>
         <Text size={2} aria-live='polite'>{getPageStart(page)}–{getPageStart(page) + perPage - 1}</Text>
-        <IconButton aria-label='Next years' size='sm' variant='secondary' appearance='transparent' onClick={() => scrollerRef.current?.next()}>
-          <Icon><ChevronRight /></Icon>
-        </IconButton>
+        <Button square aria-label='Next years' size='sm' variant='secondary' appearance='transparent' onClick={() => scrollerRef.current?.next()}>
+          <Icon><ChevronRightIcon /></Icon>
+        </Button>
       </div>
       <GridScroller apiRef={scrollerRef} defaultIndex={0} onScrollSnapChanging={(_, index) => setPage(index)}>
         <IndexedSnapScrollerContent style={{ width: '100%' }}>

@@ -1,4 +1,4 @@
-import { CalendarDaysIcon } from '@vega-ui/icons';
+import { CalendarDaysIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import {
   CalendarContent,
   CalendarDay,
@@ -26,7 +26,7 @@ import {
   DateField,
   DateFieldCalendar,
   DateFieldInput,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
   Icon,
   Popover,
   PopoverContent,
@@ -39,19 +39,19 @@ export default function CustomTriggerIcon() {
       <DateFieldInput aria-label='Invoice date' />
       <Popover placement='bottom-end'>
         <PopoverTrigger asChild>
-          <DateFieldTriggerIconButton aria-label='Choose date'>
+          <DateFieldTrigger square aria-label='Choose date'>
             <Icon><CalendarDaysIcon /></Icon>
-          </DateFieldTriggerIconButton>
+          </DateFieldTrigger>
         </PopoverTrigger>
         <PopoverContent>
           <DateFieldCalendar aria-label='Choose date'>
             <CalendarHeader>
-              <CalendarPrevButton aria-label='Previous month' />
+              <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
               <CalendarHeading>
                 <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                 <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
               </CalendarHeading>
-              <CalendarNextButton aria-label='Next month' />
+              <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
             </CalendarHeader>
             <CalendarContent>
               <CalendarDays>

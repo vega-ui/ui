@@ -9,6 +9,7 @@ import {
   FieldsetLegend,
   HelperText,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 const channels = [
   { value: 'email', label: 'Email' },
@@ -24,8 +25,8 @@ export default function DisabledByFieldset() {
       <Checkbox>
         <CheckboxInput checked={useDefaults} onChange={(event) => setUseDefaults(event.currentTarget.checked)} />
         <CheckboxIndicator>
-          <CheckboxCheckedIcon />
-          <CheckboxIndeterminateIcon />
+          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+          <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
         </CheckboxIndicator>
         Use workspace defaults
       </Checkbox>
@@ -36,8 +37,8 @@ export default function DisabledByFieldset() {
             <Checkbox key={channel.value}>
               <CheckboxInput name='channels' value={channel.value} defaultChecked={channel.value === 'email'} />
               <CheckboxIndicator>
-                <CheckboxCheckedIcon />
-                <CheckboxIndeterminateIcon />
+                <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+                <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
               </CheckboxIndicator>
               {channel.label}
             </Checkbox>
@@ -46,8 +47,8 @@ export default function DisabledByFieldset() {
             <Checkbox>
               <CheckboxInput defaultChecked disabled aria-describedby='security-alerts-note' />
               <CheckboxIndicator>
-                <CheckboxCheckedIcon />
-                <CheckboxIndeterminateIcon />
+                <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+                <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
               </CheckboxIndicator>
               Security alerts
             </Checkbox>

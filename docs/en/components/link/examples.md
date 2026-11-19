@@ -154,7 +154,7 @@ export default function ForgotPasswordLink() {
         </div>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-4)' }}>
-        <Button type='submit' fullWidth>Sign in</Button>
+        <Button type='submit' style={{ width: '100%' }}>Sign in</Button>
         <output style={{ color: 'var(--label-secondary)', textAlign: 'center', overflowWrap: 'anywhere' }}>
           {signedIn === '' ? '' : `Signed in as ${signedIn}`}
         </output>
@@ -182,7 +182,6 @@ import {
   DialogTrigger,
   Heading,
   Icon,
-  IconButton,
   Link,
   Text,
 } from '@vega-ui/react';
@@ -198,14 +197,15 @@ export default function InlineHelpLinkInsideDialogCopy() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
           <Heading id='publish-title' as='h2' size={4} fontWeight={600}>Publish to acme.design?</Heading>
           <DialogClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </DialogClose>
         </div>
         <Text id='publish-description' size={3}>

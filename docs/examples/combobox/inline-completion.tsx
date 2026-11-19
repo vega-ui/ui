@@ -1,4 +1,5 @@
 import { Combobox, ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger, HelperText, Label, ListboxOption, TextField } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { ChangeEvent, useId, useState } from 'react';
 
 const states = [
@@ -30,8 +31,8 @@ export default function InlineCompletion() {
       <Combobox autocomplete='both' value={state} onChangeValue={(next) => setState(next)}>
         <TextField>
           <ComboboxInput id={id} aria-describedby={hintId} value={text} onChange={onChange} />
-          <ComboboxTrigger aria-label='Show states'>
-            <ComboboxIcon />
+          <ComboboxTrigger square aria-label='Show states'>
+            <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
           </ComboboxTrigger>
         </TextField>
         <ComboboxListbox aria-label='States'>

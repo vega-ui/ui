@@ -437,7 +437,7 @@ export default function CompactMonthLikeMatrix() {
 <!-- example: grid/paged-picker-with-own-buttons.tsx -->
 ```tsx
 import { useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import {
   Grid,
   GridCell,
@@ -446,7 +446,7 @@ import {
   GridRowGroup,
   GridScroller,
   Icon,
-  IconButton,
+  Button,
   IndexedSnapScrollerContent,
   Text,
   useIndexedSnapScrollerContext,
@@ -493,13 +493,13 @@ export default function PagedPickerWithOwnButtons() {
   return (
     <Grid aria-label='Graduation year' selection='single' wrap='horizontal' defaultValue={2021} defaultActive={2021} style={{ width: 280 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <IconButton aria-label='Previous years' size='sm' variant='secondary' appearance='transparent' onClick={() => scrollerRef.current?.prev()}>
-          <Icon><ChevronLeft /></Icon>
-        </IconButton>
+        <Button square aria-label='Previous years' size='sm' variant='secondary' appearance='transparent' onClick={() => scrollerRef.current?.prev()}>
+          <Icon><ChevronLeftIcon /></Icon>
+        </Button>
         <Text size={2} aria-live='polite'>{getPageStart(page)}–{getPageStart(page) + perPage - 1}</Text>
-        <IconButton aria-label='Next years' size='sm' variant='secondary' appearance='transparent' onClick={() => scrollerRef.current?.next()}>
-          <Icon><ChevronRight /></Icon>
-        </IconButton>
+        <Button square aria-label='Next years' size='sm' variant='secondary' appearance='transparent' onClick={() => scrollerRef.current?.next()}>
+          <Icon><ChevronRightIcon /></Icon>
+        </Button>
       </div>
       <GridScroller apiRef={scrollerRef} defaultIndex={0} onScrollSnapChanging={(_, index) => setPage(index)}>
         <IndexedSnapScrollerContent style={{ width: '100%' }}>
@@ -600,7 +600,7 @@ export default function SortableTable() {
                     aria-sort={sort.column === column.key ? sort.direction : undefined}
                   >
                     <th className={column.numeric ? 'gridNumeric' : undefined}>
-                      <Button size='xs' variant='secondary' appearance='ghost' onClick={() => sortBy(column.key)}>
+                      <Button size='xs' variant='secondary' appearance='ghost' tabIndex={-1} onClick={() => sortBy(column.key)}>
                         {column.label}
                         <Icon size='xs'>{sortIcon(column.key)}</Icon>
                       </Button>
@@ -704,6 +704,7 @@ export default function InlineEditing() {
               <GridCell col={1}>
                 <input
                   className='gridCellInput'
+                  tabIndex={-1}
                   aria-label={`${item.category} planned`}
                   inputMode='decimal'
                   value={item.planned}
@@ -713,6 +714,7 @@ export default function InlineEditing() {
               <GridCell col={2}>
                 <input
                   className='gridCellInput'
+                  tabIndex={-1}
                   aria-label={`${item.category} spent`}
                   inputMode='decimal'
                   value={item.spent}

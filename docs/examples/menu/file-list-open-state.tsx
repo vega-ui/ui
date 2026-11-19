@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Icon, IconButton, Menu, MenuContent, MenuItem, MenuTrigger, Text } from '@vega-ui/react';
+import { Button, Icon, Menu, MenuContent, MenuItem, MenuTrigger, Text } from '@vega-ui/react';
 import { EllipsisIcon } from '@vega-ui/icons';
 
 const files = [
@@ -41,9 +41,9 @@ export default function FileListOpenState() {
           </div>
           <Menu placement='bottom-end' size='sm' open={openFile === file.id} onChangeOpen={(open) => changeOpen(file.id, open)}>
             <MenuTrigger asChild>
-              <IconButton size='sm' aria-label={`Actions for ${file.name}`} variant='secondary' appearance='ghost' style={{ flexShrink: 0 }}>
+              <Button square size='sm' aria-label={`Actions for ${file.name}`} variant='secondary' appearance='ghost' style={{ flexShrink: 0 }}>
                 <Icon><EllipsisIcon /></Icon>
-              </IconButton>
+              </Button>
             </MenuTrigger>
             <MenuContent>
               <MenuItem>Open</MenuItem>

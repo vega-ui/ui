@@ -8,6 +8,7 @@ import {
   SelectOption,
   SelectValue,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 const slots = Array.from({ length: 24 * 12 }, (_, index) => {
@@ -26,7 +27,7 @@ export default function LongScrollableOptionList() {
         <SelectHiddenSelect name='reminderTime' />
         <SelectCombobox id={id}>
           <SelectValue />
-          <SelectIcon />
+          <SelectIcon><ChevronDownIcon /></SelectIcon>
         </SelectCombobox>
         <SelectListbox>
           {slots.map((slot) => (

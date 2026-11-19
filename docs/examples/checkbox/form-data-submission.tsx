@@ -10,6 +10,7 @@ import {
   FieldsetLegend,
   Text,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 const topics = [
   { value: 'releases', label: 'Product releases' },
@@ -39,8 +40,8 @@ export default function FormDataSubmission() {
               <Checkbox key={topic.value}>
                 <CheckboxInput name='topics' value={topic.value} defaultChecked={topic.value === 'security'} />
                 <CheckboxIndicator>
-                  <CheckboxCheckedIcon />
-                  <CheckboxIndeterminateIcon />
+                  <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+                  <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
                 </CheckboxIndicator>
                 {topic.label}
               </Checkbox>
@@ -50,8 +51,8 @@ export default function FormDataSubmission() {
         <Checkbox>
           <CheckboxInput name='summary' value='weekly' />
           <CheckboxIndicator>
-            <CheckboxCheckedIcon />
-            <CheckboxIndeterminateIcon />
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+            <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
           </CheckboxIndicator>
           Weekly summary instead of single emails
         </Checkbox>

@@ -19,18 +19,20 @@ import {
   CalendarYearLabel,
   CalendarYears,
   CalendarYearsGrid,
+  Icon,
 } from '@vega-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 export default function PagingWithButtonsOnly() {
   return (
     <Calendar locale='en-US' defaultFocusedDate='2026-11-09'>
       <CalendarHeader>
-        <CalendarPrevButton aria-label='Previous' />
+        <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
         <CalendarHeading>
           <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
           <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
         </CalendarHeading>
-        <CalendarNextButton aria-label='Next' />
+        <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
       </CalendarHeader>
       <CalendarContent>
         <CalendarDays>

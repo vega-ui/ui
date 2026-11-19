@@ -6,7 +6,7 @@
 
 ## Summary
 
-`ButtonBase` is the low-level action primitive behind `Button` and `IconButton`. It owns the shared button styling contract, focus treatment, and `asChild` composition without adding higher-level product layout rules.
+`ButtonBase` is the low-level action primitive behind `Button`. It owns the shared button styling contract, focus treatment, and `asChild` composition without adding higher-level product layout rules.
 
 ## Imports
 
@@ -80,6 +80,6 @@ export default function BasicUsage() {
 
 ## Common Mistakes
 
-- Using `ButtonBase` when `Button` or `IconButton` would be clearer.
+- Using `ButtonBase` when `Button` would be clearer.
 - Forgetting that link semantics remain link semantics under `asChild`.
 - Treating unsupported variant strings as if CSS already implements them.

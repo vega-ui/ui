@@ -2,13 +2,14 @@ import {
   CheckboxCard,
   CheckboxCardContent,
   CheckboxCardControl,
-  CheckboxCardControlCheckedIcon,
-  CheckboxCardControlIndeterminateIcon,
+  CheckboxCheckedIcon,
+  CheckboxIndeterminateIcon,
   CheckboxCardControlInput,
   CheckboxCardDescription,
   CheckboxCardTitle,
   CheckboxIndicator,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 export default function BlockedUpgradeOption() {
   return (
@@ -21,8 +22,8 @@ export default function BlockedUpgradeOption() {
         <CheckboxCardControl>
           <CheckboxCardControlInput name='reports' value='weekly' defaultChecked />
           <CheckboxIndicator>
-            <CheckboxCardControlCheckedIcon />
-            <CheckboxCardControlIndeterminateIcon />
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+            <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
           </CheckboxIndicator>
         </CheckboxCardControl>
       </CheckboxCard>
@@ -34,8 +35,8 @@ export default function BlockedUpgradeOption() {
         <CheckboxCardControl>
           <CheckboxCardControlInput name='reports' value='premium' disabled aria-describedby='premium-reports-note' />
           <CheckboxIndicator>
-            <CheckboxCardControlCheckedIcon />
-            <CheckboxCardControlIndeterminateIcon />
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+            <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
           </CheckboxIndicator>
         </CheckboxCardControl>
       </CheckboxCard>

@@ -55,6 +55,7 @@ import {
   Fieldset,
   FieldsetLegend,
 } from '@vega-ui/react';
+import { CheckIcon } from '@vega-ui/icons';
 
 const COLUMNS = ['Status', 'Owner', 'Due date', 'Priority', 'Last updated'];
 
@@ -66,7 +67,7 @@ export default function UseThemeTokensToTightenSpacing() {
         <Checkbox key={column} size='sm'>
           <CheckboxInput name='columns' value={column} defaultChecked />
           <CheckboxIndicator>
-            <CheckboxCheckedIcon />
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
           </CheckboxIndicator>
           {column}
         </Checkbox>

@@ -1,9 +1,9 @@
 import { useState, type CSSProperties, type ReactNode } from 'react';
 import {
+  Button,
   ContextMenu,
   ContextMenuTrigger,
   Icon,
-  IconButton,
   Menu,
   MenuContent,
   MenuItem,
@@ -96,9 +96,9 @@ export default function FileList() {
                 </div>
                 <Menu placement='bottom-end' size='sm'>
                   <MenuTrigger asChild>
-                    <IconButton size='sm' aria-label={`Actions for ${file.name}`} variant='secondary' appearance='ghost' style={{ flexShrink: 0 }}>
+                    <Button square size='sm' aria-label={`Actions for ${file.name}`} variant='secondary' appearance='ghost' style={{ flexShrink: 0 }}>
                       <Icon><EllipsisIcon /></Icon>
-                    </IconButton>
+                    </Button>
                   </MenuTrigger>
                   <MenuContent>
                     <FileActions onAction={report} />

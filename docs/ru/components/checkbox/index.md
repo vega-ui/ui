@@ -44,17 +44,58 @@ import {
   CheckboxIndicator,
   CheckboxInput,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 export default function MinimalComposition() {
   return (
     <Checkbox>
       <CheckboxInput name='remember' />
       <CheckboxIndicator>
-        <CheckboxCheckedIcon />
-        <CheckboxIndeterminateIcon />
+        <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+        <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
       </CheckboxIndicator>
       Remember me on this device
     </Checkbox>
+  );
+}
+```
+<!-- /example -->
+
+## Свой компонент
+
+Минимальная композиция выше показывает части на месте. В приложении соберите их один раз в своём файле, со своим набором иконок, и импортируйте этот компонент везде. `MyCheckbox` передаёт свои пропсы нативному `CheckboxInput`, как `<input type="checkbox">`, а дочерние элементы становятся подписью. См. [Рецепты компонентов](../../recipes.md).
+
+<!-- example: checkbox/recipe.tsx -->
+```tsx
+import {
+  Checkbox,
+  CheckboxCheckedIcon,
+  CheckboxIndeterminateIcon,
+  CheckboxIndicator,
+  CheckboxInput,
+  type CheckboxInputProps,
+} from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
+
+export function MyCheckbox({ children, ...props }: CheckboxInputProps) {
+  return (
+    <Checkbox>
+      <CheckboxInput {...props} />
+      <CheckboxIndicator>
+        <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+        <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
+      </CheckboxIndicator>
+      {children}
+    </Checkbox>
+  );
+}
+
+export default function Recipe() {
+  return (
+    <div style={{ display: 'grid', gap: 'var(--spacing-4)' }}>
+      <MyCheckbox name='remember' defaultChecked>Remember me on this device</MyCheckbox>
+      <MyCheckbox name='files' indeterminate>Some files are selected</MyCheckbox>
+    </div>
   );
 }
 ```
@@ -68,8 +109,8 @@ export default function MinimalComposition() {
 
 ## Необязательные части
 
-- `CheckboxCheckedIcon`: иконка отмеченного состояния
-- `CheckboxIndeterminateIcon`: иконка неопределённого состояния
+- `CheckboxCheckedIcon`: показывает переданную галочку, пока чекбокс отмечен
+- `CheckboxIndeterminateIcon`: показывает переданный минус в неопределённом состоянии
 
 ## Порядок композиции
 

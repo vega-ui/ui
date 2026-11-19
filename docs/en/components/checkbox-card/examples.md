@@ -12,8 +12,8 @@ import {
   CheckboxCard,
   CheckboxCardContent,
   CheckboxCardControl,
-  CheckboxCardControlCheckedIcon,
-  CheckboxCardControlIndeterminateIcon,
+  CheckboxCheckedIcon,
+  CheckboxIndeterminateIcon,
   CheckboxCardControlInput,
   CheckboxCardDescription,
   CheckboxCardTitle,
@@ -21,6 +21,7 @@ import {
   Fieldset,
   FieldsetLegend,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 const addons = [
   { value: 'priority-support', title: 'Priority support', description: 'Replies within 1 business hour, 24/7 incident line.' },
@@ -42,8 +43,8 @@ export default function PlanOptionTile() {
             <CheckboxCardControl>
               <CheckboxCardControlInput name='addons' value={addon.value} defaultChecked={addon.value === 'audit-log'} />
               <CheckboxIndicator>
-                <CheckboxCardControlCheckedIcon />
-                <CheckboxCardControlIndeterminateIcon />
+                <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+                <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
               </CheckboxIndicator>
             </CheckboxCardControl>
           </CheckboxCard>
@@ -68,14 +69,15 @@ import {
   CheckboxCard,
   CheckboxCardContent,
   CheckboxCardControl,
-  CheckboxCardControlCheckedIcon,
-  CheckboxCardControlIndeterminateIcon,
+  CheckboxCheckedIcon,
+  CheckboxIndeterminateIcon,
   CheckboxCardControlInput,
   CheckboxCardDescription,
   CheckboxCardTitle,
   CheckboxIndicator,
   Text,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 const extras = [
   { value: 'storage', title: 'Extra storage', description: '+500 GB for files and backups', price: 12 },
@@ -113,8 +115,8 @@ export default function ParentManagedCheckedState() {
                 onChange={(event) => toggle(extra.value, event.currentTarget.checked)}
               />
               <CheckboxIndicator>
-                <CheckboxCardControlCheckedIcon />
-                <CheckboxCardControlIndeterminateIcon />
+                <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+                <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
               </CheckboxIndicator>
             </CheckboxCardControl>
           </CheckboxCard>
@@ -141,8 +143,8 @@ import {
   CheckboxCard,
   CheckboxCardContent,
   CheckboxCardControl,
-  CheckboxCardControlCheckedIcon,
-  CheckboxCardControlIndeterminateIcon,
+  CheckboxCheckedIcon,
+  CheckboxIndeterminateIcon,
   CheckboxCardControlInput,
   CheckboxCardDescription,
   CheckboxCardTitle,
@@ -151,6 +153,7 @@ import {
   FieldsetLegend,
   Text,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 const contents = [
   { value: 'projects', title: 'Projects', description: 'Boards, tasks and their history' },
@@ -181,8 +184,8 @@ export default function FormDataSubmission() {
               <CheckboxCardControl>
                 <CheckboxCardControlInput name='include' value={content.value} defaultChecked />
                 <CheckboxIndicator>
-                  <CheckboxCardControlCheckedIcon />
-                  <CheckboxCardControlIndeterminateIcon />
+                  <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+                  <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
                 </CheckboxIndicator>
               </CheckboxCardControl>
             </CheckboxCard>
@@ -214,8 +217,8 @@ import {
   CheckboxCard,
   CheckboxCardContent,
   CheckboxCardControl,
-  CheckboxCardControlCheckedIcon,
-  CheckboxCardControlIndeterminateIcon,
+  CheckboxCheckedIcon,
+  CheckboxIndeterminateIcon,
   CheckboxCardControlInput,
   CheckboxCardDescription,
   CheckboxCardTitle,
@@ -223,6 +226,7 @@ import {
   Fieldset,
   FieldsetLegend,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 const alerts = [
   { value: 'sms', title: 'SMS alerts', description: 'Critical incidents only, by text message' },
@@ -244,8 +248,8 @@ export default function HorizontalSettingsTile() {
             <CheckboxCardControl>
               <CheckboxCardControlInput name='alerts' value={alert.value} defaultChecked={alert.value !== 'sms'} />
               <CheckboxIndicator>
-                <CheckboxCardControlCheckedIcon />
-                <CheckboxCardControlIndeterminateIcon />
+                <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+                <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
               </CheckboxIndicator>
             </CheckboxCardControl>
           </CheckboxCard>
@@ -271,8 +275,8 @@ import {
   CheckboxCard,
   CheckboxCardContent,
   CheckboxCardControl,
-  CheckboxCardControlCheckedIcon,
-  CheckboxCardControlIndeterminateIcon,
+  CheckboxCheckedIcon,
+  CheckboxIndeterminateIcon,
   CheckboxCardControlInput,
   CheckboxCardDescription,
   CheckboxCardTitle,
@@ -281,6 +285,7 @@ import {
   FieldsetLegend,
   HelperText,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 const platforms = [
   { value: 'ios', title: 'iOS', description: 'App Store build, iPhone and iPad' },
@@ -322,8 +327,8 @@ export default function AtLeastOneRequired() {
                   onChange={() => setInvalid(false)}
                 />
                 <CheckboxIndicator>
-                  <CheckboxCardControlCheckedIcon />
-                  <CheckboxCardControlIndeterminateIcon />
+                  <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+                  <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
                 </CheckboxIndicator>
               </CheckboxCardControl>
             </CheckboxCard>
@@ -353,13 +358,14 @@ import {
   CheckboxCard,
   CheckboxCardContent,
   CheckboxCardControl,
-  CheckboxCardControlCheckedIcon,
-  CheckboxCardControlIndeterminateIcon,
+  CheckboxCheckedIcon,
+  CheckboxIndeterminateIcon,
   CheckboxCardControlInput,
   CheckboxCardDescription,
   CheckboxCardTitle,
   CheckboxIndicator,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 export default function BlockedUpgradeOption() {
   return (
@@ -372,8 +378,8 @@ export default function BlockedUpgradeOption() {
         <CheckboxCardControl>
           <CheckboxCardControlInput name='reports' value='weekly' defaultChecked />
           <CheckboxIndicator>
-            <CheckboxCardControlCheckedIcon />
-            <CheckboxCardControlIndeterminateIcon />
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+            <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
           </CheckboxIndicator>
         </CheckboxCardControl>
       </CheckboxCard>
@@ -385,8 +391,8 @@ export default function BlockedUpgradeOption() {
         <CheckboxCardControl>
           <CheckboxCardControlInput name='reports' value='premium' disabled aria-describedby='premium-reports-note' />
           <CheckboxIndicator>
-            <CheckboxCardControlCheckedIcon />
-            <CheckboxCardControlIndeterminateIcon />
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+            <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
           </CheckboxIndicator>
         </CheckboxCardControl>
       </CheckboxCard>
@@ -410,15 +416,15 @@ import {
   CheckboxCard,
   CheckboxCardContent,
   CheckboxCardControl,
-  CheckboxCardControlCheckedIcon,
-  CheckboxCardControlIndeterminateIcon,
+  CheckboxCheckedIcon,
+  CheckboxIndeterminateIcon,
   CheckboxCardControlInput,
   CheckboxCardDescription,
   CheckboxCardTitle,
-  CheckboxCheckedIcon,
   CheckboxIndicator,
   CheckboxInput,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 const offices = ['Berlin', 'Lisbon', 'Warsaw', 'Dublin', 'Madrid'];
 
@@ -454,8 +460,8 @@ export default function IndeterminateAggregateCard() {
         <CheckboxCardControl>
           <CheckboxCardControlInput checked={allEnabled} indeterminate={someEnabled} onChange={toggleAll} />
           <CheckboxIndicator>
-            <CheckboxCardControlCheckedIcon />
-            <CheckboxCardControlIndeterminateIcon />
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+            <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
           </CheckboxIndicator>
         </CheckboxCardControl>
       </CheckboxCard>
@@ -464,7 +470,7 @@ export default function IndeterminateAggregateCard() {
           <Checkbox key={office}>
             <CheckboxInput checked={enabled.includes(office)} onChange={() => toggle(office)} />
             <CheckboxIndicator>
-              <CheckboxCheckedIcon />
+              <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
             </CheckboxIndicator>
             {office}
           </Checkbox>
@@ -486,13 +492,14 @@ import {
   CheckboxCard,
   CheckboxCardContent,
   CheckboxCardControl,
-  CheckboxCardControlCheckedIcon,
-  CheckboxCardControlIndeterminateIcon,
+  CheckboxCheckedIcon,
+  CheckboxIndeterminateIcon,
   CheckboxCardControlInput,
   CheckboxCardDescription,
   CheckboxCardTitle,
   CheckboxIndicator,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 const title = 'Automatically archive inactive projects after 90 days without activity';
 const description = 'Archived projects stay searchable and can be restored by any workspace admin. Integrations, webhooks and scheduled exports of archived projects are paused until the project is restored.';
@@ -508,8 +515,8 @@ export default function LongContent() {
         <CheckboxCardControl>
           <CheckboxCardControlInput name='archive' value='truncated' />
           <CheckboxIndicator>
-            <CheckboxCardControlCheckedIcon />
-            <CheckboxCardControlIndeterminateIcon />
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+            <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
           </CheckboxIndicator>
         </CheckboxCardControl>
       </CheckboxCard>
@@ -521,8 +528,8 @@ export default function LongContent() {
         <CheckboxCardControl>
           <CheckboxCardControlInput name='archive' value='wrapped' />
           <CheckboxIndicator>
-            <CheckboxCardControlCheckedIcon />
-            <CheckboxCardControlIndeterminateIcon />
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+            <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
           </CheckboxIndicator>
         </CheckboxCardControl>
       </CheckboxCard>

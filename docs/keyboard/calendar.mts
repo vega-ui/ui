@@ -2,7 +2,8 @@ import type { KeyboardSpec } from './types';
 
 const example = 'calendar/single-date-in-a-locale.tsx';
 const march = (day: number) => ({ role: 'gridcell', name: String(day), nth: 2 });
-const next = { role: 'button', name: 'Weiter' };
+const marchLastDay = { role: 'gridcell', name: '31', nth: 1 };
+const next = { role: 'button', name: 'Nächster Monat' };
 const monthButton = { role: 'button', name: 'März' };
 const yearButton = { role: 'button', name: '2026' };
 
@@ -50,7 +51,7 @@ export default [
     ru: 'Переносит фокус на первый или последний день месяца.',
     checks: [
       { example, steps: [{ focus: march(15) }], press: 'Control+Home', expect: [{ focused: march(1) }] },
-      { example, steps: [{ focus: march(15) }], press: 'Control+End', expect: [{ focused: march(31) }] },
+      { example, steps: [{ focus: march(15) }], press: 'Control+End', expect: [{ focused: marchLastDay }] },
     ],
   },
   {

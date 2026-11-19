@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Icon, IconButton } from '@vega-ui/react';
+import { Icon, Button } from '@vega-ui/react';
 import { Check, Copy } from '@vega-ui/icons';
 import { useDictionary } from './LocaleProvider';
 import styles from './CodeBlock.module.css';
@@ -17,9 +17,9 @@ export const CopyButton = ({ code }: { code: string }) => {
   };
 
   return (
-    <IconButton size='xs' appearance='transparent' variant='secondary' onClick={copy} aria-label={copied ? t.code.copied : t.code.copy}>
+    <Button square size='xs' appearance='transparent' variant='secondary' onClick={copy} aria-label={copied ? t.code.copied : t.code.copy}>
       <Icon>{copied ? <Check /> : <Copy />}</Icon>
-    </IconButton>
+    </Button>
   );
 };
 

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import {
+  Button,
   Icon,
-  IconButton,
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -27,9 +27,9 @@ export default function SliderInAPopover() {
   return (
     <Popover role='dialog' placement='top'>
       <PopoverTrigger asChild>
-        <IconButton aria-label={`Volume, ${volume}%`} variant='secondary' appearance='ghost'>
+        <Button square aria-label={`Volume, ${volume}%`} variant='secondary' appearance='ghost'>
           <Icon size='sm'><VolumeIcon /></Icon>
-        </IconButton>
+        </Button>
       </PopoverTrigger>
       <PopoverContent aria-label='Volume'>
         <div style={{ padding: 'var(--spacing-6)' }}>

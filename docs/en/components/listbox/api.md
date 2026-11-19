@@ -8,7 +8,7 @@
 | --- | --- | --- | --- | --- |
 | `multiple` | `Multiple` | — | No | Allows selecting several options. Determines the structure of `value`: an array when true. |
 | `value` | `Multiple extends true ? Value[] : Value \| null` | — | No | The currently selected value (controlled). Without `multiple`, `null` clears the selection, while `undefined` makes the list uncontrolled. |
-| `defaultValue` | `ListboxValue<Value, Multiple>` | — | No | The default selected value (uncontrolled). |
+| `defaultValue` | `NoInfer<ListboxValue<Value, Multiple>>` | — | No | The default selected value (uncontrolled). |
 | `onChangeValue` | `(value: ListboxValue<Value, Multiple>) => void` | — | No | Callback fired when the selection changes. |
 | `disabled` | `boolean` | `false` | No | Prevents interaction and removes the list from the tab order. |
 | `size` | `OptionSize` | `'md'` | No | Visual size of the options. |

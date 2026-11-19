@@ -1,14 +1,13 @@
 import {
   Button,
   Icon,
-  IconButton,
   IndexedSnapScroller,
   IndexedSnapScrollerContent,
   Text,
   useIndexedSnapScrollerContext,
   type IndexedSnapScrollerApiRef,
 } from '@vega-ui/react';
-import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import { useRef, useState } from 'react';
 
 const today = new Date();
@@ -58,12 +57,12 @@ export default function ControlledVirtualIndex() {
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-6)', width: '100%' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-2)' }}>
-        <IconButton aria-label='Previous month' variant='secondary' appearance='ghost' onClick={() => api.current?.prev()}>
-          <Icon><ChevronLeft /></Icon>
-        </IconButton>
-        <IconButton aria-label='Next month' variant='secondary' appearance='ghost' onClick={() => api.current?.next()}>
-          <Icon><ChevronRight /></Icon>
-        </IconButton>
+        <Button square aria-label='Previous month' variant='secondary' appearance='ghost' onClick={() => api.current?.prev()}>
+          <Icon><ChevronLeftIcon /></Icon>
+        </Button>
+        <Button square aria-label='Next month' variant='secondary' appearance='ghost' onClick={() => api.current?.next()}>
+          <Icon><ChevronRightIcon /></Icon>
+        </Button>
         <Button size='sm' variant='secondary' appearance='ghost' onClick={() => setIndex(index + 12)} style={{ marginInlineStart: 'auto' }}>
           +1 year
         </Button>

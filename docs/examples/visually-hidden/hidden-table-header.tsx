@@ -1,4 +1,4 @@
-import { Icon, IconButton, VisuallyHidden } from '@vega-ui/react';
+import { Button, Icon, VisuallyHidden } from '@vega-ui/react';
 import { PencilIcon } from '@vega-ui/icons';
 import { useState } from 'react';
 
@@ -29,7 +29,8 @@ export default function HiddenTableHeader() {
               <td style={{ paddingBlock: 'var(--spacing-3)', borderBlockEnd: '1px solid var(--separator-opaque)' }}>{member.name}</td>
               <td style={{ paddingBlock: 'var(--spacing-3)', borderBlockEnd: '1px solid var(--separator-opaque)', color: 'var(--label-secondary)' }}>{member.role}</td>
               <td style={{ paddingBlock: 'var(--spacing-3)', borderBlockEnd: '1px solid var(--separator-opaque)', textAlign: 'end' }}>
-                <IconButton
+                <Button
+                  square
                   style={{ display: 'inline-flex' }}
                   type='button'
                   size='xs'
@@ -39,7 +40,7 @@ export default function HiddenTableHeader() {
                   onClick={() => setEditing(member.name)}
                 >
                   <Icon><PencilIcon /></Icon>
-                </IconButton>
+                </Button>
               </td>
             </tr>
           ))}

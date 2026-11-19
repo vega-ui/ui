@@ -26,15 +26,17 @@ import {
   DateField,
   DateFieldCalendar,
   DateFieldInput,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
   Fieldset,
   FieldsetLegend,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
   Text,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 const addDays = (iso: string, days: number) => {
   const date = new Date(`${iso}T00:00:00Z`);
@@ -79,17 +81,17 @@ export default function StayDates() {
           <DateFieldInput id='check-in' placeholder='dd.mm.yyyy' />
           <Popover placement='bottom-end'>
             <PopoverTrigger asChild>
-              <DateFieldTriggerIconButton aria-label='Choose check-in date' />
+              <DateFieldTrigger square aria-label='Choose check-in date'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
             </PopoverTrigger>
             <PopoverContent>
               <DateFieldCalendar aria-label='Choose check-in date'>
                 <CalendarHeader>
-                  <CalendarPrevButton aria-label='Previous month' />
+                  <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                   </CalendarHeading>
-                  <CalendarNextButton aria-label='Next month' />
+                  <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                 </CalendarHeader>
                 <CalendarContent>
                   <CalendarDays>
@@ -136,17 +138,17 @@ export default function StayDates() {
           <DateFieldInput id='check-out' placeholder='dd.mm.yyyy' />
           <Popover placement='bottom-end'>
             <PopoverTrigger asChild>
-              <DateFieldTriggerIconButton aria-label='Choose check-out date' />
+              <DateFieldTrigger square aria-label='Choose check-out date'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
             </PopoverTrigger>
             <PopoverContent>
               <DateFieldCalendar aria-label='Choose check-out date'>
                 <CalendarHeader>
-                  <CalendarPrevButton aria-label='Previous month' />
+                  <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                   </CalendarHeading>
-                  <CalendarNextButton aria-label='Next month' />
+                  <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                 </CalendarHeader>
                 <CalendarContent>
                   <CalendarDays>

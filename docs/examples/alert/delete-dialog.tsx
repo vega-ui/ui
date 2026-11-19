@@ -12,10 +12,9 @@ import {
   DialogTrigger,
   Heading,
   Icon,
-  IconButton,
   Text,
 } from '@vega-ui/react';
-import { XIcon } from '@vega-ui/icons';
+import { TriangleAlertIcon, XIcon } from '@vega-ui/icons';
 
 const destructive = {
   '--button-background-color': 'var(--color-red-accent-500)',
@@ -33,21 +32,22 @@ export default function DeleteDialog() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
           <Heading id='delete-project-title' as='h2' size={4} fontWeight={600}>Delete “Mobile app”?</Heading>
           <DialogClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </DialogClose>
         </div>
         <Text size={3} asChild>
           <p style={{ marginBlock: 'var(--spacing-4) var(--spacing-8)', color: 'var(--label-secondary)' }}>The project, its 14 environments and all deployment history will be removed.</p>
         </Text>
         <Alert id='delete-project-warning' variant='warning'>
-          <AlertIcon />
+          <AlertIcon><TriangleAlertIcon /></AlertIcon>
           <AlertMain>
             <AlertTitle>3 services still use this project</AlertTitle>
             <AlertContent>Billing API, Notifications and Search will stop receiving configuration updates.</AlertContent>

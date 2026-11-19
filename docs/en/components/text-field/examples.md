@@ -139,7 +139,7 @@ A `role='search'` form with a leading icon, a clear button that returns focus to
 <!-- example: text-field/search-with-clear-and-submit.tsx -->
 ```tsx
 import type { CSSProperties, FormEvent } from 'react';
-import { Button, Icon, IconButton, Text, TextField, TextFieldInput } from '@vega-ui/react';
+import { Button, Icon, Text, TextField, TextFieldInput } from '@vega-ui/react';
 import { SearchIcon, XIcon } from '@vega-ui/icons';
 import { useRef, useState } from 'react';
 import './examples.css';
@@ -176,16 +176,17 @@ export default function SearchWithClearAndSubmit() {
           onChange={(event) => setQuery(event.currentTarget.value)}
         />
         {query !== '' && (
-          <IconButton
+          <Button
+            square
             type='button'
             aria-label='Clear search'
             variant='secondary'
             appearance='ghost'
             onClick={clear}
-            style={{ '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5, flexShrink: 0 } as CSSProperties}
+            style={{ '--button-height': '24px', '--button-br-ratio': 0.5, flexShrink: 0 } as CSSProperties}
           >
             <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-          </IconButton>
+          </Button>
         )}
         <Button type='submit' size='sm' style={{ flexShrink: 0, marginInlineStart: 'var(--spacing-2)', marginInlineEnd: 'var(--spacing-3)' }}>Search</Button>
       </TextField>
@@ -215,7 +216,6 @@ import {
   DialogTrigger,
   Heading,
   Icon,
-  IconButton,
   Label,
   Text,
   TextField,
@@ -244,14 +244,15 @@ export default function RenameInDialog() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
             <Heading id={`${id}-title`} as='h2' size={4} fontWeight={600}>Rename project</Heading>
             <DialogClose asChild>
-              <IconButton
+              <Button
+                square
                 aria-label='Close'
                 variant='secondary'
                 appearance='ghost'
-                style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+                style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
               >
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DialogClose>
           </div>
           <form method='dialog' onSubmit={onSubmit} style={{ display: 'grid', gap: 'var(--spacing-12)', marginBlockStart: 'var(--spacing-8)' }}>

@@ -52,7 +52,7 @@ A square, `transparent` `Button` box of the same size as the links, so the row d
 
 <!-- example: pagination/secondary-pagination-text.tsx -->
 ```tsx
-import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import {
   Icon,
   Pagination,
@@ -73,7 +73,7 @@ export default function SecondaryPaginationText() {
         <PaginationItem>
           <PaginationLink asChild>
             <button type='button' aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
-              <Icon><ChevronLeft /></Icon>
+              <Icon><ChevronLeftIcon /></Icon>
             </button>
           </PaginationLink>
         </PaginationItem>
@@ -85,7 +85,7 @@ export default function SecondaryPaginationText() {
         <PaginationItem>
           <PaginationLink asChild>
             <button type='button' aria-label='Next page' disabled={page === total} onClick={() => setPage(page + 1)}>
-              <Icon><ChevronRight /></Icon>
+              <Icon><ChevronRightIcon /></Icon>
             </button>
           </PaginationLink>
         </PaginationItem>

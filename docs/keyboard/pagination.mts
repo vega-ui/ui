@@ -11,7 +11,7 @@ export default [
     ru: 'Переносит фокус по порядку через ссылки «назад» и «вперёд» и ссылки страниц. Многоточия и отключённые ссылки не получают фокус.',
     checks: [
       { example, steps: [{ focus: page(1) }], press: 'Tab', expect: [{ focused: page(2) }] },
-      { example, steps: [{ focus: page(5) }], press: 'Tab', expect: [{ focused: page(12) }] },
+      { example, steps: [{ focus: page(3) }], press: 'Tab', expect: [{ focused: page(12) }] },
       { example, steps: [{ focus: next }], press: 'Shift+Tab', expect: [{ focused: page(12) }] },
     ],
   },

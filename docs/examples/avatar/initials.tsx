@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarIcon, Text } from '@vega-ui/react';
-import { User } from '@vega-ui/icons';
+import { UserIcon } from '@vega-ui/icons';
 
 const getInitials = (name: string) => {
   const words = name.trim().split(/\s+/).filter((word) => word !== '');
@@ -29,7 +29,7 @@ export default function Initials() {
         return (
           <li key={label} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-6)' }}>
             <Avatar size='sm' aria-hidden='true'>
-              {initials === '' && <AvatarIcon><User /></AvatarIcon>}
+              {initials === '' && <AvatarIcon><UserIcon /></AvatarIcon>}
               {initials !== '' && <AvatarFallback>{initials}</AvatarFallback>}
             </Avatar>
             <Text size={3} style={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{label}</Text>

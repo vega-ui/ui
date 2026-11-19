@@ -27,13 +27,15 @@ import {
   DateField,
   DateFieldCalendar,
   DateFieldInput,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
   Text,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 const persianCalendar = createCalendarSystem('persian');
 
@@ -56,17 +58,17 @@ export default function DateFieldInANonGregorianCalendar() {
           <DateFieldInput id='persian-date' placeholder='yyyy/mm/dd' />
           <Popover placement='bottom-end'>
             <PopoverTrigger asChild>
-              <DateFieldTriggerIconButton aria-label='انتخاب تاریخ' />
+              <DateFieldTrigger square aria-label='انتخاب تاریخ'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
             </PopoverTrigger>
             <PopoverContent>
               <DateFieldCalendar aria-label='انتخاب تاریخ'>
                 <CalendarHeader>
-                  <CalendarPrevButton aria-label='ماه قبل' />
+                  <CalendarPrevButton square aria-label='ماه قبل'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                   </CalendarHeading>
-                  <CalendarNextButton aria-label='ماه بعد' />
+                  <CalendarNextButton square aria-label='ماه بعد'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                 </CalendarHeader>
                 <CalendarContent>
                   <CalendarDays>

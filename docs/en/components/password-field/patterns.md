@@ -24,8 +24,9 @@ import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleIconButton,
+  PasswordFieldToggle,
 } from '@vega-ui/react';
+import { EyeIcon, EyeOffIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 export default function SignInPassword() {
@@ -36,10 +37,10 @@ export default function SignInPassword() {
       <Label htmlFor={id}>Password</Label>
       <PasswordField>
         <PasswordFieldInput id={id} name='password' autoComplete='current-password' />
-        <PasswordFieldToggleIconButton aria-label='Show password'>
-          <PasswordFieldShownIcon />
-          <PasswordFieldHiddenIcon />
-        </PasswordFieldToggleIconButton>
+        <PasswordFieldToggle square aria-label='Show password'>
+          <PasswordFieldShownIcon><EyeIcon /></PasswordFieldShownIcon>
+          <PasswordFieldHiddenIcon><EyeOffIcon /></PasswordFieldHiddenIcon>
+        </PasswordFieldToggle>
       </PasswordField>
     </div>
   );
@@ -72,10 +73,10 @@ import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleIconButton,
+  PasswordFieldToggle,
   Text,
 } from '@vega-ui/react';
-import { CheckIcon, CircleIcon } from '@vega-ui/icons';
+import { CheckIcon, CircleIcon, EyeIcon, EyeOffIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const RULES = [
@@ -104,10 +105,10 @@ export default function NewPasswordChecklist() {
             aria-describedby={rulesId}
             onChange={(event) => setPassword(event.currentTarget.value)}
           />
-          <PasswordFieldToggleIconButton aria-label='Show password'>
-            <PasswordFieldShownIcon />
-            <PasswordFieldHiddenIcon />
-          </PasswordFieldToggleIconButton>
+          <PasswordFieldToggle square aria-label='Show password'>
+            <PasswordFieldShownIcon><EyeIcon /></PasswordFieldShownIcon>
+            <PasswordFieldHiddenIcon><EyeOffIcon /></PasswordFieldHiddenIcon>
+          </PasswordFieldToggle>
         </PasswordField>
       </div>
       <ul id={rulesId} style={{ display: 'grid', gap: 'var(--spacing-3)', margin: 0, padding: 0, listStyle: 'none' }}>
@@ -149,7 +150,7 @@ When to use:
 Composition notes:
 
 - keep the accessible button label generic and clear
-- swap icons inside the shipped toggle part
+- pass your icons to `PasswordFieldShownIcon` and `PasswordFieldHiddenIcon` inside the toggle
 
 Trade-offs:
 
@@ -164,7 +165,7 @@ import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleIconButton,
+  PasswordFieldToggle,
 } from '@vega-ui/react';
 import { LockIcon, LockOpenIcon } from '@vega-ui/icons';
 import { useId } from 'react';
@@ -177,10 +178,10 @@ export default function CustomVisibilityIcons() {
       <Label htmlFor={id}>Vault passphrase</Label>
       <PasswordField>
         <PasswordFieldInput id={id} autoComplete='current-password' />
-        <PasswordFieldToggleIconButton aria-label='Show passphrase'>
+        <PasswordFieldToggle square aria-label='Show passphrase'>
           <PasswordFieldShownIcon><LockIcon /></PasswordFieldShownIcon>
           <PasswordFieldHiddenIcon><LockOpenIcon /></PasswordFieldHiddenIcon>
-        </PasswordFieldToggleIconButton>
+        </PasswordFieldToggle>
       </PasswordField>
     </div>
   );

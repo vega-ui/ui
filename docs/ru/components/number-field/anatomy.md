@@ -18,11 +18,11 @@
 
 ### `NumberFieldIncrementButton`
 
-Необязательна. Увеличивает значение на шаг.
+Необязательна. Увеличивает значение на шаг. Рендерит `Button` без собственного содержимого: передайте иконку дочерним элементом вместе с `square` и `aria-label` или `aria-labelledby`, текст вроде «Add» или свою кнопку через `asChild`.
 
 ### `NumberFieldDecrementButton`
 
-Необязательна. Уменьшает значение на шаг.
+Необязательна. Уменьшает значение на шаг. Рендерит `Button` без собственного содержимого: передайте иконку дочерним элементом вместе с `square` и `aria-label` или `aria-labelledby`, текст вроде «Remove» или свою кнопку через `asChild`.
 
 ## Порядок композиции
 
@@ -37,12 +37,14 @@
 ```tsx
 import {
   HelperText,
+  Icon,
   Label,
   NumberField,
   NumberFieldDecrementButton,
   NumberFieldIncrementButton,
   NumberFieldInput,
 } from '@vega-ui/react';
+import { MinusIcon, PlusIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 export default function SeatCount() {
@@ -53,9 +55,9 @@ export default function SeatCount() {
     <div style={{ display: 'grid', gap: 'var(--spacing-3)', width: '100%', maxWidth: 240 }}>
       <Label htmlFor={id}>Seats</Label>
       <NumberField min={1} max={50} defaultValue={5}>
-        <NumberFieldDecrementButton aria-label='Remove a seat' />
+        <NumberFieldDecrementButton square aria-label='Remove a seat'><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
         <NumberFieldInput id={id} name='seats' aria-describedby={hintId} />
-        <NumberFieldIncrementButton aria-label='Add a seat' />
+        <NumberFieldIncrementButton square aria-label='Add a seat'><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
       </NumberField>
       <HelperText id={hintId}>From 1 to 50 seats on the Team plan.</HelperText>
     </div>

@@ -16,12 +16,12 @@ import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleIconButton,
+  PasswordFieldToggle,
   type PasswordFieldHiddenIconProps,
   type PasswordFieldInputProps,
   type PasswordFieldProps,
   type PasswordFieldShownIconProps,
-  type PasswordFieldToggleIconButtonProps,
+  type PasswordFieldToggleProps,
 } from '@vega-ui/react';
 ```
 
@@ -29,7 +29,7 @@ import {
 
 - `PasswordFieldProps`
 - `PasswordFieldInputProps`
-- `PasswordFieldToggleIconButtonProps`
+- `PasswordFieldToggleProps`
 - `PasswordFieldShownIconProps`
 - `PasswordFieldHiddenIconProps`
 
@@ -43,8 +43,9 @@ import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleIconButton,
+  PasswordFieldToggle,
 } from '@vega-ui/react';
+import { EyeIcon, EyeOffIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 export default function SignInPassword() {
@@ -55,11 +56,58 @@ export default function SignInPassword() {
       <Label htmlFor={id}>Password</Label>
       <PasswordField>
         <PasswordFieldInput id={id} name='password' autoComplete='current-password' />
-        <PasswordFieldToggleIconButton aria-label='Show password'>
-          <PasswordFieldShownIcon />
-          <PasswordFieldHiddenIcon />
-        </PasswordFieldToggleIconButton>
+        <PasswordFieldToggle square aria-label='Show password'>
+          <PasswordFieldShownIcon><EyeIcon /></PasswordFieldShownIcon>
+          <PasswordFieldHiddenIcon><EyeOffIcon /></PasswordFieldHiddenIcon>
+        </PasswordFieldToggle>
       </PasswordField>
+    </div>
+  );
+}
+```
+<!-- /example -->
+
+## Your Own Component
+
+The minimal composition above shows the parts in place. In an app, compose them once in a file of your own, with your icon set, and import that component everywhere. `MyPasswordField` passes its props to the native `PasswordFieldInput`, and the toggle takes its name from `toggleLabel`. See [Component recipes](../../recipes.md).
+
+<!-- example: password-field/recipe.tsx -->
+```tsx
+import {
+  Label,
+  PasswordField,
+  PasswordFieldHiddenIcon,
+  PasswordFieldInput,
+  PasswordFieldShownIcon,
+  PasswordFieldToggle,
+  type PasswordFieldInputProps,
+} from '@vega-ui/react';
+import { EyeIcon, EyeOffIcon } from '@vega-ui/icons';
+import { useId } from 'react';
+
+interface MyPasswordFieldProps extends PasswordFieldInputProps {
+  toggleLabel: string
+}
+
+export function MyPasswordField({ toggleLabel, ...props }: MyPasswordFieldProps) {
+  return (
+    <PasswordField>
+      <PasswordFieldInput {...props} />
+      <PasswordFieldToggle square aria-label={toggleLabel}>
+        <PasswordFieldShownIcon><EyeIcon /></PasswordFieldShownIcon>
+        <PasswordFieldHiddenIcon><EyeOffIcon /></PasswordFieldHiddenIcon>
+      </PasswordFieldToggle>
+    </PasswordField>
+  );
+}
+
+export default function Recipe() {
+  const id = useId();
+
+  return (
+    <div style={{ display: 'grid', gap: 'var(--spacing-3)', width: '100%', maxWidth: 320 }}>
+      <Label htmlFor={id}>Password</Label>
+      <MyPasswordField id={id} name='password' autoComplete='current-password' toggleLabel='Show password' />
     </div>
   );
 }
@@ -70,25 +118,25 @@ export default function SignInPassword() {
 
 - `PasswordField`: root state container
 - `PasswordFieldInput`: native password input
-- `PasswordFieldToggleIconButton`: visibility toggle
+- `PasswordFieldToggle`: visibility toggle
 
 ## Optional Parts
 
-- `PasswordFieldShownIcon`: shown-state icon
-- `PasswordFieldHiddenIcon`: hidden-state icon
+- `PasswordFieldShownIcon`: shows the icon you pass, such as an eye, while the password is hidden
+- `PasswordFieldHiddenIcon`: shows the icon you pass, such as a crossed out eye, while the password is shown
 
 ## Composition Order
 
 1. `PasswordField`
 2. `PasswordFieldInput`
-3. `PasswordFieldToggleIconButton`
+3. `PasswordFieldToggle`
 4. shown/hidden icon parts
 
 ## Variants
 
 - Size: inherited from `TextField`
 - State: hidden or shown password, disabled through root field props, invalid through `aria-invalid` or `:user-invalid` on `PasswordFieldInput`
-- Composition: default icons or custom icon content
+- Composition: icons from any set inside the shown and hidden icon parts, or a text toggle
 
 ## Related Docs
 

@@ -25,7 +25,9 @@ import {
   CalendarYearsScroller,
   CalendarYearsScrollerContent,
   HelperText,
+  Icon,
 } from '@vega-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const DAY = 86_400_000;
@@ -71,12 +73,12 @@ export default function BookingCalendar() {
           onChangeValue={setRange}
         >
           <CalendarHeader>
-            <CalendarPrevButton aria-label='Previous' />
+            <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
             <CalendarHeading>
               <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
               <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
             </CalendarHeading>
-            <CalendarNextButton aria-label='Next' />
+            <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
           </CalendarHeader>
           <CalendarContent>
             <CalendarDays aria-label='Stay dates' aria-describedby={messageId}>

@@ -11,6 +11,7 @@ import {
   Separator,
   Text,
 } from '@vega-ui/react';
+import { CheckIcon } from '@vega-ui/icons';
 
 const sorts = [
   { value: 'due', label: 'Due date' },
@@ -48,11 +49,11 @@ export default function ViewOptions() {
         </MenuTrigger>
         <MenuContent>
           <MenuCheckboxItem checked={showCompleted} onChangeChecked={setShowCompleted}>
-            <MenuItemIndicator />
+            <MenuItemIndicator><CheckIcon /></MenuItemIndicator>
             Show completed
           </MenuCheckboxItem>
           <MenuCheckboxItem checked={showSubtasks} onChangeChecked={setShowSubtasks}>
-            <MenuItemIndicator />
+            <MenuItemIndicator><CheckIcon /></MenuItemIndicator>
             Show subtasks
           </MenuCheckboxItem>
           <Separator />
@@ -60,7 +61,7 @@ export default function ViewOptions() {
             <Text id={sortHeadingId} size={2} fontWeight={500} style={groupHeading}>Sort by</Text>
             {sorts.map((item) => (
               <MenuRadioItem key={item.value} value={item.value}>
-                <MenuItemIndicator />
+                <MenuItemIndicator><CheckIcon /></MenuItemIndicator>
                 {item.label}
               </MenuRadioItem>
             ))}

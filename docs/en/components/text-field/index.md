@@ -64,7 +64,7 @@ export default function WorkEmailField() {
 
 ## Optional Parts
 
-- prefix or suffix children such as `Button`, `IconButton`, counters, or status text
+- prefix or suffix children such as `Button` with text or `square`, counters, or status text
 
 ## Composition Order
 

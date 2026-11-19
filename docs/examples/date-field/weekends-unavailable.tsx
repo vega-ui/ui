@@ -26,13 +26,15 @@ import {
   DateField,
   DateFieldCalendar,
   DateFieldInput,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
   HelperText,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 const isWeekend = (iso: string) => {
   const weekday = new Date(`${iso}T00:00:00Z`).getUTCDay();
@@ -58,17 +60,17 @@ export default function WeekendsUnavailable() {
           />
           <Popover placement='bottom-end'>
             <PopoverTrigger asChild>
-              <DateFieldTriggerIconButton aria-label='Choose delivery date' />
+              <DateFieldTrigger square aria-label='Choose delivery date'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
             </PopoverTrigger>
             <PopoverContent>
               <DateFieldCalendar aria-label='Choose delivery date'>
                 <CalendarHeader>
-                  <CalendarPrevButton aria-label='Previous month' />
+                  <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                   </CalendarHeading>
-                  <CalendarNextButton aria-label='Next month' />
+                  <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                 </CalendarHeader>
                 <CalendarContent>
                   <CalendarDays>

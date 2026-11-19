@@ -16,7 +16,6 @@ export default function SelectedDisabledControl() {
           name='billing'
           defaultValue='yearly'
           disabled
-          role='radiogroup'
           aria-labelledby='billing-label'
           aria-describedby='billing-note'
         >
@@ -34,7 +33,7 @@ export default function SelectedDisabledControl() {
       </div>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label id='quality-label'>Video quality</Label>
-        <SegmentedControl name='quality' defaultValue='1080p' role='radiogroup' aria-labelledby='quality-label'>
+        <SegmentedControl name='quality' defaultValue='1080p' aria-labelledby='quality-label'>
           <SegmentedControlItem value='720p'>
             <SegmentedControlItemInput />
             720p

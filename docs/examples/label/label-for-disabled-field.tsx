@@ -7,6 +7,7 @@ import {
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
+import { CheckIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 export default function LabelForDisabledField() {
@@ -18,7 +19,7 @@ export default function LabelForDisabledField() {
       <Checkbox>
         <CheckboxInput checked={sameAsCompany} onChange={(event) => setSameAsCompany(event.currentTarget.checked)} />
         <CheckboxIndicator>
-          <CheckboxCheckedIcon />
+          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
         </CheckboxIndicator>
         Ship to the company address
       </Checkbox>

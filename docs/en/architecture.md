@@ -35,7 +35,7 @@ Read this stack left to right:
 
 The important dependency direction is:
 
-- `ui` depends on `core`, `widgets`, `hooks`, `i18n`, `icons`, and `utils`; the React adapter of a widget (`useWidget`, `useOutput`, `useSnapshot`, `useItem`) and `createContext` live in `ui` internals
+- `ui` depends on `core`, `widgets`, `hooks`, `i18n`, and `utils`, and not on `icons`: its parts draw no icons of their own; the React adapter of a widget (`useWidget`, `useOutput`, `useSnapshot`, `useItem`) and `createContext` live in `ui` internals
 - `hooks` depends on `core`, and `core` depends on nothing
 - `theme` depends on `tokens`
 - components in `ui` are styled against semantic variables from `theme`
@@ -118,7 +118,7 @@ Logic shared by two widgets lives in `packages/widgets/src/<segment>`; a context
 - **User action:** event → adapter builds the input and reads the browser values → steps → one commit → `onChangeX` once → subscribers → actions.
 - **New props:** the owner's render passes the options to the widget, muted; the layout effect tells the subscribers and runs the actions of `lifecycle.options`.
 - **Mount:** with `cells` as data the widget knows its items before they render, so the server HTML has the right tab stop. Without it, the items register through `useItem`, and the widget gets them in DOM order as soon as the registry changes, without a render of the component. `lifecycle.connect` arrives when the adapter is connected and the items are registered.
-- **Composition:** a widget built on another one wraps its steps, like the period pickers on the grid; a widget that drives a widget inside it registers its root as a part and sends it inputs with `act.send`, like `Calendar` focusing the day of its day grid after a year is picked; a component sends `command(name)` inputs through `handle.send` only from its own event handlers. Widgets never share state.
+- **Composition:** a widget built on another one wraps its steps, like the period pickers on the grid; a widget that drives a widget inside it registers its root as a part and sends it inputs with `act.send`, like `Calendar` focusing the day of its day grid after a year is picked; a button that acts on a widget is a part of it, registered with `handle.part`, and its click arrives as `pointer.press` on that part; `command(name)` inputs sent through `handle.send` are only for an imperative method of the component. Widgets never share state.
 
 ### How to write a widget
 

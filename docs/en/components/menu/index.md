@@ -72,6 +72,69 @@ export default function MinimalComposition() {
 ```
 <!-- /example -->
 
+## Your Own Component
+
+The minimal composition above shows the parts in place. In an app, compose them once in a file of your own, with your icon set, and import that component everywhere. `MyMenuCheckboxItem` and `MyMenuRadioItem` pass their props to `MenuCheckboxItem` and `MenuRadioItem` and put the check mark in `MenuItemIndicator` before their children. See [Component recipes](../../recipes.md).
+
+<!-- example: menu/recipe.tsx -->
+```tsx
+import { useState } from 'react';
+import {
+  Button,
+  Menu,
+  MenuCheckboxItem,
+  MenuContent,
+  MenuItemIndicator,
+  MenuRadioGroup,
+  MenuRadioItem,
+  MenuTrigger,
+  Separator,
+  type MenuCheckboxItemProps,
+  type MenuRadioItemProps,
+} from '@vega-ui/react';
+import { CheckIcon } from '@vega-ui/icons';
+
+export function MyMenuCheckboxItem({ children, ...props }: MenuCheckboxItemProps) {
+  return (
+    <MenuCheckboxItem {...props}>
+      <MenuItemIndicator><CheckIcon /></MenuItemIndicator>
+      {children}
+    </MenuCheckboxItem>
+  );
+}
+
+export function MyMenuRadioItem({ children, ...props }: MenuRadioItemProps) {
+  return (
+    <MenuRadioItem {...props}>
+      <MenuItemIndicator><CheckIcon /></MenuItemIndicator>
+      {children}
+    </MenuRadioItem>
+  );
+}
+
+export default function Recipe() {
+  const [showCompleted, setShowCompleted] = useState(false);
+  const [density, setDensity] = useState('comfortable');
+
+  return (
+    <Menu>
+      <MenuTrigger asChild>
+        <Button size='sm' variant='secondary' appearance='ghost'>View</Button>
+      </MenuTrigger>
+      <MenuContent>
+        <MyMenuCheckboxItem checked={showCompleted} onChangeChecked={setShowCompleted}>Show completed</MyMenuCheckboxItem>
+        <Separator />
+        <MenuRadioGroup aria-label='Density' value={density} onChangeValue={setDensity}>
+          <MyMenuRadioItem value='comfortable'>Comfortable</MyMenuRadioItem>
+          <MyMenuRadioItem value='compact'>Compact</MyMenuRadioItem>
+        </MenuRadioGroup>
+      </MenuContent>
+    </Menu>
+  );
+}
+```
+<!-- /example -->
+
 ## Required Parts
 
 - `Menu`: root that owns the open state, the placement and the size; it renders no element
@@ -84,7 +147,7 @@ export default function MinimalComposition() {
 - `MenuCheckboxItem`: an item that is checked or unchecked (`menuitemcheckbox`)
 - `MenuRadioGroup` and `MenuRadioItem`: a group of items where one is checked (`menuitemradio`)
 - `MenuGroup`: a `role="group"` around related items
-- `MenuItemIndicator`: the check mark of a checkbox or radio item
+- `MenuItemIndicator`: the mark of a checkbox or radio item, such as a check mark you pass as children
 - [Separator](../separator/): a line between groups of items
 
 ## Composition Order

@@ -2,22 +2,22 @@
 
 ## Overview
 
-`PasswordField` reuses the `TextField` styling contract. Its unique visual layer is the toggle icon button, which maps to the shared input height and hover tokens.
+`PasswordField` reuses the `TextField` styling contract. Its unique visual layer is the toggle button, which maps to the shared input height and hover tokens.
 
 ## Public CSS Variables
 
 | Variable | Used By | Purpose |
 | --- | --- | --- |
 | `--input-height` | toggle button | keeps the toggle square with the field height |
-| `--text-color` | toggle button | default icon color |
+| `--text-color` | toggle button | color of the icons inside |
 | `--fills-quaternary-hover` | toggle button | hover surface |
 | `--fills-quaternary-active` | toggle button | active surface |
-| `--button-color` | `PasswordFieldToggleIconButton` | Button icon color. |
-| `--button-color-hover` | `PasswordFieldToggleIconButton` | Button icon color on hover. |
-| `--button-color-active` | `PasswordFieldToggleIconButton` | Button icon color while pressed. |
-| `--button-background-color` | `PasswordFieldToggleIconButton` | Button background. |
-| `--button-background-color-hover` | `PasswordFieldToggleIconButton` | Button background on hover. |
-| `--button-background-color-active` | `PasswordFieldToggleIconButton` | Button background while pressed. |
+| `--button-color` | `PasswordFieldToggle` | Button icon color. |
+| `--button-color-hover` | `PasswordFieldToggle` | Button icon color on hover. |
+| `--button-color-active` | `PasswordFieldToggle` | Button icon color while pressed. |
+| `--button-background-color` | `PasswordFieldToggle` | Button background. |
+| `--button-background-color-hover` | `PasswordFieldToggle` | Button background on hover. |
+| `--button-background-color-active` | `PasswordFieldToggle` | Button background while pressed. |
 
 ## Part-Level Variables
 
@@ -27,7 +27,7 @@ The root inherits the same wrapper contract as `TextField`.
 
 ### Toggle Button
 
-`PasswordFieldToggleIconButton` maps `--icon-button-size` to `--input-height` and uses transparent background until hover or active state.
+`PasswordFieldToggle` maps `--button-height` to `--input-height` and uses transparent background until hover or active state.
 
 ## State And Variant Interaction
 
@@ -47,7 +47,7 @@ import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleIconButton,
+  PasswordFieldToggle,
 } from '@vega-ui/react';
 import { LockIcon, LockOpenIcon } from '@vega-ui/icons';
 import { useId } from 'react';
@@ -60,10 +60,10 @@ export default function CustomVisibilityIcons() {
       <Label htmlFor={id}>Vault passphrase</Label>
       <PasswordField>
         <PasswordFieldInput id={id} autoComplete='current-password' />
-        <PasswordFieldToggleIconButton aria-label='Show passphrase'>
+        <PasswordFieldToggle square aria-label='Show passphrase'>
           <PasswordFieldShownIcon><LockIcon /></PasswordFieldShownIcon>
           <PasswordFieldHiddenIcon><LockOpenIcon /></PasswordFieldHiddenIcon>
-        </PasswordFieldToggleIconButton>
+        </PasswordFieldToggle>
       </PasswordField>
     </div>
   );

@@ -4,7 +4,7 @@
 
 ### Базовый: переключатель вида
 
-Каждый сегмент — это `SegmentedControlItem` со скрытой радиокнопкой `SegmentedControlItemInput`, и все они используют `name` корня. Корень сам не задаёт роль, поэтому передайте `role='radiogroup'` и `aria-label`, чтобы дать группе имя.
+Каждый сегмент — это `SegmentedControlItem` со скрытой радиокнопкой `SegmentedControlItemInput`, и все они используют `name` корня. Корень — это `radiogroup`; дайте ему имя через `aria-label` или `aria-labelledby`.
 
 <!-- example: segmented-control/view-range-selector.tsx -->
 ```tsx
@@ -17,7 +17,7 @@ import {
 
 export default function ViewRangeSelector() {
   return (
-    <SegmentedControl name='calendar-view' defaultValue='week' role='radiogroup' aria-label='Calendar view'>
+    <SegmentedControl name='calendar-view' defaultValue='week' aria-label='Calendar view'>
       <SegmentedControlItem value='day'>
         <SegmentedControlItemInput />
         Day
@@ -45,7 +45,7 @@ export default function ViewRangeSelector() {
 
 ### Контролируемый/с состоянием: диапазон дат, управляющий сводкой
 
-Родитель хранит `value` и обновляет его из `event.currentTarget.value` в `onChange`. Суммы посетителей ниже вычисляются из выбранного диапазона.
+Родитель хранит `value` и обновляет его в `onChangeValue`, который получает значение выбранного сегмента. Суммы посетителей ниже вычисляются из выбранного диапазона.
 
 <!-- example: segmented-control/parent-owned-selected-segment.tsx -->
 ```tsx
@@ -79,10 +79,9 @@ export default function ParentOwnedSelectedSegment() {
     <div style={{ display: 'grid', gap: 'var(--spacing-8)', justifyItems: 'start', width: '100%' }}>
       <SegmentedControl
         name='traffic-range'
-        role='radiogroup'
         aria-label='Date range'
         value={range}
-        onChange={(event) => setRange(event.currentTarget.value)}
+        onChangeValue={setRange}
       >
         {ranges.map((item) => (
           <SegmentedControlItem key={item.value} value={item.value}>
@@ -133,7 +132,7 @@ export default function NativeRadioGroupParticipation() {
     <form onSubmit={handleSubmit} onReset={() => setResult('')} style={{ display: 'grid', gap: 'var(--spacing-12)', justifyItems: 'start', width: '100%' }}>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label id='export-format-label'>File format</Label>
-        <SegmentedControl name='export-format' defaultValue='csv' role='radiogroup' aria-labelledby='export-format-label'>
+        <SegmentedControl name='export-format' defaultValue='csv' aria-labelledby='export-format-label'>
           <SegmentedControlItem value='csv'>
             <SegmentedControlItemInput />
             CSV
@@ -179,7 +178,6 @@ import {
   DialogTrigger,
   Heading,
   Icon,
-  IconButton,
   Label,
   SegmentedControl,
   SegmentedControlIndicator,
@@ -214,20 +212,21 @@ export default function ExclusiveSelectorInsideOverlays() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
             <Heading id='display-settings-title' as='h2' size={4} fontWeight={600}>Display settings</Heading>
             <DialogClose asChild>
-              <IconButton
+              <Button
+                square
                 aria-label='Close'
                 variant='secondary'
                 appearance='ghost'
-                style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+                style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
               >
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DialogClose>
           </div>
           <form method='dialog' onSubmit={handleSubmit} style={{ display: 'grid', gap: 'var(--spacing-12)', marginBlockStart: 'var(--spacing-8)' }}>
             <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
               <Label id='density-label'>Row density</Label>
-              <SegmentedControl name='density' defaultValue={density} role='radiogroup' aria-labelledby='density-label'>
+              <SegmentedControl name='density' defaultValue={density} aria-labelledby='density-label'>
                 {densities.map((item) => (
                   <SegmentedControlItem key={item.value} value={item.value}>
                     <SegmentedControlItemInput />
@@ -292,10 +291,9 @@ export default function RequiredVisibleChoiceWithoutASelection() {
         <Label id='size-label'>Size</Label>
         <SegmentedControl
           name='size'
-          role='radiogroup'
           aria-labelledby='size-label'
           aria-describedby={invalid ? 'size-error' : undefined}
-          onChange={() => setInvalid(false)}
+          onChangeValue={() => setInvalid(false)}
         >
           {sizes.map((size) => (
             <SegmentedControlItem key={size} value={size}>
@@ -347,7 +345,6 @@ export default function SelectedDisabledControl() {
           name='billing'
           defaultValue='yearly'
           disabled
-          role='radiogroup'
           aria-labelledby='billing-label'
           aria-describedby='billing-note'
         >
@@ -365,7 +362,7 @@ export default function SelectedDisabledControl() {
       </div>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label id='quality-label'>Video quality</Label>
-        <SegmentedControl name='quality' defaultValue='1080p' role='radiogroup' aria-labelledby='quality-label'>
+        <SegmentedControl name='quality' defaultValue='1080p' aria-labelledby='quality-label'>
           <SegmentedControlItem value='720p'>
             <SegmentedControlItemInput />
             720p
@@ -407,7 +404,7 @@ import { MonitorIcon, MoonIcon, SunIcon } from '@vega-ui/icons';
 
 export default function IconOnlyModeSelector() {
   return (
-    <SegmentedControl name='appearance' defaultValue='system' size='sm' role='radiogroup' aria-label='Appearance'>
+    <SegmentedControl name='appearance' defaultValue='system' size='sm' aria-label='Appearance'>
       <SegmentedControlItem value='light' title='Light'>
         <SegmentedControlItemInput aria-label='Light' />
         <Icon size='sm'><SunIcon /></Icon>
@@ -429,7 +426,7 @@ export default function IconOnlyModeSelector() {
 
 ### Пограничный случай: числовые значения
 
-Значения сегментов могут быть числами, но `event.currentTarget.value` — всегда строка, поэтому перед сохранением приведите её через `Number`. Число колонок сетки следует за выбором.
+Значения сегментов могут быть числами, и `onChangeValue` получает число, заданное сегменту, а сама радиокнопка отправляет его строкой. Число колонок сетки следует за выбором.
 
 <!-- example: segmented-control/numeric-values.tsx -->
 ```tsx
@@ -455,10 +452,9 @@ export default function NumericValues() {
         <SegmentedControl
           name='columns'
           size='sm'
-          role='radiogroup'
           aria-labelledby='columns-label'
           value={columns}
-          onChange={(event) => setColumns(Number(event.currentTarget.value))}
+          onChangeValue={setColumns}
         >
           {columnOptions.map((option) => (
             <SegmentedControlItem key={option} value={option}>

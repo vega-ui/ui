@@ -14,6 +14,7 @@ import {
   TableRow,
   Text,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 const invoices = [
   { id: 'INV-1042', customer: 'Northwind Traders', amount: '$1,240.00' },
@@ -57,8 +58,8 @@ export default function TableRowSelection() {
               <Checkbox size='sm'>
                 <CheckboxInput aria-label='Select all invoices' checked={allSelected} indeterminate={someSelected} onChange={toggleAll} />
                 <CheckboxIndicator>
-                  <CheckboxCheckedIcon />
-                  <CheckboxIndeterminateIcon />
+                  <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+                  <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
                 </CheckboxIndicator>
               </Checkbox>
             </TableHeading>
@@ -74,8 +75,8 @@ export default function TableRowSelection() {
                 <Checkbox size='sm'>
                   <CheckboxInput aria-label={`Select ${invoice.id}`} checked={selected.includes(invoice.id)} onChange={() => toggle(invoice.id)} />
                   <CheckboxIndicator>
-                    <CheckboxCheckedIcon />
-                    <CheckboxIndeterminateIcon />
+                    <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+                    <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
                   </CheckboxIndicator>
                 </Checkbox>
               </TableData>

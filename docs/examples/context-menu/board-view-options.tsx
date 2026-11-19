@@ -13,6 +13,7 @@ import {
   Separator,
   Text,
 } from '@vega-ui/react';
+import { CheckIcon } from '@vega-ui/icons';
 
 const zooms = ['50', '100', '150'];
 
@@ -44,11 +45,11 @@ function ViewItems({ showGrid, snap, zoom, setShowGrid, setSnap, setZoom }: View
   return (
     <>
       <MenuCheckboxItem checked={showGrid} onChangeChecked={setShowGrid}>
-        <MenuItemIndicator />
+        <MenuItemIndicator><CheckIcon /></MenuItemIndicator>
         Show grid
       </MenuCheckboxItem>
       <MenuCheckboxItem checked={snap} onChangeChecked={setSnap}>
-        <MenuItemIndicator />
+        <MenuItemIndicator><CheckIcon /></MenuItemIndicator>
         Snap to grid
       </MenuCheckboxItem>
       <Separator />
@@ -56,7 +57,7 @@ function ViewItems({ showGrid, snap, zoom, setShowGrid, setSnap, setZoom }: View
         <Text id={zoomHeadingId} size={2} fontWeight={500} style={groupHeading}>Zoom</Text>
         {zooms.map((value) => (
           <MenuRadioItem key={value} value={value}>
-            <MenuItemIndicator />
+            <MenuItemIndicator><CheckIcon /></MenuItemIndicator>
             {value}%
           </MenuRadioItem>
         ))}

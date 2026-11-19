@@ -1,5 +1,5 @@
-import { Code, Icon, IconButton, Text } from '@vega-ui/react';
-import { Check, Copy } from '@vega-ui/icons';
+import { Button, Code, Icon, Text } from '@vega-ui/react';
+import { CheckIcon, CopyIcon } from '@vega-ui/icons';
 import { useEffect, useState } from 'react';
 
 const command = 'npx @vega-ui/cli init --template dashboard';
@@ -31,9 +31,9 @@ export default function CopyCommand() {
         <Code style={{ flex: 1, minWidth: 0, overflowX: 'auto', whiteSpace: 'nowrap', paddingBlock: 'var(--spacing-3)' }}>
           {command}
         </Code>
-        <IconButton aria-label='Copy command' variant='secondary' appearance='ghost' onClick={copy}>
-          <Icon>{status === 'copied' ? <Check /> : <Copy />}</Icon>
-        </IconButton>
+        <Button square aria-label='Copy command' variant='secondary' appearance='ghost' onClick={copy}>
+          <Icon>{status === 'copied' ? <CheckIcon /> : <CopyIcon />}</Icon>
+        </Button>
       </div>
       <Text size={2} role='status' style={{ minHeight: 'var(--line-height-2)', color: 'var(--label-secondary)' }}>
         {status === 'copied' && 'Copied to clipboard'}

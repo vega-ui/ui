@@ -16,11 +16,11 @@ export default function CustomStepperIcons() {
     <div style={{ display: 'grid', gap: 'var(--spacing-3)', width: '100%', maxWidth: 200 }}>
       <Label htmlFor={id}>Font size, px</Label>
       <NumberField min={8} max={72} defaultValue={16}>
-        <NumberFieldDecrementButton aria-label='Smaller'>
+        <NumberFieldDecrementButton square aria-label='Smaller'>
           <Icon><ChevronDownIcon /></Icon>
         </NumberFieldDecrementButton>
         <NumberFieldInput id={id} />
-        <NumberFieldIncrementButton aria-label='Larger'>
+        <NumberFieldIncrementButton square aria-label='Larger'>
           <Icon><ChevronUpIcon /></Icon>
         </NumberFieldIncrementButton>
       </NumberField>

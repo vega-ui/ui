@@ -1,5 +1,5 @@
-import { Icon, IconButton, Separator } from '@vega-ui/react';
-import { AlignCenter, AlignLeft, Bold, Italic, Link, List, ListOrdered } from '@vega-ui/icons';
+import { Button, Icon, Separator } from '@vega-ui/react';
+import { AlignCenterIcon, AlignLeftIcon, BoldIcon, ItalicIcon, LinkIcon, ListIcon, ListOrderedIcon } from '@vega-ui/icons';
 
 export default function VerticalDividerInToolbar() {
   return (
@@ -16,29 +16,29 @@ export default function VerticalDividerInToolbar() {
         background: 'var(--surface-primary)',
       }}
     >
-      <IconButton aria-label='Bold' variant='secondary' appearance='transparent'>
-        <Icon><Bold /></Icon>
-      </IconButton>
-      <IconButton aria-label='Italic' variant='secondary' appearance='transparent'>
-        <Icon><Italic /></Icon>
-      </IconButton>
-      <IconButton aria-label='Insert link' variant='secondary' appearance='transparent'>
-        <Icon><Link /></Icon>
-      </IconButton>
+      <Button square aria-label='Bold' variant='secondary' appearance='transparent'>
+        <Icon><BoldIcon /></Icon>
+      </Button>
+      <Button square aria-label='Italic' variant='secondary' appearance='transparent'>
+        <Icon><ItalicIcon /></Icon>
+      </Button>
+      <Button square aria-label='Insert link' variant='secondary' appearance='transparent'>
+        <Icon><LinkIcon /></Icon>
+      </Button>
       <Separator orientation='vertical' style={{ height: 'var(--spacing-10)', marginInline: 'var(--spacing-2)' }} />
-      <IconButton aria-label='Bulleted list' variant='secondary' appearance='transparent'>
-        <Icon><List /></Icon>
-      </IconButton>
-      <IconButton aria-label='Numbered list' variant='secondary' appearance='transparent'>
-        <Icon><ListOrdered /></Icon>
-      </IconButton>
+      <Button square aria-label='Bulleted list' variant='secondary' appearance='transparent'>
+        <Icon><ListIcon /></Icon>
+      </Button>
+      <Button square aria-label='Numbered list' variant='secondary' appearance='transparent'>
+        <Icon><ListOrderedIcon /></Icon>
+      </Button>
       <Separator orientation='vertical' style={{ height: 'var(--spacing-10)', marginInline: 'var(--spacing-2)' }} />
-      <IconButton aria-label='Align left' variant='secondary' appearance='transparent'>
-        <Icon><AlignLeft /></Icon>
-      </IconButton>
-      <IconButton aria-label='Align center' variant='secondary' appearance='transparent'>
-        <Icon><AlignCenter /></Icon>
-      </IconButton>
+      <Button square aria-label='Align left' variant='secondary' appearance='transparent'>
+        <Icon><AlignLeftIcon /></Icon>
+      </Button>
+      <Button square aria-label='Align center' variant='secondary' appearance='transparent'>
+        <Icon><AlignCenterIcon /></Icon>
+      </Button>
     </div>
   );
 }

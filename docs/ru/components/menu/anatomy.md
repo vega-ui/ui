@@ -12,7 +12,7 @@
 
 ### `MenuTrigger`
 
-Рендерит `<button type="button">` с `aria-haspopup="menu"`, `aria-expanded`, `aria-controls` и `popovertarget`, указывающим на меню. С `asChild` рендерит вашу кнопку, например `Button` или `IconButton`. Это CSS-якорь, к которому привязано меню, и он же даёт меню имя.
+Рендерит `<button type="button">` с `aria-haspopup="menu"`, `aria-expanded`, `aria-controls` и `popovertarget`, указывающим на меню. С `asChild` рендерит вашу кнопку, например `Button` с текстом или с `square`. Это CSS-якорь, к которому привязано меню, и он же даёт меню имя.
 
 ### `MenuContent`
 
@@ -38,7 +38,7 @@
 
 ### `MenuItemIndicator`
 
-Рендерит иконку галочки с `aria-hidden`. Внутри пункта-флажка или радиопункта занимает своё место в каждом пункте, а видна только в отмеченном, поэтому подписи отмеченных и неотмеченных пунктов стоят ровно. Дочерние элементы заменяют иконку.
+Рендерит иконку из дочерних элементов, например галочку, с `aria-hidden`; своей иконки у неё нет. Внутри пункта-флажка или радиопункта занимает своё место в каждом пункте, а видна только в отмеченном, поэтому подписи отмеченных и неотмеченных пунктов стоят ровно.
 
 ### `MenuSubmenu` и `MenuSubmenuTrigger`
 
@@ -78,6 +78,7 @@ import {
   Separator,
   Text,
 } from '@vega-ui/react';
+import { CheckIcon } from '@vega-ui/icons';
 
 const groupHeading: CSSProperties = {
   display: 'block',
@@ -103,14 +104,14 @@ export default function ValidCompositionPatterns() {
         <Separator />
         <MenuGroup aria-labelledby={panelsId}>
           <Text id={panelsId} size={2} fontWeight={500} style={groupHeading}>Panels</Text>
-          <MenuCheckboxItem defaultChecked>Outline<MenuItemIndicator style={indicatorEnd} /></MenuCheckboxItem>
-          <MenuCheckboxItem>Comments<MenuItemIndicator style={indicatorEnd} /></MenuCheckboxItem>
+          <MenuCheckboxItem defaultChecked>Outline<MenuItemIndicator style={indicatorEnd}><CheckIcon /></MenuItemIndicator></MenuCheckboxItem>
+          <MenuCheckboxItem>Comments<MenuItemIndicator style={indicatorEnd}><CheckIcon /></MenuItemIndicator></MenuCheckboxItem>
         </MenuGroup>
         <Separator />
         <MenuRadioGroup aria-labelledby={widthId} defaultValue='standard'>
           <Text id={widthId} size={2} fontWeight={500} style={groupHeading}>Page width</Text>
-          <MenuRadioItem value='standard'>Standard<MenuItemIndicator style={indicatorEnd} /></MenuRadioItem>
-          <MenuRadioItem value='wide'>Wide<MenuItemIndicator style={indicatorEnd} /></MenuRadioItem>
+          <MenuRadioItem value='standard'>Standard<MenuItemIndicator style={indicatorEnd}><CheckIcon /></MenuItemIndicator></MenuRadioItem>
+          <MenuRadioItem value='wide'>Wide<MenuItemIndicator style={indicatorEnd}><CheckIcon /></MenuItemIndicator></MenuRadioItem>
         </MenuRadioGroup>
       </MenuContent>
     </Menu>

@@ -49,6 +49,43 @@ export default function MinimalComposition() {
 ```
 <!-- /example -->
 
+## Свой компонент
+
+Минимальная композиция выше показывает части на месте. В приложении соберите их один раз в своём файле и импортируйте этот компонент везде. `MySwitch` передаёт свои пропсы нативному полю: состояние, `name` и `id` для `Label` живут на нём, а индикатор добавляет сам. См. [Рецепты компонентов](../../recipes.md).
+
+<!-- example: switch/recipe.tsx -->
+```tsx
+import { Label, Switch, SwitchIndicator, SwitchInput, type SwitchInputProps } from '@vega-ui/react';
+import { useId } from 'react';
+
+export function MySwitch(props: SwitchInputProps) {
+  return (
+    <Switch>
+      <SwitchInput {...props} />
+      <SwitchIndicator />
+    </Switch>
+  );
+}
+
+export default function Recipe() {
+  const id = useId();
+
+  return (
+    <div style={{ display: 'grid', gap: 'var(--spacing-6)' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-6)' }}>
+        <MySwitch id={`${id}-wifi`} name='wifi' defaultChecked />
+        <Label htmlFor={`${id}-wifi`}>Wi-Fi</Label>
+      </div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-6)' }}>
+        <MySwitch id={`${id}-bluetooth`} name='bluetooth' />
+        <Label htmlFor={`${id}-bluetooth`}>Bluetooth</Label>
+      </div>
+    </div>
+  );
+}
+```
+<!-- /example -->
+
 ## Обязательные части
 
 - `Switch`: корневая дорожка и поверхность контекста

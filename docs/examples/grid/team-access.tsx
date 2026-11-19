@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { MailIcon, Trash2Icon } from '@vega-ui/icons';
+import { CheckIcon, ChevronDownIcon, MailIcon, Trash2Icon } from '@vega-ui/icons';
 import {
   Button,
   Checkbox,
@@ -13,7 +13,6 @@ import {
   GridRowGroup,
   GridRowHeader,
   Icon,
-  IconButton,
   Select,
   SelectCombobox,
   SelectIcon,
@@ -107,7 +106,7 @@ export default function TeamAccess() {
                     onChange={() => toggle(member.name)}
                   />
                   <CheckboxIndicator>
-                    <CheckboxCheckedIcon />
+                    <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
                   </CheckboxIndicator>
                 </Checkbox>
               </GridCell>
@@ -116,7 +115,7 @@ export default function TeamAccess() {
                 <Select size='xs' value={member.role} onChangeValue={(role) => change(member.name, { role: role as Role })}>
                   <SelectCombobox aria-label={`${member.name} role`}>
                     <SelectValue>{roles.find((role) => role.value === member.role)?.label}</SelectValue>
-                    <SelectIcon />
+                    <SelectIcon><ChevronDownIcon /></SelectIcon>
                   </SelectCombobox>
                   <SelectListbox>
                     {roles.map((role) => (
@@ -145,7 +144,8 @@ export default function TeamAccess() {
                 </Switch>
               </GridCell>
               <GridCell col={5} className='teamAccessActions'>
-                <IconButton
+                <Button
+                  square
                   size='xs'
                   variant='secondary'
                   appearance='transparent'
@@ -153,8 +153,9 @@ export default function TeamAccess() {
                   onClick={() => setStatus(`Invite sent to ${member.name}`)}
                 >
                   <Icon size='xs'><MailIcon /></Icon>
-                </IconButton>
-                <IconButton
+                </Button>
+                <Button
+                  square
                   size='xs'
                   variant='secondary'
                   appearance='transparent'
@@ -162,7 +163,7 @@ export default function TeamAccess() {
                   onClick={() => remove([member.name])}
                 >
                   <Icon size='xs'><Trash2Icon /></Icon>
-                </IconButton>
+                </Button>
               </GridCell>
             </GridRow>
           ))}

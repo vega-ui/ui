@@ -1,11 +1,13 @@
 import {
   HelperText,
+  Icon,
   Label,
   NumberField,
   NumberFieldDecrementButton,
   NumberFieldIncrementButton,
   NumberFieldInput,
 } from '@vega-ui/react';
+import { MinusIcon, PlusIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const ACTIVE_MEMBERS = 12;
@@ -27,9 +29,9 @@ export default function SeatsBelowActiveMembers() {
     <div style={{ display: 'grid', gap: 'var(--spacing-3)', width: '100%' }}>
       <Label htmlFor={id}>Seats after renewal</Label>
       <NumberField min={1} max={200} value={seats} onChangeValue={setSeats}>
-        <NumberFieldDecrementButton aria-label='Remove a seat' />
+        <NumberFieldDecrementButton square aria-label='Remove a seat'><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
         <NumberFieldInput id={id} aria-invalid={invalid} aria-describedby={messageId} />
-        <NumberFieldIncrementButton aria-label='Add a seat' />
+        <NumberFieldIncrementButton square aria-label='Add a seat'><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
       </NumberField>
       <HelperText id={messageId} invalid={invalid}>
         {invalid ? error : `Covers all ${ACTIVE_MEMBERS} active members.`}

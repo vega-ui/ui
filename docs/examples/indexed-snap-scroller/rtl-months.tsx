@@ -1,13 +1,13 @@
 import {
   Icon,
-  IconButton,
+  Button,
   IndexedSnapScroller,
   IndexedSnapScrollerContent,
   Text,
   useIndexedSnapScrollerContext,
   type IndexedSnapScrollerApiRef,
 } from '@vega-ui/react';
-import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import { useRef } from 'react';
 
 const today = new Date();
@@ -47,12 +47,12 @@ export default function RtlMonths() {
         <MonthPage />
       </IndexedSnapScroller>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <IconButton aria-label='الشهر السابق' variant='secondary' appearance='ghost' onClick={() => api.current?.prev()}>
-          <Icon><ChevronRight /></Icon>
-        </IconButton>
-        <IconButton aria-label='الشهر التالي' variant='secondary' appearance='ghost' onClick={() => api.current?.next()}>
-          <Icon><ChevronLeft /></Icon>
-        </IconButton>
+        <Button square aria-label='الشهر السابق' variant='secondary' appearance='ghost' onClick={() => api.current?.prev()}>
+          <Icon><ChevronRightIcon /></Icon>
+        </Button>
+        <Button square aria-label='الشهر التالي' variant='secondary' appearance='ghost' onClick={() => api.current?.next()}>
+          <Icon><ChevronLeftIcon /></Icon>
+        </Button>
       </div>
     </div>
   );

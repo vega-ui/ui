@@ -73,6 +73,51 @@ export default function MinimalComposition() {
 ```
 <!-- /example -->
 
+## Свой компонент
+
+Минимальная композиция выше показывает части на месте. В приложении соберите их один раз в своём файле и импортируйте этот компонент везде. `MySlider` передаёт свои пропсы в `Slider`, включая `name`, а `id` — range-полю единственного бегунка для `Label`. См. [Рецепты компонентов](../../recipes.md).
+
+<!-- example: slider/recipe.tsx -->
+```tsx
+import {
+  Label,
+  Slider,
+  SliderRange,
+  SliderThumb,
+  SliderThumbIndicator,
+  SliderThumbInput,
+  SliderTrack,
+  type SliderProps,
+} from '@vega-ui/react';
+import { useId } from 'react';
+
+export function MySlider({ id, ...props }: SliderProps) {
+  return (
+    <Slider {...props}>
+      <SliderTrack>
+        <SliderRange />
+      </SliderTrack>
+      <SliderThumb>
+        <SliderThumbInput id={id} />
+        <SliderThumbIndicator />
+      </SliderThumb>
+    </Slider>
+  );
+}
+
+export default function Recipe() {
+  const id = useId();
+
+  return (
+    <div style={{ display: 'grid', gap: 'var(--spacing-5)', width: '100%', maxWidth: 400 }}>
+      <Label htmlFor={id}>Volume</Label>
+      <MySlider id={id} name='volume' defaultValue={40} />
+    </div>
+  );
+}
+```
+<!-- /example -->
+
 ## Обязательные части
 
 - `Slider`: корень, значения всех бегунков и общие настройки диапазона

@@ -24,7 +24,9 @@ import {
   CalendarYearsScroller,
   CalendarYearsScrollerContent,
   HelperText,
+  Icon,
 } from '@vega-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 const holidays = ['2026-12-24', '2026-12-25', '2026-12-31'];
@@ -43,12 +45,12 @@ export default function BookingWindowAndBlockedDays() {
     <div style={{ display: 'grid', gap: 'var(--spacing-3)', justifyItems: 'start', width: '100%' }}>
       <Calendar locale='en-US' min='2026-12-01' max='2027-01-31' defaultFocusedDate='2026-12-01' disabledDates={isClosed}>
         <CalendarHeader>
-          <CalendarPrevButton aria-label='Previous' />
+          <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
           <CalendarHeading>
             <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
             <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
           </CalendarHeading>
-          <CalendarNextButton aria-label='Next' />
+          <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
         </CalendarHeader>
         <CalendarContent>
           <CalendarDays aria-label='Pickup date' aria-describedby={hintId}>

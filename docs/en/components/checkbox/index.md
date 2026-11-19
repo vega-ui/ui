@@ -44,17 +44,58 @@ import {
   CheckboxIndicator,
   CheckboxInput,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 export default function MinimalComposition() {
   return (
     <Checkbox>
       <CheckboxInput name='remember' />
       <CheckboxIndicator>
-        <CheckboxCheckedIcon />
-        <CheckboxIndeterminateIcon />
+        <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+        <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
       </CheckboxIndicator>
       Remember me on this device
     </Checkbox>
+  );
+}
+```
+<!-- /example -->
+
+## Your Own Component
+
+The minimal composition above shows the parts in place. In an app, compose them once in a file of your own, with your icon set, and import that component everywhere. `MyCheckbox` passes its props to the native `CheckboxInput`, like an `<input type="checkbox">`, and its children become the label. See [Component recipes](../../recipes.md).
+
+<!-- example: checkbox/recipe.tsx -->
+```tsx
+import {
+  Checkbox,
+  CheckboxCheckedIcon,
+  CheckboxIndeterminateIcon,
+  CheckboxIndicator,
+  CheckboxInput,
+  type CheckboxInputProps,
+} from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
+
+export function MyCheckbox({ children, ...props }: CheckboxInputProps) {
+  return (
+    <Checkbox>
+      <CheckboxInput {...props} />
+      <CheckboxIndicator>
+        <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+        <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
+      </CheckboxIndicator>
+      {children}
+    </Checkbox>
+  );
+}
+
+export default function Recipe() {
+  return (
+    <div style={{ display: 'grid', gap: 'var(--spacing-4)' }}>
+      <MyCheckbox name='remember' defaultChecked>Remember me on this device</MyCheckbox>
+      <MyCheckbox name='files' indeterminate>Some files are selected</MyCheckbox>
+    </div>
   );
 }
 ```
@@ -68,8 +109,8 @@ export default function MinimalComposition() {
 
 ## Optional Parts
 
-- `CheckboxCheckedIcon`: checked-state icon
-- `CheckboxIndeterminateIcon`: indeterminate-state icon
+- `CheckboxCheckedIcon`: shows the check mark you pass while checked
+- `CheckboxIndeterminateIcon`: shows the minus you pass while indeterminate
 
 ## Composition Order
 

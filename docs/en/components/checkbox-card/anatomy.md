@@ -16,8 +16,7 @@
 
 - `CheckboxCardTitle`
 - `CheckboxCardDescription`
-- `CheckboxCardControlCheckedIcon`
-- `CheckboxCardControlIndeterminateIcon`
+- `CheckboxCheckedIcon` and `CheckboxIndeterminateIcon` (from `Checkbox`): inside `CheckboxIndicator`, they show the check mark and the minus you pass as children
 
 ## Composition Order
 

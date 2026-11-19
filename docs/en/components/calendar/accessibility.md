@@ -55,7 +55,7 @@ The calendar follows the inherited text direction, like native elements, and nev
 
 - the weeks run from right to left, starting with the first day of the week on the right
 - `ArrowRight` moves to the previous day and `ArrowLeft` to the next day
-- the next month is on the left: swiping to the left and `CalendarNextButton` show it, and the default chevrons are mirrored
+- the next month is on the left: swiping to the left and `CalendarNextButton` show it, and an icon inside `CalendarPrevButton` and `CalendarNextButton` is mirrored
 
 ## Screen Reader Semantics
 
@@ -63,7 +63,7 @@ The calendar follows the inherited text direction, like native elements, and nev
 - today is marked with `aria-current="date"`
 - the day grid sets `aria-multiselectable="true"` in `multiple` and `range` selection
 - `CalendarViewButton` exposes its state with `aria-pressed` while its view is shown
-- `CalendarPrevButton` and `CalendarNextButton` render a chevron only, so give them an `aria-label`
+- `CalendarPrevButton` and `CalendarNextButton` have no name of their own: a button with only a chevron and `square` needs an `aria-label`, like "Previous month"
 - `Calendar` sets `lang` on its root when `locale` is passed, so screen readers pronounce month and day names in that language
 - custom day content should still read like one selectable date cell
 

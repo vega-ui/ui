@@ -32,7 +32,7 @@
 
 ### `SelectIcon`
 
-Необязательный визуальный индикатор триггера.
+Необязательная иконка триггера. Своей иконки у неё нет: передайте её дочерним элементом, например шеврон из любого набора иконок. Чтобы писать шеврон один раз, см. [рецепт](./index.md#свой-компонент).
 
 - Обязательна: нет
 - Обычно размещается после `SelectValue`
@@ -66,7 +66,7 @@
 
 ### `SelectIcon`
 
-Необязательный визуальный индикатор триггера.
+Необязательная иконка триггера. Своей иконки у неё нет: передайте её дочерним элементом, например шеврон из любого набора иконок.
 
 - Обязательна: нет
 - Обычно размещается после `SelectValue`
@@ -95,6 +95,7 @@ import {
   SelectOption,
   SelectValue,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 export default function MinimalComposition() {
@@ -107,7 +108,7 @@ export default function MinimalComposition() {
         <SelectHiddenSelect name='language' />
         <SelectCombobox id={id}>
           <SelectValue placeholder='Choose a language' />
-          <SelectIcon />
+          <SelectIcon><ChevronDownIcon /></SelectIcon>
         </SelectCombobox>
         <SelectListbox>
           <SelectOption value='en'>English</SelectOption>

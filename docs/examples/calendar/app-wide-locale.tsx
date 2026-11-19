@@ -25,7 +25,9 @@ import {
   CalendarYearsGrid,
   type CalendarProps,
   type CalendarSelection,
+  Icon,
 } from '@vega-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 const appSettings = { locale: 'en-GB', min: '1900-01-01', max: '2099-12-31' };
 
@@ -33,12 +35,12 @@ function AppCalendar<S extends CalendarSelection = 'single'>(props: Omit<Calenda
   return (
     <Calendar<S> locale={appSettings.locale} min={appSettings.min} max={appSettings.max} {...props}>
       <CalendarHeader>
-        <CalendarPrevButton aria-label='Previous' />
+        <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
         <CalendarHeading>
           <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
           <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
         </CalendarHeading>
-        <CalendarNextButton aria-label='Next' />
+        <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
       </CalendarHeader>
       <CalendarContent>
         <CalendarDays>

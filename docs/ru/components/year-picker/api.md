@@ -18,7 +18,7 @@
 | `variant` | `GridItemVariant` | `'secondary'` | Нет | Цвет выбранных ячеек. |
 | `disabledDates` | `GridKeys<string>` | — | Нет | Отключённые даты, помеченные `aria-disabled`: их нельзя выбрать, и навигация с клавиатуры пропускает их, как даты вне `min` и `max`. Может быть функцией `(date) => boolean`, массивом дат `YYYY-MM-DD` или одной датой. |
 | `period` | `number` | `12` | Нет | Количество годов на странице `YearPickerScroller`; должно совпадать с размером страницы в раскладке. Внутри скроллера PageUp и PageDown перемещают фокус на столько лет. |
-| `defaultValue` | `SelectionMode extends "multiple" \| "range" ? string[] : SelectionMode extends "single" ? string : never` | — | Нет | Неконтролируемые изначально выбранные ячейки. |
+| `defaultValue` | `NoInfer<SelectionMode extends "multiple" \| "range" ? string[] : SelectionMode extends "single" ? string : never>` | — | Нет | Неконтролируемые изначально выбранные ячейки. |
 | `max` | `SelectionMode extends GridSelection ? string : never` | — | Нет | Наибольший ключ, который можно выбрать, в порядке `compare`, а без `compare` — по положению. |
 | `min` | `SelectionMode extends GridSelection ? string : never` | — | Нет | Наименьший ключ, который можно выбрать, в порядке `compare`, а без `compare` — по положению. |
 | `value` | `SelectionMode extends "multiple" \| "range" ? string[] : SelectionMode extends "single" ? string \| null : never` | — | Нет | Контролируемые выбранные ячейки: ключ в режиме `'single'`, массив ключей в остальных режимах. В режиме `'single'` значение `null` означает контролируемое состояние без выбора. |

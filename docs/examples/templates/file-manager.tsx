@@ -15,7 +15,6 @@ import {
   Heading,
   HelperText,
   Icon,
-  IconButton,
   Label,
   Link,
   Meter,
@@ -49,26 +48,29 @@ import {
   VisuallyHidden,
 } from '@vega-ui/react';
 import {
-  ArrowDown,
-  ArrowUp,
-  ArrowUpDown,
-  ChevronRight,
-  Copy,
-  Download,
-  FileArchive,
-  FileImage,
-  FileSpreadsheet,
-  FileText,
-  FileVideo,
-  Folder,
-  FolderInput,
-  FolderPlus,
-  LayoutGrid,
-  List,
-  Pencil,
-  Share2,
-  Trash2,
-  Upload,
+  ArrowDownIcon,
+  ArrowUpDownIcon,
+  ArrowUpIcon,
+  CheckIcon,
+  ChevronDownIcon,
+  ChevronRightIcon,
+  CopyIcon,
+  DownloadIcon,
+  FileArchiveIcon,
+  FileImageIcon,
+  FileSpreadsheetIcon,
+  FileTextIcon,
+  FileVideoIcon,
+  FolderIcon,
+  FolderInputIcon,
+  FolderPlusIcon,
+  LayoutGridIcon,
+  ListIcon,
+  MinusIcon,
+  PencilIcon,
+  Share2Icon,
+  Trash2Icon,
+  UploadIcon,
   XIcon,
 } from '@vega-ui/icons';
 import './file-manager.css';
@@ -102,13 +104,13 @@ const people: Record<string, { name: string, initials: string }> = {
 };
 
 const kinds: Record<Kind, { label: string, icon: ReactNode, color: string }> = {
-  folder: { label: 'Folder', icon: <Folder />, color: 'var(--color-primary-500)' },
-  doc: { label: 'Document', icon: <FileText />, color: 'var(--color-sapphirine-accent-500)' },
-  sheet: { label: 'Spreadsheet', icon: <FileSpreadsheet />, color: 'var(--color-green-accent-500)' },
-  image: { label: 'Image', icon: <FileImage />, color: 'var(--color-amber-accent-500)' },
-  pdf: { label: 'PDF', icon: <FileText />, color: 'var(--color-red-accent-500)' },
-  video: { label: 'Video', icon: <FileVideo />, color: 'var(--color-purple-accent-500)' },
-  archive: { label: 'Archive', icon: <FileArchive />, color: 'var(--label-secondary)' },
+  folder: { label: 'Folder', icon: <FolderIcon />, color: 'var(--color-primary-500)' },
+  doc: { label: 'Document', icon: <FileTextIcon />, color: 'var(--color-sapphirine-accent-500)' },
+  sheet: { label: 'Spreadsheet', icon: <FileSpreadsheetIcon />, color: 'var(--color-green-accent-500)' },
+  image: { label: 'Image', icon: <FileImageIcon />, color: 'var(--color-amber-accent-500)' },
+  pdf: { label: 'PDF', icon: <FileTextIcon />, color: 'var(--color-red-accent-500)' },
+  video: { label: 'Video', icon: <FileVideoIcon />, color: 'var(--color-purple-accent-500)' },
+  archive: { label: 'Archive', icon: <FileArchiveIcon />, color: 'var(--label-secondary)' },
 };
 
 const extensions: Record<string, Kind> = {
@@ -147,7 +149,7 @@ const timeFormat = new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '
 const numberFormat = new Intl.NumberFormat('en-US', { maximumFractionDigits: 1 });
 
 const field = { display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: 'var(--spacing-3)', alignContent: 'start' } as const;
-const closeButton = { flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties;
+const closeButton = { flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties;
 const dialogHeader = { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' } as const;
 const actions = { display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end', gap: 'var(--spacing-4)' } as const;
 const ghost = { variant: 'secondary', appearance: 'ghost' } as const;
@@ -383,9 +385,9 @@ export default function FileManager() {
   };
 
   const sortIcon = (key: SortKey) => {
-    if (sort.key !== key) return <ArrowUpDown />;
+    if (sort.key !== key) return <ArrowUpDownIcon />;
 
-    return sort.direction === 'ascending' ? <ArrowUp /> : <ArrowDown />;
+    return sort.direction === 'ascending' ? <ArrowUpIcon /> : <ArrowDownIcon />;
   };
 
   const sortHeading = (key: SortKey, label: string, align: 'start' | 'end', className?: string) => (
@@ -401,7 +403,7 @@ export default function FileManager() {
     <Checkbox size='sm'>
       <CheckboxInput aria-label={`Select ${item.name}`} checked={chosen.includes(item.id)} onChange={() => toggle(item.id)} />
       <CheckboxIndicator>
-        <CheckboxCheckedIcon />
+        <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
       </CheckboxIndicator>
     </Checkbox>
   );
@@ -441,9 +443,9 @@ export default function FileManager() {
     <span style={{ display: 'inline-flex', gap: 'var(--spacing-1)' }}>
       <Popover role='dialog' placement='bottom-end' onChangeOpen={(open) => open && setCopied('')}>
         <PopoverTrigger asChild>
-          <IconButton size='xs' type='button' {...quiet} aria-label={`Share ${item.name}`}>
-            <Icon size='sm'><Share2 /></Icon>
-          </IconButton>
+          <Button square size='xs' type='button' {...quiet} aria-label={`Share ${item.name}`}>
+            <Icon size='sm'><Share2Icon /></Icon>
+          </Button>
         </PopoverTrigger>
         <PopoverContent aria-labelledby={`${id}-${item.id}-share`} style={{ width: 'min(340px, calc(100vw - 32px))', padding: 'var(--spacing-8)', boxSizing: 'border-box', textAlign: 'start' }}>
           <div style={{ display: 'grid', gap: 'var(--spacing-8)' }}>
@@ -482,22 +484,22 @@ export default function FileManager() {
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 'var(--spacing-6)' }}>
               <Text size={2} role='status' style={{ color: 'var(--label-secondary)' }}>{copied === item.id ? 'Link copied' : ''}</Text>
               <Button size='xs' type='button' {...ghost} style={{ gap: 'var(--spacing-2)' }} onClick={() => copyLink(item)}>
-                <Icon size='xs' aria-hidden='true'><Copy /></Icon>
+                <Icon size='xs' aria-hidden='true'><CopyIcon /></Icon>
                 Copy link
               </Button>
             </div>
           </div>
         </PopoverContent>
       </Popover>
-      <IconButton size='xs' type='button' {...quiet} aria-label={`Rename ${item.name}`} onClick={() => openNaming('rename', item)}>
-        <Icon size='sm'><Pencil /></Icon>
-      </IconButton>
+      <Button square size='xs' type='button' {...quiet} aria-label={`Rename ${item.name}`} onClick={() => openNaming('rename', item)}>
+        <Icon size='sm'><PencilIcon /></Icon>
+      </Button>
     </span>
   );
 
   const empty = (
     <div style={{ display: 'grid', justifyItems: 'center', gap: 'var(--spacing-3)', padding: 'var(--spacing-24) var(--spacing-8)', textAlign: 'center' }}>
-      <Icon size='lg' aria-hidden='true' style={{ color: 'var(--label-tertiary)' }}><Folder /></Icon>
+      <Icon size='lg' aria-hidden='true' style={{ color: 'var(--label-tertiary)' }}><FolderIcon /></Icon>
       <Text size={3} fontWeight={500}>This folder is empty</Text>
       <Text size={2} style={{ color: 'var(--label-secondary)' }}>Upload files or create a folder to get started.</Text>
     </div>
@@ -512,7 +514,7 @@ export default function FileManager() {
               <ol className='fm-crumbs'>
                 {[{ id: ROOT, name: 'My files' }, ...path].map((entry, index, all) => (
                   <li key={entry.id} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-2)', minWidth: 0 }}>
-                    {index > 0 && <Icon size='xs' aria-hidden='true' className='fm-mirror' style={{ flexShrink: 0, color: 'var(--label-tertiary)' }}><ChevronRight /></Icon>}
+                    {index > 0 && <Icon size='xs' aria-hidden='true' className='fm-mirror' style={{ flexShrink: 0, color: 'var(--label-tertiary)' }}><ChevronRightIcon /></Icon>}
                     {index === all.length - 1
                       ? <Text size={2} aria-current='page' style={{ ...nowrap, color: 'var(--label-secondary)' }}>{entry.name}</Text>
                       : (
@@ -535,24 +537,24 @@ export default function FileManager() {
               <Heading ref={headingRef} tabIndex={-1} id={`${id}-title`} as='h1' size={6} fontWeight={700} style={{ outline: 'none', overflowWrap: 'anywhere' }}>{title}</Heading>
               <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 'var(--spacing-4)' }}>
                 <Button size='xs' type='button' {...ghost} style={{ gap: 'var(--spacing-2)' }} onClick={() => openNaming('create')}>
-                  <Icon size='xs' aria-hidden='true'><FolderPlus /></Icon>
+                  <Icon size='xs' aria-hidden='true'><FolderPlusIcon /></Icon>
                   New folder
                 </Button>
                 <Button size='xs' asChild style={{ gap: 'var(--spacing-2)' }}>
                   <label className='fm-upload'>
-                    <Icon size='xs' aria-hidden='true'><Upload /></Icon>
+                    <Icon size='xs' aria-hidden='true'><UploadIcon /></Icon>
                     Upload
                     <input type='file' multiple className='fm-file-input' onChange={upload} />
                   </label>
                 </Button>
-                <SegmentedControl size='xs' name={`${id}-view`} role='radiogroup' aria-label='View' value={view} onChange={(event) => setView(event.currentTarget.value === 'grid' ? 'grid' : 'list')}>
+                <SegmentedControl size='xs' name={`${id}-view`} aria-label='View' value={view} onChangeValue={(value) => setView(value === 'grid' ? 'grid' : 'list')}>
                   <SegmentedControlItem value='list'>
                     <SegmentedControlItemInput aria-label='List view' />
-                    <Icon size='xs'><List /></Icon>
+                    <Icon size='xs'><ListIcon /></Icon>
                   </SegmentedControlItem>
                   <SegmentedControlItem value='grid'>
                     <SegmentedControlItemInput aria-label='Grid view' />
-                    <Icon size='xs'><LayoutGrid /></Icon>
+                    <Icon size='xs'><LayoutGridIcon /></Icon>
                   </SegmentedControlItem>
                   <SegmentedControlIndicator />
                 </SegmentedControl>
@@ -568,21 +570,21 @@ export default function FileManager() {
             )}
             {chosen.length > 0 && (
               <>
-                <IconButton size='xs' type='button' {...quiet} aria-label='Clear selection' onClick={() => setSelected([])}>
+                <Button square size='xs' type='button' {...quiet} aria-label='Clear selection' onClick={() => setSelected([])}>
                   <Icon size='sm'><XIcon /></Icon>
-                </IconButton>
+                </Button>
                 <Text size={2} fontWeight={600} style={tabular}>{`${chosen.length} selected`}</Text>
                 <div role='toolbar' aria-label='Selected items' style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--spacing-2)', marginInlineStart: 'auto' }}>
                   <Button size='xs' type='button' {...quiet} style={{ gap: 'var(--spacing-2)' }} onClick={download}>
-                    <Icon size='xs' aria-hidden='true'><Download /></Icon>
+                    <Icon size='xs' aria-hidden='true'><DownloadIcon /></Icon>
                     Download
                   </Button>
                   <Button size='xs' type='button' {...quiet} style={{ gap: 'var(--spacing-2)' }} disabled={folders.length === 0} onClick={openMove}>
-                    <Icon size='xs' aria-hidden='true'><FolderInput /></Icon>
+                    <Icon size='xs' aria-hidden='true'><FolderInputIcon /></Icon>
                     Move
                   </Button>
                   <Button size='xs' type='button' {...quiet} className='fm-danger' style={{ gap: 'var(--spacing-2)' }} onClick={() => setDeleteOpen(true)}>
-                    <Icon size='xs' aria-hidden='true'><Trash2 /></Icon>
+                    <Icon size='xs' aria-hidden='true'><Trash2Icon /></Icon>
                     Delete
                   </Button>
                 </div>
@@ -604,8 +606,8 @@ export default function FileManager() {
                       <Checkbox size='sm'>
                         <CheckboxInput aria-label='Select all items' checked={allSelected} indeterminate={someSelected} disabled={visible.length === 0} onChange={toggleAll} />
                         <CheckboxIndicator>
-                          <CheckboxCheckedIcon />
-                          <CheckboxIndeterminateIcon />
+                          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+                          <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
                         </CheckboxIndicator>
                       </Checkbox>
                     </TableHeading>
@@ -683,7 +685,7 @@ export default function FileManager() {
                 </li>
               ))}
               <li style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
-                <Icon size='sm' aria-hidden='true' style={{ flexShrink: 0, color: 'var(--label-tertiary)' }}><FileArchive /></Icon>
+                <Icon size='sm' aria-hidden='true' style={{ flexShrink: 0, color: 'var(--label-tertiary)' }}><FileArchiveIcon /></Icon>
                 <Text size={2} style={{ flex: 1 }}>Device backups</Text>
                 <Text size={2} style={{ ...tabular, color: 'var(--label-secondary)' }}>{formatSize(BACKUPS)}</Text>
               </li>
@@ -697,9 +699,9 @@ export default function FileManager() {
           <div style={dialogHeader}>
             <Heading id={`${id}-name-title`} as='h2' size={4} fontWeight={600}>{naming?.mode === 'rename' ? 'Rename' : 'New folder'}</Heading>
             <DialogClose asChild>
-              <IconButton size='xs' aria-label='Close' {...ghost} style={closeButton}>
+              <Button square size='xs' aria-label='Close' {...ghost} style={closeButton}>
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DialogClose>
           </div>
           {naming && (
@@ -740,9 +742,9 @@ export default function FileManager() {
           <div style={dialogHeader}>
             <Heading id={`${id}-move-title`} as='h2' size={4} fontWeight={600}>{`Move ${plural(chosen.length, 'item')}`}</Heading>
             <DialogClose asChild>
-              <IconButton size='xs' aria-label='Close' {...ghost} style={closeButton}>
+              <Button square size='xs' aria-label='Close' {...ghost} style={closeButton}>
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DialogClose>
           </div>
           <form method='dialog' onSubmit={moveSelected} style={{ display: 'grid', gap: 'var(--spacing-12)', marginBlockStart: 'var(--spacing-10)' }}>
@@ -751,7 +753,7 @@ export default function FileManager() {
               <Select value={destination} onChangeValue={(value) => setDestination(value ?? ROOT)}>
                 <SelectCombobox id={`${id}-destination`}>
                   <SelectValue />
-                  <SelectIcon />
+                  <SelectIcon><ChevronDownIcon /></SelectIcon>
                 </SelectCombobox>
                 <SelectListbox>
                   {folders.map((entry) => <SelectOption key={entry.id} value={entry.id}>{entry.label}</SelectOption>)}
@@ -775,9 +777,9 @@ export default function FileManager() {
               {chosenItems.length === 1 ? `Delete “${chosenItems[0].name}”?` : `Delete ${plural(chosen.length, 'item')}?`}
             </Heading>
             <DialogClose asChild>
-              <IconButton size='xs' aria-label='Close' {...ghost} style={closeButton}>
+              <Button square size='xs' aria-label='Close' {...ghost} style={closeButton}>
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DialogClose>
           </div>
           <Text id={`${id}-delete-description`} size={3} style={{ display: 'block', marginBlockStart: 'var(--spacing-4)', color: 'var(--label-secondary)' }}>

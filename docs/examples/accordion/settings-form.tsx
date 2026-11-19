@@ -12,6 +12,7 @@ import {
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 
 export default function SettingsForm() {
   const [opened, setOpened] = useState<string[]>(['profile']);
@@ -39,7 +40,7 @@ export default function SettingsForm() {
           <AccordionHeader>
             <AccordionTrigger>
               Profile
-              <AccordionIcon />
+              <AccordionIcon><ChevronDownIcon /></AccordionIcon>
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>
@@ -64,7 +65,7 @@ export default function SettingsForm() {
           <AccordionHeader>
             <AccordionTrigger>
               Billing
-              <AccordionIcon />
+              <AccordionIcon><ChevronDownIcon /></AccordionIcon>
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>

@@ -58,8 +58,8 @@ The same `active` value is changed from three places: the dots, the arrow keys i
 
 <!-- example: page-control/controlled-active-index.tsx -->
 ```tsx
-import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
-import { Icon, IconButton, PageControl, PageControlItem, Text } from '@vega-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
+import { Button, Icon, PageControl, PageControlItem, Text } from '@vega-ui/react';
 import { useState } from 'react';
 
 const photos = ['Lisbon tram', 'Sintra palace', 'Cascais beach', 'Porto bridge', 'Douro valley'];
@@ -76,17 +76,17 @@ export default function ControlledActiveIndex() {
         {photos[active]} · {active + 1} / {photos.length}
       </Text>
       <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-8)' }}>
-        <IconButton aria-label='Previous photo' variant='secondary' appearance='ghost' size='sm' disabled={isFirst} onClick={() => setActive(active - 1)}>
-          <Icon><ChevronLeft /></Icon>
-        </IconButton>
+        <Button square aria-label='Previous photo' variant='secondary' appearance='ghost' size='sm' disabled={isFirst} onClick={() => setActive(active - 1)}>
+          <Icon><ChevronLeftIcon /></Icon>
+        </Button>
         <PageControl active={active} onChangeActive={setActive} aria-label='Photos'>
           {photos.map((photo, index) => (
             <PageControlItem key={photo} index={index} aria-label={photo} />
           ))}
         </PageControl>
-        <IconButton aria-label='Next photo' variant='secondary' appearance='ghost' size='sm' disabled={isLast} onClick={() => setActive(active + 1)}>
-          <Icon><ChevronRight /></Icon>
-        </IconButton>
+        <Button square aria-label='Next photo' variant='secondary' appearance='ghost' size='sm' disabled={isLast} onClick={() => setActive(active + 1)}>
+          <Icon><ChevronRightIcon /></Icon>
+        </Button>
       </div>
     </div>
   );
@@ -209,7 +209,6 @@ import {
   DialogTrigger,
   Heading,
   Icon,
-  IconButton,
   PageControl,
   PageControlItem,
   Text,
@@ -243,14 +242,15 @@ export default function WhatsNewDialog() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
             <Heading id={`${prefix}-title`} as='h2' size={4} fontWeight={600}>{updates[active].title}</Heading>
             <DialogClose asChild>
-              <IconButton
+              <Button
+                square
                 aria-label='Close'
                 variant='secondary'
                 appearance='ghost'
-                style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+                style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
               >
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DialogClose>
           </div>
           <Text size={3} style={{ color: 'var(--label-secondary)' }}>{updates[active].text}</Text>

@@ -1,6 +1,6 @@
 import {
+  Button,
   Icon,
-  IconButton,
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -42,9 +42,9 @@ export default function ScrollContainer() {
           <Text size={3}>{member.name}</Text>
           <Popover role='dialog' placement='bottom-end'>
             <PopoverTrigger asChild>
-              <IconButton aria-label={`Details for ${member.name}`} size='sm' variant='secondary' appearance='ghost'>
+              <Button square aria-label={`Details for ${member.name}`} size='sm' variant='secondary' appearance='ghost'>
                 <Icon size='xs'><InfoIcon /></Icon>
-              </IconButton>
+              </Button>
             </PopoverTrigger>
             <PopoverContent aria-label={`${member.name} details`}>
               <div style={{ display: 'grid', gap: 'var(--spacing-1)', minWidth: 180 }}>

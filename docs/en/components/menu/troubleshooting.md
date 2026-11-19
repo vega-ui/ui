@@ -46,7 +46,7 @@ A screen reader announces the trigger as "button" and the menu as "menu" without
 
 ### Likely Cause
 
-The trigger has no text, like an icon-only `IconButton`, and no `aria-label`. The menu is named by the trigger, so it has no name either.
+The trigger has no text, like an icon-only `Button` with `square`, and no `aria-label`. The menu is named by the trigger, so it has no name either.
 
 ### How To Verify
 

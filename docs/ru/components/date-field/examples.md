@@ -35,13 +35,15 @@ import {
   DateField,
   DateFieldCalendar,
   DateFieldInput,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
   HelperText,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 export const locales = ['en-US', 'ru-RU', 'ar-EG', 'he-IL'];
 
@@ -53,17 +55,17 @@ export default function TypedDateWithACalendarPopover({ locale = 'en-US' }: { lo
         <DateFieldInput id='due-date' placeholder='dd.mm.yyyy' aria-describedby='due-date-hint' />
         <Popover placement='bottom-end'>
           <PopoverTrigger asChild>
-            <DateFieldTriggerIconButton aria-label='Choose due date' />
+            <DateFieldTrigger square aria-label='Choose due date'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
           </PopoverTrigger>
           <PopoverContent>
             <DateFieldCalendar aria-label='Choose due date'>
               <CalendarHeader>
-                <CalendarPrevButton aria-label='Previous month' />
+                <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                 <CalendarHeading>
                   <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                   <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                 </CalendarHeading>
-                <CalendarNextButton aria-label='Next month' />
+                <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
               </CalendarHeader>
               <CalendarContent>
                 <CalendarDays>
@@ -141,13 +143,15 @@ import {
   DateField,
   DateFieldCalendar,
   DateFieldInput,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
   Text,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 const toISODate = (date: Date) => {
   const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -174,17 +178,17 @@ export default function PresetDates() {
           <DateFieldInput id='publish-on' placeholder='dd.mm.yyyy' />
           <Popover placement='bottom-end'>
             <PopoverTrigger asChild>
-              <DateFieldTriggerIconButton aria-label='Choose publish date' />
+              <DateFieldTrigger square aria-label='Choose publish date'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
             </PopoverTrigger>
             <PopoverContent>
               <DateFieldCalendar aria-label='Choose publish date'>
                 <CalendarHeader>
-                  <CalendarPrevButton aria-label='Previous month' />
+                  <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                   </CalendarHeading>
-                  <CalendarNextButton aria-label='Next month' />
+                  <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                 </CalendarHeader>
                 <CalendarContent>
                   <CalendarDays>
@@ -268,15 +272,17 @@ import {
   DateField,
   DateFieldCalendar,
   DateFieldInput,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
   Fieldset,
   FieldsetLegend,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
   Text,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 const addDays = (iso: string, days: number) => {
   const date = new Date(`${iso}T00:00:00Z`);
@@ -321,17 +327,17 @@ export default function StayDates() {
           <DateFieldInput id='check-in' placeholder='dd.mm.yyyy' />
           <Popover placement='bottom-end'>
             <PopoverTrigger asChild>
-              <DateFieldTriggerIconButton aria-label='Choose check-in date' />
+              <DateFieldTrigger square aria-label='Choose check-in date'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
             </PopoverTrigger>
             <PopoverContent>
               <DateFieldCalendar aria-label='Choose check-in date'>
                 <CalendarHeader>
-                  <CalendarPrevButton aria-label='Previous month' />
+                  <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                   </CalendarHeading>
-                  <CalendarNextButton aria-label='Next month' />
+                  <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                 </CalendarHeader>
                 <CalendarContent>
                   <CalendarDays>
@@ -378,17 +384,17 @@ export default function StayDates() {
           <DateFieldInput id='check-out' placeholder='dd.mm.yyyy' />
           <Popover placement='bottom-end'>
             <PopoverTrigger asChild>
-              <DateFieldTriggerIconButton aria-label='Choose check-out date' />
+              <DateFieldTrigger square aria-label='Choose check-out date'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
             </PopoverTrigger>
             <PopoverContent>
               <DateFieldCalendar aria-label='Choose check-out date'>
                 <CalendarHeader>
-                  <CalendarPrevButton aria-label='Previous month' />
+                  <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                   </CalendarHeading>
-                  <CalendarNextButton aria-label='Next month' />
+                  <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                 </CalendarHeader>
                 <CalendarContent>
                   <CalendarDays>
@@ -469,14 +475,16 @@ import {
   DateField,
   DateFieldCalendar,
   DateFieldInput,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
   HelperText,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
   Text,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 const DEFAULT_INVOICE_DATE = '2026-01-15';
 
@@ -503,17 +511,17 @@ export default function InvoiceForm() {
           <DateFieldInput id='invoice-date' required aria-describedby='invoice-date-hint' />
           <Popover placement='bottom-end'>
             <PopoverTrigger asChild>
-              <DateFieldTriggerIconButton aria-label='Choose invoice date' />
+              <DateFieldTrigger square aria-label='Choose invoice date'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
             </PopoverTrigger>
             <PopoverContent>
               <DateFieldCalendar aria-label='Choose invoice date'>
                 <CalendarHeader>
-                  <CalendarPrevButton aria-label='Previous month' />
+                  <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                   </CalendarHeading>
-                  <CalendarNextButton aria-label='Next month' />
+                  <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                 </CalendarHeader>
                 <CalendarContent>
                   <CalendarDays>
@@ -570,7 +578,7 @@ export default function InvoiceForm() {
 <!-- example: date-field/date-field-inside-a-dialog.tsx -->
 ```tsx
 import { CSSProperties } from 'react';
-import { XIcon } from '@vega-ui/icons';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon, XIcon } from '@vega-ui/icons';
 import {
   Button,
   CalendarContent,
@@ -599,14 +607,13 @@ import {
   DateField,
   DateFieldCalendar,
   DateFieldInput,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
   Dialog,
   DialogClose,
   DialogContent,
   DialogTrigger,
   Heading,
   Icon,
-  IconButton,
   Label,
   Popover,
   PopoverContent,
@@ -623,14 +630,15 @@ export default function DateFieldInsideADialog() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
           <Heading id='schedule-review-title' as='h2' size={4} fontWeight={600}>Schedule review</Heading>
           <DialogClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </DialogClose>
         </div>
         <form method='dialog' style={{ display: 'grid', gap: 'var(--spacing-12)', marginBlockStart: 'var(--spacing-8)' }}>
@@ -640,17 +648,17 @@ export default function DateFieldInsideADialog() {
               <DateFieldInput name='reviewDate' id='review-date' required placeholder='dd.mm.yyyy' />
               <Popover placement='bottom-end'>
                 <PopoverTrigger asChild>
-                  <DateFieldTriggerIconButton aria-label='Choose review date' />
+                  <DateFieldTrigger square aria-label='Choose review date'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
                 </PopoverTrigger>
                 <PopoverContent>
                   <DateFieldCalendar aria-label='Choose review date'>
                     <CalendarHeader>
-                      <CalendarPrevButton aria-label='Previous month' />
+                      <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                       <CalendarHeading>
                         <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                         <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                       </CalendarHeading>
-                      <CalendarNextButton aria-label='Next month' />
+                      <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                     </CalendarHeader>
                     <CalendarContent>
                       <CalendarDays>
@@ -730,12 +738,14 @@ import {
   DateField,
   DateFieldCalendar,
   DateFieldInput,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 export default function KeepCalendarOpenAfterPick() {
   const [open, setOpen] = useState(false);
@@ -747,17 +757,17 @@ export default function KeepCalendarOpenAfterPick() {
         <DateFieldInput id='delivery-date' placeholder='dd.mm.yyyy' />
         <Popover placement='bottom-end' open={open} onChangeOpen={setOpen}>
           <PopoverTrigger asChild>
-            <DateFieldTriggerIconButton aria-label='Choose delivery date' />
+            <DateFieldTrigger square aria-label='Choose delivery date'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
           </PopoverTrigger>
           <PopoverContent>
             <DateFieldCalendar aria-label='Choose delivery date' onChangeValue={() => setOpen(true)}>
               <CalendarHeader>
-                <CalendarPrevButton aria-label='Previous month' />
+                <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                 <CalendarHeading>
                   <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                   <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                 </CalendarHeading>
-                <CalendarNextButton aria-label='Next month' />
+                <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
               </CalendarHeader>
               <CalendarContent>
                 <CalendarDays>
@@ -834,13 +844,15 @@ import {
   DateField,
   DateFieldCalendar,
   DateFieldInput,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
   HelperText,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 const HINT = 'Enter the full date as dd.mm.yyyy.';
 
@@ -874,17 +886,17 @@ export default function RenewalForm() {
           />
           <Popover placement='bottom-end'>
             <PopoverTrigger asChild>
-              <DateFieldTriggerIconButton aria-label='Choose renewal date' />
+              <DateFieldTrigger square aria-label='Choose renewal date'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
             </PopoverTrigger>
             <PopoverContent>
               <DateFieldCalendar aria-label='Choose renewal date'>
                 <CalendarHeader>
-                  <CalendarPrevButton aria-label='Previous month' />
+                  <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                   </CalendarHeading>
-                  <CalendarNextButton aria-label='Next month' />
+                  <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                 </CalendarHeader>
                 <CalendarContent>
                   <CalendarDays>
@@ -964,13 +976,15 @@ import {
   DateField,
   DateFieldCalendar,
   DateFieldInput,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
   HelperText,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 export default function LockedContractDate() {
   return (
@@ -980,17 +994,17 @@ export default function LockedContractDate() {
         <DateFieldInput id='signed-on' aria-describedby='signed-on-hint' />
         <Popover placement='bottom-end'>
           <PopoverTrigger asChild>
-            <DateFieldTriggerIconButton aria-label='Choose signing date' />
+            <DateFieldTrigger square aria-label='Choose signing date'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
           </PopoverTrigger>
           <PopoverContent>
             <DateFieldCalendar aria-label='Choose signing date'>
               <CalendarHeader>
-                <CalendarPrevButton aria-label='Previous month' />
+                <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                 <CalendarHeading>
                   <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                   <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                 </CalendarHeading>
-                <CalendarNextButton aria-label='Next month' />
+                <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
               </CalendarHeader>
               <CalendarContent>
                 <CalendarDays>
@@ -1070,14 +1084,16 @@ import {
   DateField,
   DateFieldCalendar,
   DateFieldInput,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
   Fieldset,
   FieldsetLegend,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@vega-ui/react';
+import { CalendarIcon, CheckIcon, ChevronLeftIcon, ChevronRightIcon, MinusIcon } from '@vega-ui/icons';
 
 export default function DisabledByFieldset() {
   const [asap, setAsap] = useState(true);
@@ -1087,8 +1103,8 @@ export default function DisabledByFieldset() {
       <Checkbox>
         <CheckboxInput checked={asap} onChange={(event) => setAsap(event.currentTarget.checked)} />
         <CheckboxIndicator>
-          <CheckboxCheckedIcon />
-          <CheckboxIndeterminateIcon />
+          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+          <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
         </CheckboxIndicator>
         Ship as soon as possible
       </Checkbox>
@@ -1100,17 +1116,17 @@ export default function DisabledByFieldset() {
             <DateFieldInput name='shipOn' id='ship-on' placeholder='dd.mm.yyyy' />
             <Popover placement='bottom-end'>
               <PopoverTrigger asChild>
-                <DateFieldTriggerIconButton aria-label='Choose shipping date' />
+                <DateFieldTrigger square aria-label='Choose shipping date'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
               </PopoverTrigger>
               <PopoverContent>
                 <DateFieldCalendar aria-label='Choose shipping date'>
                   <CalendarHeader>
-                    <CalendarPrevButton aria-label='Previous month' />
+                    <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                     <CalendarHeading>
                       <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                       <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                     </CalendarHeading>
-                    <CalendarNextButton aria-label='Next month' />
+                    <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                   </CalendarHeader>
                   <CalendarContent>
                     <CalendarDays>
@@ -1210,14 +1226,16 @@ import {
   DateField,
   DateFieldCalendar,
   DateFieldInput,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
   HelperText,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
   Text,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 const FIRST_DAY = '2026-01-10';
 const LAST_DAY = '2026-12-31';
@@ -1242,17 +1260,17 @@ export default function OverflowingAndOutOfRangeDates() {
           <DateFieldInput id='campaign-start' placeholder='dd.mm.yyyy' aria-invalid={outOfRange} aria-describedby='campaign-start-hint' />
           <Popover placement='bottom-end'>
             <PopoverTrigger asChild>
-              <DateFieldTriggerIconButton aria-label='Choose campaign start' />
+              <DateFieldTrigger square aria-label='Choose campaign start'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
             </PopoverTrigger>
             <PopoverContent>
               <DateFieldCalendar aria-label='Choose campaign start'>
                 <CalendarHeader>
-                  <CalendarPrevButton aria-label='Previous month' />
+                  <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                   </CalendarHeading>
-                  <CalendarNextButton aria-label='Next month' />
+                  <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                 </CalendarHeader>
                 <CalendarContent>
                   <CalendarDays>
@@ -1333,13 +1351,15 @@ import {
   DateField,
   DateFieldCalendar,
   DateFieldInput,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
   HelperText,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 const isWeekend = (iso: string) => {
   const weekday = new Date(`${iso}T00:00:00Z`).getUTCDay();
@@ -1365,17 +1385,17 @@ export default function WeekendsUnavailable() {
           />
           <Popover placement='bottom-end'>
             <PopoverTrigger asChild>
-              <DateFieldTriggerIconButton aria-label='Choose delivery date' />
+              <DateFieldTrigger square aria-label='Choose delivery date'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
             </PopoverTrigger>
             <PopoverContent>
               <DateFieldCalendar aria-label='Choose delivery date'>
                 <CalendarHeader>
-                  <CalendarPrevButton aria-label='Previous month' />
+                  <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                   </CalendarHeading>
-                  <CalendarNextButton aria-label='Next month' />
+                  <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                 </CalendarHeader>
                 <CalendarContent>
                   <CalendarDays>
@@ -1453,13 +1473,15 @@ import {
   DateField,
   DateFieldCalendar,
   DateFieldInput,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
   HelperText,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 export default function CalendarPopupInAnotherLocale() {
   return (
@@ -1469,17 +1491,17 @@ export default function CalendarPopupInAnotherLocale() {
         <DateFieldInput id='liefertermin' placeholder='TT.MM.JJJJ' aria-describedby='liefertermin-hint' />
         <Popover placement='bottom-end'>
           <PopoverTrigger asChild>
-            <DateFieldTriggerIconButton aria-label='Datum auswählen' />
+            <DateFieldTrigger square aria-label='Datum auswählen'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
           </PopoverTrigger>
           <PopoverContent>
             <DateFieldCalendar aria-label='Datum auswählen'>
               <CalendarHeader>
-                <CalendarPrevButton aria-label='Vorheriger Monat' />
+                <CalendarPrevButton square aria-label='Vorheriger Monat'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                 <CalendarHeading>
                   <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                   <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                 </CalendarHeading>
-                <CalendarNextButton aria-label='Nächster Monat' />
+                <CalendarNextButton square aria-label='Nächster Monat'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
               </CalendarHeader>
               <CalendarContent>
                 <CalendarDays>

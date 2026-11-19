@@ -47,6 +47,7 @@ import {
   SelectOption,
   SelectValue,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 export default function MinimalComposition() {
@@ -60,7 +61,7 @@ export default function MinimalComposition() {
           <SelectHiddenSelect name='country' />
           <SelectCombobox aria-label='Country'>
             <SelectValue />
-            <SelectIcon />
+            <SelectIcon><ChevronDownIcon /></SelectIcon>
           </SelectCombobox>
           <SelectListbox>
             <SelectOption value='US'>US</SelectOption>
@@ -70,6 +71,68 @@ export default function MinimalComposition() {
         </PhoneFieldSelect>
         <PhoneFieldInput name='phone' id={id} autoComplete='tel' />
       </PhoneField>
+    </div>
+  );
+}
+```
+<!-- /example -->
+
+## Свой компонент
+
+Минимальная композиция выше показывает части на месте. В приложении соберите их один раз в своём файле, со своим набором иконок, и импортируйте этот компонент везде. `MyPhoneField` передаёт свои пропсы в `PhoneField`, `id` и `name` — полю ввода для `Label` и формы, `countryName` — скрытому select, `countryLabel` — триггеру страны, а дочерние элементы — в список стран. См. [Рецепты компонентов](../../recipes.md).
+
+<!-- example: phone-field/recipe.tsx -->
+```tsx
+import {
+  Label,
+  PhoneField,
+  PhoneFieldInput,
+  PhoneFieldSelect,
+  SelectCombobox,
+  SelectHiddenSelect,
+  SelectIcon,
+  SelectListbox,
+  SelectOption,
+  SelectValue,
+  type PhoneFieldProps,
+} from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
+import { useId } from 'react';
+
+interface MyPhoneFieldProps extends PhoneFieldProps {
+  name?: string
+  countryName?: string
+  countryLabel: string
+}
+
+export function MyPhoneField({ id, name, countryName, countryLabel, children, ...props }: MyPhoneFieldProps) {
+  return (
+    <PhoneField {...props}>
+      <PhoneFieldSelect>
+        <SelectHiddenSelect name={countryName} />
+        <SelectCombobox aria-label={countryLabel}>
+          <SelectValue />
+          <SelectIcon><ChevronDownIcon /></SelectIcon>
+        </SelectCombobox>
+        <SelectListbox>{children}</SelectListbox>
+      </PhoneFieldSelect>
+      <PhoneFieldInput id={id} name={name} autoComplete='tel' />
+    </PhoneField>
+  );
+}
+
+export default function Recipe() {
+  const id = useId();
+
+  return (
+    <div style={{ display: 'grid', gap: 'var(--spacing-3)', width: '100%', maxWidth: 320 }}>
+      <Label htmlFor={id}>Phone number</Label>
+      <MyPhoneField id={id} name='phone' countryName='country' countryLabel='Country' defaultCountry='GB'>
+        <SelectOption value='US'>US</SelectOption>
+        <SelectOption value='GB'>GB</SelectOption>
+        <SelectOption value='DE'>DE</SelectOption>
+        <SelectOption value='FR'>FR</SelectOption>
+      </MyPhoneField>
     </div>
   );
 }

@@ -11,6 +11,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 export default function DisabledActionReason() {
   const [verified, setVerified] = useState(false);
@@ -26,8 +27,8 @@ export default function DisabledActionReason() {
       <Checkbox>
         <CheckboxInput checked={verified} onChange={(event) => setVerified(event.currentTarget.checked)} />
         <CheckboxIndicator>
-          <CheckboxCheckedIcon />
-          <CheckboxIndeterminateIcon />
+          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+          <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
         </CheckboxIndicator>
         Billing verified
       </Checkbox>

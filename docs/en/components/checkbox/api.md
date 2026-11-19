@@ -18,8 +18,8 @@ Also accepts all `<label>` attributes.
 
 - `CheckboxInput`: the native `<input type="checkbox">`. Takes `checked`, `defaultChecked`, `onChange`, `disabled`, `name`, `value` and `indeterminate`.
 - `CheckboxIndicator`: visible checkbox surface.
-- `CheckboxCheckedIcon`: optional checked-state icon.
-- `CheckboxIndeterminateIcon`: optional indeterminate-state icon.
+- `CheckboxCheckedIcon`: optional checked-state icon; pass the check mark as its children.
+- `CheckboxIndeterminateIcon`: optional indeterminate-state icon; pass the minus as its children.
 
 ### `CheckboxInput`
 
@@ -46,7 +46,7 @@ Also accepts all `<div>` attributes.
 | `size` | `IconSize` | — | No | Predefined size token for the icon. Can be overridden by explicit width and height. |
 | `ref` | `Ref<SVGSVGElement>` | — | No | Ref to the SVG element |
 | `strokeWidth` | `number` | — | No | Stroke thickness for SVG lines and shapes (in px or pt). |
-| `children` | `ReactNode` | — | No | Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
+| `children` | `ReactNode` | — | Yes | Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
 
 Also accepts all HTML attributes.
 <!-- AUTO-GENERATED:PART_API:CheckboxCheckedIcon:end -->
@@ -59,7 +59,7 @@ Also accepts all HTML attributes.
 | `size` | `IconSize` | — | No | Predefined size token for the icon. Can be overridden by explicit width and height. |
 | `ref` | `Ref<SVGSVGElement>` | — | No | Ref to the SVG element |
 | `strokeWidth` | `number` | — | No | Stroke thickness for SVG lines and shapes (in px or pt). |
-| `children` | `ReactNode` | — | No | Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
+| `children` | `ReactNode` | — | Yes | Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
 
 Also accepts all HTML attributes.
 <!-- AUTO-GENERATED:PART_API:CheckboxIndeterminateIcon:end -->

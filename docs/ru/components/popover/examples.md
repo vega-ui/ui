@@ -57,9 +57,9 @@ export default function AnchoredUserMenu() {
 import { useId, useState } from 'react';
 import {
   Badge,
+  Button,
   Heading,
   Icon,
-  IconButton,
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -100,9 +100,9 @@ export default function ControlledOpenState() {
     >
       <Popover role='dialog' placement='bottom-start' open={open} onChangeOpen={changeOpen}>
         <PopoverTrigger asChild>
-          <IconButton aria-label={unread > 0 ? `Notifications, ${unread} unread` : 'Notifications'} variant='secondary' appearance='ghost'>
+          <Button square aria-label={unread > 0 ? `Notifications, ${unread} unread` : 'Notifications'} variant='secondary' appearance='ghost'>
             <Icon><BellIcon /></Icon>
-          </IconButton>
+          </Button>
         </PopoverTrigger>
         <PopoverContent aria-labelledby={titleId}>
           <div style={{ display: 'grid', gap: 'var(--spacing-8)', width: 280 }}>
@@ -273,7 +273,7 @@ function DeleteComment({ onDelete }: { onDelete: () => void }) {
 
 ### Форма/интеграция: форма переименования
 
-Форма проверяется нативно (`required`, `pattern`, `maxLength`), читает новое имя через `FormData` и закрывает поповер, ставя `open` в `false`. Круглая кнопка закрытия — обычный `IconButton`, который ставит `open` в `false`: отдельной части для закрытия у поповера нет.
+Форма проверяется нативно (`required`, `pattern`, `maxLength`), читает новое имя через `FormData` и закрывает поповер, ставя `open` в `false`. Круглая кнопка закрытия — обычный `Button` с `square`, который ставит `open` в `false`: отдельной части для закрытия у поповера нет.
 
 <!-- example: popover/inline-rename-flow.tsx -->
 ```tsx
@@ -282,7 +282,6 @@ import {
   Button,
   Heading,
   Icon,
-  IconButton,
   Label,
   Popover,
   PopoverContent,
@@ -313,15 +312,16 @@ export default function InlineRenameFlow() {
         <form onSubmit={onSubmit} style={{ display: 'grid', width: 260 }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
             <Heading id={titleId} as='h3' size={5} fontWeight={600}>Rename document</Heading>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
               onClick={() => setOpen(false)}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </div>
           <div style={{ display: 'grid', gap: 'var(--spacing-3)', marginBlockStart: 'var(--spacing-6)' }}>
             <Label htmlFor={fieldId}>Name</Label>
@@ -347,8 +347,8 @@ export default function InlineRenameFlow() {
 <!-- example: popover/scroll-container.tsx -->
 ```tsx
 import {
+  Button,
   Icon,
-  IconButton,
   Popover,
   PopoverContent,
   PopoverTrigger,
@@ -390,9 +390,9 @@ export default function ScrollContainer() {
           <Text size={3}>{member.name}</Text>
           <Popover role='dialog' placement='bottom-end'>
             <PopoverTrigger asChild>
-              <IconButton aria-label={`Details for ${member.name}`} size='sm' variant='secondary' appearance='ghost'>
+              <Button square aria-label={`Details for ${member.name}`} size='sm' variant='secondary' appearance='ghost'>
                 <Icon size='xs'><InfoIcon /></Icon>
-              </IconButton>
+              </Button>
             </PopoverTrigger>
             <PopoverContent aria-label={`${member.name} details`}>
               <div style={{ display: 'grid', gap: 'var(--spacing-1)', minWidth: 180 }}>
@@ -423,7 +423,6 @@ import {
   CheckboxIndicator,
   CheckboxInput,
   Icon,
-  IconButton,
   Popover,
   PopoverAnchor,
   PopoverClose,
@@ -433,11 +432,11 @@ import {
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
-import { SlidersHorizontal, XIcon } from '@vega-ui/icons';
+import { CheckIcon, SlidersHorizontalIcon, XIcon } from '@vega-ui/icons';
 
 const statuses = ['Open', 'In review', 'Merged', 'Closed'];
 
-const closeButton = { flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties;
+const closeButton = { flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties;
 
 export default function FiltersAnchoredToASearchField() {
   const titleId = useId();
@@ -455,15 +454,16 @@ export default function FiltersAnchoredToASearchField() {
           <TextField>
             <TextFieldInput type='search' aria-label='Search pull requests' placeholder='Search pull requests' />
             <PopoverTrigger asChild>
-              <IconButton
+              <Button
+                square
                 size='xs'
                 variant='secondary'
                 appearance='transparent'
                 aria-label={`Filters, ${applied.length} applied`}
                 style={{ flexShrink: 0, marginInlineEnd: 'var(--spacing-3)' }}
               >
-                <Icon size='sm'><SlidersHorizontal /></Icon>
-              </IconButton>
+                <Icon size='sm'><SlidersHorizontalIcon /></Icon>
+              </Button>
             </PopoverTrigger>
           </TextField>
         </PopoverAnchor>
@@ -472,9 +472,9 @@ export default function FiltersAnchoredToASearchField() {
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
               <Text id={titleId} size={3} fontWeight={600}>Status</Text>
               <PopoverClose asChild>
-                <IconButton aria-label='Close' variant='secondary' appearance='ghost' style={closeButton}>
+                <Button square aria-label='Close' variant='secondary' appearance='ghost' style={closeButton}>
                   <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-                </IconButton>
+                </Button>
               </PopoverClose>
             </div>
             <div style={{ display: 'grid', gap: 'var(--spacing-6)' }}>
@@ -482,7 +482,7 @@ export default function FiltersAnchoredToASearchField() {
                 <Checkbox key={status}>
                   <CheckboxInput checked={draft.includes(status)} onChange={() => toggle(status)} />
                   <CheckboxIndicator>
-                    <CheckboxCheckedIcon />
+                    <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
                   </CheckboxIndicator>
                   {status}
                 </Checkbox>
@@ -521,7 +521,6 @@ import {
   Button,
   HelperText,
   Icon,
-  IconButton,
   Label,
   Popover,
   PopoverContent,
@@ -585,9 +584,9 @@ export default function LinkError() {
     >
       <Popover role='dialog' placement='bottom-start' open={open} onChangeOpen={changeOpen}>
         <PopoverTrigger asChild>
-          <IconButton aria-label='Insert link' variant='secondary' appearance='ghost' style={{ flexShrink: 0 }}>
+          <Button square aria-label='Insert link' variant='secondary' appearance='ghost' style={{ flexShrink: 0 }}>
             <Icon><LinkIcon /></Icon>
-          </IconButton>
+          </Button>
         </PopoverTrigger>
         <PopoverContent aria-label='Insert link'>
           <form noValidate onSubmit={onSubmit} style={{ display: 'grid', gap: 'var(--spacing-3)', width: 280 }}>
@@ -638,6 +637,7 @@ import {
   PopoverTrigger,
   Text,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 const actions = ['Download', 'Move to archive', 'Share'];
 
@@ -680,8 +680,8 @@ export default function DisabledTrigger() {
           <Checkbox key={file} style={{ minWidth: 0 }}>
             <CheckboxInput checked={selected.includes(file)} onChange={(event) => toggle(file, event.currentTarget.checked)} />
             <CheckboxIndicator>
-              <CheckboxCheckedIcon />
-              <CheckboxIndeterminateIcon />
+              <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+              <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
             </CheckboxIndicator>
             <span style={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{file}</span>
           </Checkbox>

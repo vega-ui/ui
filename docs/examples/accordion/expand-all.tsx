@@ -10,6 +10,7 @@ import {
   Separator,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 
 const sections = [
   { value: 'requirements', title: 'System requirements', body: 'Node.js 20 or later, 2 GB of free memory and outbound HTTPS access.' },
@@ -47,7 +48,7 @@ export default function ExpandAll() {
             <AccordionHeader>
               <AccordionTrigger>
                 {section.title}
-                <AccordionIcon />
+                <AccordionIcon><ChevronDownIcon /></AccordionIcon>
               </AccordionTrigger>
             </AccordionHeader>
             <AccordionContent>

@@ -26,7 +26,7 @@ import {
   TableRow,
   Text,
 } from '@vega-ui/react';
-import { ArrowDown, ArrowUp } from '@vega-ui/icons';
+import { ArrowDownIcon, ArrowUpIcon } from '@vega-ui/icons';
 import './analytics.css';
 
 type Period = '7' | '30' | '90';
@@ -113,10 +113,9 @@ export default function Analytics() {
         </div>
         <SegmentedControl
           name={`${id}-period`}
-          role='radiogroup'
           aria-label='Period'
           value={period}
-          onChange={(event) => setPeriod(event.target.value as Period)}
+          onChangeValue={setPeriod}
         >
           {periods.map((item) => (
             <SegmentedControlItem key={item.value} value={item.value}>
@@ -140,7 +139,7 @@ export default function Analytics() {
                 <Text size={7} fontWeight={700} style={nowrap}>{kpi.value}</Text>
                 <span style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 'var(--spacing-2) var(--spacing-4)' }}>
                   <Badge size='sm' variant={up ? 'success' : 'error'} style={{ gap: 'var(--spacing-1)', ...tabular }}>
-                    <Icon size='xs' aria-hidden='true'>{up ? <ArrowUp strokeWidth={2.5} /> : <ArrowDown strokeWidth={2.5} />}</Icon>
+                    <Icon size='xs' aria-hidden='true'>{up ? <ArrowUpIcon strokeWidth={2.5} /> : <ArrowDownIcon strokeWidth={2.5} />}</Icon>
                     {signedPercent.format(delta)}
                   </Badge>
                   <Text size={2} style={{ color: 'var(--label-secondary)' }}>{`vs previous ${label}`}</Text>

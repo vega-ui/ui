@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import {
   Icon,
   Pagination,
@@ -35,12 +35,12 @@ export default function DisabledWhileLoading() {
   return (
     <div style={{ display: 'grid', justifyItems: 'center', gap: 'var(--spacing-6)', width: '100%' }}>
       <fieldset disabled={loading} style={{ margin: 0, padding: 0, border: 'none', minInlineSize: 0 }}>
-        <Pagination aria-label='Invoice pages'>
+        <Pagination aria-label='Invoice pages' size='sm'>
           <PaginationList>
             <PaginationItem>
               <PaginationLink asChild>
                 <button type='button' aria-label='Previous page' disabled={page === 1} onClick={() => setLoadingPage(page - 1)}>
-                  <Icon><ChevronLeft /></Icon>
+                  <Icon><ChevronLeftIcon /></Icon>
                 </button>
               </PaginationLink>
             </PaginationItem>
@@ -56,7 +56,7 @@ export default function DisabledWhileLoading() {
             <PaginationItem>
               <PaginationLink asChild>
                 <button type='button' aria-label='Next page' disabled={page === total} onClick={() => setLoadingPage(page + 1)}>
-                  <Icon><ChevronRight /></Icon>
+                  <Icon><ChevronRightIcon /></Icon>
                 </button>
               </PaginationLink>
             </PaginationItem>

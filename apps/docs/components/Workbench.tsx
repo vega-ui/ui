@@ -3,7 +3,7 @@
 import { MouseEvent, useId, useRef, useState } from 'react';
 import {
   Icon,
-  IconButton,
+  Button,
   SegmentedControl,
   SegmentedControlIndicator,
   SegmentedControlItem,
@@ -16,7 +16,7 @@ import {
   SelectValue,
   Text,
 } from '@vega-ui/react';
-import { ChevronDown, RotateCcw, SquareArrowOutUpRight } from '@vega-ui/icons';
+import { ChevronDown, ChevronDownIcon, RotateCcw, SquareArrowOutUpRight } from '@vega-ui/icons';
 import { CodeBody, CopyButton } from './CodeBlock';
 import { codeUrl, COLLAPSED_LINES, isPartial } from '@/lib/code';
 import { EXAMPLE_META, EXAMPLES, SANDBOX_PACKAGE } from '@/generated/examples';
@@ -172,14 +172,14 @@ export const Workbench = ({ slug, example, code, html }: { slug: string, example
             <Select size='xs' variant='inline' value={exampleLocale} onChangeValue={changeLocale}>
               <SelectCombobox aria-label={t.code.exampleLocale}>
                 <SelectValue />
-                <SelectIcon />
+                <SelectIcon><ChevronDownIcon /></SelectIcon>
               </SelectCombobox>
               <SelectListbox>
                 {locales.map((item) => <SelectOption key={item} value={item} lang={item}>{item}</SelectOption>)}
               </SelectListbox>
             </Select>
           )}
-          <SegmentedControl size='xs' variant='secondary' name={`${codeId}-dir`} role='radiogroup' aria-label={t.code.direction} value={dir} onChange={(event) => setDir(event.target.value)}>
+          <SegmentedControl size='xs' variant='secondary' name={`${codeId}-dir`} aria-label={t.code.direction} value={dir} onChangeValue={setDir}>
             <SegmentedControlItem value='ltr'>
               <SegmentedControlItemInput />
               LTR
@@ -190,9 +190,9 @@ export const Workbench = ({ slug, example, code, html }: { slug: string, example
             </SegmentedControlItem>
             <SegmentedControlIndicator />
           </SegmentedControl>
-          <IconButton size='xs' variant='secondary' appearance='ghost' aria-label={t.code.reset} onClick={() => setRun(run + 1)}>
+          <Button square size='xs' variant='secondary' appearance='ghost' aria-label={t.code.reset} onClick={() => setRun(run + 1)}>
             <Icon size='xs'><RotateCcw /></Icon>
-          </IconButton>
+          </Button>
         </div>
         <div key={run} ref={specimen} dir={dir} lang={exampleLocale} className={styles.specimen} data-wide={meta?.wide || undefined}>{preview}</div>
       </div>
@@ -203,7 +203,8 @@ export const Workbench = ({ slug, example, code, html }: { slug: string, example
             <Text className={styles.drawerLabel}>{`${name} · ${lines} ${linesLabel}`}</Text>
             <div className={styles.actions}>
               {meta?.sandbox && (
-                <IconButton
+                <Button
+                  square
                   size='xs'
                   variant='secondary'
                   appearance='transparent'
@@ -212,7 +213,7 @@ export const Workbench = ({ slug, example, code, html }: { slug: string, example
                   onClick={() => openInStackBlitz(`Vega UI · ${example}`, code, meta.sandbox ?? {})}
                 >
                   <Icon><SquareArrowOutUpRight /></Icon>
-                </IconButton>
+                </Button>
               )}
               <CopyButton code={code} />
             </div>

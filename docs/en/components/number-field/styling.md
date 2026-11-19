@@ -2,7 +2,7 @@
 
 ## Overview
 
-`NumberField` reuses the `TextField` surface and adds number-specific alignment plus square stepper buttons tied to the shared input height.
+`NumberField` reuses the `TextField` surface and adds number-specific alignment plus stepper buttons tied to the shared input height.
 
 ## Public CSS Variables
 
@@ -27,7 +27,7 @@ The root adds centered text alignment through `.numberTextField`.
 
 ### Buttons
 
-Increment and decrement buttons map `--icon-button-size` to `--input-height`.
+Increment and decrement buttons map `--button-height` to `--input-height`.
 
 ### Input
 
@@ -52,16 +52,18 @@ Increment and decrement buttons map `--icon-button-size` to `--input-height`.
 
 ### Sizes
 
-`size` on the root sets `--input-height`, and the stepper buttons follow it, so they stay square at every size.
+`size` on the root sets `--input-height`, and the stepper buttons follow it; with `square` they stay square at every size.
 
 <!-- example: number-field/stepper-sizes.tsx -->
 ```tsx
 import {
+  Icon,
   NumberField,
   NumberFieldDecrementButton,
   NumberFieldIncrementButton,
   NumberFieldInput,
 } from '@vega-ui/react';
+import { MinusIcon, PlusIcon } from '@vega-ui/icons';
 
 const SIZES = ['xs', 'sm', 'md', 'lg', 'xl'] as const;
 
@@ -70,9 +72,9 @@ export default function StepperSizes() {
     <div style={{ display: 'grid', gap: 'var(--spacing-6)', width: '100%', maxWidth: 220 }}>
       {SIZES.map((size) => (
         <NumberField key={size} size={size} min={0} max={10} defaultValue={3}>
-          <NumberFieldDecrementButton aria-label={`Decrease, size ${size}`} />
+          <NumberFieldDecrementButton square aria-label={`Decrease, size ${size}`}><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
           <NumberFieldInput aria-label={`Guests, size ${size}`} />
-          <NumberFieldIncrementButton aria-label={`Increase, size ${size}`} />
+          <NumberFieldIncrementButton square aria-label={`Increase, size ${size}`}><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
         </NumberField>
       ))}
     </div>
@@ -83,7 +85,7 @@ export default function StepperSizes() {
 
 ### Custom stepper icons
 
-Children of `NumberFieldDecrementButton` and `NumberFieldIncrementButton` replace their default icons. Icon-only buttons have no built-in name, so pass `aria-label` to each.
+The icons of `NumberFieldDecrementButton` and `NumberFieldIncrementButton` are their children, so any icon fits. Icon-only buttons with `square` have no built-in name, so pass `aria-label` to each.
 
 <!-- example: number-field/custom-stepper-icons.tsx -->
 ```tsx
@@ -105,11 +107,11 @@ export default function CustomStepperIcons() {
     <div style={{ display: 'grid', gap: 'var(--spacing-3)', width: '100%', maxWidth: 200 }}>
       <Label htmlFor={id}>Font size, px</Label>
       <NumberField min={8} max={72} defaultValue={16}>
-        <NumberFieldDecrementButton aria-label='Smaller'>
+        <NumberFieldDecrementButton square aria-label='Smaller'>
           <Icon><ChevronDownIcon /></Icon>
         </NumberFieldDecrementButton>
         <NumberFieldInput id={id} />
-        <NumberFieldIncrementButton aria-label='Larger'>
+        <NumberFieldIncrementButton square aria-label='Larger'>
           <Icon><ChevronUpIcon /></Icon>
         </NumberFieldIncrementButton>
       </NumberField>

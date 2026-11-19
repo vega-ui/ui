@@ -30,7 +30,7 @@ Items that are checked or unchecked, and a group where one item is checked, as i
 
 ### `MenuGroup` and `MenuItemIndicator`
 
-A named `role="group"` around related items, and the check mark of a checkbox or radio item, as in `Menu`.
+A named `role="group"` around related items, and the mark of a checkbox or radio item with the icon you pass, as in `Menu`.
 
 ### `MenuSubmenu` and `MenuSubmenuTrigger`
 
@@ -55,10 +55,10 @@ Each row of a list is its own `ContextMenu`, and a `<div>` inside the `<li>` is 
 ```tsx
 import { useState, type CSSProperties, type ReactNode } from 'react';
 import {
+  Button,
   ContextMenu,
   ContextMenuTrigger,
   Icon,
-  IconButton,
   Menu,
   MenuContent,
   MenuItem,
@@ -151,9 +151,9 @@ export default function FileList() {
                 </div>
                 <Menu placement='bottom-end' size='sm'>
                   <MenuTrigger asChild>
-                    <IconButton size='sm' aria-label={`Actions for ${file.name}`} variant='secondary' appearance='ghost' style={{ flexShrink: 0 }}>
+                    <Button square size='sm' aria-label={`Actions for ${file.name}`} variant='secondary' appearance='ghost' style={{ flexShrink: 0 }}>
                       <Icon><EllipsisIcon /></Icon>
-                    </IconButton>
+                    </Button>
                   </MenuTrigger>
                   <MenuContent>
                     <FileActions onAction={report} />

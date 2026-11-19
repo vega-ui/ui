@@ -4,14 +4,14 @@
 
 - `MenuContent` in a `ContextMenu` has no `aria-labelledby`, as there is no button to name it. Pass `aria-label` or `aria-labelledby` to `MenuContent` yourself, naming the object the menu acts on, like the file name. The components never set a label themselves.
 - Name every `MenuRadioGroup`, and every `MenuGroup` that has a heading, with `aria-labelledby` pointing at the heading or with `aria-label`.
-- An icon-only button that opens the same actions in a `Menu`, like a "⋯" `IconButton`, needs an `aria-label` that names the object.
+- An icon-only button that opens the same actions in a `Menu`, like a "⋯" `Button` with `square`, needs an `aria-label` that names the object.
 
 ## Keyboard Behavior
 
 <!-- AUTO-GENERATED:KEYBOARD:start -->
 | Key | Action |
 | --- | --- |
-| <kbd>Shift</kbd> + <kbd>F10</kbd> | With the focus on an element inside the area: opens the menu at that element instead of the menu of the browser, and moves the focus to its first item. The context menu key does the same where the keyboard has one. |
+| <kbd>Shift</kbd> + <kbd>F10</kbd> | With the focus on an element inside the area: opens the menu at that element instead of the menu of the browser, and moves the focus to its first item. The context menu key does the same where the keyboard has one. Browsers on macOS give no menu to Shift+F10, so there only the keys of a screen reader open it. |
 | <kbd>↓</kbd> / <kbd>↑</kbd> | In the menu: moves the focus to the next or previous item. From the last item it moves to the first, and from the first to the last. Disabled items take the focus too. |
 | <kbd>Home</kbd> / <kbd>End</kbd> | In the menu: moves the focus to the first or last item. |
 | <kbd>c</kbd> | Typeahead: a printable character moves the focus to the next item whose label starts with the typed text. Disabled items are included. The label is the text of the item, or its `label` prop. |

@@ -7,7 +7,6 @@ import {
   DialogTrigger,
   Heading,
   Icon,
-  IconButton,
   Text,
 } from '@vega-ui/react';
 import { XIcon } from '@vega-ui/icons';
@@ -24,14 +23,15 @@ export default function CommandInADialogBody() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
             <Heading as='h2' size={5} id='connect-cli-title'>Connect the CLI</Heading>
             <DialogClose asChild>
-              <IconButton
+              <Button
+                square
                 aria-label='Close'
                 variant='secondary'
                 appearance='ghost'
-                style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+                style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
               >
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DialogClose>
           </div>
           <Text asChild size={3}>

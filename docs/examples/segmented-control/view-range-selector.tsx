@@ -7,7 +7,7 @@ import {
 
 export default function ViewRangeSelector() {
   return (
-    <SegmentedControl name='calendar-view' defaultValue='week' role='radiogroup' aria-label='Calendar view'>
+    <SegmentedControl name='calendar-view' defaultValue='week' aria-label='Calendar view'>
       <SegmentedControlItem value='day'>
         <SegmentedControlItemInput />
         Day

@@ -10,7 +10,6 @@ import {
   DialogTrigger,
   Heading,
   Icon,
-  IconButton,
   Text,
 } from '@vega-ui/react';
 import { XIcon } from '@vega-ui/icons';
@@ -32,14 +31,15 @@ export default function ErrorDetailsDialog() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
           <Heading id='export-error-title' as='h2' size={4} fontWeight={600}>Export failed</Heading>
           <DialogClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </DialogClose>
         </div>
         <Text id='export-error-description' size={3} asChild>

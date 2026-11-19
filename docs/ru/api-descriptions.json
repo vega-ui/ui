@@ -200,16 +200,16 @@
     "ru": "Ref на нативный элемент `<img>`. Полезен для прямого доступа к DOM, отслеживания загрузки или анимаций."
   },
   "AvatarStack.ref": {
-    "en": "Ref forwarded to the root `div` element of the avatar group. Useful for direct DOM access (e.g., measuring width or attaching listeners).",
-    "ru": "Ref, передаваемый на корневой элемент `div` группы аватаров. Полезен для прямого доступа к DOM (например, чтобы измерить ширину или подключить слушатели)."
+    "en": "Ref forwarded to the root `div` element of the avatar stack. Useful for direct DOM access (e.g., measuring width or attaching listeners).",
+    "ru": "Ref, передаваемый на корневой элемент `div` стопки аватаров. Полезен для прямого доступа к DOM (например, чтобы измерить ширину или подключить слушатели)."
   },
   "AvatarStack.size": {
-    "en": "Size of all avatar items within the group. Ensures consistent sizing across all items.",
-    "ru": "Размер всех аватаров в группе. Обеспечивает единый размер всех элементов."
+    "en": "Size of all avatar items within the stack. Ensures consistent sizing across all items.",
+    "ru": "Размер всех аватаров в стопке. Обеспечивает единый размер всех элементов."
   },
   "AvatarStack.variant": {
-    "en": "Variant for all avatars in the group. Applies a unified visual style (e.g., `primary`, `secondary`).",
-    "ru": "Вариант для всех аватаров группы. Применяет единый визуальный стиль (например, `primary`, `secondary`)."
+    "en": "Variant for all avatars in the stack. Applies a unified visual style (e.g., `primary`, `secondary`).",
+    "ru": "Вариант для всех аватаров стопки. Применяет единый визуальный стиль (например, `primary`, `secondary`)."
   },
   "AvatarStackItem.ref": {
     "en": "Ref forwarded to the root `span` element of the avatar. Enables access to the DOM node, e.g., for focus or measurements.",
@@ -255,10 +255,6 @@
     "en": "Disables the button when true. Prevents user interaction and applies a visually disabled state. Not applied with `asChild`: the child element owns its disabled state, for example, `aria-disabled` or a link without `href`.",
     "ru": "Отключает кнопку при true. Запрещает взаимодействие и применяет визуальное отключённое состояние. Не применяется с `asChild`: отключённым состоянием владеет дочерний элемент, например через `aria-disabled` или ссылку без `href`."
   },
-  "Button.fullWidth": {
-    "en": "When true, the button expands to fill the width with its container.",
-    "ru": "Если true, кнопка растягивается на всю ширину контейнера."
-  },
   "Button.ref": {
     "en": "Ref forwarded to the native `<button>` element. Allows direct DOM access for focus management or measuring.",
     "ru": "Ref, передаваемый на нативный элемент `<button>`. Даёт прямой доступ к DOM для управления фокусом или измерений."
@@ -270,6 +266,10 @@
   "Button.variant": {
     "en": "Defines the visual style of the button, affecting color schemes and emphasis.",
     "ru": "Определяет визуальный стиль кнопки: цветовую схему и акцент."
+  },
+  "Button.square": {
+    "en": "Makes the button a square as wide as it is high, for a single icon. Name it with `aria-label` or `aria-labelledby`.",
+    "ru": "Делает кнопку квадратной — такой же ширины, как высоты, — для одной иконки. Назовите её через `aria-label` или `aria-labelledby`."
   },
   "ButtonBase.appearance": {
     "en": "Adjusts the button's structural appearance (background, border, etc.).",
@@ -536,12 +536,16 @@
     "ru": "Ref, передаваемый на нативный элемент `<button>`. Даёт прямой доступ к DOM для управления фокусом или измерений."
   },
   "CalendarNextButton.size": {
-    "en": "Size of the button container. Controls padding and overall clickable area.",
-    "ru": "Размер контейнера кнопки. Управляет отступами и общей кликабельной областью."
+    "en": "Defines the size of the button. Affects padding, font size, and overall dimensions.",
+    "ru": "Определяет размер кнопки. Влияет на отступы, размер шрифта и общие габариты."
   },
   "CalendarNextButton.variant": {
     "en": "Defines the visual style of the button, affecting color schemes and emphasis.",
     "ru": "Определяет визуальный стиль кнопки: цветовую схему и акцент."
+  },
+  "CalendarNextButton.square": {
+    "en": "Makes the button a square as wide as it is high, for a single icon. Name it with `aria-label` or `aria-labelledby`.",
+    "ru": "Делает кнопку квадратной — такой же ширины, как высоты, — для одной иконки. Назовите её через `aria-label` или `aria-labelledby`."
   },
   "CalendarPrevButton.appearance": {
     "en": "Adjusts the button's structural appearance (background, border, etc.).",
@@ -568,12 +572,16 @@
     "ru": "Ref, передаваемый на нативный элемент `<button>`. Даёт прямой доступ к DOM для управления фокусом или измерений."
   },
   "CalendarPrevButton.size": {
-    "en": "Size of the button container. Controls padding and overall clickable area.",
-    "ru": "Размер контейнера кнопки. Управляет отступами и общей кликабельной областью."
+    "en": "Defines the size of the button. Affects padding, font size, and overall dimensions.",
+    "ru": "Определяет размер кнопки. Влияет на отступы, размер шрифта и общие габариты."
   },
   "CalendarPrevButton.variant": {
     "en": "Defines the visual style of the button, affecting color schemes and emphasis.",
     "ru": "Определяет визуальный стиль кнопки: цветовую схему и акцент."
+  },
+  "CalendarPrevButton.square": {
+    "en": "Makes the button a square as wide as it is high, for a single icon. Name it with `aria-label` or `aria-labelledby`.",
+    "ru": "Делает кнопку квадратной — такой же ширины, как высоты, — для одной иконки. Назовите её через `aria-label` или `aria-labelledby`."
   },
   "CalendarViewButton.appearance": {
     "en": "Adjusts the button's structural appearance (background, border, etc.).",
@@ -594,10 +602,6 @@
   "CalendarViewButton.disabled": {
     "en": "Disables the button when true. Prevents user interaction and applies a visually disabled state. Not applied with `asChild`: the child element owns its disabled state, for example, `aria-disabled` or a link without `href`.",
     "ru": "Отключает кнопку при true. Запрещает взаимодействие и применяет визуальное отключённое состояние. Не применяется с `asChild`: отключённым состоянием владеет дочерний элемент, например через `aria-disabled` или ссылку без `href`."
-  },
-  "CalendarViewButton.fullWidth": {
-    "en": "When true, the button expands to fill the width with its container.",
-    "ru": "Если true, кнопка растягивается на всю ширину контейнера."
   },
   "CalendarViewButton.ref": {
     "en": "Ref forwarded to the native `<button>` element. Allows direct DOM access for focus management or measuring.",
@@ -814,38 +818,6 @@
   "CheckboxCardControl.variant": {
     "en": "Visual variant of the checkbox, for theme or context switching.",
     "ru": "Визуальный вариант чекбокса для переключения темы или контекста."
-  },
-  "CheckboxCardControlCheckedIcon.children": {
-    "en": "Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler)",
-    "ru": "Содержимое иконки. Принимает: иконки из `@vega-ui/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler)"
-  },
-  "CheckboxCardControlCheckedIcon.ref": {
-    "en": "Ref to the SVG element",
-    "ru": "Ref на SVG-элемент"
-  },
-  "CheckboxCardControlCheckedIcon.size": {
-    "en": "Predefined size token for the icon. Can be overridden by explicit width and height.",
-    "ru": "Предопределённый токен размера иконки. Может быть переопределён явными шириной и высотой."
-  },
-  "CheckboxCardControlCheckedIcon.strokeWidth": {
-    "en": "Stroke thickness for SVG lines and shapes (in px or pt).",
-    "ru": "Толщина обводки линий и фигур SVG (в px или pt)."
-  },
-  "CheckboxCardControlIndeterminateIcon.children": {
-    "en": "Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler)",
-    "ru": "Содержимое иконки. Принимает: иконки из `@vega-ui/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler)"
-  },
-  "CheckboxCardControlIndeterminateIcon.ref": {
-    "en": "Ref to the SVG element",
-    "ru": "Ref на SVG-элемент"
-  },
-  "CheckboxCardControlIndeterminateIcon.size": {
-    "en": "Predefined size token for the icon. Can be overridden by explicit width and height.",
-    "ru": "Предопределённый токен размера иконки. Может быть переопределён явными шириной и высотой."
-  },
-  "CheckboxCardControlIndeterminateIcon.strokeWidth": {
-    "en": "Stroke thickness for SVG lines and shapes (in px or pt).",
-    "ru": "Толщина обводки линий и фигур SVG (в px или pt)."
   },
   "CheckboxCardControlInput.indeterminate": {
     "en": "Sets the native `indeterminate` property of the input. Often used when only some nested items are selected. It has no HTML attribute, so it is applied imperatively.",
@@ -1072,12 +1044,16 @@
     "ru": "Ref, передаваемый на нативный элемент `<button>`. Даёт прямой доступ к DOM для управления фокусом или измерений."
   },
   "ComboboxTrigger.size": {
-    "en": "Size of the button container. Controls padding and overall clickable area.",
-    "ru": "Размер контейнера кнопки. Управляет отступами и общей кликабельной областью."
+    "en": "Defines the size of the button. Affects padding, font size, and overall dimensions.",
+    "ru": "Определяет размер кнопки. Влияет на отступы, размер шрифта и общие габариты."
   },
   "ComboboxTrigger.variant": {
     "en": "Defines the visual style of the button, affecting color schemes and emphasis.",
     "ru": "Определяет визуальный стиль кнопки: цветовую схему и акцент."
+  },
+  "ComboboxTrigger.square": {
+    "en": "Makes the button a square as wide as it is high, for a single icon. Name it with `aria-label` or `aria-labelledby`.",
+    "ru": "Делает кнопку квадратной — такой же ширины, как высоты, — для одной иконки. Назовите её через `aria-label` или `aria-labelledby`."
   },
   "ContextMenu.children": {
     "en": "The ContextMenuTrigger and the MenuContent of the menu.",
@@ -1251,38 +1227,6 @@
     "en": "Ref forwarded to the underlying native `<input>` element.",
     "ru": "Ref, передаваемый на нижележащий нативный элемент `<input>`."
   },
-  "DateFieldTriggerIconButton.appearance": {
-    "en": "Adjusts the button's structural appearance (background, border, etc.).",
-    "ru": "Настраивает структурный внешний вид кнопки (фон, рамка и т. д.)."
-  },
-  "DateFieldTriggerIconButton.asChild": {
-    "en": "When true, renders the button as a child component using `Slot` (e.g., from Radix UI). Enables polymorphic rendering — useful for making the button act as a link or custom tag.",
-    "ru": "Если true, рендерит кнопку как дочерний компонент через `Slot` (например, из Radix UI). Включает полиморфный рендер — полезно, чтобы кнопка работала как ссылка или собственный тег."
-  },
-  "DateFieldTriggerIconButton.children": {
-    "en": "Content of the button — text, icon, or any React node.",
-    "ru": "Содержимое кнопки — текст, иконка или любой React-узел."
-  },
-  "DateFieldTriggerIconButton.className": {
-    "en": "Optional custom CSS class for the button element. Useful for design system overrides or scoped styles.",
-    "ru": "Необязательный собственный CSS-класс для элемента кнопки. Полезен для переопределений дизайн-системы или локальных стилей."
-  },
-  "DateFieldTriggerIconButton.disabled": {
-    "en": "Disables the button when true. Prevents user interaction and applies a visually disabled state. Not applied with `asChild`: the child element owns its disabled state, for example, `aria-disabled` or a link without `href`.",
-    "ru": "Отключает кнопку при true. Запрещает взаимодействие и применяет визуальное отключённое состояние. Не применяется с `asChild`: отключённым состоянием владеет дочерний элемент, например через `aria-disabled` или ссылку без `href`."
-  },
-  "DateFieldTriggerIconButton.ref": {
-    "en": "Ref forwarded to the native `<button>` element. Allows direct DOM access for focus management or measuring.",
-    "ru": "Ref, передаваемый на нативный элемент `<button>`. Даёт прямой доступ к DOM для управления фокусом или измерений."
-  },
-  "DateFieldTriggerIconButton.size": {
-    "en": "Size of the button container. Controls padding and overall clickable area.",
-    "ru": "Размер контейнера кнопки. Управляет отступами и общей кликабельной областью."
-  },
-  "DateFieldTriggerIconButton.variant": {
-    "en": "Defines the visual style of the button, affecting color schemes and emphasis.",
-    "ru": "Определяет визуальный стиль кнопки: цветовую схему и акцент."
-  },
   "DateRangeField.calendar": {
     "en": "Calendar system the dates are typed and picked in. The values stay `YYYY-MM-DD` days. Defaults to the Gregorian calendar.",
     "ru": "Календарная система, в которой даты вводятся и выбираются. Значения остаются днями в формате `YYYY-MM-DD`. По умолчанию — григорианский календарь."
@@ -1438,38 +1382,6 @@
   "DateRangeFieldInput.ref": {
     "en": "Ref forwarded to the underlying native `<input>` element.",
     "ru": "Ref, передаваемый на нижележащий нативный элемент `<input>`."
-  },
-  "DateRangeFieldTriggerIconButton.appearance": {
-    "en": "Adjusts the button's structural appearance (background, border, etc.).",
-    "ru": "Настраивает структурный внешний вид кнопки (фон, рамка и т. д.)."
-  },
-  "DateRangeFieldTriggerIconButton.asChild": {
-    "en": "When true, renders the button as a child component using `Slot` (e.g., from Radix UI). Enables polymorphic rendering — useful for making the button act as a link or custom tag.",
-    "ru": "Если true, рендерит кнопку как дочерний компонент через `Slot` (например, из Radix UI). Включает полиморфный рендер — полезно, чтобы кнопка работала как ссылка или собственный тег."
-  },
-  "DateRangeFieldTriggerIconButton.children": {
-    "en": "Content of the button — text, icon, or any React node.",
-    "ru": "Содержимое кнопки — текст, иконка или любой React-узел."
-  },
-  "DateRangeFieldTriggerIconButton.className": {
-    "en": "Optional custom CSS class for the button element. Useful for design system overrides or scoped styles.",
-    "ru": "Необязательный собственный CSS-класс для элемента кнопки. Полезен для переопределений дизайн-системы или локальных стилей."
-  },
-  "DateRangeFieldTriggerIconButton.disabled": {
-    "en": "Disables the button when true. Prevents user interaction and applies a visually disabled state. Not applied with `asChild`: the child element owns its disabled state, for example, `aria-disabled` or a link without `href`.",
-    "ru": "Отключает кнопку при true. Запрещает взаимодействие и применяет визуальное отключённое состояние. Не применяется с `asChild`: отключённым состоянием владеет дочерний элемент, например через `aria-disabled` или ссылку без `href`."
-  },
-  "DateRangeFieldTriggerIconButton.ref": {
-    "en": "Ref forwarded to the native `<button>` element. Allows direct DOM access for focus management or measuring.",
-    "ru": "Ref, передаваемый на нативный элемент `<button>`. Даёт прямой доступ к DOM для управления фокусом или измерений."
-  },
-  "DateRangeFieldTriggerIconButton.size": {
-    "en": "Size of the button container. Controls padding and overall clickable area.",
-    "ru": "Размер контейнера кнопки. Управляет отступами и общей кликабельной областью."
-  },
-  "DateRangeFieldTriggerIconButton.variant": {
-    "en": "Defines the visual style of the button, affecting color schemes and emphasis.",
-    "ru": "Определяет визуальный стиль кнопки: цветовую схему и акцент."
   },
   "DateTimeField.calendar": {
     "en": "Calendar system the date is typed and picked in. The value stays a `YYYY-MM-DDTHH:mm[:ss]` string. Defaults to the Gregorian calendar.",
@@ -1634,38 +1546,6 @@
   "DateTimeFieldInput.ref": {
     "en": "Ref forwarded to the underlying native `<input>` element.",
     "ru": "Ref, передаваемый на нижележащий нативный элемент `<input>`."
-  },
-  "DateTimeFieldTriggerIconButton.appearance": {
-    "en": "Adjusts the button's structural appearance (background, border, etc.).",
-    "ru": "Настраивает структурный внешний вид кнопки (фон, рамка и т. д.)."
-  },
-  "DateTimeFieldTriggerIconButton.asChild": {
-    "en": "When true, renders the button as a child component using `Slot` (e.g., from Radix UI). Enables polymorphic rendering — useful for making the button act as a link or custom tag.",
-    "ru": "Если true, рендерит кнопку как дочерний компонент через `Slot` (например, из Radix UI). Включает полиморфный рендер — полезно, чтобы кнопка работала как ссылка или собственный тег."
-  },
-  "DateTimeFieldTriggerIconButton.children": {
-    "en": "Content of the button — text, icon, or any React node.",
-    "ru": "Содержимое кнопки — текст, иконка или любой React-узел."
-  },
-  "DateTimeFieldTriggerIconButton.className": {
-    "en": "Optional custom CSS class for the button element. Useful for design system overrides or scoped styles.",
-    "ru": "Необязательный собственный CSS-класс для элемента кнопки. Полезен для переопределений дизайн-системы или локальных стилей."
-  },
-  "DateTimeFieldTriggerIconButton.disabled": {
-    "en": "Disables the button when true. Prevents user interaction and applies a visually disabled state. Not applied with `asChild`: the child element owns its disabled state, for example, `aria-disabled` or a link without `href`.",
-    "ru": "Отключает кнопку при true. Запрещает взаимодействие и применяет визуальное отключённое состояние. Не применяется с `asChild`: отключённым состоянием владеет дочерний элемент, например через `aria-disabled` или ссылку без `href`."
-  },
-  "DateTimeFieldTriggerIconButton.ref": {
-    "en": "Ref forwarded to the native `<button>` element. Allows direct DOM access for focus management or measuring.",
-    "ru": "Ref, передаваемый на нативный элемент `<button>`. Даёт прямой доступ к DOM для управления фокусом или измерений."
-  },
-  "DateTimeFieldTriggerIconButton.size": {
-    "en": "Size of the button container. Controls padding and overall clickable area.",
-    "ru": "Размер контейнера кнопки. Управляет отступами и общей кликабельной областью."
-  },
-  "DateTimeFieldTriggerIconButton.variant": {
-    "en": "Defines the visual style of the button, affecting color schemes and emphasis.",
-    "ru": "Определяет визуальный стиль кнопки: цветовую схему и акцент."
   },
   "DayPicker.apiRef": {
     "en": "Ref to the grid’s imperative API, with `YYYY-MM-DD` keys. `focus(date?)` — moves focus to the day of this date, or to the tab stop without one; a day that is not rendered yet takes focus as soon as it renders",
@@ -2180,8 +2060,8 @@
     "ru": "Режим зацикливания навигации. 'horizontal' — переход по столбцам в пределах строки; 'vertical' — переход по строкам в пределах столбца; 'both' — оба поведения; undefined — без зацикливания"
   },
   "GridCell.asChild": {
-    "en": "When `true`, renders children via `Slot` and forwards props/refs to the child element instead of using a native `<div>`. An interactive child, like a `<button>` or a link, keeps its own role: the cell has no `role=\"gridcell\"` then, so the control is announced for what it is. For a cell that holds a control, prefer the control inside the cell with `tabIndex={-1}`, `<GridCell><button tabIndex={-1}>…</button></GridCell>`: the cell stays a gridcell, Enter and F2 move the focus into the control and Escape brings it back.",
-    "ru": "Если `true`, рендерит дочерние элементы через `Slot` и передаёт пропсы и ref дочернему элементу вместо нативного `<div>`. Интерактивный дочерний элемент, например `<button>` или ссылка, сохраняет свою роль: у ячейки тогда нет `role=\"gridcell\"`, и контрол объявляется тем, чем он является. Для ячейки с контролом лучше поместить контрол внутрь ячейки с `tabIndex={-1}`, `<GridCell><button tabIndex={-1}>…</button></GridCell>`: ячейка остаётся gridcell, Enter и F2 переносят фокус в контрол, а Escape возвращает его."
+    "en": "When `true`, renders children via `Slot` and forwards props/refs to the child element instead of using a native `<div>`. The child gets `role=\"gridcell\"` too, so a `<button>` child is announced as a cell and still runs on a click, Enter and Space. A link cannot take that role: put it inside the cell with `tabIndex={-1}`, as any control that should be announced for what it is, `<GridCell><a href='…' tabIndex={-1}>…</a></GridCell>`. Enter and F2 move the focus into it and Escape brings it back.",
+    "ru": "Если `true`, рендерит дочерние элементы через `Slot` и передаёт пропсы и ref дочернему элементу вместо нативного `<div>`. Дочерний элемент тоже получает `role=\"gridcell\"`, поэтому `<button>` объявляется как ячейка и по-прежнему срабатывает по клику, Enter и Space. Ссылке эта роль недоступна: поместите её внутрь ячейки с `tabIndex={-1}`, как любой контрол, который должен объявляться тем, чем он является, `<GridCell><a href='…' tabIndex={-1}>…</a></GridCell>`. Enter и F2 переносят фокус в него, а Escape возвращает."
   },
   "GridCell.col": {
     "en": "Column index of the cell (0-based). Together with the `row` of its `GridRow` it places the cell for the keyboard navigation and orders the cells when the grid has no `compare`.",
@@ -2362,38 +2242,6 @@
   "Icon.strokeWidth": {
     "en": "Stroke thickness for SVG lines and shapes (in px or pt).",
     "ru": "Толщина обводки линий и фигур SVG (в px или pt)."
-  },
-  "IconButton.appearance": {
-    "en": "Adjusts the button's structural appearance (background, border, etc.).",
-    "ru": "Настраивает структурный внешний вид кнопки (фон, рамка и т. д.)."
-  },
-  "IconButton.asChild": {
-    "en": "When true, renders the button as a child component using `Slot` (e.g., from Radix UI). Enables polymorphic rendering — useful for making the button act as a link or custom tag.",
-    "ru": "Если true, рендерит кнопку как дочерний компонент через `Slot` (например, из Radix UI). Включает полиморфный рендер — полезно, чтобы кнопка работала как ссылка или собственный тег."
-  },
-  "IconButton.children": {
-    "en": "Content of the button — text, icon, or any React node.",
-    "ru": "Содержимое кнопки — текст, иконка или любой React-узел."
-  },
-  "IconButton.className": {
-    "en": "Optional custom CSS class for the button element. Useful for design system overrides or scoped styles.",
-    "ru": "Необязательный собственный CSS-класс для элемента кнопки. Полезен для переопределений дизайн-системы или локальных стилей."
-  },
-  "IconButton.disabled": {
-    "en": "Disables the button when true. Prevents user interaction and applies a visually disabled state. Not applied with `asChild`: the child element owns its disabled state, for example, `aria-disabled` or a link without `href`.",
-    "ru": "Отключает кнопку при true. Запрещает взаимодействие и применяет визуальное отключённое состояние. Не применяется с `asChild`: отключённым состоянием владеет дочерний элемент, например через `aria-disabled` или ссылку без `href`."
-  },
-  "IconButton.ref": {
-    "en": "Ref forwarded to the native `<button>` element. Allows direct DOM access for focus management or measuring.",
-    "ru": "Ref, передаваемый на нативный элемент `<button>`. Даёт прямой доступ к DOM для управления фокусом или измерений."
-  },
-  "IconButton.size": {
-    "en": "Size of the button container. Controls padding and overall clickable area.",
-    "ru": "Размер контейнера кнопки. Управляет отступами и общей кликабельной областью."
-  },
-  "IconButton.variant": {
-    "en": "Defines the visual style of the button, affecting color schemes and emphasis.",
-    "ru": "Определяет визуальный стиль кнопки: цветовую схему и акцент."
   },
   "IndexedSnapScroller.apiRef": {
     "en": "Exposes the imperative API of the scroller. Allows programmatic control such as scrolling to an index, rebuilding the window around it when needed.",
@@ -3020,12 +2868,16 @@
     "ru": "Ref, передаваемый на нативный элемент `<button>`. Даёт прямой доступ к DOM для управления фокусом или измерений."
   },
   "NumberFieldDecrementButton.size": {
-    "en": "Size of the button container. Controls padding and overall clickable area.",
-    "ru": "Размер контейнера кнопки. Управляет отступами и общей кликабельной областью."
+    "en": "Defines the size of the button. Affects padding, font size, and overall dimensions.",
+    "ru": "Определяет размер кнопки. Влияет на отступы, размер шрифта и общие габариты."
   },
   "NumberFieldDecrementButton.variant": {
     "en": "Defines the visual style of the button, affecting color schemes and emphasis.",
     "ru": "Определяет визуальный стиль кнопки: цветовую схему и акцент."
+  },
+  "NumberFieldDecrementButton.square": {
+    "en": "Makes the button a square as wide as it is high, for a single icon. Name it with `aria-label` or `aria-labelledby`.",
+    "ru": "Делает кнопку квадратной — такой же ширины, как высоты, — для одной иконки. Назовите её через `aria-label` или `aria-labelledby`."
   },
   "NumberFieldIncrementButton.appearance": {
     "en": "Adjusts the button's structural appearance (background, border, etc.).",
@@ -3052,12 +2904,16 @@
     "ru": "Ref, передаваемый на нативный элемент `<button>`. Даёт прямой доступ к DOM для управления фокусом или измерений."
   },
   "NumberFieldIncrementButton.size": {
-    "en": "Size of the button container. Controls padding and overall clickable area.",
-    "ru": "Размер контейнера кнопки. Управляет отступами и общей кликабельной областью."
+    "en": "Defines the size of the button. Affects padding, font size, and overall dimensions.",
+    "ru": "Определяет размер кнопки. Влияет на отступы, размер шрифта и общие габариты."
   },
   "NumberFieldIncrementButton.variant": {
     "en": "Defines the visual style of the button, affecting color schemes and emphasis.",
     "ru": "Определяет визуальный стиль кнопки: цветовую схему и акцент."
+  },
+  "NumberFieldIncrementButton.square": {
+    "en": "Makes the button a square as wide as it is high, for a single icon. Name it with `aria-label` or `aria-labelledby`.",
+    "ru": "Делает кнопку квадратной — такой же ширины, как высоты, — для одной иконки. Назовите её через `aria-label` или `aria-labelledby`."
   },
   "NumberFieldInput.ref": {
     "en": "Ref forwarded to the underlying native `<input>` element.",
@@ -3258,38 +3114,6 @@
   "PasswordFieldShownIcon.strokeWidth": {
     "en": "Stroke thickness for SVG lines and shapes (in px or pt).",
     "ru": "Толщина обводки линий и фигур SVG (в px или pt)."
-  },
-  "PasswordFieldToggleIconButton.appearance": {
-    "en": "Adjusts the button's structural appearance (background, border, etc.).",
-    "ru": "Настраивает структурный внешний вид кнопки (фон, рамка и т. д.)."
-  },
-  "PasswordFieldToggleIconButton.asChild": {
-    "en": "When true, renders the button as a child component using `Slot` (e.g., from Radix UI). Enables polymorphic rendering — useful for making the button act as a link or custom tag.",
-    "ru": "Если true, рендерит кнопку как дочерний компонент через `Slot` (например, из Radix UI). Включает полиморфный рендер — полезно, чтобы кнопка работала как ссылка или собственный тег."
-  },
-  "PasswordFieldToggleIconButton.children": {
-    "en": "Content of the button — text, icon, or any React node.",
-    "ru": "Содержимое кнопки — текст, иконка или любой React-узел."
-  },
-  "PasswordFieldToggleIconButton.className": {
-    "en": "Optional custom CSS class for the button element. Useful for design system overrides or scoped styles.",
-    "ru": "Необязательный собственный CSS-класс для элемента кнопки. Полезен для переопределений дизайн-системы или локальных стилей."
-  },
-  "PasswordFieldToggleIconButton.disabled": {
-    "en": "Disables the button when true. Prevents user interaction and applies a visually disabled state. Not applied with `asChild`: the child element owns its disabled state, for example, `aria-disabled` or a link without `href`.",
-    "ru": "Отключает кнопку при true. Запрещает взаимодействие и применяет визуальное отключённое состояние. Не применяется с `asChild`: отключённым состоянием владеет дочерний элемент, например через `aria-disabled` или ссылку без `href`."
-  },
-  "PasswordFieldToggleIconButton.ref": {
-    "en": "Ref forwarded to the native `<button>` element. Allows direct DOM access for focus management or measuring.",
-    "ru": "Ref, передаваемый на нативный элемент `<button>`. Даёт прямой доступ к DOM для управления фокусом или измерений."
-  },
-  "PasswordFieldToggleIconButton.size": {
-    "en": "Size of the button container. Controls padding and overall clickable area.",
-    "ru": "Размер контейнера кнопки. Управляет отступами и общей кликабельной областью."
-  },
-  "PasswordFieldToggleIconButton.variant": {
-    "en": "Defines the visual style of the button, affecting color schemes and emphasis.",
-    "ru": "Определяет визуальный стиль кнопки: цветовую схему и акцент."
   },
   "PhoneField.country": {
     "en": "Controlled ISO 3166-1 alpha-2 country, like `\"US\"`: the country selected in `PhoneFieldSelect` and the calling code a strict mask starts an empty field with. A change of it never changes the number.",
@@ -3551,10 +3375,6 @@
     "en": "The name of the underlying radio group. All `SegmentedControlItemInput` elements share this name, allowing the segmented control to behave as a single native radio group for form submission and accessibility.",
     "ru": "Имя нижележащей группы радиокнопок. Все элементы `SegmentedControlItemInput` используют это имя, поэтому сегментированный контрол ведёт себя как одна нативная группа радиокнопок для отправки формы и доступности."
   },
-  "SegmentedControl.onChange": {
-    "en": "Fired when the selected segment changes. This event mirrors the native `change` event of a radio input and can be used to integrate with forms or listen for user selection. The event target is the underlying hidden `<input type=\"radio\">`.",
-    "ru": "Вызывается при изменении выбранного сегмента. Это событие повторяет нативное событие `change` радиокнопки и может использоваться для интеграции с формами или отслеживания выбора пользователя. Целью события является скрытый `<input type=\"radio\">`."
-  },
   "SegmentedControl.ref": {
     "en": "Ref to the root container element. Useful for measuring or controlling focus.",
     "ru": "Ref на корневой элемент-контейнер. Полезен для измерений или управления фокусом."
@@ -3570,6 +3390,10 @@
   "SegmentedControl.variant": {
     "en": "Visual style variant of the segmented control.",
     "ru": "Вариант визуального стиля сегментированного контрола."
+  },
+  "SegmentedControl.onChangeValue": {
+    "en": "Called with the value of the item the user selects. Like the native `change` event bubbling to the root, it does not run when the `onChange` of the `SegmentedControlItemInput` stops the propagation. `preventDefault` cannot undo the choice, because the radio is checked before `change`: to turn a choice down, keep the previous `value` in controlled mode. The root's own `onChange` is the native `change` event that bubbles from the radio input.",
+    "ru": "Вызывается со значением сегмента, который выбрал пользователь. Как и нативное событие `change`, всплывающее к корню, не вызывается, если `onChange` у `SegmentedControlItemInput` останавливает всплытие. `preventDefault` не отменяет выбор, потому что радиокнопка отмечается до `change`: чтобы отклонить выбор, оставьте прежний `value` в контролируемом режиме. Собственный `onChange` корня — это нативное событие `change`, которое всплывает от радиокнопки."
   },
   "SegmentedControlItem.disabled": {
     "en": "Disables the item, preventing selection and focus.",
@@ -4434,5 +4258,269 @@
   "TabsTab.value": {
     "en": "Value of the tab, matched by the `value` of its TabsPanel.",
     "ru": "Значение вкладки; совпадает с `value` её TabsPanel."
+  },
+  "DateFieldTrigger.appearance": {
+    "en": "Adjusts the button's structural appearance (background, border, etc.).",
+    "ru": "Настраивает структурный внешний вид кнопки (фон, рамка и т. д.)."
+  },
+  "DateFieldTrigger.asChild": {
+    "en": "When true, renders the button as a child component using `Slot` (e.g., from Radix UI). Enables polymorphic rendering — useful for making the button act as a link or custom tag.",
+    "ru": "Если true, рендерит кнопку как дочерний компонент через `Slot` (например, из Radix UI). Включает полиморфный рендер — полезно, чтобы кнопка работала как ссылка или собственный тег."
+  },
+  "DateFieldTrigger.children": {
+    "en": "Content of the button — text, icon, or any React node.",
+    "ru": "Содержимое кнопки — текст, иконка или любой React-узел."
+  },
+  "DateFieldTrigger.className": {
+    "en": "Optional custom CSS class for the button element. Useful for design system overrides or scoped styles.",
+    "ru": "Необязательный собственный CSS-класс для элемента кнопки. Полезен для переопределений дизайн-системы или локальных стилей."
+  },
+  "DateFieldTrigger.disabled": {
+    "en": "Disables the button when true. Prevents user interaction and applies a visually disabled state. Not applied with `asChild`: the child element owns its disabled state, for example, `aria-disabled` or a link without `href`.",
+    "ru": "Отключает кнопку при true. Запрещает взаимодействие и применяет визуальное отключённое состояние. Не применяется с `asChild`: отключённым состоянием владеет дочерний элемент, например через `aria-disabled` или ссылку без `href`."
+  },
+  "DateFieldTrigger.ref": {
+    "en": "Ref forwarded to the native `<button>` element. Allows direct DOM access for focus management or measuring.",
+    "ru": "Ref, передаваемый на нативный элемент `<button>`. Даёт прямой доступ к DOM для управления фокусом или измерений."
+  },
+  "DateFieldTrigger.size": {
+    "en": "Defines the size of the button. Affects padding, font size, and overall dimensions.",
+    "ru": "Определяет размер кнопки. Влияет на отступы, размер шрифта и общие габариты."
+  },
+  "DateFieldTrigger.square": {
+    "en": "Makes the button a square as wide as it is high, for a single icon. Name it with `aria-label` or `aria-labelledby`.",
+    "ru": "Делает кнопку квадратной — такой же ширины, как высоты, — для одной иконки. Назовите её через `aria-label` или `aria-labelledby`."
+  },
+  "DateFieldTrigger.variant": {
+    "en": "Defines the visual style of the button, affecting color schemes and emphasis.",
+    "ru": "Определяет визуальный стиль кнопки: цветовую схему и акцент."
+  },
+  "DateRangeFieldTrigger.appearance": {
+    "en": "Adjusts the button's structural appearance (background, border, etc.).",
+    "ru": "Настраивает структурный внешний вид кнопки (фон, рамка и т. д.)."
+  },
+  "DateRangeFieldTrigger.asChild": {
+    "en": "When true, renders the button as a child component using `Slot` (e.g., from Radix UI). Enables polymorphic rendering — useful for making the button act as a link or custom tag.",
+    "ru": "Если true, рендерит кнопку как дочерний компонент через `Slot` (например, из Radix UI). Включает полиморфный рендер — полезно, чтобы кнопка работала как ссылка или собственный тег."
+  },
+  "DateRangeFieldTrigger.children": {
+    "en": "Content of the button — text, icon, or any React node.",
+    "ru": "Содержимое кнопки — текст, иконка или любой React-узел."
+  },
+  "DateRangeFieldTrigger.className": {
+    "en": "Optional custom CSS class for the button element. Useful for design system overrides or scoped styles.",
+    "ru": "Необязательный собственный CSS-класс для элемента кнопки. Полезен для переопределений дизайн-системы или локальных стилей."
+  },
+  "DateRangeFieldTrigger.disabled": {
+    "en": "Disables the button when true. Prevents user interaction and applies a visually disabled state. Not applied with `asChild`: the child element owns its disabled state, for example, `aria-disabled` or a link without `href`.",
+    "ru": "Отключает кнопку при true. Запрещает взаимодействие и применяет визуальное отключённое состояние. Не применяется с `asChild`: отключённым состоянием владеет дочерний элемент, например через `aria-disabled` или ссылку без `href`."
+  },
+  "DateRangeFieldTrigger.ref": {
+    "en": "Ref forwarded to the native `<button>` element. Allows direct DOM access for focus management or measuring.",
+    "ru": "Ref, передаваемый на нативный элемент `<button>`. Даёт прямой доступ к DOM для управления фокусом или измерений."
+  },
+  "DateRangeFieldTrigger.size": {
+    "en": "Defines the size of the button. Affects padding, font size, and overall dimensions.",
+    "ru": "Определяет размер кнопки. Влияет на отступы, размер шрифта и общие габариты."
+  },
+  "DateRangeFieldTrigger.square": {
+    "en": "Makes the button a square as wide as it is high, for a single icon. Name it with `aria-label` or `aria-labelledby`.",
+    "ru": "Делает кнопку квадратной — такой же ширины, как высоты, — для одной иконки. Назовите её через `aria-label` или `aria-labelledby`."
+  },
+  "DateRangeFieldTrigger.variant": {
+    "en": "Defines the visual style of the button, affecting color schemes and emphasis.",
+    "ru": "Определяет визуальный стиль кнопки: цветовую схему и акцент."
+  },
+  "DateTimeFieldTrigger.appearance": {
+    "en": "Adjusts the button's structural appearance (background, border, etc.).",
+    "ru": "Настраивает структурный внешний вид кнопки (фон, рамка и т. д.)."
+  },
+  "DateTimeFieldTrigger.asChild": {
+    "en": "When true, renders the button as a child component using `Slot` (e.g., from Radix UI). Enables polymorphic rendering — useful for making the button act as a link or custom tag.",
+    "ru": "Если true, рендерит кнопку как дочерний компонент через `Slot` (например, из Radix UI). Включает полиморфный рендер — полезно, чтобы кнопка работала как ссылка или собственный тег."
+  },
+  "DateTimeFieldTrigger.children": {
+    "en": "Content of the button — text, icon, or any React node.",
+    "ru": "Содержимое кнопки — текст, иконка или любой React-узел."
+  },
+  "DateTimeFieldTrigger.className": {
+    "en": "Optional custom CSS class for the button element. Useful for design system overrides or scoped styles.",
+    "ru": "Необязательный собственный CSS-класс для элемента кнопки. Полезен для переопределений дизайн-системы или локальных стилей."
+  },
+  "DateTimeFieldTrigger.disabled": {
+    "en": "Disables the button when true. Prevents user interaction and applies a visually disabled state. Not applied with `asChild`: the child element owns its disabled state, for example, `aria-disabled` or a link without `href`.",
+    "ru": "Отключает кнопку при true. Запрещает взаимодействие и применяет визуальное отключённое состояние. Не применяется с `asChild`: отключённым состоянием владеет дочерний элемент, например через `aria-disabled` или ссылку без `href`."
+  },
+  "DateTimeFieldTrigger.ref": {
+    "en": "Ref forwarded to the native `<button>` element. Allows direct DOM access for focus management or measuring.",
+    "ru": "Ref, передаваемый на нативный элемент `<button>`. Даёт прямой доступ к DOM для управления фокусом или измерений."
+  },
+  "DateTimeFieldTrigger.size": {
+    "en": "Defines the size of the button. Affects padding, font size, and overall dimensions.",
+    "ru": "Определяет размер кнопки. Влияет на отступы, размер шрифта и общие габариты."
+  },
+  "DateTimeFieldTrigger.square": {
+    "en": "Makes the button a square as wide as it is high, for a single icon. Name it with `aria-label` or `aria-labelledby`.",
+    "ru": "Делает кнопку квадратной — такой же ширины, как высоты, — для одной иконки. Назовите её через `aria-label` или `aria-labelledby`."
+  },
+  "DateTimeFieldTrigger.variant": {
+    "en": "Defines the visual style of the button, affecting color schemes and emphasis.",
+    "ru": "Определяет визуальный стиль кнопки: цветовую схему и акцент."
+  },
+  "PasswordFieldToggle.appearance": {
+    "en": "Adjusts the button's structural appearance (background, border, etc.).",
+    "ru": "Настраивает структурный внешний вид кнопки (фон, рамка и т. д.)."
+  },
+  "PasswordFieldToggle.asChild": {
+    "en": "When true, renders the button as a child component using `Slot` (e.g., from Radix UI). Enables polymorphic rendering — useful for making the button act as a link or custom tag.",
+    "ru": "Если true, рендерит кнопку как дочерний компонент через `Slot` (например, из Radix UI). Включает полиморфный рендер — полезно, чтобы кнопка работала как ссылка или собственный тег."
+  },
+  "PasswordFieldToggle.children": {
+    "en": "Content of the button — text, icon, or any React node.",
+    "ru": "Содержимое кнопки — текст, иконка или любой React-узел."
+  },
+  "PasswordFieldToggle.className": {
+    "en": "Optional custom CSS class for the button element. Useful for design system overrides or scoped styles.",
+    "ru": "Необязательный собственный CSS-класс для элемента кнопки. Полезен для переопределений дизайн-системы или локальных стилей."
+  },
+  "PasswordFieldToggle.disabled": {
+    "en": "Disables the button when true. Prevents user interaction and applies a visually disabled state. Not applied with `asChild`: the child element owns its disabled state, for example, `aria-disabled` or a link without `href`.",
+    "ru": "Отключает кнопку при true. Запрещает взаимодействие и применяет визуальное отключённое состояние. Не применяется с `asChild`: отключённым состоянием владеет дочерний элемент, например через `aria-disabled` или ссылку без `href`."
+  },
+  "PasswordFieldToggle.ref": {
+    "en": "Ref forwarded to the native `<button>` element. Allows direct DOM access for focus management or measuring.",
+    "ru": "Ref, передаваемый на нативный элемент `<button>`. Даёт прямой доступ к DOM для управления фокусом или измерений."
+  },
+  "PasswordFieldToggle.size": {
+    "en": "Defines the size of the button. Affects padding, font size, and overall dimensions.",
+    "ru": "Определяет размер кнопки. Влияет на отступы, размер шрифта и общие габариты."
+  },
+  "PasswordFieldToggle.square": {
+    "en": "Makes the button a square as wide as it is high, for a single icon. Name it with `aria-label` or `aria-labelledby`.",
+    "ru": "Делает кнопку квадратной — такой же ширины, как высоты, — для одной иконки. Назовите её через `aria-label` или `aria-labelledby`."
+  },
+  "PasswordFieldToggle.variant": {
+    "en": "Defines the visual style of the button, affecting color schemes and emphasis.",
+    "ru": "Определяет визуальный стиль кнопки: цветовую схему и акцент."
+  },
+  "Toggle.asChild": {
+    "en": "Renders the only child element as the toggle instead of a Button, like a link.",
+    "ru": "Рендерит единственный дочерний элемент как переключатель вместо Button, например ссылку."
+  },
+  "Toggle.children": {
+    "en": "Content of the button — text, icon, or any React node.",
+    "ru": "Содержимое кнопки — текст, иконка или любой React-узел."
+  },
+  "Toggle.className": {
+    "en": "Optional custom CSS class for the button element. Useful for design system overrides or scoped styles.",
+    "ru": "Необязательный собственный CSS-класс для элемента кнопки. Полезен для переопределений дизайн-системы или локальных стилей."
+  },
+  "Toggle.defaultPressed": {
+    "en": "Whether the toggle is pressed on mount.",
+    "ru": "Нажат ли переключатель при монтировании."
+  },
+  "Toggle.disabled": {
+    "en": "Disables the toggle, also the child element with `asChild`.",
+    "ru": "Отключает переключатель, а с `asChild` — и дочерний элемент."
+  },
+  "Toggle.onChangePressed": {
+    "en": "Called when a click, Enter or Space presses or releases the toggle.",
+    "ru": "Вызывается, когда клик, Enter или Space нажимают или отжимают переключатель."
+  },
+  "Toggle.pressed": {
+    "en": "Whether the toggle is pressed. Enables controlled mode when set.",
+    "ru": "Нажат ли переключатель. Если задан, включает контролируемый режим."
+  },
+  "Toggle.ref": {
+    "en": "Ref forwarded to the native `<button>` element. Allows direct DOM access for focus management or measuring.",
+    "ru": "Ref, передаваемый на нативный элемент `<button>`. Даёт прямой доступ к DOM для управления фокусом или измерений."
+  },
+  "Toggle.size": {
+    "en": "Defines the size of the button. Affects padding, font size, and overall dimensions.",
+    "ru": "Определяет размер кнопки. Влияет на отступы, размер шрифта и общие габариты."
+  },
+  "Toggle.square": {
+    "en": "Makes the button a square as wide as it is high, for a single icon. Name it with `aria-label` or `aria-labelledby`.",
+    "ru": "Делает кнопку квадратной — такой же ширины, как высоты, — для одной иконки. Назовите её через `aria-label` или `aria-labelledby`."
+  },
+  "ToggleGroup.defaultValue": {
+    "en": "The value of the pressed button, or the values of the pressed buttons with `multiple`, on mount.",
+    "ru": "Значение нажатой кнопки или, с `multiple`, значения нажатых кнопок при монтировании."
+  },
+  "ToggleGroup.disabled": {
+    "en": "Disables every button.",
+    "ru": "Отключает все кнопки."
+  },
+  "ToggleGroup.multiple": {
+    "en": "Lets every button turn on and off by itself, and makes the value an array.",
+    "ru": "Позволяет каждой кнопке включаться и выключаться самой по себе и делает значение массивом."
+  },
+  "ToggleGroup.onChangeValue": {
+    "en": "Called when a click, Enter or Space presses a button, or releases one with `multiple`.",
+    "ru": "Вызывается, когда клик, Enter или Space нажимают кнопку или, с `multiple`, отжимают её."
+  },
+  "ToggleGroup.ref": {
+    "en": "Ref forwarded to the group element.",
+    "ru": "Ref, передаваемый на элемент группы."
+  },
+  "ToggleGroup.size": {
+    "en": "Size of the buttons.",
+    "ru": "Размер кнопок."
+  },
+  "ToggleGroup.value": {
+    "en": "The value of the pressed button, or the values of the pressed buttons with `multiple`. Enables controlled mode when set.",
+    "ru": "Значение нажатой кнопки или, с `multiple`, значения нажатых кнопок. Если задан, включает контролируемый режим."
+  },
+  "ToggleGroupToggle.asChild": {
+    "en": "Renders the only child element as the toggle instead of a Button, like a link.",
+    "ru": "Рендерит единственный дочерний элемент как переключатель вместо Button, например ссылку."
+  },
+  "ToggleGroupToggle.children": {
+    "en": "Content of the button — text, icon, or any React node.",
+    "ru": "Содержимое кнопки — текст, иконка или любой React-узел."
+  },
+  "ToggleGroupToggle.className": {
+    "en": "Optional custom CSS class for the button element. Useful for design system overrides or scoped styles.",
+    "ru": "Необязательный собственный CSS-класс для элемента кнопки. Полезен для переопределений дизайн-системы или локальных стилей."
+  },
+  "ToggleGroupToggle.disabled": {
+    "en": "Disables the toggle, also the child element with `asChild`. The arrow keys of the ToggleGroup or a Toolbar skip it.",
+    "ru": "Отключает переключатель, а с `asChild` — и дочерний элемент. Стрелки ToggleGroup или Toolbar его пропускают."
+  },
+  "ToggleGroupToggle.ref": {
+    "en": "Ref forwarded to the native `<button>` element. Allows direct DOM access for focus management or measuring.",
+    "ru": "Ref, передаваемый на нативный элемент `<button>`. Даёт прямой доступ к DOM для управления фокусом или измерений."
+  },
+  "ToggleGroupToggle.size": {
+    "en": "Defines the size of the button. Affects padding, font size, and overall dimensions.",
+    "ru": "Определяет размер кнопки. Влияет на отступы, размер шрифта и общие габариты."
+  },
+  "ToggleGroupToggle.square": {
+    "en": "Makes the button a square as wide as it is high, for a single icon. Name it with `aria-label` or `aria-labelledby`.",
+    "ru": "Делает кнопку квадратной — такой же ширины, как высоты, — для одной иконки. Назовите её через `aria-label` или `aria-labelledby`."
+  },
+  "ToggleGroupToggle.value": {
+    "en": "The value the toggle adds to the value of its ToggleGroup when pressed.",
+    "ru": "Значение, которое переключатель при нажатии добавляет в значение своей ToggleGroup."
+  },
+  "Toolbar.orientation": {
+    "en": "Lays the items out in a row or a column; the arrow keys of that axis move the focus between them.",
+    "ru": "Выкладывает элементы строкой или столбцом; стрелки этой оси переносят фокус между ними."
+  },
+  "Toolbar.ref": {
+    "en": "Ref forwarded to the toolbar element.",
+    "ru": "Ref, передаваемый на элемент панели."
+  },
+  "ToolbarItem.asChild": {
+    "en": "Renders the only child element as the item instead of a `<button>`, like a Button, a MenuTrigger or a Toggle.",
+    "ru": "Рендерит единственный дочерний элемент как элемент панели вместо `<button>`, например Button, MenuTrigger или Toggle."
+  },
+  "ToolbarItem.disabled": {
+    "en": "Disables the item and its child, and the arrow keys skip it.",
+    "ru": "Отключает элемент и его дочерний элемент, и стрелки его пропускают."
+  },
+  "ToolbarItem.ref": {
+    "en": "Ref forwarded to the item element.",
+    "ru": "Ref, передаваемый на элемент панели."
   }
 }

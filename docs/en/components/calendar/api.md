@@ -79,14 +79,15 @@ Also accepts all `<div>` attributes.
 <!-- AUTO-GENERATED:PART_API:CalendarPrevButton:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `size` | `IconButtonSize` | — | No | Size of the button container. Controls padding and overall clickable area. |
 | `asChild` | `boolean` | — | No | When true, renders the button as a child component using `Slot` (e.g., from Radix UI). Enables polymorphic rendering — useful for making the button act as a link or custom tag. |
+| `size` | `ButtonSize` | — | No | Defines the size of the button. Affects padding, font size, and overall dimensions. |
 | `variant` | `ButtonBaseVariant` | — | No | Defines the visual style of the button, affecting color schemes and emphasis. |
 | `appearance` | `ButtonBaseAppearance` | — | No | Adjusts the button's structural appearance (background, border, etc.). |
 | `disabled` | `boolean` | — | No | Disables the button when true. Prevents user interaction and applies a visually disabled state. Not applied with `asChild`: the child element owns its disabled state, for example, `aria-disabled` or a link without `href`. |
 | `className` | `string` | — | No | Optional custom CSS class for the button element. Useful for design system overrides or scoped styles. |
 | `children` | `ReactNode` | — | No | Content of the button — text, icon, or any React node. |
 | `ref` | `Ref<HTMLButtonElement>` | — | No | Ref forwarded to the native `<button>` element. Allows direct DOM access for focus management or measuring. |
+| `square` | `false` | — | No | Makes the button a square as wide as it is high, for a single icon. Name it with `aria-label` or `aria-labelledby`. |
 
 Also accepts all `<button>` attributes.
 <!-- AUTO-GENERATED:PART_API:CalendarPrevButton:end -->
@@ -96,14 +97,15 @@ Also accepts all `<button>` attributes.
 <!-- AUTO-GENERATED:PART_API:CalendarNextButton:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `size` | `IconButtonSize` | — | No | Size of the button container. Controls padding and overall clickable area. |
 | `asChild` | `boolean` | — | No | When true, renders the button as a child component using `Slot` (e.g., from Radix UI). Enables polymorphic rendering — useful for making the button act as a link or custom tag. |
+| `size` | `ButtonSize` | — | No | Defines the size of the button. Affects padding, font size, and overall dimensions. |
 | `variant` | `ButtonBaseVariant` | — | No | Defines the visual style of the button, affecting color schemes and emphasis. |
 | `appearance` | `ButtonBaseAppearance` | — | No | Adjusts the button's structural appearance (background, border, etc.). |
 | `disabled` | `boolean` | — | No | Disables the button when true. Prevents user interaction and applies a visually disabled state. Not applied with `asChild`: the child element owns its disabled state, for example, `aria-disabled` or a link without `href`. |
 | `className` | `string` | — | No | Optional custom CSS class for the button element. Useful for design system overrides or scoped styles. |
 | `children` | `ReactNode` | — | No | Content of the button — text, icon, or any React node. |
 | `ref` | `Ref<HTMLButtonElement>` | — | No | Ref forwarded to the native `<button>` element. Allows direct DOM access for focus management or measuring. |
+| `square` | `false` | — | No | Makes the button a square as wide as it is high, for a single icon. Name it with `aria-label` or `aria-labelledby`. |
 
 Also accepts all `<button>` attributes.
 <!-- AUTO-GENERATED:PART_API:CalendarNextButton:end -->
@@ -116,7 +118,6 @@ Also accepts all `<button>` attributes.
 | `view` | `Exclude<CalendarView, 'day'>` | — | Yes | View the button opens: `'month'` for `CalendarMonths`, `'year'` for `CalendarYears`. Pressing it again goes back to the days. |
 | `asChild` | `boolean` | — | No | When true, renders the button as a child component using `Slot` (e.g., from Radix UI). Enables polymorphic rendering — useful for making the button act as a link or custom tag. |
 | `size` | `ButtonSize` | — | No | Defines the size of the button. Affects padding, font size, and overall dimensions. |
-| `fullWidth` | `boolean` | — | No | When true, the button expands to fill the width with its container. |
 | `variant` | `ButtonBaseVariant` | — | No | Defines the visual style of the button, affecting color schemes and emphasis. |
 | `appearance` | `ButtonBaseAppearance` | — | No | Adjusts the button's structural appearance (background, border, etc.). |
 | `disabled` | `boolean` | — | No | Disables the button when true. Prevents user interaction and applies a visually disabled state. Not applied with `asChild`: the child element owns its disabled state, for example, `aria-disabled` or a link without `href`. |

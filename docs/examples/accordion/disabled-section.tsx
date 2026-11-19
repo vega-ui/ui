@@ -8,6 +8,7 @@ import {
   Separator,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 
 export default function DisabledSection() {
   return (
@@ -17,7 +18,7 @@ export default function DisabledSection() {
           <AccordionHeader>
             <AccordionTrigger>
               Password sign-in
-              <AccordionIcon />
+              <AccordionIcon><ChevronDownIcon /></AccordionIcon>
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>
@@ -29,7 +30,7 @@ export default function DisabledSection() {
           <AccordionHeader>
             <AccordionTrigger disabled aria-describedby='sso-reason' style={{ cursor: 'not-allowed', color: 'var(--label-tertiary)' }}>
               SAML single sign-on
-              <AccordionIcon />
+              <AccordionIcon><ChevronDownIcon /></AccordionIcon>
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>

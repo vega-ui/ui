@@ -4,16 +4,16 @@
 
 ### Базовый: строки файлов с теми же действиями за кнопкой
 
-Правый щелчок или долгое нажатие на строке открывает её действия в точке, а `IconButton` «⋯» в строке открывает те же действия в `Menu`, поэтому их находят и те, кто никогда не нажимает правую кнопку. Каждая строка — свой `ContextMenu`, а `MenuContent` называется по имени файла через `aria-label`. Share открывает вложенное меню, как в `Menu`. Когда фокус на кнопке «⋯», Shift+F10 открывает контекстное меню у кнопки, а Escape возвращает на неё фокус.
+Правый щелчок или долгое нажатие на строке открывает её действия в точке, а `Button` с `square` «⋯» в строке открывает те же действия в `Menu`, поэтому их находят и те, кто никогда не нажимает правую кнопку. Каждая строка — свой `ContextMenu`, а `MenuContent` называется по имени файла через `aria-label`. Share открывает вложенное меню, как в `Menu`. Когда фокус на кнопке «⋯», Shift+F10 открывает контекстное меню у кнопки, а Escape возвращает на неё фокус.
 
 <!-- example: context-menu/file-list.tsx -->
 ```tsx
 import { useState, type CSSProperties, type ReactNode } from 'react';
 import {
+  Button,
   ContextMenu,
   ContextMenuTrigger,
   Icon,
-  IconButton,
   Menu,
   MenuContent,
   MenuItem,
@@ -106,9 +106,9 @@ export default function FileList() {
                 </div>
                 <Menu placement='bottom-end' size='sm'>
                   <MenuTrigger asChild>
-                    <IconButton size='sm' aria-label={`Actions for ${file.name}`} variant='secondary' appearance='ghost' style={{ flexShrink: 0 }}>
+                    <Button square size='sm' aria-label={`Actions for ${file.name}`} variant='secondary' appearance='ghost' style={{ flexShrink: 0 }}>
                       <Icon><EllipsisIcon /></Icon>
-                    </IconButton>
+                    </Button>
                   </MenuTrigger>
                   <MenuContent>
                     <FileActions onAction={report} />
@@ -151,6 +151,7 @@ import {
   Separator,
   Text,
 } from '@vega-ui/react';
+import { CheckIcon } from '@vega-ui/icons';
 
 const zooms = ['50', '100', '150'];
 
@@ -182,11 +183,11 @@ function ViewItems({ showGrid, snap, zoom, setShowGrid, setSnap, setZoom }: View
   return (
     <>
       <MenuCheckboxItem checked={showGrid} onChangeChecked={setShowGrid}>
-        <MenuItemIndicator />
+        <MenuItemIndicator><CheckIcon /></MenuItemIndicator>
         Show grid
       </MenuCheckboxItem>
       <MenuCheckboxItem checked={snap} onChangeChecked={setSnap}>
-        <MenuItemIndicator />
+        <MenuItemIndicator><CheckIcon /></MenuItemIndicator>
         Snap to grid
       </MenuCheckboxItem>
       <Separator />
@@ -194,7 +195,7 @@ function ViewItems({ showGrid, snap, zoom, setShowGrid, setSnap, setZoom }: View
         <Text id={zoomHeadingId} size={2} fontWeight={500} style={groupHeading}>Zoom</Text>
         {zooms.map((value) => (
           <MenuRadioItem key={value} value={value}>
-            <MenuItemIndicator />
+            <MenuItemIndicator><CheckIcon /></MenuItemIndicator>
             {value}%
           </MenuRadioItem>
         ))}
@@ -372,10 +373,10 @@ Rename превращает имя в строке в текстовое пол�
 ```tsx
 import { useRef, useState, type CSSProperties, type FocusEvent, type KeyboardEvent, type ReactNode } from 'react';
 import {
+  Button,
   ContextMenu,
   ContextMenuTrigger,
   Icon,
-  IconButton,
   Menu,
   MenuContent,
   MenuItem,
@@ -489,9 +490,9 @@ function FileRow({ file, onRename, onAdd }: FileRowProps) {
         <Text size={2} style={{ ...muted, flexShrink: 0 }}>{file.edited}</Text>
         <Menu placement='bottom-end' size='sm'>
           <MenuTrigger asChild>
-            <IconButton ref={moreRef} size='xs' aria-label={`Actions for ${file.name}`} variant='secondary' appearance='ghost' style={{ flexShrink: 0 }}>
+            <Button square ref={moreRef} size='xs' aria-label={`Actions for ${file.name}`} variant='secondary' appearance='ghost' style={{ flexShrink: 0 }}>
               <Icon><EllipsisIcon /></Icon>
-            </IconButton>
+            </Button>
           </MenuTrigger>
           <MenuContent>
             <FileActions {...actions} />

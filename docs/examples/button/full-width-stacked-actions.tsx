@@ -22,8 +22,8 @@ export default function FullWidthStackedActions() {
         </Text>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-4)' }}>
-        <Button type='button' fullWidth>Start 14-day trial</Button>
-        <Button type='button' fullWidth variant='secondary' appearance='transparent'>Compare plans</Button>
+        <Button type='button' style={{ width: '100%' }}>Start 14-day trial</Button>
+        <Button type='button' variant='secondary' appearance='transparent' style={{ width: '100%' }}>Compare plans</Button>
       </div>
     </section>
   );

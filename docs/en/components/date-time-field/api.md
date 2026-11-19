@@ -31,7 +31,7 @@ Also accepts all `<div>` attributes.
 ## Child Parts
 
 - `DateTimeFieldInput`: typed timestamp entry surface.
-- `DateTimeFieldTriggerIconButton`: optional calendar trigger button.
+- `DateTimeFieldTrigger`: optional calendar trigger button.
 - `DateTimeFieldCalendar`: calendar content synchronized with the field value.
 
 ### `DateTimeFieldInput`
@@ -75,28 +75,29 @@ Also accepts all `<input>` attributes.
 Also accepts all `<div>` attributes.
 <!-- AUTO-GENERATED:PART_API:DateTimeFieldCalendar:end -->
 
-### `DateTimeFieldTriggerIconButton`
+### `DateTimeFieldTrigger`
 
-<!-- AUTO-GENERATED:PART_API:DateTimeFieldTriggerIconButton:start -->
+<!-- AUTO-GENERATED:PART_API:DateTimeFieldTrigger:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `size` | `IconButtonSize` | — | No | Size of the button container. Controls padding and overall clickable area. |
 | `asChild` | `boolean` | — | No | When true, renders the button as a child component using `Slot` (e.g., from Radix UI). Enables polymorphic rendering — useful for making the button act as a link or custom tag. |
+| `size` | `ButtonSize` | — | No | Defines the size of the button. Affects padding, font size, and overall dimensions. |
 | `variant` | `ButtonBaseVariant` | — | No | Defines the visual style of the button, affecting color schemes and emphasis. |
 | `appearance` | `ButtonBaseAppearance` | — | No | Adjusts the button's structural appearance (background, border, etc.). |
 | `disabled` | `boolean` | — | No | Disables the button when true. Prevents user interaction and applies a visually disabled state. Not applied with `asChild`: the child element owns its disabled state, for example, `aria-disabled` or a link without `href`. |
 | `className` | `string` | — | No | Optional custom CSS class for the button element. Useful for design system overrides or scoped styles. |
 | `children` | `ReactNode` | — | No | Content of the button — text, icon, or any React node. |
 | `ref` | `Ref<HTMLButtonElement>` | — | No | Ref forwarded to the native `<button>` element. Allows direct DOM access for focus management or measuring. |
+| `square` | `false` | — | No | Makes the button a square as wide as it is high, for a single icon. Name it with `aria-label` or `aria-labelledby`. |
 
 Also accepts all `<button>` attributes.
-<!-- AUTO-GENERATED:PART_API:DateTimeFieldTriggerIconButton:end -->
+<!-- AUTO-GENERATED:PART_API:DateTimeFieldTrigger:end -->
 
 ## Types
 
 - `DateTimeFieldProps`
 - `DateTimeFieldInputProps`
-- `DateTimeFieldTriggerIconButtonProps`
+- `DateTimeFieldTriggerProps`
 - `DateTimeFieldCalendarProps`
 
 ## State Model
@@ -113,4 +114,4 @@ Also accepts all `<button>` attributes.
 - `readOnly` and `disabled` on the root are mirrored to the input like the native attributes: a read-only field still opens the calendar to show its value but picking does not change it; a disabled field is not submitted.
 - A two-digit year (`yy` in `dateFormat`) is read within 80 years before and 19 years after the year of `today`, like CLDR and ICU: with today in 2026, `45` is 2045 and `46` is 1946. Years outside this window are shown with two digits but cannot be typed back.
 - `today` (default: the date of the device, read after hydration) is passed to the calendar, which opens on the value, otherwise on today clamped to `min` and `max`.
-- `DateTimeFieldTriggerIconButton` runs your `onClick` first: `event.preventDefault()` in it keeps the popup closed, like on a native `popovertarget` button.
+- `DateTimeFieldTrigger` runs your `onClick` first: `event.preventDefault()` in it keeps the popup closed, like on a native `popovertarget` button.

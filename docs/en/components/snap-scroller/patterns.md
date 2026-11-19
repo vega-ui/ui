@@ -20,13 +20,13 @@ Trade-offs:
 ```tsx
 import {
   Icon,
-  IconButton,
+  Button,
   SnapScroller,
   SnapScrollerContent,
   Text,
   type SnapScrollerApiRef,
 } from '@vega-ui/react';
-import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import { useRef, useState, type CSSProperties } from 'react';
 
 const products = [
@@ -55,15 +55,16 @@ export default function ButtonControlledCarousel() {
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)', width: '100%' }}>
-      <IconButton
+      <Button
+        square
         aria-label='Previous product'
         variant='secondary'
         appearance='ghost'
         disabled={isFirst}
         onClick={() => api.current?.prev()}
       >
-        <Icon><ChevronLeft /></Icon>
-      </IconButton>
+        <Icon><ChevronLeftIcon /></Icon>
+      </Button>
       <SnapScroller
         apiRef={api}
         tabIndex={0}
@@ -78,15 +79,16 @@ export default function ButtonControlledCarousel() {
           </SnapScrollerContent>
         ))}
       </SnapScroller>
-      <IconButton
+      <Button
+        square
         aria-label='Next product'
         variant='secondary'
         appearance='ghost'
         disabled={isLast}
         onClick={() => api.current?.next()}
       >
-        <Icon><ChevronRight /></Icon>
-      </IconButton>
+        <Icon><ChevronRightIcon /></Icon>
+      </Button>
     </div>
   );
 }

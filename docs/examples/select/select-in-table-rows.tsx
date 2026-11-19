@@ -13,6 +13,7 @@ import {
   TableRow,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useState } from 'react';
 
 const initialMembers = [
@@ -55,7 +56,7 @@ export default function SelectInTableRows() {
               >
                 <SelectCombobox aria-label={`Role of ${member.name}`}>
                   <SelectValue />
-                  <SelectIcon />
+                  <SelectIcon><ChevronDownIcon /></SelectIcon>
                 </SelectCombobox>
                 <SelectListbox>
                   <SelectOption value='owner'>Owner</SelectOption>

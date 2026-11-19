@@ -5,7 +5,7 @@ import {
   CheckboxIndicator,
   CheckboxInput,
 } from '@vega-ui/react';
-import { Diff, Rocket } from '@vega-ui/icons';
+import { CheckIcon, DiffIcon, MinusIcon, RocketIcon } from '@vega-ui/icons';
 
 export default function CustomStateIcons() {
   return (
@@ -14,18 +14,18 @@ export default function CustomStateIcons() {
         <CheckboxInput defaultChecked />
         <CheckboxIndicator>
           <CheckboxCheckedIcon>
-            <Rocket />
+            <RocketIcon />
           </CheckboxCheckedIcon>
-          <CheckboxIndeterminateIcon />
+          <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
         </CheckboxIndicator>
         Deploy after merge
       </Checkbox>
       <Checkbox>
         <CheckboxInput indeterminate />
         <CheckboxIndicator>
-          <CheckboxCheckedIcon />
+          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
           <CheckboxIndeterminateIcon>
-            <Diff />
+            <DiffIcon />
           </CheckboxIndeterminateIcon>
         </CheckboxIndicator>
         Files with changes

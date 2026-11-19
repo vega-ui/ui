@@ -27,13 +27,15 @@ import {
   DateField,
   DateFieldCalendar,
   DateFieldInput,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
   Text,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 const toISODate = (date: Date) => {
   const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -60,17 +62,17 @@ export default function PresetDates() {
           <DateFieldInput id='publish-on' placeholder='dd.mm.yyyy' />
           <Popover placement='bottom-end'>
             <PopoverTrigger asChild>
-              <DateFieldTriggerIconButton aria-label='Choose publish date' />
+              <DateFieldTrigger square aria-label='Choose publish date'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
             </PopoverTrigger>
             <PopoverContent>
               <DateFieldCalendar aria-label='Choose publish date'>
                 <CalendarHeader>
-                  <CalendarPrevButton aria-label='Previous month' />
+                  <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                   </CalendarHeading>
-                  <CalendarNextButton aria-label='Next month' />
+                  <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                 </CalendarHeader>
                 <CalendarContent>
                   <CalendarDays>

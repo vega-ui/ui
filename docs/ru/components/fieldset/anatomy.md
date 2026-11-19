@@ -41,6 +41,7 @@ import {
   FieldsetLegend,
   Text,
 } from '@vega-ui/react';
+import { CheckIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 const CHANNELS = [
@@ -64,7 +65,7 @@ export default function NotificationChannels() {
         <Checkbox key={channel.value}>
           <CheckboxInput name='alertChannels' value={channel.value} defaultChecked={channel.checked} />
           <CheckboxIndicator>
-            <CheckboxCheckedIcon />
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
           </CheckboxIndicator>
           {channel.label}
         </Checkbox>

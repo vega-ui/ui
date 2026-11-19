@@ -44,6 +44,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 
 export default function MinimalComposition() {
   return (
@@ -52,11 +53,58 @@ export default function MinimalComposition() {
         <AccordionHeader>
           <AccordionTrigger>
             Account settings
-            <AccordionIcon />
+            <AccordionIcon><ChevronDownIcon /></AccordionIcon>
           </AccordionTrigger>
         </AccordionHeader>
         <AccordionContent>Profile, password, and session settings.</AccordionContent>
       </AccordionItem>
+    </Accordion>
+  );
+}
+```
+<!-- /example -->
+
+## Your Own Component
+
+The minimal composition above shows the parts in place. In an app, compose them once in a file of your own, with your icon set, and import that component everywhere. `MyAccordionItem` passes its props to `AccordionItem`, renders `summary` in the trigger with the chevron, and its children in the content. See [Component recipes](../../recipes.md).
+
+<!-- example: accordion/recipe.tsx -->
+```tsx
+import {
+  Accordion,
+  AccordionContent,
+  AccordionHeader,
+  AccordionIcon,
+  AccordionItem,
+  AccordionTrigger,
+  type AccordionItemProps,
+} from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
+import type { ReactNode } from 'react';
+
+interface MyAccordionItemProps extends AccordionItemProps {
+  summary: ReactNode
+}
+
+export function MyAccordionItem({ summary, children, ...props }: MyAccordionItemProps) {
+  return (
+    <AccordionItem {...props}>
+      <AccordionHeader>
+        <AccordionTrigger>
+          {summary}
+          <AccordionIcon><ChevronDownIcon /></AccordionIcon>
+        </AccordionTrigger>
+      </AccordionHeader>
+      <AccordionContent>{children}</AccordionContent>
+    </AccordionItem>
+  );
+}
+
+export default function Recipe() {
+  return (
+    <Accordion defaultOpened={['shipping']} style={{ width: '100%' }}>
+      <MyAccordionItem value='shipping' summary='Shipping'>Orders ship in 2–5 business days.</MyAccordionItem>
+      <MyAccordionItem value='returns' summary='Returns'>Return any item within 30 days of delivery.</MyAccordionItem>
     </Accordion>
   );
 }
@@ -73,7 +121,7 @@ export default function MinimalComposition() {
 
 ## Optional Parts
 
-- `AccordionIcon`: visual affordance that reflects open state
+- `AccordionIcon`: the indicator of the open state, with the icon you pass as children
 
 ## Composition Order
 
@@ -89,7 +137,7 @@ export default function MinimalComposition() {
 - Single-open versus multiple-open groups through `multiple`
 - Uncontrolled versus [controlled](../../glossary.md#controlled) opened state
 - Size variants through `size`
-- Default icon versus custom icon composition
+- With or without `AccordionIcon`, holding an icon from any set
 
 ## Related Docs
 

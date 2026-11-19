@@ -39,7 +39,7 @@ export default function BasicUsage() {
           <li key={feature}><Text size={2} style={{ color: 'var(--label-secondary)' }}>{feature}</Text></li>
         ))}
       </ul>
-      <Button fullWidth style={{ marginBlockStart: 'var(--spacing-6)' }}>Start 14-day trial</Button>
+      <Button style={{ width: '100%', marginBlockStart: 'var(--spacing-6)' }}>Start 14-day trial</Button>
     </Card>
   );
 }

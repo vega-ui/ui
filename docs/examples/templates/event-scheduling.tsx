@@ -49,7 +49,7 @@ import {
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
-import { CalendarDays as CalendarIcon, CircleCheck, Clock, Globe, Video } from '@vega-ui/icons';
+import { CalendarDaysIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, CircleCheckIcon, ClockIcon, GlobeIcon, VideoIcon } from '@vega-ui/icons';
 
 const HOST_ZONE = 'Europe/Berlin';
 const FIRST_DAY = '2026-11-09';
@@ -259,21 +259,21 @@ export default function EventScheduling() {
       </div>
       <ul style={{ display: 'grid', gap: 'var(--spacing-5)', margin: 0, padding: 0, listStyle: 'none' }}>
         <li style={meta}>
-          <Icon size='sm' aria-hidden='true' style={{ flexShrink: 0 }}><Clock /></Icon>
+          <Icon size='sm' aria-hidden='true' style={{ flexShrink: 0 }}><ClockIcon /></Icon>
           <Text size={2} style={{ fontVariantNumeric: 'tabular-nums' }}>{`${length} min`}</Text>
         </li>
         <li style={meta}>
-          <Icon size='sm' aria-hidden='true' style={{ flexShrink: 0 }}><Video /></Icon>
+          <Icon size='sm' aria-hidden='true' style={{ flexShrink: 0 }}><VideoIcon /></Icon>
           <Text size={2}>Google Meet</Text>
         </li>
         {step !== 'pick' && (
           <>
             <li style={{ ...meta, color: 'var(--label-primary)' }}>
-              <Icon size='sm' aria-hidden='true' style={{ flexShrink: 0 }}><CalendarIcon /></Icon>
+              <Icon size='sm' aria-hidden='true' style={{ flexShrink: 0 }}><CalendarDaysIcon /></Icon>
               <Text size={2} fontWeight={500} style={{ fontVariantNumeric: 'tabular-nums' }}>{when}</Text>
             </li>
             <li style={meta}>
-              <Icon size='sm' aria-hidden='true' style={{ flexShrink: 0 }}><Globe /></Icon>
+              <Icon size='sm' aria-hidden='true' style={{ flexShrink: 0 }}><GlobeIcon /></Icon>
               <Text size={2}>{timezoneLabel}</Text>
             </li>
           </>
@@ -288,7 +288,7 @@ export default function EventScheduling() {
     return (
       <div style={{ display: 'grid', gap: 'var(--spacing-12)', width: '100%', maxWidth: 560, marginInline: 'auto' }}>
         <header style={{ display: 'grid', gap: 'var(--spacing-4)', justifyItems: 'start' }}>
-          <Icon size='lg' aria-hidden='true' style={{ color: 'var(--color-green-accent-700)' }}><CircleCheck /></Icon>
+          <Icon size='lg' aria-hidden='true' style={{ color: 'var(--color-green-accent-700)' }}><CircleCheckIcon /></Icon>
           <div style={{ display: 'grid', gap: 'var(--spacing-2)' }}>
             <Heading ref={headingRef} tabIndex={-1} as='h1' size={6} fontWeight={700} style={{ outline: 'none' }}>{`You’re scheduled, ${booked.name}`}</Heading>
             <Text size={3} style={{ color: 'var(--label-secondary)', overflowWrap: 'anywhere' }}>{`An invitation is on its way to ${booked.email}.`}</Text>
@@ -410,12 +410,12 @@ export default function EventScheduling() {
             onChangeValue={changeDate}
           >
             <CalendarHeader>
-              <CalendarPrevButton aria-label='Previous month' />
+              <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
               <CalendarHeading>
                 <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                 <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
               </CalendarHeading>
-              <CalendarNextButton aria-label='Next month' />
+              <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
             </CalendarHeader>
             <CalendarContent>
               <CalendarDays aria-describedby={`${id}-days-hint`}>
@@ -454,12 +454,11 @@ export default function EventScheduling() {
             <Label id={`${id}-length`}>Meeting length</Label>
             <SegmentedControl
               name={`${id}-length`}
-              role='radiogroup'
               aria-labelledby={`${id}-length`}
               value={length}
               size='sm'
               style={{ width: '100%' }}
-              onChange={(event) => changeLength(Number(event.currentTarget.value))}
+              onChangeValue={changeLength}
             >
               {lengths.map((option) => (
                 <SegmentedControlItem key={option} value={option} style={{ flex: 1, fontVariantNumeric: 'tabular-nums' }}>
@@ -507,7 +506,7 @@ export default function EventScheduling() {
               <SelectHiddenSelect name='timezone' />
               <SelectCombobox id={`${id}-timezone`}>
                 <SelectValue />
-                <SelectIcon />
+                <SelectIcon><ChevronDownIcon /></SelectIcon>
               </SelectCombobox>
               <SelectListbox>
                 {timezones.map((item) => (

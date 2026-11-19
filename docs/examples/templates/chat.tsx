@@ -13,7 +13,6 @@ import {
   DrawerTrigger,
   Heading,
   Icon,
-  IconButton,
   Link,
   Listbox,
   ListboxGroup,
@@ -24,7 +23,7 @@ import {
   TextFieldInput,
   VisuallyHidden,
 } from '@vega-ui/react';
-import { ArrowDown, ArrowLeft, Check, CheckCheck, FileText, Hash, Heart, PanelRight, Paperclip, SearchIcon, SendHorizontal, ThumbsUp, XIcon } from '@vega-ui/icons';
+import { ArrowDownIcon, ArrowLeftIcon, CheckCheckIcon, CheckIcon, FileTextIcon, HashIcon, HeartIcon, PanelRightIcon, PaperclipIcon, SearchIcon, SendHorizontalIcon, ThumbsUpIcon, XIcon } from '@vega-ui/icons';
 import './chat.css';
 
 type Presence = 'online' | 'away' | 'offline';
@@ -90,9 +89,9 @@ const presenceColors: Record<Presence, string> = {
 };
 
 const reactionKinds: Record<ReactionName, { label: string, icon: ReactNode }> = {
-  'thumbs-up': { label: 'Thumbs up', icon: <ThumbsUp /> },
-  'heart': { label: 'Heart', icon: <Heart /> },
-  'check': { label: 'Done', icon: <Check /> },
+  'thumbs-up': { label: 'Thumbs up', icon: <ThumbsUpIcon /> },
+  'heart': { label: 'Heart', icon: <HeartIcon /> },
+  'check': { label: 'Done', icon: <CheckIcon /> },
 };
 
 const conversations: Conversation[] = [
@@ -153,7 +152,7 @@ const replies = [
 
 const clock = new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit' });
 
-const closeButton = { flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties;
+const closeButton = { flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties;
 const ghost = { variant: 'secondary', appearance: 'ghost' } as const;
 const truncate = { minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' } as const;
 
@@ -210,7 +209,7 @@ const AttachmentCard = ({ attachment }: { attachment: Attachment }) => {
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-6)', inlineSize: 'min(100%, 320px)', padding: 'var(--spacing-5) var(--spacing-6)', border: '1px solid var(--separator-opaque)', borderRadius: 'var(--radius-3)', background: 'var(--surface-primary)', boxSizing: 'border-box' }}>
-      <Icon size='sm' aria-hidden='true' style={{ flexShrink: 0, color: 'var(--color-primary-500)' }}><FileText /></Icon>
+      <Icon size='sm' aria-hidden='true' style={{ flexShrink: 0, color: 'var(--color-primary-500)' }}><FileTextIcon /></Icon>
       <div style={{ display: 'grid', minWidth: 0 }}>
         <Text size={2} fontWeight={500} style={truncate}>{attachment.name}</Text>
         <Text size={1} className='chat-muted' style={{ fontVariantNumeric: 'tabular-nums' }}>{attachment.size}</Text>
@@ -304,7 +303,7 @@ const MessageItem = ({ message, first, receipt, fresh, quoted, onToggleReaction 
         )}
         {receipt && message.status && (
           <Text size={1} style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--spacing-1)', color: 'var(--label-tertiary)' }}>
-            <Icon size='xs' aria-hidden='true'>{message.status === 'read' ? <CheckCheck /> : <Check />}</Icon>
+            <Icon size='xs' aria-hidden='true'>{message.status === 'read' ? <CheckCheckIcon /> : <CheckIcon />}</Icon>
             {message.status === 'read' ? 'Read' : 'Sent'}
           </Text>
         )}
@@ -526,7 +525,7 @@ export default function Chat() {
         {item.kind === 'channel'
           ? (
             <span className='chat-channel-icon' style={{ display: 'inline-flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, inlineSize: 'var(--spacing-16)', blockSize: 'var(--spacing-16)', borderRadius: 'var(--radius-2)' }}>
-              <Icon size='sm' aria-hidden='true'><Hash /></Icon>
+              <Icon size='sm' aria-hidden='true'><HashIcon /></Icon>
             </span>
           )
           : <PersonAvatar person={item.id} />}
@@ -621,9 +620,9 @@ export default function Chat() {
 
         <section ref={paneRef} className='chat-pane' aria-labelledby={`${id}-title`}>
           <header style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-6)', minHeight: 'var(--spacing-32)', paddingBlock: 'var(--spacing-6)', paddingInline: 'var(--spacing-6) var(--spacing-8)', borderBlockEnd: '1px solid var(--separator-opaque)', boxSizing: 'border-box' }}>
-            <IconButton size='xs' type='button' className='chat-back' aria-label='Back to conversations' {...ghost} onClick={goBack} style={{ flexShrink: 0 }}>
-              <Icon size='sm' className='chat-mirror'><ArrowLeft /></Icon>
-            </IconButton>
+            <Button square size='xs' type='button' className='chat-back' aria-label='Back to conversations' {...ghost} onClick={goBack} style={{ flexShrink: 0 }}>
+              <Icon size='sm' className='chat-mirror'><ArrowLeftIcon /></Icon>
+            </Button>
             {conversation.kind === 'direct' && <PersonAvatar person={conversation.id} />}
             <div style={{ display: 'grid', flex: 1, minWidth: 0, paddingInlineStart: 'var(--spacing-2)' }}>
               <Heading ref={titleRef} id={`${id}-title`} as='h2' size={4} fontWeight={600} tabIndex={-1} style={{ ...truncate, outline: 'none' }}><bdi>{title}</bdi></Heading>
@@ -647,17 +646,17 @@ export default function Chat() {
             )}
             <Drawer>
               <DrawerTrigger asChild>
-                <IconButton size='xs' type='button' aria-label='Conversation details' {...ghost} style={{ flexShrink: 0 }}>
-                  <Icon size='sm' className='chat-mirror'><PanelRight /></Icon>
-                </IconButton>
+                <Button square size='xs' type='button' aria-label='Conversation details' {...ghost} style={{ flexShrink: 0 }}>
+                  <Icon size='sm' className='chat-mirror'><PanelRightIcon /></Icon>
+                </Button>
               </DrawerTrigger>
               <DrawerContent fullHeight aria-labelledby={`${id}-details`} style={{ width: 'min(360px, 100vw)', boxSizing: 'border-box' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
                   <Heading id={`${id}-details`} as='h2' size={4} fontWeight={600} style={truncate}><bdi>{title}</bdi></Heading>
                   <DrawerClose asChild>
-                    <IconButton size='xs' aria-label='Close' {...ghost} style={closeButton}>
+                    <Button square size='xs' aria-label='Close' {...ghost} style={closeButton}>
                       <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-                    </IconButton>
+                    </Button>
                   </DrawerClose>
                 </div>
                 <Text size={2} className='chat-muted' style={{ display: 'block', marginBlockStart: 'var(--spacing-2)' }}>{conversation.topic}</Text>
@@ -683,7 +682,7 @@ export default function Chat() {
                       <ul style={{ display: 'grid', gap: 'var(--spacing-4)', margin: 0, padding: 0, listStyle: 'none' }}>
                         {files.map((file) => (
                           <li key={file.name} style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-6)', minWidth: 0 }}>
-                            <Icon size='sm' aria-hidden='true' style={{ flexShrink: 0, color: 'var(--color-primary-500)' }}><FileText /></Icon>
+                            <Icon size='sm' aria-hidden='true' style={{ flexShrink: 0, color: 'var(--color-primary-500)' }}><FileTextIcon /></Icon>
                             <Text size={3} style={{ ...truncate, flex: 1 }}>{file.name}</Text>
                             <Text size={2} className='chat-muted' style={{ flexShrink: 0, fontVariantNumeric: 'tabular-nums' }}>{file.size}</Text>
                           </li>
@@ -744,7 +743,7 @@ export default function Chat() {
                     onClick={jumpToLatest}
                     style={{ gap: 'var(--spacing-3)', '--button-br-ratio': 0.5 } as CSSProperties}
                   >
-                    <Icon size='xs' aria-hidden='true'><ArrowDown /></Icon>
+                    <Icon size='xs' aria-hidden='true'><ArrowDownIcon /></Icon>
                     Jump to latest
                   </Button>
                 </span>
@@ -767,9 +766,9 @@ export default function Chat() {
             </Text>
             <div style={{ display: 'flex', alignItems: 'flex-end', gap: 'var(--spacing-3)' }}>
               <input ref={fileRef} type='file' hidden onChange={attach} />
-              <IconButton size='xs' type='button' aria-label='Attach file' {...ghost} onClick={() => fileRef.current?.click()} style={{ flexShrink: 0, marginBlockEnd: 'var(--spacing-5)' }}>
-                <Icon size='sm'><Paperclip /></Icon>
-              </IconButton>
+              <Button square size='xs' type='button' aria-label='Attach file' {...ghost} onClick={() => fileRef.current?.click()} style={{ flexShrink: 0, marginBlockEnd: 'var(--spacing-5)' }}>
+                <Icon size='sm'><PaperclipIcon /></Icon>
+              </Button>
               <TextArea
                 ref={composerRef}
                 rows={Math.min(lines, 6)}
@@ -781,9 +780,9 @@ export default function Chat() {
                 onKeyDown={onComposerKeyDown}
                 style={{ minWidth: 0, maxHeight: 160, resize: 'none', fieldSizing: 'content' } as CSSProperties}
               />
-              <IconButton size='xs' type='submit' aria-label='Send message' disabled={draft.trim() === ''} style={{ flexShrink: 0, marginBlockEnd: 'var(--spacing-5)' }}>
-                <Icon size='sm' className='chat-mirror'><SendHorizontal /></Icon>
-              </IconButton>
+              <Button square size='xs' type='submit' aria-label='Send message' disabled={draft.trim() === ''} style={{ flexShrink: 0, marginBlockEnd: 'var(--spacing-5)' }}>
+                <Icon size='sm' className='chat-mirror'><SendHorizontalIcon /></Icon>
+              </Button>
             </div>
           </form>
         </section>

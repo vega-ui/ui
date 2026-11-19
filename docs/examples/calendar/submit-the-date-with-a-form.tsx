@@ -27,8 +27,10 @@ import {
   Fieldset,
   FieldsetLegend,
   HelperText,
+  Icon,
   Text,
 } from '@vega-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import { FormEvent, useId, useState } from 'react';
 
 export default function SubmitTheDateWithAForm() {
@@ -67,12 +69,12 @@ export default function SubmitTheDateWithAForm() {
         <FieldsetLegend>Appointment date</FieldsetLegend>
         <Calendar locale='en-US' value={date} onChangeValue={pick}>
           <CalendarHeader>
-            <CalendarPrevButton aria-label='Previous' />
+            <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
             <CalendarHeading>
               <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
               <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
             </CalendarHeading>
-            <CalendarNextButton aria-label='Next' />
+            <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
           </CalendarHeader>
           <CalendarContent>
             <CalendarDays aria-label='Appointment date' aria-describedby={missing ? errorId : undefined}>

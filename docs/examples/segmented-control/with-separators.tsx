@@ -11,7 +11,6 @@ export default function WithSeparators() {
     <SegmentedControl
       name='sort-order'
       defaultValue='newest'
-      role='radiogroup'
       aria-label='Sort by'
       style={{ display: 'flex', width: 'min-content' }}
     >

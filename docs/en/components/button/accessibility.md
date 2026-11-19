@@ -2,7 +2,7 @@
 
 ## Labeling
 
-Button text should describe the action clearly. If the content is icon-only, use `IconButton` with an explicit `aria-label` instead.
+Button text should describe the action clearly. If the content is icon-only, use `square` and name the button with `aria-label` or `aria-labelledby`; the type of `square` requires one of them. A tooltip does not replace that name.
 
 ## Keyboard Behavior
 

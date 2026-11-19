@@ -36,7 +36,7 @@ Use `Menu` when:
 
 - there are more actions than fit, or they are used rarely
 
-Use visible `Button`s or `IconButton`s when:
+Use visible `Button`s, with text or `square`, when:
 
 - there are two or three frequent actions
 

@@ -10,9 +10,9 @@
 | `size` | `SegmentedControlSize` | `'md'` | No | Visual size of the segmented control. |
 | `variant` | `SegmentedControlVariant` | `'secondary'` | No | Visual style variant of the segmented control. |
 | `ref` | `Ref<HTMLDivElement>` | — | No | Ref to the root container element. Useful for measuring or controlling focus. |
-| `value` | `SegmentedControlValue` | — | No | The currently selected value of the segmented control |
-| `defaultValue` | `SegmentedControlValue` | `''` | No | The initial selected value when the component is used in an uncontrolled mode |
-| `onChange` | `(e: ChangeEvent<HTMLInputElement>) => void` | — | No | Fired when the selected segment changes. This event mirrors the native `change` event of a radio input and can be used to integrate with forms or listen for user selection. The event target is the underlying hidden `<input type="radio">`. |
+| `value` | `Value` | — | No | The currently selected value of the segmented control |
+| `defaultValue` | `NoInfer<Value>` | — | No | The initial selected value when the component is used in an uncontrolled mode |
+| `onChangeValue` | `(value: Value) => void` | — | No | Called with the value of the item the user selects. Like the native `change` event bubbling to the root, it does not run when the `onChange` of the `SegmentedControlItemInput` stops the propagation. `preventDefault` cannot undo the choice, because the radio is checked before `change`: to turn a choice down, keep the previous `value` in controlled mode. The root's own `onChange` is the native `change` event that bubbles from the radio input. |
 | `name` | `string` | — | Yes | The name of the underlying radio group. All `SegmentedControlItemInput` elements share this name, allowing the segmented control to behave as a single native radio group for form submission and accessibility. |
 
 Also accepts all `<div>` attributes.
@@ -61,7 +61,7 @@ Also accepts all `<input>` attributes.
 
 ## State Model
 
-- `SegmentedControl` can be uncontrolled through `defaultValue` or controlled through `value` and `onChange`.
+- `SegmentedControl` can be uncontrolled through `defaultValue` or controlled through `value` and `onChangeValue`.
 - `onChange` of `SegmentedControlItemInput` runs before `onChange` of the root, like a native `change` event bubbling from the radio to the group; `event.stopPropagation()` in it keeps the root's `onChange` from running.
 - In uncontrolled mode the native radio group owns the selection: clicks, keyboard, form reset and programmatic `checked` changes all apply without React state.
 - `SegmentedControlIndicator` is anchored to the checked segment in CSS, so it follows any of those changes.

@@ -9,6 +9,7 @@ The text lives in state and the app renders only the languages that contain it. 
 <!-- example: combobox/no-results-message.tsx -->
 ```tsx
 import { Combobox, ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger, HelperText, Label, ListboxOption, TextField } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const languages = [
@@ -36,8 +37,8 @@ export default function NoResultsMessage() {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
           />
-          <ComboboxTrigger aria-label='Show languages'>
-            <ComboboxIcon />
+          <ComboboxTrigger square aria-label='Show languages'>
+            <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
           </ComboboxTrigger>
         </TextField>
         <ComboboxListbox aria-label='Languages'>
@@ -60,6 +61,7 @@ With `autocomplete='both'`, typing writes the first state that starts with the t
 <!-- example: combobox/inline-completion.tsx -->
 ```tsx
 import { Combobox, ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger, HelperText, Label, ListboxOption, TextField } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { ChangeEvent, useId, useState } from 'react';
 
 const states = [
@@ -91,8 +93,8 @@ export default function InlineCompletion() {
       <Combobox autocomplete='both' value={state} onChangeValue={(next) => setState(next)}>
         <TextField>
           <ComboboxInput id={id} aria-describedby={hintId} value={text} onChange={onChange} />
-          <ComboboxTrigger aria-label='Show states'>
-            <ComboboxIcon />
+          <ComboboxTrigger square aria-label='Show states'>
+            <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
           </ComboboxTrigger>
         </TextField>
         <ComboboxListbox aria-label='States'>
@@ -115,6 +117,7 @@ With `autocomplete='none'` the options stay the same whatever is typed, and the 
 <!-- example: combobox/fixed-suggestions.tsx -->
 ```tsx
 import { Combobox, ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger, HelperText, Label, ListboxOption, TextField } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 const lengths = ['15 minutes', '30 minutes', '45 minutes', '1 hour', '90 minutes', '2 hours'];
@@ -129,8 +132,8 @@ export default function FixedSuggestions() {
       <Combobox autocomplete='none'>
         <TextField>
           <ComboboxInput id={id} name='length' placeholder='For example, 50 minutes' aria-describedby={hintId} />
-          <ComboboxTrigger aria-label='Show lengths'>
-            <ComboboxIcon />
+          <ComboboxTrigger square aria-label='Show lengths'>
+            <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
           </ComboboxTrigger>
         </TextField>
         <ComboboxListbox aria-label='Common lengths'>
@@ -153,6 +156,7 @@ The parent owns both the picked member and the text. "Assign to me" and "Clear" 
 <!-- example: combobox/controlled-value-and-text.tsx -->
 ```tsx
 import { Button, Combobox, ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger, Label, ListboxOption, Text, TextField } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const CURRENT_USER = 'ana';
@@ -195,8 +199,8 @@ export default function ControlledValueAndText() {
       <Combobox value={assignee} onChangeValue={(next) => setAssignee(next)}>
         <TextField>
           <ComboboxInput id={id} placeholder='Search people' value={query} onChange={(event) => setQuery(event.target.value)} />
-          <ComboboxTrigger aria-label='Show team members'>
-            <ComboboxIcon />
+          <ComboboxTrigger square aria-label='Show team members'>
+            <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
           </ComboboxTrigger>
         </TextField>
         <ComboboxListbox aria-label='Team members'>
@@ -221,6 +225,7 @@ export default function ControlledValueAndText() {
 <!-- example: combobox/native-form-participation.tsx -->
 ```tsx
 import { Button, Combobox, ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger, Label, ListboxOption, Text, TextField } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { FormEvent, useId, useState } from 'react';
 
 const countries = [
@@ -262,8 +267,8 @@ export default function NativeFormParticipation() {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
           />
-          <ComboboxTrigger aria-label='Show countries'>
-            <ComboboxIcon />
+          <ComboboxTrigger square aria-label='Show countries'>
+            <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
           </ComboboxTrigger>
         </TextField>
         <ComboboxListbox aria-label='Countries'>
@@ -305,13 +310,12 @@ import {
   DialogTrigger,
   Heading,
   Icon,
-  IconButton,
   Label,
   ListboxOption,
   Text,
   TextField,
 } from '@vega-ui/react';
-import { XIcon } from '@vega-ui/icons';
+import { ChevronDownIcon, XIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const reviewers = ['Ana Silva', 'Kenji Watanabe', 'Lena Fischer', 'Omar Haddad', 'Priya Natarajan', 'Tomás Herrera'];
@@ -350,14 +354,15 @@ export default function ComboboxInsideDialog() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
             <Heading id={`${id}-title`} as='h2' size={4} fontWeight={600}>Request a review</Heading>
             <DialogClose asChild>
-              <IconButton
+              <Button
+                square
                 aria-label='Close'
                 variant='secondary'
                 appearance='ghost'
-                style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+                style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
               >
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DialogClose>
           </div>
           <form
@@ -368,8 +373,8 @@ export default function ComboboxInsideDialog() {
             <Combobox value={reviewer} onChangeValue={(next) => setReviewer(next)}>
               <TextField>
                 <ComboboxInput id={id} placeholder='Search people' value={query} onChange={(event) => setQuery(event.target.value)} />
-                <ComboboxTrigger aria-label='Show people'>
-                  <ComboboxIcon />
+                <ComboboxTrigger square aria-label='Show people'>
+                  <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
                 </ComboboxTrigger>
               </TextField>
               <ComboboxListbox aria-label='People'>
@@ -396,6 +401,7 @@ Each region is a `ListboxGroup` named by its heading, and a region is left out w
 <!-- example: combobox/grouped-options.tsx -->
 ```tsx
 import { Combobox, ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger, Label, ListboxGroup, ListboxOption, Text, TextField } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const regions = [
@@ -439,8 +445,8 @@ export default function GroupedOptions() {
       <Combobox>
         <TextField>
           <ComboboxInput id={id} placeholder='Search by city' value={query} onChange={(event) => setQuery(event.target.value)} />
-          <ComboboxTrigger aria-label='Show time zones'>
-            <ComboboxIcon />
+          <ComboboxTrigger square aria-label='Show time zones'>
+            <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
           </ComboboxTrigger>
         </TextField>
         <ComboboxListbox aria-label='Time zones'>
@@ -479,6 +485,7 @@ The form checks the picked value, not the text: an airport typed but not picked 
 <!-- example: combobox/pick-required-error.tsx -->
 ```tsx
 import { Button, Combobox, ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger, HelperText, Label, ListboxOption, Text, TextField } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { FormEvent, useId, useRef, useState } from 'react';
 
 const airports = [
@@ -534,8 +541,8 @@ export default function PickRequiredError() {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
           />
-          <ComboboxTrigger aria-label='Show airports'>
-            <ComboboxIcon />
+          <ComboboxTrigger square aria-label='Show airports'>
+            <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
           </ComboboxTrigger>
         </TextField>
         <ComboboxListbox aria-label='Airports'>
@@ -571,6 +578,7 @@ Neither list depends on the text, so both roots set `autocomplete='none'`. A rea
 <!-- example: combobox/disabled-and-read-only.tsx -->
 ```tsx
 import { Combobox, ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger, HelperText, Label, ListboxOption, TextField } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 const regions = [
@@ -596,8 +604,8 @@ export default function DisabledAndReadOnly() {
         <Combobox autocomplete='none' readOnly defaultValue='eu-central'>
           <TextField>
             <ComboboxInput id={regionId} name='region' defaultValue='Frankfurt (eu-central)' aria-describedby={`${regionId}-hint`} />
-            <ComboboxTrigger aria-label='Show regions'>
-              <ComboboxIcon />
+            <ComboboxTrigger square aria-label='Show regions'>
+              <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
             </ComboboxTrigger>
           </TextField>
           <ComboboxListbox aria-label='Regions'>
@@ -611,8 +619,8 @@ export default function DisabledAndReadOnly() {
         <Combobox autocomplete='none' disabled defaultValue='finance'>
           <TextField>
             <ComboboxInput id={ownerId} name='owner' defaultValue='Finance team' aria-describedby={`${ownerId}-hint`} />
-            <ComboboxTrigger aria-label='Show teams'>
-              <ComboboxIcon />
+            <ComboboxTrigger square aria-label='Show teams'>
+              <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
             </ComboboxTrigger>
           </TextField>
           <ComboboxListbox aria-label='Teams'>
@@ -636,6 +644,7 @@ The search starts after two letters and a short pause. While it runs, a spinner 
 <!-- example: combobox/async-suggestions.tsx -->
 ```tsx
 import { Combobox, ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger, HelperText, Label, ListboxOption, Spinner, TextField } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useEffect, useId, useState } from 'react';
 
 interface City {
@@ -727,8 +736,8 @@ export default function AsyncSuggestions() {
             onChange={(event) => setQuery(event.target.value)}
           />
           {loading && <Spinner size={3} aria-label='Searching cities' />}
-          <ComboboxTrigger aria-label='Show cities'>
-            <ComboboxIcon />
+          <ComboboxTrigger square aria-label='Show cities'>
+            <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
           </ComboboxTrigger>
         </TextField>
         <ComboboxListbox aria-label='Cities'>
@@ -754,6 +763,7 @@ Options show an avatar and an email, and `label` gives the plain name that is wr
 <!-- example: combobox/rich-option-content.tsx -->
 ```tsx
 import { Avatar, AvatarFallback, Combobox, ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger, Label, ListboxOption, TextField } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const people = [
@@ -783,8 +793,8 @@ export default function RichOptionContent() {
             </Avatar>
           )}
           <ComboboxInput id={id} placeholder='Name or email' value={query} onChange={(event) => setQuery(event.target.value)} />
-          <ComboboxTrigger aria-label='Show people'>
-            <ComboboxIcon />
+          <ComboboxTrigger square aria-label='Show people'>
+            <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
           </ComboboxTrigger>
         </TextField>
         <ComboboxListbox aria-label='People' style={{ maxWidth: 320 }}>

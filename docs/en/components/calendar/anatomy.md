@@ -21,7 +21,7 @@ Header wrapper for navigation and view switching.
 
 ### `CalendarPrevButton` / `CalendarNextButton`
 
-Show the previous or next page of the current view. In the days they move the focused day to the same day of the previous or next month, and the focus stays on the button; in the years they show the previous or next page of years. Hidden in the months view, and in the days when the previous or next month is outside `min` / `max`.
+Show the previous or next page of the current view. In the days they move the focused day to the same day of the previous or next month, and the focus stays on the button; in the years they show the previous or next page of years. Hidden in the months view, and in the days when the previous or next month is outside `min` / `max`. They render a `Button` with no content of their own: pass a chevron as children with `square` and an `aria-label` or `aria-labelledby`, a text like "Next month", or your own button with `asChild`. An `svg` inside them is mirrored in a right-to-left layout, so one chevron serves both directions.
 
 ### `CalendarHeading`
 
@@ -98,20 +98,22 @@ import {
   CalendarWeekdays,
   CalendarWeeks,
   CalendarYearLabel,
+  Icon,
   Text,
 } from '@vega-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 export default function ValidCompositionPatterns() {
   return (
     <Calendar locale='en-US'>
       <CalendarHeader>
-        <CalendarPrevButton aria-label='Previous month' />
+        <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
         <CalendarHeading>
           <Text fontWeight={600}>
             <CalendarMonthLabel /> <CalendarYearLabel />
           </Text>
         </CalendarHeading>
-        <CalendarNextButton aria-label='Next month' />
+        <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
       </CalendarHeader>
       <CalendarContent>
         <CalendarDays>

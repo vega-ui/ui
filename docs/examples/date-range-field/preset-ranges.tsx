@@ -27,12 +27,14 @@ import {
   DateRangeField,
   DateRangeFieldCalendar,
   DateRangeFieldInput,
-  DateRangeFieldTriggerIconButton,
+  DateRangeFieldTrigger,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 const toISODate = (date: Date) => {
   const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -68,17 +70,17 @@ export default function PresetRanges() {
           <DateRangeFieldInput id='report-period' placeholder='dd.mm.yyyy – dd.mm.yyyy' />
           <Popover placement='bottom-end'>
             <PopoverTrigger asChild>
-              <DateRangeFieldTriggerIconButton aria-label='Choose report period' />
+              <DateRangeFieldTrigger square aria-label='Choose report period'><Icon><CalendarIcon /></Icon></DateRangeFieldTrigger>
             </PopoverTrigger>
             <PopoverContent>
               <DateRangeFieldCalendar aria-label='Choose report period'>
                 <CalendarHeader>
-                  <CalendarPrevButton aria-label='Previous month' />
+                  <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                   </CalendarHeading>
-                  <CalendarNextButton aria-label='Next month' />
+                  <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                 </CalendarHeader>
                 <CalendarContent>
                   <CalendarDays>

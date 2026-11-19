@@ -23,7 +23,7 @@ Also accepts all `<ul>` attributes.
 - `AccordionHeader`: semantic header wrapper for each item.
 - `AccordionTrigger`: toggle button for the item.
 - `AccordionContent`: expandable content region.
-- `AccordionIcon`: optional visual state indicator.
+- `AccordionIcon`: optional state indicator that shows the icon passed as its children.
 
 ### `AccordionItem`
 
@@ -81,7 +81,7 @@ Also accepts all `<h1>–<h6>` attributes.
 | `size` | `IconSize` | — | No | Predefined size token for the icon. Can be overridden by explicit width and height. |
 | `ref` | `Ref<SVGSVGElement>` | — | No | Ref to the SVG element |
 | `strokeWidth` | `number` | — | No | Stroke thickness for SVG lines and shapes (in px or pt). |
-| `children` | `ReactNode` | — | No | Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
+| `children` | `ReactNode` | — | Yes | Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
 
 Also accepts all HTML attributes.
 <!-- AUTO-GENERATED:PART_API:AccordionIcon:end -->

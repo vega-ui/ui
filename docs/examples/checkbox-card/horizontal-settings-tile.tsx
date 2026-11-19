@@ -2,8 +2,8 @@ import {
   CheckboxCard,
   CheckboxCardContent,
   CheckboxCardControl,
-  CheckboxCardControlCheckedIcon,
-  CheckboxCardControlIndeterminateIcon,
+  CheckboxCheckedIcon,
+  CheckboxIndeterminateIcon,
   CheckboxCardControlInput,
   CheckboxCardDescription,
   CheckboxCardTitle,
@@ -11,6 +11,7 @@ import {
   Fieldset,
   FieldsetLegend,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 const alerts = [
   { value: 'sms', title: 'SMS alerts', description: 'Critical incidents only, by text message' },
@@ -32,8 +33,8 @@ export default function HorizontalSettingsTile() {
             <CheckboxCardControl>
               <CheckboxCardControlInput name='alerts' value={alert.value} defaultChecked={alert.value !== 'sms'} />
               <CheckboxIndicator>
-                <CheckboxCardControlCheckedIcon />
-                <CheckboxCardControlIndeterminateIcon />
+                <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+                <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
               </CheckboxIndicator>
             </CheckboxCardControl>
           </CheckboxCard>

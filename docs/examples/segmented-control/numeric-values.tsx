@@ -20,10 +20,9 @@ export default function NumericValues() {
         <SegmentedControl
           name='columns'
           size='sm'
-          role='radiogroup'
           aria-labelledby='columns-label'
           value={columns}
-          onChange={(event) => setColumns(Number(event.currentTarget.value))}
+          onChangeValue={setColumns}
         >
           {columnOptions.map((option) => (
             <SegmentedControlItem key={option} value={option}>

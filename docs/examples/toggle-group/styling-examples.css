@@ -1,0 +1,15 @@
+.segmentedGroup[role='radiogroup'] {
+  gap: 0;
+  padding: var(--spacing-1);
+  border-radius: var(--radius-4);
+  background: var(--fills-tertiary);
+}
+
+.segmentedGroup [aria-checked='true'] {
+  --button-color: var(--label-primary);
+  --button-color-hover: var(--label-primary);
+  --button-color-active: var(--label-primary);
+  --button-background-color: var(--surface-primary);
+  --button-background-color-hover: var(--surface-primary);
+  --button-background-color-active: var(--surface-primary);
+}

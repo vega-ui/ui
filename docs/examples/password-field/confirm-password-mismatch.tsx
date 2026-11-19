@@ -6,8 +6,9 @@ import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleIconButton,
+  PasswordFieldToggle,
 } from '@vega-ui/react';
+import { EyeIcon, EyeOffIcon } from '@vega-ui/icons';
 import { FormEvent, useId, useState } from 'react';
 
 export default function ConfirmPasswordMismatch() {
@@ -34,10 +35,10 @@ export default function ConfirmPasswordMismatch() {
             value={password}
             onChange={(event) => setPassword(event.currentTarget.value)}
           />
-          <PasswordFieldToggleIconButton aria-label='Show password'>
-            <PasswordFieldShownIcon />
-            <PasswordFieldHiddenIcon />
-          </PasswordFieldToggleIconButton>
+          <PasswordFieldToggle square aria-label='Show password'>
+            <PasswordFieldShownIcon><EyeIcon /></PasswordFieldShownIcon>
+            <PasswordFieldHiddenIcon><EyeOffIcon /></PasswordFieldHiddenIcon>
+          </PasswordFieldToggle>
         </PasswordField>
       </div>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
@@ -52,10 +53,10 @@ export default function ConfirmPasswordMismatch() {
             onChange={(event) => setConfirmation(event.currentTarget.value)}
             onBlur={() => setTouched(true)}
           />
-          <PasswordFieldToggleIconButton aria-label='Show password'>
-            <PasswordFieldShownIcon />
-            <PasswordFieldHiddenIcon />
-          </PasswordFieldToggleIconButton>
+          <PasswordFieldToggle square aria-label='Show password'>
+            <PasswordFieldShownIcon><EyeIcon /></PasswordFieldShownIcon>
+            <PasswordFieldHiddenIcon><EyeOffIcon /></PasswordFieldHiddenIcon>
+          </PasswordFieldToggle>
         </PasswordField>
         <HelperText id={messageId} invalid={invalid}>
           {invalid ? 'Passwords do not match. Check the last characters.' : 'Type the same password again.'}

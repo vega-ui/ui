@@ -6,7 +6,6 @@ import {
   CheckboxIndicator,
   CheckboxInput,
   Icon,
-  IconButton,
   Popover,
   PopoverAnchor,
   PopoverClose,
@@ -16,11 +15,11 @@ import {
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
-import { SlidersHorizontal, XIcon } from '@vega-ui/icons';
+import { CheckIcon, SlidersHorizontalIcon, XIcon } from '@vega-ui/icons';
 
 const statuses = ['Open', 'In review', 'Merged', 'Closed'];
 
-const closeButton = { flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties;
+const closeButton = { flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties;
 
 export default function FiltersAnchoredToASearchField() {
   const titleId = useId();
@@ -38,15 +37,16 @@ export default function FiltersAnchoredToASearchField() {
           <TextField>
             <TextFieldInput type='search' aria-label='Search pull requests' placeholder='Search pull requests' />
             <PopoverTrigger asChild>
-              <IconButton
+              <Button
+                square
                 size='xs'
                 variant='secondary'
                 appearance='transparent'
                 aria-label={`Filters, ${applied.length} applied`}
                 style={{ flexShrink: 0, marginInlineEnd: 'var(--spacing-3)' }}
               >
-                <Icon size='sm'><SlidersHorizontal /></Icon>
-              </IconButton>
+                <Icon size='sm'><SlidersHorizontalIcon /></Icon>
+              </Button>
             </PopoverTrigger>
           </TextField>
         </PopoverAnchor>
@@ -55,9 +55,9 @@ export default function FiltersAnchoredToASearchField() {
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
               <Text id={titleId} size={3} fontWeight={600}>Status</Text>
               <PopoverClose asChild>
-                <IconButton aria-label='Close' variant='secondary' appearance='ghost' style={closeButton}>
+                <Button square aria-label='Close' variant='secondary' appearance='ghost' style={closeButton}>
                   <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-                </IconButton>
+                </Button>
               </PopoverClose>
             </div>
             <div style={{ display: 'grid', gap: 'var(--spacing-6)' }}>
@@ -65,7 +65,7 @@ export default function FiltersAnchoredToASearchField() {
                 <Checkbox key={status}>
                   <CheckboxInput checked={draft.includes(status)} onChange={() => toggle(status)} />
                   <CheckboxIndicator>
-                    <CheckboxCheckedIcon />
+                    <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
                   </CheckboxIndicator>
                   {status}
                 </Checkbox>

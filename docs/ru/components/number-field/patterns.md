@@ -19,12 +19,14 @@
 <!-- example: number-field/cart-line-items.tsx -->
 ```tsx
 import {
+  Icon,
   NumberField,
   NumberFieldDecrementButton,
   NumberFieldIncrementButton,
   NumberFieldInput,
   Text,
 } from '@vega-ui/react';
+import { MinusIcon, PlusIcon } from '@vega-ui/icons';
 import { useState } from 'react';
 
 interface LineItem {
@@ -72,9 +74,9 @@ export default function CartLineItems() {
             <Text size={2} style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>{currency.format(item.price)}</Text>
           </div>
           <NumberField size='sm' min={0} max={20} value={item.quantity} onChangeValue={(quantity) => changeQuantity(item.sku, quantity)}>
-            <NumberFieldDecrementButton aria-label={`Remove one ${item.name}`} />
+            <NumberFieldDecrementButton square aria-label={`Remove one ${item.name}`}><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
             <NumberFieldInput aria-label={`Quantity of ${item.name}`} />
-            <NumberFieldIncrementButton aria-label={`Add one ${item.name}`} />
+            <NumberFieldIncrementButton square aria-label={`Add one ${item.name}`}><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
           </NumberField>
         </div>
       ))}
@@ -116,6 +118,7 @@ export default function CartLineItems() {
 <!-- example: number-field/discount-percentage.tsx -->
 ```tsx
 import {
+  Icon,
   Label,
   NumberField,
   NumberFieldDecrementButton,
@@ -123,6 +126,7 @@ import {
   NumberFieldInput,
   Text,
 } from '@vega-ui/react';
+import { MinusIcon, PlusIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const LIST_PRICE = 1290;
@@ -139,10 +143,10 @@ export default function DiscountPercentage({ locale = 'en-US' }: { locale?: stri
     <div style={{ display: 'grid', gap: 'var(--spacing-3)', width: '100%', maxWidth: 260 }}>
       <Label htmlFor={id}>Discount</Label>
       <NumberField min={0} max={100} step={0.5} maximumFractionDigits={1} value={discount} onChangeValue={setDiscount}>
-        <NumberFieldDecrementButton aria-label='Decrease discount by 0.5%' />
+        <NumberFieldDecrementButton square aria-label='Decrease discount by 0.5%'><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
         <NumberFieldInput id={id} aria-describedby={`${id}-price`} />
         <Text size={3} aria-hidden style={{ color: 'var(--label-secondary)' }}>%</Text>
-        <NumberFieldIncrementButton aria-label='Increase discount by 0.5%' />
+        <NumberFieldIncrementButton square aria-label='Increase discount by 0.5%'><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
       </NumberField>
       <Text id={`${id}-price`} size={2} style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>
         Annual plan: {currency.format(price)} instead of {currency.format(LIST_PRICE)}
@@ -173,6 +177,7 @@ export default function DiscountPercentage({ locale = 'en-US' }: { locale?: stri
 ```tsx
 import {
   Button,
+  Icon,
   Label,
   NumberField,
   NumberFieldDecrementButton,
@@ -180,6 +185,7 @@ import {
   NumberFieldInput,
   Text,
 } from '@vega-ui/react';
+import { MinusIcon, PlusIcon } from '@vega-ui/icons';
 import { FormEvent, useId, useState } from 'react';
 
 const DEFAULT_BUDGET = 2500;
@@ -208,9 +214,9 @@ export default function FormSubmitAndReset() {
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor={id}>Monthly budget, USD</Label>
         <NumberField min={0} max={1000000} step={500} value={budget} onChangeValue={setBudget} maximumFractionDigits={0}>
-          <NumberFieldDecrementButton aria-label='Decrease budget by 500' />
+          <NumberFieldDecrementButton square aria-label='Decrease budget by 500'><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
           <NumberFieldInput id={id} required />
-          <NumberFieldIncrementButton aria-label='Increase budget by 500' />
+          <NumberFieldIncrementButton square aria-label='Increase budget by 500'><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
         </NumberField>
         <input type='hidden' name='monthlyBudget' value={Number.isNaN(budget) ? '' : budget} />
       </div>

@@ -7,6 +7,7 @@ import {
   CheckboxInput,
   Text,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 const permissions = ['View invoices', 'Download invoices', 'Edit payment methods', 'Cancel subscription'];
 
@@ -37,8 +38,8 @@ export default function IndeterminateParentSelector() {
       <Checkbox style={{ fontWeight: 600 }}>
         <CheckboxInput checked={allSelected} indeterminate={someSelected} onChange={toggleAll} />
         <CheckboxIndicator>
-          <CheckboxCheckedIcon />
-          <CheckboxIndeterminateIcon />
+          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+          <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
         </CheckboxIndicator>
         Billing
       </Checkbox>
@@ -47,8 +48,8 @@ export default function IndeterminateParentSelector() {
           <Checkbox key={permission}>
             <CheckboxInput checked={selected.includes(permission)} onChange={() => toggle(permission)} />
             <CheckboxIndicator>
-              <CheckboxCheckedIcon />
-              <CheckboxIndeterminateIcon />
+              <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+              <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
             </CheckboxIndicator>
             {permission}
           </Checkbox>

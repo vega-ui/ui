@@ -26,7 +26,7 @@ const fileTrigger = { role: 'button', name: 'Actions for Q3 report.pdf' };
 const fileMenu = { role: 'menu', name: 'Actions for Q3 report.pdf' };
 const shareItem = item('Share');
 const shareMenu = { role: 'menu', name: 'Share' };
-const onShare = [{ focus: fileTrigger }, { press: 'Enter' }, { press: 'End' }, { press: 'ArrowUp' }, { press: 'ArrowUp' }];
+const onShare = [{ focus: fileTrigger }, { press: 'Enter' }, { focus: item('Open') }, { press: 'End' }, { press: 'ArrowUp' }, { press: 'ArrowUp' }];
 const inShare = [...onShare, { press: 'ArrowRight' }];
 
 export default [

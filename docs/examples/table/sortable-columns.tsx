@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowUp, ArrowUpDown } from '@vega-ui/icons';
+import { ArrowDownIcon, ArrowUpDownIcon, ArrowUpIcon } from '@vega-ui/icons';
 import {
   Button,
   Icon,
@@ -64,9 +64,9 @@ export default function SortableColumns() {
             <TableHeading scope='col'>Invoice</TableHeading>
             {columns.map((column) => {
               const active = column.key === sortKey;
-              let icon = <ArrowUpDown />;
+              let icon = <ArrowUpDownIcon />;
               if (active) {
-                icon = direction === 'ascending' ? <ArrowUp /> : <ArrowDown />;
+                icon = direction === 'ascending' ? <ArrowUpIcon /> : <ArrowDownIcon />;
               }
 
               return (

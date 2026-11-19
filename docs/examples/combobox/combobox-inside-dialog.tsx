@@ -12,13 +12,12 @@ import {
   DialogTrigger,
   Heading,
   Icon,
-  IconButton,
   Label,
   ListboxOption,
   Text,
   TextField,
 } from '@vega-ui/react';
-import { XIcon } from '@vega-ui/icons';
+import { ChevronDownIcon, XIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const reviewers = ['Ana Silva', 'Kenji Watanabe', 'Lena Fischer', 'Omar Haddad', 'Priya Natarajan', 'Tomás Herrera'];
@@ -57,14 +56,15 @@ export default function ComboboxInsideDialog() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
             <Heading id={`${id}-title`} as='h2' size={4} fontWeight={600}>Request a review</Heading>
             <DialogClose asChild>
-              <IconButton
+              <Button
+                square
                 aria-label='Close'
                 variant='secondary'
                 appearance='ghost'
-                style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+                style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
               >
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DialogClose>
           </div>
           <form
@@ -75,8 +75,8 @@ export default function ComboboxInsideDialog() {
             <Combobox value={reviewer} onChangeValue={(next) => setReviewer(next)}>
               <TextField>
                 <ComboboxInput id={id} placeholder='Search people' value={query} onChange={(event) => setQuery(event.target.value)} />
-                <ComboboxTrigger aria-label='Show people'>
-                  <ComboboxIcon />
+                <ComboboxTrigger square aria-label='Show people'>
+                  <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
                 </ComboboxTrigger>
               </TextField>
               <ComboboxListbox aria-label='People'>

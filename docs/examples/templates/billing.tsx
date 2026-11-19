@@ -15,7 +15,6 @@ import {
   Heading,
   HelperText,
   Icon,
-  IconButton,
   Label,
   Link,
   Meter,
@@ -37,7 +36,7 @@ import {
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
-import { CreditCard, XIcon } from '@vega-ui/icons';
+import { CreditCardIcon, TriangleAlertIcon, XIcon } from '@vega-ui/icons';
 
 type PlanId = 'starter' | 'team' | 'business';
 type Cycle = 'monthly' | 'yearly';
@@ -83,7 +82,7 @@ const count = new Intl.NumberFormat('en-US');
 const field = { display: 'grid', gap: 'var(--spacing-3)', alignContent: 'start' } as const;
 const amount = { fontVariantNumeric: 'tabular-nums', whiteSpace: 'nowrap' } as const;
 const nowrap = { whiteSpace: 'nowrap' } as const;
-const closeButton = { flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties;
+const closeButton = { flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties;
 const dialogHeader = { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' } as const;
 const actions = { display: 'flex', flexWrap: 'wrap', justifyContent: 'flex-end', gap: 'var(--spacing-4)' } as const;
 const meterHeader = { display: 'flex', flexWrap: 'wrap', alignItems: 'baseline', justifyContent: 'space-between', gap: 'var(--spacing-2) var(--spacing-8)' } as const;
@@ -242,7 +241,7 @@ export default function Billing() {
 
       {canceled && (
         <Alert variant='warning'>
-          <AlertIcon />
+          <AlertIcon><TriangleAlertIcon /></AlertIcon>
           <AlertMain>
             <AlertTitle>Subscription canceled</AlertTitle>
             <AlertContent>{`${currentPlan.title} features stay available until ${RENEWAL}. After that, the workspace moves to the Free plan.`}</AlertContent>
@@ -280,10 +279,9 @@ export default function Billing() {
                   <SegmentedControl
                     size='sm'
                     name={`${id}-cycle`}
-                    role='radiogroup'
                     aria-label='Billing cycle'
                     value={cycle}
-                    onChange={(event) => setCycle(event.target.value as Cycle)}
+                    onChangeValue={setCycle}
                   >
                     <SegmentedControlItem value='monthly'>
                       <SegmentedControlItemInput />
@@ -414,9 +412,9 @@ export default function Billing() {
                   <div style={dialogHeader}>
                     <Heading id={`${id}-card-title`} as='h2' size={4} fontWeight={600}>Update payment method</Heading>
                     <DialogClose asChild>
-                      <IconButton size='xs' aria-label='Close' variant='secondary' appearance='ghost' style={closeButton}>
+                      <Button square size='xs' aria-label='Close' variant='secondary' appearance='ghost' style={closeButton}>
                         <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-                      </IconButton>
+                      </Button>
                     </DialogClose>
                   </div>
                   <form noValidate onSubmit={saveCard} style={{ display: 'grid', gap: 'var(--spacing-8)', marginBlockStart: 'var(--spacing-10)' }}>
@@ -506,7 +504,7 @@ export default function Billing() {
                 aria-hidden='true'
                 style={{ display: 'grid', placeItems: 'center', flexShrink: 0, width: 44, height: 32, borderRadius: 'var(--radius-2)', background: 'var(--fills-tertiary)', color: 'var(--label-secondary)' }}
               >
-                <Icon size='sm'><CreditCard /></Icon>
+                <Icon size='sm'><CreditCardIcon /></Icon>
               </span>
               <span style={{ display: 'grid', flex: 1, minWidth: 0 }}>
                 <Text size={3} fontWeight={500} style={{ fontVariantNumeric: 'tabular-nums' }}>{`${payment.brand} ending in ${payment.last4}`}</Text>
@@ -581,13 +579,13 @@ export default function Billing() {
             <div style={dialogHeader}>
               <Heading id={`${id}-cancel-title`} as='h2' size={4} fontWeight={600}>Cancel your subscription?</Heading>
               <DialogClose asChild>
-                <IconButton size='xs' aria-label='Close' variant='secondary' appearance='ghost' style={closeButton}>
+                <Button square size='xs' aria-label='Close' variant='secondary' appearance='ghost' style={closeButton}>
                   <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-                </IconButton>
+                </Button>
               </DialogClose>
             </div>
             <Alert variant='warning' style={{ marginBlockStart: 'var(--spacing-8)' }}>
-              <AlertIcon />
+              <AlertIcon><TriangleAlertIcon /></AlertIcon>
               <AlertMain>
                 <AlertTitle>{`Access ends on ${RENEWAL}`}</AlertTitle>
                 <AlertContent>{`After that, Northwind moves to the Free plan: 3 seats and 5 GB of storage. ${SEATS - 3} members lose access.`}</AlertContent>

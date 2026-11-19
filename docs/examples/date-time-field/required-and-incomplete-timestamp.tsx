@@ -27,13 +27,15 @@ import {
   DateTimeField,
   DateTimeFieldCalendar,
   DateTimeFieldInput,
-  DateTimeFieldTriggerIconButton,
+  DateTimeFieldTrigger,
   HelperText,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 const HINT = 'Date and 24-hour time, for example 15.07.2026, 09:30.';
 
@@ -67,17 +69,17 @@ export default function MaintenanceWindowForm() {
           />
           <Popover placement='bottom-end'>
             <PopoverTrigger asChild>
-              <DateTimeFieldTriggerIconButton aria-label='Choose maintenance date' />
+              <DateTimeFieldTrigger square aria-label='Choose maintenance date'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
             </PopoverTrigger>
             <PopoverContent>
               <DateTimeFieldCalendar aria-label='Choose maintenance date'>
                 <CalendarHeader>
-                  <CalendarPrevButton aria-label='Previous month' />
+                  <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                   </CalendarHeading>
-                  <CalendarNextButton aria-label='Next month' />
+                  <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                 </CalendarHeader>
                 <CalendarContent>
                   <CalendarDays>

@@ -1,0 +1,8 @@
+.markToggle[data-pressed='true'] {
+  --button-color: var(--label-primary);
+  --button-color-hover: var(--label-primary);
+  --button-color-active: var(--label-primary);
+  --button-background-color: var(--fills-primary);
+  --button-background-color-hover: var(--fills-primary-hover);
+  --button-background-color-active: var(--fills-primary-active);
+}

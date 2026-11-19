@@ -2,6 +2,7 @@ import {
   Button,
   Fieldset,
   FieldsetLegend,
+  Icon,
   Label,
   NumberField,
   NumberFieldDecrementButton,
@@ -14,6 +15,7 @@ import {
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
+import { MinusIcon, PlusIcon } from '@vega-ui/icons';
 import { FormEvent, useId, useState } from 'react';
 
 export default function UseOrganizationDefaults() {
@@ -46,9 +48,9 @@ export default function UseOrganizationDefaults() {
         <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
           <Label htmlFor={`${id}-timeout`}>Idle timeout, minutes</Label>
           <NumberField min={5} max={720} step={5} defaultValue={30}>
-            <NumberFieldDecrementButton aria-label='Decrease by 5 minutes' />
+            <NumberFieldDecrementButton square aria-label='Decrease by 5 minutes'><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
             <NumberFieldInput id={`${id}-timeout`} name='idleTimeout' />
-            <NumberFieldIncrementButton aria-label='Increase by 5 minutes' />
+            <NumberFieldIncrementButton square aria-label='Increase by 5 minutes'><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
           </NumberField>
         </div>
         <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>

@@ -8,7 +8,7 @@ A caption names the table, column headings use `scope='col'` and the first cell 
 
 <!-- example: table/plan-comparison-table.tsx -->
 ```tsx
-import { Check, Minus } from '@vega-ui/icons';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 import {
   Icon,
   Table,
@@ -56,7 +56,7 @@ export default function PlanComparisonTable() {
 
                 return (
                   <TableData key={plans[index]}>
-                    <Icon size='sm' aria-hidden='true'>{value ? <Check /> : <Minus />}</Icon>
+                    <Icon size='sm' aria-hidden='true'>{value ? <CheckIcon /> : <MinusIcon />}</Icon>
                     <VisuallyHidden>{value ? 'Included' : 'Not included'}</VisuallyHidden>
                   </TableData>
                 );
@@ -147,7 +147,7 @@ The sort column and direction live in state; each sortable heading contains a re
 
 <!-- example: table/sortable-columns.tsx -->
 ```tsx
-import { ArrowDown, ArrowUp, ArrowUpDown } from '@vega-ui/icons';
+import { ArrowDownIcon, ArrowUpDownIcon, ArrowUpIcon } from '@vega-ui/icons';
 import {
   Button,
   Icon,
@@ -213,9 +213,9 @@ export default function SortableColumns() {
             <TableHeading scope='col'>Invoice</TableHeading>
             {columns.map((column) => {
               const active = column.key === sortKey;
-              let icon = <ArrowUpDown />;
+              let icon = <ArrowUpDownIcon />;
               if (active) {
-                icon = direction === 'ascending' ? <ArrowUp /> : <ArrowDown />;
+                icon = direction === 'ascending' ? <ArrowUpIcon /> : <ArrowDownIcon />;
               }
 
               return (
@@ -269,6 +269,7 @@ import {
   TableHeading,
   TableRow,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 import { FormEvent, useState } from 'react';
 
 const members = [
@@ -313,8 +314,8 @@ export default function RowSelectionForm() {
                 <Checkbox>
                   <CheckboxInput aria-label='Select all members' checked={allSelected} indeterminate={someSelected} onChange={toggleAll} />
                   <CheckboxIndicator>
-                    <CheckboxCheckedIcon />
-                    <CheckboxIndeterminateIcon />
+                    <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+                    <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
                   </CheckboxIndicator>
                 </Checkbox>
               </TableHeading>
@@ -335,7 +336,7 @@ export default function RowSelectionForm() {
                       onChange={() => toggle(member.id)}
                     />
                     <CheckboxIndicator>
-                      <CheckboxCheckedIcon />
+                      <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
                     </CheckboxIndicator>
                   </Checkbox>
                 </TableData>
@@ -372,7 +373,6 @@ import {
   DialogTrigger,
   Heading,
   Icon,
-  IconButton,
   Table,
   TableBody,
   TableData,
@@ -401,14 +401,15 @@ export default function BillingTableInsideADialog() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
           <Heading id={titleId} as='h2' size={4} fontWeight={600}>October usage charges</Heading>
           <DialogClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </DialogClose>
         </div>
         <div role='region' aria-labelledby={titleId} tabIndex={0} style={{ maxHeight: 280, overflowY: 'auto' }}>

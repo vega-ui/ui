@@ -14,8 +14,9 @@ import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleIconButton,
+  PasswordFieldToggle,
 } from '@vega-ui/react';
+import { EyeIcon, EyeOffIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 export default function SignInPassword() {
@@ -26,10 +27,10 @@ export default function SignInPassword() {
       <Label htmlFor={id}>Password</Label>
       <PasswordField>
         <PasswordFieldInput id={id} name='password' autoComplete='current-password' />
-        <PasswordFieldToggleIconButton aria-label='Show password'>
-          <PasswordFieldShownIcon />
-          <PasswordFieldHiddenIcon />
-        </PasswordFieldToggleIconButton>
+        <PasswordFieldToggle square aria-label='Show password'>
+          <PasswordFieldShownIcon><EyeIcon /></PasswordFieldShownIcon>
+          <PasswordFieldHiddenIcon><EyeOffIcon /></PasswordFieldHiddenIcon>
+        </PasswordFieldToggle>
       </PasswordField>
     </div>
   );
@@ -52,10 +53,10 @@ import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleIconButton,
+  PasswordFieldToggle,
   Text,
 } from '@vega-ui/react';
-import { CheckIcon, CircleIcon } from '@vega-ui/icons';
+import { CheckIcon, CircleIcon, EyeIcon, EyeOffIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const RULES = [
@@ -84,10 +85,10 @@ export default function NewPasswordChecklist() {
             aria-describedby={rulesId}
             onChange={(event) => setPassword(event.currentTarget.value)}
           />
-          <PasswordFieldToggleIconButton aria-label='Show password'>
-            <PasswordFieldShownIcon />
-            <PasswordFieldHiddenIcon />
-          </PasswordFieldToggleIconButton>
+          <PasswordFieldToggle square aria-label='Show password'>
+            <PasswordFieldShownIcon><EyeIcon /></PasswordFieldShownIcon>
+            <PasswordFieldHiddenIcon><EyeOffIcon /></PasswordFieldHiddenIcon>
+          </PasswordFieldToggle>
         </PasswordField>
       </div>
       <ul id={rulesId} style={{ display: 'grid', gap: 'var(--spacing-3)', margin: 0, padding: 0, listStyle: 'none' }}>
@@ -132,8 +133,9 @@ import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleIconButton,
+  PasswordFieldToggle,
 } from '@vega-ui/react';
+import { EyeIcon, EyeOffIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 export default function OneToggleForTwoFields() {
@@ -146,10 +148,10 @@ export default function OneToggleForTwoFields() {
         <Label htmlFor={`${id}-new`}>New password</Label>
         <PasswordField shown={shown} onChangeShown={setShown}>
           <PasswordFieldInput id={`${id}-new`} autoComplete='new-password' />
-          <PasswordFieldToggleIconButton aria-label='Show passwords'>
-            <PasswordFieldShownIcon />
-            <PasswordFieldHiddenIcon />
-          </PasswordFieldToggleIconButton>
+          <PasswordFieldToggle square aria-label='Show passwords'>
+            <PasswordFieldShownIcon><EyeIcon /></PasswordFieldShownIcon>
+            <PasswordFieldHiddenIcon><EyeOffIcon /></PasswordFieldHiddenIcon>
+          </PasswordFieldToggle>
         </PasswordField>
       </div>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
@@ -179,11 +181,12 @@ import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleIconButton,
+  PasswordFieldToggle,
   Text,
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
+import { EyeIcon, EyeOffIcon } from '@vega-ui/icons';
 import { FormEvent, useId, useState } from 'react';
 
 export default function SignInForm() {
@@ -211,10 +214,10 @@ export default function SignInForm() {
         <Label htmlFor={`${id}-password`}>Password</Label>
         <PasswordField shown={shown} onChangeShown={setShown}>
           <PasswordFieldInput id={`${id}-password`} name='password' autoComplete='current-password' required />
-          <PasswordFieldToggleIconButton aria-label='Show password'>
-            <PasswordFieldShownIcon />
-            <PasswordFieldHiddenIcon />
-          </PasswordFieldToggleIconButton>
+          <PasswordFieldToggle square aria-label='Show password'>
+            <PasswordFieldShownIcon><EyeIcon /></PasswordFieldShownIcon>
+            <PasswordFieldHiddenIcon><EyeOffIcon /></PasswordFieldHiddenIcon>
+          </PasswordFieldToggle>
         </PasswordField>
       </div>
       <Button type='submit' style={{ marginBlockStart: 'var(--spacing-4)' }}>Sign in</Button>
@@ -243,16 +246,15 @@ import {
   Heading,
   HelperText,
   Icon,
-  IconButton,
   Label,
   PasswordField,
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleIconButton,
+  PasswordFieldToggle,
   Text,
 } from '@vega-ui/react';
-import { XIcon } from '@vega-ui/icons';
+import { EyeIcon, EyeOffIcon, XIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 export default function ConfirmInDialog() {
@@ -288,14 +290,15 @@ export default function ConfirmInDialog() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
             <Heading id={`${id}-title`} as='h2' size={4} fontWeight={600}>Confirm it’s you</Heading>
             <DialogClose asChild>
-              <IconButton
+              <Button
+                square
                 aria-label='Close'
                 variant='secondary'
                 appearance='ghost'
-                style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+                style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
               >
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DialogClose>
           </div>
           <Text id={`${id}-text`} size={3} style={{ color: 'var(--label-secondary)', marginBlockStart: 'var(--spacing-2)' }}>
@@ -314,10 +317,10 @@ export default function ConfirmInDialog() {
                   aria-invalid={error !== ''}
                   aria-describedby={`${id}-error`}
                 />
-                <PasswordFieldToggleIconButton aria-label='Show password'>
-                  <PasswordFieldShownIcon />
-                  <PasswordFieldHiddenIcon />
-                </PasswordFieldToggleIconButton>
+                <PasswordFieldToggle square aria-label='Show password'>
+                  <PasswordFieldShownIcon><EyeIcon /></PasswordFieldShownIcon>
+                  <PasswordFieldHiddenIcon><EyeOffIcon /></PasswordFieldHiddenIcon>
+                </PasswordFieldToggle>
               </PasswordField>
               <HelperText id={`${id}-error`} invalid>{error}</HelperText>
             </div>
@@ -353,8 +356,9 @@ import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleIconButton,
+  PasswordFieldToggle,
 } from '@vega-ui/react';
+import { EyeIcon, EyeOffIcon } from '@vega-ui/icons';
 import { FormEvent, useId, useState } from 'react';
 
 export default function ConfirmPasswordMismatch() {
@@ -381,10 +385,10 @@ export default function ConfirmPasswordMismatch() {
             value={password}
             onChange={(event) => setPassword(event.currentTarget.value)}
           />
-          <PasswordFieldToggleIconButton aria-label='Show password'>
-            <PasswordFieldShownIcon />
-            <PasswordFieldHiddenIcon />
-          </PasswordFieldToggleIconButton>
+          <PasswordFieldToggle square aria-label='Show password'>
+            <PasswordFieldShownIcon><EyeIcon /></PasswordFieldShownIcon>
+            <PasswordFieldHiddenIcon><EyeOffIcon /></PasswordFieldHiddenIcon>
+          </PasswordFieldToggle>
         </PasswordField>
       </div>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
@@ -399,10 +403,10 @@ export default function ConfirmPasswordMismatch() {
             onChange={(event) => setConfirmation(event.currentTarget.value)}
             onBlur={() => setTouched(true)}
           />
-          <PasswordFieldToggleIconButton aria-label='Show password'>
-            <PasswordFieldShownIcon />
-            <PasswordFieldHiddenIcon />
-          </PasswordFieldToggleIconButton>
+          <PasswordFieldToggle square aria-label='Show password'>
+            <PasswordFieldShownIcon><EyeIcon /></PasswordFieldShownIcon>
+            <PasswordFieldHiddenIcon><EyeOffIcon /></PasswordFieldHiddenIcon>
+          </PasswordFieldToggle>
         </PasswordField>
         <HelperText id={messageId} invalid={invalid}>
           {invalid ? 'Passwords do not match. Check the last characters.' : 'Type the same password again.'}
@@ -430,8 +434,9 @@ import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleIconButton,
+  PasswordFieldToggle,
 } from '@vega-ui/react';
+import { EyeIcon, EyeOffIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 export default function ManagedBySso() {
@@ -442,10 +447,10 @@ export default function ManagedBySso() {
       <Label htmlFor={id}>Password</Label>
       <PasswordField disabled>
         <PasswordFieldInput id={id} placeholder='Managed by Okta' aria-describedby={`${id}-hint`} />
-        <PasswordFieldToggleIconButton aria-label='Show password'>
-          <PasswordFieldShownIcon />
-          <PasswordFieldHiddenIcon />
-        </PasswordFieldToggleIconButton>
+        <PasswordFieldToggle square aria-label='Show password'>
+          <PasswordFieldShownIcon><EyeIcon /></PasswordFieldShownIcon>
+          <PasswordFieldHiddenIcon><EyeOffIcon /></PasswordFieldHiddenIcon>
+        </PasswordFieldToggle>
       </PasswordField>
       <HelperText id={`${id}-hint`}>Your organization signs you in with Okta. Change the password there.</HelperText>
     </div>
@@ -469,8 +474,9 @@ import {
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleIconButton,
+  PasswordFieldToggle,
 } from '@vega-ui/react';
+import { EyeIcon, EyeOffIcon } from '@vega-ui/icons';
 import { KeyboardEvent, useId, useState } from 'react';
 
 export default function CapsLockWarning() {
@@ -493,10 +499,10 @@ export default function CapsLockWarning() {
           onKeyUp={onKey}
           onBlur={() => setCapsLock(false)}
         />
-        <PasswordFieldToggleIconButton aria-label='Show password'>
-          <PasswordFieldShownIcon />
-          <PasswordFieldHiddenIcon />
-        </PasswordFieldToggleIconButton>
+        <PasswordFieldToggle square aria-label='Show password'>
+          <PasswordFieldShownIcon><EyeIcon /></PasswordFieldShownIcon>
+          <PasswordFieldHiddenIcon><EyeOffIcon /></PasswordFieldHiddenIcon>
+        </PasswordFieldToggle>
       </PasswordField>
       <HelperText id={`${id}-caps`} aria-live='polite'>
         {capsLock ? 'Caps Lock is on.' : ''}

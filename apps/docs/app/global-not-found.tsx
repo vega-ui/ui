@@ -5,6 +5,7 @@ import { NotFound } from '@/components/NotFound';
 import { NotFoundChrome, NotFoundTitle } from '@/components/NotFoundChrome';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
+import { SiteThemeProvider } from '@/components/SiteThemeProvider';
 import { getDictionary, type Locale } from '@/lib/i18n';
 
 export const metadata = { ...getRootMetadata('en'), title: null };
@@ -33,9 +34,11 @@ export default function GlobalNotFound() {
       </head>
       <body>
         <script dangerouslySetInnerHTML={{ __html: localeScript }} />
+        <SiteThemeProvider>
           <NotFoundChrome chrome={{ en: <Header locale='en' />, ru: <Header locale='ru' /> }} />
-        <NotFound />
-        <NotFoundChrome chrome={{ en: <Footer locale='en' />, ru: <Footer locale='ru' /> }} />
+          <NotFound />
+          <NotFoundChrome chrome={{ en: <Footer locale='en' />, ru: <Footer locale='ru' /> }} />
+        </SiteThemeProvider>
       </body>
     </html>
   );

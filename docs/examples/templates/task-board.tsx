@@ -37,7 +37,7 @@ import {
   DateField,
   DateFieldCalendar,
   DateFieldInput,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
   Dialog,
   DialogClose,
   DialogContent,
@@ -47,7 +47,6 @@ import {
   Heading,
   HelperText,
   Icon,
-  IconButton,
   Label,
   Popover,
   PopoverContent,
@@ -66,7 +65,7 @@ import {
   TextFieldInput,
   VisuallyHidden,
 } from '@vega-ui/react';
-import { CalendarDays as CalendarIcon, ChevronDown, ChevronLeft, ChevronRight, ListChecks, Plus, SearchIcon, XIcon } from '@vega-ui/icons';
+import { CalendarDaysIcon, CalendarIcon, CheckIcon, ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, ListChecksIcon, PlusIcon, SearchIcon, XIcon } from '@vega-ui/icons';
 import './task-board.css';
 
 type Status = 'todo' | 'progress' | 'review' | 'done';
@@ -123,7 +122,7 @@ const initialTasks: Task[] = [
 const dueFormat = new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', timeZone: 'UTC' });
 
 const field = { display: 'grid', gridTemplateColumns: 'minmax(0, 1fr)', gap: 'var(--spacing-3)', alignContent: 'start' } as const;
-const closeButton = { flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties;
+const closeButton = { flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties;
 const dialogHeader = { display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' } as const;
 const ghost = { variant: 'secondary', appearance: 'ghost' } as const;
 const quiet = { variant: 'secondary', appearance: 'transparent' } as const;
@@ -324,21 +323,22 @@ export default function TaskBoard() {
             <span id={`${id}-${task.id}-meta`} style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 'var(--spacing-1) var(--spacing-6)', flex: 1, minWidth: 0 }}>
               {task.due !== '' && (
                 <Text size={2} style={{ ...meta, color: overdue ? 'var(--color-error)' : 'var(--label-secondary)', fontWeight: overdue ? 500 : undefined }}>
-                  <Icon size='xs' aria-hidden='true'><CalendarIcon /></Icon>
+                  <Icon size='xs' aria-hidden='true'><CalendarDaysIcon /></Icon>
                   <VisuallyHidden>{overdue ? 'Overdue, was due' : 'Due'}</VisuallyHidden>
                   {dueLabel(task.due)}
                 </Text>
               )}
               {task.subtasks.total > 0 && (
                 <Text size={2} style={{ ...meta, color: 'var(--label-secondary)' }}>
-                  <Icon size='xs' aria-hidden='true'><ListChecks /></Icon>
+                  <Icon size='xs' aria-hidden='true'><ListChecksIcon /></Icon>
                   <VisuallyHidden>Subtasks</VisuallyHidden>
                   {`${task.subtasks.done}/${task.subtasks.total}`}
                 </Text>
               )}
             </span>
             <span style={{ display: 'flex', gap: 'var(--spacing-1)', flexShrink: 0, marginInlineStart: 'auto' }}>
-              <IconButton
+              <Button
+                square
                 size='xs'
                 type='button'
                 {...quiet}
@@ -347,9 +347,10 @@ export default function TaskBoard() {
                 aria-label={prev ? `Move to ${prev.title}` : 'Already in the first column'}
                 onClick={() => move(task, -1, 'prev')}
               >
-                <Icon size='sm' className='tb-mirror'><ChevronLeft /></Icon>
-              </IconButton>
-              <IconButton
+                <Icon size='sm' className='tb-mirror'><ChevronLeftIcon /></Icon>
+              </Button>
+              <Button
+                square
                 size='xs'
                 type='button'
                 {...quiet}
@@ -358,8 +359,8 @@ export default function TaskBoard() {
                 aria-label={next ? `Move to ${next.title}` : 'Already in the last column'}
                 onClick={() => move(task, 1, 'next')}
               >
-                <Icon size='sm' className='tb-mirror'><ChevronRight /></Icon>
-              </IconButton>
+                <Icon size='sm' className='tb-mirror'><ChevronRightIcon /></Icon>
+              </Button>
             </span>
           </div>
         </article>
@@ -395,7 +396,7 @@ export default function TaskBoard() {
               <CollapsibleTrigger className='tb-toggle'>
                 <Text size={3} fontWeight={600}>{title}</Text>
                 {count}
-                <Icon size='sm' aria-hidden='true' className='tb-chevron' style={{ marginInlineStart: 'auto' }}><ChevronDown /></Icon>
+                <Icon size='sm' aria-hidden='true' className='tb-chevron' style={{ marginInlineStart: 'auto' }}><ChevronDownIcon /></Icon>
               </CollapsibleTrigger>
             </h2>
             <CollapsibleContent>
@@ -427,7 +428,7 @@ export default function TaskBoard() {
         <Dialog open={createOpen} onChangeOpen={changeCreateOpen}>
           <DialogTrigger asChild>
             <Button size='xs' style={{ gap: 'var(--spacing-2)' }}>
-              <Icon size='xs' aria-hidden='true'><Plus strokeWidth={2.5} /></Icon>
+              <Icon size='xs' aria-hidden='true'><PlusIcon strokeWidth={2.5} /></Icon>
               New task
             </Button>
           </DialogTrigger>
@@ -435,9 +436,9 @@ export default function TaskBoard() {
             <div style={dialogHeader}>
               <Heading id={`${id}-create-title`} as='h2' size={4} fontWeight={600}>New task</Heading>
               <DialogClose asChild>
-                <IconButton size='xs' aria-label='Close' {...ghost} style={closeButton}>
+                <Button square size='xs' aria-label='Close' {...ghost} style={closeButton}>
                   <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-                </IconButton>
+                </Button>
               </DialogClose>
             </div>
             <form noValidate onSubmit={createTask} style={{ display: 'grid', gap: 'var(--spacing-8)', marginBlockStart: 'var(--spacing-10)' }}>
@@ -466,7 +467,7 @@ export default function TaskBoard() {
                   <Select value={draftStatus} onChangeValue={(value) => setDraftStatus(value ?? 'todo')}>
                     <SelectCombobox id={`${id}-status`}>
                       <SelectValue />
-                      <SelectIcon />
+                      <SelectIcon><ChevronDownIcon /></SelectIcon>
                     </SelectCombobox>
                     <SelectListbox>
                       {columns.map((column) => <SelectOption key={column.status} value={column.status}>{column.title}</SelectOption>)}
@@ -478,7 +479,7 @@ export default function TaskBoard() {
                   <Select value={draftAssignee} onChangeValue={(value) => setDraftAssignee(value ?? 'ana')}>
                     <SelectCombobox id={`${id}-assignee`}>
                       <SelectValue />
-                      <SelectIcon />
+                      <SelectIcon><ChevronDownIcon /></SelectIcon>
                     </SelectCombobox>
                     <SelectListbox>
                       {Object.entries(people).map(([key, person]) => <SelectOption key={key} value={key}>{person.name}</SelectOption>)}
@@ -505,17 +506,17 @@ export default function TaskBoard() {
                   />
                   <Popover placement='bottom-end'>
                     <PopoverTrigger asChild>
-                      <DateFieldTriggerIconButton aria-label='Choose due date' />
+                      <DateFieldTrigger square aria-label='Choose due date'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
                     </PopoverTrigger>
                     <PopoverContent>
                       <DateFieldCalendar aria-label='Choose due date'>
                         <CalendarHeader>
-                          <CalendarPrevButton aria-label='Previous month' />
+                          <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                           <CalendarHeading>
                             <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                             <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                           </CalendarHeading>
-                          <CalendarNextButton aria-label='Next month' />
+                          <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                         </CalendarHeader>
                         <CalendarContent>
                           <CalendarDays>
@@ -558,7 +559,7 @@ export default function TaskBoard() {
                     <Checkbox key={label}>
                       <CheckboxInput name='labels' value={label} />
                       <CheckboxIndicator>
-                        <CheckboxCheckedIcon />
+                        <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
                       </CheckboxIndicator>
                       {labels[label].title}
                     </Checkbox>

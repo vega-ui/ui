@@ -22,7 +22,7 @@
 - `MenuRadioGroup`: the group that holds the value of its radio items.
 - `MenuRadioItem`: one choice of a radio group.
 - `MenuGroup`: a group of related items.
-- `MenuItemIndicator`: the check mark of a checkbox or radio item.
+- `MenuItemIndicator`: the mark of a checkbox or radio item, such as a check mark you pass as children.
 - `MenuSubmenu`: a submenu, with no element of its own.
 - `MenuSubmenuTrigger`: the item that opens a submenu.
 
@@ -125,13 +125,13 @@ Also accepts all `<div>` attributes.
 | `size` | `IconSize` | — | No | Predefined size token for the icon. Can be overridden by explicit width and height. |
 | `ref` | `Ref<SVGSVGElement>` | — | No | Ref to the SVG element |
 | `strokeWidth` | `number` | — | No | Stroke thickness for SVG lines and shapes (in px or pt). |
-| `children` | `ReactNode` | — | No | Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
+| `children` | `ReactNode` | — | Yes | Icon content. Accepts: icons from `@vega-ui/icons`; custom inline SVG; third-party icon components (e.g. Lucide, Tabler) |
 
 Also accepts all HTML attributes.
 <!-- AUTO-GENERATED:PART_API:MenuItemIndicator:end -->
 
 - Its size follows the size of the menu: `xs` in a `sm` menu, `sm` in a `md` menu, `md` in a `lg` menu. Pass `size` to change it.
-- Without children it renders a check icon; pass another icon, such as a dot for radio items, as its children.
+- It draws no icon of its own: pass one as its children, such as a check mark, or a dot for radio items.
 
 ### `MenuSubmenu`
 

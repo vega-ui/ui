@@ -16,7 +16,6 @@ import {
   Heading,
   HelperText,
   Icon,
-  IconButton,
   Label,
   Separator,
   Switch,
@@ -27,7 +26,7 @@ import {
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
-import { XIcon } from '@vega-ui/icons';
+import { TriangleAlertIcon, XIcon } from '@vega-ui/icons';
 
 const ACCOUNT_EMAIL = 'elena.moreau@northwind.io';
 const BIO_LIMIT = 160;
@@ -41,7 +40,7 @@ const notifications = [
 
 const field = { display: 'grid', gap: 'var(--spacing-3)', alignContent: 'start' } as const;
 const card = { alignItems: 'stretch', gap: 'var(--spacing-12)', minWidth: 0, flex: '999 1 420px' } as const;
-const closeButton = { flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties;
+const closeButton = { flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties;
 
 const destructive = {
   '--button-background-color': 'var(--color-red-accent-500)',
@@ -218,7 +217,7 @@ export default function AccountSettings() {
         <Card style={{ ...card, gap: 'var(--spacing-8)', '--card-border-color': 'color-mix(in oklch, var(--color-error) 45%, transparent)' } as CSSProperties} aria-labelledby={`${id}-danger`}>
           {deleted && (
             <Alert variant='warning'>
-              <AlertIcon />
+              <AlertIcon><TriangleAlertIcon /></AlertIcon>
               <AlertMain>
                 <AlertTitle>Deletion scheduled</AlertTitle>
                 <AlertContent>Your account will be deleted in 30 days. Sign in before then to cancel.</AlertContent>
@@ -236,9 +235,9 @@ export default function AccountSettings() {
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
                 <Heading id={`${id}-dialog-title`} as='h2' size={4} fontWeight={600}>Delete your account?</Heading>
                 <DialogClose asChild>
-                  <IconButton size='xs' aria-label='Close' variant='secondary' appearance='ghost' style={closeButton}>
+                  <Button square size='xs' aria-label='Close' variant='secondary' appearance='ghost' style={closeButton}>
                     <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-                  </IconButton>
+                  </Button>
                 </DialogClose>
               </div>
               <Text id={`${id}-dialog-description`} size={3} style={{ display: 'block', marginBlockStart: 'var(--spacing-4)', color: 'var(--label-secondary)' }}>

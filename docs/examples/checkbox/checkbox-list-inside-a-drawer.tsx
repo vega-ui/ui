@@ -14,9 +14,8 @@ import {
   FieldsetLegend,
   Heading,
   Icon,
-  IconButton,
 } from '@vega-ui/react';
-import { XIcon } from '@vega-ui/icons';
+import { CheckIcon, MinusIcon, XIcon } from '@vega-ui/icons';
 
 const statuses = [
   { value: 'open', label: 'Open' },
@@ -42,14 +41,15 @@ export default function CheckboxListInsideADrawer() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
           <Heading id='issue-filters-title' as='h2' size={4} fontWeight={600}>Filter issues</Heading>
           <DrawerClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </DrawerClose>
         </div>
         <form method='dialog' onSubmit={handleSubmit} style={{ display: 'grid', gap: 'var(--spacing-12)', marginBlockStart: 'var(--spacing-8)' }}>
@@ -60,8 +60,8 @@ export default function CheckboxListInsideADrawer() {
                 <Checkbox key={status.value}>
                   <CheckboxInput name='status' value={status.value} defaultChecked={applied.includes(status.value)} />
                   <CheckboxIndicator>
-                    <CheckboxCheckedIcon />
-                    <CheckboxIndeterminateIcon />
+                    <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+                    <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
                   </CheckboxIndicator>
                   {status.label}
                 </Checkbox>

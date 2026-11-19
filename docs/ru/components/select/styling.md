@@ -120,6 +120,7 @@ import {
   SelectOption,
   SelectValue,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 
 export default function RootSizeOverride() {
   return (
@@ -129,7 +130,7 @@ export default function RootSizeOverride() {
     >
       <SelectCombobox aria-label='Sort orders by'>
         <SelectValue />
-        <SelectIcon />
+        <SelectIcon><ChevronDownIcon /></SelectIcon>
       </SelectCombobox>
       <SelectListbox>
         <SelectOption value='newest'>Newest first</SelectOption>
@@ -157,6 +158,7 @@ import {
   SelectOption,
   SelectValue,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 
 export default function ValueAndPlaceholderColorOverride() {
   return (
@@ -169,7 +171,7 @@ export default function ValueAndPlaceholderColorOverride() {
     >
       <SelectCombobox aria-label='Status'>
         <SelectValue placeholder='Any status' />
-        <SelectIcon />
+        <SelectIcon><ChevronDownIcon /></SelectIcon>
       </SelectCombobox>
       <SelectListbox>
         <SelectOption value='open'>Open</SelectOption>
@@ -197,13 +199,14 @@ import {
   SelectOption,
   SelectValue,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 
 export default function IconAndListboxOverride() {
   return (
     <Select defaultValue='week' style={{ width: 200 }}>
       <SelectCombobox aria-label='Date range'>
         <SelectValue />
-        <SelectIcon style={{ '--select-icon-color': 'var(--color-primary-600)' } as CSSProperties} />
+        <SelectIcon style={{ '--select-icon-color': 'var(--color-primary-600)' } as CSSProperties}><ChevronDownIcon /></SelectIcon>
       </SelectCombobox>
       <SelectListbox style={{ '--select-listbox-br-ratio': 0.5 } as CSSProperties}>
         <SelectOption value='today'>Today</SelectOption>

@@ -18,17 +18,18 @@
 
 <!-- example: visually-hidden/icon-only-control-label.tsx -->
 ```tsx
-import { Icon, IconButton, VisuallyHidden } from '@vega-ui/react';
+import { Button, Icon, VisuallyHidden } from '@vega-ui/react';
 import { BellIcon } from '@vega-ui/icons';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 
 export default function IconOnlyControlLabel() {
   const [unread, setUnread] = useState(4);
+  const labelId = useId();
 
   return (
-    <IconButton type='button' variant='secondary' appearance='ghost' onClick={() => setUnread(0)} style={{ position: 'relative' }}>
+    <Button square aria-labelledby={labelId} type='button' variant='secondary' appearance='ghost' onClick={() => setUnread(0)} style={{ position: 'relative' }}>
       <Icon><BellIcon /></Icon>
-      <VisuallyHidden>
+      <VisuallyHidden id={labelId}>
         Notifications, {unread} unread
       </VisuallyHidden>
       {unread > 0 && (
@@ -53,7 +54,7 @@ export default function IconOnlyControlLabel() {
           {unread}
         </span>
       )}
-    </IconButton>
+    </Button>
   );
 }
 ```

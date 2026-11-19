@@ -4,7 +4,7 @@ How the behavior of composite components is written on `@vega-ui/core` and `@veg
 
 ## When a Component Needs a Widget
 
-A component gets a widget when it has behavior the native element does not give: a focus that moves between items, a selection, a popup the keyboard drives, a mask over a text field, a drag. `Listbox`, `Select`, `Grid`, the pickers, `Calendar`, the fields, `Slider`, `Sheet` and `Tooltip` have one. A component that is close to its native element, like `Button` or `Switch`, has none: the browser already does what it should.
+A component gets a widget when it has behavior the native element does not give: a focus that moves between items, a selection, a popup the keyboard drives, a mask over a text field, a drag. `Listbox`, `Select`, `Grid`, the pickers, `Calendar`, the fields, `Slider`, `Sheet`, `Toolbar`, `Toggle`, `ToggleGroup` and `Tooltip` have one. A component that is close to its native element, like `Button` or `Switch`, has none: the browser already does what it should.
 
 The widget is plain TypeScript with no React and no DOM. It runs and is tested in node, and an adapter for another framework can reuse it as it is.
 
@@ -245,7 +245,7 @@ An input is a value, never a string: `key.enter`, `key.with(key.a, mod.mod)`, `n
 
 ### Commands
 
-A command is an input a component sends itself, from its own event handler or an imperative method:
+A command is an input a component sends itself from an imperative method. A button that acts on the widget is not a command: register it as a part with `handle.part` and step on `pointer.press` with that `part`, like the previous and next buttons of the calendar.
 
 ```ts
 export const TOGGLE_ITEM = command('toggleItem')

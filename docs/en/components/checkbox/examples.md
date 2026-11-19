@@ -17,6 +17,7 @@ import {
   Fieldset,
   FieldsetLegend,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 const options = [
   { value: 'mentions', label: 'Someone mentions me in a comment', checked: true },
@@ -33,8 +34,8 @@ export default function LabeledCheckbox() {
           <Checkbox key={option.value}>
             <CheckboxInput name='notifications' value={option.value} defaultChecked={option.checked} />
             <CheckboxIndicator>
-              <CheckboxCheckedIcon />
-              <CheckboxIndeterminateIcon />
+              <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+              <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
             </CheckboxIndicator>
             {option.label}
           </Checkbox>
@@ -63,6 +64,7 @@ import {
   CheckboxInput,
   Text,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 const permissions = ['View invoices', 'Download invoices', 'Edit payment methods', 'Cancel subscription'];
 
@@ -93,8 +95,8 @@ export default function IndeterminateParentSelector() {
       <Checkbox style={{ fontWeight: 600 }}>
         <CheckboxInput checked={allSelected} indeterminate={someSelected} onChange={toggleAll} />
         <CheckboxIndicator>
-          <CheckboxCheckedIcon />
-          <CheckboxIndeterminateIcon />
+          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+          <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
         </CheckboxIndicator>
         Billing
       </Checkbox>
@@ -103,8 +105,8 @@ export default function IndeterminateParentSelector() {
           <Checkbox key={permission}>
             <CheckboxInput checked={selected.includes(permission)} onChange={() => toggle(permission)} />
             <CheckboxIndicator>
-              <CheckboxCheckedIcon />
-              <CheckboxIndeterminateIcon />
+              <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+              <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
             </CheckboxIndicator>
             {permission}
           </Checkbox>
@@ -139,6 +141,7 @@ import {
   FieldsetLegend,
   Text,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 const topics = [
   { value: 'releases', label: 'Product releases' },
@@ -168,8 +171,8 @@ export default function FormDataSubmission() {
               <Checkbox key={topic.value}>
                 <CheckboxInput name='topics' value={topic.value} defaultChecked={topic.value === 'security'} />
                 <CheckboxIndicator>
-                  <CheckboxCheckedIcon />
-                  <CheckboxIndeterminateIcon />
+                  <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+                  <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
                 </CheckboxIndicator>
                 {topic.label}
               </Checkbox>
@@ -179,8 +182,8 @@ export default function FormDataSubmission() {
         <Checkbox>
           <CheckboxInput name='summary' value='weekly' />
           <CheckboxIndicator>
-            <CheckboxCheckedIcon />
-            <CheckboxIndeterminateIcon />
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+            <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
           </CheckboxIndicator>
           Weekly summary instead of single emails
         </Checkbox>
@@ -222,9 +225,8 @@ import {
   FieldsetLegend,
   Heading,
   Icon,
-  IconButton,
 } from '@vega-ui/react';
-import { XIcon } from '@vega-ui/icons';
+import { CheckIcon, MinusIcon, XIcon } from '@vega-ui/icons';
 
 const statuses = [
   { value: 'open', label: 'Open' },
@@ -250,14 +252,15 @@ export default function CheckboxListInsideADrawer() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
           <Heading id='issue-filters-title' as='h2' size={4} fontWeight={600}>Filter issues</Heading>
           <DrawerClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </DrawerClose>
         </div>
         <form method='dialog' onSubmit={handleSubmit} style={{ display: 'grid', gap: 'var(--spacing-12)', marginBlockStart: 'var(--spacing-8)' }}>
@@ -268,8 +271,8 @@ export default function CheckboxListInsideADrawer() {
                 <Checkbox key={status.value}>
                   <CheckboxInput name='status' value={status.value} defaultChecked={applied.includes(status.value)} />
                   <CheckboxIndicator>
-                    <CheckboxCheckedIcon />
-                    <CheckboxIndeterminateIcon />
+                    <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+                    <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
                   </CheckboxIndicator>
                   {status.label}
                 </Checkbox>
@@ -307,6 +310,7 @@ import {
   TableRow,
   Text,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 const invoices = [
   { id: 'INV-1042', customer: 'Northwind Traders', amount: '$1,240.00' },
@@ -350,8 +354,8 @@ export default function TableRowSelection() {
               <Checkbox size='sm'>
                 <CheckboxInput aria-label='Select all invoices' checked={allSelected} indeterminate={someSelected} onChange={toggleAll} />
                 <CheckboxIndicator>
-                  <CheckboxCheckedIcon />
-                  <CheckboxIndeterminateIcon />
+                  <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+                  <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
                 </CheckboxIndicator>
               </Checkbox>
             </TableHeading>
@@ -367,8 +371,8 @@ export default function TableRowSelection() {
                 <Checkbox size='sm'>
                   <CheckboxInput aria-label={`Select ${invoice.id}`} checked={selected.includes(invoice.id)} onChange={() => toggle(invoice.id)} />
                   <CheckboxIndicator>
-                    <CheckboxCheckedIcon />
-                    <CheckboxIndeterminateIcon />
+                    <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+                    <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
                   </CheckboxIndicator>
                 </Checkbox>
               </TableData>
@@ -403,6 +407,7 @@ import {
   CheckboxInput,
   HelperText,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 export default function RequiredAgreementCheckbox() {
   const [error, setError] = useState('');
@@ -438,8 +443,8 @@ export default function RequiredAgreementCheckbox() {
             onChange={handleChange}
           />
           <CheckboxIndicator>
-            <CheckboxCheckedIcon />
-            <CheckboxIndeterminateIcon />
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+            <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
           </CheckboxIndicator>
           I agree to the Terms of Service
         </Checkbox>
@@ -474,6 +479,7 @@ import {
   FieldsetLegend,
   HelperText,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 const channels = [
   { value: 'email', label: 'Email' },
@@ -489,8 +495,8 @@ export default function DisabledByFieldset() {
       <Checkbox>
         <CheckboxInput checked={useDefaults} onChange={(event) => setUseDefaults(event.currentTarget.checked)} />
         <CheckboxIndicator>
-          <CheckboxCheckedIcon />
-          <CheckboxIndeterminateIcon />
+          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+          <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
         </CheckboxIndicator>
         Use workspace defaults
       </Checkbox>
@@ -501,8 +507,8 @@ export default function DisabledByFieldset() {
             <Checkbox key={channel.value}>
               <CheckboxInput name='channels' value={channel.value} defaultChecked={channel.value === 'email'} />
               <CheckboxIndicator>
-                <CheckboxCheckedIcon />
-                <CheckboxIndeterminateIcon />
+                <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+                <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
               </CheckboxIndicator>
               {channel.label}
             </Checkbox>
@@ -511,8 +517,8 @@ export default function DisabledByFieldset() {
             <Checkbox>
               <CheckboxInput defaultChecked disabled aria-describedby='security-alerts-note' />
               <CheckboxIndicator>
-                <CheckboxCheckedIcon />
-                <CheckboxIndeterminateIcon />
+                <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+                <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
               </CheckboxIndicator>
               Security alerts
             </Checkbox>
@@ -541,6 +547,7 @@ import {
   CheckboxIndicator,
   CheckboxInput,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 export default function LongLabelWrapping() {
   return (
@@ -548,16 +555,16 @@ export default function LongLabelWrapping() {
       <Checkbox style={{ alignItems: 'flex-start' }}>
         <CheckboxInput name='data-processing' />
         <CheckboxIndicator style={{ marginBlockStart: 'var(--spacing-1)' }}>
-          <CheckboxCheckedIcon />
-          <CheckboxIndeterminateIcon />
+          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+          <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
         </CheckboxIndicator>
         I consent to the processing of my personal data by Acme Analytics GmbH and its sub-processors in the European Economic Area for the purposes described in the Data Processing Agreement.
       </Checkbox>
       <Checkbox style={{ alignItems: 'flex-start' }}>
         <CheckboxInput name='export-recipient' />
         <CheckboxIndicator style={{ marginBlockStart: 'var(--spacing-1)' }}>
-          <CheckboxCheckedIcon />
-          <CheckboxIndeterminateIcon />
+          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+          <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
         </CheckboxIndicator>
         <span style={{ minWidth: 0, overflowWrap: 'anywhere' }}>
           Send the export to finance-reporting-quarterly-archive@northwind-traders.example.com
@@ -584,6 +591,7 @@ import {
   CheckboxInput,
   Text,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 const teams = ['billing', 'search', 'auth', 'checkout', 'payments', 'catalog', 'inventory', 'shipping', 'reviews', 'ads', 'email', 'reports'];
 const services = ['api', 'worker', 'web', 'gateway', 'scheduler'];
@@ -620,8 +628,8 @@ export default function ManyOptionsWithSelectAll() {
       <Checkbox style={{ fontWeight: 600 }}>
         <CheckboxInput checked={allSelected} indeterminate={someSelected} onChange={toggleAll} />
         <CheckboxIndicator>
-          <CheckboxCheckedIcon />
-          <CheckboxIndeterminateIcon />
+          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+          <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
         </CheckboxIndicator>
         Restart all deployments
       </Checkbox>
@@ -642,8 +650,8 @@ export default function ManyOptionsWithSelectAll() {
           <Checkbox key={deployment} size='sm'>
             <CheckboxInput checked={selected.has(deployment)} onChange={() => toggle(deployment)} />
             <CheckboxIndicator>
-              <CheckboxCheckedIcon />
-              <CheckboxIndeterminateIcon />
+              <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+              <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
             </CheckboxIndicator>
             {deployment}
           </Checkbox>

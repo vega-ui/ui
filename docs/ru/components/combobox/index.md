@@ -45,6 +45,7 @@ import {
 <!-- example: combobox/minimal-composition.tsx -->
 ```tsx
 import { Combobox, ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger, Label, ListboxOption, TextField } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const cities = ['Amsterdam', 'Athens', 'Berlin', 'Copenhagen', 'Dublin', 'Lisbon', 'London', 'Madrid', 'Oslo', 'Prague', 'Rome', 'Vienna'];
@@ -60,14 +61,94 @@ export default function MinimalComposition() {
       <Combobox>
         <TextField>
           <ComboboxInput id={id} placeholder='Start typing a city' value={query} onChange={(event) => setQuery(event.target.value)} />
-          <ComboboxTrigger aria-label='Show cities'>
-            <ComboboxIcon />
+          <ComboboxTrigger square aria-label='Show cities'>
+            <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
           </ComboboxTrigger>
         </TextField>
         <ComboboxListbox aria-label='Cities'>
           {matches.map((city) => <ListboxOption key={city} value={city}>{city}</ListboxOption>)}
         </ComboboxListbox>
       </Combobox>
+    </div>
+  );
+}
+```
+<!-- /example -->
+
+## Свой компонент
+
+Минимальная композиция выше показывает части на месте. В приложении соберите их один раз в своём файле, со своим набором иконок, и импортируйте этот компонент везде. `MyCombobox` передаёт свои пропсы в `Combobox`, `id`, `name`, `placeholder` и `text` с `onChangeText` — полю ввода, называет кнопку с шевроном и список через `triggerLabel` и `listLabel`, а дочерние элементы кладёт в список. См. [Рецепты компонентов](../../recipes.md).
+
+<!-- example: combobox/recipe.tsx -->
+```tsx
+import {
+  Combobox,
+  ComboboxIcon,
+  ComboboxInput,
+  ComboboxListbox,
+  ComboboxTrigger,
+  Label,
+  ListboxOption,
+  TextField,
+  type ComboboxProps,
+} from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
+import { useId, useState } from 'react';
+
+interface MyComboboxProps<Value extends string | number = string> extends ComboboxProps<Value> {
+  name?: string
+  placeholder?: string
+  text?: string
+  onChangeText?(text: string): void
+  triggerLabel: string
+  listLabel: string
+}
+
+export function MyCombobox<Value extends string | number = string>({
+  id,
+  name,
+  placeholder,
+  text,
+  onChangeText,
+  triggerLabel,
+  listLabel,
+  children,
+  ...props
+}: MyComboboxProps<Value>) {
+  return (
+    <Combobox {...props}>
+      <TextField>
+        <ComboboxInput id={id} name={name} placeholder={placeholder} value={text} onChange={(event) => onChangeText?.(event.target.value)} />
+        <ComboboxTrigger square aria-label={triggerLabel}>
+          <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
+        </ComboboxTrigger>
+      </TextField>
+      <ComboboxListbox aria-label={listLabel}>{children}</ComboboxListbox>
+    </Combobox>
+  );
+}
+
+const cities = ['Amsterdam', 'Athens', 'Berlin', 'Copenhagen', 'Dublin', 'Lisbon', 'London', 'Madrid', 'Oslo', 'Prague', 'Rome', 'Vienna'];
+
+export default function Recipe() {
+  const id = useId();
+  const [query, setQuery] = useState('');
+  const matches = cities.filter((city) => city.toLowerCase().includes(query.trim().toLowerCase()));
+
+  return (
+    <div style={{ display: 'grid', gap: 'var(--spacing-3)', width: '100%', maxWidth: 280 }}>
+      <Label htmlFor={id}>Destination</Label>
+      <MyCombobox
+        id={id}
+        name='destination'
+        placeholder='Start typing a city'
+        text={query}
+        onChangeText={setQuery}
+        triggerLabel='Show cities'
+        listLabel='Cities'
+      >
+        {matches.map((city) => <ListboxOption key={city} value={city}>{city}</ListboxOption>)}
+      </MyCombobox>
     </div>
   );
 }
@@ -85,7 +166,7 @@ export default function MinimalComposition() {
 ## Необязательные части
 
 - `ComboboxTrigger`: кнопка в поле, которая открывает список без ввода, для пользователей мыши и сенсорного экрана
-- `ComboboxIcon`: шеврон внутри `ComboboxTrigger`, размер которого задаёт поле
+- `ComboboxIcon`: иконка внутри `ComboboxTrigger`, например переданный дочерним элементом шеврон, размер которой задаёт поле
 - `ListboxGroup`: именованная группа вариантов, как `optgroup`
 - `Label`, `HelperText` и другое содержимое поля, размещённое вне корня
 

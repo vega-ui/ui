@@ -9,7 +9,7 @@
 Заметки о композиции:
 
 - Оберните каждую строку в свой `ContextMenu`; внутри `<li>` сделайте областью `<div>`, потому что `MenuContent` рендерится рядом с ней.
-- Положите те же действия в [Menu](../menu/) за `IconButton` «⋯» в строке, с `aria-label`, который называет объект.
+- Положите те же действия в [Menu](../menu/) за `Button` с `square` «⋯» в строке, с `aria-label`, который называет объект.
 - Назовите `MenuContent` по объекту через `aria-label`, а разрушительное действие ставьте последним, после `Separator`.
 
 Компромиссы:
@@ -20,10 +20,10 @@
 ```tsx
 import { useState, type CSSProperties, type ReactNode } from 'react';
 import {
+  Button,
   ContextMenu,
   ContextMenuTrigger,
   Icon,
-  IconButton,
   Menu,
   MenuContent,
   MenuItem,
@@ -116,9 +116,9 @@ export default function FileList() {
                 </div>
                 <Menu placement='bottom-end' size='sm'>
                   <MenuTrigger asChild>
-                    <IconButton size='sm' aria-label={`Actions for ${file.name}`} variant='secondary' appearance='ghost' style={{ flexShrink: 0 }}>
+                    <Button square size='sm' aria-label={`Actions for ${file.name}`} variant='secondary' appearance='ghost' style={{ flexShrink: 0 }}>
                       <Icon><EllipsisIcon /></Icon>
-                    </IconButton>
+                    </Button>
                   </MenuTrigger>
                   <MenuContent>
                     <FileActions onAction={report} />
@@ -171,6 +171,7 @@ import {
   Separator,
   Text,
 } from '@vega-ui/react';
+import { CheckIcon } from '@vega-ui/icons';
 
 const zooms = ['50', '100', '150'];
 
@@ -202,11 +203,11 @@ function ViewItems({ showGrid, snap, zoom, setShowGrid, setSnap, setZoom }: View
   return (
     <>
       <MenuCheckboxItem checked={showGrid} onChangeChecked={setShowGrid}>
-        <MenuItemIndicator />
+        <MenuItemIndicator><CheckIcon /></MenuItemIndicator>
         Show grid
       </MenuCheckboxItem>
       <MenuCheckboxItem checked={snap} onChangeChecked={setSnap}>
-        <MenuItemIndicator />
+        <MenuItemIndicator><CheckIcon /></MenuItemIndicator>
         Snap to grid
       </MenuCheckboxItem>
       <Separator />
@@ -214,7 +215,7 @@ function ViewItems({ showGrid, snap, zoom, setShowGrid, setSnap, setZoom }: View
         <Text id={zoomHeadingId} size={2} fontWeight={500} style={groupHeading}>Zoom</Text>
         {zooms.map((value) => (
           <MenuRadioItem key={value} value={value}>
-            <MenuItemIndicator />
+            <MenuItemIndicator><CheckIcon /></MenuItemIndicator>
             {value}%
           </MenuRadioItem>
         ))}

@@ -23,18 +23,20 @@ import {
   CalendarYearsGrid,
   CalendarYearsScroller,
   CalendarYearsScrollerContent,
+  Icon,
 } from '@vega-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 export default function DenseEmbeddedCalendar() {
   return (
     <Calendar compact size='xs' variant='primary' locale='en-US' defaultValue='2026-11-18'>
       <CalendarHeader>
-        <CalendarPrevButton aria-label='Previous' />
+        <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
         <CalendarHeading>
           <CalendarViewButton view='month'><CalendarMonthLabel format='short' /></CalendarViewButton>
           <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
         </CalendarHeading>
-        <CalendarNextButton aria-label='Next' />
+        <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
       </CalendarHeader>
       <CalendarContent>
         <CalendarDays>

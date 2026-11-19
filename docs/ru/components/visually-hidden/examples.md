@@ -52,17 +52,18 @@ export default function BasicUsage() {
 
 <!-- example: visually-hidden/icon-only-control-label.tsx -->
 ```tsx
-import { Icon, IconButton, VisuallyHidden } from '@vega-ui/react';
+import { Button, Icon, VisuallyHidden } from '@vega-ui/react';
 import { BellIcon } from '@vega-ui/icons';
-import { useState } from 'react';
+import { useId, useState } from 'react';
 
 export default function IconOnlyControlLabel() {
   const [unread, setUnread] = useState(4);
+  const labelId = useId();
 
   return (
-    <IconButton type='button' variant='secondary' appearance='ghost' onClick={() => setUnread(0)} style={{ position: 'relative' }}>
+    <Button square aria-labelledby={labelId} type='button' variant='secondary' appearance='ghost' onClick={() => setUnread(0)} style={{ position: 'relative' }}>
       <Icon><BellIcon /></Icon>
-      <VisuallyHidden>
+      <VisuallyHidden id={labelId}>
         Notifications, {unread} unread
       </VisuallyHidden>
       {unread > 0 && (
@@ -87,7 +88,7 @@ export default function IconOnlyControlLabel() {
           {unread}
         </span>
       )}
-    </IconButton>
+    </Button>
   );
 }
 ```
@@ -204,7 +205,6 @@ import {
   DialogContent,
   DialogTrigger,
   Icon,
-  IconButton,
   VisuallyHidden,
 } from '@vega-ui/react';
 import { ImageIcon, XIcon } from '@vega-ui/icons';
@@ -224,14 +224,15 @@ export default function HiddenDialogCue() {
         </VisuallyHidden>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <DialogClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </DialogClose>
         </div>
         <div
@@ -413,7 +414,7 @@ export default function SlottedHiddenElement() {
 
 <!-- example: visually-hidden/hidden-table-header.tsx -->
 ```tsx
-import { Icon, IconButton, VisuallyHidden } from '@vega-ui/react';
+import { Button, Icon, VisuallyHidden } from '@vega-ui/react';
 import { PencilIcon } from '@vega-ui/icons';
 import { useState } from 'react';
 
@@ -444,7 +445,8 @@ export default function HiddenTableHeader() {
               <td style={{ paddingBlock: 'var(--spacing-3)', borderBlockEnd: '1px solid var(--separator-opaque)' }}>{member.name}</td>
               <td style={{ paddingBlock: 'var(--spacing-3)', borderBlockEnd: '1px solid var(--separator-opaque)', color: 'var(--label-secondary)' }}>{member.role}</td>
               <td style={{ paddingBlock: 'var(--spacing-3)', borderBlockEnd: '1px solid var(--separator-opaque)', textAlign: 'end' }}>
-                <IconButton
+                <Button
+                  square
                   style={{ display: 'inline-flex' }}
                   type='button'
                   size='xs'
@@ -454,7 +456,7 @@ export default function HiddenTableHeader() {
                   onClick={() => setEditing(member.name)}
                 >
                   <Icon><PencilIcon /></Icon>
-                </IconButton>
+                </Button>
               </td>
             </tr>
           ))}

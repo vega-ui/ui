@@ -5,6 +5,7 @@ import {
   CheckboxIndicator,
   CheckboxInput,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 export default function ValidCompositionPatterns() {
   return (
@@ -12,15 +13,15 @@ export default function ValidCompositionPatterns() {
       <Checkbox>
         <CheckboxInput name='archived' />
         <CheckboxIndicator>
-          <CheckboxCheckedIcon />
-          <CheckboxIndeterminateIcon />
+          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+          <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
         </CheckboxIndicator>
         Show archived projects
       </Checkbox>
       <Checkbox>
         <CheckboxInput aria-label='Select Q3 marketing report' />
         <CheckboxIndicator>
-          <CheckboxCheckedIcon />
+          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
         </CheckboxIndicator>
       </Checkbox>
     </div>

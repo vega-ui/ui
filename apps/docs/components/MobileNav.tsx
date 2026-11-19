@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { Drawer, DrawerContent, DrawerTrigger, Icon, IconButton, Text } from '@vega-ui/react';
+import { Drawer, DrawerContent, DrawerTrigger, Icon, Button, Text } from '@vega-ui/react';
 import { PanelLeft } from '@vega-ui/icons';
 import { useDictionary } from './LocaleProvider';
 import { Sidebar, type SidebarSection } from './Sidebar';
@@ -21,9 +21,9 @@ export const MobileNav = ({ sections }: { sections: SidebarSection[] }) => {
     <div className={styles.bar}>
       <Drawer position='start' open={open} onChangeOpen={setOpen}>
         <DrawerTrigger asChild>
-          <IconButton size='sm' variant='secondary' appearance='transparent' aria-label={t.sidebar.open}>
+          <Button square size='sm' variant='secondary' appearance='transparent' aria-label={t.sidebar.open}>
             <Icon><PanelLeft /></Icon>
-          </IconButton>
+          </Button>
         </DrawerTrigger>
         <DrawerContent aria-label={t.sidebar.drawer} className={styles.drawer}>
           <Sidebar sections={sections} />

@@ -5,7 +5,7 @@
 ## Подписи
 
 - Назовите input видимым `Label` (`htmlFor`) или через `aria-label` / `aria-labelledby` на `DateTimeFieldInput`.
-- Назовите триггер через `aria-label` на `DateTimeFieldTriggerIconButton`, например «Выбрать дату»; поле не добавляет подписей само.
+- Назовите `DateTimeFieldTrigger` только с иконкой через `aria-label`, например «Выбрать дату»; триггер с текстом называется своим текстом. Поле не добавляет подписей само.
 - Назовите диалог через `aria-label` или `aria-labelledby` на `DateTimeFieldCalendar`. По умолчанию это `role="dialog"`; не задавайте `role` ещё и у `Popover`.
 
 ## Поведение клавиатуры

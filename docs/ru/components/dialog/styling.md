@@ -73,7 +73,6 @@ import {
   DialogTrigger,
   Heading,
   Icon,
-  IconButton,
   Label,
   TextArea,
   TextField,
@@ -98,14 +97,15 @@ export default function FullScreenDialog() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
             <Heading id={titleId} as='h2' size={4} fontWeight={600}>New message to the design team</Heading>
             <DialogClose asChild>
-              <IconButton
+              <Button
+                square
                 aria-label='Close'
                 variant='secondary'
                 appearance='ghost'
-                style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+                style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
               >
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DialogClose>
           </div>
           <form method='dialog' style={{ display: 'grid', gap: 'var(--spacing-8)', marginBlockStart: 'var(--spacing-8)' }}>
@@ -133,7 +133,7 @@ export default function FullScreenDialog() {
 
 ### Шапка в стиле Apple
 
-Шапка с небольшим заголовком и круглой кнопкой закрытия 24px в углу — это обычная композиция: `Heading` с `size={4}` и `fontWeight={600}` и `DialogClose asChild` вокруг `IconButton`, абсолютно позиционированной в верхнем конечном углу (`position: absolute`, `insetBlockStart: 16`, `insetInlineEnd: 16`); содержащим блоком служит открытый модальный `<dialog>`. У `IconButton` нет для этого опции размера или формы; круглая кнопка 24px получается из двух CSS-переменных, заданных на ней, — `--icon-button-size: 24px` и `--icon-button-br-ratio: 0.5`, — с `Icon size='xs'` внутри.
+Шапка с небольшим заголовком и круглой кнопкой закрытия 24px в углу — это обычная композиция: `Heading` с `size={4}` и `fontWeight={600}` и `DialogClose asChild` вокруг `Button` с `square`, абсолютно позиционированной в верхнем конечном углу (`position: absolute`, `insetBlockStart: 16`, `insetInlineEnd: 16`); содержащим блоком служит открытый модальный `<dialog>`. У `Button` нет для этого размера; круглая кнопка 24px получается из двух CSS-переменных, заданных на ней, — `--button-height: 24px` и `--button-br-ratio: 0.5`, — с `Icon size='xs'` внутри.
 
 ## Не переопределяйте
 

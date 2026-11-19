@@ -10,7 +10,7 @@ When to use:
 Composition notes:
 
 - Keep `DateFieldInput` as the primary surface and label it.
-- Mount `DateFieldCalendar` inside `PopoverContent` and use `DateFieldTriggerIconButton` with an `aria-label` as the trigger.
+- Mount `DateFieldCalendar` inside `PopoverContent` and use `DateFieldTrigger` with an `aria-label` as the trigger.
 
 Trade-offs:
 
@@ -46,13 +46,15 @@ import {
   DateField,
   DateFieldCalendar,
   DateFieldInput,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
   HelperText,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 export const locales = ['en-US', 'ru-RU', 'ar-EG', 'he-IL'];
 
@@ -64,17 +66,17 @@ export default function TypedDateWithACalendarPopover({ locale = 'en-US' }: { lo
         <DateFieldInput id='due-date' placeholder='dd.mm.yyyy' aria-describedby='due-date-hint' />
         <Popover placement='bottom-end'>
           <PopoverTrigger asChild>
-            <DateFieldTriggerIconButton aria-label='Choose due date' />
+            <DateFieldTrigger square aria-label='Choose due date'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
           </PopoverTrigger>
           <PopoverContent>
             <DateFieldCalendar aria-label='Choose due date'>
               <CalendarHeader>
-                <CalendarPrevButton aria-label='Previous month' />
+                <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                 <CalendarHeading>
                   <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                   <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                 </CalendarHeading>
-                <CalendarNextButton aria-label='Next month' />
+                <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
               </CalendarHeader>
               <CalendarContent>
                 <CalendarDays>
@@ -164,13 +166,15 @@ import {
   DateField,
   DateFieldCalendar,
   DateFieldInput,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
   HelperText,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 const HINT = 'Enter the full date as dd.mm.yyyy.';
 
@@ -204,17 +208,17 @@ export default function RenewalForm() {
           />
           <Popover placement='bottom-end'>
             <PopoverTrigger asChild>
-              <DateFieldTriggerIconButton aria-label='Choose renewal date' />
+              <DateFieldTrigger square aria-label='Choose renewal date'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
             </PopoverTrigger>
             <PopoverContent>
               <DateFieldCalendar aria-label='Choose renewal date'>
                 <CalendarHeader>
-                  <CalendarPrevButton aria-label='Previous month' />
+                  <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                   </CalendarHeading>
-                  <CalendarNextButton aria-label='Next month' />
+                  <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                 </CalendarHeader>
                 <CalendarContent>
                   <CalendarDays>
@@ -279,7 +283,7 @@ Trade-offs:
 <!-- example: date-field/date-field-inside-a-dialog.tsx -->
 ```tsx
 import { CSSProperties } from 'react';
-import { XIcon } from '@vega-ui/icons';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon, XIcon } from '@vega-ui/icons';
 import {
   Button,
   CalendarContent,
@@ -308,14 +312,13 @@ import {
   DateField,
   DateFieldCalendar,
   DateFieldInput,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
   Dialog,
   DialogClose,
   DialogContent,
   DialogTrigger,
   Heading,
   Icon,
-  IconButton,
   Label,
   Popover,
   PopoverContent,
@@ -332,14 +335,15 @@ export default function DateFieldInsideADialog() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
           <Heading id='schedule-review-title' as='h2' size={4} fontWeight={600}>Schedule review</Heading>
           <DialogClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </DialogClose>
         </div>
         <form method='dialog' style={{ display: 'grid', gap: 'var(--spacing-12)', marginBlockStart: 'var(--spacing-8)' }}>
@@ -349,17 +353,17 @@ export default function DateFieldInsideADialog() {
               <DateFieldInput name='reviewDate' id='review-date' required placeholder='dd.mm.yyyy' />
               <Popover placement='bottom-end'>
                 <PopoverTrigger asChild>
-                  <DateFieldTriggerIconButton aria-label='Choose review date' />
+                  <DateFieldTrigger square aria-label='Choose review date'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
                 </PopoverTrigger>
                 <PopoverContent>
                   <DateFieldCalendar aria-label='Choose review date'>
                     <CalendarHeader>
-                      <CalendarPrevButton aria-label='Previous month' />
+                      <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                       <CalendarHeading>
                         <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                         <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                       </CalendarHeading>
-                      <CalendarNextButton aria-label='Next month' />
+                      <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                     </CalendarHeader>
                     <CalendarContent>
                       <CalendarDays>
@@ -452,13 +456,15 @@ import {
   DateField,
   DateFieldCalendar,
   DateFieldInput,
-  DateFieldTriggerIconButton,
+  DateFieldTrigger,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
   Text,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 const persianCalendar = createCalendarSystem('persian');
 
@@ -481,17 +487,17 @@ export default function DateFieldInANonGregorianCalendar() {
           <DateFieldInput id='persian-date' placeholder='yyyy/mm/dd' />
           <Popover placement='bottom-end'>
             <PopoverTrigger asChild>
-              <DateFieldTriggerIconButton aria-label='انتخاب تاریخ' />
+              <DateFieldTrigger square aria-label='انتخاب تاریخ'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
             </PopoverTrigger>
             <PopoverContent>
               <DateFieldCalendar aria-label='انتخاب تاریخ'>
                 <CalendarHeader>
-                  <CalendarPrevButton aria-label='ماه قبل' />
+                  <CalendarPrevButton square aria-label='ماه قبل'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                   </CalendarHeading>
-                  <CalendarNextButton aria-label='ماه بعد' />
+                  <CalendarNextButton square aria-label='ماه بعد'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                 </CalendarHeader>
                 <CalendarContent>
                   <CalendarDays>

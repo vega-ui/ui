@@ -7,6 +7,7 @@ import {
   CheckboxInput,
   Text,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 const teams = ['billing', 'search', 'auth', 'checkout', 'payments', 'catalog', 'inventory', 'shipping', 'reviews', 'ads', 'email', 'reports'];
 const services = ['api', 'worker', 'web', 'gateway', 'scheduler'];
@@ -43,8 +44,8 @@ export default function ManyOptionsWithSelectAll() {
       <Checkbox style={{ fontWeight: 600 }}>
         <CheckboxInput checked={allSelected} indeterminate={someSelected} onChange={toggleAll} />
         <CheckboxIndicator>
-          <CheckboxCheckedIcon />
-          <CheckboxIndeterminateIcon />
+          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+          <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
         </CheckboxIndicator>
         Restart all deployments
       </Checkbox>
@@ -65,8 +66,8 @@ export default function ManyOptionsWithSelectAll() {
           <Checkbox key={deployment} size='sm'>
             <CheckboxInput checked={selected.has(deployment)} onChange={() => toggle(deployment)} />
             <CheckboxIndicator>
-              <CheckboxCheckedIcon />
-              <CheckboxIndeterminateIcon />
+              <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+              <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
             </CheckboxIndicator>
             {deployment}
           </Checkbox>

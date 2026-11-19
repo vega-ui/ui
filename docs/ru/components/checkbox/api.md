@@ -18,8 +18,8 @@
 
 - `CheckboxInput`: нативный `<input type="checkbox">`. Принимает `checked`, `defaultChecked`, `onChange`, `disabled`, `name`, `value` и `indeterminate`.
 - `CheckboxIndicator`: видимая поверхность чекбокса.
-- `CheckboxCheckedIcon`: необязательная иконка отмеченного состояния.
-- `CheckboxIndeterminateIcon`: необязательная иконка неопределённого состояния.
+- `CheckboxCheckedIcon`: необязательная иконка отмеченного состояния; передайте галочку дочерним элементом.
+- `CheckboxIndeterminateIcon`: необязательная иконка неопределённого состояния; передайте минус дочерним элементом.
 
 ### `CheckboxInput`
 
@@ -46,7 +46,7 @@
 | `size` | `IconSize` | — | Нет | Предопределённый токен размера иконки. Может быть переопределён явными шириной и высотой. |
 | `ref` | `Ref<SVGSVGElement>` | — | Нет | Ref на SVG-элемент |
 | `strokeWidth` | `number` | — | Нет | Толщина обводки линий и фигур SVG (в px или pt). |
-| `children` | `ReactNode` | — | Нет | Содержимое иконки. Принимает: иконки из `@vega-ui/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler) |
+| `children` | `ReactNode` | — | Да | Содержимое иконки. Принимает: иконки из `@vega-ui/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler) |
 
 Также принимает все HTML-атрибуты.
 <!-- AUTO-GENERATED:PART_API:CheckboxCheckedIcon:end -->
@@ -59,7 +59,7 @@
 | `size` | `IconSize` | — | Нет | Предопределённый токен размера иконки. Может быть переопределён явными шириной и высотой. |
 | `ref` | `Ref<SVGSVGElement>` | — | Нет | Ref на SVG-элемент |
 | `strokeWidth` | `number` | — | Нет | Толщина обводки линий и фигур SVG (в px или pt). |
-| `children` | `ReactNode` | — | Нет | Содержимое иконки. Принимает: иконки из `@vega-ui/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler) |
+| `children` | `ReactNode` | — | Да | Содержимое иконки. Принимает: иконки из `@vega-ui/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler) |
 
 Также принимает все HTML-атрибуты.
 <!-- AUTO-GENERATED:PART_API:CheckboxIndeterminateIcon:end -->

@@ -21,7 +21,6 @@ import {
   Heading,
   HelperText,
   Icon,
-  IconButton,
   Label,
   NumberField,
   NumberFieldDecrementButton,
@@ -44,7 +43,7 @@ import {
   Text,
   type SnapScrollerApiRef,
 } from '@vega-ui/react';
-import { ChevronLeft, ChevronRight, Heart, Maximize2, RotateCcw, Shirt, Star, Truck, XIcon } from '@vega-ui/icons';
+import { ChevronDownIcon, ChevronLeftIcon, ChevronRightIcon, CircleCheckIcon, HeartIcon, Maximize2Icon, MinusIcon, PlusIcon, RotateCcwIcon, ShirtIcon, StarIcon, TruckIcon, XIcon } from '@vega-ui/icons';
 import './product-page.css';
 
 const PRICE = 98;
@@ -76,7 +75,7 @@ const currency = new Intl.NumberFormat('en-US', { style: 'currency', currency: '
 
 const field = { display: 'grid', gap: 'var(--spacing-3)', alignContent: 'start' } as const;
 const fullScreen = { width: '100%', maxWidth: 'none', height: '100%', maxHeight: 'none', margin: 0, overflow: 'auto', borderRadius: 0 } as CSSProperties;
-const closeButton = { flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties;
+const closeButton = { flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties;
 
 const photoStyle = (swatch: string, height: string): CSSProperties => ({
   display: 'grid',
@@ -127,12 +126,11 @@ const ProductOptions = ({ prefix, color, size, sizeError, onChangeColor, onChang
         <Label id={`${prefix}-size-label`}>Size</Label>
         <SegmentedControl
           name={`${prefix}-size`}
-          role='radiogroup'
           value={size}
           aria-labelledby={`${prefix}-size-label`}
           aria-describedby={sizeError ? `${prefix}-size-error` : `${prefix}-size-hint`}
           style={{ width: '100%' }}
-          onChange={(event) => onChangeSize(event.currentTarget.value)}
+          onChangeValue={onChangeSize}
         >
           {sizes.map((item) => (
             <SegmentedControlItem key={item.value} value={item.value} disabled={item.soldOut} style={{ flex: 1 }}>
@@ -223,20 +221,20 @@ export default function ProductPage() {
               {photos.map((name, index) => (
                 <SnapScrollerContent key={name} index={index} style={{ width: '100%', flexShrink: 0 }}>
                   <div role='img' aria-label={`${name}, ${selectedColor.name}`} style={photoStyle(selectedColor.swatch, 'clamp(280px, 60vw, 440px)')}>
-                    <Shirt size={index === 2 ? 160 : 120} strokeWidth={1} aria-hidden='true' />
+                    <ShirtIcon size={index === 2 ? 160 : 120} strokeWidth={1} aria-hidden='true' />
                   </div>
                 </SnapScrollerContent>
               ))}
             </SnapScroller>
-            <IconButton size='xs'
+            <Button square size='xs'
               aria-label='Open full-screen photos'
               variant='secondary'
               appearance='ghost'
               onClick={openViewer}
               style={{ position: 'absolute', insetBlockStart: 'var(--spacing-6)', insetInlineEnd: 'var(--spacing-6)', background: 'var(--surface-primary)' }}
             >
-              <Icon size='xs'><Maximize2 /></Icon>
-            </IconButton>
+              <Icon size='xs'><Maximize2Icon /></Icon>
+            </Button>
           </div>
           <PageControl active={photo} style={{ justifySelf: 'center' }} aria-label='Choose a photo' onChangeActive={(index) => gallery.current?.scrollToElementByKey(index)}>
             {photos.map((name, index) => (
@@ -250,7 +248,7 @@ export default function ProductPage() {
             <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: 'var(--spacing-4)' }}>
               <Badge size='sm' variant='info'>New season</Badge>
               <Text size={2} style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--spacing-2)', fontVariantNumeric: 'tabular-nums' }}>
-                <Icon size='xs' aria-hidden='true'><Star /></Icon>
+                <Icon size='xs' aria-hidden='true'><StarIcon /></Icon>
                 4.8 · 214 reviews
               </Text>
             </div>
@@ -279,9 +277,9 @@ export default function ProductPage() {
           <div style={field}>
             <Label htmlFor={`${id}-quantity`}>Quantity</Label>
             <NumberField min={1} max={5} value={quantity} onChangeValue={(next) => setQuantity(next ?? 1)} style={{ maxWidth: 160 }}>
-              <NumberFieldDecrementButton aria-label='Decrease quantity' />
+              <NumberFieldDecrementButton square aria-label='Decrease quantity'><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
               <NumberFieldInput id={`${id}-quantity`} name='quantity' aria-describedby={`${id}-quantity-hint`} />
-              <NumberFieldIncrementButton aria-label='Increase quantity' />
+              <NumberFieldIncrementButton square aria-label='Increase quantity'><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
             </NumberField>
             <HelperText id={`${id}-quantity-hint`}>Up to 5 per order.</HelperText>
           </div>
@@ -289,7 +287,7 @@ export default function ProductPage() {
           <div style={{ display: 'grid', gap: 'var(--spacing-6)' }}>
             {added !== '' && (
               <Alert variant='success'>
-                <AlertIcon />
+                <AlertIcon><CircleCheckIcon /></AlertIcon>
                 <AlertMain>
                   <AlertTitle>Added to your bag</AlertTitle>
                   <AlertContent>{`Merino crew sweater · ${added}`}</AlertContent>
@@ -299,7 +297,7 @@ export default function ProductPage() {
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--spacing-4)' }}>
               <Button type='submit' size='xs' style={{ flex: '999 1 200px' }}>{`Add to bag · ${currency.format(PRICE * quantity)}`}</Button>
               <Button type='button' size='xs' variant='secondary' appearance='ghost' aria-pressed={saved} onClick={() => setSaved(!saved)} style={{ flex: '1 1 auto', gap: 'var(--spacing-4)' }}>
-                <Icon size='xs' aria-hidden='true'><Heart fill={saved ? 'currentColor' : 'none'} /></Icon>
+                <Icon size='xs' aria-hidden='true'><HeartIcon fill={saved ? 'currentColor' : 'none'} /></Icon>
                 {saved ? 'Saved' : 'Save'}
               </Button>
             </div>
@@ -307,14 +305,14 @@ export default function ProductPage() {
 
           <ul style={{ display: 'grid', gap: 'var(--spacing-6)', margin: 0, padding: 0, listStyle: 'none' }}>
             <li style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--spacing-6)' }}>
-              <Icon aria-hidden='true' style={{ flexShrink: 0, color: 'var(--label-secondary)' }}><Truck /></Icon>
+              <Icon aria-hidden='true' style={{ flexShrink: 0, color: 'var(--label-secondary)' }}><TruckIcon /></Icon>
               <span style={{ display: 'grid', gap: 'var(--spacing-1)' }}>
                 <Text size={3} fontWeight={500}>Free delivery Thu, Nov 12 – Mon, Nov 16</Text>
                 <Text size={2} style={{ color: 'var(--label-secondary)' }}>Order within 3 h 20 min for dispatch today.</Text>
               </span>
             </li>
             <li style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--spacing-6)' }}>
-              <Icon aria-hidden='true' style={{ flexShrink: 0, color: 'var(--label-secondary)' }}><RotateCcw /></Icon>
+              <Icon aria-hidden='true' style={{ flexShrink: 0, color: 'var(--label-secondary)' }}><RotateCcwIcon /></Icon>
               <Text size={3} fontWeight={500}>Free returns within 30 days</Text>
             </li>
           </ul>
@@ -326,7 +324,7 @@ export default function ProductPage() {
                 <AccordionHeader>
                   <AccordionTrigger>
                     {item.title}
-                    <AccordionIcon />
+                    <AccordionIcon><ChevronDownIcon /></AccordionIcon>
                   </AccordionTrigger>
                 </AccordionHeader>
                 <AccordionContent>
@@ -345,14 +343,14 @@ export default function ProductPage() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)', marginBlockEnd: 'var(--spacing-10)' }}>
             <Heading id={`${id}-options-title`} as='h2' size={4} fontWeight={600}>Choose options</Heading>
             <SheetClose asChild>
-              <IconButton aria-label='Close' variant='secondary' appearance='ghost' style={closeButton}>
+              <Button square aria-label='Close' variant='secondary' appearance='ghost' style={closeButton}>
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </SheetClose>
           </div>
           <ProductOptions prefix={`${id}-sheet`} color={color} size={size} sizeError={sizeError} onChangeColor={changeColor} onChangeSize={changeSize} />
           <SheetClose asChild>
-            <Button fullWidth size='xs' style={{ marginBlockStart: 'var(--spacing-12)' }}>Done</Button>
+            <Button size='xs' style={{ width: '100%', marginBlockStart: 'var(--spacing-12)' }}>Done</Button>
           </SheetClose>
         </SheetContent>
       </Sheet>
@@ -363,9 +361,9 @@ export default function ProductPage() {
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
               <Heading id={`${id}-viewer-title`} as='h2' size={4} fontWeight={600}>{`Merino crew sweater, ${selectedColor.name}`}</Heading>
               <DialogClose asChild>
-                <IconButton aria-label='Close' variant='secondary' appearance='ghost' style={closeButton}>
+                <Button square aria-label='Close' variant='secondary' appearance='ghost' style={closeButton}>
                   <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-                </IconButton>
+                </Button>
               </DialogClose>
             </div>
             <SnapScroller
@@ -379,21 +377,21 @@ export default function ProductPage() {
               {photos.map((name, index) => (
                 <SnapScrollerContent key={name} index={index} style={{ width: '100%', flexShrink: 0 }}>
                   <div role='img' aria-label={`${name}, ${selectedColor.name}`} style={photoStyle(selectedColor.swatch, 'min(70vh, 640px)')}>
-                    <Shirt size={index === 2 ? 280 : 220} strokeWidth={0.75} aria-hidden='true' />
+                    <ShirtIcon size={index === 2 ? 280 : 220} strokeWidth={0.75} aria-hidden='true' />
                   </div>
                 </SnapScrollerContent>
               ))}
             </SnapScroller>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
-              <IconButton size='xs' aria-label='Previous photo' variant='secondary' appearance='ghost' disabled={viewerPhoto === 0} onClick={() => viewer.current?.prev()}>
-                <Icon size='xs' className='productPageChevron'><ChevronLeft /></Icon>
-              </IconButton>
+              <Button square size='xs' aria-label='Previous photo' variant='secondary' appearance='ghost' disabled={viewerPhoto === 0} onClick={() => viewer.current?.prev()}>
+                <Icon size='xs' className='productPageChevron'><ChevronLeftIcon /></Icon>
+              </Button>
               <Text size={2} aria-live='polite' style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>
                 {`${photos[viewerPhoto]} · ${viewerPhoto + 1} of ${photos.length}`}
               </Text>
-              <IconButton size='xs' aria-label='Next photo' variant='secondary' appearance='ghost' disabled={viewerPhoto === photos.length - 1} onClick={() => viewer.current?.next()}>
-                <Icon size='xs' className='productPageChevron'><ChevronRight /></Icon>
-              </IconButton>
+              <Button square size='xs' aria-label='Next photo' variant='secondary' appearance='ghost' disabled={viewerPhoto === photos.length - 1} onClick={() => viewer.current?.next()}>
+                <Icon size='xs' className='productPageChevron'><ChevronRightIcon /></Icon>
+              </Button>
             </div>
           </div>
         </DialogContent>

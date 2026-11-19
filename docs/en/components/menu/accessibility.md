@@ -3,7 +3,7 @@
 ## Labeling
 
 - The menu is named by its trigger through `aria-labelledby`, so the trigger text should say what the menu holds. Pass `aria-label` or `aria-labelledby` to `MenuContent` when the trigger text changes with the state, like "Zoom 125%", or does not describe the menu.
-- An icon-only trigger, such as a "⋯" `IconButton`, needs an `aria-label` that names the object, like "Actions for Q3 report.pdf". The components never set a label themselves.
+- An icon-only trigger, such as a "⋯" `Button` with `square`, needs an `aria-label` that names the object, like "Actions for Q3 report.pdf". The components never set a label themselves.
 - Name every `MenuRadioGroup`, and every `MenuGroup` that has a heading, with `aria-labelledby` pointing at the heading or with `aria-label`.
 - Decorative content inside an item, such as an avatar or a badge with a code, should be `aria-hidden`, so the item name stays short. Text that explains why an item is disabled should stay in the name.
 

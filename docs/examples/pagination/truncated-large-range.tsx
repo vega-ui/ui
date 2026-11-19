@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from '@vega-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon, ChevronsLeftIcon, ChevronsRightIcon } from '@vega-ui/icons';
 import {
   Button,
   Icon,
@@ -68,18 +68,18 @@ export default function TruncatedLargeRange() {
         </div>
       </div>
       <Pagination aria-label='Log pages' size='xs'>
-        <PaginationList>
+        <PaginationList style={{ flexWrap: 'wrap', justifyContent: 'center' }}>
           <PaginationItem>
             <PaginationLink asChild>
               <button type='button' aria-label='First page' disabled={page === 1} onClick={() => setPage(1)}>
-                <Icon><ChevronsLeft /></Icon>
+                <Icon><ChevronsLeftIcon /></Icon>
               </button>
             </PaginationLink>
           </PaginationItem>
           <PaginationItem>
             <PaginationLink asChild>
               <button type='button' aria-label='Previous page' disabled={page === 1} onClick={() => setPage(page - 1)}>
-                <Icon><ChevronLeft /></Icon>
+                <Icon><ChevronLeftIcon /></Icon>
               </button>
             </PaginationLink>
           </PaginationItem>
@@ -101,14 +101,14 @@ export default function TruncatedLargeRange() {
           <PaginationItem>
             <PaginationLink asChild>
               <button type='button' aria-label='Next page' disabled={page === total} onClick={() => setPage(page + 1)}>
-                <Icon><ChevronRight /></Icon>
+                <Icon><ChevronRightIcon /></Icon>
               </button>
             </PaginationLink>
           </PaginationItem>
           <PaginationItem>
             <PaginationLink asChild>
               <button type='button' aria-label='Last page' disabled={page === total} onClick={() => setPage(total)}>
-                <Icon><ChevronsRight /></Icon>
+                <Icon><ChevronsRightIcon /></Icon>
               </button>
             </PaginationLink>
           </PaginationItem>

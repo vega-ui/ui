@@ -236,7 +236,7 @@ export default function SortableTable() {
                     aria-sort={sort.column === column.key ? sort.direction : undefined}
                   >
                     <th className={column.numeric ? 'gridNumeric' : undefined}>
-                      <Button size='xs' variant='secondary' appearance='ghost' onClick={() => sortBy(column.key)}>
+                      <Button size='xs' variant='secondary' appearance='ghost' tabIndex={-1} onClick={() => sortBy(column.key)}>
                         {column.label}
                         <Icon size='xs'>{sortIcon(column.key)}</Icon>
                       </Button>
@@ -560,7 +560,6 @@ import {
   GridRowGroup,
   Heading,
   Icon,
-  IconButton,
   SegmentedControl,
   SegmentedControlIndicator,
   SegmentedControlItem,
@@ -640,19 +639,20 @@ export default function EditACellInADialog() {
               {person?.name}, {day}
             </Heading>
             <DialogClose asChild>
-              <IconButton
+              <Button
+                square
                 aria-label='Close'
                 variant='secondary'
                 appearance='ghost'
-                style={{ '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+                style={{ '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
               >
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DialogClose>
           </div>
           {editing && (
             <form onSubmit={onSubmit} style={{ display: 'grid', gap: 'var(--spacing-12)', marginBlockStart: 'var(--spacing-12)' }}>
-              <SegmentedControl name='shift' defaultValue={rota[editing[0]].shifts[editing[1]]} role='radiogroup' aria-label='Shift'>
+              <SegmentedControl name='shift' defaultValue={rota[editing[0]].shifts[editing[1]]} aria-label='Shift'>
                 {shiftTypes.map((type) => (
                   <SegmentedControlItem key={type} value={type}>
                     <SegmentedControlItemInput />
@@ -1100,6 +1100,7 @@ export default function InlineEditing() {
               <GridCell col={1}>
                 <input
                   className='gridCellInput'
+                  tabIndex={-1}
                   aria-label={`${item.category} planned`}
                   inputMode='decimal'
                   value={item.planned}
@@ -1109,6 +1110,7 @@ export default function InlineEditing() {
               <GridCell col={2}>
                 <input
                   className='gridCellInput'
+                  tabIndex={-1}
                   aria-label={`${item.category} spent`}
                   inputMode='decimal'
                   value={item.spent}
@@ -1139,7 +1141,7 @@ export default function InlineEditing() {
 <!-- example: grid/team-access.tsx -->
 ```tsx
 import { useState } from 'react';
-import { MailIcon, Trash2Icon } from '@vega-ui/icons';
+import { CheckIcon, ChevronDownIcon, MailIcon, Trash2Icon } from '@vega-ui/icons';
 import {
   Button,
   Checkbox,
@@ -1153,7 +1155,6 @@ import {
   GridRowGroup,
   GridRowHeader,
   Icon,
-  IconButton,
   Select,
   SelectCombobox,
   SelectIcon,
@@ -1247,7 +1248,7 @@ export default function TeamAccess() {
                     onChange={() => toggle(member.name)}
                   />
                   <CheckboxIndicator>
-                    <CheckboxCheckedIcon />
+                    <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
                   </CheckboxIndicator>
                 </Checkbox>
               </GridCell>
@@ -1256,7 +1257,7 @@ export default function TeamAccess() {
                 <Select size='xs' value={member.role} onChangeValue={(role) => change(member.name, { role: role as Role })}>
                   <SelectCombobox aria-label={`${member.name} role`}>
                     <SelectValue>{roles.find((role) => role.value === member.role)?.label}</SelectValue>
-                    <SelectIcon />
+                    <SelectIcon><ChevronDownIcon /></SelectIcon>
                   </SelectCombobox>
                   <SelectListbox>
                     {roles.map((role) => (
@@ -1285,7 +1286,8 @@ export default function TeamAccess() {
                 </Switch>
               </GridCell>
               <GridCell col={5} className='teamAccessActions'>
-                <IconButton
+                <Button
+                  square
                   size='xs'
                   variant='secondary'
                   appearance='transparent'
@@ -1293,8 +1295,9 @@ export default function TeamAccess() {
                   onClick={() => setStatus(`Invite sent to ${member.name}`)}
                 >
                   <Icon size='xs'><MailIcon /></Icon>
-                </IconButton>
-                <IconButton
+                </Button>
+                <Button
+                  square
                   size='xs'
                   variant='secondary'
                   appearance='transparent'
@@ -1302,7 +1305,7 @@ export default function TeamAccess() {
                   onClick={() => remove([member.name])}
                 >
                   <Icon size='xs'><Trash2Icon /></Icon>
-                </IconButton>
+                </Button>
               </GridCell>
             </GridRow>
           ))}
@@ -1472,7 +1475,7 @@ export default function SlotGridInAPopover() {
 <!-- example: grid/paged-picker-with-own-buttons.tsx -->
 ```tsx
 import { useRef, useState } from 'react';
-import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import {
   Grid,
   GridCell,
@@ -1481,7 +1484,7 @@ import {
   GridRowGroup,
   GridScroller,
   Icon,
-  IconButton,
+  Button,
   IndexedSnapScrollerContent,
   Text,
   useIndexedSnapScrollerContext,
@@ -1528,13 +1531,13 @@ export default function PagedPickerWithOwnButtons() {
   return (
     <Grid aria-label='Graduation year' selection='single' wrap='horizontal' defaultValue={2021} defaultActive={2021} style={{ width: 280 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <IconButton aria-label='Previous years' size='sm' variant='secondary' appearance='transparent' onClick={() => scrollerRef.current?.prev()}>
-          <Icon><ChevronLeft /></Icon>
-        </IconButton>
+        <Button square aria-label='Previous years' size='sm' variant='secondary' appearance='transparent' onClick={() => scrollerRef.current?.prev()}>
+          <Icon><ChevronLeftIcon /></Icon>
+        </Button>
         <Text size={2} aria-live='polite'>{getPageStart(page)}–{getPageStart(page) + perPage - 1}</Text>
-        <IconButton aria-label='Next years' size='sm' variant='secondary' appearance='transparent' onClick={() => scrollerRef.current?.next()}>
-          <Icon><ChevronRight /></Icon>
-        </IconButton>
+        <Button square aria-label='Next years' size='sm' variant='secondary' appearance='transparent' onClick={() => scrollerRef.current?.next()}>
+          <Icon><ChevronRightIcon /></Icon>
+        </Button>
       </div>
       <GridScroller apiRef={scrollerRef} defaultIndex={0} onScrollSnapChanging={(_, index) => setPage(index)}>
         <IndexedSnapScrollerContent style={{ width: '100%' }}>
@@ -1895,10 +1898,9 @@ export default function WrapModes() {
       <SegmentedControl
         name='wrap-mode'
         size='sm'
-        role='radiogroup'
         aria-label='Wrap mode'
         value={mode}
-        onChange={(event) => setMode(event.target.value)}
+        onChangeValue={setMode}
       >
         {modes.map((item) => (
           <SegmentedControlItem key={item.value} value={item.value}>

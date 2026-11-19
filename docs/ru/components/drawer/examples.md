@@ -18,7 +18,6 @@ import {
   DrawerTrigger,
   Heading,
   Icon,
-  IconButton,
   Text,
 } from '@vega-ui/react';
 import { XIcon } from '@vega-ui/icons';
@@ -43,14 +42,15 @@ export default function SideInspector() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
           <Heading id={titleId} as='h2' size={4} fontWeight={600}>Order #10482</Heading>
           <DrawerClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </DrawerClose>
         </div>
         <div style={{ marginBlockStart: 'var(--spacing-4)' }}>
@@ -87,7 +87,6 @@ import {
   DrawerContent,
   Heading,
   Icon,
-  IconButton,
   Text,
 } from '@vega-ui/react';
 import { ChevronDownIcon, ChevronUpIcon, XIcon } from '@vega-ui/icons';
@@ -145,24 +144,25 @@ export default function ControlledOpenState() {
               <Heading id={titleId} as='h2' size={4} fontWeight={600}>{ticket.title}</Heading>
             </div>
             <DrawerClose asChild>
-              <IconButton
+              <Button
+                square
                 aria-label='Close'
                 variant='secondary'
                 appearance='ghost'
-                style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+                style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
               >
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DrawerClose>
           </div>
           <Text size={3} style={{ display: 'block', marginBlockStart: 'var(--spacing-4)', color: 'var(--label-secondary)' }}>Requested by {ticket.requester} · {ticket.priority} priority</Text>
           <div style={{ display: 'flex', gap: 'var(--spacing-4)', marginBlockStart: 'auto', paddingBlockStart: 'var(--spacing-12)' }}>
-            <IconButton aria-label='Previous ticket' variant='secondary' appearance='ghost' disabled={index === 0} onClick={() => setIndex(index - 1)}>
+            <Button square aria-label='Previous ticket' variant='secondary' appearance='ghost' disabled={index === 0} onClick={() => setIndex(index - 1)}>
               <Icon><ChevronUpIcon /></Icon>
-            </IconButton>
-            <IconButton aria-label='Next ticket' variant='secondary' appearance='ghost' disabled={index === tickets.length - 1} onClick={() => setIndex(index + 1)}>
+            </Button>
+            <Button square aria-label='Next ticket' variant='secondary' appearance='ghost' disabled={index === tickets.length - 1} onClick={() => setIndex(index + 1)}>
               <Icon><ChevronDownIcon /></Icon>
-            </IconButton>
+            </Button>
           </div>
         </DrawerContent>
       </Drawer>
@@ -190,7 +190,6 @@ import {
   Heading,
   HelperText,
   Icon,
-  IconButton,
   Label,
   Text,
   TextArea,
@@ -223,14 +222,15 @@ export default function ShortFormFlow() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
             <Heading id={titleId} as='h2' size={4} fontWeight={600}>Invite members</Heading>
             <DrawerClose asChild>
-              <IconButton
+              <Button
+                square
                 aria-label='Close'
                 variant='secondary'
                 appearance='ghost'
-                style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+                style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
               >
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DrawerClose>
           </div>
           <form method='dialog' onSubmit={onSubmit} style={{ display: 'grid', gap: 'var(--spacing-8)', marginBlockStart: 'var(--spacing-8)' }}>
@@ -289,7 +289,6 @@ import {
   DrawerTrigger,
   Heading,
   Icon,
-  IconButton,
   Text,
 } from '@vega-ui/react';
 import { XIcon } from '@vega-ui/icons';
@@ -316,14 +315,15 @@ export default function ActivityPanel() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
           <Heading id={titleId} as='h2' size={4} fontWeight={600}>Activity</Heading>
           <DrawerClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </DrawerClose>
         </div>
         <ol
@@ -370,7 +370,6 @@ import {
   DrawerTrigger,
   Heading,
   Icon,
-  IconButton,
   Text,
 } from '@vega-ui/react';
 import { XIcon } from '@vega-ui/icons';
@@ -394,14 +393,15 @@ export default function DrawerWithoutOverlay() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
           <Heading id={titleId} as='h2' size={4} fontWeight={600}>Revenue widget</Heading>
           <DrawerClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </DrawerClose>
         </div>
         <dl style={{ display: 'grid', gap: 'var(--spacing-8)', margin: 'var(--spacing-8) 0 0' }}>
@@ -437,7 +437,6 @@ import {
   Heading,
   HelperText,
   Icon,
-  IconButton,
   Label,
   Text,
   TextField,
@@ -512,14 +511,15 @@ export default function FormError() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
             <Heading id={titleId} as='h2' size={4} fontWeight={600}>Payout account</Heading>
             <DrawerClose asChild>
-              <IconButton
+              <Button
+                square
                 aria-label='Close'
                 variant='secondary'
                 appearance='ghost'
-                style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+                style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
               >
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DrawerClose>
           </div>
           <form noValidate onSubmit={onSubmit} style={{ display: 'grid', gap: 'var(--spacing-3)', marginBlockStart: 'var(--spacing-8)' }}>
@@ -575,12 +575,11 @@ import {
   Heading,
   HelperText,
   Icon,
-  IconButton,
   Label,
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
-import { XIcon } from '@vega-ui/icons';
+import { CheckIcon, MinusIcon, XIcon } from '@vega-ui/icons';
 
 export default function ReadOnlySettings() {
   const titleId = useId();
@@ -594,8 +593,8 @@ export default function ReadOnlySettings() {
       <Checkbox>
         <CheckboxInput checked={canEdit} onChange={(event) => setCanEdit(event.currentTarget.checked)} />
         <CheckboxIndicator>
-          <CheckboxCheckedIcon />
-          <CheckboxIndeterminateIcon />
+          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+          <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
         </CheckboxIndicator>
         Signed in as a workspace admin
       </Checkbox>
@@ -607,14 +606,15 @@ export default function ReadOnlySettings() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
             <Heading id={titleId} as='h2' size={4} fontWeight={600}>Workspace settings</Heading>
             <DrawerClose asChild>
-              <IconButton
+              <Button
+                square
                 aria-label='Close'
                 variant='secondary'
                 appearance='ghost'
-                style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+                style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
               >
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DrawerClose>
           </div>
           <form method='dialog' style={{ display: 'grid', gap: 'var(--spacing-8)', marginBlockStart: 'var(--spacing-8)' }}>
@@ -660,7 +660,6 @@ import {
   DrawerTrigger,
   Heading,
   Icon,
-  IconButton,
   Label,
   Text,
   TextField,
@@ -689,14 +688,15 @@ export default function NestedDrawers() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
           <Heading id={orderTitleId} as='h2' size={4} fontWeight={600}>Order #10482</Heading>
           <DrawerClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </DrawerClose>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-6)', marginBlockStart: 'var(--spacing-8)' }}>
@@ -712,14 +712,15 @@ export default function NestedDrawers() {
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
                 <Heading id={addressTitleId} as='h3' size={4} fontWeight={600}>Shipping address</Heading>
                 <DrawerClose asChild>
-                  <IconButton
+                  <Button
+                    square
                     aria-label='Close'
                     variant='secondary'
                     appearance='ghost'
-                    style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+                    style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
                   >
                     <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-                  </IconButton>
+                  </Button>
                 </DrawerClose>
               </div>
               <form method='dialog' onSubmit={onSubmit} style={{ display: 'grid', gap: 'var(--spacing-8)', marginBlockStart: 'var(--spacing-8)' }}>
@@ -762,7 +763,6 @@ import {
   DrawerTrigger,
   Heading,
   Icon,
-  IconButton,
 } from '@vega-ui/react';
 import { XIcon } from '@vega-ui/icons';
 
@@ -788,14 +788,15 @@ export default function DrawerFromTheStartSide() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
             <Heading id={titleId} as='h2' size={4} fontWeight={600}>{section.title}</Heading>
             <DrawerClose asChild>
-              <IconButton
+              <Button
+                square
                 aria-label='Close'
                 variant='secondary'
                 appearance='ghost'
-                style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+                style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
               >
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DrawerClose>
           </div>
           <nav aria-labelledby={titleId} style={{ display: 'grid', gap: 'var(--spacing-1)', marginBlockStart: 'var(--spacing-8)' }}>

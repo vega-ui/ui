@@ -24,6 +24,7 @@ import {
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
+import { CheckIcon, CircleCheckIcon } from '@vega-ui/icons';
 
 const steps = ['Workspace', 'Team', 'Review'];
 
@@ -141,7 +142,7 @@ export default function Onboarding() {
     return (
       <Card style={{ gap: 'var(--spacing-10)', width: '100%', maxWidth: 560, marginInline: 'auto' }}>
         <Alert variant='success'>
-          <AlertIcon />
+          <AlertIcon><CircleCheckIcon /></AlertIcon>
           <AlertMain>
             <AlertTitle>{`${workspace} is ready`}</AlertTitle>
             <AlertContent>
@@ -289,7 +290,7 @@ export default function Onboarding() {
             <Checkbox>
               <CheckboxInput name='tips' defaultChecked />
               <CheckboxIndicator>
-                <CheckboxCheckedIcon />
+                <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
               </CheckboxIndicator>
               Email me tips for the first week
             </Checkbox>

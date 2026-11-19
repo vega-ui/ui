@@ -23,7 +23,7 @@ import {
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
-import { ChevronRight } from '@vega-ui/icons';
+import { CheckIcon, ChevronRight } from '@vega-ui/icons';
 import { localize } from '@/lib/i18n';
 import { useDictionary, useLocale } from './LocaleProvider';
 import { HomeTitle } from './HomeTitle';
@@ -112,7 +112,7 @@ export const HomeAccess = () => {
             <Checkbox>
               <CheckboxInput />
               <CheckboxIndicator>
-                <CheckboxCheckedIcon />
+                <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
               </CheckboxIndicator>
               {t.form.digest}
             </Checkbox>

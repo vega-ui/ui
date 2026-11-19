@@ -11,14 +11,14 @@ const more = { role: 'button', name: 'Actions for Q3 report.pdf' };
 const fileMenu = { role: 'menu', name: 'Q3 report.pdf' };
 const shareItem = item('Share');
 const shareMenu = { role: 'menu', name: 'Share' };
-const onShare = [{ focus: more }, { press: 'Shift+F10' }, { press: 'End' }, { press: 'ArrowUp' }];
+const onShare = [{ focus: more }, { press: 'Shift+F10' }, { focus: item('Open') }, { press: 'End' }, { press: 'ArrowUp' }];
 const inShare = [...onShare, { press: 'ArrowRight' }];
 
 export default [
   {
     keys: ['Shift+F10'],
-    en: 'With the focus on an element inside the area: opens the menu at that element instead of the menu of the browser, and moves the focus to its first item. The context menu key does the same where the keyboard has one.',
-    ru: 'Когда фокус на элементе внутри области: открывает меню у этого элемента вместо меню браузера и переносит фокус на его первый пункт. Клавиша контекстного меню делает то же самое, если она есть на клавиатуре.',
+    en: 'With the focus on an element inside the area: opens the menu at that element instead of the menu of the browser, and moves the focus to its first item. The context menu key does the same where the keyboard has one. Browsers on macOS give no menu to Shift+F10, so there only the keys of a screen reader open it.',
+    ru: 'Когда фокус на элементе внутри области: открывает меню у этого элемента вместо меню браузера и переносит фокус на его первый пункт. Клавиша контекстного меню делает то же самое, если она есть на клавиатуре. Браузеры в macOS не открывают меню по Shift+F10, поэтому там его открывают только клавиши экранного диктора.',
     checks: [
       { example, steps: [{ focus: photo }], press: 'Shift+F10', before: [{ hidden: menu }], expect: [{ visible: menu }, { focused: item('Download') }] },
       { example: files, steps: [{ focus: more }], press: 'Shift+F10', before: [{ hidden: fileMenu }], expect: [{ visible: fileMenu }, { focused: item('Open') }] },

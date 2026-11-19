@@ -160,8 +160,8 @@ export default function YearRangeFilter() {
 <!-- example: year-picker/paged-years-with-own-buttons.tsx -->
 ```tsx
 import {
+  Button,
   Icon,
-  IconButton,
   type IndexedSnapScrollerApiRef,
   Text,
   YearPicker,
@@ -170,7 +170,7 @@ import {
   YearPickerScrollerContent,
   YearPickerScrollerLayout,
 } from '@vega-ui/react';
-import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import { useRef, useState } from 'react';
 
 const PERIOD = 20;
@@ -191,13 +191,13 @@ export default function PagedYearsWithOwnButtons() {
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-4)', inlineSize: 'fit-content' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <IconButton aria-label='Earlier years' size='sm' variant='secondary' appearance='ghost' onClick={() => scrollerRef.current?.prev()}>
-          <Icon><ChevronLeft /></Icon>
-        </IconButton>
+        <Button square aria-label='Earlier years' size='sm' variant='secondary' appearance='ghost' onClick={() => scrollerRef.current?.prev()}>
+          <Icon><ChevronLeftIcon /></Icon>
+        </Button>
         <Text fontWeight={600} aria-live='polite'>{firstYear}–{lastYear}</Text>
-        <IconButton aria-label='Later years' size='sm' variant='secondary' appearance='ghost' onClick={() => scrollerRef.current?.next()}>
-          <Icon><ChevronRight /></Icon>
-        </IconButton>
+        <Button square aria-label='Later years' size='sm' variant='secondary' appearance='ghost' onClick={() => scrollerRef.current?.next()}>
+          <Icon><ChevronRightIcon /></Icon>
+        </Button>
       </div>
       <YearPicker
         aria-label='Founding year'

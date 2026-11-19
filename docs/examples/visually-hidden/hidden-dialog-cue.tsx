@@ -6,7 +6,6 @@ import {
   DialogContent,
   DialogTrigger,
   Icon,
-  IconButton,
   VisuallyHidden,
 } from '@vega-ui/react';
 import { ImageIcon, XIcon } from '@vega-ui/icons';
@@ -26,14 +25,15 @@ export default function HiddenDialogCue() {
         </VisuallyHidden>
         <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
           <DialogClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </DialogClose>
         </div>
         <div

@@ -11,11 +11,10 @@ import {
   CheckboxCard,
   CheckboxCardContent,
   CheckboxCardControl,
-  CheckboxCardControlCheckedIcon,
+  CheckboxCheckedIcon,
   CheckboxCardControlInput,
   CheckboxCardDescription,
   CheckboxCardTitle,
-  CheckboxCheckedIcon,
   CheckboxIndicator,
   CheckboxInput,
   Fieldset,
@@ -41,6 +40,7 @@ import {
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
+import { CheckIcon, CircleCheckIcon } from '@vega-ui/icons';
 import './survey.css';
 
 const steps = ['Rating', 'Usage', 'Details', 'Review'];
@@ -196,7 +196,7 @@ export default function Survey() {
         </div>
         {answers.email.trim() !== '' && (
           <Alert variant='success'>
-            <AlertIcon />
+            <AlertIcon><CircleCheckIcon /></AlertIcon>
             <AlertMain>
               <AlertTitle>We may reach out</AlertTitle>
               <AlertContent style={{ overflowWrap: 'anywhere' }}>{`If we have questions, we’ll write to ${answers.email.trim()}.`}</AlertContent>
@@ -243,12 +243,11 @@ export default function Survey() {
               <SegmentedControl
                 size='xs'
                 name='score'
-                role='radiogroup'
                 value={answers.score}
                 aria-labelledby={`${id}-score-label`}
                 aria-describedby={errors.score ? `${id}-score-error ${id}-score-scale` : `${id}-score-scale`}
                 className='surveyScore'
-                onChange={(event) => change('score', event.target.value)}
+                onChangeValue={(value) => change('score', value)}
               >
                 {scores.map((score, index) => (
                   <SegmentedControlItem key={score} value={score}>
@@ -308,7 +307,7 @@ export default function Survey() {
                         onChange={(event) => toggleFeature(item.value, event.currentTarget.checked)}
                       />
                       <CheckboxIndicator>
-                        <CheckboxCardControlCheckedIcon />
+                        <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
                       </CheckboxIndicator>
                     </CheckboxCardControl>
                   </CheckboxCard>
@@ -409,7 +408,7 @@ export default function Survey() {
                     onChange={(event) => change('consent', event.currentTarget.checked)}
                   />
                   <CheckboxIndicator>
-                    <CheckboxCheckedIcon />
+                    <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
                   </CheckboxIndicator>
                   The research team may contact me about my answers
                 </Checkbox>

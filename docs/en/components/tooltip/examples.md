@@ -9,8 +9,8 @@ Each icon button is named by its own `aria-label`; the tooltip only adds a hint 
 <!-- example: tooltip/icon-hint.tsx -->
 ```tsx
 import {
+  Button,
   Icon,
-  IconButton,
   Text,
   Tooltip,
   TooltipContent,
@@ -30,9 +30,9 @@ export default function IconHint() {
       {actions.map((action) => (
         <Tooltip key={action.label}>
           <TooltipTrigger asChild>
-            <IconButton aria-label={action.label} variant='secondary' appearance='ghost'>
+            <Button square aria-label={action.label} variant='secondary' appearance='ghost'>
               <Icon>{action.icon}</Icon>
-            </IconButton>
+            </Button>
           </TooltipTrigger>
           <TooltipContent>
             <Text size={2}>{action.hint}</Text>
@@ -55,8 +55,8 @@ The tooltip is controlled, so the click handler can open it right after copying 
 ```tsx
 import { useState } from 'react';
 import {
+  Button,
   Icon,
-  IconButton,
   Text,
   Tooltip,
   TooltipContent,
@@ -100,9 +100,9 @@ export default function StatefulCopyFeedback() {
       <Text size={3} style={{ flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontFamily: 'monospace' }}>{inviteLink}</Text>
       <Tooltip delayOpen={0} open={open} onChangeOpen={changeOpen}>
         <TooltipTrigger asChild>
-          <IconButton aria-label='Copy invite link' variant='secondary' appearance='ghost' style={{ flexShrink: 0 }} onClick={copy}>
+          <Button square aria-label='Copy invite link' variant='secondary' appearance='ghost' style={{ flexShrink: 0 }} onClick={copy}>
             <Icon>{copied ? <CheckIcon /> : <CopyIcon />}</Icon>
-          </IconButton>
+          </Button>
         </TooltipTrigger>
         <TooltipContent>
           <Text size={2}>{copied ? 'Copied' : 'Copy invite link'}</Text>
@@ -133,6 +133,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 export default function ControlledOpenState() {
   const [open, setOpen] = useState(false);
@@ -143,8 +144,8 @@ export default function ControlledOpenState() {
       <Checkbox>
         <CheckboxInput checked={pinned} onChange={(event) => setPinned(event.currentTarget.checked)} />
         <CheckboxIndicator>
-          <CheckboxCheckedIcon />
-          <CheckboxIndeterminateIcon />
+          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+          <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
         </CheckboxIndicator>
         Keep the hint open
       </Checkbox>
@@ -177,7 +178,6 @@ import { useId, useState, type FormEvent } from 'react';
 import {
   Button,
   Icon,
-  IconButton,
   Label,
   Text,
   TextField,
@@ -203,9 +203,9 @@ export default function FieldHelper() {
         <Label htmlFor={fieldId}>VAT number (optional)</Label>
         <Tooltip>
           <TooltipTrigger asChild>
-            <IconButton aria-label='About the VAT number' size='xs' variant='secondary' appearance='ghost'>
+            <Button square aria-label='About the VAT number' size='xs' variant='secondary' appearance='ghost'>
               <Icon size='xs'><InfoIcon /></Icon>
-            </IconButton>
+            </Button>
           </TooltipTrigger>
           <TooltipContent>
             <Text size={2}>Printed on invoices for EU business customers</Text>
@@ -242,7 +242,6 @@ import {
   DialogTrigger,
   Heading,
   Icon,
-  IconButton,
   Label,
   Text,
   TextField,
@@ -274,14 +273,15 @@ export default function TooltipInsideDialog() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
           <Heading id={titleId} as='h2' size={4} fontWeight={600}>Production API key</Heading>
           <DialogClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </DialogClose>
         </div>
         <div style={{ display: 'grid', gap: 'var(--spacing-3)', marginBlockStart: 'var(--spacing-8)' }}>
@@ -292,9 +292,9 @@ export default function TooltipInsideDialog() {
             </TextField>
             <Tooltip delayOpen={0}>
               <TooltipTrigger asChild>
-                <IconButton aria-label='Copy key' variant='secondary' appearance='ghost' style={{ flexShrink: 0 }} onClick={copy}>
+                <Button square aria-label='Copy key' variant='secondary' appearance='ghost' style={{ flexShrink: 0 }} onClick={copy}>
                   <Icon>{copied ? <CheckIcon /> : <CopyIcon />}</Icon>
-                </IconButton>
+                </Button>
               </TooltipTrigger>
               <TooltipContent>
                 <Text size={2}>{copied ? 'Copied to clipboard' : 'Copy to clipboard'}</Text>
@@ -317,8 +317,8 @@ Once one tooltip has shown, moving to a neighbour shows its tooltip at once, wit
 <!-- example: tooltip/toolbar-shared-delay.tsx -->
 ```tsx
 import {
+  Button,
   Icon,
-  IconButton,
   Text,
   Tooltip,
   TooltipContent,
@@ -349,9 +349,9 @@ export default function ToolbarSharedDelay() {
       {tools.map(({ label, shortcut, icon }) => (
         <Tooltip key={label}>
           <TooltipTrigger asChild>
-            <IconButton aria-label={label} appearance='transparent' variant='secondary'>
+            <Button square aria-label={label} appearance='transparent' variant='secondary'>
               <Icon>{icon}</Icon>
-            </IconButton>
+            </Button>
           </TooltipTrigger>
           <TooltipContent>
             <Text size={2}>{`${label} ${shortcut}`}</Text>
@@ -377,7 +377,6 @@ import {
   Badge,
   Button,
   Icon,
-  IconButton,
   Text,
   Tooltip,
   TooltipContent,
@@ -431,9 +430,9 @@ export default function SyncErrorHint() {
                 <Badge variant='error' size='xs'>Sync failed</Badge>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <IconButton aria-label={`Why ${integration.name} sync failed`} size='xs' variant='secondary' appearance='ghost'>
+                    <Button square aria-label={`Why ${integration.name} sync failed`} size='xs' variant='secondary' appearance='ghost'>
                       <Icon size='xs'><CircleAlertIcon /></Icon>
-                    </IconButton>
+                    </Button>
                   </TooltipTrigger>
                   <TooltipContent>
                     <Text size={2}>{integration.error}</Text>
@@ -472,6 +471,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 export default function DisabledActionReason() {
   const [verified, setVerified] = useState(false);
@@ -487,8 +487,8 @@ export default function DisabledActionReason() {
       <Checkbox>
         <CheckboxInput checked={verified} onChange={(event) => setVerified(event.currentTarget.checked)} />
         <CheckboxIndicator>
-          <CheckboxCheckedIcon />
-          <CheckboxIndeterminateIcon />
+          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+          <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
         </CheckboxIndicator>
         Billing verified
       </Checkbox>
@@ -576,8 +576,8 @@ Small info buttons next to each metric keep the row compact while the definition
 <!-- example: tooltip/dense-data-hint.tsx -->
 ```tsx
 import {
+  Button,
   Icon,
-  IconButton,
   Text,
   Tooltip,
   TooltipContent,
@@ -613,9 +613,9 @@ export default function DenseDataHint() {
             <Text size={2} style={{ color: 'var(--label-secondary)' }}>{metric.label}</Text>
             <Tooltip>
               <TooltipTrigger asChild>
-                <IconButton aria-label={`About ${metric.label}`} size='xs' variant='secondary' appearance='ghost'>
+                <Button square aria-label={`About ${metric.label}`} size='xs' variant='secondary' appearance='ghost'>
                   <Icon size='xs'><InfoIcon /></Icon>
-                </IconButton>
+                </Button>
               </TooltipTrigger>
               <TooltipContent>
                 <Text size={2} style={{ display: 'block', maxWidth: 240 }}>{metric.hint}</Text>

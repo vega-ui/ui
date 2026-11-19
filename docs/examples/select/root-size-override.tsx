@@ -7,6 +7,7 @@ import {
   SelectOption,
   SelectValue,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 
 export default function RootSizeOverride() {
   return (
@@ -16,7 +17,7 @@ export default function RootSizeOverride() {
     >
       <SelectCombobox aria-label='Sort orders by'>
         <SelectValue />
-        <SelectIcon />
+        <SelectIcon><ChevronDownIcon /></SelectIcon>
       </SelectCombobox>
       <SelectListbox>
         <SelectOption value='newest'>Newest first</SelectOption>

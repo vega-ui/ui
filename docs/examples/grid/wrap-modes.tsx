@@ -34,10 +34,9 @@ export default function WrapModes() {
       <SegmentedControl
         name='wrap-mode'
         size='sm'
-        role='radiogroup'
         aria-label='Wrap mode'
         value={mode}
-        onChange={(event) => setMode(event.target.value)}
+        onChangeValue={setMode}
       >
         {modes.map((item) => (
           <SegmentedControlItem key={item.value} value={item.value}>

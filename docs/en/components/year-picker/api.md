@@ -18,7 +18,7 @@
 | `variant` | `GridItemVariant` | `'secondary'` | No | Color of the selected cells. |
 | `disabledDates` | `GridKeys<string>` | — | No | Disabled dates, marked with `aria-disabled`: they cannot be selected, and keyboard navigation skips them like the dates outside `min` and `max`. Can be a function `(date) => boolean`, an array of `YYYY-MM-DD` dates, or a single date. |
 | `period` | `number` | `12` | No | Number of years on a page of `YearPickerScroller`; must match the page size of the layout. Inside the scroller PageUp and PageDown move the focus by this many years. |
-| `defaultValue` | `SelectionMode extends "multiple" \| "range" ? string[] : SelectionMode extends "single" ? string : never` | — | No | Uncontrolled initially selected cells. |
+| `defaultValue` | `NoInfer<SelectionMode extends "multiple" \| "range" ? string[] : SelectionMode extends "single" ? string : never>` | — | No | Uncontrolled initially selected cells. |
 | `max` | `SelectionMode extends GridSelection ? string : never` | — | No | The largest key that can be selected, by the `compare` order, or by position without `compare`. |
 | `min` | `SelectionMode extends GridSelection ? string : never` | — | No | The smallest key that can be selected, by the `compare` order, or by position without `compare`. |
 | `value` | `SelectionMode extends "multiple" \| "range" ? string[] : SelectionMode extends "single" ? string \| null : never` | — | No | Controlled selected cells: a key in `'single'` mode, an array of keys otherwise. In `'single'` mode `null` means controlled with nothing selected. |

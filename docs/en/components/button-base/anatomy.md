@@ -27,4 +27,4 @@
 
 - multiple direct children when relying on a single slotted semantic target
 - `asChild` with a child that does not accept forwarded props
-- treating `ButtonBase` as a complete product button when `Button` or `IconButton` is the clearer public API
+- treating `ButtonBase` as a complete product button when `Button` is the clearer public API

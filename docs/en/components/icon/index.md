@@ -6,7 +6,7 @@
 
 ## Summary
 
-`Icon` is the shared SVG wrapper for VegaUI icons and custom SVG content. It normalizes size through tokens and renders through `Slot`, which lets the child SVG receive the merged props directly.
+`Icon` is the shared SVG wrapper for an icon from any set, such as `@vega-ui/icons`, or your own SVG. It normalizes size through tokens and renders through `Slot`, which lets the child SVG receive the merged props directly. The icon parts of other components, such as `SelectIcon`, `CheckboxCheckedIcon` or `AlertIcon`, are built on `Icon` and draw no icon of their own: they size and show the one you pass as children. [Component recipes](../../recipes.md) show how to write each icon once.
 
 ## Imports
 

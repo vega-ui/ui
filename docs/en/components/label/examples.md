@@ -35,6 +35,7 @@ In composite fields the `id` goes on the focusable part: `SelectCombobox`, `Numb
 <!-- example: label/labels-for-composite-fields.tsx -->
 ```tsx
 import {
+  Icon,
   Label,
   NumberField,
   NumberFieldDecrementButton,
@@ -49,6 +50,7 @@ import {
   SelectValue,
   TextArea,
 } from '@vega-ui/react';
+import { ChevronDownIcon, MinusIcon, PlusIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 export default function LabelsForCompositeFields() {
@@ -62,7 +64,7 @@ export default function LabelsForCompositeFields() {
           <SelectHiddenSelect name='region' />
           <SelectCombobox id={`${id}-region`}>
             <SelectValue placeholder='Choose a region' />
-            <SelectIcon />
+            <SelectIcon><ChevronDownIcon /></SelectIcon>
           </SelectCombobox>
           <SelectListbox>
             <SelectOption value='eu-central'>Frankfurt (eu-central)</SelectOption>
@@ -74,9 +76,9 @@ export default function LabelsForCompositeFields() {
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor={`${id}-replicas`}>Read replicas</Label>
         <NumberField min={0} max={5} defaultValue={1}>
-          <NumberFieldDecrementButton aria-label='Remove a replica' />
+          <NumberFieldDecrementButton square aria-label='Remove a replica'><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
           <NumberFieldInput id={`${id}-replicas`} name='replicas' />
-          <NumberFieldIncrementButton aria-label='Add a replica' />
+          <NumberFieldIncrementButton square aria-label='Add a replica'><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
         </NumberField>
       </div>
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
@@ -233,6 +235,7 @@ import {
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
+import { CheckIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 export default function LabelForDisabledField() {
@@ -244,7 +247,7 @@ export default function LabelForDisabledField() {
       <Checkbox>
         <CheckboxInput checked={sameAsCompany} onChange={(event) => setSameAsCompany(event.currentTarget.checked)} />
         <CheckboxIndicator>
-          <CheckboxCheckedIcon />
+          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
         </CheckboxIndicator>
         Ship to the company address
       </Checkbox>

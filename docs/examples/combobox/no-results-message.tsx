@@ -1,4 +1,5 @@
 import { Combobox, ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger, HelperText, Label, ListboxOption, TextField } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const languages = [
@@ -26,8 +27,8 @@ export default function NoResultsMessage() {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
           />
-          <ComboboxTrigger aria-label='Show languages'>
-            <ComboboxIcon />
+          <ComboboxTrigger square aria-label='Show languages'>
+            <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
           </ComboboxTrigger>
         </TextField>
         <ComboboxListbox aria-label='Languages'>

@@ -7,7 +7,6 @@ import {
   DialogTrigger,
   Heading,
   Icon,
-  IconButton,
   Label,
   PhoneField,
   PhoneFieldInput,
@@ -20,7 +19,7 @@ import {
   SelectValue,
   Text,
 } from '@vega-ui/react';
-import { XIcon } from '@vega-ui/icons';
+import { ChevronDownIcon, XIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 export default function FullFieldInsideADialogForm() {
@@ -45,14 +44,15 @@ export default function FullFieldInsideADialogForm() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
             <Heading id={`${id}-title`} as='h2' size={4} fontWeight={600}>Emergency contact</Heading>
             <DialogClose asChild>
-              <IconButton
+              <Button
+                square
                 aria-label='Close'
                 variant='secondary'
                 appearance='ghost'
-                style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+                style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
               >
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DialogClose>
           </div>
           <form
@@ -65,7 +65,7 @@ export default function FullFieldInsideADialogForm() {
                 <SelectHiddenSelect name='country' />
                 <SelectCombobox aria-label='Country'>
                   <SelectValue />
-                  <SelectIcon />
+                  <SelectIcon><ChevronDownIcon /></SelectIcon>
                 </SelectCombobox>
                 <SelectListbox>
                   <SelectOption value='FR'>FR</SelectOption>

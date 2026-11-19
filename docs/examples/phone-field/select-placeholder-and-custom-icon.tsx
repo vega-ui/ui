@@ -10,7 +10,7 @@ import {
   SelectOption,
   SelectValue,
 } from '@vega-ui/react';
-import { ChevronsUpDown } from '@vega-ui/icons';
+import { ChevronsUpDownIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 export default function SelectPlaceholderAndCustomIcon() {
@@ -25,7 +25,7 @@ export default function SelectPlaceholderAndCustomIcon() {
           <SelectCombobox aria-label='Country'>
             <SelectValue placeholder='Code' />
             <SelectIcon>
-              <ChevronsUpDown />
+              <ChevronsUpDownIcon />
             </SelectIcon>
           </SelectCombobox>
           <SelectListbox>

@@ -2,14 +2,14 @@ import {
   CheckboxCard,
   CheckboxCardContent,
   CheckboxCardControl,
-  CheckboxCardControlCheckedIcon,
-  CheckboxCardControlIndeterminateIcon,
+  CheckboxCheckedIcon,
+  CheckboxIndeterminateIcon,
   CheckboxCardControlInput,
   CheckboxCardDescription,
   CheckboxCardTitle,
   CheckboxIndicator,
 } from '@vega-ui/react';
-import { Diff, Rocket } from '@vega-ui/icons';
+import { CheckIcon, DiffIcon, MinusIcon, RocketIcon } from '@vega-ui/icons';
 
 export default function CustomStateIcons() {
   return (
@@ -22,10 +22,10 @@ export default function CustomStateIcons() {
         <CheckboxCardControl>
           <CheckboxCardControlInput defaultChecked />
           <CheckboxIndicator>
-            <CheckboxCardControlCheckedIcon>
-              <Rocket />
-            </CheckboxCardControlCheckedIcon>
-            <CheckboxCardControlIndeterminateIcon />
+            <CheckboxCheckedIcon>
+              <RocketIcon />
+            </CheckboxCheckedIcon>
+            <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
           </CheckboxIndicator>
         </CheckboxCardControl>
       </CheckboxCard>
@@ -37,10 +37,10 @@ export default function CustomStateIcons() {
         <CheckboxCardControl>
           <CheckboxCardControlInput indeterminate />
           <CheckboxIndicator>
-            <CheckboxCardControlCheckedIcon />
-            <CheckboxCardControlIndeterminateIcon>
-              <Diff />
-            </CheckboxCardControlIndeterminateIcon>
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+            <CheckboxIndeterminateIcon>
+              <DiffIcon />
+            </CheckboxIndeterminateIcon>
           </CheckboxIndicator>
         </CheckboxCardControl>
       </CheckboxCard>

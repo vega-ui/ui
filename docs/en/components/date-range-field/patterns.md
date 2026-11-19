@@ -46,13 +46,15 @@ import {
   DateRangeField,
   DateRangeFieldCalendar,
   DateRangeFieldInput,
-  DateRangeFieldTriggerIconButton,
+  DateRangeFieldTrigger,
   HelperText,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 export const locales = ['en-US', 'ru-RU', 'ar-EG', 'he-IL'];
 
@@ -64,17 +66,17 @@ export default function BookingRangeWithACalendarPopover({ locale = 'en-US' }: {
         <DateRangeFieldInput id='stay' placeholder='dd.mm.yyyy – dd.mm.yyyy' aria-describedby='stay-hint' />
         <Popover placement='bottom-end'>
           <PopoverTrigger asChild>
-            <DateRangeFieldTriggerIconButton aria-label='Choose stay dates' />
+            <DateRangeFieldTrigger square aria-label='Choose stay dates'><Icon><CalendarIcon /></Icon></DateRangeFieldTrigger>
           </PopoverTrigger>
           <PopoverContent>
             <DateRangeFieldCalendar aria-label='Choose stay dates'>
               <CalendarHeader>
-                <CalendarPrevButton aria-label='Previous month' />
+                <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                 <CalendarHeading>
                   <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                   <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                 </CalendarHeading>
-                <CalendarNextButton aria-label='Next month' />
+                <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
               </CalendarHeader>
               <CalendarContent>
                 <CalendarDays>
@@ -135,7 +137,7 @@ Trade-offs:
 <!-- example: date-range-field/range-in-a-filter-drawer.tsx -->
 ```tsx
 import { CSSProperties, useState } from 'react';
-import { XIcon } from '@vega-ui/icons';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon, XIcon } from '@vega-ui/icons';
 import {
   Button,
   CalendarContent,
@@ -164,14 +166,13 @@ import {
   DateRangeField,
   DateRangeFieldCalendar,
   DateRangeFieldInput,
-  DateRangeFieldTriggerIconButton,
+  DateRangeFieldTrigger,
   Drawer,
   DrawerClose,
   DrawerContent,
   DrawerTrigger,
   Heading,
   Icon,
-  IconButton,
   Label,
   Popover,
   PopoverContent,
@@ -200,14 +201,15 @@ export default function RangeInAFilterDrawer() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
             <Heading id='order-filters-title' as='h2' size={4} fontWeight={600}>Order filters</Heading>
             <DrawerClose asChild>
-              <IconButton
+              <Button
+                square
                 aria-label='Close'
                 variant='secondary'
                 appearance='ghost'
-                style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+                style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
               >
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DrawerClose>
           </div>
           <form
@@ -221,17 +223,17 @@ export default function RangeInAFilterDrawer() {
                 <DateRangeFieldInput id='created' placeholder='dd.mm.yyyy – dd.mm.yyyy' />
                 <Popover placement='bottom-end'>
                   <PopoverTrigger asChild>
-                    <DateRangeFieldTriggerIconButton aria-label='Choose creation dates' />
+                    <DateRangeFieldTrigger square aria-label='Choose creation dates'><Icon><CalendarIcon /></Icon></DateRangeFieldTrigger>
                   </PopoverTrigger>
                   <PopoverContent>
                     <DateRangeFieldCalendar aria-label='Choose creation dates'>
                       <CalendarHeader>
-                        <CalendarPrevButton aria-label='Previous month' />
+                        <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                         <CalendarHeading>
                           <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                           <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                         </CalendarHeading>
-                        <CalendarNextButton aria-label='Next month' />
+                        <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                       </CalendarHeader>
                       <CalendarContent>
                         <CalendarDays>
@@ -329,13 +331,15 @@ import {
   DateRangeField,
   DateRangeFieldCalendar,
   DateRangeFieldInput,
-  DateRangeFieldTriggerIconButton,
+  DateRangeFieldTrigger,
   HelperText,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 const HINT = 'Choose the first and the last day of coverage.';
 
@@ -369,17 +373,17 @@ export default function CoverageForm() {
           />
           <Popover placement='bottom-end'>
             <PopoverTrigger asChild>
-              <DateRangeFieldTriggerIconButton aria-label='Choose coverage period' />
+              <DateRangeFieldTrigger square aria-label='Choose coverage period'><Icon><CalendarIcon /></Icon></DateRangeFieldTrigger>
             </PopoverTrigger>
             <PopoverContent>
               <DateRangeFieldCalendar aria-label='Choose coverage period'>
                 <CalendarHeader>
-                  <CalendarPrevButton aria-label='Previous month' />
+                  <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                   </CalendarHeading>
-                  <CalendarNextButton aria-label='Next month' />
+                  <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                 </CalendarHeader>
                 <CalendarContent>
                   <CalendarDays>

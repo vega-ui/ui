@@ -4,7 +4,6 @@ import {
   Heading,
   HelperText,
   Icon,
-  IconButton,
   Sheet,
   SheetContent,
   SheetHandle,
@@ -41,13 +40,13 @@ export default function DisabledTrigger() {
           <Text size={2} style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>${price.toFixed(2)}</Text>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-4)' }}>
-          <IconButton aria-label='Remove one flat white' size='sm' variant='secondary' appearance='ghost' disabled={empty} onClick={() => setCount(count - 1)}>
+          <Button square aria-label='Remove one flat white' size='sm' variant='secondary' appearance='ghost' disabled={empty} onClick={() => setCount(count - 1)}>
             <Icon size='xs'><MinusIcon /></Icon>
-          </IconButton>
+          </Button>
           <Text size={3} aria-live='polite' style={{ minWidth: '2ch', textAlign: 'center', fontVariantNumeric: 'tabular-nums' }}>{count}</Text>
-          <IconButton aria-label='Add one flat white' size='sm' variant='secondary' appearance='ghost' onClick={() => setCount(count + 1)}>
+          <Button square aria-label='Add one flat white' size='sm' variant='secondary' appearance='ghost' onClick={() => setCount(count + 1)}>
             <Icon size='xs'><PlusIcon /></Icon>
-          </IconButton>
+          </Button>
         </div>
       </div>
       <Sheet>

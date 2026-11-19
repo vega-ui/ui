@@ -73,6 +73,51 @@ export default function MinimalComposition() {
 ```
 <!-- /example -->
 
+## Your Own Component
+
+The minimal composition above shows the parts in place. In an app, compose them once in a file of your own and import that component everywhere. `MySlider` passes its props to `Slider`, `name` included, and its `id` to the range input of the one thumb for a `Label`. See [Component recipes](../../recipes.md).
+
+<!-- example: slider/recipe.tsx -->
+```tsx
+import {
+  Label,
+  Slider,
+  SliderRange,
+  SliderThumb,
+  SliderThumbIndicator,
+  SliderThumbInput,
+  SliderTrack,
+  type SliderProps,
+} from '@vega-ui/react';
+import { useId } from 'react';
+
+export function MySlider({ id, ...props }: SliderProps) {
+  return (
+    <Slider {...props}>
+      <SliderTrack>
+        <SliderRange />
+      </SliderTrack>
+      <SliderThumb>
+        <SliderThumbInput id={id} />
+        <SliderThumbIndicator />
+      </SliderThumb>
+    </Slider>
+  );
+}
+
+export default function Recipe() {
+  const id = useId();
+
+  return (
+    <div style={{ display: 'grid', gap: 'var(--spacing-5)', width: '100%', maxWidth: 400 }}>
+      <Label htmlFor={id}>Volume</Label>
+      <MySlider id={id} name='volume' defaultValue={40} />
+    </div>
+  );
+}
+```
+<!-- /example -->
+
 ## Required Parts
 
 - `Slider`: root, values of all thumbs and shared range settings

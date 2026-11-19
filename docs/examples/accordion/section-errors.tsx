@@ -13,6 +13,7 @@ import {
   TextField,
   TextFieldInput,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 
 const ibanPattern = /^[A-Z]{2}[0-9]{2}[A-Z0-9]{11,30}$/;
 
@@ -50,7 +51,7 @@ export default function SectionErrors() {
                 Payout details
                 {error && <Text size={2} style={{ color: 'var(--color-error)' }}>1 error</Text>}
               </span>
-              <AccordionIcon />
+              <AccordionIcon><ChevronDownIcon /></AccordionIcon>
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>

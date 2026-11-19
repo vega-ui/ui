@@ -8,16 +8,15 @@ import {
   Heading,
   HelperText,
   Icon,
-  IconButton,
   Label,
   PasswordField,
   PasswordFieldHiddenIcon,
   PasswordFieldInput,
   PasswordFieldShownIcon,
-  PasswordFieldToggleIconButton,
+  PasswordFieldToggle,
   Text,
 } from '@vega-ui/react';
-import { XIcon } from '@vega-ui/icons';
+import { EyeIcon, EyeOffIcon, XIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 export default function ConfirmInDialog() {
@@ -53,14 +52,15 @@ export default function ConfirmInDialog() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
             <Heading id={`${id}-title`} as='h2' size={4} fontWeight={600}>Confirm it’s you</Heading>
             <DialogClose asChild>
-              <IconButton
+              <Button
+                square
                 aria-label='Close'
                 variant='secondary'
                 appearance='ghost'
-                style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+                style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
               >
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DialogClose>
           </div>
           <Text id={`${id}-text`} size={3} style={{ color: 'var(--label-secondary)', marginBlockStart: 'var(--spacing-2)' }}>
@@ -79,10 +79,10 @@ export default function ConfirmInDialog() {
                   aria-invalid={error !== ''}
                   aria-describedby={`${id}-error`}
                 />
-                <PasswordFieldToggleIconButton aria-label='Show password'>
-                  <PasswordFieldShownIcon />
-                  <PasswordFieldHiddenIcon />
-                </PasswordFieldToggleIconButton>
+                <PasswordFieldToggle square aria-label='Show password'>
+                  <PasswordFieldShownIcon><EyeIcon /></PasswordFieldShownIcon>
+                  <PasswordFieldHiddenIcon><EyeOffIcon /></PasswordFieldHiddenIcon>
+                </PasswordFieldToggle>
               </PasswordField>
               <HelperText id={`${id}-error`} invalid>{error}</HelperText>
             </div>

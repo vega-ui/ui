@@ -20,14 +20,13 @@ import {
   SwitchInput,
 } from '@vega-ui/react';
 import { Moon, Sun } from '@vega-ui/icons';
+import { useTheme } from 'next-themes';
 import { ACCENTS } from '@/lib/accent';
 import { DEFAULT_THEME, previewVars, type Scheme } from '@/lib/theme';
 import { useRootAttribute } from '@/hooks/useRootAttribute';
 import { HeroShowcase } from './HeroShowcase';
 import { useDictionary } from './LocaleProvider';
 import styles from './HeroLab.module.css';
-
-const readScheme = (): Scheme => document.documentElement.classList.contains('dark') ? 'dark' : 'light';
 
 interface HeroLabProps {
   intro: ReactNode
@@ -40,20 +39,14 @@ export const HeroLab = ({ intro, caption, template }: HeroLabProps) => {
   const lab = t.home.lab;
   const id = useId();
   const siteAccent = useRootAttribute('data-accent') ?? 'blue';
+  const { resolvedTheme } = useTheme();
   const [accent, setAccent] = useState<string | null>(null);
   const [radius, setRadius] = useState(DEFAULT_THEME.radius);
   const [scheme, setScheme] = useState<Scheme>('light');
   const [dir, setDir] = useState('ltr');
   const [inspect, setInspect] = useState(false);
 
-  useEffect(() => {
-    setScheme(readScheme());
-
-    const observer = new MutationObserver(() => setScheme(readScheme()));
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-
-    return () => observer.disconnect();
-  }, []);
+  useEffect(() => setScheme(resolvedTheme === 'dark' ? 'dark' : 'light'), [resolvedTheme]);
 
   const chosen = accent ?? siteAccent;
   const tuned = accent !== null || radius !== DEFAULT_THEME.radius;
@@ -78,7 +71,7 @@ export const HeroLab = ({ intro, caption, template }: HeroLabProps) => {
           ))}
         </div>
         <span className={styles.divider} />
-        <SegmentedControl size='xs' variant='secondary' name={`${id}-scheme`} role='radiogroup' aria-label={lab.scheme} value={scheme} onChange={(event) => setScheme(event.target.value as Scheme)}>
+        <SegmentedControl size='xs' variant='secondary' name={`${id}-scheme`} aria-label={lab.scheme} value={scheme} onChangeValue={setScheme}>
           <SegmentedControlItem value='light'>
             <SegmentedControlItemInput aria-label={lab.light} />
             <Icon size='xs'><Sun /></Icon>
@@ -103,7 +96,7 @@ export const HeroLab = ({ intro, caption, template }: HeroLabProps) => {
           </Slider>
         </div>
         <span className={styles.divider} />
-        <SegmentedControl size='xs' variant='secondary' name={`${id}-dir`} role='radiogroup' aria-label={lab.direction} value={dir} onChange={(event) => setDir(event.target.value)}>
+        <SegmentedControl size='xs' variant='secondary' name={`${id}-dir`} aria-label={lab.direction} value={dir} onChangeValue={setDir}>
           <SegmentedControlItem value='ltr'>
             <SegmentedControlItemInput />
             LTR

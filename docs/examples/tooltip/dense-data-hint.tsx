@@ -1,6 +1,6 @@
 import {
+  Button,
   Icon,
-  IconButton,
   Text,
   Tooltip,
   TooltipContent,
@@ -36,9 +36,9 @@ export default function DenseDataHint() {
             <Text size={2} style={{ color: 'var(--label-secondary)' }}>{metric.label}</Text>
             <Tooltip>
               <TooltipTrigger asChild>
-                <IconButton aria-label={`About ${metric.label}`} size='xs' variant='secondary' appearance='ghost'>
+                <Button square aria-label={`About ${metric.label}`} size='xs' variant='secondary' appearance='ghost'>
                   <Icon size='xs'><InfoIcon /></Icon>
-                </IconButton>
+                </Button>
               </TooltipTrigger>
               <TooltipContent>
                 <Text size={2} style={{ display: 'block', maxWidth: 240 }}>{metric.hint}</Text>

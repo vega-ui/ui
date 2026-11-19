@@ -1,6 +1,6 @@
 import {
+  Button,
   Icon,
-  IconButton,
   Text,
   Tooltip,
   TooltipContent,
@@ -31,9 +31,9 @@ export default function ToolbarSharedDelay() {
       {tools.map(({ label, shortcut, icon }) => (
         <Tooltip key={label}>
           <TooltipTrigger asChild>
-            <IconButton aria-label={label} appearance='transparent' variant='secondary'>
+            <Button square aria-label={label} appearance='transparent' variant='secondary'>
               <Icon>{icon}</Icon>
-            </IconButton>
+            </Button>
           </TooltipTrigger>
           <TooltipContent>
             <Text size={2}>{`${label} ${shortcut}`}</Text>

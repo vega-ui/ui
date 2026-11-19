@@ -13,10 +13,10 @@ import { Button } from '@vega-ui/react';
 export default function ActionHierarchy() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-4)', width: '100%' }}>
-      <Button type='button' fullWidth>Publish article</Button>
-      <Button type='button' fullWidth variant='secondary' appearance='ghost'>Save draft</Button>
-      <Button type='button' fullWidth variant='secondary' appearance='ghost'>Preview</Button>
-      <Button type='button' fullWidth variant='secondary' appearance='transparent'>Discard</Button>
+      <Button type='button' style={{ width: '100%' }}>Publish article</Button>
+      <Button type='button' variant='secondary' appearance='ghost' style={{ width: '100%' }}>Save draft</Button>
+      <Button type='button' variant='secondary' appearance='ghost' style={{ width: '100%' }}>Preview</Button>
+      <Button type='button' variant='secondary' appearance='transparent' style={{ width: '100%' }}>Discard</Button>
     </div>
   );
 }
@@ -253,7 +253,6 @@ import {
   DialogTrigger,
   Heading,
   Icon,
-  IconButton,
   Text,
 } from '@vega-ui/react';
 import { Trash2Icon, XIcon } from '@vega-ui/icons';
@@ -291,14 +290,15 @@ export default function DialogConfirmationActions() {
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
           <Heading id='delete-file-title' as='h2' size={4} fontWeight={600}>Delete Q3 report.pdf?</Heading>
           <DialogClose asChild>
-            <IconButton
+            <Button
+              square
               aria-label='Close'
               variant='secondary'
               appearance='ghost'
-              style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+              style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
             >
               <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-            </IconButton>
+            </Button>
           </DialogClose>
         </div>
         <Text id='delete-file-description' size={3}>
@@ -321,7 +321,7 @@ export default function DialogConfirmationActions() {
 
 ### Layout/Overlay: full-width actions in a narrow card
 
-`fullWidth` stretches the button to the container, which is the usual layout for cards, sheets, and mobile screens with stacked actions.
+Set `width: 100%` with `style` or a class to stretch a button to its container, the usual layout for cards, sheets, and mobile screens with stacked actions. Button has no width prop of its own, like a native `<button>`.
 
 <!-- example: button/full-width-stacked-actions.tsx -->
 ```tsx
@@ -349,8 +349,8 @@ export default function FullWidthStackedActions() {
         </Text>
       </div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-4)' }}>
-        <Button type='button' fullWidth>Start 14-day trial</Button>
-        <Button type='button' fullWidth variant='secondary' appearance='transparent'>Compare plans</Button>
+        <Button type='button' style={{ width: '100%' }}>Start 14-day trial</Button>
+        <Button type='button' variant='secondary' appearance='transparent' style={{ width: '100%' }}>Compare plans</Button>
       </div>
     </section>
   );
@@ -494,9 +494,9 @@ export default function FieldsetDisabledActions() {
       <Fieldset disabled={locked} appearance='outlined' style={{ width: '100%', boxSizing: 'border-box' }}>
         <FieldsetLegend>Billing actions</FieldsetLegend>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--spacing-4)' }}>
-          <Button type='button' fullWidth>Change plan</Button>
-          <Button type='button' fullWidth variant='secondary' appearance='ghost'>Update card</Button>
-          <Button type='button' fullWidth variant='secondary' appearance='transparent'>Download invoices</Button>
+          <Button type='button' style={{ width: '100%' }}>Change plan</Button>
+          <Button type='button' variant='secondary' appearance='ghost' style={{ width: '100%' }}>Update card</Button>
+          <Button type='button' variant='secondary' appearance='transparent' style={{ width: '100%' }}>Download invoices</Button>
         </div>
       </Fieldset>
       <Button type='button' size='sm' variant='secondary' appearance='ghost' onClick={() => setLocked(!locked)}>

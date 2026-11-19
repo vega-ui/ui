@@ -3,7 +3,6 @@ import {
   Badge,
   Button,
   Icon,
-  IconButton,
   Text,
   Tooltip,
   TooltipContent,
@@ -57,9 +56,9 @@ export default function SyncErrorHint() {
                 <Badge variant='error' size='xs'>Sync failed</Badge>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <IconButton aria-label={`Why ${integration.name} sync failed`} size='xs' variant='secondary' appearance='ghost'>
+                    <Button square aria-label={`Why ${integration.name} sync failed`} size='xs' variant='secondary' appearance='ghost'>
                       <Icon size='xs'><CircleAlertIcon /></Icon>
-                    </IconButton>
+                    </Button>
                   </TooltipTrigger>
                   <TooltipContent>
                     <Text size={2}>{integration.error}</Text>

@@ -7,7 +7,6 @@ import {
   DialogTrigger,
   Heading,
   Icon,
-  IconButton,
   Label,
   Select,
   SelectCombobox,
@@ -18,7 +17,7 @@ import {
   SelectValue,
   Text,
 } from '@vega-ui/react';
-import { XIcon } from '@vega-ui/icons';
+import { ChevronDownIcon, XIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 export default function SelectInsideDialog() {
@@ -43,14 +42,15 @@ export default function SelectInsideDialog() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-8)' }}>
             <Heading id={`${id}-title`} as='h2' size={4} fontWeight={600}>Export Q3 report</Heading>
             <DialogClose asChild>
-              <IconButton
+              <Button
+                square
                 aria-label='Close'
                 variant='secondary'
                 appearance='ghost'
-                style={{ flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties}
+                style={{ flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties}
               >
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DialogClose>
           </div>
           <form
@@ -62,7 +62,7 @@ export default function SelectInsideDialog() {
               <SelectHiddenSelect name='format' />
               <SelectCombobox id={id}>
                 <SelectValue />
-                <SelectIcon />
+                <SelectIcon><ChevronDownIcon /></SelectIcon>
               </SelectCombobox>
               <SelectListbox>
                 <SelectOption value='xlsx'>Excel workbook (.xlsx)</SelectOption>

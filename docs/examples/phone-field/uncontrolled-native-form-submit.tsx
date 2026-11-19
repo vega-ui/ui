@@ -12,6 +12,7 @@ import {
   SelectValue,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { FormEvent, useId, useState } from 'react';
 
 export default function UncontrolledNativeFormSubmit() {
@@ -32,7 +33,7 @@ export default function UncontrolledNativeFormSubmit() {
           <SelectHiddenSelect name='country' />
           <SelectCombobox aria-label='Country'>
             <SelectValue />
-            <SelectIcon />
+            <SelectIcon><ChevronDownIcon /></SelectIcon>
           </SelectCombobox>
           <SelectListbox>
             <SelectOption value='DE'>DE</SelectOption>

@@ -43,7 +43,7 @@
 
 .copy .compact {
     --button-height: var(--spacing-14);
-    --icon-button-size: var(--spacing-14);
+    --button-height: var(--spacing-14);
     --padding-inline: var(--spacing-6);
     font-size: var(--site-subheadline-size);
     line-height: var(--site-subheadline-leading);

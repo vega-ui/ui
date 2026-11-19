@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import NextLink from 'next/link';
-import { Button, Icon, IconButton, Popover, PopoverContent, PopoverTrigger, Text } from '@vega-ui/react';
+import { Button, Icon, Popover, PopoverContent, PopoverTrigger, Text } from '@vega-ui/react';
 import { ChevronRight, Palette } from '@vega-ui/icons';
 import { useRootAttribute } from '@/hooks/useRootAttribute';
 import { localize } from '@/lib/i18n';
@@ -21,9 +21,9 @@ export const AppearanceMenu = () => {
   return (
     <Popover role='dialog' placement='bottom-end' open={open} onChangeOpen={setOpen}>
       <PopoverTrigger asChild>
-        <IconButton size='xs' variant='secondary' appearance='transparent' aria-label={t.settings.open}>
+        <Button square size='xs' variant='secondary' appearance='transparent' aria-label={t.settings.open}>
           <Icon size='xs'><Palette /></Icon>
-        </IconButton>
+        </Button>
       </PopoverTrigger>
       <PopoverContent aria-label={t.settings.open}>
         <div className={styles.panel}>

@@ -82,35 +82,9 @@
 Также принимает все атрибуты `<input>`.
 <!-- AUTO-GENERATED:PART_API:CheckboxCardControlInput:end -->
 
-## `CheckboxCardControlCheckedIcon`
+## Части из `Checkbox`
 
-Иконка отмеченного состояния.
-
-<!-- AUTO-GENERATED:PART_API:CheckboxCardControlCheckedIcon:start -->
-| Проп | Тип | По умолчанию | Обязательный | Описание |
-| --- | --- | --- | --- | --- |
-| `size` | `IconSize` | — | Нет | Предопределённый токен размера иконки. Может быть переопределён явными шириной и высотой. |
-| `ref` | `Ref<SVGSVGElement>` | — | Нет | Ref на SVG-элемент |
-| `strokeWidth` | `number` | — | Нет | Толщина обводки линий и фигур SVG (в px или pt). |
-| `children` | `ReactNode` | — | Нет | Содержимое иконки. Принимает: иконки из `@vega-ui/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler) |
-
-Также принимает все HTML-атрибуты.
-<!-- AUTO-GENERATED:PART_API:CheckboxCardControlCheckedIcon:end -->
-
-## `CheckboxCardControlIndeterminateIcon`
-
-Иконка неопределённого состояния.
-
-<!-- AUTO-GENERATED:PART_API:CheckboxCardControlIndeterminateIcon:start -->
-| Проп | Тип | По умолчанию | Обязательный | Описание |
-| --- | --- | --- | --- | --- |
-| `size` | `IconSize` | — | Нет | Предопределённый токен размера иконки. Может быть переопределён явными шириной и высотой. |
-| `ref` | `Ref<SVGSVGElement>` | — | Нет | Ref на SVG-элемент |
-| `strokeWidth` | `number` | — | Нет | Толщина обводки линий и фигур SVG (в px или pt). |
-| `children` | `ReactNode` | — | Нет | Содержимое иконки. Принимает: иконки из `@vega-ui/icons`; собственный встроенный SVG; компоненты иконок сторонних библиотек (например, Lucide, Tabler) |
-
-Также принимает все HTML-атрибуты.
-<!-- AUTO-GENERATED:PART_API:CheckboxCardControlIndeterminateIcon:end -->
+`CheckboxIndicator`, `CheckboxCheckedIcon` и `CheckboxIndeterminateIcon` внутри `CheckboxCardControl` — части [Checkbox](../checkbox/api.md) с теми же пропсами. Своих иконок у частей-иконок нет: передайте галочку и минус дочерними элементами, например `<CheckIcon strokeWidth={4} />` и `<MinusIcon strokeWidth={4} />` из любого набора иконок.
 
 ## Хуки
 

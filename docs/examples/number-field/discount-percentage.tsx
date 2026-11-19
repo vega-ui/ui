@@ -1,4 +1,5 @@
 import {
+  Icon,
   Label,
   NumberField,
   NumberFieldDecrementButton,
@@ -6,6 +7,7 @@ import {
   NumberFieldInput,
   Text,
 } from '@vega-ui/react';
+import { MinusIcon, PlusIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const LIST_PRICE = 1290;
@@ -22,10 +24,10 @@ export default function DiscountPercentage({ locale = 'en-US' }: { locale?: stri
     <div style={{ display: 'grid', gap: 'var(--spacing-3)', width: '100%', maxWidth: 260 }}>
       <Label htmlFor={id}>Discount</Label>
       <NumberField min={0} max={100} step={0.5} maximumFractionDigits={1} value={discount} onChangeValue={setDiscount}>
-        <NumberFieldDecrementButton aria-label='Decrease discount by 0.5%' />
+        <NumberFieldDecrementButton square aria-label='Decrease discount by 0.5%'><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
         <NumberFieldInput id={id} aria-describedby={`${id}-price`} />
         <Text size={3} aria-hidden style={{ color: 'var(--label-secondary)' }}>%</Text>
-        <NumberFieldIncrementButton aria-label='Increase discount by 0.5%' />
+        <NumberFieldIncrementButton square aria-label='Increase discount by 0.5%'><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
       </NumberField>
       <Text id={`${id}-price`} size={2} style={{ color: 'var(--label-secondary)', fontVariantNumeric: 'tabular-nums' }}>
         Annual plan: {currency.format(price)} instead of {currency.format(LIST_PRICE)}

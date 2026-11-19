@@ -12,6 +12,7 @@ import {
   SwitchIndicator,
   SwitchInput,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 export default function FullyDisabledField() {
@@ -41,7 +42,7 @@ export default function FullyDisabledField() {
           <SelectHiddenSelect name='weekStart' />
           <SelectCombobox id={selectId}>
             <SelectValue />
-            <SelectIcon />
+            <SelectIcon><ChevronDownIcon /></SelectIcon>
           </SelectCombobox>
           <SelectListbox>
             <SelectOption value='saturday'>Saturday</SelectOption>

@@ -5,7 +5,7 @@ import { getPageMetadata, withSiteName } from '@/lib/site';
 import { getTemplateCategory, getTemplateComponents, TEMPLATE_CATEGORIES, TEMPLATES } from '@/lib/templates';
 import styles from './TemplatesScreen.module.css';
 
-const BASICS = ['button', 'card', 'heading', 'helper-text', 'icon', 'icon-button', 'label', 'separator', 'text', 'visually-hidden'];
+const BASICS = ['button', 'card', 'heading', 'helper-text', 'icon', 'label', 'separator', 'text', 'visually-hidden'];
 
 export const getTemplatesMetadata = (locale: Locale) => {
   const t = getDictionary(locale).templates;

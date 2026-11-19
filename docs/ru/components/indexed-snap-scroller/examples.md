@@ -86,14 +86,13 @@ export default function WeekStrip() {
 import {
   Button,
   Icon,
-  IconButton,
   IndexedSnapScroller,
   IndexedSnapScrollerContent,
   Text,
   useIndexedSnapScrollerContext,
   type IndexedSnapScrollerApiRef,
 } from '@vega-ui/react';
-import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import { useRef, useState } from 'react';
 
 const today = new Date();
@@ -143,12 +142,12 @@ export default function ControlledVirtualIndex() {
   return (
     <div style={{ display: 'grid', gap: 'var(--spacing-6)', width: '100%' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-2)' }}>
-        <IconButton aria-label='Previous month' variant='secondary' appearance='ghost' onClick={() => api.current?.prev()}>
-          <Icon><ChevronLeft /></Icon>
-        </IconButton>
-        <IconButton aria-label='Next month' variant='secondary' appearance='ghost' onClick={() => api.current?.next()}>
-          <Icon><ChevronRight /></Icon>
-        </IconButton>
+        <Button square aria-label='Previous month' variant='secondary' appearance='ghost' onClick={() => api.current?.prev()}>
+          <Icon><ChevronLeftIcon /></Icon>
+        </Button>
+        <Button square aria-label='Next month' variant='secondary' appearance='ghost' onClick={() => api.current?.next()}>
+          <Icon><ChevronRightIcon /></Icon>
+        </Button>
         <Button size='sm' variant='secondary' appearance='ghost' onClick={() => setIndex(index + 12)} style={{ marginInlineStart: 'auto' }}>
           +1 year
         </Button>
@@ -187,14 +186,13 @@ import {
   Button,
   HelperText,
   Icon,
-  IconButton,
   IndexedSnapScroller,
   IndexedSnapScrollerContent,
   Text,
   useIndexedSnapScrollerContext,
   type IndexedSnapScrollerApiRef,
 } from '@vega-ui/react';
-import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import { useRef, useState, type FormEvent } from 'react';
 
 const today = new Date();
@@ -287,12 +285,12 @@ export default function WeekStripForm() {
     <form onSubmit={onSubmit} onReset={onReset} style={{ display: 'grid', gap: 'var(--spacing-8)', width: '100%' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--spacing-2)' }}>
         <Text id='delivery-day-label' size={3} fontWeight={500} style={{ flex: 1 }}>Delivery day</Text>
-        <IconButton aria-label='Previous week' variant='secondary' appearance='ghost' onClick={() => api.current?.prev()}>
-          <Icon><ChevronLeft /></Icon>
-        </IconButton>
-        <IconButton aria-label='Next week' variant='secondary' appearance='ghost' onClick={() => api.current?.next()}>
-          <Icon><ChevronRight /></Icon>
-        </IconButton>
+        <Button square aria-label='Previous week' variant='secondary' appearance='ghost' onClick={() => api.current?.prev()}>
+          <Icon><ChevronLeftIcon /></Icon>
+        </Button>
+        <Button square aria-label='Next week' variant='secondary' appearance='ghost' onClick={() => api.current?.next()}>
+          <Icon><ChevronRightIcon /></Icon>
+        </Button>
       </div>
       <div
         role='group'
@@ -617,14 +615,14 @@ export default function LazyPageData() {
 ```tsx
 import {
   Icon,
-  IconButton,
+  Button,
   IndexedSnapScroller,
   IndexedSnapScrollerContent,
   Text,
   useIndexedSnapScrollerContext,
   type IndexedSnapScrollerApiRef,
 } from '@vega-ui/react';
-import { ChevronLeft, ChevronRight } from '@vega-ui/icons';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import { useRef } from 'react';
 
 const today = new Date();
@@ -664,12 +662,12 @@ export default function RtlMonths() {
         <MonthPage />
       </IndexedSnapScroller>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <IconButton aria-label='الشهر السابق' variant='secondary' appearance='ghost' onClick={() => api.current?.prev()}>
-          <Icon><ChevronRight /></Icon>
-        </IconButton>
-        <IconButton aria-label='الشهر التالي' variant='secondary' appearance='ghost' onClick={() => api.current?.next()}>
-          <Icon><ChevronLeft /></Icon>
-        </IconButton>
+        <Button square aria-label='الشهر السابق' variant='secondary' appearance='ghost' onClick={() => api.current?.prev()}>
+          <Icon><ChevronRightIcon /></Icon>
+        </Button>
+        <Button square aria-label='الشهر التالي' variant='secondary' appearance='ghost' onClick={() => api.current?.next()}>
+          <Icon><ChevronLeftIcon /></Icon>
+        </Button>
       </div>
     </div>
   );

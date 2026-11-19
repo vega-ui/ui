@@ -73,7 +73,7 @@ export default function SortableTable() {
                     aria-sort={sort.column === column.key ? sort.direction : undefined}
                   >
                     <th className={column.numeric ? 'gridNumeric' : undefined}>
-                      <Button size='xs' variant='secondary' appearance='ghost' onClick={() => sortBy(column.key)}>
+                      <Button size='xs' variant='secondary' appearance='ghost' tabIndex={-1} onClick={() => sortBy(column.key)}>
                         {column.label}
                         <Icon size='xs'>{sortIcon(column.key)}</Icon>
                       </Button>

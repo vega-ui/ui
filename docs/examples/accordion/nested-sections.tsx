@@ -9,6 +9,7 @@ import {
   Separator,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 
 const endpoints = [
   { value: 'list', title: 'GET /v1/invoices', body: 'Returns invoices sorted by creation date, newest first. Supports cursor pagination.' },
@@ -25,7 +26,7 @@ export default function NestedSections() {
           <AccordionHeader as='h3'>
             <AccordionTrigger>
               Invoices
-              <AccordionIcon />
+              <AccordionIcon><ChevronDownIcon /></AccordionIcon>
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>
@@ -35,7 +36,7 @@ export default function NestedSections() {
                   <AccordionHeader as='h4'>
                     <AccordionTrigger>
                       <code style={{ fontFamily: 'var(--code-font-family)', fontSize: 'var(--font-size-2)' }}>{endpoint.title}</code>
-                      <AccordionIcon />
+                      <AccordionIcon><ChevronDownIcon /></AccordionIcon>
                     </AccordionTrigger>
                   </AccordionHeader>
                   <AccordionContent>
@@ -51,7 +52,7 @@ export default function NestedSections() {
           <AccordionHeader as='h3'>
             <AccordionTrigger>
               Customers
-              <AccordionIcon />
+              <AccordionIcon><ChevronDownIcon /></AccordionIcon>
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent>

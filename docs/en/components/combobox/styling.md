@@ -11,7 +11,7 @@
 | `--combobox-size` | root, `ComboboxListbox` | Base for the list radius, set by `size` |
 | `--combobox-br-ratio` | root, `ComboboxListbox` | Shared radius ratio, `--br-ratio` by default |
 | `--combobox-listbox-br-ratio` | `ComboboxListbox` | List-specific radius ratio override |
-| `--combobox-icon-color` | `ComboboxIcon` | Chevron color, `--label-tertiary` by default |
+| `--combobox-icon-color` | `ComboboxIcon` | Icon color, `--label-tertiary` by default |
 
 The list also reads global tokens:
 
@@ -41,11 +41,11 @@ The list is positioned under the root with CSS anchor positioning and flips abov
 
 ### ComboboxTrigger
 
-An `IconButton` as tall and wide as the field (`--icon-button-size: var(--input-height)`), transparent, in the text color, with the quaternary fills on hover and press.
+A `Button` as tall as the field (`--button-height: var(--input-height)`), and as wide with `square`, transparent, in the text color, with the quaternary fills on hover and press.
 
 ### ComboboxIcon
 
-The chevron takes its size from the `TextField` size: `xs` for `xs` and `sm` fields, `sm` for `md`, `md` for `lg` and `xl`. Its color is `var(--combobox-icon-color, var(--label-tertiary))`, and it turns upside down while the list is shown.
+The icon takes its size from the `TextField` size: `xs` for `xs` and `sm` fields, `sm` for `md`, `md` for `lg` and `xl`. Its color is `var(--combobox-icon-color, var(--label-tertiary))`, and it turns upside down while the list is shown.
 
 ### ListboxOption
 
@@ -82,6 +82,7 @@ Options with an avatar and a secondary line set `height: 'auto'` and their own p
 <!-- example: combobox/rich-option-content.tsx -->
 ```tsx
 import { Avatar, AvatarFallback, Combobox, ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger, Label, ListboxOption, TextField } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const people = [
@@ -111,8 +112,8 @@ export default function RichOptionContent() {
             </Avatar>
           )}
           <ComboboxInput id={id} placeholder='Name or email' value={query} onChange={(event) => setQuery(event.target.value)} />
-          <ComboboxTrigger aria-label='Show people'>
-            <ComboboxIcon />
+          <ComboboxTrigger square aria-label='Show people'>
+            <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
           </ComboboxTrigger>
         </TextField>
         <ComboboxListbox aria-label='People' style={{ maxWidth: 320 }}>

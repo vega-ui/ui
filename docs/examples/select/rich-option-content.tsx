@@ -9,6 +9,7 @@ import {
   SelectValue,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const plans = [
@@ -29,7 +30,7 @@ export default function RichOptionContent() {
         <SelectHiddenSelect name='plan' />
         <SelectCombobox id={id}>
           <SelectValue placeholder='Choose a plan'>{selected?.name}</SelectValue>
-          <SelectIcon />
+          <SelectIcon><ChevronDownIcon /></SelectIcon>
         </SelectCombobox>
         <SelectListbox>
           {plans.map((item) => (

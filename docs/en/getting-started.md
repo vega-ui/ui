@@ -10,12 +10,19 @@ Install the packages, connect the styles and the theme, and render your first co
 ## Install
 
 ```bash
-pnpm add @vega-ui/react @vega-ui/theme-core @vega-ui/icons
+pnpm add @vega-ui/react @vega-ui/theme-core
 ```
 
 - `@vega-ui/react`: the components and their stylesheet.
 - `@vega-ui/theme-core`: the light and dark themes. Components read their colors, surfaces and text from its variables, so without it they render unstyled.
-- `@vega-ui/icons`: the icons used across the examples. `@vega-ui/react` already depends on it, but pnpm and Yarn Plug'n'Play only let the app import packages it lists itself.
+
+Components draw no icons of their own: parts such as `SelectIcon` or `CheckboxCheckedIcon` show the icon you pass as children, so any icon set works, or your own SVG. The examples use `@vega-ui/icons`, a set built on `lucide-react`; it is optional, install it to use the same icons:
+
+```bash
+pnpm add @vega-ui/icons
+```
+
+To write each icon once, compose the parts in your own components, as in [Component recipes](./recipes.md).
 
 Install `@vega-ui/i18n` as well when the app uses calendar systems or the date helpers directly. See [Dates and calendar systems](./i18n.md#install).
 
@@ -82,7 +89,7 @@ For Next.js and server rendering, see [Next.js and SSR](./nextjs.md).
 - Only `@vega-ui/react/style.css` is imported: without `@vega-ui/theme-core` the variables are undefined.
 - The theme class is on an inner wrapper: `Dialog`, `Drawer` and `Sheet` open without a theme.
 - Montserrat is not loaded and the font stack is not replaced: text renders in Arial.
-- `@vega-ui/icons` is imported but not installed: the build fails to resolve it.
+- An example is copied with its `@vega-ui/icons` imports, but the package is not installed: the build fails to resolve it.
 
 ## Working On The Library
 

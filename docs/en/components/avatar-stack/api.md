@@ -5,9 +5,9 @@
 <!-- AUTO-GENERATED:ROOT_API:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `ref` | `Ref<HTMLDivElement>` | — | No | Ref forwarded to the root `div` element of the avatar group. Useful for direct DOM access (e.g., measuring width or attaching listeners). |
-| `size` | `AvatarGroupSize` | `'md'` | No | Size of all avatar items within the group. Ensures consistent sizing across all items. |
-| `variant` | `AvatarGroupVariant` | `'primary'` | No | Variant for all avatars in the group. Applies a unified visual style (e.g., `primary`, `secondary`). |
+| `ref` | `Ref<HTMLDivElement>` | — | No | Ref forwarded to the root `div` element of the avatar stack. Useful for direct DOM access (e.g., measuring width or attaching listeners). |
+| `size` | `AvatarStackSize` | `'md'` | No | Size of all avatar items within the stack. Ensures consistent sizing across all items. |
+| `variant` | `AvatarStackVariant` | `'primary'` | No | Variant for all avatars in the stack. Applies a unified visual style (e.g., `primary`, `secondary`). |
 
 Also accepts all `<div>` attributes.
 <!-- AUTO-GENERATED:ROOT_API:end -->
@@ -30,10 +30,10 @@ Also accepts all `<span>` attributes.
 
 ## Types
 
-- `AvatarGroupProps`
-- `AvatarGroupStackItemProps`
-- `AvatarGroupSize`
-- `AvatarGroupVariant`
+- `AvatarStackProps`
+- `AvatarStackItemProps`
+- `AvatarStackSize`
+- `AvatarStackVariant`
 
 ## State Model
 

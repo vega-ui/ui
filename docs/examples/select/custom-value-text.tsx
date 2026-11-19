@@ -6,6 +6,7 @@ import {
   SelectOption,
   SelectValue,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useState } from 'react';
 
 export default function CustomValueText() {
@@ -15,7 +16,7 @@ export default function CustomValueText() {
     <Select style={{ width: 120 }} value={currency} onChangeValue={(next) => setCurrency(next ?? null)}>
       <SelectCombobox aria-label='Currency'>
         <SelectValue placeholder='Currency'>{currency}</SelectValue>
-        <SelectIcon />
+        <SelectIcon><ChevronDownIcon /></SelectIcon>
       </SelectCombobox>
       <SelectListbox>
         <SelectOption value='USD'>United States dollar (USD)</SelectOption>

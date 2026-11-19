@@ -10,6 +10,7 @@ import {
   SelectValue,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 export default function NonStrictMaskForLenientPasteBehavior() {
@@ -23,7 +24,7 @@ export default function NonStrictMaskForLenientPasteBehavior() {
         <PhoneFieldSelect>
           <SelectCombobox aria-label='Country'>
             <SelectValue />
-            <SelectIcon />
+            <SelectIcon><ChevronDownIcon /></SelectIcon>
           </SelectCombobox>
           <SelectListbox>
             <SelectOption value='US'>US</SelectOption>

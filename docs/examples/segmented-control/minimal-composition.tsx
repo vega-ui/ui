@@ -7,7 +7,7 @@ import {
 
 export default function MinimalComposition() {
   return (
-    <SegmentedControl name='billing-period' defaultValue='monthly' role='radiogroup' aria-label='Billing period'>
+    <SegmentedControl name='billing-period' defaultValue='monthly' aria-label='Billing period'>
       <SegmentedControlItem value='monthly'>
         <SegmentedControlItemInput />
         Monthly

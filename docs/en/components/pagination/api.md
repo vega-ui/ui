@@ -80,7 +80,7 @@ The content is `…` unless you pass `children`.
 - `PaginationItemProps`
 - `PaginationLinkProps`
 - `PaginationEllipsisProps`
-- `PaginationSize`: `'xs' | 'sm' | 'md' | 'lg' | 'xl'`, the `IconButton` size scale
+- `PaginationSize`: `'xs' | 'sm' | 'md' | 'lg' | 'xl'`, the `Button` size scale
 - `PaginationVariant`: `'primary' | 'secondary'`
 
 ## State Model

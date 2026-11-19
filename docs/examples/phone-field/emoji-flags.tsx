@@ -11,6 +11,7 @@ import {
   SelectValue,
   useSelectContext,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 const countries = [
@@ -46,7 +47,7 @@ export default function EmojiFlags() {
             <SelectValue>
               <SelectedFlag />
             </SelectValue>
-            <SelectIcon />
+            <SelectIcon><ChevronDownIcon /></SelectIcon>
           </SelectCombobox>
           <SelectListbox>
             {countries.map((country) => (

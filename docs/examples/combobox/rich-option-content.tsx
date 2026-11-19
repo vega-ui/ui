@@ -1,4 +1,5 @@
 import { Avatar, AvatarFallback, Combobox, ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger, Label, ListboxOption, TextField } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const people = [
@@ -28,8 +29,8 @@ export default function RichOptionContent() {
             </Avatar>
           )}
           <ComboboxInput id={id} placeholder='Name or email' value={query} onChange={(event) => setQuery(event.target.value)} />
-          <ComboboxTrigger aria-label='Show people'>
-            <ComboboxIcon />
+          <ComboboxTrigger square aria-label='Show people'>
+            <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
           </ComboboxTrigger>
         </TextField>
         <ComboboxListbox aria-label='People' style={{ maxWidth: 320 }}>

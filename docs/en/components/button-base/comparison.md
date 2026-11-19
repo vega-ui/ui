@@ -2,19 +2,13 @@
 
 ## Quick Decision Rule
 
-Choose `ButtonBase` only when the product needs the lowest shared action primitive. For normal product buttons, prefer `Button` or `IconButton`.
+Choose `ButtonBase` only when the product needs the lowest shared action primitive. For normal product buttons, prefer `Button`, with `square` for a single icon.
 
 ## `ButtonBase` vs `Button`
 
 Use `ButtonBase` when you need raw action styling with custom structure.
 
 Use `Button` when product code should express a standard text button with the higher-level public API.
-
-## `ButtonBase` vs `IconButton`
-
-Use `ButtonBase` when icon-only layout is custom or not the main intent.
-
-Use `IconButton` when the action is primarily icon-first and should follow the icon-button size contract.
 
 ## `ButtonBase` vs `Link`
 

@@ -1,9 +1,9 @@
 import { useRef, useState, type CSSProperties, type FocusEvent, type KeyboardEvent, type ReactNode } from 'react';
 import {
+  Button,
   ContextMenu,
   ContextMenuTrigger,
   Icon,
-  IconButton,
   Menu,
   MenuContent,
   MenuItem,
@@ -117,9 +117,9 @@ function FileRow({ file, onRename, onAdd }: FileRowProps) {
         <Text size={2} style={{ ...muted, flexShrink: 0 }}>{file.edited}</Text>
         <Menu placement='bottom-end' size='sm'>
           <MenuTrigger asChild>
-            <IconButton ref={moreRef} size='xs' aria-label={`Actions for ${file.name}`} variant='secondary' appearance='ghost' style={{ flexShrink: 0 }}>
+            <Button square ref={moreRef} size='xs' aria-label={`Actions for ${file.name}`} variant='secondary' appearance='ghost' style={{ flexShrink: 0 }}>
               <Icon><EllipsisIcon /></Icon>
-            </IconButton>
+            </Button>
           </MenuTrigger>
           <MenuContent>
             <FileActions {...actions} />

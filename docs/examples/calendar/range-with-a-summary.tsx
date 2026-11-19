@@ -24,8 +24,10 @@ import {
   CalendarYearsGrid,
   CalendarYearsScroller,
   CalendarYearsScrollerContent,
+  Icon,
   Text,
 } from '@vega-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import { useState } from 'react';
 
 const DAY = 86_400_000;
@@ -52,12 +54,12 @@ export default function RangeWithASummary({ locale = 'en-US' }: { locale?: strin
     <div style={{ display: 'grid', gap: 'var(--spacing-6)', justifyItems: 'start', width: '100%' }}>
       <Calendar locale={locale} selection='range' value={[start, end]} onChangeValue={setRange}>
         <CalendarHeader>
-          <CalendarPrevButton aria-label='Previous' />
+          <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
           <CalendarHeading>
             <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
             <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
           </CalendarHeading>
-          <CalendarNextButton aria-label='Next' />
+          <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
         </CalendarHeader>
         <CalendarContent>
           <CalendarDays aria-label='Stay dates'>

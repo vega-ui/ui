@@ -10,7 +10,7 @@ import {
   SelectOption,
   SelectValue,
 } from '@vega-ui/react';
-import { FlagDE, FlagFR, FlagGBUKM, FlagIN, FlagJP, FlagUS } from '@vega-ui/icons';
+import { ChevronDownIcon, FlagDE, FlagFR, FlagGBUKM, FlagIN, FlagJP, FlagUS } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const countries = [
@@ -41,7 +41,7 @@ export default function SelectWithCountryOptionsAndIcons() {
             <SelectValue>
               <country.Flag width={20} height={15} aria-hidden='true' />
             </SelectValue>
-            <SelectIcon />
+            <SelectIcon><ChevronDownIcon /></SelectIcon>
           </SelectCombobox>
           <SelectListbox>
             {countries.map(({ code, name, callingCode, Flag }) => (

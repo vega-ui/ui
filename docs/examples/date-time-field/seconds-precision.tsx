@@ -26,13 +26,15 @@ import {
   DateTimeField,
   DateTimeFieldCalendar,
   DateTimeFieldInput,
-  DateTimeFieldTriggerIconButton,
+  DateTimeFieldTrigger,
+  Icon,
   Label,
   Popover,
   PopoverContent,
   PopoverTrigger,
   Text,
 } from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 
 export default function SecondsPrecision() {
   const [loggedAt, setLoggedAt] = useState('2026-07-01T23:59:58');
@@ -51,17 +53,17 @@ export default function SecondsPrecision() {
           <DateTimeFieldInput id='logged-at' placeholder='dd.mm.yyyy, hh:mm:ss' />
           <Popover placement='bottom-end'>
             <PopoverTrigger asChild>
-              <DateTimeFieldTriggerIconButton aria-label='Choose log date' />
+              <DateTimeFieldTrigger square aria-label='Choose log date'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
             </PopoverTrigger>
             <PopoverContent>
               <DateTimeFieldCalendar aria-label='Choose log date'>
                 <CalendarHeader>
-                  <CalendarPrevButton aria-label='Previous month' />
+                  <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                   </CalendarHeading>
-                  <CalendarNextButton aria-label='Next month' />
+                  <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                 </CalendarHeader>
                 <CalendarContent>
                   <CalendarDays>

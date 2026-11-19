@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import { Icon, IconButton, Sheet, SheetContent, SheetHandle, SheetTrigger } from '@vega-ui/react';
+import { Icon, Button, Sheet, SheetContent, SheetHandle, SheetTrigger } from '@vega-ui/react';
 import { Menu } from '@vega-ui/icons';
 import { HeaderNav } from './HeaderNav';
 import { useDictionary } from './LocaleProvider';
@@ -20,9 +20,9 @@ export const HeaderMenu = ({ className }: { className?: string }) => {
   return (
     <Sheet open={open} onChangeOpen={setOpen}>
       <SheetTrigger asChild>
-        <IconButton size='xs' variant='secondary' appearance='transparent' aria-label={t.nav.menu} className={className}>
+        <Button square size='xs' variant='secondary' appearance='transparent' aria-label={t.nav.menu} className={className}>
           <Icon size='xs'><Menu /></Icon>
-        </IconButton>
+        </Button>
       </SheetTrigger>
       <SheetContent aria-label={t.nav.sheet} className={styles.sheet}>
         <SheetHandle aria-label={t.nav.handle} />

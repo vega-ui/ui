@@ -11,7 +11,7 @@
 | `--combobox-size` | корень, `ComboboxListbox` | Основа для скругления списка, задаётся `size` |
 | `--combobox-br-ratio` | корень, `ComboboxListbox` | Общий коэффициент скругления, по умолчанию `--br-ratio` |
 | `--combobox-listbox-br-ratio` | `ComboboxListbox` | Собственный коэффициент скругления списка |
-| `--combobox-icon-color` | `ComboboxIcon` | Цвет шеврона, по умолчанию `--label-tertiary` |
+| `--combobox-icon-color` | `ComboboxIcon` | Цвет иконки, по умолчанию `--label-tertiary` |
 
 Список также читает глобальные токены:
 
@@ -41,11 +41,11 @@
 
 ### ComboboxTrigger
 
-`IconButton` высотой и шириной с поле (`--icon-button-size: var(--input-height)`), прозрачный, цвета текста, с четвертичными заливками при наведении и нажатии.
+`Button` высотой с поле (`--button-height: var(--input-height)`) и такой же ширины с `square`, прозрачный, цвета текста, с четвертичными заливками при наведении и нажатии.
 
 ### ComboboxIcon
 
-Размер шеврона берётся из размера `TextField`: `xs` для полей `xs` и `sm`, `sm` для `md`, `md` для `lg` и `xl`. Его цвет — `var(--combobox-icon-color, var(--label-tertiary))`, и он переворачивается, пока список показан.
+Размер иконки берётся из размера `TextField`: `xs` для полей `xs` и `sm`, `sm` для `md`, `md` для `lg` и `xl`. Его цвет — `var(--combobox-icon-color, var(--label-tertiary))`, и он переворачивается, пока список показан.
 
 ### ListboxOption
 
@@ -82,6 +82,7 @@
 <!-- example: combobox/rich-option-content.tsx -->
 ```tsx
 import { Avatar, AvatarFallback, Combobox, ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger, Label, ListboxOption, TextField } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const people = [
@@ -111,8 +112,8 @@ export default function RichOptionContent() {
             </Avatar>
           )}
           <ComboboxInput id={id} placeholder='Name or email' value={query} onChange={(event) => setQuery(event.target.value)} />
-          <ComboboxTrigger aria-label='Show people'>
-            <ComboboxIcon />
+          <ComboboxTrigger square aria-label='Show people'>
+            <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
           </ComboboxTrigger>
         </TextField>
         <ComboboxListbox aria-label='People' style={{ maxWidth: 320 }}>

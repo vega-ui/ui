@@ -1,4 +1,5 @@
 import { Combobox, ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger, Label, ListboxGroup, ListboxOption, Text, TextField } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const regions = [
@@ -42,8 +43,8 @@ export default function GroupedOptions() {
       <Combobox>
         <TextField>
           <ComboboxInput id={id} placeholder='Search by city' value={query} onChange={(event) => setQuery(event.target.value)} />
-          <ComboboxTrigger aria-label='Show time zones'>
-            <ComboboxIcon />
+          <ComboboxTrigger square aria-label='Show time zones'>
+            <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
           </ComboboxTrigger>
         </TextField>
         <ComboboxListbox aria-label='Time zones'>

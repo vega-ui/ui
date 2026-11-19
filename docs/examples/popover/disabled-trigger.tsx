@@ -12,6 +12,7 @@ import {
   PopoverTrigger,
   Text,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 const actions = ['Download', 'Move to archive', 'Share'];
 
@@ -54,8 +55,8 @@ export default function DisabledTrigger() {
           <Checkbox key={file} style={{ minWidth: 0 }}>
             <CheckboxInput checked={selected.includes(file)} onChange={(event) => toggle(file, event.currentTarget.checked)} />
             <CheckboxIndicator>
-              <CheckboxCheckedIcon />
-              <CheckboxIndeterminateIcon />
+              <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+              <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
             </CheckboxIndicator>
             <span style={{ minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{file}</span>
           </Checkbox>

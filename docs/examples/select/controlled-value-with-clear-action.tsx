@@ -9,6 +9,7 @@ import {
   SelectValue,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const priorities = [
@@ -29,7 +30,7 @@ export default function ControlledValueWithClearAction() {
         <Select style={{ flex: 1 }} value={priority} onChangeValue={(next) => setPriority(next ?? null)}>
           <SelectCombobox id={id}>
             <SelectValue placeholder='Not set' />
-            <SelectIcon />
+            <SelectIcon><ChevronDownIcon /></SelectIcon>
           </SelectCombobox>
           <SelectListbox>
             {priorities.map((item) => (

@@ -27,6 +27,7 @@ import {
   Fieldset,
   FieldsetLegend,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 const options = [
   { value: 'mentions', label: 'Someone mentions me in a comment', checked: true },
@@ -43,8 +44,8 @@ export default function LabeledCheckbox() {
           <Checkbox key={option.value}>
             <CheckboxInput name='notifications' value={option.value} defaultChecked={option.checked} />
             <CheckboxIndicator>
-              <CheckboxCheckedIcon />
-              <CheckboxIndeterminateIcon />
+              <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+              <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
             </CheckboxIndicator>
             {option.label}
           </Checkbox>
@@ -83,6 +84,7 @@ import {
   CheckboxInput,
   Text,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 const permissions = ['View invoices', 'Download invoices', 'Edit payment methods', 'Cancel subscription'];
 
@@ -113,8 +115,8 @@ export default function IndeterminateParentSelector() {
       <Checkbox style={{ fontWeight: 600 }}>
         <CheckboxInput checked={allSelected} indeterminate={someSelected} onChange={toggleAll} />
         <CheckboxIndicator>
-          <CheckboxCheckedIcon />
-          <CheckboxIndeterminateIcon />
+          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+          <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
         </CheckboxIndicator>
         Billing
       </Checkbox>
@@ -123,8 +125,8 @@ export default function IndeterminateParentSelector() {
           <Checkbox key={permission}>
             <CheckboxInput checked={selected.includes(permission)} onChange={() => toggle(permission)} />
             <CheckboxIndicator>
-              <CheckboxCheckedIcon />
-              <CheckboxIndeterminateIcon />
+              <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+              <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
             </CheckboxIndicator>
             {permission}
           </Checkbox>
@@ -167,6 +169,7 @@ import {
   CheckboxInput,
   HelperText,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 export default function RequiredAgreementCheckbox() {
   const [error, setError] = useState('');
@@ -202,8 +205,8 @@ export default function RequiredAgreementCheckbox() {
             onChange={handleChange}
           />
           <CheckboxIndicator>
-            <CheckboxCheckedIcon />
-            <CheckboxIndeterminateIcon />
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+            <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
           </CheckboxIndicator>
           I agree to the Terms of Service
         </Checkbox>

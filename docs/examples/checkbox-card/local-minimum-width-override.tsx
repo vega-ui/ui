@@ -2,13 +2,14 @@ import {
   CheckboxCard,
   CheckboxCardContent,
   CheckboxCardControl,
-  CheckboxCardControlCheckedIcon,
-  CheckboxCardControlIndeterminateIcon,
+  CheckboxCheckedIcon,
+  CheckboxIndeterminateIcon,
   CheckboxCardControlInput,
   CheckboxCardDescription,
   CheckboxCardTitle,
   CheckboxIndicator,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 import './local-minimum-width-override.css';
 
 const regions = [
@@ -29,8 +30,8 @@ export default function LocalMinimumWidthOverride() {
           <CheckboxCardControl>
             <CheckboxCardControlInput name='regions' value={region.value} defaultChecked={region.value === 'eu'} />
             <CheckboxIndicator>
-              <CheckboxCardControlCheckedIcon />
-              <CheckboxCardControlIndeterminateIcon />
+              <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+              <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
             </CheckboxIndicator>
           </CheckboxCardControl>
         </CheckboxCard>

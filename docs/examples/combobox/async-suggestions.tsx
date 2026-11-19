@@ -1,4 +1,5 @@
 import { Combobox, ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger, HelperText, Label, ListboxOption, Spinner, TextField } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useEffect, useId, useState } from 'react';
 
 interface City {
@@ -90,8 +91,8 @@ export default function AsyncSuggestions() {
             onChange={(event) => setQuery(event.target.value)}
           />
           {loading && <Spinner size={3} aria-label='Searching cities' />}
-          <ComboboxTrigger aria-label='Show cities'>
-            <ComboboxIcon />
+          <ComboboxTrigger square aria-label='Show cities'>
+            <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
           </ComboboxTrigger>
         </TextField>
         <ComboboxListbox aria-label='Cities'>

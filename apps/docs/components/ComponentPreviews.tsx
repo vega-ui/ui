@@ -2,34 +2,227 @@
 
 import { useId, useState, type CSSProperties, type ReactNode } from 'react';
 import {
-  Accordion, AccordionContent, AccordionHeader, AccordionIcon, AccordionItem, AccordionTrigger, Alert, AlertContent,
-  AlertIcon, Avatar, AvatarFallback, AvatarStack, AvatarStackItem, Badge, Button, ButtonBase, Calendar,
-  CalendarContent, CalendarDay, CalendarDays, CalendarHeader, CalendarHeading, CalendarMonth, CalendarMonthLabel,
-  CalendarMonths, CalendarMonthsGrid, CalendarNextButton, CalendarPrevButton, CalendarViewButton, CalendarWeekday,
-  CalendarWeekdays, CalendarWeeks, CalendarDaysScroller, CalendarDaysScrollerContent, CalendarYear, CalendarYearLabel, CalendarYears, CalendarYearsScroller, CalendarYearsScrollerContent, CalendarYearsGrid, Card, Checkbox, CheckboxCard,
-  CheckboxCardContent, CheckboxCardControl, CheckboxCardControlCheckedIcon, CheckboxCardControlIndeterminateIcon,
-  CheckboxCardControlInput, CheckboxCardDescription, CheckboxCardTitle,
-  CheckboxCheckedIcon, CheckboxIndeterminateIcon, CheckboxIndicator, CheckboxInput, Code, Collapsible,
-  CollapsibleContent, CollapsibleTrigger, Combobox, ComboboxIcon, ComboboxInput, ComboboxListbox, ComboboxTrigger, ContextMenu, ContextMenuTrigger,
-  DateField, DateFieldCalendar, DateFieldInput, DateFieldTriggerIconButton, DateRangeField,
-  DateRangeFieldCalendar, DateRangeFieldInput, DateRangeFieldTriggerIconButton, DateTimeField, DateTimeFieldCalendar,
-  DateTimeFieldInput, DateTimeFieldTriggerIconButton, DayPicker, DayPickerCell, DayPickerLayout, Dialog, DialogClose, DialogContent,
-  DialogTrigger, Drawer, DrawerClose, DrawerContent, DrawerTrigger, Fieldset, FieldsetLegend, Grid, GridCell, GridRow, GridRowGroup, Heading, HelperText, Icon,
-  IconButton, IndexedSnapScroller, IndexedSnapScrollerContent, Label, Link, Listbox, ListboxOption, Menu, MenuContent, MenuItem, MenuTrigger, Meter, MeterStack,
-  MeterStackSegment, MeterTrack, MonthPicker, MonthPickerCell, MonthPickerLayout, NumberField,
-  NumberFieldDecrementButton, NumberFieldIncrementButton, NumberFieldInput, Option, PageControl, PageControlItem,
-  Pagination, PaginationItem, PaginationLink, PaginationList, PasswordField, PasswordFieldHiddenIcon, PasswordFieldInput,
-  PasswordFieldShownIcon, PasswordFieldToggleIconButton, PhoneField, PhoneFieldInput, PinField, PinFieldInput,
-  PinFieldSlot, Popover, PopoverContent, PopoverTrigger, Progress, ProgressTrack, Radio, SegmentedControl,
-  SegmentedControlIndicator, SegmentedControlItem, SegmentedControlItemInput, Select, SelectCombobox, SelectIcon,
-  SelectListbox, SelectOption, SelectValue, Separator, Sheet, SheetClose, SheetContent, SheetHandle, SheetTrigger,
-  Slider, SliderRange, SliderThumb, SliderThumbIndicator, SliderThumbInput, SliderTrack, SnapScroller,
-  SnapScrollerContent, Spinner, Switch, SwitchIndicator, SwitchInput, Table, TableBody, TableData, TableHead,
-  TableHeading, TableRow, Tabs, TabsList, TabsPanel, TabsTab, Text, TextArea, TextField, TextFieldInput, TimeField, TimeFieldInput, Tooltip,
-  TooltipContent, TooltipTrigger, useIndexedSnapScrollerContext, VisuallyHidden, YearPicker, YearPickerCell,
+  Accordion,
+  AccordionContent,
+  AccordionHeader,
+  AccordionIcon,
+  AccordionItem,
+  AccordionTrigger,
+  Alert,
+  AlertContent,
+  AlertIcon,
+  Avatar,
+  AvatarFallback,
+  AvatarStack,
+  AvatarStackItem,
+  Badge,
+  Button,
+  ButtonBase,
+  Calendar,
+  CalendarContent,
+  CalendarDay,
+  CalendarDays,
+  CalendarHeader,
+  CalendarHeading,
+  CalendarMonth,
+  CalendarMonthLabel,
+  CalendarMonths,
+  CalendarMonthsGrid,
+  CalendarNextButton,
+  CalendarPrevButton,
+  CalendarViewButton,
+  CalendarWeekday,
+  CalendarWeekdays,
+  CalendarWeeks,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
+  CalendarYear,
+  CalendarYearLabel,
+  CalendarYears,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
+  CalendarYearsGrid,
+  Card,
+  Checkbox,
+  CheckboxCard,
+  CheckboxCardContent,
+  CheckboxCardControl,
+  CheckboxCheckedIcon,
+  CheckboxIndeterminateIcon,
+  CheckboxCardControlInput,
+  CheckboxCardDescription,
+  CheckboxCardTitle,
+  CheckboxIndicator,
+  CheckboxInput,
+  Code,
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+  Combobox,
+  ComboboxIcon,
+  ComboboxInput,
+  ComboboxListbox,
+  ComboboxTrigger,
+  ContextMenu,
+  ContextMenuTrigger,
+  DateField,
+  DateFieldCalendar,
+  DateFieldInput,
+  DateFieldTrigger,
+  DateRangeField,
+  DateRangeFieldCalendar,
+  DateRangeFieldInput,
+  DateRangeFieldTrigger,
+  DateTimeField,
+  DateTimeFieldCalendar,
+  DateTimeFieldInput,
+  DateTimeFieldTrigger,
+  DayPicker,
+  DayPickerCell,
+  DayPickerLayout,
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTrigger,
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerTrigger,
+  Fieldset,
+  FieldsetLegend,
+  Grid,
+  GridCell,
+  GridRow,
+  GridRowGroup,
+  Heading,
+  HelperText,
+  Icon,
+  IndexedSnapScroller,
+  IndexedSnapScrollerContent,
+  Label,
+  Link,
+  Listbox,
+  ListboxOption,
+  Menu,
+  MenuContent,
+  MenuItem,
+  MenuTrigger,
+  Meter,
+  MeterStack,
+  MeterStackSegment,
+  MeterTrack,
+  MonthPicker,
+  MonthPickerCell,
+  MonthPickerLayout,
+  NumberField,
+  NumberFieldDecrementButton,
+  NumberFieldIncrementButton,
+  NumberFieldInput,
+  Option,
+  PageControl,
+  PageControlItem,
+  Pagination,
+  PaginationItem,
+  PaginationLink,
+  PaginationList,
+  PasswordField,
+  PasswordFieldHiddenIcon,
+  PasswordFieldInput,
+  PasswordFieldShownIcon,
+  PasswordFieldToggle,
+  PhoneField,
+  PhoneFieldInput,
+  PinField,
+  PinFieldInput,
+  PinFieldSlot,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Progress,
+  ProgressTrack,
+  Radio,
+  SegmentedControl,
+  SegmentedControlIndicator,
+  SegmentedControlItem,
+  SegmentedControlItemInput,
+  Select,
+  SelectCombobox,
+  SelectIcon,
+  SelectListbox,
+  SelectOption,
+  SelectValue,
+  Separator,
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetHandle,
+  SheetTrigger,
+  Slider,
+  SliderRange,
+  SliderThumb,
+  SliderThumbIndicator,
+  SliderThumbInput,
+  SliderTrack,
+  SnapScroller,
+  SnapScrollerContent,
+  Spinner,
+  Switch,
+  SwitchIndicator,
+  SwitchInput,
+  Table,
+  TableBody,
+  TableData,
+  TableHead,
+  TableHeading,
+  TableRow,
+  Tabs,
+  TabsList,
+  TabsPanel,
+  TabsTab,
+  Text,
+  TextArea,
+  TextField,
+  TextFieldInput,
+  TimeField,
+  TimeFieldInput,
+  Toggle,
+  ToggleGroup,
+  ToggleGroupToggle,
+  Toolbar,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+  useIndexedSnapScrollerContext,
+  VisuallyHidden,
+  YearPicker,
+  YearPickerCell,
   YearPickerLayout,
 } from '@vega-ui/react';
-import { Bell, Check, Heart, Search, Star, XIcon } from '@vega-ui/icons';
+import {
+  Bell,
+  BoldIcon,
+  CalendarIcon,
+  Check,
+  CheckIcon,
+  ChevronDownIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  CircleCheckIcon,
+  EyeIcon,
+  EyeOffIcon,
+  Heart,
+  ItalicIcon,
+  MicOffIcon,
+  MinusIcon,
+  PlusIcon,
+  Search,
+  Star,
+  TextAlignCenterIcon,
+  TextAlignEndIcon,
+  TextAlignStartIcon,
+  UnderlineIcon,
+  XIcon,
+} from '@vega-ui/icons';
 import styles from './ComponentPreviews.module.css';
 
 export interface Preview {
@@ -38,7 +231,7 @@ export interface Preview {
 
 const MONTHS = ['November 2026', 'December 2026', 'January 2027'];
 
-const CLOSE_STYLE = { flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties;
+const CLOSE_STYLE = { flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties;
 
 const STORAGE = [
   { label: 'Photos', value: 24, color: 'var(--color-blue-500)' },
@@ -65,8 +258,8 @@ const ComboboxPreview = () => {
       <Combobox>
         <TextField>
           <ComboboxInput id={id} placeholder='Start typing a city' value={query} onChange={(event) => setQuery(event.target.value)} />
-          <ComboboxTrigger aria-label='Show cities'>
-            <ComboboxIcon />
+          <ComboboxTrigger square aria-label='Show cities'>
+            <ComboboxIcon><ChevronDownIcon /></ComboboxIcon>
           </ComboboxTrigger>
         </TextField>
         <ComboboxListbox aria-label='Cities'>
@@ -85,7 +278,7 @@ export const PREVIEWS: Record<string, Preview> = {
           <AccordionHeader as='h2'>
             <AccordionTrigger>
               Shipping
-              <AccordionIcon />
+              <AccordionIcon><ChevronDownIcon /></AccordionIcon>
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent><Text size={2} className={styles.secondary}>Orders ship in 2–5 business days.</Text></AccordionContent>
@@ -95,7 +288,7 @@ export const PREVIEWS: Record<string, Preview> = {
           <AccordionHeader as='h2'>
             <AccordionTrigger>
               Returns
-              <AccordionIcon />
+              <AccordionIcon><ChevronDownIcon /></AccordionIcon>
             </AccordionTrigger>
           </AccordionHeader>
           <AccordionContent><Text size={2} className={styles.secondary}>Free returns within 30 days.</Text></AccordionContent>
@@ -126,30 +319,22 @@ export const PREVIEWS: Record<string, Preview> = {
       </div>
     ),
   },
-  'icon-button': {
-    node: (
-      <div className={styles.row}>
-        <IconButton aria-label='Add to favorites'><Icon><Heart /></Icon></IconButton>
-        <IconButton variant='secondary' appearance='ghost' aria-label='Star project'><Icon><Star /></Icon></IconButton>
-      </div>
-    ),
-  },
   checkbox: {
     node: (
       <div className={styles.list}>
         <Checkbox>
           <CheckboxInput defaultChecked />
           <CheckboxIndicator>
-            <CheckboxCheckedIcon />
-            <CheckboxIndeterminateIcon />
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+            <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
           </CheckboxIndicator>
           <Text size={3}>Product updates</Text>
         </Checkbox>
         <Checkbox>
           <CheckboxInput />
           <CheckboxIndicator>
-            <CheckboxCheckedIcon />
-            <CheckboxIndeterminateIcon />
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+            <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
           </CheckboxIndicator>
           <Text size={3}>Weekly digest</Text>
         </Checkbox>
@@ -166,8 +351,8 @@ export const PREVIEWS: Record<string, Preview> = {
         <CheckboxCardControl>
           <CheckboxCardControlInput name='preview-backups' defaultChecked />
           <CheckboxIndicator>
-            <CheckboxCardControlCheckedIcon />
-            <CheckboxCardControlIndeterminateIcon />
+            <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+            <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
           </CheckboxIndicator>
         </CheckboxCardControl>
       </CheckboxCard>
@@ -181,17 +366,17 @@ export const PREVIEWS: Record<string, Preview> = {
           <DateFieldInput id='preview-due-date' placeholder='dd.mm.yyyy' />
           <Popover placement='bottom-end'>
             <PopoverTrigger asChild>
-              <DateFieldTriggerIconButton aria-label='Choose due date' />
+              <DateFieldTrigger square aria-label='Choose due date'><Icon><CalendarIcon /></Icon></DateFieldTrigger>
             </PopoverTrigger>
             <PopoverContent>
               <DateFieldCalendar>
                 <CalendarHeader>
-                  <CalendarPrevButton aria-label='Previous month' />
+                  <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                   </CalendarHeading>
-                  <CalendarNextButton aria-label='Next month' />
+                  <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                 </CalendarHeader>
                 <CalendarContent>
                   <CalendarDays>
@@ -236,17 +421,17 @@ export const PREVIEWS: Record<string, Preview> = {
           <DateRangeFieldInput id='preview-stay' placeholder='dd.mm.yyyy – dd.mm.yyyy' />
           <Popover placement='bottom-end'>
             <PopoverTrigger asChild>
-              <DateRangeFieldTriggerIconButton aria-label='Choose stay dates' />
+              <DateRangeFieldTrigger square aria-label='Choose stay dates'><Icon><CalendarIcon /></Icon></DateRangeFieldTrigger>
             </PopoverTrigger>
             <PopoverContent>
               <DateRangeFieldCalendar>
                 <CalendarHeader>
-                  <CalendarPrevButton aria-label='Previous month' />
+                  <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                   </CalendarHeading>
-                  <CalendarNextButton aria-label='Next month' />
+                  <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                 </CalendarHeader>
                 <CalendarContent>
                   <CalendarDays>
@@ -291,17 +476,17 @@ export const PREVIEWS: Record<string, Preview> = {
           <DateTimeFieldInput id='preview-starts-at' placeholder='dd.mm.yyyy, hh:mm' />
           <Popover placement='bottom-end'>
             <PopoverTrigger asChild>
-              <DateTimeFieldTriggerIconButton aria-label='Choose start date' />
+              <DateTimeFieldTrigger square aria-label='Choose start date'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
             </PopoverTrigger>
             <PopoverContent>
               <DateTimeFieldCalendar>
                 <CalendarHeader>
-                  <CalendarPrevButton aria-label='Previous month' />
+                  <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
                     <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
                     <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
                   </CalendarHeading>
-                  <CalendarNextButton aria-label='Next month' />
+                  <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
                 </CalendarHeader>
                 <CalendarContent>
                   <CalendarDays>
@@ -346,16 +531,16 @@ export const PREVIEWS: Record<string, Preview> = {
           <Checkbox>
             <CheckboxInput defaultChecked />
             <CheckboxIndicator>
-              <CheckboxCheckedIcon />
-              <CheckboxIndeterminateIcon />
+              <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+              <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
             </CheckboxIndicator>
             <Text size={3}>Email</Text>
           </Checkbox>
           <Checkbox>
             <CheckboxInput />
             <CheckboxIndicator>
-              <CheckboxCheckedIcon />
-              <CheckboxIndeterminateIcon />
+              <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+              <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
             </CheckboxIndicator>
             <Text size={3}>Push notifications</Text>
           </Checkbox>
@@ -396,9 +581,9 @@ export const PREVIEWS: Record<string, Preview> = {
       <div className={styles.field}>
         <Label htmlFor='preview-guests'>Guests</Label>
         <NumberField min={1} max={10} defaultValue={2}>
-          <NumberFieldDecrementButton aria-label='Remove guest' />
+          <NumberFieldDecrementButton square aria-label='Remove guest'><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
           <NumberFieldInput id='preview-guests' />
-          <NumberFieldIncrementButton aria-label='Add guest' />
+          <NumberFieldIncrementButton square aria-label='Add guest'><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
         </NumberField>
       </div>
     ),
@@ -409,10 +594,10 @@ export const PREVIEWS: Record<string, Preview> = {
         <Label htmlFor='preview-password'>Password</Label>
         <PasswordField>
           <PasswordFieldInput id='preview-password' defaultValue='hunter22' />
-          <PasswordFieldToggleIconButton aria-label='Show password'>
-            <PasswordFieldShownIcon />
-            <PasswordFieldHiddenIcon />
-          </PasswordFieldToggleIconButton>
+          <PasswordFieldToggle square aria-label='Show password'>
+            <PasswordFieldShownIcon><EyeIcon /></PasswordFieldShownIcon>
+            <PasswordFieldHiddenIcon><EyeOffIcon /></PasswordFieldHiddenIcon>
+          </PasswordFieldToggle>
         </PasswordField>
       </div>
     ),
@@ -467,7 +652,7 @@ export const PREVIEWS: Record<string, Preview> = {
         <Select defaultValue='react' className={styles.wide}>
           <SelectCombobox aria-labelledby='preview-framework-label'>
             <SelectValue placeholder='Choose a framework' />
-            <SelectIcon />
+            <SelectIcon><ChevronDownIcon /></SelectIcon>
           </SelectCombobox>
           <SelectListbox>
             <SelectOption value='react'>React</SelectOption>
@@ -538,9 +723,9 @@ export const PREVIEWS: Record<string, Preview> = {
           <div className={styles.header}>
             <Heading id='preview-dialog-title' as='h2' size={4} fontWeight={600}>Leave Northwind Studio?</Heading>
             <DialogClose asChild>
-              <IconButton aria-label='Close' variant='secondary' appearance='ghost' style={CLOSE_STYLE}>
+              <Button square aria-label='Close' variant='secondary' appearance='ghost' style={CLOSE_STYLE}>
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DialogClose>
           </div>
           <Text id='preview-dialog-text' size={3} className={styles.body}>You will lose access to 14 projects until an admin invites you again.</Text>
@@ -556,9 +741,9 @@ export const PREVIEWS: Record<string, Preview> = {
           <div className={styles.header}>
             <Heading id='preview-drawer-title' as='h2' size={4} fontWeight={600}>Team members</Heading>
             <DrawerClose asChild>
-              <IconButton aria-label='Close' variant='secondary' appearance='ghost' style={CLOSE_STYLE}>
+              <Button square aria-label='Close' variant='secondary' appearance='ghost' style={CLOSE_STYLE}>
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </DrawerClose>
           </div>
           <Text size={3} className={styles.body}>Manage roles and pending invitations.</Text>
@@ -593,6 +778,40 @@ export const PREVIEWS: Record<string, Preview> = {
       </Menu>
     ),
   },
+  toolbar: {
+    node: (
+      <Toolbar aria-label='Formatting'>
+        <ToggleGroup multiple size='sm' aria-label='Text style' defaultValue={['bold']}>
+          <ToggleGroupToggle value='bold' square aria-label='Bold'><Icon><BoldIcon /></Icon></ToggleGroupToggle>
+          <ToggleGroupToggle value='italic' square aria-label='Italic'><Icon><ItalicIcon /></Icon></ToggleGroupToggle>
+          <ToggleGroupToggle value='underline' square aria-label='Underline'><Icon><UnderlineIcon /></Icon></ToggleGroupToggle>
+        </ToggleGroup>
+        <Separator orientation='vertical' />
+        <ToggleGroup size='sm' aria-label='Alignment' defaultValue='start'>
+          <ToggleGroupToggle value='start' square aria-label='Align start'><Icon><TextAlignStartIcon /></Icon></ToggleGroupToggle>
+          <ToggleGroupToggle value='center' square aria-label='Align center'><Icon><TextAlignCenterIcon /></Icon></ToggleGroupToggle>
+          <ToggleGroupToggle value='end' square aria-label='Align end'><Icon><TextAlignEndIcon /></Icon></ToggleGroupToggle>
+        </ToggleGroup>
+      </Toolbar>
+    ),
+  },
+  'toggle': {
+    node: (
+      <Toggle defaultPressed>
+        <Icon size='sm'><MicOffIcon /></Icon>
+        Mute
+      </Toggle>
+    ),
+  },
+  'toggle-group': {
+    node: (
+      <ToggleGroup size='sm' aria-label='Alignment' defaultValue='start'>
+        <ToggleGroupToggle value='start' square aria-label='Align start'><Icon><TextAlignStartIcon /></Icon></ToggleGroupToggle>
+        <ToggleGroupToggle value='center' square aria-label='Align center'><Icon><TextAlignCenterIcon /></Icon></ToggleGroupToggle>
+        <ToggleGroupToggle value='end' square aria-label='Align end'><Icon><TextAlignEndIcon /></Icon></ToggleGroupToggle>
+      </ToggleGroup>
+    ),
+  },
   'context-menu': {
     node: (
       <ContextMenu>
@@ -618,9 +837,9 @@ export const PREVIEWS: Record<string, Preview> = {
           <div className={styles.header}>
             <Heading id='preview-sheet-title' as='h2' size={4} fontWeight={600}>Order summary</Heading>
             <SheetClose asChild>
-              <IconButton aria-label='Close' variant='secondary' appearance='ghost' style={CLOSE_STYLE}>
+              <Button square aria-label='Close' variant='secondary' appearance='ghost' style={CLOSE_STYLE}>
                 <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-              </IconButton>
+              </Button>
             </SheetClose>
           </div>
           <Text size={3} className={styles.secondary}>2 × Flat white, 1 × Almond croissant · $13.40</Text>
@@ -632,7 +851,7 @@ export const PREVIEWS: Record<string, Preview> = {
     node: (
       <Tooltip>
         <TooltipTrigger asChild>
-          <IconButton variant='secondary' appearance='ghost' aria-label='Notifications'><Icon><Bell /></Icon></IconButton>
+          <Button square variant='secondary' appearance='ghost' aria-label='Notifications'><Icon><Bell /></Icon></Button>
         </TooltipTrigger>
         <TooltipContent>
           <Text size={2}>Notifications</Text>
@@ -686,12 +905,12 @@ export const PREVIEWS: Record<string, Preview> = {
     node: (
       <Calendar locale='en-US' defaultValue='2026-11-03'>
         <CalendarHeader>
-          <CalendarPrevButton aria-label='Previous month' />
+          <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
           <CalendarHeading>
             <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
             <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
           </CalendarHeading>
-          <CalendarNextButton aria-label='Next month' />
+          <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
         </CalendarHeader>
         <CalendarContent>
           <CalendarDays>
@@ -773,7 +992,7 @@ export const PREVIEWS: Record<string, Preview> = {
   alert: {
     node: (
       <Alert variant='success' appearance='surface' className={styles.wide}>
-        <AlertIcon />
+        <AlertIcon><CircleCheckIcon /></AlertIcon>
         <AlertContent>Changes saved</AlertContent>
       </Alert>
     ),
@@ -890,10 +1109,10 @@ export const PREVIEWS: Record<string, Preview> = {
   },
   'visually-hidden': {
     node: (
-      <IconButton variant='secondary' appearance='ghost'>
+      <Button square aria-labelledby='visually-hidden-preview' variant='secondary' appearance='ghost'>
         <Icon><Search /></Icon>
-        <VisuallyHidden>Search</VisuallyHidden>
-      </IconButton>
+        <VisuallyHidden id='visually-hidden-preview'>Search</VisuallyHidden>
+      </Button>
     ),
   },
 };

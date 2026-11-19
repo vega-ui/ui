@@ -137,6 +137,7 @@ import {
   HelperText,
   Text,
 } from '@vega-ui/react';
+import { CheckIcon } from '@vega-ui/icons';
 import { FormEvent, useId, useState } from 'react';
 
 const CHANNELS = ['Email', 'Slack', 'SMS'];
@@ -160,7 +161,7 @@ export default function GroupHint() {
           <Checkbox key={channel}>
             <CheckboxInput name='channels' value={channel} defaultChecked={channel === 'Email'} />
             <CheckboxIndicator>
-              <CheckboxCheckedIcon />
+              <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
             </CheckboxIndicator>
             {channel}
           </Checkbox>

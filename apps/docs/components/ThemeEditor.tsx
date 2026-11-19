@@ -22,7 +22,6 @@ import {
   DialogTrigger,
   Heading,
   Icon,
-  IconButton,
   Label,
   Meter,
   MeterTrack,
@@ -57,7 +56,7 @@ import {
   TextFieldInput,
   VisuallyHidden,
 } from '@vega-ui/react';
-import { Check, Download, Link, XIcon } from '@vega-ui/icons';
+import { Check, CheckIcon, ChevronDownIcon, Download, Link, TriangleAlertIcon, XIcon } from '@vega-ui/icons';
 import { ACCENTS } from '@/lib/accent';
 import { DEFAULT_THEME, DENSITIES, exportCss, parseTheme, previewVars, RADII, RADIUS_VALUES, radiusStep, siteCss, themeQuery, type Scheme, type ThemeSettings } from '@/lib/theme';
 import { applyStoredTheme } from '@/lib/storedTheme';
@@ -65,7 +64,7 @@ import { CodeBlock } from './CodeBlock';
 import { useDictionary } from './LocaleProvider';
 import styles from './ThemeEditor.module.css';
 
-const CLOSE_STYLE = { flexShrink: 0, '--icon-button-size': '24px', '--icon-button-br-ratio': 0.5 } as CSSProperties;
+const CLOSE_STYLE = { flexShrink: 0, '--button-height': '24px', '--button-br-ratio': 0.5 } as CSSProperties;
 
 const applyToSite = (settings: ThemeSettings) => {
   const css = siteCss(settings);
@@ -199,10 +198,9 @@ export const ThemeEditor = () => {
             size='sm'
             variant='secondary'
             name={`${id}-radius`}
-            role='radiogroup'
             aria-labelledby={`${id}-radius`}
             value={step}
-            onChange={(event) => update({ radius: RADIUS_VALUES[event.target.value as keyof typeof RADIUS_VALUES] })}
+            onChangeValue={(value) => update({ radius: RADIUS_VALUES[value as keyof typeof RADIUS_VALUES] })}
           >
             {RADII.map((value) => (
               <SegmentedControlItem key={value} value={value}>
@@ -233,10 +231,9 @@ export const ThemeEditor = () => {
             size='sm'
             variant='secondary'
             name={`${id}-density`}
-            role='radiogroup'
             aria-labelledby={`${id}-density`}
             value={settings.density}
-            onChange={(event) => update({ density: event.target.value as ThemeSettings['density'] })}
+            onChangeValue={(value) => update({ density: value as ThemeSettings['density'] })}
           >
             {DENSITIES.map((value) => (
               <SegmentedControlItem key={value} value={value}>
@@ -254,10 +251,9 @@ export const ThemeEditor = () => {
             size='sm'
             variant='secondary'
             name={`${id}-scheme`}
-            role='radiogroup'
             aria-labelledby={`${id}-scheme`}
             value={scheme}
-            onChange={(event) => setScheme(event.target.value as Scheme)}
+            onChangeValue={setScheme}
           >
             <SegmentedControlItem value='light'>
               <SegmentedControlItemInput />
@@ -302,7 +298,7 @@ export const ThemeEditor = () => {
               <Select>
                 <SelectCombobox id={`${id}-region`}>
                   <SelectValue placeholder={e.card.regionPlaceholder} />
-                  <SelectIcon />
+                  <SelectIcon><ChevronDownIcon /></SelectIcon>
                 </SelectCombobox>
                 <SelectListbox>
                   {e.card.regions.map((region) => (
@@ -313,7 +309,7 @@ export const ThemeEditor = () => {
             </div>
             <div className={styles.field}>
               <Text id={`${id}-plan`} size={2} fontWeight={500}>{e.card.plan}</Text>
-              <SegmentedControl name={`${id}-plan`} role='radiogroup' aria-labelledby={`${id}-plan`} defaultValue='Pro'>
+              <SegmentedControl name={`${id}-plan`} aria-labelledby={`${id}-plan`} defaultValue='Pro'>
                 {e.card.plans.map((plan) => (
                   <SegmentedControlItem key={plan} value={plan}>
                     <SegmentedControlItemInput />
@@ -333,7 +329,7 @@ export const ThemeEditor = () => {
             <Checkbox className={styles.checkbox}>
               <CheckboxInput defaultChecked />
               <CheckboxIndicator>
-                <CheckboxCheckedIcon />
+                <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
               </CheckboxIndicator>
               {e.card.terms}
             </Checkbox>
@@ -360,7 +356,7 @@ export const ThemeEditor = () => {
           </nav>
 
           <Alert variant='warning'>
-            <AlertIcon />
+            <AlertIcon><TriangleAlertIcon /></AlertIcon>
             <AlertMain>
               <AlertTitle>{e.alert.title}</AlertTitle>
               <AlertContent>{e.alert.description}</AlertContent>
@@ -425,9 +421,9 @@ export const ThemeEditor = () => {
               <div className={styles.dialogHeader}>
                 <Heading id={`${id}-dialog`} as='h2' size={4} fontWeight={600}>{e.dialog.title}</Heading>
                 <DialogClose asChild>
-                  <IconButton aria-label={e.dialog.close} variant='secondary' appearance='ghost' style={CLOSE_STYLE}>
+                  <Button square aria-label={e.dialog.close} variant='secondary' appearance='ghost' style={CLOSE_STYLE}>
                     <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
-                  </IconButton>
+                  </Button>
                 </DialogClose>
               </div>
               <Text id={`${id}-dialog-text`} size={3} className={styles.muted}>{e.dialog.description}</Text>

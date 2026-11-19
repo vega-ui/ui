@@ -9,6 +9,7 @@ import {
   Spinner,
   Text,
 } from '@vega-ui/react';
+import { ChevronDownIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 interface Project {
@@ -52,7 +53,7 @@ export default function AsyncOptions() {
       <Select value={project?.id ?? null} onChangeValue={onChangeValue} onChangeOpen={onChangeOpen}>
         <SelectCombobox id={id}>
           <SelectValue placeholder='Choose a project'>{project?.name}</SelectValue>
-          <SelectIcon />
+          <SelectIcon><ChevronDownIcon /></SelectIcon>
         </SelectCombobox>
         <SelectListbox aria-busy={loading}>
           {loading && (

@@ -22,11 +22,11 @@
 
 ### `CheckboxCheckedIcon`
 
-Необязательная иконка отмеченного состояния внутри индикатора.
+Показывает свои дочерние элементы внутри индикатора, пока чекбокс отмечен. Своей иконки у неё нет: передайте галочку из любого набора иконок, например `<CheckIcon strokeWidth={4} />`.
 
 ### `CheckboxIndeterminateIcon`
 
-Необязательная иконка неопределённого состояния внутри индикатора.
+Показывает свои дочерние элементы внутри индикатора, пока чекбокс в неопределённом состоянии. Своей иконки у неё нет: передайте минус из любого набора иконок, например `<MinusIcon strokeWidth={4} />`.
 
 ## Порядок композиции
 
@@ -50,6 +50,7 @@ import {
   CheckboxIndicator,
   CheckboxInput,
 } from '@vega-ui/react';
+import { CheckIcon, MinusIcon } from '@vega-ui/icons';
 
 export default function ValidCompositionPatterns() {
   return (
@@ -57,15 +58,15 @@ export default function ValidCompositionPatterns() {
       <Checkbox>
         <CheckboxInput name='archived' />
         <CheckboxIndicator>
-          <CheckboxCheckedIcon />
-          <CheckboxIndeterminateIcon />
+          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
+          <CheckboxIndeterminateIcon><MinusIcon strokeWidth={4} /></CheckboxIndeterminateIcon>
         </CheckboxIndicator>
         Show archived projects
       </Checkbox>
       <Checkbox>
         <CheckboxInput aria-label='Select Q3 marketing report' />
         <CheckboxIndicator>
-          <CheckboxCheckedIcon />
+          <CheckboxCheckedIcon><CheckIcon strokeWidth={4} /></CheckboxCheckedIcon>
         </CheckboxIndicator>
       </Checkbox>
     </div>

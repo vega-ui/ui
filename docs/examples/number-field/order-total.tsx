@@ -1,5 +1,6 @@
 import {
   Button,
+  Icon,
   Label,
   NumberField,
   NumberFieldDecrementButton,
@@ -7,6 +8,7 @@ import {
   NumberFieldInput,
   Text,
 } from '@vega-ui/react';
+import { MinusIcon, PlusIcon } from '@vega-ui/icons';
 import { useId, useState } from 'react';
 
 const UNIT_PRICE = 24.5;
@@ -24,9 +26,9 @@ export default function OrderTotal({ locale = 'en-US' }: { locale?: string }) {
       <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
         <Label htmlFor={id}>Notebooks, {currency.format(UNIT_PRICE)} each</Label>
         <NumberField min={0} max={99} value={quantity} onChangeValue={setQuantity}>
-          <NumberFieldDecrementButton aria-label='Decrease quantity' />
+          <NumberFieldDecrementButton square aria-label='Decrease quantity'><Icon><MinusIcon /></Icon></NumberFieldDecrementButton>
           <NumberFieldInput id={id} />
-          <NumberFieldIncrementButton aria-label='Increase quantity' />
+          <NumberFieldIncrementButton square aria-label='Increase quantity'><Icon><PlusIcon /></Icon></NumberFieldIncrementButton>
         </NumberField>
       </div>
       <Text size={3} fontWeight={500} role='status' style={{ fontVariantNumeric: 'tabular-nums' }}>
