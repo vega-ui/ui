@@ -67,6 +67,7 @@ Vega UI поставляет строительные блоки без икон
 - [Meter](./components/meter/index.md#свой-компонент): `MyMeter`
 - [MeterStack](./components/meter-stack/index.md#свой-компонент): `MyMeterStack`
 - [Progress](./components/progress/index.md#свой-компонент): `MyProgress`
+- [Toast](./components/toast/index.md#свой-компонент): `MyToastRegion`
 
 ### Примитивы раскладки
 

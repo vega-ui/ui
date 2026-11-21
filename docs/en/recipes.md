@@ -67,6 +67,7 @@ Each component page has the recipe in its "Your Own Component" section.
 - [Meter](./components/meter/index.md#your-own-component): `MyMeter`
 - [MeterStack](./components/meter-stack/index.md#your-own-component): `MyMeterStack`
 - [Progress](./components/progress/index.md#your-own-component): `MyProgress`
+- [Toast](./components/toast/index.md#your-own-component): `MyToastRegion`
 
 ### Layout primitives
 

@@ -73,6 +73,7 @@
 - [TextArea](./text-area/)
 - [TextField](./text-field/)
 - [TimeField](./time-field/)
+- [Toast](./toast/)
 - [Toggle](./toggle/)
 - [ToggleGroup](./toggle-group/)
 - [Toolbar](./toolbar/)

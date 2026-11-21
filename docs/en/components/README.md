@@ -73,6 +73,7 @@ For decision-oriented navigation across related controls, see [Component Familie
 - [TextArea](./text-area/)
 - [TextField](./text-field/)
 - [TimeField](./time-field/)
+- [Toast](./toast/)
 - [Toggle](./toggle/)
 - [ToggleGroup](./toggle-group/)
 - [Toolbar](./toolbar/)

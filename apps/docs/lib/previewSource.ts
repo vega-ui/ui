@@ -13,6 +13,8 @@ const LAYOUT_STYLES: Record<string, string> = {
 const HELPERS = [
   { name: 'WEEK', pattern: /^const WEEK = .+;$/m },
   { name: 'IndexedSlide', pattern: /^const IndexedSlide = [\s\S]+?\n};$/m },
+  { name: 'PREVIEW_TOASTS', pattern: /^const PREVIEW_TOASTS = .+;$/m },
+  { name: 'PreviewToast', pattern: /^const PreviewToast = [\s\S]+?\n};$/m },
   { name: 'CITIES', pattern: /^const CITIES = .+;$/m },
   { name: 'ComboboxPreview', pattern: /^const ComboboxPreview = [\s\S]+?\n};$/m },
 ];
@@ -53,7 +55,7 @@ export const getPreviewSource = (slug: string) => {
   const helpers = HELPERS.filter((helper) => [jsx, ...direct].some((code) => code.includes(helper.name))).map((helper) => cleanClasses(source.match(helper.pattern)?.[0] ?? ''));
   const body = [...helpers, cleanClasses(jsx)].join('\n\n');
   const helperNames = HELPERS.map((helper) => helper.name);
-  const used = [...new Set([...body.matchAll(/<([A-Z]\w*)|\b(use[A-Z]\w*)\(/g)].map((match) => match[1] ?? match[2]))]
+  const used = [...new Set([...body.matchAll(/<([A-Z]\w*)|\b((?:use|create)[A-Z]\w*)\(/g)].map((match) => match[1] ?? match[2]))]
     .filter((name) => !helperNames.includes(name))
     .sort();
   const hooks = used.filter((name) => REACT_HOOKS.includes(name));
