@@ -254,6 +254,8 @@ export const browser = {
   reveal: defineInput('browser', 'reveal'),
   animationEnd: defineInput('browser', 'animationEnd'),
   flushed: defineInput('browser', 'flushed'),
+  active: defineInput('browser', 'active'),
+  inactive: defineInput('browser', 'inactive'),
 }
 
 export const lifecycle = {

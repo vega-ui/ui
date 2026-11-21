@@ -278,7 +278,7 @@ function getComponentModel(checker: ts.TypeChecker, name: string, symbol: ts.Sym
     rows.push({
       prop: propName,
       type: getTypeText(checker, prop, own, declaration),
-      defaultValue: defaults.get(propName) ?? getDefaultTag(checker, prop),
+      defaultValue: defaultOf(defaults.get(propName), getDefaultTag(checker, prop)),
       required: !(prop.flags & ts.SymbolFlags.Optional),
       description,
     });
@@ -438,6 +438,18 @@ function findImplementation(declaration: ts.Node): ts.SignatureDeclaration | nul
   }
 
   return null;
+}
+
+function defaultOf(destructured: string | undefined, tagged: string): string {
+  if (destructured === undefined) {
+    return tagged;
+  }
+
+  if (tagged && /^[A-Z][A-Z0-9_]*$/.test(destructured)) {
+    return tagged;
+  }
+
+  return destructured;
 }
 
 function addBindingDefaults(pattern: ts.ObjectBindingPattern, defaults: Map<string, string>): void {

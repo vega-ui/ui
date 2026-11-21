@@ -3859,6 +3859,42 @@
     "en": "Ref forwarded to the underlying native `<input>` element.",
     "ru": "Ref, передаваемый на нижележащий нативный элемент `<input>`."
   },
+  "Toast.ref": {
+    "en": "Ref forwarded to the toast element.",
+    "ru": "Ref, передаваемый элементу тоста."
+  },
+  "ToastClose.asChild": {
+    "en": "If true, renders the close action as its child element using `Slot`, so any button of your own closes the toast, like an action that also dismisses it.",
+    "ru": "Если true, рендерит действие закрытия как свой дочерний элемент через `Slot`, поэтому тост закрывает любая ваша кнопка, например действие, которое заодно его убирает."
+  },
+  "ToastClose.ref": {
+    "en": "Ref forwarded to the underlying button.",
+    "ru": "Ref, передаваемый нижележащей кнопке."
+  },
+  "ToastRegion.children": {
+    "en": "The template of one toast: rendered once per shown toast, which reads its content with `useToastContext()`.",
+    "ru": "Шаблон одного тоста: рендерится по одному разу на каждый показанный тост и читает его содержимое через `useToastContext()`."
+  },
+  "ToastRegion.limit": {
+    "en": "How many of the newest toasts are shown at once; the older ones wait until a shown one closes.",
+    "ru": "Сколько самых новых тостов видно одновременно; более старые ждут, пока закроется показанный."
+  },
+  "ToastRegion.placement": {
+    "en": "Where the toasts appear: `top-start`, `top`, `top-end`, `bottom-start`, `bottom` or `bottom-end`. On a screen up to 40rem wide they are always centered.",
+    "ru": "Где появляются тосты: `top-start`, `top`, `top-end`, `bottom-start`, `bottom` или `bottom-end`. На экране шириной до 40rem они всегда по центру."
+  },
+  "ToastRegion.queue": {
+    "en": "The queue the region shows, made once with `createToastQueue()`.",
+    "ru": "Очередь, которую показывает область, созданная один раз через `createToastQueue()`."
+  },
+  "ToastRegion.ref": {
+    "en": "Ref forwarded to the region element.",
+    "ru": "Ref, передаваемый элементу области."
+  },
+  "ToastRegion.swipeDirections": {
+    "en": "The directions a swipe closes a toast in. A swipe the other way resists and springs back.",
+    "ru": "Направления, в которых свайп закрывает тост. Свайп в другую сторону сопротивляется и пружинит обратно."
+  },
   "Tooltip.children": {
     "en": "The trigger and content of the tooltip. Should include `TooltipTrigger` and `TooltipContent` components.",
     "ru": "Триггер и содержимое подсказки. Должны включать компоненты `TooltipTrigger` и `TooltipContent`."

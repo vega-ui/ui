@@ -6,6 +6,7 @@ Use this page when the UI should communicate state, loading, progress, measureme
 
 - Use [Badge](../components/badge/) for compact status or category metadata.
 - Use [Alert](../components/alert/) for short semantic feedback messages.
+- Use [Toast](../components/toast/) for a short message about something that happened away from the focus of the user, like an Undo after archiving or a failed background upload.
 - Use [Spinner](../components/spinner/) for compact indeterminate loading.
 - Use [Progress](../components/progress/) for temporal completion.
 - Use [Meter](../components/meter/) for bounded descriptive measurement.
@@ -17,6 +18,7 @@ Use this page when the UI should communicate state, loading, progress, measureme
 
 - Compact metadata: [Badge](../components/badge/)
 - Short feedback message: [Alert](../components/alert/)
+- Temporary message about something elsewhere or later: [Toast](../components/toast/)
 - Unknown-duration loading: [Spinner](../components/spinner/)
 - Known or bar-like completion: [Progress](../components/progress/)
 - Bounded score, capacity, or level: [Meter](../components/meter/)
@@ -28,6 +30,7 @@ Use this page when the UI should communicate state, loading, progress, measureme
 
 - Do not use [Badge](../components/badge/) for full messages that need hierarchy or explanation.
 - Do not use [Alert](../components/alert/) as a neutral layout container.
+- Do not use [Toast](../components/toast/) for feedback on the control the user just used, or as the only way to an action: show feedback in place, and keep every action of a toast reachable in the page.
 - Do not use [Spinner](../components/spinner/) when exact progress is known.
 - Do not use [Progress](../components/progress/) for static scores or quotas.
 - Do not use [Meter](../components/meter/) for async completion.
@@ -36,6 +39,7 @@ Use this page when the UI should communicate state, loading, progress, measureme
 ## Start Here
 
 - Feedback near content or forms: [Alert](../components/alert/), [Badge](../components/badge/)
+- Undo, background results and news away from the focus: [Toast](../components/toast/)
 - Loading states: [Spinner](../components/spinner/), [Progress](../components/progress/)
 - Metrics and usage displays: [Meter](../components/meter/), [MeterStack](../components/meter-stack/)
 - Identity surfaces: [Avatar](../components/avatar/), [AvatarStack](../components/avatar-stack/)

@@ -66,7 +66,7 @@
                            SURFACE
     ============================================ */
 
-    --surface-shadow: var(--black-shadow);
+    --surface-shadow: var(--black-shadow-strong);
     --surface-primary: oklch(0.20 0.014 264);
     --surface-secondary: oklch(0.21 0.012 264);
 

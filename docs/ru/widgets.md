@@ -239,7 +239,7 @@ export const Tag = ({ value, disabled = false, children, ...props }: TagProps) =
 
 - **Клавиши и направления.** Адаптер превращает стрелки в `nav.forward`, `nav.backward`, `nav.up` и `nav.down` по `aria-orientation` и направлению письма корня, поэтому шаг ничего не знает про RTL. Объявляйте `nav.*` для списка и `key.*` для клавиши, которая значит одно и то же в любом направлении.
 - **Указатель.** `pointer.down`, `press`, `drag`, `dragOver`, `release`, `cancel`, `hover`, `enter`, `leave`, `wheel` и `spin` несут `key` элемента и `part`, в которую попали.
-- **Браузер.** `browser.toggle` — после того как поповер или диалог открылся или закрылся, `browser.cancel` / `close` / `submit` у `<dialog>`, `browser.reset` — после сброса формы, `browser.reveal` — когда поиск по странице вот-вот раскроет часть с `hidden="until-found"`, `browser.contextMenu` — от правого щелчка, долгого нажатия или клавиши контекстного меню, с точкой `point` и частью `part`, `browser.animationEnd` и `browser.flushed` — ответы на действия.
+- **Браузер.** `browser.toggle` — после того как поповер или диалог открылся или закрылся, `browser.cancel` / `close` / `submit` у `<dialog>`, `browser.reset` — после сброса формы, `browser.reveal` — когда поиск по странице вот-вот раскроет часть с `hidden="until-found"`, `browser.contextMenu` — от правого щелчка, долгого нажатия или клавиши контекстного меню, с точкой `point` и частью `part`, `browser.inactive` — когда окно теряет фокус или вкладка скрыта, и `browser.active` — когда страницей снова пользуются, только для виджета, который их объявил, `browser.animationEnd` и `browser.flushed` — ответы на действия.
 - **Жизненный цикл.** `lifecycle.connect` — когда адаптер подключён и элементы зарегистрированы; `lifecycle.options` — когда родитель меняет контролируемое значение или опцию из `follows`, с `changed` — именами изменившихся.
 - `defineInput(type, name)` объявляет вход собственного вида для собственного адаптера.
 
@@ -284,11 +284,11 @@ const selecting: Step<PhoneFieldSnapshot> = (state, input) => {
 
 Действие — данные, которые адаптер выполняет после фиксации, поэтому шаг остаётся чистым:
 
-- **Фокус и прокрутка:** `act.focus(key)`, `focusInside(key, 'first' | 'next' | 'previous')`, `focusPart(part)`, `reveal(key)`, `scrollTo(part, options)`.
+- **Фокус и прокрутка:** `act.focus(key)`, `focusInside(key, 'first' | 'next' | 'previous')`, `focusPart(part)`, `restoreFocus()` — обратно на элемент, у которого был фокус до виджета, `reveal(key)`, `scrollTo(part, options)`.
 - **Попапы:** `showPopover(part)`, `hidePopover(part)`, `showModal(part)`, `closeDialog(part, returnValue)`.
-- **Время:** `timer(name, ms)` возвращается входом `timer(name)`, `cancelTimer(name)`.
+- **Время:** `timer(name, ms)` возвращается входом `timer(name)`, `cancelTimer(name)`, `pauseTimer(name)` и `resumeTimer(name)`, который продолжает таймер с оставшимся временем.
 - **Геометрия:** `measure(request)` отвечает входом `measure.done` с простыми числами по частям и по элементам. Замеряйте, только когда это нужно шагу: адаптер читает все запросы момента разом, после того как DOM показал новое состояние.
-- **Анимации:** `awaitAnimations(part)` отвечает входом `browser.animationEnd`, `flushStyles(part)` — входом `browser.flushed`, `scrub(part, ...)` перематывает приостановленную анимацию перетаскиванием, `animateHeight(part, open)`.
+- **Анимации:** `awaitAnimations(part)` отвечает входом `browser.animationEnd`, `awaitAnimationsAt(key)` — то же для элемента, с его `key`, `flushStyles(part)` — входом `browser.flushed`, `scrub(part, ...)` перематывает приостановленную анимацию перетаскиванием, `animateHeight(part, open)`.
 - **Текст:** `setText(part, value, selection)` записывает текст после маски, `commitText(part, value)` ещё и отправляет `change`, `commit(part)` отправляет только `change`.
 - **Указатель и клавиши:** `claimPointer()` не даёт сенсорному перетаскиванию прокручивать страницу и глотает клик, которым оно заканчивается; `watchKeys()` / `unwatchKeys()` доставляют клавиши, нажатые в любом месте страницы, как Escape для подсказки, открытой наведением.
 - **Наружу:** `click(key)`, `emit(name, value)` вызывает `on<Name>` из опций, `send(part, input)` доставляет вход виджету, чей корень — эта часть, `sendAt(key, input)` — виджету, чей корень — пункт `key` или содержит его.
@@ -356,6 +356,7 @@ connection.send(createInput(lifecycle.connect))
 - У виджета может быть несколько корней, как у триггера и поповера в верхнем слое: `setRoot(element, name)`. Событие внутри любого из них принадлежит виджету, а фокус, переходящий между ними, виджет не покидает.
 - Событие, отменённое обработчиком пользователя, обработанное внутренним виджетом или с целью вне корня в DOM, пропускается.
 - Адаптер ни на что не подписывается, пока не зарегистрирован корень, поэтому виджет, созданный на сервере, ничего не трогает.
+- `stayOnTop(container, popover)` показывает поповер и держит его над элементами верхнего слоя, открытыми после него. Всё вне открытого модального `<dialog>` инертно, поэтому он переносит `container` в верхний модальный диалог и обратно; фреймворк рендерит в этот контейнер и не видит, как его собственный элемент двигают.
 
 React-адаптер в `packages/ui/src/internals/widget` оборачивает его: `useWidget` создаёт handle, синхронизирует опции во время рендера владельца и оповещает подписчиков после фиксации; `handle.root`, `handle.rootAt(name)` и `handle.part(name)` — рефы, регистрирующие элементы, а `usePart(handle, name, part, key)` регистрирует один из многих элементов части по ключу, например панель вкладки, и заново пишет его каналы после каждой фиксации, потому что React перерисовывает атрибут вроде `hidden="until-found"`; `handle.send(input)` отправляет команду; `useSnapshot(handle, select)` читает значение снимка для компонента, которому оно нужно.
 

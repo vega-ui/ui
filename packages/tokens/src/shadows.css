@@ -1,3 +1,4 @@
 :root {
     --black-shadow: 0px 1px 24px rgba(12, 12, 13, 0.05);
+    --black-shadow-strong: 0 1px 2px rgb(0 0 0 / 0.8), 0 10px 32px -4px rgb(0 0 0 / 0.68);
 }

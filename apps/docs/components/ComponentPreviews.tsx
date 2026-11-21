@@ -185,6 +185,9 @@ import {
   TextFieldInput,
   TimeField,
   TimeFieldInput,
+  Toast,
+  ToastClose,
+  ToastRegion,
   Toggle,
   ToggleGroup,
   ToggleGroupToggle,
@@ -192,7 +195,9 @@ import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
+  createToastQueue,
   useIndexedSnapScrollerContext,
+  useToastContext,
   VisuallyHidden,
   YearPicker,
   YearPickerCell,
@@ -243,6 +248,24 @@ const IndexedSlide = () => {
   const { index } = useIndexedSnapScrollerContext();
 
   return <IndexedSnapScrollerContent className={styles.slide}>{MONTHS[index] ?? `Month ${index + 1}`}</IndexedSnapScrollerContent>;
+};
+
+const PREVIEW_TOASTS = createToastQueue<string>();
+
+const PreviewToast = () => {
+  const { content } = useToastContext<string>();
+
+  return (
+    <Toast className={styles.row}>
+      <Text size={2} fontWeight={500} style={{ flex: 1, paddingBlock: 'var(--spacing-2)' }}>{content}</Text>
+      <ToastClose asChild><Button size='xs' variant='primary' appearance='ghost'>Undo</Button></ToastClose>
+      <ToastClose asChild>
+        <Button square size='xs' aria-label='Dismiss' variant='secondary' appearance='ghost' style={CLOSE_STYLE}>
+          <Icon size='xs'><XIcon strokeWidth={2.5} /></Icon>
+        </Button>
+      </ToastClose>
+    </Toast>
+  );
 };
 
 const CITIES = ['Amsterdam', 'Athens', 'Berlin', 'Lisbon', 'Madrid', 'Prague', 'Vienna'];
@@ -995,6 +1018,16 @@ export const PREVIEWS: Record<string, Preview> = {
         <AlertIcon><CircleCheckIcon /></AlertIcon>
         <AlertContent>Changes saved</AlertContent>
       </Alert>
+    ),
+  },
+  toast: {
+    node: (
+      <>
+        <Button variant='secondary' appearance='ghost' onClick={() => PREVIEW_TOASTS.add('Conversation archived', { timeout: 6000 })}>Archive</Button>
+        <ToastRegion queue={PREVIEW_TOASTS} aria-label='Notifications'>
+          <PreviewToast />
+        </ToastRegion>
+      </>
     ),
   },
   meter: {

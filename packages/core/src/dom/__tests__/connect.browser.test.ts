@@ -129,6 +129,67 @@ describe('Critical User Paths', () => {
     expect(instance.state.timers.size).toBe(0)
   })
 
+  it('pauses a timer with the time it has left and runs it on from there once resumed', () => {
+    vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'performance'] })
+    const root = document.createElement('div')
+    document.body.appendChild(root)
+    const elements = createElements<never>()
+    elements.setRoot(root)
+
+    const fired: string[] = []
+    const timing = defineWidget({
+      state: state({ options: {}, owns: {} }),
+      step: [listening([key.enter, key.escape, key.space], (current, input) => {
+        if (input.is(key.enter)) return handled(current, [act.timer('toast', 1000)])
+        if (input.is(key.escape)) return handled(current, [act.pauseTimer('toast')])
+        if (input.is(key.space)) return handled(current, [act.resumeTimer('toast')])
+        if (input.type === 'timer') fired.push(input.name)
+        return undefined
+      })],
+    })
+    connect(createWidget(timing, {}, { id: 'widget', strict: true }), elements).listen(root)
+
+    keydown(root, { key: 'Enter' })
+    vi.advanceTimersByTime(400)
+    keydown(root, { key: 'Escape' })
+    vi.advanceTimersByTime(2000)
+    expect(fired).toEqual([])
+
+    keydown(root, { key: ' ' })
+    vi.advanceTimersByTime(599)
+    expect(fired).toEqual([])
+
+    vi.advanceTimersByTime(1)
+    expect(fired).toEqual(['toast'])
+  })
+
+  it('tells a widget that asks for it when the page stops and starts being the one the user looks at', () => {
+    const hasFocus = vi.spyOn(document, 'hasFocus').mockReturnValue(true)
+    const root = document.createElement('div')
+    document.body.appendChild(root)
+    const elements = createElements<never>()
+    elements.setRoot(root)
+
+    const heard: string[] = []
+    const attending = defineWidget({
+      state: state({ options: {}, owns: {} }),
+      step: [listening([browser.active, browser.inactive], (current, input) => {
+        heard.push(input.name)
+        return keep(current)
+      })],
+    })
+    connect(createWidget(attending, {}, { id: 'widget', strict: true }), elements)
+
+    hasFocus.mockReturnValue(false)
+    window.dispatchEvent(new FocusEvent('blur'))
+    window.dispatchEvent(new FocusEvent('blur'))
+    hasFocus.mockReturnValue(true)
+    window.dispatchEvent(new FocusEvent('focus'))
+
+    expect(heard).toEqual(['inactive', 'active'])
+    hasFocus.mockRestore()
+  })
+
   it('names the part a key came from', () => {
     const { root, elements } = mount({ items: fruits, mode: 'single' })
     const trigger = document.createElement('button')
@@ -338,6 +399,30 @@ describe('Critical User Paths', () => {
 
     fading.finish()
     await vi.waitFor(() => expect(ended).toEqual(['panel']))
+  })
+
+  it('answers once the animations of an item have finished, with its key', async () => {
+    const { root, items, elements } = mount({ items: fruits, mode: 'single' })
+
+    const ended: unknown[] = []
+    const waiting = defineWidget({
+      state: shape,
+      step: [listening([key.escape], (state, input) => {
+        if (input.is(key.escape)) return handled(state, [act.awaitAnimationsAt('date')])
+        if (input.is(browser.animationEnd)) ended.push(input.key)
+        return undefined
+      })],
+    })
+    connect(createWidget(waiting, { items: fruits, mode: 'single' }, { id: 'waiting', strict: true }), elements).listen(root)
+
+    const fading = items.get('date')!.animate([{ opacity: 1 }, { opacity: 0 }], 100)
+    fading.pause()
+    keydown(root, { key: 'Escape' })
+    await new Promise((resolve) => setTimeout(resolve, 20))
+    expect(ended).toEqual([])
+
+    fading.finish()
+    await vi.waitFor(() => expect(ended).toEqual(['date']))
   })
 
   it('takes the events of a second root apart from the first, like a popover in the top layer, with the focus between them staying inside', () => {

@@ -1,0 +1,43 @@
+.region {
+    --toast-inset: var(--spacing-8);
+    --toast-gap: var(--spacing-4);
+    --toast-peek: var(--spacing-6);
+    --toast-br-ratio: var(--br-ratio);
+    --toast-radius: calc(var(--spacing-16) * var(--toast-br-ratio) + var(--spacing-4));
+    --toast-shadow: var(--surface-shadow), 0 4px 12px -4px rgb(0 0 0 / 0.16);
+    position: fixed;
+    inset: auto;
+    inset-block-start: max(var(--toast-inset), env(safe-area-inset-top));
+    inset-inline-end: max(var(--toast-inset), env(safe-area-inset-right));
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    color: inherit;
+    overflow: visible;
+    inline-size: min(22rem, 100vw - 2 * var(--toast-inset));
+    display: grid;
+    align-items: start;
+    pointer-events: none;
+}
+
+.region:where([data-placement^='bottom']) {
+    inset-block: auto max(var(--toast-inset), env(safe-area-inset-bottom));
+    align-items: end;
+}
+
+.region:where([data-placement='top'], [data-placement='bottom']) {
+    inset-inline: 0;
+    margin-inline: auto;
+}
+
+.region:where([data-placement$='-start']) {
+    inset-inline: max(var(--toast-inset), env(safe-area-inset-left)) auto;
+}
+
+@media (max-width: 40rem) {
+    .region {
+        inset-inline: 0;
+        margin-inline: auto;
+    }
+}

@@ -239,7 +239,7 @@ An input is a value, never a string: `key.enter`, `key.with(key.a, mod.mod)`, `n
 
 - **Keys and directions.** The adapter turns the arrows into `nav.forward`, `nav.backward`, `nav.up` and `nav.down` by `aria-orientation` and the writing direction of the root, so a step never knows about RTL. Declare `nav.*` for a list and `key.*` for a key that means the same in every direction.
 - **Pointer.** `pointer.down`, `press`, `drag`, `dragOver`, `release`, `cancel`, `hover`, `enter`, `leave`, `wheel` and `spin` carry the `key` of the item and the `part` they hit.
-- **Browser.** `browser.toggle` after a popover or a dialog opened or closed, `browser.cancel` / `close` / `submit` of a `<dialog>`, `browser.reset` after a form reset, `browser.reveal` when find in page is about to reveal a part with `hidden="until-found"`, `browser.contextMenu` from a right click, a long press or the context menu key, with the `point` and the `part`, `browser.animationEnd` and `browser.flushed` as answers to actions.
+- **Browser.** `browser.toggle` after a popover or a dialog opened or closed, `browser.cancel` / `close` / `submit` of a `<dialog>`, `browser.reset` after a form reset, `browser.reveal` when find in page is about to reveal a part with `hidden="until-found"`, `browser.contextMenu` from a right click, a long press or the context menu key, with the `point` and the `part`, `browser.inactive` when the window loses the focus or the tab is hidden and `browser.active` when the page is in use again, only for a widget that declares them, `browser.animationEnd` and `browser.flushed` as answers to actions.
 - **Lifecycle.** `lifecycle.connect` once the adapter is connected and the items are registered; `lifecycle.options` when the parent changes a value it controls or an option in `follows`, with `changed`, the names that changed.
 - `defineInput(type, name)` declares an input of a kind of your own for an adapter of your own.
 
@@ -284,11 +284,11 @@ Every answer but `undefined` ends the input: the steps after it and the widgets 
 
 An action is data the adapter executes after the commit, so a step stays pure:
 
-- **Focus and scroll:** `act.focus(key)`, `focusInside(key, 'first' | 'next' | 'previous')`, `focusPart(part)`, `reveal(key)`, `scrollTo(part, options)`.
+- **Focus and scroll:** `act.focus(key)`, `focusInside(key, 'first' | 'next' | 'previous')`, `focusPart(part)`, `restoreFocus()` back to the element that had the focus before the widget, `reveal(key)`, `scrollTo(part, options)`.
 - **Popups:** `showPopover(part)`, `hidePopover(part)`, `showModal(part)`, `closeDialog(part, returnValue)`.
-- **Time:** `timer(name, ms)` fires back as `timer(name)`, `cancelTimer(name)`.
+- **Time:** `timer(name, ms)` fires back as `timer(name)`, `cancelTimer(name)`, `pauseTimer(name)` and `resumeTimer(name)`, which runs it on with the time it had left.
 - **Geometry:** `measure(request)` answers with `measure.done` and plain numbers per part and per item. Measure only when the step needs it: the adapter reads every request of the moment at once, after the DOM shows the new state.
-- **Animations:** `awaitAnimations(part)` answers with `browser.animationEnd`, `flushStyles(part)` with `browser.flushed`, `scrub(part, ...)` seeks a paused animation by a drag, `animateHeight(part, open)`.
+- **Animations:** `awaitAnimations(part)` answers with `browser.animationEnd`, `awaitAnimationsAt(key)` the same for an item, with its `key`, `flushStyles(part)` with `browser.flushed`, `scrub(part, ...)` seeks a paused animation by a drag, `animateHeight(part, open)`.
 - **Text:** `setText(part, value, selection)` writes a masked text, `commitText(part, value)` also dispatches `change`, `commit(part)` dispatches only `change`.
 - **Pointer and keys:** `claimPointer()` keeps a touch drag from scrolling the page and swallows the click that ends it; `watchKeys()` / `unwatchKeys()` deliver keys pressed anywhere on the page, like Escape for a tooltip opened by hover.
 - **Outside:** `click(key)`, `emit(name, value)` calls `on<Name>` from the options, `send(part, input)` delivers an input to the widget whose root is that part, `sendAt(key, input)` to the widget whose root is the item `key` or holds it.
@@ -356,6 +356,7 @@ connection.send(createInput(lifecycle.connect))
 - A widget may have several roots, like a trigger and a popover in the top layer: `setRoot(element, name)`. An event inside any of them belongs to the widget, and a focus moving between them never leaves it.
 - An event the user's handler prevented, one an inner widget handled or one whose target is outside the root in the DOM is skipped.
 - The adapter attaches nothing until a root registers, so a widget created on the server touches nothing.
+- `stayOnTop(container, popover)` shows a popover and keeps it above the top layer elements opened after it. Everything outside an open modal `<dialog>` is inert, so it moves the `container` into the topmost modal dialog and back; the framework renders into that container and never sees its own element moved.
 
 The React adapter in `packages/ui/src/internals/widget` wraps it: `useWidget` creates the handle, syncs the options during the render of the owner and tells the subscribers after the commit; `handle.root`, `handle.rootAt(name)` and `handle.part(name)` are refs that register elements, and `usePart(handle, name, part, key)` registers one of many keyed elements of a part, like a tab panel, and writes its channels again after every commit, since React renders over an attribute like `hidden="until-found"`; `handle.send(input)` sends a command; `useSnapshot(handle, select)` reads a value of the snapshot for a component that needs it.
 

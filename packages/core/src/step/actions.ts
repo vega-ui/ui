@@ -27,10 +27,13 @@ export type Action<Key = unknown, PartName extends string = string> =
   | { readonly type: 'focus'; readonly key: Key; readonly options?: FocusActionOptions }
   | { readonly type: 'focusInside'; readonly key: Key; readonly at: FocusInsideAt }
   | { readonly type: 'focusPart'; readonly part: PartName }
+  | { readonly type: 'restoreFocus' }
   | { readonly type: 'reveal'; readonly key: Key }
   | { readonly type: 'click'; readonly key: Key }
   | { readonly type: 'timer'; readonly name: string; readonly ms: number }
   | { readonly type: 'cancelTimer'; readonly name: string }
+  | { readonly type: 'pauseTimer'; readonly name: string }
+  | { readonly type: 'resumeTimer'; readonly name: string }
   | { readonly type: 'showPopover'; readonly part: PartName }
   | { readonly type: 'hidePopover'; readonly part: PartName }
   | { readonly type: 'send'; readonly part: PartName; readonly input: InputSpec; readonly payload: Payload }
@@ -38,6 +41,7 @@ export type Action<Key = unknown, PartName extends string = string> =
   | { readonly type: 'sendUp'; readonly part: PartName; readonly input: InputSpec; readonly payload: Payload }
   | { readonly type: 'measure'; readonly request: MeasureRequest<Key, PartName> }
   | { readonly type: 'awaitAnimations'; readonly part: PartName }
+  | { readonly type: 'awaitAnimationsAt'; readonly key: Key }
   | { readonly type: 'showModal'; readonly part: PartName }
   | { readonly type: 'closeDialog'; readonly part: PartName; readonly returnValue?: string }
   | { readonly type: 'watchKeys' }
@@ -56,10 +60,13 @@ export const act = {
   focus: <Key>(key: Key, options?: FocusActionOptions): Action<Key, never> => (options ? { type: 'focus', key, options } : { type: 'focus', key }),
   focusInside: <Key>(key: Key, at: FocusInsideAt): Action<Key, never> => ({ type: 'focusInside', key, at }),
   focusPart: <PartName extends string>(part: PartName): Action<never, PartName> => ({ type: 'focusPart', part }),
+  restoreFocus: (): Action<never, never> => ({ type: 'restoreFocus' }),
   reveal: <Key>(key: Key): Action<Key, never> => ({ type: 'reveal', key }),
   click: <Key>(key: Key): Action<Key, never> => ({ type: 'click', key }),
   timer: (name: string, ms: number): Action<never, never> => ({ type: 'timer', name, ms }),
   cancelTimer: (name: string): Action<never, never> => ({ type: 'cancelTimer', name }),
+  pauseTimer: (name: string): Action<never, never> => ({ type: 'pauseTimer', name }),
+  resumeTimer: (name: string): Action<never, never> => ({ type: 'resumeTimer', name }),
   showPopover: <PartName extends string>(part: PartName): Action<never, PartName> => ({ type: 'showPopover', part }),
   hidePopover: <PartName extends string>(part: PartName): Action<never, PartName> => ({ type: 'hidePopover', part }),
   send: <PartName extends string>(part: PartName, input: InputSpec, payload: Payload = {}): Action<never, PartName> => ({ type: 'send', part, input, payload }),
@@ -67,6 +74,7 @@ export const act = {
   sendUp: <PartName extends string>(part: PartName, input: InputSpec, payload: Payload = {}): Action<never, PartName> => ({ type: 'sendUp', part, input, payload }),
   measure: <Key, PartName extends string = never>(request: MeasureRequest<Key, PartName>): Action<Key, PartName> => ({ type: 'measure', request }),
   awaitAnimations: <PartName extends string>(part: PartName): Action<never, PartName> => ({ type: 'awaitAnimations', part }),
+  awaitAnimationsAt: <Key>(key: Key): Action<Key, never> => ({ type: 'awaitAnimationsAt', key }),
   showModal: <PartName extends string>(part: PartName): Action<never, PartName> => ({ type: 'showModal', part }),
   closeDialog: <PartName extends string>(part: PartName, returnValue?: string): Action<never, PartName> => (returnValue === undefined ? { type: 'closeDialog', part } : { type: 'closeDialog', part, returnValue }),
   watchKeys: (): Action<never, never> => ({ type: 'watchKeys' }),
