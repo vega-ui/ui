@@ -179,14 +179,32 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
   const events = eventsFor(instance.listens)
   const drags = delivers(instance.listens, pointer.drag)
   const dragsOver = delivers(instance.listens, pointer.dragOver)
-  const deferred: Extract<Action<Key>, { type: 'measure' | 'awaitAnimations' }>[] = []
-  const timers = new Map<string, ReturnType<typeof setTimeout>>()
+  const deferred: Extract<Action<Key>, { type: 'measure' | 'awaitAnimations' | 'awaitAnimationsAt' }>[] = []
+  const timers = new Map<string, { handle: ReturnType<typeof setTimeout> | undefined; startedAt: number; remaining: number }>()
+  const stopTimer = (name: string) => {
+    clearTimeout(timers.get(name)?.handle)
+    timers.delete(name)
+  }
   const startTimer = (name: string, ms: number) => {
-    clearTimeout(timers.get(name))
-    timers.set(name, setTimeout(() => {
+    stopTimer(name)
+    const handle = setTimeout(() => {
       timers.delete(name)
       send(createInput(timer(name)))
-    }, ms))
+    }, ms)
+    timers.set(name, { handle, startedAt: performance.now(), remaining: ms })
+  }
+  const pauseTimer = (name: string) => {
+    const running = timers.get(name)
+    if (!running || running.handle === undefined) return
+
+    clearTimeout(running.handle)
+    timers.set(name, { handle: undefined, startedAt: running.startedAt, remaining: Math.max(0, running.remaining - (performance.now() - running.startedAt)) })
+  }
+  const resumeTimer = (name: string) => {
+    const paused = timers.get(name)
+    if (!paused || paused.handle !== undefined) return
+
+    startTimer(name, paused.remaining)
   }
   const pending: Waiting<Key>[] = []
   const controller = new AbortController()
@@ -196,6 +214,7 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
   const heights = new Map<string, Animation>()
   const scrollEnds = new Map<Element, ReturnType<typeof setTimeout>>()
   let focusing: Element | null = null
+  let focusOrigin: HTMLElement | null = null
 
   const declares = (spec: InputSpec) => instance.listens.some((declared) => declared.type === spec.type && declared.name === spec.name)
   const spinning = spins(instance.listens)
@@ -230,6 +249,22 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
         send(createInput<Key>(browser.reveal, { part: elements.partOf(revealed.element), key: revealed.key }))
         queueMicrotask(() => paint(revealed.element))
       }, { capture: true, signal: controller.signal })
+    }
+
+    if (declares(browser.active) || declares(browser.inactive)) {
+      const isActive = () => document.visibilityState === 'visible' && document.hasFocus()
+      let active = isActive()
+      const changed = () => {
+        const now = isActive()
+        if (now === active) return
+
+        active = now
+        send(createInput<Key>(active ? browser.active : browser.inactive))
+      }
+      window.addEventListener('focus', changed, { signal: controller.signal })
+      window.addEventListener('blur', changed, { signal: controller.signal })
+      document.addEventListener('visibilitychange', changed, { signal: controller.signal })
+      if (!active) queueMicrotask(() => void send(createInput<Key>(browser.inactive)))
     }
 
     if (declares(layout.viewport)) {
@@ -378,6 +413,11 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
         if (target) focusElement(target)
         return false
       }
+      case 'restoreFocus': {
+        if (focusOrigin?.isConnected) focusElement(focusOrigin)
+        focusOrigin = null
+        return false
+      }
       case 'focusPart': {
         const element = elements.part(action.part)
         if (!element) return waits
@@ -401,8 +441,15 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
         return false
       }
       case 'cancelTimer': {
-        clearTimeout(timers.get(action.name))
-        timers.delete(action.name)
+        stopTimer(action.name)
+        return false
+      }
+      case 'pauseTimer': {
+        pauseTimer(action.name)
+        return false
+      }
+      case 'resumeTimer': {
+        resumeTimer(action.name)
         return false
       }
       case 'showPopover':
@@ -534,7 +581,8 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
         return false
       }
       case 'measure':
-      case 'awaitAnimations': {
+      case 'awaitAnimations':
+      case 'awaitAnimationsAt': {
         if (deferred.length === 0) queueMicrotask(runDeferred)
         deferred.push(action)
         return false
@@ -610,12 +658,11 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
     paintBound(bound)
   }
 
-  const awaitAnimations = (part: string) => {
-    const element = elements.part(part)
+  const awaitAnimations = (element: Element | null, answer: { part?: string; key?: Key }) => {
     const animations = element ? element.getAnimations({ subtree: true }).filter((animation) => animation.effect instanceof KeyframeEffect && animation.effect.target === element) : []
 
     void Promise.allSettled(animations.map((animation) => animation.finished)).then(() => {
-      if (!controller.signal.aborted) send(createInput<Key>(browser.animationEnd, { part }))
+      if (!controller.signal.aborted) send(createInput<Key>(browser.animationEnd, answer))
     })
   }
 
@@ -626,7 +673,8 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
     const results: Measured<Key>[] = []
     for (const action of actions) {
       if (action.type === 'measure') results.push(readMeasure<Key>(elements, action.request, instance.state.collection.order as readonly Key[]))
-      else awaitAnimations(action.part)
+      else if (action.type === 'awaitAnimations') awaitAnimations(elements.part(action.part), { part: action.part })
+      else awaitAnimations(elements.item(action.key), { key: action.key })
     }
 
     for (const measured of results) send(createInput<Key>(measure.done, { measured }))
@@ -841,6 +889,7 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
       const part = partAt(event.target)
       if (isOwn(event.relatedTarget)) return dispatch(event, createInput(focus.move, { key, part }), true)
 
+      focusOrigin = event.relatedTarget instanceof HTMLElement ? event.relatedTarget : null
       return dispatch(event, createInput(focus.enter, { key, part }), true)
     },
 
@@ -973,7 +1022,7 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
   const disconnect = () => {
     if (receivers.get(elements) === receive) receivers.delete(elements)
     controller.abort()
-    for (const handle of timers.values()) clearTimeout(handle)
+    for (const running of timers.values()) clearTimeout(running.handle)
     timers.clear()
     pending.length = 0
     pressed = null

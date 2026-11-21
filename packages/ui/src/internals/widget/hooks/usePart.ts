@@ -2,7 +2,7 @@ import { useCallback, useLayoutEffect, useRef } from 'react'
 import { AnyShape, KeyOf, Part, PartOf, SnapshotOf } from '@vega-ui/core'
 import { WidgetHandle } from './useWidget'
 
-export const usePart = <WidgetShape extends AnyShape, Data = undefined>(handle: WidgetHandle<WidgetShape, Data>, name: PartOf<WidgetShape>, output: Part<SnapshotOf<WidgetShape>, KeyOf<WidgetShape>>, key: KeyOf<WidgetShape>) => {
+export const usePart = <WidgetShape extends AnyShape, Data = undefined>(handle: WidgetHandle<WidgetShape, Data>, name: PartOf<WidgetShape>, output: Part<SnapshotOf<WidgetShape>, KeyOf<WidgetShape>> | undefined, key: KeyOf<WidgetShape>) => {
   const element = useRef<Element | null>(null)
 
   useLayoutEffect(() => {

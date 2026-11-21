@@ -1,0 +1,14 @@
+.notifications {
+  --toast-inset: var(--spacing-12);
+  --toast-gap: var(--spacing-6);
+  --toast-peek: var(--spacing-8);
+  --toast-radius: var(--radius-4);
+}
+
+.notifications > [role='alert'] {
+  background: color-mix(in oklch, var(--color-error) 10%, var(--surface-primary));
+}
+
+.notifications > [data-swiping='true'] {
+  cursor: grabbing;
+}
