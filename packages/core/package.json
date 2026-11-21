@@ -1,6 +1,6 @@
 {
   "name": "@vega-ui/core",
-  "version": "0.0.0",
+  "version": "3.0.0",
   "description": "Framework-free models that @vega-ui components are built from",
   "license": "MIT",
   "keywords": [
