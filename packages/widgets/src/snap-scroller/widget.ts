@@ -1,7 +1,9 @@
-import { Action, act, collection, command, defineWidget, Entry, Input, internal, keep, layout, lifecycle, listening, matching, measure, Metrics, pointer, ROOT, ScrollBox, scroll, source, state, Step } from '@vega-ui/core'
+import { Action, act, collection, command, defineWidget, Entry, Input, internal, keep, layout, lifecycle, listening, matching, measure, Metrics, pointer, Rect, ROOT, ScrollBox, scroll, source, state, Step } from '@vega-ui/core'
 import { getOffsetIndexes } from '@vega-ui/utils'
 
 export type SnapScrollerEntry = Entry<number, undefined>
+
+export type SnapScrollerOrientation = 'horizontal' | 'vertical'
 
 export interface SnapPages {
   readonly start: number
@@ -12,7 +14,9 @@ export interface SnapPages {
 export const MEASURE_SNAP = command('measureSnap')
 export const SNAP_NEXT = command('snapNext')
 export const SNAP_PREVIOUS = command('snapPrevious')
-export const SNAP_TO = command<{ readonly key: number; readonly value?: ScrollBehavior }>()('snapTo')
+type SnapBehavior = ScrollBehavior | 'animated'
+
+export const SNAP_TO = command<{ readonly key: number; readonly value?: SnapBehavior }>()('snapTo')
 export const SNAP_INDEX = command<{ readonly key: number }>()('snapIndex')
 
 const OFFSETS = 'snapOffsets'
@@ -21,7 +25,7 @@ const entries = source({
   key: (entry: SnapScrollerEntry) => entry.key,
 })
 
-type Offset = readonly [key: number, left: number]
+type Offset = readonly [key: number, position: number]
 
 export interface Anchor {
   readonly key: number
@@ -40,6 +44,7 @@ export const snapScrollerShape = state({
     pages: undefined as SnapPages | undefined,
     index: undefined as number | undefined,
     preserveScroll: true as boolean,
+    orientation: 'horizontal' as SnapScrollerOrientation,
     onSnapChanging: undefined as ((index: number) => void) | undefined,
     onSnapChange: undefined as ((index: number) => void) | undefined,
     onOffset: undefined as ((value: number) => void) | undefined,
@@ -48,7 +53,7 @@ export const snapScrollerShape = state({
   follows: ['items', 'index'],
   internal: {
     offsets: internal([] as readonly Offset[]),
-    left: internal(0),
+    position: internal(0),
     committed: internal(null as number | null),
     pending: internal(null as number | null),
     target: internal(null as number | null),
@@ -71,7 +76,11 @@ interface Outcome {
   readonly actions: readonly Action<number, typeof ROOT>[]
 }
 
-const MEASURE = [act.measure<number, typeof ROOT>({ name: OFFSETS, parts: [ROOT], items: 'all', rect: true, scroll: true, styles: ['scroll-padding-inline-start'] })]
+const vertical = (state: SnapScrollerSnapshot) => state.options.orientation === 'vertical'
+
+const paddingOf = (state: SnapScrollerSnapshot) => (vertical(state) ? 'scroll-padding-block-start' : 'scroll-padding-inline-start')
+
+const measureOf = (state: SnapScrollerSnapshot) => [act.measure<number, typeof ROOT>({ name: OFFSETS, parts: [ROOT], items: 'all', rect: true, scroll: true, styles: [paddingOf(state)] })]
 
 const centerOf = (pages: SnapPages) => Math.floor(pages.size / 2)
 
@@ -103,30 +112,49 @@ const sameKeys = (offsets: readonly Offset[], keys: readonly number[]) => offset
 
 const measuresItems = (state: SnapScrollerSnapshot) => !sameKeys(state.offsets, state.options.items.map((entry) => entry.key))
 
-const inlineLeft = (scroller: ScrollBox | undefined) => Math.abs(scroller?.left ?? 0)
+const scrolledOf = (state: SnapScrollerSnapshot, scroller: ScrollBox | undefined) => {
+  if (vertical(state)) return scroller?.top ?? 0
 
-const offsetOf = (state: SnapScrollerSnapshot, root: Metrics, item: Metrics) => {
-  const padding = parseFloat(root.styles?.['scroll-padding-inline-start'] ?? '') || 0
-  const left = inlineLeft(root.scroll)
-  if (!root.rect || !item.rect) return left
-
-  if (state.rtl) return left + root.rect.x + root.rect.width - item.rect.x - item.rect.width - padding
-
-  return left + item.rect.x - root.rect.x - padding
+  return Math.abs(scroller?.left ?? 0)
 }
 
-const snappedAt = (offsets: readonly Offset[], left: number) => {
+const scrollableOf = (state: SnapScrollerSnapshot, scroller: ScrollBox) => {
+  if (vertical(state)) return scroller.height - scroller.clientHeight
+
+  return scroller.width - scroller.clientWidth
+}
+
+const scaleOf = (state: SnapScrollerSnapshot, rect: Rect, scroll: ScrollBox | undefined) => {
+  const size = vertical(state) ? scroll?.offsetHeight : scroll?.offsetWidth
+  if (!size) return 1
+
+  return (vertical(state) ? rect.height : rect.width) / size
+}
+
+const offsetOf = (state: SnapScrollerSnapshot, root: Metrics, item: Metrics) => {
+  const scrolled = scrolledOf(state, root.scroll)
+  if (!root.rect || !item.rect) return scrolled
+
+  const padding = parseFloat(root.styles?.[paddingOf(state)] ?? '') || 0
+  const scale = scaleOf(state, root.rect, root.scroll)
+  if (vertical(state)) return scrolled + (item.rect.y - root.rect.y) / scale - padding
+  if (state.rtl) return scrolled + (root.rect.x + root.rect.width - item.rect.x - item.rect.width) / scale - padding
+
+  return scrolled + (item.rect.x - root.rect.x) / scale - padding
+}
+
+const snappedAt = (offsets: readonly Offset[], position: number) => {
   let snapped: Offset | undefined
   for (const offset of offsets) {
-    if (!snapped || Math.abs(offset[1] - left) < Math.abs(snapped[1] - left)) snapped = offset
+    if (!snapped || Math.abs(offset[1] - position) < Math.abs(snapped[1] - position)) snapped = offset
   }
 
   return snapped?.[0] ?? null
 }
 
-const atEnd = (scroller: ScrollBox) => inlineLeft(scroller) >= scroller.width - scroller.clientWidth - 1
+const atEnd = (state: SnapScrollerSnapshot, scroller: ScrollBox) => scrolledOf(state, scroller) >= scrollableOf(state, scroller) - 1
 
-const leftOf = (state: SnapScrollerSnapshot, key: number) => state.offsets.find(([candidate]) => candidate === key)?.[1]
+const positionOf = (state: SnapScrollerSnapshot, key: number) => state.offsets.find(([candidate]) => candidate === key)?.[1]
 
 const snapAt = (state: SnapScrollerSnapshot, key: number | null) => snapScrollerShape.pending.set(snapScrollerShape.committed.set(state, key), key)
 
@@ -139,28 +167,33 @@ const deltaOf = (input: Input<number>) => {
   return 0
 }
 
-const scrollTo = (state: SnapScrollerSnapshot, inline: number, behavior?: ScrollBehavior) => {
-  const left = state.rtl ? -inline : inline
+const coordinatesOf = (state: SnapScrollerSnapshot, position: number): ScrollToOptions => {
+  if (vertical(state)) return { top: position }
 
-  return act.scrollTo(ROOT, behavior ? { left, behavior } : { left })
+  return { left: state.rtl ? -position : position }
+}
+
+const scrollTo = (state: SnapScrollerSnapshot, position: number, behavior?: ScrollBehavior) => {
+  const coordinates = coordinatesOf(state, position)
+  return act.scrollTo(ROOT, behavior ? { ...coordinates, behavior } : coordinates)
 }
 
 const anchorAt = (state: SnapScrollerSnapshot, key: number) => {
-  const left = leftOf(state, key)
-  if (!state.options.preserveScroll || left === undefined) return state
+  const position = positionOf(state, key)
+  if (!state.options.preserveScroll || position === undefined) return state
 
-  return snapScrollerShape.anchor.set(state, { key, delta: state.left - left })
+  return snapScrollerShape.anchor.set(state, { key, delta: state.position - position })
 }
 
 const scrollToIndex = (state: SnapScrollerSnapshot, key: number, behavior?: ScrollBehavior): Outcome => {
-  const left = leftOf(state, key)
-  if (left !== undefined && Math.abs(left - state.left) < 1) return { state, actions: [] }
+  const position = positionOf(state, key)
+  if (position !== undefined && Math.abs(position - state.position) < 1) return { state, actions: [] }
 
   const targeted = snapScrollerShape.target.set(state, key)
-  if (left === undefined) return { state: snapScrollerShape.queued.set(targeted, { key, behavior }), actions: [] }
+  if (position === undefined) return { state: snapScrollerShape.queued.set(targeted, { key, behavior }), actions: [] }
 
   const next = behavior === 'instant' ? snapScrollerShape.pending.set(targeted, key) : targeted
-  return { state: next, actions: [scrollTo(next, left, behavior)] }
+  return { state: next, actions: [scrollTo(next, position, behavior)] }
 }
 
 const showIndex = (state: SnapScrollerSnapshot, key: number): Outcome => {
@@ -204,16 +237,16 @@ const restore = (state: SnapScrollerSnapshot): Outcome => {
 
   const actions: Action<number, typeof ROOT>[] = []
   const { anchor, queued, announced } = state
-  const anchorLeft = anchor ? leftOf(state, anchor.key) : undefined
+  const anchorPosition = anchor ? positionOf(state, anchor.key) : undefined
 
   let next = snapScrollerShape.anchor.set(state, null)
-  if (anchor && anchorLeft !== undefined) {
-    const left = anchorLeft + anchor.delta
-    actions.push(scrollTo(next, left, 'instant'))
-    next = snapScrollerShape.left.set(next, left)
+  if (anchor && anchorPosition !== undefined) {
+    const position = anchorPosition + anchor.delta
+    actions.push(scrollTo(next, position, 'instant'))
+    next = snapScrollerShape.position.set(next, position)
   }
 
-  if (queued && leftOf(next, queued.key) !== undefined) {
+  if (queued && positionOf(next, queued.key) !== undefined) {
     const scrolled = scrollToIndex(snapScrollerShape.queued.set(next, null), queued.key, queued.behavior)
     next = scrolled.state
     actions.push(...scrolled.actions)
@@ -225,44 +258,44 @@ const restore = (state: SnapScrollerSnapshot): Outcome => {
 }
 
 const show = (state: SnapScrollerSnapshot, root: Metrics): Outcome => {
-  const left = inlineLeft(root.scroll)
   const committed = state.committed !== null && collection.has(state.collection, state.committed)
-  const known = committed ? state : snapAt(state, snappedAt(state.offsets, left))
+  const known = committed ? state : snapAt(state, snappedAt(state.offsets, scrolledOf(state, root.scroll)))
   if (known.shown) return { state: known, actions: [] }
 
   const shown = snapScrollerShape.shown.set(known, true)
   const start = startIndexOf(shown)
-  const startLeft = start === undefined ? undefined : leftOf(shown, start)
-  if (start === undefined || startLeft === undefined) return { state: shown, actions: [] }
+  const startPosition = start === undefined ? undefined : positionOf(shown, start)
+  if (start === undefined || startPosition === undefined) return { state: shown, actions: [] }
 
-  return { state: snapAt(shown, start), actions: [scrollTo(shown, startLeft, 'instant')] }
+  return { state: snapAt(shown, start), actions: [scrollTo(shown, startPosition, 'instant')] }
 }
 
 const syncing: Step<SnapScrollerSnapshot> = (state, input) => {
-  if (input.is(MEASURE_SNAP)) return keep(state, MEASURE)
+  if (input.is(MEASURE_SNAP)) return keep(state, measureOf(state))
 
   if (input.is(lifecycle.connect)) {
     const windowed = state.options.pages ? snapScrollerShape.window.set(state, windowOf(state)) : state
-    return keep(windowed, measuresItems(windowed) ? MEASURE : [])
+    return keep(windowed, measuresItems(windowed) ? measureOf(windowed) : [])
   }
 
   if (!input.is(lifecycle.options)) return undefined
 
   const followed = follow(state)
-  const measures = measuresItems(followed.state) ? MEASURE : []
+  const measures = measuresItems(followed.state) ? measureOf(followed.state) : []
   return keep(followed.state, [...followed.actions, ...measures])
 }
 
-const resizing = listening<SnapScrollerSnapshot>([layout.resize], (state, input) => (input.is(layout.resize) ? keep(state, MEASURE) : undefined))
+const resizing = listening<SnapScrollerSnapshot>([layout.resize], (state, input) => (input.is(layout.resize) ? keep(state, measureOf(state)) : undefined))
 
 const measuring: Step<SnapScrollerSnapshot> = (state, input) => {
   if (!input.is(measure.done) || input.measured?.name !== OFFSETS) return undefined
 
   const root = input.measured.parts[ROOT]
-  if (!root?.rect || !root.scroll || root.rect.width === 0) return keep(state)
+  if (!root?.rect || !root.scroll) return keep(state)
+  if ((vertical(state) ? root.rect.height : root.rect.width) === 0) return keep(state)
 
   const offsets = input.measured.items.map(([key, item]): Offset => [key, offsetOf(state, root, item)])
-  const measured = snapScrollerShape.left.set(snapScrollerShape.offsets.set(state, offsets), inlineLeft(root.scroll))
+  const measured = snapScrollerShape.position.set(snapScrollerShape.offsets.set(state, offsets), scrolledOf(state, root.scroll))
   const shown = show(measured, root)
   const restored = restore(shown.state)
 
@@ -271,15 +304,16 @@ const measuring: Step<SnapScrollerSnapshot> = (state, input) => {
 
 const following = listening<SnapScrollerSnapshot>([scroll.move], (state, input) => {
   if (!input.is(scroll.move) || input.part !== ROOT || !input.scroller) return undefined
-  if (state.offsets.length === 0) return keep(state, MEASURE)
+  if (state.offsets.length === 0) return keep(state, measureOf(state))
 
-  const scrolled = snapScrollerShape.left.set(state, inlineLeft(input.scroller))
-  const key = snappedAt(state.offsets, inlineLeft(input.scroller))
+  const position = scrolledOf(state, input.scroller)
+  const scrolled = snapScrollerShape.position.set(state, position)
+  const key = snappedAt(state.offsets, position)
   const moved = key === null || key === state.pending ? scrolled : snapScrollerShape.pending.set(scrolled, key)
   const changing = key !== null && key !== state.pending && reports(state, key) ? [act.emit('snapChanging', key)] : []
 
   const { pages } = state.options
-  if (!pages || !atEnd(input.scroller)) return keep(moved, changing)
+  if (!pages || !atEnd(moved, input.scroller)) return keep(moved, changing)
 
   const grown = snapScrollerShape.window.set(moved, extended(pages, windowOf(moved), 1))
   return keep(grown, [...changing, act.emit('offset', 1)])
@@ -288,9 +322,10 @@ const following = listening<SnapScrollerSnapshot>([scroll.move], (state, input) 
 const settling = listening<SnapScrollerSnapshot>([scroll.end], (state, input) => {
   if (!input.is(scroll.end) || input.part !== ROOT || !input.scroller) return undefined
 
-  const unreachable = state.target !== null && (leftOf(state, state.target) ?? 0) > input.scroller.width - input.scroller.clientWidth + 1
-  const scrolled = snapScrollerShape.left.set(unreachable ? snapScrollerShape.target.set(state, null) : state, inlineLeft(input.scroller))
-  const key = snappedAt(state.offsets, inlineLeft(input.scroller))
+  const position = scrolledOf(state, input.scroller)
+  const unreachable = state.target !== null && (positionOf(state, state.target) ?? 0) > scrollableOf(state, input.scroller) + 1
+  const scrolled = snapScrollerShape.position.set(unreachable ? snapScrollerShape.target.set(state, null) : state, position)
+  const key = snappedAt(state.offsets, position)
   if (key === null || key === state.committed) return keep(scrolled)
 
   const changing = key !== state.pending && reports(scrolled, key) ? [act.emit('snapChanging', key)] : []
@@ -307,7 +342,7 @@ const stepping: Step<SnapScrollerSnapshot> = (state, input) => {
   if (base === null) return keep(state)
 
   const next = base + delta
-  if (leftOf(state, next) !== undefined) {
+  if (positionOf(state, next) !== undefined) {
     const scrolled = scrollToIndex(state, next)
     return keep(scrolled.state, scrolled.actions)
   }
@@ -331,13 +366,14 @@ const jumping: Step<SnapScrollerSnapshot> = (state, input) => {
     return keep(shown.state, shown.actions)
   }
 
-  const left = leftOf(state, input.key)
-  if (left === undefined) return keep(state)
+  const position = positionOf(state, input.key)
+  if (position === undefined) return keep(state)
 
   const behavior = input.value
-  const next = behavior === 'instant' ? snapScrollerShape.pending.set(state, input.key) : state
+  if (behavior === 'animated') return keep(snapScrollerShape.committed.set(state, null), [act.animateScroll(ROOT, coordinatesOf(state, position))])
 
-  return keep(next, [scrollTo(next, left, behavior)])
+  const next = behavior === 'instant' ? snapScrollerShape.pending.set(state, input.key) : state
+  return keep(next, [scrollTo(next, position, behavior)])
 }
 
 const releasing = listening<SnapScrollerSnapshot>([pointer.wheel, pointer.down], (state, input) => {

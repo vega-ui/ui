@@ -231,6 +231,28 @@ describe('Critical User Paths', () => {
     expect(inner.instance.state.active).toBe('date')
   })
 
+  it('delivers an input sent to a root to every widget on it, the one that sends it too, when two widgets share an element', () => {
+    const shared = mount({ items: fruits, mode: 'single' })
+    const heard = vi.fn()
+
+    const elements = createElements<string>()
+    elements.setRoot(shared.root)
+
+    const PING = command('ping')
+    const sending = defineWidget({
+      state: shape,
+      step: [
+        listening([PING], (state, input) => (input.is(PING) ? handled(state, [act.send('root', key.printable, { char: 'd' })]) : undefined)),
+        listening([key.printable], (_state, input) => heard(input.char)),
+      ],
+    })
+    const connection = connect(createWidget(sending, { items: fruits, mode: 'single' }, { id: 'sending', strict: true }), elements)
+
+    connection.send(createInput(PING))
+    expect(shared.instance.state.active).toBe('date')
+    expect(heard).toHaveBeenCalledWith('d')
+  })
+
   it('delivers an input to the widget whose root is an item or holds it, and to no one for an item outside other widgets', () => {
     const outer = document.createElement('div')
     document.body.appendChild(outer)
@@ -692,6 +714,79 @@ describe('Critical User Paths', () => {
 
     root.dispatchEvent(new WheelEvent('wheel', { bubbles: true, deltaX: 10 }))
     expect(onWheeled).toHaveBeenCalledWith('pager')
+  })
+
+  it('animates a scroll over the animation duration of the part without snapping, reports its end once and stops it when the user turns the wheel', async () => {
+    const root = document.createElement('div')
+    root.style.cssText = 'display: flex; overflow-x: auto; width: 100px; scroll-snap-type: x mandatory; animation-duration: 0.3s; animation-timing-function: linear'
+    for (let page = 0; page < 4; page++) root.append(Object.assign(document.createElement('div'), { style: 'flex: none; width: 100px; height: 10px; scroll-snap-align: start' }))
+    document.body.appendChild(root)
+    const elements = createElements<string>()
+    elements.setRoot(root, 'pager')
+
+    const GLIDE = command<{ readonly to: number }>()('glide')
+    const moves: number[] = []
+    const ends: number[] = []
+    const gliding = defineWidget({
+      state: shape,
+      step: [listening([scroll.move, scroll.end], (state, input) => {
+        if (input.is(GLIDE)) return keep(state, [act.animateScroll('pager', { left: input.to })])
+        if (input.is(scroll.move)) moves.push(input.scroller?.left ?? -1)
+        if (input.is(scroll.end)) ends.push(input.scroller?.left ?? -1)
+        return keep(state)
+      })],
+    })
+    const connection = connect(createWidget(gliding, { items: fruits, mode: 'single' } as Options, { id: 'widget', strict: true }), elements)
+    connection.listen(root)
+
+    connection.send(createInput(GLIDE, { to: 300 }))
+    await expect.poll(() => ends[0]).toBe(300)
+    expect(moves.some((left) => left % 100 !== 0)).toBe(true)
+    await new Promise((resolve) => setTimeout(resolve, 200))
+    expect(ends).toEqual([300])
+    expect(root.style.scrollSnapType).toBe('x mandatory')
+
+    connection.send(createInput(GLIDE, { to: 0 }))
+    await expect.poll(() => root.style.scrollSnapType).toBe('none')
+    root.dispatchEvent(new WheelEvent('wheel', { deltaX: 1 }))
+    await new Promise((resolve) => setTimeout(resolve, 400))
+    expect(root.scrollLeft).toBeGreaterThan(0)
+    expect(root.style.scrollSnapType).toBe('x mandatory')
+
+    root.scrollTo({ left: 100, behavior: 'instant' })
+    await expect.poll(() => ends.at(-1)).toBe(100)
+  })
+
+  it('scrubs an animation of a part by its scroll until the scrub stops, for browsers without scroll timelines', async () => {
+    const root = document.createElement('div')
+    root.style.cssText = 'overflow-y: auto; height: 100px'
+    root.append(Object.assign(document.createElement('div'), { style: 'height: 500px' }))
+    document.body.appendChild(root)
+    const elements = createElements<string>()
+    elements.setRoot(root, 'wheel')
+
+    const FOLLOW = command()('follow')
+    const UNFOLLOW = command()('unfollow')
+    const following = defineWidget({
+      state: shape,
+      step: [(state, input) => {
+        if (input.is(FOLLOW)) return keep(state, [act.scrubWithScroll('wheel', { keyframes: [{ opacity: 0 }, { opacity: 1 }] })])
+        if (input.is(UNFOLLOW)) return keep(state, [act.stopScrub('wheel')])
+        return undefined
+      }],
+    })
+    const connection = connect(createWidget(following, { items: fruits, mode: 'single' } as Options, { id: 'widget', strict: true }), elements)
+    connection.listen(root)
+
+    connection.send(createInput(FOLLOW))
+    expect(getComputedStyle(root).opacity).toBe('0')
+    root.scrollTo({ top: 200, behavior: 'instant' })
+    await expect.poll(() => getComputedStyle(root).opacity).toBe('0.5')
+
+    connection.send(createInput(UNFOLLOW))
+    expect(root.getAnimations()).toHaveLength(0)
+    connection.disconnect()
+    root.remove()
   })
 
   it('reports a resize of each root, also of a root registered after connecting, and a change of the viewport', async () => {

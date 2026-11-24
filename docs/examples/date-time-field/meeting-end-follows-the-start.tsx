@@ -83,8 +83,8 @@ export default function MeetingTimes() {
             <PopoverTrigger asChild>
               <DateTimeFieldTrigger square aria-label='Choose start date'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
             </PopoverTrigger>
-            <PopoverContent>
-              <DateTimeFieldCalendar aria-label='Choose start date'>
+            <PopoverContent role='dialog' aria-label='Choose start date'>
+              <DateTimeFieldCalendar>
                 <CalendarHeader>
                   <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
@@ -140,8 +140,8 @@ export default function MeetingTimes() {
             <PopoverTrigger asChild>
               <DateTimeFieldTrigger square aria-label='Choose end date'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
             </PopoverTrigger>
-            <PopoverContent>
-              <DateTimeFieldCalendar aria-label='Choose end date'>
+            <PopoverContent role='dialog' aria-label='Choose end date'>
+              <DateTimeFieldCalendar>
                 <CalendarHeader>
                   <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>

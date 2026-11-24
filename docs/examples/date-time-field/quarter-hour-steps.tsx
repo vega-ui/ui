@@ -45,8 +45,8 @@ export default function QuarterHourSteps() {
           <PopoverTrigger asChild>
             <DateTimeFieldTrigger square aria-label='Choose pickup date'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
           </PopoverTrigger>
-          <PopoverContent>
-            <DateTimeFieldCalendar aria-label='Choose pickup date'>
+          <PopoverContent role='dialog' aria-label='Choose pickup date'>
+            <DateTimeFieldCalendar>
               <CalendarHeader>
                 <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                 <CalendarHeading>

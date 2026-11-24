@@ -2,6 +2,53 @@
 
 ## Basic
 
+### Basic: time on wheels
+
+The clock button opens the hours and the minutes as wheels. The minutes go by the quarter hour of `step`, the times outside 09:00–21:00 are disabled, and each turn writes the time into the input at once, so the popover stays open until Escape or a click outside.
+
+<!-- example: time-field/wheels-in-a-popover.tsx -->
+```tsx
+import {
+  Icon,
+  Label,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  TimeField,
+  TimeFieldColumn,
+  TimeFieldInput,
+  TimeFieldOption,
+  TimeFieldTrigger,
+  WheelPicker,
+  WheelPickerFace,
+} from '@vega-ui/react';
+import { ClockIcon } from '@vega-ui/icons';
+
+export default function WheelsInAPopover() {
+  return (
+    <div style={{ display: 'grid', gap: 'var(--spacing-3)', width: '100%', maxWidth: 260 }}>
+      <Label htmlFor='pickup-time'>Pickup time</Label>
+      <TimeField defaultValue='12:30' min='09:00' max='21:00' step={15}>
+        <TimeFieldInput id='pickup-time' name='pickupTime' placeholder='hh:mm' />
+        <Popover placement='bottom-end'>
+          <PopoverTrigger asChild>
+            <TimeFieldTrigger square aria-label='Choose pickup time'><Icon><ClockIcon /></Icon></TimeFieldTrigger>
+          </PopoverTrigger>
+          <PopoverContent role='dialog' aria-label='Choose pickup time' style={{ padding: 'var(--spacing-6)' }}>
+            <WheelPicker aria-label='Pickup time'>
+              <TimeFieldColumn unit='hour' aria-label='Hours' autoFocus><TimeFieldOption><WheelPickerFace /></TimeFieldOption></TimeFieldColumn>
+              <span aria-hidden='true' style={{ alignSelf: 'center' }}>:</span>
+              <TimeFieldColumn unit='minute' aria-label='Minutes'><TimeFieldOption><WheelPickerFace /></TimeFieldOption></TimeFieldColumn>
+            </WheelPicker>
+          </PopoverContent>
+        </Popover>
+      </TimeField>
+    </div>
+  );
+}
+```
+<!-- /example -->
+
 ### Basic: daily reminder time
 
 A labelled field for a 24-hour time. `defaultValue` on the root is an `HH:mm` string, and the helper text tells users which clock and time zone the time is in.
@@ -126,6 +173,67 @@ export default function QuietHoursForm() {
 <!-- /example -->
 
 ## Layout/Overlay
+
+### Layout/Overlay: units in the wheel cells
+
+The children of a time column are the template of its options, each a `TimeFieldOption`. One cell serves both columns and reads the `unit` of its option: the hours show without the leading zero and the minutes by five, each with a small unit, while the input keeps `HH:mm` and the columns still announce the two-digit value.
+
+<!-- example: time-field/wheel-cells-with-units.tsx -->
+```tsx
+import {
+  Icon,
+  Label,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  TimeField,
+  TimeFieldColumn,
+  TimeFieldInput,
+  TimeFieldOption,
+  TimeFieldTrigger,
+  useTimeFieldOptionContext,
+  WheelPicker,
+  WheelPickerFace,
+} from '@vega-ui/react';
+import { ClockIcon } from '@vega-ui/icons';
+
+const unitStyle = { marginInlineStart: 'var(--spacing-2)', color: 'var(--label-secondary)', fontSize: 'var(--font-size-1)' } as const;
+
+function UnitCell() {
+  const { unit, value } = useTimeFieldOptionContext();
+
+  if (unit === 'hour') return <TimeFieldOption><WheelPickerFace>{Number(value)}<span style={unitStyle}>h</span></WheelPickerFace></TimeFieldOption>;
+
+  return <TimeFieldOption><WheelPickerFace>{value}<span style={unitStyle}>min</span></WheelPickerFace></TimeFieldOption>;
+}
+
+export default function WheelCellsWithUnits() {
+  return (
+    <div style={{ display: 'grid', gap: 'var(--spacing-3)', width: '100%', maxWidth: 260 }}>
+      <Label htmlFor='quiet-hours'>Quiet hours start</Label>
+      <TimeField defaultValue='22:30' step={5}>
+        <TimeFieldInput id='quiet-hours' name='quietHours' placeholder='hh:mm' />
+        <Popover placement='bottom-end'>
+          <PopoverTrigger asChild>
+            <TimeFieldTrigger square aria-label='Choose start time'><Icon><ClockIcon /></Icon></TimeFieldTrigger>
+          </PopoverTrigger>
+          <PopoverContent role='dialog' aria-label='Choose start time' style={{ padding: 'var(--spacing-6)' }}>
+            <WheelPicker aria-label='Quiet hours start'>
+              <TimeFieldColumn unit='hour' aria-label='Hours' autoFocus style={{ minInlineSize: '4.5em' }}>
+                <UnitCell />
+              </TimeFieldColumn>
+              <TimeFieldColumn unit='minute' aria-label='Minutes' style={{ minInlineSize: '5.5em' }}>
+                <UnitCell />
+              </TimeFieldColumn>
+            </WheelPicker>
+          </PopoverContent>
+        </Popover>
+      </TimeField>
+    </div>
+  );
+}
+```
+<!-- /example -->
 
 ### Layout/Overlay: opening hours table
 
@@ -377,12 +485,27 @@ export default function QuarterHourStep() {
 
 ### Edge: seconds precision
 
-`format='HH:mm:ss'` adds a seconds segment; the value then has seconds, and `min` and `max` are written with seconds too.
+`format='HH:mm:ss'` adds a seconds segment; the value then has seconds, and `min` and `max` are written with seconds too. The wheels get a third column, `TimeFieldColumn` with `unit='second'`, and the seconds before 00:00:30 are disabled by `min`.
 
 <!-- example: time-field/seconds-precision-rule.tsx -->
 ```tsx
 import { useState } from 'react';
-import { Label, Text, TimeField, TimeFieldInput } from '@vega-ui/react';
+import {
+  Icon,
+  Label,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Text,
+  TimeField,
+  TimeFieldColumn,
+  TimeFieldInput,
+  TimeFieldOption,
+  TimeFieldTrigger,
+  WheelPicker,
+  WheelPickerFace,
+} from '@vega-ui/react';
+import { ClockIcon } from '@vega-ui/icons';
 
 export default function SecondsPrecisionRule() {
   const [runAt, setRunAt] = useState('00:00:30');
@@ -393,6 +516,20 @@ export default function SecondsPrecisionRule() {
         <Label htmlFor='cron-time'>Run the export at</Label>
         <TimeField format='HH:mm:ss' min='00:00:30' max='23:59:30' value={runAt} onChangeValue={setRunAt}>
           <TimeFieldInput id='cron-time' placeholder='hh:mm:ss' />
+          <Popover placement='bottom-end'>
+            <PopoverTrigger asChild>
+              <TimeFieldTrigger square aria-label='Choose export time'><Icon><ClockIcon /></Icon></TimeFieldTrigger>
+            </PopoverTrigger>
+            <PopoverContent role='dialog' aria-label='Choose export time' style={{ padding: 'var(--spacing-6)' }}>
+              <WheelPicker aria-label='Export time'>
+                <TimeFieldColumn unit='hour' aria-label='Hours' autoFocus><TimeFieldOption><WheelPickerFace /></TimeFieldOption></TimeFieldColumn>
+                <span aria-hidden='true' style={{ alignSelf: 'center' }}>:</span>
+                <TimeFieldColumn unit='minute' aria-label='Minutes'><TimeFieldOption><WheelPickerFace /></TimeFieldOption></TimeFieldColumn>
+                <span aria-hidden='true' style={{ alignSelf: 'center' }}>:</span>
+                <TimeFieldColumn unit='second' aria-label='Seconds'><TimeFieldOption><WheelPickerFace /></TimeFieldOption></TimeFieldColumn>
+              </WheelPicker>
+            </PopoverContent>
+          </Popover>
         </TimeField>
       </div>
       <Text size={2} style={{ color: 'var(--label-secondary)' }}>

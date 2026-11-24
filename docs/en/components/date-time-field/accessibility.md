@@ -1,12 +1,12 @@
 # DateTimeField Accessibility
 
-The field follows the WAI-ARIA [Date Picker Dialog](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/datepicker-dialog/) pattern: a text input for typing, a trigger button, and a calendar dialog for picking.
+The field follows the WAI-ARIA [Date Picker Dialog](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/datepicker-dialog/) pattern: a text input for typing, a trigger button, and a dialog with the calendar and the time wheels for picking, like the picker of a native `<input type="datetime-local">`.
 
 ## Labeling
 
 - Name the input with a visible `Label` (`htmlFor`), or with `aria-label` / `aria-labelledby` on `DateTimeFieldInput`.
 - Name an icon-only `DateTimeFieldTrigger` with `aria-label`, for example "Choose date"; a trigger with text is named by its text. The field never adds a label of its own.
-- Name the dialog with `aria-label` or `aria-labelledby` on `DateTimeFieldCalendar`. It is `role="dialog"` by default; do not also set `role` on the `Popover`.
+- Set `role="dialog"` on `PopoverContent` and name it with `aria-label` or `aria-labelledby`, so the calendar and its time button are one dialog. Name the time button with `aria-labelledby` from the visible "Time" label and the button itself, so it reads as "Time 18:30"; name the nested dialog, the `WheelPicker` and each column, for example "Hours" and "Minutes".
 
 ## Keyboard Behavior
 
@@ -14,10 +14,10 @@ The field follows the WAI-ARIA [Date Picker Dialog](https://www.w3.org/WAI/ARIA/
 | Key | Action |
 | --- | --- |
 | <kbd>↑</kbd> / <kbd>↓</kbd> | With the caret in the hours: steps them by one. In the minutes or seconds: steps them by `timeStep`. A segment wraps around its range without changing the others; in the date part the arrows do not change the value. `timeStep={0}` turns stepping off. |
-| <kbd>Enter</kbd> / <kbd>Space</kbd> | On the trigger button: opens the calendar popup and moves the focus into the day grid: to the selected day, otherwise today, otherwise the first available day. |
-| <kbd>Tab</kbd> / <kbd>Shift</kbd> + <kbd>Tab</kbd> | In the popup: moves the focus between the header buttons and the day grid. The popup is not modal: Tab from its last element leaves it, and it stays open until Escape, an outside click or a pick. |
-| <kbd>Enter</kbd> / <kbd>Space</kbd> | On a day in the popup: writes the day into the input and keeps the time, closes the popup and returns the focus to the trigger button, so the time is edited in the input. The other calendar keys work as in Calendar. |
-| <kbd>Escape</kbd> | Closes the popup and returns the focus to the trigger button. |
+| <kbd>Enter</kbd> / <kbd>Space</kbd> | On the trigger button: opens the calendar popup and moves the focus into the day grid: to the selected day, otherwise today, otherwise the first available day. On the time button under the calendar: opens the time wheels in a nested popover. |
+| <kbd>Tab</kbd> / <kbd>Shift</kbd> + <kbd>Tab</kbd> | In the popup: moves the focus between the header buttons, the day grid and the time button. The popup is not modal: Tab from its last element leaves it, and it stays open until Escape, an outside click or the trigger. |
+| <kbd>Enter</kbd> / <kbd>Space</kbd> | On a day in the popup: writes the day into the input and keeps the time, and the popup stays open with the focus on the day for the time wheels, like a native `datetime-local` picker. The other calendar keys work as in Calendar. |
+| <kbd>Escape</kbd> | Closes the popup and returns the focus to the trigger button. In the time wheels: closes only them and returns the focus to the time button. |
 <!-- AUTO-GENERATED:KEYBOARD:end -->
 
 - Typing works without opening the calendar. Inside the calendar, navigation only moves the focus; the value changes only when a day is picked.
@@ -27,10 +27,10 @@ The field follows the WAI-ARIA [Date Picker Dialog](https://www.w3.org/WAI/ARIA/
 
 - The trigger has `aria-haspopup="dialog"`; it opens the popup through the native `popovertarget`, which exposes `aria-expanded` and the controlled popup.
 - On open, the focus moves into the day grid: to the selected day, otherwise today (clamped to `min` and `max`), otherwise the first available day. The popup opens on the month of that date.
-- Picking a day (click, <kbd>Enter</kbd> or <kbd>Space</kbd>) writes it into the input with the typed time (midnight without one), closes the popup and returns the focus to the trigger; the time is then edited in the input.
+- Picking a day (click, <kbd>Enter</kbd> or <kbd>Space</kbd>) writes it into the input with the time (midnight without one) and keeps the popup open with the focus on the day, like a native `datetime-local` picker; <kbd>Tab</kbd> moves on to the time button, which opens the wheels in a nested popover. <kbd>Escape</kbd> there closes only the wheels and returns the focus to the time button.
 - <kbd>Escape</kbd> and an outside click close the popup without a change; the browser returns the focus to the trigger. In Safari a mouse click does not focus a button, so after a mouse-opened popup closes the focus returns to the page body; keyboard activation returns it to the trigger.
-- Deviation from the APG modal dialog: the popup is a non-modal `popover="auto"`. <kbd>Tab</kbd> can leave it, and it stays open until <kbd>Escape</kbd>, an outside click, a pick or another popover closes it. This keeps the page usable, like the native date pickers of the browsers.
-- To keep the popup open after a pick, control `open` on the `Popover` and set it back to `true` in `onChangeValue` of `DateTimeFieldCalendar`, which runs after the field closes it.
+- Deviation from the APG modal dialog: the popup is a non-modal `popover="auto"`. <kbd>Tab</kbd> can leave it, and it stays open until <kbd>Escape</kbd>, an outside click, the trigger or another popover closes it. This keeps the page usable, like the native date pickers of the browsers.
+- To close a popup with the calendar alone after a pick, control `open` on the `Popover` and set it to `false` in `onChangeValue` of `DateTimeFieldCalendar`.
 
 ## Screen Reader Semantics
 

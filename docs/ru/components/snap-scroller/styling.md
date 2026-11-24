@@ -12,7 +12,7 @@
 
 ### Корень
 
-Корень использует flex-раскладку, `scroll-snap-type: x mandatory`, плавную прокрутку и скрытые полосы прокрутки.
+Корень использует flex-раскладку, `scroll-snap-type: x mandatory`, плавную прокрутку и скрытые полосы прокрутки. С `data-orientation="vertical"` он ставит элементы в колонку и использует `scroll-snap-type: y mandatory`.
 
 ### Содержимое
 

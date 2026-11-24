@@ -8,6 +8,13 @@
     overflow-y: hidden;
 }
 
+.scrollView[data-orientation='vertical'] {
+    flex-direction: column;
+    scroll-snap-type: y mandatory;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
 .scrollView::-webkit-scrollbar {
     display: none;
 }

@@ -85,8 +85,8 @@ export default function ReschedulingInsideASheet() {
                   <PopoverTrigger asChild>
                     <DateTimeFieldTrigger square aria-label='Choose new date'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
                   </PopoverTrigger>
-                  <PopoverContent>
-                    <DateTimeFieldCalendar aria-label='Choose new date'>
+                  <PopoverContent role='dialog' aria-label='Choose new date'>
+                    <DateTimeFieldCalendar>
                       <CalendarHeader>
                         <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                         <CalendarHeading>

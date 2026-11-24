@@ -57,23 +57,23 @@ Users can enter times that do not match the intended schedule granularity.
 
 Configure `timeStep` to match the real scheduling rule and validate it consistently on submit.
 
-## Calendar Closes After A Pick
+## Popup Stays Open After A Pick
 
 ### Symptom
 
-The popup closes as soon as a day is picked, but the product wants it to stay open.
+A day is picked, but the popup with the calendar alone stays open.
 
 ### Likely Cause
 
-Picking closes the popup and returns the focus to the trigger, as the WAI-ARIA date picker dialog pattern describes.
+Picking a day keeps the popup open for the time, like the picker of a native `<input type="datetime-local">`, where the calendar and the time wheels share one popup.
 
 ### How To Verify
 
-- Pick a day with a click or <kbd>Enter</kbd> and check whether the popup hides.
+- Pick a day with a click or <kbd>Enter</kbd> and check that the input shows it while the popup stays open.
 
 ### Fix
 
-Control `open` on the `Popover` and set it back to `true` in `onChangeValue` of `DateTimeFieldCalendar`. It runs after the field closes the popup, in the same update, so the popup never hides.
+Put a time button with `DateTimeFieldTime` under the calendar, opening a `WheelPicker` of `DateTimeFieldColumn`, so the user goes on to the time. To close a popup with the calendar alone, control `open` on the `Popover` and set it to `false` in `onChangeValue` of `DateTimeFieldCalendar`.
 
 ## Two-Digit Year Reads The Wrong Century
 

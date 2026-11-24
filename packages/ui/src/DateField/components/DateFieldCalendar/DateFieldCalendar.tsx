@@ -1,12 +1,19 @@
 import { FC } from 'react';
+import { useTextFieldContext } from '../../../TextField/contexts';
 import { useSnapshot } from '../../../internals/widget';
-import { Calendar, CalendarProps } from '../../../Calendar';
+import { Calendar, CalendarProps, CalendarSize } from '../../../Calendar';
 import { usePopoverContext } from '../../../Popover';
 import { useDateFieldContext } from '../../contexts';
 import { createInput } from '@vega-ui/core';
 import { PICK_VALUE } from '@vega-ui/widgets/date-field';
 
-export type DateFieldCalendarProps = CalendarProps
+export interface DateFieldCalendarProps extends Omit<CalendarProps, 'size'> {
+  /**
+   * Size of the buttons, cells and weekday names of the calendar.
+   * @default the size of the field
+   */
+  size?: CalendarSize
+}
 
 /**
  * DateFieldCalendar — Calendar adapter for DateField, the dialog of the
@@ -23,6 +30,7 @@ export type DateFieldCalendarProps = CalendarProps
  * A read-only field or input keeps its date.
  */
 export const DateFieldCalendar: FC<DateFieldCalendarProps> = ({ onChangeValue: _onChangeValue, ...props }) => {
+  const { size } = useTextFieldContext()
   const { handle, max, min, calendar, locale, today, disabledDates, readOnly } = useDateFieldContext()
   const date = useSnapshot(handle, (state) => state.value)
   const popover = usePopoverContext()
@@ -40,6 +48,7 @@ export const DateFieldCalendar: FC<DateFieldCalendarProps> = ({ onChangeValue: _
     <Calendar
       role='dialog'
       compact
+      size={size}
       autoFocus={open}
       readOnly={readOnly}
       max={max}

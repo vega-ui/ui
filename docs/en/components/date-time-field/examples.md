@@ -64,8 +64,8 @@ export default function DateAndTimeWithACalendarPopover({ locale = 'en-US' }: { 
           <PopoverTrigger asChild>
             <DateTimeFieldTrigger square aria-label='Choose webinar date'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
           </PopoverTrigger>
-          <PopoverContent>
-            <DateTimeFieldCalendar aria-label='Choose webinar date'>
+          <PopoverContent role='dialog' aria-label='Choose webinar date'>
+            <DateTimeFieldCalendar>
               <CalendarHeader>
                 <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                 <CalendarHeading>
@@ -107,6 +107,146 @@ export default function DateAndTimeWithACalendarPopover({ locale = 'en-US' }: { 
         </Popover>
       </DateTimeField>
       <HelperText id='starts-at-hint'>24-hour time. Picking a day keeps the typed time.</HelperText>
+    </div>
+  );
+}
+```
+<!-- /example -->
+
+### Basic: a calendar with a time button
+
+The day and the time in one popover, as on iOS: picking a day keeps the popover open, and the time button under the calendar shows `DateTimeFieldTime` and opens the wheels in a nested popover. `DateTimeFieldColumn` with `unit='hour'` and `unit='minute'` turns the time and keeps the day, the minutes go by `timeStep`; while the field is empty, the wheels take `today` for the date. `Escape` closes only the wheels and returns the focus to the time button. The button is named by the "Time" label and its own text, so it reads as "Time 18:30". Rows use `<TimeFieldOption><WheelPickerFace /></TimeFieldOption>` as their template, as in `TimeField`.
+
+<!-- example: date-time-field/calendar-and-time-wheels.tsx -->
+```tsx
+import { useId, useState } from 'react';
+import {
+  Button,
+  CalendarContent,
+  CalendarDay,
+  CalendarDays,
+  CalendarDaysScroller,
+  CalendarDaysScrollerContent,
+  CalendarHeader,
+  CalendarHeading,
+  CalendarMonth,
+  CalendarMonthLabel,
+  CalendarMonths,
+  CalendarMonthsGrid,
+  CalendarNextButton,
+  CalendarPrevButton,
+  CalendarViewButton,
+  CalendarWeekday,
+  CalendarWeekdays,
+  CalendarWeeks,
+  CalendarYear,
+  CalendarYearLabel,
+  CalendarYears,
+  CalendarYearsGrid,
+  CalendarYearsScroller,
+  CalendarYearsScrollerContent,
+  DateTimeField,
+  DateTimeFieldCalendar,
+  DateTimeFieldColumn,
+  DateTimeFieldInput,
+  DateTimeFieldTime,
+  DateTimeFieldTrigger,
+  Icon,
+  Label,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Text,
+  TimeFieldOption,
+  WheelPicker,
+  WheelPickerFace,
+} from '@vega-ui/react';
+import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
+
+export default function CalendarAndTimeWheels() {
+  const [startsAt, setStartsAt] = useState('2026-07-15T18:30');
+  const timeLabelId = useId();
+  const timeButtonId = useId();
+
+  return (
+    <div style={{ display: 'grid', gap: 'var(--spacing-8)', width: '100%', maxWidth: 320 }}>
+      <div style={{ display: 'grid', gap: 'var(--spacing-3)' }}>
+        <Label htmlFor='call-starts-at'>Call starts at</Label>
+        <DateTimeField
+          dateFormat='dd.MM.yyyy'
+          timeStep={5}
+          today='2026-07-15'
+          value={startsAt}
+          onChangeValue={setStartsAt}
+        >
+          <DateTimeFieldInput id='call-starts-at' placeholder='dd.mm.yyyy, hh:mm' />
+          <Popover placement='bottom-end'>
+            <PopoverTrigger asChild>
+              <DateTimeFieldTrigger square aria-label='Choose call date and time'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
+            </PopoverTrigger>
+            <PopoverContent role='dialog' aria-label='Choose call date and time'>
+              <DateTimeFieldCalendar>
+                <CalendarHeader>
+                  <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
+                  <CalendarHeading>
+                    <CalendarViewButton view='month'><CalendarMonthLabel /></CalendarViewButton>
+                    <CalendarViewButton view='year'><CalendarYearLabel /></CalendarViewButton>
+                  </CalendarHeading>
+                  <CalendarNextButton square aria-label='Next month'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
+                </CalendarHeader>
+                <CalendarContent>
+                  <CalendarDays>
+                    <CalendarWeekdays>
+                      <CalendarWeekday />
+                    </CalendarWeekdays>
+                    <CalendarDaysScroller>
+                      <CalendarDaysScrollerContent>
+                        <CalendarWeeks>
+                          <CalendarDay />
+                        </CalendarWeeks>
+                      </CalendarDaysScrollerContent>
+                    </CalendarDaysScroller>
+                  </CalendarDays>
+                  <CalendarMonths>
+                    <CalendarMonthsGrid>
+                      <CalendarMonth />
+                    </CalendarMonthsGrid>
+                  </CalendarMonths>
+                  <CalendarYears>
+                    <CalendarYearsScroller>
+                      <CalendarYearsScrollerContent>
+                        <CalendarYearsGrid>
+                          <CalendarYear />
+                        </CalendarYearsGrid>
+                      </CalendarYearsScrollerContent>
+                    </CalendarYearsScroller>
+                  </CalendarYears>
+                </CalendarContent>
+              </DateTimeFieldCalendar>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-4)', padding: '0 var(--spacing-6) var(--spacing-6)' }}>
+                <Text id={timeLabelId}>Time</Text>
+                <Popover placement='top-end'>
+                  <PopoverTrigger asChild>
+                    <Button id={timeButtonId} aria-labelledby={`${timeLabelId} ${timeButtonId}`} aria-haspopup='dialog' variant='secondary' appearance='ghost'>
+                      <DateTimeFieldTime placeholder='--:--' />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent role='dialog' aria-label='Choose call time' style={{ padding: 'var(--spacing-6)' }}>
+                    <WheelPicker aria-label='Call time'>
+                      <DateTimeFieldColumn unit='hour' aria-label='Hours' autoFocus><TimeFieldOption><WheelPickerFace /></TimeFieldOption></DateTimeFieldColumn>
+                      <span aria-hidden='true' style={{ alignSelf: 'center' }}>:</span>
+                      <DateTimeFieldColumn unit='minute' aria-label='Minutes'><TimeFieldOption><WheelPickerFace /></TimeFieldOption></DateTimeFieldColumn>
+                    </WheelPicker>
+                  </PopoverContent>
+                </Popover>
+              </div>
+            </PopoverContent>
+          </Popover>
+        </DateTimeField>
+      </div>
+      <Text size={2} style={{ color: 'var(--label-secondary)' }}>
+        Value: {startsAt ? <code>{startsAt}</code> : 'no complete date and time'}
+      </Text>
     </div>
   );
 }
@@ -206,8 +346,8 @@ export default function MeetingTimes() {
             <PopoverTrigger asChild>
               <DateTimeFieldTrigger square aria-label='Choose start date'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
             </PopoverTrigger>
-            <PopoverContent>
-              <DateTimeFieldCalendar aria-label='Choose start date'>
+            <PopoverContent role='dialog' aria-label='Choose start date'>
+              <DateTimeFieldCalendar>
                 <CalendarHeader>
                   <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
@@ -263,8 +403,8 @@ export default function MeetingTimes() {
             <PopoverTrigger asChild>
               <DateTimeFieldTrigger square aria-label='Choose end date'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
             </PopoverTrigger>
-            <PopoverContent>
-              <DateTimeFieldCalendar aria-label='Choose end date'>
+            <PopoverContent role='dialog' aria-label='Choose end date'>
+              <DateTimeFieldCalendar>
                 <CalendarHeader>
                   <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
@@ -395,8 +535,8 @@ export default function SnoozePresets() {
             <PopoverTrigger asChild>
               <DateTimeFieldTrigger square aria-label='Choose reminder date'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
             </PopoverTrigger>
-            <PopoverContent>
-              <DateTimeFieldCalendar aria-label='Choose reminder date'>
+            <PopoverContent role='dialog' aria-label='Choose reminder date'>
+              <DateTimeFieldCalendar>
                 <CalendarHeader>
                   <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
@@ -531,8 +671,8 @@ export default function SchedulePostForm() {
             <PopoverTrigger asChild>
               <DateTimeFieldTrigger square aria-label='Choose publish date'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
             </PopoverTrigger>
-            <PopoverContent>
-              <DateTimeFieldCalendar aria-label='Choose publish date'>
+            <PopoverContent role='dialog' aria-label='Choose publish date'>
+              <DateTimeFieldCalendar>
                 <CalendarHeader>
                   <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
@@ -682,8 +822,8 @@ export default function ReschedulingInsideASheet() {
                   <PopoverTrigger asChild>
                     <DateTimeFieldTrigger square aria-label='Choose new date'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
                   </PopoverTrigger>
-                  <PopoverContent>
-                    <DateTimeFieldCalendar aria-label='Choose new date'>
+                  <PopoverContent role='dialog' aria-label='Choose new date'>
+                    <DateTimeFieldCalendar>
                       <CalendarHeader>
                         <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                         <CalendarHeading>
@@ -818,8 +958,8 @@ export default function MaintenanceWindowForm() {
             <PopoverTrigger asChild>
               <DateTimeFieldTrigger square aria-label='Choose maintenance date'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
             </PopoverTrigger>
-            <PopoverContent>
-              <DateTimeFieldCalendar aria-label='Choose maintenance date'>
+            <PopoverContent role='dialog' aria-label='Choose maintenance date'>
+              <DateTimeFieldCalendar>
                 <CalendarHeader>
                   <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
@@ -926,8 +1066,8 @@ export default function LockedExecutionTime() {
           <PopoverTrigger asChild>
             <DateTimeFieldTrigger square aria-label='Choose execution date'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
           </PopoverTrigger>
-          <PopoverContent>
-            <DateTimeFieldCalendar aria-label='Choose execution date'>
+          <PopoverContent role='dialog' aria-label='Choose execution date'>
+            <DateTimeFieldCalendar>
               <CalendarHeader>
                 <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                 <CalendarHeading>
@@ -1046,8 +1186,8 @@ export default function BusinessHoursWindow() {
             <PopoverTrigger asChild>
               <DateTimeFieldTrigger square aria-label='Choose delivery day'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
             </PopoverTrigger>
-            <PopoverContent>
-              <DateTimeFieldCalendar aria-label='Choose delivery day'>
+            <PopoverContent role='dialog' aria-label='Choose delivery day'>
+              <DateTimeFieldCalendar>
                 <CalendarHeader>
                   <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
@@ -1154,8 +1294,8 @@ export default function QuarterHourSteps() {
           <PopoverTrigger asChild>
             <DateTimeFieldTrigger square aria-label='Choose pickup date'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
           </PopoverTrigger>
-          <PopoverContent>
-            <DateTimeFieldCalendar aria-label='Choose pickup date'>
+          <PopoverContent role='dialog' aria-label='Choose pickup date'>
+            <DateTimeFieldCalendar>
               <CalendarHeader>
                 <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                 <CalendarHeading>
@@ -1266,8 +1406,8 @@ export default function SecondsPrecision() {
             <PopoverTrigger asChild>
               <DateTimeFieldTrigger square aria-label='Choose log date'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
             </PopoverTrigger>
-            <PopoverContent>
-              <DateTimeFieldCalendar aria-label='Choose log date'>
+            <PopoverContent role='dialog' aria-label='Choose log date'>
+              <DateTimeFieldCalendar>
                 <CalendarHeader>
                   <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
@@ -1387,8 +1527,8 @@ export default function WeekdaysOnly() {
             <PopoverTrigger asChild>
               <DateTimeFieldTrigger square aria-label='Choose meeting date'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
             </PopoverTrigger>
-            <PopoverContent>
-              <DateTimeFieldCalendar aria-label='Choose meeting date'>
+            <PopoverContent role='dialog' aria-label='Choose meeting date'>
+              <DateTimeFieldCalendar>
                 <CalendarHeader>
                   <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>

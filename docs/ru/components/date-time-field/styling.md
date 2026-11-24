@@ -24,6 +24,7 @@
 
 ## Взаимодействие состояний и вариантов
 
+- `size` на корне задаёт и размер `DateTimeFieldCalendar` по той же шкале; `size` на самом календаре его переопределяет. Колёса времени в его поповере берут размер поля как есть, и кнопке времени нужен тот же: передайте `size` поля этому `Button`.
 - Отключённое состояние должно приглушать поле ввода и триггер вместе.
 - Стили ошибки должны приходить из состояния окружающего поля.
 - Семантика времени должна оставаться читаемой даже в плотных формах.
@@ -105,8 +106,8 @@ export default function CustomTriggerIcon() {
             <Icon><CalendarDaysIcon /></Icon>
           </DateTimeFieldTrigger>
         </PopoverTrigger>
-        <PopoverContent>
-          <DateTimeFieldCalendar aria-label='Choose date'>
+        <PopoverContent role='dialog' aria-label='Choose date'>
+          <DateTimeFieldCalendar>
             <CalendarHeader>
               <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
               <CalendarHeading>

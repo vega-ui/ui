@@ -19,7 +19,7 @@ The trigger must be a button. Safari does not move focus from the trigger into t
 ## Focus Behavior
 
 - Focus should move predictably between trigger and content.
-- Nested popovers stack: opening a nested popover keeps its parent open.
+- Nested popovers stack: opening a nested popover keeps its parent open. The browsers leave the focus inside a nested popover that closes, so Popover returns it to the element it came from, usually the inner trigger.
 - Nested popovers should be tested as a real integration case.
 
 ## Screen Reader Semantics

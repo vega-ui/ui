@@ -2,7 +2,8 @@ import { describe, expect, it, vi } from 'vitest'
 import { act, createInput, key, lifecycle, ROOT, text } from '@vega-ui/core'
 import { simulate } from '@vega-ui/core/test'
 import { createCalendarSystem, gregorianCalendar } from '@vega-ui/i18n'
-import { dateTimeFieldWidget, PICK_VALUE } from '../widget'
+import { dateTimeFieldWidget, PICK_VALUE, timeOf } from '../widget'
+import { getDateTimeWheelOptions, getDateTimeWheelValue, pickDateTimeWheel } from '../wheels'
 
 type DateTimeFieldOptions = Parameters<typeof simulate<typeof dateTimeFieldWidget.shape>>[1]
 
@@ -68,6 +69,22 @@ describe('Critical User Paths', () => {
     expect(dateTimeField.actions).toEqual([act.commitText(ROOT, '01.04.2026, 09:05')])
 
     expect(simulateDateTime().send(pick('2026-04-01')).state.value).toBe('2026-04-01T00:00')
+  })
+
+  it('gives the time of the value for a time button, empty while the value is', () => {
+    const dateTimeField = simulateDateTime({ defaultValue: '2026-03-15T09:05' })
+
+    expect(timeOf(dateTimeField.state)).toBe('09:05')
+    expect(timeOf(simulateDateTime().state)).toBe('')
+  })
+
+  it('writes a picked date and time as they are, as the time wheels pick them', () => {
+    const dateTimeField = simulateDateTime({ defaultValue: '2026-03-15T09:05' })
+
+    dateTimeField.send(pick('2026-03-15T10:05'))
+
+    expect(dateTimeField.state.value).toBe('2026-03-15T10:05')
+    expect(dateTimeField.actions).toEqual([act.commitText(ROOT, '15.03.2026, 10:05')])
   })
 })
 
@@ -164,5 +181,25 @@ describe('Edge Cases', () => {
 
     dateTimeField.setOptions(options({ defaultValue: '2026-03-15T09:05', separator: ' ', dateSeparator: '/' }))
     expect(dateTimeField.state.text).toBe('15/03/2026 09:05')
+  })
+
+  it('turns the time of the date on the wheels, today within min and max for an empty field', () => {
+    const wheel = { min: '2026-03-10T09:30', max: '2026-03-20T18:00', today: '2026-01-15', step: 15, seconds: false }
+
+    expect(getDateTimeWheelValue('hour', '2026-03-15T12:45', wheel)).toBe('12')
+    expect(pickDateTimeWheel('hour', '14', '2026-03-15T12:45', wheel)).toBe('2026-03-15T14:45')
+    expect(getDateTimeWheelValue('hour', '', wheel)).toBe('09')
+    expect(pickDateTimeWheel('minute', '45', '', wheel)).toBe('2026-03-10T09:45')
+    expect(pickDateTimeWheel('minute', '45', '', { ...wheel, min: undefined, max: undefined })).toBe('2026-01-15T00:45')
+  })
+
+  it('disables the times outside min and max only on the days of min and max', () => {
+    const wheel = { min: '2026-03-10T09:30', max: '2026-03-20T18:00', today: '2026-03-15', step: 15, seconds: false }
+    const disabledHours = (value: string) => getDateTimeWheelOptions('hour', value, wheel).filter((option) => option.disabled).map((option) => option.value)
+
+    expect(disabledHours('2026-03-10T12:00')).toEqual(['00', '01', '02', '03', '04', '05', '06', '07', '08'])
+    expect(disabledHours('2026-03-15T12:00')).toEqual([])
+    expect(disabledHours('2026-03-20T12:00')).toEqual(['19', '20', '21', '22', '23'])
+    expect(pickDateTimeWheel('hour', '20', '2026-03-20T12:00', wheel)).toBe('2026-03-20T18:00')
   })
 })

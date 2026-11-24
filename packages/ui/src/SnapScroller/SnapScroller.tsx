@@ -1,5 +1,6 @@
 import { FC, HTMLAttributes, PropsWithChildren, Ref, useImperativeHandle } from 'react';
 import { csx } from '@vega-ui/utils';
+import type { SnapScrollerOrientation } from '@vega-ui/widgets/snap-scroller';
 import { SnapScrollerProvider } from './contexts'
 import { useSnapScroller } from './hooks';
 import style from './style.module.css'
@@ -21,6 +22,13 @@ export interface SnapScrollerProps extends HTMLAttributes<HTMLDivElement> {
    * Initial index of the item to snap to on mount.
    */
   defaultIndex?: number
+
+  /**
+   * The axis the scroller scrolls and snaps along. A vertical scroller stacks its items in a column.
+   *
+   * @default 'horizontal'
+   */
+  orientation?: SnapScrollerOrientation
   
   /**
    * Fired when a scroll snap operation has fully completed
@@ -65,11 +73,12 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
   onScrollSnapChange,
   onScrollSnapChanging,
   defaultIndex,
+  orientation = 'horizontal',
   children,
   apiRef,
   ...props
 }) => {
-  const { handle, ref: mergedRef, api } = useSnapScroller({ ref, defaultIndex, onScrollSnapChange, onScrollSnapChanging })
+  const { handle, ref: mergedRef, api } = useSnapScroller({ ref, defaultIndex, orientation, onScrollSnapChange, onScrollSnapChanging })
 
   useImperativeHandle(apiRef, () => api, [api])
 
@@ -78,6 +87,7 @@ export const SnapScroller: FC<PropsWithChildren<SnapScrollerProps>> = ({
       <div
         ref={mergedRef}
         className={csx(className, style.scrollView)}
+        data-orientation={orientation}
         {...handle.listen({}, props)}
       >
         {children}

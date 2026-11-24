@@ -14,14 +14,17 @@
 <!-- AUTO-GENERATED:KEYBOARD:end -->
 
 - Keyboard entry remains native text input behavior shaped by the mask.
+- The time columns turn with the keys of [WheelPicker](../wheel-picker/accessibility.md): ↑ and ↓ step an option and skip the disabled ones, Page Up and Page Down move a page, Home and End go to the first and the last option, and typed digits select the option that starts with them.
 
 ## Focus Behavior
 
 - Focus lands on the input and uses inherited `TextField` focus styling.
+- With `autoFocus` on the first time column the focus moves into the popover when it opens, Tab moves between the columns, and Escape closes the popover and returns the focus to the trigger.
 
 ## Screen Reader Semantics
 
 - The control is still a native input.
+- Each time column is a `spinbutton` named by its `aria-label` that announces the selected part, like "Hours, 09"; a template in the cells changes only what is shown, the column still announces the two-digit value; name the popover with `role="dialog"` and `aria-label` to match `aria-haspopup` of the trigger.
 - Users may need explicit helper copy for the expected time format.
 
 ## Form Semantics

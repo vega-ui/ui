@@ -24,6 +24,7 @@
 
 ## State And Variant Interaction
 
+- `size` on the root also sizes `DateFieldCalendar`, on the same scale; `size` on the calendar overrides it.
 - `disabled` should dim both typed input and trigger affordance consistently.
 - Error styling should come from the surrounding field state instead of ad-hoc trigger overrides.
 - Theme-level tokens should drive the look before any component-local overrides.

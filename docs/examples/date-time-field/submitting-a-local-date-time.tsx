@@ -69,8 +69,8 @@ export default function SchedulePostForm() {
             <PopoverTrigger asChild>
               <DateTimeFieldTrigger square aria-label='Choose publish date'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
             </PopoverTrigger>
-            <PopoverContent>
-              <DateTimeFieldCalendar aria-label='Choose publish date'>
+            <PopoverContent role='dialog' aria-label='Choose publish date'>
+              <DateTimeFieldCalendar>
                 <CalendarHeader>
                   <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>

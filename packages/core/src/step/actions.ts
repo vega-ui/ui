@@ -18,6 +18,8 @@ export interface Scrub {
   readonly progress: number
 }
 
+export type ScrollScrub = Omit<Scrub, 'progress'>
+
 export interface FocusActionOptions {
   readonly preventScroll?: boolean
   readonly focusVisible?: boolean
@@ -48,10 +50,12 @@ export type Action<Key = unknown, PartName extends string = string> =
   | { readonly type: 'claimPointer' }
   | { readonly type: 'scrub'; readonly part: PartName; readonly scrub: Scrub }
   | { readonly type: 'stopScrub'; readonly part: PartName }
+  | { readonly type: 'scrubWithScroll'; readonly part: PartName; readonly scrub: ScrollScrub }
   | { readonly type: 'flushStyles'; readonly part: PartName }
   | { readonly type: 'animateHeight'; readonly part: PartName; readonly open: boolean }
   | { readonly type: 'unwatchKeys' }
   | { readonly type: 'scrollTo'; readonly part: PartName; readonly to: ScrollToOptions }
+  | { readonly type: 'animateScroll'; readonly part: PartName; readonly to: ScrollToOptions }
   | { readonly type: 'setText'; readonly part: PartName; readonly value: string; readonly selection?: readonly [number, number]; readonly commit?: boolean }
   | { readonly type: 'commit'; readonly part: PartName }
   | { readonly type: 'emit'; readonly name: string; readonly value: unknown }
@@ -81,10 +85,12 @@ export const act = {
   claimPointer: (): Action<never, never> => ({ type: 'claimPointer' }),
   scrub: <PartName extends string>(part: PartName, scrub: Scrub): Action<never, PartName> => ({ type: 'scrub', part, scrub }),
   stopScrub: <PartName extends string>(part: PartName): Action<never, PartName> => ({ type: 'stopScrub', part }),
+  scrubWithScroll: <PartName extends string>(part: PartName, scrub: ScrollScrub): Action<never, PartName> => ({ type: 'scrubWithScroll', part, scrub }),
   flushStyles: <PartName extends string>(part: PartName): Action<never, PartName> => ({ type: 'flushStyles', part }),
   animateHeight: <PartName extends string>(part: PartName, open: boolean): Action<never, PartName> => ({ type: 'animateHeight', part, open }),
   unwatchKeys: (): Action<never, never> => ({ type: 'unwatchKeys' }),
   scrollTo: <PartName extends string>(part: PartName, to: ScrollToOptions): Action<never, PartName> => ({ type: 'scrollTo', part, to }),
+  animateScroll: <PartName extends string>(part: PartName, to: ScrollToOptions): Action<never, PartName> => ({ type: 'animateScroll', part, to }),
   setText: <PartName extends string>(part: PartName, value: string, selection?: readonly [number, number]): Action<never, PartName> => ({ type: 'setText', part, value, selection }),
   commitText: <PartName extends string>(part: PartName, value: string): Action<never, PartName> => ({ type: 'setText', part, value, commit: true }),
   commit: <PartName extends string>(part: PartName): Action<never, PartName> => ({ type: 'commit', part }),

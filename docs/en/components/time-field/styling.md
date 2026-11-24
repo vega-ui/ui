@@ -46,7 +46,7 @@ The root is a `TextField` wrapper with time-specific context only.
 
 ### Field sizes
 
-`size` on the root sets the height, padding and font size of the inherited `TextField` surface: `sm`, `md` (default) or `lg`.
+`size` on the root sets the height, padding and font size of the inherited `TextField` surface: `sm`, `md` (default) or `lg`. The `WheelPicker` in its popover takes the same size, unless it has a `size` of its own.
 
 <!-- example: time-field/field-sizes.tsx -->
 ```tsx

@@ -35,6 +35,8 @@ export interface ScrollBox {
   readonly height: number
   readonly clientWidth: number
   readonly clientHeight: number
+  readonly offsetWidth?: number
+  readonly offsetHeight?: number
 }
 
 export interface TextState {

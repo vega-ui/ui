@@ -1,7 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
+import { ClockIcon } from '@vega-ui/icons';
 
 import { TimeField, TimeFieldProps } from './TimeField';
-import { TimeFieldInput } from './components';
+import { TimeFieldColumn, TimeFieldInput, TimeFieldOption, TimeFieldTrigger } from './components';
+import { Icon } from '../Icon';
+import { Popover, PopoverContent, PopoverTrigger } from '../Popover';
+import { WheelPicker, WheelPickerFace } from '../WheelPicker';
 import { getTimeTemplate } from '@vega-ui/utils';
 
 const sizes: TimeFieldProps['size'][] = ['xs', 'sm', 'md', 'lg', 'xl'];
@@ -16,6 +20,9 @@ const meta = {
   component: TimeField,
   subcomponents: {
     TimeFieldInput,
+    TimeFieldTrigger,
+    TimeFieldColumn,
+    TimeFieldOption,
   },
   parameters: { layout: 'centered' },
   tags: ['autodocs'],
@@ -25,6 +32,8 @@ const meta = {
     min: { control: 'text' },
     max: { control: 'text' },
     step: { control: 'number' },
+    disabled: { control: 'boolean' },
+    readOnly: { control: 'boolean' },
   },
   args: {
     format: 'HH:mm',
@@ -32,6 +41,20 @@ const meta = {
   render: (args) => (
     <TimeField {...args}>
       <TimeFieldInput aria-label='Time' placeholder={getTimeTemplate(args.format ?? 'HH:mm')} />
+      <Popover placement='bottom-end'>
+        <PopoverTrigger asChild>
+          <TimeFieldTrigger square aria-label='Pick a time'><Icon><ClockIcon /></Icon></TimeFieldTrigger>
+        </PopoverTrigger>
+        <PopoverContent role='dialog' aria-label='Pick a time' style={{ padding: 'var(--spacing-6)' }}>
+          <WheelPicker aria-label='Time'>
+            <TimeFieldColumn unit='hour' aria-label='Hours' autoFocus><TimeFieldOption><WheelPickerFace /></TimeFieldOption></TimeFieldColumn>
+            <span aria-hidden='true' style={{ alignSelf: 'center' }}>:</span>
+            <TimeFieldColumn unit='minute' aria-label='Minutes'><TimeFieldOption><WheelPickerFace /></TimeFieldOption></TimeFieldColumn>
+            {args.format === 'HH:mm:ss' && <span aria-hidden='true' style={{ alignSelf: 'center' }}>:</span>}
+            {args.format === 'HH:mm:ss' && <TimeFieldColumn unit='second' aria-label='Seconds'><TimeFieldOption><WheelPickerFace /></TimeFieldOption></TimeFieldColumn>}
+          </WheelPicker>
+        </PopoverContent>
+      </Popover>
     </TimeField>
   ),
 } satisfies Meta<typeof TimeField>;

@@ -4,10 +4,11 @@ import { Part, sameSelection, ValidationAttributes } from '../output'
 import { AnyShape, capitalize, KeyOf, ObservedValues } from '../state'
 import { Action, Answer, FocusActionOptions, targets } from '../step'
 import { Dispatched, WidgetInstance } from '../widget'
-import { registryOf } from './elements'
+import { registriesOf } from './elements'
 import { focusableAt, holdsFocusable } from './focusables'
 import { isComposing, keyInput } from './keys'
 import { pressesText, readMeasure, scrollerBelow, scrollOf } from './measure'
+import { animateScroll, scrubWithScroll } from './scrolling'
 import { cancels, delivers, DomEvent, eventsFor, hears, spins } from './sources'
 import { inOpenPopup, isTextEntry, yieldsToNative } from './yield'
 
@@ -137,6 +138,7 @@ const IMPLICIT_ORIENTATIONS = new Map<string, Orientation>([
   ['tablist', 'horizontal'],
   ['menubar', 'horizontal'],
   ['toolbar', 'horizontal'],
+  ['spinbutton', 'horizontal'],
 ])
 
 const isBackdrop = (event: MouseEvent) => {
@@ -211,8 +213,21 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
   let pressed: { id: number; key: Key | undefined; pointerType: string; claimed: boolean } | null = null
   let swallowsClick = false
   const scrubs = new Map<string, Animation>()
+  const scrollScrubs = new Map<string, () => void>()
   const heights = new Map<string, Animation>()
   const scrollEnds = new Map<Element, ReturnType<typeof setTimeout>>()
+  const glides = new Map<Element, () => void>()
+  const landings = new Set<Element>()
+  const stopGlide = (element: Element) => {
+    glides.get(element)?.()
+    glides.delete(element)
+    landings.delete(element)
+  }
+  const land = (element: Element) => {
+    landings.delete(element)
+    glides.delete(element)
+    send(createInput(scroll.end, { part: partAt(element), scroller: scrollOf(element) }))
+  }
   let focusing: Element | null = null
   let focusOrigin: HTMLElement | null = null
 
@@ -365,11 +380,10 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
 
   const receiverFrom = (start: Element | null, stops: ReadonlySet<Element>) => {
     for (let node = start; node && !stops.has(node); node = node.parentElement) {
-      const registry = registryOf(node)
-      if (!registry || registry === elements) continue
-
-      const receiver = receivers.get(registry)
-      if (receiver) return receiver
+      for (const registry of registriesOf(node)) {
+        const receiver = registry === elements ? undefined : receivers.get(registry)
+        if (receiver) return receiver
+      }
     }
 
     return undefined
@@ -463,10 +477,9 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
       }
       case 'send': {
         const element = elements.part(action.part)
-        const registry = element ? registryOf(element) : undefined
-        const receiver = registry ? receivers.get(registry) : undefined
-        if (!receiver) return waits
-        receiver(createInput(action.input, action.payload))
+        const found = element ? registriesOf(element).flatMap((registry) => receivers.get(registry) ?? []) : []
+        if (found.length === 0) return waits
+        for (const receiver of found) receiver(createInput(action.input, action.payload))
         return false
       }
       case 'sendAt': {
@@ -511,6 +524,15 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
       case 'stopScrub': {
         scrubs.get(action.part)?.cancel()
         scrubs.delete(action.part)
+        scrollScrubs.get(action.part)?.()
+        scrollScrubs.delete(action.part)
+        return false
+      }
+      case 'scrubWithScroll': {
+        const element = elements.part(action.part)
+        if (!(element instanceof HTMLElement)) return waits
+        scrollScrubs.get(action.part)?.()
+        scrollScrubs.set(action.part, scrubWithScroll(element, action.scrub))
         return false
       }
       case 'setText': {
@@ -536,7 +558,23 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
       case 'scrollTo': {
         const element = elements.part(action.part)
         if (!element) return waits
+        stopGlide(element)
         element.scrollTo(action.to)
+        return false
+      }
+      case 'animateScroll': {
+        const element = elements.part(action.part)
+        if (!(element instanceof HTMLElement)) return waits
+        stopGlide(element)
+        glides.set(element, animateScroll(element, action.to, (finished, moved) => {
+          if (finished && moved) {
+            landings.add(element)
+            return
+          }
+
+          glides.delete(element)
+          if (finished) send(createInput(scroll.end, { part: partAt(element), scroller: scrollOf(element) }))
+        }))
         return false
       }
       case 'emit': {
@@ -851,7 +889,7 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
       const target = event.target
       if (!accepts(event) || !(target instanceof Element)) return false
 
-      if (!('onscrollend' in target)) {
+      if (!('onscrollend' in target) && !glides.has(target)) {
         clearTimeout(scrollEnds.get(target))
         scrollEnds.set(target, setTimeout(() => {
           scrollEnds.delete(target)
@@ -859,12 +897,20 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
         }, SCROLL_END_FALLBACK))
       }
 
-      return dispatch(event, createInput(scroll.move, { part: partAt(target), scroller: scrollOf(target) }))
+      const answer = dispatch(event, createInput(scroll.move, { part: partAt(target), scroller: scrollOf(target) }))
+      if (landings.has(target) && !('onscrollend' in target)) land(target)
+      return answer
     },
 
     scrollend(event) {
       const target = event.target
       if (!accepts(event) || !(target instanceof Element)) return false
+      if (landings.has(target)) {
+        land(target)
+        return false
+      }
+      if (glides.has(target)) return false
+
       return dispatch(event, createInput(scroll.end, { part: partAt(target), scroller: scrollOf(target) }))
     },
 
@@ -1033,6 +1079,11 @@ export const connect = <WidgetShape extends AnyShape>(instance: WidgetInstance<W
     heights.clear()
     for (const handle of scrollEnds.values()) clearTimeout(handle)
     scrollEnds.clear()
+    for (const stop of glides.values()) stop()
+    glides.clear()
+    landings.clear()
+    for (const stop of scrollScrubs.values()) stop()
+    scrollScrubs.clear()
     resizes?.disconnect()
     unwatchRoots()
     unwatchLoads()

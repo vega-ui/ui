@@ -14,6 +14,7 @@ Use this page when the user must choose, toggle, or combine values and the first
 - Use [CheckboxCard](../components/checkbox-card/) for rich multi-select option tiles.
 - Use [Toggle](../components/toggle/) for a button that stays pressed, like bold or mute, that applies at once.
 - Use [ToggleGroup](../components/toggle-group/) for a set of such buttons, one pressed at a time or each by itself, like the alignment or the view of a list.
+- Use [WheelPicker](../components/wheel-picker/) for a value of a few parts, each picked from a short list by swiping, like a duration or an amount with its unit.
 
 ## By Interaction Model
 
@@ -23,6 +24,7 @@ Use this page when the user must choose, toggle, or combine values and the first
 - Exclusive compact field: [Select](../components/select/)
 - Rich descriptive multi-select: [CheckboxCard](../components/checkbox-card/)
 - Pressed state of a button outside a form: [Toggle](../components/toggle/) and [ToggleGroup](../components/toggle-group/)
+- Parts of a value turned side by side on a touch screen: [WheelPicker](../components/wheel-picker/)
 
 ## Common Misclassifications
 

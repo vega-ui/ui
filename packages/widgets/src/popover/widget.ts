@@ -1,4 +1,4 @@
-import { act, browser, command, controlled, defineWidget, internal, keep, lifecycle, listening, matching, state, Step } from '@vega-ui/core'
+import { act, browser, command, controlled, defineWidget, focus, internal, keep, lifecycle, listening, matching, state, Step } from '@vega-ui/core'
 
 export const CONTENT = 'content'
 
@@ -8,7 +8,7 @@ export const popoverShape = state({
   options: { role: undefined as 'listbox' | 'dialog' | undefined },
   owns: { open: controlled(false) },
   internal: { mounted: internal(false) },
-  observes: { shown: matching(CONTENT, ':popover-open') },
+  observes: { shown: matching(CONTENT, ':popover-open'), focusedWithin: matching(CONTENT, ':focus-within') },
   parts: [CONTENT],
 })
 
@@ -38,8 +38,15 @@ const toggling = listening<PopoverSnapshot>([browser.toggle], (state, input) => 
 
   const next = popoverShape.open.set(state, input.to === true)
   if (input.to === true) return keep(popoverShape.mounted.set(next, true))
+  if (state.focusedWithin) return keep(next, [...SETTLING, act.restoreFocus()])
 
   return keep(next, SETTLING)
+})
+
+const losing = listening<PopoverSnapshot>([focus.leave], (state, input) => {
+  if (!input.is(focus.leave) || state.shown) return undefined
+
+  return keep(state, [act.restoreFocus()])
 })
 
 const settling: Step<PopoverSnapshot> = (state, input) => {
@@ -53,7 +60,7 @@ const settling: Step<PopoverSnapshot> = (state, input) => {
 export const popoverWidget = defineWidget({
   state: popoverShape,
 
-  step: [following, closing, toggling, settling],
+  step: [following, closing, toggling, losing, settling],
 
   output: {
     content: popoverShape.part(

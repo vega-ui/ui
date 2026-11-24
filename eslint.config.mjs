@@ -24,7 +24,8 @@ export default tseslint.config([
       'react-hooks/exhaustive-deps': 'error',
       '@typescript-eslint/strict-boolean-expressions': 'off',
       '@typescript-eslint/no-floating-promises': 'off',
-      '@typescript-eslint/explicit-function-return-type': 'off'
+      '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }]
     },
   },
   {

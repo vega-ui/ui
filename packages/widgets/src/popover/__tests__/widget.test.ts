@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest'
-import { act, browser } from '@vega-ui/core'
+import { act, browser, focus } from '@vega-ui/core'
 import { simulate } from '@vega-ui/core/test'
 import { CLOSE_POPOVER, CONTENT, isRendered, popoverWidget } from '../widget'
 
@@ -55,6 +55,29 @@ describe('Edge Cases', () => {
 
     controlled.setOptions({ role: undefined, open: false })
     expect(controlled.actions).toEqual([act.hidePopover(CONTENT)])
+  })
+
+  it('returns the focus that a closing popover still holds, as browsers do not for a nested one', () => {
+    const popover = simulate(popoverWidget, { role: undefined })
+
+    popover.observe({ shown: true }).send(browser.toggle, { part: CONTENT, to: true })
+    popover.observe({ shown: false, focusedWithin: true }).send(browser.toggle, { part: CONTENT, to: false })
+    expect(popover.actions).toEqual([act.awaitAnimations(CONTENT), act.restoreFocus()])
+
+    popover.observe({ shown: true, focusedWithin: false }).send(browser.toggle, { part: CONTENT, to: true })
+    popover.observe({ shown: false }).send(browser.toggle, { part: CONTENT, to: false })
+    expect(popover.actions).toEqual([act.awaitAnimations(CONTENT)])
+  })
+
+  it('returns the focus that a hidden popover lost before its toggle came, and not the focus the user moves out of an open one', () => {
+    const popover = simulate(popoverWidget, { role: undefined })
+
+    popover.observe({ shown: true }).send(browser.toggle, { part: CONTENT, to: true })
+    popover.send(focus.leave)
+    expect(popover.actions).toEqual([])
+
+    popover.observe({ shown: false }).send(focus.leave)
+    expect(popover.actions).toEqual([act.restoreFocus()])
   })
 
   it('ignores the toggle of a popover nested in the content', () => {

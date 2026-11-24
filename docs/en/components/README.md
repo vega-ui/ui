@@ -79,6 +79,7 @@ For decision-oriented navigation across related controls, see [Component Familie
 - [Toolbar](./toolbar/)
 - [Tooltip](./tooltip/)
 - [VisuallyHidden](./visually-hidden/)
+- [WheelPicker](./wheel-picker/)
 - [YearPicker](./year-picker/)
 
 ## Per-Component Layout

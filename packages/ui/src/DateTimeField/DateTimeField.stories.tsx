@@ -1,10 +1,15 @@
 import { Icon } from '../Icon';
 import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { FC, ReactNode } from 'react';
+import { FC, ReactNode, useId } from 'react';
 
 import { DateTimeField, DateTimeFieldProps } from './DateTimeField';
-import { DateTimeFieldCalendar, DateTimeFieldInput, DateTimeFieldInputProps, DateTimeFieldTrigger } from './components';
+import { DateTimeFieldCalendar, DateTimeFieldColumn, DateTimeFieldInput, DateTimeFieldInputProps, DateTimeFieldTime, DateTimeFieldTrigger } from './components';
+import { Text } from '../Text';
+import { useTextFieldContext } from '../TextField/contexts';
+import { Button } from '../Button';
+import { TimeFieldOption } from '../TimeField';
+import { WheelPicker, WheelPickerFace } from '../WheelPicker';
 import { Popover, PopoverContent, PopoverTrigger } from '../Popover';
 import { Label } from '../Label';
 import {
@@ -61,60 +66,85 @@ const states = [
   { label: 'disabled', invalid: false, disabled: true },
 ];
 
-const DateTimeFieldParts: FC<DateTimeFieldInputProps> = (props) => (
-  <>
-    <DateTimeFieldInput {...props} />
-    <Popover placement='bottom-end'>
-      <PopoverTrigger asChild>
-        <DateTimeFieldTrigger square aria-label='Open calendar'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
-      </PopoverTrigger>
-      <PopoverContent>
-        <DateTimeFieldCalendar>
-          <CalendarHeader>
-            <CalendarPrevButton square aria-label='Previous'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
-            <CalendarHeading>
-              <CalendarViewButton view='month'>
-                <CalendarMonthLabel />
-              </CalendarViewButton>
-              <CalendarViewButton view='year'>
-                <CalendarYearLabel />
-              </CalendarViewButton>
-            </CalendarHeading>
-            <CalendarNextButton square aria-label='Next'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
-          </CalendarHeader>
-          <CalendarContent>
-            <CalendarDays>
-              <CalendarWeekdays format='narrow'>
-                <CalendarWeekday />
-              </CalendarWeekdays>
-              <CalendarDaysScroller>
-                <CalendarDaysScrollerContent>
-                  <CalendarWeeks>
-                    <CalendarDay />
-                  </CalendarWeeks>
-                </CalendarDaysScrollerContent>
-              </CalendarDaysScroller>
-            </CalendarDays>
-            <CalendarMonths>
-              <CalendarMonthsGrid>
-                <CalendarMonth />
-              </CalendarMonthsGrid>
-            </CalendarMonths>
-            <CalendarYears>
-              <CalendarYearsScroller>
-                <CalendarYearsScrollerContent>
-                  <CalendarYearsGrid>
-                    <CalendarYear />
-                  </CalendarYearsGrid>
-                </CalendarYearsScrollerContent>
-              </CalendarYearsScroller>
-            </CalendarYears>
-          </CalendarContent>
-        </DateTimeFieldCalendar>
-      </PopoverContent>
-    </Popover>
-  </>
-);
+const DateTimeFieldParts: FC<DateTimeFieldInputProps & { seconds?: boolean }> = ({ seconds, ...props }) => {
+  const { size } = useTextFieldContext()
+  const timeLabelId = useId()
+  const timeButtonId = useId()
+
+  return (
+    <>
+      <DateTimeFieldInput {...props} />
+      <Popover placement='bottom-end'>
+        <PopoverTrigger asChild>
+          <DateTimeFieldTrigger square aria-label='Pick a date and time'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
+        </PopoverTrigger>
+        <PopoverContent role='dialog' aria-label='Pick a date and time'>
+          <DateTimeFieldCalendar>
+            <CalendarHeader>
+              <CalendarPrevButton square aria-label='Previous'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
+              <CalendarHeading>
+                <CalendarViewButton view='month'>
+                  <CalendarMonthLabel />
+                </CalendarViewButton>
+                <CalendarViewButton view='year'>
+                  <CalendarYearLabel />
+                </CalendarViewButton>
+              </CalendarHeading>
+              <CalendarNextButton square aria-label='Next'><Icon><ChevronRightIcon /></Icon></CalendarNextButton>
+            </CalendarHeader>
+            <CalendarContent>
+              <CalendarDays>
+                <CalendarWeekdays format='narrow'>
+                  <CalendarWeekday />
+                </CalendarWeekdays>
+                <CalendarDaysScroller>
+                  <CalendarDaysScrollerContent>
+                    <CalendarWeeks>
+                      <CalendarDay />
+                    </CalendarWeeks>
+                  </CalendarDaysScrollerContent>
+                </CalendarDaysScroller>
+              </CalendarDays>
+              <CalendarMonths>
+                <CalendarMonthsGrid>
+                  <CalendarMonth />
+                </CalendarMonthsGrid>
+              </CalendarMonths>
+              <CalendarYears>
+                <CalendarYearsScroller>
+                  <CalendarYearsScrollerContent>
+                    <CalendarYearsGrid>
+                      <CalendarYear />
+                    </CalendarYearsGrid>
+                  </CalendarYearsScrollerContent>
+                </CalendarYearsScroller>
+              </CalendarYears>
+            </CalendarContent>
+          </DateTimeFieldCalendar>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-4)', padding: '0 var(--spacing-6) var(--spacing-6)' }}>
+            <Text id={timeLabelId}>Time</Text>
+            <Popover placement='top-end'>
+              <PopoverTrigger asChild>
+                <Button id={timeButtonId} aria-labelledby={`${timeLabelId} ${timeButtonId}`} aria-haspopup='dialog' size={size} variant='secondary' appearance='ghost'>
+                  <DateTimeFieldTime placeholder='--:--' />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent role='dialog' aria-label='Pick a time' style={{ padding: 'var(--spacing-6)' }}>
+                <WheelPicker aria-label='Time'>
+                  <DateTimeFieldColumn unit='hour' aria-label='Hours' autoFocus><TimeFieldOption><WheelPickerFace /></TimeFieldOption></DateTimeFieldColumn>
+                  <span aria-hidden='true' style={{ alignSelf: 'center' }}>:</span>
+                  <DateTimeFieldColumn unit='minute' aria-label='Minutes'><TimeFieldOption><WheelPickerFace /></TimeFieldOption></DateTimeFieldColumn>
+                  {seconds && <span aria-hidden='true' style={{ alignSelf: 'center' }}>:</span>}
+                  {seconds && <DateTimeFieldColumn unit='second' aria-label='Seconds'><TimeFieldOption><WheelPickerFace /></TimeFieldOption></DateTimeFieldColumn>}
+                </WheelPicker>
+              </PopoverContent>
+            </Popover>
+          </div>
+        </PopoverContent>
+      </Popover>
+    </>
+  )
+}
 
 const FormItem: FC<{ id: string; label: string; children: ReactNode }> = ({ id, label, children }) => (
   <div style={{ display: 'flex', flexDirection: 'column', gap: 6, width: 280 }}>
@@ -153,7 +183,7 @@ const meta = {
   render: (args) => (
     <FormItem id='date-time' label='Date and time'>
       <DateTimeField {...args}>
-        <DateTimeFieldParts id='date-time' placeholder={getPlaceholder(args.dateFormat, args.timeFormat, args.separator)} />
+        <DateTimeFieldParts seconds={args.timeFormat === 'HH:mm:ss'} id='date-time' placeholder={getPlaceholder(args.dateFormat, args.timeFormat, args.separator)} />
       </DateTimeField>
     </FormItem>
   ),
@@ -169,7 +199,7 @@ export const Matrix: Story = {
     <div style={{ display: 'grid', gridTemplateColumns: `repeat(${states.length}, 280px)`, gap: 12, alignItems: 'center' }}>
       {sizes.map((size) => states.map((state) => (
         <DateTimeField key={`${size}-${state.label}`} {...args} size={size} disabled={state.disabled}>
-          <DateTimeFieldParts aria-label={`${size} / ${state.label}`} aria-invalid={state.invalid} placeholder={getPlaceholder(args.dateFormat, args.timeFormat, args.separator)} />
+          <DateTimeFieldParts seconds={args.timeFormat === 'HH:mm:ss'} aria-label={`${size} / ${state.label}`} aria-invalid={state.invalid} placeholder={getPlaceholder(args.dateFormat, args.timeFormat, args.separator)} />
         </DateTimeField>
       )))}
     </div>
@@ -182,7 +212,7 @@ export const Locales: Story = {
       {locales.map((locale) => (
         <FormItem key={locale} id={locale} label={locale}>
           <DateTimeField {...args} locale={locale} dateFormat={getDateFormat(gregorianCalendar, locale)} dateSeparator={getDateSeparator(gregorianCalendar, locale)}>
-            <DateTimeFieldParts id={locale} placeholder={getPlaceholder(getDateFormat(gregorianCalendar, locale), args.timeFormat, args.separator)} />
+            <DateTimeFieldParts seconds={args.timeFormat === 'HH:mm:ss'} id={locale} placeholder={getPlaceholder(getDateFormat(gregorianCalendar, locale), args.timeFormat, args.separator)} />
           </DateTimeField>
         </FormItem>
       ))}
@@ -197,7 +227,7 @@ export const CalendarSystems: Story = {
       {calendarSystems.map(({ name, locale, calendar }) => (
         <FormItem key={name} id={name} label={`${name} (${locale})`}>
           <DateTimeField {...args} locale={locale} calendar={calendar} dateFormat={getDateFormat(calendar, locale)} dateSeparator={getDateSeparator(calendar, locale)}>
-            <DateTimeFieldParts id={name} placeholder={getPlaceholder(getDateFormat(calendar, locale), args.timeFormat, args.separator)} />
+            <DateTimeFieldParts seconds={args.timeFormat === 'HH:mm:ss'} id={name} placeholder={getPlaceholder(getDateFormat(calendar, locale), args.timeFormat, args.separator)} />
           </DateTimeField>
         </FormItem>
       ))}

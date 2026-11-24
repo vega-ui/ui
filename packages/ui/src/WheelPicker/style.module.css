@@ -1,0 +1,183 @@
+@property --wheel-picker-center {
+    syntax: '<number>';
+    inherits: true;
+    initial-value: 0;
+}
+
+@property --wheel-picker-duration {
+    syntax: '<time>';
+    inherits: true;
+    initial-value: 0s;
+}
+
+.picker {
+    --wheel-picker-row: var(--spacing-21);
+    --wheel-picker-rows: 5;
+    --wheel-picker-depth: 2;
+    --wheel-picker-step: calc(2rad / var(--wheel-picker-rows) * sqrt(var(--wheel-picker-depth) / (var(--wheel-picker-depth) + 2)));
+    --wheel-picker-radius: calc(var(--wheel-picker-row) * var(--wheel-picker-rows) / 2 * sqrt((var(--wheel-picker-depth) + 2) / var(--wheel-picker-depth)));
+    --wheel-picker-perspective: calc(var(--wheel-picker-radius) * var(--wheel-picker-depth));
+    --wheel-picker-inset: calc(var(--wheel-picker-row) * (var(--wheel-picker-rows) - 1) / 2);
+    --wheel-picker-edge: calc(pi * var(--wheel-picker-rows) / 4 / sqrt(var(--wheel-picker-depth) / (var(--wheel-picker-depth) + 2)));
+    --wheel-picker-duration: var(--duration-spring);
+    --wheel-picker-easing: var(--ease-smooth);
+    --wheel-picker-band-color: var(--fills-secondary);
+    --wheel-picker-band-radius: var(--radius-3);
+
+    position: relative;
+    display: inline-flex;
+    justify-content: center;
+    gap: var(--spacing-2);
+    font-family: var(--default-font-family);
+    font-size: var(--text-font-size-3);
+    font-variant-numeric: tabular-nums;
+    color: var(--text-color);
+    user-select: none;
+}
+
+.picker:where([data-size='xs']) {
+    --wheel-picker-row: var(--spacing-16);
+
+    font-size: var(--text-font-size-2);
+}
+
+.picker:where([data-size='sm']) {
+    --wheel-picker-row: var(--spacing-18);
+
+    font-size: var(--text-font-size-2);
+}
+
+.picker:where([data-size='lg']) {
+    --wheel-picker-row: var(--spacing-24);
+
+    font-size: var(--text-font-size-4);
+}
+
+.picker:where([data-size='xl']) {
+    --wheel-picker-row: var(--spacing-26);
+
+    font-size: var(--text-font-size-4);
+}
+
+.picker::before {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: var(--wheel-picker-inset);
+    block-size: var(--wheel-picker-row);
+    border-radius: var(--wheel-picker-band-radius);
+    background: var(--wheel-picker-band-color);
+    pointer-events: none;
+}
+
+.column {
+    min-inline-size: 3em;
+    block-size: calc(var(--wheel-picker-row) * var(--wheel-picker-rows));
+    border-radius: var(--wheel-picker-band-radius);
+    outline: none;
+    scroll-padding-block: var(--wheel-picker-inset);
+    overscroll-behavior: contain;
+    animation-duration: var(--wheel-picker-duration);
+    animation-timing-function: var(--wheel-picker-easing);
+}
+
+.column:focus-visible {
+    outline: 2px solid var(--focus-color);
+}
+
+.bounded {
+    --wheel-picker-lead: var(--wheel-picker-inset);
+}
+
+.bounded::before,
+.bounded::after {
+    content: '';
+    flex-shrink: 0;
+    block-size: var(--wheel-picker-inset);
+}
+
+.picker .column[data-disabled],
+.picker .column[data-readonly] {
+    overflow-y: hidden;
+}
+
+.column[data-disabled] {
+    color: var(--disable-label-text-color);
+}
+
+.column .option {
+    --wheel-picker-offset: calc(var(--wheel-picker-index) - var(--wheel-picker-center));
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    block-size: var(--wheel-picker-row);
+    padding-inline: var(--spacing-6);
+    white-space: nowrap;
+    scroll-snap-stop: normal;
+    pointer-events: none;
+    cursor: default;
+}
+
+.column .option[data-disabled] {
+    scroll-snap-align: none;
+    color: var(--disable-label-text-color);
+}
+
+.face {
+    --wheel-picker-angle: clamp(-90deg, var(--wheel-picker-offset) * var(--wheel-picker-step), 90deg);
+    --wheel-picker-fade: max(0, (cos(var(--wheel-picker-angle)) * (var(--wheel-picker-depth) + 1) - 1) / var(--wheel-picker-depth));
+
+    backface-visibility: hidden;
+    pointer-events: auto;
+    opacity: calc(var(--wheel-picker-fade) * var(--wheel-picker-fade));
+    transform:
+            translateY(calc(-1 * var(--wheel-picker-offset) * var(--wheel-picker-row)))
+            perspective(var(--wheel-picker-perspective))
+            translateZ(calc(-1 * var(--wheel-picker-radius)))
+            rotateX(calc(-1 * var(--wheel-picker-angle)))
+            translateZ(var(--wheel-picker-radius));
+}
+
+@supports (animation-timeline: scroll()) {
+    .column {
+        scroll-timeline: --wheel-picker block;
+    }
+
+    .face {
+        --wheel-picker-at: calc(var(--wheel-picker-index) * var(--wheel-picker-row) + var(--wheel-picker-lead, 0px) - var(--wheel-picker-inset));
+
+        opacity: 0;
+        animation: wheel-picker-roll linear both;
+        animation-timeline: --wheel-picker;
+        animation-range: calc(var(--wheel-picker-at) - var(--wheel-picker-edge) * var(--wheel-picker-row)) calc(var(--wheel-picker-at) + var(--wheel-picker-edge) * var(--wheel-picker-row));
+    }
+}
+
+@keyframes wheel-picker-roll {
+    from {
+        transform:
+                translateY(calc(-1 * var(--wheel-picker-edge) * var(--wheel-picker-row)))
+                perspective(var(--wheel-picker-perspective))
+                translateZ(calc(-1 * var(--wheel-picker-radius)))
+                rotateX(-90deg)
+                translateZ(var(--wheel-picker-radius));
+    }
+
+    from, 10.8%, 89.2%, to { opacity: 0 }
+    16.7%, 83.3% { opacity: 0.06 }
+    25%, 75% { opacity: 0.31 }
+    33.3%, 66.7% { opacity: 0.64 }
+    41.7%, 58.3% { opacity: 0.9 }
+    50% { opacity: 1 }
+
+    to {
+        transform:
+                translateY(calc(var(--wheel-picker-edge) * var(--wheel-picker-row)))
+                perspective(var(--wheel-picker-perspective))
+                translateZ(calc(-1 * var(--wheel-picker-radius)))
+                rotateX(90deg)
+                translateZ(var(--wheel-picker-radius));
+    }
+}

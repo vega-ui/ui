@@ -38,6 +38,7 @@ const KEYWORDS: Record<typeof LOCALES[number], Record<string, string>> = {
     'toggle-group': 'toggle group button group segmented alignment view switcher filter',
     'toolbar': 'toolbar formatting bar tools buttons roving tabindex',
     'tooltip': 'hint',
+    'wheel-picker': 'wheel picker spinner drum roller time picker duration timer ios picker',
   },
   ru: {
     'accordion': 'аккордеон раскрывающиеся секции',
@@ -104,6 +105,7 @@ const KEYWORDS: Record<typeof LOCALES[number], Record<string, string>> = {
     'toggle-group': 'группа кнопок-переключателей выравнивание вид фильтр',
     'toolbar': 'панель инструментов тулбар форматирование',
     'tooltip': 'подсказка тултип',
+    'wheel-picker': 'колесо барабан пикер выбор времени длительность таймер',
     'visually-hidden': 'скрытый текст',
     'year-picker': 'выбор года',
   },

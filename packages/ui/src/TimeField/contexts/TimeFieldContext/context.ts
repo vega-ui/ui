@@ -6,6 +6,8 @@ import { timeFieldShape, timeFieldWidget } from '@vega-ui/widgets/time-field';
 
 export interface TimeFieldContextState {
   handle: WidgetHandle<typeof timeFieldShape>
+  disabled?: boolean
+  readOnly?: boolean
 }
 
 export const [TimeFieldProvider, useTimeFieldContext] = createContext<TimeFieldContextState>('TimeFieldContext', {

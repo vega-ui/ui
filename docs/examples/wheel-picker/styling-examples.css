@@ -1,0 +1,4 @@
+.strongBand {
+  --wheel-picker-band-color: var(--fills-primary);
+  --wheel-picker-band-radius: var(--radius-2);
+}

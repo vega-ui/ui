@@ -9,7 +9,7 @@ import style from './style.module.css'
 import { IndexedSnapScrollerProvider } from './contexts';
 import { IndexedSnapScrollerApiRef } from './types';
 
-export interface IndexedSnapScrollerProps extends SnapScrollerProps {
+export interface IndexedSnapScrollerProps extends Omit<SnapScrollerProps, 'orientation'> {
   /**
    * Starting index used to generate the initial sequence of pages.
    * Acts as the logical origin for the sliding index window.

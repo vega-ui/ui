@@ -17,8 +17,8 @@
 | `min` | `string` | — | No | Minimum allowed date–time as a `YYYY-MM-DDTHH:mm[:ss]` string. Dates earlier than this value cannot be selected in the calendar and make a typed value invalid, like a native input. |
 | `max` | `string` | — | No | Maximum allowed date–time as a `YYYY-MM-DDTHH:mm[:ss]` string. Dates later than this value cannot be selected in the calendar and make a typed value invalid, like a native input. |
 | `disabledDates` | `CalendarDatesDisabled` | — | No | Rules for disabling specific dates in the calendar. Can be used to block ranges, weekdays, or custom conditions. |
-| `disabled` | `boolean` | — | No | Disables the field like a native `disabled` input: the input and the trigger are disabled, and the value is not submitted. |
-| `readOnly` | `boolean` | — | No | Makes the field read-only like a native `readonly` input: the input is `readonly`, the calendar still opens to show the date, and picking a day does not change it. The value is still submitted. |
+| `disabled` | `boolean` | — | No | Disables the field like a native `disabled` input: the input, the trigger and the time wheels are disabled, and the value is not submitted. |
+| `readOnly` | `boolean` | — | No | Makes the field read-only like a native `readonly` input: the input is `readonly`, the calendar and the time wheels still open to show the timestamp, and picking a day or turning a wheel does not change it. The value is still submitted. |
 | `today` | `string` | — | No | Today as a `YYYY-MM-DD` string, passed to `DateTimeFieldCalendar` and used to read a two-digit year (`yy`) of `dateFormat`: within 80 years before and 19 years after the year of today. Defaults to the date of the device, read after hydration and followed when the day or the time zone changes. |
 | `calendar` | `CalendarSystem` | `gregorianCalendar` | No | Calendar system the date is typed and picked in. The value stays a `YYYY-MM-DDTHH:mm[:ss]` string. Defaults to the Gregorian calendar. |
 | `locale` | `string` | `"en-US"` | No | BCP 47 locale of the calendar popup (month and day names, first day of the week), e.g. `de-DE`. The typed format still comes from `dateFormat`. |
@@ -33,6 +33,8 @@ Also accepts all `<div>` attributes.
 - `DateTimeFieldInput`: typed timestamp entry surface.
 - `DateTimeFieldTrigger`: optional calendar trigger button.
 - `DateTimeFieldCalendar`: calendar content synchronized with the field value.
+- `DateTimeFieldColumn`: a wheel of one part of the time, chosen by `unit`.
+- `DateTimeFieldTime`: the time of the field as text, for the button that opens the wheels.
 
 ### `DateTimeFieldInput`
 
@@ -49,28 +51,28 @@ Also accepts all `<input>` attributes.
 <!-- AUTO-GENERATED:PART_API:DateTimeFieldCalendar:start -->
 | Prop | Type | Default | Required | Description |
 | --- | --- | --- | --- | --- |
-| `variant` | `CalendarVariant` | `"secondary"` | No | Visual variant of the buttons and cells of the calendar. |
-| `size` | `CalendarSize` | `"xs"` | No | Size of the buttons, cells and weekday names of the calendar. |
-| `compact` | `boolean` | — | No | Shrinks the calendar to the width of its content: the root gets `data-compact="true"`. |
+| `size` | `CalendarSize` | `the size of the field` | No | Size of the buttons, cells and weekday names of the calendar. |
+| `defaultValue` | `string` | — | No | Uncontrolled initial selection value, shaped by the `selection` mode. |
+| `autoFocus` | `boolean` | — | No | Moves the focus into the calendar when it mounts, onto the tab stop of the shown view: the focused day, otherwise the selected day or today, otherwise the first available day. |
 | `max` | `string` | — | No | Latest selectable date as a `YYYY-MM-DD` string. Months and years beyond this date become unavailable. Day, Month, and Year pickers use this to disable or clamp navigation. |
 | `min` | `string` | — | No | Earliest selectable date as a `YYYY-MM-DD` string. Months and years before this date become unavailable. All pickers respect this constraint when computing active ranges. |
-| `selection` | `"single"` | `'single'` | No | Selection mode. Determines the structure of `value`, all dates are `YYYY-MM-DD` strings: 'single' — a string, `''` when nothing is selected; 'multiple' — an array of strings; 'range' — a `[start, end]` tuple with `start` not after `end`, `''` marks an unset bound |
-| `view` | `CalendarView` | — | No | Controlled visible view: 'day' — the days of the visible month (`CalendarDays`); 'month' — the months of the visible year (`CalendarMonths`); 'year' — pages of years (`CalendarYears`) |
 | `value` | `string` | — | No | Controlled selection value, shaped by the `selection` mode. Malformed or non-existent dates are treated as unselected. |
-| `defaultValue` | `string` | — | No | Uncontrolled initial selection value, shaped by the `selection` mode. |
-| `defaultView` | `CalendarView` | `'day'` | No | Initial view for uncontrolled usage. |
+| `view` | `CalendarView` | — | No | Controlled visible view: 'day' — the days of the visible month (`CalendarDays`); 'month' — the months of the visible year (`CalendarMonths`); 'year' — pages of years (`CalendarYears`) |
 | `disabled` | `boolean` | — | No | Disables the whole calendar: no date can be selected and navigation is off. |
 | `readOnly` | `boolean` | — | No | Makes the selection read-only like a native `readonly` input: the day grid gets `aria-readonly="true"`, navigation still works, and picking a day neither changes the selection nor calls `onChangeValue`. |
-| `autoFocus` | `boolean` | — | No | Moves the focus into the calendar when it mounts, onto the tab stop of the shown view: the focused day, otherwise the selected day or today, otherwise the first available day. |
 | `disabledDates` | `CalendarDatesDisabled` | — | No | Dates that cannot be selected, as `YYYY-MM-DD` strings: a single date; an array of dates; a predicate `(date: string) => boolean` |
-| `onChangeValue` | `(value: CalendarValue<SelectionMode>) => void` | — | No | Fires when the user changes the selection. The value is shaped by the `selection` mode. |
-| `onChangeView` | `(view: CalendarView) => void` | — | No | Fires when the visible view changes. |
 | `focusedDate` | `string` | — | No | Controlled focused day as a `YYYY-MM-DD` string. The calendar shows its month, and the day is the tab stop of the day grid when it can be focused. |
 | `defaultFocusedDate` | `string` | — | No | Initial focused day for uncontrolled usage. Default: the selected day, otherwise `today` clamped to `min` and `max` |
 | `onChangeFocusedDate` | `(date: string) => void` | — | No | Fires with the newly focused day as a `YYYY-MM-DD` string when the focus moves, also to another month (with the keyboard, the previous and next buttons, swiping, or the month and year views). This event represents navigation, not selection. |
 | `today` | `string` | — | No | Today as a `YYYY-MM-DD` string: the day marked with `aria-current="date"`. Defaults to the date of the device, read after hydration, so the server and the client render the same markup. Pass it when the server must render the month of today, or to use the time zone of the user. Without it, today follows the device when the day or the time zone changes. |
 | `calendar` | `CalendarSystem` | — | No | Calendar system the calendar is shown in. Values stay `YYYY-MM-DD` days. Defaults to the Gregorian calendar. |
 | `locale` | `string` | `"en-US"` | No | BCP 47 locale of month and day names and of the first day of the week, e.g. `de-DE`. Applies to all parts of the calendar and sets `lang` on the root. |
+| `variant` | `CalendarVariant` | `"secondary"` | No | Visual variant of the buttons and cells of the calendar. |
+| `compact` | `boolean` | — | No | Shrinks the calendar to the width of its content: the root gets `data-compact="true"`. |
+| `selection` | `"single"` | `'single'` | No | Selection mode. Determines the structure of `value`, all dates are `YYYY-MM-DD` strings: 'single' — a string, `''` when nothing is selected; 'multiple' — an array of strings; 'range' — a `[start, end]` tuple with `start` not after `end`, `''` marks an unset bound |
+| `defaultView` | `CalendarView` | `'day'` | No | Initial view for uncontrolled usage. |
+| `onChangeView` | `(view: CalendarView) => void` | — | No | Fires when the visible view changes. |
+| `onChangeValue` | `(value: CalendarValue<SelectionMode>) => void` | — | No | Fires when the user changes the selection. The value is shaped by the `selection` mode. |
 
 Also accepts all `<div>` attributes.
 <!-- AUTO-GENERATED:PART_API:DateTimeFieldCalendar:end -->
@@ -93,12 +95,38 @@ Also accepts all `<div>` attributes.
 Also accepts all `<button>` attributes.
 <!-- AUTO-GENERATED:PART_API:DateTimeFieldTrigger:end -->
 
+### `DateTimeFieldColumn`
+
+<!-- AUTO-GENERATED:PART_API:DateTimeFieldColumn:start -->
+| Prop | Type | Default | Required | Description |
+| --- | --- | --- | --- | --- |
+| `unit` | `TimeFieldUnit` | — | Yes | Part of the time the column turns: the hours 00 to 23, or the minutes or the seconds by `timeStep`. The seconds go with `timeFormat="HH:mm:ss"`. |
+| `children` | `ReactNode` | — | Yes | Template of an option, rendered once for every option of the column. Read the option with `useTimeFieldOptionContext()`; usually `<TimeFieldOption><WheelPickerFace /></TimeFieldOption>`. |
+| `loop` | `boolean` | `true` | No | If true, the column goes on past its last option to the first one and back, like a dial. |
+| `autoFocus` | `boolean` | — | No | If true, the column takes the focus once it mounts, like a native control with `autofocus`, for example as the first column in a popover. |
+| `disabled` | `boolean` | `false` | No | If true, the column does not turn and leaves the Tab order. |
+| `readOnly` | `boolean` | `false` | No | If true, the column stays focusable but does not turn. |
+| `ref` | `Ref<HTMLDivElement>` | — | No | Ref forwarded to the spinbutton element. |
+
+Also accepts all `<div>` attributes.
+<!-- AUTO-GENERATED:PART_API:DateTimeFieldColumn:end -->
+
+### `DateTimeFieldTime`
+
+<!-- AUTO-GENERATED:PART_API:DateTimeFieldTime:start -->
+| Prop | Type | Default | Required | Description |
+| --- | --- | --- | --- | --- |
+| `placeholder` | `string` | — | No | Text shown while the field has no complete date and time, for example `--:--`. |
+<!-- AUTO-GENERATED:PART_API:DateTimeFieldTime:end -->
+
 ## Types
 
 - `DateTimeFieldProps`
 - `DateTimeFieldInputProps`
 - `DateTimeFieldTriggerProps`
 - `DateTimeFieldCalendarProps`
+- `DateTimeFieldColumnProps`
+- `DateTimeFieldTimeProps`
 
 ## State Model
 
