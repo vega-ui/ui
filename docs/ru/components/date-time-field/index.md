@@ -16,6 +16,8 @@ import {
   DateTimeFieldInput,
   DateTimeFieldCalendar,
   DateTimeFieldTrigger,
+  DateTimeFieldColumn,
+  DateTimeFieldTime,
   type DateTimeFieldProps,
 } from '@vega-ui/react';
 ```
@@ -26,6 +28,8 @@ import {
 - `DateTimeFieldInputProps`
 - `DateTimeFieldCalendarProps`
 - `DateTimeFieldTriggerProps`
+- `DateTimeFieldColumnProps`
+- `DateTimeFieldTimeProps`
 
 ## Минимальная композиция
 
@@ -74,8 +78,8 @@ export default function MinimalComposition() {
         <PopoverTrigger asChild>
           <DateTimeFieldTrigger square aria-label='Choose start date'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
         </PopoverTrigger>
-        <PopoverContent>
-          <DateTimeFieldCalendar aria-label='Choose start date'>
+        <PopoverContent role='dialog' aria-label='Choose start date'>
+          <DateTimeFieldCalendar>
             <CalendarHeader>
               <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
               <CalendarHeading>
@@ -123,11 +127,12 @@ export default function MinimalComposition() {
 
 ## Свой компонент
 
-Минимальная композиция выше показывает части на месте. В приложении соберите их один раз в своём файле, со своим набором иконок, и импортируйте этот компонент везде. `MyDateTimeField` передаёт свои пропсы в `DateTimeField`, `id` и `name` — полю ввода, а имена кнопки календаря и кнопок месяцев принимает пропсами. См. [Рецепты компонентов](../../recipes.md).
+Минимальная композиция выше показывает части на месте. В приложении соберите их один раз в своём файле, со своим набором иконок, и импортируйте этот компонент везде. `MyDateTimeField` передаёт свои пропсы в `DateTimeField`, `id` и `name` — полю ввода, а имена пикера, кнопок месяцев, подписи времени и колонок времени принимает пропсами; кнопка времени под календарём открывает колёса во вложенном поповере. См. [Рецепты компонентов](../../recipes.md).
 
 <!-- example: date-time-field/recipe.tsx -->
 ```tsx
 import {
+  Button,
   CalendarContent,
   CalendarDay,
   CalendarDays,
@@ -153,7 +158,9 @@ import {
   CalendarYearsScrollerContent,
   DateTimeField,
   DateTimeFieldCalendar,
+  DateTimeFieldColumn,
   DateTimeFieldInput,
+  DateTimeFieldTime,
   DateTimeFieldTrigger,
   Icon,
   Label,
@@ -161,27 +168,39 @@ import {
   PopoverContent,
   PopoverTrigger,
   type DateTimeFieldProps,
+  Text,
+  TimeFieldOption,
+  WheelPicker,
+  WheelPickerFace,
 } from '@vega-ui/react';
 import { CalendarIcon, ChevronLeftIcon, ChevronRightIcon } from '@vega-ui/icons';
 import { useId } from 'react';
 
 interface MyDateTimeFieldProps extends DateTimeFieldProps {
   name?: string
-  calendarLabel: string
+  pickerLabel: string
   previousLabel: string
   nextLabel: string
+  timeLabel: string
+  hoursLabel: string
+  minutesLabel: string
+  secondsLabel?: string
 }
 
-export function MyDateTimeField({ id, name, calendarLabel, previousLabel, nextLabel, ...props }: MyDateTimeFieldProps) {
+export function MyDateTimeField({ id, name, pickerLabel, previousLabel, nextLabel, timeLabel, hoursLabel, minutesLabel, secondsLabel, ...props }: MyDateTimeFieldProps) {
+  const seconds = props.timeFormat === 'HH:mm:ss';
+  const timeLabelId = useId();
+  const timeButtonId = useId();
+
   return (
     <DateTimeField {...props}>
       <DateTimeFieldInput id={id} name={name} />
       <Popover placement='bottom-end'>
         <PopoverTrigger asChild>
-          <DateTimeFieldTrigger square aria-label={calendarLabel}><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
+          <DateTimeFieldTrigger square aria-label={pickerLabel}><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
         </PopoverTrigger>
-        <PopoverContent>
-          <DateTimeFieldCalendar aria-label={calendarLabel}>
+        <PopoverContent role='dialog' aria-label={pickerLabel}>
+          <DateTimeFieldCalendar>
             <CalendarHeader>
               <CalendarPrevButton square aria-label={previousLabel}><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
               <CalendarHeading>
@@ -219,6 +238,25 @@ export function MyDateTimeField({ id, name, calendarLabel, previousLabel, nextLa
               </CalendarYears>
             </CalendarContent>
           </DateTimeFieldCalendar>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--spacing-4)', padding: '0 var(--spacing-6) var(--spacing-6)' }}>
+            <Text id={timeLabelId}>{timeLabel}</Text>
+            <Popover placement='top-end'>
+              <PopoverTrigger asChild>
+                <Button id={timeButtonId} aria-labelledby={`${timeLabelId} ${timeButtonId}`} aria-haspopup='dialog' size={props.size} variant='secondary' appearance='ghost'>
+                  <DateTimeFieldTime placeholder='--:--' />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent role='dialog' aria-labelledby={timeLabelId} style={{ padding: 'var(--spacing-6)' }}>
+                <WheelPicker aria-labelledby={timeLabelId}>
+                  <DateTimeFieldColumn unit='hour' aria-label={hoursLabel} autoFocus><TimeFieldOption><WheelPickerFace /></TimeFieldOption></DateTimeFieldColumn>
+                  <span aria-hidden='true' style={{ alignSelf: 'center' }}>:</span>
+                  <DateTimeFieldColumn unit='minute' aria-label={minutesLabel}><TimeFieldOption><WheelPickerFace /></TimeFieldOption></DateTimeFieldColumn>
+                  {seconds && <span aria-hidden='true' style={{ alignSelf: 'center' }}>:</span>}
+                  {seconds && <DateTimeFieldColumn unit='second' aria-label={secondsLabel}><TimeFieldOption><WheelPickerFace /></TimeFieldOption></DateTimeFieldColumn>}
+                </WheelPicker>
+              </PopoverContent>
+            </Popover>
+          </div>
         </PopoverContent>
       </Popover>
     </DateTimeField>
@@ -238,9 +276,12 @@ export default function Recipe() {
         dateSeparator='.'
         separator=', '
         defaultValue='2026-07-15T18:30'
-        calendarLabel='Choose webinar date'
+        pickerLabel='Choose webinar date and time'
         previousLabel='Previous month'
         nextLabel='Next month'
+        timeLabel='Time'
+        hoursLabel='Hours'
+        minutesLabel='Minutes'
       />
     </div>
   );
@@ -257,6 +298,8 @@ export default function Recipe() {
 
 - `DateTimeFieldTrigger`: триггер календаря
 - `DateTimeFieldCalendar`: содержимое визуального пикера, обычно монтируется в `Popover`
+- `DateTimeFieldColumn`: колесо часов, минут или секунд по `unit` внутри `WheelPicker`
+- `DateTimeFieldTime`: время поля текстом для кнопки, которая открывает колёса
 
 ## Порядок композиции
 
@@ -265,6 +308,7 @@ export default function Recipe() {
 3. `Popover`
 4. `DateTimeFieldTrigger`
 5. `DateTimeFieldCalendar`
+6. Под календарём вложенный `Popover` с `Button`, показывающим `DateTimeFieldTime`, и `WheelPicker` из `DateTimeFieldColumn`
 
 ## Варианты
 

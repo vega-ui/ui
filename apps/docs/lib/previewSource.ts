@@ -15,6 +15,8 @@ const HELPERS = [
   { name: 'IndexedSlide', pattern: /^const IndexedSlide = [\s\S]+?\n};$/m },
   { name: 'PREVIEW_TOASTS', pattern: /^const PREVIEW_TOASTS = .+;$/m },
   { name: 'PreviewToast', pattern: /^const PreviewToast = [\s\S]+?\n};$/m },
+  { name: 'HOURS', pattern: /^const HOURS = .+;$/m },
+  { name: 'MINUTES', pattern: /^const MINUTES = .+;$/m },
   { name: 'CITIES', pattern: /^const CITIES = .+;$/m },
   { name: 'ComboboxPreview', pattern: /^const ComboboxPreview = [\s\S]+?\n};$/m },
 ];

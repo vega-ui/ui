@@ -43,8 +43,8 @@ export default function CustomTriggerIcon() {
             <Icon><CalendarDaysIcon /></Icon>
           </DateTimeFieldTrigger>
         </PopoverTrigger>
-        <PopoverContent>
-          <DateTimeFieldCalendar aria-label='Choose date'>
+        <PopoverContent role='dialog' aria-label='Choose date'>
+          <DateTimeFieldCalendar>
             <CalendarHeader>
               <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
               <CalendarHeading>

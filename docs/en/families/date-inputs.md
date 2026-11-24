@@ -8,6 +8,7 @@ Use this page when the product stores dates, ranges, or timestamps and the main 
 - Use [DateRangeField](../components/date-range-field/) when one control owns start and end dates.
 - Use [DateTimeField](../components/date-time-field/) when one stored value is a timestamp.
 - Use [TimeField](../components/time-field/) for time-only values.
+- Use [WheelPicker](../components/wheel-picker/) for swiped values that are not a field's time, like a duration or a birth date; a time swiped on a touch screen is a TimeField or a DateTimeField with their columns inside a WheelPicker.
 - Use [Calendar](../components/calendar/) when the experience should be visibly calendar-first.
 
 ## By Data Shape

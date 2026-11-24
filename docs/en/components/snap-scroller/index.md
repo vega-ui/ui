@@ -6,7 +6,7 @@
 
 ## Summary
 
-`SnapScroller` is a [compound component](../../glossary.md#compound-component) for CSS scroll-snap-based horizontal paging. It exposes direct scroller items, snapping callbacks, and an imperative API for previous/next navigation and keyed scrolling.
+`SnapScroller` is a [compound component](../../glossary.md#compound-component) for CSS scroll-snap-based paging, horizontal by default or vertical with `orientation`. It exposes direct scroller items, snapping callbacks, and an imperative API for previous/next navigation and keyed scrolling.
 
 ## Imports
 
@@ -25,6 +25,7 @@ import {
 - `SnapScrollerProps`
 - `SnapScrollerContentProps`
 - `SnapScrollerApiRef`
+- `SnapScrollerOrientation`
 
 ## Minimal Composition
 
@@ -72,6 +73,7 @@ export default function MinimalComposition() {
 - Passive snapping with callbacks
 - Imperative control through `apiRef`
 - Fixed-size or mixed-width content, though mixed width needs more testing
+- Vertical paging with `orientation='vertical'`, which stacks the items in a column and snaps along the block axis
 
 ## Related Docs
 

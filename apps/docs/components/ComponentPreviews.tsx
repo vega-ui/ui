@@ -184,7 +184,10 @@ import {
   TextField,
   TextFieldInput,
   TimeField,
+  TimeFieldColumn,
   TimeFieldInput,
+  TimeFieldOption,
+  TimeFieldTrigger,
   Toast,
   ToastClose,
   ToastRegion,
@@ -199,6 +202,10 @@ import {
   useIndexedSnapScrollerContext,
   useToastContext,
   VisuallyHidden,
+  WheelPicker,
+  WheelPickerColumn,
+  WheelPickerFace,
+  WheelPickerOption,
   YearPicker,
   YearPickerCell,
   YearPickerLayout,
@@ -213,6 +220,7 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   CircleCheckIcon,
+  ClockIcon,
   EyeIcon,
   EyeOffIcon,
   Heart,
@@ -267,6 +275,10 @@ const PreviewToast = () => {
     </Toast>
   );
 };
+
+const HOURS = Array.from({ length: 24 }, (_, hour) => hour);
+
+const MINUTES = Array.from({ length: 60 }, (_, minute) => minute);
 
 const CITIES = ['Amsterdam', 'Athens', 'Berlin', 'Lisbon', 'Madrid', 'Prague', 'Vienna'];
 
@@ -501,7 +513,7 @@ export const PREVIEWS: Record<string, Preview> = {
             <PopoverTrigger asChild>
               <DateTimeFieldTrigger square aria-label='Choose start date'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
             </PopoverTrigger>
-            <PopoverContent>
+            <PopoverContent role='dialog' aria-label='Choose start date'>
               <DateTimeFieldCalendar>
                 <CalendarHeader>
                   <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
@@ -734,6 +746,18 @@ export const PREVIEWS: Record<string, Preview> = {
         <Label htmlFor='preview-time'>Reminder</Label>
         <TimeField defaultValue='09:30'>
           <TimeFieldInput id='preview-time' placeholder='hh:mm' />
+          <Popover placement='bottom-end'>
+            <PopoverTrigger asChild>
+              <TimeFieldTrigger square aria-label='Choose reminder time'><Icon><ClockIcon /></Icon></TimeFieldTrigger>
+            </PopoverTrigger>
+            <PopoverContent role='dialog' aria-label='Choose reminder time' style={{ padding: 'var(--spacing-6)' }}>
+              <WheelPicker aria-label='Reminder time'>
+                <TimeFieldColumn unit='hour' aria-label='Hours' autoFocus><TimeFieldOption><WheelPickerFace /></TimeFieldOption></TimeFieldColumn>
+                <span aria-hidden='true' style={{ alignSelf: 'center' }}>:</span>
+                <TimeFieldColumn unit='minute' aria-label='Minutes'><TimeFieldOption><WheelPickerFace /></TimeFieldOption></TimeFieldColumn>
+              </WheelPicker>
+            </PopoverContent>
+          </Popover>
         </TimeField>
       </div>
     ),
@@ -824,6 +848,18 @@ export const PREVIEWS: Record<string, Preview> = {
         <Icon size='sm'><MicOffIcon /></Icon>
         Mute
       </Toggle>
+    ),
+  },
+  'wheel-picker': {
+    node: (
+      <WheelPicker aria-label='Alarm time'>
+        <WheelPickerColumn aria-label='Hours' loop defaultValue={7}>
+          {HOURS.map((hour) => <WheelPickerOption key={hour} value={hour}><WheelPickerFace>{String(hour).padStart(2, '0')}</WheelPickerFace></WheelPickerOption>)}
+        </WheelPickerColumn>
+        <WheelPickerColumn aria-label='Minutes' loop defaultValue={30}>
+          {MINUTES.map((minute) => <WheelPickerOption key={minute} value={minute}><WheelPickerFace>{String(minute).padStart(2, '0')}</WheelPickerFace></WheelPickerOption>)}
+        </WheelPickerColumn>
+      </WheelPicker>
     ),
   },
   'toggle-group': {

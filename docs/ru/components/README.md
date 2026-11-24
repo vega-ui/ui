@@ -79,6 +79,7 @@
 - [Toolbar](./toolbar/)
 - [Tooltip](./tooltip/)
 - [VisuallyHidden](./visually-hidden/)
+- [WheelPicker](./wheel-picker/)
 - [YearPicker](./year-picker/)
 
 ## Структура страниц компонента

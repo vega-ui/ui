@@ -41,8 +41,8 @@ export default function MinimalComposition() {
         <PopoverTrigger asChild>
           <DateTimeFieldTrigger square aria-label='Choose start date'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
         </PopoverTrigger>
-        <PopoverContent>
-          <DateTimeFieldCalendar aria-label='Choose start date'>
+        <PopoverContent role='dialog' aria-label='Choose start date'>
+          <DateTimeFieldCalendar>
             <CalendarHeader>
               <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
               <CalendarHeading>

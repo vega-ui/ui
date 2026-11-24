@@ -24,6 +24,7 @@
 
 ## State And Variant Interaction
 
+- `size` on the root also sizes `DateRangeFieldCalendar`, on the same scale; `size` on the calendar overrides it.
 - Disabled state should dim the input and trigger together.
 - Error styling should come from the surrounding field state instead of one-off trigger overrides.
 - Range-specific styling should remain legible when both start and end values are partially filled.

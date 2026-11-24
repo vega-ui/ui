@@ -1400,8 +1400,8 @@
     "ru": "Начальные дата и время для неконтролируемого использования, как у `value`. По умолчанию `''` — пустое поле."
   },
   "DateTimeField.disabled": {
-    "en": "Disables the field like a native `disabled` input: the input and the trigger are disabled, and the value is not submitted.",
-    "ru": "Отключает поле, как нативный input с `disabled`: поле ввода и кнопка отключены, а значение не отправляется с формой."
+    "en": "Disables the field like a native `disabled` input: the input, the trigger and the time wheels are disabled, and the value is not submitted.",
+    "ru": "Отключает поле, как нативный input с `disabled`: поле ввода, кнопка и колёса времени отключены, а значение не отправляется с формой."
   },
   "DateTimeField.disabledDates": {
     "en": "Rules for disabling specific dates in the calendar. Can be used to block ranges, weekdays, or custom conditions.",
@@ -1424,8 +1424,8 @@
     "ru": "Вызывается с датой и временем при их изменении и с `''`, когда текст очищен или не заполнен до конца."
   },
   "DateTimeField.readOnly": {
-    "en": "Makes the field read-only like a native `readonly` input: the input is `readonly`, the calendar still opens to show the date, and picking a day does not change it. The value is still submitted.",
-    "ru": "Делает поле доступным только для чтения, как нативный input с `readonly`: поле ввода получает `readonly`, календарь по-прежнему открывается и показывает дату, но выбор дня её не меняет. Значение отправляется с формой."
+    "en": "Makes the field read-only like a native `readonly` input: the input is `readonly`, the calendar and the time wheels still open to show the timestamp, and picking a day or turning a wheel does not change it. The value is still submitted.",
+    "ru": "Делает поле доступным только для чтения, как нативный input с `readonly`: поле ввода получает `readonly`, календарь и колёса времени по-прежнему открываются и показывают момент, но выбор дня или поворот колеса его не меняют. Значение отправляется с формой."
   },
   "DateTimeField.ref": {
     "en": "Ref forwarded to wrapper element Useful for programmatic control, focus, or integration.",
@@ -4558,5 +4558,181 @@
   "ToolbarItem.ref": {
     "en": "Ref forwarded to the item element.",
     "ru": "Ref, передаваемый на элемент панели."
+  },
+  "SnapScroller.orientation": {
+    "en": "The axis the scroller scrolls and snaps along. A vertical scroller stacks its items in a column.",
+    "ru": "Ось, вдоль которой скроллер прокручивается и привязывается. Вертикальный скроллер ставит элементы в колонку."
+  },
+  "WheelPicker.rows": {
+    "en": "How many rows of each column are visible: the selected one in the middle and the same number above and below it. Use an odd number.",
+    "ru": "Сколько строк каждой колонки видно: выбранная посередине и столько же выше и ниже. Берите нечётное число."
+  },
+  "WheelPicker.ref": {
+    "en": "Ref forwarded to the root element.",
+    "ru": "Ref, передаваемый корневому элементу."
+  },
+  "WheelPickerColumn.value": {
+    "en": "The value of the selected option, for a controlled column.",
+    "ru": "Значение выбранной опции для контролируемой колонки."
+  },
+  "WheelPickerColumn.defaultValue": {
+    "en": "The value of the option selected at first, for an uncontrolled column. Without it the column starts at its first enabled option.",
+    "ru": "Значение опции, выбранной сначала, для неконтролируемой колонки. Без него колонка начинает с первой доступной опции."
+  },
+  "WheelPickerColumn.onChangeValue": {
+    "en": "Called with the value of the option the column stops at after a scroll, and at once after a key.",
+    "ru": "Вызывается со значением опции, на которой колонка остановилась после прокрутки, и сразу после клавиши."
+  },
+  "WheelPickerColumn.loop": {
+    "en": "If true, the column goes on past its last option to the first one and back, like a dial.",
+    "ru": "Если true, колонка переходит с последней опции на первую и обратно, как диск."
+  },
+  "WheelPickerColumn.disabled": {
+    "en": "If true, the column does not turn and leaves the Tab order.",
+    "ru": "Если true, колонка не крутится и уходит из порядка Tab."
+  },
+  "WheelPickerColumn.readOnly": {
+    "en": "If true, the column stays focusable but does not turn.",
+    "ru": "Если true, колонка остаётся в фокусе, но не крутится."
+  },
+  "WheelPickerColumn.ref": {
+    "en": "Ref forwarded to the spinbutton element.",
+    "ru": "Ref, передаваемый элементу spinbutton."
+  },
+  "WheelPickerOption.value": {
+    "en": "The value of this option, passed to `onChangeValue` of its column once it is selected.",
+    "ru": "Значение этой опции, которое передаётся в `onChangeValue` её колонки, когда опция выбрана."
+  },
+  "WheelPickerOption.disabled": {
+    "en": "If true, the column skips this option and moves off it when a scroll stops on it.",
+    "ru": "Если true, колонка пропускает эту опцию и уходит с неё, когда прокрутка на ней останавливается."
+  },
+  "WheelPickerOption.label": {
+    "en": "Plain text of this option, used for typeahead and as `aria-valuetext` of the column instead of the text of its content.",
+    "ru": "Простой текст этой опции для поиска по набору и для `aria-valuetext` колонки вместо текста её содержимого."
+  },
+  "WheelPickerOption.ref": {
+    "en": "Ref forwarded to the row element.",
+    "ru": "Ref, передаваемый элементу строки."
+  },
+  "WheelPickerFace.ref": {
+    "en": "Ref forwarded to the face element.",
+    "ru": "Ref, передаваемый элементу грани."
+  },
+  "TimeFieldTrigger.appearance": {
+    "en": "Adjusts the button's structural appearance (background, border, etc.).",
+    "ru": "Настраивает структурный внешний вид кнопки (фон, рамка и т. д.)."
+  },
+  "TimeFieldTrigger.asChild": {
+    "en": "When true, renders the button as a child component using `Slot` (e.g., from Radix UI). Enables polymorphic rendering — useful for making the button act as a link or custom tag.",
+    "ru": "Если true, рендерит кнопку как дочерний компонент через `Slot` (например, из Radix UI). Включает полиморфный рендер — полезно, чтобы кнопка работала как ссылка или собственный тег."
+  },
+  "TimeFieldTrigger.children": {
+    "en": "Content of the button — text, icon, or any React node.",
+    "ru": "Содержимое кнопки — текст, иконка или любой React-узел."
+  },
+  "TimeFieldTrigger.className": {
+    "en": "Optional custom CSS class for the button element. Useful for design system overrides or scoped styles.",
+    "ru": "Необязательный собственный CSS-класс для элемента кнопки. Полезен для переопределений дизайн-системы или локальных стилей."
+  },
+  "TimeFieldTrigger.disabled": {
+    "en": "Disables the button when true. Prevents user interaction and applies a visually disabled state. Not applied with `asChild`: the child element owns its disabled state, for example, `aria-disabled` or a link without `href`.",
+    "ru": "Отключает кнопку при true. Запрещает взаимодействие и применяет визуальное отключённое состояние. Не применяется с `asChild`: отключённым состоянием владеет дочерний элемент, например через `aria-disabled` или ссылку без `href`."
+  },
+  "TimeFieldTrigger.ref": {
+    "en": "Ref forwarded to the native `<button>` element. Allows direct DOM access for focus management or measuring.",
+    "ru": "Ref, передаваемый на нативный элемент `<button>`. Даёт прямой доступ к DOM для управления фокусом или измерений."
+  },
+  "TimeFieldTrigger.size": {
+    "en": "Defines the size of the button. Affects padding, font size, and overall dimensions.",
+    "ru": "Определяет размер кнопки. Влияет на отступы, размер шрифта и общие габариты."
+  },
+  "TimeFieldTrigger.square": {
+    "en": "Makes the button a square as wide as it is high, for a single icon. Name it with `aria-label` or `aria-labelledby`.",
+    "ru": "Делает кнопку квадратной — такой же ширины, как высоты, — для одной иконки. Назовите её через `aria-label` или `aria-labelledby`."
+  },
+  "TimeFieldTrigger.variant": {
+    "en": "Defines the visual style of the button, affecting color schemes and emphasis.",
+    "ru": "Определяет визуальный стиль кнопки: цветовую схему и акцент."
+  },
+  "WheelPickerColumn.autoFocus": {
+    "en": "If true, the column takes the focus once it mounts, like a native control with `autofocus`, for example as the first column in a popover.",
+    "ru": "Если true, колонка получает фокус, как только появляется, как нативный элемент с `autofocus`, например первая колонка в поповере."
+  },
+  "TimeFieldColumn.autoFocus": {
+    "en": "If true, the column takes the focus once it mounts, like a native control with `autofocus`, for example as the first column in a popover.",
+    "ru": "Если true, колонка получает фокус, как только появляется, как нативный элемент с `autofocus`, например первая колонка в поповере."
+  },
+  "TimeFieldColumn.disabled": {
+    "en": "If true, the column does not turn and leaves the Tab order.",
+    "ru": "Если true, колонка не крутится и уходит из порядка Tab."
+  },
+  "TimeFieldColumn.readOnly": {
+    "en": "If true, the column stays focusable but does not turn.",
+    "ru": "Если true, колонка остаётся в фокусе, но не крутится."
+  },
+  "TimeFieldColumn.ref": {
+    "en": "Ref forwarded to the spinbutton element.",
+    "ru": "Ref, передаваемый элементу spinbutton."
+  },
+  "TimeFieldColumn.loop": {
+    "en": "If true, the column goes on past its last option to the first one and back, like a dial.",
+    "ru": "Если true, колонка переходит с последней опции на первую и обратно, как диск."
+  },
+  "TimeField.disabled": {
+    "en": "Disables the field like a native `disabled` input: the input, the trigger and the wheels are disabled, and the time is not submitted.",
+    "ru": "Отключает поле, как нативный input с `disabled`: поле ввода, кнопка и колёса отключены, а время не отправляется с формой."
+  },
+  "TimeField.readOnly": {
+    "en": "Makes the field read-only like a native `readonly` input: the input is `readonly`, the wheels still open to show the time, and turning them does not change it. The time is still submitted.",
+    "ru": "Делает поле доступным только для чтения, как нативный input с `readonly`: поле ввода получает `readonly`, колёса по-прежнему открываются и показывают время, но их поворот его не меняет. Время отправляется с формой."
+  },
+  "WheelPicker.size": {
+    "en": "Height of the rows and size of the text, on the scale of the other fields. Inside the popover of a field, such as a TimeField or a DateTimeField, it follows the size of the field.",
+    "ru": "Высота строк и размер текста по шкале остальных полей. Внутри поповера поля, например TimeField или DateTimeField, следует за размером поля."
+  },
+  "TimeFieldOption.ref": {
+    "en": "Ref forwarded to the row element.",
+    "ru": "Ref, передаваемый элементу строки."
+  },
+  "TimeFieldColumn.children": {
+    "en": "Template of an option, rendered once for every option of the column. Read the option with `useTimeFieldOptionContext()`; usually `<TimeFieldOption><WheelPickerFace /></TimeFieldOption>`.",
+    "ru": "Шаблон опции, рендерится один раз на каждую опцию колонки. Опцию читайте через `useTimeFieldOptionContext()`; обычно это `<TimeFieldOption><WheelPickerFace /></TimeFieldOption>`."
+  },
+  "TimeFieldColumn.unit": {
+    "en": "Part of the time the column turns: the hours 00 to 23, or the minutes or the seconds by `step`. The seconds go with `format=\"HH:mm:ss\"`.",
+    "ru": "Часть времени, которую крутит колонка: часы от 00 до 23 или минуты и секунды по `step`. Секунды используются с `format=\"HH:mm:ss\"`."
+  },
+  "DateTimeFieldColumn.autoFocus": {
+    "en": "If true, the column takes the focus once it mounts, like a native control with `autofocus`, for example as the first column in a popover.",
+    "ru": "Если true, колонка получает фокус, как только появляется, как нативный элемент с `autofocus`, например первая колонка в поповере."
+  },
+  "DateTimeFieldColumn.children": {
+    "en": "Template of an option, rendered once for every option of the column. Read the option with `useTimeFieldOptionContext()`; usually `<TimeFieldOption><WheelPickerFace /></TimeFieldOption>`.",
+    "ru": "Шаблон опции, рендерится один раз на каждую опцию колонки. Опцию читайте через `useTimeFieldOptionContext()`; обычно это `<TimeFieldOption><WheelPickerFace /></TimeFieldOption>`."
+  },
+  "DateTimeFieldColumn.disabled": {
+    "en": "If true, the column does not turn and leaves the Tab order.",
+    "ru": "Если true, колонка не крутится и уходит из порядка Tab."
+  },
+  "DateTimeFieldColumn.loop": {
+    "en": "If true, the column goes on past its last option to the first one and back, like a dial.",
+    "ru": "Если true, колонка переходит с последней опции на первую и обратно, как диск."
+  },
+  "DateTimeFieldColumn.readOnly": {
+    "en": "If true, the column stays focusable but does not turn.",
+    "ru": "Если true, колонка остаётся в фокусе, но не крутится."
+  },
+  "DateTimeFieldColumn.ref": {
+    "en": "Ref forwarded to the spinbutton element.",
+    "ru": "Ref, передаваемый элементу spinbutton."
+  },
+  "DateTimeFieldColumn.unit": {
+    "en": "Part of the time the column turns: the hours 00 to 23, or the minutes or the seconds by `timeStep`. The seconds go with `timeFormat=\"HH:mm:ss\"`.",
+    "ru": "Часть времени, которую крутит колонка: часы от 00 до 23 или минуты и секунды по `timeStep`. Секунды используются с `timeFormat=\"HH:mm:ss\"`."
+  },
+  "DateTimeFieldTime.placeholder": {
+    "en": "Text shown while the field has no complete date and time, for example `--:--`.",
+    "ru": "Текст, который показывается, пока у поля нет полной даты и времени, например `--:--`."
   }
 }

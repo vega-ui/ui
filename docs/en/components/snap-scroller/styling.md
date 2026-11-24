@@ -12,7 +12,7 @@ There are no component-local CSS variables in the current implementation.
 
 ### Root
 
-The root uses flex layout, `scroll-snap-type: x mandatory`, smooth scrolling, and hidden scrollbars.
+The root uses flex layout, `scroll-snap-type: x mandatory`, smooth scrolling, and hidden scrollbars. With `data-orientation="vertical"` it stacks the items in a column and uses `scroll-snap-type: y mandatory`.
 
 ### Content
 

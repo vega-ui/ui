@@ -41,6 +41,7 @@ Each component page has the recipe in its "Your Own Component" section.
 - [DateField](./components/date-field/index.md#your-own-component): `MyDateField`
 - [DateRangeField](./components/date-range-field/index.md#your-own-component): `MyDateRangeField`
 - [DateTimeField](./components/date-time-field/index.md#your-own-component): `MyDateTimeField`
+- [TimeField](./components/time-field/index.md#your-own-component): `MyTimeField`
 - [Calendar](./components/calendar/index.md#your-own-component): `MyCalendar`
 
 ### Overlays

@@ -9,6 +9,7 @@
 | `ref` | `Ref<HTMLDivElement>` | — | No | Ref to the scroller’s element. |
 | `apiRef` | `Ref<SnapScrollerApiRef>` | — | No | Ref to the scroller’s imperative API. Provides `prev()`, `next()` and `scrollToElementByKey()` for programmatic control. |
 | `defaultIndex` | `number` | — | No | Initial index of the item to snap to on mount. |
+| `orientation` | `SnapScrollerOrientation` | `'horizontal'` | No | The axis the scroller scrolls and snaps along. A vertical scroller stacks its items in a column. |
 | `onScrollSnapChange` | `(element: HTMLElement, index: number) => void` | — | No | Fired when a scroll snap operation has fully completed and the scroller has settled on a new snap index. This callback is invoked after all scrolling and snapping animations have finished and the active snap position is considered stable. |
 | `onScrollSnapChanging` | `(element: HTMLElement, index: number) => void` | — | No | Fired while a scroll snap operation is in progress and the active snap index is still changing. This callback may be invoked multiple times during a single scroll or swipe interaction as the scroller approaches its final snap position. Useful for optimistic UI updates, previews, or synchronizing transient state during scrolling. |
 
@@ -36,6 +37,7 @@ Also accepts all `<div>` attributes.
 - `SnapScrollerProps`
 - `SnapScrollerContentProps`
 - `SnapScrollerApiRef`
+- `SnapScrollerOrientation`: `'horizontal' | 'vertical'`
 
 ## State Model
 

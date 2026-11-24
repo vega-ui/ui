@@ -24,6 +24,7 @@
 
 ## State And Variant Interaction
 
+- `size` on the root also sizes `DateTimeFieldCalendar`, on the same scale; `size` on the calendar overrides it. The time wheels in its popover take the size of the field as it is, and the time button should too: pass the `size` of the field to that `Button`.
 - Disabled state should dim the input and trigger together.
 - Error styling should come from the surrounding field state.
 - Time-specific semantics should remain readable even when the control is compressed into dense forms.
@@ -105,8 +106,8 @@ export default function CustomTriggerIcon() {
             <Icon><CalendarDaysIcon /></Icon>
           </DateTimeFieldTrigger>
         </PopoverTrigger>
-        <PopoverContent>
-          <DateTimeFieldCalendar aria-label='Choose date'>
+        <PopoverContent role='dialog' aria-label='Choose date'>
+          <DateTimeFieldCalendar>
             <CalendarHeader>
               <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
               <CalendarHeading>

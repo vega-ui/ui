@@ -22,9 +22,17 @@ Optional trigger affordance for opening a calendar overlay. It renders a `Button
 
 ### `DateTimeFieldCalendar`
 
-Optional visual date picker that stays synchronized with the field value.
+Optional visual date picker that stays synchronized with the field value. Place it in a `PopoverContent` with `role="dialog"` and a name. Picking a day keeps the popover open for the time, like the picker of a native `<input type="datetime-local">`; under the calendar a time button opens the wheels, as on iOS.
 
 Its children are the `Calendar` parts: `CalendarHeader` with `CalendarPrevButton`, `CalendarHeading` with `CalendarViewButton view='month'` and `view='year'`, and `CalendarNextButton`, then `CalendarContent` with `CalendarDays`, `CalendarMonths`, and `CalendarYears`. The calendar takes `locale` and `calendar` from `DateTimeField`.
+
+### `DateTimeFieldColumn`
+
+Optional wheel of one part of the time, chosen by the required `unit`: `hour`, `minute` or `second`, the seconds with `timeFormat="HH:mm:ss"`. Place the columns in a `WheelPicker` inside a nested `Popover`, opened by a time button under `DateTimeFieldCalendar`. A column turns the time and keeps the day; the minutes and the seconds go by `timeStep`; while the field is empty it takes `today`, within `min` and `max`, for the date. The times outside `min` and `max` are disabled only on the days of `min` and `max`. Its children are the template of an option, usually `<TimeFieldOption><WheelPickerFace /></TimeFieldOption>`.
+
+### `DateTimeFieldTime`
+
+Optional text of the time of the field in its `timeFormat`, and `placeholder`, for example `--:--`, while the field has no complete date and time. It renders text only: place it in the `Button` that opens the time wheels, and name that button with `aria-labelledby` from a visible "Time" label and the button itself, so it reads as "Time 18:30".
 
 ## Composition Order
 
@@ -34,6 +42,7 @@ Its children are the `Calendar` parts: `CalendarHeader` with `CalendarPrevButton
 4. `DateTimeFieldTrigger`
 5. `DateTimeFieldCalendar`
 6. `CalendarHeader` and `CalendarContent` with the calendar views
+7. Under the calendar, a "Time" label and a nested `Popover` whose trigger is a `Button` with `DateTimeFieldTime`, and whose content is a `WheelPicker` of `DateTimeFieldColumn`
 
 ## Valid Composition Patterns
 
@@ -82,8 +91,8 @@ export default function MinimalComposition() {
         <PopoverTrigger asChild>
           <DateTimeFieldTrigger square aria-label='Choose start date'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
         </PopoverTrigger>
-        <PopoverContent>
-          <DateTimeFieldCalendar aria-label='Choose start date'>
+        <PopoverContent role='dialog' aria-label='Choose start date'>
+          <DateTimeFieldCalendar>
             <CalendarHeader>
               <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
               <CalendarHeading>

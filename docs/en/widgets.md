@@ -284,14 +284,14 @@ Every answer but `undefined` ends the input: the steps after it and the widgets 
 
 An action is data the adapter executes after the commit, so a step stays pure:
 
-- **Focus and scroll:** `act.focus(key)`, `focusInside(key, 'first' | 'next' | 'previous')`, `focusPart(part)`, `restoreFocus()` back to the element that had the focus before the widget, `reveal(key)`, `scrollTo(part, options)`.
+- **Focus and scroll:** `act.focus(key)`, `focusInside(key, 'first' | 'next' | 'previous')`, `focusPart(part)`, `restoreFocus()` back to the element that had the focus before the widget, `reveal(key)`, `scrollTo(part, options)`, `animateScroll(part, options)` over the `animation-duration` and `animation-timing-function` of the part, without snapping, until the user turns the wheel or presses; it answers with one `scroll.end`.
 - **Popups:** `showPopover(part)`, `hidePopover(part)`, `showModal(part)`, `closeDialog(part, returnValue)`.
 - **Time:** `timer(name, ms)` fires back as `timer(name)`, `cancelTimer(name)`, `pauseTimer(name)` and `resumeTimer(name)`, which runs it on with the time it had left.
 - **Geometry:** `measure(request)` answers with `measure.done` and plain numbers per part and per item. Measure only when the step needs it: the adapter reads every request of the moment at once, after the DOM shows the new state.
 - **Animations:** `awaitAnimations(part)` answers with `browser.animationEnd`, `awaitAnimationsAt(key)` the same for an item, with its `key`, `flushStyles(part)` with `browser.flushed`, `scrub(part, ...)` seeks a paused animation by a drag, `animateHeight(part, open)`.
 - **Text:** `setText(part, value, selection)` writes a masked text, `commitText(part, value)` also dispatches `change`, `commit(part)` dispatches only `change`.
 - **Pointer and keys:** `claimPointer()` keeps a touch drag from scrolling the page and swallows the click that ends it; `watchKeys()` / `unwatchKeys()` deliver keys pressed anywhere on the page, like Escape for a tooltip opened by hover.
-- **Outside:** `click(key)`, `emit(name, value)` calls `on<Name>` from the options, `send(part, input)` delivers an input to the widget whose root is that part, `sendAt(key, input)` to the widget whose root is the item `key` or holds it.
+- **Outside:** `click(key)`, `emit(name, value)` calls `on<Name>` from the options, `send(part, input)` delivers an input to every widget whose root is that part, `sendAt(key, input)` to the widget whose root is the item `key` or holds it.
 
 An action that cannot run yet, like a focus on an element that is not rendered, waits and runs once the element registers. An action that throws is reported to `onError`, and the others still run.
 
@@ -374,7 +374,7 @@ A fragment takes fields, not names: pass `selectedKeys`, a `Field` of your own w
 ### Composition
 
 - **Wrap the steps.** A widget built on another one lists the steps of the other one among its own, like the period pickers on the grid.
-- **Drive a widget inside.** A widget registers the root of an inner widget as one of its parts and sends it inputs with `act.send(part, input)`, like `Calendar` focusing a day after a year is picked. Widgets never share state.
+- **Drive a widget inside.** A widget registers the root of an inner widget as one of its parts and sends it inputs with `act.send(part, input)`, like `Calendar` focusing a day after a year is picked. Two widgets can share one element: `act.send(ROOT, input)` then reaches both, like `WheelPicker` turning the snap scroller that is its own column. Widgets never share state.
 - **Share code.** Logic two widgets share lives in a segment, `packages/widgets/src/<segment>`, closed in `exports` when it is not a widget of its own.
 
 ## Testing

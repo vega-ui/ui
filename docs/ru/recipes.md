@@ -41,6 +41,7 @@ Vega UI поставляет строительные блоки без икон
 - [DateField](./components/date-field/index.md#свой-компонент): `MyDateField`
 - [DateRangeField](./components/date-range-field/index.md#свой-компонент): `MyDateRangeField`
 - [DateTimeField](./components/date-time-field/index.md#свой-компонент): `MyDateTimeField`
+- [TimeField](./components/time-field/index.md#свой-компонент): `MyTimeField`
 - [Calendar](./components/calendar/index.md#свой-компонент): `MyCalendar`
 
 ### Оверлеи

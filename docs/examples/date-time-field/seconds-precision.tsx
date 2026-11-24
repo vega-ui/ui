@@ -55,8 +55,8 @@ export default function SecondsPrecision() {
             <PopoverTrigger asChild>
               <DateTimeFieldTrigger square aria-label='Choose log date'><Icon><CalendarIcon /></Icon></DateTimeFieldTrigger>
             </PopoverTrigger>
-            <PopoverContent>
-              <DateTimeFieldCalendar aria-label='Choose log date'>
+            <PopoverContent role='dialog' aria-label='Choose log date'>
+              <DateTimeFieldCalendar>
                 <CalendarHeader>
                   <CalendarPrevButton square aria-label='Previous month'><Icon><ChevronLeftIcon /></Icon></CalendarPrevButton>
                   <CalendarHeading>
