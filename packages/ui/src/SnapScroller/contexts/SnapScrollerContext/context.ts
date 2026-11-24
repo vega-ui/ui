@@ -9,5 +9,5 @@ export interface SnapScrollerContextState {
 }
 
 export const [SnapScrollerProvider, useSnapScrollerContext] = createContext<SnapScrollerContextState>('SnapScrollerContext', {
-  handle: createHandle(snapScrollerWidget, { items: [], defaultIndex: undefined, pages: undefined, index: undefined, preserveScroll: true, onSnapChanging: undefined, onSnapChange: undefined, onOffset: undefined }, { id: 'snap-scroller' }),
+  handle: createHandle(snapScrollerWidget, { items: [], defaultIndex: undefined, pages: undefined, index: undefined, preserveScroll: true, orientation: 'horizontal', onSnapChanging: undefined, onSnapChange: undefined, onOffset: undefined }, { id: 'snap-scroller' }),
 })

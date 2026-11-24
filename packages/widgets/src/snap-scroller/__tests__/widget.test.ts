@@ -20,13 +20,27 @@ const measured = (keys: readonly number[], left: number, { padding = 0, itemWidt
     name: 'snapOffsets',
     parts: { [ROOT]: { rect: { x: 0, y: 0, width: WIDTH, height: 50 }, scroll: scroller(left, keys.length), styles: { 'scroll-padding-inline-start': `${padding}px` } } },
     items: keys.map((key, position) => {
-      const x = rtl ? WIDTH - itemWidth - position * itemWidth - left : position * itemWidth - left
-      return [key, { rect: { x, y: 0, width: itemWidth, height: 50 } }] as const
+      const offset = rtl ? WIDTH - itemWidth - position * itemWidth - left : position * itemWidth - left
+      return [key, { rect: { x: offset, y: 0, width: itemWidth, height: 50 } }] as const
     }),
   },
 })
 
 const scrolled = (left: number, count: number) => ({ part: ROOT, scroller: scroller(left, count) })
+
+const ROW = 40
+
+const column = (top: number, count: number) => ({ top, left: 0, width: 100, height: count * ROW, clientWidth: 100, clientHeight: ROW })
+
+const measuredColumn = (keys: readonly number[], top: number, padding = 0) => ({
+  measured: {
+    name: 'snapOffsets',
+    parts: { [ROOT]: { rect: { x: 0, y: 0, width: 100, height: ROW }, scroll: column(top, keys.length), styles: { 'scroll-padding-block-start': `${padding}px` } } },
+    items: keys.map((key, position) => [key, { rect: { x: 0, y: position * ROW - top + padding, width: 100, height: ROW } }] as const),
+  },
+})
+
+const scrolledColumn = (top: number, count: number) => ({ part: ROOT, scroller: column(top, count) })
 
 const options = (overrides: Partial<SnapScrollerOptions> = {}): SnapScrollerOptions => ({
   items: itemsOf(range(0, 5)),
@@ -34,6 +48,7 @@ const options = (overrides: Partial<SnapScrollerOptions> = {}): SnapScrollerOpti
   pages: undefined,
   index: undefined,
   preserveScroll: true,
+  orientation: 'horizontal',
   onSnapChanging: undefined,
   onSnapChange: undefined,
   onOffset: undefined,
@@ -98,6 +113,16 @@ describe('Critical User Paths', () => {
     snapScroller.send(createInput(SNAP_INDEX, { key: 4 }))
     expect(snapScroller.actions).toEqual([act.scrollTo(ROOT, { left: 400, behavior: 'instant' })])
     expect(snapScroller.state.pending).toBe(4)
+  })
+
+  it('animates a scroll to an item on the timing of the scroller and reports where it stops, also the item it started from when the user stopped it', () => {
+    const snapScroller = shown()
+
+    snapScroller.send(createInput(SNAP_TO, { key: 3, value: 'animated' }))
+    expect(snapScroller.actions).toEqual([act.animateScroll(ROOT, { left: 300 })])
+
+    snapScroller.send(scroll.end, scrolled(0, 5))
+    expect(snapScroller.actions).toContainEqual(act.emit('snapChange', 0))
   })
 
   it('moves the window of pages around the settled page and keeps that page in place', () => {
@@ -227,6 +252,41 @@ describe('Edge Cases', () => {
 
     snapScroller.send(scroll.end, scrolled(-300, 5))
     expect(snapScroller.state.committed).toBe(3)
+  })
+
+  it('snaps and scrolls along the block axis in a vertical scroller, after its block padding', () => {
+    const snapScroller = simulate(snapScrollerWidget, options({ orientation: 'vertical' })).send(lifecycle.connect)
+    expect(snapScroller.actions).toEqual([act.measure({ name: 'snapOffsets', parts: [ROOT], items: 'all', rect: true, scroll: true, styles: ['scroll-padding-block-start'] })])
+
+    snapScroller.send(measure.done, measuredColumn(range(0, 5), 0, 8))
+    snapScroller.send(scroll.end, scrolledColumn(80, 5))
+    expect(snapScroller.state.committed).toBe(2)
+
+    snapScroller.send(createInput(SNAP_NEXT))
+    expect(snapScroller.actions).toEqual([act.scrollTo(ROOT, { top: 120 })])
+  })
+
+  it('measures the offsets in layout pixels while an ancestor scales the scroller, like a popover that opens', () => {
+    const snapScroller = simulate(snapScrollerWidget, options({ orientation: 'vertical', defaultIndex: 3 })).send(lifecycle.connect)
+    const scale = 0.9
+
+    snapScroller.send(measure.done, {
+      measured: {
+        name: 'snapOffsets',
+        parts: { [ROOT]: { rect: { x: 0, y: 0, width: 100 * scale, height: ROW * scale }, scroll: { ...column(0, 5), offsetWidth: 100, offsetHeight: ROW }, styles: {} } },
+        items: range(0, 5).map((key) => [key, { rect: { x: 0, y: key * ROW * scale, width: 100 * scale, height: ROW * scale } }] as const),
+      },
+    })
+
+    expect(snapScroller.actions).toEqual([act.scrollTo(ROOT, { top: 3 * ROW, behavior: 'instant' })])
+  })
+
+  it('appends pages once a vertical scroll reaches the bottom of the window', () => {
+    const snapScroller = simulate(snapScrollerWidget, options({ orientation: 'vertical', pages: PAGES })).send(lifecycle.connect).send(measure.done, measuredColumn(range(0, 5), 0))
+
+    snapScroller.send(scroll.move, scrolledColumn(160, 5))
+    expect(windowOf(snapScroller.state)).toEqual([0, 1, 2, 3, 4, 5, 6, 7])
+    expect(snapScroller.actions).toEqual([act.emit('snapChanging', 4), act.emit('offset', 1)])
   })
 
   it('appends pages once a scroll reaches the end of the window', () => {

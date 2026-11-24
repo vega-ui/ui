@@ -23,7 +23,7 @@ const templateOf = (state: TimeFieldSnapshot) => getTimeTemplate(state.options.f
 
 const boundsOf = ({ min, max }: TimeFieldSnapshot['options']) => ({ min: isISOTime(min) ? min : undefined, max: isISOTime(max) ? max : undefined })
 
-const timeField = maskedField<TimeFieldSnapshot, string>({
+const timeField = maskedField<TimeFieldSnapshot, string, string>({
   text: timeFieldShape.text,
   value: timeFieldShape.value,
   pending: timeFieldShape.pending,
@@ -46,9 +46,10 @@ const timeField = maskedField<TimeFieldSnapshot, string>({
 
     return { value, selection: [position, position] }
   },
+  picked: (state, time) => formatTemplateTime(time, templateOf(state)),
 })
 
-export const { defaultTextOf } = timeField
+export const { defaultTextOf, pick: PICK_VALUE } = timeField
 
 export const timeFieldWidget = defineWidget({
   state: timeFieldShape,

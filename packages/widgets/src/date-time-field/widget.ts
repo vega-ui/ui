@@ -55,14 +55,18 @@ const dateTimeField = maskedField<DateTimeFieldSnapshot, string, string>({
 
     return { value, selection: [position, position] }
   },
-  picked: (state, date) => {
+  picked: (state, picked) => {
+    if (getISOTimePart(picked)) return formatTemplateDate(state.options.calendar, picked, templateOf(state))
+
     const time = getISOTimePart(state.value) ?? '00:00:00'
 
-    return formatTemplateDate(state.options.calendar, `${date}T${time}`, templateOf(state))
+    return formatTemplateDate(state.options.calendar, `${picked}T${time}`, templateOf(state))
   },
 })
 
 export const { defaultTextOf, pick: PICK_VALUE } = dateTimeField
+
+export const timeOf = (state: DateTimeFieldSnapshot) => getISOTimePart(state.value) ?? ''
 
 export const dateTimeFieldWidget = defineWidget({
   state: dateTimeFieldShape,

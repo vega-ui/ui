@@ -97,15 +97,16 @@ export interface DateTimeFieldProps extends Omit<TextFieldProps, 'defaultValue'>
   disabledDates?: CalendarDatesDisabled
   
   /**
-   * Disables the field like a native `disabled` input: the input and the
-   * trigger are disabled, and the value is not submitted.
+   * Disables the field like a native `disabled` input: the input, the
+   * trigger and the time wheels are disabled, and the value is not submitted.
    */
   disabled?: boolean
 
   /**
    * Makes the field read-only like a native `readonly` input: the input is
-   * `readonly`, the calendar still opens to show the date, and picking a day
-   * does not change it. The value is still submitted.
+   * `readonly`, the calendar and the time wheels still open to show the
+   * timestamp, and picking a day or turning a wheel does not change it. The
+   * value is still submitted.
    */
   readOnly?: boolean
 

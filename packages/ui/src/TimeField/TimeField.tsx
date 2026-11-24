@@ -54,6 +54,19 @@ export interface TimeFieldProps extends Omit<TextFieldProps, 'defaultValue'> {
    * Defaults to `1`.
    */
   step?: number
+
+  /**
+   * Disables the field like a native `disabled` input: the input, the trigger
+   * and the wheels are disabled, and the time is not submitted.
+   */
+  disabled?: boolean
+
+  /**
+   * Makes the field read-only like a native `readonly` input: the input is
+   * `readonly`, the wheels still open to show the time, and turning them does
+   * not change it. The time is still submitted.
+   */
+  readOnly?: boolean
 }
 
 /**
@@ -68,6 +81,8 @@ export const TimeField: FC<TimeFieldProps> = ({
   min,
   max,
   step = 1,
+  disabled,
+  readOnly,
   value,
   defaultValue = '',
   onChangeValue,
@@ -76,7 +91,7 @@ export const TimeField: FC<TimeFieldProps> = ({
   const handle = useWidget(timeFieldWidget, { format, min, max, step, value, defaultValue, onChangeValue }, widgetEnvironment)
 
   return (
-    <TimeFieldProvider handle={handle}>
+    <TimeFieldProvider handle={handle} disabled={disabled} readOnly={readOnly}>
       <TextField {...props} />
     </TimeFieldProvider>
   )

@@ -1,4 +1,5 @@
 export { type SnapScrollerApiRef } from './types'
+export type { SnapScrollerOrientation } from '@vega-ui/widgets/snap-scroller'
 export { SnapScroller, type SnapScrollerProps } from './SnapScroller'
 export { SnapScrollerContent, type SnapScrollerContentProps } from './components'
 export { useSnapScrollerContext } from './contexts'

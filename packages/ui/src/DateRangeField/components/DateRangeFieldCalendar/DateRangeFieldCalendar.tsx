@@ -1,12 +1,19 @@
 import { FC } from 'react';
+import { useTextFieldContext } from '../../../TextField/contexts';
 import { useSnapshot } from '../../../internals/widget';
-import { Calendar, CalendarProps } from '../../../Calendar';
+import { Calendar, CalendarProps, CalendarSize } from '../../../Calendar';
 import { usePopoverContext } from '../../../Popover';
 import { useDateRangeFieldContext } from '../../contexts';
 import { createInput } from '@vega-ui/core';
 import { PICK_VALUE } from '@vega-ui/widgets/date-range-field';
 
-export type DateRangeFieldCalendarProps = CalendarProps<'range'>
+export interface DateRangeFieldCalendarProps extends Omit<CalendarProps<'range'>, 'size'> {
+  /**
+   * Size of the buttons, cells and weekday names of the calendar.
+   * @default the size of the field
+   */
+  size?: CalendarSize
+}
 
 /**
  * DateRangeFieldCalendar — a range-enabled calendar component integrated
@@ -24,6 +31,7 @@ export type DateRangeFieldCalendarProps = CalendarProps<'range'>
  * A read-only field or input keeps its range.
  */
 export const DateRangeFieldCalendar: FC<DateRangeFieldCalendarProps> = ({ onChangeValue: _onChangeValue, ...props }) => {
+  const { size } = useTextFieldContext()
   const { handle, max, min, calendar, locale, today, disabledDates, readOnly } = useDateRangeFieldContext()
   const date = useSnapshot(handle, (state) => state.value)
   const popover = usePopoverContext()
@@ -41,6 +49,7 @@ export const DateRangeFieldCalendar: FC<DateRangeFieldCalendarProps> = ({ onChan
     <Calendar
       role='dialog'
       compact
+      size={size}
       autoFocus={open}
       readOnly={readOnly}
       max={max}

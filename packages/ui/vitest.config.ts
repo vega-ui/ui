@@ -22,14 +22,19 @@ export default mergeConfig(
         screenshotFailures: false,
         commands: {
           emulateReducedMotion: ({ page }, reducedMotion: 'reduce' | 'no-preference') => page.emulateMedia({ reducedMotion }),
+          mouseClick: async ({ page, iframe }, selector: string) => {
+            const box = await iframe.locator(selector).boundingBox()
+            if (!box) return
+            await page.mouse.click(box.x + box.width / 2, box.y + box.height / 2)
+          },
           mouseDrag: async ({ page, iframe }, selector: string, distance: number) => {
             const box = await iframe.locator(selector).boundingBox()
             if (!box) return
-            const x = box.x + box.width / 2
-            const y = box.y + box.height / 2
-            await page.mouse.move(x, y)
+            const centerX = box.x + box.width / 2
+            const centerY = box.y + box.height / 2
+            await page.mouse.move(centerX, centerY)
             await page.mouse.down()
-            await page.mouse.move(x, y + distance, { steps: 10 })
+            await page.mouse.move(centerX, centerY + distance, { steps: 10 })
             await page.mouse.up()
           },
         },

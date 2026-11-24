@@ -14,6 +14,8 @@ export const scrollOf = (element: Element): ScrollBox => ({
   height: element.scrollHeight,
   clientWidth: element.clientWidth,
   clientHeight: element.clientHeight,
+  offsetWidth: element instanceof HTMLElement ? element.offsetWidth : undefined,
+  offsetHeight: element instanceof HTMLElement ? element.offsetHeight : undefined,
 })
 
 export const scrollerBelow = (target: EventTarget | null, root: Element): Element | undefined => {

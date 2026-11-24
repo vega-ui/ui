@@ -1,7 +1,8 @@
 import { describe, expect, it, vi } from 'vitest'
-import { act, browser, focus, key, lifecycle, ROOT, text } from '@vega-ui/core'
+import { act, browser, createInput, focus, key, lifecycle, ROOT, text } from '@vega-ui/core'
 import { simulate } from '@vega-ui/core/test'
-import { timeFieldWidget } from '../widget'
+import { getTimeWheelOptions, getTimeWheelValue, pickTimeWheel } from '../wheels'
+import { PICK_VALUE, timeFieldWidget } from '../widget'
 
 type TimeFieldOptions = Parameters<typeof simulate<typeof timeFieldWidget.shape>>[1]
 
@@ -104,6 +105,38 @@ describe('Critical User Paths', () => {
 })
 
 describe('Edge Cases', () => {
+  it('writes a time picked on the wheels in the format and commits it, and ignores it in a read-only field', () => {
+    const onChangeValue = vi.fn()
+    const timeField = simulateTime({ format: 'HH:mm:ss', onChangeValue })
+
+    timeField.send(createInput(PICK_VALUE, { to: '07:30:15' }))
+    expect(timeField.actions).toEqual([act.commitText(ROOT, '07:30:15')])
+    expect(onChangeValue).toHaveBeenLastCalledWith('07:30:15')
+
+    timeField.observe({ readOnly: true }).send(createInput(PICK_VALUE, { to: '08:00:00' }))
+    expect(timeField.answer).toBe('pass')
+  })
+
+  it('offers the minutes of the wheel by the step, also the off-step minute of the time, and disables the times outside min and max', () => {
+    const bounds = { min: '09:20', max: '17:00', step: 15, seconds: false }
+    const disabledOf = (unit: 'hour' | 'minute', time: string) => getTimeWheelOptions(unit, time, bounds).filter((option) => option.disabled).map((option) => option.value)
+
+    expect(getTimeWheelOptions('minute', '10:07', bounds).map((option) => option.value)).toEqual(['00', '07', '15', '30', '45'])
+    expect(disabledOf('hour', '10:00')).toEqual(['00', '01', '02', '03', '04', '05', '06', '07', '08', '18', '19', '20', '21', '22', '23'])
+    expect(disabledOf('minute', '09:30')).toEqual(['00', '15'])
+    expect(disabledOf('minute', '17:00')).toEqual(['15', '30', '45'])
+  })
+
+  it('shows min on the wheels of an empty field and keeps a picked time within min and max', () => {
+    const bounds = { min: '09:20', max: '17:00', step: 1, seconds: false }
+
+    expect(getTimeWheelValue('hour', '', bounds)).toBe('09')
+    expect(getTimeWheelValue('minute', '', bounds)).toBe('20')
+    expect(pickTimeWheel('minute', '45', '', bounds)).toBe('09:45')
+    expect(pickTimeWheel('hour', '17', '10:30', bounds)).toBe('17:00')
+    expect(pickTimeWheel('second', '05', '10:30:00', { step: 1, seconds: true })).toBe('10:30:05')
+  })
+
   it('writes the formatted time into the field once connected and again when the format changes, without reporting a change', () => {
     const onChangeValue = vi.fn()
     const timeField = simulateTime({ defaultValue: '09:05', onChangeValue })

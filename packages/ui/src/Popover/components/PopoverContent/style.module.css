@@ -80,7 +80,7 @@
     box-shadow: var(--surface-shadow);
 }
 
-.content:where(:popover-open) {
+.content:where(:popover-open[data-status='open']) {
     opacity: 1;
     scale: 1;
     transition:
@@ -91,7 +91,7 @@
 }
 
 @starting-style {
-    .content:where(:popover-open) {
+    .content:where(:popover-open[data-status='open']) {
         opacity: 0;
         scale: .9;
     }

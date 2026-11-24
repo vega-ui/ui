@@ -18,7 +18,7 @@ export type TimeFieldInputProps = Omit<TextFieldInputProps, 'value' | 'defaultVa
  * work natively.
  */
 export const TimeFieldInput: FC<TimeFieldInputProps> = ({ ref, ...props }) => {
-  const { handle } = useTimeFieldContext()
+  const { handle, disabled, readOnly } = useTimeFieldContext()
   const [defaultValue] = useState(() => defaultTextOf(handle.instance.state))
   const attrs = useOutput(handle, timeFieldWidget.output.root)
   const mergedRef = useMergeRefs([handle.rootAt(ROOT, timeFieldWidget.output.root), ref])
@@ -27,6 +27,8 @@ export const TimeFieldInput: FC<TimeFieldInputProps> = ({ ref, ...props }) => {
     <TextFieldInput
       type='text'
       inputMode='numeric'
+      disabled={disabled}
+      readOnly={readOnly}
       defaultValue={defaultValue}
       ref={mergedRef}
       {...handle.listen(attrs, props)}

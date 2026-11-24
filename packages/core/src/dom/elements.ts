@@ -25,9 +25,9 @@ const byPosition = <Key, Data>(first: Registered<Key, Data>, second: Registered<
   return first.element.compareDocumentPosition(second.element) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1
 }
 
-const registries = new WeakMap<Element, Elements<unknown>>()
+const registries = new WeakMap<Element, Set<Elements<unknown>>>()
 
-export const registryOf = (root: Element): Elements<unknown> | undefined => registries.get(root)
+export const registriesOf = (root: Element): readonly Elements<unknown>[] => [...(registries.get(root) ?? [])]
 
 export const ROOT = 'root'
 
@@ -182,11 +182,11 @@ export const createElements = <Key, Data = undefined>(): ElementRegistry<Key, Da
       if (element === previous) return
       if (observer && movesItems(observer.takeRecords())) reorder()
 
-      if (previous && registries.get(previous) === registry) registries.delete(previous)
+      if (previous) registries.get(previous)?.delete(registry)
       if (element) roots.set(name, element)
       else roots.delete(name)
       setPart(name, element, output)
-      if (element) registries.set(element, registry)
+      if (element) registries.set(element, (registries.get(element) ?? new Set()).add(registry))
 
       observer?.disconnect()
       for (const root of roots.values()) observer?.observe(root, { childList: true, subtree: true })
